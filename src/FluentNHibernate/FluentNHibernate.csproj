@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1C988DFB-1EC5-484E-87D9-1D3C775BA435}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FluentNHibernate</RootNamespace>
+    <AssemblyName>FluentNHibernate</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="fit, Version=1.4.2970.22359, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\fit\fit.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=1.2.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.Linq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\NHibernate\NHibernate.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="ShadeTree.Core, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\ShadeTree\ShadeTree.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap, Version=2.5.0.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\StructureMap\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Fixtures\DomainClassFixture.cs" />
+    <Compile Include="Fixtures\DomainFixtureWatcher.cs" />
+    <Compile Include="Fixtures\DomainListFixture.cs" />
+    <Compile Include="Fixtures\DomainObjectFinder.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="Fixtures\ExampleAttribute.cs" />
+    <Compile Include="Fixtures\TestContext.cs" />
+    <Compile Include="Generation\CodeFile.cs" />
+    <Compile Include="Generation\DomainFixture.cs" />
+    <Compile Include="Generation\DomainProperty.cs" />
+    <Compile Include="Generation\GenericSimpleProperty.cs" />
+    <Compile Include="Generation\IProperty.cs" />
+    <Compile Include="Generation\PropertyBuilder.cs" />
+    <Compile Include="Generation\SimpleProperty.cs" />
+    <Compile Include="IMappingVisitor.cs" />
+    <Compile Include="InMemoryRepository.cs" />
+    <Compile Include="IRepository.cs" />
+    <Compile Include="MappingVisitor.cs" />
+    <Compile Include="Mapping\ClassMap.cs" />
+    <Compile Include="Mapping\ClassMapBase.cs" />
+    <Compile Include="Mapping\ClassToTableMapping.cs" />
+    <Compile Include="Mapping\ComponentPart.cs" />
+    <Compile Include="Conventions.cs" />
+    <Compile Include="Mapping\DefaultConvention.cs" />
+    <Compile Include="Mapping\DiscriminatorPart.cs" />
+    <Compile Include="Mapping\EnumerationTypeConvention.cs" />
+    <Compile Include="Mapping\GenericEnumMapper.cs" />
+    <Compile Include="Mapping\IdentityPart.cs" />
+    <Compile Include="Mapping\IgnoreNullableTypeConvention.cs" />
+    <Compile Include="Mapping\IMapping.cs" />
+    <Compile Include="Mapping\IProperty.cs" />
+    <Compile Include="Mapping\ITypeConvention.cs" />
+    <Compile Include="Mapping\ManyToManyPart.cs" />
+    <Compile Include="Mapping\ManyToOnePart.cs" />
+    <Compile Include="Mapping\OneToManyPart.cs" />
+    <Compile Include="Mapping\PropertyMap.cs" />
+    <Compile Include="Mapping\SubClassPart.cs" />
+    <Compile Include="Mapping\TypeMapping.cs" />
+    <Compile Include="Mapping\XmlExtensions.cs" />
+    <Compile Include="Metadata\DependencyChain.cs" />
+    <Compile Include="PersistenceModel.cs" />
+    <Compile Include="PersistenceSpecification.cs" />
+    <Compile Include="Query\EntityQueryDefinition.cs" />
+    <Compile Include="Query\FilterType.cs" />
+    <Compile Include="SessionSource.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\Template.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

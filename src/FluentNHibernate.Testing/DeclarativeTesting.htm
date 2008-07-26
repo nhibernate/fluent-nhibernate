@@ -1,0 +1,213 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+	    <p>Yesterday,
+            <a href="http://codebetter.com/blogs/david_laribee/archive/2008/06/17/test-your-nhibernate-mappings.aspx">David Laribee related some problems</a> he experienced with refactorings in his 
+            domain model leading to some breaking problems with NHibernate mappings.&nbsp; 
+            Specifically, the issues are:</p>
+    <ol>
+        <li>Changing the property names of a domain model can break the NHibernate mapping</li>
+        <li>Changing the database fields can break the NHibernate mappings</li>
+    </ol>
+    <p>
+        David went on to bemoan the absence of a quick way to validate NHibernate 
+        mappings.&nbsp; Ayende popped in with the suggestion that the presence of 
+        integrated tests around the NHibernate usage would spot mapping problems.&nbsp; 
+        Other folks mentioned that there&#39;s a new ReSharper plugin to validate and 
+        refactor NHibernate mappings.&nbsp; I&#39;ll circle back to the refactoring plugin 
+        in a while.&nbsp; First I want to talk about quick ways to validate NHibernate 
+        mappings.&nbsp; Ayende is right of course about the integrated tests against the 
+        individual queries, but I&#39;m going to suggest that that isn&#39;t the most efficient 
+        answer.&nbsp; The bigger integration tests will tell you that something is 
+        wrong, but from experience they&#39;ll be harder to diagnose because there is so 
+        much more going on than simple property checking, and they provide a slow 
+        feedback cycle because of how much stuff is going on.&nbsp; What would be nice 
+        is a way to walk right up to a mapping and specify which properties on a class 
+        are supposed to be persisted and how.</p>
+    <p>
+        I thought I would come out of my blogging retirement and show an example of the
+        <a href="http://www.lostechies.com/blogs/chad_myers/archive/2008/06/02/a-new-start.aspx">Chad and Jeremy</a> 
+        approach to testing NHibernate mappings:</p>
+        <pre name="code" class="c-sharp">
+        
+        [SetUp]
+        public void SetUp()
+        {
+            // Ensure that the StructureMap configuration is bootstrapped
+            // In our case, this includes everything we need setup to 
+            // execute NHibernate (mappings + ISessionFactory configuration)
+            // This will be pretty application specific here
+            Bootstrapper.RestartStructureMap();
+        }
+        
+        [Test]
+        public void SaveAndLoadCustomerContact()
+        {
+            new PersistenceSpecification&lt;CustomerContact&gt;()
+                .CheckProperty(x =&gt; x.Name, "Frank")
+                .CheckProperty(x =&gt; x.Email, "Email")
+                .CheckProperty(x =&gt; x.Extension, 123)
+                .CheckProperty(x =&gt; x.FaxNumber, "111-111-1111")
+                .CheckProperty(x =&gt; x.TelephoneNumber, "222-222-2222")
+                .CheckProperty(x =&gt; x.Title, "Mr.")
+                .VerifyTheMappings();
+        }
+        </pre>
+        <p>
+            All this test does is ensure that the 6 properties of the CustomerContact class 
+            (Name, Email, Extension, FaxNumber, TelephoneNumber, Title) are mapped in 
+            NHibernate.&nbsp; We have some other methods for checking to many and many to 
+            one type relationships.&nbsp; </p>
+        <p>
+            Behind the scenes the PersistenceSpecification&lt;T&gt; class:</p>
+    <ol>
+        <li>&nbsp;Creates a new instance of T</li>
+        <li>Uses the lambda expressions and suggested values in the calls to CheckProperty 
+            to load values into the new instance of T</li>
+        <li>Grabs our IRepository out of StructureMap (of course), and saves the object</li>
+        <li>Grabs a second IRepository out of StructureMap</li>
+        <li>Fetches a second copy of the same T out of the second IRepository</li>
+        <li>Verifies that all of the specified properties in the specification were saved 
+            and loaded.&nbsp; If any single property does not match between the first T and 
+            the second T, the test will fail.</li>
+    </ol>
+    <p>Here's the implementation of the PersistenceSpecification.VerifyTheMappings() method:</p>
+    <pre name="code" class="c-sharp">
+        public void VerifyTheMappings()
+        {
+            // Create the initial copy
+            var first = new T();
+
+            // Set the "suggested" properties, including references
+            // to other entities and possibly collections
+            _allProperties.ForEach(p =&gt; p.SetValue(first));
+
+            // Save the first copy
+            _repository.Save(first);
+
+            // Get a completely different IRepository
+            var secondRepository = createRepository();
+
+            // "Find" the same entity from the second IRepository
+            var second = secondRepository.Find&lt;T&gt;(first.Id);
+
+            // Validate that each specified property and value
+            // made the round trip
+            // It's a bit naive right now because it fails on the first failure
+            _allProperties.ForEach(p =&gt; p.CheckValue(second));
+        }
+    </pre>
+    
+    <p>The advantage of this testing is that it gives a (relatively) fast feedback cycle 
+        focused specifically on the mappings.&nbsp; Tools that check the hbm.xml 
+        mappings can only verify that what&#39;s there is correctly formed.&nbsp; The 
+        mapping tests above will catch missing mappings and desired behavior.&nbsp; At a 
+        bare minimum, you really should have at least one smoke test in your CI build 
+        that simply tries to create an NHibernate ISession object from your 
+        configuration.&nbsp; Let that test run and possibly fail before any integrated 
+        tests run.</p>
+    <p>Now, the ReSharper plugin for NHibernate sounds pretty cool.&nbsp; I definitely 
+        want little or no friction in renaming or adding properties in my Domain Model 
+        classes (why I absolutely despise codegen your business object solutions).&nbsp; 
+        We beat the refactoring problem by eliminating HBM.XML.&nbsp; As part of my New 
+        Year&#39;s resolution to eliminate my exposure to angle bracket hell, we&#39;ve created 
+        the beginning of a Fluent Interface API to express NHibernate mappings.&nbsp; 
+        Using copious amounts of Generics (I guess .Net code just &quot;wants&quot; to have lots 
+        of angle brackets) and lambda expressions, we&#39;re able to express NHibernate 
+        mappings in a completely compiler-checked, ReSharper-able way.&nbsp; Since we 
+        switched to the FI, we&#39;ve experienced far less trouble with mapping problems.&nbsp; 
+        Here&#39;s a couple of examples:</p>
+        
+        <pre name="code" class="c-sharp">
+    // Simple class with properties and a single "to-many" relationship
+    public class CustomerContactMap : ClassMap&lt;CustomerContact&gt;
+    {
+        public CustomerContactMap()
+        {
+            Map(x =&gt; x.Name);
+            Map(x =&gt; x.Email);
+            Map(x =&gt; x.Extension);
+            Map(x =&gt; x.FaxNumber);
+            Map(x =&gt; x.TelephoneNumber);
+            Map(x =&gt; x.Title);
+            References(x =&gt; x.Customer);
+        }
+    }
+    
+    // Class with a "Component"
+    public class CustomerDeliveryAddressMap : ClassMap&lt;CustomerDeliveryAddress&gt;
+    {
+        public CustomerDeliveryAddressMap()
+        {
+            Map(x =&gt; x.Name);
+            References(x =&gt; x.Customer);
+            Component&lt;Address&gt;(x =&gt; x.Address, m =&gt;
+               {
+                   m.Map(x =&gt; x.AddressLine1);
+                   m.Map(x =&gt; x.AddressLine2);
+                   m.Map(x =&gt; x.AddressLine3);
+                   m.Map(x =&gt; x.CityName);
+                   m.Map(x =&gt; x.CountryName);
+                   m.References(x =&gt; x.State);
+                   m.References(x =&gt; x.PostalCode);
+               });
+        }
+    }
+    
+    // Class with some "has many" relationships
+    public class CustomerMap : ClassMap&lt;Customer&gt;
+    {
+        public CustomerMap()
+        {
+            HasMany&lt;CustomerContact&gt;(x =&gt; x.Contacts).CascadeAll();
+            HasMany&lt;CustomerJob&gt;(x =&gt; x.Jobs).CascadeAll();
+            HasMany&lt;CustomerDeliveryAddress&gt;(x =&gt; x.DeliveryAddresses).CascadeAll();
+
+            Map(x =&gt; x.Name);
+            Map(x =&gt; x.LookupName);
+            Map(x =&gt; x.IsGeneric);
+            Map(x =&gt; x.RequiresPurchaseOrder);
+            Map(x =&gt; x.Retired);
+        }
+    }
+    
+    
+        </pre>
+        
+    <p>With this approach, and backed up with the little PersistenceSpecification tests, 
+        we can happily change class names and property names with relative confidence.&nbsp; 
+        Besides, the simple usage of Intellisense plus compiler safe code cuts down on 
+        the number of mapping errors.&nbsp; We&#39;re more or less greenfield at the moment, so we can get away with generating 
+        the database from our NHibernate mappings on demand, but you can specify 
+        specific table and column names in the language above for brownfield scenarios.&nbsp; 
+        I&#39;d very confidently say that we&#39;re faster with this approach than we would be 
+        with HBM.XML.</p>
+    <p>If you're interested, the complete code for everything I talked about is in the ShadeTree.DomainModel project in the StoryTeller codebase (and effectively released under the Apache 2.0 license).  The code is at
+        <a href="http://storyteller.tigris.org/svn/storyteller/trunk">http://storyteller.tigris.org/svn/storyteller/trunk/</a>.  Use the src\ShadeTree.sln for this stuff.  I don't know that we'll ever get around to a fully supported release of this stuff, but I wanted to throw out the idea anyway.  At this point I'm only extending this code when we need something new for our current project.&nbsp; 
+        A lot of the advantages of this approach are tied to application specific 
+        conventions and also by tieing the forward generation of the database structure 
+        to validation rules.</p>
+    <p>&nbsp;</p>
+    
+    <h4>As for IoC container testing... </h4>
+    <p>I'll overlook the fact that my friend David implicitly implied that an 
+        IoC container not named StructureMap was the de facto standard.
+        <a href="http://weblogs.asp.net/bsimser/archive/2008/06/04/the-first-spec-you-should-write-when-using-castle.aspx">Bil Simser posted a little snippet of code to smoke test the configuration</a> of one of those other IoC containers.&nbsp; StructureMap has had quite a bit 
+        of diagnostic support since version 0.85, but StructureMap 2.5 will add the 
+        ability to do this:</p>
+        <pre name="code" class="c-sharp">
+        [SetUp]
+        public void SmokeTestStructureMapConfiguration()
+        {
+            ObjectFactory.AssertConfigurationIsValid();
+        }
+        </pre>
+        <p>This will attempt to build every possible configured instance in StructureMap, perform any designated 
+            <a href="http://codebetter.com/blogs/jeremy.miller/archive/2006/04/06/142431.aspx">environment tests</a> (like trying to connect to a database), and generate a complete report of all errors encountered by StructureMap.&nbsp; 
+            If you&#39;re aggressive about putting all services into your IoC container, this 
+            test can help measure the correctness of an installation.</p>
+	</body>
+</html>
