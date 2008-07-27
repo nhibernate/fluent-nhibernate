@@ -17,12 +17,11 @@ namespace ShadeTree.DomainModel.Mapping
         private readonly bool _parentIsRequired;
         private string _columnName;
 
-
-        public PropertyMap(PropertyInfo property, bool parentIsRequired, string columnName, Type parentType)
+        public PropertyMap(PropertyInfo property, bool parentIsRequired, Type parentType)
         {
             _property = property;
             _parentIsRequired = parentIsRequired;
-            _columnName = columnName;
+            _columnName = property.Name;
             _parentType = parentType;
 
             _columnProperties.Store("name", _columnName);
@@ -69,7 +68,7 @@ namespace ShadeTree.DomainModel.Mapping
 
         public string ColumnName()
         {
-            return _property.Name;
+            return _columnName;
         }
 
         public void AddAlteration(Action<XmlElement> action)
@@ -102,6 +101,10 @@ namespace ShadeTree.DomainModel.Mapping
         public PropertyMap TheColumnNameIs(string name)
         {
             _columnName = name;
+
+            _columnProperties.Remove("column");
+            _columnProperties.Store("name", _columnName);
+
             return this;
         }
 

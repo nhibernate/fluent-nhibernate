@@ -33,7 +33,10 @@ namespace ShadeTree.DomainModel.Mapping
         public PropertyMap Map(Expression<Func<T,object>> expression, string columnName)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            var map = new PropertyMap(property, parentIsRequired, columnName ?? property.Name, typeof(T));
+            var map = new PropertyMap(property, parentIsRequired, typeof(T));
+
+            if (columnName != null)
+                map.TheColumnNameIs(columnName);
 
             _properties.Add(map);
 
