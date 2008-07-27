@@ -87,6 +87,7 @@
     <Compile Include="InMemoryRepository.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="MappingVisitor.cs" />
+    <Compile Include="Mapping\AccessStrategyBuilder.cs" />
     <Compile Include="Mapping\ClassMap.cs" />
     <Compile Include="Mapping\ClassMapBase.cs" />
     <Compile Include="Mapping\ClassToTableMapping.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Mapping\ManyToManyPart.cs" />
     <Compile Include="Mapping\ManyToOnePart.cs" />
     <Compile Include="Mapping\OneToManyPart.cs" />
+    <Compile Include="Mapping\Prefix.cs" />
     <Compile Include="Mapping\PropertyMap.cs" />
     <Compile Include="Mapping\SubClassPart.cs" />
     <Compile Include="Mapping\TypeMapping.cs" />

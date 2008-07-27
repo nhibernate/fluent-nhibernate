@@ -16,9 +16,12 @@ namespace ShadeTree.DomainModel.Mapping
         private readonly PropertyInfo _property;
         private readonly bool _parentIsRequired;
         private string _columnName;
+        private readonly AccessStrategyBuilder access;
 
         public PropertyMap(PropertyInfo property, bool parentIsRequired, Type parentType)
         {
+            access = new AccessStrategyBuilder(this);
+
             _property = property;
             _parentIsRequired = parentIsRequired;
             _columnName = property.Name;
@@ -94,6 +97,11 @@ namespace ShadeTree.DomainModel.Mapping
         public Type ParentType
         {
             get { return _parentType; }
+        }
+
+        public AccessStrategyBuilder Access
+        {
+            get { return access; }
         }
 
         #endregion
