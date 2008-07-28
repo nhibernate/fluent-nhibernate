@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Xml;
 using ShadeTree.Validation;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public class ManyToOnePart : IMappingPart
     {

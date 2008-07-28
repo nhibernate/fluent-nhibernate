@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace ShadeTree.DomainModel
+namespace FluentNHibernate
 {
     public interface IMappingVisitor
     {

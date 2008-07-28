@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using NUnit.Framework;
-using ShadeTree.DomainModel;
-using ShadeTree.DomainModel.Query;
+using FluentNHibernate;
+using FluentNHibernate.Query;
 
-namespace ShadeTree.Testing.DomainModel.Query
+namespace FluentNHibernate.Testing.DomainModel.Query
 {
     public class FooClass
     {

@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace ShadeTree.Testing
+namespace FluentNHibernate.Testing
 {
     [TestFixture]
     public class Debugging

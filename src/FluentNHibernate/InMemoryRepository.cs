@@ -6,7 +6,7 @@ using System.Reflection;
 using ShadeTree.Core;
 using System.Linq;
 
-namespace ShadeTree.DomainModel
+namespace FluentNHibernate
 {
     public class InMemoryRepository : IRepository
     {

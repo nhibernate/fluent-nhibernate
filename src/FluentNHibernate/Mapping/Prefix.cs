@@ -1,4 +1,4 @@
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     /// <summary>
     /// Naming strategy prefix.

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public class SubClassPart<T> : ClassMapBase<T>, IMappingPart
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 
-namespace ShadeTree.DomainModel.Generation
+namespace FluentNHibernate.Generation
 {
     public class PropertyBuilder
     {

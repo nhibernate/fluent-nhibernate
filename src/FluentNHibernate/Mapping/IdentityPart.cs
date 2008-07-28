@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Xml;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public class IdentityPart : IMappingPart
     {

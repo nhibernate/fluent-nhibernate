@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Xml;
+using FluentNHibernate.Metadata;
 using NHibernate.Cfg;
-using ShadeTree.DomainModel.Metadata;
+using FluentNHibernate.Metadata;
 
-namespace ShadeTree.DomainModel
+namespace FluentNHibernate
 {
     public class MappingVisitor : IMappingVisitor
     {

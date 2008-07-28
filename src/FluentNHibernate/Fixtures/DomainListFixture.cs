@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using fit;
-using ShadeTree.DomainModel.Fixtures;
+using FluentNHibernate.Fixtures;
 
-namespace ShadeTree.DomainModel.Fixtures
+namespace FluentNHibernate.Fixtures
 {
     public class DomainListFixture<T> : ColumnFixture where T : new()
     {

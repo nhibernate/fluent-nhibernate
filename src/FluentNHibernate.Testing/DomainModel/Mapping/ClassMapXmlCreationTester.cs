@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
 using NUnit.Framework;
-using ShadeTree.DomainModel;
-using ShadeTree.DomainModel.Mapping;
+using FluentNHibernate;
+using FluentNHibernate.Mapping;
 using ShadeTree.Validation;
 
-namespace ShadeTree.Testing.DomainModel.Mapping
+namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
     [TestFixture]
     public class ClassMapXmlCreationTester

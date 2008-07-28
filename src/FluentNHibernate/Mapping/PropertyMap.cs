@@ -5,7 +5,7 @@ using System.Xml;
 using ShadeTree.Core;
 using ShadeTree.Validation;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public class PropertyMap : IMappingPart, IProperty
     {

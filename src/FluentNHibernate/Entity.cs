@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ShadeTree.DomainModel
+namespace FluentNHibernate
 {
     [Serializable]
     public class Entity : IEquatable<Entity>

@@ -5,12 +5,14 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Xml;
+using FluentNHibernate.Mapping;
+using FluentNHibernate.Metadata;
 using NHibernate.Cfg;
-using ShadeTree.DomainModel.Mapping;
-using ShadeTree.DomainModel.Metadata;
+using FluentNHibernate.Mapping;
+using FluentNHibernate.Metadata;
 using StructureMap.Graph;
 
-namespace ShadeTree.DomainModel
+namespace FluentNHibernate
 {
     public class PersistenceModel : TypeRules
     {

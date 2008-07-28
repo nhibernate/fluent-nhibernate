@@ -1,7 +1,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace ShadeTree.DomainModel.Generation
+namespace FluentNHibernate.Generation
 {
     public interface IProperty
     {

@@ -1,8 +1,8 @@
 ﻿using fit;
 using fitlibrary;
-using ShadeTree.DomainModel.Fixtures;
-using ShadeTree.Testing.DomainModel;
-using StoryTeller.FixtureModel;
+using FluentNHibernate.Fixtures;
+using FluentNHibernate.Testing.DomainModel;
+using FluentNHibernate.FixtureModel;
 using System;
 
 namespace DomainFixtureGeneration

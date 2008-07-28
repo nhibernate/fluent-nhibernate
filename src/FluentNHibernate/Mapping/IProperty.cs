@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Xml;
 using NHibernate.UserTypes;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public interface IProperty
     {

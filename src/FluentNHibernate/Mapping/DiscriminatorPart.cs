@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public class DiscriminatorPart<T, PARENT> : IMappingPart
     {

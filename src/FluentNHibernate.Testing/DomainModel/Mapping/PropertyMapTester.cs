@@ -4,10 +4,10 @@ using System.Xml;
 using NHibernate.Properties;
 using NUnit.Framework;
 using ShadeTree.Core;
-using ShadeTree.DomainModel;
-using ShadeTree.DomainModel.Mapping;
+using FluentNHibernate;
+using FluentNHibernate.Mapping;
 
-namespace ShadeTree.Testing.DomainModel.Mapping
+namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
     [TestFixture]
     public class PropertyMapTester

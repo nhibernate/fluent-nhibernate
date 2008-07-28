@@ -1,9 +1,9 @@
 using System;
 using System.Linq.Expressions;
 using NUnit.Framework;
-using ShadeTree.DomainModel.Query;
+using FluentNHibernate.Query;
 
-namespace ShadeTree.Testing.DomainModel.Query
+namespace FluentNHibernate.Testing.DomainModel.Query
 {
     [TestFixture]
     public class StringFilterTypeTester : FilterTypeSpec<StringFilterType, FilterTestEntity>

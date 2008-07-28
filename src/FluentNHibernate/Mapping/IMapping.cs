@@ -1,6 +1,6 @@
 using System.Xml;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public interface IMapping
     {

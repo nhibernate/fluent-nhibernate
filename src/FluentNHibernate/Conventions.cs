@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 using ShadeTree.Core.Validation;
-using ShadeTree.DomainModel.Mapping;
+using FluentNHibernate.Mapping;
 using ShadeTree.Validation;
 
-namespace ShadeTree.DomainModel
+namespace FluentNHibernate
 {
     public interface IPropertyConvention
     {

@@ -8,7 +8,7 @@ using System.Text;
 using ShadeTree.Core;
 using StructureMap;
 
-namespace ShadeTree.DomainModel
+namespace FluentNHibernate
 {
     public class PersistenceSpecification<T> where T : Entity, new()
     {

@@ -8,7 +8,7 @@ using ShadeTree.Core;
 using StructureMap;
 using Action=System.Action;
 
-namespace ShadeTree.DomainModel
+namespace FluentNHibernate
 {
     public interface IRepository
     {

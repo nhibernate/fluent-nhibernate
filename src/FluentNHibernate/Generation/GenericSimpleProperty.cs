@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace ShadeTree.DomainModel.Generation
+namespace FluentNHibernate.Generation
 {
     public class GenericSimpleProperty : IProperty
     {

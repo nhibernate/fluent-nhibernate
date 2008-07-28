@@ -6,7 +6,7 @@ using System.Text;
 using NHibernate;
 using NHibernate.Cfg;
 
-namespace ShadeTree.DomainModel
+namespace FluentNHibernate
 {
     public interface ISessionSource
     {

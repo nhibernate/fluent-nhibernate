@@ -7,7 +7,7 @@ using System.Reflection;
 using NHibernate.Util;
 using ShadeTree.Core;
 
-namespace ShadeTree.DomainModel.Query
+namespace FluentNHibernate.Query
 {
 
 

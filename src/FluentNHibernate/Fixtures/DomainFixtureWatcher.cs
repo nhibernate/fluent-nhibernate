@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ShadeTree.DomainModel.Fixtures
+namespace FluentNHibernate.Fixtures
 {
     public static class DomainFixtureWatcher
     {

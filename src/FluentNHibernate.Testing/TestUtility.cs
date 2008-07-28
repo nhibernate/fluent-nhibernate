@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace ShadeTree.Testing
+namespace FluentNHibernate.Testing
 {
     public static class TestUtility
     {

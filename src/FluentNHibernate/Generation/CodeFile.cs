@@ -5,9 +5,10 @@ using System.Reflection;
 using System.Text;
 using fit;
 using fitlibrary;
-using ShadeTree.DomainModel.Fixtures;
+using FluentNHibernate.Fixtures;
+using FluentNHibernate.Fixtures;
 
-namespace ShadeTree.DomainModel.Generation
+namespace FluentNHibernate.Generation
 {
     public class FixtureFileDefinition
     {
@@ -33,7 +34,7 @@ namespace ShadeTree.DomainModel.Generation
 
             file.AddNamespace(typeof(DoFixture));
             file.AddNamespace(typeof(Fixture));
-            file.AddNamespace(typeof(StoryTeller.FixtureModel.ExampleAttribute));
+            file.AddNamespace(typeof(FluentNHibernate.FixtureModel.ExampleAttribute));
             file.AddNamespace(typeof(DomainFixture));
             file.AddNamespace(typeof(DomainClassFixture<>));
 

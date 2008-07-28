@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml;
 using ShadeTree.Core;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public static class XmlExtensions
     {

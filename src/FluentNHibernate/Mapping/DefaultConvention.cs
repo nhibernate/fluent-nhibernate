@@ -1,6 +1,6 @@
 using System;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public class DefaultConvention : ITypeConvention
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Xml;
 using NUnit.Framework;
 
-namespace ShadeTree.Testing
+namespace FluentNHibernate.Testing
 {
     public delegate void MethodThatThrows();
 

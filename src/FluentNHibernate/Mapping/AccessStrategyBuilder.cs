@@ -1,7 +1,7 @@
 using System;
 using NHibernate.Properties;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public class AccessStrategyBuilder
     {

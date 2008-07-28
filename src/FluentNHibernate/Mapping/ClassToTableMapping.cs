@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public static class ClassToTableMapping
     {

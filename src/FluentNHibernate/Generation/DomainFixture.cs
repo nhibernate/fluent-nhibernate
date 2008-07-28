@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using ICollection=System.Collections.ICollection;
 
-namespace ShadeTree.DomainModel.Generation
+namespace FluentNHibernate.Generation
 {
     public interface IWriteableWithTypes : IWriteable
     {

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using NHibernate;
 using ShadeTree.Core;
 
-namespace ShadeTree.DomainModel.Metadata
+namespace FluentNHibernate.Metadata
 {
     public interface IDeleter
     {

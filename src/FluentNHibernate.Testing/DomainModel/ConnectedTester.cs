@@ -6,14 +6,14 @@ using System.Linq.Expressions;
 using System.Text;
 using NHibernate;
 using NUnit.Framework;
-using ShadeTree.DomainModel;
-using ShadeTree.DomainModel.Fixtures;
-using ShadeTree.DomainModel.Mapping;
+using FluentNHibernate;
+using FluentNHibernate.Fixtures;
+using FluentNHibernate.Mapping;
 using NHibernate.Linq;
-using ShadeTree.DomainModel.Query;
+using FluentNHibernate.Query;
 using StructureMap;
 
-namespace ShadeTree.Testing.DomainModel
+namespace FluentNHibernate.Testing.DomainModel
 {
     [TestFixture, Explicit]
     public class ConnectedTester

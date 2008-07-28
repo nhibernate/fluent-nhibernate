@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using ShadeTree.DomainModel.Generation;
+using FluentNHibernate.Generation;
 
-namespace ShadeTree.Testing.DomainModel.Generation
+namespace FluentNHibernate.Testing.DomainModel.Generation
 {
     [TestFixture]
     public class CodeFileSmokeTester

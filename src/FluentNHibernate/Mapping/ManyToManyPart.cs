@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public class ManyToManyPart<PARENT,CHILD> : IMappingPart
     {

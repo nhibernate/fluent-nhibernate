@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Xml;
 using ShadeTree.Core;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public class ClassMap<T> : ClassMapBase<T>, IMapping
     {

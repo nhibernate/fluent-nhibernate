@@ -5,10 +5,10 @@ using System.Text;
 using fit;
 using fitlibrary;
 using ShadeTree.Validation;
-using StoryTeller.FixtureModel;
+using FluentNHibernate.FixtureModel;
 using ObjectFactory=StructureMap.ObjectFactory;
 
-namespace ShadeTree.DomainModel.Fixtures
+namespace FluentNHibernate.Fixtures
 {
     public class GenericRowFixture<T> : RowFixture where T : class
     {

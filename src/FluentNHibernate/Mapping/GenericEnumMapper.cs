@@ -1,7 +1,7 @@
 ﻿using System;
 using NHibernate.Type;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public class GenericEnumMapper<TEnum> : EnumStringType
     {

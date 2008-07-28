@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using NUnit.Framework;
-using ShadeTree.DomainModel;
+using FluentNHibernate;
 
-namespace ShadeTree.Testing.DomainModel
+namespace FluentNHibernate.Testing.DomainModel
 {
     [TestFixture]
     public class InMemoryRepositoryTester

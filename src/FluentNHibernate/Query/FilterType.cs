@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using ShadeTree.Core;
 
-namespace ShadeTree.DomainModel.Query
+namespace FluentNHibernate.Query
 {
     public interface IFilterType
     {

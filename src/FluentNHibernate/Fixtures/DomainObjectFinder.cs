@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using ShadeTree.Core;
 using StructureMap;
 
-namespace ShadeTree.DomainModel.Fixtures
+namespace FluentNHibernate.Fixtures
 {
     public delegate T FinderDelegate<T, R>(R repository, string key);
 

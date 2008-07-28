@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml;
 using ShadeTree.Validation;
 
-namespace ShadeTree.DomainModel.Mapping
+namespace FluentNHibernate.Mapping
 {
     public class ComponentPart<T> : ClassMapBase<T>, IMappingPart
     {
