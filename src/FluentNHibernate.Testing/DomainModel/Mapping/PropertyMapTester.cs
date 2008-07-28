@@ -104,6 +104,7 @@ namespace ShadeTree.Testing.DomainModel.Mapping
             propertyElement.AttributeShouldEqual("column", "column_name");
         }
 
+        
         [Test]
         public void Map_WithFluentColumnName_UsesColumnNameFor_ColumnNameAttribute()
         {
@@ -455,11 +456,74 @@ namespace ShadeTree.Testing.DomainModel.Mapping
             var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
             propertyElement.AttributeShouldEqual("access", assemblyQualifiedClassName);
         }
+
+        [Test]
+        public void Map_WithFluentLength_UsesWithLengthOf_PropertyColumnAttribute()
+        {
+            var classMap = new ClassMap<PropertyTarget>();
+
+            classMap.Map(x => x.Name)
+                .WithLengthOf(20);
+
+            var document = classMap.CreateMapping(new MappingVisitor());
+
+            // attribute on property
+            var classElement = document.DocumentElement.SelectSingleNode("class");
+            var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
+            propertyElement.AttributeShouldEqual("length", "20");
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Map_WithFluentLength_UsesInvalidWithLengthOf_PropertyColumnAttribute()
+        {
+            var classMap = new ClassMap<PropertyTarget>();
+
+            classMap.Map(x => x.Id)
+                .WithLengthOf(20);
+
+            classMap.CreateMapping(new MappingVisitor());
+
+        }
+
+        [Test]
+        public void Map_WithFluentLength_UsesCanNotBeNull_PropertyColumnAttribute()
+        {
+            var classMap = new ClassMap<PropertyTarget>();
+
+            classMap.Map(x => x.Name)
+                .CanNotBeNull();
+
+            var document = classMap.CreateMapping(new MappingVisitor());
+
+            // attribute on property
+            var classElement = document.DocumentElement.SelectSingleNode("class");
+            var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
+            propertyElement.AttributeShouldEqual("not-null", "true");
+        }
+
+        [Test]
+        public void Map_WithFluentLength_UsesAsReadOnly_PropertyColumnAttribute()
+        {
+            var classMap = new ClassMap<PropertyTarget>();
+
+            classMap.Map(x => x.Name)
+                .AsReadOnly();
+
+            var document = classMap.CreateMapping(new MappingVisitor());
+
+            // attribute on property
+            var classElement = document.DocumentElement.SelectSingleNode("class");
+            var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
+            propertyElement.AttributeShouldEqual("insert", "false");
+            propertyElement.AttributeShouldEqual("update", "false");
+        }
     }
 
     public class PropertyTarget
     {
         public string Name { get; set; }
+        public int Id { get; set; }
     }
 
     public class FakePropertyAccessor : IPropertyAccessor

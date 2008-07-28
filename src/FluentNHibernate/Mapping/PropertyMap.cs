@@ -51,7 +51,7 @@ namespace ShadeTree.DomainModel.Mapping
                 .WithAtt("column", _columnName)
                 .WithProperties(_extendedProperties);
 
-            
+
             element.AddElement("column").WithProperties(_columnProperties);
 
             foreach (var action in _alterations)
@@ -119,6 +119,29 @@ namespace ShadeTree.DomainModel.Mapping
         public PropertyMap ValueIsAutoNumber()
         {
             _extendedProperties.Store("insert", "true");
+
+            return this;
+        }
+
+        public PropertyMap WithLengthOf(int length)
+        {
+            if (this._property.PropertyType == typeof(string))
+                this.AddAlteration(x => x.SetAttribute("length", length.ToString()));
+            else
+                throw new InvalidOperationException(String.Format("{0} is not a string.", this._property.Name));
+            return this;
+        }
+
+        public PropertyMap CanNotBeNull()
+        {
+            this.AddAlteration(x => x.SetAttribute("not-null", "true"));
+            return this;
+        }
+
+        public PropertyMap AsReadOnly()
+        {
+            this.AddAlteration(x => x.SetAttribute("insert", "false"));
+            this.AddAlteration(x => x.SetAttribute("update", "false"));
 
             return this;
         }
