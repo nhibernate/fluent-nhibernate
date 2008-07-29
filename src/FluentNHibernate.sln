@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate", "FluentN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate.Testing", "FluentNHibernate.Testing\FluentNHibernate.Testing.csproj", "{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentnHibernate.StructureMap", "FluentnHibernate.StructureMap\FluentnHibernate.StructureMap.csproj", "{D650F66E-6308-4DD5-8D3F-4B5C1F87595C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,10 @@ Global
 		{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D650F66E-6308-4DD5-8D3F-4B5C1F87595C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D650F66E-6308-4DD5-8D3F-4B5C1F87595C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D650F66E-6308-4DD5-8D3F-4B5C1F87595C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D650F66E-6308-4DD5-8D3F-4B5C1F87595C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

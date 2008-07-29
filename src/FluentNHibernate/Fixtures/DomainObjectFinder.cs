@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
 using ShadeTree.Core;
-using StructureMap;
 
 namespace FluentNHibernate.Fixtures
 {
@@ -46,7 +45,7 @@ namespace FluentNHibernate.Fixtures
         {
             Func<string, T> wrapped = s =>
             {
-                var repository = ObjectFactory.GetInstance<IRepository>();
+                var repository = ServiceLocator.GetInstance<IRepository>();
                 var expression = func(s);
                 return repository.FindBy(expression);
             };
@@ -58,7 +57,7 @@ namespace FluentNHibernate.Fixtures
         {
             Func<string, T> function = key =>
             {
-                var repository = ObjectFactory.GetInstance<IRepository>();
+                var repository = ServiceLocator.GetInstance<IRepository>();
                 return repository.FindBy(expression, key);
             };
 

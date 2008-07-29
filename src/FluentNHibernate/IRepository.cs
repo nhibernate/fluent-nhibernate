@@ -5,7 +5,6 @@ using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
 using ShadeTree.Core;
-using StructureMap;
 using Action=System.Action;
 
 namespace FluentNHibernate
@@ -24,7 +23,6 @@ namespace FluentNHibernate
     {
         private readonly ISession _session;
 
-        [DefaultConstructor]
         public Repository(ISessionSource source) : this(source.CreateSession())
         {
             

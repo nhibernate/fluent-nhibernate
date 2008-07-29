@@ -84,6 +84,7 @@
     <Compile Include="DomainModel\Query\FilterTypeRegistryTester.cs" />
     <Compile Include="DomainModel\Query\FilterTypeTester.cs" />
     <Compile Include="Fixtures.cs" />
+    <Compile Include="Mapping\MappingTests.cs" />
     <Compile Include="SpecificationExtensions.cs" />
     <Compile Include="Debugging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

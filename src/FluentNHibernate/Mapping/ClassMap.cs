@@ -41,8 +41,8 @@ namespace FluentNHibernate.Mapping
         {
             return parentNode.AddElement("class")
                 .WithAtt("name", typeof (T).Name)
-                .WithAtt("table", TableName)
-                .WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
+                .WithAtt("table", TableName);
+                //.WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
         }
 
         private void setHeaderValues(XmlDocument document)

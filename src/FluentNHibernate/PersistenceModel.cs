@@ -8,8 +8,6 @@ using System.Xml;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Metadata;
 using NHibernate.Cfg;
-using FluentNHibernate.Mapping;
-using FluentNHibernate.Metadata;
 using StructureMap.Graph;
 
 namespace FluentNHibernate
@@ -46,7 +44,7 @@ namespace FluentNHibernate
             addMappingsFromAssembly(assembly);
         }
 
-        protected void addMappingsFromAssembly(Assembly assembly)
+        public void addMappingsFromAssembly(Assembly assembly)
         {
             foreach (Type type in assembly.GetExportedTypes())
             {

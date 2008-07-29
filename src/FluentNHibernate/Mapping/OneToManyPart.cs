@@ -8,11 +8,13 @@ namespace FluentNHibernate.Mapping
     {
         private readonly Dictionary<string, string> _properties = new Dictionary<string, string>();
         private readonly PropertyInfo _property;
+        private readonly string columnName;
 
 
-        public OneToManyPart(PropertyInfo property)
+        public OneToManyPart(PropertyInfo property, string columnName)
         {
             _property = property;
+            this.columnName = columnName;
             _properties.Add("name", _property.Name);
             _properties.Add("cascade", "none");
         }
@@ -24,7 +26,11 @@ namespace FluentNHibernate.Mapping
             // TODO -- hard-coded to List just for today
             XmlElement element = classElement.AddElement("bag").WithProperties(_properties);
 
-            string foreignKeyName = visitor.Conventions.GetForeignKeyNameOfParent(typeof(PARENT));
+            string foreignKeyName = columnName;
+
+            if (string.IsNullOrEmpty(columnName))
+                foreignKeyName = visitor.Conventions.GetForeignKeyNameOfParent(typeof(PARENT));
+
             element.AddElement("key").SetAttribute("column", foreignKeyName);
             element.AddElement("one-to-many").SetAttribute("class", typeof (CHILD).AssemblyQualifiedName);
 
