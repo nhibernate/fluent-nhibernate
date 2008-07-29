@@ -71,6 +71,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="Fixtures\DomainClassFixture.cs" />
     <Compile Include="Fixtures\DomainFixtureWatcher.cs" />
     <Compile Include="Fixtures\DomainListFixture.cs" />

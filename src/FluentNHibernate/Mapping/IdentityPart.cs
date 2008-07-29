@@ -18,7 +18,7 @@ namespace FluentNHibernate.Mapping
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             XmlElement element = classElement.AddElement("id") 
-                //.WithAtt("xmlns", "urn:nhibernate-mapping-2.2")
+                .WithAtt("xmlns", "urn:nhibernate-mapping-2.2")
                 .WithAtt("name", _property.Name)
                 .WithAtt("column", _columnName)
                 .WithAtt("type", TypeMapping.GetTypeString(_property.PropertyType))
