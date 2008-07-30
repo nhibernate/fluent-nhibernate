@@ -6,6 +6,7 @@ using fit;
 using fitlibrary;
 using ShadeTree.Validation;
 using FluentNHibernate.FixtureModel;
+using ObjectFactory=StructureMap.ObjectFactory;
 
 namespace FluentNHibernate.Fixtures
 {
@@ -49,7 +50,7 @@ namespace FluentNHibernate.Fixtures
         [Example("|Find|[id]|")]
         public void Find(long id)
         {
-            IRepository repository = ServiceLocator.GetInstance<IRepository>();
+            IRepository repository = ObjectFactory.GetInstance<IRepository>();
             _subject = repository.Find<T>(id);
 
             if (_subject == null)
@@ -69,7 +70,7 @@ namespace FluentNHibernate.Fixtures
         [Example("|Save as alias|[alias]|")]
         public void SaveAsAlias(string alias)
         {
-            IRepository repository = ServiceLocator.GetInstance<IRepository>();
+            IRepository repository = ObjectFactory.GetInstance<IRepository>();
             repository.Save(_subject);
 
             TestContext.StoreAlias(alias, _subject.Id);

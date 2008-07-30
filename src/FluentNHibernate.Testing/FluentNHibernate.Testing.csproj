@@ -84,7 +84,6 @@
     <Compile Include="DomainModel\Query\FilterTypeRegistryTester.cs" />
     <Compile Include="DomainModel\Query\FilterTypeTester.cs" />
     <Compile Include="Fixtures.cs" />
-    <Compile Include="Mapping\MappingTests.cs" />
     <Compile Include="SpecificationExtensions.cs" />
     <Compile Include="Debugging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,6 +97,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DeclarativeTesting.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Mapping\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

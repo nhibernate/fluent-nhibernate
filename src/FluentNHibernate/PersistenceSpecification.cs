@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using ShadeTree.Core;
+using StructureMap;
 
 namespace FluentNHibernate
 {
@@ -21,7 +22,7 @@ namespace FluentNHibernate
 
         private IRepository createRepository()
         {
-            ISessionSource source = ServiceLocator.GetInstance<ISessionSource>();
+            ISessionSource source = ObjectFactory.GetInstance<ISessionSource>();
             return new Repository(source.CreateSession());
         }
 

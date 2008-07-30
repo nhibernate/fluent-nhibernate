@@ -13,7 +13,8 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>FluentKey.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -71,7 +72,6 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="Fixtures\DomainClassFixture.cs" />
     <Compile Include="Fixtures\DomainFixtureWatcher.cs" />
     <Compile Include="Fixtures\DomainListFixture.cs" />
@@ -118,14 +118,10 @@
     <Compile Include="PersistenceSpecification.cs" />
     <Compile Include="Query\EntityQueryDefinition.cs" />
     <Compile Include="Query\FilterType.cs" />
-    <Compile Include="ServiceLocator.cs" />
     <Compile Include="SessionSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mapping\Template.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FluentKey.snk" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
