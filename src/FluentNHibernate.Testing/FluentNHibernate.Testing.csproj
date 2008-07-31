@@ -35,6 +35,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\fit\fit.dll</HintPath>
     </Reference>
+    <Reference Include="Iesi.Collections, Version=1.0.0.3, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\NHibernate\Iesi.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate, Version=1.2.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
@@ -80,6 +84,7 @@
     <Compile Include="DomainModel\Mapping\ClassMapXmlCreationTester.cs" />
     <Compile Include="DomainModel\Mapping\ConventionsTester.cs" />
     <Compile Include="DomainModel\Mapping\IdentityPartTester.cs" />
+    <Compile Include="DomainModel\Mapping\OneToManyTester.cs" />
     <Compile Include="DomainModel\Mapping\PropertyMapTester.cs" />
     <Compile Include="DomainModel\Query\EntityQueryDefinitionTester.cs" />
     <Compile Include="DomainModel\Query\FilterTypeRegistryTester.cs" />

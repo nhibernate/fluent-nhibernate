@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.Mapping;
 using ShadeTree.Core.Validation;
-using FluentNHibernate.Mapping;
 using ShadeTree.Validation;
 
 namespace FluentNHibernate

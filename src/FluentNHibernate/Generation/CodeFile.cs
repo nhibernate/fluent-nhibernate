@@ -6,7 +6,6 @@ using System.Text;
 using fit;
 using fitlibrary;
 using FluentNHibernate.Fixtures;
-using FluentNHibernate.Fixtures;
 
 namespace FluentNHibernate.Generation
 {

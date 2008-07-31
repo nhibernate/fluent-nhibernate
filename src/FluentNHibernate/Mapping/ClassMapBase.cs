@@ -77,13 +77,8 @@ namespace FluentNHibernate.Mapping
 
         public OneToManyPart<T, CHILD> HasMany<CHILD>(Expression<Func<T, object>> expression)
         {
-            return HasMany<CHILD>(expression, null);
-        }
-
-        public OneToManyPart<T, CHILD> HasMany<CHILD>(Expression<Func<T, object>> expression, string columnName)
-        {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            OneToManyPart<T, CHILD> part = new OneToManyPart<T, CHILD>(property, columnName);
+            OneToManyPart<T, CHILD> part = new OneToManyPart<T, CHILD>(property);
 
             addPart(part);
 

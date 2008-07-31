@@ -2,7 +2,6 @@
 using System.Xml;
 using FluentNHibernate.Metadata;
 using NHibernate.Cfg;
-using FluentNHibernate.Metadata;
 
 namespace FluentNHibernate
 {
