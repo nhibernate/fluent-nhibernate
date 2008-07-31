@@ -85,9 +85,20 @@ namespace FluentNHibernate.Mapping
                 string message = string.Format("Error while trying to build the Mapping Document for '{0}'",
                                                typeof (T).FullName);
                 throw new ApplicationException(message, e);
-
-                
             }
         }
+
+		public IdentityPart Id(Expression<Func<T, object>> expression)
+		{
+			return Id(expression, null);
+		}
+
+    	public IdentityPart Id(Expression<Func<T, object>> expression, string column)
+    	{
+			PropertyInfo property = ReflectionHelper.GetProperty(expression);
+    		var id = column == null ? new IdentityPart(property) : new IdentityPart(property, column);
+    		_properties.Insert(0, id);
+    		return id;
+    	}
     }
 }

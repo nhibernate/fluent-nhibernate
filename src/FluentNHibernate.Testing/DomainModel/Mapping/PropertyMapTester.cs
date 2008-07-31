@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void Map_WithoutColumnName_UsesPropertyNameFor_PropertyColumnAttribute()
         {
-            var classMap = new ClassMap<PropertyTarget>();
+        	var classMap = new ClassMap<PropertyTarget>();
 
             classMap.Map(x => x.Name);
 

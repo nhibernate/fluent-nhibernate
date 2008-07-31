@@ -20,9 +20,9 @@ namespace FluentNHibernate
             _chain = chain;
         }
 
-        public MappingVisitor() : this(new Conventions(), new Configuration(), new DependencyChain())
-        {
-        }
+		public MappingVisitor() : this(new Conventions(), new Configuration(), new DependencyChain())
+		{
+		}
 
         #region IMappingVisitor Members
 

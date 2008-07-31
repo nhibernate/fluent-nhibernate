@@ -100,6 +100,7 @@
     <Compile Include="Mapping\DiscriminatorPart.cs" />
     <Compile Include="Mapping\EnumerationTypeConvention.cs" />
     <Compile Include="Mapping\GenericEnumMapper.cs" />
+    <Compile Include="Mapping\IdentityGenerationStrategyBuilder.cs" />
     <Compile Include="Mapping\IdentityPart.cs" />
     <Compile Include="Mapping\IgnoreNullableTypeConvention.cs" />
     <Compile Include="Mapping\IMapping.cs" />

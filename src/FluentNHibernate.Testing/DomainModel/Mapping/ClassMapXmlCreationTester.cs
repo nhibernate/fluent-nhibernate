@@ -338,6 +338,59 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             classElement.AttributeShouldEqual("name", typeof (MappedObject).Name);
             classElement.AttributeShouldEqual("table", map.TableName);
         }
+
+		[Test]
+		public void DomainClassMapWithId()
+		{
+			var map = new ClassMap<MappedObject>();
+			map.Id(x => x.Id, "id");
+			document = map.CreateMapping(new MappingVisitor());
+
+			XmlElement idElement = document.DocumentElement["class"]["id"];
+			idElement.ShouldNotBeNull();
+
+			idElement.GetAttribute("name").ShouldEqual("Id");
+			idElement.GetAttribute("column").ShouldEqual("id");
+			idElement.GetAttribute("type").ShouldEqual("Int64");
+			idElement.GetAttribute("unsaved-value").ShouldEqual("0");
+
+			XmlElement generatorElement = idElement["generator"];
+			generatorElement.ShouldNotBeNull();
+			generatorElement.GetAttribute("class").ShouldEqual("identity");
+		}
+
+		[Test]
+		public void DomainClassMapWithIdNoColumn()
+		{
+			var map = new ClassMap<MappedObject>();
+			map.Id(x => x.Id);
+			document = map.CreateMapping(new MappingVisitor());
+
+			XmlElement idElement = document.DocumentElement["class"]["id"];
+			idElement.ShouldNotBeNull();
+
+			idElement.GetAttribute("name").ShouldEqual("Id");
+			idElement.GetAttribute("column").ShouldEqual("Id");
+			idElement.GetAttribute("type").ShouldEqual("Int64");
+			idElement.GetAttribute("unsaved-value").ShouldEqual("0");
+
+			XmlElement generatorElement = idElement["generator"];
+			generatorElement.ShouldNotBeNull();
+			generatorElement.GetAttribute("class").ShouldEqual("identity");
+		}
+
+		[Test]
+		public void DomainClassMapWithIdNoColumnAndGenerator()
+		{
+			var map = new ClassMap<MappedObject>();
+			map.Id(x => x.Id).GeneratedBy.Native();
+			document = map.CreateMapping(new MappingVisitor());
+
+			XmlElement generatorElement = document.DocumentElement["class"]["id"]["generator"];
+
+			generatorElement.ShouldNotBeNull();
+			generatorElement.GetAttribute("class").ShouldEqual("native");
+		}
     }
 
     public class SecondMappedObject
