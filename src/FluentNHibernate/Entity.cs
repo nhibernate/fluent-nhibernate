@@ -25,7 +25,7 @@ namespace FluentNHibernate
 
     	public override int GetHashCode()
     	{
-    		return Id.GetHashCode();
+            return (Id.GetHashCode() * 397) ^ GetType().GetHashCode();
     	}
 
     	public static bool operator ==(Entity left, Entity right)
