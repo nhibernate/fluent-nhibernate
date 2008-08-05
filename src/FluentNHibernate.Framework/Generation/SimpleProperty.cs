@@ -1,7 +1,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace FluentNHibernate.Generation
+namespace FluentNHibernate.Framework.Generation
 {
     public class SimpleProperty : IProperty
     {

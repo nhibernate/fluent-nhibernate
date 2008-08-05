@@ -1,6 +1,6 @@
 ﻿using ShadeTree.Core;
 
-namespace FluentNHibernate.Fixtures
+namespace FluentNHibernate.Framework.Fixtures
 {
     public static class TestContext
     {

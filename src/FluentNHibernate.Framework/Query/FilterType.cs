@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using ShadeTree.Core;
 
-namespace FluentNHibernate.Query
+namespace FluentNHibernate.Framework.Query
 {
     public interface IFilterType
     {
@@ -78,30 +78,30 @@ namespace FluentNHibernate.Query
             ClearAll();
 
             var standardTypes = new[]
-                                    {
-                                        typeof (char),
-                                        typeof (byte),
-                                        typeof (bool),
-                                        typeof (short),
-                                        typeof (int),
-                                        typeof (long),
-                                        typeof (DateTime),
-                                        typeof (sbyte),
-                                        typeof (ushort),
-                                        typeof (uint),
-                                        typeof (ulong),
-                                        typeof (char?),
-                                        typeof (byte?),
-                                        typeof (bool),
-                                        typeof (short?),
-                                        typeof (int?),
-                                        typeof (long?),
-                                        typeof (DateTime?),
-                                        typeof (sbyte?),
-                                        typeof (ushort?),
-                                        typeof (uint?),
-                                        typeof (ulong?)
-                                    };
+            {
+                typeof (char),
+                typeof (byte),
+                typeof (bool),
+                typeof (short),
+                typeof (int),
+                typeof (long),
+                typeof (DateTime),
+                typeof (sbyte),
+                typeof (ushort),
+                typeof (uint),
+                typeof (ulong),
+                typeof (char?),
+                typeof (byte?),
+                typeof (bool),
+                typeof (short?),
+                typeof (int?),
+                typeof (long?),
+                typeof (DateTime?),
+                typeof (sbyte?),
+                typeof (ushort?),
+                typeof (uint?),
+                typeof (ulong?)
+            };
 
             RegisterFilter(new BinaryFilterType {Key = "EQUAL", FilterExpressionType = ExpressionType.Equal})
                 .ForTypes(standardTypes)
@@ -112,19 +112,19 @@ namespace FluentNHibernate.Query
                 .ForType<string>();
 
             RegisterFilter(new BinaryFilterType
-                               {Key = "LESSTHAN", FilterExpressionType = ExpressionType.LessThan})
+            {Key = "LESSTHAN", FilterExpressionType = ExpressionType.LessThan})
                 .ForTypes(standardTypes);
 
             RegisterFilter(new BinaryFilterType
-                               {Key = "LESSTHANOREQUAL", FilterExpressionType = ExpressionType.LessThanOrEqual})
+            {Key = "LESSTHANOREQUAL", FilterExpressionType = ExpressionType.LessThanOrEqual})
                 .ForTypes(standardTypes);
 
             RegisterFilter(new BinaryFilterType
-                               {Key = "GREATERTHAN", FilterExpressionType = ExpressionType.GreaterThan})
+            {Key = "GREATERTHAN", FilterExpressionType = ExpressionType.GreaterThan})
                 .ForTypes(standardTypes);
 
             RegisterFilter(new BinaryFilterType
-                               {Key = "GREATERTHANOREQUAL", FilterExpressionType = ExpressionType.GreaterThanOrEqual})
+            {Key = "GREATERTHANOREQUAL", FilterExpressionType = ExpressionType.GreaterThanOrEqual})
                 .ForTypes(standardTypes);
 
             RegisterFilter(new StringFilterType {Key = "STARTSWITH", StringMethod = s => s.StartsWith("")})

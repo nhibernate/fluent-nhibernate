@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Framework;
+using FluentNHibernate.Framework.Query;
 using NHibernate.Util;
 using ShadeTree.Core;
 
-namespace FluentNHibernate.Query
+namespace FluentNHibernate.Framework.Query
 {
-
-
     public class EntityQueryDefinition
     {
         private readonly IDictionary<string, FilterableProperty> _filterProperties;
@@ -167,8 +167,8 @@ namespace FluentNHibernate.Query
             var filterExpr = filterType.GetExpression(getMemberValueExpr, valueExpr);
 
             var curExpr = (FilterExpression == null)
-                ? filterExpr
-                : Expression.AndAlso(FilterExpression.Body, filterExpr);
+                              ? filterExpr
+                              : Expression.AndAlso(FilterExpression.Body, filterExpr);
 
             FilterExpression = Expression.Lambda<Func<ENTITY, bool>>(curExpr, _expressionParams);
         }

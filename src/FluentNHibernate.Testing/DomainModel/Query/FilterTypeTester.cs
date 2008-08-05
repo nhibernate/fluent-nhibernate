@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Framework.Query;
 using NUnit.Framework;
-using FluentNHibernate.Query;
 
 namespace FluentNHibernate.Testing.DomainModel.Query
 {

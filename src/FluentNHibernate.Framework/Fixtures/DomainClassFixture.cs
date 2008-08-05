@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using fit;
 using fitlibrary;
+using FluentNHibernate.Framework;
+using FluentNHibernate.Framework.Fixtures;
 using ShadeTree.Validation;
-using FluentNHibernate.FixtureModel;
 using ObjectFactory=StructureMap.ObjectFactory;
 
-namespace FluentNHibernate.Fixtures
+namespace FluentNHibernate.Framework.Fixtures
 {
     public class GenericRowFixture<T> : RowFixture where T : class
     {

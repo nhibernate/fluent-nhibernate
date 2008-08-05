@@ -5,9 +5,11 @@ using System.Reflection;
 using System.Text;
 using fit;
 using fitlibrary;
-using FluentNHibernate.Fixtures;
+using FluentNHibernate.Framework.Fixtures;
+using FluentNHibernate.Framework.Generation;
+using ExampleAttribute=FluentNHibernate.Framework.Fixtures.ExampleAttribute;
 
-namespace FluentNHibernate.Generation
+namespace FluentNHibernate.Framework.Generation
 {
     public class FixtureFileDefinition
     {
@@ -33,7 +35,7 @@ namespace FluentNHibernate.Generation
 
             file.AddNamespace(typeof(DoFixture));
             file.AddNamespace(typeof(Fixture));
-            file.AddNamespace(typeof(FluentNHibernate.FixtureModel.ExampleAttribute));
+            file.AddNamespace(typeof(ExampleAttribute));
             file.AddNamespace(typeof(DomainFixture));
             file.AddNamespace(typeof(DomainClassFixture<>));
 

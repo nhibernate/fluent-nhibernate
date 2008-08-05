@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FluentNHibernate.Framework.Generation;
 using NUnit.Framework;
-using FluentNHibernate.Generation;
 
 namespace FluentNHibernate.Testing.DomainModel.Generation
 {

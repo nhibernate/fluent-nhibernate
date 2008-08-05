@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace FluentNHibernate.FixtureModel
+namespace FluentNHibernate.Framework.Fixtures
 {
     /// <remarks>
     /// Imported from StoryTeller project, as this was the only dependency there.

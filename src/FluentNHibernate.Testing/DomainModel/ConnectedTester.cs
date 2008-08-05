@@ -4,13 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using FluentNHibernate.Framework;
+using FluentNHibernate.Framework.Fixtures;
+using FluentNHibernate.Framework.Query;
 using NHibernate;
 using NUnit.Framework;
-using FluentNHibernate;
-using FluentNHibernate.Fixtures;
 using FluentNHibernate.Mapping;
 using NHibernate.Linq;
-using FluentNHibernate.Query;
 using StructureMap;
 
 namespace FluentNHibernate.Testing.DomainModel

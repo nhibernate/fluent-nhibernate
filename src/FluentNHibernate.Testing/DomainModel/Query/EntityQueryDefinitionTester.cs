@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using FluentNHibernate.Framework;
+using FluentNHibernate.Framework.Query;
 using NUnit.Framework;
-using FluentNHibernate;
-using FluentNHibernate.Query;
 
 namespace FluentNHibernate.Testing.DomainModel.Query
 {

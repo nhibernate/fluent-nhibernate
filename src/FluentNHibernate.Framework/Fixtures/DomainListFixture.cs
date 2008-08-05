@@ -4,9 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using fit;
-using FluentNHibernate.Fixtures;
 
-namespace FluentNHibernate.Fixtures
+namespace FluentNHibernate.Framework.Fixtures
 {
     public class DomainListFixture<T> : ColumnFixture where T : new()
     {

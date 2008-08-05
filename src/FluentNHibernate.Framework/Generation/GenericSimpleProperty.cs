@@ -1,8 +1,9 @@
 using System;
 using System.IO;
 using System.Reflection;
+using FluentNHibernate.Framework.Generation;
 
-namespace FluentNHibernate.Generation
+namespace FluentNHibernate.Framework.Generation
 {
     public class GenericSimpleProperty : IProperty
     {

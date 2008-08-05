@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using FluentNHibernate.Framework.Generation;
 
 
-namespace FluentNHibernate.Generation
+namespace FluentNHibernate.Framework.Generation
 {
     public class PropertyBuilder
     {

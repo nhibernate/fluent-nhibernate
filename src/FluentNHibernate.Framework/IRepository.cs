@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using FluentNHibernate.Framework;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
 using ShadeTree.Core;
 using Action=System.Action;
 
-namespace FluentNHibernate
+namespace FluentNHibernate.Framework
 {
     public interface IRepository
     {
         T Find<T>(long id) where T : Entity;
         void Delete<T>(T target);
-        T[] Query<T>(Expression<System.Func<T, bool>> where);
-        T FindBy<T, U>(Expression<System.Func<T, U>> expression, U search) where T : class;
-        T FindBy<T>(Expression<System.Func<T, bool>> where);
+        T[] Query<T>(Expression<Func<T, bool>> where);
+        T FindBy<T, U>(Expression<Func<T, U>> expression, U search) where T : class;
+        T FindBy<T>(Expression<Func<T, bool>> where);
         void Save<T>(T target);
     }
 

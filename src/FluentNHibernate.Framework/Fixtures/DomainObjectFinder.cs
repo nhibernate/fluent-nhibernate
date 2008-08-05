@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Framework;
 using ShadeTree.Core;
 using StructureMap;
 
-namespace FluentNHibernate.Fixtures
+namespace FluentNHibernate.Framework.Fixtures
 {
     public delegate T FinderDelegate<T, R>(R repository, string key);
 

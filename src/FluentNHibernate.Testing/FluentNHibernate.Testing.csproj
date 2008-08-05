@@ -96,6 +96,10 @@
     <Compile Include="TestUtility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FluentNHibernate.Framework\FluentNHibernate.Framework.csproj">
+      <Project>{E775193E-E0C6-4C2D-8D9A-3B927493DAA9}</Project>
+      <Name>FluentNHibernate.Framework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
       <Project>{1C988DFB-1EC5-484E-87D9-1D3C775BA435}</Project>
       <Name>ShadeTree.DomainModel</Name>

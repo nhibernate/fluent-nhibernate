@@ -5,10 +5,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using FluentNHibernate.Framework;
 using ShadeTree.Core;
 using StructureMap;
 
-namespace FluentNHibernate
+namespace FluentNHibernate.Framework
 {
     public class PersistenceSpecification<T> where T : Entity, new()
     {

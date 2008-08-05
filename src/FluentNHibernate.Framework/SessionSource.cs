@@ -6,7 +6,7 @@ using System.Text;
 using NHibernate;
 using NHibernate.Cfg;
 
-namespace FluentNHibernate
+namespace FluentNHibernate.Framework
 {
     public interface ISessionSource
     {

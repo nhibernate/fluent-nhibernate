@@ -1,8 +1,7 @@
 ﻿using fit;
 using fitlibrary;
-using FluentNHibernate.Fixtures;
+using FluentNHibernate.Framework.Fixtures;
 using FluentNHibernate.Testing.DomainModel;
-using FluentNHibernate.FixtureModel;
 using System;
 
 namespace DomainFixtureGeneration

@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using FluentNHibernate.Framework.Generation;
 using ICollection=System.Collections.ICollection;
 
-namespace FluentNHibernate.Generation
+namespace FluentNHibernate.Framework.Generation
 {
     public interface IWriteableWithTypes : IWriteable
     {

@@ -5,16 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1C988DFB-1EC5-484E-87D9-1D3C775BA435}</ProjectGuid>
+    <ProjectGuid>{E775193E-E0C6-4C2D-8D9A-3B927493DAA9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FluentNHibernate</RootNamespace>
-    <AssemblyName>FluentNHibernate</AssemblyName>
+    <RootNamespace>FluentNHibernate.Framework</RootNamespace>
+    <AssemblyName>FluentNHibernate.Framework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,9 +31,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NHibernate, Version=1.2.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+    <Reference Include="fit, Version=1.4.2970.22359, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\fit\fit.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=2.0.0.1001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.Linq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\NHibernate\NHibernate.Linq.dll</HintPath>
     </Reference>
     <Reference Include="ShadeTree.Core, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -63,43 +68,33 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="IMappingVisitor.cs" />
-    <Compile Include="MappingVisitor.cs" />
-    <Compile Include="Mapping\AccessStrategyBuilder.cs" />
-    <Compile Include="Mapping\ClassMap.cs" />
-    <Compile Include="Mapping\ClassMapBase.cs" />
-    <Compile Include="Mapping\ClassToTableMapping.cs" />
-    <Compile Include="Mapping\ComponentPart.cs" />
-    <Compile Include="Conventions.cs" />
-    <Compile Include="Mapping\DefaultConvention.cs" />
-    <Compile Include="Mapping\DiscriminatorPart.cs" />
-    <Compile Include="Mapping\EnumerationTypeConvention.cs" />
-    <Compile Include="Mapping\GenericEnumMapper.cs" />
-    <Compile Include="Mapping\IdentityGenerationStrategyBuilder.cs" />
-    <Compile Include="Mapping\IdentityPart.cs" />
-    <Compile Include="Mapping\IgnoreNullableTypeConvention.cs" />
-    <Compile Include="Mapping\IMapping.cs" />
-    <Compile Include="Mapping\IProperty.cs" />
-    <Compile Include="Mapping\ITypeConvention.cs" />
-    <Compile Include="Mapping\ManyToManyPart.cs" />
-    <Compile Include="Mapping\ManyToOnePart.cs" />
-    <Compile Include="Mapping\OneToManyPart.cs" />
-    <Compile Include="Mapping\Prefix.cs" />
-    <Compile Include="Mapping\PropertyMap.cs" />
-    <Compile Include="Mapping\SubClassPart.cs" />
-    <Compile Include="Mapping\TypeMapping.cs" />
-    <Compile Include="Mapping\XmlExtensions.cs" />
-    <Compile Include="Metadata\Deleter.cs" />
-    <Compile Include="Metadata\DependencyChain.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Metadata\IDeleter.cs" />
-    <Compile Include="Metadata\TypeDependency.cs" />
-    <Compile Include="PersistenceModel.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="Fixtures\DomainClassFixture.cs" />
+    <Compile Include="Fixtures\DomainFixtureWatcher.cs" />
+    <Compile Include="Fixtures\DomainListFixture.cs" />
+    <Compile Include="Fixtures\DomainObjectFinder.cs" />
+    <Compile Include="Fixtures\ExampleAttribute.cs" />
+    <Compile Include="Fixtures\TestContext.cs" />
+    <Compile Include="Generation\CodeFile.cs" />
+    <Compile Include="Generation\DomainFixture.cs" />
+    <Compile Include="Generation\DomainProperty.cs" />
+    <Compile Include="Generation\GenericSimpleProperty.cs" />
+    <Compile Include="Generation\IProperty.cs" />
+    <Compile Include="Generation\PropertyBuilder.cs" />
+    <Compile Include="Generation\SimpleProperty.cs" />
+    <Compile Include="InMemoryRepository.cs" />
+    <Compile Include="IRepository.cs" />
+    <Compile Include="PersistenceSpecification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query\EntityQueryDefinition.cs" />
+    <Compile Include="Query\FilterType.cs" />
+    <Compile Include="SessionSource.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mapping\Template.xml" />
+    <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
+      <Project>{1C988DFB-1EC5-484E-87D9-1D3C775BA435}</Project>
+      <Name>FluentNHibernate</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
