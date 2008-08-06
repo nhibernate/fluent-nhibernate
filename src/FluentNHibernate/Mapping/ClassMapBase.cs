@@ -57,6 +57,14 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+		public DiscriminatorPart<ARG, T> DiscriminateSubClassesOnColumn<ARG>(string columnName, ARG baseClassDiscriminator) 
+		{
+			var part = new DiscriminatorPart<ARG, T>(columnName, _properties, baseClassDiscriminator);
+			addPart(part);
+
+			return part;
+		}
+
         public DiscriminatorPart<ARG, T> DiscriminateSubClassesOnColumn<ARG>(string columnName)
         {
             var part = new DiscriminatorPart<ARG, T>(columnName, _properties);

@@ -209,6 +209,21 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             propertyElement.AttributeShouldEqual("column", "Name");
         }
 
+    	[Test]
+    	public void CreateDiscriminatorValueAtClassLevel()
+		{
+			var map = new ClassMap<MappedObject>();
+
+			map.DiscriminateSubClassesOnColumn<string>("Type", "Foo")
+				.SubClass<SecondMappedObject>().IsIdentifiedBy("Bar")
+				.MapSubClassColumns(m => m.Map(x => x.Name));
+
+			document = map.CreateMapping(new MappingVisitor());
+
+			var element = (XmlElement)document.DocumentElement.SelectSingleNode("class");
+			element.AttributeShouldEqual("discriminator-value", "Foo");
+    	}
+
         [Test]
         public void Creating_a_many_to_one_reference()
         {

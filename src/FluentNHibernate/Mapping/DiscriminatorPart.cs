@@ -8,7 +8,17 @@ namespace FluentNHibernate.Mapping
     {
         private readonly string _columnName;
         private readonly List<IMappingPart> _properties;
-
+        private T _discriminatorValue;
+		private bool _discriminatorValueSet;
+ 
+		public DiscriminatorPart(string columnName, List<IMappingPart> properties, T discriminatorValue) : this(columnName, properties) 
+		{
+			if (discriminatorValue != null)
+            {
+				_discriminatorValue = discriminatorValue;
+				_discriminatorValueSet = true;
+			}
+		}
 
         public DiscriminatorPart(string columnName, List<IMappingPart> _properties)
         {
@@ -24,6 +34,9 @@ namespace FluentNHibernate.Mapping
             classElement.AddElement("discriminator")
                 .WithAtt("column", _columnName)
                 .WithAtt("type", typeString);
+
+            if (_discriminatorValueSet) 
+				classElement.WithAtt("discriminator-value", _discriminatorValue.ToString());
         }
 
         public int Level
