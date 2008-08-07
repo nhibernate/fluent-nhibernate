@@ -100,5 +100,10 @@ namespace FluentNHibernate.Mapping
     		_properties.Insert(0, id);
     		return id;
     	}
+
+        public string FileName
+        {
+            get { return string.Format("{0}.hbm.xml", typeof (T).Name); }
+        }
     }
 }

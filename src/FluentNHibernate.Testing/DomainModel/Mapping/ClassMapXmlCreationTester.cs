@@ -394,7 +394,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 			generatorElement.GetAttribute("class").ShouldEqual("identity");
 		}
 
-		[Test]
+        [Test]
+        public void ClassMapHasCorrectHBMFileName()
+        {
+            var expectedFileName = "MappedObject.hbm.xml";
+            var map = new ClassMap<MappedObject>();
+            Assert.AreEqual(expectedFileName , map.FileName);
+        }
+
+        [Test]
 		public void DomainClassMapWithIdNoColumnAndGenerator()
 		{
 			var map = new ClassMap<MappedObject>();
