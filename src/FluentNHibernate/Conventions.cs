@@ -49,11 +49,11 @@ namespace FluentNHibernate
             {
                 if (prop.ParentIsRequired)
                 {
-                    prop.SetAttributeOnPropertyElement("not-null", "true");
+                    prop.SetAttribute("not-null", "true");
                 }
             });
 
-            ForAttribute<MaximumStringLengthAttribute>((att, prop) => prop.SetAttributeOnPropertyElement("length", att.Length.ToString()));
+            ForAttribute<MaximumStringLengthAttribute>((att, prop) => prop.SetAttribute("length", att.Length.ToString()));
             ForAttribute<UniqueAttribute>((att, prop) => prop.SetAttributeOnColumnElement("unique", "true"));
         }
 
@@ -78,7 +78,7 @@ namespace FluentNHibernate
         {
             if (property.PropertyType == typeof(string))
             {
-                property.SetAttributeOnPropertyElement("length", DefaultStringLength.ToString());
+                property.SetAttribute("length", DefaultStringLength.ToString());
             }
 
             ITypeConvention convention = FindConvention(property.PropertyType);

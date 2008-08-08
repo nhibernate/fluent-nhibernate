@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using ShadeTree.Core;
 
 namespace FluentNHibernate.Mapping
 {
@@ -10,8 +11,9 @@ namespace FluentNHibernate.Mapping
         private readonly List<IMappingPart> _properties;
         private T _discriminatorValue;
 		private bool _discriminatorValueSet;
- 
-		public DiscriminatorPart(string columnName, List<IMappingPart> properties, T discriminatorValue) : this(columnName, properties) 
+        private readonly Cache<string, string> attributes = new Cache<string, string>();
+
+        public DiscriminatorPart(string columnName, List<IMappingPart> properties, T discriminatorValue) : this(columnName, properties) 
 		{
 			if (discriminatorValue != null)
             {
@@ -33,10 +35,21 @@ namespace FluentNHibernate.Mapping
             string typeString = TypeMapping.GetTypeString(typeof (T));
             classElement.AddElement("discriminator")
                 .WithAtt("column", _columnName)
-                .WithAtt("type", typeString);
+                .WithAtt("type", typeString)
+                .WithProperties(attributes);
 
             if (_discriminatorValueSet) 
 				classElement.WithAtt("discriminator-value", _discriminatorValue.ToString());
+        }
+
+        /// <summary>
+        /// Set an attribute on the xml element produced by this discriminator mapping.
+        /// </summary>
+        /// <param name="name">Attribute name</param>
+        /// <param name="value">Attribute value</param>
+        public void SetAttribute(string name, string value)
+        {
+            attributes.Store(name, value);
         }
 
         public int Level

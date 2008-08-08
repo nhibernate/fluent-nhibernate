@@ -5,10 +5,9 @@ using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IProperty
+    public interface IProperty : IHasAttributes
     {
         void AddAlteration(Action<XmlElement> action);
-        void SetAttributeOnPropertyElement(string name, string key);
         void SetAttributeOnColumnElement(string name, string value);
         Type PropertyType { get; }
         string ColumnName();

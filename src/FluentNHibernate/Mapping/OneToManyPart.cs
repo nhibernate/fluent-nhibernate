@@ -6,16 +6,18 @@ using System;
 
 namespace FluentNHibernate.Mapping
 {
-    public class OneToManyPart<PARENT, CHILD> : IMappingPart
+    public class OneToManyPart<PARENT, CHILD> : IMappingPart, IAccessStrategy<OneToManyPart<PARENT, CHILD>>
     {
         private readonly Dictionary<string, string> _properties = new Dictionary<string, string>();
         private readonly PropertyInfo _property;
         private string _keyColumnName;
         private string _collectionType;
         private IndexMapping _indexMapping;
+        private readonly AccessStrategyBuilder<OneToManyPart<PARENT, CHILD>> access;
 
         public OneToManyPart(PropertyInfo property)
         {
+            access = new AccessStrategyBuilder<OneToManyPart<PARENT, CHILD>>(this);
             _keyColumnName = string.Empty;
             _property = property;            
             _properties.Add("name", _property.Name);
@@ -46,6 +48,16 @@ namespace FluentNHibernate.Mapping
             }
 
             element.AddElement("one-to-many").SetAttribute("class", typeof (CHILD).AssemblyQualifiedName);
+        }
+
+        /// <summary>
+        /// Set an attribute on the xml element produced by this one-to-many mapping.
+        /// </summary>
+        /// <param name="name">Attribute name</param>
+        /// <param name="value">Attribute value</param>
+        public void SetAttribute(string name, string value)
+        {
+            _properties.Add(name, value);
         }
 
         public int Level
@@ -127,7 +139,13 @@ namespace FluentNHibernate.Mapping
                 indexElement.WithProperties(_properties);
             }
         }
+
+        /// <summary>
+        /// Set the access and naming strategy for this one-to-many.
+        /// </summary>
+        public AccessStrategyBuilder<OneToManyPart<PARENT, CHILD>> Access
+        {
+            get { return access; }
+        }
     }
-
-
 }

@@ -7,7 +7,7 @@ using ShadeTree.Validation;
 
 namespace FluentNHibernate.Mapping
 {
-    public class PropertyMap : IMappingPart, IProperty
+    public class PropertyMap : IMappingPart, IProperty, IAccessStrategy<PropertyMap>
     {
         private readonly List<Action<XmlElement>> _alterations = new List<Action<XmlElement>>();
         private readonly Cache<string, string> _extendedProperties = new Cache<string, string>();
@@ -16,11 +16,11 @@ namespace FluentNHibernate.Mapping
         private readonly PropertyInfo _property;
         private readonly bool _parentIsRequired;
         private string _columnName;
-        private readonly AccessStrategyBuilder access;
+        private readonly AccessStrategyBuilder<PropertyMap> access;
 
         public PropertyMap(PropertyInfo property, bool parentIsRequired, Type parentType)
         {
-            access = new AccessStrategyBuilder(this);
+            access = new AccessStrategyBuilder<PropertyMap>(this);
 
             _property = property;
             _parentIsRequired = parentIsRequired;
@@ -79,9 +79,14 @@ namespace FluentNHibernate.Mapping
             _alterations.Add(action);
         }
 
-        public void SetAttributeOnPropertyElement(string name, string key)
+        /// <summary>
+        /// Set an attribute on the xml element produced by this property mapping.
+        /// </summary>
+        /// <param name="name">Attribute name</param>
+        /// <param name="value">Attribute value</param>
+        public void SetAttribute(string name, string value)
         {
-            _extendedProperties.Store(name, key);
+            _extendedProperties.Store(name, value);
         }
 
         public void SetAttributeOnColumnElement(string name, string value)
@@ -99,11 +104,6 @@ namespace FluentNHibernate.Mapping
             get { return _parentType; }
         }
 
-        public AccessStrategyBuilder Access
-        {
-            get { return access; }
-        }
-
         #endregion
 
         public PropertyMap TheColumnNameIs(string name)
@@ -114,6 +114,14 @@ namespace FluentNHibernate.Mapping
             _columnProperties.Store("name", _columnName);
 
             return this;
+        }
+
+        /// <summary>
+        /// Set the access and naming strategy for this property.
+        /// </summary>
+        public AccessStrategyBuilder<PropertyMap> Access
+        {
+            get { return access; }
         }
 
         public PropertyMap ValueIsAutoNumber()

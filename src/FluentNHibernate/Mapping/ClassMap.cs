@@ -8,10 +8,15 @@ using ShadeTree.Core;
 
 namespace FluentNHibernate.Mapping
 {
-    public class ClassMap<T> : ClassMapBase<T>, IMapping
+    public class ClassMap<T> : ClassMapBase<T>, IMapping, IHasAttributes
     {
+        private readonly Cache<string, string> attributes = new Cache<string, string>();
+        private readonly Cache<string, string> hibernateMappingAttributes = new Cache<string, string>();
+        private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
+
         public ClassMap()
         {
+            defaultAccess = new DefaultAccessStrategyBuilder<T>(this);
             TableName = typeof (T).Name;
         }
 
@@ -42,13 +47,16 @@ namespace FluentNHibernate.Mapping
             return parentNode.AddElement("class")
                 .WithAtt("name", typeof (T).Name)
                 .WithAtt("table", TableName)
-                .WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
+                .WithAtt("xmlns", "urn:nhibernate-mapping-2.2")
+                .WithProperties(attributes);
         }
 
         private void setHeaderValues(XmlDocument document)
         {
             document.DocumentElement.SetAttribute("assembly", typeof (T).Assembly.GetName().Name);
             document.DocumentElement.SetAttribute("namespace", typeof (T).Namespace);
+
+            hibernateMappingAttributes.ForEachPair((name,value) => document.DocumentElement.SetAttribute(name, value));
         }
 
         private static XmlDocument getBaseDocument()
@@ -88,12 +96,27 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-		public IdentityPart Id(Expression<Func<T, object>> expression)
+        /// <summary>
+        /// Set an attribute on the xml element produced by this class mapping.
+        /// </summary>
+        /// <param name="name">Attribute name</param>
+        /// <param name="value">Attribute value</param>
+        public void SetAttribute(string name, string value)
+        {
+            attributes.Store(name, value);
+        }
+
+        public void SetHibernateMappingAttribute(string name, string value)
+        {
+            hibernateMappingAttributes.Store(name, value);
+        }
+
+        public IdentityPart Id(Expression<Func<T, object>> expression)
 		{
 			return Id(expression, null);
 		}
 
-    	public IdentityPart Id(Expression<Func<T, object>> expression, string column)
+        public IdentityPart Id(Expression<Func<T, object>> expression, string column)
     	{
 			PropertyInfo property = ReflectionHelper.GetProperty(expression);
     		var id = column == null ? new IdentityPart(property) : new IdentityPart(property, column);
@@ -104,6 +127,14 @@ namespace FluentNHibernate.Mapping
         public string FileName
         {
             get { return string.Format("{0}.hbm.xml", typeof (T).Name); }
+        }
+
+        /// <summary>
+        /// Set the default access and naming strategies for this entire mapping.
+        /// </summary>
+        public AccessStrategyBuilder<ClassMap<T>> DefaultAccess
+        {
+            get { return defaultAccess; }
         }
     }
 }

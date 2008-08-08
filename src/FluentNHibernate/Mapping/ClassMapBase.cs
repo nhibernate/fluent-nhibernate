@@ -73,7 +73,7 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public void Component<C>(Expression<Func<T, object>> expression, Action<ComponentPart<C>> action)
+        public ComponentPart<C> Component<C>(Expression<Func<T, object>> expression, Action<ComponentPart<C>> action)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
 
@@ -81,6 +81,8 @@ namespace FluentNHibernate.Mapping
             addPart(part);
 
             action(part);
+
+            return part;
         }
 
         public OneToManyPart<T, CHILD> HasMany<CHILD>(Expression<Func<T, object>> expression)

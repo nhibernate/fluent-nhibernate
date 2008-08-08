@@ -45,6 +45,16 @@ namespace FluentNHibernate.Mapping
                 .WithAtt("not-null", "true");
         }
 
+        /// <summary>
+        /// Set an attribute on the xml element produced by this many-to-many mapping.
+        /// </summary>
+        /// <param name="name">Attribute name</param>
+        /// <param name="value">Attribute value</param>
+        public void SetAttribute(string name, string value)
+        {
+            _properties.Add(name, value);
+        }
+
         public int Level
         {
             get { return 3; }
