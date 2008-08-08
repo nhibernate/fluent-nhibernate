@@ -400,6 +400,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
 			new IdentityPart(property).GeneratedBy.Native();
 		}
+
+        [Test]
+        public void WithUnsavedValue_SetsUnsavedValueAttributeOnId()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(c => c.Id(x => x.IntId).WithUnsavedValue(-1))
+                .Element("class/id").HasAttribute("unsaved-value", "-1");
+        }
 	}
 
 	public class IdentityTarget

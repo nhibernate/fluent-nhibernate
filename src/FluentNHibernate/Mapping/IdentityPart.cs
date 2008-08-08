@@ -14,8 +14,9 @@ namespace FluentNHibernate.Mapping
 		private readonly PropertyInfo _property;
 		private string _generatorClass;
         private readonly AccessStrategyBuilder<IdentityPart> access;
+	    private object _unsavedValue = "0";
 
-		public IdentityPart(PropertyInfo property, string columnName)
+	    public IdentityPart(PropertyInfo property, string columnName)
 		{
             access = new AccessStrategyBuilder<IdentityPart>(this);
 
@@ -56,7 +57,7 @@ namespace FluentNHibernate.Mapping
 				.WithAtt("name", _property.Name)
 				.WithAtt("column", _columnName)
 				.WithAtt("type", TypeMapping.GetTypeString(_property.PropertyType))
-				.WithAtt("unsaved-value", "0");
+				.WithAtt("unsaved-value", _unsavedValue.ToString());
 
             _elementAttributes.ForEachPair((name, value) => element.WithAtt(name, value));
 
@@ -97,5 +98,15 @@ namespace FluentNHibernate.Mapping
 	    {
 	        get { return access; }
 	    }
+
+        /// <summary>
+        /// Sets the unsaved-value of the identity.
+        /// </summary>
+        /// <param name="unsavedValue">Value that represents an unsaved value.</param>
+        public IdentityPart WithUnsavedValue(object unsavedValue)
+        {
+            _unsavedValue = unsavedValue;
+            return this;
+        }
 	}
 }
