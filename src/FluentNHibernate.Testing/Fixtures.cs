@@ -1,5 +1,6 @@
 ﻿using fit;
 using fitlibrary;
+using FluentNHibernate.Framework;
 using FluentNHibernate.Framework.Fixtures;
 using FluentNHibernate.Testing.DomainModel;
 using System;
@@ -10,8 +11,8 @@ namespace DomainFixtureGeneration
     public partial class CaseFixture : DomainClassFixture<Case>
     {
 
-        public CaseFixture() : base() { }
-        public CaseFixture(Case subject) : base(subject) { }
+        public CaseFixture(IRepository repository) : base(repository) { }
+        public CaseFixture(Case subject, IRepository repository) : base(subject, repository) { }
 
 
         [Example("|Number is|[value]|")]
@@ -89,8 +90,8 @@ namespace DomainFixtureGeneration
     public partial class ContactFixture : DomainClassFixture<Contact>
     {
 
-        public ContactFixture() : base() { }
-        public ContactFixture(Contact subject) : base(subject) { }
+        public ContactFixture(IRepository repository) : base(repository) { }
+        public ContactFixture(Contact subject, IRepository repository) : base(subject, repository) { }
 
 
         [Example("|Id is|[value]|")]

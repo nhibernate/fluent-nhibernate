@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using fit;
 using fitlibrary;
 using FluentNHibernate.Framework;
 using FluentNHibernate.Framework.Fixtures;
 using ShadeTree.Validation;
-using ObjectFactory=StructureMap.ObjectFactory;
 
 namespace FluentNHibernate.Framework.Fixtures
 {
@@ -35,23 +31,23 @@ namespace FluentNHibernate.Framework.Fixtures
     {
         private T _subject;
         private Action<T> _onFinished = t => { };
+        private readonly IRepository repository;
 
-
-
-        public DomainClassFixture()
+        public DomainClassFixture(IRepository repository)
         {
             _subject = new T();
+            this.repository = repository;
         }
 
-        public DomainClassFixture(T subject)
+        public DomainClassFixture(T subject, IRepository repository)
         {
             _subject = subject;
+            this.repository = repository;
         }
 
         [Example("|Find|[id]|")]
         public void Find(long id)
         {
-            IRepository repository = ObjectFactory.GetInstance<IRepository>();
             _subject = repository.Find<T>(id);
 
             if (_subject == null)
@@ -71,7 +67,6 @@ namespace FluentNHibernate.Framework.Fixtures
         [Example("|Save as alias|[alias]|")]
         public void SaveAsAlias(string alias)
         {
-            IRepository repository = ObjectFactory.GetInstance<IRepository>();
             repository.Save(_subject);
 
             TestContext.StoreAlias(alias, _subject.Id);

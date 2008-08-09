@@ -8,11 +8,10 @@ using System.Xml;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Metadata;
 using NHibernate.Cfg;
-using StructureMap.Graph;
 
 namespace FluentNHibernate
 {
-    public class PersistenceModel : TypeRules
+    public class PersistenceModel
     {
         private List<IMapping> _mappings = new List<IMapping>();
         private Conventions _conventions = new Conventions();
@@ -48,7 +47,7 @@ namespace FluentNHibernate
         {
             foreach (Type type in assembly.GetExportedTypes())
             {
-                if (!type.IsGenericType && CanBeCast(typeof(IMapping), type))
+                if (!type.IsGenericType && typeof(IMapping).IsAssignableFrom(type))
                 {
                     IMapping mapping = (IMapping) Activator.CreateInstance(type);
                     addMapping(mapping);

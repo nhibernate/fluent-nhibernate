@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using FluentNHibernate.Framework;
 using ShadeTree.Core;
-using StructureMap;
 
 namespace FluentNHibernate.Framework
 {
@@ -15,15 +13,16 @@ namespace FluentNHibernate.Framework
     {
         private readonly List<PropertyValue> _allProperties = new List<PropertyValue>();
         private readonly IRepository _repository;
+        private readonly ISessionSource source;
 
-        public PersistenceSpecification()
+        public PersistenceSpecification(ISessionSource source)
         {
+            this.source = source;
             _repository = createRepository();
         }
 
         private IRepository createRepository()
         {
-            ISessionSource source = ObjectFactory.GetInstance<ISessionSource>();
             return new Repository(source.CreateSession());
         }
 

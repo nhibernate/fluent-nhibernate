@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using FluentNHibernate.Framework;
 using ShadeTree.Core;
-using StructureMap;
 
 namespace FluentNHibernate.Framework.Fixtures
 {
@@ -43,11 +42,10 @@ namespace FluentNHibernate.Framework.Fixtures
             _finders.Store(typeof (T), func);
         }
 
-        public void IsFoundBy(Func<string, Expression<Func<T, bool>>> func)
+        public void IsFoundBy(IRepository repository, Func<string, Expression<Func<T, bool>>> func)
         {
             Func<string, T> wrapped = s =>
             {
-                var repository = ObjectFactory.GetInstance<IRepository>();
                 var expression = func(s);
                 return repository.FindBy(expression);
             };
@@ -55,11 +53,10 @@ namespace FluentNHibernate.Framework.Fixtures
             IsFoundBy(wrapped);
         }
 
-        public void IsFoundByProperty(Expression<Func<T, string>> expression)
+        public void IsFoundByProperty(IRepository repository, Expression<Func<T, string>> expression)
         {
             Func<string, T> function = key =>
             {
-                var repository = ObjectFactory.GetInstance<IRepository>();
                 return repository.FindBy(expression, key);
             };
 

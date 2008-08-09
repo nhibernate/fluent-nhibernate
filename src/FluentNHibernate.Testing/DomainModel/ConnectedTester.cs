@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using FluentNHibernate.Framework;
 using FluentNHibernate.Framework.Fixtures;
 using FluentNHibernate.Framework.Query;
 using NHibernate;
 using NUnit.Framework;
 using FluentNHibernate.Mapping;
-using NHibernate.Linq;
-using StructureMap;
 
 namespace FluentNHibernate.Testing.DomainModel
 {
@@ -37,16 +32,8 @@ namespace FluentNHibernate.Testing.DomainModel
 
             _source.BuildSchema();
 
-            ObjectFactory.Inject<ISessionSource>(_source);
             DomainObjectFinder.ClearAllFinders();
         }
-
-        [TearDown]
-        public void TearDown()
-        {
-            ObjectFactory.ResetDefaults();
-        }
-
 
         [Test]
         public void Spin_up_the_Linq_stuff()
@@ -179,12 +166,11 @@ namespace FluentNHibernate.Testing.DomainModel
             session.SaveOrUpdate(new Record { Name = "Earl", Age = 36 });
 
             Repository repository = new Repository(_source.CreateSession());
-            ObjectFactory.Inject<IRepository>(repository);
 
             
             
             
-            DomainObjectFinder.Type<Record>().IsFoundByProperty(r => r.Name);
+            DomainObjectFinder.Type<Record>().IsFoundByProperty(repository, r => r.Name);
             
             
             
@@ -210,7 +196,6 @@ namespace FluentNHibernate.Testing.DomainModel
             session.SaveOrUpdate(new Record { Name = "Earl", Age = 36 });
 
             Repository repository = new Repository(_source.CreateSession());
-            ObjectFactory.Inject<IRepository>(repository);
 
 
 
@@ -242,7 +227,7 @@ namespace FluentNHibernate.Testing.DomainModel
         [Test]
         public void MappingTest1()
         {
-            new PersistenceSpecification<Record>()
+            new PersistenceSpecification<Record>(_source)
                 .CheckProperty(r => r.Age, 22)
                 .CheckProperty(r => r.Name, "somebody")
                 .CheckProperty(r => r.Location, "somebody")
