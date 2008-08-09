@@ -408,6 +408,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(c => c.Id(x => x.IntId).WithUnsavedValue(-1))
                 .Element("class/id").HasAttribute("unsaved-value", "-1");
         }
+
+        [Test]
+        public void TypeIsSetToTypeName()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(c => c.Id(x => x.IntId).WithUnsavedValue(-1))
+                .Element("class/id").HasAttribute("type", "Int32");
+        }
+
+        [Test]
+        public void TypeIsSetToFullTypeNameIfTypeGeneric()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(c => c.Id(x => x.NullableGuidId).WithUnsavedValue(-1))
+                .Element("class/id").HasAttribute("type", typeof(Guid?).FullName);
+        }
 	}
 
 	public class IdentityTarget
@@ -415,6 +431,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public virtual int IntId { get; set; }
 		public virtual long LongId { get; set; }
 		public virtual Guid GuidId { get; set; }
+		public virtual Guid? NullableGuidId { get; set; }
 		public virtual string StringId { get; set; }
 	}
 }

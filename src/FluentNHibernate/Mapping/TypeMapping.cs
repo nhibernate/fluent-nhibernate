@@ -6,7 +6,7 @@ namespace FluentNHibernate.Mapping
     {
         public static string GetTypeString(Type type)
         {
-            return type.Name;
+            return (type.IsGenericType) ? type.FullName : type.Name;
         }
     }
 }
