@@ -410,6 +410,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void UnsavedValueAttributeIsntSetIfThereHasntBeenAValueSpecified()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(c => c.Id(x => x.IntId))
+                .Element("class/id").DoesntHaveAttribute("unsaved-value");
+        }
+
+        [Test]
         public void TypeIsSetToTypeName()
         {
             new MappingTester<IdentityTarget>()

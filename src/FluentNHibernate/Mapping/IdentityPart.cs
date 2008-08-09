@@ -14,7 +14,7 @@ namespace FluentNHibernate.Mapping
 		private readonly PropertyInfo _property;
 		private string _generatorClass;
         private readonly AccessStrategyBuilder<IdentityPart> access;
-	    private object _unsavedValue = "0";
+	    private object _unsavedValue;
 
 	    public IdentityPart(PropertyInfo property, string columnName)
 		{
@@ -56,8 +56,10 @@ namespace FluentNHibernate.Mapping
 			XmlElement element = classElement.AddElement("id")
 				.WithAtt("name", _property.Name)
 				.WithAtt("column", _columnName)
-				.WithAtt("type", TypeMapping.GetTypeString(_property.PropertyType))
-				.WithAtt("unsaved-value", _unsavedValue.ToString());
+				.WithAtt("type", TypeMapping.GetTypeString(_property.PropertyType));
+
+            if (_unsavedValue != null)
+				element.WithAtt("unsaved-value", _unsavedValue.ToString());
 
             _elementAttributes.ForEachPair((name, value) => element.WithAtt(name, value));
 

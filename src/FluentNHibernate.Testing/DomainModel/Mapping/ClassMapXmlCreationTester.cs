@@ -276,7 +276,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             idElement.GetAttribute("name").ShouldEqual("Id");
             idElement.GetAttribute("column").ShouldEqual("id");
             idElement.GetAttribute("type").ShouldEqual("Int64");
-            idElement.GetAttribute("unsaved-value").ShouldEqual("0");
 
             XmlElement generatorElement = idElement["generator"];
             generatorElement.ShouldNotBeNull();
@@ -367,7 +366,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 			idElement.GetAttribute("name").ShouldEqual("Id");
 			idElement.GetAttribute("column").ShouldEqual("id");
 			idElement.GetAttribute("type").ShouldEqual("Int64");
-			idElement.GetAttribute("unsaved-value").ShouldEqual("0");
 
 			XmlElement generatorElement = idElement["generator"];
 			generatorElement.ShouldNotBeNull();
@@ -387,7 +385,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 			idElement.GetAttribute("name").ShouldEqual("Id");
 			idElement.GetAttribute("column").ShouldEqual("Id");
 			idElement.GetAttribute("type").ShouldEqual("Int64");
-			idElement.GetAttribute("unsaved-value").ShouldEqual("0");
 
 			XmlElement generatorElement = idElement["generator"];
 			generatorElement.ShouldNotBeNull();

@@ -1,6 +1,7 @@
 using System;
 using System.Xml;
 using FluentNHibernate.Mapping;
+using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
@@ -40,6 +41,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public MappingTester<T> HasAttribute(string name, string value)
         {
             currentElement.AttributeShouldEqual(name, value);
+
+            return this;
+        }
+
+        public MappingTester<T> DoesntHaveAttribute(string name)
+        {
+            Assert.IsFalse(currentElement.HasAttribute(name), "Found attribute '" + name + "' on element.");
 
             return this;
         }
