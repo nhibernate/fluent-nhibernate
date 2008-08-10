@@ -124,6 +124,16 @@ namespace FluentNHibernate.Mapping
     		return id;
     	}
 
+        public JoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<JoinedSubClassPart<TSubclass>> action) where TSubclass : T
+        {
+            var subclass = new JoinedSubClassPart<TSubclass>(keyColumn);
+
+            action(subclass);
+            _properties.Add(subclass);
+
+            return subclass;
+        }
+
         public string FileName
         {
             get { return string.Format("{0}.hbm.xml", typeof (T).Name); }

@@ -82,6 +82,7 @@
     <Compile Include="Mapping\InvalidPrefixException.cs" />
     <Compile Include="Mapping\IProperty.cs" />
     <Compile Include="Mapping\ITypeConvention.cs" />
+    <Compile Include="Mapping\JoinedSubClassPart.cs" />
     <Compile Include="Mapping\ManyToManyPart.cs" />
     <Compile Include="Mapping\ManyToOnePart.cs" />
     <Compile Include="Mapping\OneToManyPart.cs" />
