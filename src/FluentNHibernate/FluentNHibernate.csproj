@@ -59,6 +59,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="IMappingVisitor.cs" />
     <Compile Include="MappingVisitor.cs" />
     <Compile Include="Mapping\AccessStrategyBuilder.cs" />
