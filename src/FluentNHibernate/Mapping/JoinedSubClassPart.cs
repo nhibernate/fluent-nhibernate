@@ -31,7 +31,7 @@ namespace FluentNHibernate.Mapping
 
         public int Level
         {
-            get { return 3; }
+            get { return 4; }
         }
     }
 }

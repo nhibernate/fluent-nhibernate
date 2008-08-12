@@ -17,7 +17,7 @@ namespace FluentNHibernate.Mapping
         public ClassMap()
         {
             defaultAccess = new DefaultAccessStrategyBuilder<T>(this);
-            TableName = typeof (T).Name;
+            TableName = String.Format("[{0}]", typeof (T).Name);
         }
 
         public string TableName { get; set; }
