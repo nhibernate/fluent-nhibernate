@@ -153,5 +153,12 @@ namespace FluentNHibernate.Mapping
 
             return this;
         }
+
+        public PropertyMap FormulaIs(string forumla) 
+        {
+            this.AddAlteration(x => x.SetAttribute("formula", forumla));
+
+            return this;
+        }
     }
 }

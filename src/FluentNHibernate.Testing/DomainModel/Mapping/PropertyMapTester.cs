@@ -211,6 +211,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             propertyElement.AttributeShouldEqual("insert", "false");
             propertyElement.AttributeShouldEqual("update", "false");
         }
+
+        [Test]
+        public void Map_WithFluentFormula_UsesFormula() 
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Name).FormulaIs("foo(bar)"))
+                .Element("class/property").HasAttribute("formula", "foo(bar)");
+        }
     }
 
     public class PropertyTarget
