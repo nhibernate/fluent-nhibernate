@@ -4,13 +4,17 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public class ManyToManyPart<PARENT,CHILD> : IMappingPart
+	public class ManyToManyPart<PARENT, CHILD> : IMappingPart
     {
+    
         private readonly PropertyInfo _property;
         private readonly Dictionary<string, string> _properties = new Dictionary<string, string>();
+    	private string _tableName;
+    	private string _childForeignKeyName;
+    	private string _collectionType = "bag";
+    	private FetchType _fetchType = FetchType.Join;
 
-
-        public ManyToManyPart(PropertyInfo property)
+    	public ManyToManyPart(PropertyInfo property)
         {
             _property = property;
             _properties.Add("name", _property.Name);
@@ -23,29 +27,78 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
+		public ManyToManyPart<PARENT, CHILD> WithTableName(string name)
+		{
+			_tableName = name;
+			return this;
+		} 
+		
+		public ManyToManyPart<PARENT, CHILD> WithChildForeignKey(string foreignKeyName)
+		{
+			_childForeignKeyName = foreignKeyName;
+			return this;
+		}
+		
+		public ManyToManyPart<PARENT, CHILD> AsSet()
+		{
+			_collectionType = "set";
+			return this;
+		}
+
+		public ManyToManyPart<PARENT, CHILD> AsBag()
+		{
+			_collectionType = "bag";
+			return this;
+		}
+		
+		public ManyToManyPart<PARENT, CHILD> WithFetchType(FetchType fetchType)
+		{
+			_fetchType = fetchType;
+			return this;
+		}
+
+		public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             var conventions = visitor.Conventions;
 
-            string tableName = conventions.GetManyToManyTableName(typeof(CHILD), typeof(PARENT));
-            _properties.Add("table", tableName);
+			string tableName = GetTableName(conventions);
+			string parentForeignKeyName = conventions.GetForeignKeyNameOfParent(typeof(PARENT));
+			string childForeignKeyName = GetChildForeignKeyName(conventions);
 
-            XmlElement element = classElement.AddElement("bag").WithProperties(_properties);
+			XmlElement set = classElement.AddElement(_collectionType).WithProperties(_properties);
+			set.WithAtt("table", tableName);
+			set.WithAtt("name", _property.Name);
 
-            string foreignKeyName = conventions.GetForeignKeyNameOfParent(typeof(PARENT));
-            element.AddElement("key").AddElement("column").WithAtt("name", foreignKeyName).WithAtt("not-null", "true");
+			XmlElement key = set.AddElement("key");
+			key.WithAtt("column", parentForeignKeyName);
 
-            string childForeignKeyName = conventions.GetForeignKeyNameOfParent(typeof(CHILD));
-
-            XmlElement manyToManyElement = element.AddElement("many-to-many")
-                .WithAtt("class", typeof(CHILD).AssemblyQualifiedName);
-            
-            manyToManyElement.AddElement("column")
-                .WithAtt("name", childForeignKeyName)
-                .WithAtt("not-null", "true");
+			XmlElement manyToManyElement = set.AddElement("many-to-many");
+			manyToManyElement.WithAtt("column", childForeignKeyName);
+			manyToManyElement.WithAtt("class", typeof(CHILD).AssemblyQualifiedName);
+			manyToManyElement.WithAtt("fetch", _fetchType.Type);
         }
 
-        /// <summary>
+    	private string GetChildForeignKeyName(Conventions conventions)
+    	{
+    		string childForeignKeyName;
+    		if (string.IsNullOrEmpty(_childForeignKeyName))
+				childForeignKeyName = conventions.GetForeignKeyNameOfParent(typeof(CHILD));
+			else
+    			childForeignKeyName = _childForeignKeyName;
+    		return childForeignKeyName;
+    	}
+
+    	private string GetTableName(Conventions conventions)
+    	{
+    		string tableName;
+    		if (string.IsNullOrEmpty(_tableName))
+    			tableName = conventions.GetManyToManyTableName(typeof(CHILD), typeof(PARENT));
+    		else
+    			tableName = _tableName;
+    		return tableName;
+    	}
+
+    	/// <summary>
         /// Set an attribute on the xml element produced by this many-to-many mapping.
         /// </summary>
         /// <param name="name">Attribute name</param>

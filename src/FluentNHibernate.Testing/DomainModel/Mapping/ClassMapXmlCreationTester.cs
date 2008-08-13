@@ -35,8 +35,73 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             element["many-to-many"].AttributeShouldEqual("table", typeof (ChildObject).Name);
             element["many-to-many"].AttributeShouldEqual("column", "ChildObject_Fk");
         }
-
+        
         [Test]
+        public void ManyToManyAsSet()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet())
+                .Element("class/set")
+                    .HasAttribute("name", "Children")
+                    .HasAttribute("cascade", "none")
+                    .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
+                .Element("class/set/key")
+                    .HasAttribute("column", "MappedObject_id")
+                .Element("class/set/many-to-many")
+                    .HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
+                    .HasAttribute("column", "ChildObject_id");
+		}
+
+		[Test]
+		public void ManyToManyAsBag()
+		{
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsBag())
+                .Element("class/bag")
+                    .HasAttribute("name", "Children")
+                    .HasAttribute("cascade", "none")
+                    .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
+                .Element("class/bag/key")
+                    .HasAttribute("column", "MappedObject_id")
+                .Element("class/bag/many-to-many")
+                    .HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
+                    .HasAttribute("column", "ChildObject_id");
+		}
+		
+		[Test]
+		public void ManyToManyAsSetWithChildForeignKey()
+		{
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet().WithChildForeignKey("TheKids_ID"))
+                .Element("class/set")
+                    .HasAttribute("name", "Children")
+                    .HasAttribute("cascade", "none")
+                    .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
+                .Element("class/set/key")
+                    .HasAttribute("column", "MappedObject_id")
+                .Element("class/set/many-to-many")
+                    .HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
+                    .HasAttribute("column", "TheKids_ID");
+		}
+
+		[Test]
+		public void ManyToManyAsSetWithJoinFetchMode()
+		{
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet().WithFetchType(FetchType.Join))
+                .Element("class/set")
+                    .HasAttribute("name", "Children")
+                    .HasAttribute("cascade", "none")
+                    .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
+                .Element("class/set/key")
+                    .HasAttribute("column", "MappedObject_id")
+                .Element("class/set/many-to-many")
+                    .HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
+                    .HasAttribute("column", "ChildObject_id")
+                    .HasAttribute("fetch", "join");
+		}
+
+		[Test]
         public void BasicOneToManyMapping()
         {
             var map = new ClassMap<MappedObject>();
