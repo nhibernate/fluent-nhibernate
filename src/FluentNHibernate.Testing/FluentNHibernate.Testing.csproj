@@ -79,6 +79,7 @@
     <Compile Include="DomainModel\Mapping\AccessStrategyOneToManyPartTester.cs" />
     <Compile Include="DomainModel\Mapping\AccessStrategyPropertyMapTester.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapXmlCreationTester.cs" />
+    <Compile Include="DomainModel\Mapping\CompositeIdentityPartTester.cs" />
     <Compile Include="DomainModel\Mapping\ConventionsTester.cs" />
     <Compile Include="DomainModel\Mapping\DefaultAccessStrategyClassMapTester.cs" />
     <Compile Include="DomainModel\Mapping\DiscriminatorPartTester.cs" />

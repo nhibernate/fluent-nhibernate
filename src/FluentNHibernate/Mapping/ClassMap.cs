@@ -41,6 +41,14 @@ namespace FluentNHibernate.Mapping
             _properties.Insert(0, part);
         }
 
+		public CompositeIdentityPart<T> UseCompositeId()
+		{
+			var part = new CompositeIdentityPart<T>();
+			_properties.Insert(0, part);
+
+			return part;
+		}
+
         protected virtual XmlElement createClassValues(XmlDocument document, XmlNode parentNode)
         {
             return parentNode.AddElement("class")

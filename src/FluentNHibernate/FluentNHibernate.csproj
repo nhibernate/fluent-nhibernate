@@ -66,6 +66,7 @@
     <Compile Include="Mapping\ClassMapBase.cs" />
     <Compile Include="Mapping\ClassToTableMapping.cs" />
     <Compile Include="Mapping\ComponentPart.cs" />
+    <Compile Include="Mapping\CompositeIdentityPart.cs" />
     <Compile Include="Mapping\DefaultAccessStrategyBuilder.cs" />
     <Compile Include="Mapping\DefaultConvention.cs" />
     <Compile Include="Mapping\DiscriminatorPart.cs" />
