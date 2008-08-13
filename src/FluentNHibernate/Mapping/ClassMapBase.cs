@@ -104,6 +104,13 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+        public VersionPart Version(Expression<Func<T, object>> expression)
+        {
+            var versionPart = new VersionPart(ReflectionHelper.GetProperty(expression));
+            addPart(versionPart);
+            return versionPart;
+        }
+
         protected void writeTheParts(XmlElement classElement, IMappingVisitor visitor)
         {
             _properties.Sort(new MappingPartComparer());

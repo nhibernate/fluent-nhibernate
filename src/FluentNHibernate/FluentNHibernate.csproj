@@ -90,6 +90,7 @@
     <Compile Include="Mapping\PropertyMap.cs" />
     <Compile Include="Mapping\SubClassPart.cs" />
     <Compile Include="Mapping\TypeMapping.cs" />
+    <Compile Include="Mapping\VersionPart.cs" />
     <Compile Include="Mapping\XmlExtensions.cs" />
     <Compile Include="Metadata\Deleter.cs" />
     <Compile Include="Metadata\DependencyChain.cs">
