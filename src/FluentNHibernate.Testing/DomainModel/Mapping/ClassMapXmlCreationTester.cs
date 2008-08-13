@@ -4,22 +4,12 @@ using System.Xml;
 using NUnit.Framework;
 using FluentNHibernate;
 using FluentNHibernate.Mapping;
-using ShadeTree.Validation;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
     [TestFixture]
     public class ClassMapXmlCreationTester
     {
-        #region Setup/Teardown
-
-        [SetUp]
-        public void SetUp()
-        {
-        }
-
-        #endregion
-
         private XmlDocument document;
 
         private XmlElement elementForProperty(string propertyName)
@@ -135,45 +125,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             componentElement.ShouldHaveChild("property[@name='Name']");
             componentElement.ShouldHaveChild("property[@name='Age']");
-        }
-
-
-        [Test]
-        public void
-            Create_a_component_mapping_for_a_component_that_is_not_required_and_the_fields_for_the_component_should_not_be_non_null
-            ()
-        {
-            var map = new ClassMap<MappedObject>();
-            map.Component<SecondMappedObject>(x => x.Parent, c => { c.Map(x => x.Name); });
-
-            document = map.CreateMapping(new MappingVisitor());
-
-            var element =
-                (XmlElement) document.DocumentElement.SelectSingleNode("class/component/property[@name='Name']");
-
-            Debug.WriteLine(element.OuterXml);
-
-            element.HasAttribute("not-null").ShouldBeFalse();
-        }
-
-        [Test]
-        public void Create_a_component_mapping_for_a_required_child_and_set_the_required_fields_of_component_to_non_null
-            ()
-        {
-            var map = new ClassMap<MappedObject>();
-            map.Component<ComponentOfMappedObject>(x => x.Component, c =>
-                                                                         {
-                                                                             c.Map(x => x.Name);
-                                                                             c.Map(x => x.Age);
-                                                                         });
-
-            document = map.CreateMapping(new MappingVisitor());
-
-            var componentElement =
-                (XmlElement) document.DocumentElement.SelectSingleNode("class/component");
-
-            var propertyElement = (XmlElement) componentElement.SelectSingleNode("property[@name = 'Age']");
-            propertyElement.AttributeShouldEqual("not-null", "true");
         }
 
         [Test]
@@ -314,33 +265,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void SimpleProperty_picks_up_maximum_length_for_string_fields()
-        {
-            var map = new ClassMap<MappedObject>();
-            map.Map(x => x.Name);
-            map.Map(x => x.NickName);
-
-            document = map.CreateMapping(new MappingVisitor());
-
-            Debug.WriteLine(document.DocumentElement.OuterXml);
-
-            elementForProperty("Name").AttributeShouldEqual("length", "100");
-            elementForProperty("NickName").AttributeShouldEqual("length", "10");
-        }
-
-        [Test]
-        public void SimpleProperty_picks_up_not_null_for_required()
-        {
-            var map = new ClassMap<MappedObject>();
-            map.Map(x => x.Name);
-            map.Map(x => x.NickName);
-
-            document = map.CreateMapping(new MappingVisitor());
-            elementForProperty("Name").AttributeShouldEqual("not-null", "true");
-            elementForProperty("NickName").DoesNotHaveAttribute("not-null");
-        }
-
-        [Test]
         public void WriteTheClassNode()
         {
             var map = new ClassMap<MappedObject>();
@@ -415,7 +339,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
     public class SecondMappedObject
     {
-        [Required]
         public string Name { get; set; }
         public long Id { get; set; }
     }
@@ -423,8 +346,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     public class ComponentOfMappedObject
     {
         public string Name { get; set; }
-
-        [Required]
         public int Age { get; set; }
     }
 
@@ -439,15 +360,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     {
         public ColorEnum Color { get; set; }
 
-        [Required]
         public ComponentOfMappedObject Component { get; set; }
 
         public SecondMappedObject Parent { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
-        [MaximumStringLength(10)]
         public string NickName { get; set; }
 
 

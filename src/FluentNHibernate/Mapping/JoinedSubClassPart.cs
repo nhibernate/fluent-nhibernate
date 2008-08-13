@@ -1,5 +1,4 @@
 using System.Xml;
-using ShadeTree.Core;
 
 namespace FluentNHibernate.Mapping
 {

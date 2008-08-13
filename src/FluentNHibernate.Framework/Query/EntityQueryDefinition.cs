@@ -6,8 +6,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Framework;
 using FluentNHibernate.Framework.Query;
-using NHibernate.Util;
-using ShadeTree.Core;
 
 namespace FluentNHibernate.Framework.Query
 {

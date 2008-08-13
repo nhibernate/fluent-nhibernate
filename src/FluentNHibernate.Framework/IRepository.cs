@@ -5,7 +5,6 @@ using FluentNHibernate.Framework;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
-using ShadeTree.Core;
 using Action=System.Action;
 
 namespace FluentNHibernate.Framework

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 using System.Xml;
-using ShadeTree.Core;
-using ShadeTree.Validation;
 
 namespace FluentNHibernate.Mapping
 {
@@ -19,7 +13,8 @@ namespace FluentNHibernate.Mapping
         {
             access = new AccessStrategyBuilder<ComponentPart<T>>(this);
             _property = property;
-            this.parentIsRequired = parentIsRequired && RequiredAttribute.IsRequired(_property) && parentIsRequired;
+			//TODO: Need some support for this
+            //this.parentIsRequired = parentIsRequired && RequiredAttribute.IsRequired(_property) && parentIsRequired;
         }
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)

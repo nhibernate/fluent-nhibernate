@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
 using FluentNHibernate.Framework;
-using ShadeTree.Core;
 
 namespace FluentNHibernate.Framework.Fixtures
 {

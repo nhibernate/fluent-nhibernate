@@ -55,10 +55,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\rhino\Rhino.Mocks.dll</HintPath>
     </Reference>
-    <Reference Include="ShadeTree.Core, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\ShadeTree\ShadeTree.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -108,7 +104,7 @@
     </ProjectReference>
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
       <Project>{1C988DFB-1EC5-484E-87D9-1D3C775BA435}</Project>
-      <Name>ShadeTree.DomainModel</Name>
+      <Name>FluentNHibernate</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

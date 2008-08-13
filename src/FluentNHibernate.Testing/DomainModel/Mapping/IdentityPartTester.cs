@@ -7,7 +7,6 @@ using NHibernate.Engine;
 using NHibernate.Id;
 using NHibernate.Util;
 using NUnit.Framework;
-using ShadeTree.Core;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {

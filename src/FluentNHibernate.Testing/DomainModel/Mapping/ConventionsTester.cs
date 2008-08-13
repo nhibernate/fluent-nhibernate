@@ -2,8 +2,6 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using Rhino.Mocks;
-using ShadeTree.Core;
-using ShadeTree.Core.Validation;
 using FluentNHibernate;
 using FluentNHibernate.Mapping;
 
@@ -47,29 +45,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 conventions.AlterMap(property);
             }
         }
-
-        [Test]
-        public void add_unique_property_for_Unique_attribute_by_default()
-        {
-            MockRepository mocks = new MockRepository();
-            IProperty property = mocks.DynamicMock<IProperty>();
-
-
-            using (mocks.Record())
-            {
-                PropertyInfo propertyInfo = ReflectionHelper.GetProperty<Site>(s => s.LastName);
-                Expect.Call(property.Property).Return(propertyInfo).Repeat.Any();
-                Expect.Call(property.PropertyType).Return(typeof(string)).Repeat.Any();
-
-                property.SetAttributeOnColumnElement("unique", "true");
-            }
-
-            using (mocks.Playback())
-            {
-                var conventions = new Conventions();
-                conventions.AlterMap(property);
-            }
-        }
     }
 
     public class Invoice{}
@@ -79,7 +54,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [My]
         public string Name { get; set; }
 
-        [Unique]
         public string LastName { get; set; }
 
         public Address Primary { get; set; }

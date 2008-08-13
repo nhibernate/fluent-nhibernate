@@ -1,5 +1,4 @@
-﻿using System;
-using ShadeTree.Core;
+using System;
 
 namespace FluentNHibernate.Metadata
 {

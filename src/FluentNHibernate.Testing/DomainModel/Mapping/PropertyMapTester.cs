@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Xml;
 using NHibernate.Properties;
 using NUnit.Framework;
-using ShadeTree.Core;
 using FluentNHibernate;
 using FluentNHibernate.Mapping;
 

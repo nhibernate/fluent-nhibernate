@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Framework;
-using ShadeTree.Core;
 
 namespace FluentNHibernate.Framework
 {

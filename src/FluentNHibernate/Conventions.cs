@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.Mapping;
-using ShadeTree.Core.Validation;
-using ShadeTree.Validation;
 
 namespace FluentNHibernate
 {
@@ -44,17 +42,6 @@ namespace FluentNHibernate
 
             AddTypeConvention(new IgnoreNullableTypeConvention());
             AddTypeConvention(new EnumerationTypeConvention());
-
-            ForAttribute<RequiredAttribute>((att, prop) =>
-            {
-                if (prop.ParentIsRequired)
-                {
-                    prop.SetAttribute("not-null", "true");
-                }
-            });
-
-            ForAttribute<MaximumStringLengthAttribute>((att, prop) => prop.SetAttribute("length", att.Length.ToString()));
-            ForAttribute<UniqueAttribute>((att, prop) => prop.SetAttributeOnColumnElement("unique", "true"));
         }
 
         public Func<PropertyInfo, string> GetForeignKeyName = prop => prop.Name + "_id";

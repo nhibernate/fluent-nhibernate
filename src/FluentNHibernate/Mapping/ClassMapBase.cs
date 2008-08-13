@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
-using ShadeTree.Core;
 
 namespace FluentNHibernate.Mapping
 {

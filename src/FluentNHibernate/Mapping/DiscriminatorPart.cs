@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Xml;
-using ShadeTree.Core;
 
 namespace FluentNHibernate.Mapping
 {
