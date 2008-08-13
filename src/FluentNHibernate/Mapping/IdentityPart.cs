@@ -82,14 +82,16 @@ namespace FluentNHibernate.Mapping
 			get { return 0; }
 		}
 
-		public void SetGeneratorClass(string generator)
+		public IdentityPart SetGeneratorClass(string generator)
 		{
 			_generatorClass = generator;
+			return this;
 		}
 
-		public void AddGeneratorParam(string name, string innerXml)
+		public IdentityPart AddGeneratorParam(string name, string innerXml)
 		{
 			_generatorParameters.Store(name, innerXml);
+			return this;
 		}
 
         /// <summary>
