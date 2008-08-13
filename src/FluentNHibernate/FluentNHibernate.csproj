@@ -62,6 +62,7 @@
     <Compile Include="IMappingVisitor.cs" />
     <Compile Include="MappingVisitor.cs" />
     <Compile Include="Mapping\AccessStrategyBuilder.cs" />
+    <Compile Include="Mapping\CascadeType.cs" />
     <Compile Include="Mapping\ClassMap.cs" />
     <Compile Include="Mapping\ClassMapBase.cs" />
     <Compile Include="Mapping\ClassToTableMapping.cs" />

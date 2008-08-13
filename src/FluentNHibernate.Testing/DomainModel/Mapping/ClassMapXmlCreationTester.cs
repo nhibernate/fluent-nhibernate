@@ -258,7 +258,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void Creating_a_many_to_one_reference_sets_the_column_overrides()
         {
             var map = new ClassMap<MappedObject>();
-            map.References(x => x.Parent);
+            map.References(x => x.Parent).WithForeignKey();
 
             document = map.CreateMapping(new MappingVisitor());
 
@@ -399,6 +399,30 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
 			generatorElement.ShouldNotBeNull();
 			generatorElement.GetAttribute("class").ShouldEqual("native");
+		}
+
+   		[Test]
+		public void Creating_a_many_to_one_reference_with_column_specified()
+		{
+   		    new MappingTester<MappedObject>()
+   		        .ForMapping(m => m.References(x => x.Parent, "MyParentId"))
+   		        .Element("class/many-to-one").HasAttribute("column", "MyParentId");
+		}
+
+		[Test]
+		public void Creating_a_many_to_one_reference_using_specified_foreign_key()
+		{
+		    new MappingTester<MappedObject>()
+		        .ForMapping(m => m.References(x => x.Parent).WithForeignKey("FK_MyForeignKey"))
+		        .Element("class/many-to-one").HasAttribute("foreign-key", "FK_MyForeignKey");
+		}
+
+		[Test]
+		public void Creating_a_many_to_one_reference_with_cascade_specified_as_None()
+		{
+		    new MappingTester<MappedObject>()
+		        .ForMapping(m => m.References(x => x.Parent).WithCascade(CascadeType.None))
+		        .Element("class/many-to-one").HasAttribute("cascade", "none");
 		}
     }
 

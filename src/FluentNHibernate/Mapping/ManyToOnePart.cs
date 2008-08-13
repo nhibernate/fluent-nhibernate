@@ -9,16 +9,12 @@ namespace FluentNHibernate.Mapping
     {
         private readonly Dictionary<string, string> _properties = new Dictionary<string, string>();
         private readonly PropertyInfo _property;
-        private readonly string columnName;
+        private readonly string _columnName;
         private readonly AccessStrategyBuilder<ManyToOnePart> access;
+    	private FetchType _fetchType = FetchType.Join;
+    	private CascadeType _cascadeType = CascadeType.All;
 
-        public ManyToOnePart(PropertyInfo property) : this(property, null)
-        {
-            _property = property;
-
-            _properties.Add("name", property.Name);
-            _properties.Add("foreign-key", string.Format("FK_{0}To{1}", property.DeclaringType.Name, property.Name));
-        }
+    	public ManyToOnePart(PropertyInfo property) : this(property, null){}
 
         public ManyToOnePart(PropertyInfo property, string columnName) 
         {
@@ -26,35 +22,49 @@ namespace FluentNHibernate.Mapping
 
             _property = property;
 
-            _properties.Add("name", property.Name);
-            _properties.Add("foreign-key", string.Format("FK_{0}To{1}", property.DeclaringType.Name, property.Name));
-
-            this.columnName = columnName;
+            _columnName = columnName;
         }
 
-        #region IMappingPart Members
+		public ManyToOnePart WithFetchType(FetchType fetchType)
+		{
+			_fetchType = fetchType;
+			return this;
+		}
+		
+		public ManyToOnePart WithForeignKey()
+		{
+			return WithForeignKey(string.Format("FK_{0}To{1}", _property.DeclaringType.Name, _property.Name));
+		}
+		
+		public ManyToOnePart WithForeignKey(string foreignKeyName)
+		{
+			_properties.Add("foreign-key", foreignKeyName);
+			return this;
+		}
+		
+		public ManyToOnePart WithCascade(CascadeType cascadeType)
+		{
+			_cascadeType = cascadeType;
+			return this;
+		}
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             visitor.RegisterDependency(_property.PropertyType);
 
-            string fkName = columnName;
+            string columnName = _columnName;
             
-            if (string.IsNullOrEmpty(columnName))
-                fkName = visitor.Conventions.GetForeignKeyName(_property);
+            if (string.IsNullOrEmpty(_columnName))
+                columnName = visitor.Conventions.GetForeignKeyName(_property);
 
-            _properties.Add("column", fkName);
-            _properties.Add("cascade", "all");
+			_properties["name"] = _property.Name;
+			_properties["column"] = columnName;
+            _properties["cascade"] = _cascadeType.Type;
+			_properties["fetch"] = _fetchType.Type;
 
             classElement.AddElement("many-to-one").WithProperties(_properties);
-
         }
 
-        /// <summary>
-        /// Set an attribute on the xml element produced by this many-to-one mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
         public void SetAttribute(string name, string value)
         {
             _properties.Add(name, value);
@@ -65,11 +75,6 @@ namespace FluentNHibernate.Mapping
             get { return 3; }
         }
 
-        #endregion
-
-        /// <summary>
-        /// Set the access and naming strategy for this many-to-one.
-        /// </summary>
         public AccessStrategyBuilder<ManyToOnePart> Access
         {
             get { return access; }
