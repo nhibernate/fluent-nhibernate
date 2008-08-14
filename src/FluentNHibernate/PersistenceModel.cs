@@ -111,6 +111,11 @@ namespace FluentNHibernate
             DiagnosticMappingVisitor visitor = new DiagnosticMappingVisitor(folder, _conventions);
             _mappings.ForEach(m => m.ApplyMappings(visitor));
         }
+
+        protected ClassMap<T> findMapping<T>()
+        {
+            return (ClassMap<T>) _mappings.Find(t => t is ClassMap<T>);
+        }
     }
 
     public class DiagnosticMappingVisitor : MappingVisitor

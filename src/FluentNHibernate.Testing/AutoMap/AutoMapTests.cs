@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Xml;
 using FluentNHibernate;
 using FluentNHibernate.AutoMap;
+using FluentNHibernate.AutoMap.Test;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing;
 using NUnit.Framework;
 
@@ -11,6 +14,14 @@ namespace FluentNHibernate.Testing.AutoMap
     [TestFixture]
     public class AutoMapTests
     {
+        [Test]
+        public void AutoMapAssembly()
+        {
+            var autoModel = new AutoPersistenceModel(Assembly.GetAssembly(typeof(AutoMapTests)));
+            autoModel.AddEntityAssembly(Assembly.GetAssembly(typeof (AutoMapTests)),
+                                        t => t.Namespace == "FluentNHibernate.AutoMap.Test");
+        }
+
         [Test]
         public void AutoMapIdentification()
         {
@@ -99,7 +110,10 @@ namespace FluentNHibernate.Testing.AutoMap
             keyElement.AttributeShouldEqual("name", "Examples");
         }
     }
+}
 
+namespace FluentNHibernate.AutoMap.Test
+{
     public class ExampleCustomColumn
     {
         public int CustomColumn

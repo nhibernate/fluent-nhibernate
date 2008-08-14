@@ -20,23 +20,26 @@ namespace FluentNHibernate.AutoMap
                                 };
         }
 
-        public ClassMap<T> Map<T>()
+        public ClassMap<T> Map<T>(ClassMap<T> map)
         {
-            var classMap = (ClassMap<T>)Activator.CreateInstance(typeof(ClassMap<T>));
-
             foreach (var property in typeof(T).GetProperties())
             {
                 foreach (var rule in _mappingRules)
                 {
                     if (rule.MapsProperty(property))
                     {
-                        rule.Map(classMap, property);
+                        rule.Map(map, property);
                         break;
                     }
                 }
             }
+            return map;
+        }
 
-            return classMap;
+        public ClassMap<T> Map<T>()
+        {
+            var classMap = (ClassMap<T>)Activator.CreateInstance(typeof(ClassMap<T>));
+            return Map(classMap);
         }
     }
 }
