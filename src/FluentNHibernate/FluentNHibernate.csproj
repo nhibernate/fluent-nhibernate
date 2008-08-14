@@ -56,6 +56,15 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Accessor.cs" />
+    <Compile Include="AutoMap\AutoMapColumn.cs" />
+    <Compile Include="AutoMap\AutoMapIdentity.cs" />
+    <Compile Include="AutoMap\AutoMapManyToOne.cs" />
+    <Compile Include="AutoMap\AutoMapOneToMany.cs" />
+    <Compile Include="AutoMap\AutoMapper.cs" />
+    <Compile Include="AutoMap\AutoMapVersion.cs" />
+    <Compile Include="AutoMap\AutoPersistanceModel.cs" />
+    <Compile Include="AutoMap\ExpressionBuilder.cs" />
+    <Compile Include="AutoMap\IAutoMapper.cs" />
     <Compile Include="Cache.cs" />
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="Conventions.cs" />
