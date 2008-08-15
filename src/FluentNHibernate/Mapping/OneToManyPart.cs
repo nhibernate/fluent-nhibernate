@@ -7,7 +7,7 @@ namespace FluentNHibernate.Mapping
 {
     public class OneToManyPart<PARENT, CHILD> : IMappingPart, IAccessStrategy<OneToManyPart<PARENT, CHILD>>
     {
-        private readonly Dictionary<string, string> _properties = new Dictionary<string, string>();
+		private readonly Cache<string, string> _properties = new Cache<string, string>();
         private readonly PropertyInfo _property;
         private string _keyColumnName;
         private string _collectionType;
@@ -20,8 +20,7 @@ namespace FluentNHibernate.Mapping
             access = new AccessStrategyBuilder<OneToManyPart<PARENT, CHILD>>(this);
             _keyColumnName = string.Empty;
             _property = property;            
-            _properties.Add("name", _property.Name);
-            _properties.Add("cascade", "none");
+            _properties.Store("name", _property.Name);
             
             // default the collection type to bag for now
             _collectionType = "bag";
@@ -67,7 +66,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="value">Attribute value</param>
         public void SetAttribute(string name, string value)
         {
-            _properties.Add(name, value);
+            _properties.Store(name, value);
         }
 
         public int Level
@@ -79,21 +78,19 @@ namespace FluentNHibernate.Mapping
 
         public OneToManyPart<PARENT, CHILD> LazyLoad()
         {
-            _properties["lazy"] = "true";
+            _properties.Store("lazy", "true");
             return this;
         }
 
         public OneToManyPart<PARENT, CHILD> IsInverse()
         {
-            _properties.Add("inverse", "true");
+			_properties.Store("inverse", "true");
             return this;
         }
 
-        public OneToManyPart<PARENT, CHILD> CascadeAll()
+        public CollectionCascadeExpression<OneToManyPart<PARENT, CHILD>> Cascade
         {
-            _properties["cascade"] = "all";
-            
-            return this;
+			get { return new CollectionCascadeExpression<OneToManyPart<PARENT, CHILD>>(this); }
         }
 
         public OneToManyPart<PARENT, CHILD> AsSet()
@@ -151,17 +148,17 @@ namespace FluentNHibernate.Mapping
 
         public class IndexMapping
         {
-            private readonly Dictionary<string, string> _properties = new Dictionary<string, string>();
+            private readonly Cache<string, string> _properties = new Cache<string, string>();
 
             public IndexMapping WithColumn(string indexColumnName)
             {
-                _properties["column"] = indexColumnName;
+				_properties.Store("column", indexColumnName);
                 return this;
             }
 
             public IndexMapping WithType<INDEXTYPE>()
             {
-                _properties["type"] = typeof(INDEXTYPE).AssemblyQualifiedName;
+				_properties.Store("type", typeof(INDEXTYPE).AssemblyQualifiedName);
                 return this;
             }
 

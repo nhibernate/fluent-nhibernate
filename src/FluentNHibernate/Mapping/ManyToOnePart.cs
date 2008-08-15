@@ -12,7 +12,6 @@ namespace FluentNHibernate.Mapping
         private readonly string _columnName;
         private readonly AccessStrategyBuilder<ManyToOnePart> access;
     	private FetchType _fetchType = FetchType.Join;
-    	private CascadeType _cascadeType = CascadeType.All;
 
     	public ManyToOnePart(PropertyInfo property) : this(property, null){}
 
@@ -42,10 +41,12 @@ namespace FluentNHibernate.Mapping
 			return this;
 		}
 		
-		public ManyToOnePart WithCascade(CascadeType cascadeType)
+		public CascadeExpression<ManyToOnePart> Cascade
 		{
-			_cascadeType = cascadeType;
-			return this;
+			get
+			{
+				return new CascadeExpression<ManyToOnePart>(this);
+			}
 		}
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
@@ -59,7 +60,6 @@ namespace FluentNHibernate.Mapping
 
 			_properties["name"] = _property.Name;
 			_properties["column"] = columnName;
-            _properties["cascade"] = _cascadeType.Type;
 			_properties["fetch"] = _fetchType.Type;
 
             classElement.AddElement("many-to-one").WithProperties(_properties);

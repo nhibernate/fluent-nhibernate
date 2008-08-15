@@ -1,134 +1,122 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FluentNHibernate.Mapping;
-using Iesi.Collections;
+﻿using System.Collections.Generic;
 using Iesi.Collections.Generic;
-using System.Xml;
+using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
-    [TestFixture]
-    public class OneToManyTester
-    {
-        private ClassMap<OneToManyTarget> _classMap;
+	[TestFixture]
+	public class OneToManyTester
+	{
+		public class OneToManyTarget
+		{
+			public ISet<ChildObject> SetOfChildren { get; set; }
+			public IList<ChildObject> BagOfChildren { get; set; }
+			public IList<ChildObject> ListOfChildren { get; set; }
+		}
 
-        [SetUp]
-        public void SetUp()
-        {
-            _classMap = new ClassMap<OneToManyTarget>();
-        }
+		public class OneToManyComponentTarget
+		{
+			public virtual ISet<ComponentOfMappedObject> SetOfComponents { get; set; }
+			public virtual ComponentOfMappedObject Component { get; set; }
+		}
 
-        [Test]
-        public void CanSpecifyCollectionTypeAsSet()
-        {
-            _classMap.HasMany<ChildObject>(x => x.SetOfChildren)
-                .AsSet();
+		[Test]
+		public void CanSpecifyCollectionOfComponents()
+		{
+			new MappingTester<OneToManyComponentTarget>()
+				.ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
+				                 	.Component(c => c.Map(x => x.Name)))
+				.Element("class/bag/composite-element").Exists();
+		}
 
-            var document = _classMap.CreateMapping(new MappingVisitor());
-            var classElement = (XmlElement)document.DocumentElement.SelectSingleNode("class");
-            classElement.ShouldHaveChild("set");                        
-        }
+		[Test]
+		public void CanSpecifyCollectionTypeAsBag()
+		{
+			new MappingTester<OneToManyTarget>()
+				.ForMapping(map => map.HasMany<ChildObject>(x => x.BagOfChildren).AsBag())
+				.Element("class/bag").Exists();
+		}
 
-        [Test]
-        public void CanSpecifyCollectionTypeAsBag()
-        {
-            _classMap.HasMany<ChildObject>(x => x.BagOfChildren)
-                .AsBag();
+		[Test]
+		public void CanSpecifyCollectionTypeAsList()
+		{
+			new MappingTester<OneToManyTarget>()
+				.ForMapping(map => map.HasMany<ChildObject>(x => x.ListOfChildren).AsList())
+				.Element("class/list").Exists();
+		}
 
-            var document = _classMap.CreateMapping(new MappingVisitor());
-            var classElement = (XmlElement)document.DocumentElement.SelectSingleNode("class");
-            classElement.ShouldHaveChild("bag");
-        }
+		[Test]
+		public void CanSpecifyCollectionTypeAsSet()
+		{
+			new MappingTester<OneToManyTarget>()
+				.ForMapping(map => map.HasMany<ChildObject>(x => x.SetOfChildren).AsSet())
+				.Element("class/set").Exists();
+		}
 
-        [Test]
-        public void CanSpecifyCollectionTypeAsList()
-        {
-            _classMap.HasMany<ChildObject>(x => x.ListOfChildren)
-                .AsList();
+		[Test]
+		public void CanSpecifyForeignKeyColumnAsString()
+		{
+			new MappingTester<OneToManyTarget>()
+				.ForMapping(map => map.HasMany<ChildObject>(x => x.BagOfChildren).WithKeyColumn("ParentID"))
+				.Element("class/bag/key")
+				.HasAttribute("column", "ParentID");
+		}
 
-            var document = _classMap.CreateMapping(new MappingVisitor());
-            var classElement = (XmlElement)document.DocumentElement.SelectSingleNode("class");
-            classElement.ShouldHaveChild("list");        
-        }
+		[Test]
+		public void CanSpecifyIndexColumnAndTypeForList()
+		{
+			new MappingTester<OneToManyTarget>()
+			.ForMapping(map=>map.HasMany<ChildObject>(x => x.ListOfChildren)
+				.AsList(index => index
+				                 	.WithColumn("ListIndex")
+				                 	.WithType<int>()
+				))
+				.Element("class/list/index")
+				.HasAttribute("column", "ListIndex")
+				.HasAttribute("type", typeof (int).AssemblyQualifiedName);
+		}
 
-        [Test]
-        public void ListHasIndexElement()
-        {
-            _classMap.HasMany<ChildObject>(x => x.ListOfChildren)
-                .AsList();
+		[Test]
+		public void cascade_attribute_is_noneexistant_if_not_specified()
+		{
+			new MappingTester<OneToManyTarget>()
+				.ForMapping(c => c.HasMany<ChildObject>(x => x.BagOfChildren))
+				.Element("class/bag").DoesntHaveAttribute("cascade");
+		}
 
-            var document = _classMap.CreateMapping(new MappingVisitor());
-            var listElement = (XmlElement)document.DocumentElement.SelectSingleNode("class/list");            
-            listElement.ShouldHaveChild("index");            
-        }
+		[Test]
+		public void ListHasIndexElement()
+		{
+			new MappingTester<OneToManyTarget>()
+				.ForMapping(map => map.HasMany<ChildObject>(x => x.ListOfChildren).AsList())
+				.Element("class/list/index").Exists();
+		}
 
-        [Test]
-        public void CanSpecifyForeignKeyColumnAsString()
-        {
-            _classMap.HasMany<ChildObject>(x => x.BagOfChildren)
-                .WithKeyColumn("ParentID");
+		[Test]
+		public void OneToManyElementIsExcludedForComponents()
+		{
+			new MappingTester<OneToManyComponentTarget>()
+				.ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
+				                 	.Component(c => c.Map(x => x.Name)))
+				.Element("class/bag/one-to-many").DoesntExist();
+		}
 
-            var document = _classMap.CreateMapping(new MappingVisitor());
-            var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//key");
-            keyElement.AttributeShouldEqual("column", "ParentID");
-        }
+		[Test]
+		public void ShouldMapElementsOfCompositeElement()
+		{
+			new MappingTester<OneToManyComponentTarget>()
+				.ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
+				                 	.Component(c => c.Map(x => x.Name)))
+				.Element("class/bag/composite-element/property[@name = 'Name']").Exists();
+		}
 
-        [Test]
-        public void CanSpecifyIndexColumnAndTypeForList()
-        {
-            _classMap.HasMany<ChildObject>(x => x.ListOfChildren)
-                .AsList(index => index
-                    .WithColumn("ListIndex")
-                    .WithType<int>()
-                    );
-
-            var document = _classMap.CreateMapping(new MappingVisitor());
-            var indexElement = (XmlElement)document.DocumentElement.SelectSingleNode("class/list/index");
-            indexElement.AttributeShouldEqual("column", "ListIndex");
-            indexElement.AttributeShouldEqual("type", typeof(int).AssemblyQualifiedName);
-        }
-
-        [Test]
-        public void CanSpecifyCollectionOfComponents()
-        {
-            new MappingTester<OneToManyComponentTarget>()
-                .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
-                                    .Component(c => c.Map(x => x.Name)))
-                .Element("class/bag/composite-element").Exists();
-        }
-
-        [Test]
-        public void OneToManyElementIsExcludedForComponents()
-        {
-            new MappingTester<OneToManyComponentTarget>()
-                .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
-                                     .Component(c => c.Map(x => x.Name)))
-                .Element("class/bag/one-to-many").DoesntExist();
-        }
-
-        [Test]
-        public void ShouldMapElementsOfCompositeElement()
-        {
-            new MappingTester<OneToManyComponentTarget>()
-                .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
-                                     .Component(c => c.Map(x => x.Name)))
-                .Element("class/bag/composite-element/property[@name = 'Name']").Exists();
-        }
-
-        public class OneToManyTarget
-        {            
-            public ISet<ChildObject> SetOfChildren { get; set; }
-            public IList<ChildObject> BagOfChildren { get; set; }
-            public IList<ChildObject> ListOfChildren { get; set; }            
-        }
-
-        public class OneToManyComponentTarget
-        {
-            public virtual ISet<ComponentOfMappedObject> SetOfComponents { get; set; }
-            public virtual ComponentOfMappedObject Component { get; set; }
-        }
-    }
+		[Test]
+		public void setting_the_cascade_to_something_other_than_none_updates_the_cascade_attribute()
+		{
+			new MappingTester<OneToManyTarget>()
+				.ForMapping(c => c.HasMany<ChildObject>(x => x.BagOfChildren).Cascade.AllDeleteOrphan())
+				.Element("class/bag")
+				.HasAttribute("cascade", "all-delete-orphan");
+		}
+	}
 }

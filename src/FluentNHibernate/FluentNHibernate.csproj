@@ -75,10 +75,11 @@
     <Compile Include="IMappingVisitor.cs" />
     <Compile Include="MappingVisitor.cs" />
     <Compile Include="Mapping\AccessStrategyBuilder.cs" />
-    <Compile Include="Mapping\CascadeType.cs" />
+    <Compile Include="Mapping\CascadeExpression.cs" />
     <Compile Include="Mapping\ClassMap.cs" />
     <Compile Include="Mapping\ClassMapBase.cs" />
     <Compile Include="Mapping\ClassToTableMapping.cs" />
+    <Compile Include="Mapping\CollectionCascadeExpression.cs" />
     <Compile Include="Mapping\ComponentPart.cs" />
     <Compile Include="Mapping\CompositeElementPart.cs" />
     <Compile Include="Mapping\CompositeIdentityPart.cs" />

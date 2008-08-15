@@ -103,11 +103,11 @@ namespace FluentNHibernate.Framework
 
         #region Nested type: ListValue
 
-        internal class ListValue<T> : PropertyValue
+        internal class ListValue<LIST> : PropertyValue
         {
-            private readonly IList<T> _expected;
+			private readonly IList<LIST> _expected;
 
-            public ListValue(PropertyInfo property, IList<T> propertyValue)
+			public ListValue(PropertyInfo property, IList<LIST> propertyValue)
                 : base(property, propertyValue)
             {
                 _expected = propertyValue;
@@ -115,15 +115,13 @@ namespace FluentNHibernate.Framework
 
             internal override void CheckValue(object target)
             {
-                var actual = (IList<T>)_property.GetValue(target, null);
+				var actual = (IList<LIST>)_property.GetValue(target, null);
                 assertGenericListMatches(actual, _expected);
             }
 
-            private static void assertGenericListMatches<T>(IList<T> actual, IList<T> expected)
+			private static void assertGenericListMatches<ITEM>(IList<ITEM> actual, IList<ITEM> expected)
             {
-                ArrayList list = new ArrayList(actual.ToArray());
-
-                if (expected.Count != list.Count)
+                if (expected.Count != actual.Count())
                 {
                     throw new ApplicationException("The counts between actual and expected do not match");
                 }

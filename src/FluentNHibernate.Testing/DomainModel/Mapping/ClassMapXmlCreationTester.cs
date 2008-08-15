@@ -104,19 +104,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		[Test]
         public void BasicOneToManyMapping()
         {
-            var map = new ClassMap<MappedObject>();
-            map.HasMany<ChildObject>(x => x.Children);
-
-            document = map.CreateMapping(new MappingVisitor());
-            
-            var element =
-                (XmlElement) document.DocumentElement.SelectSingleNode("class/bag[@name='Children']");
-
-            element.AttributeShouldEqual("name", "Children");
-            element.AttributeShouldEqual("cascade", "none");
-
-            element["key"].AttributeShouldEqual("column", "MappedObject_id");
-            element["one-to-many"].AttributeShouldEqual("class", typeof (ChildObject).AssemblyQualifiedName);
+			new MappingTester<MappedObject>()
+				.ForMapping(map => map.HasMany<ChildObject>(x => x.Children))
+				.Element("class/bag")
+					.HasAttribute("name", "Children")
+				.Element("class/bag/key")
+					.HasAttribute("column", "MappedObject_id")
+				.Element("class/bag/one-to-many")
+					.HasAttribute("class", typeof (ChildObject).AssemblyQualifiedName);
         }
 
         [Test]
@@ -159,14 +154,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void CascadeAll_with_one_to_many()
         {
-            var map = new ClassMap<MappedObject>();
-            map.HasMany<ChildObject>(x => x.Children).CascadeAll();
-
-            document = map.CreateMapping(new MappingVisitor());
-            var element =
-                (XmlElement) document.DocumentElement.SelectSingleNode("class/bag[@name='Children']");
-
-            element.AttributeShouldEqual("cascade", "all");
+        	new MappingTester<MappedObject>()
+        		.ForMapping(map => map.HasMany<ChildObject>(x => x.Children).Cascade.All())
+        		.Element("class/bag[@name='Children']").HasAttribute("cascade", "all");
         }
 
         [Test]
@@ -243,16 +233,21 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void Creating_a_many_to_one_reference()
         {
-            var map = new ClassMap<MappedObject>();
-            map.References(x => x.Parent);
-
-            document = map.CreateMapping(new MappingVisitor());
-            var element = (XmlElement) document.DocumentElement.SelectSingleNode("class/many-to-one");
-
-            element.AttributeShouldEqual("name", "Parent");
-            element.AttributeShouldEqual("cascade", "all");
-            element.AttributeShouldEqual("column", "Parent_id");
+			new MappingTester<MappedObject>()
+			.ForMapping(map=>map.References(x => x.Parent))
+			.Element("class/many-to-one")
+			   .HasAttribute("name", "Parent")
+	            .HasAttribute("column", "Parent_id");
         }
+
+    	[Test]
+    	public void Many_to_one_reference_should_default_to_empty_cascade()
+    	{
+			new MappingTester<MappedObject>()
+			.ForMapping(map => map.References(x => x.Parent))
+			.Element("class/many-to-one")
+				.DoesntHaveAttribute("cascade");
+    	}
 
         [Test]
         public void Creating_a_many_to_one_reference_sets_the_column_overrides()
@@ -421,7 +416,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void Creating_a_many_to_one_reference_with_cascade_specified_as_None()
 		{
 		    new MappingTester<MappedObject>()
-		        .ForMapping(m => m.References(x => x.Parent).WithCascade(CascadeType.None))
+		        .ForMapping(m => m.References(x => x.Parent).Cascade.None())
 		        .Element("class/many-to-one").HasAttribute("cascade", "none");
 		}
     }
