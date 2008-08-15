@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Framework;
+using Iesi.Collections;
+using Iesi.Collections.Generic;
 using NHibernate;
 
 namespace FluentNHibernate.Framework
@@ -113,34 +115,64 @@ namespace FluentNHibernate.Framework
                 _expected = propertyValue;
             }
 
+            internal override void SetValue(object target)
+            {
+                try
+                {
+                    object collection;
+
+                    // sorry guys - create an instance of the collection type because we can't rely
+                    // on the user to pass in the correct collection type (especially if they're using
+                    // an interface). I've tried to create the common ones, but I'm sure this won't be
+                    // infallable.
+                    if (_property.PropertyType.IsAssignableFrom(typeof(ISet<T>)))
+                        collection = new SortedSet<T>(_expected);
+                    else if (_property.PropertyType.IsAssignableFrom(typeof(ISet)))
+                        collection = new SortedSet((ICollection)_expected);
+                    else
+                        collection = new List<T>(_expected);
+
+                    _property.SetValue(target, collection, null);
+                }
+                catch (Exception e)
+                {
+                    string message = "Error while trying to set property " + _property.Name;
+                    throw new ApplicationException(message, e);
+                }
+            }
+
             internal override void CheckValue(object target)
             {
-				var actual = (IList<LIST>)_property.GetValue(target, null);
+                var actual = (IEnumerable<T>)_property.GetValue(target, null);
                 assertGenericListMatches(actual, _expected);
             }
 
 			private static void assertGenericListMatches<ITEM>(IList<ITEM> actual, IList<ITEM> expected)
             {
-                if (expected.Count != actual.Count())
-                {
-                    throw new ApplicationException("The counts between actual and expected do not match");
-                }
+                var actualEnumerator = actual.GetEnumerator();
+                var expectedEnumerator = expected.GetEnumerator();
 
+                int index = 0;
 
-                for (int i = 0; i < expected.Count; i++)
+                while (actualEnumerator.Current != null)
                 {
-                    object expectedValue = expected[i];
-                    var actualValue = actual[i];
+                    var actualValue = actualEnumerator.Current;
+                    var expectedValue = expectedEnumerator.Current;
+
                     if (!expectedValue.Equals(actualValue))
                     {
                         string message = 
                             string.Format(
                                 "Expected '{0}' but got '{1}' at position {2}", 
                                 expectedValue,
-                                actualValue, i);
+                                actualValue, index);
 
                         throw new ApplicationException(message);
                     }
+
+                    actualEnumerator.MoveNext();
+                    expectedEnumerator.MoveNext();
+                    index++;
                 }
             }
         }
