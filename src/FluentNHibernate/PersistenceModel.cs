@@ -13,7 +13,7 @@ namespace FluentNHibernate
 {
     public class PersistenceModel
     {
-        private List<IMapping> _mappings = new List<IMapping>();
+        protected List<IMapping> _mappings = new List<IMapping>();
         private Conventions _conventions = new Conventions();
         private DependencyChain _chain = new DependencyChain();
         private bool _configured = false;
@@ -110,11 +110,6 @@ namespace FluentNHibernate
         {
             DiagnosticMappingVisitor visitor = new DiagnosticMappingVisitor(folder, _conventions);
             _mappings.ForEach(m => m.ApplyMappings(visitor));
-        }
-
-        protected ClassMap<T> findMapping<T>()
-        {
-            return (ClassMap<T>) _mappings.Find(t => t is ClassMap<T>);
         }
     }
 
