@@ -35,8 +35,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             currentElement = (XmlElement)document.DocumentElement.SelectSingleNode(elementPath);
 
-            Assert.IsNotNull(currentElement, "Element '" + elementPath + "' not found.");
-
             return this;
         }
 
@@ -57,6 +55,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public MappingTester<T> Exists()
         {
             Assert.IsNotNull(currentElement);
+
+            return this;
+        }
+
+        public MappingTester<T> DoesntExist()
+        {
+            Assert.IsNull(currentElement);
 
             return this;
         }

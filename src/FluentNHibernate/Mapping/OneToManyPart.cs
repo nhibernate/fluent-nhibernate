@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
-using System.Linq.Expressions;
 using System;
 
 namespace FluentNHibernate.Mapping
@@ -14,6 +13,7 @@ namespace FluentNHibernate.Mapping
         private string _collectionType;
         private IndexMapping _indexMapping;
         private readonly AccessStrategyBuilder<OneToManyPart<PARENT, CHILD>> access;
+        private CompositeElementPart<CHILD> _componentMapping;
 
         public OneToManyPart(PropertyInfo property)
         {
@@ -47,7 +47,17 @@ namespace FluentNHibernate.Mapping
                 _indexMapping.WriteAttributesToIndexElement(indexElement);
             }
 
-            element.AddElement("one-to-many").SetAttribute("class", typeof (CHILD).AssemblyQualifiedName);
+            if (_componentMapping == null)
+            {
+                // standard one-to-many element
+                element.AddElement("one-to-many")
+                    .SetAttribute("class", typeof(CHILD).AssemblyQualifiedName);
+            }
+            else
+            {
+                // specified a component, so output that instead
+                _componentMapping.Write(element, visitor);
+            }
         }
 
         /// <summary>
@@ -118,6 +128,27 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Maps this collection as a collection of components.
+        /// </summary>
+        /// <param name="action">Component mapping</param>
+        public OneToManyPart<PARENT, CHILD> Component(Action<CompositeElementPart<CHILD>> action)
+        {
+            _componentMapping = new CompositeElementPart<CHILD>();
+
+            action(_componentMapping);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Set the access and naming strategy for this one-to-many.
+        /// </summary>
+        public AccessStrategyBuilder<OneToManyPart<PARENT, CHILD>> Access
+        {
+            get { return access; }
+        }
+
         public class IndexMapping
         {
             private readonly Dictionary<string, string> _properties = new Dictionary<string, string>();
@@ -138,14 +169,6 @@ namespace FluentNHibernate.Mapping
             {
                 indexElement.WithProperties(_properties);
             }
-        }
-
-        /// <summary>
-        /// Set the access and naming strategy for this one-to-many.
-        /// </summary>
-        public AccessStrategyBuilder<OneToManyPart<PARENT, CHILD>> Access
-        {
-            get { return access; }
         }
     }
 }

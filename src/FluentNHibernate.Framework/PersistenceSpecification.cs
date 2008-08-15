@@ -59,6 +59,20 @@ namespace FluentNHibernate.Framework
             return this;
         }
 
+        /// <summary>
+        /// Checks a list of components for validity.
+        /// </summary>
+        /// <typeparam name="LIST">Type of list element</typeparam>
+        /// <param name="expression">Property</param>
+        /// <param name="propertyValue">Value to save</param>
+        public PersistenceSpecification<T> CheckComponentList<LIST>(Expression<Func<T, object>> expression, IList<LIST> propertyValue)
+        {
+            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            _allProperties.Add(new ListValue<LIST>(property, propertyValue));
+
+            return this;
+        }
+
         public void VerifyTheMappings()
         {
             // Create the initial copy

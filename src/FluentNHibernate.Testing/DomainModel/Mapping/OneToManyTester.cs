@@ -91,11 +91,44 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             indexElement.AttributeShouldEqual("type", typeof(int).AssemblyQualifiedName);
         }
 
+        [Test]
+        public void CanSpecifyCollectionOfComponents()
+        {
+            new MappingTester<OneToManyComponentTarget>()
+                .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
+                                    .Component(c => c.Map(x => x.Name)))
+                .Element("class/bag/composite-element").Exists();
+        }
+
+        [Test]
+        public void OneToManyElementIsExcludedForComponents()
+        {
+            new MappingTester<OneToManyComponentTarget>()
+                .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
+                                     .Component(c => c.Map(x => x.Name)))
+                .Element("class/bag/one-to-many").DoesntExist();
+        }
+
+        [Test]
+        public void ShouldMapElementsOfCompositeElement()
+        {
+            new MappingTester<OneToManyComponentTarget>()
+                .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
+                                     .Component(c => c.Map(x => x.Name)))
+                .Element("class/bag/composite-element/property[@name = 'Name']").Exists();
+        }
+
         public class OneToManyTarget
         {            
             public ISet<ChildObject> SetOfChildren { get; set; }
             public IList<ChildObject> BagOfChildren { get; set; }
             public IList<ChildObject> ListOfChildren { get; set; }            
+        }
+
+        public class OneToManyComponentTarget
+        {
+            public virtual ISet<ComponentOfMappedObject> SetOfComponents { get; set; }
+            public virtual ComponentOfMappedObject Component { get; set; }
         }
     }
 }
