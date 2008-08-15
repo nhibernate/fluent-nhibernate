@@ -14,10 +14,9 @@ namespace FluentNHibernate.Testing.AutoMap
     [TestFixture]
     public class AutoMapTests
     {
-        [Test, Ignore("Can't get this test to pass. Need Andrew to look at it.")]
+        [Test]
         public void AutoMapAssembly()
         {
-			//TODO: Andrew, please review this, this test keeps failing. Thx! -CAM
             var autoModel = new AutoPersistenceModel(Assembly.GetAssembly(typeof(AutoMapTests)));
             autoModel.AddEntityAssembly(Assembly.GetAssembly(typeof (AutoMapTests)),
                                         t => t.Namespace == "FluentNHibernate.AutoMap.Test");
