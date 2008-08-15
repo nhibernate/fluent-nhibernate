@@ -70,6 +70,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AutoMap\AutoMapTests.cs" />
+    <Compile Include="Cfg\PersistenceConfigurationTester.cs" />
     <Compile Include="DomainModel\ConnectedTester.cs" />
     <Compile Include="DomainModel\EntityEquality.cs" />
     <Compile Include="DomainModel\Generation\CodeFileSmokeTester.cs" />

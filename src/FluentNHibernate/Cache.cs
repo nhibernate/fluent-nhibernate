@@ -22,6 +22,12 @@ namespace FluentNHibernate
 		{
 		}
 
+		public Cache(Dictionary<KEY, VALUE> values, Func<KEY, VALUE> onMissing)
+			: this(onMissing)
+		{
+			_values = values;
+		}
+
 		public Cache(Func<KEY, VALUE> onMissing)
 		{
 			_onMissing = onMissing;

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using FluentNHibernate.Cfg;
 using FluentNHibernate.Framework;
 using FluentNHibernate.Framework.Fixtures;
 using FluentNHibernate.Framework.Query;
@@ -18,17 +19,15 @@ namespace FluentNHibernate.Testing.DomainModel
         [SetUp]
         public void SetUp()
         {
-            IDictionary<string, string> props = new Dictionary<string, string>();
-            props.Add("connection.provider", "NHibernate.Connection.DriverConnectionProvider");
-            props.Add("connection.driver_class", "NHibernate.Driver.SqlClientDriver");
-            props.Add("dialect", "NHibernate.Dialect.MsSql2000Dialect");
-            props.Add("hibernate.dialect", "NHibernate.Dialect.MsSql2000Dialect");
-            props.Add("use_outer_join", "true");
-            props.Add("connection.connection_string", "Data Source=.;Initial Catalog=ShadeTree;Integrated Security=True;Pooling=False");
-            //props.Add("show_sql", showSql);
-            props.Add("show_sql", true.ToString());
+			var connectionString = "Data Source=.;Initial Catalog=Blue;Integrated Security=True;Pooling=False";
 
-            _source = new SessionSource(props, new TestModel());
+        	var properties = MsSqlConfiguration.MsSql2005
+        		.UseOuterJoin()
+        		.ShowSql()
+        		.ConnectionString.Is(connectionString)
+        		.ToProperties();
+
+			_source = new SessionSource(properties, new TestModel());
 
             _source.BuildSchema();
 

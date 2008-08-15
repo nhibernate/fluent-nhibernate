@@ -14,12 +14,15 @@ namespace FluentNHibernate.Framework
         private readonly List<PropertyValue> _allProperties = new List<PropertyValue>();
     	private readonly ISession _currentSession;
 		private readonly IRepository _repository;
-        private readonly ISessionSource _source;
 
     	public PersistenceSpecification(ISessionSource source)
+			: this(source.CreateSession())
+    	{
+    	}
+
+		public PersistenceSpecification(ISession session)
 		{
-			_source = source;
-			_currentSession = _source.CreateSession();
+    		_currentSession = session;
 			_repository = new Repository(_currentSession);
 		}
 

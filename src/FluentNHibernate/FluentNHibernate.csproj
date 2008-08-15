@@ -39,6 +39,7 @@
       <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -66,7 +67,9 @@
     <Compile Include="AutoMap\ExpressionBuilder.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />
     <Compile Include="Cache.cs" />
+    <Compile Include="Cfg\PersistenceConfiguration.cs" />
     <Compile Include="ConfigurationHelper.cs" />
+    <Compile Include="Cfg\MsSqlConfiguration.cs" />
     <Compile Include="Conventions.cs" />
     <Compile Include="IMappingVisitor.cs" />
     <Compile Include="MappingVisitor.cs" />

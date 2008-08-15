@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using FluentNHibernate.Cfg;
 using NHibernate;
 using NHibernate.Cfg;
 
@@ -21,18 +22,29 @@ namespace FluentNHibernate.Framework
         private Configuration _configuration;
         private PersistenceModel _model;
 
-        public SessionSource(IDictionary<string, string> properties, PersistenceModel model)
-        {
-            _configuration = new Configuration();
-            _configuration.AddProperties(properties);
+    	public SessionSource(PersistenceModel model) 
+    	{
+    		Initialize(new Configuration().Configure(), model);
+    	}
 
-            model.Configure(_configuration);
-            _model = model;
+    	public SessionSource(IDictionary<string, string> properties, PersistenceModel model)
+    	{
+    		Initialize(new Configuration().AddProperties(properties), model);
+    	}
 
-            _sessionFactory = _configuration.BuildSessionFactory();
-        }
+    	protected void Initialize(Configuration nhibernateConfig, PersistenceModel model)
+		{
+			if( model == null ) throw new ArgumentNullException("model", "Model cannot be null");
 
-        public PersistenceModel Model
+			_configuration = nhibernateConfig;
+			_model = model;
+			
+			model.Configure(_configuration);
+
+			_sessionFactory = _configuration.BuildSessionFactory();
+		}
+
+    	public PersistenceModel Model
         {
             get { return _model; }
         }
@@ -44,8 +56,12 @@ namespace FluentNHibernate.Framework
 
         public void BuildSchema()
         {
-            ISession session = CreateSession();
-            IDbConnection connection = session.Connection;
+        	BuildSchema(CreateSession());
+        }
+
+		public void BuildSchema(ISession session)
+		{
+    		IDbConnection connection = session.Connection;
 
             string[] drops = _configuration.GenerateDropSchemaScript(_sessionFactory.Dialect);
             executeScripts(drops, connection);
@@ -54,7 +70,7 @@ namespace FluentNHibernate.Framework
             executeScripts(scripts, connection);
         }
 
-        private static void executeScripts(string[] scripts, IDbConnection connection)
+        private static void executeScripts(IEnumerable<string> scripts, IDbConnection connection)
         {
             foreach (var script in scripts)
             {
