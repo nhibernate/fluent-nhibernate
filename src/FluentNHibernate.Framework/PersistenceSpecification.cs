@@ -5,27 +5,25 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Framework;
+using NHibernate;
 
 namespace FluentNHibernate.Framework
 {
     public class PersistenceSpecification<T> where T : Entity, new()
     {
         private readonly List<PropertyValue> _allProperties = new List<PropertyValue>();
-        private readonly IRepository _repository;
-        private readonly ISessionSource source;
+    	private readonly ISession _currentSession;
+		private readonly IRepository _repository;
+        private readonly ISessionSource _source;
 
-        public PersistenceSpecification(ISessionSource source)
-        {
-            this.source = source;
-            _repository = createRepository();
-        }
+    	public PersistenceSpecification(ISessionSource source)
+		{
+			_source = source;
+			_currentSession = _source.CreateSession();
+			_repository = new Repository(_currentSession);
+		}
 
-        private IRepository createRepository()
-        {
-            return new Repository(source.CreateSession());
-        }
-
-        public PersistenceSpecification<T> CheckProperty(Expression<System.Func<T, object>> expression, object propertyValue)
+        public PersistenceSpecification<T> CheckProperty(Expression<Func<T, object>> expression, object propertyValue)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
             _allProperties.Add(new PropertyValue(property, propertyValue));
@@ -33,7 +31,7 @@ namespace FluentNHibernate.Framework
             return this;
         }
 
-        public PersistenceSpecification<T> CheckReference(Expression<System.Func<T, object>> expression, object propertyValue)
+        public PersistenceSpecification<T> CheckReference(Expression<Func<T, object>> expression, object propertyValue)
         {
             _repository.Save(propertyValue);
 
@@ -44,7 +42,7 @@ namespace FluentNHibernate.Framework
         }
 
 
-        public PersistenceSpecification<T> CheckList<LIST>(Expression<System.Func<T, object>> expression,
+        public PersistenceSpecification<T> CheckList<LIST>(Expression<Func<T, object>> expression,
                                                            IList<LIST> propertyValue)
         {
             foreach (LIST item in propertyValue)
@@ -70,8 +68,12 @@ namespace FluentNHibernate.Framework
             // Save the first copy
             _repository.Save(first);
 
+			// Clear and reset the current session
+        	_currentSession.Flush();
+        	_currentSession.Clear();
+
             // Get a completely different IRepository
-            var secondRepository = createRepository();
+            var secondRepository = new Repository(_currentSession);
 
             // "Find" the same entity from the second IRepository
             var second = secondRepository.Find<T>(first.Id);
