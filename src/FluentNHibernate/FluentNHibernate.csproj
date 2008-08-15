@@ -57,6 +57,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Accessor.cs" />
+    <Compile Include="AutoMap\AutoMap.cs" />
     <Compile Include="AutoMap\AutoMapColumn.cs" />
     <Compile Include="AutoMap\AutoMapIdentity.cs" />
     <Compile Include="AutoMap\AutoMapManyToOne.cs" />

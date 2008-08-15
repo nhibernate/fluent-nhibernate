@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.AutoMap
@@ -20,7 +21,7 @@ namespace FluentNHibernate.AutoMap
                                 };
         }
 
-        public ClassMap<T> Map<T>(ClassMap<T> map)
+        public AutoMap<T> MergeMap<T>(AutoMap<T> map)
         {
             foreach (var property in typeof(T).GetProperties())
             {
@@ -28,18 +29,21 @@ namespace FluentNHibernate.AutoMap
                 {
                     if (rule.MapsProperty(property))
                     {
-                        rule.Map(map, property);
-                        break;
+                        if (map.PropertiesMapped.Count(p => p.Name == property.Name) == 0)
+                        {
+                            rule.Map(map, property);
+                            break;
+                        }
                     }
                 }
             }
             return map;
         }
 
-        public ClassMap<T> Map<T>()
+        public AutoMap<T> Map<T>()
         {
-            var classMap = (ClassMap<T>)Activator.CreateInstance(typeof(ClassMap<T>));
-            return Map(classMap);
+            var classMap = (AutoMap<T>)Activator.CreateInstance(typeof(AutoMap<T>));
+            return MergeMap(classMap);
         }
     }
 }

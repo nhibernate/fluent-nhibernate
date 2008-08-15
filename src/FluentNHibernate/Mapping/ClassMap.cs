@@ -118,12 +118,12 @@ namespace FluentNHibernate.Mapping
             hibernateMappingAttributes.Store(name, value);
         }
 
-        public IdentityPart Id(Expression<Func<T, object>> expression)
+        public virtual IdentityPart Id(Expression<Func<T, object>> expression)
 		{
 			return Id(expression, null);
 		}
 
-        public IdentityPart Id(Expression<Func<T, object>> expression, string column)
+        public virtual IdentityPart Id(Expression<Func<T, object>> expression, string column)
     	{
 			PropertyInfo property = ReflectionHelper.GetProperty(expression);
     		var id = column == null ? new IdentityPart(property) : new IdentityPart(property, column);
@@ -131,7 +131,7 @@ namespace FluentNHibernate.Mapping
     		return id;
     	}
 
-        public JoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<JoinedSubClassPart<TSubclass>> action) where TSubclass : T
+        public virtual JoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<JoinedSubClassPart<TSubclass>> action) where TSubclass : T
         {
             var subclass = new JoinedSubClassPart<TSubclass>(keyColumn);
 

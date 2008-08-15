@@ -24,12 +24,12 @@ namespace FluentNHibernate.Mapping
             _properties.Add(part);
         }
 
-        public PropertyMap Map(Expression<Func<T, object>> expression)
+        public virtual PropertyMap Map(Expression<Func<T, object>> expression)
         {
             return Map(expression, null);
         }
 
-        public PropertyMap Map(Expression<Func<T,object>> expression, string columnName)
+        public virtual PropertyMap Map(Expression<Func<T, object>> expression, string columnName)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
             var map = new PropertyMap(property, parentIsRequired, typeof(T));
@@ -42,12 +42,12 @@ namespace FluentNHibernate.Mapping
             return map;
         }
 
-        public ManyToOnePart References(Expression<Func<T, object>> expression)
+        public virtual ManyToOnePart References(Expression<Func<T, object>> expression)
         {
             return References(expression, null);
         }
 
-        public ManyToOnePart References(Expression<Func<T, object>> expression, string columnName)
+        public virtual ManyToOnePart References(Expression<Func<T, object>> expression, string columnName)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
             ManyToOnePart part = new ManyToOnePart(property, columnName);
@@ -56,7 +56,7 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-		public DiscriminatorPart<ARG, T> DiscriminateSubClassesOnColumn<ARG>(string columnName, ARG baseClassDiscriminator) 
+        public virtual DiscriminatorPart<ARG, T> DiscriminateSubClassesOnColumn<ARG>(string columnName, ARG baseClassDiscriminator) 
 		{
 			var part = new DiscriminatorPart<ARG, T>(columnName, _properties, baseClassDiscriminator);
 			addPart(part);
@@ -64,7 +64,7 @@ namespace FluentNHibernate.Mapping
 			return part;
 		}
 
-        public DiscriminatorPart<ARG, T> DiscriminateSubClassesOnColumn<ARG>(string columnName)
+        public virtual DiscriminatorPart<ARG, T> DiscriminateSubClassesOnColumn<ARG>(string columnName)
         {
             var part = new DiscriminatorPart<ARG, T>(columnName, _properties);
             addPart(part);
@@ -72,7 +72,7 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public ComponentPart<C> Component<C>(Expression<Func<T, object>> expression, Action<ComponentPart<C>> action)
+        public virtual ComponentPart<C> Component<C>(Expression<Func<T, object>> expression, Action<ComponentPart<C>> action)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
 
@@ -84,7 +84,7 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public OneToManyPart<T, CHILD> HasMany<CHILD>(Expression<Func<T, object>> expression)
+        public virtual OneToManyPart<T, CHILD> HasMany<CHILD>(Expression<Func<T, object>> expression)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
             OneToManyPart<T, CHILD> part = new OneToManyPart<T, CHILD>(property);
@@ -94,7 +94,7 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public ManyToManyPart<T, CHILD> HasManyToMany<CHILD>(Expression<Func<T, object>> expression)
+        public virtual ManyToManyPart<T, CHILD> HasManyToMany<CHILD>(Expression<Func<T, object>> expression)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
             ManyToManyPart<T, CHILD> part = new ManyToManyPart<T, CHILD>(property);
@@ -104,7 +104,7 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public VersionPart Version(Expression<Func<T, object>> expression)
+        public virtual VersionPart Version(Expression<Func<T, object>> expression)
         {
             var versionPart = new VersionPart(ReflectionHelper.GetProperty(expression));
             addPart(versionPart);
