@@ -28,6 +28,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 			return this;
 		}
 
+		public void should_set_the_cascade_value_to(string expected)
+		{
+			_mockPart.Expect(p => p.SetAttribute("cascade", expected));
+			_currentCascadeAction();
+			_mockPart.VerifyAllExpectations();
+		}
+
 		#endregion
 
 		[Test]
@@ -52,16 +59,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void Delete_should_add_the_correct_cascade_attribute_to_the_parent_part()
 		{
 			A_call_to(_cascade.Delete).should_set_the_cascade_value_to("delete");
-		}
-	}
-
-	public static class CascadeExpressionTesterExtensions
-	{
-		public static void should_set_the_cascade_value_to(this CascadeExpressionTester tester, string expected)
-		{
-			tester._mockPart.Expect(p => p.SetAttribute("cascade", expected));
-			tester._currentCascadeAction();
-			tester._mockPart.VerifyAllExpectations();
 		}
 	}
 }

@@ -1,7 +1,6 @@
 using System;
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {

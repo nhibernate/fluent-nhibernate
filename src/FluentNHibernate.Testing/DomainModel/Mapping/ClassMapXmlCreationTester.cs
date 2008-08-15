@@ -18,22 +18,20 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             return (XmlElement) document.DocumentElement.SelectSingleNode(xpath);
         }
 
-        [Test, Ignore("Needs to be rewritten at some point")]
+        [Test]
         public void BasicManyToManyMapping()
         {
-            var map = new ClassMap<MappedObject>();
-            map.HasManyToMany<ChildObject>(x => x.Children);
-
-            document = map.CreateMapping(new MappingVisitor());
-            var element = (XmlElement) document.DocumentElement.SelectSingleNode("class/bag[@name='Children']");
-
-            element.AttributeShouldEqual("name", "Children");
-            element.AttributeShouldEqual("cascade", "none");
-
-            element["key"].AttributeShouldEqual("column", "MappedObject_Fk");
-            element["many-to-many"].AttributeShouldEqual("class", typeof (ChildObject).AssemblyQualifiedName);
-            element["many-to-many"].AttributeShouldEqual("table", typeof (ChildObject).Name);
-            element["many-to-many"].AttributeShouldEqual("column", "ChildObject_Fk");
+        	new MappingTester<MappedObject>()
+        		.ForMapping(map => map.HasManyToMany<ChildObject>(x => x.Children))
+        		.Element("class/bag")
+        			.HasAttribute("name", "Children")
+					.DoesntHaveAttribute("cascade")
+        		.Element("class/bag/key")
+        			.HasAttribute("column", "MappedObject_id")
+        		.Element("class/bag/many-to-many")
+        			.HasAttribute("class", typeof (ChildObject).AssemblyQualifiedName)
+        			.HasAttribute("column", "ChildObject_id")
+					.DoesntHaveAttribute("fetch");
         }
         
         [Test]
@@ -43,7 +41,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet())
                 .Element("class/set")
                     .HasAttribute("name", "Children")
-                    .HasAttribute("cascade", "none")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
                 .Element("class/set/key")
                     .HasAttribute("column", "MappedObject_id")
@@ -59,7 +56,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsBag())
                 .Element("class/bag")
                     .HasAttribute("name", "Children")
-                    .HasAttribute("cascade", "none")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
                 .Element("class/bag/key")
                     .HasAttribute("column", "MappedObject_id")
@@ -75,7 +71,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet().WithChildForeignKey("TheKids_ID"))
                 .Element("class/set")
                     .HasAttribute("name", "Children")
-                    .HasAttribute("cascade", "none")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
                 .Element("class/set/key")
                     .HasAttribute("column", "MappedObject_id")
@@ -88,10 +83,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void ManyToManyAsSetWithJoinFetchMode()
 		{
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet().WithFetchType(FetchType.Join))
+                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet().FetchType.Join())
                 .Element("class/set")
                     .HasAttribute("name", "Children")
-                    .HasAttribute("cascade", "none")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
                 .Element("class/set/key")
                     .HasAttribute("column", "MappedObject_id")
@@ -143,7 +137,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CascadeAll_with_many_to_many()
         {
             var map = new ClassMap<MappedObject>();
-            map.HasManyToMany<ChildObject>(x => x.Children).CascadeAll();
+            map.HasManyToMany<ChildObject>(x => x.Children).Cascade.All();
 
             document = map.CreateMapping(new MappingVisitor());
             var element = (XmlElement) document.DocumentElement.SelectSingleNode("class/bag[@name='Children']");
@@ -418,6 +412,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		    new MappingTester<MappedObject>()
 		        .ForMapping(m => m.References(x => x.Parent).Cascade.None())
 		        .Element("class/many-to-one").HasAttribute("cascade", "none");
+		}
+
+		[Test]
+		public void Creating_a_many_to_one_reference_with_fetchtype_set()
+		{
+			new MappingTester<MappedObject>()
+				.ForMapping(m => m.References(x => x.Parent).FetchType.Select())
+				.Element("class/many-to-one").HasAttribute("fetch", "select");
 		}
     }
 

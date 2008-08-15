@@ -85,6 +85,7 @@
     <Compile Include="DomainModel\Mapping\CollectionCascadeExpressionTester.cs" />
     <Compile Include="DomainModel\Mapping\CompositeIdentityPartTester.cs" />
     <Compile Include="DomainModel\Mapping\ConventionsTester.cs" />
+    <Compile Include="DomainModel\Mapping\FetchTypeExpressionTester.cs" />
     <Compile Include="DomainModel\Mapping\DefaultAccessStrategyClassMapTester.cs" />
     <Compile Include="DomainModel\Mapping\DiscriminatorPartTester.cs" />
     <Compile Include="DomainModel\Mapping\IdentityPartTester.cs" />

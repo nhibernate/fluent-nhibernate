@@ -12,19 +12,17 @@ namespace FluentNHibernate.Mapping
     	private string _tableName;
     	private string _childForeignKeyName;
     	private string _collectionType = "bag";
-    	private FetchType _fetchType = FetchType.Join;
+		private readonly Cache<string, string> _manyToManyProperties = new Cache<string, string>();
 
-    	public ManyToManyPart(PropertyInfo property)
+		public ManyToManyPart(PropertyInfo property)
         {
             _property = property;
             _properties.Add("name", _property.Name);
-            _properties.Add("cascade", "none");
         }
 
-        public ManyToManyPart<PARENT, CHILD> CascadeAll()
+        public CollectionCascadeExpression<ManyToManyPart<PARENT, CHILD>> Cascade
         {
-            _properties["cascade"] = "all";
-            return this;
+			get { return new CollectionCascadeExpression<ManyToManyPart<PARENT, CHILD>>(this); }
         }
 
 		public ManyToManyPart<PARENT, CHILD> WithTableName(string name)
@@ -51,10 +49,12 @@ namespace FluentNHibernate.Mapping
 			return this;
 		}
 		
-		public ManyToManyPart<PARENT, CHILD> WithFetchType(FetchType fetchType)
+		public FetchTypeExpression<ManyToManyPart<PARENT, CHILD>> FetchType
 		{
-			_fetchType = fetchType;
-			return this;
+			get
+			{
+				return new FetchTypeExpression<ManyToManyPart<PARENT, CHILD>>(this, _manyToManyProperties);
+			}
 		}
 
 		public void Write(XmlElement classElement, IMappingVisitor visitor)
@@ -75,7 +75,7 @@ namespace FluentNHibernate.Mapping
 			XmlElement manyToManyElement = set.AddElement("many-to-many");
 			manyToManyElement.WithAtt("column", childForeignKeyName);
 			manyToManyElement.WithAtt("class", typeof(CHILD).AssemblyQualifiedName);
-			manyToManyElement.WithAtt("fetch", _fetchType.Type);
+			manyToManyElement.WithProperties(_manyToManyProperties);
         }
 
     	private string GetChildForeignKeyName(Conventions conventions)

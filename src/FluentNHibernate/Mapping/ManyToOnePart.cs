@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
     public class ManyToOnePart : IMappingPart, IAccessStrategy<ManyToOnePart>
     {
-        private readonly Dictionary<string, string> _properties = new Dictionary<string, string>();
+		private readonly Cache<string, string> _properties = new Cache<string, string>();
         private readonly PropertyInfo _property;
         private readonly string _columnName;
         private readonly AccessStrategyBuilder<ManyToOnePart> access;
-    	private FetchType _fetchType = FetchType.Join;
 
     	public ManyToOnePart(PropertyInfo property) : this(property, null){}
 
@@ -24,10 +21,12 @@ namespace FluentNHibernate.Mapping
             _columnName = columnName;
         }
 
-		public ManyToOnePart WithFetchType(FetchType fetchType)
+		public FetchTypeExpression<ManyToOnePart> FetchType
 		{
-			_fetchType = fetchType;
-			return this;
+			get
+			{
+				return new FetchTypeExpression<ManyToOnePart>(this, _properties);
+			}
 		}
 		
 		public ManyToOnePart WithForeignKey()
@@ -37,7 +36,7 @@ namespace FluentNHibernate.Mapping
 		
 		public ManyToOnePart WithForeignKey(string foreignKeyName)
 		{
-			_properties.Add("foreign-key", foreignKeyName);
+			_properties.Store("foreign-key", foreignKeyName);
 			return this;
 		}
 		
@@ -58,16 +57,15 @@ namespace FluentNHibernate.Mapping
             if (string.IsNullOrEmpty(_columnName))
                 columnName = visitor.Conventions.GetForeignKeyName(_property);
 
-			_properties["name"] = _property.Name;
-			_properties["column"] = columnName;
-			_properties["fetch"] = _fetchType.Type;
+        	_properties.Store("name", _property.Name);
+			_properties.Store("column", columnName);
 
             classElement.AddElement("many-to-one").WithProperties(_properties);
         }
 
         public void SetAttribute(string name, string value)
         {
-            _properties.Add(name, value);
+			_properties.Store(name, value);
         }
 
         public int Level
