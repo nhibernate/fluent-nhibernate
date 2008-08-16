@@ -98,7 +98,7 @@ namespace FluentNHibernate
         }
 
 
-        public void Configure(Configuration configuration)
+        public virtual void Configure(Configuration configuration)
         {
             _configured = true;
 

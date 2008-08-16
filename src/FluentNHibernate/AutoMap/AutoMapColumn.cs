@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.Mapping;
@@ -14,9 +15,14 @@ namespace FluentNHibernate.AutoMap
             return false;
         }
 
-        public void Map<T>(ClassMap<T> classMap, PropertyInfo property)
+        public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
             classMap.Map(ExpressionBuilder.Create<T>(property));
+        }
+
+        public void SetConvention(Func<PropertyInfo, bool> findPropertyconvention, Func<PropertyInfo, string> columnConvention)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

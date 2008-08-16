@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.AutoMap
@@ -44,6 +45,13 @@ namespace FluentNHibernate.AutoMap
         {
             var classMap = (AutoMap<T>)Activator.CreateInstance(typeof(AutoMap<T>));
             return MergeMap(classMap);
+        }
+
+        public void SetConvention<T>(Func<PropertyInfo, bool> propertyConvention, Func<PropertyInfo, string> columnConvention)
+        {
+            _mappingRules
+                .Find(map => map.GetType() == typeof (T))
+                .SetConvention(propertyConvention, columnConvention);
         }
     }
 }
