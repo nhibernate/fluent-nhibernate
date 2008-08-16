@@ -69,6 +69,7 @@
     <Compile Include="AutoMap\IAutoMapper.cs" />
     <Compile Include="Cache.cs" />
     <Compile Include="Cfg\PersistenceConfiguration.cs" />
+    <Compile Include="Cfg\SQLiteConfiguration.cs" />
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="Cfg\MsSqlConfiguration.cs" />
     <Compile Include="Conventions.cs" />
