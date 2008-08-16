@@ -126,11 +126,11 @@ namespace FluentNHibernate.Framework
                     // an interface). I've tried to create the common ones, but I'm sure this won't be
                     // infallable.
                     if (_property.PropertyType.IsAssignableFrom(typeof(ISet<T>)))
-                        collection = new SortedSet<T>(_expected);
+                        collection = new SortedSet<LIST>(_expected);
                     else if (_property.PropertyType.IsAssignableFrom(typeof(ISet)))
                         collection = new SortedSet((ICollection)_expected);
                     else
-                        collection = new List<T>(_expected);
+                        collection = new List<LIST>(_expected);
 
                     _property.SetValue(target, collection, null);
                 }
@@ -143,11 +143,11 @@ namespace FluentNHibernate.Framework
 
             internal override void CheckValue(object target)
             {
-                var actual = (IEnumerable<T>)_property.GetValue(target, null);
-                assertGenericListMatches(actual, _expected);
+                var actual = (IEnumerable<LIST>)_property.GetValue(target, null);
+                assertGenericListMatches<LIST>(actual, _expected);
             }
 
-			private static void assertGenericListMatches<ITEM>(IList<ITEM> actual, IList<ITEM> expected)
+			private static void assertGenericListMatches<ITEM>(IEnumerable<ITEM> actual, IEnumerable<ITEM> expected)
             {
                 var actualEnumerator = actual.GetEnumerator();
                 var expectedEnumerator = expected.GetEnumerator();
