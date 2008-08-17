@@ -33,7 +33,9 @@ namespace FluentNHibernate.AutoMap
 
         public override void Configure(NHibernate.Cfg.Configuration configuration)
         {
-            addMappingsFromAssembly(assemblyContainingMaps);
+            if (assemblyContainingMaps != null)
+                addMappingsFromAssembly(assemblyContainingMaps);
+
             foreach (var obj in entityAssembly.GetTypes())
             {
                 if (shouldIncludeType.Invoke(obj))

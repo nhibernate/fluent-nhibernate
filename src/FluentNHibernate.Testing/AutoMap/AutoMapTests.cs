@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using System.Xml;
 using FluentNHibernate;
 using FluentNHibernate.AutoMap;
-using FluentNHibernate.AutoMap.Test;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.AutoMap.TestFixtures;
 using FluentNHibernate.Testing;
 using NUnit.Framework;
 
@@ -14,19 +10,6 @@ namespace FluentNHibernate.Testing.AutoMap
     [TestFixture]
     public class AutoMapTests
     {
-        [Test]
-        public void AutoMapAssembly()
-        {
-
-/*
- *          Need to think of way to test this.
- *          
-            var autoModel = new AutoPersistenceModel(Assembly.GetAssembly(typeof(AutoMapTests)));
-            autoModel.AddEntityAssembly(Assembly.GetAssembly(typeof (AutoMapTests)),
-                                        t => t.Namespace == "FluentNHibernate.AutoMap.Test");
- * */
-        }
-
         [Test]
         public void AutoMapIdentification()
         {
@@ -117,35 +100,3 @@ namespace FluentNHibernate.Testing.AutoMap
     }
 }
 
-namespace FluentNHibernate.AutoMap.Test
-{
-    public class ExampleCustomColumn
-    {
-        public int CustomColumn
-        {
-            get
-            {
-                return 12;
-            }
-        }
-    }
-
-    public class ExampleInheritedClass : ExampleClass
-    {
-        public string ExampleProperty { get; set; }
-    }
-
-    public class ExampleClass
-    {
-        public virtual int Id { get; set; }
-        public virtual string LineOne { get; set; }
-        public DateTime Timestamp { get; set; }
-        public ExampleParentClass Parent { get; set; }
-    }
-
-    public class ExampleParentClass
-    {
-        public virtual int Id { get; set; }
-        public virtual IList<ExampleClass> Examples {get; set;}
-    }
-}

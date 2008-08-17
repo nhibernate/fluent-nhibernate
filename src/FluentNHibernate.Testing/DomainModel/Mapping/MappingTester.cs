@@ -19,6 +19,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             }
         }
 
+        public MappingTester<T> ForMapping(ClassMap<T> mapping)
+        {
+            document = mapping.CreateMapping(new MappingVisitor());
+            currentElement = document.DocumentElement;
+
+            return this;
+        }
+
         public MappingTester<T> ForMapping(Action<ClassMap<T>> mapping)
         {
             var classMap = new ClassMap<T>();
