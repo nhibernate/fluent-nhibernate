@@ -10,6 +10,11 @@ namespace FluentNHibernate.AutoMap
         private Func<PropertyInfo, bool> findPropertyconvention = p => ((p.PropertyType.Namespace != "System") && (p.PropertyType.Namespace != "System.Collections.Generic"));
         private Func<PropertyInfo, string> columnConvention;
 
+        public AutoMapManyToOne(Conventions conventions)
+        {
+            
+        }
+
         public bool MapsProperty(PropertyInfo property)
         {
             if (property.CanWrite)
@@ -20,22 +25,7 @@ namespace FluentNHibernate.AutoMap
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
-            if (columnConvention == null)
-            {
-                classMap.References(ExpressionBuilder.Create<T>(property));
-            }
-            else
-            {
-                classMap.References(ExpressionBuilder.Create<T>(property), columnConvention.Invoke(property));
-            }
-        }
-
-        public void SetConvention(Func<PropertyInfo, bool> findPropertyconvention, Func<PropertyInfo, string> columnConvention)
-        {
-            if (findPropertyconvention != null)
-                this.findPropertyconvention = findPropertyconvention;
-
-            this.columnConvention = columnConvention;
+            classMap.References(ExpressionBuilder.Create<T>(property));
         }
     }
 }

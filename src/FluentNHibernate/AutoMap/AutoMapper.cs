@@ -10,15 +10,15 @@ namespace FluentNHibernate.AutoMap
     {
         private readonly List<IAutoMapper> _mappingRules;
 
-        public AutoMapper()
+        public AutoMapper(Conventions conventions)
         {
             _mappingRules = new List<IAutoMapper>
                                 {
-                                    new AutoMapIdentity(), 
-                                    new AutoMapVersion(), 
-                                    new AutoMapColumn(),
-                                    new AutoMapManyToOne(),
-                                    new AutoMapOneToMany(),
+                                    new AutoMapIdentity(conventions), 
+                                    new AutoMapVersion(conventions), 
+                                    new AutoMapColumn(conventions),
+                                    new AutoMapManyToOne(conventions),
+                                    new AutoMapOneToMany(conventions),
                                 };
         }
 
@@ -45,13 +45,6 @@ namespace FluentNHibernate.AutoMap
         {
             var classMap = (AutoMap<T>)Activator.CreateInstance(typeof(AutoMap<T>));
             return MergeMap(classMap);
-        }
-
-        public void SetConvention<T>(Func<PropertyInfo, bool> propertyConvention, Func<PropertyInfo, string> columnConvention)
-        {
-            _mappingRules
-                .Find(map => map.GetType() == typeof (T))
-                .SetConvention(propertyConvention, columnConvention);
         }
     }
 }

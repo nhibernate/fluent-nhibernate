@@ -7,6 +7,10 @@ namespace FluentNHibernate.AutoMap
 {
     public class AutoMapColumn : IAutoMapper
     {
+        public AutoMapColumn(Conventions conventions)
+        {
+        }
+
         public bool MapsProperty(PropertyInfo property)
         {
             if (property.CanWrite)
@@ -18,11 +22,6 @@ namespace FluentNHibernate.AutoMap
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
             classMap.Map(ExpressionBuilder.Create<T>(property));
-        }
-
-        public void SetConvention(Func<PropertyInfo, bool> findPropertyconvention, Func<PropertyInfo, string> columnConvention)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

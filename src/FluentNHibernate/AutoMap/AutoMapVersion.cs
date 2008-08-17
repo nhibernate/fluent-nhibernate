@@ -10,6 +10,10 @@ namespace FluentNHibernate.AutoMap
         private Func<PropertyInfo, bool> findPropertyconvention = p => (p.Name.ToLower() == "version") || (p.Name.ToLower() == "timestamp");
         private Func<PropertyInfo, string> columnConvention;
 
+        public AutoMapVersion(Conventions conventions)
+        {
+        }
+
         public bool MapsProperty(PropertyInfo property)
         {
             return findPropertyconvention.Invoke(property);
@@ -23,14 +27,6 @@ namespace FluentNHibernate.AutoMap
             if (columnConvention != null)
                 verionMap.TheColumnNameIs(columnConvention.Invoke(property));
 
-        }
-
-        public void SetConvention(Func<PropertyInfo, bool> findPropertyconvention, Func<PropertyInfo, string> columnConvention)
-        {
-            if (findPropertyconvention != null)
-                this.findPropertyconvention = findPropertyconvention;
-
-            this.columnConvention = columnConvention;
         }
     }
 }

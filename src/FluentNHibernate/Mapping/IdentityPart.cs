@@ -6,7 +6,7 @@ namespace FluentNHibernate.Mapping
 {
 	public class IdentityPart : IMappingPart, IAccessStrategy<IdentityPart>
 	{
-		private readonly string _columnName;
+		private string _columnName;
 		private readonly IdentityGenerationStrategyBuilder _generatedBy;
 		private readonly Cache<string, string> _generatorParameters = new Cache<string, string>();
         private readonly Cache<string, string> _elementAttributes = new Cache<string, string>();
@@ -24,7 +24,7 @@ namespace FluentNHibernate.Mapping
 			_generatedBy = new IdentityGenerationStrategyBuilder(this);
 		}
 
-		public IdentityPart(PropertyInfo property) : this(property, property.Name)
+		public IdentityPart(PropertyInfo property) : this(property, null)
 		{
 		}
 
@@ -52,6 +52,9 @@ namespace FluentNHibernate.Mapping
 
 		public void Write(XmlElement classElement, IMappingVisitor visitor)
 		{
+            if (String.IsNullOrEmpty(_columnName))
+                _columnName = visitor.Conventions.GetPrimaryKeyName(_property);
+
 			XmlElement element = classElement.AddElement("id")
 				.WithAtt("name", _property.Name)
 				.WithAtt("column", _columnName)

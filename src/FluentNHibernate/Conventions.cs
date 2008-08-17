@@ -44,6 +44,7 @@ namespace FluentNHibernate
             AddTypeConvention(new EnumerationTypeConvention());
         }
 
+        public Func<PropertyInfo, string> GetPrimaryKeyName = prop => prop.Name;
         public Func<PropertyInfo, string> GetForeignKeyName = prop => prop.Name + "_id";
         public Func<Type, string> GetForeignKeyNameOfParent = type => type.Name + "_id";
 
@@ -79,5 +80,7 @@ namespace FluentNHibernate
             AttributeConvention<T> convention = new AttributeConvention<T>(action);
             _propertyConventions.Add(convention);
         }
+
+        public Func<PropertyInfo,bool> FindIdentity = p => p.Name == "Id";
     }
 }

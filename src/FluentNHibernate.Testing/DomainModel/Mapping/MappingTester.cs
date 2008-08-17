@@ -7,8 +7,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
     public class MappingTester<T>
     {
-        private XmlElement currentElement;
-        private XmlDocument document;
+        protected XmlElement currentElement;
+        protected XmlDocument document;
 
         public MappingTester<T> RootElement
         {
@@ -17,14 +17,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 currentElement = document.DocumentElement;
                 return this;
             }
-        }
-
-        public MappingTester<T> ForMapping(ClassMap<T> mapping)
-        {
-            document = mapping.CreateMapping(new MappingVisitor());
-            currentElement = document.DocumentElement;
-
-            return this;
         }
 
         public MappingTester<T> ForMapping(Action<ClassMap<T>> mapping)

@@ -65,6 +65,7 @@
     <Compile Include="AutoMap\AutoMapper.cs" />
     <Compile Include="AutoMap\AutoMapVersion.cs" />
     <Compile Include="AutoMap\AutoPersistenceModel.cs" />
+    <Compile Include="AutoMap\ConventionBuilder.cs" />
     <Compile Include="AutoMap\ExpressionBuilder.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />
     <Compile Include="Cache.cs" />

@@ -10,6 +10,11 @@ namespace FluentNHibernate.AutoMap
         private Func<PropertyInfo, bool> findPropertyconvention = p => (p.PropertyType.Namespace == "System.Collections.Generic");
         private Func<PropertyInfo, string> columnConvention;
 
+        public AutoMapOneToMany(Conventions conventions)
+        {
+            
+        }
+
         public bool MapsProperty(PropertyInfo property)
         {
             if (property.CanWrite)
@@ -25,15 +30,6 @@ namespace FluentNHibernate.AutoMap
             var listType = property.PropertyType.GetGenericArguments()[0];
             var genericHasManyMethod = hasManyMethod.MakeGenericMethod(listType);
             genericHasManyMethod.Invoke(classMap, new object[] { ExpressionBuilder.Create<T>(property) });
-        }
-
-        public void SetConvention(Func<PropertyInfo, bool> findPropertyconvention, Func<PropertyInfo, string> columnConvention)
-        {
-            if (findPropertyconvention != null)
-                this.findPropertyconvention = findPropertyconvention;
-
-            if (columnConvention != null)
-                throw new ApplicationException("Setting Column Conventions is not yet working in the current version");
         }
     }
 }

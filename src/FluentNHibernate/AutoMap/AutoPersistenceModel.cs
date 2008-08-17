@@ -12,6 +12,11 @@ namespace FluentNHibernate.AutoMap
         private Func<Type, bool> shouldIncludeType = t => true;
         private Assembly entityAssembly;
 
+        public ConventionBuilder WithConvention
+        {
+            get { return new ConventionBuilder(this); }
+        }
+
         public static AutoPersistenceModel MapEntitiesFromAssemblyOf<T>()
         {
             var persistenceModel = new AutoPersistenceModel();
@@ -67,7 +72,7 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel()
         {
-            autoMap = new AutoMapper();
+            autoMap = new AutoMapper(Conventions);
         }
 
         /// <summary>
@@ -77,7 +82,7 @@ namespace FluentNHibernate.AutoMap
         public AutoPersistenceModel(Assembly mapAssembly)
         {
             addMappingsFromAssembly(mapAssembly);
-            autoMap = new AutoMapper();
+            autoMap = new AutoMapper(Conventions);
         }
 
         public AutoPersistenceModel AutoMap<T>()
@@ -97,42 +102,17 @@ namespace FluentNHibernate.AutoMap
                 Console.WriteLine(map);
         }
 
-        public AutoPersistenceModel SetIdentityAs(Func<PropertyInfo, bool> findIdentity, Func<PropertyInfo, string> nameColumn)
-        {
-            autoMap.SetConvention<AutoMapIdentity>(findIdentity, nameColumn);
-            return this;
-        }
-
-        public AutoPersistenceModel SetManyToOne(Func<PropertyInfo, bool> findIdentity, Func<PropertyInfo, string> nameColumn)
-        {
-            Conventions.GetForeignKeyName = nameColumn;
-            autoMap.SetConvention<AutoMapManyToOne>(findIdentity, null);
-            return this;
-        }
-
-        public AutoPersistenceModel SetOneToMany(Func<PropertyInfo, bool> findIdentity, Func<Type, string> nameColumn)
-        {
-            Conventions.GetForeignKeyNameOfParent = nameColumn;
-            autoMap.SetConvention<AutoMapOneToMany>(findIdentity, null);
-            return this;
-        }
-
-        public AutoPersistenceModel SetVersion(Func<PropertyInfo, bool> findIdentity, Func<PropertyInfo, string> nameColumn)
-        {
-            autoMap.SetConvention<AutoMapVersion>(findIdentity, nameColumn);
-            return this;
-        }
-
-        /// <summary>
-        /// NOTE: Experimental: Doesn't take into account existing mappings so will map properties twice at the moment
-        /// </summary>
-        /// <param name="assembly"></param>
-        /// <param name="evaluation"></param>
-        /// <returns></returns>
         public AutoPersistenceModel AddEntityAssembly(Assembly assembly)
         {
             entityAssembly = assembly;
+            return this;
+        }
 
+        public AutoPersistenceModel ForTypesThatDeriveFrom<T>(Action<AutoMap<T>> populateMap)
+        {
+            var map= (AutoMap<T>) Activator.CreateInstance(typeof (AutoMap<T>));
+            populateMap.Invoke(map);
+            _mappings.Add(map);
             return this;
         }
     }

@@ -69,6 +69,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AutoMap\AutoMappingTester.cs" />
     <Compile Include="AutoMap\AutoMapTests.cs" />
     <Compile Include="AutoMap\AutoPersistenceModelTests.cs" />
     <Compile Include="AutoMap\TestFixtures.cs" />
