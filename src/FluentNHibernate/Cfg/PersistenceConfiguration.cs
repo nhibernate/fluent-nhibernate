@@ -28,6 +28,7 @@ namespace FluentNHibernate.Cfg
 
 		private readonly Dictionary<string, string> _rawValues;
 		private readonly Cache<string, string> _values;
+	    private bool _nextBoolSettingValue = true;
 
 		protected PersistenceConfiguration()
 		{
@@ -86,23 +87,41 @@ namespace FluentNHibernate.Cfg
 
 		public THIS ShowSql()
 		{
-			_values.Store(ShowSqlKey, "true");
+            toggleBooleanSetting(ShowSqlKey);
 			return (THIS) this;
 		}
 
-		public THIS UseOuterJoin()
+	    public THIS UseOuterJoin()
 		{
-			_values.Store(UseOuterJoinKey, "true");
+            toggleBooleanSetting(UseOuterJoinKey);
 			return (THIS)this;
 		}
 
-        public THIS UseReflectionOptimizer()
+	    public THIS UseReflectionOptimizer()
 		{
-            _values.Store(UseReflectionOptimizerKey, "true");
+            toggleBooleanSetting(UseReflectionOptimizerKey);
 			return (THIS)this;
 		}
 
-		public ConnectionStringExpression<THIS> ConnectionString
+	    protected void toggleBooleanSetting(string settingKey)
+	    {
+	        var value = _nextBoolSettingValue.ToString().ToLowerInvariant();
+
+	        _values.Store(settingKey, value);
+
+	        _nextBoolSettingValue = true;
+	    }
+
+	    public THIS DoNot
+	    {
+	        get
+	        {
+	            _nextBoolSettingValue = false;
+	            return (THIS)this;
+	        }
+	    }
+
+	    public ConnectionStringExpression<THIS> ConnectionString
 		{
 			get
 			{
@@ -110,7 +129,7 @@ namespace FluentNHibernate.Cfg
 			}
 		}
 
-		public THIS Raw(string key, string value)
+	    public THIS Raw(string key, string value)
 		{
 			_values.Store(key, value);
 			return (THIS) this;

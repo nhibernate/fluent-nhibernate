@@ -76,6 +76,44 @@ namespace FluentNHibernate.Testing.Cfg
             ValueOf("max_fetch_depth").ShouldEqual("2");
 	    }
 
+	    [Test]
+	    public void DoNot_ShowSql_should_set_the_property_to_const_false()
+	    {
+	        _config.DoNot.ShowSql();
+	        ValueOf("show_sql").ShouldEqual("false");
+            
+	    }
+
+	    [Test]
+	    public void DoNot_Should_only_affect_next_property()
+	    {
+	        _config.DoNot.ShowSql().UseReflectionOptimizer();
+            ValueOf("show_sql").ShouldEqual("false");
+            ValueOf("use_reflection_optimizer").ShouldEqual("true");
+	    }
+        
+        [Test]
+	    public void Repeated_DoNot_Calls()
+	    {
+	        _config.DoNot.ShowSql().DoNot.UseReflectionOptimizer();
+            ValueOf("show_sql").ShouldEqual("false");
+            ValueOf("use_reflection_optimizer").ShouldEqual("false");
+	    }
+
+	    [Test]
+	    public void DoNot_UseReflectionOptimizer_should_set_the_property_to_const_false()
+	    {
+	        _config.DoNot.UseReflectionOptimizer();
+	        ValueOf("use_reflection_optimizer").ShouldEqual("false");
+	    }
+
+	    [Test]
+	    public void DoNot_UseOuterJoin_should_set_the_property_to_const_false()
+	    {
+	        _config.DoNot.UseOuterJoin();
+	        ValueOf("use_outer_join").ShouldEqual("false");
+	    }
+
         public class ConfigTester : PersistenceConfiguration<ConfigTester>
 		{
 		}
