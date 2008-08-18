@@ -73,7 +73,7 @@ namespace FluentNHibernate.Testing.Cfg
         public void Max_Fetch_Depth_should_set_property_value()
 	    {
 	        _config.MaxFetchDepth(2);
-            ValueOf("hibernate.max_fetch_depth").ShouldEqual("2");
+            ValueOf("max_fetch_depth").ShouldEqual("2");
 	    }
 
         public class ConfigTester : PersistenceConfiguration<ConfigTester>

@@ -24,7 +24,7 @@ namespace FluentNHibernate.Cfg
 		protected const string ConnectionStringKey = "connection.connection_string";
 		protected const string UseOuterJoinKey = "use_outer_join";
         protected const string UseReflectionOptimizerKey = "use_reflection_optimizer";
-        protected const string MaxFetchDepthKey = "hibernate.max_fetch_depth";
+        protected const string MaxFetchDepthKey = "max_fetch_depth";
 
 		private readonly Dictionary<string, string> _rawValues;
 		private readonly Cache<string, string> _values;
