@@ -73,7 +73,9 @@
     <Compile Include="AutoMap\AutoMapTests.cs" />
     <Compile Include="AutoMap\AutoPersistenceModelTests.cs" />
     <Compile Include="AutoMap\TestFixtures.cs" />
+    <Compile Include="Cfg\MsSqlConfigurationTester.cs" />
     <Compile Include="Cfg\PersistenceConfigurationTester.cs" />
+    <Compile Include="Cfg\PostgreSQLConfigurationTester.cs" />
     <Compile Include="Cfg\SQLiteConfigurationTester.cs" />
     <Compile Include="DomainModel\ConnectedTester.cs" />
     <Compile Include="DomainModel\EntityEquality.cs" />
