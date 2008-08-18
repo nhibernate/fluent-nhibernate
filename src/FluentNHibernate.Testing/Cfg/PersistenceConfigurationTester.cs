@@ -61,6 +61,21 @@ namespace FluentNHibernate.Testing.Cfg
 			ValueOf("use_outer_join").ShouldEqual("true");
 		}
 
+        [Test]
+        public void Use_Reflection_Optimizer_should_set_value_to_const_true()
+        {
+            _config.UseReflectionOptimizer();
+            ValueOf("use_reflection_optimizer").ShouldEqual("true");
+
+        }
+
+	    [Test]
+        public void Max_Fetch_Depth_should_set_property_value()
+	    {
+	        _config.MaxFetchDepth(2);
+            ValueOf("hibernate.max_fetch_depth").ShouldEqual("2");
+	    }
+
         public class ConfigTester : PersistenceConfiguration<ConfigTester>
 		{
 		}

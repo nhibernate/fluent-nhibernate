@@ -23,6 +23,8 @@ namespace FluentNHibernate.Cfg
 		protected const string DriverClassKey = "connection.driver_class";
 		protected const string ConnectionStringKey = "connection.connection_string";
 		protected const string UseOuterJoinKey = "use_outer_join";
+        protected const string UseReflectionOptimizerKey = "use_reflection_optimizer";
+        protected const string MaxFetchDepthKey = "hibernate.max_fetch_depth";
 
 		private readonly Dictionary<string, string> _rawValues;
 		private readonly Cache<string, string> _values;
@@ -94,6 +96,12 @@ namespace FluentNHibernate.Cfg
 			return (THIS)this;
 		}
 
+        public THIS UseReflectionOptimizer()
+		{
+            _values.Store(UseReflectionOptimizerKey, "true");
+			return (THIS)this;
+		}
+
 		public ConnectionStringExpression<THIS> ConnectionString
 		{
 			get
@@ -108,7 +116,13 @@ namespace FluentNHibernate.Cfg
 			return (THIS) this;
 		}
 
-		public class ConnectionStringExpression<CONFIG>
+	    public THIS MaxFetchDepth(int maxFetchDepth)
+	    {
+	        _values.Store(MaxFetchDepthKey, maxFetchDepth.ToString());
+            return (THIS)this;
+	    }
+
+	    public class ConnectionStringExpression<CONFIG>
 			where CONFIG : PersistenceConfiguration<CONFIG>
 		{
 			private readonly CONFIG _config;
