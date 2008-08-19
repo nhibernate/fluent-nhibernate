@@ -26,7 +26,7 @@ namespace FluentNHibernate.AutoMap
         {
             foreach (var property in typeof(T).GetProperties())
             {
-                if (property.PropertyType.IsClass)
+                if (!property.PropertyType.IsEnum)
                 {
                     foreach (var rule in _mappingRules)
                     {
