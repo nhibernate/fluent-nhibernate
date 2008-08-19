@@ -26,14 +26,17 @@ namespace FluentNHibernate.AutoMap
         {
             foreach (var property in typeof(T).GetProperties())
             {
-                foreach (var rule in _mappingRules)
+                if (!property.PropertyType.IsEnum)
                 {
-                    if (rule.MapsProperty(property))
+                    foreach (var rule in _mappingRules)
                     {
-                        if (map.PropertiesMapped.Count(p => p.Name == property.Name) == 0)
+                        if (rule.MapsProperty(property))
                         {
-                            rule.Map(map, property);
-                            break;
+                            if (map.PropertiesMapped.Count(p => p.Name == property.Name) == 0)
+                            {
+                                rule.Map(map, property);
+                                break;
+                            }
                         }
                     }
                 }

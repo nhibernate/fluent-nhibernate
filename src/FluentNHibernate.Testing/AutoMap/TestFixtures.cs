@@ -31,7 +31,13 @@ namespace FluentNHibernate.AutoMap.TestFixtures
         public virtual int ExampleClassId { get; set; }
         public virtual string LineOne { get; set; }
         public DateTime Timestamp { get; set; }
+        public ExampleEnum Enum { get; set; }
         public ExampleParentClass Parent { get; set; }
+    }
+
+    public enum ExampleEnum
+    {
+        enum1=1
     }
 
     public class ExampleParentClass

@@ -43,26 +43,29 @@ namespace FluentNHibernate.AutoMap
 
             foreach (var obj in entityAssembly.GetTypes())
             {
-                if (shouldIncludeType.Invoke(obj))
+                if (obj.IsClass)
                 {
-                    // Find the map that already exists
-                    var findMapMethod = typeof(AutoPersistenceModel).GetMethod("FindMapping");
-                    var genericFindMapMethod = findMapMethod.MakeGenericMethod(obj);
-                    var mapping = genericFindMapMethod.Invoke(this, null);
+                    if (shouldIncludeType.Invoke(obj))
+                    {
+                        // Find the map that already exists
+                        var findMapMethod = typeof (AutoPersistenceModel).GetMethod("FindMapping");
+                        var genericFindMapMethod = findMapMethod.MakeGenericMethod(obj);
+                        var mapping = genericFindMapMethod.Invoke(this, null);
 
-                    if (mapping != null)
-                    {
-                        // Merge Mappings together
-                        var findAutoMapMethod = typeof(AutoMapper).GetMethod("MergeMap");
-                        var genericfindAutoMapMethod = findAutoMapMethod.MakeGenericMethod(obj);
-                        genericfindAutoMapMethod.Invoke(autoMap, new[] { mapping });
-                    }
-                    else
-                    {
-                        //Auto magically map the entity
-                        var findAutoMapMethod = typeof(AutoMapper).GetMethod("Map", new Type[0]);
-                        var genericfindAutoMapMethod = findAutoMapMethod.MakeGenericMethod(obj);
-                        addMapping((IMapping)genericfindAutoMapMethod.Invoke(autoMap, null));
+                        if (mapping != null)
+                        {
+                            // Merge Mappings together
+                            var findAutoMapMethod = typeof (AutoMapper).GetMethod("MergeMap");
+                            var genericfindAutoMapMethod = findAutoMapMethod.MakeGenericMethod(obj);
+                            genericfindAutoMapMethod.Invoke(autoMap, new[] {mapping});
+                        }
+                        else
+                        {
+                            //Auto magically map the entity
+                            var findAutoMapMethod = typeof (AutoMapper).GetMethod("Map", new Type[0]);
+                            var genericfindAutoMapMethod = findAutoMapMethod.MakeGenericMethod(obj);
+                            addMapping((IMapping) genericfindAutoMapMethod.Invoke(autoMap, null));
+                        }
                     }
                 }
             }
