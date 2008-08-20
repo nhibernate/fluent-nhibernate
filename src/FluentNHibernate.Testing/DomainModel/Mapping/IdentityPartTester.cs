@@ -431,6 +431,27 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(c => c.Id(x => x.NullableGuidId).WithUnsavedValue(-1))
                 .Element("class/id").HasAttribute("type", typeof(Guid?).FullName);
         }
+
+        [Test]
+        public void BUGFIX_each_visitor_should_be_asked_to_specify_the_primary_key_name_convention()
+        {
+            var visitor1 = new MappingVisitor();
+            var visitor2 = new MappingVisitor();
+            var classMap = new ClassMap<IdentityTarget>();
+            classMap.Id(x => x.LongId);
+
+            visitor1.Conventions.GetPrimaryKeyName = prop => "foo";
+            visitor2.Conventions.GetPrimaryKeyName = prop => "bar";
+
+            new MappingTester<IdentityTarget>()
+                .UsingVisitor(visitor1)
+                    .ForMapping(classMap)
+                    .Element("class/id").HasAttribute("column", "foo")
+                .UsingVisitor(visitor2)
+                    .ForMapping(classMap)
+                    .Element("class/id").HasAttribute("column", "bar");
+            
+        }
 	}
 
 	public class IdentityTarget

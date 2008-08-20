@@ -52,12 +52,13 @@ namespace FluentNHibernate.Mapping
 
 		public void Write(XmlElement classElement, IMappingVisitor visitor)
 		{
-            if (String.IsNullOrEmpty(_columnName))
-                _columnName = visitor.Conventions.GetPrimaryKeyName(_property);
+            var columnName = (String.IsNullOrEmpty(_columnName))
+             ? visitor.Conventions.GetPrimaryKeyName(_property)
+             : _columnName;
 
 			XmlElement element = classElement.AddElement("id")
 				.WithAtt("name", _property.Name)
-				.WithAtt("column", _columnName)
+                .WithAtt("column", columnName)
 				.WithAtt("type", TypeMapping.GetTypeString(_property.PropertyType));
 
             if (_unsavedValue != null)

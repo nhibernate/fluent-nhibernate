@@ -9,6 +9,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     {
         protected XmlElement currentElement;
         protected XmlDocument document;
+        protected IMappingVisitor _visitor = new MappingVisitor();
 
         public MappingTester<T> RootElement
         {
@@ -19,13 +20,24 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             }
         }
 
-        public MappingTester<T> ForMapping(Action<ClassMap<T>> mapping)
+        public MappingTester<T> UsingVisitor(IMappingVisitor visitor)
+        {
+            _visitor = visitor;
+            return this;
+        }
+
+        public MappingTester<T> ForMapping(Action<ClassMap<T>> mappingAction)
         {
             var classMap = new ClassMap<T>();
 
-            mapping(classMap);
+            mappingAction(classMap);
 
-            document = classMap.CreateMapping(new MappingVisitor());
+            return ForMapping(classMap);
+        }
+
+        public MappingTester<T> ForMapping(ClassMap<T> classMap)
+        {
+            document = classMap.CreateMapping(_visitor);
             currentElement = document.DocumentElement;
 
             return this;

@@ -5,7 +5,7 @@ namespace FluentNHibernate.Framework
     [Serializable]
     public class Entity : IEquatable<Entity>
     {
-        public long Id { get; set; }
+        public virtual long Id { get; set; }
 
         public virtual bool Equals(Entity obj)
         {
