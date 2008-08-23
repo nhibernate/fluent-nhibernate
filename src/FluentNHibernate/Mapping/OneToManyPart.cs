@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Xml;
 using System;
+using System.Linq.Expressions;
 
 namespace FluentNHibernate.Mapping
 {
@@ -38,8 +39,7 @@ namespace FluentNHibernate.Mapping
                 foreignKeyName = visitor.Conventions.GetForeignKeyNameOfParent(typeof(PARENT));
 
             element.AddElement("key").SetAttribute("column", foreignKeyName);
-
-            // TODO: Revisit. Not so sure about this.
+            
             if (_indexMapping != null)
             {
                 var indexElement = element.AddElement("index");
@@ -116,6 +116,25 @@ namespace FluentNHibernate.Mapping
         {
             AsList();
             action(_indexMapping);
+            return this;
+        }
+
+        public OneToManyPart<PARENT, CHILD> AsMap<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector)
+        {
+            return AsMap(indexSelector, null);
+        }
+
+        public OneToManyPart<PARENT, CHILD> AsMap<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector, Action<IndexMapping> customIndexMapping)
+        {
+            var indexProperty = ReflectionHelper.GetProperty(indexSelector);
+            _indexMapping = new IndexMapping();
+            _indexMapping.WithType<INDEX_TYPE>();
+            _indexMapping.WithColumn(indexProperty.Name);
+
+            if (customIndexMapping != null)
+                customIndexMapping(_indexMapping);
+
+            _collectionType = "map";
             return this;
         }
 
