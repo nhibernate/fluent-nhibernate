@@ -125,10 +125,10 @@ namespace FluentNHibernate.Framework
                     // on the user to pass in the correct collection type (especially if they're using
                     // an interface). I've tried to create the common ones, but I'm sure this won't be
                     // infallable.
-                    if (_property.PropertyType.IsAssignableFrom(typeof(ISet<T>)))
-                        collection = new SortedSet<LIST>(_expected);
+                    if (_property.PropertyType.IsAssignableFrom(typeof(ISet<LIST>)))
+                        collection = new HashedSet<LIST>(_expected);
                     else if (_property.PropertyType.IsAssignableFrom(typeof(ISet)))
-                        collection = new SortedSet((ICollection)_expected);
+                        collection = new HashedSet((ICollection)_expected);
                     else
                         collection = new List<LIST>(_expected);
 
