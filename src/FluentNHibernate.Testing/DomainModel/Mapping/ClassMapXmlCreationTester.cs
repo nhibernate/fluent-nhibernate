@@ -68,7 +68,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void ManyToManyAsSetWithChildForeignKey()
 		{
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet().WithChildForeignKey("TheKids_ID"))
+                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet().WithChildKeyColumn("TheKids_ID"))
                 .Element("class/set")
                     .HasAttribute("name", "Children")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
@@ -77,6 +77,21 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/set/many-to-many")
                     .HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
                     .HasAttribute("column", "TheKids_ID");
+		}
+
+		[Test]
+		public void ManyToManyAsSetWithParentForeignKey()
+		{
+			new MappingTester<MappedObject>()
+				.ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet().WithParentKeyColumn("TheParentID"))
+				.Element("class/set")
+					.HasAttribute("name", "Children")
+					.HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
+				.Element("class/set/key")
+					.HasAttribute("column", "TheParentID")
+				.Element("class/set/many-to-many")
+					.HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
+					.HasAttribute("column", "ChildObject_id");
 		}
 
 		[Test]
