@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Framework;
@@ -11,11 +10,10 @@ using NHibernate;
 
 namespace FluentNHibernate.Framework
 {
-    public class PersistenceSpecification<T> where T : Entity, new()
+    public class PersistenceSpecification<T> where T : new()
     {
         private readonly List<PropertyValue> _allProperties = new List<PropertyValue>();
     	private readonly ISession _currentSession;
-		private readonly IRepository _repository;
 
     	public PersistenceSpecification(ISessionSource source)
 			: this(source.CreateSession())
@@ -25,7 +23,6 @@ namespace FluentNHibernate.Framework
 		public PersistenceSpecification(ISession session)
 		{
     		_currentSession = session;
-			_repository = new Repository(_currentSession);
 		}
 
         public PersistenceSpecification<T> CheckProperty(Expression<Func<T, object>> expression, object propertyValue)
@@ -38,7 +35,7 @@ namespace FluentNHibernate.Framework
 
         public PersistenceSpecification<T> CheckReference(Expression<Func<T, object>> expression, object propertyValue)
         {
-            _repository.Save(propertyValue);
+            TransactionalSave(propertyValue);
 
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
             _allProperties.Add(new PropertyValue(property, propertyValue));
@@ -52,7 +49,7 @@ namespace FluentNHibernate.Framework
         {
             foreach (LIST item in propertyValue)
             {
-                _repository.Save(item);
+                TransactionalSave(item);
             }
 
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
@@ -85,22 +82,30 @@ namespace FluentNHibernate.Framework
             _allProperties.ForEach(p => p.SetValue(first));
 
             // Save the first copy
-            _repository.Save(first);
+            TransactionalSave(first);
+
+            object firstId = _currentSession.GetIdentifier(first);
 
 			// Clear and reset the current session
         	_currentSession.Flush();
         	_currentSession.Clear();
 
-            // Get a completely different IRepository
-            var secondRepository = new Repository(_currentSession);
-
             // "Find" the same entity from the second IRepository
-            var second = secondRepository.Find<T>(first.Id);
+            var second = _currentSession.Get<T>(firstId);
 
             // Validate that each specified property and value
             // made the round trip
             // It's a bit naive right now because it fails on the first failure
             _allProperties.ForEach(p => p.CheckValue(second));
+        }
+
+        private void TransactionalSave(object propertyValue)
+        {
+            using (var tx = _currentSession.BeginTransaction())
+            {
+                _currentSession.Save(propertyValue);
+                tx.Commit();
+            }
         }
 
         #region Nested type: ListValue
