@@ -75,6 +75,7 @@
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="Cfg\MsSqlConfiguration.cs" />
     <Compile Include="Conventions.cs" />
+    <Compile Include="RestrictionsHelper.cs" />
     <Compile Include="IMappingVisitor.cs" />
     <Compile Include="MappingVisitor.cs" />
     <Compile Include="Mapping\AccessStrategyBuilder.cs" />
