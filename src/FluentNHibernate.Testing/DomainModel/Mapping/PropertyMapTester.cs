@@ -218,6 +218,30 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.Map(x => x.Name).FormulaIs("foo(bar)"))
                 .Element("class/property").HasAttribute("formula", "foo(bar)");
         }
+
+        [Test]
+        public void CanSpecifyCustomType()
+        {
+            var classMap = new ClassMap<PropertyTarget>();
+            var propertyMap = classMap.Map(x => x.Data)
+                .CustomTypeIs("BinaryBlob");
+
+            new MappingTester<PropertyTarget>()
+                .ForMapping(classMap)
+                .Element("class/property").HasAttribute("type", "BinaryBlob");
+        }
+
+        [Test]
+        public void CanSpecifyCustomSqlType()
+        {
+            var classMap = new ClassMap<PropertyTarget>();
+            var propertyMap = classMap.Map(x => x.Data)
+                .CustomSqlTypeIs("image");
+
+            new MappingTester<PropertyTarget>()
+                .ForMapping(classMap)                
+                .Element("class/property/column").HasAttribute("sql-type", "image");
+        }
     }
 
     public class PropertyTarget
@@ -227,6 +251,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public IList<PropertyReferenceTarget> References { get; set; }
         public ComponentTarget Component { get; set; }
         public int Id { get; set; }
+        public byte[] Data { get; set; }
     }
 
     public class PropertyReferenceTarget {}

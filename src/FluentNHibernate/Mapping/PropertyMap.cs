@@ -77,6 +77,16 @@ namespace FluentNHibernate.Mapping
             _alterations.Add(action);
         }
 
+        public bool HasAttribute(string name)
+        {
+            return _extendedProperties.Has(name);
+        }
+
+        public string GetAttribute(string name)
+        {
+            return _extendedProperties.Get(name);
+        }
+
         /// <summary>
         /// Set an attribute on the xml element produced by this property mapping.
         /// </summary>
@@ -158,5 +168,24 @@ namespace FluentNHibernate.Mapping
 
             return this;
         }
+
+        public PropertyMap CustomTypeIs(Type type)
+        {
+            this.AddAlteration(x => x.SetAttribute("type", type.AssemblyQualifiedName));
+            return this;
+        }
+
+        public PropertyMap CustomTypeIs(string typeName)
+        {
+            this.AddAlteration(x => x.SetAttribute("type", typeName));
+            return this;
+        }
+
+        public PropertyMap CustomSqlTypeIs(string sqlType)
+        {
+            this.AddAlteration(x => x.SetColumnProperty("sql-type", sqlType));
+            return this;
+        }
+
     }
 }

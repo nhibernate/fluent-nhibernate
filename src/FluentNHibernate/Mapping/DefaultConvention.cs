@@ -10,8 +10,9 @@ namespace FluentNHibernate.Mapping
         }
 
         public void AlterMap(IProperty property)
-        {
-            property.SetAttribute("type", TypeMapping.GetTypeString(property.PropertyType));
+        {            
+            if(!property.HasAttribute("type"))
+                property.SetAttribute("type", TypeMapping.GetTypeString(property.PropertyType));
         }
     }
 }

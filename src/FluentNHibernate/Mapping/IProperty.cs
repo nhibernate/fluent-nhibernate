@@ -14,5 +14,8 @@ namespace FluentNHibernate.Mapping
         Type ParentType { get; }
         PropertyInfo Property { get; }
         bool ParentIsRequired { get; }
+
+        // Possibly should be moved to IHasAttributes.
+        bool HasAttribute(string name);
     }
 }
