@@ -31,6 +31,9 @@ namespace FluentNHibernate.Mapping
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
+            if (visitor.Conventions.EnableLazyLoading)
+                LazyLoad();
+
             XmlElement element = classElement.AddElement(_collectionType)
                 .WithProperties(_properties);
 

@@ -109,11 +109,8 @@ namespace FluentNHibernate.Testing.AutoMap
         {
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
-
-            autoMapper
-                .WithConvention
-                .SetPrimaryKey(p => p.Name + "Id");
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .WithConvention(c=> c.GetPrimaryKeyName = p=> p.Name + "Id");
 
             autoMapper.Configure(cfg);
 
@@ -128,11 +125,11 @@ namespace FluentNHibernate.Testing.AutoMap
         {
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
-
-            autoMapper
-                .WithConvention
-                .SetManyToOneKey(p => p.Name + "Id");
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .WithConvention(c =>
+                                    {
+                                        c.GetForeignKeyName = p => p.Name + "Id";
+                                    });
 
             autoMapper.Configure(cfg);
 
@@ -147,11 +144,8 @@ namespace FluentNHibernate.Testing.AutoMap
         {
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
-
-            autoMapper
-                .WithConvention
-                .SetOneToManyKey(t => t.Name + "Id");
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .WithConvention(c => c.GetForeignKeyNameOfParent =  t => t.Name + "Id");
 
             autoMapper.Configure(cfg);
 
@@ -167,11 +161,8 @@ namespace FluentNHibernate.Testing.AutoMap
         {
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
-
-            autoMapper
-                .WithConvention
-                .SetIdentityAs(p => p.Name == p.DeclaringType.Name + "Id" );
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .WithConvention(c => c.FindIdentity = p => p.Name == p.DeclaringType.Name + "Id" );
 
             autoMapper.Configure(cfg);
 

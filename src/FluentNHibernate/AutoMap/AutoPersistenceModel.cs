@@ -12,9 +12,16 @@ namespace FluentNHibernate.AutoMap
         private Func<Type, bool> shouldIncludeType = t => true;
         private Assembly entityAssembly;
 
-        public ConventionBuilder WithConvention
+        public AutoPersistenceModel WithConvention(Conventions convention)
         {
-            get { return new ConventionBuilder(this); }
+            Conventions = convention;
+            return this;
+        }
+
+        public AutoPersistenceModel WithConvention(Action<Conventions> conventionAction)
+        {
+            conventionAction.Invoke(Conventions);
+            return this;
         }
 
         public static AutoPersistenceModel MapEntitiesFromAssemblyOf<T>()

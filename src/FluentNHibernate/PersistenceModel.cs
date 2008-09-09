@@ -63,6 +63,7 @@ namespace FluentNHibernate
         public Conventions Conventions
         {
             get { return _conventions; }
+            protected set { _conventions = value; }
         }
 
         private static Assembly findTheCallingAssembly()

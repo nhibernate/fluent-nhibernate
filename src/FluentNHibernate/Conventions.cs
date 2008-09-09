@@ -82,5 +82,8 @@ namespace FluentNHibernate
         }
 
         public Func<PropertyInfo,bool> FindIdentity = p => p.Name == "Id";
+
+        public bool EnableLazyLoading { get; set; }
+
     }
 }

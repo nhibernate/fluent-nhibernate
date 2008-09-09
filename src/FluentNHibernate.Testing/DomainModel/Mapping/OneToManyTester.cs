@@ -148,5 +148,27 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .HasAttribute("cascade", "all-delete-orphan");
         }
 
+        [Test]
+        public void SetsLazyLoadingAsDefault()
+        {
+            new MappingTester<OneToManyComponentTarget>()
+                .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
+                                    .Component(c => c.Map(x => x.Name)))
+                .Element("class/bag").DoesntHaveAttribute("lazy");
+        }
+
+        [Test]
+        public void SetsLazyLoadingOnThroughConvention()
+        {
+            var visitor = new MappingVisitor {Conventions = {EnableLazyLoading = true}};
+            visitor.Conventions.EnableLazyLoading = true;
+
+            new MappingTester<OneToManyComponentTarget>()
+                .UsingVisitor(visitor)
+                .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents).Component(c => c.Map(x => x.Name)))
+                .Element("class/bag").HasAttribute("lazy", "true");
+        }
+
+
     }    
 }

@@ -6,6 +6,7 @@ using System.Text;
 using FluentNHibernate.Cfg;
 using NHibernate;
 using NHibernate.Cfg;
+using NHibernate.Dialect;
 
 namespace FluentNHibernate.Framework
 {
@@ -63,10 +64,10 @@ namespace FluentNHibernate.Framework
 		{
     		IDbConnection connection = session.Connection;
 
-            string[] drops = _configuration.GenerateDropSchemaScript(_sessionFactory.Dialect);
+            string[] drops = _configuration.GenerateDropSchemaScript(Dialect.GetDialect());
             executeScripts(drops, connection);
 
-            string[] scripts = _configuration.GenerateSchemaCreationScript(_sessionFactory.Dialect);
+            string[] scripts = _configuration.GenerateSchemaCreationScript(Dialect.GetDialect());
             executeScripts(scripts, connection);
         }
 

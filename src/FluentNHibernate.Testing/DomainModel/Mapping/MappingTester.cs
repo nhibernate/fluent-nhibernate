@@ -29,7 +29,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public MappingTester<T> ForMapping(Action<ClassMap<T>> mappingAction)
         {
             var classMap = new ClassMap<T>();
-
             mappingAction(classMap);
 
             return ForMapping(classMap);
