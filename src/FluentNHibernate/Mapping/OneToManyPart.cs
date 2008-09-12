@@ -32,7 +32,7 @@ namespace FluentNHibernate.Mapping
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-            visitor.Conventions.AlterMap(this);
+            visitor.Conventions.AlterOneToManyMap(this);
 
             XmlElement element = classElement.AddElement(_collectionType)
                 .WithProperties(_properties);

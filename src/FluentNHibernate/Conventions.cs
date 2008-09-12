@@ -75,7 +75,7 @@ namespace FluentNHibernate
             _propertyConventions.ForEach(c => c.Process(property));
         }
 
-        public void AlterMap(IMappingPart oneToManyPart)
+        public void AlterOneToManyMap(IMappingPart oneToManyPart)
         {
             if (OneToManyConvention != null) OneToManyConvention.Invoke(oneToManyPart);
         }
