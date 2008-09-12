@@ -75,6 +75,12 @@ namespace FluentNHibernate
             _propertyConventions.ForEach(c => c.Process(property));
         }
 
+        public void AlterMap(IMappingPart oneToManyPart)
+        {
+            if (OneToManyConvention != null) OneToManyConvention.Invoke(oneToManyPart);
+        }
+
+
         public void ForAttribute<T>(Action<T, IProperty> action) where T : Attribute
         {
             AttributeConvention<T> convention = new AttributeConvention<T>(action);
@@ -83,7 +89,6 @@ namespace FluentNHibernate
 
         public Func<PropertyInfo,bool> FindIdentity = p => p.Name == "Id";
 
-        public bool EnableLazyLoading { get; set; }
-
+        public Action<IMappingPart> OneToManyConvention;
     }
 }

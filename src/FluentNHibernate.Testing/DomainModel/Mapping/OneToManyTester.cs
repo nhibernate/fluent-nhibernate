@@ -160,8 +160,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void SetsLazyLoadingOnThroughConvention()
         {
-            var visitor = new MappingVisitor {Conventions = {EnableLazyLoading = true}};
-            visitor.Conventions.EnableLazyLoading = true;
+            var visitor = new MappingVisitor();
+            visitor.Conventions.OneToManyConvention = p => p.SetAttribute("lazy", "true");
 
             new MappingTester<OneToManyComponentTarget>()
                 .UsingVisitor(visitor)
@@ -169,6 +169,27 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/bag").HasAttribute("lazy", "true");
         }
 
+
+        [Test]
+        public void SetsCascadeOffAsDefault()
+        {
+            new MappingTester<OneToManyComponentTarget>()
+                .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
+                                    .Component(c => c.Map(x => x.Name)))
+                .Element("class/bag").DoesntHaveAttribute("cascade");
+        }
+
+        [Test]
+        public void SetsCascadeOnThroughConvention()
+        {
+            var visitor = new MappingVisitor ();
+            visitor.Conventions.OneToManyConvention = p => p.SetAttribute("cascade", "all");
+
+            new MappingTester<OneToManyComponentTarget>()
+                .UsingVisitor(visitor)
+                .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents).Component(c => c.Map(x => x.Name)))
+                .Element("class/bag").HasAttribute("cascade", "all");
+        }
 
     }    
 }

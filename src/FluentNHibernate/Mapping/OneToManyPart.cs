@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 
 namespace FluentNHibernate.Mapping
 {
+
     public class OneToManyPart<PARENT, CHILD> : IMappingPart, IAccessStrategy<OneToManyPart<PARENT, CHILD>>
     {
 		private readonly Cache<string, string> _properties = new Cache<string, string>();
@@ -31,8 +32,7 @@ namespace FluentNHibernate.Mapping
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-            if (visitor.Conventions.EnableLazyLoading)
-                LazyLoad();
+            visitor.Conventions.AlterMap(this);
 
             XmlElement element = classElement.AddElement(_collectionType)
                 .WithProperties(_properties);
