@@ -147,7 +147,7 @@ namespace FluentNHibernate.Cfg
         }
 
 
-	    public ConnectionStringExpression<THIS> ConnectionString
+	    public virtual ConnectionStringExpression<THIS> ConnectionString
 		{
 			get
 			{
@@ -173,9 +173,9 @@ namespace FluentNHibernate.Cfg
 	    public class ConnectionStringExpression<CONFIG>
 			where CONFIG : PersistenceConfiguration<CONFIG>
 		{
-			private readonly CONFIG _config;
+	        protected readonly CONFIG _config;
 
-			public ConnectionStringExpression(CONFIG config)
+	        public ConnectionStringExpression(CONFIG config)
 			{
 				_config = config;
 			}
@@ -198,7 +198,7 @@ namespace FluentNHibernate.Cfg
 			{
 				return _config.Raw(ConnectionStringKey, rawConnectionString);
 			}
-		}
+        }
 
 		public class CacheSettingsExpression<CONFIG>
 			where CONFIG : PersistenceConfiguration<CONFIG>

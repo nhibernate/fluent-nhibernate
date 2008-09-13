@@ -36,5 +36,29 @@ namespace FluentNHibernate.Testing.Cfg
 		{
 			MsSqlConfiguration.MsSql2000.ToProperties()["connection.driver_class"].ShouldEqual("NHibernate.Driver.SqlClientDriver, " + typeof(ISession).Assembly.FullName);
 		}
-	}
+
+	    [Test]
+	    public void ConnectionString_is_added_to_the_configuration()
+        {
+	        MsSqlConfiguration.MsSql2005
+                .ConnectionString
+                    .Server("db-srv")
+                    .Database("tables")
+                    .Username("toni tester")
+                    .Password("secret")
+                    .Create
+                .ToProperties()["connection.connection_string"].ShouldEqual("Data Source=db-srv;Initial Catalog=tables;Integrated Security=False;User ID=\"toni tester\";Password=secret");
+	    }
+
+        [Test]
+        public void ConnectionString_for_trustedConnection_is_added_to_the_configuration() {
+            MsSqlConfiguration.MsSql2005
+                .ConnectionString
+                    .Server("db-srv")
+                    .Database("tables")
+                    .TrustedConnection
+                    .Create
+                .ToProperties()["connection.connection_string"].ShouldEqual("Data Source=db-srv;Initial Catalog=tables;Integrated Security=True");
+        }
+    }
 }
