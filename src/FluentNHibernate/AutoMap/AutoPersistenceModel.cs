@@ -50,7 +50,7 @@ namespace FluentNHibernate.AutoMap
 
             foreach (var obj in entityAssembly.GetTypes())
             {
-		if (obj.IsClass && obj.BaseType == typeof(object))
+		        if (obj.IsClass)
                 {
                     if (shouldIncludeType.Invoke(obj))
                     {

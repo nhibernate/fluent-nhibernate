@@ -8,12 +8,6 @@ namespace FluentNHibernate.AutoMap
     public class AutoMapOneToMany : IAutoMapper
     {
         private Func<PropertyInfo, bool> findPropertyconvention = p => (p.PropertyType.Namespace == "System.Collections.Generic");
-        private Func<PropertyInfo, string> columnConvention;
-
-        public AutoMapOneToMany(Conventions conventions)
-        {
-            
-        }
 
         public bool MapsProperty(PropertyInfo property)
         {

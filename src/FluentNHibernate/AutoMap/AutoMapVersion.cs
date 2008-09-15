@@ -12,6 +12,7 @@ namespace FluentNHibernate.AutoMap
 
         public AutoMapVersion(Conventions conventions)
         {
+            columnConvention = conventions.GetVersionColumnName;
         }
 
         public bool MapsProperty(PropertyInfo property)

@@ -51,6 +51,7 @@ namespace FluentNHibernate.Mapping
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             visitor.RegisterDependency(_property.PropertyType);
+            visitor.Conventions.AlterManyToOneMap(this);
 
             string columnName = _columnName;
             

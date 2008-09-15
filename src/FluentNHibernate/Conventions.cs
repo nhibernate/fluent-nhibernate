@@ -75,6 +75,12 @@ namespace FluentNHibernate
             _propertyConventions.ForEach(c => c.Process(property));
         }
 
+        public void AlterManyToOneMap(ManyToOnePart part)
+        {
+            if (ManyToOneConvention != null) ManyToOneConvention.Invoke(part);
+        }
+
+
         public void AlterOneToManyMap(IMappingPart oneToManyPart)
         {
             if (OneToManyConvention != null) OneToManyConvention.Invoke(oneToManyPart);
@@ -90,5 +96,8 @@ namespace FluentNHibernate
         public Func<PropertyInfo,bool> FindIdentity = p => p.Name == "Id";
 
         public Action<IMappingPart> OneToManyConvention;
+        public Action<IMappingPart> ManyToOneConvention;
+
+        public Func<PropertyInfo, string> GetVersionColumnName;
     }
 }

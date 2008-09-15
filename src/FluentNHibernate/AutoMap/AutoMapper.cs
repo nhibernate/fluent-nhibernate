@@ -17,8 +17,8 @@ namespace FluentNHibernate.AutoMap
                                     new AutoMapIdentity(conventions), 
                                     new AutoMapVersion(conventions), 
                                     new AutoMapColumn(conventions),
-                                    new AutoMapManyToOne(conventions),
-                                    new AutoMapOneToMany(conventions),
+                                    new AutoMapManyToOne(),
+                                    new AutoMapOneToMany(),
                                 };
         }
 
@@ -26,7 +26,7 @@ namespace FluentNHibernate.AutoMap
         {
             foreach (var property in typeof(T).GetProperties())
             {
-                if (!property.PropertyType.IsEnum)
+                if (!property.PropertyType.IsEnum && property.GetIndexParameters().Length == 0)
                 {
                     foreach (var rule in _mappingRules)
                     {
