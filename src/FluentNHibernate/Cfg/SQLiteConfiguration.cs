@@ -14,7 +14,9 @@ namespace FluentNHibernate.Cfg
 
 		public SQLiteConfiguration InMemory()
 		{
+            Raw("connection.release_mode", "on_close");
 			return ConnectionString.Is("Data Source=:memory:;Version=3;New=True;");
+            
 		}
 
 		public SQLiteConfiguration UsingFile(string fileName)
