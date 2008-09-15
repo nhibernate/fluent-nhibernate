@@ -6,11 +6,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
     public class OneToManyTarget
     {
-        public int Id { get; set; }
+        public int Id { get; set; }        
         public ISet<ChildObject> SetOfChildren { get; set; }
         public IList<ChildObject> BagOfChildren { get; set; }
         public IList<ChildObject> ListOfChildren { get; set; }
         public IDictionary<string, ChildObject> MapOfChildren { get; set; }
+        public ChildObject[] ArrayOfChildren { get; set; }
     }
 
     public class OneToManyComponentTarget
@@ -64,6 +65,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void CanSpecifyCollectionTypeAsArray()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany<ChildObject>(x => x.ArrayOfChildren).AsArray(x => x.Name))
+                .Element("class/array").Exists();
+        }
+
+        [Test]
         public void CanSpecifyForeignKeyColumnAsString()
         {
             new MappingTester<OneToManyTarget>()
@@ -109,6 +118,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(map => map.HasMany<ChildObject>(x => x.MapOfChildren).AsMap(x => x.Name))
                 .Element("class/map/index").HasAttribute("type", typeof(string).AssemblyQualifiedName)
                 .Element("class/map/index").HasAttribute("column", "Name");
+        }
+
+        [Test]
+        public void ArrayHasIndexElement()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany<ChildObject>(x => x.ArrayOfChildren).AsArray(x => x.Position))
+                .Element("class/array/index").Exists();
         }
 
         [Test]
@@ -182,7 +199,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void SetsCascadeOnThroughConvention()
         {
-            var visitor = new MappingVisitor ();
+            var visitor = new MappingVisitor();
             visitor.Conventions.OneToManyConvention = p => p.SetAttribute("cascade", "all");
 
             new MappingTester<OneToManyComponentTarget>()
@@ -191,5 +208,5 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/bag").HasAttribute("cascade", "all");
         }
 
-    }    
+    }
 }

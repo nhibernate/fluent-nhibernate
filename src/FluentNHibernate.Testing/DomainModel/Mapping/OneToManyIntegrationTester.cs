@@ -36,6 +36,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     HasMany<ChildObject>(x => x.BagOfChildren).AsBag();
                     HasMany<ChildObject>(x => x.SetOfChildren).AsSet();
                     HasMany<ChildObject>(x => x.MapOfChildren).AsMap( x => x.Name);
+                    HasMany<ChildObject>(x => x.ArrayOfChildren).AsArray(x => x.Position);
                 }
             }
         }

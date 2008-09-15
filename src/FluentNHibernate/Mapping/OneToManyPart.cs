@@ -115,10 +115,10 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public OneToManyPart<PARENT, CHILD> AsList(Action<IndexMapping> action)
+        public OneToManyPart<PARENT, CHILD> AsList(Action<IndexMapping> customIndexMapping)
         {
             AsList();
-            action(_indexMapping);
+            customIndexMapping(_indexMapping);
             return this;
         }
 
@@ -129,6 +129,23 @@ namespace FluentNHibernate.Mapping
 
         public OneToManyPart<PARENT, CHILD> AsMap<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector, Action<IndexMapping> customIndexMapping)
         {
+           _collectionType = "map";
+           return AsIndexedCollection(indexSelector, customIndexMapping);
+        }
+
+        public OneToManyPart<PARENT, CHILD> AsArray<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector)
+        {
+            return AsArray(indexSelector, null);
+        }
+
+        public OneToManyPart<PARENT, CHILD> AsArray<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector, Action<IndexMapping> customIndexMapping)
+        {
+            _collectionType = "array";
+            return AsIndexedCollection(indexSelector, customIndexMapping);
+        }
+
+        private OneToManyPart<PARENT, CHILD> AsIndexedCollection<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector, Action<IndexMapping> customIndexMapping)
+        {
             var indexProperty = ReflectionHelper.GetProperty(indexSelector);
             _indexMapping = new IndexMapping();
             _indexMapping.WithType<INDEX_TYPE>();
@@ -136,8 +153,7 @@ namespace FluentNHibernate.Mapping
 
             if (customIndexMapping != null)
                 customIndexMapping(_indexMapping);
-
-            _collectionType = "map";
+            
             return this;
         }
 
