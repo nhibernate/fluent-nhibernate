@@ -109,7 +109,7 @@ namespace FluentNHibernate
 
         public void WriteMappingsTo(string folder)
         {
-            DiagnosticMappingVisitor visitor = new DiagnosticMappingVisitor(folder, _conventions);
+            DiagnosticMappingVisitor visitor = new DiagnosticMappingVisitor(folder, _conventions, null, _chain);
             _mappings.ForEach(m => m.ApplyMappings(visitor));
         }
     }
@@ -118,9 +118,9 @@ namespace FluentNHibernate
     {
         private string _folder;
 
-        public DiagnosticMappingVisitor(string folder, Conventions conventions)
+        public DiagnosticMappingVisitor(string folder, Conventions conventions, Configuration configuration, DependencyChain chain) : base(conventions, configuration, chain)
         {
-            _folder = folder;
+            _folder = folder;            
         }
 
         public override void AddMappingDocument(XmlDocument document, Type type)
