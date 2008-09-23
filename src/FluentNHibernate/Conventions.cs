@@ -80,6 +80,11 @@ namespace FluentNHibernate
             if (ManyToOneConvention != null) ManyToOneConvention.Invoke(part);
         }
 
+        public void AlterOneToOneMap(OneToOnePart part)
+        {
+            if (OneToOneConvention != null) OneToOneConvention.Invoke(part);
+        }
+
 
         public void AlterOneToManyMap(IMappingPart oneToManyPart)
         {
@@ -97,6 +102,7 @@ namespace FluentNHibernate
 
         public Action<IMappingPart> OneToManyConvention;
         public Action<IMappingPart> ManyToOneConvention;
+        public Action<IMappingPart> OneToOneConvention;
 
         public Func<PropertyInfo, string> GetVersionColumnName;
     }

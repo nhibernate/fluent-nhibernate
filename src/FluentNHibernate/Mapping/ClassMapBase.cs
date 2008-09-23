@@ -56,6 +56,15 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+        public virtual OneToOnePart HasOne(Expression<Func<T, object>> expression)
+        {
+            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            OneToOnePart part = new OneToOnePart(property);
+            addPart(part);
+
+            return part;
+        }
+
         public virtual DiscriminatorPart<ARG, T> DiscriminateSubClassesOnColumn<ARG>(string columnName, ARG baseClassDiscriminator) 
 		{
 			var part = new DiscriminatorPart<ARG, T>(columnName, _properties, baseClassDiscriminator);
