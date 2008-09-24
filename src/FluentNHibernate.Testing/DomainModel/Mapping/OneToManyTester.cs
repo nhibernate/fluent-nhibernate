@@ -96,6 +96,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void CanSetTableName()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany<ChildObject>(x => x.ListOfChildren).WithTableName("MyTableName"))
+                .Element("class/bag").HasAttribute("table", "MyTableName");
+        }
+
+        [Test]
+        public void TableNameAttributeOnlyAddedWhenSet()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany<ChildObject>(x => x.ListOfChildren))
+                .Element("class/bag").DoesntHaveAttribute("table");
+        }
+
+        [Test]
         public void cascade_attribute_is_noneexistant_if_not_specified()
         {
             new MappingTester<OneToManyTarget>()
@@ -154,6 +170,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
                                     .Component(c => c.Map(x => x.Name)))
                 .Element("class/bag/composite-element/property[@name = 'Name']").Exists();
+        }
+
+        [Test]
+        public void CanSetTableNameForCompositeElements()
+        {
+            new MappingTester<OneToManyComponentTarget>()
+                .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
+                                     .Component(c => c.Map(x => x.Name))
+                                     .WithTableName("MyTableName"))
+                .Element("class/bag").HasAttribute("table", "MyTableName");
         }
 
         [Test]

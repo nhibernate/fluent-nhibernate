@@ -16,6 +16,7 @@ namespace FluentNHibernate.Mapping
         private IndexMapping _indexMapping;
         private readonly AccessStrategyBuilder<OneToManyPart<PARENT, CHILD>> access;
         private CompositeElementPart<CHILD> _componentMapping;
+        private string _tableName;
 
         public OneToManyPart(PropertyInfo property)
         {
@@ -34,31 +35,34 @@ namespace FluentNHibernate.Mapping
         {
             visitor.Conventions.AlterOneToManyMap(this);
 
-            XmlElement element = classElement.AddElement(_collectionType)
+            XmlElement collectionElement = classElement.AddElement(_collectionType)
                 .WithProperties(_properties);
+
+            if (!string.IsNullOrEmpty(_tableName))
+                collectionElement.SetAttribute("table", _tableName);
 
             string foreignKeyName = _keyColumnName;
             if (string.IsNullOrEmpty(_keyColumnName))
                 foreignKeyName = visitor.Conventions.GetForeignKeyNameOfParent(typeof(PARENT));
 
-            element.AddElement("key").SetAttribute("column", foreignKeyName);
+            collectionElement.AddElement("key").SetAttribute("column", foreignKeyName);
             
             if (_indexMapping != null)
             {
-                var indexElement = element.AddElement("index");
+                var indexElement = collectionElement.AddElement("index");
                 _indexMapping.WriteAttributesToIndexElement(indexElement);
             }
 
             if (_componentMapping == null)
             {
                 // standard one-to-many element
-                element.AddElement("one-to-many")
+                collectionElement.AddElement("one-to-many")
                     .SetAttribute("class", typeof(CHILD).AssemblyQualifiedName);
             }
             else
             {
                 // specified a component, so output that instead
-                _componentMapping.Write(element, visitor);
+                _componentMapping.Write(collectionElement, visitor);
             }
         }
 
@@ -175,6 +179,16 @@ namespace FluentNHibernate.Mapping
 
             return this;
         }
+
+        /// <summary>
+        /// Sets the table name for this one-to-many.
+        /// </summary>
+        /// <param name="name">Table name</param>
+        public OneToManyPart<PARENT, CHILD> WithTableName(string name)
+        {
+            _tableName = name;
+            return this;
+        } 
 
         /// <summary>
         /// Set the access and naming strategy for this one-to-many.
