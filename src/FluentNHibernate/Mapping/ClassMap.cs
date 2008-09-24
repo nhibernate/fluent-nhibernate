@@ -141,6 +141,11 @@ namespace FluentNHibernate.Mapping
             return subclass;
         }
 
+        public void SchemaIs(string schema)
+        {
+            SetHibernateMappingAttribute("schema", schema);
+        }
+
         public string FileName
         {
             get { return string.Format("{0}.hbm.xml", typeof (T).Name); }

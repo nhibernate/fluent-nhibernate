@@ -469,6 +469,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 				.ForMapping(m => m.References(x => x.Parent).FetchType.Select())
 				.Element("class/many-to-one").HasAttribute("fetch", "select");
 		}
+
+        [Test]
+        public void CanSetSchema()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.SchemaIs("test"))
+                .HasAttribute("schema", "test");
+        }
     }
 
     public class SecondMappedObject
