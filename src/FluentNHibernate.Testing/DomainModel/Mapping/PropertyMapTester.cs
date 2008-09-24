@@ -272,5 +272,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             throw new NotImplementedException();
         }
+
+        public bool CanAccessTroughReflectionOptimizer
+        {
+            get { throw new NotImplementedException(); }
+        }
+
     }
 }

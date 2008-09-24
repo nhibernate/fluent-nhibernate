@@ -9260,7 +9260,7 @@
         </member>
         <member name="T:NHibernate.Dialect.Dialect">
             <summary>
-            Represents a dialect of SQL implemented by a particular RDBMS. Sublcasses
+            Represents a dialect of SQL implemented by a particular RDBMS. Subclasses
             implement NHibernate compatibility with different systems.
             </summary>
             <remarks>
@@ -10970,11 +10970,28 @@
             <param name="hasOffset">Offset of the first row to process in the result set is non-zero</param>
             <returns></returns>
         </member>
+        <member name="M:NHibernate.Dialect.PostgreSQLDialect.GetSelectClauseNullString(NHibernate.SqlTypes.SqlType)">
+            <summary>PostgreSQL requires to cast NULL values to correctly handle UNION/UNION ALL</summary>
+            <remarks>
+            See <see href="http://archives.postgresql.org/pgsql-bugs/2005-08/msg00239.php">
+            PostgreSQL BUG #1847: Error in some kind of UNION query.</see>
+            </remarks>
+            <param name="sqlType">The <see cref="T:System.Data.DbType"/> type code.</param>
+            <returns>null casted as <paramref name="sqlType"/>: "<c>null::sqltypename</c>"</returns>
+        </member>
         <member name="P:NHibernate.Dialect.PostgreSQLDialect.AddColumnString">
             <summary></summary>
         </member>
         <member name="P:NHibernate.Dialect.PostgreSQLDialect.DropConstraints">
             <summary></summary>
+        </member>
+        <member name="P:NHibernate.Dialect.PostgreSQLDialect.SupportsUnionAll">
+            <summary>PostgreSQL supports UNION ALL clause</summary>
+            <remarks>
+            Reference: <see href="http://www.postgresql.org/docs/8.0/static/sql-select.html#SQL-UNION">
+            PostgreSQL 8.0 UNION Clause documentation</see>
+            </remarks>
+            <value><see langword="true"/></value>
         </member>
         <member name="P:NHibernate.Dialect.PostgreSQL81Dialect.SupportsIdentityColumns">
             <summary>
@@ -11037,10 +11054,14 @@
             
             </summary>
         </member>
-        <member name="P:NHibernate.Dialect.SQLiteDialect.IdentitySelectString">
+        <member name="M:NHibernate.Dialect.SQLiteDialect.GetLimitString(NHibernate.SqlCommand.SqlString,System.Int32,System.Int32)">
             <summary>
-            
+            Add a LIMIT N clause to the given SQL <c>SELECT</c>
             </summary>
+            <param name="querySqlString">A Query in the form of a SqlString.</param>
+            <param name="limit">Maximum number of rows to be returned by the query</param>
+            <param name="offset">Offset of the first row to process in the result set</param>
+            <returns>A new SqlString that contains the <c>LIMIT</c> clause.</returns>
         </member>
         <member name="T:NHibernate.Dialect.Sybase11Dialect">
             <summary>
@@ -11123,7 +11144,7 @@
         </member>
         <member name="T:NHibernate.Dialect.SybaseAnywhereDialect">
             <summary>
-            An SQL dialect for Sybase Adaptive Server Anywhere 9.0
+            An SQL dialect for Sybase Adaptive Server Anywhere 9.0/10.0
             </summary>
             <remarks>
             <p>
@@ -11237,9 +11258,9 @@
             <param name="typecode"></param>
             <param name="value"></param>
         </member>
-        <member name="T:NHibernate.Driver.ASAClientDriver">
+        <member name="T:NHibernate.Driver.ASA10ClientDriver">
             <summary>
-            The ASAClientDriver Driver provides a database driver for Adaptive Server Anywhere 9.0.
+            The ASAClientDriver Driver provides a database driver for Adaptive Server Anywhere 10.0.
             </summary>
         </member>
         <member name="T:NHibernate.Driver.DriverBase">
@@ -11408,12 +11429,36 @@
             <param name="connectionTypeName">Connection type name.</param>
             <param name="commandTypeName">Command type name.</param>
         </member>
+        <member name="M:NHibernate.Driver.ASA10ClientDriver.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NHibernate.Driver.ASAClientDriver"/> class.
+            </summary>
+            <exception cref="T:NHibernate.HibernateException">
+            Thrown when the iAnywhere.Data.SQLAnywhere assembly is not and can not be loaded.
+            </exception>
+        </member>
+        <member name="P:NHibernate.Driver.ASA10ClientDriver.UseNamedPrefixInSql">
+            <summary>
+            iAnywhere.Data.SQLAnywhere uses named parameters in the sql.
+            </summary>
+            <value><see langword="true" /> - Sybase uses <c>String.Empty</c> in the sql.</value>
+        </member>
+        <member name="P:NHibernate.Driver.ASA10ClientDriver.NamedPrefix">
+            <summary>
+            iAnywhere.Data.SQLAnywhere use the <c>string.Empty</c> to locate parameters in sql.
+            </summary>
+        </member>
+        <member name="T:NHibernate.Driver.ASAClientDriver">
+            <summary>
+            The ASAClientDriver Driver provides a database driver for Adaptive Server Anywhere 9.0.
+            </summary>
+        </member>
         <member name="M:NHibernate.Driver.ASAClientDriver.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:NHibernate.Driver.ASAClientDriver"/> class.
             </summary>
             <exception cref="T:NHibernate.HibernateException">
-            Thrown when the ASA.Data.AseClient assembly is not and can not be loaded.
+            Thrown when the ASA.Data.AsaClient assembly is not and can not be loaded.
             </exception>
         </member>
         <member name="P:NHibernate.Driver.ASAClientDriver.UseNamedPrefixInSql">
@@ -15678,6 +15723,7 @@
             <param name="obj"></param>
             <param name="persister"></param>
             <param name="id"></param>
+            <param name="entityMode"></param>
         </member>
         <member name="M:NHibernate.Event.Default.DefaultFlushEntityEventListener.IsUpdateNecessary(NHibernate.Event.FlushEntityEvent)">
             <summary> 
@@ -21387,6 +21433,76 @@
             <param name="cacheMode">The cache mode to use. </param>
             <returns> this (for method chaining) </returns>
         </member>
+        <member name="T:NHibernate.Impl.DbCommandSet`2">
+            <summary>
+            Expose the batch functionality in ADO.Net 2.0
+            Microsoft in its wisdom decided to make my life hard and mark it internal.
+            Through the use of Reflection and some delegates magic, I opened up the functionality.
+            
+            Observable performance benefits are 50%+ when used, so it is really worth it.
+            </summary>
+        </member>
+        <member name="M:NHibernate.Impl.IDbCommandSet.Append(System.Data.IDbCommand)">
+            <summary>
+            Append a command to the batch
+            </summary>
+            <param name="command"></param>
+        </member>
+        <member name="M:NHibernate.Impl.IDbCommandSet.ExecuteNonQuery">
+            <summary>
+            Executes the batch
+            </summary>
+            <returns>
+            This seems to be returning the total number of affected rows in all queries
+            </returns>
+        </member>
+        <member name="P:NHibernate.Impl.IDbCommandSet.BatchCommand">
+            <summary>
+            Return the batch command to be executed
+            </summary>
+        </member>
+        <member name="P:NHibernate.Impl.IDbCommandSet.CountOfCommands">
+            <summary>
+            The number of commands batched in this instance
+            </summary>
+        </member>
+        <member name="M:NHibernate.Impl.DbCommandSet`2.Append(System.Data.IDbCommand)">
+            <summary>
+            Append a command to the batch
+            </summary>
+            <param name="command"></param>
+        </member>
+        <member name="M:NHibernate.Impl.DbCommandSet`2.AssertHasParameters(System.Data.IDbCommand)">
+            <summary>
+            This is required because SqlClient.SqlCommandSet will throw if 
+            the command has no parameters.
+            </summary>
+            <param name="command"></param>
+        </member>
+        <member name="M:NHibernate.Impl.DbCommandSet`2.ExecuteNonQuery">
+            <summary>
+            Executes the batch
+            </summary>
+            <returns>
+            This seems to be returning the total number of affected rows in all queries
+            </returns>
+        </member>
+        <member name="M:NHibernate.Impl.DbCommandSet`2.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:NHibernate.Impl.DbCommandSet`2.BatchCommand">
+            <summary>
+            Return the batch command to be executed
+            </summary>
+        </member>
+        <member name="P:NHibernate.Impl.DbCommandSet`2.CountOfCommands">
+            <summary>
+            The number of commands batched in this instance
+            </summary>
+        </member>
         <member name="T:NHibernate.Impl.DetachedNamedQuery">
             <summary>
             Named query in "detached mode" where the NHibernate session is not available.
@@ -21987,6 +22103,14 @@
             </summary>
             <param name="name">The name of the parameter</param>
             <param name="val">A non-null instance of a <see cref="T:System.String"/>.</param>
+        </member>
+        <member name="M:NHibernate.IMultiQuery.SetGuid(System.String,System.Guid)">
+            <summary>
+            Bind an instance of a <see cref="T:System.Guid"/> to a named parameter
+            using an NHibernate <see cref="T:NHibernate.Type.GuidType"/>.
+            </summary>
+            <param name="name">The name of the parameter</param>
+            <param name="val">An instance of a <see cref="T:System.Guid"/>.</param>
         </member>
         <member name="M:NHibernate.IMultiQuery.SetTime(System.String,System.DateTime)">
             <summary>
@@ -25356,7 +25480,7 @@
         <member name="T:NHibernate.Mapping.RootClass">
             <summary>
             Declaration of a System.Type mapped with the <c>&lt;class&gt;</c> element that
-            is the root class of a table-per-sublcass, or table-per-concrete-class 
+            is the root class of a table-per-subclass, or table-per-concrete-class 
             inheritance heirarchy.
             </summary>
         </member>
@@ -26920,6 +27044,11 @@
             Thrown when a Property specified by the <c>propertyName</c> could not
             be found in the <see cref="T:System.Type"/>.
             </exception>
+        </member>
+        <member name="P:NHibernate.Properties.IPropertyAccessor.CanAccessTroughReflectionOptimizer">
+            <summary>
+            Allow embedded and custom accessors to define if the ReflectionOptimizer can be used.
+            </summary>
         </member>
         <member name="T:NHibernate.Properties.BackrefPropertyAccessor.BackrefSetter">
             <summary> The Setter implementation for id backrefs.</summary>
@@ -29006,6 +29135,14 @@
             SqlTypeFactory provides Singleton access to the SqlTypes.
             </summary>
         </member>
+        <member name="T:NHibernate.SqlTypes.SqlXmlType">
+            <summary>
+            Describes the details of a <see cref="F:System.Data.DbType.Xml"/> that is stored in an XML column.
+            </summary>
+            <remarks>
+            Does not handle advanced concepts such as associating a schema to the XML column.
+            </remarks>
+        </member>
         <member name="T:NHibernate.SqlTypes.StringClobSqlType">
             <summary>
             Describes the details of a <see cref="F:System.Data.DbType.String"/> that is stored in
@@ -29572,6 +29709,12 @@
             It is okay for this to be a no op implementation.
             </remarks>
         </member>
+        <member name="M:NHibernate.ITransaction.RegisterSynchronization(NHibernate.Transaction.ISynchronization)">
+            <summary>
+            Register a user synchronization callback for this transaction.
+            </summary>
+            <param name="synchronization">The <see cref="T:NHibernate.Transaction.ISynchronization"/> callback to register.</param>
+        </member>
         <member name="P:NHibernate.ITransaction.IsActive">
             <summary>
             Is the transaction in progress
@@ -29686,6 +29829,11 @@
             <see langword="true"/> if the <see cref="T:System.Data.IDbTransaction"/> had <c>Commit</c> called
             without any exceptions.
             </value>
+        </member>
+        <member name="T:NHibernate.Transaction.ISynchronization">
+            <summary>
+            A mimic to the javax.transaction.Synchronization callback to enable <see cref="M:NHibernate.ITransaction.RegisterSynchronization(NHibernate.Transaction.ISynchronization)"/> 
+            </summary>
         </member>
         <member name="T:NHibernate.Transform.IResultTransformer">
             <summary>
@@ -31288,12 +31436,15 @@
             other unique key, in the case of property-ref
             </summary>
         </member>
-        <member name="M:NHibernate.Type.CollectionType.Instantiate">
+        <member name="M:NHibernate.Type.CollectionType.Instantiate(System.Int32)">
             <summary> 
             Instantiate an empty instance of the "underlying" collection (not a wrapper),
             but with the given anticipated size (i.e. accounting for initial capacity
             and perhaps load factor).
             </summary>
+            <param name="anticipatedSize">
+            The anticipated size of the instaniated collection after we are done populating it.
+            </param>
             <returns> A newly instantiated collection to be wrapped. </returns>
         </member>
         <member name="M:NHibernate.Type.CollectionType.GetElementsIterator(System.Object,NHibernate.Engine.ISessionImplementor)">
@@ -31500,6 +31651,14 @@
             Maps a <see cref="T:System.Char"/> Property 
             to a <c>DbType.StringFixedLength</c> column.
             </summary>
+        </member>
+        <member name="T:NHibernate.Type.ClassMetaType">
+            <summary>
+            ClassMetaType is a NH specif type to support "any" with meta-type="class"
+            </summary>
+            <remarks>
+            It work like a MetaType where the key is the entity-name it self
+            </remarks>
         </member>
         <member name="M:NHibernate.Type.ComponentType.NullSafeSet(System.Data.IDbCommand,System.Object,System.Int32,NHibernate.Engine.ISessionImplementor)">
             <summary>
@@ -32589,20 +32748,6 @@
             PersistentEnumType
             </summary>
         </member>
-        <member name="M:NHibernate.Type.PersistentEnumType.#ctor(System.Type)">
-            <summary>
-            
-            </summary>
-            <param name="enumClass"></param>
-        </member>
-        <member name="M:NHibernate.Type.PersistentEnumType.GetUnderlyingSqlType(System.Type)">
-            <summary>
-            Determines what the NHibernate SqlType should be based on the 
-            values contain in the Enum
-            </summary>
-            <param name="enumClass">The Enumeration class to get the values from.</param>
-            <returns>The SqlType for this EnumClass</returns>
-        </member>
         <member name="M:NHibernate.Type.PersistentEnumType.GetInstance(System.Object)">
             <summary>
             Gets an instance of the Enum
@@ -32616,16 +32761,13 @@
             <summary>
             Gets the correct value for the Enum.
             </summary>
-            <param name="code">The value to convert.</param>
-            <returns>A boxed version of the code converted to the correct type.</returns>
+            <param name="code">The value to convert (an enum instance).</param>
+            <returns>A boxed version of the code, converted to the correct type.</returns>
             <remarks>
             This handles situations where the DataProvider returns the value of the Enum
             from the db in the wrong underlying type.  It uses <see cref="T:System.Convert"/> to 
             convert it to the correct type.
             </remarks>
-        </member>
-        <member name="P:NHibernate.Type.PersistentEnumType.Name">
-            <summary></summary> 
         </member>
         <member name="T:NHibernate.Type.SByteType">
             <summary>
@@ -33875,10 +34017,18 @@
             Replace the elements of a collection with the elements of another collection
             </summary>
         </member>
-        <member name="M:NHibernate.UserTypes.IUserCollectionType.Instantiate">
-            <summary>
-            Instantiate an empty instance of the "underlying" collection (not a wrapper)
-            </summary>
+        <member name="M:NHibernate.UserTypes.IUserCollectionType.Instantiate(System.Int32)">
+            <summary> 
+            Instantiate an empty instance of the "underlying" collection (not a wrapper),
+            but with the given anticipated size (i.e. accounting for initial size
+            and perhaps load factor).
+             </summary>
+            <param name="anticipatedSize">
+            The anticipated size of the instaniated collection
+            after we are done populating it.  Note, may be negative to indicate that
+            we not yet know anything about the anticipated size (i.e., when initializing
+            from a result set row by row).
+            </param>		
         </member>
         <member name="T:NHibernate.UserTypes.IUserVersionType">
             <summary>
@@ -35828,6 +35978,12 @@
             <summary>
             NHibernate class type
             </summary>
+        </member>
+        <member name="F:NHibernate.NHibernateUtil.ClassMetaType">
+            <summary>
+            NHibernate class meta type for associtiation of kind <code>any</code>.
+            </summary>
+            <seealso cref="T:NHibernate.Type.AnyType"/>
         </member>
         <member name="F:NHibernate.NHibernateUtil.Serializable">
             <summary>
