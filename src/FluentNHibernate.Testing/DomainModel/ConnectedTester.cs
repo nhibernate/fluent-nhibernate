@@ -11,24 +11,21 @@ using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Testing.DomainModel
 {
-    [TestFixture, Explicit]
+    [TestFixture]
     public class ConnectedTester
     {
-        private SessionSource _source;
+        private ISessionSource _source;
 
         [SetUp]
         public void SetUp()
         {
-			var connectionString = "Data Source=.;Initial Catalog=Blue;Integrated Security=True;Pooling=False";
-
-        	var properties = MsSqlConfiguration.MsSql2005
+        	var properties = new SQLiteConfiguration()
         		.UseOuterJoin()
         		.ShowSql()
-        		.ConnectionString.Is(connectionString)
+        		.InMemory()
         		.ToProperties();
 
-			_source = new SessionSource(properties, new TestModel());
-
+            _source = new SingleConnectionSessionSource(properties, new TestModel());
             _source.BuildSchema();
 
             DomainObjectFinder.ClearAllFinders();
@@ -229,9 +226,27 @@ namespace FluentNHibernate.Testing.DomainModel
             new PersistenceSpecification<Record>(_source)
                 .CheckProperty(r => r.Age, 22)
                 .CheckProperty(r => r.Name, "somebody")
-                .CheckProperty(r => r.Location, "somebody")
+                .CheckProperty(r => r.Location, "somewhere")
                 .VerifyTheMappings();
                 
+        }
+
+        private class SingleConnectionSessionSource : SessionSource
+        {
+            private ISession _session;
+
+            public SingleConnectionSessionSource(IDictionary<string, string> properties, PersistenceModel model) : base(properties, model)
+            {
+            }
+
+            public override ISession CreateSession()
+            {
+                if(_session == null)
+                    _session =  base.CreateSession();
+
+                _session.Clear();
+                return _session;
+            }
         }
     }
 
@@ -250,6 +265,7 @@ namespace FluentNHibernate.Testing.DomainModel
             UseIdentityForKey(x => x.Id, "id");
             Map(x => x.Name);
             Map(x => x.Age);
+            Map(x => x.Location);
         }
     }
 

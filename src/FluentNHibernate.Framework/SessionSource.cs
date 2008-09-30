@@ -50,7 +50,7 @@ namespace FluentNHibernate.Framework
             get { return _model; }
         }
 
-        public ISession CreateSession()
+        public virtual ISession CreateSession()
         {
             return _sessionFactory.OpenSession();
         }
