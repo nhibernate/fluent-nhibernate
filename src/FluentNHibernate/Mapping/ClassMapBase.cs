@@ -50,7 +50,11 @@ namespace FluentNHibernate.Mapping
         public virtual ManyToOnePart References(Expression<Func<T, object>> expression, string columnName)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            ManyToOnePart part = new ManyToOnePart(property, columnName);
+            var part = new ManyToOnePart(property);
+
+            if (columnName != null)
+                part.TheColumnNameIs(columnName);
+
             addPart(part);
 
             return part;

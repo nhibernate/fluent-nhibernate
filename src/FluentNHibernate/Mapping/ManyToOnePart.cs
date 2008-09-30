@@ -7,18 +7,14 @@ namespace FluentNHibernate.Mapping
     {
 		private readonly Cache<string, string> _properties = new Cache<string, string>();
         private readonly PropertyInfo _property;
-        private readonly string _columnName;
+        private string _columnName;
         private readonly AccessStrategyBuilder<ManyToOnePart> access;
 
-    	public ManyToOnePart(PropertyInfo property) : this(property, null){}
-
-        public ManyToOnePart(PropertyInfo property, string columnName) 
+        public ManyToOnePart(PropertyInfo property) 
         {
             access = new AccessStrategyBuilder<ManyToOnePart>(this);
 
             _property = property;
-
-            _columnName = columnName;
         }
 
 		public FetchTypeExpression<ManyToOnePart> FetchType
@@ -67,6 +63,13 @@ namespace FluentNHibernate.Mapping
         public void SetAttribute(string name, string value)
         {
 			_properties.Store(name, value);
+        }
+
+        public ManyToOnePart TheColumnNameIs(string name)
+        {
+            _columnName = name;
+
+            return this;
         }
 
         public int Level
