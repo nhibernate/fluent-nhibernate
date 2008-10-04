@@ -46,6 +46,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .Exists()
                     .HasAttribute("name", "Name");
         }
+
+        [Test]
+        public void CanSpecifyJoinedSubClassTable()
+        {
+            new MappingTester<SuperClass>()
+               .ForMapping(m => m.JoinedSubClass<SubClassA>("columnName", sm => sm.WithTableName("TestTable")))
+               .Element("class/joined-subclass")
+                   .HasAttribute("table", "TestTable");
+        }
     }
 
     public class SuperClass
