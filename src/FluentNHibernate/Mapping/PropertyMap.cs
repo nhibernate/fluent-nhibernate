@@ -187,5 +187,11 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+
+        public PropertyMap WithUniqueConstraint()
+        {
+            this.AddAlteration(x => x.SetAttribute("unique", "true"));
+            return this;
+        }
     }
 }
