@@ -11,7 +11,8 @@ namespace FluentNHibernate.Mapping
     {
 		private readonly Cache<string, string> _properties = new Cache<string, string>();
         private readonly PropertyInfo _property;
-        private string _keyColumnName;
+        //private string _keyColumnName;
+        private readonly Cache<string, string> _keyProperties = new Cache<string, string>();
         private string _collectionType;
         private IndexMapping _indexMapping;
         private readonly AccessStrategyBuilder<OneToManyPart<PARENT, CHILD>> access;
@@ -21,7 +22,6 @@ namespace FluentNHibernate.Mapping
         public OneToManyPart(PropertyInfo property)
         {
             access = new AccessStrategyBuilder<OneToManyPart<PARENT, CHILD>>(this);
-            _keyColumnName = string.Empty;
             _property = property;            
             _properties.Store("name", _property.Name);
             
@@ -35,24 +35,27 @@ namespace FluentNHibernate.Mapping
         {
             visitor.Conventions.AlterOneToManyMap(this);
 
+            XmlElement collectionElement = WriteCollectionElement(classElement);
+            WriteKeyElement(visitor, collectionElement);
+
+            if (_indexMapping != null)
+                WriteIndexElement(collectionElement);
+
+            WriteMappingTypeElement(visitor, collectionElement);
+        }
+
+        private XmlElement WriteCollectionElement(XmlElement classElement)
+        {
             XmlElement collectionElement = classElement.AddElement(_collectionType)
                 .WithProperties(_properties);
 
             if (!string.IsNullOrEmpty(_tableName))
                 collectionElement.SetAttribute("table", _tableName);
+            return collectionElement;
+        }
 
-            string foreignKeyName = _keyColumnName;
-            if (string.IsNullOrEmpty(_keyColumnName))
-                foreignKeyName = visitor.Conventions.GetForeignKeyNameOfParent(typeof(PARENT));
-
-            collectionElement.AddElement("key").SetAttribute("column", foreignKeyName);
-            
-            if (_indexMapping != null)
-            {
-                var indexElement = collectionElement.AddElement("index");
-                _indexMapping.WriteAttributesToIndexElement(indexElement);
-            }
-
+        private void WriteMappingTypeElement(IMappingVisitor visitor, XmlElement collectionElement)
+        {
             if (_componentMapping == null)
             {
                 // standard one-to-many element
@@ -64,6 +67,21 @@ namespace FluentNHibernate.Mapping
                 // specified a component, so output that instead
                 _componentMapping.Write(collectionElement, visitor);
             }
+        }
+
+        private void WriteIndexElement(XmlElement collectionElement)
+        {
+            var indexElement = collectionElement.AddElement("index");
+            _indexMapping.WriteAttributesToIndexElement(indexElement);
+        }
+
+        private void WriteKeyElement(IMappingVisitor visitor, XmlElement collectionElement)
+        {
+            if(!_keyProperties.Has("column"))
+                _keyProperties.Store("column", visitor.Conventions.GetForeignKeyNameOfParent(typeof(PARENT)));
+
+            collectionElement.AddElement("key")
+                .WithProperties(_keyProperties);
         }
 
         /// <summary>
@@ -163,7 +181,7 @@ namespace FluentNHibernate.Mapping
 
         public OneToManyPart<PARENT, CHILD> WithKeyColumn(string columnName)
         {
-            _keyColumnName = columnName;
+            _keyProperties.Store("column", columnName);
             return this;
         }
 
@@ -188,7 +206,13 @@ namespace FluentNHibernate.Mapping
         {
             _tableName = name;
             return this;
-        } 
+        }
+
+        public OneToManyPart<PARENT, CHILD> WithForeignKeyConstraintName(string foreignKeyName)
+        {
+            _keyProperties.Store("foreign-key", foreignKeyName);
+            return this;
+        }
 
         /// <summary>
         /// Set the access and naming strategy for this one-to-many.
@@ -212,12 +236,14 @@ namespace FluentNHibernate.Mapping
             {
 				_properties.Store("type", typeof(INDEXTYPE).AssemblyQualifiedName);
                 return this;
-            }
+            }            
 
             internal void WriteAttributesToIndexElement(XmlElement indexElement)
             {
                 indexElement.WithProperties(_properties);
             }
         }
+
+
     }
 }

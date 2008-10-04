@@ -82,6 +82,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void CanSpecifyForeignKeyName()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany<ChildObject>(x => x.ListOfChildren).WithForeignKeyConstraintName("FK_TEST"))                    
+                .Element("class/bag/key")
+                .HasAttribute("foreign-key", "FK_TEST");
+        }
+
+        [Test]
         public void CanSpecifyIndexColumnAndTypeForList()
         {
             new MappingTester<OneToManyTarget>()
