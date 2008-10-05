@@ -312,8 +312,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             var map = new ClassMap<MappedObject>();
             map.TableName.ShouldEqual("[MappedObject]");
 
-            map.TableName = "Different";
+            map.WithTable("Different");
             map.TableName.ShouldEqual("Different");
+        }
+
+        [Test]
+        public void CanSetTableName()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.WithTable("myTableName"))
+                .Element("class").HasAttribute("table", "myTableName");
         }
 
         [Test]
@@ -492,6 +500,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<MappedObject>()
                 .ForMapping(m => m.Map(x => x.Name).WithUniqueConstraint())
                 .Element("class/property").HasAttribute("unique", "true");
+        }
+
+        [Test]
+        public void SpanningClassAcrossTwoTables()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.WithTable("tableTwo", t => t.Map(x => x.Name)))
+                .Element("class/join").Exists();
         }
     }
 

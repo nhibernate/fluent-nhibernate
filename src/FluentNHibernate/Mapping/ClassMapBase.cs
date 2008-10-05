@@ -124,7 +124,7 @@ namespace FluentNHibernate.Mapping
             return versionPart;
         }
 
-        protected void writeTheParts(XmlElement classElement, IMappingVisitor visitor)
+        protected virtual void writeTheParts(XmlElement classElement, IMappingVisitor visitor)
         {
             _properties.Sort(new MappingPartComparer());
             foreach (IMappingPart part in _properties)

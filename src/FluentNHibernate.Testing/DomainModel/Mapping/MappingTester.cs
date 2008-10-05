@@ -76,5 +76,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             return this;
         }
+
+        public MappingTester<T> HasName(string name)
+        {
+            Assert.AreEqual(name, currentElement.Name, "Expected current element to have the name '" + name + "' but found '" + currentElement.Name + "'.");
+
+            return this;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq.Expressions;
@@ -12,6 +13,7 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> attributes = new Cache<string, string>();
         private readonly Cache<string, string> hibernateMappingAttributes = new Cache<string, string>();
         private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
+        private readonly IList<JoinPart<T>> additionalTables = new List<JoinPart<T>>();
 
         public ClassMap()
         {
@@ -19,7 +21,7 @@ namespace FluentNHibernate.Mapping
             TableName = String.Format("[{0}]", typeof (T).Name);
         }
 
-        public string TableName { get; set; }
+        public string TableName { get; private set; }
 
         public XmlDocument CreateMapping(IMappingVisitor visitor)
         {
@@ -31,6 +33,16 @@ namespace FluentNHibernate.Mapping
             writeTheParts(classElement, visitor);
 
             return document;
+        }
+
+        protected override void writeTheParts(XmlElement classElement, IMappingVisitor visitor)
+        {
+            base.writeTheParts(classElement, visitor);
+
+            foreach (var table in additionalTables)
+            {
+                table.Write(classElement, visitor);
+            }
         }
 
         public void UseIdentityForKey(Expression<Func<T, object>> expression, string columnName)
@@ -157,6 +169,28 @@ namespace FluentNHibernate.Mapping
         public AccessStrategyBuilder<ClassMap<T>> DefaultAccess
         {
             get { return defaultAccess; }
+        }
+
+        /// <summary>
+        /// Sets the table for the class.
+        /// </summary>
+        /// <param name="tableName">Table name</param>
+        public void WithTable(string tableName)
+        {
+            TableName = tableName;
+        }
+
+        /// <summary>
+        /// Sets additional tables for the class via the NH 2.0 Join element.
+        /// </summary>
+        /// <param name="tableName">Joined table name</param>
+        /// <param name="action">Joined table mapping</param>
+        public void WithTable(string tableName, Action<JoinPart<T>> action)
+        {
+            var join = new JoinPart<T>(tableName);
+
+            action(join);
+            additionalTables.Add(join);
         }
     }
 }

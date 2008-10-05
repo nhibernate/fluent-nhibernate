@@ -85,12 +85,15 @@ namespace FluentNHibernate
             if (OneToOneConvention != null) OneToOneConvention.Invoke(part);
         }
 
-
         public void AlterOneToManyMap(IMappingPart oneToManyPart)
         {
             if (OneToManyConvention != null) OneToManyConvention.Invoke(oneToManyPart);
         }
 
+        public void AlterJoin(IMappingPart part)
+        {
+            if (JoinConvention != null) JoinConvention.Invoke(part);
+        }
 
         public void ForAttribute<T>(Action<T, IProperty> action) where T : Attribute
         {
@@ -99,11 +102,10 @@ namespace FluentNHibernate
         }
 
         public Func<PropertyInfo,bool> FindIdentity = p => p.Name == "Id";
-
         public Action<IMappingPart> OneToManyConvention;
         public Action<IMappingPart> ManyToOneConvention;
         public Action<IMappingPart> OneToOneConvention;
-
+        public Action<IMappingPart> JoinConvention;
         public Func<PropertyInfo, string> GetVersionColumnName;
     }
 }
