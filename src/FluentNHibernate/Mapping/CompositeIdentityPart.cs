@@ -43,6 +43,11 @@ namespace FluentNHibernate.Mapping
 		{
 			get { return 0; }
 		}
+
+	    public PartPosition Position
+	    {
+            get { return PartPosition.Anywhere; }
+	    }
 	}
 
 	public class CompositeIdentityPart<T> : IMappingPart, IAccessStrategy<CompositeIdentityPart<T>>
@@ -85,7 +90,12 @@ namespace FluentNHibernate.Mapping
 			get { return 1; }
 		}
 
-		/// <summary>
+	    public PartPosition Position
+	    {
+            get { return PartPosition.Anywhere; }
+	    }
+
+	    /// <summary>
 		/// Defines a property to be used as a key for this composite-id.
 		/// </summary>
 		/// <param name="expression">A member access lambda expression for the property</param>

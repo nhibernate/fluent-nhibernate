@@ -33,6 +33,11 @@ namespace FluentNHibernate.Mapping
             get { return 4; }
         }
 
+        public PartPosition Position
+        {
+            get { return PartPosition.Anywhere; }
+        }
+
         public JoinedSubClassPart<T> WithTableName(string tableName)
         {             
             attributes.Store("table", tableName);

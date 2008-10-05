@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CreatesJoinedSubClassElement()
         {
             new MappingTester<SuperClass>()
-                .ForMapping(m => m.JoinedSubClass<SubClassA>("columnName", sm => sm.Map(x => x.Name)))
+                .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Map(x => x.Name)))
                 .Element("class/joined-subclass").Exists();
         }
 
@@ -17,7 +17,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void NamesJoinedSubClassElementCorrectly()
         {
             new MappingTester<SuperClass>()
-                .ForMapping(m => m.JoinedSubClass<SubClassA>("columnName", sm => sm.Map(x => x.Name)))
+                .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Map(x => x.Name)))
                 .Element("class/joined-subclass").HasAttribute("name", "SubClassA");
         }
 
@@ -25,7 +25,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void JoinedSubClassHasKeyElement()
         {
             new MappingTester<SuperClass>()
-                .ForMapping(m => m.JoinedSubClass<SubClassA>("columnName", sm => sm.Map(x => x.Name)))
+                .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Map(x => x.Name)))
                 .Element("class/joined-subclass/key").Exists();
         }
 
@@ -33,7 +33,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void JoinedSubClassKeyElementHasCorrectColumn()
         {
             new MappingTester<SuperClass>()
-                .ForMapping(m => m.JoinedSubClass<SubClassA>("columnName", sm => sm.Map(x => x.Name)))
+                .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Map(x => x.Name)))
                 .Element("class/joined-subclass/key").HasAttribute("column", "columnName");
         }
 
@@ -41,7 +41,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void PropertiesGetAddedToJoinedSubClassElement()
         {
             new MappingTester<SuperClass>()
-                .ForMapping(m => m.JoinedSubClass<SubClassA>("columnName", sm => sm.Map(x => x.Name)))
+                .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Map(x => x.Name)))
                 .Element("class/joined-subclass/property")
                     .Exists()
                     .HasAttribute("name", "Name");
@@ -51,17 +51,41 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyJoinedSubClassTable()
         {
             new MappingTester<SuperClass>()
-               .ForMapping(m => m.JoinedSubClass<SubClassA>("columnName", sm => sm.WithTableName("TestTable")))
+               .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.WithTableName("TestTable")))
                .Element("class/joined-subclass")
                    .HasAttribute("table", "TestTable");
         }
-    }
 
-    public class SuperClass
-    {}
+        [Test]
+        public void SubclassesAreLastInClass()
+        {
+            new MappingTester<SuperClass>()
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Type);
+                    m.References(x => x.Parent);
+                    m.DiscriminateSubClassesOnColumn<string>("class")
+                        .SubClass<SubClass>()
+                        .IsIdentifiedBy("subclass")
+                        .MapSubClassColumns(sc =>
+                        {
+                            sc.Map(x => x.Name);
+                        });
+                })
+                .Element("class/*[last()]").HasName("subclass");
+        }
 
-    public class SubClassA : SuperClass
-    {
-        public string Name { get; set; }
+        private class SuperClass
+        {
+            public int Id { get; set; }
+            public string Type { get; set; }
+            public SuperClass Parent { get; set; }
+        }
+
+        private class SubClass : SuperClass
+        {
+            public string Name { get; set; }
+        }
     }
 }

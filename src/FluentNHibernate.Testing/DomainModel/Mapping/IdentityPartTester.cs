@@ -45,6 +45,18 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 			generatorElemenent.AttributeShouldEqual("class", "identity");
 		}
 
+        [Test]
+        public void IdIsAlwaysFirstElementInClass()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(m =>
+                {
+                    m.Map(x => x.StringId); // just a property in this case
+                    m.Id(x => x.IntId);
+                })
+                .Element("class/*[1]").HasName("id");
+        }
+
 		[Test]
 		public void ColumnName_SpecifyColumnName()
 		{

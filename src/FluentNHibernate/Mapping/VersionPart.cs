@@ -56,6 +56,11 @@ namespace FluentNHibernate.Mapping
             get { return 1; }
         }
 
+        public PartPosition Position
+        {
+            get { return PartPosition.Anywhere; }
+        }
+
         public VersionPart TheColumnNameIs(string columnName)
         {
             _columnName = columnName;

@@ -77,6 +77,11 @@ namespace FluentNHibernate.Mapping
             get { return 3; }
         }
 
+        public PartPosition Position
+        {
+            get { return PartPosition.Anywhere; }
+        }
+
         public AccessStrategyBuilder<ManyToOnePart> Access
         {
             get { return access; }

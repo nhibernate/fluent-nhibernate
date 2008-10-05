@@ -99,6 +99,11 @@ namespace FluentNHibernate.Mapping
             get { return 3; }
         }
 
+        public PartPosition Position
+        {
+            get { return PartPosition.Anywhere; }
+        }
+
         #endregion
 
         public OneToManyPart<PARENT, CHILD> LazyLoad()

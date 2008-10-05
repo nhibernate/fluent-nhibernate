@@ -40,6 +40,11 @@ namespace FluentNHibernate.Mapping
             get { return 3; }
         }
 
+        public PartPosition Position
+        {
+            get { return PartPosition.Last; }
+        }
+
         public void WithKeyColumn(string column)
         {
             keyColumnName = column;

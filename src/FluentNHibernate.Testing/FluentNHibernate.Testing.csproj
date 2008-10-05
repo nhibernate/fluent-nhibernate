@@ -99,6 +99,7 @@
     <Compile Include="DomainModel\Mapping\CompositeIdentityPartTester.cs" />
     <Compile Include="DomainModel\Mapping\ConventionsTester.cs" />
     <Compile Include="DomainModel\Mapping\DefaultConventionTester.cs" />
+    <Compile Include="DomainModel\Mapping\MappingPartOutputOrderTests.cs" />
     <Compile Include="DomainModel\Mapping\FetchTypeExpressionTester.cs" />
     <Compile Include="DomainModel\Mapping\DefaultAccessStrategyClassMapTester.cs" />
     <Compile Include="DomainModel\Mapping\DiscriminatorPartTester.cs" />

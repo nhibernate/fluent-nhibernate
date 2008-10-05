@@ -9,9 +9,7 @@ namespace FluentNHibernate.Mapping
     public class ClassMapBase<T>
     {
         private bool _parentIsRequired = true;
-        
         protected readonly List<IMappingPart> _properties = new List<IMappingPart>();
-
 
         protected bool parentIsRequired
         {
@@ -124,20 +122,12 @@ namespace FluentNHibernate.Mapping
             return versionPart;
         }
 
-        protected virtual void writeTheParts(XmlElement classElement, IMappingVisitor visitor)
+        protected void writeTheParts(XmlElement classElement, IMappingVisitor visitor)
         {
             _properties.Sort(new MappingPartComparer());
             foreach (IMappingPart part in _properties)
             {
                 part.Write(classElement, visitor);
-            }
-        }
-
-        internal class MappingPartComparer : IComparer<IMappingPart>
-        {
-            public int Compare(IMappingPart x, IMappingPart y)
-            {
-                return x.Level.CompareTo(y.Level);
             }
         }
     }

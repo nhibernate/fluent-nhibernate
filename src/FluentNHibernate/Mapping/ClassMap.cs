@@ -13,7 +13,6 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> attributes = new Cache<string, string>();
         private readonly Cache<string, string> hibernateMappingAttributes = new Cache<string, string>();
         private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
-        private readonly IList<JoinPart<T>> additionalTables = new List<JoinPart<T>>();
 
         public ClassMap()
         {
@@ -33,16 +32,6 @@ namespace FluentNHibernate.Mapping
             writeTheParts(classElement, visitor);
 
             return document;
-        }
-
-        protected override void writeTheParts(XmlElement classElement, IMappingVisitor visitor)
-        {
-            base.writeTheParts(classElement, visitor);
-
-            foreach (var table in additionalTables)
-            {
-                table.Write(classElement, visitor);
-            }
         }
 
         public void UseIdentityForKey(Expression<Func<T, object>> expression, string columnName)
@@ -139,7 +128,7 @@ namespace FluentNHibernate.Mapping
     	{
 			PropertyInfo property = ReflectionHelper.GetProperty(expression);
     		var id = column == null ? new IdentityPart(property) : new IdentityPart(property, column);
-    		_properties.Insert(0, id);
+    		_properties.Add(id);
     		return id;
     	}
 
@@ -190,7 +179,7 @@ namespace FluentNHibernate.Mapping
             var join = new JoinPart<T>(tableName);
 
             action(join);
-            additionalTables.Add(join);
+            addPart(join);
         }
     }
 }

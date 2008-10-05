@@ -86,7 +86,12 @@ namespace FluentNHibernate.Mapping
 			get { return 0; }
 		}
 
-		public IdentityPart SetGeneratorClass(string generator)
+	    public PartPosition Position
+	    {
+            get { return PartPosition.First; }
+	    }
+
+	    public IdentityPart SetGeneratorClass(string generator)
 		{
 			_generatorClass = generator;
 			return this;

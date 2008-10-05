@@ -63,6 +63,11 @@ namespace FluentNHibernate.Mapping
             get { return 2; }
         }
 
+        public PartPosition Position
+        {
+            get { return PartPosition.Anywhere; }
+        }
+
         #endregion
 
         #region IProperty Members

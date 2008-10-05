@@ -292,6 +292,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             get { throw new System.NotImplementedException(); }
         }
 
+        public PartPosition Position
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
         public bool HasAttribute(string name, string value)
         {
             if (!attributes.ContainsKey(name)) return false;

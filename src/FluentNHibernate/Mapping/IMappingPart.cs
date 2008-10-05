@@ -6,5 +6,6 @@ namespace FluentNHibernate.Mapping
     {
         void Write(XmlElement classElement, IMappingVisitor visitor);
         int Level { get; }
+        PartPosition Position { get; }
     }
 }
