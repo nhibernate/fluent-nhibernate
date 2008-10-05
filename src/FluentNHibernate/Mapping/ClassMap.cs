@@ -39,13 +39,14 @@ namespace FluentNHibernate.Mapping
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
             var part = new IdentityPart(property, columnName);
 
-            _properties.Insert(0, part);
+            AddPart(part);
         }
 
 		public CompositeIdentityPart<T> UseCompositeId()
 		{
 			var part = new CompositeIdentityPart<T>();
-			_properties.Insert(0, part);
+			
+            AddPart(part);
 
 			return part;
 		}
@@ -128,7 +129,7 @@ namespace FluentNHibernate.Mapping
     	{
 			PropertyInfo property = ReflectionHelper.GetProperty(expression);
     		var id = column == null ? new IdentityPart(property) : new IdentityPart(property, column);
-    		_properties.Add(id);
+    		AddPart(id);
     		return id;
     	}
 
@@ -137,7 +138,7 @@ namespace FluentNHibernate.Mapping
             var subclass = new JoinedSubClassPart<TSubclass>(keyColumn);
 
             action(subclass);
-            _properties.Add(subclass);
+            AddPart(subclass);
 
             return subclass;
         }
@@ -179,7 +180,7 @@ namespace FluentNHibernate.Mapping
             var join = new JoinPart<T>(tableName);
 
             action(join);
-            addPart(join);
+            AddPart(join);
         }
     }
 }

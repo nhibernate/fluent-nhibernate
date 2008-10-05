@@ -74,13 +74,28 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 					.HasAttribute("name", "Child");
 		}
 
+        [Test]
+        public void IdIsAlwaysFirstElementInClass()
+        {
+            new MappingTester<CompIdTarget>()
+                .ForMapping(m =>
+                {
+                    m.Map(x => x.DummyProp); // just a property in this case
+                    m.UseCompositeId()
+                        .WithKeyProperty(x => x.LongId)
+                        .WithKeyReference(x => x.Child);
+                })
+                .Element("class/*[1]").HasName("composite-id");
+        }
+
+
 
 		public class CompIdTarget
 		{
 			public virtual long LongId { get; set; }
 			public virtual long? NullableLongId { get; set; }
 			public virtual CompIdChild Child { get; set; }
-
+		    public virtual string DummyProp { get; set; }
 		}
 
 		public class CompIdChild

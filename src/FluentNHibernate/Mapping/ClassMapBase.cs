@@ -9,7 +9,7 @@ namespace FluentNHibernate.Mapping
     public class ClassMapBase<T>
     {
         private bool _parentIsRequired = true;
-        protected readonly List<IMappingPart> _properties = new List<IMappingPart>();
+        private readonly List<IMappingPart> _properties = new List<IMappingPart>();
 
         protected bool parentIsRequired
         {
@@ -17,7 +17,7 @@ namespace FluentNHibernate.Mapping
             set { _parentIsRequired = value; }
         }
 
-        protected void addPart(IMappingPart part)
+        protected void AddPart(IMappingPart part)
         {
             _properties.Add(part);
         }
@@ -53,7 +53,7 @@ namespace FluentNHibernate.Mapping
             if (columnName != null)
                 part.TheColumnNameIs(columnName);
 
-            addPart(part);
+            AddPart(part);
 
             return part;
         }
@@ -62,7 +62,7 @@ namespace FluentNHibernate.Mapping
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
             OneToOnePart part = new OneToOnePart(property);
-            addPart(part);
+            AddPart(part);
 
             return part;
         }
@@ -70,7 +70,7 @@ namespace FluentNHibernate.Mapping
         public virtual DiscriminatorPart<ARG, T> DiscriminateSubClassesOnColumn<ARG>(string columnName, ARG baseClassDiscriminator) 
 		{
 			var part = new DiscriminatorPart<ARG, T>(columnName, _properties, baseClassDiscriminator);
-			addPart(part);
+			AddPart(part);
 
 			return part;
 		}
@@ -78,7 +78,7 @@ namespace FluentNHibernate.Mapping
         public virtual DiscriminatorPart<ARG, T> DiscriminateSubClassesOnColumn<ARG>(string columnName)
         {
             var part = new DiscriminatorPart<ARG, T>(columnName, _properties);
-            addPart(part);
+            AddPart(part);
 
             return part;
         }
@@ -88,7 +88,7 @@ namespace FluentNHibernate.Mapping
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
 
             ComponentPart<C> part = new ComponentPart<C>(property, parentIsRequired);
-            addPart(part);
+            AddPart(part);
 
             action(part);
 
@@ -100,7 +100,7 @@ namespace FluentNHibernate.Mapping
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
             OneToManyPart<T, CHILD> part = new OneToManyPart<T, CHILD>(property);
 
-            addPart(part);
+            AddPart(part);
 
             return part;
         }
@@ -110,7 +110,7 @@ namespace FluentNHibernate.Mapping
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
             ManyToManyPart<T, CHILD> part = new ManyToManyPart<T, CHILD>(property);
 
-            addPart(part);
+            AddPart(part);
 
             return part;
         }
@@ -118,7 +118,7 @@ namespace FluentNHibernate.Mapping
         public virtual VersionPart Version(Expression<Func<T, object>> expression)
         {
             var versionPart = new VersionPart(ReflectionHelper.GetProperty(expression));
-            addPart(versionPart);
+            AddPart(versionPart);
             return versionPart;
         }
 

@@ -92,7 +92,7 @@ namespace FluentNHibernate.Mapping
 
 	    public PartPosition Position
 	    {
-            get { return PartPosition.Anywhere; }
+            get { return PartPosition.First; }
 	    }
 
 	    /// <summary>
