@@ -77,22 +77,22 @@ namespace FluentNHibernate
 
         public void AlterManyToOneMap(ManyToOnePart part)
         {
-            if (ManyToOneConvention != null) ManyToOneConvention.Invoke(part);
+            ManyToOneConvention.Invoke(part);
         }
 
         public void AlterOneToOneMap(OneToOnePart part)
         {
-            if (OneToOneConvention != null) OneToOneConvention.Invoke(part);
+            OneToOneConvention.Invoke(part);
         }
 
         public void AlterOneToManyMap(IMappingPart oneToManyPart)
         {
-            if (OneToManyConvention != null) OneToManyConvention.Invoke(oneToManyPart);
+            OneToManyConvention.Invoke(oneToManyPart);
         }
 
         public void AlterJoin(IMappingPart part)
         {
-            if (JoinConvention != null) JoinConvention.Invoke(part);
+            JoinConvention.Invoke(part);
         }
 
         public void ForAttribute<T>(Action<T, IProperty> action) where T : Attribute
@@ -102,10 +102,10 @@ namespace FluentNHibernate
         }
 
         public Func<PropertyInfo,bool> FindIdentity = p => p.Name == "Id";
-        public Action<IMappingPart> OneToManyConvention;
-        public Action<IMappingPart> ManyToOneConvention;
-        public Action<IMappingPart> OneToOneConvention;
-        public Action<IMappingPart> JoinConvention;
+        public Action<IMappingPart> OneToManyConvention = m => {};
+        public Action<IMappingPart> ManyToOneConvention = m => {};
+        public Action<IMappingPart> OneToOneConvention = m => {};
+        public Action<IMappingPart> JoinConvention = m => {};
         public Func<PropertyInfo, string> GetVersionColumnName;
     }
 }
