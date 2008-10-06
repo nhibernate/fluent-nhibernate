@@ -9,8 +9,8 @@ namespace FluentNHibernate.AutoMap
     {
         private readonly AutoMapper autoMap;
         private Assembly assemblyContainingMaps;
-        private Func<Type, bool> shouldIncludeType = t => true;
         private Assembly entityAssembly;
+        private Func<Type, bool> shouldIncludeType;
 
         public AutoPersistenceModel WithConvention(Conventions convention)
         {
@@ -48,37 +48,52 @@ namespace FluentNHibernate.AutoMap
             if (assemblyContainingMaps != null)
                 addMappingsFromAssembly(assemblyContainingMaps);
 
-            foreach (var obj in entityAssembly.GetTypes())
+            foreach (var type in entityAssembly.GetTypes())
             {
-		        if (obj.IsClass)
+                if (shouldIncludeType!= null)
                 {
-                    if (shouldIncludeType.Invoke(obj))
-                    {
-                        // Find the map that already exists
-                        var findMapMethod = typeof (AutoPersistenceModel).GetMethod("FindMapping");
-                        var genericFindMapMethod = findMapMethod.MakeGenericMethod(obj);
-                        var mapping = genericFindMapMethod.Invoke(this, null);
+                    if (!shouldIncludeType.Invoke(type))
+                        continue;
+                }
 
-                        if (mapping != null)
-                        {
-                            // Merge Mappings together
-                            var findAutoMapMethod = typeof (AutoMapper).GetMethod("MergeMap");
-                            var genericfindAutoMapMethod = findAutoMapMethod.MakeGenericMethod(obj);
-                            genericfindAutoMapMethod.Invoke(autoMap, new[] {mapping});
-                        }
-                        else
-                        {
-                            //Auto magically map the entity
-                            var findAutoMapMethod = typeof (AutoMapper).GetMethod("Map", new Type[0]);
-                            var genericfindAutoMapMethod = findAutoMapMethod.MakeGenericMethod(obj);
-                            addMapping((IMapping) genericfindAutoMapMethod.Invoke(autoMap, null));
-                        }
-                    }
+                if (type.IsClass)
+                {
+                    var mapping = FindMapping(type);
+
+                    if (mapping != null)
+                        MergeMap(type, mapping);
+                    else
+                        AddMapping(type);
                 }
             }
 
             base.Configure(configuration);
         }
+
+        #region Configuation Helpers
+
+        private object AddMapping(Type type)
+        {
+            var mapping = InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
+                autoMap, a => a.Map<object>(), null, type);
+            addMapping((IMapping)mapping);
+            return mapping;
+        }
+
+        private void MergeMap(Type type, object mapping)
+        {
+            InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
+                autoMap, a => a.MergeMap<object>(null), new[] { mapping }, type);
+        }
+
+        private object FindMapping(Type type)
+        {
+            var mapping = InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
+                this, a => a.FindMapping<object>(), null, type);
+            return mapping;
+        }
+
+        #endregion
 
         public AutoPersistenceModel()
         {
