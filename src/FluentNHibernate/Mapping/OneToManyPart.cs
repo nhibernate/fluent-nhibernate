@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 namespace FluentNHibernate.Mapping
 {
 
-    public class OneToManyPart<PARENT, CHILD> : IMappingPart, IAccessStrategy<OneToManyPart<PARENT, CHILD>>
+    public class OneToManyPart<PARENT, CHILD> : IMappingPart, IAccessStrategy<OneToManyPart<PARENT, CHILD>>, IOneToManyPart
     {
 		private readonly Cache<string, string> _properties = new Cache<string, string>();
         private readonly PropertyInfo _property;
@@ -249,6 +249,24 @@ namespace FluentNHibernate.Mapping
             }
         }
 
+        #region Explicit IOneToManyPart Implementation
+
+        CollectionCascadeExpression<IOneToManyPart> IOneToManyPart.Cascade
+        {
+            get { return new CollectionCascadeExpression<IOneToManyPart>(this); }
+        }
+
+        IOneToManyPart IOneToManyPart.IsInverse()
+        {
+            return this.IsInverse();
+        }
+
+        IOneToManyPart IOneToManyPart.LazyLoad()
+        {
+            return this.LazyLoad();
+        }
+
+        #endregion
 
     }
 }

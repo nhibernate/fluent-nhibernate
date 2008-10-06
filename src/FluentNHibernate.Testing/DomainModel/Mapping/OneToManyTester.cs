@@ -213,7 +213,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void SetsLazyLoadingOnThroughConvention()
         {
             var visitor = new MappingVisitor();
-            visitor.Conventions.OneToManyConvention = p => p.SetAttribute("lazy", "true");
+            visitor.Conventions.OneToManyConvention = p => p.LazyLoad();
 
             new MappingTester<OneToManyComponentTarget>()
                 .UsingVisitor(visitor)
@@ -235,7 +235,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void SetsCascadeOnThroughConvention()
         {
             var visitor = new MappingVisitor();
-            visitor.Conventions.OneToManyConvention = p => p.SetAttribute("cascade", "all");
+            visitor.Conventions.OneToManyConvention = p => p.Cascade.All();
 
             new MappingTester<OneToManyComponentTarget>()
                 .UsingVisitor(visitor)
