@@ -15,6 +15,7 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> _keyProperties = new Cache<string, string>();
         private string _collectionType;
         private IndexMapping _indexMapping;
+        private string _elementColumn;
         private readonly AccessStrategyBuilder<OneToManyPart<PARENT, CHILD>> access;
         private CompositeElementPart<CHILD> _componentMapping;
         private string _tableName;
@@ -56,7 +57,13 @@ namespace FluentNHibernate.Mapping
 
         private void WriteMappingTypeElement(IMappingVisitor visitor, XmlElement collectionElement)
         {
-            if (_componentMapping == null)
+            if (!string.IsNullOrEmpty(_elementColumn)) 
+            { 
+                collectionElement.AddElement("element") 
+                    .SetAttribute("column", _elementColumn);
+                collectionElement.SetAttributeOnChild("element", "type", typeof(CHILD).Name); 
+            } 
+            else if (_componentMapping == null) 
             {
                 // standard one-to-many element
                 collectionElement.AddElement("one-to-many")
@@ -188,6 +195,12 @@ namespace FluentNHibernate.Mapping
         {
             _keyProperties.Store("column", columnName);
             return this;
+        }
+
+        public OneToManyPart<PARENT, CHILD> AsElement(string columnName) 
+        { 
+            _elementColumn = columnName; 
+            return this; 
         }
 
         /// <summary>

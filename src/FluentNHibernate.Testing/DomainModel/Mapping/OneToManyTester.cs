@@ -12,6 +12,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public IList<ChildObject> ListOfChildren { get; set; }
         public IDictionary<string, ChildObject> MapOfChildren { get; set; }
         public ChildObject[] ArrayOfChildren { get; set; }
+        public IList<string> ListOfSimpleChildren { get; set; } 
     }
 
     public class OneToManyComponentTarget
@@ -243,5 +244,30 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/bag").HasAttribute("cascade", "all");
         }
 
+        [Test] 
+        public void CanSetAsElement() 
+        { 
+            new MappingTester<OneToManyTarget>() 
+                .ForMapping(m => m.HasMany<string>(x => x.ListOfSimpleChildren).AsElement("columnName")) 
+                .Element("class/bag/element").Exists(); 
+        } 
+ 
+        [Test] 
+        public void ElementHasCorrectType() 
+        { 
+            new MappingTester<OneToManyTarget>() 
+                .ForMapping(m => m.HasMany<string>(x => x.ListOfSimpleChildren).AsElement("columnName")) 
+                .Element("class/bag/element").HasAttribute("type", typeof(string).Name); 
+        } 
+ 
+        [Test] 
+        public void ElementHasCorrectColumnName() 
+        { 
+            string columnName = "columnName"; 
+ 
+            new MappingTester<OneToManyTarget>() 
+                .ForMapping(m => m.HasMany<string>(x => x.ListOfSimpleChildren).AsElement(columnName)) 
+                .Element("class/bag/element").HasAttribute("column", columnName); 
+        } 
     }
 }
