@@ -20,7 +20,7 @@ namespace FluentNHibernate.Mapping
         {
             XmlElement subclassElement = classElement.AddElement("subclass")
                 .WithAtt("discriminator-value", _discriminatorValue)
-                .WithAtt("name", typeof(T).Name)
+                .WithAtt("name", typeof(T).FullName)
                 .WithProperties(attributes);
 
             writeTheParts(subclassElement, visitor);
