@@ -17,7 +17,7 @@ class NUnitRunner
 			cp @teamCityAddinPath + '-2.4.7.dll', 'tools/nunit/addins'
 		end
 	
-		@nunitExe = "tools/nunit/nunit-console#{(@compilePlatform.nil? ? '' : "-#{@compilePlatform}")}.exe /nothread"
+		@nunitExe = File.join('tools', 'nunit', "nunit-console#{(@compilePlatform.nil? ? '' : "-#{@compilePlatform}")}.exe").gsub('/','\\') + ' /nothread'
 	end
 	
 	def executeTests(assemblies)
