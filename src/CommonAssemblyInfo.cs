@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 //------------------------------------------------------------------------------
 
 [assembly: AssemblyVersionAttribute("0.1.0.0")]
-[assembly: AssemblyCopyrightAttribute("Released by Jeremy D. Miller under the Apache 2.0 License")]
+[assembly: AssemblyCopyrightAttribute("Copyright 2008 Jeremy D. Miller, James Gregory, Andrew Stewart, Paul Batum, Chad Myers et al. All rights reserved.")]
 [assembly: AssemblyProductAttribute("FluentNHibernate")]
 [assembly: AssemblyCompanyAttribute("FluentNHibernate")]
 [assembly: AssemblyConfigurationAttribute("debug")]
