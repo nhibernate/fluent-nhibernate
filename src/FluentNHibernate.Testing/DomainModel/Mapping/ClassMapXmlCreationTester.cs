@@ -216,7 +216,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             Debug.WriteLine(document.OuterXml);
 
             var element = (XmlElement) document.DocumentElement.SelectSingleNode("//subclass");
-            element.AttributeShouldEqual("name", "SecondMappedObject");
+            element.AttributeShouldEqual("name", typeof(SecondMappedObject).AssemblyQualifiedName);
             element.AttributeShouldEqual("discriminator-value", "red");
 
             XmlElement propertyElement = element["property"];

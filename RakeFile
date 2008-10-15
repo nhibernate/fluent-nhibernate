@@ -1,0 +1,104 @@
+COMPILE_TARGET = "debug"
+require "BuildUtils.rb"
+
+include FileTest
+
+require 'rubygems'
+
+gem 'rubyzip'
+require 'zip/zip'
+require 'zip/zipfilesystem'
+
+RESULTS_DIR = "results"
+BUILD_NUMBER = "0.1.0."
+PRODUCT = "FluentNHibernate"
+COPYRIGHT = 'Copyright 2008 Jeremy D. Miller, James Gregory, Andrew Stewart, Paul Batum, Chad Myers et al. All rights reserved.';
+COMMON_ASSEMBLY_INFO = 'src/CommonAssemblyInfo.cs';
+CLR_VERSION = "v3.5"
+
+versionNumber = ENV["BUILD_NUMBER"].nil? ? 0 : ENV["BUILD_NUMBER"]
+
+props = { :archive => "build" }
+
+desc "Compiles, unit tests, generates the database, and then runs integration tests"
+task :all => [:default]
+
+desc "**Default**, compiles and runs tests"
+task :default => [:use_nhib_20, :compile, :unit_test]
+
+desc "Builds Fluent NHibernate against the NHibernate 2.1 libs (instead of the normal NHibernate 2.0GA"
+task :nhib21 =>[:use_nhib_21, :compile, :unit_test, :use_nhib_20]
+
+desc "Switches NHibernate dependencies to NHibernate 2.1"
+task :use_nhib_21 do
+	switch_nhib_libs('nhib2.1')
+end
+
+desc "Switches NHibernate dependencies to NHibernate 2.0"
+task :use_nhib_20 do	
+	switch_nhib_libs('nhib2.0GA')
+end
+
+#### hidden task, don't call directly
+def switch_nhib_libs(nhib_lib_dir)
+	puts "Switching NHibernate dependencies to #{nhib_lib_dir}"
+	# clear the nhib dir
+	Dir.foreach('tools/NHibernate') {|file| 
+		relFile = File.join('tools/NHibernate',file)
+		File.delete(relFile) if File.file?(relFile)
+	}
+	
+	# copy the source files over
+	Dir.foreach("tools/NHibernate/#{nhib_lib_dir}"){|file| 
+		relFile = File.join("tools/NHibernate/#{nhib_lib_dir}",file)
+		copy(relFile, 'tools/NHibernate') if File.file?(relFile)
+	}
+end
+
+
+desc "Displays a list of tasks"
+task :help do
+  taskHash = Hash[*(`rake.cmd -T`.split(/\n/).collect { |l| l.match(/rake (\S+)\s+\#\s(.+)/).to_a }.collect { |l| [l[1], l[2]] }).flatten] 
+ 
+  indent = "                          "
+  
+  puts "rake #{indent}#Runs the 'default' task"
+  
+  taskHash.each_pair do |key, value|
+    if key.nil?  
+      next
+    end
+    puts "rake #{key}#{indent.slice(0, indent.length - key.length)}##{value}"
+  end
+end
+
+desc "Update the version information for the build"
+task :version do
+  builder = AsmInfoBuilder.new(BUILD_NUMBER, {'Product' => PRODUCT, 'Copyright' => COPYRIGHT})
+  buildNumber = builder.buildnumber
+  puts "The build number is #{buildNumber}"
+  builder.write COMMON_ASSEMBLY_INFO  
+end
+
+desc "Prepares the working directory for a new build"
+task :clean do
+	#TODO: do any other tasks required to clean/prepare the working directory
+	Dir.mkdir props[:archive] unless exists?(props[:archive])
+end
+
+desc "Compiles the app"
+task :compile => [:clean, :version] do
+  MSBuildRunner.compile :compilemode => COMPILE_TARGET, :solutionfile => 'src/FluentNHibernate.sln', :clrversion => CLR_VERSION
+    
+  outDir = "src/FluentNHibernate/bin/#{COMPILE_TARGET}"
+    
+  Dir.glob(File.join(outDir, "*.{dll,pdb}")){|file| 		
+	copy(file, props[:archive]) if File.file?(file)
+  }
+end
+
+desc "Runs unit tests"
+task :unit_test => :compile do
+  runner = NUnitRunner.new :compilemode => COMPILE_TARGET, :source => 'src', :platform => 'x86'
+  runner.executeTests ['FluentNHibernate.Testing']  
+end

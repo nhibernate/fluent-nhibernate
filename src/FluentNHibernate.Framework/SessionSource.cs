@@ -22,8 +22,9 @@ namespace FluentNHibernate.Framework
         private ISessionFactory _sessionFactory;
         private Configuration _configuration;
         private PersistenceModel _model;
+        private Dialect _dialect;
 
-    	public SessionSource(PersistenceModel model) 
+        public SessionSource(PersistenceModel model) 
     	{
     		Initialize(new Configuration().Configure(), model);
     	}
@@ -43,6 +44,7 @@ namespace FluentNHibernate.Framework
 			model.Configure(_configuration);
 
 			_sessionFactory = _configuration.BuildSessionFactory();
+    	    _dialect = Dialect.GetDialect(_configuration.Properties);
 		}
 
     	public PersistenceModel Model
@@ -64,10 +66,10 @@ namespace FluentNHibernate.Framework
 		{
     		IDbConnection connection = session.Connection;
 
-            string[] drops = _configuration.GenerateDropSchemaScript(_sessionFactory.Dialect);
+            string[] drops = _configuration.GenerateDropSchemaScript(_dialect);
             executeScripts(drops, connection);
 
-            string[] scripts = _configuration.GenerateSchemaCreationScript(_sessionFactory.Dialect);
+            string[] scripts = _configuration.GenerateSchemaCreationScript(_dialect);
             executeScripts(scripts, connection);
         }
 
