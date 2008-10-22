@@ -28,7 +28,7 @@ namespace FluentNHibernate.Mapping
 
 		private void ensureGuidIdentityType()
 		{
-			if (_parent.IdentityType != typeof(Guid)) throw new InvalidOperationException("Identity type must be Guid");
+			if (_parent.IdentityType != typeof(Guid) && _parent.IdentityType != typeof(Guid?)) throw new InvalidOperationException("Identity type must be Guid");
 		}
 
 		private void ensureStringIdentityType()
@@ -39,7 +39,14 @@ namespace FluentNHibernate.Mapping
 		private static bool isIntegralType(Type t)
 		{
 			// do we think we'll encounter more?
-			return t == typeof (int) || t == typeof (long) || t == typeof(uint) || t == typeof(ulong) || t == typeof(byte) || t == typeof(sbyte) || t == typeof(short) || t == typeof(ushort);
+            return t == typeof(int) || t == typeof(int?) 
+                || t == typeof(long) || t == typeof(long?)
+                || t == typeof(uint) || t == typeof(uint?)
+                || t == typeof(ulong) || t == typeof(ulong?)
+                || t == typeof(byte) || t == typeof(byte?)
+                || t == typeof(sbyte) || t == typeof(sbyte?)
+                || t == typeof(short) || t == typeof(short?)
+                || t == typeof(ushort) || t == typeof(ushort?);
 		}
 
 		/// <summary>
