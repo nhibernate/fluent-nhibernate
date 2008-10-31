@@ -57,15 +57,18 @@ namespace FluentNHibernate.Testing.AutoMap
         }
 
         [Test]
-        public void AutoMapDoesntIncludeCustomProperty()
+        public void AutoMapIgnoreProperty()
         {
             var autoMapper = new AutoMapper(new Conventions());
-            var map = autoMapper.Map<ExampleCustomColumn>();
+            var map = autoMapper.Map<ExampleClass>();
 
             Assert.IsNotNull(map);
 
             var document = map.CreateMapping(new MappingVisitor());
-            Assert.IsFalse(document.InnerText.Contains("CustomColumn"));
+
+            var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//property");
+            keyElement.AttributeShouldEqual("column", "LineOne");
+            keyElement.AttributeShouldEqual("name", "LineOne");
         }
 
         [Test]

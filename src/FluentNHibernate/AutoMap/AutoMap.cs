@@ -20,6 +20,11 @@ namespace FluentNHibernate.AutoMap
             return base.HasMany<CHILD>(expression);
         }
 
+        public void IgnoreProperty(System.Linq.Expressions.Expression<Func<T, object>> expression)
+        {
+            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
+        }
+
         public override IdentityPart Id(System.Linq.Expressions.Expression<Func<T, object>> expression)
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));

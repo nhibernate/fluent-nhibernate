@@ -47,6 +47,20 @@ namespace FluentNHibernate.Testing.AutoMap
         }
 
         [Test]
+        public void TestAutoMapIgnoresProperties()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForTypesThatDeriveFrom<ExampleCustomColumn>(c => c.IgnoreProperty(p => p.ExampleCustomColumnId));
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<ExampleCustomColumn>(autoMapper)
+                .Element("//property").DoesntExist();
+        }
+
+        [Test]
         public void TestAutoMapManyToOne()
         {
             var autoMapper = AutoPersistenceModel
