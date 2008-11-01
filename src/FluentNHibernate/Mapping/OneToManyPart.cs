@@ -61,7 +61,7 @@ namespace FluentNHibernate.Mapping
             { 
                 collectionElement.AddElement("element") 
                     .SetAttribute("column", _elementColumn);
-                collectionElement.SetAttributeOnChild("element", "type", typeof(CHILD).Name); 
+                collectionElement.SetAttributeOnChild("element", "type", typeof(CHILD).AssemblyQualifiedName); 
             } 
             else if (_componentMapping == null) 
             {
