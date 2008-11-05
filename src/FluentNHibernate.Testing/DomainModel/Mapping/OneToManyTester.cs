@@ -257,7 +257,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         { 
             new MappingTester<OneToManyTarget>() 
                 .ForMapping(m => m.HasMany<string>(x => x.ListOfSimpleChildren).AsElement("columnName")) 
-                .Element("class/bag/element").HasAttribute("type", typeof(string).Name); 
+                .Element("class/bag/element").HasAttribute("type", typeof(string).AssemblyQualifiedName); 
         } 
  
         [Test] 

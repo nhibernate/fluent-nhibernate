@@ -16,9 +16,10 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void NamesJoinedSubClassElementCorrectly()
         {
-            new MappingTester<SuperClass>()
-                .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Map(x => x.Name)))
-                .Element("class/joined-subclass").HasAttribute("name", "SubClass");
+          new MappingTester<SuperClass>()
+            .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Map(x => x.Name)))
+            .Element("class/joined-subclass").HasAttribute("name", typeof (SubClass).AssemblyQualifiedName);
+                
         }
 
         [Test]

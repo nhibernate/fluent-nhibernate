@@ -20,7 +20,7 @@ namespace FluentNHibernate.Mapping
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             XmlElement subclassElement = classElement.AddElement("joined-subclass")
-                .WithAtt("name", typeof(T).Name);
+                .WithAtt("name", typeof(T).AssemblyQualifiedName);
             subclassElement.AddElement("key")
                 .WithAtt("column", _keyColumn);
             subclassElement.WithProperties(attributes);
