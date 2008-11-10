@@ -6,18 +6,30 @@ namespace FluentNHibernate.Mapping
 	public class ManyToManyPart<PARENT, CHILD> : IMappingPart
     {
     
-        private readonly PropertyInfo _property;
         private readonly Cache<string, string> _properties = new Cache<string, string>();
     	private string _tableName;
     	private string _childKeyColumn;
 		private string _parentKeyColumn;
 		private string _collectionType = "bag";
         private readonly Cache<string, string> _manyToManyProperties = new Cache<string, string>();
+	    private readonly MethodInfo _collectionMethod;
+        private readonly AccessStrategyBuilder<ManyToManyPart<PARENT, CHILD>> access;
 
-		public ManyToManyPart(PropertyInfo property)
+	    public ManyToManyPart(PropertyInfo property)
+            : this(property.Name)
         {
-            _property = property;
-            _properties.Store("name", _property.Name);
+        }
+
+	    public ManyToManyPart(MethodInfo method)
+	        : this(method.Name)
+        {
+	        _collectionMethod = method;
+        }
+
+        protected ManyToManyPart(string memberName)
+        {
+            access = new AccessStrategyBuilder<ManyToManyPart<PARENT, CHILD>>(this);
+            _properties.Store("name", memberName);
         }
 
         public CollectionCascadeExpression<ManyToManyPart<PARENT, CHILD>> Cascade
@@ -66,6 +78,14 @@ namespace FluentNHibernate.Mapping
 			_collectionType = "bag";
 			return this;
 		}
+
+        /// <summary>
+        /// Set the access and naming strategy for this one-to-many.
+        /// </summary>
+        public AccessStrategyBuilder<ManyToManyPart<PARENT, CHILD>> Access
+        {
+            get { return access; }
+        }
 		
 		public FetchTypeExpression<ManyToManyPart<PARENT, CHILD>> FetchType
 		{
@@ -79,13 +99,19 @@ namespace FluentNHibernate.Mapping
         {
             var conventions = visitor.Conventions;
 
+            if (_collectionMethod != null)
+            {
+                var conventionName = conventions.GetReadOnlyCollectionBackingFieldName(_collectionMethod);
+                _properties.Store("name", conventionName);
+            }
+
+
 			string tableName = GetTableName(conventions);
 			string parentKeyName = GetParentKeyName(conventions);
 			string childForeignKeyName = GetChildKeyName(conventions);
 
 			XmlElement set = classElement.AddElement(_collectionType).WithProperties(_properties);
 			set.WithAtt("table", tableName);
-			set.WithAtt("name", _property.Name);
 
 			XmlElement key = set.AddElement("key");
 			key.WithAtt("column", parentKeyName);

@@ -97,8 +97,9 @@ namespace FluentNHibernate.Mapping
 
         public virtual OneToManyPart<T, CHILD> HasMany<CHILD>(Expression<Func<T, object>> expression)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            OneToManyPart<T, CHILD> part = new OneToManyPart<T, CHILD>(property);
+            var part = ReflectionHelper.IsMethodExpression(expression)
+                               ? new OneToManyPart<T, CHILD>(ReflectionHelper.GetMethod(expression))
+                               : new OneToManyPart<T, CHILD>(ReflectionHelper.GetProperty(expression));
 
             AddPart(part);
 
@@ -107,8 +108,9 @@ namespace FluentNHibernate.Mapping
 
         public virtual ManyToManyPart<T, CHILD> HasManyToMany<CHILD>(Expression<Func<T, object>> expression)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            ManyToManyPart<T, CHILD> part = new ManyToManyPart<T, CHILD>(property);
+            var part = ReflectionHelper.IsMethodExpression(expression)
+                               ? new ManyToManyPart<T, CHILD>(ReflectionHelper.GetMethod(expression))
+                               : new ManyToManyPart<T, CHILD>(ReflectionHelper.GetProperty(expression));
 
             AddPart(part);
 

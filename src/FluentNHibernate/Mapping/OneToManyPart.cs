@@ -9,7 +9,6 @@ namespace FluentNHibernate.Mapping
     public class OneToManyPart<PARENT, CHILD> : IOneToManyPart, IAccessStrategy<OneToManyPart<PARENT, CHILD>> 
     {
 		private readonly Cache<string, string> _properties = new Cache<string, string>();
-        private readonly PropertyInfo _property;
         //private string _keyColumnName;
         private readonly Cache<string, string> _keyProperties = new Cache<string, string>();
         private string _collectionType;
@@ -18,21 +17,39 @@ namespace FluentNHibernate.Mapping
         private readonly AccessStrategyBuilder<OneToManyPart<PARENT, CHILD>> access;
         private CompositeElementPart<CHILD> _componentMapping;
         private string _tableName;
+        private MethodInfo _collectionMethod;
 
         public OneToManyPart(PropertyInfo property)
+            : this(property.Name)
+        {
+        }
+
+        public OneToManyPart(MethodInfo method)
+            : this(method.Name)
+        {
+            _collectionMethod = method;
+        }
+
+
+        protected OneToManyPart(string memberName)
         {
             access = new AccessStrategyBuilder<OneToManyPart<PARENT, CHILD>>(this);
-            _property = property;            
-            _properties.Store("name", _property.Name);
-            
+            _properties.Store("name", memberName);
+
             // default the collection type to bag for now
-            _collectionType = "bag";
+            _collectionType = "bag";            
         }
 
         #region IMappingPart Members
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
+            if (_collectionMethod != null )
+            {
+                var conventionName = visitor.Conventions.GetReadOnlyCollectionBackingFieldName(_collectionMethod);
+                _properties.Store("name", conventionName);
+            }
+
             visitor.Conventions.AlterOneToManyMap(this);
 
             XmlElement collectionElement = WriteCollectionElement(classElement);

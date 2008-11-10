@@ -12,7 +12,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public IList<ChildObject> ListOfChildren { get; set; }
         public IDictionary<string, ChildObject> MapOfChildren { get; set; }
         public ChildObject[] ArrayOfChildren { get; set; }
-        public IList<string> ListOfSimpleChildren { get; set; } 
+        public IList<string> ListOfSimpleChildren { get; set; }
+
+
+        private IList<ChildObject> otherChildren = new List<ChildObject>();
+        public IList<ChildObject> GetOtherChildren() { return otherChildren; }
     }
 
     public class OneToManyComponentTarget
@@ -268,6 +272,20 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyTarget>() 
                 .ForMapping(m => m.HasMany<string>(x => x.ListOfSimpleChildren).AsElement(columnName)) 
                 .Element("class/bag/element").HasAttribute("column", columnName); 
-        } 
+        }
+
+        [Test]
+        public void OneToManyMapping_with_private_backing_field()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m =>
+                {
+                    m.DefaultAccess.AsCamelCaseField();
+                    m.HasMany<ChildObject>(x => x.GetOtherChildren());
+                })
+                .HasAttribute("default-access", "field.camelcase")
+                .Element("class/bag")
+                .HasAttribute("name", "OtherChildren");
+        }
     }
 }

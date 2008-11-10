@@ -7,6 +7,16 @@ namespace FluentNHibernate
 {
 	public static class ReflectionHelper
 	{
+        public static bool IsMethodExpression<MODEL>(Expression<Func<MODEL, object>> expression)
+        {
+            return expression.Body is MethodCallExpression;
+        }
+
+        public static bool IsPropertyExpression<MODEL>(Expression<Func<MODEL, object>> expression)
+        {
+            return getMemberExpression(expression, false) != null;
+        }
+
 		public static PropertyInfo GetProperty<MODEL>(Expression<Func<MODEL, object>> expression)
 		{
 			MemberExpression memberExpression = getMemberExpression(expression);
@@ -19,7 +29,12 @@ namespace FluentNHibernate
 			return (PropertyInfo)memberExpression.Member;
 		}
 
-		private static MemberExpression getMemberExpression<MODEL, T>(Expression<Func<MODEL, T>> expression)
+        private static MemberExpression getMemberExpression<MODEL, T>(Expression<Func<MODEL, T>> expression)
+        {
+            return getMemberExpression(expression, true);
+        }
+
+		private static MemberExpression getMemberExpression<MODEL, T>(Expression<Func<MODEL, T>> expression, bool enforceCheck)
 		{
 			MemberExpression memberExpression = null;
 			if (expression.Body.NodeType == ExpressionType.Convert)
@@ -32,10 +47,11 @@ namespace FluentNHibernate
 				memberExpression = expression.Body as MemberExpression;
 			}
 
-            
-
-			if (memberExpression == null) throw new ArgumentException("Not a member access", "member");
-			return memberExpression;
+            if (enforceCheck && memberExpression == null)
+            {
+                throw new ArgumentException("Not a member access", "member");
+            }
+		    return memberExpression;
 		}
 
 		public static Accessor GetAccessor<MODEL>(Expression<Func<MODEL, object>> expression)

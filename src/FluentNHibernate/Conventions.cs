@@ -47,6 +47,7 @@ namespace FluentNHibernate
         public Func<PropertyInfo, string> GetPrimaryKeyName = prop => prop.Name;
         public Func<PropertyInfo, string> GetForeignKeyName = prop => prop.Name + "_id";
         public Func<Type, string> GetForeignKeyNameOfParent = type => type.Name + "_id";
+        public Func<MethodInfo, string> GetReadOnlyCollectionBackingFieldName = method => method.Name.Replace("Get", "");
 
         public Func<Type, Type, string> GetManyToManyTableName =
             (child, parent) => child.Name + "To" + parent.Name;

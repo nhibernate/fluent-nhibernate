@@ -98,7 +98,9 @@
     <Compile Include="DomainModel\Mapping\CollectionCascadeExpressionTester.cs" />
     <Compile Include="DomainModel\Mapping\CompositeIdentityPartTester.cs" />
     <Compile Include="DomainModel\Mapping\ConventionsTester.cs" />
+    <Compile Include="DomainModel\Mapping\ManyToManyIntegrationTester.cs" />
     <Compile Include="DomainModel\Mapping\DefaultConventionTester.cs" />
+    <Compile Include="DomainModel\Mapping\ManyToManyTester.cs" />
     <Compile Include="DomainModel\Mapping\MappingPartOutputOrderTests.cs" />
     <Compile Include="DomainModel\Mapping\FetchTypeExpressionTester.cs" />
     <Compile Include="DomainModel\Mapping\DefaultAccessStrategyClassMapTester.cs" />
