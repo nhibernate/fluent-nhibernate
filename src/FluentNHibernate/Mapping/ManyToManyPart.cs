@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 
@@ -8,7 +7,7 @@ namespace FluentNHibernate.Mapping
     {
     
         private readonly PropertyInfo _property;
-        private readonly Dictionary<string, string> _properties = new Dictionary<string, string>();
+        private readonly Cache<string, string> _properties = new Cache<string, string>();
     	private string _tableName;
     	private string _childKeyColumn;
 		private string _parentKeyColumn;
@@ -18,12 +17,24 @@ namespace FluentNHibernate.Mapping
 		public ManyToManyPart(PropertyInfo property)
         {
             _property = property;
-            _properties.Add("name", _property.Name);
+            _properties.Store("name", _property.Name);
         }
 
         public CollectionCascadeExpression<ManyToManyPart<PARENT, CHILD>> Cascade
         {
 			get { return new CollectionCascadeExpression<ManyToManyPart<PARENT, CHILD>>(this); }
+        }
+
+        public ManyToManyPart<PARENT, CHILD> LazyLoad()
+        {
+            _properties.Store("lazy", "true");
+            return this;
+        }
+
+        public ManyToManyPart<PARENT, CHILD> IsInverse()
+        {
+            _properties.Store("inverse", "true");
+            return this;
         }
 
 		public ManyToManyPart<PARENT, CHILD> WithTableName(string name)
@@ -122,7 +133,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="value">Attribute value</param>
         public void SetAttribute(string name, string value)
         {
-            _properties.Add(name, value);
+            _properties.Store(name, value);
         }
 
         public int Level

@@ -138,6 +138,21 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void AdvancedManyToManyMapping()
+        {
+            var map = new ClassMap<MappedObject>();
+            map.HasManyToMany<ChildObject>(x => x.Children).LazyLoad().IsInverse();
+
+            document = map.CreateMapping(new MappingVisitor());
+
+            var element =
+                (XmlElement)document.DocumentElement.SelectSingleNode("class/bag[@name='Children']");
+
+            element.AttributeShouldEqual("lazy", "true");
+            element.AttributeShouldEqual("inverse", "true");
+        }
+
+        [Test]
         public void BuildTheHeaderXmlWithAssemblyAndNamespace()
         {
             var map = new ClassMap<MappedObject>();

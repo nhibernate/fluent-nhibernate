@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Xml;
 using System;
 using System.Linq.Expressions;
@@ -7,7 +6,7 @@ using System.Linq.Expressions;
 namespace FluentNHibernate.Mapping
 {
 
-    public class OneToManyPart<PARENT, CHILD> : IMappingPart, IAccessStrategy<OneToManyPart<PARENT, CHILD>>, IOneToManyPart
+    public class OneToManyPart<PARENT, CHILD> : IOneToManyPart, IAccessStrategy<OneToManyPart<PARENT, CHILD>> 
     {
 		private readonly Cache<string, string> _properties = new Cache<string, string>();
         private readonly PropertyInfo _property;
