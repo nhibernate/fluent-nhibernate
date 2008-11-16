@@ -296,48 +296,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             element.AttributeShouldEqual("foreign-key", "FK_MappedObjectToParent");
         }
 
-        [Test]
-        public void Creating_a_one_to_one_reference()
-        {
-			new MappingTester<MappedObject>()
-			    .ForMapping(map=>map.HasOne(x => x.Parent))
-			    .Element("class/one-to-one")
-                    .HasAttribute("name", "Parent")
-                    .HasAttribute("class", typeof(SecondMappedObject).AssemblyQualifiedName);
-        }
-
-    	[Test]
-    	public void One_to_one_reference_should_default_to_empty_cascade()
-    	{
-			new MappingTester<MappedObject>()
-			    .ForMapping(map => map.HasOne(x => x.Parent))
-			    .Element("class/one-to-one")
-				    .DoesntHaveAttribute("cascade");
-    	}
-
-        [Test]
-        public void Creating_a_one_to_one_reference_sets_the_column_overrides()
-        {
-            var map = new ClassMap<MappedObject>();
-            map.HasOne(x => x.Parent).WithForeignKey();
-
-            document = map.CreateMapping(new MappingVisitor());
-
-            Debug.WriteLine(document.DocumentElement.OuterXml);
-
-            var element = (XmlElement)document.DocumentElement.SelectSingleNode("class/one-to-one");
-
-            element.AttributeShouldEqual("foreign-key", "FK_MappedObjectToParent");
-        }
-
-        [Test]
-        public void One_to_one_with_property_reference_should_set_the_property_ref_attribute()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(map => map.HasOne(x => x.Parent).PropertyRef(p=>p.Name))
-                .Element("class/one-to-one")
-                    .HasAttribute("property-ref", "Name");
-        }
+       
 
         [Test]
         public void DetermineTheTableName()

@@ -44,6 +44,13 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public OneToOnePart<OTHER> Constrained()
+        {
+            _properties.Store("constrained", "true");
+
+            return this;
+        }
+
         public CascadeExpression<OneToOnePart<OTHER>> Cascade
         {
             get {
