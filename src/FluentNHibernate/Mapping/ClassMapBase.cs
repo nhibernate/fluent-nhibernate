@@ -40,15 +40,15 @@ namespace FluentNHibernate.Mapping
             return map;
         }
 
-        public virtual ManyToOnePart References(Expression<Func<T, object>> expression)
+        public virtual ManyToOnePart<OTHER> References<OTHER>(Expression<Func<T, OTHER>> expression)
         {
             return References(expression, null);
         }
 
-        public virtual ManyToOnePart References(Expression<Func<T, object>> expression, string columnName)
+        public virtual ManyToOnePart<OTHER> References<OTHER>(Expression<Func<T, OTHER>> expression, string columnName)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            var part = new ManyToOnePart(property);
+            var property = ReflectionHelper.GetProperty(expression);
+            var part = new ManyToOnePart<OTHER>(property);
 
             if (columnName != null)
                 part.TheColumnNameIs(columnName);
@@ -58,10 +58,10 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public virtual OneToOnePart HasOne(Expression<Func<T, object>> expression)
+        public virtual OneToOnePart<OTHER> HasOne<OTHER>(Expression<Func<T, OTHER>> expression)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            OneToOnePart part = new OneToOnePart(property);
+            var property = ReflectionHelper.GetProperty(expression);
+            var part = new OneToOnePart<OTHER>(property);
             AddPart(part);
 
             return part;

@@ -1,46 +1,61 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public class ManyToOnePart : IMappingPart, IAccessStrategy<ManyToOnePart>
+    public interface IManyToOnePart : IMappingPart
+    {
+        CascadeExpression<IManyToOnePart> Cascade { get; }
+    }
+
+    public class ManyToOnePart<OTHER> : IManyToOnePart, IAccessStrategy<ManyToOnePart<OTHER>>
     {
 		private readonly Cache<string, string> _properties = new Cache<string, string>();
         private readonly PropertyInfo _property;
         private string _columnName;
-        private readonly AccessStrategyBuilder<ManyToOnePart> access;
+        private readonly AccessStrategyBuilder<ManyToOnePart<OTHER>> access;
 
         public ManyToOnePart(PropertyInfo property) 
         {
-            access = new AccessStrategyBuilder<ManyToOnePart>(this);
+            access = new AccessStrategyBuilder<ManyToOnePart<OTHER>>(this);
 
             _property = property;
         }
 
-		public FetchTypeExpression<ManyToOnePart> FetchType
+		public FetchTypeExpression<ManyToOnePart<OTHER>> FetchType
 		{
 			get
 			{
-				return new FetchTypeExpression<ManyToOnePart>(this, _properties);
+				return new FetchTypeExpression<ManyToOnePart<OTHER>>(this, _properties);
 			}
 		}
+
+        public ManyToOnePart<OTHER> PropertyRef(Expression<Func<OTHER, object>> propRefExpression)
+        {
+            var prop = ReflectionHelper.GetProperty(propRefExpression);
+            _properties.Store("property-ref", prop.Name);
+
+            return this;
+        }
 		
-		public ManyToOnePart WithForeignKey()
+		public ManyToOnePart<OTHER> WithForeignKey()
 		{
 			return WithForeignKey(string.Format("FK_{0}To{1}", _property.DeclaringType.Name, _property.Name));
 		}
 		
-		public ManyToOnePart WithForeignKey(string foreignKeyName)
+		public ManyToOnePart<OTHER> WithForeignKey(string foreignKeyName)
 		{
 			_properties.Store("foreign-key", foreignKeyName);
 			return this;
 		}
 		
-		public CascadeExpression<ManyToOnePart> Cascade
+		public CascadeExpression<ManyToOnePart<OTHER>> Cascade
 		{
 			get
 			{
-				return new CascadeExpression<ManyToOnePart>(this);
+				return new CascadeExpression<ManyToOnePart<OTHER>>(this);
 			}
 		}
 
@@ -65,7 +80,7 @@ namespace FluentNHibernate.Mapping
 			_properties.Store(name, value);
         }
 
-        public ManyToOnePart TheColumnNameIs(string name)
+        public ManyToOnePart<OTHER> TheColumnNameIs(string name)
         {
             _columnName = name;
 
@@ -82,9 +97,21 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.Anywhere; }
         }
 
-        public AccessStrategyBuilder<ManyToOnePart> Access
+        public AccessStrategyBuilder<ManyToOnePart<OTHER>> Access
         {
             get { return access; }
         }
+
+        public void PropertyRef(Func<object, object> func)
+        {
+            throw new NotImplementedException();
+        }
+
+        #region Explicit IManyToOnePart Implementation
+        CascadeExpression<IManyToOnePart> IManyToOnePart.Cascade
+        {
+            get { return new CascadeExpression<IManyToOnePart>(this); }
+        }
+        #endregion
     }
 }

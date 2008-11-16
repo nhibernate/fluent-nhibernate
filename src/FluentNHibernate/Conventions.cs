@@ -76,12 +76,12 @@ namespace FluentNHibernate
             _propertyConventions.ForEach(c => c.Process(property));
         }
 
-        public void AlterManyToOneMap(ManyToOnePart part)
+        public void AlterManyToOneMap(IManyToOnePart part)
         {
             ManyToOneConvention.Invoke(part);
         }
 
-        public void AlterOneToOneMap(OneToOnePart part)
+        public void AlterOneToOneMap(IOneToOnePart part)
         {
             OneToOneConvention.Invoke(part);
         }

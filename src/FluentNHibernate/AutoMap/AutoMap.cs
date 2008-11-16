@@ -37,7 +37,7 @@ namespace FluentNHibernate.AutoMap
             return base.Map(expression);
         }
 
-        public override ManyToOnePart References(System.Linq.Expressions.Expression<Func<T, object>> expression)
+        public override ManyToOnePart<OTHER> References<OTHER>(System.Linq.Expressions.Expression<Func<T, OTHER>> expression)
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
             return base.References(expression);
@@ -67,7 +67,7 @@ namespace FluentNHibernate.AutoMap
             return base.Id(expression, column);
         }
 
-        public override ManyToOnePart References(System.Linq.Expressions.Expression<Func<T, object>> expression, string columnName)
+        public override ManyToOnePart<OTHER> References<OTHER>(System.Linq.Expressions.Expression<Func<T, OTHER>> expression, string columnName)
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
             return base.References(expression, columnName);

@@ -273,6 +273,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     	}
 
         [Test]
+        public void Many_to_one_reference_with_property_reference_should_set_the_property_ref_attribute()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map => map.References(x => x.Parent).PropertyRef(p => p.Name))
+                .Element("class/many-to-one")
+                    .HasAttribute("property-ref", "Name");
+        }
+
+        [Test]
         public void Creating_a_many_to_one_reference_sets_the_column_overrides()
         {
             var map = new ClassMap<MappedObject>();
@@ -319,6 +328,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             var element = (XmlElement)document.DocumentElement.SelectSingleNode("class/one-to-one");
 
             element.AttributeShouldEqual("foreign-key", "FK_MappedObjectToParent");
+        }
+
+        [Test]
+        public void One_to_one_with_property_reference_should_set_the_property_ref_attribute()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map => map.HasOne(x => x.Parent).PropertyRef(p=>p.Name))
+                .Element("class/one-to-one")
+                    .HasAttribute("property-ref", "Name");
         }
 
         [Test]

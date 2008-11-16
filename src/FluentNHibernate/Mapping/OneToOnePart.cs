@@ -1,37 +1,53 @@
+using System;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public class OneToOnePart : IMappingPart, IAccessStrategy<OneToOnePart>
+    public interface IOneToOnePart : IMappingPart
+    {
+        CascadeExpression<IOneToOnePart> Cascade { get; }
+    }
+
+    public class OneToOnePart<OTHER> : IOneToOnePart, IAccessStrategy<OneToOnePart<OTHER>>
     {
         private readonly Cache<string, string> _properties = new Cache<string, string>();
         private readonly PropertyInfo _property;
-        private readonly AccessStrategyBuilder<OneToOnePart> access;
+        private readonly AccessStrategyBuilder<OneToOnePart<OTHER>> access;
 
         public OneToOnePart(PropertyInfo property) {
-            access = new AccessStrategyBuilder<OneToOnePart>(this);
+            access = new AccessStrategyBuilder<OneToOnePart<OTHER>>(this);
             _property = property;
         }
 
-        public FetchTypeExpression<OneToOnePart> FetchType {
+        public FetchTypeExpression<OneToOnePart<OTHER>> FetchType {
             get {
-                return new FetchTypeExpression<OneToOnePart>(this, _properties);
+                return new FetchTypeExpression<OneToOnePart<OTHER>>(this, _properties);
             }
         }
-
-        public OneToOnePart WithForeignKey() {
+        
+        public OneToOnePart<OTHER> WithForeignKey() {
             return WithForeignKey(string.Format("FK_{0}To{1}", _property.DeclaringType.Name, _property.Name));
         }
 
-        public OneToOnePart WithForeignKey(string foreignKeyName) {
+        public OneToOnePart<OTHER> WithForeignKey(string foreignKeyName) {
             _properties.Store("foreign-key", foreignKeyName);
             return this;
         }
 
-        public CascadeExpression<OneToOnePart> Cascade {
+        public OneToOnePart<OTHER> PropertyRef(Expression<Func<OTHER, object>> propRefExpression)
+        {
+            var prop = ReflectionHelper.GetProperty(propRefExpression);
+            _properties.Store("property-ref", prop.Name);
+
+            return this;
+        }
+
+        public CascadeExpression<OneToOnePart<OTHER>> Cascade
+        {
             get {
-                return new CascadeExpression<OneToOnePart>(this);
+                return new CascadeExpression<OneToOnePart<OTHER>>(this);
             }
         }
 
@@ -58,8 +74,15 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.Anywhere; }
         }
 
-        public AccessStrategyBuilder<OneToOnePart> Access {
+        public AccessStrategyBuilder<OneToOnePart<OTHER>> Access {
             get { return access; }
         }
+
+        #region Explicit IOneToOnePart Implementation
+        CascadeExpression<IOneToOnePart> IOneToOnePart.Cascade
+        {
+            get { return new CascadeExpression<IOneToOnePart>(this); }
+        }
+        #endregion
     }
 }
