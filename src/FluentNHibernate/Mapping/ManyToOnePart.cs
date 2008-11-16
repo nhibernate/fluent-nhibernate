@@ -39,6 +39,13 @@ namespace FluentNHibernate.Mapping
 
             return this;
         }
+
+        public ManyToOnePart<OTHER> WithUniqueConstraint()
+        {
+            _properties.Store("unique", "true");
+            return this;
+        }
+
 		
 		public ManyToOnePart<OTHER> WithForeignKey()
 		{

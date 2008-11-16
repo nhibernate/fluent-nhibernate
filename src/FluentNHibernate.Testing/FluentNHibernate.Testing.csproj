@@ -98,6 +98,7 @@
     <Compile Include="DomainModel\Mapping\CollectionCascadeExpressionTester.cs" />
     <Compile Include="DomainModel\Mapping\CompositeIdentityPartTester.cs" />
     <Compile Include="DomainModel\Mapping\ConventionsTester.cs" />
+    <Compile Include="DomainModel\Mapping\ManyToOneTester.cs" />
     <Compile Include="DomainModel\Mapping\OneToOneTester.cs" />
     <Compile Include="DomainModel\Mapping\ManyToManyIntegrationTester.cs" />
     <Compile Include="DomainModel\Mapping\DefaultConventionTester.cs" />

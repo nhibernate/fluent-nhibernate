@@ -21,7 +21,7 @@ namespace FluentNHibernate.Testing.DomainModel
         {
         	var properties = new SQLiteConfiguration()
         		.UseOuterJoin()
-        		.ShowSql()
+        		//.ShowSql()
         		.InMemory()
         		.ToProperties();
 

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentNHibernate.Framework.Generation;
+﻿using FluentNHibernate.Framework.Generation;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Generation
 {
-    [TestFixture]
+    [TestFixture, Explicit]
     public class CodeFileSmokeTester
     {
         [Test]
