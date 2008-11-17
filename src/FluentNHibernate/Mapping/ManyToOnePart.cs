@@ -46,6 +46,11 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public ManyToOnePart<OTHER> LazyLoad()
+        {
+            _properties.Store("lazy", "proxy");
+            return this;
+        }
 		
 		public ManyToOnePart<OTHER> WithForeignKey()
 		{

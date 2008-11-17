@@ -171,6 +171,22 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
+        /// Sets this entity to be lazy-loaded (overrides the default lazy load configuration).
+        /// </summary>
+        public void LazyLoad()
+        {
+            attributes.Store("lazy", "true");
+        }
+
+        /// <summary>
+        /// Sets this entity to not be lazy-loaded (overrides the default lazy load configuration).
+        /// </summary>
+        public void NotLazyLoaded()
+        {
+            attributes.Store("lazy", "false");
+        }
+
+        /// <summary>
         /// Sets additional tables for the class via the NH 2.0 Join element.
         /// </summary>
         /// <param name="tableName">Joined table name</param>

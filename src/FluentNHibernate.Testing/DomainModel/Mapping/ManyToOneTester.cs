@@ -50,5 +50,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/many-to-one")
                     .HasAttribute("unique", "true");
         }
+
+        [Test]
+        public void Many_to_one_lazy_load_should_set_the_proxy_value_on_the_lazy_attribute()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map => map.References(x => x.Parent).LazyLoad())
+                .Element("class/many-to-one")
+                    .HasAttribute("lazy", "proxy");
+        }
     }
 }

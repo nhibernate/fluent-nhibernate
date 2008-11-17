@@ -272,6 +272,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void CanOverrideLazyLoad()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.LazyLoad())
+                .Element("class").HasAttribute("lazy", "true");
+        }
+
+        [Test]
+        public void CanOverrideNotLazyLoad()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.NotLazyLoaded())
+                .Element("class").HasAttribute("lazy", "false");
+        }
+
+        [Test]
         public void DomainClassMapAutomaticallyCreatesTheId()
         {
             var map = new ClassMap<MappedObject>();
