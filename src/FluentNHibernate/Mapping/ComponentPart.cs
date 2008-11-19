@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using System.Xml;
+using System;
+using System.Linq.Expressions;
 
 namespace FluentNHibernate.Mapping
 {
@@ -8,6 +10,7 @@ namespace FluentNHibernate.Mapping
         private readonly PropertyInfo _property;
         private readonly AccessStrategyBuilder<ComponentPart<T>> access;
         private readonly Cache<string, string> properties = new Cache<string, string>();
+        private PropertyInfo _parentReference;
 
         public ComponentPart(PropertyInfo property, bool parentIsRequired)
         {
@@ -24,6 +27,9 @@ namespace FluentNHibernate.Mapping
                 .WithAtt("insert", "true")
                 .WithAtt("update", "true")
                 .WithProperties(properties);
+
+            if (_parentReference != null)
+                element.AddElement("parent").WithAtt("name", _parentReference.Name);
 
             writeTheParts(element, visitor);
         }
@@ -54,6 +60,12 @@ namespace FluentNHibernate.Mapping
         public AccessStrategyBuilder<ComponentPart<T>> Access
         {
             get { return access; }
+        }
+
+        public ComponentPart<T> WithParentReference(Expression<Func<T, object>> exp )
+        {
+            _parentReference = ReflectionHelper.GetProperty(exp);
+            return this;
         }
     }
 }

@@ -258,6 +258,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     
     public class ComponentTarget
     {
+        public PropertyTarget MyParent { get; set; }
         public object Name { get; set; }
     }
 

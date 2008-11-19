@@ -83,5 +83,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             return this;
         }
+        
+        public void OutputToConsole()
+        {
+        	var stringWriter = new System.IO.StringWriter();
+        	var xmlWriter = new XmlTextWriter(stringWriter);
+        	xmlWriter.Formatting = Formatting.Indented;        	
+        	this.document.WriteContentTo(xmlWriter);       
+        	
+        	Console.WriteLine(string.Empty);
+        	Console.WriteLine(stringWriter.ToString());
+        	Console.WriteLine(string.Empty);
+        }
     }
 }
