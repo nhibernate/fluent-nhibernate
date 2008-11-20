@@ -109,6 +109,12 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.Anywhere; }
         }
 
+        public ManyToOnePart<OTHER> CanNotBeNull()
+        {
+            this.SetAttribute("not-null", "true");
+            return this;
+        }
+
         public AccessStrategyBuilder<ManyToOnePart<OTHER>> Access
         {
             get { return access; }

@@ -59,5 +59,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/many-to-one")
                     .HasAttribute("lazy", "proxy");
         }
+
+        [Test]
+        public void Many_to_one_reference_can_be_set_as_not_nullable()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map => 
+                    map.References(x => x.Parent)
+                      .CanNotBeNull()
+                )
+                .Element("class/many-to-one")
+                    .HasAttribute("not-null", "true");                    
+        }
     }
 }
