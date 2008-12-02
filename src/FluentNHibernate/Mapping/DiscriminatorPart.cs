@@ -51,6 +51,14 @@ namespace FluentNHibernate.Mapping
             attributes.Store(name, value);
         }
 
+        public void SetAttributes(Attributes atts)
+        {
+            foreach (var key in atts.Keys)
+            {
+                SetAttribute(key, atts[key]);
+            }
+        }
+
         public int Level
         {
             get { return 1; }

@@ -472,6 +472,20 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.WithTable("tableTwo", t => t.Map(x => x.Name)))
                 .Element("class/join").Exists();
         }
+
+        [Test]
+        public void ShouldAddMultipleAttributesToClassUsingSetAttributes()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(x => x.SetAttributes(new Attributes
+                {
+                    {"first", "value"},
+                    {"second", "secondValue"},
+                }))
+                .Element("class")
+                    .HasAttribute("first", "value")
+                    .HasAttribute("second", "secondValue");
+        }
     }
 
     public class SecondMappedObject

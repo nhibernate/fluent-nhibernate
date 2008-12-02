@@ -26,6 +26,14 @@ namespace FluentNHibernate.Mapping
             _properties.Add(name, value);
         }
 
+        public void SetAttributes(Attributes atts)
+        {
+            foreach (var key in atts.Keys)
+            {
+                SetAttribute(key, atts[key]);
+            }
+        }
+
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             var versionElement = classElement 

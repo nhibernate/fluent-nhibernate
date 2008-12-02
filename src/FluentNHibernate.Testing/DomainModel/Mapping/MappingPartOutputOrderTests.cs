@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.Mapping;
@@ -101,6 +102,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             public void SetAttribute(string name, string value)
             {
                 throw new System.NotImplementedException();
+            }
+
+            public void SetAttributes(Attributes attrs)
+            {
+                throw new NotImplementedException();
             }
 
             public void Write(XmlElement classElement, IMappingVisitor visitor)

@@ -102,6 +102,14 @@ namespace FluentNHibernate.Mapping
             _extendedProperties.Store(name, value);
         }
 
+        public void SetAttributes(Attributes atts)
+        {
+            foreach (var key in atts.Keys)
+            {
+                SetAttribute(key, atts[key]);
+            }
+        }
+
         public void SetAttributeOnColumnElement(string name, string value)
         {
             _columnProperties.Store(name, value);

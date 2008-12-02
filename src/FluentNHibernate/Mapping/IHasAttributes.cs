@@ -11,5 +11,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="name">Attribute name</param>
         /// <param name="value">Attribute value</param>
         void SetAttribute(string name, string value);
+
+        void SetAttributes(Attributes attributes);
     }
 }

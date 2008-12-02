@@ -92,6 +92,14 @@ namespace FluentNHibernate.Mapping
 			_properties.Store(name, value);
         }
 
+        public void SetAttributes(Attributes atts)
+        {
+            foreach (var key in atts.Keys)
+            {
+                SetAttribute(key, atts[key]);
+            }
+        }
+
         public ManyToOnePart<OTHER> TheColumnNameIs(string name)
         {
             _columnName = name;

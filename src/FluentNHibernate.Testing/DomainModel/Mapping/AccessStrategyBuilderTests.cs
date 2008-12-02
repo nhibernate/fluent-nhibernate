@@ -287,6 +287,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             attributes.Add(name, value);
         }
 
+        public void SetAttributes(Attributes attrs)
+        {
+            foreach (var key in attrs.Keys)
+            {
+                SetAttribute(key, attrs[key]);
+            }
+        }
+
         public int Level
         {
             get { throw new System.NotImplementedException(); }

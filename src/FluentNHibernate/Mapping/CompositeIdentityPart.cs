@@ -24,6 +24,14 @@ namespace FluentNHibernate.Mapping
 			throw new NotImplementedException();
 		}
 
+        public void SetAttributes(Attributes atts)
+        {
+            foreach (var key in atts.Keys)
+            {
+                SetAttribute(key, atts[key]);
+            }
+        }
+
 		public void Write(XmlElement idElement, IMappingVisitor visitor)
 		{
 			XmlElement element = 
@@ -65,6 +73,14 @@ namespace FluentNHibernate.Mapping
 		{
 			throw new System.NotImplementedException();
 		}
+
+        public void SetAttributes(Attributes atts)
+        {
+            foreach (var key in atts.Keys)
+            {
+                SetAttribute(key, atts[key]);
+            }
+        }
 
 		public void Write(XmlElement classElement, IMappingVisitor visitor)
 		{
