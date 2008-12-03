@@ -150,7 +150,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Map_WithFluentLength_UsesWithLengthOf_PropertyColumnAttribute()
+        public void Map_WithFluentLength_OnString_UsesWithLengthOf_PropertyColumnAttribute()
         {
             var classMap = new ClassMap<PropertyTarget>();
 
@@ -164,6 +164,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
             propertyElement.AttributeShouldEqual("length", "20");
         }
+
+		[Test]
+		public void Map_WithFluentLength_OnDecimal_UsesWithLengthOf_PropertyColumnAttribute()
+		{
+			var classMap = new ClassMap<PropertyTarget>();
+
+			classMap.Map(x => x.DecimalProperty)
+				.WithLengthOf(1);
+
+			var document = classMap.CreateMapping(new MappingVisitor());
+
+			// attribute on property
+			var classElement = document.DocumentElement.SelectSingleNode("class");
+			var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
+			propertyElement.AttributeShouldEqual("length", "1");
+		}
 
         [Test]
         [ExpectedException(typeof(InvalidOperationException))]
@@ -252,6 +268,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public ComponentTarget Component { get; set; }
         public int Id { get; set; }
         public byte[] Data { get; set; }
+		public decimal DecimalProperty { get; set; }
     }
 
     public class PropertyReferenceTarget {}

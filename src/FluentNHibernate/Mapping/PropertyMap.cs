@@ -154,14 +154,20 @@ namespace FluentNHibernate.Mapping
 
         public PropertyMap WithLengthOf(int length)
         {
-            if (this._property.PropertyType == typeof(string))
+            if (CanApplyLengthAttribute())
                 this.AddAlteration(x => x.SetAttribute("length", length.ToString()));
             else
                 throw new InvalidOperationException(String.Format("{0} is not a string.", this._property.Name));
             return this;
         }
 
-        public PropertyMap CanNotBeNull()
+    	private bool CanApplyLengthAttribute()
+    	{
+    		var propertyType = this._property.PropertyType;
+    		return  propertyType == typeof(string) || propertyType == typeof(decimal);
+    	}
+
+    	public PropertyMap CanNotBeNull()
         {
             this.AddAlteration(x => x.SetAttribute("not-null", "true"));
             return this;
