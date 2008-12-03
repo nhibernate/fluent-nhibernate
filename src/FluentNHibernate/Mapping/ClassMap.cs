@@ -206,5 +206,14 @@ namespace FluentNHibernate.Mapping
             action(join);
             AddPart(join);
         }
+
+        /// <summary>
+        /// Imports an existing type for use in the mapping.
+        /// </summary>
+        /// <typeparam name="TImport">Type to import.</typeparam>
+        public void ImportType<TImport>()
+        {
+            AddPart(new ImportPart(typeof(TImport)));
+        }
     }
 }

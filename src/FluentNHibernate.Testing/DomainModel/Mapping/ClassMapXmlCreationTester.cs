@@ -486,6 +486,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .HasAttribute("first", "value")
                     .HasAttribute("second", "secondValue");
         }
+
+        [Test]
+        public void ShouldAddImportElements()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(x => x.ImportType<SecondMappedObject>())
+                .Element("class/import")
+                    .Exists()
+                    .HasAttribute("class", typeof(SecondMappedObject).AssemblyQualifiedName);
+        }
     }
 
     public class SecondMappedObject

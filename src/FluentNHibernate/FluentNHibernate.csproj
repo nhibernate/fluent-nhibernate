@@ -76,6 +76,7 @@
     <Compile Include="Cfg\MsSqlConfiguration.cs" />
     <Compile Include="Conventions.cs" />
     <Compile Include="Mapping\Attributes.cs" />
+    <Compile Include="Mapping\ImportPart.cs" />
     <Compile Include="Mapping\IOneToManyPart.cs" />
     <Compile Include="Mapping\JoinPart.cs" />
     <Compile Include="Mapping\MappingPartComparer.cs" />
