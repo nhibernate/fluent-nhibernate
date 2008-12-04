@@ -13,6 +13,7 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> attributes = new Cache<string, string>();
         private readonly Cache<string, string> hibernateMappingAttributes = new Cache<string, string>();
         private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
+        private readonly IList<ImportPart> imports = new List<ImportPart>();
 
         public ClassMap()
         {
@@ -27,6 +28,12 @@ namespace FluentNHibernate.Mapping
             visitor.CurrentType = typeof(T);
             XmlDocument document = getBaseDocument();
             setHeaderValues(document);
+
+            foreach (var import in imports)
+            {
+                import.Write(document.DocumentElement, visitor);
+            }
+
             XmlElement classElement = createClassValues(document, document.DocumentElement);
 
             writeTheParts(classElement, visitor);
@@ -211,9 +218,13 @@ namespace FluentNHibernate.Mapping
         /// Imports an existing type for use in the mapping.
         /// </summary>
         /// <typeparam name="TImport">Type to import.</typeparam>
-        public void ImportType<TImport>()
+        public ImportPart ImportType<TImport>()
         {
-            AddPart(new ImportPart(typeof(TImport)));
+            var part = new ImportPart(typeof(TImport));
+            
+            imports.Add(part);
+
+            return part;
         }
     }
 }

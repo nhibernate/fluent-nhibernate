@@ -34,6 +34,11 @@ namespace FluentNHibernate.Mapping
             attributes.ForEachPair((name, value) => importElement.WithAtt(name, value));
         }
 
+        public void As(string alternativeName)
+        {
+            SetAttribute("rename", alternativeName);
+        }
+
         public int Level
         {
             get { return 1; }
