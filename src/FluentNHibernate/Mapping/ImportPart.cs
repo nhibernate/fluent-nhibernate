@@ -29,7 +29,8 @@ namespace FluentNHibernate.Mapping
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             var importElement = classElement.AddElement("import")
-                .WithAtt("class", importType.AssemblyQualifiedName);
+                .WithAtt("class", importType.AssemblyQualifiedName)
+                .WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
 
             attributes.ForEachPair((name, value) => importElement.WithAtt(name, value));
         }
