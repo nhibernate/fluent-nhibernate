@@ -512,6 +512,38 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(x => x.ImportType<SecondMappedObject>().As("MappedObject"))
                 .Element("import").HasAttribute("rename", "MappedObject");
         }
+
+        [Test]
+        public void DefaultLazyLoad_should_be_false_by_default_for_compatibility()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(c => { })
+                .HasAttribute("default-lazy", "false");
+        }
+
+        [Test]
+        public void DefaultLazyLoad_should_be_true_if_set_by_convention()
+        {
+            var visitor = new MappingVisitor();
+            visitor.Conventions.DefaultLazyLoad = true;
+
+            new MappingTester<MappedObject>()
+                .UsingVisitor(visitor)
+                .ForMapping(c => { })
+                .HasAttribute("default-lazy", "true");
+        }
+
+        [Test]
+        public void DefaultLazyLoad_convention_should_not_override_direct_setting_on_classmap()
+        {
+            var visitor = new MappingVisitor();
+            visitor.Conventions.DefaultLazyLoad = false;
+
+            new MappingTester<MappedObject>()
+                .UsingVisitor(visitor)
+                .ForMapping(c =>c.SetHibernateMappingAttribute(ClassMap<MappedObject>.DefaultLazyAttributeKey, "false"))
+                .HasAttribute("default-lazy", "false");
+        }
     }
 
     public class SecondMappedObject

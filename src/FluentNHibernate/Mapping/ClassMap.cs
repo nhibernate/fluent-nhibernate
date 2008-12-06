@@ -10,6 +10,7 @@ namespace FluentNHibernate.Mapping
 {
     public class ClassMap<T> : ClassMapBase<T>, IMapping, IHasAttributes
     {
+        public const string DefaultLazyAttributeKey = "default-lazy";
         private readonly Cache<string, string> attributes = new Cache<string, string>();
         private readonly Cache<string, string> hibernateMappingAttributes = new Cache<string, string>();
         private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
@@ -27,7 +28,7 @@ namespace FluentNHibernate.Mapping
         {
             visitor.CurrentType = typeof(T);
             XmlDocument document = getBaseDocument();
-            setHeaderValues(document);
+            setHeaderValues(visitor, document);
 
             foreach (var import in imports)
             {
@@ -35,6 +36,7 @@ namespace FluentNHibernate.Mapping
             }
 
             XmlElement classElement = createClassValues(document, document.DocumentElement);
+
 
             writeTheParts(classElement, visitor);
 
@@ -67,12 +69,23 @@ namespace FluentNHibernate.Mapping
                 .WithProperties(attributes);
         }
 
-        private void setHeaderValues(XmlDocument document)
+        private void setHeaderValues(IMappingVisitor visitor, XmlDocument document)
         {
-            document.DocumentElement.SetAttribute("assembly", typeof (T).Assembly.GetName().Name);
-            document.DocumentElement.SetAttribute("namespace", typeof (T).Namespace);
+            var documentElement = document.DocumentElement;
 
-            hibernateMappingAttributes.ForEachPair((name,value) => document.DocumentElement.SetAttribute(name, value));
+            //TODO: Law of Demeter violation here. The convention stuff smells, perhaps some double-dispatch is in order?
+            var defaultLazyValue = visitor.Conventions.DefaultLazyLoad.ToString().ToLowerInvariant();
+            
+            if (!hibernateMappingAttributes.Has(DefaultLazyAttributeKey))
+            {
+                documentElement.SetAttribute(DefaultLazyAttributeKey, defaultLazyValue);
+            }
+
+            documentElement.SetAttribute("assembly", typeof(T).Assembly.GetName().Name);
+            documentElement.SetAttribute("assembly", typeof (T).Assembly.GetName().Name);
+            documentElement.SetAttribute("namespace", typeof (T).Namespace);
+
+            hibernateMappingAttributes.ForEachPair(documentElement.SetAttribute);
         }
 
         private static XmlDocument getBaseDocument()

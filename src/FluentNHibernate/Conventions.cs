@@ -102,6 +102,7 @@ namespace FluentNHibernate
             _propertyConventions.Add(convention);
         }
 
+
         public Func<PropertyInfo,bool> FindIdentity = p => p.Name == "Id";
 
         public Action<IOneToManyPart> OneToManyConvention = m => {};
@@ -110,5 +111,7 @@ namespace FluentNHibernate
         public Action<IMappingPart> OneToOneConvention = m => { };
 
         public Func<PropertyInfo, string> GetVersionColumnName;
+
+        public bool DefaultLazyLoad;
     }
 }

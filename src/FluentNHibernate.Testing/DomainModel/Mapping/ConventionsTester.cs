@@ -45,6 +45,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 conventions.AlterMap(property);
             }
         }
+
+        [Test]
+        public void DefaultLazyLoad_should_be_false_by_default_for_compatibility()
+        {
+            new Conventions().DefaultLazyLoad.ShouldBeFalse();
+        }
     }
 
     public class Invoice{}
