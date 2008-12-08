@@ -19,13 +19,15 @@ namespace FluentNHibernate.Mapping
         public ClassMap()
         {
             defaultAccess = new DefaultAccessStrategyBuilder<T>(this);
-            TableName = String.Format("[{0}]", typeof (T).Name);
         }
 
         public string TableName { get; private set; }
 
         public XmlDocument CreateMapping(IMappingVisitor visitor)
         {
+            if (String.IsNullOrEmpty(TableName))
+                TableName = visitor.Conventions.GetTableName.Invoke(typeof(T));
+
             visitor.CurrentType = typeof(T);
             XmlDocument document = getBaseDocument();
             setHeaderValues(visitor, document);

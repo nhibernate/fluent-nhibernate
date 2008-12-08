@@ -256,11 +256,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void DetermineTheTableName()
         {
-            var map = new ClassMap<MappedObject>();
-            map.TableName.ShouldEqual("[MappedObject]");
-
-            map.WithTable("Different");
-            map.TableName.ShouldEqual("Different");
+            new MappingTester<MappedObject>()
+                .ForMapping(m => { })
+                .Element("class").HasAttribute("table", "[MappedObject]");
         }
 
         [Test]
