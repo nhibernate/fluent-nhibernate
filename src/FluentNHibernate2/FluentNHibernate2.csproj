@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{529145D5-6CC3-4016-89B5-826563024AF1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FluentNHibernate</RootNamespace>
+    <AssemblyName>FluentNHibernate2</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NHibernate, Version=2.0.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\NHibernate\nhib2.0.1GA\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cache.cs" />
+    <Compile Include="Cfg\MsSqlConfiguration.cs" />
+    <Compile Include="Cfg\PersistenceConfiguration.cs" />
+    <Compile Include="Cfg\PostgreSQLConfiguration.cs" />
+    <Compile Include="Cfg\SQLiteConfiguration.cs" />
+    <Compile Include="MappingModel\Collections\CollectionAttributes.cs" />
+    <Compile Include="MappingModel\Collections\CollectionMappingBase.cs" />
+    <Compile Include="MappingModel\Collections\SetMapping.cs" />
+    <Compile Include="MappingModel\Collections\BagMapping.cs" />
+    <Compile Include="MappingModel\Collections\ICollectionContentsMapping.cs" />
+    <Compile Include="MappingModel\Collections\ICollectionMapping.cs" />
+    <Compile Include="MappingModel\Identity\IdGeneratorMapping.cs" />
+    <Compile Include="MappingModel\Identity\IdColumnMapping.cs" />
+    <Compile Include="MappingModel\Identity\CompositeIdMapping.cs" />
+    <Compile Include="MappingModel\HibernateMapping.cs" />
+    <Compile Include="MappingModel\Identity\IdMapping.cs" />
+    <Compile Include="MappingModel\Identity\IIdentityMapping.cs" />
+    <Compile Include="MappingModel\ClassMapping.cs" />
+    <Compile Include="MappingModel\IMappingBase.cs" />
+    <Compile Include="MappingModel\Collections\KeyMapping.cs" />
+    <Compile Include="MappingModel\ManyToOneMapping.cs" />
+    <Compile Include="MappingModel\MappingBase.cs" />
+    <Compile Include="MappingModel\Collections\OneToManyMapping.cs" />
+    <Compile Include="MappingModel\PropertyMapping.cs" />
+    <Compile Include="PersistenceModel.cs" />
+    <Compile Include="Reflection\Accessor.cs" />
+    <Compile Include="Reflection\PropertyChain.cs" />
+    <Compile Include="Reflection\ReflectionHelper.cs" />
+    <Compile Include="Reflection\SingleProperty.cs" />
+    <Compile Include="Xml\MappingXmlSerializer.cs" />
+    <Compile Include="Xml\MappingXmlValidator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\tools\NHibernate\nhib2.0.1GA\nhibernate-mapping.xsd">
+      <Link>nhibernate-mapping.xsd</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

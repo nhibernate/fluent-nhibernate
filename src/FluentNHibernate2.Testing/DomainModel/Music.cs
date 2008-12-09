@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Iesi.Collections.Generic;
+
+namespace FluentNHibernate.Testing.DomainModel
+{
+    public class Artist
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public ISet<Album> Albums { get; set; }
+    }
+
+    public class Album
+    {
+        public int ID { get; set; }
+        public string Title { get; set;}
+        public Artist Artist { get; set; }
+        public ISet<Track> Tracks { get; set; }
+    }
+
+    public class Track
+    {
+        public int ID { get; set; }
+        public Album Album { get; set; }
+        public string Name { get; set; }
+        public int TrackNumber { get; set; }
+    }
+}

@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4A693F88-A29A-4FC9-B086-24956848FD99}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FluentNHibernate.Testing</RootNamespace>
+    <AssemblyName>FluentNHibernate2.Testing</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Iesi.Collections, Version=1.0.0.3, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\NHibernate\nhib2.0.1GA\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=2.0.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\NHibernate\nhib2.0.1GA\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\nunit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.51.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\sqlite\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DomainModel\Music.cs" />
+    <Compile Include="BackwardCompatibility\ClassMapTester.cs" />
+    <Compile Include="BackwardCompatibility\MusicMappingTester.cs" />
+    <Compile Include="MappingModel\Collections\BagMappingTester.cs" />
+    <Compile Include="MappingModel\ClassMappingTester.cs" />
+    <Compile Include="MappingModel\Identity\CompositeIdMappingTester.cs" />
+    <Compile Include="MappingModel\HibernateMappingTester.cs" />
+    <Compile Include="MappingModel\Collections\KeyMappingTester.cs" />
+    <Compile Include="MappingModel\ManyToOneMappingTester.cs" />
+    <Compile Include="MappingModel\MappingMother.cs" />
+    <Compile Include="MappingModel\MappingTestingExtensions.cs" />
+    <Compile Include="MappingModel\Identity\IdMappingTester.cs" />
+    <Compile Include="MappingModel\Collections\OneToManyMappingTester.cs" />
+    <Compile Include="MappingModel\PropertyMappingTester.cs" />
+    <Compile Include="MappingModel\Collections\SetMappingTester.cs" />
+    <Compile Include="PersistenceModelTester.cs" />
+    <Compile Include="Xml\MappingXmlValidatorTester.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Xml\MappingXmlSerializerTester.cs" />
+    <Compile Include="SpecificationExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FluentNHibernate2.BackwardCompatibility\FluentNHibernate2.BackwardCompatibility.csproj">
+      <Project>{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}</Project>
+      <Name>FluentNHibernate2.BackwardCompatibility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FluentNHibernate2\FluentNHibernate2.csproj">
+      <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>
+      <Name>FluentNHibernate2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
