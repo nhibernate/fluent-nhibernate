@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Xml;
-using FluentNHibernate;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures;
-using FluentNHibernate.Testing;
 using FluentNHibernate.Testing.AutoMap.ManyToMany;
-using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.AutoMap
@@ -93,7 +89,7 @@ namespace FluentNHibernate.Testing.AutoMap
         public void AutoMapManyToMany()
         {
             var autoMapper = new AutoMapper(new Conventions());
-            var map = autoMapper.Map<ManyToMany1>();
+            var map = autoMapper.Map<ManyToMany1>(new List<AutoMapType>());
 
             Assert.IsNotNull(map);
 
@@ -104,43 +100,10 @@ namespace FluentNHibernate.Testing.AutoMap
         }
 
         [Test]
-        public void AutoMapManyToMany_WillMapBothSidesToSameTable()
-        {
-            var autoMapper = new AutoMapper(new Conventions());
-            var map1 = autoMapper.Map<ManyToMany1>();
-            var map2 = autoMapper.Map<ManyToMany2>();
-
-            var document1 = map1.CreateMapping(new MappingVisitor());
-            var document2 = map2.CreateMapping(new MappingVisitor());
-
-            var keyElement1 = (XmlElement)document1.DocumentElement.SelectSingleNode("//set");
-            keyElement1.AttributeShouldEqual("table", "ManyToMany2ToManyToMany1");
-            var keyElement2 = (XmlElement)document2.DocumentElement.SelectSingleNode("//set");
-            keyElement2.AttributeShouldEqual("table", "ManyToMany2ToManyToMany1");
-        }
-
-        [Test]
-        public void AutoMapManyToMany_WillSetChildSideToBeInverse()
-        {
-            var autoMapper = new AutoMapper(new Conventions());
-            var map1 = autoMapper.Map<ManyToMany1>();
-            var map2 = autoMapper.Map<ManyToMany2>();
-
-            var document1 = map1.CreateMapping(new MappingVisitor());
-            var document2 = map2.CreateMapping(new MappingVisitor());
-
-            var keyElement1 = (XmlElement)document1.DocumentElement.SelectSingleNode("//set");
-            keyElement1.AttributeShouldEqual("inverse", "");
-            var keyElement2 = (XmlElement)document2.DocumentElement.SelectSingleNode("//set");
-            keyElement2.AttributeShouldEqual("inverse", "true");
-        }
-
-
-        [Test]
         public void AutoMapManyToMany_ShouldRecognizeSet_BaseOnType()
         {
             var autoMapper = new AutoMapper(new Conventions());
-            var map = autoMapper.Map<ManyToMany1>();
+            var map = autoMapper.Map<ManyToMany1>(new List<AutoMapType>());
 
             Assert.IsNotNull(map);
 

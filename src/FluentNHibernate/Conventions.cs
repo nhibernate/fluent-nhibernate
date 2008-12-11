@@ -116,6 +116,6 @@ namespace FluentNHibernate
 
         public Func<PropertyInfo, string> GetVersionColumnName;
 
-        public bool DefaultLazyLoad;
+        public bool DefaultLazyLoad = false;
     }
 }
