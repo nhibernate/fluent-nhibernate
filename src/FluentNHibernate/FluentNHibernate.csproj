@@ -70,7 +70,6 @@
     <Compile Include="AutoMap\ConventionBuilder.cs" />
     <Compile Include="AutoMap\ExpressionBuilder.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />
-    <Compile Include="AutoMap\PropertyInfoHelper.cs" />
     <Compile Include="AutoMap\ManyToManyAutoMapper.cs" />
     <Compile Include="Cache.cs" />
     <Compile Include="Cfg\PersistenceConfiguration.cs" />

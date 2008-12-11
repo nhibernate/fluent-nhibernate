@@ -1,0 +1,85 @@
+<Configuration>
+  <UnitTestRunner>
+    <CustomStartDirectory>
+    </CustomStartDirectory>
+    <UseShadowCopy>True</UseShadowCopy>
+    <UseCustomFolder>False</UseCustomFolder>
+    <EnableUnitTesting>True</EnableUnitTesting>
+    <Providers />
+  </UnitTestRunner>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <CodeCleanup RecentlyUsed="" />
+  <RecentFiles>
+    <RecentFiles>
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/f:TestUtility.cs" caret="0" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/f:Fixtures.cs" caret="0" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/f:Debugging.cs" caret="0" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:Mapping/f:MappingTests.cs" caret="0" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:DomainModel/f:InMemoryRepositoryTester.cs" caret="0" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/f:DeclarativeTesting.htm" caret="0" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:DomainModel/d:Mapping/f:ClassMapXmlCreationTester.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:MappingVisitor.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:ServiceLocator.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:PersistenceSpecification.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:IRepository.cs" caret="0" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:DomainModel/d:Mapping/f:PropertyMapTester.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:SessionSource.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:PropertyMap.cs" caret="1180" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:Conventions.cs" caret="889" scrollPosition="0|28" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:IMappingVisitor.cs" caret="394" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ManyToOnePart.cs" caret="1445" scrollPosition="0|5" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:OneToManyPart.cs" caret="1084" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMapBase.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:IdentityPart.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMap.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:PersistenceModel.cs" caret="3149" scrollPosition="0|71" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:ConfigurationHelper.cs" caret="437" scrollPosition="0|0" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:PersistenceModel.cs" caret="253" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:PersistenceModel.cs" caret="604" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:PersistenceModel.cs" caret="665" scrollPosition="0|22" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:PersistenceModel.cs" caret="1267" scrollPosition="0|24" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMapBase.cs" caret="1701" scrollPosition="0|24" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMapBase.cs" caret="1632" scrollPosition="7|24" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ManyToOnePart.cs" caret="1089" scrollPosition="4|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ManyToOnePart.cs" caret="1010" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ManyToOnePart.cs" caret="788" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ManyToOnePart.cs" caret="481" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ManyToOnePart.cs" caret="1334" scrollPosition="0|5" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMapBase.cs" caret="1356" scrollPosition="0|24" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMapBase.cs" caret="2859" scrollPosition="0|63" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMapBase.cs" caret="2456" scrollPosition="0|56" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMapBase.cs" caret="2786" scrollPosition="0|56" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:OneToManyPart.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:OneToManyPart.cs" caret="459" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:OneToManyPart.cs" caret="1084" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:ConfigurationHelper.cs" caret="432" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:IdentityPart.cs" caret="577" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMap.cs" caret="1383" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:ConfigurationHelper.cs" caret="388" scrollPosition="0|1" />
+    </RecentEdits>
+  </RecentFiles>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="CreateInstance" priority="0" />
+      <Item value="IsNullOrEmpty" priority="1" />
+      <Item value="References" priority="0" />
+      <Item value="expression" priority="1" />
+      <Item value="ExpressionType" priority="0" />
+      <Item value="HasMany" priority="0" />
+      <Item value="columnName" priority="0" />
+      <Item value="Configure" priority="0" />
+      <Item value="configuration" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+</Configuration>

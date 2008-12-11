@@ -1,0 +1,198 @@
+<Configuration>
+  <UnitTestRunner>
+    <CustomStartDirectory>
+    </CustomStartDirectory>
+    <UseShadowCopy>True</UseShadowCopy>
+    <UseCustomFolder>False</UseCustomFolder>
+    <EnableUnitTesting>True</EnableUnitTesting>
+    <Providers />
+  </UnitTestRunner>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <SettingsComponent>
+    <string />
+    <integer>
+      <setting name="UsedSolutionBuilderID">0</setting>
+    </integer>
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <CodeCleanup RecentlyUsed="" />
+  <RecentFiles>
+    <RecentFiles>
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:DomainModel/d:Mapping/f:ClassMapXmlCreationTester.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:MappingVisitor.cs" caret="0" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:DomainModel/d:Mapping/f:PropertyMapTester.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:PropertyMap.cs" caret="1180" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:IMappingVisitor.cs" caret="394" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ManyToOnePart.cs" caret="1445" scrollPosition="0|5" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:OneToManyPart.cs" caret="1084" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:IdentityPart.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:PersistenceModel.cs" caret="3149" scrollPosition="0|71" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:ConfigurationHelper.cs" caret="437" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoMappingTester.cs" caret="238" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:Conventions.cs" caret="3926" scrollPosition="0|81" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:IAutoMapper.cs" caret="156" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:ConventionBuilder.cs" caret="0" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapJoinedSubClass.cs" caret="425" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:ReflectionHelper.cs" caret="4371" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoPersistenceModel.cs" caret="2917" scrollPosition="0|60" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoMapTests.cs" caret="2069" scrollPosition="0|70" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:TestFixtures.cs" caret="675" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMapBase.cs" caret="4192" scrollPosition="0|95" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:ExpressionBuilder.cs" caret="207" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapColumn.cs" caret="625" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMap.cs" caret="5621" scrollPosition="0|143" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoJoinedSubClassPart.cs" caret="1505" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:JoinedSubClassPart.cs" caret="712" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMap.cs" caret="3250" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapper.cs" caret="518" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapIdentity.cs" caret="549" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapVersion.cs" caret="473" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoPersistenceModelTests.cs" caret="8144" scrollPosition="0|195" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapper.cs" caret="2606" scrollPosition="0|26" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoMapTests.cs" caret="597" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoMapTests.cs" caret="1144" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoMapTests.cs" caret="1711" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoMapTests.cs" caret="2281" scrollPosition="0|46" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoMapTests.cs" caret="2846" scrollPosition="0|46" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoMapTests.cs" caret="3421" scrollPosition="0|80" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:TestFixtures.cs" caret="219" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:TestFixtures.cs" caret="525" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoPersistenceModelTests.cs" caret="6906" scrollPosition="0|170" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:TestFixtures.cs" caret="675" scrollPosition="0|2" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoPersistenceModelTests.cs" caret="1929" scrollPosition="0|27" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoPersistenceModelTests.cs" caret="1525" scrollPosition="0|34" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapper.cs" caret="966" scrollPosition="0|17" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoPersistenceModelTests.cs" caret="7461" scrollPosition="20|187" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoPersistenceModelTests.cs" caret="7952" scrollPosition="0|188" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMap.cs" caret="3705" scrollPosition="0|33" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapper.cs" caret="1091" scrollPosition="0|9" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:JoinedSubClassPart.cs" caret="1553" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:JoinedSubClassPart.cs" caret="278" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoJoinedSubClassPart.cs" caret="306" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoJoinedSubClassPart.cs" caret="1446" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapper.cs" caret="1642" scrollPosition="0|23" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapper.cs" caret="1301" scrollPosition="0|14" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMap.cs" caret="3562" scrollPosition="0|59" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapIdentity.cs" caret="515" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapVersion.cs" caret="721" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapVersion.cs" caret="878" scrollPosition="0|0" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoPersistenceModelTests.cs" caret="8128" scrollPosition="0|195" />
+      <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoPersistenceModelTests.cs" caret="7622" scrollPosition="0|195" />
+    </RecentEdits>
+  </RecentFiles>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="CreateInstance" priority="0" />
+      <Item value="IsNullOrEmpty" priority="1" />
+      <Item value="References" priority="0" />
+      <Item value="expression" priority="1" />
+      <Item value="ExpressionType" priority="0" />
+      <Item value="HasMany" priority="0" />
+      <Item value="columnName" priority="0" />
+      <Item value="Configure" priority="0" />
+      <Item value="configuration" priority="0" />
+      <Item value="ExampleClass" priority="1" />
+      <Item value="public" priority="1" />
+      <Item value="void" priority="0" />
+      <Item value="var" priority="6" />
+      <Item value="type" priority="7" />
+      <Item value="new" priority="5" />
+      <Item value="if" priority="3" />
+      <Item value="map" priority="2" />
+      <Item value="typeof" priority="5" />
+      <Item value="AutoPersistenceModel" priority="0" />
+      <Item value="Type" priority="3" />
+      <Item value="List&lt;Type&gt;" priority="2" />
+      <Item value="mappingTypes" priority="5" />
+      <Item value="mapping" priority="0" />
+      <Item value="AutoMap" priority="4" />
+      <Item value="List" priority="0" />
+      <Item value="T" priority="4" />
+      <Item value="types" priority="1" />
+      <Item value="this" priority="3" />
+      <Item value="q" priority="0" />
+      <Item value="AutoMapColumn" priority="0" />
+      <Item value="PropertyMap" priority="0" />
+      <Item value="base" priority="0" />
+      <Item value="InvocationHelper" priority="1" />
+      <Item value="p" priority="0" />
+      <Item value="keyColumn" priority="1" />
+      <Item value="action" priority="1" />
+      <Item value="object" priority="5" />
+      <Item value="ReflectionHelper" priority="0" />
+      <Item value="JoinedSubClassPart" priority="1" />
+      <Item value="Activator" priority="0" />
+      <Item value="genericType" priority="1" />
+      <Item value="joinedclass" priority="5" />
+      <Item value="IMappingPart" priority="0" />
+      <Item value="AutoMapType" priority="1" />
+      <Item value="inheritedClasses" priority="1" />
+      <Item value="tester" priority="0" />
+      <Item value="mapEverythingInClass" priority="0" />
+      <Item value="return" priority="1" />
+      <Item value="GetType" priority="0" />
+      <Item value="method" priority="0" />
+      <Item value="joinedClass" priority="2" />
+      <Item value="genericMethod" priority="0" />
+      <Item value="BindingFlags" priority="0" />
+      <Item value="AutoJoinedSubClassPart" priority="0" />
+      <Item value="property" priority="0" />
+      <Item value="false" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FluentNHibernate.Testing.DomainModel.Mapping.MappingTester`1">
+      <Item value="Element" priority="1" />
+      <Item value="Exists" priority="0" />
+      <Item value="HasAttribute" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Type">
+      <Item value="BaseType" priority="6" />
+      <Item value="MakeGenericType" priority="0" />
+      <Item value="Name" priority="0" />
+      <Item value="FullName" priority="0" />
+      <Item value="AssemblyQualifiedName" priority="0" />
+      <Item value="GetMethod" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FluentNHibernate.AutoMap.AutoMap`1">
+      <Item value="JoinedSubClass" priority="1" />
+      <Item value="JoinedSubClassAutoMap" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FluentNHibernate.Mapping.ClassMap`1">
+      <Item value="JoinedSubClass" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@FluentNHibernate.InvocationHelper">
+      <Item value="InvokeGenericMethodWithDynamicTypeArguments" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Activator">
+      <Item value="CreateInstance" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FluentNHibernate.AutoMap.AutoMapType">
+      <Item value="Type" priority="3" />
+      <Item value="IsMapped" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FluentNHibernate.AutoMap.TestFixtures.ExampleCustomColumn">
+      <Item value="ExampleCustomColumnId" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Object">
+      <Item value="GetType" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FluentNHibernate.AutoMap.AutoMapper">
+      <Item value="GetType" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Reflection.MethodInfo">
+      <Item value="Invoke" priority="1" />
+      <Item value="MakeGenericMethod" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Reflection.BindingFlags">
+      <Item value="NonPublic" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Reflection.PropertyInfo">
+      <Item value="ReflectedType" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+</Configuration>

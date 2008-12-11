@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         protected XmlDocument document;
         protected IMappingVisitor _visitor = new MappingVisitor();
 
-        public MappingTester<T> RootElement
+        public virtual MappingTester<T> RootElement
         {
             get
             {
@@ -20,13 +20,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             }
         }
 
-        public MappingTester<T> UsingVisitor(IMappingVisitor visitor)
+        public virtual MappingTester<T> UsingVisitor(IMappingVisitor visitor)
         {
             _visitor = visitor;
             return this;
         }
 
-        public MappingTester<T> ForMapping(Action<ClassMap<T>> mappingAction)
+        public virtual MappingTester<T> ForMapping(Action<ClassMap<T>> mappingAction)
         {
             var classMap = new ClassMap<T>();
             mappingAction(classMap);
@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             return ForMapping(classMap);
         }
 
-        public MappingTester<T> ForMapping(ClassMap<T> classMap)
+        public virtual MappingTester<T> ForMapping(ClassMap<T> classMap)
         {
             document = classMap.CreateMapping(_visitor);
             currentElement = document.DocumentElement;
@@ -42,58 +42,72 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             return this;
         }
 
-        public MappingTester<T> Element(string elementPath)
+        public virtual MappingTester<T> Element(string elementPath)
         {
             currentElement = (XmlElement)document.DocumentElement.SelectSingleNode(elementPath);
 
             return this;
         }
 
-        public MappingTester<T> HasAttribute(string name, string value)
+        public virtual MappingTester<T> HasAttribute(string name, string value)
         {
             currentElement.AttributeShouldEqual(name, value);
 
             return this;
         }
 
-        public MappingTester<T> DoesntHaveAttribute(string name)
+        public virtual MappingTester<T> DoesntHaveAttribute(string name)
         {
             Assert.IsFalse(currentElement.HasAttribute(name), "Found attribute '" + name + "' on element.");
 
             return this;
         }
 
-        public MappingTester<T> Exists()
+        public virtual MappingTester<T> Exists()
         {
             Assert.IsNotNull(currentElement);
 
             return this;
         }
 
-        public MappingTester<T> DoesntExist()
+        public virtual MappingTester<T> DoesntExist()
         {
             Assert.IsNull(currentElement);
 
             return this;
         }
 
-        public MappingTester<T> HasName(string name)
+        public virtual MappingTester<T> HasName(string name)
         {
             Assert.AreEqual(name, currentElement.Name, "Expected current element to have the name '" + name + "' but found '" + currentElement.Name + "'.");
 
             return this;
         }
-        
-        public void OutputToConsole()
+
+        public virtual void OutputToConsole()
         {
-        	var stringWriter = new System.IO.StringWriter();
-        	var xmlWriter = new XmlTextWriter(stringWriter);
-        	xmlWriter.Formatting = Formatting.Indented;        	
-        	this.document.WriteContentTo(xmlWriter);       
-        	
         	Console.WriteLine(string.Empty);
-        	Console.WriteLine(stringWriter.ToString());
+        	Console.WriteLine(this.ToString());
         	Console.WriteLine(string.Empty);
+        }
+
+        public override string ToString()
+        {
+            var stringWriter = new System.IO.StringWriter();
+            var xmlWriter = new XmlTextWriter(stringWriter);
+            xmlWriter.Formatting = Formatting.Indented;
+            this.document.WriteContentTo(xmlWriter);
+            return stringWriter.ToString();
+        }
+
+        public MappingTester<T> ChildrenDontContainAttribute(string key, string value)
+        {
+            foreach (XmlElement node in currentElement.ChildNodes)
+            {
+                if (node.HasAttribute(key))
+                    Assert.AreNotEqual(node.Attributes[key].Value, value);
+            }
+            return this;
         }
     }
 }
