@@ -44,6 +44,9 @@ namespace FluentNHibernate
             AddTypeConvention(new EnumerationTypeConvention());
         }
 
+        public Func<Type, Type, Type> GetParentSideForManyToMany = (one, two) =>
+            one.FullName.CompareTo(two.FullName) < 0 ? one : two;
+
         public Func<Type, string> GetTableName = prop => String.Format("[{0}]", prop.Name);
         public Func<PropertyInfo, string> GetPrimaryKeyName = prop => prop.Name;
         public Func<PropertyInfo, string> GetForeignKeyName = prop => prop.Name + "_id";
