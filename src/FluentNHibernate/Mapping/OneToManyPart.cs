@@ -22,14 +22,21 @@ namespace FluentNHibernate.Mapping
         public OneToManyPart(PropertyInfo property)
             : this(property.Name)
         {
+            SetDefaultCollectionType(property.PropertyType);
         }
 
         public OneToManyPart(MethodInfo method)
             : this(method.Name)
         {
             _collectionMethod = method;
+            SetDefaultCollectionType(method.ReturnType);
         }
 
+        private void SetDefaultCollectionType(Type type)
+        {
+            if (type.Namespace == "Iesi.Collections.Generic")
+                AsSet();
+        }
 
         protected OneToManyPart(string memberName)
         {

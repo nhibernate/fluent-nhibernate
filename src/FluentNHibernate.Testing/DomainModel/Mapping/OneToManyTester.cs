@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyComponentTarget>()
                 .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
                                     .Component(c => c.Map(x => x.Name)))
-                .Element("class/bag/composite-element").Exists();
+                .Element("class/set/composite-element").Exists();
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyComponentTarget>()
                 .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
                                     .Component(c => c.Map(x => x.Name)))
-                .Element("class/bag/one-to-many").DoesntExist();
+                .Element("class/set/one-to-many").DoesntExist();
         }
 
         [Test]
@@ -183,7 +183,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyComponentTarget>()
                 .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
                                     .Component(c => c.Map(x => x.Name)))
-                .Element("class/bag/composite-element/property[@name = 'Name']").Exists();
+                .Element("class/set/composite-element/property[@name = 'Name']").Exists();
         }
 
         [Test]
@@ -193,7 +193,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
                                      .Component(c => c.Map(x => x.Name))
                                      .WithTableName("MyTableName"))
-                .Element("class/bag").HasAttribute("table", "MyTableName");
+                .Element("class/set").HasAttribute("table", "MyTableName");
         }
 
         [Test]
@@ -211,7 +211,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyComponentTarget>()
                 .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
                                     .Component(c => c.Map(x => x.Name)))
-                .Element("class/bag").DoesntHaveAttribute("lazy");
+                .Element("class/set").DoesntHaveAttribute("lazy");
         }
 
         [Test]
@@ -223,7 +223,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyComponentTarget>()
                 .UsingVisitor(visitor)
                 .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents).Component(c => c.Map(x => x.Name)))
-                .Element("class/bag").HasAttribute("lazy", "true");
+                .Element("class/set").HasAttribute("lazy", "true");
         }
 
 
@@ -233,7 +233,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyComponentTarget>()
                 .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents)
                                     .Component(c => c.Map(x => x.Name)))
-                .Element("class/bag").DoesntHaveAttribute("cascade");
+                .Element("class/set").DoesntHaveAttribute("cascade");
         }
 
         [Test]
@@ -245,7 +245,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyComponentTarget>()
                 .UsingVisitor(visitor)
                 .ForMapping(m => m.HasMany<ComponentOfMappedObject>(x => x.SetOfComponents).Component(c => c.Map(x => x.Name)))
-                .Element("class/bag").HasAttribute("cascade", "all");
+                .Element("class/set").HasAttribute("cascade", "all");
         }
 
         [Test] 

@@ -3,6 +3,7 @@ using FluentNHibernate;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures;
 using FluentNHibernate.Testing;
+using FluentNHibernate.Testing.AutoMap.ManyToMany;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
@@ -84,6 +85,34 @@ namespace FluentNHibernate.Testing.AutoMap
             var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//many-to-one");
             keyElement.AttributeShouldEqual("column", "Parent_id");
             keyElement.AttributeShouldEqual("name", "Parent");
+        }
+
+        [Test]
+        public void AutoMapManyToMany()
+        {
+            var autoMapper = new AutoMapper(new Conventions());
+            var map = autoMapper.Map<ManyToMany1>();
+
+            Assert.IsNotNull(map);
+
+            var document = map.CreateMapping(new MappingVisitor());
+
+            var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//many-to-many");
+            keyElement.AttributeShouldEqual("column", "ManyToMany2_id");
+        }
+
+        [Test]
+        public void AutoMapManyToMany_ShouldRecognizeSet_BaseOnType()
+        {
+            var autoMapper = new AutoMapper(new Conventions());
+            var map = autoMapper.Map<ManyToMany1>();
+
+            Assert.IsNotNull(map);
+
+            var document = map.CreateMapping(new MappingVisitor());
+
+            var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//many-to-many");
+            keyElement.ParentNode.Name.ShouldEqual("set");
         }
 
         [Test]

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using Iesi.Collections.Generic;
 
 namespace FluentNHibernate.AutoMap.TestFixtures
 {
@@ -34,6 +35,7 @@ namespace FluentNHibernate.AutoMap.TestFixtures
         public ExampleEnum Enum { get; set; }
         public ExampleParentClass Parent { get; set; }
     }
+
 
     public enum ExampleEnum
     {

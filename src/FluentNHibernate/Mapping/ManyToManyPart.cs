@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using System.Xml;
 
@@ -17,16 +18,24 @@ namespace FluentNHibernate.Mapping
 
 	    public ManyToManyPart(PropertyInfo property)
             : this(property.Name)
-        {
-        }
+	    {
+	        SetDefaultCollectionType(property.PropertyType);
+	    }
 
 	    public ManyToManyPart(MethodInfo method)
 	        : this(method.Name)
         {
 	        _collectionMethod = method;
+            SetDefaultCollectionType(method.ReturnType);
         }
 
-        protected ManyToManyPart(string memberName)
+	    private void SetDefaultCollectionType(Type type)
+	    {
+	        if (type.Namespace == "Iesi.Collections.Generic")
+	            AsSet();
+	    }
+
+	    protected ManyToManyPart(string memberName)
         {
             access = new AccessStrategyBuilder<ManyToManyPart<PARENT, CHILD>>(this);
             _properties.Store("name", memberName);
