@@ -16,6 +16,9 @@ namespace FluentNHibernate.AutoMap
 
         public bool MapsProperty(PropertyInfo property)
         {
+            if (property.ReflectedType.BaseType != typeof(object))
+                return false;
+
             return conventions.FindIdentity.Invoke(property);
         }
 

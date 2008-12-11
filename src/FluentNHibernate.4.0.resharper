@@ -3,37 +3,4 @@
     <Namespace>JetBrains.Annotations</Namespace>
     <DefaultNamespace>JetBrains.Annotations</DefaultNamespace>
   </CodeAnnotations>
-  <SharedSolutionTemplateManager>
-    <LiveTemplates>
-      <Template uid="03229c49-6943-46b2-ba6a-400ac9550f85" text="[Test]&#xD;&#xA;public void $TESTNAME$()&#xD;&#xA;{&#xD;&#xA;	$END$&#xD;&#xA;}" shortcut="pvt" description="New Test Case" reformat="true" shortenQualifiedReferences="true">
-        <Context>
-          <CSharpContext context="TypeMember" minimumLanguageVersion="2.0" />
-        </Context>
-        <Categories />
-        <Variables>
-          <Variable name="TESTNAME" expression="" initialRange="0" />
-        </Variables>
-        <CustomProperties />
-      </Template>
-    </LiveTemplates>
-    <Surrounds />
-    <FileTemplates>
-      <Template uid="482e6087-caae-4484-b5cc-d7b56a938201" text="using NUnit.Framework;&#xD;&#xA;&#xD;&#xA;namespace $Testing_Namespace$&#xD;&#xA;{&#xD;&#xA;	[TestFixture]&#xD;&#xA;	public class $Test_Fixture_Name$&#xD;&#xA;	{&#xD;&#xA;		[Test]&#xD;&#xA;		public void $Test_Name$()&#xD;&#xA;		{&#xD;&#xA;			$END$&#xD;&#xA;		}&#xD;&#xA;	}&#xD;&#xA;}" shortcut="" description="Test Fixture Class" reformat="true" shortenQualifiedReferences="true">
-        <Context>
-          <ProjectLanguageContext language="CSharp" />
-        </Context>
-        <Categories />
-        <Variables>
-          <Variable name="Testing_Namespace" expression="fileDefaultNamespace()" initialRange="0" />
-          <Variable name="Test_Fixture_Name" expression="getFileNameWithoutExtension()" initialRange="0" />
-          <Variable name="Test_Name" expression="" initialRange="0" />
-        </Variables>
-        <CustomProperties>
-          <Property key="FileName" value="Class" />
-          <Property key="Extension" value="cs" />
-          <Property key="ValidateFileName" value="False" />
-        </CustomProperties>
-      </Template>
-    </FileTemplates>
-  </SharedSolutionTemplateManager>
 </Configuration>

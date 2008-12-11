@@ -8,6 +8,8 @@ namespace FluentNHibernate.AutoMap
     public class AutoMap<T> : ClassMap<T>
     {
         private IList<PropertyInfo> propertiesMapped = new List<PropertyInfo>();
+        private Dictionary<Type, object> joinedSubClasses = new Dictionary<Type, object>();
+
         public IList<PropertyInfo> PropertiesMapped
         {
             get { return propertiesMapped; }
@@ -77,6 +79,29 @@ namespace FluentNHibernate.AutoMap
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
             return base.Version(expression);
+        }
+
+        public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
+        {
+            var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(typeof(TSubclass));
+            var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn);
+            action(joinedclass);
+            AddPart(joinedclass);
+            joinedSubClasses.Add(typeof(TSubclass), joinedclass);
+            return joinedclass;
+            
+        }
+
+        public object JoinedSubClass(Type type, string keyColumn)
+        {
+            if (joinedSubClasses.ContainsKey(type))
+                return joinedSubClasses[type];
+
+
+            var genericType = typeof (AutoJoinedSubClassPart<>).MakeGenericType(type);
+            var joinedclass = (IMappingPart)Activator.CreateInstance(genericType, keyColumn);                      
+            AddPart(joinedclass);
+            return joinedclass;
         }
     }
 }

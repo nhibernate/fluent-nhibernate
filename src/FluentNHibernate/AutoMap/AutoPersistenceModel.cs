@@ -1,16 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
-using FluentNHibernate;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.AutoMap
 {
     public class AutoPersistenceModel : PersistenceModel
     {
-        private readonly AutoMapper autoMap;
+        private readonly AutoMapper autoMapper;
         private Assembly assemblyContainingMaps;
         private Assembly entityAssembly;
         private Func<Type, bool> shouldIncludeType;
+        private readonly List<AutoMapType> mappingTypes = new List<AutoMapType>();
 
         public AutoPersistenceModel WithConvention(Conventions convention)
         {
@@ -50,20 +51,27 @@ namespace FluentNHibernate.AutoMap
 
             foreach (var type in entityAssembly.GetTypes())
             {
-                if (shouldIncludeType!= null)
+                if (shouldIncludeType != null)
                 {
                     if (!shouldIncludeType.Invoke(type))
                         continue;
                 }
+                mappingTypes.Add(new AutoMapType(type));
+            }
 
-                if (type.IsClass)
+            foreach (var type in mappingTypes)
+            {
+                if (type.Type.IsClass)
                 {
-                    var mapping = FindMapping(type);
+                    if (!type.IsMapped)
+                    {
+                        var mapping = FindMapping(type.Type);
 
-                    if (mapping != null)
-                        MergeMap(type, mapping);
-                    else
-                        AddMapping(type);
+                        if (mapping != null)
+                            MergeMap(type.Type, mapping);
+                        else
+                            AddMapping(type.Type);
+                    }
                 }
             }
 
@@ -72,24 +80,31 @@ namespace FluentNHibernate.AutoMap
 
         #region Configuation Helpers
 
-        private object AddMapping(Type type)
+        private void AddMapping(Type type)
         {
+            Type typeToMap = GetTypeToMap(type);
             var mapping = InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
-                autoMap, a => a.Map<object>(), null, type);
+                autoMapper, a => a.Map<object>(mappingTypes), new object[] {mappingTypes}, typeToMap);
             addMapping((IMapping)mapping);
-            return mapping;
+        }
+
+        private Type GetTypeToMap(Type type)
+        {
+            return type.BaseType == typeof(object) ? type : type.BaseType;
         }
 
         private void MergeMap(Type type, object mapping)
         {
+            Type typeToMap = GetTypeToMap(type);
             InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
-                autoMap, a => a.MergeMap<object>(null), new[] { mapping }, type);
+                autoMapper, a => a.MergeMap<object>(null), new[] { mapping }, typeToMap);
         }
 
         private object FindMapping(Type type)
         {
+            Type typeToMap = GetTypeToMap(type);
             var mapping = InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
-                this, a => a.FindMapping<object>(), null, type);
+                this, a => a.FindMapping<object>(), null, typeToMap);
             return mapping;
         }
 
@@ -97,7 +112,7 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel()
         {
-            autoMap = new AutoMapper(Conventions);
+            autoMapper = new AutoMapper(Conventions);
         }
 
         /// <summary>
@@ -107,12 +122,12 @@ namespace FluentNHibernate.AutoMap
         public AutoPersistenceModel(Assembly mapAssembly)
         {
             addMappingsFromAssembly(mapAssembly);
-            autoMap = new AutoMapper(Conventions);
+            autoMapper = new AutoMapper(Conventions);
         }
 
         public AutoPersistenceModel AutoMap<T>()
         {
-            addMapping(autoMap.Map<T>());
+            addMapping(autoMapper.Map<T>(mappingTypes));
             return this;
         }
 
@@ -140,5 +155,16 @@ namespace FluentNHibernate.AutoMap
             _mappings.Add(map);
             return this;
         }
+    }
+
+    public class AutoMapType
+    {
+        public AutoMapType(Type type)
+        {
+            Type = type;
+        }
+
+        public Type Type { get; set;}
+        public bool IsMapped { get; set; }
     }
 }

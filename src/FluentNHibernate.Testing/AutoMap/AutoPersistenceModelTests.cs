@@ -175,7 +175,7 @@ namespace FluentNHibernate.Testing.AutoMap
         {
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t == typeof(ExampleClass))
                 .WithConvention(c => c.FindIdentity = p => p.Name == p.DeclaringType.Name + "Id" );
 
             autoMapper.Configure(cfg);
@@ -185,6 +185,69 @@ namespace FluentNHibernate.Testing.AutoMap
                 .HasAttribute("name", "ExampleClassId")
                 .HasAttribute("column", "ExampleClassId");
         }
+
+        [Test]
+        public void TestInheritanceMapping()
+        {
+            var autoMapper = AutoPersistenceModel
+                    .MapEntitiesFromAssemblyOf<ExampleClass>()
+                    .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            autoMapper.Configure(cfg);
+
+            var tester = new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/joined-subclass")
+                .HasAttribute("name", typeof(ExampleInheritedClass).AssemblyQualifiedName);
+
+            tester.Element("class/joined-subclass/key")
+                .HasAttribute("column", "ExampleClassId");
+        }
+
+        [Test]
+        public void TestInheritanceMappingProperties()
+        {
+            var autoMapper = AutoPersistenceModel
+                    .MapEntitiesFromAssemblyOf<ExampleClass>()
+                    .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            autoMapper.Configure(cfg);
+
+            var tester = new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/joined-subclass/property")
+                .HasAttribute("name", "ExampleProperty");
+        }
+
+        [Test]
+        public void TestInheritanceMappingDoesntIncludeBaseTypeProperties()
+        {
+            var autoMapper = AutoPersistenceModel
+                    .MapEntitiesFromAssemblyOf<ExampleClass>()
+                    .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/joined-subclass")
+                .ChildrenDontContainAttribute("name", "LineOne");
+        }
+
+        [Test]
+        public void TestInheritanceOverridingMappingProperties()
+        {
+            var autoMapper = AutoPersistenceModel
+                    .MapEntitiesFromAssemblyOf<ExampleClass>()
+                    .ForTypesThatDeriveFrom<ExampleClass>(t => t.JoinedSubClass<ExampleInheritedClass>("OverridenKey", p =>p.Map(c => c.ExampleProperty, "columnName")))
+                    .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<ExampleClass>(autoMapper).ToString();
+            
+            var tester = new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/joined-subclass")
+                .ChildrenDontContainAttribute("name", "LineOne");
+        }
+
 
     }
 }

@@ -9,6 +9,7 @@ namespace FluentNHibernate.AutoMap
     public class AutoMapper
     {
         private readonly List<IAutoMapper> _mappingRules;
+        private List<AutoMapType> mappingTypes;
 
         public AutoMapper(Conventions conventions)
         {
@@ -25,9 +26,27 @@ namespace FluentNHibernate.AutoMap
 
         public AutoMap<T> MergeMap<T>(AutoMap<T> map)
         {
+            if (mappingTypes != null)
+            {
+                foreach (var inheritedClass in mappingTypes.Where(q => q.Type.BaseType == typeof (T)))
+                {                    
+                    object joinedClass = map.JoinedSubClass(inheritedClass.Type, typeof(T).Name + "Id");
+                    var method = this.GetType().GetMethod("mapEverythingInClass");
+                    var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
+                    genericMethod.Invoke(this, new[] {joinedClass});
+                    inheritedClass.IsMapped = true;
+                }
+            }
+
+            mapEverythingInClass(map);
+            return map;
+        }
+
+        public void mapEverythingInClass<T>(AutoMap<T> map)
+        {
             foreach (var property in typeof(T).GetProperties())
             {
-                if (!property.PropertyType.IsEnum && property.GetIndexParameters().Length == 0)
+                if ((property.DeclaringType == typeof(T)) && !property.PropertyType.IsEnum && property.GetIndexParameters().Length == 0)
                 {
                     foreach (var rule in _mappingRules)
                     {
@@ -42,12 +61,12 @@ namespace FluentNHibernate.AutoMap
                     }
                 }
             }
-            return map;
         }
 
-        public AutoMap<T> Map<T>()
+        public AutoMap<T> Map<T>(List<AutoMapType> types)
         {
             var classMap = (AutoMap<T>)Activator.CreateInstance(typeof(AutoMap<T>));
+            mappingTypes = types;
             return MergeMap(classMap);
         }
     }

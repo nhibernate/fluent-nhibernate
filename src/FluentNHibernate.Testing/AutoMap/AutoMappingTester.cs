@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.Metadata;

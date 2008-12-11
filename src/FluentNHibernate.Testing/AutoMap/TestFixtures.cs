@@ -17,14 +17,12 @@ namespace FluentNHibernate.AutoMap.TestFixtures
         }
     }
 
-/*
     public class ExampleInheritedClass : ExampleClass
     {
-        public int Id { get; set; }
-        public int ExampleInheritedClassId { get; set; } 
         public string ExampleProperty { get; set; }
+        public int SomeNumber{ get; set; }
     }
-*/
+
 
     public class ExampleClass
     {

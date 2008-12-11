@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate;
 using FluentNHibernate.AutoMap;
@@ -16,7 +18,7 @@ namespace FluentNHibernate.Testing.AutoMap
         public void AutoMapIdentification()
         {
             var autoMapper = new AutoMapper(new Conventions());
-            var map = autoMapper.Map<ExampleClass>();
+            var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
 
             Assert.IsNotNull(map);
 
@@ -31,7 +33,7 @@ namespace FluentNHibernate.Testing.AutoMap
         public void AutoMapVersion()
         {
             var autoMapper = new AutoMapper(new Conventions());
-            var map = autoMapper.Map<ExampleClass>();
+            var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
 
             Assert.IsNotNull(map);
 
@@ -46,7 +48,7 @@ namespace FluentNHibernate.Testing.AutoMap
         public void AutoMapProperty()
         {
             var autoMapper = new AutoMapper(new Conventions());
-            var map = autoMapper.Map<ExampleClass>();
+            var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
 
             Assert.IsNotNull(map);
 
@@ -61,7 +63,7 @@ namespace FluentNHibernate.Testing.AutoMap
         public void AutoMapIgnoreProperty()
         {
             var autoMapper = new AutoMapper(new Conventions());
-            var map = autoMapper.Map<ExampleClass>();
+            var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
 
             Assert.IsNotNull(map);
 
@@ -76,7 +78,7 @@ namespace FluentNHibernate.Testing.AutoMap
         public void AutoMapManyToOne()
         {
             var autoMapper = new AutoMapper(new Conventions());
-            var map = autoMapper.Map<ExampleClass>();
+            var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
 
             Assert.IsNotNull(map);
 
@@ -119,7 +121,7 @@ namespace FluentNHibernate.Testing.AutoMap
         public void AutoMapOneToMany()
         {
             var autoMapper = new AutoMapper(new Conventions());
-            var map = autoMapper.Map<ExampleParentClass>();
+            var map = autoMapper.Map<ExampleParentClass>(new List<AutoMapType>());
 
             Assert.IsNotNull(map);
 
@@ -128,6 +130,7 @@ namespace FluentNHibernate.Testing.AutoMap
             var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//bag");
             keyElement.AttributeShouldEqual("name", "Examples");
         }
+
     }
 }
 
