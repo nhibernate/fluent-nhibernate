@@ -42,6 +42,9 @@ namespace FluentNHibernate.Mapping
 
             writeTheParts(classElement, visitor);
 
+            foreach (XmlNode discriminator in document.SelectNodes("//subclass/discriminator"))
+                discriminator.ParentNode.RemoveChild(discriminator);
+
             return document;
         }
 

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Xml;
 using NUnit.Framework;
 using FluentNHibernate.Mapping;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
@@ -230,12 +231,33 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             Debug.WriteLine(document.OuterXml);
 
-            var element = (XmlElement) document.DocumentElement.SelectSingleNode("//subclass");
+            var element = (XmlElement)document.DocumentElement.SelectSingleNode("//subclass");
             element.AttributeShouldEqual("name", typeof(SecondMappedObject).AssemblyQualifiedName);
             element.AttributeShouldEqual("discriminator-value", "red");
 
             XmlElement propertyElement = element["property"];
             propertyElement.AttributeShouldEqual("column", "Name");
+        }
+
+        [Test]
+        public void SubclassShouldNotHaveDiscriminator()
+        {
+            var map = new ClassMap<MappedObject>();
+
+            map.DiscriminateSubClassesOnColumn<string>("Type")
+                .SubClass<SecondMappedObject>().IsIdentifiedBy("red")
+                .MapSubClassColumns(m => { 
+                                            m.Map(x => x.Name);
+                                            m.DiscriminateSubClassesOnColumn<string>("Type")
+                                                 .SubClass<SecondMappedObject>().IsIdentifiedBy("blue")
+                                                 .MapSubClassColumns(m2 => { });
+                });
+
+            document = map.CreateMapping(new MappingVisitor());
+
+            Debug.WriteLine(document.OuterXml);
+
+            Assert.That(document.SelectNodes("//subclass/discriminator").Count, Is.EqualTo(0));
         }
 
     	[Test]
