@@ -34,5 +34,19 @@ namespace FluentNHibernate.Testing.Cfg
 			PostgreSQLConfiguration.PostgreSQL82.ToProperties()["dialect"].ShouldEqual(
 				"NHibernate.Dialect.PostgreSQL82Dialect, " + typeof(ISession).Assembly.FullName);
 		}
+
+        [Test]
+        public void ConnectionString_is_added_to_the_configuration()
+        {
+            PostgreSQLConfiguration.PostgreSQL82
+                .ConnectionString
+                    .Host("db-srv")
+                    .Database("tables")
+                    .Username("toni tester")
+                    .Password("secret")
+                    .Port(22)
+                    .Create
+                .ToProperties()["connection.connection_string"].ShouldEqual("User Id=toni tester;Password=secret;Host=db-srv;Port=22;Database=tables;");
+        }
 	}
 }
