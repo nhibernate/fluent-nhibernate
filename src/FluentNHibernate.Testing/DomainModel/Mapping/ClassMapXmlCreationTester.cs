@@ -258,7 +258,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
                 .ForMapping(m => { })
-                .Element("class").HasAttribute("table", "[MappedObject]");
+                .Element("class").HasAttribute("table", "`MappedObject`");
         }
 
         [Test]
