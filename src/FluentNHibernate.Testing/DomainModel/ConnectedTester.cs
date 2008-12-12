@@ -271,8 +271,8 @@ namespace FluentNHibernate.Testing.DomainModel
 
     public class Record : Entity
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public string Location { get; set; }
+        public virtual string Name { get; set; }
+        public virtual int Age { get; set; }
+        public virtual string Location { get; set; }
     }
 }

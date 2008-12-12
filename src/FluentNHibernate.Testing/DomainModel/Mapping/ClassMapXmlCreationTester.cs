@@ -534,23 +534,23 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void DefaultLazyLoad_should_be_false_by_default_for_compatibility()
+        public void DefaultLazyLoad_should_be_true_by_default_for_compatibility_with_NHibernate()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(c => { })
-                .HasAttribute("default-lazy", "false");
+                .HasAttribute("default-lazy", "true");
         }
 
         [Test]
-        public void DefaultLazyLoad_should_be_true_if_set_by_convention()
+        public void DefaultLazyLoad_should_be_false_if_set_by_convention()
         {
             var visitor = new MappingVisitor();
-            visitor.Conventions.DefaultLazyLoad = true;
+            visitor.Conventions.DefaultLazyLoad = false;
 
             new MappingTester<MappedObject>()
                 .UsingVisitor(visitor)
                 .ForMapping(c => { })
-                .HasAttribute("default-lazy", "true");
+                .HasAttribute("default-lazy", "false");
         }
 
         [Test]
@@ -561,8 +561,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             new MappingTester<MappedObject>()
                 .UsingVisitor(visitor)
-                .ForMapping(c =>c.SetHibernateMappingAttribute(ClassMap<MappedObject>.DefaultLazyAttributeKey, "false"))
-                .HasAttribute("default-lazy", "false");
+                .ForMapping(c =>c.SetHibernateMappingAttribute(ClassMap<MappedObject>.DefaultLazyAttributeKey, "true"))
+                .HasAttribute("default-lazy", "true");
         }
     }
 
@@ -604,8 +604,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
     public class ChildObject
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Position { get; set; }
+        public virtual int Id { get; set; }
+        public virtual string Name { get; set; }
+        public virtual int Position { get; set; }
     }
 }

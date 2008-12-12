@@ -47,9 +47,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void DefaultLazyLoad_should_be_false_by_default_for_compatibility()
+        public void DefaultLazyLoad_should_be_true_by_default_for_compatibility_with_NHibernate()
         {
-            new Conventions().DefaultLazyLoad.ShouldBeFalse();
+            new Conventions().DefaultLazyLoad.ShouldBeTrue();
         }
     }
 

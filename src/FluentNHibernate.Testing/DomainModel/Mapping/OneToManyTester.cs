@@ -6,17 +6,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
     public class OneToManyTarget
     {
-        public int Id { get; set; }        
-        public ISet<ChildObject> SetOfChildren { get; set; }
-        public IList<ChildObject> BagOfChildren { get; set; }
-        public IList<ChildObject> ListOfChildren { get; set; }
-        public IDictionary<string, ChildObject> MapOfChildren { get; set; }
-        public ChildObject[] ArrayOfChildren { get; set; }
-        public IList<string> ListOfSimpleChildren { get; set; }
+        public virtual int Id { get; set; }
+        public virtual ISet<ChildObject> SetOfChildren { get; set; }
+        public virtual IList<ChildObject> BagOfChildren { get; set; }
+        public virtual IList<ChildObject> ListOfChildren { get; set; }
+        public virtual IDictionary<string, ChildObject> MapOfChildren { get; set; }
+        public virtual ChildObject[] ArrayOfChildren { get; set; }
+        public virtual IList<string> ListOfSimpleChildren { get; set; }
 
 
         private IList<ChildObject> otherChildren = new List<ChildObject>();
-        public IList<ChildObject> GetOtherChildren() { return otherChildren; }
+        public virtual IList<ChildObject> GetOtherChildren() { return otherChildren; }
     }
 
     public class OneToManyComponentTarget

@@ -39,6 +39,7 @@ namespace FluentNHibernate
         public Conventions()
         {
             DefaultStringLength = 100;
+            DefaultLazyLoad = true;
 
             AddTypeConvention(new IgnoreNullableTypeConvention());
             AddTypeConvention(new EnumerationTypeConvention());
