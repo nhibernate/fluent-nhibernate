@@ -42,6 +42,8 @@ namespace FluentNHibernate.Mapping
 
             writeTheParts(classElement, visitor);
 
+            // This is a workaround - subclasses should not have a discriminator node. A better fix would be to see
+            // that the node is not created in the first place.
             foreach (XmlNode discriminator in document.SelectNodes("//subclass/discriminator"))
                 discriminator.ParentNode.RemoveChild(discriminator);
 
