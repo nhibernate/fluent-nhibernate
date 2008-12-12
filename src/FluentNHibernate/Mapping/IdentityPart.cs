@@ -53,7 +53,7 @@ namespace FluentNHibernate.Mapping
 		public void Write(XmlElement classElement, IMappingVisitor visitor)
 		{
             var columnName = (String.IsNullOrEmpty(_columnName))
-             ? visitor.Conventions.GetPrimaryKeyName(_property)
+             ? visitor.Conventions.CalculatePrimaryKey(_property)
              : _columnName;
 
 			XmlElement element = classElement.AddElement("id")

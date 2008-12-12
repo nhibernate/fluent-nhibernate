@@ -118,5 +118,14 @@ namespace FluentNHibernate
         public Func<PropertyInfo, string> GetVersionColumnName;
 
         public bool DefaultLazyLoad = false;
+        public Func<Type, string> GetPrimaryKeyNameFromType;
+
+        public string CalculatePrimaryKey(PropertyInfo _property)
+        {
+            if (GetPrimaryKeyNameFromType != null)
+                return GetPrimaryKeyNameFromType(_property.DeclaringType);
+
+            return GetPrimaryKeyName(_property);
+        }
     }
 }
