@@ -2,6 +2,7 @@ using System;
 using System.Xml;
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
@@ -107,6 +108,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 if (node.HasAttribute(key))
                     Assert.AreNotEqual(node.Attributes[key].Value, value);
             }
+            return this;
+        }
+
+        public MappingTester<T> ValueEquals(string value)
+        {
+            Assert.That(currentElement.InnerXml, Is.EqualTo(value));
+
             return this;
         }
     }

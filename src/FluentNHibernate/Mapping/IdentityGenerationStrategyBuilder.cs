@@ -1,12 +1,13 @@
 using System;
+using System.Linq.Expressions;
 
 namespace FluentNHibernate.Mapping
 {
-	public class IdentityGenerationStrategyBuilder
+	public class IdentityGenerationStrategyBuilder<T>
 	{
-		private readonly IdentityPart _parent;
+        private readonly IdentityPart<T> _parent;
 
-		public IdentityGenerationStrategyBuilder(IdentityPart parent)
+        public IdentityGenerationStrategyBuilder(IdentityPart<T> parent)
 		{
 			_parent = parent;
 		}
@@ -54,7 +55,7 @@ namespace FluentNHibernate.Mapping
 		/// process is inserting data into the same table. Do not use in a cluster.
 		/// </summary>
 		/// <returns></returns>
-		public IdentityPart Increment()
+        public IdentityPart<T> Increment()
 		{
 			ensureIntegralIdenityType();
 			setGenerator("increment");
@@ -67,7 +68,7 @@ namespace FluentNHibernate.Mapping
 		/// Convert.ChangeType. Any integral property type is thus supported.
 		/// </summary>
 		/// <returns></returns>
-		public IdentityPart Identity()
+        public IdentityPart<T> Identity()
 		{
 			ensureIntegralIdenityType();
 			setGenerator("identity");
@@ -81,7 +82,7 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
 		/// <param name="sequenceName"></param>
 		/// <returns></returns>
-		public IdentityPart Sequence(string sequenceName)
+        public IdentityPart<T> Sequence(string sequenceName)
 		{
 			ensureIntegralIdenityType();
 			setGenerator("sequence");
@@ -100,7 +101,7 @@ namespace FluentNHibernate.Mapping
 		/// <param name="column"></param>
 		/// <param name="max_lo"></param>
 		/// <returns></returns>
-		public IdentityPart HiLo(string table, string column, string max_lo)
+        public IdentityPart<T> HiLo(string table, string column, string max_lo)
 		{
 			addGeneratorParam("table", table);
 			addGeneratorParam("column", column);
@@ -116,7 +117,7 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
 		/// <param name="max_lo"></param>
 		/// <returns></returns>
-		public IdentityPart HiLo(string max_lo)
+        public IdentityPart<T> HiLo(string max_lo)
 		{
 			ensureIntegralIdenityType();
 			setGenerator("hilo");
@@ -130,7 +131,7 @@ namespace FluentNHibernate.Mapping
 		/// <param name="sequence"></param>
 		/// <param name="max_lo"></param>
 		/// <returns></returns>
-		public IdentityPart SeqHiLo(string sequence, string max_lo)
+        public IdentityPart<T> SeqHiLo(string sequence, string max_lo)
 		{
 			ensureIntegralIdenityType();
 			setGenerator("seqhilo");
@@ -145,7 +146,7 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
 		/// <param name="format">http://msdn.microsoft.com/en-us/library/97af8hh4.aspx</param>
 		/// <returns></returns>
-		public IdentityPart UuidHex(string format)
+        public IdentityPart<T> UuidHex(string format)
 		{
 			ensureStringIdentityType();
 			setGenerator("uuid.hex");
@@ -157,7 +158,7 @@ namespace FluentNHibernate.Mapping
 		/// uses a new System.Guid to create a byte[] that is converted to a string.  
 		/// </summary>
 		/// <returns></returns>
-		public IdentityPart UuidString()
+        public IdentityPart<T> UuidString()
 		{
 			ensureStringIdentityType();
 			setGenerator("uuid.string");
@@ -168,7 +169,7 @@ namespace FluentNHibernate.Mapping
 		/// uses a new System.Guid as the identifier. 
 		/// </summary>
 		/// <returns></returns>
-		public IdentityPart Guid()
+        public IdentityPart<T> Guid()
 		{
 			ensureGuidIdentityType();
 			setGenerator("guid");
@@ -181,7 +182,7 @@ namespace FluentNHibernate.Mapping
 		/// in the article http://www.informit.com/articles/article.asp?p=25862. 
 		/// </summary>
 		/// <returns></returns>
-		public IdentityPart GuidComb()
+        public IdentityPart<T> GuidComb()
 		{
 			ensureGuidIdentityType();
 			setGenerator("guid.comb");
@@ -192,7 +193,7 @@ namespace FluentNHibernate.Mapping
 		/// lets the application to assign an identifier to the object before Save() is called. 
 		/// </summary>
 		/// <returns></returns>
-		public IdentityPart Assigned()
+        public IdentityPart<T> Assigned()
 		{
 			setGenerator("assigned");
 			return _parent;
@@ -202,7 +203,7 @@ namespace FluentNHibernate.Mapping
 		/// picks identity, sequence or hilo depending upon the capabilities of the underlying database. 
 		/// </summary>
 		/// <returns></returns>
-		public IdentityPart Native()
+        public IdentityPart<T> Native()
 		{
 			ensureIntegralIdenityType();
 			setGenerator("native");
@@ -214,11 +215,21 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
 		/// <param name="property"></param>
 		/// <returns></returns>
-		public IdentityPart Foreign(string property)
+        public IdentityPart<T> Foreign(string property)
 		{
 			setGenerator("foreign");
 			addGeneratorParam("property", property);
 			return _parent;
 		}
+
+        /// <summary>
+        /// uses the identifier of another associated object. Usually used in conjunction with a one-to-one primary key association. 
+        /// </summary>
+        public IdentityPart<T> Foreign(Expression<Func<T, object>> expression)
+        {
+            var property = ReflectionHelper.GetProperty(expression);
+
+            return Foreign(property.Name);
+        }
 	}
 }

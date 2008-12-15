@@ -3,9 +3,6 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Xml;
 using FluentNHibernate.Mapping;
-using NHibernate.Engine;
-using NHibernate.Id;
-using NHibernate.Util;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
@@ -17,7 +14,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void Scratch()
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-			var id = new IdentityPart(property);
+			var id = new IdentityPart<IdentityTarget>(property);
 
 			var document = new XmlDocument();
 			var element = document.CreateElement("root");
@@ -25,24 +22,19 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 			Debug.Write(element.InnerXml);
 		}
 
-
 		[Test]
 		public void Defaults()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-
-			var id = new IdentityPart(property);
-
-			var document = new XmlDocument();
-			var element = document.CreateElement("root");
-			id.Write(element, new MappingVisitor());
-			var idElement = (XmlElement)element.SelectSingleNode("id");
-			var generatorElemenent = (XmlElement) idElement.SelectSingleNode("generator");
-			
-			idElement.AttributeShouldEqual("name", "IntId");
-			idElement.AttributeShouldEqual("column", "IntId");
-			idElement.AttributeShouldEqual("type", "Int32");
-			generatorElemenent.AttributeShouldEqual("class", "identity");
+		    new MappingTester<IdentityTarget>()
+		        .ForMapping(mapping => mapping.Id(x => x.IntId))
+		        .Element("class/id")
+		            .Exists()
+		            .HasAttribute("name", "IntId")
+		            .HasAttribute("column", "IntId")
+		            .HasAttribute("type", "Int32")
+		        .Element("class/id/generator")
+		            .Exists()
+		            .HasAttribute("class", "identity");
 		}
 
         [Test]
@@ -60,276 +52,212 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		[Test]
 		public void ColumnName_SpecifyColumnName()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-
-			var id = new IdentityPart(property, "Id");
-
-			var document = new XmlDocument();
-			var element = document.CreateElement("root");
-			id.Write(element, new MappingVisitor());
-			var idElement = (XmlElement)element.SelectSingleNode("id");
-
-			idElement.AttributeShouldEqual("column", "Id");
+		    new MappingTester<IdentityTarget>()
+		        .ForMapping(mapping => mapping.Id(x => x.IntId, "Id"))
+		        .Element("class/id").HasAttribute("column", "Id");
 		}
 
 		[Test]
 		public void GeneratorClass_Long_DefaultsToIdentity()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.LongId);
-			
-			var id = new IdentityPart(property);
-			
-			var document = new XmlDocument();
-			var element = document.CreateElement("root");
-			id.Write(element, new MappingVisitor());
-			var idElement = (XmlElement)element.SelectSingleNode("id");
-			var generatorElemenent = (XmlElement)idElement.SelectSingleNode("generator");
-			
-			idElement.AttributeShouldEqual("type", "Int64");
-			generatorElemenent.AttributeShouldEqual("class", "identity");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping => mapping.Id(x => x.LongId))
+                .Element("class/id").HasAttribute("type", "Int64")
+                .Element("class/id/generator").HasAttribute("class", "identity");
 		}
 
 		[Test]
 		public void GeneratorClass_Guid_DefaultsToGuidComb()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-
-			var id = new IdentityPart(property);
-
-			var document = new XmlDocument();
-			var element = document.CreateElement("root");
-			id.Write(element, new MappingVisitor());
-			var idElement = (XmlElement)element.SelectSingleNode("id");
-			var generatorElemenent = (XmlElement)idElement.SelectSingleNode("generator");
-
-			idElement.AttributeShouldEqual("type", "Guid");
-			generatorElemenent.AttributeShouldEqual("class", "guid.comb");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping => mapping.Id(x => x.GuidId))
+                .Element("class/id").HasAttribute("type", "Guid")
+                .Element("class/id/generator").HasAttribute("class", "guid.comb");
 		}
 
 		[Test]
 		public void GeneratorClass_String_DefaultsToAssigned()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.StringId);
-
-			var id = new IdentityPart(property);
-
-			var document = new XmlDocument();
-			var element = document.CreateElement("root");
-			id.Write(element, new MappingVisitor());
-			var idElement = (XmlElement)element.SelectSingleNode("id");
-			var generatorElemenent = (XmlElement)idElement.SelectSingleNode("generator");
-
-			idElement.AttributeShouldEqual("type", "String");
-			generatorElemenent.AttributeShouldEqual("class", "assigned");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping => mapping.Id(x => x.StringId))
+                .Element("class/id").HasAttribute("type", "String")
+                .Element("class/id/generator").HasAttribute("class", "assigned");
 		}
 
 		[Test]
 		public void GeneratorClass_CanSpecifyIncrement()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-
-			var id = new IdentityPart(property).GeneratedBy.Increment();
-			
-			XmlNodeList ignored;
-			XmlElement generatorElement = getGeneratorElement(id, out ignored);
-
-			generatorElement.AttributeShouldEqual("class", "increment");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.IntId)
+                        .GeneratedBy.Increment())
+                .Element("class/id/generator").HasAttribute("class", "increment");
 		}
 
 		[Test]
 		public void GeneratorClass_CanSpecifyIdentity()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-
-			var id = new IdentityPart(property).GeneratedBy.Identity();
-
-			XmlNodeList ignored;
-			XmlElement generatorElement = getGeneratorElement(id, out ignored);
-
-			generatorElement.AttributeShouldEqual("class", "identity");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.IntId)
+                        .GeneratedBy.Identity())
+                .Element("class/id/generator").HasAttribute("class", "identity");
 		}
 
 		[Test]
 		public void GeneratorClass_CanSpecifySequence()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-
-			var id = new IdentityPart(property).GeneratedBy.Sequence("uid_sequence");
-
-			XmlNodeList paramElements;
-			XmlElement generatorElement = getGeneratorElement(id, out paramElements);
-
-			generatorElement.AttributeShouldEqual("class", "sequence");
-			paramElements.Count.ShouldEqual(1);
-			paramElements[0].Name.ShouldEqual("param");
-			paramElements[0].Attributes["name"].Value.ShouldEqual("sequence");
-			paramElements[0].InnerXml.ShouldEqual("uid_sequence");
+		    new MappingTester<IdentityTarget>()
+		        .ForMapping(mapping =>
+                    mapping.Id(x => x.IntId)
+                        .GeneratedBy.Sequence("uid_sequence"))
+		        .Element("class/id/generator").HasAttribute("class", "sequence")
+		        .Element("class/id/generator/param")
+		            .Exists()
+		            .HasAttribute("name", "sequence")
+		            .ValueEquals("uid_sequence");
 		}
 
 		[Test]
 		public void GeneratorClass_CanSpecifyHiLo()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-
-			var id = new IdentityPart(property).GeneratedBy.HiLo("hi_value", "next_value", "100");
-
-			XmlNodeList paramElements;
-			XmlElement generatorElement = getGeneratorElement(id, out paramElements);
-
-			generatorElement.AttributeShouldEqual("class", "hilo");
-			paramElements.Count.ShouldEqual(3);
-			paramElements[0].Name.ShouldEqual("param");
-			paramElements[0].Attributes["name"].Value.ShouldEqual("table");
-			paramElements[0].InnerXml.ShouldEqual("hi_value");
-
-			paramElements[1].Name.ShouldEqual("param");
-			paramElements[1].Attributes["name"].Value.ShouldEqual("column");
-			paramElements[1].InnerXml.ShouldEqual("next_value");
-
-			paramElements[2].Name.ShouldEqual("param");
-			paramElements[2].Attributes["name"].Value.ShouldEqual("max_lo");
-			paramElements[2].InnerXml.ShouldEqual("100");
-
-			var id2 = new IdentityPart(property).GeneratedBy.HiLo("hi_value", "next_value", "100");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.IntId)
+                        .GeneratedBy.HiLo("hi_value", "next_value", "100"))
+                .Element("class/id/generator").HasAttribute("class", "hilo")
+                .Element("class/id/generator/param[1]")
+                    .Exists()
+                    .HasAttribute("name", "table")
+                    .ValueEquals("hi_value")
+                .Element("class/id/generator/param[2]")
+                    .Exists()
+                    .HasAttribute("name", "column")
+                    .ValueEquals("next_value")
+                .Element("class/id/generator/param[3]")
+                    .Exists()
+                    .HasAttribute("name", "max_lo")
+                    .ValueEquals("100");
 		}
 
-		private XmlElement getGeneratorElement(IdentityPart id, out XmlNodeList paramElements)
-		{
-			var document = new XmlDocument();
-			var element = document.CreateElement("root");
-			id.Write(element, new MappingVisitor());
-			var generatorElement = (XmlElement)element.SelectSingleNode("id/generator");
-			paramElements = generatorElement.SelectNodes("param");
-			return generatorElement;
-		}
-
-		[Test]
+	    [Test]
 		public void GeneratorClass_CanSpecifySeqHiLo()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-
-			var id = new IdentityPart(property).GeneratedBy.SeqHiLo("hi_value","100");
-
-			XmlNodeList paramElements;
-			XmlElement generatorElement = getGeneratorElement(id, out paramElements);
-
-			generatorElement.AttributeShouldEqual("class", "seqhilo");
-			paramElements.Count.ShouldEqual(2);
-			paramElements[0].Name.ShouldEqual("param");
-			paramElements[0].Attributes["name"].Value.ShouldEqual("sequence");
-			paramElements[0].InnerXml.ShouldEqual("hi_value");
-
-			paramElements[1].Name.ShouldEqual("param");
-			paramElements[1].Attributes["name"].Value.ShouldEqual("max_lo");
-			paramElements[1].InnerXml.ShouldEqual("100");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.IntId)
+                        .GeneratedBy.SeqHiLo("hi_value", "100"))
+                .Element("class/id/generator").HasAttribute("class", "seqhilo")
+                .Element("class/id/generator/param[1]")
+                    .Exists()
+                    .HasAttribute("name", "sequence")
+                    .ValueEquals("hi_value")
+                .Element("class/id/generator/param[2]")
+                    .Exists()
+                    .HasAttribute("name", "max_lo")
+                    .ValueEquals("100");
 		}
 
 		[Test]
 		public void GeneratorClass_CanSpecifyUuidHex()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.StringId);
-
-			var id = new IdentityPart(property).GeneratedBy.UuidHex("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-
-			XmlNodeList paramElements;
-			XmlElement generatorElement = getGeneratorElement(id, out paramElements);
-
-			generatorElement.AttributeShouldEqual("class", "uuid.hex");
-			paramElements.Count.ShouldEqual(1);
-			paramElements[0].Name.ShouldEqual("param");
-			paramElements[0].Attributes["name"].Value.ShouldEqual("format");
-			paramElements[0].InnerXml.ShouldEqual("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.StringId)
+                        .GeneratedBy.UuidHex("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"))
+                .Element("class/id/generator").HasAttribute("class", "uuid.hex")
+                .Element("class/id/generator/param")
+                    .Exists()
+                    .HasAttribute("name", "format")
+                    .ValueEquals("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 		}
 
 		[Test]
 		public void GeneratorClass_CanSpecifyUuidString()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.StringId);
-
-			var id = new IdentityPart(property).GeneratedBy.UuidString();
-
-			XmlNodeList ignored;
-			XmlElement generatorElement = getGeneratorElement(id, out ignored);
-
-			generatorElement.AttributeShouldEqual("class", "uuid.string");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.StringId)
+                        .GeneratedBy.UuidString())
+                .Element("class/id/generator").HasAttribute("class", "uuid.string");
 		}
 
 		[Test]
 		public void GeneratorClass_CanSpecifyGuid()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-
-			var id = new IdentityPart(property).GeneratedBy.Guid();
-
-			XmlNodeList ignored;
-			XmlElement generatorElement = getGeneratorElement(id, out ignored);
-
-			generatorElement.AttributeShouldEqual("class", "guid");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.GuidId)
+                        .GeneratedBy.Guid())
+                .Element("class/id/generator").HasAttribute("class", "guid");
 		}
 
 		[Test]
 		public void GeneratorClass_CanSpecifyGuidComb()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-
-			var id = new IdentityPart(property).GeneratedBy.GuidComb();
-
-			XmlNodeList ignored;
-			XmlElement generatorElement = getGeneratorElement(id, out ignored);
-
-			generatorElement.AttributeShouldEqual("class", "guid.comb");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.GuidId)
+                        .GeneratedBy.GuidComb())
+                .Element("class/id/generator").HasAttribute("class", "guid.comb");
 		}
 
 		[Test]
 		public void GeneratorClass_CanSpecifyNative()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-
-			var id = new IdentityPart(property).GeneratedBy.Native();
-
-			XmlNodeList ignored;
-			XmlElement generatorElement = getGeneratorElement(id, out ignored);
-
-			generatorElement.AttributeShouldEqual("class", "native");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.IntId)
+                        .GeneratedBy.Native())
+                .Element("class/id/generator").HasAttribute("class", "native");
 		}
 
 		[Test]
 		public void GeneratorClass_CanSpecifyAssigned()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-
-			var id = new IdentityPart(property).GeneratedBy.Assigned();
-
-			XmlNodeList ignored;
-			XmlElement generatorElement = getGeneratorElement(id, out ignored);
-
-			generatorElement.AttributeShouldEqual("class", "assigned");	
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.GuidId)
+                        .GeneratedBy.Assigned())
+                .Element("class/id/generator").HasAttribute("class", "assigned");
 		}
 
 		[Test]
 		public void GeneratorClass_CanSpecifyForeign()
 		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-
-			var id = new IdentityPart(property).GeneratedBy.Foreign("Parent");
-
-			XmlNodeList paramElements;
-			XmlElement generatorElement = getGeneratorElement(id, out paramElements);
-
-			generatorElement.AttributeShouldEqual("class", "foreign");
-			paramElements.Count.ShouldEqual(1);
-			paramElements[0].Name.ShouldEqual("param");
-			paramElements[0].Attributes["name"].Value.ShouldEqual("property");
-			paramElements[0].InnerXml.ShouldEqual("Parent");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.IntId)
+                        .GeneratedBy
+                        .Foreign("Parent"))
+                .Element("class/id/generator").HasAttribute("class", "foreign")
+                .Element("class/id/generator/param")
+                    .Exists()
+                    .HasAttribute("name", "property")
+                    .ValueEquals("Parent");
 		}
+
+        [Test]
+        public void GeneratorClass_CanSpecifyForeignFluently()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.IntId)
+                        .GeneratedBy
+                        .Foreign(x => x.StringId))
+                .Element("class/id/generator").HasAttribute("class", "foreign")
+                .Element("class/id/generator/param")
+                    .Exists()
+                    .HasAttribute("name", "property")
+                    .ValueEquals("StringId");
+        }
 
 		[Test]
 		[ExpectedException(typeof (InvalidOperationException))]
 		public void IdentityType_MustBeIntegral_ForIncrement()
 		{
-
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-			new IdentityPart(property).GeneratedBy.Increment();
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.Increment();
 		}
 
 		[Test]
@@ -338,7 +266,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-			new IdentityPart(property).GeneratedBy.Identity();
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.Identity();
 		}
 
 		[Test]
@@ -347,7 +275,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-			new IdentityPart(property).GeneratedBy.Sequence("no");
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.Sequence("no");
 		}
 
 		[Test]
@@ -356,7 +284,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-			new IdentityPart(property).GeneratedBy.HiLo("no","no","no");
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.HiLo("no", "no", "no");
 		}
 
 		[Test]
@@ -365,7 +293,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-			new IdentityPart(property).GeneratedBy.SeqHiLo("no", "no");
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.SeqHiLo("no", "no");
 		}
 
 		[Test]
@@ -374,7 +302,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-			new IdentityPart(property).GeneratedBy.UuidHex("format");
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.UuidHex("format");
 		}
 
 		[Test]
@@ -383,7 +311,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-			new IdentityPart(property).GeneratedBy.UuidString();
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.UuidString();
 		}
 
 		[Test]
@@ -392,7 +320,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-			new IdentityPart(property).GeneratedBy.Guid();
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.Guid();
 		}
 
 		[Test]
@@ -401,7 +329,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-			new IdentityPart(property).GeneratedBy.GuidComb();
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.GuidComb();
 		}
 
 		[Test]
@@ -409,7 +337,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void IdentityType_MustBeIntegral_ForNative()
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-			new IdentityPart(property).GeneratedBy.Native();
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.Native();
 		}
 
         [Test]
@@ -445,7 +373,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void BUGFIX_each_visitor_should_be_asked_to_specify_the_primary_key_name_convention()
+        public void Each_visitor_should_be_asked_to_specify_the_primary_key_name_convention()
         {
             var visitor1 = new MappingVisitor();
             var visitor2 = new MappingVisitor();

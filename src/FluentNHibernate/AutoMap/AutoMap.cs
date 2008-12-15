@@ -27,7 +27,7 @@ namespace FluentNHibernate.AutoMap
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
         }
 
-        public override IdentityPart Id(System.Linq.Expressions.Expression<Func<T, object>> expression)
+        public override IdentityPart<T> Id(System.Linq.Expressions.Expression<Func<T, object>> expression)
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
             return base.Id(expression);
@@ -63,7 +63,7 @@ namespace FluentNHibernate.AutoMap
             return base.Map(expression, columnName);
         }
 
-        public override IdentityPart Id(System.Linq.Expressions.Expression<Func<T, object>> expression, string column)
+        public override IdentityPart<T> Id(System.Linq.Expressions.Expression<Func<T, object>> expression, string column)
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
             return base.Id(expression, column);

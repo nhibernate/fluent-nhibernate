@@ -4,31 +4,31 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-	public class IdentityPart : IMappingPart, IAccessStrategy<IdentityPart>
+	public class IdentityPart<T> : IMappingPart, IAccessStrategy<IdentityPart<T>>
 	{
 		private string _columnName;
-		private readonly IdentityGenerationStrategyBuilder _generatedBy;
+		private readonly IdentityGenerationStrategyBuilder<T> _generatedBy;
 		private readonly Cache<string, string> _generatorParameters = new Cache<string, string>();
         private readonly Cache<string, string> _elementAttributes = new Cache<string, string>();
 		private readonly PropertyInfo _property;
 		private string _generatorClass;
-        private readonly AccessStrategyBuilder<IdentityPart> access;
+        private readonly AccessStrategyBuilder<IdentityPart<T>> access;
 	    private object _unsavedValue;
 
 	    public IdentityPart(PropertyInfo property, string columnName)
 		{
-            access = new AccessStrategyBuilder<IdentityPart>(this);
+            access = new AccessStrategyBuilder<IdentityPart<T>>(this);
 
 			_property = property;
 			_columnName = columnName;
-			_generatedBy = new IdentityGenerationStrategyBuilder(this);
+			_generatedBy = new IdentityGenerationStrategyBuilder<T>(this);
 		}
 
 		public IdentityPart(PropertyInfo property) : this(property, null)
 		{
 		}
 
-		public IdentityGenerationStrategyBuilder GeneratedBy
+		public IdentityGenerationStrategyBuilder<T> GeneratedBy
 		{
 			get { return _generatedBy; }
 		}
@@ -99,13 +99,13 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.First; }
 	    }
 
-	    public IdentityPart SetGeneratorClass(string generator)
+        public IdentityPart<T> SetGeneratorClass(string generator)
 		{
 			_generatorClass = generator;
 			return this;
 		}
 
-		public IdentityPart AddGeneratorParam(string name, string innerXml)
+        public IdentityPart<T> AddGeneratorParam(string name, string innerXml)
 		{
 			_generatorParameters.Store(name, innerXml);
 			return this;
@@ -114,7 +114,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Set the access and naming strategy for this identity.
         /// </summary>
-	    public AccessStrategyBuilder<IdentityPart> Access
+        public AccessStrategyBuilder<IdentityPart<T>> Access
 	    {
 	        get { return access; }
 	    }
@@ -123,7 +123,7 @@ namespace FluentNHibernate.Mapping
         /// Sets the unsaved-value of the identity.
         /// </summary>
         /// <param name="unsavedValue">Value that represents an unsaved value.</param>
-        public IdentityPart WithUnsavedValue(object unsavedValue)
+        public IdentityPart<T> WithUnsavedValue(object unsavedValue)
         {
             _unsavedValue = unsavedValue;
             return this;
