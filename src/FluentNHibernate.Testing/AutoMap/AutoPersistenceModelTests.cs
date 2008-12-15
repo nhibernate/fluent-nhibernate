@@ -1,8 +1,10 @@
+using System;
 using FluentNHibernate.AutoMap;
-using FluentNHibernate.AutoMap.TestFixtures;
 using FluentNHibernate.Testing.Cfg;
 using NHibernate.Cfg;
 using NUnit.Framework;
+using SuperTypes = FluentNHibernate.AutoMap.TestFixtures.SuperTypes;
+using FluentNHibernate.AutoMap.TestFixtures;
 
 namespace FluentNHibernate.Testing.AutoMap
 {
@@ -184,6 +186,23 @@ namespace FluentNHibernate.Testing.AutoMap
                 .Element("class/id")
                 .HasAttribute("name", "ExampleClassId")
                 .HasAttribute("column", "ExampleClassId");
+        }
+
+        [Test]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void TestInheritanceMappingSkipsSuperTypes()
+        {
+            var autoMapper = AutoPersistenceModel
+                    .MapEntitiesFromAssemblyOf<ExampleClass>()
+                    .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures.SuperTypes")
+                    .WithConvention(c =>
+                                        {
+                                            c.IsBaseType = b => b == typeof(SuperTypes.SuperType);
+                                        });
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<SuperTypes.SuperType>(autoMapper);
         }
 
         [Test]

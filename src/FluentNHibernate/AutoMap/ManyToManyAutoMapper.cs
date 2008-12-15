@@ -39,6 +39,9 @@ namespace FluentNHibernate.AutoMap
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
+            if (!classMap.CanMapProperty(property))
+                return;
+
             PropertyInfo inverseProperty = GetInverseProperty(property);
 
             Type parentSide = conventions.GetParentSideForManyToMany(property.DeclaringType, inverseProperty.DeclaringType);

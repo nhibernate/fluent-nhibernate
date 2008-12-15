@@ -16,14 +16,14 @@ namespace FluentNHibernate.AutoMap
 
         public bool MapsProperty(PropertyInfo property)
         {
-            if (property.ReflectedType.BaseType != typeof(object))
-                return false;
-
             return conventions.FindIdentity.Invoke(property);
         }
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
+            if (classMap is AutoJoinedSubClassPart<T>)
+                return;
+
             classMap.Id(ExpressionBuilder.Create<T>(property));
         }
     }

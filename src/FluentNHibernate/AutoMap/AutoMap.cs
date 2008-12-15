@@ -103,5 +103,16 @@ namespace FluentNHibernate.AutoMap
             AddPart(joinedclass);
             return joinedclass;
         }
+
+        public bool CanMapProperty(PropertyInfo property)
+        {
+            if (this is AutoJoinedSubClassPart<T>)
+            {
+                if (property.DeclaringType != typeof(T))
+                    return false;
+            }
+
+            return true;
+        }
     }
 }

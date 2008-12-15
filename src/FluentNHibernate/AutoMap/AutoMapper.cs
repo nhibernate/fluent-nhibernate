@@ -29,8 +29,8 @@ namespace FluentNHibernate.AutoMap
             if (mappingTypes != null)
             {
                 foreach (var inheritedClass in mappingTypes.Where(q => q.Type.BaseType == typeof (T)))
-                {                    
-                    object joinedClass = map.JoinedSubClass(inheritedClass.Type, typeof(T).Name + "Id");
+                {
+                    object joinedClass = map.JoinedSubClass(inheritedClass.Type, typeof (T).Name + "Id");
                     var method = this.GetType().GetMethod("mapEverythingInClass");
                     var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
                     genericMethod.Invoke(this, new[] {joinedClass});
@@ -39,6 +39,7 @@ namespace FluentNHibernate.AutoMap
             }
 
             mapEverythingInClass(map);
+            
             return map;
         }
 
@@ -46,7 +47,7 @@ namespace FluentNHibernate.AutoMap
         {
             foreach (var property in typeof(T).GetProperties())
             {
-                if ((property.DeclaringType == typeof(T)) && !property.PropertyType.IsEnum && property.GetIndexParameters().Length == 0)
+                if (!property.PropertyType.IsEnum && property.GetIndexParameters().Length == 0)
                 {
                     foreach (var rule in _mappingRules)
                     {

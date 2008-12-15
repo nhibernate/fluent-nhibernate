@@ -47,3 +47,52 @@ namespace FluentNHibernate.AutoMap.TestFixtures
         public virtual IList<ExampleClass> Examples {get; set;}
     }
 }
+
+namespace FluentNHibernate.AutoMap.TestFixtures.SuperTypes
+{
+    public class SuperType
+    {
+        public int Id { get; set; }
+    }
+
+    public class ExampleCustomColumn : SuperType
+    {
+        public int ExampleCustomColumnId { get; set; }
+        public int CustomColumn
+        {
+            get
+            {
+                return 12;
+            }
+        }
+    }
+
+    public class ExampleInheritedClass : ExampleClass
+    {
+        public string ExampleProperty { get; set; }
+        public int SomeNumber{ get; set; }
+    }
+
+
+    public class ExampleClass : SuperType
+    {
+        public virtual int ExampleClassId { get; set; }
+        public virtual string LineOne { get; set; }
+        public DateTime Timestamp { get; set; }
+        public ExampleEnum Enum { get; set; }
+        public ExampleParentClass Parent { get; set; }
+    }
+
+
+    public enum ExampleEnum
+    {
+        enum1=1
+    }
+
+    public class ExampleParentClass : SuperType
+    {
+        public int ExampleParentClassId { get; set; } 
+        public virtual IList<ExampleClass> Examples {get; set;}
+    }
+
+}

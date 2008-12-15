@@ -21,6 +21,9 @@ namespace FluentNHibernate.AutoMap
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
+            if (!classMap.CanMapProperty(property))
+                return;
+
             var classMapType = typeof(ClassMap<T>);
             var hasManyMethod = classMapType.GetMethod("HasMany");
             var listType = property.PropertyType.GetGenericArguments()[0];

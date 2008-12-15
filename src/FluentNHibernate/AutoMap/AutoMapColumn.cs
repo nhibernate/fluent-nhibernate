@@ -21,6 +21,9 @@ namespace FluentNHibernate.AutoMap
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
+            if (!classMap.CanMapProperty(property))
+                return;
+
             classMap.Map(ExpressionBuilder.Create<T>(property));
         }
     }

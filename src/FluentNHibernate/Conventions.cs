@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.Mapping;
@@ -119,6 +119,7 @@ namespace FluentNHibernate
 
         public bool DefaultLazyLoad = false;
         public Func<Type, string> GetPrimaryKeyNameFromType;
+        public Func<Type, bool> IsBaseType = b => b == typeof(object); 
 
         public string CalculatePrimaryKey(PropertyInfo _property)
         {
