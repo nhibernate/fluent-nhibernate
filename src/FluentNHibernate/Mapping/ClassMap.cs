@@ -14,6 +14,7 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> attributes = new Cache<string, string>();
         private readonly Cache<string, string> hibernateMappingAttributes = new Cache<string, string>();
         private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
+        private CacheBuilder<T> cache;
         private readonly IList<ImportPart> imports = new List<ImportPart>();
 
         public ClassMap()
@@ -25,6 +26,8 @@ namespace FluentNHibernate.Mapping
 
         public XmlDocument CreateMapping(IMappingVisitor visitor)
         {
+            PrepareBeforeCreateMapping();
+
             if (String.IsNullOrEmpty(TableName))
                 TableName = visitor.Conventions.GetTableName.Invoke(typeof(T));
 
@@ -48,6 +51,13 @@ namespace FluentNHibernate.Mapping
                 discriminator.ParentNode.RemoveChild(discriminator);
 
             return document;
+        }
+
+        private void PrepareBeforeCreateMapping()
+        {
+            if (cache == null) return;
+
+            AddPart(cache.ToMappingPart());
         }
 
         public void UseIdentityForKey(Expression<Func<T, object>> expression, string columnName)
@@ -137,12 +147,12 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="name">Attribute name</param>
         /// <param name="value">Attribute value</param>
-        public void SetAttribute(string name, string value)
+        public virtual void SetAttribute(string name, string value)
         {
             attributes.Store(name, value);
         }
 
-        public void SetAttributes(Attributes atts)
+        public virtual void SetAttributes(Attributes atts)
         {
             foreach (var key in atts.Keys)
             {
@@ -194,6 +204,19 @@ namespace FluentNHibernate.Mapping
         public AccessStrategyBuilder<ClassMap<T>> DefaultAccess
         {
             get { return defaultAccess; }
+        }
+
+        /// <summary>
+        /// Specify caching for this entity.
+        /// </summary>
+        public CacheBuilder<T> Cache
+        {
+            get
+            {
+                cache = new CacheBuilder<T>(this);
+
+                return cache;
+            }
         }
 
         /// <summary>
