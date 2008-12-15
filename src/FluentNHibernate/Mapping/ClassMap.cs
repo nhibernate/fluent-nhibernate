@@ -14,7 +14,7 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> attributes = new Cache<string, string>();
         private readonly Cache<string, string> hibernateMappingAttributes = new Cache<string, string>();
         private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
-        private CacheBuilder<T> cache;
+        private CachePart cache;
         private readonly IList<ImportPart> imports = new List<ImportPart>();
 
         public ClassMap()
@@ -26,10 +26,7 @@ namespace FluentNHibernate.Mapping
 
         public XmlDocument CreateMapping(IMappingVisitor visitor)
         {
-            PrepareBeforeCreateMapping();
-
-            if (String.IsNullOrEmpty(TableName))
-                TableName = visitor.Conventions.GetTableName.Invoke(typeof(T));
+            PrepareBeforeCreateMapping(visitor);
 
             visitor.CurrentType = typeof(T);
             XmlDocument document = getBaseDocument();
@@ -53,11 +50,16 @@ namespace FluentNHibernate.Mapping
             return document;
         }
 
-        private void PrepareBeforeCreateMapping()
+        private void PrepareBeforeCreateMapping(IMappingVisitor visitor)
         {
-            if (cache == null) return;
+            if (cache == null)
+                cache = visitor.Conventions.DefaultCache(new CachePart());
 
-            AddPart(cache.ToMappingPart());
+            if (cache != null)
+                AddPart(cache);
+
+            if (String.IsNullOrEmpty(TableName))
+                TableName = visitor.Conventions.GetTableName.Invoke(typeof(T));
         }
 
         public void UseIdentityForKey(Expression<Func<T, object>> expression, string columnName)
@@ -209,11 +211,11 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specify caching for this entity.
         /// </summary>
-        public CacheBuilder<T> Cache
+        public CachePart Cache
         {
             get
             {
-                cache = new CacheBuilder<T>(this);
+                cache = new CachePart();
 
                 return cache;
             }

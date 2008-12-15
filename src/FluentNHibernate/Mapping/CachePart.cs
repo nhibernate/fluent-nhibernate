@@ -5,12 +5,7 @@ namespace FluentNHibernate.Mapping
     public class CachePart : IMappingPart
     {
         private readonly Cache<string, string> attributes = new Cache<string, string>();
-        private readonly string usage;
-
-        public CachePart(string usage)
-        {
-            this.usage = usage;
-        }
+        private string usage;
 
         public void SetAttribute(string name, string value)
         {
@@ -34,12 +29,36 @@ namespace FluentNHibernate.Mapping
 
         public int Level
         {
-            get { return 0; }
+            get { return -1; }
         }
 
         public PartPosition Position
         {
             get { return PartPosition.First; }
+        }
+
+        public CachePart AsReadWrite()
+        {
+            usage = "read-write";
+            return this;
+        }
+
+        public CachePart AsNonStrictReadWrite()
+        {
+            usage = "nonstrict-read-write";
+            return this;
+        }
+
+        public CachePart AsReadOnly()
+        {
+            usage = "read-only";
+            return this;
+        }
+
+        public CachePart AsCustom(string custom)
+        {
+            usage = custom;
+            return this;
         }
     }
 }

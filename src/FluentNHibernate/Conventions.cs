@@ -114,12 +114,13 @@ namespace FluentNHibernate
         public Action<IMappingPart> ManyToOneConvention = m => {};
         public Action<IMappingPart> JoinConvention = m => {};
         public Action<IMappingPart> OneToOneConvention = m => { };
+        public Func<CachePart, CachePart> DefaultCache = cache => null;
 
         public Func<PropertyInfo, string> GetVersionColumnName;
 
         public bool DefaultLazyLoad = false;
         public Func<Type, string> GetPrimaryKeyNameFromType;
-        public Func<Type, bool> IsBaseType = b => b == typeof(object); 
+        public Func<Type, bool> IsBaseType = b => b == typeof(object);
 
         public string CalculatePrimaryKey(PropertyInfo _property)
         {

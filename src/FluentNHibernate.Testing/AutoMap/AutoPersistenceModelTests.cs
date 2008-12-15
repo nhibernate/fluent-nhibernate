@@ -267,6 +267,18 @@ namespace FluentNHibernate.Testing.AutoMap
                 .ChildrenDontContainAttribute("name", "LineOne");
         }
 
+        [Test]
+        public void TestAutoMapClassSetCacheConvention()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .WithConvention(c => c.DefaultCache = cache => cache.AsReadWrite());
 
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("//cache").HasAttribute("usage", "read-write");
+        }
     }
 }

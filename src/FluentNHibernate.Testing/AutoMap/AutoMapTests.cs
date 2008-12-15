@@ -2,8 +2,11 @@ using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures;
+using FluentNHibernate.Metadata;
 using FluentNHibernate.Testing.AutoMap.ManyToMany;
+using NHibernate.Cfg;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace FluentNHibernate.Testing.AutoMap
 {
@@ -127,6 +130,32 @@ namespace FluentNHibernate.Testing.AutoMap
             keyElement.AttributeShouldEqual("name", "Examples");
         }
 
+        [Test]
+        public void AutoMapDoesntSetCacheWithDefaultConvention()
+        {
+            var autoMapper = new AutoMapper(new Conventions());
+            var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
+            var document = map.CreateMapping(new MappingVisitor());
+
+            var cacheElement = document.DocumentElement.SelectSingleNode("//cache");
+
+            Assert.That(cacheElement, Is.Null);
+        }
+
+        [Test]
+        public void AutoMapSetsCacheOnClassUsingConvention()
+        {
+            var conventions = new Conventions();
+            var autoMapper = new AutoMapper(conventions);
+
+            conventions.DefaultCache = cache => cache.AsReadOnly();
+
+            var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
+            var document = map.CreateMapping(new MappingVisitor(conventions, new Configuration(), new DependencyChain()));
+            var cacheElement = document.DocumentElement.SelectSingleNode("//cache");
+
+            Assert.That(cacheElement, Is.Not.Null);
+        }
     }
 }
 

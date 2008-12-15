@@ -79,7 +79,6 @@
     <Compile Include="Cfg\MsSqlConfiguration.cs" />
     <Compile Include="Conventions.cs" />
     <Compile Include="Mapping\Attributes.cs" />
-    <Compile Include="Mapping\CacheBuilder.cs" />
     <Compile Include="Mapping\CachePart.cs" />
     <Compile Include="Mapping\ImportPart.cs" />
     <Compile Include="Mapping\IOneToManyPart.cs" />
