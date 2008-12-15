@@ -63,7 +63,7 @@ namespace FluentNHibernate.Mapping
             visitor.Conventions.AlterOneToOneMap(this);
 
             _properties.Store("name", _property.Name);
-            _properties.Store("class", _property.PropertyType.AssemblyQualifiedName);
+            _properties.Store("class", typeof(OTHER).AssemblyQualifiedName);
 
             classElement.AddElement("one-to-one").WithProperties(_properties);
         }

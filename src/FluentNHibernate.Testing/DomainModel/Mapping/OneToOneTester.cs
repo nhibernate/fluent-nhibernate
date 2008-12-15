@@ -50,5 +50,27 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/one-to-one")
                     .HasAttribute("constrained", "true");
         }
+
+        [Test]
+        public void The_class_is_determined_by_the_return_value_of_the_HasOne_expression()
+        {
+            new MappingTester<User>()
+                .ForMapping(map => map.HasOne(x => (UserLoginInfo) x.LoginInfo))
+                .Element("class/one-to-one")
+                .HasAttribute("class", typeof (UserLoginInfo).AssemblyQualifiedName);
+        }
+
+        
+        private interface IUserLoginInfo {}
+        private class UserLoginInfo : IUserLoginInfo { }
+        private class User
+        {
+            public IUserLoginInfo LoginInfo
+            {
+                get { throw new System.NotImplementedException(); }
+            }
+        }
+
+        
     }
 }
