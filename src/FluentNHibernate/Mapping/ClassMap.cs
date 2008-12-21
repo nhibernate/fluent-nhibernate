@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -16,6 +17,8 @@ namespace FluentNHibernate.Mapping
         private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
         private CachePart cache;
         private readonly IList<ImportPart> imports = new List<ImportPart>();
+        private string assemblyName;
+        private string namespaceName;
 
         public ClassMap()
         {
@@ -100,9 +103,8 @@ namespace FluentNHibernate.Mapping
                 documentElement.SetAttribute(DefaultLazyAttributeKey, defaultLazyValue);
             }
 
-            documentElement.SetAttribute("assembly", typeof(T).Assembly.GetName().Name);
-            documentElement.SetAttribute("assembly", typeof (T).Assembly.GetName().Name);
-            documentElement.SetAttribute("namespace", typeof (T).Namespace);
+            documentElement.SetAttribute("assembly", assemblyName ?? typeof(T).Assembly.GetName().Name);
+            documentElement.SetAttribute("namespace", namespaceName ?? typeof (T).Namespace);
 
             hibernateMappingAttributes.ForEachPair(documentElement.SetAttribute);
         }
@@ -167,6 +169,11 @@ namespace FluentNHibernate.Mapping
             hibernateMappingAttributes.Store(name, value);
         }
 
+        public void SetHibernateMappingAttribute(string name, bool value)
+        {
+            hibernateMappingAttributes.Store(name, value.ToString().ToLowerInvariant());
+        }
+
         public virtual IdentityPart<T> Id(Expression<Func<T, object>> expression)
 		{
 			return Id(expression, null);
@@ -190,9 +197,49 @@ namespace FluentNHibernate.Mapping
             return subclass;
         }
 
+        /// <summary>
+        /// Sets the hibernate-mapping schema for this class.
+        /// </summary>
+        /// <param name="schema">Schema name</param>
         public void SchemaIs(string schema)
         {
             SetHibernateMappingAttribute("schema", schema);
+        }
+
+        /// <summary>
+        /// Sets the hibernate-mapping auto-import for this class.
+        /// </summary>
+        /// <param name="autoImport">Auto-import value</param>
+        public void AutoImport(bool autoImport)
+        {
+            SetHibernateMappingAttribute("auto-import", autoImport);
+        }
+
+        /// <summary>
+        /// Override the inferred assembly for this class
+        /// </summary>
+        /// <param name="assembly">Assembly to use</param>
+        public void OverrideAssembly(Assembly assembly)
+        {
+            assemblyName = assembly.GetName().Name;
+        }
+
+        /// <summary>
+        /// Override the inferred assembly for this class
+        /// </summary>
+        /// <param name="assembly">Assembly to use</param>
+        public void OverrideAssembly(string assembly)
+        {
+            assemblyName = assembly;
+        }
+
+        /// <summary>
+        /// Override the inferred namespace for this class
+        /// </summary>
+        /// <param name="namespace">Namespace to use</param>
+        public void OverrideNamespace(string @namespace)
+        {
+            namespaceName = @namespace;
         }
 
         public string FileName
