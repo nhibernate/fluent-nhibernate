@@ -71,6 +71,7 @@
     <Compile Include="AutoMap\IAutoMapper.cs" />
     <Compile Include="AutoMap\ManyToManyAutoMapper.cs" />
     <Compile Include="Cache.cs" />
+    <Compile Include="Cfg\MsSqlCeConfiguration.cs" />
     <Compile Include="Cfg\MySQLConfiguration.cs" />
     <Compile Include="Cfg\PersistenceConfiguration.cs" />
     <Compile Include="Cfg\PostgreSQLConfiguration.cs" />

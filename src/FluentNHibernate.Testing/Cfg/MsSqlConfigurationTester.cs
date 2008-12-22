@@ -26,12 +26,6 @@ namespace FluentNHibernate.Testing.Cfg
 		}
 
 		[Test]
-		public void MsSqlCe_should_default_to_the_Sql2005_dialect()
-		{
-			MsSqlConfiguration.MsSqlCe.ToProperties()["dialect"].ShouldEqual("NHibernate.Dialect.MsSqlCeDialect, " + typeof(ISession).Assembly.FullName);
-		}
-
-		[Test]
 		public void MsSql_driver_should_default_to_the_SqlClientDriver()
 		{
 			MsSqlConfiguration.MsSql2000.ToProperties()["connection.driver_class"].ShouldEqual("NHibernate.Driver.SqlClientDriver, " + typeof(ISession).Assembly.FullName);

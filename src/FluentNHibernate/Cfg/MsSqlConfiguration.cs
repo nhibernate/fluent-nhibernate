@@ -35,14 +35,6 @@ namespace FluentNHibernate.Cfg
 			}
 		}
 
-		public static MsSqlConfiguration MsSqlCe
-		{
-			get
-			{
-				return new MsSqlConfiguration().Dialect<MsSqlCeDialect>();
-			}
-		}
-
 	    public new MsSqlConnectionStringExpression ConnectionString
         {
 	        get
