@@ -59,7 +59,6 @@
       <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoMapTests.cs" caret="3522" scrollPosition="0|25" />
       <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMapBase.cs" caret="599" scrollPosition="0|6" />
       <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMap.cs" caret="1152" scrollPosition="0|0" />
-      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMap.cs" caret="5882" scrollPosition="0|137" />
       <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapper.cs" caret="252" scrollPosition="0|3" />
       <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoMapIdentity.cs" caret="631" scrollPosition="0|0" />
       <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:ManyToManyAutoMapper.cs" caret="13" scrollPosition="0|0" />
@@ -69,6 +68,11 @@
       <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:AutoMap/f:AutoPersistenceModelTests.cs" caret="6961" scrollPosition="0|153" />
       <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:Conventions.cs" caret="3939" scrollPosition="0|27" />
       <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:DomainModel/d:Mapping/f:IdentityPartTester.cs" caret="713" scrollPosition="0|12" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/f:PersistenceModel.cs" caret="1236" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:AutoPersistenceModel.cs" caret="2206" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:ClassMap.cs" caret="2520" scrollPosition="0|19" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:AutoMap/f:ExpressionBuilder.cs" caret="570" scrollPosition="0|0" />
+      <File id="1C988DFB-1EC5-484E-87D9-1D3C775BA435/d:Mapping/f:Template.xml" caret="94" scrollPosition="0|0" />
     </RecentFiles>
     <RecentEdits>
       <File id="F5DC3221-827E-4CB4-B61C-5F50EB4D32EA/d:DomainModel/d:Mapping/f:ClassMapXmlCreationTester.cs" caret="10790" scrollPosition="0|247" />

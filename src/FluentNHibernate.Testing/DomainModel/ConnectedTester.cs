@@ -239,13 +239,22 @@ namespace FluentNHibernate.Testing.DomainModel
             {
             }
 
+            protected void ensure_current_session()
+            {
+                if (_session == null)
+                    _session = base.CreateSession();
+            }
+
             public override ISession CreateSession()
             {
-                if(_session == null)
-                    _session =  base.CreateSession();
-
+                ensure_current_session();
                 _session.Clear();
                 return _session;
+            }
+
+            public override void BuildSchema()
+            {
+                BuildSchema(CreateSession());
             }
         }
     }

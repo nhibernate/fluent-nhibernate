@@ -57,9 +57,12 @@ namespace FluentNHibernate.Framework
             return _sessionFactory.OpenSession();
         }
 
-        public void BuildSchema()
+        public virtual void BuildSchema()
         {
-        	BuildSchema(CreateSession());
+            using( var session = CreateSession())
+            {
+                BuildSchema(session);
+            }
         }
 
 		public void BuildSchema(ISession session)

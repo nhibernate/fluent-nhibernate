@@ -90,7 +90,7 @@ desc "Compiles the app"
 task :compile => [:clean, :version] do
   MSBuildRunner.compile :compilemode => COMPILE_TARGET, :solutionfile => 'src/FluentNHibernate.sln', :clrversion => CLR_VERSION
     
-  outDir = "src/FluentNHibernate/bin/#{COMPILE_TARGET}"
+  outDir = "src/FluentNHibernate.Framework/bin/#{COMPILE_TARGET}"
     
   Dir.glob(File.join(outDir, "*.{dll,pdb}")){|file| 		
 	copy(file, props[:archive]) if File.file?(file)
