@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq.Expressions;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Framework;
@@ -25,7 +24,7 @@ namespace FluentNHibernate.Testing.DomainModel
         		.InMemory()
         		.ToProperties();
 
-            _source = new SingleConnectionSessionSource(properties, new TestModel());
+            _source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new TestModel());
             _source.BuildSchema();
 
             DomainObjectFinder.ClearAllFinders();
@@ -229,33 +228,6 @@ namespace FluentNHibernate.Testing.DomainModel
                 .CheckProperty(r => r.Location, "somewhere")
                 .VerifyTheMappings();
                 
-        }
-
-        private class SingleConnectionSessionSource : SessionSource
-        {
-            private ISession _session;
-
-            public SingleConnectionSessionSource(IDictionary<string, string> properties, PersistenceModel model) : base(properties, model)
-            {
-            }
-
-            protected void ensure_current_session()
-            {
-                if (_session == null)
-                    _session = base.CreateSession();
-            }
-
-            public override ISession CreateSession()
-            {
-                ensure_current_session();
-                _session.Clear();
-                return _session;
-            }
-
-            public override void BuildSchema()
-            {
-                BuildSchema(CreateSession());
-            }
         }
     }
 
