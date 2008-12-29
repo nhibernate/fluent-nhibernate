@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Framework;
@@ -29,6 +30,14 @@ namespace FluentNHibernate.Framework
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
             _allProperties.Add(new PropertyValue(property, propertyValue));
+
+            return this;
+        }
+
+        public PersistenceSpecification<T> CheckProperty<ELEMENTTYPE>(Expression<Func<T, Array>> expression, IList<ELEMENTTYPE> propertyValue)
+        {
+            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            _allProperties.Add(new ListValue<ELEMENTTYPE>(property, propertyValue));
 
             return this;
         }
@@ -110,11 +119,11 @@ namespace FluentNHibernate.Framework
 
         #region Nested type: ListValue
 
-        internal class ListValue<LIST> : PropertyValue
+        internal class ListValue<LISTELEMENT> : PropertyValue
         {
-			private readonly IList<LIST> _expected;
+			private readonly IList<LISTELEMENT> _expected;
 
-			public ListValue(PropertyInfo property, IList<LIST> propertyValue)
+			public ListValue(PropertyInfo property, IList<LISTELEMENT> propertyValue)
                 : base(property, propertyValue)
             {
                 _expected = propertyValue;
@@ -130,12 +139,17 @@ namespace FluentNHibernate.Framework
                     // on the user to pass in the correct collection type (especially if they're using
                     // an interface). I've tried to create the common ones, but I'm sure this won't be
                     // infallable.
-                    if (_property.PropertyType.IsAssignableFrom(typeof(ISet<LIST>)))
-                        collection = new HashedSet<LIST>(_expected);
+                    if (_property.PropertyType.IsAssignableFrom(typeof(ISet<LISTELEMENT>)))
+                        collection = new HashedSet<LISTELEMENT>(_expected);
                     else if (_property.PropertyType.IsAssignableFrom(typeof(ISet)))
                         collection = new HashedSet((ICollection)_expected);
+                    else if (_property.PropertyType.IsArray)
+                    {
+                        collection = Array.CreateInstance(typeof (LISTELEMENT), _expected.Count);
+                        Array.Copy((Array)_expected, (Array)collection, _expected.Count);
+                    }
                     else
-                        collection = new List<LIST>(_expected);
+                        collection = new List<LISTELEMENT>(_expected);
 
                     _property.SetValue(target, collection, null);
                 }
@@ -148,36 +162,35 @@ namespace FluentNHibernate.Framework
 
             internal override void CheckValue(object target)
             {
-                var actual = (IEnumerable<LIST>)_property.GetValue(target, null);
-                assertGenericListMatches<LIST>(actual, _expected);
+                var actual = (IEnumerable<LISTELEMENT>)_property.GetValue(target, null);
+                assertGenericListMatches(actual, _expected);
             }
 
-			private static void assertGenericListMatches<ITEM>(IEnumerable<ITEM> actual, IEnumerable<ITEM> expected)
+            private static void assertGenericListMatches<ITEM>(IEnumerable<ITEM> actualEnumerable, IEnumerable<ITEM> expectedEnumerable)
             {
-                var actualEnumerator = actual.GetEnumerator();
-                var expectedEnumerator = expected.GetEnumerator();
+                if (actualEnumerable == null)
+                    throw new ArgumentNullException("actualEnumerable",
+                                                    "Actual and expected are not equal (Actual was null).");
+                if (expectedEnumerable == null)
+                    throw new ArgumentNullException("expectedEnumerable",
+                                                    "Actual and expected are not equal (expected was null).");
 
-                int index = 0;
+                var actual = actualEnumerable.ToList();
+                var expected = expectedEnumerable.ToList();
 
-                while (actualEnumerator.Current != null)
+                if (actual.Count != expected.Count)
+                    throw new ApplicationException("Actual count does not equal expected count");
+
+                for (var i = 0; i < actual.Count; i++)
                 {
-                    var actualValue = actualEnumerator.Current;
-                    var expectedValue = expectedEnumerator.Current;
+                    if (actual[i].Equals(expected[i])) continue;
 
-                    if (!expectedValue.Equals(actualValue))
-                    {
-                        string message = 
-                            string.Format(
-                                "Expected '{0}' but got '{1}' at position {2}", 
-                                expectedValue,
-                                actualValue, index);
+                    var message = string.Format("Expected '{0}' but got '{1}' at position {2}",
+                                                expected[i],
+                                                actual[i],
+                                                i);
 
-                        throw new ApplicationException(message);
-                    }
-
-                    actualEnumerator.MoveNext();
-                    expectedEnumerator.MoveNext();
-                    index++;
+                    throw new ApplicationException(message);
                 }
             }
         }

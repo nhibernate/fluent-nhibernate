@@ -18,11 +18,20 @@ namespace FluentNHibernate.Testing.DomainModel
         [SetUp]
         public void SetUp()
         {
-        	var properties = new SQLiteConfiguration()
-        		.UseOuterJoin()
-        		//.ShowSql()
-        		.InMemory()
-        		.ToProperties();
+            var properties = new SQLiteConfiguration()
+                .UseOuterJoin()
+                //.ShowSql()
+                .InMemory()
+                .ToProperties();
+
+            //var properties = MsSqlConfiguration
+            //    .MsSql2005
+            //    .ConnectionString
+            //    .Server(".")
+            //    .Database("FluentNHibernate")
+            //    .TrustedConnection
+            //    .Create
+            //    .ToProperties();
 
             _source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new TestModel());
             _source.BuildSchema();
@@ -227,7 +236,14 @@ namespace FluentNHibernate.Testing.DomainModel
                 .CheckProperty(r => r.Name, "somebody")
                 .CheckProperty(r => r.Location, "somewhere")
                 .VerifyTheMappings();
-                
+        }
+
+        [Test]
+        public void Mapping_test_with_arrays()
+        {
+            new PersistenceSpecification<BinaryRecord>(_source)
+                .CheckProperty(r => r.BinaryValue, new byte[] { 1, 2, 3 })
+                .VerifyTheMappings();
         }
     }
 
@@ -255,5 +271,19 @@ namespace FluentNHibernate.Testing.DomainModel
         public virtual string Name { get; set; }
         public virtual int Age { get; set; }
         public virtual string Location { get; set; }
+    }
+
+    public class BinaryRecordMap : ClassMap<BinaryRecord>
+    {
+        public BinaryRecordMap()
+        {
+            UseIdentityForKey(x => x.Id, "id");
+            Map(x => x.BinaryValue).CanNotBeNull();
+        }
+    }
+
+    public class BinaryRecord : Entity
+    {
+        public virtual byte[] BinaryValue { get; set; }
     }
 }
