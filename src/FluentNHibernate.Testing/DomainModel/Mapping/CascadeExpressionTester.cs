@@ -9,7 +9,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 	public class CascadeExpressionTester
 	{
 		#region Test Setup
-		public MockRepository _mocks;
 		public IMappingPart _mockPart;
 		public CascadeExpression<IMappingPart> _cascade;
 		public Func<IMappingPart> _currentCascadeAction;
@@ -17,8 +16,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		[SetUp]
 		public virtual void SetUp()
 		{
-			_mocks = new MockRepository();
-			_mockPart = _mocks.Stub<IMappingPart>();
+            _mockPart = MockRepository.GenerateStub<IMappingPart>();
 			_cascade = new CascadeExpression<IMappingPart>(_mockPart);
 		}
 
@@ -30,9 +28,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
 		public void should_set_the_cascade_value_to(string expected)
 		{
-			_mockPart.Expect(p => p.SetAttribute("cascade", expected));
 			_currentCascadeAction();
-			_mockPart.VerifyAllExpectations();
+            _mockPart.AssertWasCalled(p => p.SetAttribute("cascade", expected));
 		}
 
 		#endregion
