@@ -84,6 +84,7 @@
     <Compile Include="Cfg\FirebirdConfigurationTester.cs" />
     <Compile Include="Cfg\MsSqlCeConfigurationTester.cs" />
     <Compile Include="Cfg\MsSqlConfigurationTester.cs" />
+    <Compile Include="Cfg\MySQLConfigurationTester.cs" />
     <Compile Include="Cfg\PersistenceConfigurationTester.cs" />
     <Compile Include="Cfg\PostgreSQLConfigurationTester.cs" />
     <Compile Include="Cfg\SQLiteConfigurationTester.cs" />
