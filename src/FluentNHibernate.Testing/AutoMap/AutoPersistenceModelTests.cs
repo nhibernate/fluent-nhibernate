@@ -1,7 +1,5 @@
 using System;
 using FluentNHibernate.AutoMap;
-using FluentNHibernate.Testing.Cfg;
-using NHibernate.Cfg;
 using NUnit.Framework;
 using SuperTypes = FluentNHibernate.AutoMap.TestFixtures.SuperTypes;
 using FluentNHibernate.AutoMap.TestFixtures;
@@ -9,19 +7,8 @@ using FluentNHibernate.AutoMap.TestFixtures;
 namespace FluentNHibernate.Testing.AutoMap
 {
     [TestFixture]
-    public class AutoPersistenceModelTests
+    public class AutoPersistenceModelTests : BaseAutoPersistenceTests
     {
-        private Configuration cfg;
-
-        [SetUp]
-        public void SetUp()
-        {
-            cfg = new Configuration();
-            var configTester = new PersistenceConfigurationTester.ConfigTester();
-            configTester.Dialect("NHibernate.Dialect.MsSql2005Dialect");
-            configTester.ConfigureProperties(cfg);
-        }
-
         [Test]
         public void TestAutoMapsIds()
         {
@@ -87,21 +74,6 @@ namespace FluentNHibernate.Testing.AutoMap
             new AutoMappingTester<ExampleParentClass>(autoMapper)
                 .Element("//bag")
                 .HasAttribute("name", "Examples");
-        }
-
-        [Test]
-        public void TestAutoMapTimestamp()
-        {
-            var autoMapper = AutoPersistenceModel
-                .MapEntitiesFromAssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
-
-            autoMapper.Configure(cfg);
-
-            new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("//version")
-                .HasAttribute("name", "Timestamp")
-                .HasAttribute("column", "Timestamp");
         }
 
         [Test]

@@ -46,6 +46,31 @@ namespace FluentNHibernate.AutoMap.TestFixtures
         public virtual int Id { get; set; }
         public virtual IList<ExampleClass> Examples {get; set;}
     }
+
+
+    public class ValidTimestampClass
+    {
+        public virtual int Id { get; set; }
+        public virtual int Timestamp { get; set; }
+    }
+
+    public class ValidVersionClass
+    {
+        public virtual int Id { get; set; }
+        public virtual long Version { get; set; }
+    }
+
+    public class InvalidTimestampClass
+    {
+        public virtual int Id { get; set; }
+        public virtual DateTime Timestamp { get; set; }
+    }
+
+    public class InvalidVersionClass
+    {
+        public virtual int Id { get; set; }
+        public virtual string Version { get; set; }
+    }
 }
 
 namespace FluentNHibernate.AutoMap.TestFixtures.SuperTypes
@@ -94,5 +119,4 @@ namespace FluentNHibernate.AutoMap.TestFixtures.SuperTypes
         public int ExampleParentClassId { get; set; } 
         public virtual IList<ExampleClass> Examples {get; set;}
     }
-
 }
