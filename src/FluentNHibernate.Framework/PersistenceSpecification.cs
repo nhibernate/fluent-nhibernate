@@ -8,10 +8,11 @@ using FluentNHibernate.Framework;
 using Iesi.Collections;
 using Iesi.Collections.Generic;
 using NHibernate;
+using NHibernate.Util;
 
 namespace FluentNHibernate.Framework
 {
-    public class PersistenceSpecification<T> where T : new()
+    public class PersistenceSpecification<T>
     {
         private readonly List<PropertyValue> _allProperties = new List<PropertyValue>();
     	private readonly ISession _currentSession;
@@ -94,7 +95,7 @@ namespace FluentNHibernate.Framework
         public void VerifyTheMappings()
         {
             // Create the initial copy
-            var first = new T();
+            var first = CreateInstance();
 
             // Set the "suggested" properties, including references
             // to other entities and possibly collections
@@ -116,6 +117,16 @@ namespace FluentNHibernate.Framework
             // made the round trip
             // It's a bit naive right now because it fails on the first failure
             _allProperties.ForEach(p => p.CheckValue(second));
+        }
+
+        private T CreateInstance()
+        {
+            var constructor = ReflectHelper.GetDefaultConstructor(typeof(T));
+
+            if (constructor == null)
+                throw new MissingConstructorException(typeof(T));
+
+            return (T)constructor.Invoke(null);
         }
 
         private void TransactionalSave(object propertyValue)

@@ -116,4 +116,71 @@ namespace FluentNHibernate.Testing.Framework
                 _spec.CheckList(x => x.AllKittens, _cat.AllKittens).VerifyTheMappings());
         }
     }
+
+    [TestFixture]
+    public class PersistenceSpecificationConstructorTests
+    {
+        private ISessionSource sessionSource;
+
+        [SetUp]
+        public void Setup()
+        {
+            var transaction = MockRepository.GenerateStub<ITransaction>();
+            var session = MockRepository.GenerateStub<ISession>();
+            session.Stub(s => s.BeginTransaction()).Return(transaction);
+
+            sessionSource = MockRepository.GenerateStub<ISessionSource>();
+            sessionSource.Stub(ss => ss.CreateSession()).Return(session);
+        }
+
+        [Test]
+        public void Should_accept_classes_with_public_parameterless_constructor()
+        {
+            var _spec = new PersistenceSpecification<PublicConstructorClass>(sessionSource);
+            _spec.VerifyTheMappings();
+        }
+
+        [Test]
+        public void Should_accept_classes_with_private_parameterless_constructor()
+        {
+            var _spec = new PersistenceSpecification<PrivateConstructorClass>(sessionSource);
+            _spec.VerifyTheMappings();
+        }
+
+        [Test]
+        public void Should_accept_classes_with_protected_parameterless_constructor()
+        {
+            var _spec = new PersistenceSpecification<ProtectedConstructorClass>(sessionSource);
+            _spec.VerifyTheMappings();
+        }
+
+        [Test]
+        public void Should_reject_classes_without_a_parameterless_constructor()
+        {
+            var _spec = new PersistenceSpecification<NoParameterlessConstructorClass>(sessionSource);
+            
+            typeof(MissingConstructorException).ShouldBeThrownBy(() =>
+                _spec.VerifyTheMappings());
+        }
+
+        public class PublicConstructorClass 
+        {
+            public PublicConstructorClass() {}
+        }
+
+        public class ProtectedConstructorClass
+        {
+            protected ProtectedConstructorClass() {}
+        }
+
+        public class PrivateConstructorClass
+        {
+            private PrivateConstructorClass() { }
+        }
+
+        public class NoParameterlessConstructorClass
+        {
+            public NoParameterlessConstructorClass(int someParameter) {}
+        }
+    }
 }
