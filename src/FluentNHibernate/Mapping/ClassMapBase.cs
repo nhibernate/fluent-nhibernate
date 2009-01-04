@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -79,6 +80,19 @@ namespace FluentNHibernate.Mapping
         {
             var part = new DiscriminatorPart<ARG, T>(columnName, _properties);
             AddPart(part);
+
+            return part;
+        }
+
+
+        public virtual DynamicComponentPart<T> DynamicComponent(Expression<Func<T, IDictionary>> expression, Action<DynamicComponentPart<T>> action)
+        {
+            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+
+            var part = new DynamicComponentPart<T>(property, parentIsRequired);
+            AddPart(part);
+
+            action(part);
 
             return part;
         }

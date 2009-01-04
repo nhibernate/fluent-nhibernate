@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
@@ -269,6 +270,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public int Id { get; set; }
         public byte[] Data { get; set; }
 		public decimal DecimalProperty { get; set; }
+        public IDictionary ExtensionData { get; set; }
     }
 
     public class PropertyReferenceTarget {}

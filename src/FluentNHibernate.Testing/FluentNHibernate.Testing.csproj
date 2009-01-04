@@ -106,6 +106,7 @@
     <Compile Include="DomainModel\Mapping\ComponentPartTester.cs" />
     <Compile Include="DomainModel\Mapping\CompositeIdentityPartTester.cs" />
     <Compile Include="DomainModel\Mapping\ConventionsTester.cs" />
+    <Compile Include="DomainModel\Mapping\DynamicComponentTester.cs" />
     <Compile Include="DomainModel\Mapping\HbmAttributeTests.cs" />
     <Compile Include="DomainModel\Mapping\ManyToOneTester.cs" />
     <Compile Include="DomainModel\Mapping\OneToOneTester.cs" />

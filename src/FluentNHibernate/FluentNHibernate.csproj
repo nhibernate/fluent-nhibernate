@@ -80,8 +80,10 @@
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="Cfg\MsSqlConfiguration.cs" />
     <Compile Include="Conventions.cs" />
+    <Compile Include="DummyPropertyInfo.cs" />
     <Compile Include="Mapping\Attributes.cs" />
     <Compile Include="Mapping\CachePart.cs" />
+    <Compile Include="Mapping\DynamicComponentPart.cs" />
     <Compile Include="Mapping\ImportPart.cs" />
     <Compile Include="Mapping\IOneToManyPart.cs" />
     <Compile Include="Mapping\JoinPart.cs" />
