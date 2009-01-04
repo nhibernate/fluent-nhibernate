@@ -88,6 +88,7 @@
     <Compile Include="Mapping\MappingPartComparer.cs" />
     <Compile Include="Mapping\OneToOnePart.cs" />
     <Compile Include="Mapping\PartPosition.cs" />
+    <Compile Include="MissingConstructorException.cs" />
     <Compile Include="RestrictionsHelper.cs" />
     <Compile Include="IMappingVisitor.cs" />
     <Compile Include="MappingVisitor.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="PropertyChain.cs" />
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="SingleProperty.cs" />
+    <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mapping\Template.xml" />

@@ -1,11 +1,11 @@
 using System;
 
-namespace FluentNHibernate.Framework
+namespace FluentNHibernate
 {
     public class MissingConstructorException : Exception
     {
         public MissingConstructorException(Type type)
-            : base("'" + type.Name + "' is missing a parameterless constructor.")
+            : base("'" + type.AssemblyQualifiedName + "' is missing a parameterless constructor.")
         {}
     }
 }

@@ -49,7 +49,7 @@ namespace FluentNHibernate
             {
                 if (!type.IsGenericType && typeof(IMapping).IsAssignableFrom(type))
                 {
-                    IMapping mapping = (IMapping) Activator.CreateInstance(type);
+                    IMapping mapping = (IMapping)type.InstantiateUsingParameterlessConstructor();
                     addMapping(mapping);
                 }
             }
