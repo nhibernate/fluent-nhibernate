@@ -49,8 +49,7 @@ namespace FluentNHibernate.Framework.Generation
             writer.WriteLine("\t\t{");
             writer.WriteLine("\t\t\tset");
             writer.WriteLine("\t\t\t{");
-            writer.WriteLine("\t\t\t\tsubject.{0} = value;", _property.Name,
-                             _property.PropertyType.FullName);
+            writer.WriteLine("\t\t\t\tsubject.{0} = value;", _property.Name);
             writer.WriteLine("\t\t\t}");
             writer.WriteLine("\t\t}");
         }
