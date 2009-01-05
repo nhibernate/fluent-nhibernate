@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
+using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping
 {
@@ -188,12 +189,33 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies that a custom type (an implementation of <see cref="IUserType"/>) should be used for this property for mapping it to/from one or more database columns whose format or type doesn't match this .NET property.
+        /// </summary>
+        /// <typeparam name="CUSTOMTYPE">A type which implements <see cref="IUserType"/>.</typeparam>
+        /// <returns>This property mapping to continue the method chain</returns>
+        public PropertyMap CustomTypeIs<CUSTOMTYPE>()
+            where CUSTOMTYPE : IUserType
+        {
+            return CustomTypeIs(typeof (CUSTOMTYPE));
+        }
+       
+        /// <summary>
+        /// Specifies that a custom type (an implementation of <see cref="IUserType"/>) should be used for this property for mapping it to/from one or more database columns whose format or type doesn't match this .NET property.
+        /// </summary>
+        /// <param name="type">A type which implements <see cref="IUserType"/>.</param>
+        /// <returns>This property mapping to continue the method chain</returns>
         public PropertyMap CustomTypeIs(Type type)
         {
             this.AddAlteration(x => x.SetAttribute("type", type.AssemblyQualifiedName));
             return this;
         }
 
+        /// <summary>
+        /// Specifies that a custom type (an implementation of <see cref="IUserType"/>) should be used for this property for mapping it to/from one or more database columns whose format or type doesn't match this .NET property.
+        /// </summary>
+        /// <param name="typeName">The assembly-qualified type name of a type which implements <see cref="IUserType"/>.</param>
+        /// <returns>This property mapping to continue the method chain</returns>
         public PropertyMap CustomTypeIs(string typeName)
         {
             this.AddAlteration(x => x.SetAttribute("type", typeName));

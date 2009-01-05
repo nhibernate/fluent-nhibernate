@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Reflection;
 using System.Xml;
 using NHibernate.Properties;
+using NHibernate.SqlTypes;
+using NHibernate.Type;
+using NHibernate.UserTypes;
 using NUnit.Framework;
 using FluentNHibernate;
 using FluentNHibernate.Mapping;
@@ -239,14 +243,86 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void CanSpecifyCustomType()
         {
-            var classMap = new ClassMap<PropertyTarget>();
-            var propertyMap = classMap.Map(x => x.Data)
-                .CustomTypeIs("BinaryBlob");
-
             new MappingTester<PropertyTarget>()
-                .ForMapping(classMap)
+                .ForMapping(c=>c.Map(x => x.Data).CustomTypeIs("BinaryBlob"))
                 .Element("class/property").HasAttribute("type", "BinaryBlob");
         }
+
+        [Test]
+        public void CanSpecifyCustomTypeAsDotNetTypeGenerically()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(c => c.Map(x => x.Data).CustomTypeIs<custom_type_for_testing>())
+                .Element("class/property").HasAttribute("type", typeof(custom_type_for_testing).AssemblyQualifiedName);
+        }
+
+        [Test]
+        public void CanSpecifyCustomTypeAsDotNetType()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(c=>c.Map(x => x.Data).CustomTypeIs(typeof (custom_type_for_testing)))
+                .Element("class/property").HasAttribute("type", typeof(custom_type_for_testing).AssemblyQualifiedName);
+        }
+
+        #region Custom IUserType impl for testing
+        public class custom_type_for_testing : IUserType
+        {
+            public bool Equals(object x, object y)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public int GetHashCode(object x)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public object NullSafeGet(IDataReader rs, string[] names, object owner)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void NullSafeSet(IDbCommand cmd, object value, int index)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public object DeepCopy(object value)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public object Replace(object original, object target, object owner)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public object Assemble(object cached, object owner)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public object Disassemble(object value)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public SqlType[] SqlTypes
+            {
+                get { throw new System.NotImplementedException(); }
+            }
+
+            public Type ReturnedType
+            {
+                get { throw new System.NotImplementedException(); }
+            }
+
+            public bool IsMutable
+            {
+                get { throw new System.NotImplementedException(); }
+            }
+        }
+        #endregion
 
         [Test]
         public void CanSpecifyCustomSqlType()
