@@ -125,6 +125,7 @@
     <Compile Include="DomainModel\Mapping\AccessStrategyManyToOnePartTester.cs" />
     <Compile Include="DomainModel\Mapping\MappingTester.cs" />
     <Compile Include="DomainModel\Mapping\PropertyMapTester.cs" />
+    <Compile Include="DomainModel\Mapping\SubClassTester.cs" />
     <Compile Include="DomainModel\Mapping\VersionTester.cs" />
     <Compile Include="DomainModel\Query\EntityQueryDefinitionTester.cs" />
     <Compile Include="DomainModel\Query\FilterTypeRegistryTester.cs" />

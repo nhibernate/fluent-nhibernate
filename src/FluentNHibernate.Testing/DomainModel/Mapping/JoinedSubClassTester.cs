@@ -67,12 +67,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.Map(x => x.Type);
                     m.References(x => x.Parent);
                     m.DiscriminateSubClassesOnColumn<string>("class")
-                        .SubClass<SubClass>()
-                        .IsIdentifiedBy("subclass")
-                        .MapSubClassColumns(sc =>
-                        {
-                            sc.Map(x => x.Name);
-                        });
+                        .SubClass<SubClass>("subclass", sc =>
+                            sc.Map(x => x.Name));
                 })
                 .Element("class/*[last()]").HasName("subclass");
         }

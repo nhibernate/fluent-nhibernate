@@ -1,18 +1,20 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public class DiscriminatorPart<T, PARENT> : IMappingPart
+    public class DiscriminatorPart<TDiscriminator, TParent> : IMappingPart
     {
         private readonly string _columnName;
-        private readonly List<IMappingPart> _properties;
-        private T _discriminatorValue;
+        private TDiscriminator _discriminatorValue;
 		private bool _discriminatorValueSet;
         private readonly Cache<string, string> attributes = new Cache<string, string>();
+        private ClassMap<TParent> _parent;
 
-        public DiscriminatorPart(string columnName, List<IMappingPart> properties, T discriminatorValue) : this(columnName, properties) 
+        public DiscriminatorPart(string columnName, TDiscriminator discriminatorValue, ClassMap<TParent> parent)
+            : this(columnName, parent) 
 		{
 			if (discriminatorValue != null)
             {
@@ -21,17 +23,17 @@ namespace FluentNHibernate.Mapping
 			}
 		}
 
-        public DiscriminatorPart(string columnName, List<IMappingPart> _properties)
+        public DiscriminatorPart(string columnName, ClassMap<TParent> parent)
         {
             _columnName = columnName;
-            this._properties = _properties;
+            _parent = parent;
         }
 
         #region IMappingPart Members
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-            string typeString = TypeMapping.GetTypeString(typeof (T));
+            string typeString = TypeMapping.GetTypeString(typeof (TDiscriminator));
             classElement.AddElement("discriminator")
                 .WithAtt("column", _columnName)
                 .WithAtt("type", typeString)
@@ -71,40 +73,26 @@ namespace FluentNHibernate.Mapping
 
         #endregion
 
-        public SubClassExpression<T, SUBCLASS> SubClass<SUBCLASS>()
+        public DiscriminatorPart<TDiscriminator, TParent> SubClass<TSubClass>(TDiscriminator discriminatorValue, Action<SubClassPart<TDiscriminator, TParent, TSubClass>> action)
         {
-            return new SubClassExpression<T, SUBCLASS>(this);
+            var subclass = new SubClassPart<TDiscriminator, TParent, TSubClass>(discriminatorValue, this);
+                
+            action(subclass);
+
+            _parent.AddPart(subclass);
+
+            return this;
         }
 
-        #region Nested type: SubClassExpression
-
-        public class SubClassExpression<DISC, SUBCLASS>
+        public DiscriminatorPart<TDiscriminator, TParent> SubClass<TSubClass>(Action<SubClassPart<TDiscriminator, TParent, TSubClass>> action)
         {
-            private readonly DiscriminatorPart<T, PARENT> _parent;
-            private string _discriminatorValue;
+            var subclass = new SubClassPart<TDiscriminator, TParent, TSubClass>(this);
 
-            public SubClassExpression(DiscriminatorPart<T, PARENT> parent)
-            {
-                _parent = parent;
-            }
+            action(subclass);
 
-            public SubClassExpression<DISC, SUBCLASS> IsIdentifiedBy(DISC discriminator)
-            {
-                _discriminatorValue = discriminator.ToString();
-                return this;
-            }
+            _parent.AddPart(subclass);
 
-            public DiscriminatorPart<T, PARENT> MapSubClassColumns(Action<SubClassPart<SUBCLASS>> action)
-            {
-                var subclass = new SubClassPart<SUBCLASS>(_discriminatorValue);
-                action(subclass);
-
-                _parent._properties.Add(subclass);
-
-                return _parent;
-            }
+            return this;
         }
-
-        #endregion
     }
 }

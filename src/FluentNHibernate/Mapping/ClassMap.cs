@@ -42,13 +42,7 @@ namespace FluentNHibernate.Mapping
 
             XmlElement classElement = createClassValues(document, document.DocumentElement);
 
-
             writeTheParts(classElement, visitor);
-
-            // This is a workaround - subclasses should not have a discriminator node. A better fix would be to see
-            // that the node is not created in the first place.
-            foreach (XmlNode discriminator in document.SelectNodes("//subclass/discriminator"))
-                discriminator.ParentNode.RemoveChild(discriminator);
 
             return document;
         }
@@ -81,6 +75,29 @@ namespace FluentNHibernate.Mapping
 
 			return part;
 		}
+
+        public virtual DiscriminatorPart<TDiscriminator, T> DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
+        {
+            var part = new DiscriminatorPart<TDiscriminator, T>(columnName, baseClassDiscriminator, this);
+            
+            AddPart(part);
+
+            return part;
+        }
+
+        public virtual DiscriminatorPart<TDiscriminator, T> DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
+        {
+            var part = new DiscriminatorPart<TDiscriminator, T>(columnName, this);
+            
+            AddPart(part);
+
+            return part;
+        }
+
+        public virtual DiscriminatorPart<string, T> DiscriminateSubClassesOnColumn(string columnName)
+        {
+            return DiscriminateSubClassesOnColumn<string>(columnName);
+        }
 
         protected virtual XmlElement createClassValues(XmlDocument document, XmlNode parentNode)
         {

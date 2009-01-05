@@ -245,6 +245,15 @@ namespace FluentNHibernate.Testing.DomainModel
                 .CheckProperty(r => r.BinaryValue, new byte[] { 1, 2, 3 })
                 .VerifyTheMappings();
         }
+        [Test]
+        public void CanWorkWithNestedSubClasses()
+        {
+            new PersistenceSpecification<Child2Record>(_source)
+                .CheckProperty(r => r.Name, "Foxy")
+                .CheckProperty(r => r.Another, "Lady")
+                .CheckProperty(r => r.Third, "Yeah")
+                .VerifyTheMappings();
+        }
     }
 
     public class TestModel : PersistenceModel
@@ -264,6 +273,37 @@ namespace FluentNHibernate.Testing.DomainModel
             Map(x => x.Age);
             Map(x => x.Location);
         }
+    }
+
+    public class NestedSubClassMap : ClassMap<SuperRecord>
+    {
+        public NestedSubClassMap()
+        {
+            Id(x => x.Id);
+            Map(x => x.Name);
+            DiscriminateSubClassesOnColumn<string>("Type")
+                .SubClass<ChildRecord>(sc =>
+                {
+                    sc.Map(x => x.Another);
+                    sc.SubClass<Child2Record>(sc2 =>
+                        sc2.Map(x => x.Third));
+                });
+        }
+    }
+
+    public class SuperRecord  : Entity
+    {
+        public virtual string Name { get; set; }
+    }
+
+    public class ChildRecord : SuperRecord
+    {
+        public virtual string Another { get; set; }
+    }
+
+    public class Child2Record : ChildRecord
+    {
+        public virtual string Third { get; set; }
     }
 
     public class Record : Entity

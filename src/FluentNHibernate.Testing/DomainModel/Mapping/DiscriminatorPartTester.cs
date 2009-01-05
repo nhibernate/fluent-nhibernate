@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping {
 		[Test]
 		public void When_no_discriminator_value_is_explicitly_specified_then_attribute_should_not_be_written() 
 		{
-			var part = new DiscriminatorPart<int, DiscriminatorTarget>("Discriminator", new List<IMappingPart>());
+			var part = new DiscriminatorPart<int, DiscriminatorTarget>("Discriminator", new ClassMap<DiscriminatorTarget>());
 
 			var document = new XmlDocument();
 			var element = document.CreateElement("class");
@@ -25,7 +25,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping {
 		[Test]
 		public void When_a_discriminator_value_is_specified_then_an_attribute_should_be_written() 
 		{
-			var part = new DiscriminatorPart<int, DiscriminatorTarget>("Discriminator", new List<IMappingPart>(), 0);
+            var part = new DiscriminatorPart<int, DiscriminatorTarget>("Discriminator", 0, new ClassMap<DiscriminatorTarget>());
 
 			var document = new XmlDocument();
 			var element = document.CreateElement("class");
@@ -38,7 +38,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping {
 		[Test]
 		public void When_null_is_specified_as_the_discriminator_value_then_attribute_should_not_be_written() 
 		{
-			var part = new DiscriminatorPart<string, DiscriminatorTarget>("Discriminator", new List<IMappingPart>(), null);
+			var part = new DiscriminatorPart<string, DiscriminatorTarget>("Discriminator", null, null);
 
 			var document = new XmlDocument();
 			var element = document.CreateElement("class");

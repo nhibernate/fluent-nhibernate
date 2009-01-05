@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Xml;
 using NUnit.Framework;
 using FluentNHibernate.Mapping;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
@@ -205,75 +204,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             componentElement.ShouldHaveChild("property[@name='Name']");
             componentElement.ShouldHaveChild("property[@name='Age']");
         }
-
-        [Test]
-        public void CreateDiscriminator()
-        {
-            var map = new ClassMap<SecondMappedObject>();
-            map.DiscriminateSubClassesOnColumn<string>("Type");
-
-            document = map.CreateMapping(new MappingVisitor());
-            var element = (XmlElement) document.DocumentElement.SelectSingleNode("class/discriminator");
-            element.AttributeShouldEqual("column", "Type");
-            element.AttributeShouldEqual("type", "String");
-        }
-
-        [Test]
-        public void CreateTheSubClassMappings()
-        {
-            var map = new ClassMap<MappedObject>();
-
-            map.DiscriminateSubClassesOnColumn<string>("Type")
-                .SubClass<SecondMappedObject>().IsIdentifiedBy("red")
-                .MapSubClassColumns(m => { m.Map(x => x.Name); });
-
-            document = map.CreateMapping(new MappingVisitor());
-
-            Debug.WriteLine(document.OuterXml);
-
-            var element = (XmlElement)document.DocumentElement.SelectSingleNode("//subclass");
-            element.AttributeShouldEqual("name", typeof(SecondMappedObject).AssemblyQualifiedName);
-            element.AttributeShouldEqual("discriminator-value", "red");
-
-            XmlElement propertyElement = element["property"];
-            propertyElement.AttributeShouldEqual("column", "Name");
-        }
-
-        [Test]
-        public void SubclassShouldNotHaveDiscriminator()
-        {
-            var map = new ClassMap<MappedObject>();
-
-            map.DiscriminateSubClassesOnColumn<string>("Type")
-                .SubClass<SecondMappedObject>().IsIdentifiedBy("red")
-                .MapSubClassColumns(m => { 
-                                            m.Map(x => x.Name);
-                                            m.DiscriminateSubClassesOnColumn<string>("Type")
-                                                 .SubClass<SecondMappedObject>().IsIdentifiedBy("blue")
-                                                 .MapSubClassColumns(m2 => { });
-                });
-
-            document = map.CreateMapping(new MappingVisitor());
-
-            Debug.WriteLine(document.OuterXml);
-
-            Assert.That(document.SelectNodes("//subclass/discriminator").Count, Is.EqualTo(0));
-        }
-
-    	[Test]
-    	public void CreateDiscriminatorValueAtClassLevel()
-		{
-			var map = new ClassMap<MappedObject>();
-
-			map.DiscriminateSubClassesOnColumn<string>("Type", "Foo")
-				.SubClass<SecondMappedObject>().IsIdentifiedBy("Bar")
-				.MapSubClassColumns(m => m.Map(x => x.Name));
-
-			document = map.CreateMapping(new MappingVisitor());
-
-			var element = (XmlElement)document.DocumentElement.SelectSingleNode("class");
-			element.AttributeShouldEqual("discriminator-value", "Foo");
-    	}
 
         [Test]
         public void DetermineTheTableName()

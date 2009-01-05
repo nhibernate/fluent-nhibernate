@@ -18,7 +18,7 @@ namespace FluentNHibernate.Mapping
             set { _parentIsRequired = value; }
         }
 
-        protected void AddPart(IMappingPart part)
+        internal void AddPart(IMappingPart part)
         {
             _properties.Add(part);
         }
@@ -63,22 +63,6 @@ namespace FluentNHibernate.Mapping
         {
             var property = ReflectionHelper.GetProperty(expression);
             var part = new OneToOnePart<OTHER>(property);
-            AddPart(part);
-
-            return part;
-        }
-
-        public virtual DiscriminatorPart<ARG, T> DiscriminateSubClassesOnColumn<ARG>(string columnName, ARG baseClassDiscriminator) 
-		{
-			var part = new DiscriminatorPart<ARG, T>(columnName, _properties, baseClassDiscriminator);
-			AddPart(part);
-
-			return part;
-		}
-
-        public virtual DiscriminatorPart<ARG, T> DiscriminateSubClassesOnColumn<ARG>(string columnName)
-        {
-            var part = new DiscriminatorPart<ARG, T>(columnName, _properties);
             AddPart(part);
 
             return part;
