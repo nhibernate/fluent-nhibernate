@@ -95,7 +95,6 @@ namespace FluentNHibernate.AutoMap
             AddPart(joinedclass);
             joinedSubClasses.Add(typeof(TSubclass), joinedclass);
             return joinedclass;
-            
         }
 
         public object JoinedSubClass(Type type, string keyColumn)
