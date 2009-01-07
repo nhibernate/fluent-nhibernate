@@ -75,6 +75,12 @@ namespace FluentNHibernate.AutoMap
             return base.References(expression, columnName);
         }
 
+        public override OneToOnePart<OTHER> HasOne<OTHER>(System.Linq.Expressions.Expression<Func<T, OTHER>> expression)
+        {
+            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
+            return base.HasOne(expression);
+        }
+
         public override VersionPart Version(System.Linq.Expressions.Expression<Func<T, object>> expression)
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
@@ -103,6 +109,7 @@ namespace FluentNHibernate.AutoMap
             AddPart(joinedclass);
             return joinedclass;
         }
+
 
         public bool CanMapProperty(PropertyInfo property)
         {
