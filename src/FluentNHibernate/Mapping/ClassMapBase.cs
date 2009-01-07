@@ -18,7 +18,7 @@ namespace FluentNHibernate.Mapping
             set { _parentIsRequired = value; }
         }
 
-        internal void AddPart(IMappingPart part)
+        protected internal void AddPart(IMappingPart part)
         {
             _properties.Add(part);
         }
