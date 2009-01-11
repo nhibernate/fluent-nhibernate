@@ -9,13 +9,13 @@ namespace FluentNHibernate.Mapping
             return type.IsEnum;
         }
 
-        public void AlterMap(IProperty property)
+        public void AlterMap(IProperty propertyMapping)
         {
-            Type mapperType = typeof(GenericEnumMapper<>).MakeGenericType(property.PropertyType);
-            property.SetAttribute("type", mapperType.AssemblyQualifiedName);
+            Type mapperType = typeof(GenericEnumMapper<>).MakeGenericType(propertyMapping.PropertyType);
+            propertyMapping.SetAttribute("type", mapperType.AssemblyQualifiedName);
 
-            property.SetAttributeOnColumnElement("sql-type", "string");
-            property.SetAttributeOnColumnElement("length", "50");
+            propertyMapping.SetAttributeOnColumnElement("sql-type", "string");
+            propertyMapping.SetAttributeOnColumnElement("length", "50");
         }
     }
 }

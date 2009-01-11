@@ -9,10 +9,10 @@ namespace FluentNHibernate.Mapping
             return true;
         }
 
-        public void AlterMap(IProperty property)
+        public void AlterMap(IProperty propertyMapping)
         {            
-            if(!property.HasAttribute("type"))
-                property.SetAttribute("type", TypeMapping.GetTypeString(property.PropertyType));
+            if(!propertyMapping.HasAttribute("type"))
+                propertyMapping.SetAttribute("type", TypeMapping.GetTypeString(propertyMapping.PropertyType));
         }
     }
 }

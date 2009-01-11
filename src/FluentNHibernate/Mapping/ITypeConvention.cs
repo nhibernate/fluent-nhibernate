@@ -5,7 +5,7 @@ namespace FluentNHibernate.Mapping
     public interface ITypeConvention
     {
         bool CanHandle(Type type);
-        void AlterMap(IProperty property);
+        void AlterMap(IProperty propertyMapping);
         
     }
 }

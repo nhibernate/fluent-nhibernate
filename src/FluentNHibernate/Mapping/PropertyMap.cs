@@ -128,7 +128,7 @@ namespace FluentNHibernate.Mapping
 
         #endregion
 
-        public PropertyMap TheColumnNameIs(string name)
+        public IProperty TheColumnNameIs(string name)
         {
             _columnName = name;
 
@@ -146,14 +146,14 @@ namespace FluentNHibernate.Mapping
             get { return access; }
         }
 
-        public PropertyMap ValueIsAutoNumber()
+        public IProperty ValueIsAutoNumber()
         {
             _extendedProperties.Store("insert", "true");
 
             return this;
         }
 
-        public PropertyMap WithLengthOf(int length)
+        public IProperty WithLengthOf(int length)
         {
             if (CanApplyLengthAttribute())
                 this.AddAlteration(x => x.SetAttribute("length", length.ToString()));
@@ -168,13 +168,13 @@ namespace FluentNHibernate.Mapping
     		return  propertyType == typeof(string) || propertyType == typeof(decimal);
     	}
 
-    	public PropertyMap CanNotBeNull()
+        public IProperty CanNotBeNull()
         {
             this.AddAlteration(x => x.SetAttribute("not-null", "true"));
             return this;
         }
 
-        public PropertyMap AsReadOnly()
+        public IProperty AsReadOnly()
         {
             this.AddAlteration(x => x.SetAttribute("insert", "false"));
             this.AddAlteration(x => x.SetAttribute("update", "false"));
@@ -182,7 +182,7 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public PropertyMap FormulaIs(string forumla) 
+        public IProperty FormulaIs(string forumla) 
         {
             this.AddAlteration(x => x.SetAttribute("formula", forumla));
 
@@ -194,7 +194,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <typeparam name="CUSTOMTYPE">A type which implements <see cref="IUserType"/>.</typeparam>
         /// <returns>This property mapping to continue the method chain</returns>
-        public PropertyMap CustomTypeIs<CUSTOMTYPE>()
+        public IProperty CustomTypeIs<CUSTOMTYPE>()
             where CUSTOMTYPE : IUserType
         {
             return CustomTypeIs(typeof (CUSTOMTYPE));
@@ -205,7 +205,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="type">A type which implements <see cref="IUserType"/>.</param>
         /// <returns>This property mapping to continue the method chain</returns>
-        public PropertyMap CustomTypeIs(Type type)
+        public IProperty CustomTypeIs(Type type)
         {
             this.AddAlteration(x => x.SetAttribute("type", type.AssemblyQualifiedName));
             return this;
@@ -216,20 +216,19 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="typeName">The assembly-qualified type name of a type which implements <see cref="IUserType"/>.</param>
         /// <returns>This property mapping to continue the method chain</returns>
-        public PropertyMap CustomTypeIs(string typeName)
+        public IProperty CustomTypeIs(string typeName)
         {
             this.AddAlteration(x => x.SetAttribute("type", typeName));
             return this;
         }
 
-        public PropertyMap CustomSqlTypeIs(string sqlType)
+        public IProperty CustomSqlTypeIs(string sqlType)
         {
             this.AddAlteration(x => x.SetColumnProperty("sql-type", sqlType));
             return this;
         }
 
-
-        public PropertyMap WithUniqueConstraint()
+        public IProperty WithUniqueConstraint()
         {
             this.AddAlteration(x => x.SetAttribute("unique", "true"));
             return this;

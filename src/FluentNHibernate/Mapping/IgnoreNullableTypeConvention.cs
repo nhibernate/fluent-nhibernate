@@ -9,7 +9,7 @@ namespace FluentNHibernate.Mapping
             return type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
         }
 
-        public void AlterMap(IProperty property)
+        public void AlterMap(IProperty propertyMapping)
         {
             // no-op;
         }
