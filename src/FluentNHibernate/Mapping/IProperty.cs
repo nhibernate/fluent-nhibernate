@@ -23,6 +23,7 @@ namespace FluentNHibernate.Mapping
         IProperty CanNotBeNull();
         IProperty AsReadOnly();
         IProperty FormulaIs(string forumla);
+        IProperty CustomTypeIs<T>() where T : IUserType;
         IProperty CustomTypeIs(Type type);
         IProperty CustomTypeIs(string typeName);
         IProperty CustomSqlTypeIs(string sqlType);
