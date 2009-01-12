@@ -1,5 +1,7 @@
 using System;
 using FluentNHibernate.AutoMap;
+using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
+using FluentNHibernate.Mapping;
 using NUnit.Framework;
 using SuperTypes = FluentNHibernate.AutoMap.TestFixtures.SuperTypes;
 using FluentNHibernate.AutoMap.TestFixtures;
@@ -267,6 +269,23 @@ namespace FluentNHibernate.Testing.AutoMap
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//cache").HasAttribute("usage", "read-write");
+        }
+
+        [Test]
+        public void TypeConventionShouldForcePropertyToBeMapped()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ClassWithUserType>()
+                .WithConvention(convention =>
+                {
+                    convention.AddTypeConvention(new CustomTypeConvention());
+                })
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<ClassWithUserType>(autoMapper)
+                .Element("class/property").HasAttribute("name", "Custom");
         }
     }
 }

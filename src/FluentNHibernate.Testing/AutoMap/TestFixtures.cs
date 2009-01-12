@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System;
+using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
+using FluentNHibernate.Mapping;
 using Iesi.Collections.Generic;
 
 namespace FluentNHibernate.AutoMap.TestFixtures
@@ -81,6 +83,33 @@ namespace FluentNHibernate.AutoMap.TestFixtures
         public virtual int Id { get; set; }
         public virtual string Version { get; set; }
     }
+
+    public class ClassWithUserType
+    {
+        public int Id { get; set; }
+        public Custom Custom { get; set; }
+    }
+}
+
+namespace FluentNHibernate.AutoMap.TestFixtures.CustomTypes
+{
+    public class Custom
+    {
+
+    }
+
+    public class CustomTypeConvention : ITypeConvention
+    {
+        public bool CanHandle(Type type)
+        {
+            return type == typeof(Custom);
+        }
+
+        public void AlterMap(IProperty propertyMapping)
+        {
+
+        }
+    }   
 }
 
 namespace FluentNHibernate.AutoMap.TestFixtures.SuperTypes
