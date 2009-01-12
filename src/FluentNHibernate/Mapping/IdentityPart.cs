@@ -4,31 +4,31 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-	public class IdentityPart<T> : IMappingPart, IAccessStrategy<IdentityPart<T>>
-	{
+    public class IdentityPart : IIdentityPart
+    {
 		private string _columnName;
-		private readonly IdentityGenerationStrategyBuilder<T> _generatedBy;
+		private readonly IdentityGenerationStrategyBuilder _generatedBy;
 		private readonly Cache<string, string> _generatorParameters = new Cache<string, string>();
         private readonly Cache<string, string> _elementAttributes = new Cache<string, string>();
 		private readonly PropertyInfo _property;
 		private string _generatorClass;
-        private readonly AccessStrategyBuilder<IdentityPart<T>> access;
+        private readonly AccessStrategyBuilder<IIdentityPart> access;
 	    private object _unsavedValue;
 
 	    public IdentityPart(PropertyInfo property, string columnName)
 		{
-            access = new AccessStrategyBuilder<IdentityPart<T>>(this);
+            access = new AccessStrategyBuilder<IIdentityPart>(this);
 
 			_property = property;
 			_columnName = columnName;
-			_generatedBy = new IdentityGenerationStrategyBuilder<T>(this);
+			_generatedBy = new IdentityGenerationStrategyBuilder(this);
 		}
 
 		public IdentityPart(PropertyInfo property) : this(property, null)
 		{
 		}
 
-		public IdentityGenerationStrategyBuilder<T> GeneratedBy
+		public IdentityGenerationStrategyBuilder GeneratedBy
 		{
 			get { return _generatedBy; }
 		}
@@ -52,6 +52,8 @@ namespace FluentNHibernate.Mapping
 
 		public void Write(XmlElement classElement, IMappingVisitor visitor)
 		{
+            visitor.Conventions.AlterId(this);
+
             var columnName = (String.IsNullOrEmpty(_columnName))
              ? visitor.Conventions.CalculatePrimaryKey(_property)
              : _columnName;
@@ -99,13 +101,13 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.First; }
 	    }
 
-        public IdentityPart<T> SetGeneratorClass(string generator)
+        public IIdentityPart SetGeneratorClass(string generator)
 		{
 			_generatorClass = generator;
 			return this;
 		}
 
-        public IdentityPart<T> AddGeneratorParam(string name, string innerXml)
+        public IIdentityPart AddGeneratorParam(string name, string innerXml)
 		{
 			_generatorParameters.Store(name, innerXml);
 			return this;
@@ -114,7 +116,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Set the access and naming strategy for this identity.
         /// </summary>
-        public AccessStrategyBuilder<IdentityPart<T>> Access
+        public AccessStrategyBuilder<IIdentityPart> Access
 	    {
 	        get { return access; }
 	    }
@@ -123,7 +125,7 @@ namespace FluentNHibernate.Mapping
         /// Sets the unsaved-value of the identity.
         /// </summary>
         /// <param name="unsavedValue">Value that represents an unsaved value.</param>
-        public IdentityPart<T> WithUnsavedValue(object unsavedValue)
+        public IIdentityPart WithUnsavedValue(object unsavedValue)
         {
             _unsavedValue = unsavedValue;
             return this;

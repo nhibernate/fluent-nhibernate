@@ -68,6 +68,11 @@ namespace FluentNHibernate
             return find ?? new DefaultConvention();
         }
 
+        public void AlterId(IIdentityPart part)
+        {
+            IdConvention(part);
+        }
+
         public void AlterMap(IProperty property)
         {
             if (property.PropertyType == typeof(string))
@@ -110,6 +115,7 @@ namespace FluentNHibernate
 
         public Func<PropertyInfo,bool> FindIdentity = p => p.Name == "Id";
 
+        public Action<IIdentityPart> IdConvention = id => {};
         public Action<IOneToManyPart> OneToManyConvention = m => {};
         public Action<IMappingPart> ManyToOneConvention = m => {};
         public Action<IMappingPart> JoinConvention = m => {};

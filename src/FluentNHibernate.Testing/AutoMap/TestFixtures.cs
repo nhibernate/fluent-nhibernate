@@ -34,6 +34,16 @@ namespace FluentNHibernate.AutoMap.TestFixtures
         public ExampleParentClass Parent { get; set; }
     }
 
+    public class PrivateIdSetterClass
+    {
+        private int id;
+
+        public virtual int Id
+        {
+            get { return id; }
+        }
+    }
+
 
     public enum ExampleEnum
     {

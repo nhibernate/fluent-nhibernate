@@ -84,6 +84,7 @@
     <Compile Include="Mapping\Attributes.cs" />
     <Compile Include="Mapping\CachePart.cs" />
     <Compile Include="Mapping\DynamicComponentPart.cs" />
+    <Compile Include="Mapping\IIdentityPart.cs" />
     <Compile Include="Mapping\ImportPart.cs" />
     <Compile Include="Mapping\IOneToManyPart.cs" />
     <Compile Include="Mapping\JoinPart.cs" />

@@ -109,6 +109,22 @@ namespace FluentNHibernate.Testing.AutoMap
         }
 
         [Test]
+        public void TestAutoMapIdUsesConvention()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<PrivateIdSetterClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .WithConvention(convention =>
+                    convention.IdConvention = id => id.Access.AsLowerCaseField());
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<PrivateIdSetterClass>(autoMapper)
+                .Element("class/id")
+                .HasAttribute("access", "field.lowercase");
+        }
+
+        [Test]
         public void TestAutoMapPropertySetManyToOneKeyConvention()
         {
             var autoMapper = AutoPersistenceModel

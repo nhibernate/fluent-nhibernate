@@ -14,7 +14,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void Scratch()
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-			var id = new IdentityPart<IdentityTarget>(property);
+			var id = new IdentityPart(property);
 
 			var document = new XmlDocument();
 			var element = document.CreateElement("root");
@@ -237,27 +237,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .ValueEquals("Parent");
 		}
 
-        [Test]
-        public void GeneratorClass_CanSpecifyForeignFluently()
-        {
-            new MappingTester<IdentityTarget>()
-                .ForMapping(mapping =>
-                    mapping.Id(x => x.IntId)
-                        .GeneratedBy
-                        .Foreign(x => x.StringId))
-                .Element("class/id/generator").HasAttribute("class", "foreign")
-                .Element("class/id/generator/param")
-                    .Exists()
-                    .HasAttribute("name", "property")
-                    .ValueEquals("StringId");
-        }
-
 		[Test]
 		[ExpectedException(typeof (InvalidOperationException))]
 		public void IdentityType_MustBeIntegral_ForIncrement()
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.Increment();
+            new IdentityPart(property).GeneratedBy.Increment();
 		}
 
 		[Test]
@@ -266,7 +251,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.Identity();
+            new IdentityPart(property).GeneratedBy.Identity();
 		}
 
 		[Test]
@@ -275,7 +260,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.Sequence("no");
+            new IdentityPart(property).GeneratedBy.Sequence("no");
 		}
 
 		[Test]
@@ -284,7 +269,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.HiLo("no", "no", "no");
+            new IdentityPart(property).GeneratedBy.HiLo("no", "no", "no");
 		}
 
 		[Test]
@@ -293,7 +278,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.SeqHiLo("no", "no");
+            new IdentityPart(property).GeneratedBy.SeqHiLo("no", "no");
 		}
 
 		[Test]
@@ -302,7 +287,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.UuidHex("format");
+            new IdentityPart(property).GeneratedBy.UuidHex("format");
 		}
 
 		[Test]
@@ -311,7 +296,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.UuidString();
+            new IdentityPart(property).GeneratedBy.UuidString();
 		}
 
 		[Test]
@@ -320,7 +305,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.Guid();
+            new IdentityPart(property).GeneratedBy.Guid();
 		}
 
 		[Test]
@@ -329,7 +314,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.GuidComb();
+            new IdentityPart(property).GeneratedBy.GuidComb();
 		}
 
 		[Test]
@@ -337,7 +322,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void IdentityType_MustBeIntegral_ForNative()
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.Native();
+            new IdentityPart(property).GeneratedBy.Native();
 		}
 
         [Test]
