@@ -65,7 +65,7 @@ namespace FluentNHibernate.AutoMap
 
             foreach (var type in mappingTypes)
             {
-                if (type.Type.IsClass)
+                if (type.Type.IsClass && isnotAnonymousMethodClass(type))
                 {
                     if (!type.IsMapped)
                     {
@@ -80,6 +80,11 @@ namespace FluentNHibernate.AutoMap
             }
 
             base.Configure(configuration);
+        }
+
+        private bool isnotAnonymousMethodClass(AutoMapType type)
+        {
+            return type.Type.ReflectedType == null;
         }
 
         #region Configuation Helpers
