@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.AutoMap.TestFixtures.SuperTypes;
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
 
@@ -14,7 +15,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void Scratch()
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-			var id = new IdentityPart(property);
+			var id = new IdentityPart<IdentityTarget>(property);
 
 			var document = new XmlDocument();
 			var element = document.CreateElement("root");
@@ -242,7 +243,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void IdentityType_MustBeIntegral_ForIncrement()
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart(property).GeneratedBy.Increment();
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.Increment();
 		}
 
 		[Test]
@@ -251,7 +252,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart(property).GeneratedBy.Identity();
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.Identity();
 		}
 
 		[Test]
@@ -260,7 +261,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart(property).GeneratedBy.Sequence("no");
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.Sequence("no");
 		}
 
 		[Test]
@@ -269,7 +270,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart(property).GeneratedBy.HiLo("no", "no", "no");
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.HiLo("no", "no", "no");
 		}
 
 		[Test]
@@ -278,7 +279,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart(property).GeneratedBy.SeqHiLo("no", "no");
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.SeqHiLo("no", "no");
 		}
 
 		[Test]
@@ -287,7 +288,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-            new IdentityPart(property).GeneratedBy.UuidHex("format");
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.UuidHex("format");
 		}
 
 		[Test]
@@ -296,7 +297,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-            new IdentityPart(property).GeneratedBy.UuidString();
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.UuidString();
 		}
 
 		[Test]
@@ -305,7 +306,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-            new IdentityPart(property).GeneratedBy.Guid();
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.Guid();
 		}
 
 		[Test]
@@ -314,7 +315,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-            new IdentityPart(property).GeneratedBy.GuidComb();
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.GuidComb();
 		}
 
 		[Test]
@@ -322,7 +323,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void IdentityType_MustBeIntegral_ForNative()
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart(property).GeneratedBy.Native();
+            new IdentityPart<IdentityTarget>(property).GeneratedBy.Native();
 		}
 
         [Test]
@@ -376,6 +377,20 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .ForMapping(classMap)
                     .Element("class/id").HasAttribute("column", "bar");
             
+        }
+
+        [Test]
+        public void Key_convention_receives_superclass_type()
+        {
+            var visitor = new MappingVisitor();
+
+            visitor.Conventions.GetPrimaryKeyNameFromType =
+                type => type.Name + "Id";
+
+            new MappingTester<ExampleClass>()
+                .UsingVisitor(visitor)
+                    .ForMapping(mapping => mapping.Id(x => x.Id))
+                    .Element("class/id").HasAttribute("column", "ExampleClassId");
         }
 	}
 

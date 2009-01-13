@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public class IdentityPart : IIdentityPart
+    public class IdentityPart<T> : IIdentityPart
     {
 		private string _columnName;
 		private readonly IdentityGenerationStrategyBuilder _generatedBy;
@@ -55,7 +55,7 @@ namespace FluentNHibernate.Mapping
             visitor.Conventions.AlterId(this);
 
             var columnName = (String.IsNullOrEmpty(_columnName))
-             ? visitor.Conventions.CalculatePrimaryKey(_property)
+             ? visitor.Conventions.CalculatePrimaryKey(typeof(T), _property)
              : _columnName;
 
 			XmlElement element = classElement.AddElement("id")

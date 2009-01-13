@@ -128,10 +128,10 @@ namespace FluentNHibernate
         public Func<Type, string> GetPrimaryKeyNameFromType;
         public Func<Type, bool> IsBaseType = b => b == typeof(object);
 
-        public string CalculatePrimaryKey(PropertyInfo _property)
+        public string CalculatePrimaryKey(Type classType, PropertyInfo _property)
         {
             if (GetPrimaryKeyNameFromType != null)
-                return GetPrimaryKeyNameFromType(_property.DeclaringType);
+                return GetPrimaryKeyNameFromType(classType);
 
             return GetPrimaryKeyName(_property);
         }

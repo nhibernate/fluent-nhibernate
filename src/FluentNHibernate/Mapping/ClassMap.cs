@@ -62,7 +62,7 @@ namespace FluentNHibernate.Mapping
         public void UseIdentityForKey(Expression<Func<T, object>> expression, string columnName)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            var part = new IdentityPart(property, columnName);
+            var part = new IdentityPart<T>(property, columnName);
 
             AddPart(part);
         }
@@ -199,7 +199,7 @@ namespace FluentNHibernate.Mapping
         public virtual IIdentityPart Id(Expression<Func<T, object>> expression, string column)
     	{
 			PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            var id = column == null ? new IdentityPart(property) : new IdentityPart(property, column);
+            var id = column == null ? new IdentityPart<T>(property) : new IdentityPart<T>(property, column);
     		AddPart(id);
     		return id;
     	}
