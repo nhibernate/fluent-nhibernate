@@ -130,6 +130,7 @@
     <Compile Include="DomainModel\Query\EntityQueryDefinitionTester.cs" />
     <Compile Include="DomainModel\Query\FilterTypeRegistryTester.cs" />
     <Compile Include="DomainModel\Query\FilterTypeTester.cs" />
+    <Compile Include="DomainModel\RevealTests.cs" />
     <Compile Include="Fixtures.cs" />
     <Compile Include="Framework\PersistenceSpecificationTester.cs" />
     <Compile Include="SpecificationExtensions.cs" />

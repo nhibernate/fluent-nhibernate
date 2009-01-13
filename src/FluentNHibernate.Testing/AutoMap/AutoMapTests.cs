@@ -6,7 +6,6 @@ using FluentNHibernate.Metadata;
 using FluentNHibernate.Testing.AutoMap.ManyToMany;
 using NHibernate.Cfg;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace FluentNHibernate.Testing.AutoMap
 {

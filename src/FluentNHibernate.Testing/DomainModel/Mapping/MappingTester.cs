@@ -2,7 +2,6 @@ using System;
 using System.Xml;
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {

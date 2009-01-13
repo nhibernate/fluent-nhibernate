@@ -141,7 +141,9 @@
     <Compile Include="PropertyChain.cs" />
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="SingleProperty.cs" />
+    <Compile Include="Reveal.cs" />
     <Compile Include="TypeExtensions.cs" />
+    <Compile Include="UnknownPropertyException.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mapping\Template.xml" />

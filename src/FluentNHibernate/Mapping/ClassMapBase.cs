@@ -68,7 +68,6 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-
         public virtual DynamicComponentPart<T> DynamicComponent(Expression<Func<T, IDictionary>> expression, Action<DynamicComponentPart<T>> action)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
