@@ -83,6 +83,7 @@
     <Compile Include="AutoMap\ManyToMany.cs" />
     <Compile Include="AutoMap\TestFixtures.cs" />
     <Compile Include="AutoMap\VersionTests.cs" />
+    <Compile Include="AutoMap\XXAppenderPropertyConvention.cs" />
     <Compile Include="Cfg\FirebirdConfigurationTester.cs" />
     <Compile Include="Cfg\MsSqlCeConfigurationTester.cs" />
     <Compile Include="Cfg\MsSqlConfigurationTester.cs" />

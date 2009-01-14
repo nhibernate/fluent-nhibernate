@@ -57,6 +57,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Accessor.cs" />
+    <Compile Include="AttributeConvention.cs" />
     <Compile Include="AutoMap\AutoJoinedSubClassPart.cs" />
     <Compile Include="AutoMap\AutoMap.cs" />
     <Compile Include="AutoMap\AutoMapColumn.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Cfg\MsSqlConfiguration.cs" />
     <Compile Include="Conventions.cs" />
     <Compile Include="DummyPropertyInfo.cs" />
+    <Compile Include="IPropertyConvention.cs" />
     <Compile Include="Mapping\Attributes.cs" />
     <Compile Include="Mapping\CachePart.cs" />
     <Compile Include="Mapping\DynamicComponentPart.cs" />

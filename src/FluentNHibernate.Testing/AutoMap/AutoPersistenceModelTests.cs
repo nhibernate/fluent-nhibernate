@@ -1,7 +1,6 @@
 using System;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
-using FluentNHibernate.Mapping;
 using NUnit.Framework;
 using SuperTypes = FluentNHibernate.AutoMap.TestFixtures.SuperTypes;
 using FluentNHibernate.AutoMap.TestFixtures;
@@ -11,6 +10,23 @@ namespace FluentNHibernate.Testing.AutoMap
     [TestFixture]
     public class AutoPersistenceModelTests : BaseAutoPersistenceTests
     {
+        [Test]
+        public void MapsPropertyWithPropertyConvention()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleCustomColumn>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .WithConvention(convention =>
+                {
+                    convention.AddPropertyConvention(new XXAppenderPropertyConvention());
+                });
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/property[@name='LineOne']").HasAttribute("column", "LineOneXX");
+        }
+
         [Test]
         public void TestAutoMapsIds()
         {

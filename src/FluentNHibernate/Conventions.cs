@@ -5,34 +5,10 @@ using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate
 {
-    public interface IPropertyConvention
-    {
-        void Process(IProperty property);
-    }
-
-    public class AttributeConvention<T> : IPropertyConvention where T : Attribute
-    {
-        private Action<T, IProperty> _action;
-
-        public AttributeConvention(Action<T, IProperty> action)
-        {
-            _action = action;
-        }
-
-        public void Process(IProperty property)
-        {
-            T att = Attribute.GetCustomAttribute(property.Property, typeof (T), true) as T;
-            if (att != null)
-            {
-                _action(att, property);
-            }
-        }
-    }
-
     public class Conventions
     {
         private readonly List<ITypeConvention> _typeConventions = new List<ITypeConvention>();
-        private List<IPropertyConvention> _propertyConventions = new List<IPropertyConvention>();
+        private readonly List<IPropertyConvention> _propertyConventions = new List<IPropertyConvention>();
 
         public int DefaultStringLength { get; set; }
 
@@ -62,6 +38,11 @@ namespace FluentNHibernate
             _typeConventions.Add(convention);
         }
 
+        public void AddPropertyConvention(IPropertyConvention convention)
+        {
+            _propertyConventions.Add(convention);
+        }
+
         public ITypeConvention FindConvention(Type propertyType)
         {
             var find = _typeConventions.Find(c => c.CanHandle(propertyType));
@@ -83,7 +64,11 @@ namespace FluentNHibernate
             ITypeConvention convention = FindConvention(property.PropertyType);
             convention.AlterMap(property);
 
-            _propertyConventions.ForEach(c => c.Process(property));
+            _propertyConventions.ForEach(c =>
+            {
+                if (c.CanHandle(property))
+                    c.Process(property);
+            });
         }
 
         public void AlterManyToOneMap(IManyToOnePart part)
@@ -112,20 +97,26 @@ namespace FluentNHibernate
             _propertyConventions.Add(convention);
         }
 
-
         public Func<PropertyInfo,bool> FindIdentity = p => p.Name == "Id";
 
         public Action<IIdentityPart> IdConvention = id => {};
+
         public Action<IOneToManyPart> OneToManyConvention = m => {};
+
         public Action<IMappingPart> ManyToOneConvention = m => {};
+
         public Action<IMappingPart> JoinConvention = m => {};
+
         public Action<IMappingPart> OneToOneConvention = m => { };
+
         public Func<CachePart, CachePart> DefaultCache = cache => null;
 
         public Func<PropertyInfo, string> GetVersionColumnName;
 
         public bool DefaultLazyLoad = false;
+
         public Func<Type, string> GetPrimaryKeyNameFromType;
+
         public Func<Type, bool> IsBaseType = b => b == typeof(object);
 
         public string CalculatePrimaryKey(Type classType, PropertyInfo _property)

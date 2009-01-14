@@ -6,6 +6,5 @@ namespace FluentNHibernate.Mapping
     {
         bool CanHandle(Type type);
         void AlterMap(IProperty propertyMapping);
-        
     }
 }
