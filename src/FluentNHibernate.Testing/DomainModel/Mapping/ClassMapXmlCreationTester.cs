@@ -500,6 +500,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     {
         public string Name { get; set; }
         public long Id { get; set; }
+        public int IdPart1 { get; set; }
+        public int IdPart2 { get; set; }
+        public int IdPart3 { get; set; }
     }
 
     public class ComponentOfMappedObject

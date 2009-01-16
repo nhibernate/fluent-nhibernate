@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
@@ -16,6 +17,7 @@ namespace FluentNHibernate.Mapping
         private readonly PropertyInfo _property;
         private string _columnName;
         private readonly AccessStrategyBuilder<ManyToOnePart<OTHER>> access;
+        private readonly IList<string> _columns = new List<string>();
 
         public ManyToOnePart(PropertyInfo property) 
         {
@@ -62,6 +64,28 @@ namespace FluentNHibernate.Mapping
 			_properties.Store("foreign-key", foreignKeyName);
 			return this;
 		}
+
+        public ManyToOnePart<OTHER> WithColumns(params string[] columns)
+        {
+            foreach (var column in columns)
+            {
+                _columns.Add(column);
+            }
+
+            return this;
+        }
+
+        public ManyToOnePart<OTHER> WithColumns(params Expression<Func<OTHER, object>>[] columns)
+        {
+            foreach (var expression in columns)
+            {
+                var property = ReflectionHelper.GetProperty(expression);
+
+                WithColumns(property.Name);
+            }
+
+            return this;
+        }
 		
 		public CascadeExpression<ManyToOnePart<OTHER>> Cascade
 		{
@@ -82,9 +106,21 @@ namespace FluentNHibernate.Mapping
                 columnName = visitor.Conventions.GetForeignKeyName(_property);
 
         	_properties.Store("name", _property.Name);
-			_properties.Store("column", columnName);
 
-            classElement.AddElement("many-to-one").WithProperties(_properties);
+            if (_columns.Count == 0)
+                _properties.Store("column", columnName);
+
+            var manyToOneElement = classElement.AddElement("many-to-one").WithProperties(_properties);
+
+            if (_columns.Count > 0)
+            {
+                foreach (var column in _columns)
+                {
+                    manyToOneElement.AddElement("column")
+                        .WithAtt("name", column);
+                }
+            }
+
         }
 
         public void SetAttribute(string name, string value)

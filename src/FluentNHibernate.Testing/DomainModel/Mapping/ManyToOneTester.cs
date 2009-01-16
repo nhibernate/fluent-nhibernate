@@ -71,5 +71,29 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/many-to-one")
                     .HasAttribute("not-null", "true");                    
         }
+
+        [Test]
+        public void Many_to_one_can_have_multiple_columns_fluently()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.References(x => x.Parent)
+                      .WithColumns(x => x.IdPart1, x => x.IdPart2, x => x.IdPart3))
+                .Element("class/many-to-one/column[@name='IdPart1']").Exists()
+                .Element("class/many-to-one/column[@name='IdPart2']").Exists()
+                .Element("class/many-to-one/column[@name='IdPart3']").Exists();
+        }
+
+        [Test]
+        public void Many_to_one_can_have_multiple_columns_with_strings()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.References(x => x.Parent)
+                      .WithColumns("IdPart1", "IdPart2", "IdPart3"))
+                .Element("class/many-to-one/column[@name='IdPart1']").Exists()
+                .Element("class/many-to-one/column[@name='IdPart2']").Exists()
+                .Element("class/many-to-one/column[@name='IdPart3']").Exists();
+        }
     }
 }
