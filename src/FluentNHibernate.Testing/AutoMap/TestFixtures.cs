@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Mapping;
 using Iesi.Collections.Generic;
@@ -88,6 +89,21 @@ namespace FluentNHibernate.AutoMap.TestFixtures
     {
         public int Id { get; set; }
         public Custom Custom { get; set; }
+    }
+
+    public class ClassWithComponent
+    {
+        public virtual int Id { get; set; }
+        public virtual AComponent Component { get; set; }
+    }
+}
+
+namespace FluentNHibernate.AutoMap.TestFixtures.ComponentTypes
+{
+    public class AComponent
+    {
+        public int First { get; set; }
+        public string Second { get; set; }
     }
 }
 

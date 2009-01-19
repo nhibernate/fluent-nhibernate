@@ -1,5 +1,6 @@
 using System;
 using FluentNHibernate.AutoMap;
+using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using NUnit.Framework;
 using SuperTypes = FluentNHibernate.AutoMap.TestFixtures.SuperTypes;
@@ -302,6 +303,43 @@ namespace FluentNHibernate.Testing.AutoMap
 
             new AutoMappingTester<ClassWithUserType>(autoMapper)
                 .Element("class/property").HasAttribute("name", "Custom");
+        }
+
+        [Test]
+        public void ComponentTypesAutoMapped()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ClassWithComponent>()
+                .WithConvention(convention =>
+                {
+                    convention.IsComponentType =
+                        type => type == typeof(AComponent);
+                })
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<ClassWithComponent>(autoMapper)
+                .Element("class/component").HasAttribute("name", "Component");
+        }
+
+        [Test]
+        public void ComponentPropertiesAutoMapped()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ClassWithComponent>()
+                .WithConvention(convention =>
+                {
+                    convention.IsComponentType =
+                        type => type == typeof(AComponent);
+                })
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<ClassWithComponent>(autoMapper)
+                .Element("class/component/property[@name='First']").Exists()
+                .Element("class/component/property[@name='Second']").Exists();
         }
     }
 }

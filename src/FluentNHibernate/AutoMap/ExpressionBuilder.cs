@@ -8,10 +8,15 @@ namespace FluentNHibernate.AutoMap
     {
         public static Expression<Func<T, object>> Create<T>(PropertyInfo property)
         {
-            var param = Expression.Parameter(typeof(T), "entity");
+            return (Expression<Func<T, object>>)Create(property, typeof(T));
+        }
+
+        public static object Create(PropertyInfo property, Type type)
+        {
+            var param = Expression.Parameter(type, "entity");
             var expression = Expression.Property(param, property);
             var castedProperty = Expression.Convert(expression, typeof(object));
-            return (Expression<Func<T, object>>)Expression.Lambda(castedProperty, param);
+            return Expression.Lambda(castedProperty, param);
         }
     }
 }

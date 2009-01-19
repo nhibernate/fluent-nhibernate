@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping;
 
@@ -51,9 +52,13 @@ namespace FluentNHibernate.AutoMap
             return base.HasManyToMany<CHILD>(expression);
         }
 
-        public override ComponentPart<C> Component<C>(System.Linq.Expressions.Expression<Func<T, object>> expression, Action<ComponentPart<C>> action)
+        public override ComponentPart<C> Component<C>(Expression<Func<T, object>> expression, Action<ComponentPart<C>> action)
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
+
+            if (action == null)
+                action = c => { };
+
             return base.Component(expression, action);
         }
 

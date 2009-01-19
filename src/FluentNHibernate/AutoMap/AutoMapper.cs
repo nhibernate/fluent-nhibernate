@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.AutoMap
@@ -17,6 +16,7 @@ namespace FluentNHibernate.AutoMap
                                 {
                                     new AutoMapIdentity(conventions), 
                                     new AutoMapVersion(conventions), 
+                                    new AutoMapComponent(conventions),
                                     new AutoMapColumn(conventions),
                                     new ManyToManyAutoMapper(conventions),
                                     new AutoMapManyToOne(),

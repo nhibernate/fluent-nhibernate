@@ -29,7 +29,18 @@ namespace FluentNHibernate
         public Func<PropertyInfo, string> GetForeignKeyName = prop => prop.Name + "_id";
         public Func<Type, string> GetForeignKeyNameOfParent = type => type.Name + "_id";
         public Func<MethodInfo, string> GetReadOnlyCollectionBackingFieldName = method => method.Name.Replace("Get", "");
-
+        public Func<PropertyInfo, bool> FindIdentity = p => p.Name == "Id";
+        public Action<IIdentityPart> IdConvention = id => { };
+        public Action<IOneToManyPart> OneToManyConvention = m => { };
+        public Action<IMappingPart> ManyToOneConvention = m => { };
+        public Action<IMappingPart> JoinConvention = m => { };
+        public Action<IMappingPart> OneToOneConvention = m => { };
+        public Func<CachePart, CachePart> DefaultCache = cache => null;
+        public Func<PropertyInfo, string> GetVersionColumnName;
+        public bool DefaultLazyLoad = false;
+        public Func<Type, string> GetPrimaryKeyNameFromType;
+        public Func<Type, bool> IsBaseType = b => b == typeof(object);
+        public Func<Type, bool> IsComponentType = type => false;
         public Func<Type, Type, string> GetManyToManyTableName =
             (child, parent) => child.Name + "To" + parent.Name;
 
@@ -96,28 +107,6 @@ namespace FluentNHibernate
             AttributeConvention<T> convention = new AttributeConvention<T>(action);
             _propertyConventions.Add(convention);
         }
-
-        public Func<PropertyInfo,bool> FindIdentity = p => p.Name == "Id";
-
-        public Action<IIdentityPart> IdConvention = id => {};
-
-        public Action<IOneToManyPart> OneToManyConvention = m => {};
-
-        public Action<IMappingPart> ManyToOneConvention = m => {};
-
-        public Action<IMappingPart> JoinConvention = m => {};
-
-        public Action<IMappingPart> OneToOneConvention = m => { };
-
-        public Func<CachePart, CachePart> DefaultCache = cache => null;
-
-        public Func<PropertyInfo, string> GetVersionColumnName;
-
-        public bool DefaultLazyLoad = false;
-
-        public Func<Type, string> GetPrimaryKeyNameFromType;
-
-        public Func<Type, bool> IsBaseType = b => b == typeof(object);
 
         public string CalculatePrimaryKey(Type classType, PropertyInfo _property)
         {
