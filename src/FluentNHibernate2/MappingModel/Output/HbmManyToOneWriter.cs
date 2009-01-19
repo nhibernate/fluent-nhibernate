@@ -1,0 +1,24 @@
+using NHibernate.Cfg.MappingSchema;
+
+namespace FluentNHibernate.MappingModel.Output
+{
+    public class HbmManyToOneWriter : MappingModelVisitorBase, IHbmWriter<ManyToOneMapping>
+    {
+        private HbmManyToOne _hbm;
+
+        public object Write(ManyToOneMapping mappingModel)
+        {
+            mappingModel.AcceptVisitor(this);
+            return _hbm;
+        }
+
+        public override void ProcessManyToOne(ManyToOneMapping manyToOneMapping)
+        {
+            _hbm = new HbmManyToOne();
+            _hbm.name = manyToOneMapping.Name;
+
+            if(manyToOneMapping.Attributes.IsSpecified(x => x.AllowNull))
+                _hbm.notnull = !manyToOneMapping.AllowNull;
+        }
+    }
+}

@@ -1,5 +1,6 @@
 using System.Linq;
 using FluentNHibernate.BackwardCompatibility;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Testing.DomainModel;
@@ -15,7 +16,7 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
         {
             var classMap = new ClassMap<Artist>();
             classMap.Id(x => x.ID);
-            var mapping = classMap.GetClassMapping();
+            ClassMapping mapping = classMap.GetClassMapping();
 
             var id = mapping.Id as IdMapping;
             id.ShouldNotBeNull();
@@ -27,7 +28,7 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
         {
             var classMap = new ClassMap<Artist>();
             classMap.Map(x => x.Name);
-            var mapping = classMap.GetClassMapping();
+            ClassMapping mapping = classMap.GetClassMapping();
 
             var property = mapping.Properties.FirstOrDefault();
             property.ShouldNotBeNull();
@@ -39,7 +40,7 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
         {
             var classMap = new ClassMap<Artist>();
             classMap.HasMany<Album>(x => x.Albums);
-            var mapping = classMap.GetClassMapping();
+            ClassMapping mapping = classMap.GetClassMapping();
 
             var collection = mapping.Collections.FirstOrDefault() as BagMapping;
             collection.ShouldNotBeNull();
@@ -51,7 +52,7 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
         {
             var classMap = new ClassMap<Album>();
             classMap.References(x => x.Artist);
-            var mapping = classMap.GetClassMapping();
+            ClassMapping mapping = classMap.GetClassMapping();
 
             var reference = mapping.References.FirstOrDefault();
             reference.ShouldNotBeNull();

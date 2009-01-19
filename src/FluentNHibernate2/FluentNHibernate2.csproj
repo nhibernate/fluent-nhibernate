@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{529145D5-6CC3-4016-89B5-826563024AF1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -52,21 +52,42 @@
     <Compile Include="Cfg\PersistenceConfiguration.cs" />
     <Compile Include="Cfg\PostgreSQLConfiguration.cs" />
     <Compile Include="Cfg\SQLiteConfiguration.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="MappingModel\AttributeStore.cs" />
     <Compile Include="MappingModel\Collections\CollectionAttributes.cs" />
     <Compile Include="MappingModel\Collections\CollectionMappingBase.cs" />
     <Compile Include="MappingModel\Collections\SetMapping.cs" />
     <Compile Include="MappingModel\Collections\BagMapping.cs" />
     <Compile Include="MappingModel\Collections\ICollectionContentsMapping.cs" />
     <Compile Include="MappingModel\Collections\ICollectionMapping.cs" />
+    <Compile Include="MappingModel\ColumnMapping.cs" />
+    <Compile Include="MappingModel\KeyMapping.cs" />
+    <Compile Include="MappingModel\Output\HbmBagWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmCollectionContentsWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmKeyWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmCollectionWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmCompositeIdWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmExtensions.cs" />
+    <Compile Include="MappingModel\IMappingModelVisitor.cs" />
+    <Compile Include="MappingModel\MappingModelVisitorBase.cs" />
+    <Compile Include="MappingModel\Output\HbmClassWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmHibernateMappingWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmColumnWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmIdentityWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmIdGeneratorWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmIdWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmManyToOneWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmOneToManyWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmPropertyWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmSetWriter.cs" />
+    <Compile Include="MappingModel\Output\IHbmWriter.cs" />
     <Compile Include="MappingModel\Identity\IdGeneratorMapping.cs" />
-    <Compile Include="MappingModel\Identity\IdColumnMapping.cs" />
     <Compile Include="MappingModel\Identity\CompositeIdMapping.cs" />
     <Compile Include="MappingModel\HibernateMapping.cs" />
     <Compile Include="MappingModel\Identity\IdMapping.cs" />
     <Compile Include="MappingModel\Identity\IIdentityMapping.cs" />
     <Compile Include="MappingModel\ClassMapping.cs" />
     <Compile Include="MappingModel\IMappingBase.cs" />
-    <Compile Include="MappingModel\Collections\KeyMapping.cs" />
     <Compile Include="MappingModel\ManyToOneMapping.cs" />
     <Compile Include="MappingModel\MappingBase.cs" />
     <Compile Include="MappingModel\Collections\OneToManyMapping.cs" />

@@ -4,44 +4,35 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public class SetMapping : CollectionMappingBase<HbmSet>
+    public class SetMapping : CollectionMappingBase
     {
-        public SetMapping()
+        private readonly AttributeStore<SetMapping> _attributes;
+
+        public SetMapping() : this(new AttributeStore())
         {
             
         }
-
-        public SetMapping(string name, KeyMapping key, ICollectionContentsMapping contents)
+        
+        protected SetMapping(AttributeStore underlyingStore) : base(underlyingStore)
         {
-            Name = name;
-            Key = key;
-            Contents = contents;
+            _attributes = new AttributeStore<SetMapping>(underlyingStore);
         }
 
-        public override string Name
+        public AttributeStore<SetMapping> Attributes
         {
-            get { return _hbm.name; }
-            set { _hbm.name = value; }
+            get { return _attributes; }
         }
 
-        public override KeyMapping Key
+        public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
-            get { return _key; }
-            set
-            {
-                _key = value;
-                _hbm.key = _key.Hbm;
-            }
+            visitor.ProcessSet(this);
+            base.AcceptVisitor(visitor);
         }
 
-        public override ICollectionContentsMapping Contents
+        public string OrderBy
         {
-            get { return _contents; }
-            set
-            {
-                _contents = value;
-                _hbm.Item1 = _contents.Hbm;
-            }
+            get { return _attributes.Get(x => x.OrderBy); }
+            set { _attributes.Set(x => x.OrderBy, value); }
         }
     }
 }

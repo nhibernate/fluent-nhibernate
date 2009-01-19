@@ -4,9 +4,11 @@ namespace FluentNHibernate.MappingModel.Collections
 {
     public interface ICollectionMapping : IMappingBase
     {
-        CollectionAttributes Attributes { get; }
+        bool IsInverse { get; }
+        bool IsLazy { get; }
         string Name { get; set; }
         KeyMapping Key { get; set; }
         ICollectionContentsMapping Contents { get; set; }
+        CollectionAttributes Attributes { get; }
     }
 }

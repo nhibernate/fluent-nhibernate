@@ -4,17 +4,35 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public class OneToManyMapping : MappingBase<HbmOneToMany>, ICollectionContentsMapping
+    public class OneToManyMapping : MappingBase, ICollectionContentsMapping
     {
-        public OneToManyMapping(string className)
+        private readonly AttributeStore<OneToManyMapping> _attributes;
+
+        public OneToManyMapping()
         {
-            ClassName = className;
+            _attributes = new AttributeStore<OneToManyMapping>();
+        }
+
+        public AttributeStore<OneToManyMapping> Attributes
+        {
+            get { return _attributes; }
         }
 
         public string ClassName
         {
-            get { return _hbm.@class; }
-            set { _hbm.@class = value; }
+            get { return _attributes.Get(x => x.ClassName); }
+            set { _attributes.Set(x => x.ClassName, value); }
+        }
+
+        public bool ExceptionOnNotFound
+        {
+            get { return _attributes.Get(x => x.ExceptionOnNotFound); }
+            set { _attributes.Set(x => x.ExceptionOnNotFound, value); }
+        }
+
+        public override void AcceptVisitor(IMappingModelVisitor visitor)
+        {
+            visitor.ProcessOneToMany(this);
         }
     }
 }

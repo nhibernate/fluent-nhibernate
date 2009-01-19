@@ -11,15 +11,16 @@ namespace FluentNHibernate.Testing.MappingModel
     {
         public static ClassMapping CreateClassMapping()
         {
-            return new ClassMapping("class1", CreateNativeIDMapping());    
+            return new ClassMapping {Name = "class1" };
         }
 
         public static IdMapping CreateNativeIDMapping()
         {
-                return new IdMapping("ID",
-                    new IdColumnMapping("TestID"),
-                    IdGeneratorMapping.NativeGenerator
-                    );
+            return new IdMapping(new ColumnMapping { Name = "TestID" })
+            {
+                Name = "ID",
+                    Generator = IdGeneratorMapping.NativeGenerator
+            };
         }
     }
 }

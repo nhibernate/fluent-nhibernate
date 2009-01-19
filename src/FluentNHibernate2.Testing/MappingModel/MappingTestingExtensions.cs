@@ -2,22 +2,36 @@ using System;
 using System.Xml;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Xml;
+using NHibernate.Cfg.MappingSchema;
 using NUnit.Framework;
+using FluentNHibernate.MappingModel.Output;
 
 namespace FluentNHibernate.Testing.MappingModel
 {
     internal static class MappingTestingExtensions
     {
-        public static void ShouldBeValidAgainstSchema<T>(this MappingBase<T> mapping) where T : class, new()
+        public static void ShouldGenerateValidOutput<T>(this IHbmWriter<T> writer, T model)
+        {
+            object hbm = writer.Write(model);
+            var serializer = new MappingXmlSerializer();
+            XmlDocument document = serializer.SerializeHbmFragment(hbm);
+            Validate(document);
+        }
+
+        public static void ShouldBeValidAgainstSchema(this HibernateMapping mapping)
         {
             var serializer = new MappingXmlSerializer();
             XmlDocument document = serializer.Serialize(mapping);
+            Validate(document);
+        }
 
+        private static void Validate(XmlDocument document)
+        {
             MappingXmlValidator validator = new MappingXmlValidator();
             var result = validator.Validate(document);
 
             document.OutputXmlToConsole();
-            Assert.IsTrue(result.Success, result.FullMessageLog);  
+            Assert.IsTrue(result.Success, result.FullMessageLog);
         }
 
 

@@ -1,46 +1,30 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
+using FluentNHibernate.MappingModel.Output;
 using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class ClassMapping : MappingBase<HbmClass>
+    public class ClassMapping : MappingBase
     {
-        private IIdentityMapping _id;
+        private readonly AttributeStore<ClassMapping> _attributes;
+
         private readonly IList<PropertyMapping> _properties;
         private readonly IList<ICollectionMapping> _collections;
         private readonly IList<ManyToOneMapping> _references;
-
+        
         public ClassMapping()
         {
+            _attributes = new AttributeStore<ClassMapping>();
             _properties = new List<PropertyMapping>();
             _collections = new List<ICollectionMapping>();   
             _references = new List<ManyToOneMapping>();
         }
 
-        public ClassMapping(string name, IIdentityMapping identityMapping) : this()
-        {            
-            Name = name;
-            Id = identityMapping;
-        }
-
-        public string Name
-        {
-            get { return _hbm.name; }
-            set { _hbm.name = value; }
-        }
-
-        public IIdentityMapping Id
-        {
-            get { return _id; }
-            set
-            {
-                _id = value;
-                _hbm.Item1 = _id.Hbm;
-            }
-        }
+        public IIdentityMapping Id { get; set; }
 
         public IEnumerable<PropertyMapping> Properties
         {
@@ -60,19 +44,39 @@ namespace FluentNHibernate.MappingModel
         public void AddProperty(PropertyMapping property)
         {
             _properties.Add(property);
-            property.Hbm.AddTo(ref _hbm.Items);
         }
 
         public void AddCollection(ICollectionMapping collection)
         {
             _collections.Add(collection);
-            collection.Hbm.AddTo(ref _hbm.Items);
         }
 
         public void AddReference(ManyToOneMapping manyToOne)
         {
             _references.Add(manyToOne);
-            manyToOne.Hbm.AddTo(ref _hbm.Items);
+        }
+
+        public override void AcceptVisitor(IMappingModelVisitor visitor)
+        {
+            visitor.ProcessClass(this);        
+    
+            if(Id != null)
+                visitor.ProcessIdentity(Id);
+
+            foreach (var collection in Collections)
+                visitor.ProcessCollection(collection);
+
+            foreach (var property in Properties)
+                visitor.ProcessProperty(property);
+
+            foreach (var reference in References)
+                visitor.ProcessManyToOne(reference);
+        }
+
+        public string Name
+        {
+            get { return _attributes.Get(x => x.Name); }
+            set { _attributes.Set(x => x.Name, value); }
         }
     }
 }

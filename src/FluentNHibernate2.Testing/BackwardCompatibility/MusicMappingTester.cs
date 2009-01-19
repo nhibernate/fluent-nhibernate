@@ -7,6 +7,7 @@ using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.MappingModel;
 using NHibernate.Cfg;
+using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 using FluentNHibernate.MappingModel;
 
@@ -62,75 +63,112 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
         public void CanMapArtist()
         {
             var artistMap = new ArtistMap();
-            var mapping = artistMap.GetClassMapping();
+            ClassMapping mapping = artistMap.GetClassMapping();
 
-            var prop = mapping.Properties.First();
+            PropertyMapping prop = mapping.Properties.First();
             prop.Name.ShouldEqual("Name");
             prop.Length.ShouldEqual(50);
             prop.AllowNull.ShouldBeFalse();
 
-            var col = mapping.Collections.First();
+            ICollectionMapping col = mapping.Collections.First();
             col.Name.ShouldEqual("Albums");
             col.ShouldBeOfType(typeof(SetMapping));
-            col.Attributes.IsInverse.ShouldBeTrue();
-
-            mapping.ShouldBeValidAgainstSchema();
+            col.IsInverse.ShouldBeTrue();
         }
 
         [Test]
         public void CanMapAlbum()
         {
             var albumMap = new AlbumMap();
-            var mapping = albumMap.GetClassMapping();
+            ClassMapping mapping = albumMap.GetClassMapping();
 
-            var prop = mapping.Properties.First();
+            PropertyMapping prop = mapping.Properties.First();
             prop.Name.ShouldEqual("Title");
             prop.Length.ShouldEqual(50);
             prop.AllowNull.ShouldBeFalse();
 
-            var reference = mapping.References.First();
+            ManyToOneMapping reference = mapping.References.First();
             reference.Name.ShouldEqual("Artist");
 
-            var col = mapping.Collections.First();
+            ICollectionMapping col = mapping.Collections.First();
             col.Name.ShouldEqual("Tracks");
             col.ShouldBeOfType(typeof(SetMapping));
-            col.Attributes.IsInverse.ShouldBeTrue();
+            col.IsInverse.ShouldBeTrue();
         }
 
         [Test]
         public void CanMapTrack()
         {
             var trackMap = new TrackMap();
-            var mapping = trackMap.GetClassMapping();
+            ClassMapping mapping = trackMap.GetClassMapping();
 
-            var nameProp = mapping.Properties.Where(p => p.Name == "Name").FirstOrDefault();
+            PropertyMapping nameProp = mapping.Properties.Where(p => p.Name == "Name").FirstOrDefault();
             nameProp.ShouldNotBeNull();
             nameProp.Length.ShouldEqual(50);
             nameProp.AllowNull.ShouldBeFalse();
 
-            var numberProp = mapping.Properties.Where(p => p.Name == "TrackNumber").FirstOrDefault();
+            PropertyMapping numberProp = mapping.Properties.Where(p => p.Name == "TrackNumber").FirstOrDefault();
             numberProp.ShouldNotBeNull();
 
-            var reference = mapping.References.First();
+            ManyToOneMapping reference = mapping.References.First();
             reference.Name.ShouldEqual("Album");
         }
 
         [Test]
-        public void CanConfigureNHibernateWithMusicMappings()
+        public void Music_xml_is_valid_against_schema()
         {
             var model = new PersistenceModel();
             model.Add(new ArtistMap());
             model.Add(new AlbumMap());
             model.Add(new TrackMap());
 
+            model.BuildHibernateMapping().ShouldBeValidAgainstSchema();
+        }
+
+        [Test]
+        public void Should_allow_music_entities_to_be_saved()
+        {
+            var model = new PersistenceModel();
+            model.Add(new ArtistMap());
+            model.Add(new AlbumMap());
+            model.Add(new TrackMap());
 
             var cfg = new SQLiteConfiguration()
                 .InMemory()
+                .ShowSql()
                 .ConfigureProperties(new Configuration());
 
             model.Configure(cfg);
 
-            cfg.BuildSessionFactory();
+            var sessionFactory = cfg.BuildSessionFactory();
+
+            using (var session = sessionFactory.OpenSession())
+            {                
+                using (var tx = session.BeginTransaction())
+                {
+                    SchemaExport export = new SchemaExport(cfg);
+                    export.Execute(true, true, false, false, session.Connection, null);
+                    tx.Commit();
+                }
+
+                using (var tx = session.BeginTransaction())
+                {
+                    var inflames = new Artist {Name = "In Flames"};
+                    session.Save(inflames);
+
+                    var whoracle = new Album {Title = "Whoracle"};
+                    whoracle.Artist = inflames;                    
+                    session.Save(whoracle);
+
+                    var jotun = new Track {Name = "Jotun"};
+                    jotun.Album = whoracle;
+                    session.Save(jotun);
+
+                    tx.Commit();
+                }
+
+            }
+
         }
 
     }

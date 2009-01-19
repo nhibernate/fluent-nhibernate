@@ -3,29 +3,41 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class PropertyMapping : MappingBase<HbmProperty>
+    public class PropertyMapping : MappingBase
     {
-        public PropertyMapping(string name)
+        private readonly AttributeStore<PropertyMapping> _attributes;        
+
+        public PropertyMapping()
         {
-            Name = name;
+            _attributes = new AttributeStore<PropertyMapping>();   
+        }
+       
+        public override void AcceptVisitor(IMappingModelVisitor visitor)
+        {
+            visitor.ProcessProperty(this);
+        }
+
+        public AttributeStore<PropertyMapping> Attributes
+        {
+            get { return _attributes; }
         }
 
         public string Name
         {
-            get { return _hbm.name;  }
-            set { _hbm.name = value; }
+            get { return _attributes.Get(x => x.Name); }
+            set { _attributes.Set(x => x.Name, value); }
         }
 
         public int Length
         {
-            get { return Convert.ToInt32(_hbm.length); }
-            set { _hbm.length = value.ToString(); }
+            get { return _attributes.Get(x => x.Length); }
+            set { _attributes.Set(x => x.Length, value); }
         }
 
         public bool AllowNull
         {
-            get { return !_hbm.notnull; }
-            set { _hbm.notnull = !value; }
+            get { return _attributes.Get(x => x.AllowNull); }
+            set { _attributes.Set(x => x.AllowNull, value); }
         }
     }
 }

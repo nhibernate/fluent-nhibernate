@@ -6,6 +6,7 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.MappingModel
 {
@@ -19,23 +20,14 @@ namespace FluentNHibernate.Testing.MappingModel
         {
             _classMapping = new ClassMapping();
         }
-        
-        [Test]
-        public void CanConstructValidInstance()
-        {
-            _classMapping.Name = "class1";
-            _classMapping.Id = MappingMother.CreateNativeIDMapping();
-            _classMapping.ShouldBeValidAgainstSchema();
-        }
 
         [Test]
         public void CanSetIdToBeStandardIdMapping()
         {
-            var idMapping = MappingMother.CreateNativeIDMapping();
+            var idMapping = new IdMapping();
             _classMapping.Id = idMapping;
 
             _classMapping.Id.ShouldEqual(idMapping);
-            _classMapping.Hbm.Id.ShouldEqual(idMapping.Hbm);
         }
 
         [Test]
@@ -45,38 +37,68 @@ namespace FluentNHibernate.Testing.MappingModel
             _classMapping.Id = idMapping;
 
             _classMapping.Id.ShouldEqual(idMapping);
-            _classMapping.Hbm.CompositeId.ShouldEqual(idMapping.Hbm);
         }
 
         [Test]
         public void CanAddProperty()
         {
-            var property = new PropertyMapping("Property1");
+            var property = new PropertyMapping { Name = "Property1" };
             _classMapping.AddProperty(property);
 
             _classMapping.Properties.ShouldContain(property);
-            _classMapping.Hbm.Items.ShouldContain(property.Hbm);
-
         }
 
         [Test]
         public void CanAddBag()
         {
-            var bag = new BagMapping("bag1", new KeyMapping(), new OneToManyMapping("class1"));
+            var bag = new BagMapping
+                          {
+                              Name = "bag1",
+                              Key = new KeyMapping(),
+                              Contents = new OneToManyMapping { ClassName = "class1" }
+                          };
             _classMapping.AddCollection(bag);
 
             _classMapping.Collections.ShouldContain(bag);
-            _classMapping.Hbm.Items.ShouldContain(bag.Hbm);
         }
 
         [Test]
         public void CanAddReference()
         {
-            var reference = new ManyToOneMapping("parent");
+            var reference = new ManyToOneMapping { Name = "parent" };
             _classMapping.AddReference(reference);
 
             _classMapping.References.ShouldContain(reference);
-            _classMapping.Hbm.Items.ShouldContain(reference.Hbm);
         }
+
+        [Test]
+        public void Should_pass_id_to_the_visitor()
+        {
+            var classMap = MappingMother.CreateClassMapping();
+            classMap.Id = new IdMapping();
+
+            var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
+            visitor.Expect(x => x.ProcessIdentity(classMap.Id));
+
+            classMap.AcceptVisitor(visitor);
+
+            visitor.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Should_not_pass_null_id_to_the_visitor()
+        {
+            var classMap = MappingMother.CreateClassMapping();
+            classMap.Id = null;
+
+            var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();            
+            visitor.Expect(x => x.ProcessIdentity(classMap.Id)).Repeat.Never();            
+            
+            classMap.AcceptVisitor(visitor);
+            
+            visitor.VerifyAllExpectations();
+        }
+
+        
     }
 }

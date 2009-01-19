@@ -13,17 +13,17 @@ namespace FluentNHibernate.BackwardCompatibility
     {
         private readonly ClassMapping _classMapping;
         private readonly IList<IDeferredCollectionMapping> _deferredCollections;
-        
+
         public ClassMap()
         {
             _classMapping = new ClassMapping();
-            _classMapping.Name = typeof (T).AssemblyQualifiedName;
+            _classMapping.Name = typeof(T).AssemblyQualifiedName;
             _deferredCollections = new List<IDeferredCollectionMapping>();
         }
 
         public ClassMapping GetClassMapping()
         {
-            foreach(var collection in _deferredCollections.Select( x => x.ResolveCollectionMapping()))
+            foreach (var collection in _deferredCollections.Select(x => x.ResolveCollectionMapping()))
                 _classMapping.AddCollection(collection);
 
             _deferredCollections.Clear();
@@ -33,17 +33,19 @@ namespace FluentNHibernate.BackwardCompatibility
 
         public void Id(Expression<Func<T, object>> expression)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            PropertyInfo property = ReflectionHelper.GetProperty(expression); 
 
-            _classMapping.Id = new IdMapping(property.Name, new IdColumnMapping(property.Name),
-                                        IdGeneratorMapping.NativeGenerator);            
-
+            _classMapping.Id = new IdMapping(new ColumnMapping {Name = property.Name})
+                                   {
+                                       Name = property.Name,
+                                       Generator = IdGeneratorMapping.NativeGenerator
+                                   };
         }
 
         public PropertyMap Map(Expression<Func<T, object>> expression)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            var propertyMapping = new PropertyMapping(property.Name);
+            var propertyMapping = new PropertyMapping {Name = property.Name};
 
             _classMapping.AddProperty(propertyMapping);
             return new PropertyMap(propertyMapping);
@@ -62,7 +64,7 @@ namespace FluentNHibernate.BackwardCompatibility
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
 
-            var mapping = new ManyToOneMapping(property.Name);
+            var mapping = new ManyToOneMapping {Name = property.Name};
             _classMapping.AddReference(mapping);
             return new ManyToOnePart(mapping);
         }

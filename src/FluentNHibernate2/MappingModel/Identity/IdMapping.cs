@@ -1,49 +1,57 @@
+using System;
 using NHibernate.Cfg.MappingSchema;
 using System.Collections.Generic;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
-    public class IdMapping : MappingBase<HbmId>, IIdentityMapping
+    public class IdMapping : MappingBase, IIdentityMapping
     {
-        private IdGeneratorMapping _generator;
-        private readonly IList<IdColumnMapping> _columns;
+        private readonly AttributeStore<IdMapping> _attributes;
+        private readonly IList<ColumnMapping> _columns;
 
-        public IdMapping(string name, IdColumnMapping column, IdGeneratorMapping generator)
+        public IdMapping()
         {
-            _columns = new List<IdColumnMapping>();
-
-            Name = name;
-            Generator = generator;
-            AddIdColumn(column);            
+            _attributes = new AttributeStore<IdMapping>();
+            _columns = new List<ColumnMapping>();
         }
 
-        public IdGeneratorMapping Generator
+        public IdMapping(ColumnMapping columnMapping) : this()
         {
-            get { return _generator; }
-            set
-            {
-                _generator = value;
-                _hbm.generator = _generator.Hbm;
-            }
-        }        
-
-        public string Name
-        {
-            get { return _hbm.name; }
-            set { _hbm.name = value; }
+            AddIdColumn(columnMapping);
         }
 
-        public void AddIdColumn(IdColumnMapping column)
+        public IdGeneratorMapping Generator { get; set; }
+
+        public void AddIdColumn(ColumnMapping column)
         {
             _columns.Add(column);
-            column.Hbm.AddTo(ref _hbm.column);
         }
 
-        public IEnumerable<IdColumnMapping> Columns
+        public IEnumerable<ColumnMapping> Columns
         {
             get { return _columns; }
         }
 
-        
+        public override void AcceptVisitor(IMappingModelVisitor visitor)
+        {
+            visitor.ProcessId(this);
+
+            if(Generator != null)
+                visitor.ProcessIdGenerator(Generator);
+            
+            foreach(var column in Columns)
+                visitor.ProcessColumn(column);
+        }
+
+        public string Name
+        {
+            get { return _attributes.Get(x => x.Name); }
+            set { _attributes.Set(x => x.Name, value); }
+        }
+
+        public AttributeStore<IdMapping> Attributes
+        {
+            get { return _attributes; }
+        }
     }
 }

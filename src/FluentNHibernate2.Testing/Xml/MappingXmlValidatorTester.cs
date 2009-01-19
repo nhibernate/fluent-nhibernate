@@ -15,13 +15,12 @@ namespace FluentNHibernate.Testing.Xml
         [Test]
         public void CanValidateXmlAgainstSchema()
         {
-            var mapping = new HibernateMapping();
-
             // Invalid, cannot use a default meta. Schema validation should fail.
-            mapping.Hbm.meta = new HbmMeta[] { new HbmMeta() };
+            var hbmMapping = new HbmMapping();
+            hbmMapping.meta = new HbmMeta[] { new HbmMeta() };
 
             var serializer = new MappingXmlSerializer();
-            XmlDocument document = serializer.Serialize(mapping);
+            XmlDocument document = serializer.Serialize(hbmMapping);
 
             MappingXmlValidator validator = new MappingXmlValidator();
             var result = validator.Validate(document);

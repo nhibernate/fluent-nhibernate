@@ -8,14 +8,14 @@ namespace FluentNHibernate.BackwardCompatibility
     public class OneToManyPart<PARENT, CHILD> : IDeferredCollectionMapping
     {
         private readonly PropertyInfo _property;
-        private readonly CollectionAttributes.NonHbmBackedCache _attributes;
+        private readonly CollectionAttributes _attributes;
 
         private Func<ICollectionMapping> _collectionBuilder;
 
         public OneToManyPart(PropertyInfo property)
         {
             _property = property;
-            _attributes = new CollectionAttributes.NonHbmBackedCache();
+            _attributes = new CollectionAttributes();
             AsBag();   
         }
 
@@ -39,12 +39,12 @@ namespace FluentNHibernate.BackwardCompatibility
 
         ICollectionMapping IDeferredCollectionMapping.ResolveCollectionMapping()
         {
-            var collection = _collectionBuilder();
+            var collection = _collectionBuilder();       
             _attributes.CopyTo(collection.Attributes);
 
             collection.Name = _property.Name;
             collection.Key = new KeyMapping();
-            collection.Contents = new OneToManyMapping(typeof (CHILD).AssemblyQualifiedName);
+            collection.Contents = new OneToManyMapping {ClassName = typeof (CHILD).AssemblyQualifiedName};
 
             return collection;
         }

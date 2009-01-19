@@ -3,18 +3,14 @@ using System.Linq;
 using System.Text;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.MappingModel
 {
     [TestFixture]
     public class HibernateMappingTester
     {
-        [Test]
-        public void CanConstructValidInstance()
-        {
-            var mapping = new HibernateMapping();
-            mapping.ShouldBeValidAgainstSchema();            
-        }
+
 
         [Test]
         public void CanAddClassMappings()
@@ -27,20 +23,30 @@ namespace FluentNHibernate.Testing.MappingModel
             hibMap.AddClass(classMap2);
 
             hibMap.Classes.ShouldContain(classMap1);
-            hibMap.Hbm.Items.ShouldContain(classMap1.Hbm);
-
             hibMap.Classes.ShouldContain(classMap2);
-            hibMap.Hbm.Items.ShouldContain(classMap2.Hbm);
         }
 
         [Test]
         public void CanSpecifyDefaultLazy()
         {
             var hibMap = new HibernateMapping();
-            hibMap.DefaultLazy = false;
+            hibMap.DefaultLazy = true;
+            hibMap.DefaultLazy.ShouldBeTrue();
+        }
 
-            hibMap.DefaultLazy.ShouldBeFalse();
-            hibMap.Hbm.defaultlazy.ShouldBeFalse();
+        [Test]
+        public void Should_pass_classmappings_to_the_visitor()
+        {
+            var hibMap = new HibernateMapping();
+            var classMap = MappingMother.CreateClassMapping();
+            hibMap.AddClass(classMap);
+
+            var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
+            visitor.Expect(x => x.ProcessClass(classMap));
+
+            hibMap.AcceptVisitor(visitor);
+
+            visitor.VerifyAllExpectations();
         }
         
     }

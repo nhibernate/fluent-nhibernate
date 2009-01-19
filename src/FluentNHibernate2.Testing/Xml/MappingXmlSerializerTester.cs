@@ -23,8 +23,8 @@ namespace FluentNHibernate.Testing.Xml
         [Test]
         public void CanSerializeHbmGraphWithOneClass()
         {
-            var mapping = new HibernateMapping();
-            mapping.Hbm.Items = new object[] { new HbmClass() };
+            var mapping = new HbmMapping();
+            mapping.Items = new object[] { new HbmClass() };
             var serializer = new MappingXmlSerializer();
             XmlDocument document = serializer.Serialize(mapping);
             Assert.IsNotNull(document);
@@ -33,7 +33,7 @@ namespace FluentNHibernate.Testing.Xml
         [Test]
         public void AssignsNHibernateMappingSchema()
         {
-            var mapping = new HibernateMapping();
+            var mapping = new HbmMapping();
             var serializer = new MappingXmlSerializer();
             XmlDocument document = serializer.Serialize(mapping);            
             Assert.That(document.Schemas.Contains("urn:nhibernate-mapping-2.2"));

@@ -1,48 +1,65 @@
-using System;
 using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public class BagMapping : CollectionMappingBase<HbmBag>
+    public class BagMapping : CollectionMappingBase
     {
-        public BagMapping()
-        {
+        private readonly AttributeStore<BagMapping> _attributes;
 
+        public BagMapping() : this(new AttributeStore())
+        {
+            
         }
 
-        public BagMapping(string name, KeyMapping key, ICollectionContentsMapping contents)
+        public BagMapping(AttributeStore underlyingStore)
+            : base(underlyingStore)
         {
-            Name = name;
-            Key = key;
-            Contents = contents;
+            _attributes = new AttributeStore<BagMapping>(underlyingStore);
         }
 
-        public override string Name
+        public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
-            get { return _hbm.name; }
-            set { _hbm.name = value; }
+            visitor.ProcessBag(this);            
+            base.AcceptVisitor(visitor);
         }
 
-        public override KeyMapping Key
+        public AttributeStore<BagMapping> Attributes
         {
-            get { return _key; }
-            set
-            {
-                _key = value;
-                _hbm.key = _key.Hbm;
-            }
+            get { return _attributes; }
         }
 
-        public override ICollectionContentsMapping Contents
+        public string OrderBy
         {
-            get { return _contents; }
-            set
-            {
-                _contents = value;
-                _hbm.Item1 = _contents.Hbm;
-            }
+            get { return _attributes.Get(x => x.OrderBy); }
+            set { _attributes.Set(x => x.OrderBy, value); }
         }
-
     }
 
+    //public class BagAttributes : CollectionAttributes
+    //{
+    //    private readonly AttributeStore<BagAttributes> _store;
+
+    //    public BagAttributes()
+    //        : this(new AttributeStore())
+    //    {
+
+    //    }
+
+    //    protected BagAttributes(AttributeStore underlyingStore) : base(underlyingStore)
+    //    {
+    //        _store = new AttributeStore<BagAttributes>(underlyingStore);            
+    //    }
+
+    //    public bool IsSpecified(Expression<Func<BagAttributes, object>> exp)
+    //    {
+    //        return _store.IsSpecified(exp);
+    //    }
+
+    //    public string OrderBy
+    //    {
+    //        get { return _store.Get(x => x.OrderBy); }
+    //        set { _store.Set(x => x.OrderBy, value); }
+    //    }
+
+    //}
 }

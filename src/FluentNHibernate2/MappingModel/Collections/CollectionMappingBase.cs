@@ -1,26 +1,55 @@
+using System;
+using System.Linq.Expressions;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public abstract class CollectionMappingBase<T> : MappingBase<T>, ICollectionMapping where T : class, new()
+    public abstract class CollectionMappingBase : MappingBase, ICollectionMapping
     {
         private readonly CollectionAttributes _attributes;
-        protected KeyMapping _key;
-        protected ICollectionContentsMapping _contents;
 
-        public CollectionMappingBase()
+        public CollectionMappingBase(AttributeStore underlyingStore)
         {
-            _attributes = new CollectionAttributes(this);
+            _attributes = new CollectionAttributes(underlyingStore);
         }
 
-        public CollectionAttributes Attributes
+        public override void AcceptVisitor(IMappingModelVisitor visitor)
+        {
+            if(Key != null)
+                visitor.ProcessKey(Key);
+
+            if (Contents != null)
+                visitor.ProcessCollectionContents(Contents);
+        }
+
+        CollectionAttributes ICollectionMapping.Attributes
         {
             get { return _attributes; }
         }
 
-        public abstract string Name { get; set; }
-        public abstract KeyMapping Key { get; set; }
-        public abstract ICollectionContentsMapping Contents { get; set; }
+        public bool IsLazy
+        {
+            get { return _attributes.IsLazy; }
+            set { _attributes.IsLazy = value; }
+        }
+
+        public bool IsInverse
+        {
+            get { return _attributes.IsInverse; }
+            set { _attributes.IsInverse = value; }
+        }
+
+        public string Name
+        {
+            get { return _attributes.Name; }
+            set { _attributes.Name = value;}
+        }
+
+        public KeyMapping Key { get; set; }
+        public ICollectionContentsMapping Contents { get; set; }
+
+
+
     }
 
 }

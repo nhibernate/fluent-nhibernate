@@ -3,23 +3,35 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class ManyToOneMapping : MappingBase<HbmManyToOne>
+    public class ManyToOneMapping : MappingBase
     {
-        public ManyToOneMapping(string name)
+        private readonly AttributeStore<ManyToOneMapping> _attributes;
+
+        public ManyToOneMapping()
         {
-            Name = name;
+            _attributes = new AttributeStore<ManyToOneMapping>();
+        }
+
+        public override void AcceptVisitor(IMappingModelVisitor visitor)
+        {
+            visitor.ProcessManyToOne(this);
         }
 
         public string Name
         {
-            get { return _hbm.name; }
-            set { _hbm.name = value; }
+            get { return _attributes.Get(x => x.Name); }
+            set { _attributes.Set(x => x.Name, value); }
         }
 
         public bool AllowNull
         {
-            get { return !_hbm.notnull; }
-            set { _hbm.notnull = !value; }
+            get { return _attributes.Get(x => x.AllowNull); }
+            set { _attributes.Set(x => x.AllowNull, value); }
+        }
+
+        public AttributeStore<ManyToOneMapping> Attributes
+        {
+            get { return _attributes; }
         }
     }
 }

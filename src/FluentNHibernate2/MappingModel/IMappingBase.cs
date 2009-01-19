@@ -1,7 +1,9 @@
+using System.Collections.Generic;
+
 namespace FluentNHibernate.MappingModel
 {
     public interface IMappingBase
     {
-        object Hbm { get; }
+        void AcceptVisitor(IMappingModelVisitor visitor);
     }
 }

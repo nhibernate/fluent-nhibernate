@@ -6,88 +6,56 @@ using System.Text;
 using FluentNHibernate.Reflection;
 using NHibernate.Cfg.MappingSchema;
 using System.Reflection;
+using System.Collections;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-
     public class CollectionAttributes
     {
-        protected readonly ICollectionAttributesStore _store;
+        private readonly AttributeStore<CollectionMappingBase> _store;
 
-        protected CollectionAttributes(ICollectionAttributesStore store)
+        public CollectionAttributes()
+            : this(new AttributeStore())
         {
-            _store = store;
+
         }
 
-        public CollectionAttributes(ICollectionMapping collection)
-            : this(new HbmStore(collection))
-        { }
+        public CollectionAttributes(AttributeStore underlyingStore)
+        {
+            _store = new AttributeStore<CollectionMappingBase>(underlyingStore);
+        }
+
+        public void CopyTo(CollectionAttributes target)
+        {
+            _store.CopyTo(target._store);
+        }
 
         public bool IsLazy
         {
-            get { return (bool)_store["lazy"]; }
-            set { _store["lazy"] = value; }
+            get { return _store.Get(x => x.IsLazy); }
+            set { _store.Set(x => x.IsLazy, value); }
         }
 
         public bool IsInverse
         {
-            get { return (bool)_store["inverse"]; }
-            set { _store["inverse"] = value; }
+            get { return _store.Get(x => x.IsInverse); }
+            set { _store.Set(x => x.IsInverse, value); }
         }
 
-        #region Nested Interface & Classes
-
-        public class NonHbmBackedCache : CollectionAttributes
-        {            
-            public NonHbmBackedCache()
-                : base(new DictionaryStore())
-            {
-            }
-
-            public void CopyTo(CollectionAttributes target)
-            {
-                ((DictionaryStore)_store).CopyTo(target._store);
-            }
-
-        }
-
-        protected interface ICollectionAttributesStore
+        public string Name
         {
-            object this[string key] { get; set; }
+            get { return _store.Get(x => x.Name); }
+            set { _store.Set(x => x.Name, value); }
         }
 
-        private class HbmStore : ICollectionAttributesStore
+        public bool IsSpecified(Expression<Func<CollectionMappingBase, object>> exp)
         {
-            private readonly object _hbm;
-
-            public HbmStore(ICollectionMapping collection)
-            {
-                _hbm = collection.Hbm;
-            }
-
-            public object this[string key]
-            {
-                get { return _hbm.GetType().GetField(key).GetValue(_hbm); }
-                set { _hbm.GetType().GetField(key).SetValue(_hbm, value); }
-            }
+            return _store.IsSpecified(exp);
         }
+    
 
-        protected class DictionaryStore : ICollectionAttributesStore
-        {
-            private readonly IDictionary<string, object> _dictionary = new Dictionary<string, object>();
-            public object this[string key]
-            {
-                get { return _dictionary[key]; }
-                set { _dictionary[key] = value; }
-            }
-
-            public void CopyTo(ICollectionAttributesStore targetStore)
-            {
-                foreach (var keyValuePair in _dictionary)
-                    targetStore[keyValuePair.Key] = keyValuePair.Value;
-            }
-        }
-
-        #endregion
     }
+
+    
+
 }

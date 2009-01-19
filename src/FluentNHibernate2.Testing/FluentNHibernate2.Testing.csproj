@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4A693F88-A29A-4FC9-B086-24956848FD99}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -43,6 +43,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\nunit\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Rhino.Mocks, Version=3.5.0.1, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\rhino\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -61,19 +65,25 @@
     <Compile Include="DomainModel\Music.cs" />
     <Compile Include="BackwardCompatibility\ClassMapTester.cs" />
     <Compile Include="BackwardCompatibility\MusicMappingTester.cs" />
-    <Compile Include="MappingModel\Collections\BagMappingTester.cs" />
+    <Compile Include="MappingModel\AttributeStoreTester.cs" />
     <Compile Include="MappingModel\ClassMappingTester.cs" />
-    <Compile Include="MappingModel\Identity\CompositeIdMappingTester.cs" />
     <Compile Include="MappingModel\HibernateMappingTester.cs" />
-    <Compile Include="MappingModel\Collections\KeyMappingTester.cs" />
-    <Compile Include="MappingModel\ManyToOneMappingTester.cs" />
     <Compile Include="MappingModel\MappingMother.cs" />
     <Compile Include="MappingModel\MappingTestingExtensions.cs" />
-    <Compile Include="MappingModel\Identity\IdMappingTester.cs" />
-    <Compile Include="MappingModel\Collections\OneToManyMappingTester.cs" />
+    <Compile Include="MappingModel\Output\HbmBagWriterTester.cs" />
+    <Compile Include="MappingModel\Output\HbmClassWriterTester.cs" />
+    <Compile Include="MappingModel\Output\HbmIdWriterTester.cs" />
+    <Compile Include="MappingModel\Output\HbmKeyWriterTester.cs" />
+    <Compile Include="MappingModel\Output\HbmColumnWriterTester.cs" />
+    <Compile Include="MappingModel\Output\HbmHibernateMappingWriterTester.cs" />
+    <Compile Include="MappingModel\Output\HbmIdGeneratorWriterTester.cs" />
+    <Compile Include="MappingModel\Output\HbmManyToOneWriterTester.cs" />
+    <Compile Include="MappingModel\Output\HbmMother.cs" />
+    <Compile Include="MappingModel\Output\HbmOneToManyWriterTester.cs" />
+    <Compile Include="MappingModel\Output\HbmPropertyWriterTester.cs" />
+    <Compile Include="MappingModel\Output\HbmSetWriterTester.cs" />
+    <Compile Include="MappingModel\Output\HbmTestHelper.cs" />
     <Compile Include="MappingModel\PropertyMappingTester.cs" />
-    <Compile Include="MappingModel\Collections\SetMappingTester.cs" />
-    <Compile Include="PersistenceModelTester.cs" />
     <Compile Include="Xml\MappingXmlValidatorTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\MappingXmlSerializerTester.cs" />
@@ -88,6 +98,10 @@
       <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>
       <Name>FluentNHibernate2</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MappingModel\Collections\" />
+    <Folder Include="MappingModel\Identity\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
