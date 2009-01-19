@@ -66,6 +66,7 @@
     <Compile Include="AutoMap\AutoMapManyToOne.cs" />
     <Compile Include="AutoMap\AutoMapOneToMany.cs" />
     <Compile Include="AutoMap\AutoMapper.cs" />
+    <Compile Include="AutoMap\AutoMappingException.cs" />
     <Compile Include="AutoMap\AutoMapVersion.cs" />
     <Compile Include="AutoMap\AutoPersistenceModel.cs" />
     <Compile Include="AutoMap\ConventionBuilder.cs" />

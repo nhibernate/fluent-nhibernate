@@ -360,5 +360,17 @@ namespace FluentNHibernate.Testing.AutoMap
             new AutoMappingTester<ClassWithComponent>(autoMapper)
                 .Element("class/component/property[@name='Custom']").HasAttribute("type", typeof(CustomUserType).AssemblyQualifiedName);
         }
+
+        [Test]
+        public void ForTypesThatDeriveFromTThrowsExceptionIfCalledMoreThanOnceForSameType()
+        {
+            var ex = Assert.Throws<AutoMappingException>(() => AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForTypesThatDeriveFrom<ExampleClass>(map => { })
+                .ForTypesThatDeriveFrom<ExampleClass>(map => { }));
+
+            Assert.That(ex.Message, Is.EqualTo("ForTypesThatDeriveFrom<T> called more than once for 'ExampleClass'. Merge your calls into one."));
+        }
     }
 }

@@ -159,6 +159,9 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel ForTypesThatDeriveFrom<T>(Action<AutoMap<T>> populateMap)
         {
+            if (_mappings.Exists(m => m.GetType() == typeof(AutoMap<T>)))
+                throw new AutoMappingException("ForTypesThatDeriveFrom<T> called more than once for '" + typeof(T).Name + "'. Merge your calls into one.");
+
             var map= (AutoMap<T>) Activator.CreateInstance(typeof (AutoMap<T>));
             populateMap.Invoke(map);
             _mappings.Add(map);
