@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.AutoMap
 {
@@ -29,12 +30,15 @@ namespace FluentNHibernate.AutoMap
         private void MapComponentProperties(Type componentType, object componentPart)
         {
             var mapMethod = GetMapMethod(componentType, componentPart);
+            var columnNamePrefix = conventions.GetComponentColumnPrefix(componentType);
 
-            foreach (var p in componentType.GetProperties())
+            foreach (var property in componentType.GetProperties())
             {
-                if (p.PropertyType.IsEnum || p.GetIndexParameters().Length != 0) continue;
+                if (property.PropertyType.IsEnum || property.GetIndexParameters().Length != 0) continue;
 
-                mapMethod.Invoke(componentPart, new[] {ExpressionBuilder.Create(p, componentType)});
+                var propertyMap = (IProperty)mapMethod.Invoke(componentPart, new[] {ExpressionBuilder.Create(property, componentType)});
+
+                propertyMap.TheColumnNameIs(columnNamePrefix + property.Name);
             }
         }
 

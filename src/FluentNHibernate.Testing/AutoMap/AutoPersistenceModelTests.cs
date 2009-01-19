@@ -362,6 +362,27 @@ namespace FluentNHibernate.Testing.AutoMap
         }
 
         [Test]
+        public void ComponentPropertiesAssumeComponentColumnPrefix()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ClassWithComponent>()
+                .WithConvention(convention =>
+                {
+                    convention.IsComponentType =
+                        type => type == typeof(AComponent);
+                    convention.GetComponentColumnPrefix =
+                        type => type.Name + "_";
+                    convention.AddTypeConvention(new CustomTypeConvention());
+                })
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<ClassWithComponent>(autoMapper)
+                .Element("class/component/property[@name='First']").HasAttribute("column", "AComponent_First");
+        }
+
+        [Test]
         public void ForTypesThatDeriveFromTThrowsExceptionIfCalledMoreThanOnceForSameType()
         {
             var ex = Assert.Throws<AutoMappingException>(() => AutoPersistenceModel
