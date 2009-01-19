@@ -341,5 +341,24 @@ namespace FluentNHibernate.Testing.AutoMap
                 .Element("class/component/property[@name='First']").Exists()
                 .Element("class/component/property[@name='Second']").Exists();
         }
+
+        [Test]
+        public void ComponentPropertiesWithUserTypeAutoMapped()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ClassWithComponent>()
+                .WithConvention(convention =>
+                {
+                    convention.IsComponentType =
+                        type => type == typeof(AComponent);
+                    convention.AddTypeConvention(new CustomTypeConvention());
+                })
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<ClassWithComponent>(autoMapper)
+                .Element("class/component/property[@name='Custom']").HasAttribute("type", typeof(CustomUserType).AssemblyQualifiedName);
+        }
     }
 }

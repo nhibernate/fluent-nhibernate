@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System;
+using System.Data;
 using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Mapping;
 using Iesi.Collections.Generic;
+using NHibernate.SqlTypes;
+using NHibernate.UserTypes;
 
 namespace FluentNHibernate.AutoMap.TestFixtures
 {
@@ -104,6 +107,7 @@ namespace FluentNHibernate.AutoMap.TestFixtures.ComponentTypes
     {
         public int First { get; set; }
         public string Second { get; set; }
+        public Custom Custom { get; set; }
     }
 }
 
@@ -123,9 +127,65 @@ namespace FluentNHibernate.AutoMap.TestFixtures.CustomTypes
 
         public void AlterMap(IProperty propertyMapping)
         {
-
+            propertyMapping.CustomTypeIs<CustomUserType>();
         }
-    }   
+    }
+
+    public class CustomUserType : IUserType
+    {
+        public bool Equals(object x, object y)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public int GetHashCode(object x)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public object DeepCopy(object value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public object Replace(object original, object target, object owner)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public object Assemble(object cached, object owner)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public object Disassemble(object value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public SqlType[] SqlTypes
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+        public Type ReturnedType
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+        public bool IsMutable
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+    }
 }
 
 namespace FluentNHibernate.AutoMap.TestFixtures.SuperTypes
