@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FluentNHibernate</RootNamespace>
-    <AssemblyName>FluentNHibernate2</AssemblyName>
+    <AssemblyName>FluentNHibernate</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

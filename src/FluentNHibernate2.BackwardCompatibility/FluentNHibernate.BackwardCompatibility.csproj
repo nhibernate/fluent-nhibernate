@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FluentNHibernate.BackwardCompatibility</RootNamespace>
-    <AssemblyName>FluentNHibernate2.BackwardCompatibility</AssemblyName>
+    <AssemblyName>FluentNHibernate.BackwardCompatibility</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -53,9 +53,9 @@
     <Compile Include="PropertyMap.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FluentNHibernate2\FluentNHibernate2.csproj">
+    <ProjectReference Include="..\FluentNHibernate2\FluentNHibernate.csproj">
       <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>
-      <Name>FluentNHibernate2</Name>
+      <Name>FluentNHibernate</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
