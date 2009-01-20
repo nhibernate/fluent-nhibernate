@@ -53,7 +53,7 @@
     <Compile Include="PropertyMap.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FluentNHibernate2\FluentNHibernate.csproj">
+    <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
       <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>
       <Name>FluentNHibernate</Name>
     </ProjectReference>

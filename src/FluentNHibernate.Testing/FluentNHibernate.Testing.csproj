@@ -89,11 +89,11 @@
     <Compile Include="SpecificationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FluentNHibernate2.BackwardCompatibility\FluentNHibernate.BackwardCompatibility.csproj">
+    <ProjectReference Include="..\FluentNHibernate.BackwardCompatibility\FluentNHibernate.BackwardCompatibility.csproj">
       <Project>{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}</Project>
       <Name>FluentNHibernate.BackwardCompatibility</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FluentNHibernate2\FluentNHibernate.csproj">
+    <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
       <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>
       <Name>FluentNHibernate</Name>
     </ProjectReference>

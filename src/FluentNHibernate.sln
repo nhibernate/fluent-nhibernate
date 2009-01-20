@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate", "FluentNHibernate2\FluentNHibernate.csproj", "{529145D5-6CC3-4016-89B5-826563024AF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate", "FluentNHibernate\FluentNHibernate.csproj", "{529145D5-6CC3-4016-89B5-826563024AF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate.Testing", "FluentNHibernate.Testing\FluentNHibernate.Testing.csproj", "{4A693F88-A29A-4FC9-B086-24956848FD99}"
 EndProject
