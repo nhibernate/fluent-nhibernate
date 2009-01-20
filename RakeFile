@@ -105,5 +105,5 @@ end
 desc "Runs unit tests"
 task :unit_test => :compile do
   runner = NUnitRunner.new :compilemode => COMPILE_TARGET, :source => 'src', :platform => 'x86'
-  runner.executeTests ['FluentNHibernate2.Testing']  
+  runner.executeTests ['FluentNHibernate.Testing']  
 end
