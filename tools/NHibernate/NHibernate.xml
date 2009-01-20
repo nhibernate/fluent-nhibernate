@@ -55,7 +55,7 @@
             <param name="persister">The <see cref="T:NHibernate.Persister.Collection.ICollectionPersister"/> that is responsible for the persisting the Collection.</param>
             <param name="collection">The Persistent collection.</param>
             <param name="key">The identifier of the Collection.</param>
-            <param name="session">The <see cref="T:NHibernate.Engine.ISessionImplementor"/> that the Action is occuring in.</param>
+            <param name="session">The <see cref="T:NHibernate.Engine.ISessionImplementor"/> that the Action is occurring in.</param>
         </member>
         <member name="M:NHibernate.Action.CollectionAction.BeforeExecutions">
             <summary> Called before executing any actions</summary>
@@ -115,7 +115,7 @@
             </summary>
             <param name="session">The session from which this action is coming.</param>
             <param name="id">The id of the entity</param>
-            <param name="instance">The entiyt instance</param>
+            <param name="instance">The entity instance</param>
             <param name="persister">The entity persister</param>
         </member>
         <member name="P:NHibernate.Action.EntityAction.EntityName">
@@ -340,7 +340,7 @@
         </member>
         <member name="F:NHibernate.AdoNet.AbstractBatcher._isAlreadyDisposed">
             <summary>
-            A flag to indicate if <c>Disose()</c> has been called.
+            A flag to indicate if <c>Dispose()</c> has been called.
             </summary>
         </member>
         <member name="M:NHibernate.AdoNet.AbstractBatcher.Finalize">
@@ -1001,7 +1001,7 @@
         </member>
         <member name="M:NHibernate.Cache.CachedItem.IsPuttable(System.Int64,System.Object,System.Collections.IComparer)">
             <summary>
-            Don't overwite already cached items
+            Don't overwrite already cached items
             </summary>
             <param name="txTimestamp"></param>
             <param name="newVersion"></param>
@@ -1438,7 +1438,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:NHibernate.Cache.QueryKey"/> class.
             </summary>
-            <param name="factory">the sesion factory for this query key, required to get the identifiers of entities that are used as values.</param>
+            <param name="factory">the session factory for this query key, required to get the identifiers of entities that are used as values.</param>
             <param name="queryString">The query string.</param>
             <param name="queryParameters">The query parameters.</param>
             <param name="filters">The filters.</param>
@@ -1717,7 +1717,7 @@
             </summary>
             <remarks>
             Not implemented in Cache.
-            Defaul value <see cref="F:NHibernate.Cfg.ConfigurationSchema.ClassCacheInclude.All"/>.
+            Default value <see cref="F:NHibernate.Cfg.ConfigurationSchema.ClassCacheInclude.All"/>.
             </remarks>
         </member>
         <member name="T:NHibernate.Cfg.ConfigurationSchema.CollectionCacheConfiguration">
@@ -4557,7 +4557,7 @@
         </member>
         <member name="M:NHibernate.Cfg.Configuration.GenerateDropSchemaScript(NHibernate.Dialect.Dialect)">
             <summary>
-            Generate DDL for droping tables
+            Generate DDL for dropping tables
             </summary>
             <seealso cref="T:NHibernate.Tool.hbm2ddl.SchemaExport"/>
         </member>
@@ -4773,7 +4773,7 @@
             </summary>
             <param name="type">The <see cref="T:NHibernate.Event.ListenerType"/>.</param>
             <param name="listeners">The listener for <paramref name="type"/> or null to clear.</param>
-            <remarks>Listners of <paramref name="listeners"/> must implements one of the interface of event listenesr.</remarks>
+            <remarks>Listeners of <paramref name="listeners"/> must implements one of the interface of event listenesr.</remarks>
             <seealso cref="N:NHibernate.Event"/>
         </member>
         <member name="M:NHibernate.Cfg.Configuration.GenerateSchemaUpdateScript(NHibernate.Dialect.Dialect,NHibernate.Tool.hbm2ddl.DatabaseMetadata)">
@@ -4975,9 +4975,9 @@
             corresponds to Java system-level properties; <c>&lt;session-factory&gt;</c>
             section is the session-factory-level configuration. 
             
-            It is possible to use the applicatoin configuration file (App.config) together with the NHibernate 
+            It is possible to use the application configuration file (App.config) together with the NHibernate 
             configuration file (hibernate.cfg.xml) at the same time.
-            Properties in hibernate.cfg.xml override/merge properties in applicatoin configuration file where same
+            Properties in hibernate.cfg.xml override/merge properties in application configuration file where same
             property is found. For others configuration a merge is applied.
             </remarks>
         </member>
@@ -5169,7 +5169,7 @@
         </member>
         <member name="M:NHibernate.Cfg.ImprovedNamingStrategy.PropertyToColumnName(System.String)">
             <summary>
-            Return the full property path with underscore seperators, mixed case converted to underscores
+            Return the full property path with underscore separators, mixed case converted to underscores
             </summary>
             <param name="propertyName"></param>
             <returns></returns>
@@ -5190,7 +5190,7 @@
         </member>
         <member name="M:NHibernate.Cfg.ImprovedNamingStrategy.PropertyToTableName(System.String,System.String)">
             <summary>
-            Return the full property path prefixed by the unqualified class name, with underscore seperators, mixed case converted to underscores
+            Return the full property path prefixed by the unqualified class name, with underscore separators, mixed case converted to underscores
             </summary>
             <param name="className"></param>
             <param name="propertyName"></param>
@@ -5207,7 +5207,7 @@
             Binding table between the logical column name and the name out of the naming strategy
             for each table.
             According that when the column name is not set, the property name is considered as such
-            This means that while theorically possible through the naming strategy contract, it is
+            This means that while theoretically possible through the naming strategy contract, it is
             forbidden to have 2 real columns having the same logical name
             </summary>
         </member>
@@ -5275,7 +5275,7 @@
         <member name="P:NHibernate.Cfg.Mappings.IsAutoImport">
             <summary>
             Gets or sets a boolean indicating if the Fully Qualified Type name should
-            automattically have an import added as the class name.
+            automatically have an import added as the class name.
             </summary>
             <value><see langword="true" /> if the class name should be used as an import.</value>
             <remarks>
@@ -5809,7 +5809,7 @@
         </member>
         <member name="M:NHibernate.Collection.AbstractPersistentCollection.QueueAdd(System.Object)">
             <summary>
-            Queue an addition if the peristent collection supports it
+            Queue an addition if the persistent collection supports it
             </summary>
             <returns>
             <see langword="true" /> if the addition was queued up, <see langword="false" /> if the persistent collection
@@ -6070,7 +6070,7 @@
         <member name="P:NHibernate.Collection.AbstractPersistentCollection.IsDirectlyAccessible">
             <summary>
             Gets a <see cref="T:System.Boolean"/> indicating if the underlying collection is directly
-            accessable through code.
+            accessible through code.
             </summary>
             <value>
             <see langword="true"/> if we are not guaranteed that the NHibernate collection wrapper
@@ -7005,32 +7005,13 @@
         </member>
         <member name="T:NHibernate.Context.ThreadStaticSessionContext">
             <summary>
-            A <see cref="T:NHibernate.Context.ICurrentSessionContext"/> impl which scopes the notion of current
-            session by the current thread of execution. Threads do not give us a 
-            nice hook to perform any type of cleanup making
-            it questionable for this impl to actually generate Session instances.  In
-            the interest of usability, it was decided to have this default impl
-            actually generate a session upon first request and then clean it up
-            after the <see cref="T:NHibernate.ITransaction"/> associated with that session
-            is committed/rolled-back.  In order for ensuring that happens, the sessions
-            generated here are unusable until after {@link Session#beginTransaction()}
-            has been called. If <tt>Close()</tt> is called on a session managed by
-            this class, it will be automatically unbound.
-            <p/>
-            Additionally, the static <see cref="M:NHibernate.Context.ThreadStaticSessionContext.Bind(NHibernate.ISession)"/> and <see cref="M:NHibernate.Context.ThreadStaticSessionContext.Unbind(NHibernate.ISessionFactory)"/> methods are
-            provided to allow application code to explicitly control opening and
-            closing of these sessions.  This, with some from of interception,
-            is the preferred approach.  It also allows easy framework integration
-            and one possible approach for implementing long-sessions.
-            <p/>
+            Provides a <see cref="M:NHibernate.ISessionFactory.GetCurrentSession">current session</see>
+            for each thread using the [<see cref="T:System.ThreadStaticAttribute"/>].
+            To avoid if there are two session factories in the same thread.
             </summary>
         </member>
-        <member name="M:NHibernate.Context.ThreadStaticSessionContext.Unbind(NHibernate.ISessionFactory)">
-            <summary>
-            Unassociate a previously bound session from the current thread of execution.
-            </summary>
-            <param name="factory"></param>
-            <returns></returns>
+        <member name="P:NHibernate.Context.ThreadStaticSessionContext.Session">
+            <summary> Gets or sets the currently bound session. </summary>
         </member>
         <member name="T:NHibernate.Context.WebSessionContext">
             <summary>
@@ -7234,7 +7215,7 @@
             Combines the <see cref="T:NHibernate.Engine.TypedValue"/> for the Left Hand Side and the 
             Right Hand Side of the Expression into one array.
             </summary>
-            <returns>An arry of <see cref="T:NHibernate.Engine.TypedValue"/>s.</returns>
+            <returns>An array of <see cref="T:NHibernate.Engine.TypedValue"/>s.</returns>
         </member>
         <member name="M:NHibernate.Criterion.LogicalExpression.ToSqlString(NHibernate.ICriteria,NHibernate.Criterion.ICriteriaQuery,System.Collections.Generic.IDictionary{System.String,NHibernate.IFilter})">
             <summary>
@@ -8103,7 +8084,7 @@
         </member>
         <member name="M:NHibernate.Criterion.Restrictions.And(NHibernate.Criterion.ICriterion,NHibernate.Criterion.ICriterion)">
             <summary>
-            Return the conjuction of two expressions
+            Return the conjunction of two expressions
             </summary>
             <param name="lhs">The Expression to use as the Left Hand Side.</param>
             <param name="rhs">The Expression to use as the Right Hand Side.</param>
@@ -10993,6 +10974,14 @@
             </remarks>
             <value><see langword="true"/></value>
         </member>
+        <member name="M:NHibernate.Dialect.PostgreSQL81Dialect.GetIdentityColumnString(System.Data.DbType)">
+            <summary>
+            PostgreSQL supports <c>serial</c> and <c>serial4</c> type for 4 bytes integer auto increment column.
+            <c>bigserial</c> or <c>serial8</c> can be used for 8 bytes integer auto increment column.
+            </summary>
+            <returns><c>bigserial</c> if <paramref name="type"/> equal Int64,
+            <c>serial</c> otherwise</returns>
+        </member>
         <member name="P:NHibernate.Dialect.PostgreSQL81Dialect.SupportsIdentityColumns">
             <summary>
             PostgreSQL supports Identity column using the "SERIAL" type.
@@ -11007,13 +10996,6 @@
             <c>CREATE TABLE tablename (colname SERIAL);</c> or 
             <c>CREATE TABLE tablename (colname BIGSERIAL);</c>
             </remarks>
-        </member>
-        <member name="P:NHibernate.Dialect.PostgreSQL81Dialect.IdentityColumnString">
-            <summary>
-            PostgreSQL supports <c>serial</c> and <c>serial4</c> type for 4 bytes integer auto increment column.
-            <c>bigserial</c> or <c>serial8</c> can be used for 8 bytes integer auto increment column.
-            This dialect uses <c>serial</c>
-            </summary>
         </member>
         <member name="P:NHibernate.Dialect.PostgreSQL81Dialect.NoColumnsInsertString">
             <summary>
@@ -11134,7 +11116,7 @@
         </member>
         <member name="T:NHibernate.Dialect.Sybase11JoinFragment">
             <summary>
-            This class is basically a port of the hibernate 3.2  Sybase 11 join fragment. It usees concepts from that join fragment and the Oracle join fragment in NHibernate
+            This class is basically a port of the hibernate 3.2  Sybase 11 join fragment. It uses concepts from that join fragment and the Oracle join fragment in NHibernate
             </summary>
         </member>
         <member name="T:NHibernate.SqlCommand.JoinFragment">
@@ -12512,7 +12494,7 @@
             dependent upon potentially bad <see cref="T:System.Data.IDataReader"/> and <see cref="T:System.Data.IDataReader"/>
             implementations.
             Considering the JDBC-redesign work, would further like this contextual info
-            not mapped seperately, but available based on the result set being processed.
+            not mapped separately, but available based on the result set being processed.
             This would also allow maintaining a single mapping as we could reliably get
             notification of the result-set closing...
             </remarks>
@@ -13104,7 +13086,7 @@
             For this style, should the given action really be cascaded?  The default
             implementation is simply to return {@link #doCascade}; for certain
             styles (currently only delete-orphan), however, we need to be able to
-            control this seperately.
+            control this separately.
             </remarks>
         </member>
         <member name="M:NHibernate.Engine.CascadeStyle.GetCascadeStyle(System.String)">
@@ -13150,7 +13132,7 @@
         </member>
         <member name="P:NHibernate.Engine.CascadeStyle.HasOrphanDelete">
             <summary> Do we need to delete orphaned collection elements? </summary>
-            <returns> True if this style need to account for orphan delete operations; false othwerwise. </returns>
+            <returns> True if this style need to account for orphan delete operations; false otherwise. </returns>
         </member>
         <member name="T:NHibernate.Engine.CascadingAction">
             <summary>
@@ -13159,7 +13141,7 @@
         </member>
         <member name="M:NHibernate.Engine.CascadingAction.Cascade(NHibernate.Event.IEventSource,System.Object,System.String,System.Object,System.Boolean)">
             <summary> Cascade the action to the child object. </summary>
-            <param name="session">The session within which the cascade is occuring. </param>
+            <param name="session">The session within which the cascade is occurring. </param>
             <param name="child">The child to which cascading should be performed. </param>
             <param name="entityName">The child's entity name </param>
             <param name="anything">Typically some form of cascade-local cache which is specific to each CascadingAction type </param>
@@ -13170,7 +13152,7 @@
             Given a collection, get an iterator of the children upon which the
             current cascading action should be visited. 
             </summary>
-            <param name="session">The session within which the cascade is occuring. </param>
+            <param name="session">The session within which the cascade is occurring. </param>
             <param name="collectionType">The mapping type of the collection. </param>
             <param name="collection">The collection instance. </param>
             <returns> The children iterator. </returns>
@@ -13180,7 +13162,7 @@
             Called (in the case of <see cref="P:NHibernate.Engine.CascadingAction.RequiresNoCascadeChecking"/> returning true) to validate
             that no cascade on the given property is considered a valid semantic. 
             </summary>
-            <param name="session">The session witin which the cascade is occurring. </param>
+            <param name="session">The session within which the cascade is occurring. </param>
             <param name="child">The property value </param>
             <param name="parent">The property value owner </param>
             <param name="persister">The entity persister for the owner </param>
@@ -13191,7 +13173,7 @@
             Given a collection, get an iterator of all its children, loading them
             from the database if necessary. 
             </summary>
-            <param name="session">The session within which the cascade is occuring. </param>
+            <param name="session">The session within which the cascade is occurring. </param>
             <param name="collectionType">The mapping type of the collection. </param>
             <param name="collection">The collection instance. </param>
             <returns> The children iterator. </returns>
@@ -13557,7 +13539,7 @@
             <summary>
             Gets or sets the <see cref="T:NHibernate.Persister.Entity.IEntityPersister"/> that is responsible for this Entity.
             </summary>
-            <value>The <see cref="T:NHibernate.Persister.Entity.IEntityPersister"/> that is reponsible for this Entity.</value>
+            <value>The <see cref="T:NHibernate.Persister.Entity.IEntityPersister"/> that is responsible for this Entity.</value>
         </member>
         <member name="P:NHibernate.Engine.EntityEntry.EntityName">
             <summary>
@@ -15467,7 +15449,7 @@
         </member>
         <member name="M:NHibernate.Event.Default.AbstractSaveEventListener.PerformSave(System.Object,System.Object,NHibernate.Persister.Entity.IEntityPersister,System.Boolean,System.Object,NHibernate.Event.IEventSource,System.Boolean)">
             <summary> 
-            Ppepares the save call by checking the session caches for a pre-existing
+            Prepares the save call by checking the session caches for a pre-existing
             entity and performing any lifecycle callbacks. 
             </summary>
             <param name="entity">The entity to be saved. </param>
@@ -15524,7 +15506,7 @@
         </member>
         <member name="M:NHibernate.Event.Default.AbstractSaveEventListener.CascadeBeforeSave(NHibernate.Event.IEventSource,NHibernate.Persister.Entity.IEntityPersister,System.Object,System.Object)">
             <summary> Handles the calls needed to perform pre-save cascades for the given entity. </summary>
-            <param name="source">The session from whcih the save event originated.</param>
+            <param name="source">The session from which the save event originated.</param>
             <param name="persister">The entity's persister instance. </param>
             <param name="entity">The entity to be saved. </param>
             <param name="anything">Generally cascade-specific data </param>
@@ -15533,7 +15515,7 @@
             <summary> Handles to calls needed to perform post-save cascades. </summary>
             <param name="source">The session from which the event originated. </param>
             <param name="persister">The entity's persister instance. </param>
-            <param name="entity">The entity beng saved. </param>
+            <param name="entity">The entity being saved. </param>
             <param name="anything">Generally cascade-specific data </param>
         </member>
         <member name="M:NHibernate.Event.Default.AbstractSaveEventListener.GetEntityState(System.Object,System.String,NHibernate.Engine.EntityEntry,NHibernate.Engine.ISessionImplementor)">
@@ -16276,7 +16258,7 @@
             <para>
             <c>Save()</c> results in an SQL <c>INSERT</c>, <c>Delete()</c>
             in an SQL <c>DELETE</c> and <c>Update()</c> in an SQL <c>UPDATE</c>. Changes to
-            <em>persistent</em> instances are deteced at flush time and also result in an SQL
+            <em>persistent</em> instances are detected at flush time and also result in an SQL
             <c>UPDATE</c>.
             </para>
             <para>
@@ -17099,7 +17081,7 @@
             <summary> Cascade persist an entity instance during the flush process</summary>
         </member>
         <member name="M:NHibernate.Event.IEventSource.Refresh(System.Object,System.Collections.IDictionary)">
-            <summary> Cascade refesh an entity instance</summary>
+            <summary> Cascade refresh an entity instance</summary>
         </member>
         <member name="M:NHibernate.Event.IEventSource.SaveOrUpdateCopy(System.String,System.Object,System.Collections.IDictionary)">
             <summary> Cascade copy an entity instance</summary>
@@ -17131,7 +17113,7 @@
             <param name="event"></param>
         </member>
         <member name="T:NHibernate.Event.IPostInsertEventListener">
-            <summary> Called after insterting an item in the datastore </summary>
+            <summary> Called after inserting an item in the datastore </summary>
         </member>
         <member name="M:NHibernate.Event.IPostInsertEventListener.OnPostInsert(NHibernate.Event.PostInsertEvent)">
             <summary>
@@ -17495,7 +17477,7 @@
         </member>
         <member name="T:NHibernate.Exceptions.SQLStateConverter">
             <summary> 
-            A SQLExceptionConverter implementation which performs no converion of
+            A SQLExceptionConverter implementation which performs no conversion of
             the underlying <see cref="T:System.Data.Common.DbException"/>. 
             Interpretation of a SQL error based on <see cref="T:System.Data.Common.DbException"/>
             is not possible as using the ErrorCode (which is, however, vendor-
@@ -18318,7 +18300,7 @@
             WARNING: side-effecty
             </summary>
         </member>
-        <member name="M:NHibernate.Hql.Classic.QueryTranslator.ExtractFunctionClause(System.Collections.IList,System.Int32@)">
+        <member name="M:NHibernate.Hql.Classic.QueryTranslator.ExtractFunctionClause(System.Collections.Generic.IList{NHibernate.SqlCommand.SqlString},System.Int32@)">
             <summary>
             Extract the complete clause of function.
             </summary>
@@ -18572,7 +18554,7 @@
             <param name="columnName">The column name for the Property</param>
             <param name="propertyType">The IType of the property.</param>
             <returns>The SqlInsertBuilder.</returns>
-            <remarks>The column will be asociated with a parameter.</remarks>
+            <remarks>The column will be associated with a parameter.</remarks>
         </member>
         <member name="M:NHibernate.SqlCommand.SqlInsertBuilder.AddColumn(System.String,System.Object,NHibernate.Type.ILiteralType)">
             <summary>
@@ -19106,7 +19088,7 @@
             Concrete <c>IEntityPersister</c>s implement mapping and persistence logic for a particular class.
             </summary>
             <remarks>
-            Implementors must be threadsafe (preferrably immutable) and must provide a constructor of type
+            Implementors must be threadsafe (preferably immutable) and must provide a constructor of type
             matching the signature of: (PersistentClass, SessionFactoryImplementor)
             </remarks>
         </member>
@@ -19164,7 +19146,7 @@
         </member>
         <member name="M:NHibernate.Persister.Entity.IEntityPersister.Load(System.Object,System.Object,NHibernate.LockMode,NHibernate.Engine.ISessionImplementor)">
             <summary>
-            Load an insatance of the persistent class.
+            Load an instance of the persistent class.
             </summary>
         </member>
         <member name="M:NHibernate.Persister.Entity.IEntityPersister.Lock(System.Object,System.Object,System.Object,NHibernate.LockMode,NHibernate.Engine.ISessionImplementor)">
@@ -19615,7 +19597,7 @@
             (2) the identifier is an embedded composite identifier; false otherwise.
             </returns>
             <remarks>
-            The other option is the deperecated feature where users could supply
+            The other option is the deprecated feature where users could supply
             the id during session calls.
             </remarks>
         </member>
@@ -20113,7 +20095,7 @@
             <summary>
             Bind a value to an indexed parameter.
             </summary>
-            <param name="position">Postion of the parameter in the query, numbered from <c>0</c></param>
+            <param name="position">Position of the parameter in the query, numbered from <c>0</c></param>
             <param name="val">The possibly null parameter value</param>
             <param name="type">The Hibernate type</param>
         </member>
@@ -20466,9 +20448,9 @@
         </member>
         <member name="M:NHibernate.IDetachedQuery.SetIgnoreUknownNamedParameters(System.Boolean)">
             <summary>
-            Set the value to ignore unknow parameters names.
+            Set the value to ignore unknown parameters names.
             </summary>
-            <param name="ignoredUnknownNamedParameters">True to ignore unknow parameters names.</param>
+            <param name="ignoredUnknownNamedParameters">True to ignore unknown parameters names.</param>
         </member>
         <member name="M:NHibernate.IDetachedQuery.SetCacheMode(NHibernate.CacheMode)">
             <summary> Override the current session cache mode, just for this query. </summary>
@@ -20715,7 +20697,7 @@
             <summary>
             Bind a value to an indexed parameter.
             </summary>
-            <param name="position">Postion of the parameter in the query, numbered from <c>0</c></param>
+            <param name="position">Position of the parameter in the query, numbered from <c>0</c></param>
             <param name="val">The possibly null parameter value</param>
             <param name="type">The Hibernate type</param>
         </member>
@@ -21612,7 +21594,7 @@
         </member>
         <member name="F:NHibernate.Impl.EnumerableImpl._isAlreadyDisposed">
             <summary>
-            A flag to indicate if <c>Disose()</c> has been called.
+            A flag to indicate if <c>Dispose()</c> has been called.
             </summary>
         </member>
         <member name="M:NHibernate.Impl.EnumerableImpl.Finalize">
@@ -23389,7 +23371,7 @@
         </member>
         <member name="P:NHibernate.Loader.ICollectionAliases.SuffixedIndexAliases">
             <summary>
-            Returns the suffixed result-set column-aliases for the collumns
+            Returns the suffixed result-set column-aliases for the columns
             making up the collection's index (map or list).
             </summary>
             <value>The index result-set column aliases.</value>
@@ -23862,7 +23844,7 @@
         </member>
         <member name="M:NHibernate.Mapping.IMetaAttributable.GetMetaAttribute(System.String)">
             <summary>
-            Retrive the <see cref="T:NHibernate.Mapping.MetaAttribute"/>
+            Retrieve the <see cref="T:NHibernate.Mapping.MetaAttribute"/>
             </summary>
             <param name="name">The attribute name</param>
             <returns>The <see cref="T:NHibernate.Mapping.MetaAttribute"/> if exists; null otherwise</returns>
@@ -26192,13 +26174,13 @@
             <summary> 
             Is this a many-to-many association?  Note that this is mainly
             a convenience feature as the single persister does not
-            conatin all the information needed to handle a many-to-many
+            contain all the information needed to handle a many-to-many
             itself, as internally it is looked at as two many-to-ones.
             </summary>
         </member>
         <member name="P:NHibernate.Persister.Collection.ICollectionPersister.IsLazy">
             <summary>
-            Is this collection lazyily initialized?
+            Is this collection lazily initialized?
             </summary>
         </member>
         <member name="P:NHibernate.Persister.Collection.ICollectionPersister.IsInverse">
@@ -26964,7 +26946,7 @@
             <summary>
             Constructs the NormalizedEntityPerister for the PersistentClass.
             </summary>
-            <param name="persistentClass">The PeristentClass to create the EntityPersister for.</param>
+            <param name="persistentClass">The PersistentClass to create the EntityPersister for.</param>
             <param name="cache">The configured <see cref="T:NHibernate.Cache.ICacheConcurrencyStrategy"/>.</param>
             <param name="factory">The SessionFactory that this EntityPersister will be stored in.</param>
             <param name="mapping">The mapping used to retrieve type information.</param>
@@ -27112,7 +27094,7 @@
         </member>
         <member name="M:NHibernate.Properties.IGetter.GetForInsert(System.Object,System.Collections.IDictionary,NHibernate.Engine.ISessionImplementor)">
             <summary> Get the property value from the given owner instance. </summary>
-            <param name="owner">The instance containing the value to be retreived. </param>
+            <param name="owner">The instance containing the value to be retrieved. </param>
             <param name="mergeMap">a map of merged persistent instances to detached instances </param>
             <param name="session">The session from which this request originated. </param>
             <returns> The extracted value. </returns>
@@ -27676,9 +27658,9 @@
             		<term>nosetter</term>
             		<description>
             			The <c>name</c> attribute is the name of the Property.  NHibernate will use the 
-            			Property's get method to retreive the value and will use the field
+            			Property's get method to retrieve the value and will use the field
             			to set the value.  This is a good option for &lt;id&gt; Properties because this access method 
-            			allow's users of the Class to get the value of the Id but not set the value.
+            			allows users of the Class to get the value of the Id but not set the value.
             		</description>
             	</item>
             	<item>
@@ -27761,7 +27743,7 @@
             <para>
             With a naming strategy and a get/set for the Property available the user of the Domain Class 
             could write an Hql statement <c>from Foo as foo where foo.SomeProperty = 'a'</c>.   If no naming 
-            strategy was specified the Hql statement whould have to be <c>from Foo as foo where foo._someProperty</c>
+            strategy was specified the Hql statement would have to be <c>from Foo as foo where foo._someProperty</c>
              (assuming CamelCase with an underscore field naming strategy is used).  
             </para>
             </remarks>
@@ -27777,7 +27759,7 @@
         </member>
         <member name="T:NHibernate.Proxy.AbstractLazyInitializer">
             <summary>
-            Provides the base functionallity to Handle Member calls into a dynamically
+            Provides the base functionality to Handle Member calls into a dynamically
             generated NHibernate Proxy.
             </summary>
             <remarks>
@@ -27880,7 +27862,7 @@
             </para> 
             <para>
             It has to be public scope because
-            the Proxies are created in a seperate DLL than NHibernate. 
+            the Proxies are created in a separate DLL than NHibernate. 
             </para> 
             </remarks>
         </member>
@@ -27917,7 +27899,7 @@
             </param>
              <exception cref="T:NHibernate.HibernateException"> Indicates a problem completing post </exception>
             <remarks>
-            Essentially equivalent to contructor injection, but contracted
+            Essentially equivalent to constructor injection, but contracted
             here via interface.
             </remarks>
         </member>
@@ -28190,7 +28172,7 @@
             This method is a bit of a hack, and assumes
             that the column on the "right" side of the
             join appears on the "left" side of the
-            operator, which is extremely wierd if this
+            operator, which is extremely weird if this
             was a normal join condition, but is natural
             for a filter.
             </summary>
@@ -28214,7 +28196,7 @@
         </member>
         <member name="M:NHibernate.SqlCommand.Parameter.Equals(System.Object)">
             <summary>
-            Determines wether this instance and the specified object 
+            Determines whether this instance and the specified object 
             are of the same type and have the same values.
             </summary>
             <param name="obj">An object to compare to this instance.</param>
@@ -28261,7 +28243,7 @@
             </summary>
             <param name="dialect"></param>
         </member>
-        <member name="M:NHibernate.SqlCommand.QuerySelect.AddSelectFragmentString(System.String)">
+        <member name="M:NHibernate.SqlCommand.QuerySelect.AddSelectFragmentString(NHibernate.SqlCommand.SqlString)">
             <summary>
             
             </summary>
@@ -28672,7 +28654,7 @@
         </member>
         <member name="M:NHibernate.SqlCommand.SqlString.IndexOfCaseInsensitive(System.String)">
             <summary>
-            Returns the index of the first occurence of <paramref name="text"/>, case-insensitive.
+            Returns the index of the first occurrence of <paramref name="text"/>, case-insensitive.
             </summary>
             <param name="text">Text to look for in the <see cref="T:NHibernate.SqlCommand.SqlString"/>. Must be in lower
             case.</param>
@@ -28681,7 +28663,7 @@
             Searching for <c>"a ? b"</c> in an <see cref="T:NHibernate.SqlCommand.SqlString"/> consisting of
             <c>"a ", Parameter, " b"</c> will result in no matches.
             </remarks>
-            <returns>The index of the first occurence of <paramref name="text"/>, or -1
+            <returns>The index of the first occurrence of <paramref name="text"/>, or -1
             if not found.</returns>
         </member>
         <member name="M:NHibernate.SqlCommand.SqlString.Trim">
@@ -28974,7 +28956,7 @@
         </member>
         <member name="M:NHibernate.SqlCommand.SqlUpdateBuilder.AddWhereFragment(System.String)">
             <summary>
-            Adds a string to the WhereFragement
+            Adds a string to the WhereFragment
             </summary>
             <param name="whereSql">A well formed sql string with no parameters.</param>
             <returns>The SqlUpdateBuilder</returns>
@@ -29249,8 +29231,8 @@
         <member name="T:NHibernate.Stat.IStatistics">
             <summary> 
             Statistics for a particular <tt>SessionFactory</tt>.
-            Beware of milliseconds metrics, they are depdendent of the JVM precision:
-            you may then encounter a 10 ms approximation dending on your OS platform.
+            Beware of milliseconds metrics, they are dependent of the JVM precision:
+            you may then encounter a 10 ms approximation depending on your OS platform.
             Please refer to the JVM documentation for more information. 
             </summary>
         </member>
@@ -29894,7 +29876,7 @@
         </member>
         <member name="T:NHibernate.Tuple.Component.IComponentTuplizer">
             <summary> 
-            Defines further responsibilities reagarding tuplization based on
+            Defines further responsibilities regarding tuplization based on
             a mapped components.
             </summary>
             <remarks>
@@ -29975,7 +29957,7 @@
             </remarks>
         </member>
         <member name="M:NHibernate.Tuple.Component.IComponentTuplizer.GetParent(System.Object)">
-            <summary> Retreive the current value of the parent property. </summary>
+            <summary> Retrieve the current value of the parent property. </summary>
             <param name="component">
             The component instance from which to extract the parent property value. 
             </param>
@@ -29984,7 +29966,7 @@
         <member name="M:NHibernate.Tuple.Component.IComponentTuplizer.SetParent(System.Object,System.Object,NHibernate.Engine.ISessionFactoryImplementor)">
             <summary> Set the value of the parent property. </summary>
             <param name="component">The component instance on which to set the parent. </param>
-            <param name="parent">The parent to be set on the comonent. </param>
+            <param name="parent">The parent to be set on the component. </param>
             <param name="factory">The current session factory. </param>
         </member>
         <member name="P:NHibernate.Tuple.Component.IComponentTuplizer.HasParentProperty">
@@ -30048,7 +30030,7 @@
         </member>
         <member name="T:NHibernate.Tuple.Entity.IEntityTuplizer">
             <summary> 
-            Defines further responsibilities reagarding tuplization based on a mapped entity.
+            Defines further responsibilities regarding tuplization based on a mapped entity.
             </summary>
             <remarks>
             EntityTuplizer implementations should have the following constructor signature:
@@ -30196,11 +30178,11 @@
             <summary> Return the entity-mode handled by this tuplizer instance. </summary>
         </member>
         <member name="P:NHibernate.Tuple.Entity.AbstractEntityTuplizer.EntityName">
-            <summary>Retreives the defined entity-name for the tuplized entity. </summary>
+            <summary>Retrieves the defined entity-name for the tuplized entity. </summary>
         </member>
         <member name="P:NHibernate.Tuple.Entity.AbstractEntityTuplizer.SubclassEntityNames">
             <summary> 
-            Retreives the defined entity-names for any subclasses defined for this entity. 
+            Retrieves the defined entity-names for any subclasses defined for this entity. 
             </summary>
         </member>
         <member name="T:NHibernate.Tuple.Entity.EntityEntityModeToTuplizerMapping">
@@ -30242,7 +30224,7 @@
             or component which this Instantiator instantiates. 
             </summary>
             <param name="obj">The object to be checked. </param>
-            <returns> True is the object does respresent an instance of the underlying entity/component. </returns>
+            <returns> True is the object does represent an instance of the underlying entity/component. </returns>
         </member>
         <member name="T:NHibernate.Tuple.IdentifierProperty">
             <summary>
@@ -30492,7 +30474,7 @@
         </member>
         <member name="M:NHibernate.Type.IType.Hydrate(System.Data.IDataReader,System.String[],NHibernate.Engine.ISessionImplementor,System.Object)">
             <summary>
-		When implemented by a class, retrives an instance of the mapped class, 
+		When implemented by a class, retrieves an instance of the mapped class, 
 		or the identifier of an entity or collection from a <see cref="T:System.Data.IDataReader"/>.
 		</summary><param name="rs">The <see cref="T:System.Data.IDataReader"/> that contains the values.</param><param name="names">
 		The names of the columns in the <see cref="T:System.Data.IDataReader"/> that contain the 
@@ -30927,7 +30909,7 @@
 		</remarks> 
             <remarks>
             <para>
-            This implemenation forwards the call to <see cref="M:NHibernate.Type.NullableType.NullSafeSet(System.Data.IDbCommand,System.Object,System.Int32)"/>.
+            This implementation forwards the call to <see cref="M:NHibernate.Type.NullableType.NullSafeSet(System.Data.IDbCommand,System.Object,System.Int32)"/>.
             </para>
             <para>
             It has been "sealed" because the Types inheriting from <see cref="T:NHibernate.Type.NullableType"/>
@@ -31002,7 +30984,7 @@
             </para>
             <para>
             If the value is not null, then the method <see cref="M:NHibernate.Type.NullableType.Get(System.Data.IDataReader,System.Int32)"/> 
-            is called and that method is responsible for retreiving the value.
+            is called and that method is responsible for retrieving the value.
             </para>
             </remarks>
         </member>
@@ -31017,7 +30999,7 @@
 		</remarks> 
             <remarks>
             <para>
-            This implemenation forwards the call to <see cref="M:NHibernate.Type.NullableType.NullSafeGet(System.Data.IDataReader,System.String)"/>.
+            This implementation forwards the call to <see cref="M:NHibernate.Type.NullableType.NullSafeGet(System.Data.IDataReader,System.String)"/>.
             </para>
             <para>
             It has been "sealed" because the Types inheriting from <see cref="T:NHibernate.Type.NullableType"/>
@@ -31032,7 +31014,7 @@
 		</summary><param name="mapping">The <see cref="T:NHibernate.Engine.IMapping"/> that uses this IType.</param><returns>An array of <see cref="P:NHibernate.Type.NullableType.SqlType"/>s.</returns> 
             <remarks>
             <para>
-            This implemenation forwards the call to <see cref="P:NHibernate.Type.NullableType.SqlType"/>.
+            This implementation forwards the call to <see cref="P:NHibernate.Type.NullableType.SqlType"/>.
             </para>
             <para>
             It has been "sealed" because the Types inheriting from <see cref="T:NHibernate.Type.NullableType"/>
@@ -31180,7 +31162,7 @@
             </summary>
             <param name="value">The object to convert to a string for the SQL statement.</param>
             <param name="dialect"></param>
-            <returns>A string that containts a well formed SQL Statement.</returns>
+            <returns>A string that contains a well formed SQL Statement.</returns>
         </member>
         <member name="M:NHibernate.Type.PrimitiveType.#ctor(NHibernate.SqlTypes.SqlType)">
             <summary>
@@ -31654,7 +31636,7 @@
         </member>
         <member name="T:NHibernate.Type.ClassMetaType">
             <summary>
-            ClassMetaType is a NH specif type to support "any" with meta-type="class"
+            ClassMetaType is a NH specific type to support "any" with meta-type="class"
             </summary>
             <remarks>
             It work like a MetaType where the key is the entity-name it self
@@ -32697,7 +32679,7 @@
             </summary>
             <param name="rs">The <see cref="T:System.Data.IDataReader"/> that contains the query results.</param>
             <param name="names">A string array of column names to read from.</param>
-            <param name="session">The <see cref="T:NHibernate.Engine.ISessionImplementor"/> this is occuring in.</param>
+            <param name="session">The <see cref="T:NHibernate.Engine.ISessionImplementor"/> this is occurring in.</param>
             <param name="owner">The object that this Entity will be a part of.</param>
             <returns>
             An instantiated object that used as the identifier of the type.
@@ -33053,7 +33035,7 @@
             </para>
             <para>
             A more appropriate choice to store the duration/time is the <see cref="T:NHibernate.Type.TimeSpanType"/>.
-            The underlying <see cref="F:System.Data.DbType.Time"/> tends to be handled diffently by different
+            The underlying <see cref="F:System.Data.DbType.Time"/> tends to be handled differently by different
             DataProviders.
             </para>
             </remarks>
@@ -33831,16 +33813,16 @@
         </member>
         <member name="T:NHibernate.UserTypes.IUserType">
             <summary>
-            The inteface to be implemented by user-defined types.
+            The interface to be implemented by user-defined types.
             </summary>
             <remarks>
             <para>
-            The inteface abstracts user code from future changes to the <see cref="T:NHibernate.Type.IType"/> inteface,
+            The interface abstracts user code from future changes to the <see cref="T:NHibernate.Type.IType"/> interface,
             simplifies the implementation of custom types and hides certain "internal interfaces from
             user code.
             </para>
             <para>
-            Implemenators must be immutable and must declare a public default constructor.
+            Implementers must be immutable and must declare a public default constructor.
             </para>
             <para>
             The actual class mapped by a <c>IUserType</c> may be just about anything. However, if it is to
@@ -33849,7 +33831,7 @@
             <para>
             Alternatively, custom types could implement <see cref="T:NHibernate.Type.IType"/> directly or extend one of the
             abstract classes in <c>NHibernate.Type</c>. This approach risks future incompatible changes
-            to classes or intefaces in the package.
+            to classes or interfaces in the package.
             </para>
             </remarks>
         </member>
@@ -33969,7 +33951,7 @@
         </member>
         <member name="M:NHibernate.UserTypes.ILoggableUserType.ToLoggableString(System.Object,NHibernate.Engine.ISessionFactoryImplementor)">
             <summary> Generate a loggable string representation of the collection (value). </summary>
-            <param name="value">The collection to be logged; guarenteed to be non-null and initialized. </param>
+            <param name="value">The collection to be logged; guaranteed to be non-null and initialized. </param>
             <param name="factory">The factory. </param>
             <returns> The loggable string representation. </returns>
         </member>
@@ -34302,7 +34284,7 @@
         </member>
         <member name="F:NHibernate.Util.JoinedEnumerable._isAlreadyDisposed">
             <summary>
-            A flag to indicate if <c>Disose()</c> has been called.
+            A flag to indicate if <c>Dispose()</c> has been called.
             </summary>
         </member>
         <member name="M:NHibernate.Util.JoinedEnumerable.Finalize">
@@ -34759,7 +34741,7 @@
         </member>
         <member name="T:NHibernate.Util.SafetyEnumerable`1">
             <summary>
-            Used to ensecure a collection filtering a given IEnumerable by a certain type.
+            Used to ensure a collection filtering a given IEnumerable by a certain type.
             </summary>
             <typeparam name="T">The type used like filter.</typeparam>
         </member>
@@ -35792,7 +35774,7 @@
         </member>
         <member name="F:NHibernate.LockMode.UpgradeNoWait">
             <summary>
-            Attempty to obtain an upgrade lock, using an Oracle-style
+            Attempt to obtain an upgrade lock, using an Oracle-style
             <c>SELECT ... FOR UPGRADE NOWAIT</c>. 
             </summary>
             <remarks>
@@ -35809,7 +35791,7 @@
         </member>
         <member name="F:NHibernate.LockMode.Force">
             <summary> 
-            Similiar to <see cref="F:NHibernate.LockMode.Upgrade"/> except that, for versioned entities,
+            Similar to <see cref="F:NHibernate.LockMode.Upgrade"/> except that, for versioned entities,
             it results in a forced version increment.
             </summary>
         </member>
@@ -35931,7 +35913,7 @@
         </member>
         <member name="F:NHibernate.NHibernateUtil.Single">
             <summary>
-            NHIbernate System.Single (float in C#) Type
+            NHibernate System.Single (float in C#) Type
             </summary>
         </member>
         <member name="F:NHibernate.NHibernateUtil.String">
@@ -35981,7 +35963,7 @@
         </member>
         <member name="F:NHibernate.NHibernateUtil.ClassMetaType">
             <summary>
-            NHibernate class meta type for associtiation of kind <code>any</code>.
+            NHibernate class meta type for association of kind <code>any</code>.
             </summary>
             <seealso cref="T:NHibernate.Type.AnyType"/>
         </member>

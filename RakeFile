@@ -39,6 +39,11 @@ task :use_nhib_20 do
 	switch_nhib_libs('nhib2.0GA')
 end
 
+desc "Switches NHibernate dependencies to NHibernate 2.0.1"
+task :use_nhib_201 do	
+	switch_nhib_libs('nhib2.0.1GA')
+end
+
 #### hidden task, don't call directly
 def switch_nhib_libs(nhib_lib_dir)
 	puts "Switching NHibernate dependencies to #{nhib_lib_dir}"
@@ -100,5 +105,5 @@ end
 desc "Runs unit tests"
 task :unit_test => :compile do
   runner = NUnitRunner.new :compilemode => COMPILE_TARGET, :source => 'src', :platform => 'x86'
-  runner.executeTests ['FluentNHibernate.Testing']  
+  runner.executeTests ['FluentNHibernate2.Testing']  
 end
