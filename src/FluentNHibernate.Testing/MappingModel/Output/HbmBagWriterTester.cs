@@ -3,6 +3,7 @@ using FluentNHibernate.MappingModel.Collections;
 using NUnit.Framework;
 using FluentNHibernate.MappingModel.Output;
 using NHibernate.Cfg.MappingSchema;
+using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.MappingModel.Output
 {
@@ -12,13 +13,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_produce_valid_hbm()
         {
-            var bag = new BagMapping
-            {
-                Name = "bag1",
-                Key = new KeyMapping(),
-                Contents = new OneToManyMapping { ClassName = "class1" }
-            };
-            var writer = new HbmBagWriter(HbmMother.CreateCollectionContentsWriter(), HbmMother.CreateKeyWriter());
+            var bag = new BagMapping { Name = "bag1", Contents = new OneToManyMapping(), Key = new KeyMapping() };
+
+            var contentsWriter = MockRepository.GenerateStub<IHbmWriter<ICollectionContentsMapping>>();
+            contentsWriter.Expect(x => x.Write(bag.Contents)).Return(new HbmOneToMany { @class = "class1" });
+            var keyWriter = MockRepository.GenerateStub<IHbmWriter<KeyMapping>>();
+            keyWriter.Expect(x => x.Write(bag.Key)).Return(new HbmKey());
+
+            var writer = new HbmBagWriter(contentsWriter, keyWriter);
 
             writer.ShouldGenerateValidOutput(bag);
         }

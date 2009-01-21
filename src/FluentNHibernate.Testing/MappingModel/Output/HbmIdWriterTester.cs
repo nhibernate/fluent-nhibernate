@@ -17,8 +17,10 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_produce_valid_hbm()
         {
-            var id = new IdMapping {Generator = IdGeneratorMapping.NativeGenerator};
-            var writer = new HbmIdWriter(null, HbmMother.CreateIdGeneratorWriter());
+            var id = new IdMapping { Generator = new IdGeneratorMapping()};
+            var generatorWriter = MockRepository.GenerateStub<IHbmWriter<IdGeneratorMapping>>();
+            generatorWriter.Expect(x => x.Write(id.Generator)).Return(new HbmGenerator { @class = "native"});
+            var writer = new HbmIdWriter(null, generatorWriter);
 
             writer.ShouldGenerateValidOutput(id);
         }

@@ -7,6 +7,7 @@ using FluentNHibernate.MappingModel.Output;
 using NHibernate.Cfg.MappingSchema;
 using NUnit.Framework;
 using FluentNHibernate.MappingModel;
+using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.MappingModel.Output
 {
@@ -16,15 +17,16 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_produce_valid_hbm()
         {
-            var bag = new SetMapping
-            {
-                Name = "set1",
-                Key = new KeyMapping(),
-                Contents = new OneToManyMapping { ClassName = "class1" }
-            };
-            var writer = new HbmSetWriter(HbmMother.CreateCollectionContentsWriter(), HbmMother.CreateKeyWriter());
+            var set = new SetMapping { Name = "set1", Contents = new OneToManyMapping(), Key = new KeyMapping() };
 
-            writer.ShouldGenerateValidOutput(bag);
+            var contentsWriter = MockRepository.GenerateStub<IHbmWriter<ICollectionContentsMapping>>();
+            contentsWriter.Expect(x => x.Write(set.Contents)).Return(new HbmOneToMany { @class = "class1" });
+            var keyWriter = MockRepository.GenerateStub<IHbmWriter<KeyMapping>>();
+            keyWriter.Expect(x => x.Write(set.Key)).Return(new HbmKey());
+
+            var writer = new HbmSetWriter(contentsWriter, keyWriter);
+
+            writer.ShouldGenerateValidOutput(set);
         }
 
         [Test]

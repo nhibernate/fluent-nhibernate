@@ -73,10 +73,16 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                     Assert.AreEqual(check.Value, val,
                                     "Property {0} was set to {1} and was expected to be written to {2} with value {3}. The value was instead {4}",
                                     _sourceProperty.InnerProperty.ReflectedType.Name + "." + _sourceProperty.Name,
-                                    _sourceValue, check.Key.ToString(), check.Value, val
+                                    FullyQualifiedValue(_sourceValue), check.Key.ToString(), FullyQualifiedValue(check.Value), FullyQualifiedValue(val)
                         );
                 }
             }
+
+            private static string FullyQualifiedValue(object val)
+            {
+                return string.Format("{0} ({1})", val, val.GetType());
+            }
+
         }
     }
 }

@@ -77,7 +77,6 @@
     <Compile Include="MappingModel\Output\HbmHibernateMappingWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmIdGeneratorWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmManyToOneWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmMother.cs" />
     <Compile Include="MappingModel\Output\HbmOneToManyWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmPropertyWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmSetWriterTester.cs" />
