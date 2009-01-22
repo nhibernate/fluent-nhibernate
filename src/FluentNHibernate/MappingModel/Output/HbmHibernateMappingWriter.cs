@@ -8,15 +8,9 @@ namespace FluentNHibernate.MappingModel.Output
         private readonly IHbmWriter<ClassMapping> _classWriter;
         private HbmMapping _hbm;
 
-        public HbmMapping Hbm
-        {
-            get { return _hbm; }
-        }
-
         public HbmHibernateMappingWriter(IHbmWriter<ClassMapping> classWriter)
         {
             _classWriter = classWriter;
-            _hbm = new HbmMapping();
         }
 
         object IHbmWriter<HibernateMapping>.Write(HibernateMapping mapping)

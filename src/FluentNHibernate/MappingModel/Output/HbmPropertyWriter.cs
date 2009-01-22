@@ -1,4 +1,5 @@
 using NHibernate.Cfg.MappingSchema;
+using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -18,8 +19,10 @@ namespace FluentNHibernate.MappingModel.Output
 
             _hbm.name = propertyMapping.Name;
 
-            if(propertyMapping.Attributes.IsSpecified(x => x.AllowNull))
-                _hbm.notnull = !propertyMapping.AllowNull;
+            if(propertyMapping.Attributes.IsSpecified(x => x.IsNotNullable))
+            {
+                _hbm.SetNotNull(propertyMapping.IsNotNullable);
+            }
 
             if (propertyMapping.Attributes.IsSpecified(x => x.Length))
                 _hbm.length = propertyMapping.Length.ToString();

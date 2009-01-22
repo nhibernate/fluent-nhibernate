@@ -17,18 +17,18 @@ namespace FluentNHibernate.MappingModel.Output
             _hbmColumn = new HbmColumn();
             _hbmColumn.name = columnMapping.Name;
             
-            if(columnMapping.Attributes.IsSpecified(x => x.AllowNull))
+            if(columnMapping.Attributes.IsSpecified(x => x.IsNotNullable))
             {
-                _hbmColumn.notnull = !columnMapping.AllowNull;
+                _hbmColumn.notnull = columnMapping.IsNotNullable;
                 _hbmColumn.notnullSpecified = true;
             }
 
             if (columnMapping.Attributes.IsSpecified(x => x.Length))
                 _hbmColumn.length = columnMapping.Length.ToString();
 
-            if(columnMapping.Attributes.IsSpecified(x => x.Unique))
+            if(columnMapping.Attributes.IsSpecified(x => x.IsUnique))
             {
-                _hbmColumn.unique = columnMapping.Unique;
+                _hbmColumn.unique = columnMapping.IsUnique;
                 _hbmColumn.uniqueSpecified = true;
             }
 

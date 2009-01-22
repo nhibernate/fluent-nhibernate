@@ -68,7 +68,7 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
             PropertyMapping prop = mapping.Properties.First();
             prop.Name.ShouldEqual("Name");
             prop.Length.ShouldEqual(50);
-            prop.AllowNull.ShouldBeFalse();
+            prop.IsNotNullable.ShouldBeTrue();
 
             ICollectionMapping col = mapping.Collections.First();
             col.Name.ShouldEqual("Albums");
@@ -85,7 +85,7 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
             PropertyMapping prop = mapping.Properties.First();
             prop.Name.ShouldEqual("Title");
             prop.Length.ShouldEqual(50);
-            prop.AllowNull.ShouldBeFalse();
+            prop.IsNotNullable.ShouldBeTrue();
 
             ManyToOneMapping reference = mapping.References.First();
             reference.Name.ShouldEqual("Artist");
@@ -105,7 +105,7 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
             PropertyMapping nameProp = mapping.Properties.Where(p => p.Name == "Name").FirstOrDefault();
             nameProp.ShouldNotBeNull();
             nameProp.Length.ShouldEqual(50);
-            nameProp.AllowNull.ShouldBeFalse();
+            nameProp.IsNotNullable.ShouldBeTrue();
 
             PropertyMapping numberProp = mapping.Properties.Where(p => p.Name == "TrackNumber").FirstOrDefault();
             numberProp.ShouldNotBeNull();
@@ -137,6 +137,14 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
                 .InMemory()
                 .ShowSql()
                 .ConfigureProperties(new Configuration());
+
+            // UGLY HACK
+            var nhVersion = typeof (Configuration).Assembly.GetName().Version;
+            if (!nhVersion.ToString().StartsWith("2.0."))
+            {
+                cfg.SetProperty("proxyfactory.factory_class",
+                                "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle");
+            }
 
             model.Configure(cfg);
 

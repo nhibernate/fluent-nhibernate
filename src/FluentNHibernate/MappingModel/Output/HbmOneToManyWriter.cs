@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FluentNHibernate.MappingModel.Collections;
 using NHibernate.Cfg.MappingSchema;
+using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -24,8 +25,7 @@ namespace FluentNHibernate.MappingModel.Output
 
             if(oneToManyMapping.Attributes.IsSpecified(x => x.ExceptionOnNotFound))
             {
-                _hbmOneToMany.notfound = oneToManyMapping.ExceptionOnNotFound ? HbmNotFoundMode.Exception : HbmNotFoundMode.Ignore;
-                _hbmOneToMany.notfoundSpecified = true;
+                _hbmOneToMany.SetNotFound(oneToManyMapping.ExceptionOnNotFound);
             }
         }
     }

@@ -20,11 +20,10 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_write_the_attributes()
         {
-            var testHelper = new HbmTestHelper<PropertyMapping, HbmProperty>();
-            testHelper.Check(x => x.Length, 50).MapsTo(x => x.length, "50");
-            testHelper.Check(x => x.AllowNull, false).MapsTo(x => x.notnull, true);
-            testHelper.Check(x => x.Name, "test").MapsTo(x => x.name);
-
+            var testHelper = new HbmTestHelper<PropertyMapping>();
+            testHelper.Check(x => x.Name, "test").MapsToAttribute("name");
+            testHelper.Check(x => x.Length, 50).MapsToAttribute("length");
+            testHelper.Check(x => x.IsNotNullable, true).MapsToAttribute("not-null");
             var writer = new HbmPropertyWriter();
             testHelper.VerifyAll(writer);
         }

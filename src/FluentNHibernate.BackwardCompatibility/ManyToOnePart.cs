@@ -14,7 +14,7 @@ namespace FluentNHibernate.BackwardCompatibility
 
         public ManyToOnePart CanNotBeNull()
         {
-            _mapping.AllowNull = false;
+            _mapping.IsNotNullable = true;
             return this;
         }
     }

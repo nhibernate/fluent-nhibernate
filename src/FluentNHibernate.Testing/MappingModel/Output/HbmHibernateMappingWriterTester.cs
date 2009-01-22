@@ -26,16 +26,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_append_class_mappings()
         {
-            var classMap = MappingMother.CreateClassMapping();
-            var classHbm = new HbmClass();
+            var hibernateMap = new HibernateMapping();
+            hibernateMap.AddClass(MappingMother.CreateClassMapping());
 
             var classWriter = MockRepository.GenerateStub<IHbmWriter<ClassMapping>>();
-            classWriter.Stub((x => x.Write(classMap))).Return(classHbm);
+            classWriter.Stub((x => x.Write(hibernateMap.Classes.First()))).Return(new HbmClass());
 
             var writer = new HbmHibernateMappingWriter(classWriter);
-            writer.ProcessClass(classMap);
-
-            writer.Hbm.Items.ShouldContain(classHbm);
+            writer.VerifyXml(hibernateMap)
+                .Element("class").Exists();
         }
         
     }

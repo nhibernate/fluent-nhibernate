@@ -18,18 +18,13 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_write_the_attributes()
         {
-            var testHelper = new HbmTestHelper<OneToManyMapping, HbmOneToMany>();
-            testHelper.Check(x => x.ClassName, "class1").MapsTo(x => x.@class);
-            testHelper.Check(x => x.ExceptionOnNotFound, true)
-                .MapsTo(x => x.notfound, HbmNotFoundMode.Exception)
-                .MapsTo(x => x.notfoundSpecified, true);
-            testHelper.Check(x => x.ExceptionOnNotFound, false)
-                .MapsTo(x => x.notfound, HbmNotFoundMode.Ignore)
-                .MapsTo(x => x.notfoundSpecified, true);
+            var testHelper = new HbmTestHelper<OneToManyMapping>();
+            testHelper.Check(x => x.ClassName, "class1").MapsToAttribute("class");
+            testHelper.Check(x => x.ExceptionOnNotFound, false).MapsToAttribute("not-found", HbmNotFoundMode.Ignore);
 
             var writer = new HbmOneToManyWriter();
             testHelper.VerifyAll(writer);
-        }
+        }        
 
 
     }

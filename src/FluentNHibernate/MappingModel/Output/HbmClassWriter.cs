@@ -3,6 +3,7 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 using NHibernate.Cfg.MappingSchema;
 using System;
+using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -42,7 +43,7 @@ namespace FluentNHibernate.MappingModel.Output
         public override void ProcessIdentity(IIdentityMapping idMapping)
         {
             object idHbm = _identityWriter.Write(idMapping);
-            _hbmClass.Item1 = idHbm;
+            _hbmClass.SetId(idHbm);
         }
 
         public override void ProcessCollection(ICollectionMapping collectionMapping)

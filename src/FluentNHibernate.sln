@@ -6,37 +6,35 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate.Testing", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate.BackwardCompatibility", "FluentNHibernate.BackwardCompatibility\FluentNHibernate.BackwardCompatibility.csproj", "{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate.Versioning.NH20", "FluentNHibernate.Versioning.NH20\FluentNHibernate.Versioning.NH20.csproj", "{ABDBBA74-1436-4893-9D02-0723022058A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate.Versioning.NH21", "FluentNHibernate.Versioning.NH21\FluentNHibernate.Versioning.NH21.csproj", "{81B90C01-2483-4212-A217-0018955DEC2D}"
+EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Debug|Mixed Platforms = Debug|Mixed Platforms
 		Release|Any CPU = Release|Any CPU
-		Release|Mixed Platforms = Release|Mixed Platforms
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{529145D5-6CC3-4016-89B5-826563024AF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{529145D5-6CC3-4016-89B5-826563024AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{529145D5-6CC3-4016-89B5-826563024AF1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{529145D5-6CC3-4016-89B5-826563024AF1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{529145D5-6CC3-4016-89B5-826563024AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{529145D5-6CC3-4016-89B5-826563024AF1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{529145D5-6CC3-4016-89B5-826563024AF1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{529145D5-6CC3-4016-89B5-826563024AF1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4A693F88-A29A-4FC9-B086-24956848FD99}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{4A693F88-A29A-4FC9-B086-24956848FD99}.Debug|Any CPU.Build.0 = Debug|x86
-		{4A693F88-A29A-4FC9-B086-24956848FD99}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{4A693F88-A29A-4FC9-B086-24956848FD99}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{4A693F88-A29A-4FC9-B086-24956848FD99}.Release|Any CPU.ActiveCfg = Release|x86
-		{4A693F88-A29A-4FC9-B086-24956848FD99}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{4A693F88-A29A-4FC9-B086-24956848FD99}.Release|Mixed Platforms.Build.0 = Release|x86
 		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Release|Any CPU.Build.0 = Release|Any CPU
-		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{ABDBBA74-1436-4893-9D02-0723022058A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABDBBA74-1436-4893-9D02-0723022058A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81B90C01-2483-4212-A217-0018955DEC2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81B90C01-2483-4212-A217-0018955DEC2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

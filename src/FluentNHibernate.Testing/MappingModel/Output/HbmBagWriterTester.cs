@@ -28,17 +28,18 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_write_the_attributes()
         {
-            var testHelper = new HbmTestHelper<BagMapping, HbmBag>();
-            testHelper.Check(x => x.Name, "bag1").MapsTo(x => x.name);
-            testHelper.Check(x => x.OrderBy, "column1").MapsTo(x => x.orderby);
-            testHelper.Check(x => x.IsInverse, true).MapsTo(x => x.inverse);
-            testHelper.Check(x => x.IsLazy, true)
-                .MapsTo(x => x.lazy)
-                .MapsTo(x => x.lazySpecified);
+
+            var testHelper = new HbmTestHelper<BagMapping>();
+            testHelper.Check(x => x.Name, "bag1").MapsToAttribute("name");
+            testHelper.Check(x => x.OrderBy, "column1").MapsToAttribute("order-by");
+            testHelper.Check(x => x.IsInverse, true).MapsToAttribute("inverse");
+            testHelper.Check(x => x.IsLazy, true).MapsToAttribute("lazy");                
 
             var writer = new HbmBagWriter(null, null);
             testHelper.VerifyAll(writer);
         }
+
+
 
     }
 }

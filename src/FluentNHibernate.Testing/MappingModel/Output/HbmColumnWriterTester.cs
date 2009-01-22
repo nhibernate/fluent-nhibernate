@@ -20,19 +20,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_write_the_attributes()
         {
-            var testHelper = new HbmTestHelper<ColumnMapping, HbmColumn>();
-            testHelper.Check(x => x.Name, "Column1").MapsTo(x => x.name);
-            testHelper.Check(x => x.Length, 50).MapsTo(x => x.length, "50");
-            testHelper.Check(x => x.AllowNull, false)
-                .MapsTo(x => x.notnull, true)
-                .MapsTo(x => x.notnullSpecified, true);
-            testHelper.Check(x => x.Unique, true)
-                .MapsTo(x => x.unique)
-                .MapsTo(x => x.uniqueSpecified, true);
-            testHelper.Check(x => x.UniqueKey, "key").MapsTo(x => x.uniquekey);
-            testHelper.Check(x => x.SqlType, "nvarchar").MapsTo(x => x.sqltype);
-            testHelper.Check(x => x.Index, "index1").MapsTo(x => x.index);
-            testHelper.Check(x => x.Check, "checkSomething").MapsTo(x => x.check);
+            var testHelper = new HbmTestHelper<ColumnMapping>();
+            testHelper.Check(x => x.Name, "Column1").MapsToAttribute("name");
+            testHelper.Check(x => x.Length, 50).MapsToAttribute("length");
+            testHelper.Check(x => x.IsNotNullable, true).MapsToAttribute("not-null");
+            testHelper.Check(x => x.IsUnique, true).MapsToAttribute("unique");                
+            testHelper.Check(x => x.UniqueKey, "key").MapsToAttribute("unique-key");
+            testHelper.Check(x => x.SqlType, "nvarchar").MapsToAttribute("sql-type");
+            testHelper.Check(x => x.Index, "index1").MapsToAttribute("index");
+            testHelper.Check(x => x.Check, "checkSomething").MapsToAttribute("check");
 
             var writer = new HbmColumnWriter();
             testHelper.VerifyAll(writer);

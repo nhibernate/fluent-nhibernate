@@ -66,6 +66,7 @@
     <Compile Include="BackwardCompatibility\MusicMappingTester.cs" />
     <Compile Include="MappingModel\AttributeStoreTester.cs" />
     <Compile Include="MappingModel\ClassMappingTester.cs" />
+    <Compile Include="MappingModel\Collections\OneToManyMappingTester.cs" />
     <Compile Include="MappingModel\HibernateMappingTester.cs" />
     <Compile Include="MappingModel\MappingMother.cs" />
     <Compile Include="MappingModel\MappingTestingExtensions.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="MappingModel\Output\HbmSetWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmTestHelper.cs" />
     <Compile Include="MappingModel\PropertyMappingTester.cs" />
+    <Compile Include="Xml\MappingXmlTestHelper.cs" />
     <Compile Include="Xml\MappingXmlValidatorTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\MappingXmlSerializerTester.cs" />
@@ -98,7 +100,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MappingModel\Collections\" />
+    <Content Include="..\..\tools\NHibernate\nhib2.1\NHibernate.ByteCode.Castle.dll">
+      <Link>NHibernate.ByteCode.Castle.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="MappingModel\Identity\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

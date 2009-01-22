@@ -11,6 +11,7 @@ namespace FluentNHibernate.MappingModel.Collections
         public OneToManyMapping()
         {
             _attributes = new AttributeStore<OneToManyMapping>();
+            _attributes.SetDefault(x => x.ExceptionOnNotFound, true);
         }
 
         public AttributeStore<OneToManyMapping> Attributes

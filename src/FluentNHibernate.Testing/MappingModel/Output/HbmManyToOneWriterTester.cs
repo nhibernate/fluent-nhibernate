@@ -24,9 +24,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_write_the_attributes()
         {
-            var testHelper = new HbmTestHelper<ManyToOneMapping, HbmManyToOne>();
-            testHelper.Check(x => x.Name, "manyToOne").MapsTo(x => x.name);
-            testHelper.Check(x => x.AllowNull, false).MapsTo(x => x.notnull, true);
+            var testHelper = new HbmTestHelper<ManyToOneMapping>();
+            testHelper.Check(x => x.Name, "manyToOne").MapsToAttribute("name");
+            testHelper.Check(x => x.IsNotNullable, true).MapsToAttribute("not-null");
 
             var writer = new HbmManyToOneWriter();
             testHelper.VerifyAll(writer);

@@ -5,11 +5,22 @@ using FluentNHibernate.Xml;
 using NHibernate.Cfg.MappingSchema;
 using NUnit.Framework;
 using FluentNHibernate.MappingModel.Output;
+using FluentNHibernate.Testing.Xml;
+using System.Linq;
 
 namespace FluentNHibernate.Testing.MappingModel
 {
     internal static class MappingTestingExtensions
     {
+        public static MappingXmlTestHelper VerifyXml<T>(this IHbmWriter<T> writer, T model)
+        {
+            object hbm = writer.Write(model);
+            var serializer = new MappingXmlSerializer();
+            XmlDocument document = serializer.SerializeHbmFragment(hbm);        
+            document.OutputXmlToConsole();
+            return new MappingXmlTestHelper(document);
+        }
+        
         public static void ShouldGenerateValidOutput<T>(this IHbmWriter<T> writer, T model)
         {
             object hbm = writer.Write(model);

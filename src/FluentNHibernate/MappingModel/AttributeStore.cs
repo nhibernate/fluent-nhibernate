@@ -9,10 +9,12 @@ namespace FluentNHibernate.MappingModel
     public class AttributeStore
     {
         private readonly IDictionary<string, object> _attributes;
+        private readonly IDictionary<string, object> _defaults;
 
         public AttributeStore()
         {
             _attributes = new Dictionary<string, object>();
+            _defaults = new Dictionary<string, object>();
         }
 
         public object this[string key]
@@ -21,6 +23,9 @@ namespace FluentNHibernate.MappingModel
             {
                 if (_attributes.ContainsKey(key))
                     return _attributes[key];
+                
+                if (_defaults.ContainsKey(key))
+                    return _defaults[key];
 
                 return null;
             }
@@ -41,6 +46,11 @@ namespace FluentNHibernate.MappingModel
         {
             foreach (KeyValuePair<string, object> pair in _attributes)
                 store._attributes[pair.Key] = pair.Value;
+        }
+
+        public void SetDefault(string key, object value)
+        {
+            _defaults[key] = value;
         }
     }
 
@@ -68,6 +78,12 @@ namespace FluentNHibernate.MappingModel
         {
             _store[GetKey(exp)] = value;
         }
+
+        public void SetDefault<U>(Expression<Func<T, U>> exp, U value)
+        {
+            _store.SetDefault(GetKey(exp), value);
+        }
+        
 
         public bool IsSpecified<U>(Expression<Func<T, U>> exp)
         {

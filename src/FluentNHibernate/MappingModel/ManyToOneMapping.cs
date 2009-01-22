@@ -23,10 +23,10 @@ namespace FluentNHibernate.MappingModel
             set { _attributes.Set(x => x.Name, value); }
         }
 
-        public bool AllowNull
+        public bool IsNotNullable
         {
-            get { return _attributes.Get(x => x.AllowNull); }
-            set { _attributes.Set(x => x.AllowNull, value); }
+            get { return _attributes.Get(x => x.IsNotNullable); }
+            set { _attributes.Set(x => x.IsNotNullable, value); }
         }
 
         public AttributeStore<ManyToOneMapping> Attributes

@@ -78,7 +78,7 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
-        public void DefaultsAreNotCopied()
+        public void UnsetValuesAreNotCopied()
         {
             var source = new TestStore();
 
@@ -87,6 +87,28 @@ namespace FluentNHibernate.Testing.MappingModel
             source.CopyTo(target);
 
             target.IsSomething.ShouldBeTrue();
+        }
+
+        [Test]
+        public void CanSetDefaultValue()
+        {
+            var source = new TestStore();
+            source.SetDefault(x => x.IsSomething, true);
+            
+            source.IsSomething.ShouldBeTrue();
+        }
+
+        [Test]
+        public void DefaultValuesAreNotCopied()
+        {
+            var source = new TestStore();
+            source.SetDefault(x => x.IsSomething, true);
+
+            var target = new TestStore();
+            target.IsSomething = false;
+            source.CopyTo(target);
+
+            target.IsSomething.ShouldBeFalse();
         }
     }
 }

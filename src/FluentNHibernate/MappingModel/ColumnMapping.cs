@@ -31,16 +31,16 @@ namespace FluentNHibernate.MappingModel
             set { _attributes.Set(x => x.Length, value); }
         }
 
-        public bool AllowNull
+        public bool IsNotNullable
         {
-            get { return _attributes.Get(x => x.AllowNull); }
-            set { _attributes.Set(x => x.AllowNull, value); }
+            get { return _attributes.Get(x => x.IsNotNullable); }
+            set { _attributes.Set(x => x.IsNotNullable, value); }
         }
 
-        public bool Unique
+        public bool IsUnique
         {
-            get { return _attributes.Get(x => x.Unique); }
-            set { _attributes.Set(x => x.Unique, value); }
+            get { return _attributes.Get(x => x.IsUnique); }
+            set { _attributes.Set(x => x.IsUnique, value); }
         }
 
         public string UniqueKey

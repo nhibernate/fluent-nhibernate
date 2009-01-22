@@ -1,4 +1,5 @@
 using NHibernate.Cfg.MappingSchema;
+using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -17,8 +18,10 @@ namespace FluentNHibernate.MappingModel.Output
             _hbm = new HbmManyToOne();
             _hbm.name = manyToOneMapping.Name;
 
-            if(manyToOneMapping.Attributes.IsSpecified(x => x.AllowNull))
-                _hbm.notnull = !manyToOneMapping.AllowNull;
+            if(manyToOneMapping.Attributes.IsSpecified(x => x.IsNotNullable))
+            {
+                _hbm.SetNotNull(manyToOneMapping.IsNotNullable);
+            }
         }
     }
 }

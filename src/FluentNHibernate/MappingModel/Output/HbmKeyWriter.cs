@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FluentNHibernate.MappingModel.Collections;
 using NHibernate.Cfg.MappingSchema;
+using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -32,8 +33,7 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (keyMapping.Attributes.IsSpecified(x => x.CascadeOnDelete))
             {
-                _hbmKey.ondelete = keyMapping.CascadeOnDelete ? HbmOndelete.Cascade : HbmOndelete.Noaction;
-                _hbmKey.ondeleteSpecified = true;
+                _hbmKey.SetCascadeOnDelete(keyMapping.CascadeOnDelete);
             }
         }
     }

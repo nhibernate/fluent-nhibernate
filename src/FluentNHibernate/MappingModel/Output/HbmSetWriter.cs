@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FluentNHibernate.MappingModel.Collections;
 using NHibernate.Cfg.MappingSchema;
+using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -39,15 +40,14 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (setMapping.Attributes.IsSpecified(x => x.IsLazy))
             {
-                _hbmSet.lazy = setMapping.IsLazy;
-                _hbmSet.lazySpecified = true;
+                _hbmSet.SetLazy(setMapping.IsLazy);
             }
         }
 
         public override void ProcessCollectionContents(ICollectionContentsMapping contentsMapping)
         {
             object contentsHbm = _contentsWriter.Write(contentsMapping);
-            _hbmSet.Item1 = contentsHbm;
+            _hbmSet.SetContents(contentsHbm);
         }
 
         public override void ProcessKey(KeyMapping keyMapping)

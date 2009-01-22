@@ -21,16 +21,11 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_write_the_attributes()
         {
-            var testHelper = new HbmTestHelper<KeyMapping, HbmKey>();
-            testHelper.Check(x => x.Column, "column1").MapsTo(x => x.column1);
-            testHelper.Check(x => x.ForeignKey, "foreignKey").MapsTo(x => x.foreignkey);
-            testHelper.Check(x => x.PropertyReference, "SomeProperty1").MapsTo(x => x.propertyref);
-            testHelper.Check(x => x.CascadeOnDelete, true)
-                .MapsTo(x => x.ondelete, HbmOndelete.Cascade)
-                .MapsTo(x => x.ondeleteSpecified, true);
-            testHelper.Check(x => x.CascadeOnDelete, false)
-                .MapsTo(x => x.ondelete, HbmOndelete.Noaction)
-                .MapsTo(x => x.ondeleteSpecified, true);
+            var testHelper = new HbmTestHelper<KeyMapping>();
+            testHelper.Check(x => x.Column, "column1").MapsToAttribute("column");
+            testHelper.Check(x => x.ForeignKey, "foreignKey").MapsToAttribute("foreign-key");
+            testHelper.Check(x => x.PropertyReference, "SomeProperty1").MapsToAttribute("property-ref");
+            testHelper.Check(x => x.CascadeOnDelete, true).MapsToAttribute("on-delete", HbmOndelete.Cascade);
 
             var writer = new HbmKeyWriter();
             testHelper.VerifyAll(writer);

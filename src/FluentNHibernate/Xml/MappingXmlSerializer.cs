@@ -38,6 +38,7 @@ namespace FluentNHibernate.Xml
                 var s = new XmlSerializer(hbm.GetType());
                 s.Serialize(writer, hbm);
                 stream.Position = 0;
+                
                 var doc = new XmlDocument();
                 doc.Load(stream);
 

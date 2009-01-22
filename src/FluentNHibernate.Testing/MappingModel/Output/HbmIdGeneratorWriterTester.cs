@@ -19,8 +19,8 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_write_the_attributes()
         {
-            var testHelper = new HbmTestHelper<IdGeneratorMapping, HbmGenerator>();
-            testHelper.Check(x => x.ClassName, "native").MapsTo(x => x.@class);
+            var testHelper = new HbmTestHelper<IdGeneratorMapping>();
+            testHelper.Check(x => x.ClassName, "native").MapsToAttribute("class");
 
             var writer = new HbmIdGeneratorWriter();
             testHelper.VerifyAll(writer);

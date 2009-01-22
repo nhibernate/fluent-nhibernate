@@ -19,7 +19,7 @@ namespace FluentNHibernate.BackwardCompatibility
 
         public PropertyMap CanNotBeNull()
         {
-            _mapping.AllowNull = false;
+            _mapping.IsNotNullable = true;
             return this;
         }
     }

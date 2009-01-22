@@ -20,8 +20,8 @@ namespace FluentNHibernate.Testing.MappingModel
         public void CanSpecifyNullability()
         {
             var property = new PropertyMapping { Name = "Property1" };
-            property.AllowNull = true;
-            property.AllowNull.ShouldBeTrue();
+            property.IsNotNullable = true;
+            property.IsNotNullable.ShouldBeTrue();
         }
 
 

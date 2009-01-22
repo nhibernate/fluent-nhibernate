@@ -28,8 +28,8 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_write_the_attributes()
         {
-            var testHelper = new HbmTestHelper<IdMapping, HbmId>();
-            testHelper.Check(x => x.Name, "id1").MapsTo(x => x.name);
+            var testHelper = new HbmTestHelper<IdMapping>();
+            testHelper.Check(x => x.Name, "id1").MapsToAttribute("name");
 
             var writer = new HbmIdWriter(null, null);
             testHelper.VerifyAll(writer);
@@ -38,31 +38,27 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_write_the_generator()
         {
-            var hbmGenerator = new HbmGenerator();
             var idMapping = new IdMapping {Generator = new IdGeneratorMapping()};
 
             var generatorWriter = MockRepository.GenerateStub<IHbmWriter<IdGeneratorMapping>>();
-            generatorWriter.Expect(x => x.Write(idMapping.Generator)).Return(hbmGenerator);
+            generatorWriter.Expect(x => x.Write(idMapping.Generator)).Return(new HbmGenerator());
             var writer = new HbmIdWriter(null, generatorWriter);
 
-            var hbmId = (HbmId)writer.Write(idMapping);
-
-            hbmId.generator.ShouldEqual(hbmGenerator);
+            writer.VerifyXml(idMapping)
+                .Element("generator").Exists();
         }
 
         [Test]
         public void Should_write_the_columns()
         {
-            var hbmColumn = new HbmColumn();
             var idMapping = new IdMapping(new ColumnMapping());
 
             var columnWriter = MockRepository.GenerateStub<IHbmWriter<ColumnMapping>>();
-            columnWriter.Expect(x => x.Write(idMapping.Columns.First())).Return(hbmColumn);
+            columnWriter.Expect(x => x.Write(idMapping.Columns.First())).Return(new HbmColumn());
             var writer = new HbmIdWriter(columnWriter, null);
 
-            var hbmId = (HbmId)writer.Write(idMapping);
-
-            hbmId.column.ShouldContain(hbmColumn);
+            writer.VerifyXml(idMapping)
+                .Element("column").Exists();
 
         }
 
