@@ -372,7 +372,7 @@ namespace FluentNHibernate.Testing.AutoMap
                     convention.IsComponentType =
                         type => type == typeof(Address);
                     convention.GetComponentColumnPrefix =
-                        (type, property) => type.Name + "_" + property.Name + "_";
+                        property => property.Name + "_";
                     convention.AddTypeConvention(new CustomTypeConvention());
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
@@ -380,29 +380,7 @@ namespace FluentNHibernate.Testing.AutoMap
             autoMapper.Configure(cfg);
 
             new AutoMappingTester<Customer>(autoMapper)
-                .Element("class/component[@name='WorkAddress']/property[@name='Number']").HasAttribute("column", "Address_WorkAddress_Number");
-        }
-
-        [Test]
-        public void ComponentColumnConventionReceivesType()
-        {
-            var autoMapper = AutoPersistenceModel
-                .MapEntitiesFromAssemblyOf<Customer>()
-                .WithConvention(convention =>
-                {
-                    convention.IsComponentType =
-                        type => type == typeof(Address);
-                    convention.GetComponentColumnPrefix =
-                        (type, property) => type.Name + "_";
-                    convention.AddTypeConvention(new CustomTypeConvention());
-                })
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
-
-            autoMapper.Configure(cfg);
-
-            new AutoMappingTester<Customer>(autoMapper)
-                .Element("class/component[@name='WorkAddress']/property[@name='Street']")
-                .HasAttribute("column", value => value.StartsWith("Address_"));
+                .Element("class/component[@name='WorkAddress']/property[@name='Number']").HasAttribute("column", "WorkAddress_Number");
         }
 
         [Test]
@@ -415,7 +393,7 @@ namespace FluentNHibernate.Testing.AutoMap
                     convention.IsComponentType =
                         type => type == typeof(Address);
                     convention.GetComponentColumnPrefix =
-                        (type, property) => property.Name + "_";
+                        property => property.Name + "_";
                     convention.AddTypeConvention(new CustomTypeConvention());
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");

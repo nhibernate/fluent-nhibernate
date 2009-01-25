@@ -30,7 +30,7 @@ namespace FluentNHibernate.AutoMap
         private void MapComponentProperties(PropertyInfo componentProperty, Type componentType, object componentPart)
         {
             var mapMethod = GetMapMethod(componentType, componentPart);
-            var columnNamePrefix = conventions.GetComponentColumnPrefix(componentType, componentProperty);
+            var columnNamePrefix = conventions.GetComponentColumnPrefix(componentProperty);
 
             foreach (var property in componentType.GetProperties())
             {
