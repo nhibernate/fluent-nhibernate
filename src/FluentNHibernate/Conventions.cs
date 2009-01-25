@@ -41,7 +41,7 @@ namespace FluentNHibernate
         public Func<Type, string> GetPrimaryKeyNameFromType;
         public Func<Type, bool> IsBaseType = b => b == typeof(object);
         public Func<Type, bool> IsComponentType = type => false;
-        public Func<Type, string> GetComponentColumnPrefix = type => type.Name;
+        public Func<Type, PropertyInfo, string> GetComponentColumnPrefix = (type, property) => property.Name;
         public Func<Type, Type, string> GetManyToManyTableName =
             (child, parent) => child.Name + "To" + parent.Name;
 

@@ -56,6 +56,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             return this;
         }
 
+        public virtual MappingTester<T> HasAttribute(string name, Func<string, bool> predicate)
+        {
+            currentElement.HasAttribute(name).ShouldBeTrue();
+
+            predicate(currentElement.Attributes[name].Value).ShouldBeTrue();
+
+            return this;
+        }
+
         public virtual MappingTester<T> DoesntHaveAttribute(string name)
         {
             Assert.IsFalse(currentElement.HasAttribute(name), "Found attribute '" + name + "' on element.");

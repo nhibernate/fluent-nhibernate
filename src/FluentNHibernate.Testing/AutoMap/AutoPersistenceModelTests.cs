@@ -309,55 +309,56 @@ namespace FluentNHibernate.Testing.AutoMap
         public void ComponentTypesAutoMapped()
         {
             var autoMapper = AutoPersistenceModel
-                .MapEntitiesFromAssemblyOf<ClassWithComponent>()
+                .MapEntitiesFromAssemblyOf<Customer>()
                 .WithConvention(convention =>
                 {
                     convention.IsComponentType =
-                        type => type == typeof(AComponent);
+                        type => type == typeof(Address);
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             autoMapper.Configure(cfg);
 
-            new AutoMappingTester<ClassWithComponent>(autoMapper)
-                .Element("class/component").HasAttribute("name", "Component");
+            new AutoMappingTester<Customer>(autoMapper)
+                .Element("class/component[@name='HomeAddress']").Exists()
+                .Element("class/component[@name='WorkAddress']").Exists();
         }
 
         [Test]
         public void ComponentPropertiesAutoMapped()
         {
             var autoMapper = AutoPersistenceModel
-                .MapEntitiesFromAssemblyOf<ClassWithComponent>()
+                .MapEntitiesFromAssemblyOf<Customer>()
                 .WithConvention(convention =>
                 {
                     convention.IsComponentType =
-                        type => type == typeof(AComponent);
+                        type => type == typeof(Address);
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             autoMapper.Configure(cfg);
 
-            new AutoMappingTester<ClassWithComponent>(autoMapper)
-                .Element("class/component/property[@name='First']").Exists()
-                .Element("class/component/property[@name='Second']").Exists();
+            new AutoMappingTester<Customer>(autoMapper)
+                .Element("class/component/property[@name='Number']").Exists()
+                .Element("class/component/property[@name='Street']").Exists();
         }
 
         [Test]
         public void ComponentPropertiesWithUserTypeAutoMapped()
         {
             var autoMapper = AutoPersistenceModel
-                .MapEntitiesFromAssemblyOf<ClassWithComponent>()
+                .MapEntitiesFromAssemblyOf<Customer>()
                 .WithConvention(convention =>
                 {
                     convention.IsComponentType =
-                        type => type == typeof(AComponent);
+                        type => type == typeof(Address);
                     convention.AddTypeConvention(new CustomTypeConvention());
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             autoMapper.Configure(cfg);
 
-            new AutoMappingTester<ClassWithComponent>(autoMapper)
+            new AutoMappingTester<Customer>(autoMapper)
                 .Element("class/component/property[@name='Custom']").HasAttribute("type", typeof(CustomUserType).AssemblyQualifiedName);
         }
 
@@ -365,21 +366,65 @@ namespace FluentNHibernate.Testing.AutoMap
         public void ComponentPropertiesAssumeComponentColumnPrefix()
         {
             var autoMapper = AutoPersistenceModel
-                .MapEntitiesFromAssemblyOf<ClassWithComponent>()
+                .MapEntitiesFromAssemblyOf<Customer>()
                 .WithConvention(convention =>
                 {
                     convention.IsComponentType =
-                        type => type == typeof(AComponent);
+                        type => type == typeof(Address);
                     convention.GetComponentColumnPrefix =
-                        type => type.Name + "_";
+                        (type, property) => type.Name + "_" + property.Name + "_";
                     convention.AddTypeConvention(new CustomTypeConvention());
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             autoMapper.Configure(cfg);
 
-            new AutoMappingTester<ClassWithComponent>(autoMapper)
-                .Element("class/component/property[@name='First']").HasAttribute("column", "AComponent_First");
+            new AutoMappingTester<Customer>(autoMapper)
+                .Element("class/component[@name='WorkAddress']/property[@name='Number']").HasAttribute("column", "Address_WorkAddress_Number");
+        }
+
+        [Test]
+        public void ComponentColumnConventionReceivesType()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<Customer>()
+                .WithConvention(convention =>
+                {
+                    convention.IsComponentType =
+                        type => type == typeof(Address);
+                    convention.GetComponentColumnPrefix =
+                        (type, property) => type.Name + "_";
+                    convention.AddTypeConvention(new CustomTypeConvention());
+                })
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<Customer>(autoMapper)
+                .Element("class/component[@name='WorkAddress']/property[@name='Street']")
+                .HasAttribute("column", value => value.StartsWith("Address_"));
+        }
+
+        [Test]
+        public void ComponentColumnConventionReceivesProperty()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<Customer>()
+                .WithConvention(convention =>
+                {
+                    convention.IsComponentType =
+                        type => type == typeof(Address);
+                    convention.GetComponentColumnPrefix =
+                        (type, property) => property.Name + "_";
+                    convention.AddTypeConvention(new CustomTypeConvention());
+                })
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<Customer>(autoMapper)
+                .Element("class/component[@name='WorkAddress']/property[@name='Number']")
+                .HasAttribute("column", value => value.StartsWith("WorkAddress_"));
         }
 
         [Test]

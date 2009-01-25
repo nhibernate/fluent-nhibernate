@@ -24,13 +24,13 @@ namespace FluentNHibernate.AutoMap
             var componentType = property.PropertyType;
             var componentPart = CreateComponentPart(property, componentType, classMap);
 
-            MapComponentProperties(componentType, componentPart);
+            MapComponentProperties(property, componentType, componentPart);
         }
 
-        private void MapComponentProperties(Type componentType, object componentPart)
+        private void MapComponentProperties(PropertyInfo componentProperty, Type componentType, object componentPart)
         {
             var mapMethod = GetMapMethod(componentType, componentPart);
-            var columnNamePrefix = conventions.GetComponentColumnPrefix(componentType);
+            var columnNamePrefix = conventions.GetComponentColumnPrefix(componentType, componentProperty);
 
             foreach (var property in componentType.GetProperties())
             {

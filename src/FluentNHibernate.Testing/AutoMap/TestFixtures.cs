@@ -94,19 +94,20 @@ namespace FluentNHibernate.AutoMap.TestFixtures
         public Custom Custom { get; set; }
     }
 
-    public class ClassWithComponent
+    public class Customer
     {
         public virtual int Id { get; set; }
-        public virtual AComponent Component { get; set; }
+        public virtual Address HomeAddress { get; set; }
+        public virtual Address WorkAddress { get; set; }
     }
 }
 
 namespace FluentNHibernate.AutoMap.TestFixtures.ComponentTypes
 {
-    public class AComponent
+    public class Address
     {
-        public int First { get; set; }
-        public string Second { get; set; }
+        public int Number { get; set; }
+        public string Street { get; set; }
         public Custom Custom { get; set; }
     }
 }
