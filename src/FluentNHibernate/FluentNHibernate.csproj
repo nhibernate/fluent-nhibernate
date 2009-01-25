@@ -95,6 +95,11 @@
     <Compile Include="MappingModel\ManyToOneMapping.cs" />
     <Compile Include="MappingModel\MappingBase.cs" />
     <Compile Include="MappingModel\Collections\OneToManyMapping.cs" />
+    <Compile Include="MappingModel\Output\Meta\ClassMapper.cs" />
+    <Compile Include="MappingModel\Output\Meta\IClassMapper.cs" />
+    <Compile Include="MappingModel\Output\Meta\IdMapper.cs" />
+    <Compile Include="MappingModel\Output\Meta\IIdMapper.cs" />
+    <Compile Include="MappingModel\Output\Meta\MappingHelpers.cs" />
     <Compile Include="MappingModel\PropertyMapping.cs" />
     <Compile Include="PersistenceModel.cs" />
     <Compile Include="Reflection\Accessor.cs" />

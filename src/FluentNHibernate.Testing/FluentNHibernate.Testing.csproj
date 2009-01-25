@@ -82,6 +82,8 @@
     <Compile Include="MappingModel\Output\HbmPropertyWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmSetWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmTestHelper.cs" />
+    <Compile Include="MappingModel\Output\Meta\ClassMapperTests.cs" />
+    <Compile Include="MappingModel\Output\Meta\IdMapperTests.cs" />
     <Compile Include="MappingModel\PropertyMappingTester.cs" />
     <Compile Include="Xml\MappingXmlTestHelper.cs" />
     <Compile Include="Xml\MappingXmlValidatorTester.cs" />
