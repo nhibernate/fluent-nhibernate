@@ -38,6 +38,7 @@ namespace FluentNHibernate.MappingModel.Output
         {
             _hbmClass = new HbmClass();
             _hbmClass.name = classMapping.Name;
+        	_hbmClass.table = classMapping.Tablename;
         }
 
         public override void ProcessIdentity(IIdentityMapping idMapping)

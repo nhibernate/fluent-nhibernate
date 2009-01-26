@@ -78,5 +78,11 @@ namespace FluentNHibernate.MappingModel
             get { return _attributes.Get(x => x.Name); }
             set { _attributes.Set(x => x.Name, value); }
         }
+
+    	public string Tablename
+    	{
+			get { return _attributes.Get(x => x.Tablename); }
+			set { _attributes.Set(x => x.Tablename,value); }
+    	}
     }
 }
