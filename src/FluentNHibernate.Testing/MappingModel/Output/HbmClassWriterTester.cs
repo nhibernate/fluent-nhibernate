@@ -28,7 +28,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var testHelper = new HbmTestHelper<ClassMapping>();
             testHelper.Check(x => x.Name, "class1").MapsToAttribute("name");
+			testHelper.Check(x => x.Tablename, "table1").MapsToAttribute("table");
         }
+
 
         [Test]
         public void Should_write_the_id()
