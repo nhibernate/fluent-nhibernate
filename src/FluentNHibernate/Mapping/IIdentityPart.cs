@@ -18,5 +18,11 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="unsavedValue">Value that represents an unsaved value.</param>
         IIdentityPart WithUnsavedValue(object unsavedValue);
+
+        /// <summary>
+        /// Sets the column name for the identity field.
+        /// </summary>
+        /// <param name="columnName">Column name</param>
+        IIdentityPart TheColumnNameIs(string columnName);
     }
 }

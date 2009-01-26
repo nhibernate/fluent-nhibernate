@@ -58,6 +58,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		        .Element("class/id").HasAttribute("column", "Id");
 		}
 
+        [Test]
+        public void ColumnName_SpecifyFluently()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping => mapping.Id(x => x.IntId).TheColumnNameIs("Id"))
+                .Element("class/id").HasAttribute("column", "Id");
+        }
+
 		[Test]
 		public void GeneratorClass_Long_DefaultsToIdentity()
 		{

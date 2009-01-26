@@ -130,5 +130,15 @@ namespace FluentNHibernate.Mapping
             _unsavedValue = unsavedValue;
             return this;
         }
-	}
+
+        /// <summary>
+        /// Sets the column name for the identity field.
+        /// </summary>
+        /// <param name="columnName">Column name</param>
+        public IIdentityPart TheColumnNameIs(string columnName)
+        {
+            _columnName = columnName;
+            return this;
+        }
+    }
 }
