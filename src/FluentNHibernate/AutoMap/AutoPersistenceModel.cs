@@ -59,6 +59,8 @@ namespace FluentNHibernate.AutoMap
 
                 if (Conventions.IsBaseType(type))
                     continue;
+                if (type.IsAbstract)
+                    continue;
 
                 mappingTypes.Add(new AutoMapType(type));
             }
@@ -140,9 +142,14 @@ namespace FluentNHibernate.AutoMap
             return this;
         }
 
-        public AutoMap<T> FindMapping<T>()
+        public IClassMap FindMapping<T>()
         {
-            return (AutoMap<T>)_mappings.Find(t => t is AutoMap<T>);
+            var mapping = (AutoMap<T>)_mappings.Find(t => t is AutoMap<T>);
+            
+            if (mapping != null) return mapping;
+            
+            // standard AutoMap<T> not found for the type, so looking for one for it's base type.
+            return (IClassMap)_mappings.Find(t => t.GetType().GetGenericArguments()[0] == typeof(T).BaseType);
         }
 
         public void OutputMappings()

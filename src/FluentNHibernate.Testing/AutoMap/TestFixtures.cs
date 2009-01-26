@@ -10,6 +10,16 @@ using NHibernate.UserTypes;
 
 namespace FluentNHibernate.AutoMap.TestFixtures
 {
+    public abstract class EntityBase<TPK>
+    {
+        public virtual TPK Id { get; set; }
+    }
+
+    public class ClassUsingGenericBase : EntityBase<Guid>
+    {
+        public virtual string Name { get; set; }
+    }
+
     public class ExampleCustomColumn
     {
         public int Id { get; set; }

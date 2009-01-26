@@ -9,7 +9,12 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public class ClassMap<T> : ClassMapBase<T>, IMapping, IHasAttributes
+    public interface IClassMap : IMapping
+    {
+        XmlDocument CreateMapping(IMappingVisitor visitor);
+    }
+
+    public class ClassMap<T> : ClassMapBase<T>, IClassMap, IHasAttributes
     {
         public const string DefaultLazyAttributeKey = "default-lazy";
         private readonly Cache<string, string> attributes = new Cache<string, string>();

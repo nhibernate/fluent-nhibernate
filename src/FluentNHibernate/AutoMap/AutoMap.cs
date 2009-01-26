@@ -111,6 +111,7 @@ namespace FluentNHibernate.AutoMap
             var genericType = typeof (AutoJoinedSubClassPart<>).MakeGenericType(type);
             var joinedclass = (IMappingPart)Activator.CreateInstance(genericType, keyColumn);                      
             AddPart(joinedclass);
+            joinedSubClasses.Add(type, joinedclass);
             return joinedclass;
         }
 

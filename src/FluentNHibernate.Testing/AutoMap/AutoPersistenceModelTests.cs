@@ -416,5 +416,24 @@ namespace FluentNHibernate.Testing.AutoMap
 
             Assert.That(ex.Message, Is.EqualTo("ForTypesThatDeriveFrom<T> called more than once for 'ExampleClass'. Merge your calls into one."));
         }
+
+        [Test]
+        public void IdIsMappedFromGenericBaseClass()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ClassUsingGenericBase>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .WithConvention(convention =>
+                {
+                    convention.IsBaseType =
+                        type => type == typeof(object) || type == typeof(EntityBase<>);
+                });
+
+           autoMapper.Configure(cfg);
+
+           new AutoMappingTester<ClassUsingGenericBase>(autoMapper)
+               .Element("class/id")
+               .HasAttribute("name", "Id");
+        }
     }
 }
