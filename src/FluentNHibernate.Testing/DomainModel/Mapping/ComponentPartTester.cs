@@ -19,7 +19,28 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 )
                 .Element("class/component/parent").Exists()
                 .HasAttribute("name", "MyParent");
-                
+        }
+
+        [Test]
+        public void ComponentDoesntHaveUniqueAttributeByDefault()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(c =>
+                    c.Component<ComponentTarget>(x => x.Component, m => m.Map(x => x.Name))
+                      .WithParentReference(y => y.MyParent)
+                )
+                .Element("class/component").DoesntHaveAttribute("unique");
+        }
+
+        [Test]
+        public void ComponentCanSetUniqueAttribute()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(c =>
+                    c.Component<ComponentTarget>(x => x.Component, m => m.Map(x => x.Name)).Unique()
+                      .WithParentReference(y => y.MyParent)
+                )
+                .Element("class/component").HasAttribute("unique", "true");
         }
     }
 }
