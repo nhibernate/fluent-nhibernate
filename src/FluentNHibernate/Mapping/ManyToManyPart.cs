@@ -10,8 +10,8 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> _properties = new Cache<string, string>();
     	private string _tableName;
     	private string _childKeyColumn;
-		private string _parentKeyColumn;
-		private string _collectionType = "bag";
+        private readonly Cache<string, string> _parentKeyProperties = new Cache<string, string>();
+        private string _collectionType = "bag";
         private readonly Cache<string, string> _manyToManyProperties = new Cache<string, string>();
 	    private readonly MethodInfo _collectionMethod;
         private readonly AccessStrategyBuilder<ManyToManyPart<PARENT, CHILD>> access;
@@ -72,10 +72,16 @@ namespace FluentNHibernate.Mapping
 		
 		public ManyToManyPart<PARENT, CHILD> WithParentKeyColumn(string parentKeyColumn)
 		{
-			_parentKeyColumn = parentKeyColumn;
+			_parentKeyProperties.Store("column", parentKeyColumn);
 			return this;
 		}
-		
+
+        public ManyToManyPart<PARENT, CHILD> WithForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName) {
+            _parentKeyProperties.Store("foreign-key", parentForeignKeyName);
+            _manyToManyProperties.Store("foreign-key", childForeignKeyName);
+            return this;
+        }
+
 		public ManyToManyPart<PARENT, CHILD> AsSet()
 		{
 			_collectionType = "set";
@@ -124,6 +130,7 @@ namespace FluentNHibernate.Mapping
 
 			XmlElement key = set.AddElement("key");
 			key.WithAtt("column", parentKeyName);
+		    key.WithProperties(_parentKeyProperties);
 
 			XmlElement manyToManyElement = set.AddElement("many-to-many");
 			manyToManyElement.WithAtt("column", childForeignKeyName);
@@ -134,10 +141,10 @@ namespace FluentNHibernate.Mapping
 		private string GetParentKeyName(Conventions conventions)
 		{
 			string parentKeyName;
-			if (string.IsNullOrEmpty(_parentKeyColumn))
+			if (!_parentKeyProperties.Has("column"))
 				parentKeyName = conventions.GetForeignKeyNameOfParent(typeof(PARENT));
 			else
-				parentKeyName = _parentKeyColumn;
+				parentKeyName = _parentKeyProperties.Get("column");
 			return parentKeyName;
 		}
 

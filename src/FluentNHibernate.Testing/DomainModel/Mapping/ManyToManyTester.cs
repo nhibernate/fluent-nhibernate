@@ -42,5 +42,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/bag")
                 .HasAttribute("name", "OtherChildren");
         }
+
+        [Test]
+        public void ManyToManyMapping_with_foreign_key_name()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.GetOtherChildren()).WithForeignKeyConstraintNames("FK_Parent", "FK_Child"))
+                .Element("class/bag/key")
+                .HasAttribute("foreign-key", "FK_Parent")
+                .Element("class/bag/many-to-many")
+                .HasAttribute("foreign-key", "FK_Child");
+        }
     }
 }
