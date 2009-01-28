@@ -87,6 +87,32 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void CanSpecifyMultipleForeignKeyColumnsTogether()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map =>
+                    map.HasMany<ChildObject>(x => x.BagOfChildren)
+                        .WithKeyColumns("ID1", "ID2")
+                )
+                .Element("class/bag/key/column").Exists()
+                .Element("class/bag/key/column[@name='ID1']").Exists()
+                .Element("class/bag/key/column[@name='ID2']").Exists();
+        }
+
+        [Test]
+        public void CanStackForeignKeyColumns()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map =>
+                    map.HasMany<ChildObject>(x => x.BagOfChildren)
+                        .WithKeyColumn("ID1")
+                        .WithKeyColumn("ID2")
+                )
+                .Element("class/bag/key/column").Exists()
+                .Element("class/bag/key/column[@name='ID1']").Exists()
+                .Element("class/bag/key/column[@name='ID2']").Exists();
+        }
+        [Test]
         public void CanSpecifyForeignKeyName()
         {
             new MappingTester<OneToManyTarget>()

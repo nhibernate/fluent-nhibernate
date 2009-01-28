@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Xml;
 using System;
 using System.Linq.Expressions;
@@ -18,6 +19,7 @@ namespace FluentNHibernate.Mapping
         private CompositeElementPart<CHILD> _componentMapping;
         private string _tableName;
         private MethodInfo _collectionMethod;
+        private readonly IList<string> _columnNames = new List<string>();
 
         public OneToManyPart(PropertyInfo property)
             : this(property.Name)
@@ -107,11 +109,21 @@ namespace FluentNHibernate.Mapping
 
         private void WriteKeyElement(IMappingVisitor visitor, XmlElement collectionElement)
         {
-            if(!_keyProperties.Has("column"))
+            if (_columnNames.Count == 0)
                 _keyProperties.Store("column", visitor.Conventions.GetForeignKeyNameOfParent(typeof(PARENT)));
+            else if (_columnNames.Count == 1)
+                _keyProperties.Store("column", _columnNames[0]);
 
-            collectionElement.AddElement("key")
+            var key = collectionElement.AddElement("key")
                 .WithProperties(_keyProperties);
+
+            if (_columnNames.Count <= 1) return;
+
+            foreach (var columnName in _columnNames)
+            {
+                key.AddElement("column")
+                    .WithAtt("name", columnName);
+            }
         }
 
         /// <summary>
@@ -222,9 +234,19 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public OneToManyPart<PARENT, CHILD> WithKeyColumns(params string[] columnNames)
+        {
+            foreach (var columnName in columnNames)
+            {
+                WithKeyColumn(columnName);
+            }
+
+            return this;
+        }
+
         public OneToManyPart<PARENT, CHILD> WithKeyColumn(string columnName)
         {
-            _keyProperties.Store("column", columnName);
+            _columnNames.Add(columnName);
             return this;
         }
 
