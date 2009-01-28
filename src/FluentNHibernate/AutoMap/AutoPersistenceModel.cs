@@ -57,9 +57,7 @@ namespace FluentNHibernate.AutoMap
                         continue;
                 }
 
-                if (Conventions.IsBaseType(type))
-                    continue;
-                if (type.IsAbstract)
+                if (Conventions.IsBaseType(type) || type == typeof(object) || type.IsAbstract)
                     continue;
 
                 mappingTypes.Add(new AutoMapType(type));
@@ -101,7 +99,7 @@ namespace FluentNHibernate.AutoMap
 
         private Type GetTypeToMap(Type type)
         {
-            return Conventions.IsBaseType(type.BaseType) ? type : type.BaseType;
+            return Conventions.IsBaseType(type.BaseType) || type.BaseType == typeof(object) ? type : type.BaseType;
         }
 
         private void MergeMap(Type type, object mapping)
