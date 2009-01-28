@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Mapping;
+using System.Reflection;
 
 namespace FluentNHibernate.AutoMap
 {
     public class AutoMapper
     {
-        private readonly List<IAutoMapper> _mappingRules;
-        private List<AutoMapType> mappingTypes;
+        protected readonly List<IAutoMapper> _mappingRules;
+        protected List<AutoMapType> mappingTypes;
 
         public AutoMapper(Conventions conventions)
         {
@@ -43,21 +44,26 @@ namespace FluentNHibernate.AutoMap
             return map;
         }
 
-        public void mapEverythingInClass<T>(AutoMap<T> map)
+        public virtual void mapEverythingInClass<T>(AutoMap<T> map)
         {
             foreach (var property in typeof(T).GetProperties())
             {
-                if (!property.PropertyType.IsEnum && property.GetIndexParameters().Length == 0)
+                TryToMapProperty(map, property);
+            }
+        }
+
+        protected void TryToMapProperty<T>(AutoMap<T> map, PropertyInfo property)
+        {
+            if (!property.PropertyType.IsEnum && property.GetIndexParameters().Length == 0)
+            {
+                foreach (var rule in _mappingRules)
                 {
-                    foreach (var rule in _mappingRules)
+                    if (rule.MapsProperty(property))
                     {
-                        if (rule.MapsProperty(property))
+                        if (map.PropertiesMapped.Count(p => p.Name == property.Name) == 0)
                         {
-                            if (map.PropertiesMapped.Count(p => p.Name == property.Name) == 0)
-                            {
-                                rule.Map(map, property);
-                                break;
-                            }
+                            rule.Map(map, property);
+                            break;
                         }
                     }
                 }
