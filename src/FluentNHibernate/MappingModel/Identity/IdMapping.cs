@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using NHibernate.Cfg.MappingSchema;
 using System.Collections.Generic;
 
@@ -32,15 +33,17 @@ namespace FluentNHibernate.MappingModel.Identity
             get { return _columns; }
         }
 
+        public PropertyInfo PropertyInfo { get; set; }
+
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessId(this);
 
-            if(Generator != null)
-                visitor.ProcessIdGenerator(Generator);
-            
-            foreach(var column in Columns)
-                visitor.ProcessColumn(column);
+            if (Generator != null)
+                visitor.Visit(Generator);
+
+            foreach (var column in Columns)
+                visitor.Visit(column);
         }
 
         public string Name
@@ -53,5 +56,6 @@ namespace FluentNHibernate.MappingModel.Identity
         {
             get { return _attributes; }
         }
+        
     }
 }

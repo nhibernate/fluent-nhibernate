@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace FluentNHibernate.MappingModel
 {
     public class ColumnMapping : MappingBase
@@ -13,6 +15,8 @@ namespace FluentNHibernate.MappingModel
         {
             visitor.ProcessColumn(this);
         }
+
+        public PropertyInfo PropertyInfo { get; set; }
 
         public AttributeStore<ColumnMapping> Attributes
         {
@@ -67,5 +71,6 @@ namespace FluentNHibernate.MappingModel
             set { _attributes.Set(x => x.Check, value); }
         }
 
+        
     }
 }

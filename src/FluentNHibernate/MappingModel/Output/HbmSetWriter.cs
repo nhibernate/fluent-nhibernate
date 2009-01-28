@@ -44,13 +44,13 @@ namespace FluentNHibernate.MappingModel.Output
             }
         }
 
-        public override void ProcessCollectionContents(ICollectionContentsMapping contentsMapping)
+        public override void Visit(ICollectionContentsMapping contentsMapping)
         {
             object contentsHbm = _contentsWriter.Write(contentsMapping);
             _hbmSet.SetContents(contentsHbm);
         }
 
-        public override void ProcessKey(KeyMapping keyMapping)
+        public override void Visit(KeyMapping keyMapping)
         {
             HbmKey keyHbm = (HbmKey)_keyWriter.Write(keyMapping);
             _hbmSet.key = keyHbm;

@@ -4,12 +4,14 @@ using FluentNHibernate.BackwardCompatibility;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
+using FluentNHibernate.Reflection;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.MappingModel;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Conventions;
 
 namespace FluentNHibernate.Testing.BackwardCompatibility
 {
@@ -66,12 +68,12 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
             ClassMapping mapping = artistMap.GetClassMapping();
 
             PropertyMapping prop = mapping.Properties.First();
-            prop.Name.ShouldEqual("Name");
+            prop.PropertyInfo.ShouldNotBeNull();
             prop.Length.ShouldEqual(50);
             prop.IsNotNullable.ShouldBeTrue();
 
             ICollectionMapping col = mapping.Collections.First();
-            col.Name.ShouldEqual("Albums");
+            col.PropertyInfo.ShouldNotBeNull();
             col.ShouldBeOfType(typeof(SetMapping));
             col.IsInverse.ShouldBeTrue();
         }
@@ -83,15 +85,15 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
             ClassMapping mapping = albumMap.GetClassMapping();
 
             PropertyMapping prop = mapping.Properties.First();
-            prop.Name.ShouldEqual("Title");
+            prop.PropertyInfo.ShouldNotBeNull();
             prop.Length.ShouldEqual(50);
             prop.IsNotNullable.ShouldBeTrue();
 
             ManyToOneMapping reference = mapping.References.First();
-            reference.Name.ShouldEqual("Artist");
+            reference.PropertyInfo.ShouldEqual(ReflectionHelper.GetProperty<Album>(x => x.Artist));
 
             ICollectionMapping col = mapping.Collections.First();
-            col.Name.ShouldEqual("Tracks");
+            col.PropertyInfo.ShouldNotBeNull();
             col.ShouldBeOfType(typeof(SetMapping));
             col.IsInverse.ShouldBeTrue();
         }
@@ -102,16 +104,16 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
             var trackMap = new TrackMap();
             ClassMapping mapping = trackMap.GetClassMapping();
 
-            PropertyMapping nameProp = mapping.Properties.Where(p => p.Name == "Name").FirstOrDefault();
+            PropertyMapping nameProp = mapping.Properties.Where(p => p.PropertyInfo.Name == "Name").FirstOrDefault();
             nameProp.ShouldNotBeNull();
             nameProp.Length.ShouldEqual(50);
             nameProp.IsNotNullable.ShouldBeTrue();
 
-            PropertyMapping numberProp = mapping.Properties.Where(p => p.Name == "TrackNumber").FirstOrDefault();
+            PropertyMapping numberProp = mapping.Properties.Where(p => p.PropertyInfo.Name == "TrackNumber").FirstOrDefault();
             numberProp.ShouldNotBeNull();
 
             ManyToOneMapping reference = mapping.References.First();
-            reference.Name.ShouldEqual("Album");
+            reference.PropertyInfo.ShouldEqual(ReflectionHelper.GetProperty<Track>(x => x.Album));
         }
 
         [Test]
@@ -122,7 +124,10 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
             model.Add(new AlbumMap());
             model.Add(new TrackMap());
 
-            model.BuildHibernateMapping().ShouldBeValidAgainstSchema();
+            model.AddConvention(new NamingConvention());
+            var hibernateMapping = model.BuildHibernateMapping();
+            model.ApplyVisitors(hibernateMapping);
+            hibernateMapping.ShouldBeValidAgainstSchema();
         }
 
         [Test]
@@ -132,6 +137,8 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
             model.Add(new ArtistMap());
             model.Add(new AlbumMap());
             model.Add(new TrackMap());
+
+            model.AddConvention(new NamingConvention());
 
             var cfg = new SQLiteConfiguration()
                 .InMemory()

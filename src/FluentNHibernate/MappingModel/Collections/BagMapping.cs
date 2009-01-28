@@ -11,7 +11,7 @@ namespace FluentNHibernate.MappingModel.Collections
             
         }
 
-        public BagMapping(AttributeStore underlyingStore)
+        protected BagMapping(AttributeStore underlyingStore)
             : base(underlyingStore)
         {
             _attributes = new AttributeStore<BagMapping>(underlyingStore);
@@ -35,31 +35,4 @@ namespace FluentNHibernate.MappingModel.Collections
         }
     }
 
-    //public class BagAttributes : CollectionAttributes
-    //{
-    //    private readonly AttributeStore<BagAttributes> _store;
-
-    //    public BagAttributes()
-    //        : this(new AttributeStore())
-    //    {
-
-    //    }
-
-    //    protected BagAttributes(AttributeStore underlyingStore) : base(underlyingStore)
-    //    {
-    //        _store = new AttributeStore<BagAttributes>(underlyingStore);            
-    //    }
-
-    //    public bool IsSpecified(Expression<Func<BagAttributes, object>> exp)
-    //    {
-    //        return _store.IsSpecified(exp);
-    //    }
-
-    //    public string OrderBy
-    //    {
-    //        get { return _store.Get(x => x.OrderBy); }
-    //        set { _store.Set(x => x.OrderBy, value); }
-    //    }
-
-    //}
 }

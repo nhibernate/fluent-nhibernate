@@ -9,6 +9,4 @@ namespace FluentNHibernate.MappingModel.Output
         object Write(T mappingModel);        
     }    
 
-    //public interface IHbmHibernateMappingWriter : IHbmWriter<HibernateMapping, HbmMapping> {}
-
 }

@@ -33,15 +33,6 @@ namespace FluentNHibernate.MappingModel.Output
             _hbm = _setWriter.Write(setMapping);
         }
 
-        public override void ProcessCollectionContents(ICollectionContentsMapping contentsMapping)
-        {
-            // NOOP
-        }
-
-        public override void ProcessKey(KeyMapping keyMapping)
-        {
-            // NOOP
-        }
 
     }
 }

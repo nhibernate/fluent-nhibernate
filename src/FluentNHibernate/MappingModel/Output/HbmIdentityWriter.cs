@@ -32,14 +32,5 @@ namespace FluentNHibernate.MappingModel.Output
             _hbm = _compositeIdWriter.Write(compositeIdMapping);
         }
 
-        public override void ProcessIdGenerator(IdGeneratorMapping generatorMapping)
-        {
-            // NOOP
-        }
-
-        public override void ProcessColumn(ColumnMapping columnMapping)
-        {
-            // NOOP
-        }
     }
 }

@@ -3,6 +3,7 @@ using FluentNHibernate.BackwardCompatibility;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
+using FluentNHibernate.Reflection;
 using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 
@@ -12,6 +13,16 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
     public class ClassMapTester
     {
         [Test]
+        public void CanCreateClassMap()
+        {
+            var classMap = new ClassMap<Artist>();
+            ClassMapping mapping = classMap.GetClassMapping();
+
+            mapping.Type.ShouldEqual(typeof (Artist));
+               
+        }
+
+        [Test]
         public void CanSpecifyId()
         {
             var classMap = new ClassMap<Artist>();
@@ -20,7 +31,7 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
 
             var id = mapping.Id as IdMapping;
             id.ShouldNotBeNull();
-            id.Name.ShouldEqual("ID");            
+            id.PropertyInfo.ShouldNotBeNull();
         }
 
         [Test]
@@ -32,7 +43,7 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
 
             var property = mapping.Properties.FirstOrDefault();
             property.ShouldNotBeNull();
-            property.Name.ShouldEqual("Name");
+            property.PropertyInfo.ShouldEqual(ReflectionHelper.GetProperty<Artist>(x => x.Name));
         }
 
         [Test]
@@ -44,7 +55,7 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
 
             var collection = mapping.Collections.FirstOrDefault() as BagMapping;
             collection.ShouldNotBeNull();
-            collection.Name.ShouldEqual("Albums");                             
+            collection.PropertyInfo.ShouldEqual(ReflectionHelper.GetProperty<Artist>(x => x.Albums));
         }
 
         [Test]
@@ -56,7 +67,7 @@ namespace FluentNHibernate.Testing.BackwardCompatibility
 
             var reference = mapping.References.FirstOrDefault();
             reference.ShouldNotBeNull();
-            reference.Name.ShouldEqual("Artist");
+            reference.PropertyInfo.ShouldEqual(ReflectionHelper.GetProperty<Album>(x => x.Artist));
         }
     }
 }

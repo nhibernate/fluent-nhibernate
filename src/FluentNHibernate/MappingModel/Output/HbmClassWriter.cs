@@ -38,28 +38,30 @@ namespace FluentNHibernate.MappingModel.Output
         {
             _hbmClass = new HbmClass();
             _hbmClass.name = classMapping.Name;
-        	_hbmClass.table = classMapping.Tablename;
+
+            if(classMapping.Attributes.IsSpecified(x => x.Tablename))
+        	    _hbmClass.table = classMapping.Tablename;
         }
 
-        public override void ProcessIdentity(IIdentityMapping idMapping)
+        public override void Visit(IIdentityMapping idMapping)
         {
             object idHbm = _identityWriter.Write(idMapping);
-            _hbmClass.SetId(idHbm);
+            _hbmClass.SetId(idHbm);            
         }
 
-        public override void ProcessCollection(ICollectionMapping collectionMapping)
+        public override void Visit(ICollectionMapping collectionMapping)
         {            
             object collectionHbm = _collectionWriter.Write(collectionMapping);
             collectionHbm.AddTo(ref _hbmClass.Items);
         }
 
-        public override void ProcessProperty(PropertyMapping propertyMapping)
+        public override void Visit(PropertyMapping propertyMapping)
         {
             object propertyHbm = _propertyWriter.Write(propertyMapping);
             propertyHbm.AddTo(ref _hbmClass.Items);
         }
 
-        public override void ProcessManyToOne(ManyToOneMapping manyToOneMapping)
+        public override void Visit(ManyToOneMapping manyToOneMapping)
         {
             object manyHbm = _manyToOneWriter.Write(manyToOneMapping);
             manyHbm.AddTo(ref _hbmClass.Items);

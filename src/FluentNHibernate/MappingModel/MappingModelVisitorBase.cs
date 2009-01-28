@@ -5,79 +5,132 @@ namespace FluentNHibernate.MappingModel
 {
     public abstract class MappingModelVisitorBase : IMappingModelVisitor
     {
-        public virtual void ProcessIdentity(IIdentityMapping idMapping)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public virtual void ProcessId(IdMapping idMapping)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public virtual void ProcessCompositeId(CompositeIdMapping idMapping)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public virtual void ProcessClass(ClassMapping classMapping)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public virtual void ProcessHibernateMapping(HibernateMapping hibernateMapping)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public virtual void ProcessProperty(PropertyMapping propertyMapping)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public virtual void ProcessCollection(ICollectionMapping collectionMapping)
-        {
-            throw new System.NotImplementedException();
+            
         }
 
         public virtual void ProcessManyToOne(ManyToOneMapping manyToOneMapping)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public virtual void ProcessKey(KeyMapping keyMapping)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public virtual void ProcessIdGenerator(IdGeneratorMapping generatorMapping)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public virtual void ProcessColumn(ColumnMapping columnMapping)
         {
-            throw new System.NotImplementedException();
+            
+        }        
+
+        #region Collections
+        public virtual void ProcessCollection(ICollectionMapping collectionMapping)
+        {
+
         }
 
         public virtual void ProcessBag(BagMapping bagMapping)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public virtual void ProcessOneToMany(OneToManyMapping oneToManyMapping)
-        {
-            throw new System.NotImplementedException();
+            ProcessCollection(bagMapping);
         }
 
         public virtual void ProcessSet(SetMapping setMapping)
         {
-            throw new System.NotImplementedException();
-        }
+            ProcessCollection(setMapping);
+        }        
+        #endregion
 
+        #region Collection Contents
         public virtual void ProcessCollectionContents(ICollectionContentsMapping contentsMapping)
         {
-            throw new System.NotImplementedException();
+
+        }
+
+        public virtual void ProcessOneToMany(OneToManyMapping oneToManyMapping)
+        {
+            ProcessCollectionContents(oneToManyMapping);
+        }
+
+        #endregion
+
+        #region Identity
+        public virtual void ProcessIdentity(IIdentityMapping idMapping)
+        {
+
+        }
+
+        public virtual void ProcessId(IdMapping idMapping)
+        {
+            ProcessIdentity(idMapping);
+        }
+
+        public virtual void ProcessCompositeId(CompositeIdMapping idMapping)
+        {
+            ProcessIdentity(idMapping);
+        } 
+        #endregion
+
+
+        public virtual void Visit(ClassMapping classMapping)
+        {
+            classMapping.AcceptVisitor(this);
+        }
+
+        public virtual void Visit(IIdentityMapping identityMapping)
+        {
+            identityMapping.AcceptVisitor(this);
+        }
+
+        public virtual void Visit(ICollectionMapping collectionMapping)
+        {
+            collectionMapping.AcceptVisitor(this);
+        }
+
+        public virtual void Visit(PropertyMapping propertyMapping)
+        {
+            propertyMapping.AcceptVisitor(this);
+        }
+
+        public virtual void Visit(ManyToOneMapping manyToOneMapping)
+        {
+            manyToOneMapping.AcceptVisitor(this);
+        }
+
+        public virtual void Visit(KeyMapping keyMapping)
+        {
+            keyMapping.AcceptVisitor(this);
+        }
+
+        public virtual void Visit(ICollectionContentsMapping contentsMapping)
+        {
+            contentsMapping.AcceptVisitor(this);
+        }
+
+        public virtual void Visit(IdGeneratorMapping generatorMapping)
+        {
+            generatorMapping.AcceptVisitor(this);
+        }
+
+        public virtual void Visit(ColumnMapping columnMapping)
+        {
+            columnMapping.AcceptVisitor(this);
         }
     }
 }

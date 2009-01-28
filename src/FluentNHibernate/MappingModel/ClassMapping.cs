@@ -8,7 +8,14 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class ClassMapping : MappingBase
+
+    public interface INameable
+    {
+        bool IsNameSpecified { get;}        
+        string Name { get; }
+    }
+
+    public class ClassMapping : MappingBase, INameable
     {
         private readonly AttributeStore<ClassMapping> _attributes;
 
@@ -25,6 +32,7 @@ namespace FluentNHibernate.MappingModel
         }
 
         public IIdentityMapping Id { get; set; }
+        public Type Type { get; set; }
 
         public IEnumerable<PropertyMapping> Properties
         {
@@ -58,19 +66,19 @@ namespace FluentNHibernate.MappingModel
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
-            visitor.ProcessClass(this);        
-    
-            if(Id != null)
-                visitor.ProcessIdentity(Id);
+            visitor.ProcessClass(this);
+
+            if (Id != null)
+                visitor.Visit(Id);
 
             foreach (var collection in Collections)
-                visitor.ProcessCollection(collection);
+                visitor.Visit(collection);
 
             foreach (var property in Properties)
-                visitor.ProcessProperty(property);
+                visitor.Visit(property);
 
             foreach (var reference in References)
-                visitor.ProcessManyToOne(reference);
+                visitor.Visit(reference);
         }
 
         public string Name
@@ -79,10 +87,20 @@ namespace FluentNHibernate.MappingModel
             set { _attributes.Set(x => x.Name, value); }
         }
 
+        public bool IsNameSpecified
+        {
+            get { return _attributes.IsSpecified(x => x.Name); }
+        }
+
     	public string Tablename
     	{
 			get { return _attributes.Get(x => x.Tablename); }
 			set { _attributes.Set(x => x.Tablename,value); }
     	}
+
+        public AttributeStore<ClassMapping> Attributes
+        {
+            get { return _attributes; }
+        }
     }
 }

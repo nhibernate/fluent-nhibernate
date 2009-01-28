@@ -30,7 +30,7 @@ namespace FluentNHibernate.MappingModel.Output
             _hbm.defaultlazy = hibernateMapping.DefaultLazy;
         }
 
-        public override void ProcessClass(ClassMapping classMapping)
+        public override void Visit(ClassMapping classMapping)
         {
             object hbmClass = _classWriter.Write(classMapping);
             hbmClass.AddTo(ref _hbm.Items);

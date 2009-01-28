@@ -17,7 +17,7 @@ namespace FluentNHibernate.BackwardCompatibility
         public ClassMap()
         {
             _classMapping = new ClassMapping();
-            _classMapping.Name = typeof(T).AssemblyQualifiedName;
+            _classMapping.Type = typeof (T);
             _deferredCollections = new List<IDeferredCollectionMapping>();
         }
 
@@ -33,19 +33,19 @@ namespace FluentNHibernate.BackwardCompatibility
 
         public void Id(Expression<Func<T, object>> expression)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression); 
+            PropertyInfo info = ReflectionHelper.GetProperty(expression);
 
-            _classMapping.Id = new IdMapping(new ColumnMapping {Name = property.Name})
-                                   {
-                                       Name = property.Name,
+            _classMapping.Id = new IdMapping(new ColumnMapping { PropertyInfo = info})
+                                   {                                       
+                                       PropertyInfo = info,
                                        Generator = IdGeneratorMapping.NativeGenerator
                                    };
         }
 
         public PropertyMap Map(Expression<Func<T, object>> expression)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            var propertyMapping = new PropertyMapping {Name = property.Name};
+            PropertyInfo info = ReflectionHelper.GetProperty(expression);
+            var propertyMapping = new PropertyMapping {PropertyInfo = info};
 
             _classMapping.AddProperty(propertyMapping);
             return new PropertyMap(propertyMapping);
@@ -53,18 +53,18 @@ namespace FluentNHibernate.BackwardCompatibility
 
         public OneToManyPart<T, CHILD> HasMany<CHILD>(Expression<Func<T, object>> expression)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            PropertyInfo info = ReflectionHelper.GetProperty(expression);
 
-            var part = new OneToManyPart<T, CHILD>(property);
+            var part = new OneToManyPart<T, CHILD>(info);
             _deferredCollections.Add(part);
             return part;
         }
 
         public ManyToOnePart References(Expression<Func<T, object>> expression)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            PropertyInfo info = ReflectionHelper.GetProperty(expression);
 
-            var mapping = new ManyToOneMapping {Name = property.Name};
+            var mapping = new ManyToOneMapping {PropertyInfo = info};
             _classMapping.AddReference(mapping);
             return new ManyToOnePart(mapping);
         }

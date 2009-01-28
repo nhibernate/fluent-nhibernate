@@ -78,7 +78,7 @@ namespace FluentNHibernate.Testing.MappingModel
             classMap.Id = new IdMapping();
 
             var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
-            visitor.Expect(x => x.ProcessIdentity(classMap.Id));
+            visitor.Expect(x => x.Visit(classMap.Id));
 
             classMap.AcceptVisitor(visitor);
 
@@ -92,7 +92,7 @@ namespace FluentNHibernate.Testing.MappingModel
             classMap.Id = null;
 
             var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();            
-            visitor.Expect(x => x.ProcessIdentity(classMap.Id)).Repeat.Never();            
+            visitor.Expect(x => x.Visit(classMap.Id)).Repeat.Never();            
             
             classMap.AcceptVisitor(visitor);
             

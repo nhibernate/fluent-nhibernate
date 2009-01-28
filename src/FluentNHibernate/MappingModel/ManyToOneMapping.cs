@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel
@@ -17,6 +18,8 @@ namespace FluentNHibernate.MappingModel
             visitor.ProcessManyToOne(this);
         }
 
+        public PropertyInfo PropertyInfo { get; set; }
+
         public string Name
         {
             get { return _attributes.Get(x => x.Name); }
@@ -33,5 +36,6 @@ namespace FluentNHibernate.MappingModel
         {
             get { return _attributes; }
         }
+        
     }
 }

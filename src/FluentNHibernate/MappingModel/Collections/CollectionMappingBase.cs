@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -15,12 +16,14 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
-            if(Key != null)
-                visitor.ProcessKey(Key);
+            if (Key != null)
+                visitor.Visit(Key);
 
             if (Contents != null)
-                visitor.ProcessCollectionContents(Contents);
+                visitor.Visit(Contents);
         }
+
+        public PropertyInfo PropertyInfo { get; set; }
 
         CollectionAttributes ICollectionMapping.Attributes
         {

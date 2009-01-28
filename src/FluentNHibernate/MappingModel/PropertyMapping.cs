@@ -1,5 +1,6 @@
 using System;
 using NHibernate.Cfg.MappingSchema;
+using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -10,12 +11,14 @@ namespace FluentNHibernate.MappingModel
         public PropertyMapping()
         {
             _attributes = new AttributeStore<PropertyMapping>();   
-        }
+        }        
        
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessProperty(this);
         }
+
+        public PropertyInfo PropertyInfo { get; set; }
 
         public AttributeStore<PropertyMapping> Attributes
         {

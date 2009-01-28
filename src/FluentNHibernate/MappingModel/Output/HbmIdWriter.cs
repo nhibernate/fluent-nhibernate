@@ -34,13 +34,13 @@ namespace FluentNHibernate.MappingModel.Output
                 _hbmId.name = idMapping.Name;
         }
 
-        public override void ProcessColumn(ColumnMapping columnMapping)
+        public override void Visit(ColumnMapping columnMapping)
         {
             var columnHbm = (HbmColumn) _columnWriter.Write(columnMapping);
             columnHbm.AddTo(ref _hbmId.column);
         }
 
-        public override void ProcessIdGenerator(IdGeneratorMapping generatorMapping)
+        public override void Visit(IdGeneratorMapping generatorMapping)
         {
             var generatorHbm = (HbmGenerator) _generatorWriter.Write(generatorMapping);
             _hbmId.generator = generatorHbm;

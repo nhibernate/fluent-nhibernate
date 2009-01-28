@@ -33,7 +33,7 @@ namespace FluentNHibernate.MappingModel
             visitor.ProcessHibernateMapping(this);
 
             foreach (var classMapping in Classes)
-                visitor.ProcessClass(classMapping);
+                visitor.Visit(classMapping);
         }
 
         public bool DefaultLazy

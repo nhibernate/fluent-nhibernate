@@ -42,7 +42,7 @@ namespace FluentNHibernate.Testing.MappingModel
             hibMap.AddClass(classMap);
 
             var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
-            visitor.Expect(x => x.ProcessClass(classMap));
+            visitor.Expect(x => x.Visit(classMap));
 
             hibMap.AcceptVisitor(visitor);
 
