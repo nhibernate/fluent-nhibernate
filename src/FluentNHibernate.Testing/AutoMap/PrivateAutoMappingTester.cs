@@ -34,40 +34,12 @@ namespace FluentNHibernate.Testing.AutoMap
             }
         }
 
-        private static readonly BindingFlags AllInstanceProperties = BindingFlags.Instance | BindingFlags.Public |
-                                                                     BindingFlags.NonPublic;
-
-        public class PrivateAutomapper : AutoMapper
-        {
-            private readonly Conventions _conventions;
-
-            public PrivateAutomapper(Conventions conventions) : base(conventions)
-            {
-                _conventions = conventions;
-            }
-
-            public override void mapEverythingInClass<T>(AutoMap<T> map)
-            {
-                base.mapEverythingInClass<T>(map);
-
-                var rule = _conventions.FindMappablePrivateProperties;
-                if (rule == null)
-                    return;
-
-                foreach (var property in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
-                {
-                    if (rule(property))
-                        TryToMapProperty(map, property);
-                }
-            }
-        }
-
         [Test]
         public void WillMapPrivatePropertyMatchingTheConvention()
         {
             var conventions = new Conventions();
             conventions.FindMappablePrivateProperties = p => p.Name.StartsWith("_");
-            var autoMapper = new PrivateAutomapper(conventions);
+            var autoMapper = new PrivateAutoMapper(conventions);
             var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
             
             Assert.Contains(ReflectionHelper.GetProperty(ExampleClass.PrivateProperties.Property), (ICollection) map.PropertiesMapped);
@@ -79,7 +51,7 @@ namespace FluentNHibernate.Testing.AutoMap
         {
             var conventions = new Conventions();
             conventions.FindMappablePrivateProperties = p => p.Name.StartsWith("asdf");
-            var autoMapper = new PrivateAutomapper(conventions);
+            var autoMapper = new PrivateAutoMapper(conventions);
             var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
             map.PropertiesMapped.ShouldBeEmpty();
         }
@@ -90,7 +62,7 @@ namespace FluentNHibernate.Testing.AutoMap
             var conventions = new Conventions();
             conventions.FindMappablePrivateProperties = p => p.Name.StartsWith("_");
             
-            var model = new AutoPersistenceModel(new PrivateAutomapper(conventions));
+            var model = new AutoPersistenceModel(new PrivateAutoMapper(conventions));
             model.AutoMap<ExampleClass>();
 
             IClassMap map = model.FindMapping<ExampleClass>();
@@ -103,11 +75,13 @@ namespace FluentNHibernate.Testing.AutoMap
         {
             var conventions = new Conventions();
             conventions.FindMappablePrivateProperties = p => p.Name.StartsWith("_");
-            var autoMapper = new PrivateAutomapper(conventions);
+            var autoMapper = new PrivateAutoMapper(conventions);
             var map = autoMapper.Map<ExampleParent>(new List<AutoMapType>());
 
             Assert.Contains(ReflectionHelper.GetProperty(ExampleParent.PrivateProperties.Children), (ICollection)map.PropertiesMapped);
         }
 
     }
+
+    
 }
