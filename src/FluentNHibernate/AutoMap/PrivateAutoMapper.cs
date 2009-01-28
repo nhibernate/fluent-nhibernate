@@ -18,13 +18,13 @@ namespace FluentNHibernate.AutoMap
 
         public override void mapEverythingInClass<T>(AutoMap<T> map)
         {
-            base.mapEverythingInClass<T>(map);
+            // This will ONLY map private properties. Do not call base.
 
             var rule = _conventions.FindMappablePrivateProperties;
             if (rule == null)
-                return;
+                throw new InvalidOperationException("The FindMappablePrivateProperties convention must be supplied to use the PrivateAutoMapper. ");
 
-            foreach (var property in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+            foreach (var property in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.NonPublic))
             {
                 if (rule(property))
                     TryToMapProperty(map, property);
