@@ -30,6 +30,7 @@ namespace FluentNHibernate
         public Func<Type, string> GetForeignKeyNameOfParent = type => type.Name + "_id";
         public Func<MethodInfo, string> GetReadOnlyCollectionBackingFieldName = method => method.Name.Replace("Get", "");
         public Func<PropertyInfo, bool> FindIdentity = p => p.Name == "Id";
+        public Func<PropertyInfo, bool> FindMappablePrivateProperties = null;
         public Action<IIdentityPart> IdConvention = id => { };
         public Action<IOneToManyPart> OneToManyConvention = m => { };
         public Action<IMappingPart> ManyToOneConvention = m => { };

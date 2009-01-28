@@ -136,6 +136,11 @@ namespace FluentNHibernate.AutoMap
             autoMapper = new AutoMapper(Conventions);
         }
 
+        public AutoPersistenceModel(AutoMapper customAutomapper)
+        {
+            autoMapper = customAutomapper;
+        }
+
         public AutoPersistenceModel AutoMap<T>()
         {
             addMapping(autoMapper.Map<T>(mappingTypes));
