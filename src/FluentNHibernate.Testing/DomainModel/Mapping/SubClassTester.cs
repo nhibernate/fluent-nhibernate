@@ -44,6 +44,34 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void SubClassLazy()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>("red", sc =>
+                        {
+                            sc.Map(x => x.Name);
+                            sc.LazyLoad();
+                        }))
+                .Element("//subclass").HasAttribute("lazy", "true");
+        }
+
+        [Test]
+        public void SubClassNotLazy()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>("red", sc =>
+                        {
+                            sc.Map(x => x.Name);
+                            sc.Not.LazyLoad();
+                        }))
+                .Element("//subclass").HasAttribute("lazy", "false");
+        }
+
+        [Test]
         public void SubclassShouldNotHaveDiscriminator()
         {
             new MappingTester<MappedObject>()

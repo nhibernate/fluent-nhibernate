@@ -84,7 +84,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<MappedObject>()
                 .ForMapping(map => 
                     map.References(x => x.Parent)
-                      .Not.Null()
+                      .Not.Nullable()
                 )
                 .Element("class/many-to-one")
                     .HasAttribute("not-null", "true");                    
@@ -96,7 +96,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
                     map.References(x => x.Parent)
-                      .Null()
+                      .Nullable()
                 )
                 .Element("class/many-to-one")
                     .HasAttribute("not-null", "false");

@@ -9,6 +9,7 @@ namespace FluentNHibernate.Mapping
         private readonly TDiscriminator _discriminator;
         private readonly Cache<string, string> attributes = new Cache<string, string>();
         private readonly DiscriminatorPart<TDiscriminator, TParent> parent;
+        private bool nextBool = true;
 
         public SubClassPart(DiscriminatorPart<TDiscriminator, TParent> parent)
         {
@@ -86,6 +87,29 @@ namespace FluentNHibernate.Mapping
             AddPart(subclass);
 
             return parent;
+        }
+
+        /// <summary>
+        /// Sets whether this subclass is lazy loaded
+        /// </summary>
+        /// <returns></returns>
+        public SubClassPart<TDiscriminator, TParent, TSubClass> LazyLoad()
+        {
+            attributes.Store("lazy", nextBool.ToString().ToLowerInvariant());
+            nextBool = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Inverts the next boolean
+        /// </summary>
+        public SubClassPart<TDiscriminator, TParent, TSubClass> Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
         }
     }
 }
