@@ -313,5 +313,92 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/bag")
                 .HasAttribute("name", "OtherChildren");
         }
+
+        [Test]
+        public void Can_specify_where_fluently_int_equals_int()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m =>
+                    m.HasMany<ChildObject>(x => x.ListOfChildren)
+                        .Where(x => x.Position == 1)
+                )
+               .Element("class/bag").HasAttribute("where", "Position = 1");
+        }
+
+        [Test]
+        public void Can_specify_where_fluently_string_equals_string()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m =>
+                    m.HasMany<ChildObject>(x => x.ListOfChildren)
+                        .Where(x => x.Name == "1")
+                )
+                .Element("class/bag").HasAttribute("where", "Name = '1'");
+        }
+
+        [Test]
+        public void Can_specify_where_fluently_NOT_equals()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m =>
+                    m.HasMany<ChildObject>(x => x.ListOfChildren)
+                        .Where(x => x.Name != "1")
+                )
+                .Element("class/bag").HasAttribute("where", "Name != '1'");
+        }
+
+        [Test]
+        public void Can_specify_where_fluently_greater()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m =>
+                    m.HasMany<ChildObject>(x => x.ListOfChildren)
+                        .Where(x => x.Position > 1)
+                )
+                .Element("class/bag").HasAttribute("where", "Position > 1");
+        }
+
+        [Test]
+        public void Can_specify_where_fluently_less()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m =>
+                    m.HasMany<ChildObject>(x => x.ListOfChildren)
+                        .Where(x => x.Position < 1)
+                )
+                .Element("class/bag").HasAttribute("where", "Position < 1");
+        }
+
+        public void Can_specify_where_fluently_greater_or_equal()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m =>
+                    m.HasMany<ChildObject>(x => x.ListOfChildren)
+                        .Where(x => x.Position >= 1)
+                )
+                .Element("class/bag").HasAttribute("where", "Position >= 1");
+        }
+
+        [Test]
+        public void Can_specify_where_fluently_less_or_equal()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m =>
+                    m.HasMany<ChildObject>(x => x.ListOfChildren)
+                        .Where(x => x.Position <= 1)
+                )
+                .Element("class/bag").HasAttribute("where", "Position <= 1");
+        }
+
+        [Test]
+        public void Can_specify_where_as_string()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m =>
+                    m.HasMany<ChildObject>(x => x.ListOfChildren)
+                        .Where("some where clause")
+                )
+                .Element("class/bag").HasAttribute("where", "some where clause");
+        }
     }
 }

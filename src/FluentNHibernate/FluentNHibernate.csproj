@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1C988DFB-1EC5-484E-87D9-1D3C775BA435}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -89,6 +89,7 @@
     <Compile Include="Mapping\Attributes.cs" />
     <Compile Include="Mapping\CachePart.cs" />
     <Compile Include="Mapping\DynamicComponentPart.cs" />
+    <Compile Include="ExpressionToSql.cs" />
     <Compile Include="Mapping\IIdentityPart.cs" />
     <Compile Include="Mapping\ImportPart.cs" />
     <Compile Include="Mapping\IOneToManyPart.cs" />

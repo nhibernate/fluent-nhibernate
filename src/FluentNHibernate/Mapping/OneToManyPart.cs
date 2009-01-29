@@ -293,6 +293,27 @@ namespace FluentNHibernate.Mapping
             get { return access; }
         }
 
+        /// <summary>
+        /// Sets the where clause for this one-to-many relationship.
+        /// Note: This only supports simple cases, use the string overload for more complex clauses.
+        /// </summary>
+        public OneToManyPart<PARENT, CHILD> Where(Expression<Func<CHILD, bool>> where)
+        {
+            var sql = ExpressionToSql.Convert(where);
+
+            return Where(sql);
+        }
+
+        /// <summary>
+        /// Sets the where clause for this one-to-many relationship.
+        /// </summary>
+        public OneToManyPart<PARENT, CHILD> Where(string where)
+        {
+            _properties.Store("where", where);
+
+            return this;
+        }
+
         public class IndexMapping
         {
             private readonly Cache<string, string> _properties = new Cache<string, string>();

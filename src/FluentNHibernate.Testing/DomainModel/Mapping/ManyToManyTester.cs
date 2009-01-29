@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FluentNHibernate.Mapping;
 using Iesi.Collections.Generic;
 using NUnit.Framework;
 
