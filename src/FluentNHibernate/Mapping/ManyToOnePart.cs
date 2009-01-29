@@ -34,6 +34,14 @@ namespace FluentNHibernate.Mapping
 			}
 		}
 
+        public NotFoundExpression<ManyToOnePart<OTHER>> NotFound
+        {
+            get
+            {
+                return new NotFoundExpression<ManyToOnePart<OTHER>>( this, _properties );
+            }
+        }
+
         public ManyToOnePart<OTHER> PropertyRef(Expression<Func<OTHER, object>> propRefExpression)
         {
             var prop = ReflectionHelper.GetProperty(propRefExpression);

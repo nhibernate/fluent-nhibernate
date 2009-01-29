@@ -95,6 +95,7 @@
     <Compile Include="Mapping\IOneToManyPart.cs" />
     <Compile Include="Mapping\JoinPart.cs" />
     <Compile Include="Mapping\MappingPartComparer.cs" />
+    <Compile Include="Mapping\NotFoundExpression.cs" />
     <Compile Include="Mapping\OneToOnePart.cs" />
     <Compile Include="Mapping\PartPosition.cs" />
     <Compile Include="MissingConstructorException.cs" />
