@@ -17,10 +17,20 @@ namespace FluentNHibernate.Reflection
             return getMemberExpression(expression, false) != null;
         }
 
-        public static PropertyInfo GetProperty<MODEL>(Expression<Func<MODEL, object>> expression)
+        public static MemberInfo GetMember<MODEL>(Expression<Func<MODEL, object>> expression)
         {
             MemberExpression memberExpression = getMemberExpression(expression);
-            return (PropertyInfo) memberExpression.Member;
+            return memberExpression.Member;
+        }
+
+        public static FieldInfo GetField<MODEL>(Expression<Func<MODEL, object>> expression)
+        {
+            return (FieldInfo)GetMember(expression);
+        }
+
+        public static PropertyInfo GetProperty<MODEL>(Expression<Func<MODEL, object>> expression)
+        {
+            return (PropertyInfo) GetMember(expression);
         }
 
         public static PropertyInfo GetProperty<MODEL, T>(Expression<Func<MODEL, T>> expression)
@@ -110,6 +120,7 @@ namespace FluentNHibernate.Reflection
             MethodCallExpression methodCall = (MethodCallExpression)expression.Body;
             return methodCall.Method;
         }
+
     }
 
     public static class InvocationHelper

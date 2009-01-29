@@ -3,7 +3,7 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public interface ICollectionMapping : IMappingBase
+    public interface ICollectionMapping : IMappingBase, INameable
     {
         bool IsInverse { get; }
         bool IsLazy { get; }

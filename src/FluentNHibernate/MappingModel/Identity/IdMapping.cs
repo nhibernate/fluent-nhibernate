@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
-    public class IdMapping : MappingBase, IIdentityMapping
+    public class IdMapping : MappingBase, IIdentityMapping, INameable
     {
         private readonly AttributeStore<IdMapping> _attributes;
         private readonly IList<ColumnMapping> _columns;
@@ -44,6 +44,11 @@ namespace FluentNHibernate.MappingModel.Identity
 
             foreach (var column in Columns)
                 visitor.Visit(column);
+        }
+
+        public bool IsNameSpecified
+        {
+            get { return Attributes.IsSpecified(x => x.Name); }
         }
 
         public string Name

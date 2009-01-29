@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class PropertyMapping : MappingBase
+    public class PropertyMapping : MappingBase, INameable
     {
         private readonly AttributeStore<PropertyMapping> _attributes;        
 
@@ -23,6 +23,11 @@ namespace FluentNHibernate.MappingModel
         public AttributeStore<PropertyMapping> Attributes
         {
             get { return _attributes; }
+        }
+
+        public bool IsNameSpecified
+        {
+            get { return Attributes.IsSpecified(x => x.Name); }
         }
 
         public string Name

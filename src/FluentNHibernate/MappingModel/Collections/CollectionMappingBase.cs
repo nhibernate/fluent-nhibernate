@@ -42,6 +42,11 @@ namespace FluentNHibernate.MappingModel.Collections
             set { _attributes.IsInverse = value; }
         }
 
+        public bool IsNameSpecified
+        {
+            get { return _attributes.IsSpecified(x => x.Name); }
+        }
+
         public string Name
         {
             get { return _attributes.Name; }

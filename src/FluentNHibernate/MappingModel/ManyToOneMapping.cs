@@ -4,7 +4,7 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class ManyToOneMapping : MappingBase
+    public class ManyToOneMapping : MappingBase, INameable
     {
         private readonly AttributeStore<ManyToOneMapping> _attributes;
 
@@ -19,6 +19,11 @@ namespace FluentNHibernate.MappingModel
         }
 
         public PropertyInfo PropertyInfo { get; set; }
+
+        public bool IsNameSpecified
+        {
+            get { return Attributes.IsSpecified(x => x.Name); }
+        }
 
         public string Name
         {

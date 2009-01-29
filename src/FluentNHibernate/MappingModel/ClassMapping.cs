@@ -8,13 +8,6 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel
 {
-
-    public interface INameable
-    {
-        bool IsNameSpecified { get;}        
-        string Name { get; }
-    }
-
     public class ClassMapping : MappingBase, INameable
     {
         private readonly AttributeStore<ClassMapping> _attributes;

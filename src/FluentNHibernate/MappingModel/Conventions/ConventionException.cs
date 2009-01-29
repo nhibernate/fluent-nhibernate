@@ -9,22 +9,22 @@ namespace FluentNHibernate.MappingModel.Conventions
     [Serializable]
     public class ConventionException : Exception
     {
-        public ConventionException()
-        {
-        }
+        private readonly object _conventionTarget;
 
-        public ConventionException(string message) : base(message)
+        public ConventionException(string message, object conventionTarget) : base(message)
         {
-        }
-
-        public ConventionException(string message, Exception inner) : base(message, inner)
-        {
+            _conventionTarget = conventionTarget;
         }
 
         protected ConventionException(
             SerializationInfo info,
             StreamingContext context) : base(info, context)
         {
+        }
+
+        public object ConventionTarget
+        {
+            get { return _conventionTarget; }
         }
     }
 }
