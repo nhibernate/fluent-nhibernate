@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using FluentNHibernate.AutoMap.TestFixtures;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
@@ -117,10 +119,24 @@ namespace FluentNHibernate.Testing.DomainModel
                 .ForMapping(map => map.Version(Reveal.Property<StringTarget>("PrivateObject")))
                 .Element("class/version").HasAttribute("name", "PrivateObject");
         }
+
+        [Test]
+        public void Can_reveal_an_int_property()
+        {
+            Reveal.Property<StringTarget>("IntProperty");
+        }
+
+        [Test]
+        public void Can_reveal_a_Double_property()
+        {
+            Reveal.Property<StringTarget>("DoubleProperty");
+        }
     }
 
     public class StringTarget
     {
+        private Double DoubleProperty { get; set; }
+        private int IntProperty { get; set; }
         private string PrivateProperty { get; set; }
         protected string ProtectedProperty { get; set; }
         protected string PublicProperty { get; set; }

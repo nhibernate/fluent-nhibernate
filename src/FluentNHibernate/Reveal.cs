@@ -38,9 +38,12 @@ namespace FluentNHibernate
                 throw new UnknownPropertyException(type, propertyName);
 
             var param = Expression.Parameter(type, "x");
-            var selector = Expression.Property(param, property);
+            Expression expression = Expression.Property(param, property);
 
-            return (Expression<Func<TEntity, TReturn>>)Expression.Lambda(typeof(Func<TEntity, TReturn>), selector, param);
+            if (property.PropertyType.IsValueType)
+                expression = Expression.Convert(expression, typeof(object));
+
+            return (Expression<Func<TEntity, TReturn>>)Expression.Lambda(typeof(Func<TEntity, TReturn>), expression, param);
         }
     }
 }
