@@ -46,9 +46,18 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void Many_to_one_unique_should_render_unique_attribute()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map => map.References(x => x.Parent).WithUniqueConstraint())
+                .ForMapping(map => map.References(x => x.Parent).Unique())
                 .Element("class/many-to-one")
                     .HasAttribute("unique", "true");
+        }
+
+        [Test]
+        public void Many_to_one_unique_should_render_unique_attribute_false()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map => map.References(x => x.Parent).Not.Unique())
+                .Element("class/many-to-one")
+                    .HasAttribute("unique", "false");
         }
 
         [Test]
@@ -61,15 +70,36 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void Many_to_one_lazy_load_should_set_the_proxy_value_on_the_lazy_attribute_false()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map => map.References(x => x.Parent).Not.LazyLoad())
+                .Element("class/many-to-one")
+                    .HasAttribute("lazy", "false");
+        }
+
+        [Test]
         public void Many_to_one_reference_can_be_set_as_not_nullable()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map => 
                     map.References(x => x.Parent)
-                      .CanNotBeNull()
+                      .Not.Null()
                 )
                 .Element("class/many-to-one")
                     .HasAttribute("not-null", "true");                    
+        }
+
+        [Test]
+        public void Many_to_one_reference_can_be_set_as_nullable()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.References(x => x.Parent)
+                      .Null()
+                )
+                .Element("class/many-to-one")
+                    .HasAttribute("not-null", "false");
         }
 
         [Test]

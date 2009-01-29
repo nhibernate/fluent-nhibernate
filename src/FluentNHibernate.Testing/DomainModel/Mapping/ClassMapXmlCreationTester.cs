@@ -126,7 +126,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AdvancedOneToManyMapping()
         {
             var map = new ClassMap<MappedObject>();
-            map.HasMany<ChildObject>(x => x.Children).LazyLoad().IsInverse();
+            map.HasMany<ChildObject>(x => x.Children).LazyLoad().Inverse();
 
             document = map.CreateMapping(new MappingVisitor());
 
@@ -138,10 +138,27 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void AdvancedOneToManyMapping_NotLazy_NotInverse()
+        {
+            var map = new ClassMap<MappedObject>();
+            map.HasMany<ChildObject>(x => x.Children)
+                .Not.LazyLoad()
+                .Not.Inverse();
+
+            document = map.CreateMapping(new MappingVisitor());
+
+            var element =
+                (XmlElement)document.DocumentElement.SelectSingleNode("class/bag[@name='Children']");
+
+            element.AttributeShouldEqual("lazy", "false");
+            element.AttributeShouldEqual("inverse", "false");
+        }
+
+        [Test]
         public void AdvancedManyToManyMapping()
         {
             var map = new ClassMap<MappedObject>();
-            map.HasManyToMany<ChildObject>(x => x.Children).LazyLoad().IsInverse();
+            map.HasManyToMany<ChildObject>(x => x.Children).LazyLoad().Inverse();
 
             document = map.CreateMapping(new MappingVisitor());
 
@@ -150,6 +167,23 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             element.AttributeShouldEqual("lazy", "true");
             element.AttributeShouldEqual("inverse", "true");
+        }
+
+        [Test]
+        public void AdvancedManyToManyMapping_NotLazy_NotInverse()
+        {
+            var map = new ClassMap<MappedObject>();
+            map.HasManyToMany<ChildObject>(x => x.Children)
+                .Not.LazyLoad()
+                .Not.Inverse();
+
+            document = map.CreateMapping(new MappingVisitor());
+
+            var element =
+                (XmlElement)document.DocumentElement.SelectSingleNode("class/bag[@name='Children']");
+
+            element.AttributeShouldEqual("lazy", "false");
+            element.AttributeShouldEqual("inverse", "false");
         }
 
         [Test]
@@ -233,8 +267,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanOverrideNotLazyLoad()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.NotLazyLoaded())
+                .ForMapping(m => m.Not.LazyLoad())
                 .Element("class").HasAttribute("lazy", "false");
+        }
+
+        [Test] // stupid, I know but somebody'll try it
+        public void DoubleNotWorksCorrectly()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Not.Not.LazyLoad())
+                .Element("class").HasAttribute("lazy", "true");
         }
 
         [Test]

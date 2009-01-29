@@ -24,6 +24,7 @@ namespace FluentNHibernate.Mapping
         private readonly IList<ImportPart> imports = new List<ImportPart>();
         private string assemblyName;
         private string namespaceName;
+        private bool nextBool = true;
 
         public ClassMap()
         {
@@ -231,10 +232,10 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the hibernate-mapping auto-import for this class.
         /// </summary>
-        /// <param name="autoImport">Auto-import value</param>
-        public void AutoImport(bool autoImport)
+        public void AutoImport()
         {
-            SetHibernateMappingAttribute("auto-import", autoImport);
+            SetHibernateMappingAttribute("auto-import", nextBool);
+            nextBool = true;
         }
 
         /// <summary>
@@ -300,19 +301,24 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
+        /// Inverse next boolean
+        /// </summary>
+        public ClassMap<T> Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
+        }
+
+        /// <summary>
         /// Sets this entity to be lazy-loaded (overrides the default lazy load configuration).
         /// </summary>
         public void LazyLoad()
         {
-            attributes.Store("lazy", "true");
-        }
-
-        /// <summary>
-        /// Sets this entity to not be lazy-loaded (overrides the default lazy load configuration).
-        /// </summary>
-        public void NotLazyLoaded()
-        {
-            attributes.Store("lazy", "false");
+            attributes.Store("lazy", nextBool.ToString().ToLowerInvariant());
+            nextBool = true;
         }
 
         /// <summary>

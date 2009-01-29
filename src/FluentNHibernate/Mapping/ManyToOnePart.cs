@@ -18,6 +18,7 @@ namespace FluentNHibernate.Mapping
         private string _columnName;
         private readonly AccessStrategyBuilder<ManyToOnePart<OTHER>> access;
         private readonly IList<string> _columns = new List<string>();
+        private bool nextBool = true;
 
         public ManyToOnePart(PropertyInfo property) 
         {
@@ -50,15 +51,16 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public ManyToOnePart<OTHER> WithUniqueConstraint()
+        public ManyToOnePart<OTHER> Unique()
         {
-            _properties.Store("unique", "true");
+            _properties.Store("unique", nextBool.ToString().ToLowerInvariant());
+            nextBool = true;
             return this;
         }
 
         public ManyToOnePart<OTHER> LazyLoad()
         {
-            _properties.Store("lazy", "proxy");
+            _properties.Store("lazy", nextBool ? "proxy" : "false");
             return this;
         }
 		
@@ -161,9 +163,9 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.Anywhere; }
         }
 
-        public ManyToOnePart<OTHER> CanNotBeNull()
+        public ManyToOnePart<OTHER> Nullable()
         {
-            this.SetAttribute("not-null", "true");
+            SetAttribute("not-null", (!nextBool).ToString().ToLowerInvariant());
             return this;
         }
 
@@ -175,6 +177,18 @@ namespace FluentNHibernate.Mapping
         public void PropertyRef(Func<object, object> func)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Inverts the next boolean
+        /// </summary>
+        public ManyToOnePart<OTHER> Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
         }
 
         #region Explicit IManyToOnePart Implementation

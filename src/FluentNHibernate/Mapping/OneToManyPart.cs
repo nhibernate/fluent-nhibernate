@@ -20,6 +20,7 @@ namespace FluentNHibernate.Mapping
         private string _tableName;
         private MethodInfo _collectionMethod;
         private readonly IList<string> _columnNames = new List<string>();
+        private bool nextBool = true;
 
         public OneToManyPart(PropertyInfo property)
             : this(property.Name)
@@ -158,13 +159,15 @@ namespace FluentNHibernate.Mapping
 
         public OneToManyPart<PARENT, CHILD> LazyLoad()
         {
-            _properties.Store("lazy", "true");
+            _properties.Store("lazy", nextBool.ToString().ToLowerInvariant());
+            nextBool = true;
             return this;
         }
 
-        public OneToManyPart<PARENT, CHILD> IsInverse()
+        public OneToManyPart<PARENT, CHILD> Inverse()
         {
-			_properties.Store("inverse", "true");
+            _properties.Store("inverse", nextBool.ToString().ToLowerInvariant());
+            nextBool = true;
             return this;
         }
 
@@ -314,6 +317,18 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Inverts the next boolean
+        /// </summary>
+        public OneToManyPart<PARENT, CHILD> Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
+        }
+
         public class IndexMapping
         {
             private readonly Cache<string, string> _properties = new Cache<string, string>();
@@ -343,14 +358,19 @@ namespace FluentNHibernate.Mapping
             get { return new CollectionCascadeExpression<IOneToManyPart>(this); }
         }
 
-        IOneToManyPart IOneToManyPart.IsInverse()
+        IOneToManyPart IOneToManyPart.Inverse()
         {
-            return this.IsInverse();
+            return this.Inverse();
         }
 
         IOneToManyPart IOneToManyPart.LazyLoad()
         {
             return this.LazyLoad();
+        }
+
+        IOneToManyPart IOneToManyPart.Not
+        {
+            get { return this.Not; }
         }
 
         #endregion

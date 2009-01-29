@@ -15,6 +15,7 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> _manyToManyProperties = new Cache<string, string>();
 	    private readonly MethodInfo _collectionMethod;
         private readonly AccessStrategyBuilder<ManyToManyPart<PARENT, CHILD>> access;
+	    private bool nextBool = true;
 
 	    public ManyToManyPart(PropertyInfo property)
             : this(property.Name)
@@ -48,13 +49,15 @@ namespace FluentNHibernate.Mapping
 
         public ManyToManyPart<PARENT, CHILD> LazyLoad()
         {
-            _properties.Store("lazy", "true");
+            _properties.Store("lazy", nextBool.ToString().ToLowerInvariant());
+            nextBool = true;
             return this;
         }
 
-        public ManyToManyPart<PARENT, CHILD> IsInverse()
+        public ManyToManyPart<PARENT, CHILD> Inverse()
         {
-            _properties.Store("inverse", "true");
+            _properties.Store("inverse", nextBool.ToString().ToLowerInvariant());
+            nextBool = true;
             return this;
         }
 
@@ -194,6 +197,18 @@ namespace FluentNHibernate.Mapping
 	    public PartPosition Position
 	    {
             get { return PartPosition.Anywhere; }
+	    }
+
+        /// <summary>
+        /// Inverts the next boolean
+        /// </summary>
+	    public ManyToManyPart<PARENT, CHILD> Not
+	    {
+	        get
+	        {
+	            nextBool = !nextBool;
+	            return this;
+	        }
 	    }
     }
 }

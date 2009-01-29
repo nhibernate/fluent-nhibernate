@@ -25,7 +25,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void Can_specify_auto_import_as_true()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.AutoImport(true))
+                .ForMapping(m => m.AutoImport())
                 .RootElement.HasAttribute("auto-import", "true");
         }
 
@@ -33,7 +33,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void Can_specify_auto_import_as_false()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.AutoImport(false))
+                .ForMapping(m => m.Not.AutoImport())
                 .RootElement.HasAttribute("auto-import", "false");
         }
 
