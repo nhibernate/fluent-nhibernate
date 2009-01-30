@@ -67,6 +67,8 @@
     <Compile Include="MappingModel\ColumnMapping.cs" />
     <Compile Include="MappingModel\Conventions\ConventionException.cs" />
     <Compile Include="MappingModel\INameable.cs" />
+    <Compile Include="MappingModel\ISubclassMapping.cs" />
+    <Compile Include="MappingModel\JoinedSubclassMapping.cs" />
     <Compile Include="MappingModel\KeyMapping.cs" />
     <Compile Include="MappingModel\Output\HbmBagWriter.cs" />
     <Compile Include="MappingModel\Output\HbmCollectionContentsWriter.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="MappingModel\Output\HbmOneToManyWriter.cs" />
     <Compile Include="MappingModel\Output\HbmPropertyWriter.cs" />
     <Compile Include="MappingModel\Output\HbmSetWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmSubclassWriter.cs" />
     <Compile Include="MappingModel\Output\IHbmWriter.cs" />
     <Compile Include="MappingModel\Identity\IdGeneratorMapping.cs" />
     <Compile Include="MappingModel\Identity\CompositeIdMapping.cs" />

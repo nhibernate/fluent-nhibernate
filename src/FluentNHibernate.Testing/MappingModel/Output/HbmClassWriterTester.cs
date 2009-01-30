@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var classMapping = new ClassMapping {Name = "class1", Id = new IdMapping()};
             var identityWriter = MockRepository.GenerateStub<IHbmWriter<IIdentityMapping>>();
             identityWriter.Expect(x => x.Write(classMapping.Id)).Return(new HbmId { generator = new HbmGenerator { @class = "native"}});
-            var writer = new HbmClassWriter(identityWriter, null, null, null);
+            var writer = new HbmClassWriter(identityWriter, null, null, null, null);
 
             writer.ShouldGenerateValidOutput(classMapping);
         }
@@ -39,7 +39,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var idWriter = MockRepository.GenerateStub<IHbmWriter<IIdentityMapping>>();
             idWriter.Expect(x => x.Write(classMapping.Id)).Return(new HbmId());            
             
-            var writer = new HbmClassWriter(idWriter, null, null, null);
+            var writer = new HbmClassWriter(idWriter, null, null, null, null);
             writer.VerifyXml(classMapping)
                 .Element("id").Exists();            
         }
@@ -53,7 +53,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var propertyWriter = MockRepository.GenerateStub<IHbmWriter<PropertyMapping>>();
             propertyWriter.Expect(x => x.Write(classMapping.Properties.First())).Return(new HbmProperty());
             
-            var writer = new HbmClassWriter(null, null, propertyWriter, null);
+            var writer = new HbmClassWriter(null, null, propertyWriter, null, null);
             writer.VerifyXml(classMapping)
                 .Element("property").Exists();            
         }
@@ -67,7 +67,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var collectionWriter = MockRepository.GenerateStub<IHbmWriter<ICollectionMapping>>();
             collectionWriter.Expect(x => x.Write(classMapping.Collections.First())).Return(new HbmBag());
             
-            var writer = new HbmClassWriter(null, collectionWriter, null, null);
+            var writer = new HbmClassWriter(null, collectionWriter, null, null, null);
             writer.VerifyXml(classMapping)
                 .Element("bag").Exists();   
         }
@@ -81,9 +81,23 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var referenceWriter = MockRepository.GenerateStub<IHbmWriter<ManyToOneMapping>>();
             referenceWriter.Expect(x => x.Write(classMapping.References.First())).Return(new HbmManyToOne());
             
-            var writer = new HbmClassWriter(null, null, null, referenceWriter);
+            var writer = new HbmClassWriter(null, null, null, referenceWriter, null);
             writer.VerifyXml(classMapping)
                 .Element("many-to-one").Exists();   
+        }
+
+        [Test]
+        public void Should_write_the_subclasses()
+        {
+            var classMapping = new ClassMapping();
+            classMapping.AddSubclass(new JoinedSubclassMapping());
+
+            var subclassWriter = MockRepository.GenerateStub<IHbmWriter<ISubclassMapping>>();
+            subclassWriter.Expect(x => x.Write(classMapping.Subclasses.First())).Return(new HbmJoinedSubclass());
+
+            var writer = new HbmClassWriter(null, null, null, null, subclassWriter);
+            writer.VerifyXml(classMapping)
+                .Element("joined-subclass").Exists();
         }
     }
 }

@@ -38,7 +38,12 @@ namespace FluentNHibernate.MappingModel
         public virtual void ProcessColumn(ColumnMapping columnMapping)
         {
             
-        }        
+        }
+
+        public virtual void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
+        {
+
+        }
 
         #region Collections
         public virtual void ProcessCollection(ICollectionMapping collectionMapping)
@@ -55,6 +60,7 @@ namespace FluentNHibernate.MappingModel
         {
             ProcessCollection(setMapping);
         }        
+
         #endregion
 
         #region Collection Contents
@@ -131,6 +137,11 @@ namespace FluentNHibernate.MappingModel
         public virtual void Visit(ColumnMapping columnMapping)
         {
             columnMapping.AcceptVisitor(this);
+        }
+
+        public virtual void Visit(ISubclassMapping subclassMapping)
+        {
+            subclassMapping.AcceptVisitor(this);
         }
     }
 }

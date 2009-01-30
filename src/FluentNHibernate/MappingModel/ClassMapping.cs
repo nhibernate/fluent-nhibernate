@@ -15,6 +15,7 @@ namespace FluentNHibernate.MappingModel
         private readonly IList<PropertyMapping> _properties;
         private readonly IList<ICollectionMapping> _collections;
         private readonly IList<ManyToOneMapping> _references;
+        private readonly IList<ISubclassMapping> _subclasses;
         
         public ClassMapping()
         {
@@ -22,6 +23,7 @@ namespace FluentNHibernate.MappingModel
             _properties = new List<PropertyMapping>();
             _collections = new List<ICollectionMapping>();   
             _references = new List<ManyToOneMapping>();
+            _subclasses = new List<ISubclassMapping>();
         }
 
         public IIdentityMapping Id { get; set; }
@@ -42,6 +44,11 @@ namespace FluentNHibernate.MappingModel
             get { return _references; }
         }
 
+        public IEnumerable<ISubclassMapping> Subclasses
+        {
+            get { return _subclasses; }
+        }
+
         public void AddProperty(PropertyMapping property)
         {
             _properties.Add(property);
@@ -55,6 +62,12 @@ namespace FluentNHibernate.MappingModel
         public void AddReference(ManyToOneMapping manyToOne)
         {
             _references.Add(manyToOne);
+        }
+
+
+        public void AddSubclass(ISubclassMapping subclass)
+        {
+            _subclasses.Add(subclass);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -72,6 +85,9 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var reference in References)
                 visitor.Visit(reference);
+
+            foreach( var subclass in Subclasses)
+                visitor.Visit(subclass);
         }
 
         public string Name
@@ -95,5 +111,7 @@ namespace FluentNHibernate.MappingModel
         {
             get { return _attributes; }
         }
+
+        
     }
 }

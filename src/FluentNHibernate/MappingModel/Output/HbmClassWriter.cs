@@ -13,19 +13,16 @@ namespace FluentNHibernate.MappingModel.Output
         private readonly IHbmWriter<ICollectionMapping> _collectionWriter;
         private readonly IHbmWriter<PropertyMapping> _propertyWriter;
         private readonly IHbmWriter<ManyToOneMapping> _manyToOneWriter;
+        private readonly IHbmWriter<ISubclassMapping> _subclassWriter;
         private HbmClass _hbmClass;
 
-        public HbmClassWriter(
-            IHbmWriter<IIdentityMapping> identityWriter,
-            IHbmWriter<ICollectionMapping> collectionWriter,
-            IHbmWriter<PropertyMapping> propertyWriter,
-            IHbmWriter<ManyToOneMapping> manyToOneWriter
-            )
+        public HbmClassWriter(IHbmWriter<IIdentityMapping> identityWriter, IHbmWriter<ICollectionMapping> collectionWriter, IHbmWriter<PropertyMapping> propertyWriter, IHbmWriter<ManyToOneMapping> manyToOneWriter, IHbmWriter<ISubclassMapping> subclassWriter)
         {
             _identityWriter = identityWriter;
             _collectionWriter = collectionWriter;
             _propertyWriter = propertyWriter;
             _manyToOneWriter = manyToOneWriter;
+            _subclassWriter = subclassWriter;
         }
 
         public object Write(ClassMapping mapping)
@@ -65,6 +62,12 @@ namespace FluentNHibernate.MappingModel.Output
         {
             object manyHbm = _manyToOneWriter.Write(manyToOneMapping);
             manyHbm.AddTo(ref _hbmClass.Items);
+        }
+
+        public override void Visit(ISubclassMapping subclassMapping)
+        {
+            object subclassHbm = _subclassWriter.Write(subclassMapping);
+            subclassHbm.AddTo(ref _hbmClass.Items1);
         }
     }
 }

@@ -7,7 +7,6 @@ namespace FluentNHibernate.MappingModel.Collections
     {
         bool IsInverse { get; }
         bool IsLazy { get; }
-        string Name { get; set; }
         KeyMapping Key { get; set; }
         ICollectionContentsMapping Contents { get; set; }
         CollectionAttributes Attributes { get; }

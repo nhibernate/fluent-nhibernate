@@ -99,6 +99,28 @@ namespace FluentNHibernate.Testing.MappingModel
             visitor.VerifyAllExpectations();
         }
 
+        [Test]
+        public void Can_add_subclass()
+        {
+            var joinedSubclass = new JoinedSubclassMapping();
+            _classMapping.AddSubclass(joinedSubclass);
+            _classMapping.Subclasses.ShouldContain(joinedSubclass);
+        }
+
+        [Test]
+        public void Should_pass_subclasses_to_the_visitor()
+        {
+            var classMap = MappingMother.CreateClassMapping();
+            classMap.AddSubclass(new JoinedSubclassMapping());
+
+            var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
+            visitor.Expect(x => x.Visit(classMap.Subclasses.First()));
+
+            classMap.AcceptVisitor(visitor);
+
+            visitor.VerifyAllExpectations();           
+        }
+
         
     }
 }
