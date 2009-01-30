@@ -346,5 +346,14 @@ namespace FluentNHibernate.Mapping
 
             return part;
         }
+
+        /// <summary>
+        /// Set the mutability of this class, sets the mutable attribute.
+        /// </summary>
+        public void ReadOnly()
+        {
+            attributes.Store("mutable", (!nextBool).ToString().ToLowerInvariant());
+            nextBool = true;
+        }
     }
 }

@@ -544,6 +544,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(c =>c.SetHibernateMappingAttribute(ClassMap<MappedObject>.DefaultLazyAttributeKey, "true"))
                 .HasAttribute("default-lazy", "true");
         }
+
+        [Test]
+        public void Can_set_readonly()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.ReadOnly())
+                .Element("class").HasAttribute("mutable", "false");
+        }
+
+        [Test]
+        public void Can_set_non_readonly()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Not.ReadOnly())
+                .Element("class").HasAttribute("mutable", "true");
+        }
     }
 
     public class SecondMappedObject
