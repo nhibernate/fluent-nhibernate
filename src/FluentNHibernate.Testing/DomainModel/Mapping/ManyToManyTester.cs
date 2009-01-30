@@ -22,6 +22,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public virtual IDictionary<string, ChildObject> MapOfChildren { get; set; }
         public virtual ChildObject[] ArrayOfChildren { get; set; }
         public virtual IList<string> ListOfSimpleChildren { get; set; }
+        public virtual CustomCollection<ChildObject> CustomCollection { get; set; }
 
         private IList<ChildObject> otherChildren = new List<ChildObject>();
         public virtual IList<ChildObject> GetOtherChildren() { return otherChildren; }
@@ -53,6 +54,48 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .HasAttribute("foreign-key", "FK_Parent")
                 .Element("class/bag/many-to-many")
                 .HasAttribute("foreign-key", "FK_Child");
+        }
+
+
+        [Test]
+        public void Can_use_custom_collection_implicitly()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map => map.HasManyToMany<ChildObject>(x => x.CustomCollection))
+                .Element("class/bag").HasAttribute("collection-type", typeof(CustomCollection<ChildObject>).AssemblyQualifiedName);
+        }
+
+        [Test]
+        public void Can_use_custom_collection_explicitly_generic()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map =>
+                    map.HasManyToMany<ChildObject>(x => x.BagOfChildren)
+                        .CollectionType<CustomCollection<ChildObject>>()
+                )
+                .Element("class/bag").HasAttribute("collection-type", typeof(CustomCollection<ChildObject>).AssemblyQualifiedName);
+        }
+
+        [Test]
+        public void Can_use_custom_collection_explicitly()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map =>
+                    map.HasManyToMany<ChildObject>(x => x.BagOfChildren)
+                        .CollectionType(typeof(CustomCollection<ChildObject>))
+                )
+                .Element("class/bag").HasAttribute("collection-type", typeof(CustomCollection<ChildObject>).AssemblyQualifiedName);
+        }
+
+        [Test]
+        public void Can_use_custom_collection_explicitly_name()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map =>
+                    map.HasManyToMany<ChildObject>(x => x.BagOfChildren)
+                        .CollectionType("name")
+                )
+                .Element("class/bag").HasAttribute("collection-type", "name");
         }
     }
 }

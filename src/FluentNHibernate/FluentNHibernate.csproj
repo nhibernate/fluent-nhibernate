@@ -98,6 +98,7 @@
     <Compile Include="Mapping\NotFoundExpression.cs" />
     <Compile Include="Mapping\OneToOnePart.cs" />
     <Compile Include="Mapping\PartPosition.cs" />
+    <Compile Include="Mapping\ToManyBase.cs" />
     <Compile Include="MissingConstructorException.cs" />
     <Compile Include="RestrictionsHelper.cs" />
     <Compile Include="IMappingVisitor.cs" />

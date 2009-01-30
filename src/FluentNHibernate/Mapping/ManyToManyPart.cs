@@ -4,70 +4,32 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-	public class ManyToManyPart<PARENT, CHILD> : IMappingPart
+	public class ManyToManyPart<PARENT, CHILD> : ToManyBase<ManyToManyPart<PARENT, CHILD>, PARENT, CHILD>
     {
-    
-        private readonly Cache<string, string> _properties = new Cache<string, string>();
-    	private string _tableName;
     	private string _childKeyColumn;
         private readonly Cache<string, string> _parentKeyProperties = new Cache<string, string>();
-        private string _collectionType = "bag";
         private readonly Cache<string, string> _manyToManyProperties = new Cache<string, string>();
 	    private readonly MethodInfo _collectionMethod;
         private readonly AccessStrategyBuilder<ManyToManyPart<PARENT, CHILD>> access;
-	    private bool nextBool = true;
 
 	    public ManyToManyPart(PropertyInfo property)
-            : this(property.Name)
-	    {
-	        SetDefaultCollectionType(property.PropertyType);
-	    }
+            : this(property.Name, property.PropertyType)
+	    {}
 
 	    public ManyToManyPart(MethodInfo method)
-	        : this(method.Name)
+	        : this(method.Name, method.ReturnType)
         {
 	        _collectionMethod = method;
-            SetDefaultCollectionType(method.ReturnType);
         }
 
-	    private void SetDefaultCollectionType(Type type)
-	    {
-	        if (type.Namespace == "Iesi.Collections.Generic")
-	            AsSet();
-	    }
-
-	    protected ManyToManyPart(string memberName)
+        protected ManyToManyPart(string memberName, Type collectionType)
+            : base(collectionType)
         {
             access = new AccessStrategyBuilder<ManyToManyPart<PARENT, CHILD>>(this);
             _properties.Store("name", memberName);
         }
 
-        public CollectionCascadeExpression<ManyToManyPart<PARENT, CHILD>> Cascade
-        {
-			get { return new CollectionCascadeExpression<ManyToManyPart<PARENT, CHILD>>(this); }
-        }
-
-        public ManyToManyPart<PARENT, CHILD> LazyLoad()
-        {
-            _properties.Store("lazy", nextBool.ToString().ToLowerInvariant());
-            nextBool = true;
-            return this;
-        }
-
-        public ManyToManyPart<PARENT, CHILD> Inverse()
-        {
-            _properties.Store("inverse", nextBool.ToString().ToLowerInvariant());
-            nextBool = true;
-            return this;
-        }
-
-		public ManyToManyPart<PARENT, CHILD> WithTableName(string name)
-		{
-			_tableName = name;
-			return this;
-		} 
-		
-		public ManyToManyPart<PARENT, CHILD> WithChildKeyColumn(string childKeyColumn)
+	    public ManyToManyPart<PARENT, CHILD> WithChildKeyColumn(string childKeyColumn)
 		{
 			_childKeyColumn = childKeyColumn;
 			return this;
@@ -84,26 +46,6 @@ namespace FluentNHibernate.Mapping
             _manyToManyProperties.Store("foreign-key", childForeignKeyName);
             return this;
         }
-
-		public ManyToManyPart<PARENT, CHILD> AsSet()
-		{
-			_collectionType = "set";
-			return this;
-		}
-
-		public ManyToManyPart<PARENT, CHILD> AsBag()
-		{
-			_collectionType = "bag";
-			return this;
-		}
-
-        /// <summary>
-        /// Set the access and naming strategy for this one-to-many.
-        /// </summary>
-        public AccessStrategyBuilder<ManyToManyPart<PARENT, CHILD>> Access
-        {
-            get { return access; }
-        }
 		
 		public FetchTypeExpression<ManyToManyPart<PARENT, CHILD>> FetchType
 		{
@@ -113,7 +55,7 @@ namespace FluentNHibernate.Mapping
 			}
 		}
 
-		public void Write(XmlElement classElement, IMappingVisitor visitor)
+		public override void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             var conventions = visitor.Conventions;
 
@@ -176,12 +118,12 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="name">Attribute name</param>
         /// <param name="value">Attribute value</param>
-        public void SetAttribute(string name, string value)
+        public override void SetAttribute(string name, string value)
         {
             _properties.Store(name, value);
         }
 
-        public void SetAttributes(Attributes atts)
+        public override void SetAttributes(Attributes atts)
         {
             foreach (var key in atts.Keys)
             {
@@ -189,26 +131,14 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public int Level
+        public override int Level
         {
             get { return 3; }
         }
 
-	    public PartPosition Position
+	    public override PartPosition Position
 	    {
             get { return PartPosition.Anywhere; }
-	    }
-
-        /// <summary>
-        /// Inverts the next boolean
-        /// </summary>
-	    public ManyToManyPart<PARENT, CHILD> Not
-	    {
-	        get
-	        {
-	            nextBool = !nextBool;
-	            return this;
-	        }
 	    }
     }
 }
