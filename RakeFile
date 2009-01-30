@@ -92,7 +92,7 @@ task :compile => [:clean, :version] do
     
   outDir = "src/FluentNHibernate.Framework/bin/#{COMPILE_TARGET}"
     
-  Dir.glob(File.join(outDir, "*.{dll,pdb}")){|file| 		
+  Dir.glob(File.join(outDir, "*.{dll,pdb,xml}")){|file| 		
 	copy(file, props[:archive]) if File.file?(file)
   }
 end
