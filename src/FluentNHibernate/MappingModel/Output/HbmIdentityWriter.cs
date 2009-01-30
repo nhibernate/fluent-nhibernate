@@ -3,7 +3,7 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmIdentityWriter : MappingModelVisitorBase, IHbmWriter<IIdentityMapping>
+    public class HbmIdentityWriter : NullMappingModelVisitor, IHbmWriter<IIdentityMapping>
     {
         private readonly IHbmWriter<IdMapping> _idWriter;
         private readonly IHbmWriter<CompositeIdMapping> _compositeIdWriter;

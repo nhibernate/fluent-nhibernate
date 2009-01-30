@@ -6,7 +6,7 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmCollectionContentsWriter : MappingModelVisitorBase, IHbmWriter<ICollectionContentsMapping>
+    public class HbmCollectionContentsWriter : NullMappingModelVisitor, IHbmWriter<ICollectionContentsMapping>
     {
         private readonly IHbmWriter<OneToManyMapping> _oneToManyWriter;
 

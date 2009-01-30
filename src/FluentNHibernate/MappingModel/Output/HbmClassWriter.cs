@@ -7,7 +7,7 @@ using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmClassWriter : MappingModelVisitorBase, IHbmWriter<ClassMapping>
+    public class HbmClassWriter : NullMappingModelVisitor, IHbmWriter<ClassMapping>
     {
         private readonly IHbmWriter<IIdentityMapping> _identityWriter;
         private readonly IHbmWriter<ICollectionMapping> _collectionWriter;

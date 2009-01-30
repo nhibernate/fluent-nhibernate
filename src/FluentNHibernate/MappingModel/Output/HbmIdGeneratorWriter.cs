@@ -7,7 +7,7 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmIdGeneratorWriter : MappingModelVisitorBase, IHbmWriter<IdGeneratorMapping>
+    public class HbmIdGeneratorWriter : NullMappingModelVisitor, IHbmWriter<IdGeneratorMapping>
     {
         private HbmGenerator _hbmGenerator;
 

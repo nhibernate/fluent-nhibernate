@@ -29,5 +29,6 @@ namespace FluentNHibernate.MappingModel
         void Visit(IdGeneratorMapping generatorMapping);
         void Visit(ColumnMapping columnMapping);
         void Visit(ISubclassMapping subclassMapping);
+        void Visit(JoinedSubclassMapping subclassMapping);
     }
 }

@@ -4,7 +4,7 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmCollectionWriter : MappingModelVisitorBase, IHbmWriter<ICollectionMapping>
+    public class HbmCollectionWriter : NullMappingModelVisitor, IHbmWriter<ICollectionMapping>
     {
         private readonly IHbmWriter<BagMapping> _bagWriter;
         private readonly IHbmWriter<SetMapping> _setWriter;

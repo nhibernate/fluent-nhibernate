@@ -3,7 +3,7 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmHibernateMappingWriter : MappingModelVisitorBase, IHbmWriter<HibernateMapping>
+    public class HbmHibernateMappingWriter : NullMappingModelVisitor, IHbmWriter<HibernateMapping>
     {
         private readonly IHbmWriter<ClassMapping> _classWriter;
         private HbmMapping _hbm;

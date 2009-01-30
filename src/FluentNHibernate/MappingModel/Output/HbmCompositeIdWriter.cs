@@ -7,7 +7,7 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmCompositeIdWriter : MappingModelVisitorBase, IHbmWriter<CompositeIdMapping>
+    public class HbmCompositeIdWriter : NullMappingModelVisitor, IHbmWriter<CompositeIdMapping>
     {
         private HbmCompositeId _hbmCompositeId;
 

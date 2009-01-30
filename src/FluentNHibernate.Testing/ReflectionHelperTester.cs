@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing
     {
         private class TestClass
         {
-            public string PublicField;
+            public string PublicField = string.Empty;
             public string PublicProperty { get; set; }
         }
 

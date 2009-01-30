@@ -3,8 +3,18 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.MappingModel
 {
-    public abstract class MappingModelVisitorBase : IMappingModelVisitor
+    public abstract class NullMappingModelVisitor : IMappingModelVisitor
     {
+        public virtual void ProcessId(IdMapping idMapping)
+        {
+            
+        }
+
+        public virtual void ProcessCompositeId(CompositeIdMapping idMapping)
+        {
+            
+        }
+
         public virtual void ProcessClass(ClassMapping classMapping)
         {
             
@@ -40,113 +50,79 @@ namespace FluentNHibernate.MappingModel
             
         }
 
-        public virtual void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
-        {
-
-        }
-
-        #region Collections
-        public virtual void ProcessCollection(ICollectionMapping collectionMapping)
-        {
-
-        }
-
         public virtual void ProcessBag(BagMapping bagMapping)
         {
-            ProcessCollection(bagMapping);
-        }
-
-        public virtual void ProcessSet(SetMapping setMapping)
-        {
-            ProcessCollection(setMapping);
-        }        
-
-        #endregion
-
-        #region Collection Contents
-        public virtual void ProcessCollectionContents(ICollectionContentsMapping contentsMapping)
-        {
-
+            
         }
 
         public virtual void ProcessOneToMany(OneToManyMapping oneToManyMapping)
         {
-            ProcessCollectionContents(oneToManyMapping);
+            
         }
 
-        #endregion
-
-        #region Identity
-        public virtual void ProcessIdentity(IIdentityMapping idMapping)
+        public virtual void ProcessSet(SetMapping setMapping)
         {
-
+            
         }
 
-        public virtual void ProcessId(IdMapping idMapping)
+        public virtual void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
         {
-            ProcessIdentity(idMapping);
+            
         }
-
-        public virtual void ProcessCompositeId(CompositeIdMapping idMapping)
-        {
-            ProcessIdentity(idMapping);
-        } 
-        #endregion
-
 
         public virtual void Visit(ClassMapping classMapping)
         {
-            classMapping.AcceptVisitor(this);
+            
         }
 
         public virtual void Visit(IIdentityMapping identityMapping)
         {
-            identityMapping.AcceptVisitor(this);
+            
         }
 
         public virtual void Visit(ICollectionMapping collectionMapping)
         {
-            collectionMapping.AcceptVisitor(this);
+            
         }
 
         public virtual void Visit(PropertyMapping propertyMapping)
         {
-            propertyMapping.AcceptVisitor(this);
+            
         }
 
         public virtual void Visit(ManyToOneMapping manyToOneMapping)
         {
-            manyToOneMapping.AcceptVisitor(this);
+            
         }
 
         public virtual void Visit(KeyMapping keyMapping)
         {
-            keyMapping.AcceptVisitor(this);
+            
         }
 
         public virtual void Visit(ICollectionContentsMapping contentsMapping)
         {
-            contentsMapping.AcceptVisitor(this);
+            
         }
 
         public virtual void Visit(IdGeneratorMapping generatorMapping)
         {
-            generatorMapping.AcceptVisitor(this);
+            
         }
 
         public virtual void Visit(ColumnMapping columnMapping)
         {
-            columnMapping.AcceptVisitor(this);
+            
         }
 
         public virtual void Visit(ISubclassMapping subclassMapping)
         {
-            subclassMapping.AcceptVisitor(this);
+            
         }
 
         public virtual void Visit(JoinedSubclassMapping subclassMapping)
         {
-            subclassMapping.AcceptVisitor(this);
+            
         }
     }
 }

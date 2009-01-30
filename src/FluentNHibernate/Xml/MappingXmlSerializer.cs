@@ -51,33 +51,8 @@ namespace FluentNHibernate.Xml
 
         private HbmMapping BuildHbm(HibernateMapping rootMapping)
         {
-            HbmHibernateMappingWriter rootWriter =
-                new HbmHibernateMappingWriter(new HbmClassWriter(
-                    new HbmIdentityWriter(
-                        new HbmIdWriter(
-                            new HbmColumnWriter(),
-                            new HbmIdGeneratorWriter()
-                            ),
-                        new HbmCompositeIdWriter()
-                        ),
-                    new HbmCollectionWriter(
-                        new HbmBagWriter(
-                            new HbmCollectionContentsWriter(
-                                new HbmOneToManyWriter()
-                                ),
-                            new HbmKeyWriter()
-                            ),
-                        new HbmSetWriter(
-                            new HbmCollectionContentsWriter(
-                                new HbmOneToManyWriter()),
-                            new HbmKeyWriter()
-                            )
-                        ),
-                    new HbmPropertyWriter(),
-                    new HbmManyToOneWriter(), 
-                    new HbmSubclassWriter(new HbmJoinedSubclassWriter())));
-
-            return rootWriter.Write(rootMapping);
+            IHbmWriter<HibernateMapping> rootWriter = HbmWriterFactory.CreateHibernateMappingWriter();               
+            return (HbmMapping) rootWriter.Write(rootMapping);
         }
     }
 }

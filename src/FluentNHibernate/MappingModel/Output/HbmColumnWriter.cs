@@ -2,7 +2,7 @@
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmColumnWriter : MappingModelVisitorBase, IHbmWriter<ColumnMapping>
+    public class HbmColumnWriter : NullMappingModelVisitor, IHbmWriter<ColumnMapping>
     {
         private HbmColumn _hbmColumn;
 

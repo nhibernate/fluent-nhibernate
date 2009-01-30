@@ -9,7 +9,7 @@ using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmBagWriter : MappingModelVisitorBase, IHbmWriter<BagMapping>
+    public class HbmBagWriter : NullMappingModelVisitor, IHbmWriter<BagMapping>
     {
         private readonly IHbmWriter<ICollectionContentsMapping> _contentsWriter;
         private readonly IHbmWriter<KeyMapping> _keyWriter;

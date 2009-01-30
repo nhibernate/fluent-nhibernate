@@ -8,7 +8,7 @@ using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmOneToManyWriter : MappingModelVisitorBase, IHbmWriter<OneToManyMapping>
+    public class HbmOneToManyWriter : NullMappingModelVisitor, IHbmWriter<OneToManyMapping>
     {
         private HbmOneToMany _hbmOneToMany;
 

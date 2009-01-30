@@ -32,8 +32,9 @@ namespace FluentNHibernate.Testing.Xml
         public virtual MappingXmlTestHelper Element(string element)
         {
             // SCREW XPATH
-            //_currentElement = (XmlElement)_document.DocumentElement.SelectSingleNode(elementPath);
-            _currentElement = _document.DocumentElement[element];
+            //_currentElement = (XmlElement)_document.DocumentElement.SelectSingleNode(elementPath);            
+            //_currentElement = _document.DocumentElement[element];
+            _currentElement = _currentElement[element];
             
 
             return this;

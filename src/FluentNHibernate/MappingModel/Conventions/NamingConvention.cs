@@ -6,7 +6,7 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.MappingModel.Conventions
 {
-    public class NamingConvention : MappingModelVisitorBase
+    public class NamingConvention : DefaultMappingModelVisitor
     {
         public Func<MemberInfo, string> DetermineNameFromMember = info => info.Name;
         public Func<Type, string> DetermineNameFromType = type => type.AssemblyQualifiedName;
@@ -36,7 +36,7 @@ namespace FluentNHibernate.MappingModel.Conventions
             Process(propertyMapping, propertyMapping.PropertyInfo);
         }
 
-        public override void ProcessCollection(ICollectionMapping collectionMapping)
+        protected override void ProcessCollection(ICollectionMapping collectionMapping)
         {
             Process(collectionMapping, collectionMapping.PropertyInfo);
         }
