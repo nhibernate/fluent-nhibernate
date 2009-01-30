@@ -16,6 +16,7 @@ namespace FluentNHibernate.Mapping
         private readonly bool _parentIsRequired;
         private string _columnName;
         private readonly AccessStrategyBuilder<PropertyMap> access;
+        private bool nextBool = true;
 
         public PropertyMap(PropertyInfo property, bool parentIsRequired, Type parentType)
         {
@@ -146,9 +147,10 @@ namespace FluentNHibernate.Mapping
             get { return access; }
         }
 
-        public IProperty ValueIsAutoNumber()
+        public IProperty AutoNumber()
         {
-            _extendedProperties.Store("insert", "true");
+            _extendedProperties.Store("insert", nextBool.ToString().ToLowerInvariant());
+            nextBool = true;
 
             return this;
         }
@@ -168,17 +170,18 @@ namespace FluentNHibernate.Mapping
     		return  propertyType == typeof(string) || propertyType == typeof(decimal);
     	}
 
-        public IProperty CanNotBeNull()
+        public IProperty Nullable()
         {
-            this.AddAlteration(x => x.SetAttribute("not-null", "true"));
+            _extendedProperties.Store("not-null", (!nextBool).ToString().ToLowerInvariant());
+            nextBool = true;
             return this;
         }
 
-        public IProperty AsReadOnly()
+        public IProperty ReadOnly()
         {
-            this.AddAlteration(x => x.SetAttribute("insert", "false"));
-            this.AddAlteration(x => x.SetAttribute("update", "false"));
-
+            _extendedProperties.Store("insert", (!nextBool).ToString().ToLowerInvariant());
+            _extendedProperties.Store("update", (!nextBool).ToString().ToLowerInvariant());
+            nextBool = true;
             return this;
         }
 
@@ -228,10 +231,23 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public IProperty WithUniqueConstraint()
+        public IProperty Unique()
         {
-            this.AddAlteration(x => x.SetAttribute("unique", "true"));
+            _extendedProperties.Store("unique", nextBool.ToString().ToLowerInvariant());
+            nextBool = true;
             return this;
+        }
+
+        /// <summary>
+        /// Inverts the next boolean
+        /// </summary>
+        public IProperty Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
         }
     }
 }

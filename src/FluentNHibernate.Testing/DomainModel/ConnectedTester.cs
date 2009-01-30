@@ -318,7 +318,7 @@ namespace FluentNHibernate.Testing.DomainModel
         public BinaryRecordMap()
         {
             UseIdentityForKey(x => x.Id, "id");
-            Map(x => x.BinaryValue).CanNotBeNull();
+            Map(x => x.BinaryValue).Not.Nullable();
         }
     }
 

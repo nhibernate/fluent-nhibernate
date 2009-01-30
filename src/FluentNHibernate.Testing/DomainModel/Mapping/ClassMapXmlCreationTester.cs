@@ -453,8 +453,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSetAsUnique()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.Map(x => x.Name).WithUniqueConstraint())
+                .ForMapping(m => m.Map(x => x.Name).Unique())
                 .Element("class/property").HasAttribute("unique", "true");
+        }
+
+        [Test]
+        public void CanSetAsNotUnique()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Map(x => x.Name).Not.Unique())
+                .Element("class/property").HasAttribute("unique", "false");
         }
 
         [Test]

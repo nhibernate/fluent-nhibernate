@@ -205,7 +205,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             var classMap = new ClassMap<PropertyTarget>();
 
             classMap.Map(x => x.Name)
-                .CanNotBeNull();
+                .Not.Nullable();
 
             var document = classMap.CreateMapping(new MappingVisitor());
 
@@ -221,7 +221,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             var classMap = new ClassMap<PropertyTarget>();
 
             classMap.Map(x => x.Name)
-                .AsReadOnly();
+                .ReadOnly();
 
             var document = classMap.CreateMapping(new MappingVisitor());
 
@@ -230,6 +230,23 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
             propertyElement.AttributeShouldEqual("insert", "false");
             propertyElement.AttributeShouldEqual("update", "false");
+        }
+
+        [Test]
+        public void Map_WithFluentLength_UsesNotReadOnly_PropertyColumnAttribute()
+        {
+            var classMap = new ClassMap<PropertyTarget>();
+
+            classMap.Map(x => x.Name)
+                .Not.ReadOnly();
+
+            var document = classMap.CreateMapping(new MappingVisitor());
+
+            // attribute on property
+            var classElement = document.DocumentElement.SelectSingleNode("class");
+            var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
+            propertyElement.AttributeShouldEqual("insert", "true");
+            propertyElement.AttributeShouldEqual("update", "true");
         }
 
         [Test]

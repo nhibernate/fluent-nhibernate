@@ -18,15 +18,20 @@ namespace FluentNHibernate.Mapping
         // Possibly should be moved to IHasAttributes.
         bool HasAttribute(string name);
         IProperty TheColumnNameIs(string name);
-        IProperty ValueIsAutoNumber();
+        IProperty AutoNumber();
         IProperty WithLengthOf(int length);
-        IProperty CanNotBeNull();
-        IProperty AsReadOnly();
+        IProperty Nullable();
+        IProperty ReadOnly();
         IProperty FormulaIs(string forumla);
         IProperty CustomTypeIs<T>() where T : IUserType;
         IProperty CustomTypeIs(Type type);
         IProperty CustomTypeIs(string typeName);
         IProperty CustomSqlTypeIs(string sqlType);
-        IProperty WithUniqueConstraint();
+        IProperty Unique();
+
+        /// <summary>
+        /// Inverts the next boolean
+        /// </summary>
+        IProperty Not { get; }
     }
 }
