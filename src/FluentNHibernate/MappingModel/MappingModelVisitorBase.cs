@@ -143,5 +143,10 @@ namespace FluentNHibernate.MappingModel
         {
             subclassMapping.AcceptVisitor(this);
         }
+
+        public virtual void Visit(JoinedSubclassMapping subclassMapping)
+        {
+            subclassMapping.AcceptVisitor(this);
+        }
     }
 }

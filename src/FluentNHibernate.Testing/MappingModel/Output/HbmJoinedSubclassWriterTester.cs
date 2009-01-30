@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var mapping = new JoinedSubclassMapping { Name = "joinedsubclass1" };
             //var generatorWriter = MockRepository.GenerateStub<IHbmWriter<JoinedSubclassMapping>>();
             //generatorWriter.Expect(x => x.Write(id.Generator)).Return(new HbmGenerator { @class = "native" });
-            var writer = new HbmJoinedSubclassWriter();
+            var writer = new HbmJoinedSubclassWriter(null, null, null);
 
             writer.ShouldGenerateValidOutput(mapping);
         }

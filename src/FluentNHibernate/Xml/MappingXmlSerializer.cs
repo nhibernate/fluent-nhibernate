@@ -74,7 +74,8 @@ namespace FluentNHibernate.Xml
                             )
                         ),
                     new HbmPropertyWriter(),
-                    new HbmManyToOneWriter(), new HbmSubclassWriter(new HbmJoinedSubclassWriter())));
+                    new HbmManyToOneWriter(), 
+                    new HbmSubclassWriter(new HbmJoinedSubclassWriter())));
 
             return rootWriter.Write(rootMapping);
         }
