@@ -36,8 +36,6 @@ namespace FluentNHibernate.MetaMapping.Tests.IntegrationTests.SimpleClassTests
 			}
 			cfg.BuildMapping();
 			schemaExport = new SchemaExport(cfg);
-
-			
 		}
 		[TearDown]
 		public void TearDown()
