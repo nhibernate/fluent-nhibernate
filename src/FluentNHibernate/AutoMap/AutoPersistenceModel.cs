@@ -46,6 +46,12 @@ namespace FluentNHibernate.AutoMap
 
         public override void Configure(NHibernate.Cfg.Configuration configuration)
         {
+            CompileMappings();
+            base.Configure(configuration);
+        }
+
+        public void CompileMappings()
+        {
             if (assemblyContainingMaps != null)
                 addMappingsFromAssembly(assemblyContainingMaps);
 
@@ -78,8 +84,6 @@ namespace FluentNHibernate.AutoMap
                     }
                 }
             }
-
-            base.Configure(configuration);
         }
 
         private bool isnotAnonymousMethodClass(AutoMapType type)
