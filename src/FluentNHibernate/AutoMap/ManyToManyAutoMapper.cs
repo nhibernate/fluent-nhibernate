@@ -56,7 +56,7 @@ namespace FluentNHibernate.AutoMap
             {
                 string manyTableName = conventions.GetManyToManyTableName(property.DeclaringType, parentSide);
                 Type type = manyToManyPart.GetType();
-                type.GetMethod("IsInverse").Invoke(manyToManyPart, new object[0]);
+                type.GetMethod("Inverse").Invoke(manyToManyPart, new object[0]);
                 type.GetMethod("WithTableName").Invoke(manyToManyPart, new object[] { manyTableName, });
             }
         }
