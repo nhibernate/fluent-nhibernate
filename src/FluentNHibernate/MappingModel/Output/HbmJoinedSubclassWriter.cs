@@ -43,5 +43,23 @@ namespace FluentNHibernate.MappingModel.Output
             var joinedSubclassHbm = (HbmJoinedSubclass)writer.Write(subclassMapping);
             joinedSubclassHbm.AddTo(ref _hbm.joinedsubclass1);
         }
+
+        public override void Visit(ICollectionMapping collectionMapping)
+        {
+            object collectionHbm = _collectionWriter.Write(collectionMapping);
+            collectionHbm.AddTo(ref _hbm.Items);
+        }
+
+        public override void Visit(PropertyMapping propertyMapping)
+        {
+            object propertyHbm = _propertyWriter.Write(propertyMapping);
+            propertyHbm.AddTo(ref _hbm.Items);
+        }
+
+        public override void Visit(ManyToOneMapping manyToOneMapping)
+        {
+            object manyHbm = _manyToOneWriter.Write(manyToOneMapping);
+            manyHbm.AddTo(ref _hbm.Items);
+        }
     }
 }

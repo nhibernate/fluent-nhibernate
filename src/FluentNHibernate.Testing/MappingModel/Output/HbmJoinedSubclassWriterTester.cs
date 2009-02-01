@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Output;
 using NHibernate.Cfg.MappingSchema;
 using NUnit.Framework;
@@ -71,5 +72,49 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Element("joined-subclass").Exists().HasAttribute("name", "Child")
                 .Element("joined-subclass").Exists().HasAttribute("name", "Granchild");
         }
+
+        [Test]
+        public void Should_write_the_collections()
+        {
+            var joinedSubclassMapping = new JoinedSubclassMapping();
+            joinedSubclassMapping.AddCollection(new BagMapping());
+
+            var collectionWriter = MockRepository.GenerateStub<IHbmWriter<ICollectionMapping>>();
+            collectionWriter.Expect(x => x.Write(joinedSubclassMapping.Collections.First())).Return(new HbmBag());
+
+            var writer = new HbmJoinedSubclassWriter(collectionWriter, null, null, null);
+            writer.VerifyXml(joinedSubclassMapping)
+                .Element("bag").Exists();   
+        }
+
+        [Test]
+        public void Should_write_the_properties()
+        {
+            var joinedSubclassMapping = new JoinedSubclassMapping();
+            joinedSubclassMapping.AddProperty(new PropertyMapping());
+
+            var propertyWriter = MockRepository.GenerateStub<IHbmWriter<PropertyMapping>>();
+            propertyWriter.Expect(x => x.Write(joinedSubclassMapping.Properties.First())).Return(new HbmProperty());
+
+            var writer = new HbmJoinedSubclassWriter(null, propertyWriter, null, null);
+            writer.VerifyXml(joinedSubclassMapping)
+                .Element("property").Exists();
+        }
+
+        [Test]
+        public void Should_write_the_references()
+        {
+            var joinedSubclassMapping = new JoinedSubclassMapping();            
+            joinedSubclassMapping.AddReference(new ManyToOneMapping());
+
+            var referenceWriter = MockRepository.GenerateStub<IHbmWriter<ManyToOneMapping>>();
+            referenceWriter.Expect(x => x.Write(joinedSubclassMapping.References.First())).Return(new HbmManyToOne());
+
+            var writer = new HbmJoinedSubclassWriter(null, null, referenceWriter, null);
+            writer.VerifyXml(joinedSubclassMapping)
+                .Element("many-to-one").Exists();
+        }
+
+
     }
 }
