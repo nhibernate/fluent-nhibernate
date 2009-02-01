@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1C988DFB-1EC5-484E-87D9-1D3C775BA435}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -76,7 +76,14 @@
     <Compile Include="AutoMap\ManyToManyAutoMapper.cs" />
     <Compile Include="AutoMap\PrivateAutoMapper.cs" />
     <Compile Include="Cache.cs" />
+    <Compile Include="Cfg\AutoMappingsContainer.cs" />
     <Compile Include="Cfg\FirebirdConfiguration.cs" />
+    <Compile Include="Cfg\FluentConfiguration.cs" />
+    <Compile Include="Cfg\FluentConfigurationException.cs" />
+    <Compile Include="Cfg\Fluently.cs" />
+    <Compile Include="Cfg\FluentMappingsContainer.cs" />
+    <Compile Include="Cfg\HbmMappingsContainer.cs" />
+    <Compile Include="Cfg\MappingConfiguration.cs" />
     <Compile Include="Cfg\MsSqlCeConfiguration.cs" />
     <Compile Include="Cfg\MySQLConfiguration.cs" />
     <Compile Include="Cfg\PersistenceConfiguration.cs" />

@@ -5,6 +5,11 @@ namespace FluentNHibernate.Cfg
 {
 	public class SQLiteConfiguration : PersistenceConfiguration<SQLiteConfiguration>
 	{
+	    public static SQLiteConfiguration Standard
+	    {
+	        get { return new SQLiteConfiguration(); }
+	    }
+
 		public SQLiteConfiguration()
 		{
 			Driver<SQLite20Driver>();

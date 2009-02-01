@@ -125,7 +125,7 @@ namespace FluentNHibernate
 
         public override void AddMappingDocument(XmlDocument document, Type type)
         {
-            string filename = Path.Combine(_folder, type.FullName + ".xml");
+            string filename = Path.Combine(_folder, type.FullName + ".hbm.xml");
             document.Save(filename);
         }
     }

@@ -86,6 +86,9 @@
     <Compile Include="AutoMap\VersionTests.cs" />
     <Compile Include="AutoMap\XXAppenderPropertyConvention.cs" />
     <Compile Include="Cfg\FirebirdConfigurationTester.cs" />
+    <Compile Include="Cfg\FluentConfigurationTests.cs" />
+    <Compile Include="Cfg\FluentlyTests.cs" />
+    <Compile Include="Cfg\MappingConfigurationTests.cs" />
     <Compile Include="Cfg\MsSqlCeConfigurationTester.cs" />
     <Compile Include="Cfg\MsSqlConfigurationTester.cs" />
     <Compile Include="Cfg\MySQLConfigurationTester.cs" />
@@ -135,6 +138,9 @@
     <Compile Include="DomainModel\Query\FilterTypeTester.cs" />
     <Compile Include="DomainModel\RevealTests.cs" />
     <Compile Include="Fixtures.cs" />
+    <Compile Include="Fixtures\Basic\Person.cs" />
+    <Compile Include="Fixtures\HbmOne.cs" />
+    <Compile Include="Fixtures\HbmTwo.cs" />
     <Compile Include="Framework\PersistenceSpecificationTester.cs" />
     <Compile Include="SpecificationExtensions.cs" />
     <Compile Include="Debugging.cs" />
@@ -153,6 +159,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DeclarativeTesting.htm" />
+    <EmbeddedResource Include="Fixtures\HbmOne.hbm.xml" />
+    <EmbeddedResource Include="Fixtures\HbmTwo.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

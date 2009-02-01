@@ -12,6 +12,7 @@ namespace FluentNHibernate.AutoMap
         private Assembly entityAssembly;
         private Func<Type, bool> shouldIncludeType;
         private readonly List<AutoMapType> mappingTypes = new List<AutoMapType>();
+        private bool autoMappingsCreated;
 
         public AutoPersistenceModel WithConvention(Conventions convention)
         {
@@ -42,12 +43,6 @@ namespace FluentNHibernate.AutoMap
         {
             assemblyContainingMaps = Assembly.GetAssembly(typeof (T));
             return this;
-        }
-
-        public override void Configure(NHibernate.Cfg.Configuration configuration)
-        {
-            CompileMappings();
-            base.Configure(configuration);
         }
 
         public void CompileMappings()
@@ -84,6 +79,16 @@ namespace FluentNHibernate.AutoMap
                     }
                 }
             }
+
+            autoMappingsCreated = true;
+        }
+
+        public override void Configure(NHibernate.Cfg.Configuration configuration)
+        {
+            if (!autoMappingsCreated)
+                CompileMappings();
+
+            base.Configure(configuration);
         }
 
         private bool isnotAnonymousMethodClass(AutoMapType type)
