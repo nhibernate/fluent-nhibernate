@@ -10,6 +10,11 @@ namespace FluentNHibernate
 	{
         public static bool IsMethodExpression<MODEL>(Expression<Func<MODEL, object>> expression)
         {
+            return IsMethodExpression<MODEL, object>(expression);
+        }
+
+        public static bool IsMethodExpression<MODEL, RETURN>(Expression<Func<MODEL, RETURN>> expression)
+        {
             return expression.Body is MethodCallExpression;
         }
 

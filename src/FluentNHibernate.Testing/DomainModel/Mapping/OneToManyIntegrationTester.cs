@@ -32,11 +32,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 public OneToManyTargetMap()
                 {
                     Id(x => x.Id);
-                    HasMany<ChildObject>(x => x.ListOfChildren).AsList();
-                    HasMany<ChildObject>(x => x.BagOfChildren).AsBag();
-                    HasMany<ChildObject>(x => x.SetOfChildren).AsSet();
-                    HasMany<ChildObject>(x => x.MapOfChildren).AsMap( x => x.Name);
-                    HasMany<ChildObject>(x => x.ArrayOfChildren).AsArray(x => x.Position);
+                    HasMany(x => x.ListOfChildren).AsList();
+                    HasMany(x => x.BagOfChildren).AsBag();
+                    HasMany(x => x.SetOfChildren).AsSet();
+                    HasMany(x => x.MapOfChildren).AsMap( x => x.Name);
+                    HasMany(x => x.ArrayOfChildren).AsArray(x => x.Position);
                 }
             }
         }

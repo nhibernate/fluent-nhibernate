@@ -17,10 +17,10 @@ namespace FluentNHibernate.AutoMap
             set { propertiesMapped = value; }
         }
 
-        public override OneToManyPart<T, CHILD> HasMany<CHILD>(System.Linq.Expressions.Expression<Func<T, object>> expression)
+        protected override OneToManyPart<T, CHILD> MapHasMany<CHILD, RETURN>(Expression<Func<T, RETURN>> expression)
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
-            return base.HasMany<CHILD>(expression);
+            return base.MapHasMany<CHILD, RETURN>(expression);
         }
 
         public void IgnoreProperty(System.Linq.Expressions.Expression<Func<T, object>> expression)

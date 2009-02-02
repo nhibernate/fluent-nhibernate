@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.Mapping;
@@ -25,7 +26,7 @@ namespace FluentNHibernate.AutoMap
                 return;
 
             var classMapType = typeof(ClassMap<T>);
-            var hasManyMethod = classMapType.GetMethod("HasMany");
+            var hasManyMethod = classMapType.GetMethod("HasMany", new[] { typeof(Expression<Func<T, object>>) });
             var listType = property.PropertyType.GetGenericArguments()[0];
             var genericHasManyMethod = hasManyMethod.MakeGenericMethod(listType);
             genericHasManyMethod.Invoke(classMap, new object[] { ExpressionBuilder.Create<T>(property) });

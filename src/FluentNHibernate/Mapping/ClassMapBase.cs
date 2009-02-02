@@ -92,7 +92,14 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public virtual OneToManyPart<T, CHILD> HasMany<CHILD>(Expression<Func<T, object>> expression)
+        /// <summary>
+        /// Create a one-to-many relationship
+        /// </summary>
+        /// <typeparam name="CHILD">Child object type</typeparam>
+        /// <typeparam name="RETURN">Property return type</typeparam>
+        /// <param name="expression">Expression to get property from</param>
+        /// <returns>one-to-many part</returns>
+        protected virtual OneToManyPart<T, CHILD> MapHasMany<CHILD, RETURN>(Expression<Func<T, RETURN>> expression)
         {
             var part = ReflectionHelper.IsMethodExpression(expression)
                                ? new OneToManyPart<T, CHILD>(ReflectionHelper.GetMethod(expression))
@@ -101,6 +108,40 @@ namespace FluentNHibernate.Mapping
             AddPart(part);
 
             return part;
+        }
+
+        /// <summary>
+        /// Create a one-to-many relationship
+        /// </summary>
+        /// <typeparam name="CHILD">Child object type</typeparam>
+        /// <param name="expression">Expression to get property from</param>
+        /// <returns>one-to-many part</returns>
+        public OneToManyPart<T, CHILD> HasMany<CHILD>(Expression<Func<T, IEnumerable<CHILD>>> expression)
+        {
+            return MapHasMany<CHILD, IEnumerable<CHILD>>(expression);
+        }
+
+        /// <summary>
+        /// Create a one-to-many relationship with a IDictionary
+        /// </summary>
+        /// <typeparam name="KEY">Dictionary key type</typeparam>
+        /// <typeparam name="CHILD">Child object type / Dictionary value type</typeparam>
+        /// <param name="expression">Expression to get property from</param>
+        /// <returns>one-to-many part</returns>
+        public OneToManyPart<T, CHILD> HasMany<KEY, CHILD>(Expression<Func<T, IDictionary<KEY, CHILD>>> expression)
+        {
+            return MapHasMany<CHILD, IDictionary<KEY, CHILD>>(expression);
+        }
+
+        /// <summary>
+        /// Create a one-to-many relationship
+        /// </summary>
+        /// <typeparam name="CHILD">Child object type</typeparam>
+        /// <param name="expression">Expression to get property from</param>
+        /// <returns>one-to-many part</returns>
+        public OneToManyPart<T, CHILD> HasMany<CHILD>(Expression<Func<T, object>> expression)
+        {
+            return MapHasMany<CHILD, object>(expression);
         }
 
         public virtual ManyToManyPart<T, CHILD> HasManyToMany<CHILD>(Expression<Func<T, object>> expression)
