@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NHibernate.Cfg;
@@ -11,9 +12,12 @@ namespace FluentNHibernate.Cfg
     {
         private readonly IList<Assembly> assemblies = new List<Assembly>();
         private string exportPath;
+        private readonly PersistenceModel model;
 
         internal FluentMappingsContainer()
-        {}
+        {
+            model = new PersistenceModel();
+        }
 
         /// <summary>
         /// Add all fluent mappings in the assembly that contains T.
@@ -49,6 +53,17 @@ namespace FluentNHibernate.Cfg
         }
 
         /// <summary>
+        /// Alter the conventions used
+        /// </summary>
+        /// <param name="conventions">Lambda expression used to alter the conventions</param>
+        /// <returns>Fluent mappings configuration</returns>
+        public FluentMappingsContainer AlterConventions(Action<Conventions> conventions)
+        {
+            conventions(model.Conventions);
+            return this;
+        }
+
+        /// <summary>
         /// Gets whether any mappings were added
         /// </summary>
         internal bool WasUsed { get; set; }
@@ -59,8 +74,6 @@ namespace FluentNHibernate.Cfg
         /// <param name="cfg">NHibernate Configuration instance</param>
         internal void Apply(Configuration cfg)
         {
-            var model = new PersistenceModel();
-
             foreach (var assembly in assemblies)
             {
                 model.addMappingsFromAssembly(assembly);

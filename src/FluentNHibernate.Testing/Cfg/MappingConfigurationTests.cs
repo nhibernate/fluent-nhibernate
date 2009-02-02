@@ -91,6 +91,17 @@ namespace FluentNHibernate.Testing.Cfg
         }
 
         [Test]
+        public void AlteringConventionsShouldAffectProducedClasses()
+        {
+            mapping.FluentMappings.AddFromAssemblyOf<Record>();
+            mapping.FluentMappings.AlterConventions(conventions =>
+                conventions.GetTableName = type => type.Name + "Table");
+            mapping.Apply(cfg);
+
+            cfg.ClassMappings.ShouldContain(c => c.Table.Name == "RecordTable");
+        }
+
+        [Test]
         public void WasUsedIsFalseWhenNothingCalled()
         {
             mapping.WasUsed.ShouldBeFalse();
