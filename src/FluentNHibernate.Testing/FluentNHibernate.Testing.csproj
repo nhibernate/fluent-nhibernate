@@ -62,8 +62,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomainModel\Music.cs" />
-    <Compile Include="BackwardCompatibility\ClassMapTester.cs" />
-    <Compile Include="BackwardCompatibility\MusicMappingTester.cs" />
+    <Compile Include="FluentInterface\ClassMapTester.cs" />
+    <Compile Include="FluentInterface\MusicMappingTester.cs" />
     <Compile Include="MappingModel\AttributeStoreTester.cs" />
     <Compile Include="MappingModel\ClassMappingTester.cs" />
     <Compile Include="MappingModel\Collections\OneToManyMappingTester.cs" />
@@ -93,9 +93,9 @@
     <Compile Include="SpecificationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FluentNHibernate.BackwardCompatibility\FluentNHibernate.BackwardCompatibility.csproj">
+    <ProjectReference Include="..\FluentNHibernate.FluentInterface\FluentNHibernate.FluentInterface.csproj">
       <Project>{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}</Project>
-      <Name>FluentNHibernate.BackwardCompatibility</Name>
+      <Name>FluentNHibernate.FluentInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
       <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>

@@ -1,6 +1,6 @@
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.BackwardCompatibility
+namespace FluentNHibernate.FluentInterface
 {
     internal interface IDeferredCollectionMapping
     {

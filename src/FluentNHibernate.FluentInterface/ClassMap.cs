@@ -7,7 +7,7 @@ using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Reflection;
 using System.Collections.Generic;
 
-namespace FluentNHibernate.BackwardCompatibility
+namespace FluentNHibernate.FluentInterface
 {
     public class ClassMap<T> : IMappingProvider
     {

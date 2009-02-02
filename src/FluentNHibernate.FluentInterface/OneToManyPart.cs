@@ -3,7 +3,7 @@ using System.Reflection;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.BackwardCompatibility
+namespace FluentNHibernate.FluentInterface
 {
     public class OneToManyPart<PARENT, CHILD> : IDeferredCollectionMapping
     {

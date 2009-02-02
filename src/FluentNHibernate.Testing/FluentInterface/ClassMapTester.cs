@@ -1,5 +1,5 @@
 using System.Linq;
-using FluentNHibernate.BackwardCompatibility;
+using FluentNHibernate.FluentInterface;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
@@ -7,7 +7,7 @@ using FluentNHibernate.Reflection;
 using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.BackwardCompatibility
+namespace FluentNHibernate.Testing.FluentInterface
 {
     [TestFixture]
     public class ClassMapTester

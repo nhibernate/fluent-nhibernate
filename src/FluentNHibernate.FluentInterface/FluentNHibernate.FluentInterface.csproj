@@ -8,8 +8,8 @@
     <ProjectGuid>{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FluentNHibernate.BackwardCompatibility</RootNamespace>
-    <AssemblyName>FluentNHibernate.BackwardCompatibility</AssemblyName>
+    <RootNamespace>FluentNHibernate.FluentInterface</RootNamespace>
+    <AssemblyName>FluentNHibernate.FluentInterface</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

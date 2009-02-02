@@ -1,6 +1,6 @@
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.BackwardCompatibility
+namespace FluentNHibernate.FluentInterface
 {
     public class ManyToOnePart
     {

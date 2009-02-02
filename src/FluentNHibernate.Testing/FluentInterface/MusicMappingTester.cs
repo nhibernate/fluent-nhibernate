@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using FluentNHibernate.BackwardCompatibility;
+using FluentNHibernate.FluentInterface;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
@@ -13,7 +13,7 @@ using NUnit.Framework;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Conventions;
 
-namespace FluentNHibernate.Testing.BackwardCompatibility
+namespace FluentNHibernate.Testing.FluentInterface
 {
     [TestFixture]
     public class MusicMappingTester
