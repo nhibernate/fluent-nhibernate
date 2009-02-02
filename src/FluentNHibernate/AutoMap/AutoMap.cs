@@ -46,10 +46,10 @@ namespace FluentNHibernate.AutoMap
             return base.References(expression);
         }
 
-        public override ManyToManyPart<T, CHILD> HasManyToMany<CHILD>(System.Linq.Expressions.Expression<Func<T, object>> expression)
+        protected override ManyToManyPart<T, CHILD> MapHasManyToMany<CHILD, RETURN>(Expression<Func<T, RETURN>> expression)
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
-            return base.HasManyToMany<CHILD>(expression);
+            return base.MapHasManyToMany<CHILD, RETURN>(expression);
         }
 
         public override ComponentPart<C> Component<C>(Expression<Func<T, object>> expression, Action<ComponentPart<C>> action)

@@ -21,7 +21,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void BasicManyToManyMapping()
         {
         	new MappingTester<MappedObject>()
-        		.ForMapping(map => map.HasManyToMany<ChildObject>(x => x.Children))
+        		.ForMapping(map => map.HasManyToMany(x => x.Children))
         		.Element("class/bag")
         			.HasAttribute("name", "Children")
 					.DoesntHaveAttribute("cascade")
@@ -37,7 +37,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ManyToManyAsSet()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet())
+                .ForMapping(m => m.HasManyToMany(x => x.Children).AsSet())
                 .Element("class/set")
                     .HasAttribute("name", "Children")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
@@ -52,7 +52,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void ManyToManyAsBag()
 		{
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsBag())
+                .ForMapping(m => m.HasManyToMany(x => x.Children).AsBag())
                 .Element("class/bag")
                     .HasAttribute("name", "Children")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
@@ -67,7 +67,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void ManyToManyAsSetWithChildForeignKey()
 		{
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet().WithChildKeyColumn("TheKids_ID"))
+                .ForMapping(m => m.HasManyToMany(x => x.Children).AsSet().WithChildKeyColumn("TheKids_ID"))
                 .Element("class/set")
                     .HasAttribute("name", "Children")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
@@ -82,7 +82,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void ManyToManyAsSetWithParentForeignKey()
 		{
 			new MappingTester<MappedObject>()
-				.ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet().WithParentKeyColumn("TheParentID"))
+				.ForMapping(m => m.HasManyToMany(x => x.Children).AsSet().WithParentKeyColumn("TheParentID"))
 				.Element("class/set")
 					.HasAttribute("name", "Children")
 					.HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
@@ -97,7 +97,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void ManyToManyAsSetWithJoinFetchMode()
 		{
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.Children).AsSet().FetchType.Join())
+                .ForMapping(m => m.HasManyToMany(x => x.Children).AsSet().FetchType.Join())
                 .Element("class/set")
                     .HasAttribute("name", "Children")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
@@ -113,7 +113,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void BasicOneToManyMapping()
         {
 			new MappingTester<MappedObject>()
-				.ForMapping(map => map.HasMany<ChildObject>(x => x.Children))
+				.ForMapping(map => map.HasMany(x => x.Children))
 				.Element("class/bag")
 					.HasAttribute("name", "Children")
 				.Element("class/bag/key")
@@ -126,7 +126,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AdvancedOneToManyMapping()
         {
             var map = new ClassMap<MappedObject>();
-            map.HasMany<ChildObject>(x => x.Children).LazyLoad().Inverse();
+            map.HasMany(x => x.Children).LazyLoad().Inverse();
 
             document = map.CreateMapping(new MappingVisitor());
 
@@ -141,7 +141,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AdvancedOneToManyMapping_NotLazy_NotInverse()
         {
             var map = new ClassMap<MappedObject>();
-            map.HasMany<ChildObject>(x => x.Children)
+            map.HasMany(x => x.Children)
                 .Not.LazyLoad()
                 .Not.Inverse();
 
@@ -158,7 +158,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AdvancedManyToManyMapping()
         {
             var map = new ClassMap<MappedObject>();
-            map.HasManyToMany<ChildObject>(x => x.Children).LazyLoad().Inverse();
+            map.HasManyToMany(x => x.Children).LazyLoad().Inverse();
 
             document = map.CreateMapping(new MappingVisitor());
 
@@ -173,7 +173,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AdvancedManyToManyMapping_NotLazy_NotInverse()
         {
             var map = new ClassMap<MappedObject>();
-            map.HasManyToMany<ChildObject>(x => x.Children)
+            map.HasManyToMany(x => x.Children)
                 .Not.LazyLoad()
                 .Not.Inverse();
 
@@ -200,7 +200,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CascadeAll_with_many_to_many()
         {
             var map = new ClassMap<MappedObject>();
-            map.HasManyToMany<ChildObject>(x => x.Children).Cascade.All();
+            map.HasManyToMany(x => x.Children).Cascade.All();
 
             document = map.CreateMapping(new MappingVisitor());
             var element = (XmlElement) document.DocumentElement.SelectSingleNode("class/bag[@name='Children']");
@@ -212,7 +212,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CascadeAll_with_one_to_many()
         {
         	new MappingTester<MappedObject>()
-        		.ForMapping(map => map.HasMany<ChildObject>(x => x.Children).Cascade.All())
+        		.ForMapping(map => map.HasMany(x => x.Children).Cascade.All())
         		.Element("class/bag[@name='Children']").HasAttribute("cascade", "all");
         }
 

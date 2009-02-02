@@ -75,7 +75,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m =>
                 {
                     m.Map(x => x.Name);
-                    m.HasMany<JoinTarget>(x => x.Children);
+                    m.HasMany(x => x.Children);
                     m.WithTable("myTable", t => t.WithKeyColumn("ID"));
                 })
                 .Element("class/*[last()]").HasName("join");

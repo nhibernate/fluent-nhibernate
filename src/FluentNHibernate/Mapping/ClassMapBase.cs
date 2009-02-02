@@ -144,7 +144,14 @@ namespace FluentNHibernate.Mapping
             return MapHasMany<CHILD, object>(expression);
         }
 
-        public virtual ManyToManyPart<T, CHILD> HasManyToMany<CHILD>(Expression<Func<T, object>> expression)
+        /// <summary>
+        /// Create a many-to-many relationship
+        /// </summary>
+        /// <typeparam name="CHILD">Child object type</typeparam>
+        /// <typeparam name="RETURN">Property return type</typeparam>
+        /// <param name="expression">Expression to get property from</param>
+        /// <returns>many-to-many part</returns>
+        protected virtual ManyToManyPart<T, CHILD> MapHasManyToMany<CHILD, RETURN>(Expression<Func<T, RETURN>> expression)
         {
             var part = ReflectionHelper.IsMethodExpression(expression)
                                ? new ManyToManyPart<T, CHILD>(ReflectionHelper.GetMethod(expression))
@@ -153,6 +160,28 @@ namespace FluentNHibernate.Mapping
             AddPart(part);
 
             return part;
+        }
+
+        /// <summary>
+        /// Create a many-to-many relationship
+        /// </summary>
+        /// <typeparam name="CHILD">Child object type</typeparam>
+        /// <param name="expression">Expression to get property from</param>
+        /// <returns>many-to-many part</returns>
+        public ManyToManyPart<T, CHILD> HasManyToMany<CHILD>(Expression<Func<T, IEnumerable<CHILD>>> expression)
+        {
+            return MapHasManyToMany<CHILD, IEnumerable<CHILD>>(expression);
+        }
+
+        /// <summary>
+        /// Create a many-to-many relationship
+        /// </summary>
+        /// <typeparam name="CHILD">Child object type</typeparam>
+        /// <param name="expression">Expression to get property from</param>
+        /// <returns>many-to-many part</returns>
+        public ManyToManyPart<T, CHILD> HasManyToMany<CHILD>(Expression<Func<T, object>> expression)
+        {
+            return MapHasManyToMany<CHILD, object>(expression);
         }
 
         public virtual VersionPart Version(Expression<Func<T, object>> expression)

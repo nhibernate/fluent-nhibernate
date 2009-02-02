@@ -38,7 +38,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m =>
                 {
                     m.DefaultAccess.AsCamelCaseField();
-                    m.HasManyToMany<ChildObject>(x => x.GetOtherChildren());
+                    m.HasManyToMany(x => x.GetOtherChildren());
                 })
                 .HasAttribute("default-access", "field.camelcase")
                 .Element("class/bag")
@@ -49,7 +49,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ManyToManyMapping_with_foreign_key_name()
         {
             new MappingTester<ManyToManyTarget>()
-                .ForMapping(m => m.HasManyToMany<ChildObject>(x => x.GetOtherChildren()).WithForeignKeyConstraintNames("FK_Parent", "FK_Child"))
+                .ForMapping(m => m.HasManyToMany(x => x.GetOtherChildren()).WithForeignKeyConstraintNames("FK_Parent", "FK_Child"))
                 .Element("class/bag/key")
                 .HasAttribute("foreign-key", "FK_Parent")
                 .Element("class/bag/many-to-many")
@@ -61,7 +61,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void Can_use_custom_collection_implicitly()
         {
             new MappingTester<ManyToManyTarget>()
-                .ForMapping(map => map.HasManyToMany<ChildObject>(x => x.CustomCollection))
+                .ForMapping(map => map.HasManyToMany(x => x.CustomCollection))
                 .Element("class/bag").HasAttribute("collection-type", typeof(CustomCollection<ChildObject>).AssemblyQualifiedName);
         }
 
@@ -70,7 +70,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<ManyToManyTarget>()
                 .ForMapping(map =>
-                    map.HasManyToMany<ChildObject>(x => x.BagOfChildren)
+                    map.HasManyToMany(x => x.BagOfChildren)
                         .CollectionType<CustomCollection<ChildObject>>()
                 )
                 .Element("class/bag").HasAttribute("collection-type", typeof(CustomCollection<ChildObject>).AssemblyQualifiedName);
@@ -81,7 +81,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<ManyToManyTarget>()
                 .ForMapping(map =>
-                    map.HasManyToMany<ChildObject>(x => x.BagOfChildren)
+                    map.HasManyToMany(x => x.BagOfChildren)
                         .CollectionType(typeof(CustomCollection<ChildObject>))
                 )
                 .Element("class/bag").HasAttribute("collection-type", typeof(CustomCollection<ChildObject>).AssemblyQualifiedName);
@@ -92,7 +92,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<ManyToManyTarget>()
                 .ForMapping(map =>
-                    map.HasManyToMany<ChildObject>(x => x.BagOfChildren)
+                    map.HasManyToMany(x => x.BagOfChildren)
                         .CollectionType("name")
                 )
                 .Element("class/bag").HasAttribute("collection-type", "name");

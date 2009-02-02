@@ -32,7 +32,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 public ManyToManyTargetMap()
                 {
                     Id(x => x.Id);
-                    HasManyToMany<ChildObject>(x => x.GetOtherChildren()).AsBag().Access.AsCamelCaseField();
+                    HasManyToMany(x => x.GetOtherChildren()).AsBag().Access.AsCamelCaseField();
                 }
             }
         }

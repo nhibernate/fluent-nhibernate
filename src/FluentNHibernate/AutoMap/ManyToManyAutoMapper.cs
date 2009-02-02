@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping;
 
@@ -47,7 +48,7 @@ namespace FluentNHibernate.AutoMap
             Type parentSide = conventions.GetParentSideForManyToMany(property.DeclaringType, inverseProperty.DeclaringType);
 
             var classMapType = typeof(ClassMap<T>);
-            var hasManyMethod = classMapType.GetMethod("HasManyToMany");
+            var hasManyMethod = classMapType.GetMethod("HasManyToMany", new[] { typeof(Expression<Func<T, object>>) });
             var listType = property.PropertyType.GetGenericArguments()[0];
             var genericHasManyMethod = hasManyMethod.MakeGenericMethod(listType);
             object manyToManyPart = genericHasManyMethod.Invoke(classMap, new object[] { ExpressionBuilder.Create<T>(property) });
