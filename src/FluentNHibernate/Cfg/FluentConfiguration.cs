@@ -18,6 +18,7 @@ namespace FluentNHibernate.Cfg
         private readonly MappingConfiguration mappingCfg;
         private bool dbSet;
         private bool mappingsSet;
+        private Action<Configuration> configAlteration;
 
         internal FluentConfiguration()
         {
@@ -66,7 +67,7 @@ namespace FluentNHibernate.Cfg
         /// <returns>Fluent configuration</returns>
         public FluentConfiguration ExposeConfiguration(Action<Configuration> config)
         {
-            config(cfg);
+            configAlteration = config;
             return this;
         }
 
@@ -79,6 +80,10 @@ namespace FluentNHibernate.Cfg
             try
             {
                 mappingCfg.Apply(cfg);
+
+                if (configAlteration != null)
+                    configAlteration(cfg);
+
                 return cfg.BuildSessionFactory();
             }
             catch (Exception ex)

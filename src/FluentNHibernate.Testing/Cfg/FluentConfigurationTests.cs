@@ -37,6 +37,19 @@ namespace FluentNHibernate.Testing.Cfg
         }
 
         [Test]
+        public void ExposeConfigurationGetsConfigAfterMappingsHaveBeenApplied()
+        {
+            Fluently.Configure()
+                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Mappings(m =>
+                    m.FluentMappings.AddFromAssemblyOf<Record>())
+                .ExposeConfiguration(cfg =>
+                {
+                    cfg.ClassMappings.Count.ShouldBeGreaterThan(0);
+                });
+        }
+
+        [Test]
         public void MappingsShouldPassInstanceOfMappingConfigurationToAction()
         {
             Fluently.Configure()
