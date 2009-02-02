@@ -44,22 +44,29 @@ namespace FluentNHibernate.AutoMap
                 return;
 
             PropertyInfo inverseProperty = GetInverseProperty(property);
-
             Type parentSide = conventions.GetParentSideForManyToMany(property.DeclaringType, inverseProperty.DeclaringType);
+            IManyToManyPart manyToManyPart = GetManyToManyPart(classMap, property);
 
-            var classMapType = typeof(ClassMap<T>);
-            var hasManyMethod = classMapType.GetMethod("HasManyToMany", new[] { typeof(Expression<Func<T, object>>) });
+            if (parentSide != property.DeclaringType)
+                ApplyInverse(property, parentSide, manyToManyPart);
+        }
+
+
+        public void ApplyInverse(PropertyInfo property, Type parentSide, IManyToManyPart manyToManyPart)
+        {
+            string manyTableName = conventions.GetManyToManyTableName(property.DeclaringType, parentSide);
+            manyToManyPart.Inverse();
+            manyToManyPart.WithTableName(manyTableName);
+        }
+
+        public IManyToManyPart GetManyToManyPart<T>(AutoMap<T> classMap, PropertyInfo property)
+        {
             var listType = property.PropertyType.GetGenericArguments()[0];
-            var genericHasManyMethod = hasManyMethod.MakeGenericMethod(listType);
-            object manyToManyPart = genericHasManyMethod.Invoke(classMap, new object[] { ExpressionBuilder.Create<T>(property) });
-
-            if (parentSide != property.DeclaringType)//inverse
-            {
-                string manyTableName = conventions.GetManyToManyTableName(property.DeclaringType, parentSide);
-                Type type = manyToManyPart.GetType();
-                type.GetMethod("Inverse").Invoke(manyToManyPart, new object[0]);
-                type.GetMethod("WithTableName").Invoke(manyToManyPart, new object[] { manyTableName, });
-            }
+            return (IManyToManyPart)InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
+                classMap,
+                x => x.HasManyToMany<object>(ExpressionBuilder.Create<T>(property)),
+                new object[] { ExpressionBuilder.Create<T>(property) },
+                listType);
         }
     }
 }

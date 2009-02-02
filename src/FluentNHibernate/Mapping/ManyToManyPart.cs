@@ -4,7 +4,13 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-	public class ManyToManyPart<PARENT, CHILD> : ToManyBase<ManyToManyPart<PARENT, CHILD>, PARENT, CHILD>
+    public interface IManyToManyPart
+    {
+        void Inverse();
+        void WithTableName(string tableName);
+    }
+
+	public class ManyToManyPart<PARENT, CHILD> : ToManyBase<ManyToManyPart<PARENT, CHILD>, PARENT, CHILD>, IManyToManyPart
     {
     	private string _childKeyColumn;
         private readonly Cache<string, string> _parentKeyProperties = new Cache<string, string>();
@@ -140,5 +146,15 @@ namespace FluentNHibernate.Mapping
 	    {
             get { return PartPosition.Anywhere; }
 	    }
+
+        void IManyToManyPart.Inverse()
+        {
+            this.Inverse();
+        }
+
+        void IManyToManyPart.WithTableName(string tableName)
+        {
+            this.WithTableName(tableName);
+        }
     }
 }

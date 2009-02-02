@@ -81,6 +81,7 @@
     <Compile Include="AutoMap\AutoPersistenceModelTests.cs" />
     <Compile Include="AutoMap\BaseAutoPersistenceTests.cs" />
     <Compile Include="AutoMap\ManyToMany.cs" />
+    <Compile Include="AutoMap\ManyToManyAutomapperTester.cs" />
     <Compile Include="AutoMap\PrivateAutoMappingTester.cs" />
     <Compile Include="AutoMap\TestFixtures.cs" />
     <Compile Include="AutoMap\VersionTests.cs" />
