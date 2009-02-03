@@ -40,12 +40,39 @@ namespace FluentNHibernate.Testing.Cfg.Db
         {
             PostgreSQLConfiguration.PostgreSQL82
                 .ConnectionString(c => c
-                .Host("db-srv")
-                .Database("tables")
-                .Username("toni tester")
-                .Password("secret")
-                .Port(22))
+                    .Host("db-srv")
+                    .Database("tables")
+                    .Username("toni tester")
+                    .Password("secret")
+                    .Port(22))
                 .ToProperties()["connection.connection_string"].ShouldEqual("User Id=toni tester;Password=secret;Host=db-srv;Port=22;Database=tables;");
+        }
+
+        [Test]
+        public void ConnectionStringSetExplicitly()
+        {
+            PostgreSQLConfiguration.PostgreSQL82
+                .ConnectionString(c => c
+                    .Is("value"))
+                .ToProperties().ShouldContain("connection.connection_string", "value");
+        }
+
+        [Test]
+        public void ConnectionStringSetFromAppSetting()
+        {
+            PostgreSQLConfiguration.PostgreSQL82
+                .ConnectionString(c => c
+                    .FromAppSetting("connectionString"))
+                .ToProperties().ShouldContain("connection.connection_string", "a-connection-string");
+        }
+
+        [Test]
+        public void ConnectionStringSetFromConnectionStrings()
+        {
+            PostgreSQLConfiguration.PostgreSQL82
+                .ConnectionString(c => c
+                    .FromConnectionStringWithKey("main"))
+                .ToProperties().ShouldContain("connection.connection_string", "connection string");
         }
     }
 }

@@ -52,13 +52,41 @@ namespace FluentNHibernate.Testing.Cfg.Db
         }
 
         [Test]
-        public void ConnectionString_for_trustedConnection_is_added_to_the_configuration() {
+        public void ConnectionString_for_trustedConnection_is_added_to_the_configuration()
+        {
             MsSqlConfiguration.MsSql2005
                 .ConnectionString(c => c
                     .Server("db-srv")
                     .Database("tables")
                     .TrustedConnection())
                 .ToProperties().ShouldContain("connection.connection_string" ,"Data Source=db-srv;Initial Catalog=tables;Integrated Security=True");
+        }
+
+        [Test]
+        public void ConnectionStringSetExplicitly()
+        {
+            MsSqlConfiguration.MsSql2005
+                .ConnectionString(c => c
+                    .Is("value"))
+                .ToProperties().ShouldContain("connection.connection_string", "value");
+        }
+
+        [Test]
+        public void ConnectionStringSetFromAppSetting()
+        {
+            MsSqlConfiguration.MsSql2005
+                .ConnectionString(c => c
+                    .FromAppSetting("connectionString"))
+                .ToProperties().ShouldContain("connection.connection_string", "a-connection-string");
+        }
+
+        [Test]
+        public void ConnectionStringSetFromConnectionStrings()
+        {
+            MsSqlConfiguration.MsSql2005
+                .ConnectionString(c => c
+                    .FromConnectionStringWithKey("main"))
+                .ToProperties().ShouldContain("connection.connection_string", "connection string");
         }
     }
 }

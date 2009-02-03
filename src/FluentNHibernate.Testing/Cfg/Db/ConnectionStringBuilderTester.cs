@@ -22,6 +22,20 @@ namespace FluentNHibernate.Testing.Cfg.Db
             builder.ConnectionString.ShouldEqual("a string");
         }
 
+        [Test]
+        public void ConnectionStringSetFromAppSetting()
+        {
+            builder.FromAppSetting("connectionString");
+            builder.ConnectionString.ShouldContain("a-connection-string");
+        }
+
+        [Test]
+        public void ConnectionStringSetFromConnectionStrings()
+        {
+            builder.FromConnectionStringWithKey("main");
+            builder.ConnectionString.ShouldContain("connection string");
+        }
+
         private class ConnectionStringBuilderDouble : ConnectionStringBuilder
         {
             public string ConnectionString

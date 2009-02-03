@@ -30,5 +30,32 @@ namespace FluentNHibernate.Testing.Cfg
                     .Password("secret"))
                 .ToProperties()["connection.connection_string"].ShouldEqual("Server=db-srv;Database=tables;User ID=toni tester;Password=secret");
         }
+
+        [Test]
+        public void ConnectionStringSetExplicitly()
+        {
+            MySQLConfiguration.Standard
+                .ConnectionString(c => c
+                    .Is("value"))
+                .ToProperties().ShouldContain("connection.connection_string", "value");
+        }
+
+        [Test]
+        public void ConnectionStringSetFromAppSetting()
+        {
+            MySQLConfiguration.Standard
+                .ConnectionString(c => c
+                    .FromAppSetting("connectionString"))
+                .ToProperties().ShouldContain("connection.connection_string", "a-connection-string");
+        }
+
+        [Test]
+        public void ConnectionStringSetFromConnectionStrings()
+        {
+            MySQLConfiguration.Standard
+                .ConnectionString(c => c
+                    .FromConnectionStringWithKey("main"))
+                .ToProperties().ShouldContain("connection.connection_string", "connection string");
+        }
     }
 }

@@ -47,7 +47,12 @@ namespace FluentNHibernate.Cfg.Db
 
         protected internal override string Create()
         {
-            var builder = new SqlConnectionStringBuilder();
+            var connectionString = base.Create();
+
+            if (!string.IsNullOrEmpty(connectionString))
+                return connectionString;
+
+            var builder = new SqlConnectionStringBuilder(connectionString);
 
             builder.DataSource = _server;
             builder.InitialCatalog = _database;

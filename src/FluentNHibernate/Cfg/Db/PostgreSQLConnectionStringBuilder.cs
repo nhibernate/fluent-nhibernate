@@ -47,6 +47,11 @@ namespace FluentNHibernate.Cfg.Db
 
         protected internal override string Create()
         {
+            var connectionString = base.Create();
+
+            if (!string.IsNullOrEmpty(connectionString))
+                return connectionString;
+
             var sb = new StringBuilder();
 
             sb.AppendFormat("User Id={0};Password={1};Host={2};Port={3};Database={4};", _username, _password,
