@@ -1,5 +1,6 @@
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures;
 using NHibernate.Cfg;

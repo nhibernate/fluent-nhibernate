@@ -94,7 +94,7 @@ namespace FluentNHibernate.Framework
 
         public void VerifyTheMappings()
         {
-            // Create the initial copy
+            // CreateProperties the initial copy
             var first = typeof(T).InstantiateUsingParameterlessConstructor();
 
             // Set the "suggested" properties, including references

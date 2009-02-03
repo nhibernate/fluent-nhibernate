@@ -51,7 +51,6 @@ namespace FluentNHibernate.AutoMap
                 ApplyInverse(property, parentSide, manyToManyPart);
         }
 
-
         public void ApplyInverse(PropertyInfo property, Type parentSide, IManyToManyPart manyToManyPart)
         {
             string manyTableName = conventions.GetManyToManyTableName(property.DeclaringType, parentSide);

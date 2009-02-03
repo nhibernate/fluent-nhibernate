@@ -80,6 +80,18 @@ namespace FluentNHibernate.Testing
             actual.Single(expected).ShouldNotEqual(default(T));
         }
 
+        public static void ShouldContain(this IDictionary actual, string key, string value)
+        {
+            Assert.That(actual.Contains(key));
+            actual[key].ShouldEqual(value);
+        }
+
+        public static void ShouldContain<KEY, VALUE>(this IDictionary<KEY, VALUE> actual, KEY key, VALUE value)
+        {
+            actual.Keys.Contains(key).ShouldBeTrue();
+            actual[key].ShouldEqual(value);
+        }
+
         public static void ShouldBeEmpty<T>(this IEnumerable<T> actual)
         {
             actual.Count().ShouldEqual(0);

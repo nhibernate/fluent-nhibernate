@@ -1,8 +1,8 @@
-using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.Cfg
+namespace FluentNHibernate.Testing.Cfg.Db
 {
     [TestFixture]
     public class MsSqlCeConfigurationTester
@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing.Cfg
         public void MsSqlCe_should_default_to_the_MsSqlCe_dialect()
         {
             MsSqlCeConfiguration.Standard.ToProperties()["dialect"].ShouldEqual("NHibernate.Dialect.MsSqlCeDialect, " +
-                                                                                 typeof (ISession).Assembly.FullName);
+                typeof (ISession).Assembly.FullName);
         }
     }
 }

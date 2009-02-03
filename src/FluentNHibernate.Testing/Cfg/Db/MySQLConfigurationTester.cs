@@ -1,4 +1,4 @@
-using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NUnit.Framework;
 
@@ -23,12 +23,11 @@ namespace FluentNHibernate.Testing.Cfg
         public void ConnectionString_is_added_to_the_configuration()
         {
             MySQLConfiguration.Standard
-                .ConnectionString
+                .ConnectionString(c => c
                     .Server("db-srv")
                     .Database("tables")
                     .Username("toni tester")
-                    .Password("secret")
-                    .Create
+                    .Password("secret"))
                 .ToProperties()["connection.connection_string"].ShouldEqual("Server=db-srv;Database=tables;User ID=toni tester;Password=secret");
         }
     }

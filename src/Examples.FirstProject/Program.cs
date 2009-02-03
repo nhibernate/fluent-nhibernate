@@ -4,6 +4,7 @@ using System.Linq;
 using Examples.FirstProject.Entities;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;

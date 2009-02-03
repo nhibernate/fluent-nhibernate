@@ -93,7 +93,7 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Create a one-to-many relationship
+        /// CreateProperties a one-to-many relationship
         /// </summary>
         /// <typeparam name="CHILD">Child object type</typeparam>
         /// <typeparam name="RETURN">Property return type</typeparam>
@@ -111,7 +111,7 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Create a one-to-many relationship
+        /// CreateProperties a one-to-many relationship
         /// </summary>
         /// <typeparam name="CHILD">Child object type</typeparam>
         /// <param name="expression">Expression to get property from</param>
@@ -122,7 +122,7 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Create a one-to-many relationship with a IDictionary
+        /// CreateProperties a one-to-many relationship with a IDictionary
         /// </summary>
         /// <typeparam name="KEY">Dictionary key type</typeparam>
         /// <typeparam name="CHILD">Child object type / Dictionary value type</typeparam>
@@ -134,7 +134,7 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Create a one-to-many relationship
+        /// CreateProperties a one-to-many relationship
         /// </summary>
         /// <typeparam name="CHILD">Child object type</typeparam>
         /// <param name="expression">Expression to get property from</param>
@@ -145,7 +145,7 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Create a many-to-many relationship
+        /// CreateProperties a many-to-many relationship
         /// </summary>
         /// <typeparam name="CHILD">Child object type</typeparam>
         /// <typeparam name="RETURN">Property return type</typeparam>
@@ -163,7 +163,7 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Create a many-to-many relationship
+        /// CreateProperties a many-to-many relationship
         /// </summary>
         /// <typeparam name="CHILD">Child object type</typeparam>
         /// <param name="expression">Expression to get property from</param>
@@ -174,7 +174,7 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Create a many-to-many relationship
+        /// CreateProperties a many-to-many relationship
         /// </summary>
         /// <typeparam name="CHILD">Child object type</typeparam>
         /// <param name="expression">Expression to get property from</param>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentNHibernate.Cfg.Db;
 using NUnit.Framework;
-using FluentNHibernate.Cfg;
 using FluentNHibernate.Mapping;
 using NHibernate.Cfg;
 

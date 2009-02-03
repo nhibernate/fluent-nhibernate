@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq.Expressions;
-using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Framework;
 using FluentNHibernate.Framework.Fixtures;
 using FluentNHibernate.Framework.Query;
@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing.DomainModel
             //    .Server(".")
             //    .Database("FluentNHibernate")
             //    .TrustedConnection
-            //    .Create
+            //    .CreateProperties
             //    .ToProperties();
 
             _source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new TestModel());

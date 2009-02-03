@@ -1,7 +1,8 @@
+using FluentNHibernate.Cfg.Db;
 using NHibernate.Dialect;
 using NHibernate.Driver;
 
-namespace FluentNHibernate.Cfg
+namespace FluentNHibernate.Cfg.Db
 {
     public class MsSqlCeConfiguration : PersistenceConfiguration<MsSqlCeConfiguration>
     {

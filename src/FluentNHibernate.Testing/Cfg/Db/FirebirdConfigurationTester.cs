@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.Cfg
+namespace FluentNHibernate.Testing.Cfg.Db
 {
     [TestFixture]
     public class FirebirdConfigurationTester

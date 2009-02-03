@@ -4,6 +4,7 @@ using FluentNHibernate.AutoMap.TestFixtures;
 using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures.Basic;
 using NHibernate.Cfg;

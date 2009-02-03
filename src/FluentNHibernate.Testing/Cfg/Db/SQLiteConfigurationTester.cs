@@ -1,11 +1,11 @@
-using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.Cfg
+namespace FluentNHibernate.Testing.Cfg.Db
 {
-	[TestFixture]
-	public class SQLiteConfigurationTester
-	{
+    [TestFixture]
+    public class SQLiteConfigurationTester
+    {
         [Test]
         public void should_set_up_default_query_substitutions()
         {
@@ -25,5 +25,5 @@ namespace FluentNHibernate.Testing.Cfg
             new SQLiteConfiguration().UsingFile("foo")
                 .ToProperties()["connection.connection_string"].ShouldEqual("Data Source=foo;Version=3;New=True;");
         }
-	}
+    }
 }
