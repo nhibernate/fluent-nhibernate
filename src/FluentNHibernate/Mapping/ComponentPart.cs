@@ -44,12 +44,6 @@ namespace FluentNHibernate.Mapping
             properties.Store(name, value);
         }
 
-        public ComponentPart<T> Unique()
-        {
-            properties.Store("unique", "true");
-            return this;
-        }
-
         public void SetAttributes(Attributes atts)
         {
             foreach (var key in atts.Keys)

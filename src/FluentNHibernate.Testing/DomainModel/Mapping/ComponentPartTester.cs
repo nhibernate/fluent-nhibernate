@@ -13,10 +13,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ComponentCanIncludeParentReference()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c =>
-                    c.Component<ComponentTarget>(x => x.Component, m => m.Map(x => x.Name))
-                      .WithParentReference(y => y.MyParent)
-                )
+                .ForMapping(m =>
+                    m.Component<ComponentTarget>(x => x.Component, c =>
+                    {
+                        c.Map(x => x.Name);
+                        c.WithParentReference(x => x.MyParent);
+                    }))
                 .Element("class/component/parent").Exists()
                 .HasAttribute("name", "MyParent");
         }
@@ -25,22 +27,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ComponentDoesntHaveUniqueAttributeByDefault()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c =>
-                    c.Component<ComponentTarget>(x => x.Component, m => m.Map(x => x.Name))
-                      .WithParentReference(y => y.MyParent)
-                )
+                .ForMapping(m =>
+                    m.Component<ComponentTarget>(x => x.Component, c =>
+                    {
+                        c.Map(x => x.Name);
+                        c.WithParentReference(x => x.MyParent);
+                    }))
                 .Element("class/component").DoesntHaveAttribute("unique");
-        }
-
-        [Test]
-        public void ComponentCanSetUniqueAttribute()
-        {
-            new MappingTester<PropertyTarget>()
-                .ForMapping(c =>
-                    c.Component<ComponentTarget>(x => x.Component, m => m.Map(x => x.Name)).Unique()
-                      .WithParentReference(y => y.MyParent)
-                )
-                .Element("class/component").HasAttribute("unique", "true");
         }
     }
 }
