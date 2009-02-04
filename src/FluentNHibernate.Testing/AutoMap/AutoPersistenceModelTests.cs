@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
@@ -314,6 +315,7 @@ namespace FluentNHibernate.Testing.AutoMap
                 {
                     convention.IsComponentType =
                         type => type == typeof(Address);
+                    convention.AddTypeConvention(new CustomTypeConvention());
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
@@ -333,6 +335,7 @@ namespace FluentNHibernate.Testing.AutoMap
                 {
                     convention.IsComponentType =
                         type => type == typeof(Address);
+                    convention.AddTypeConvention(new CustomTypeConvention());
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 

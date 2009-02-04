@@ -146,55 +146,57 @@ namespace FluentNHibernate.AutoMap.TestFixtures.CustomTypes
     {
         public bool Equals(object x, object y)
         {
-            throw new System.NotImplementedException();
+            return x == y;
         }
 
         public int GetHashCode(object x)
         {
-            throw new System.NotImplementedException();
+            return x.GetHashCode();
         }
 
         public object NullSafeGet(IDataReader rs, string[] names, object owner)
         {
-            throw new System.NotImplementedException();
+            return null;
         }
 
         public void NullSafeSet(IDbCommand cmd, object value, int index)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public object DeepCopy(object value)
         {
-            throw new System.NotImplementedException();
+            return value;
         }
 
         public object Replace(object original, object target, object owner)
         {
-            throw new System.NotImplementedException();
+            return original;
         }
 
         public object Assemble(object cached, object owner)
         {
-            throw new System.NotImplementedException();
+            return cached;
         }
 
         public object Disassemble(object value)
         {
-            throw new System.NotImplementedException();
+            return value;
         }
 
         public SqlType[] SqlTypes
         {
-            get { throw new System.NotImplementedException(); }
+            get { return new[] {new SqlType(DbType.String)}; }
         }
+
         public Type ReturnedType
         {
-            get { throw new System.NotImplementedException(); }
+            get { return typeof(Custom); }
         }
+
         public bool IsMutable
         {
-            get { throw new System.NotImplementedException(); }
+            get { return true; }
         }
     }
 }

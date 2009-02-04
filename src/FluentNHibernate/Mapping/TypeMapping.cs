@@ -6,7 +6,10 @@ namespace FluentNHibernate.Mapping
     {
         public static string GetTypeString(Type type)
         {
-            return (type.IsGenericType) ? type.FullName : type.Name;
+            if (type.Assembly == typeof(string).Assembly)
+                return type.IsGenericType ? type.FullName : type.Name;
+
+            return type.AssemblyQualifiedName;
         }
     }
 }
