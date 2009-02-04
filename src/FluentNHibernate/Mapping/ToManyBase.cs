@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Xml;
 
@@ -8,7 +7,6 @@ namespace FluentNHibernate.Mapping
     public abstract class ToManyBase<T, PARENT, CHILD> : IMappingPart where T : ToManyBase<T, PARENT, CHILD>, IMappingPart, IHasAttributes
     {
         protected readonly Cache<string, string> _properties = new Cache<string, string>();
-        protected readonly IList<string> _columnNames = new List<string>();
         protected readonly Cache<string, string> _keyProperties = new Cache<string, string>();
         private readonly AccessStrategyBuilder<T> access;
         protected IndexMapping _indexMapping;
@@ -118,22 +116,6 @@ namespace FluentNHibernate.Mapping
             if (customIndexMapping != null)
                 customIndexMapping(_indexMapping);
 
-            return (T)this;
-        }
-
-        public T WithKeyColumns(params string[] columnNames)
-        {
-            foreach (var columnName in columnNames)
-            {
-                WithKeyColumn(columnName);
-            }
-
-            return (T)this;
-        }
-
-        public T WithKeyColumn(string columnName)
-        {
-            _columnNames.Add(columnName);
             return (T)this;
         }
 

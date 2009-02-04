@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Xml;
 using System;
 
@@ -7,6 +8,7 @@ namespace FluentNHibernate.Mapping
     public class OneToManyPart<PARENT, CHILD> : ToManyBase<OneToManyPart<PARENT, CHILD>, PARENT, CHILD>, IOneToManyPart, IAccessStrategy<OneToManyPart<PARENT, CHILD>> 
     {
         private readonly MethodInfo _collectionMethod;
+        private readonly IList<string> _columnNames = new List<string>();
 
         public OneToManyPart(PropertyInfo property)
             : this(property.Name, property.PropertyType)
@@ -138,6 +140,22 @@ namespace FluentNHibernate.Mapping
             {
                 return new FetchTypeExpression<OneToManyPart<PARENT, CHILD>>(this, _properties);
             }
+        }
+
+        public OneToManyPart<PARENT, CHILD> WithKeyColumns(params string[] columnNames)
+        {
+            foreach (var columnName in columnNames)
+            {
+                WithKeyColumn(columnName);
+            }
+
+            return this;
+        }
+
+        public OneToManyPart<PARENT, CHILD> WithKeyColumn(string columnName)
+        {
+            _columnNames.Add(columnName);
+            return this;
         }
 
         #endregion
