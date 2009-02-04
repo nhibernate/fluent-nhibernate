@@ -118,14 +118,6 @@ namespace FluentNHibernate.AutoMap
                 autoMapper, a => a.MergeMap<object>(null), new[] { mapping }, typeToMap);
         }
 
-        private object FindMapping(Type type)
-        {
-            Type typeToMap = GetTypeToMap(type);
-            var mapping = InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
-                this, a => a.FindMapping<object>(), null, typeToMap);
-            return mapping;
-        }
-
         #endregion
 
         public AutoPersistenceModel()
@@ -162,6 +154,15 @@ namespace FluentNHibernate.AutoMap
             
             // standard AutoMap<T> not found for the type, so looking for one for it's base type.
             return (IClassMap)_mappings.Find(t => t.GetType().GetGenericArguments()[0] == typeof(T).BaseType);
+        }
+
+        public IClassMap FindMapping(Type type)
+        {
+            var typeToMap = GetTypeToMap(type);
+            var mapping = InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
+                this, a => a.FindMapping<object>(), null, typeToMap);
+            
+            return mapping as IClassMap;
         }
 
         public void OutputMappings()

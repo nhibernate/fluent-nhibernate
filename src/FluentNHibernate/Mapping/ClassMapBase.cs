@@ -7,7 +7,7 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public class ClassMapBase<T>
+    public abstract class ClassMapBase<T>
     {
         private bool _parentIsRequired = true;
         private readonly List<IMappingPart> _properties = new List<IMappingPart>();
@@ -198,6 +198,11 @@ namespace FluentNHibernate.Mapping
             {
                 part.Write(classElement, visitor);
             }
+        }
+
+        public IList<IMappingPart> Parts
+        {
+            get { return _properties; }
         }
     }
 }
