@@ -148,21 +148,18 @@ namespace FluentNHibernate.AutoMap
 
         public IClassMap FindMapping<T>()
         {
-            var mapping = (AutoMap<T>)_mappings.Find(t => t is AutoMap<T>);
-            
-            if (mapping != null) return mapping;
-            
-            // standard AutoMap<T> not found for the type, so looking for one for it's base type.
-            return (IClassMap)_mappings.Find(t => t.GetType().GetGenericArguments()[0] == typeof(T).BaseType);
+            return FindMapping(typeof(T));
         }
 
         public IClassMap FindMapping(Type type)
         {
-            var typeToMap = GetTypeToMap(type);
-            var mapping = InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
-                this, a => a.FindMapping<object>(), null, typeToMap);
-            
-            return mapping as IClassMap;
+            var mapping = _mappings.Find(t =>
+                t.GetType().GetGenericArguments()[0] == type) as IClassMap;
+
+            if (mapping != null) return mapping;
+
+            // standard AutoMap<T> not found for the type, so looking for one for it's base type.
+            return _mappings.Find(t => t.GetType().GetGenericArguments()[0] == type.BaseType) as IClassMap;
         }
 
         public void OutputMappings()

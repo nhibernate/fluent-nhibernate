@@ -290,6 +290,17 @@ namespace FluentNHibernate.Testing.AutoMap
         }
 
         [Test]
+        public void CanSearchForOpenGenericTypes()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            autoMapper.CompileMappings();
+            autoMapper.FindMapping(typeof(SomeOpenGenericType<>));
+        }
+
+        [Test]
         public void TypeConventionShouldForcePropertyToBeMapped()
         {
             var autoMapper = AutoPersistenceModel
@@ -439,4 +450,7 @@ namespace FluentNHibernate.Testing.AutoMap
                .HasAttribute("name", "Id");
         }
     }
+
+    public class SomeOpenGenericType<T>
+    {}
 }
