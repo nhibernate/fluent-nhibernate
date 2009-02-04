@@ -44,13 +44,13 @@ namespace Examples.FirstProject
 
                     // add products to the stores, there's some crossover in the products in each
                     // store, because the store-product relationship is many-to-many
-                    barginBasin.AddProducts(potatoes, fish, milk, bread, cheese);
-                    superMart.AddProducts(bread, cheese, waffles);
+                    AddProductsToStore(barginBasin, potatoes, fish, milk, bread, cheese);
+                    AddProductsToStore(superMart, bread, cheese, waffles);
 
                     // add employees to the stores, this relationship is a one-to-many, so one
                     // employee can only work at one store at a time
-                    barginBasin.AddEmployees(daisy, jack, sue);
-                    superMart.AddEmployees(bill, joan);
+                    AddEmployeesToStore(barginBasin, daisy, jack, sue);
+                    AddEmployeesToStore(superMart, bill, joan);
 
                     // save both stores, this saves everything else via cascading
                     session.SaveOrUpdate(barginBasin);
@@ -116,7 +116,22 @@ namespace Examples.FirstProject
             }
 
             Console.WriteLine();
+        }
 
+        public static void AddProductsToStore(Store store, params Product[] products)
+        {
+            foreach (var product in products)
+            {
+                store.AddProduct(product);
+            }
+        }
+
+        public static void AddEmployeesToStore(Store store, params Employee[] employees)
+        {
+            foreach (var employee in employees)
+            {
+                store.AddEmployee(employee);
+            }
         }
     }
 }
