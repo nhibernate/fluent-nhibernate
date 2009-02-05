@@ -65,12 +65,12 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var joinedSubclassMapping = new JoinedSubclassMapping();
 
             joinedSubclassMapping.AddSubclass(new JoinedSubclassMapping { Name = "Child" });
-            joinedSubclassMapping.Subclasses.First().AddSubclass(new JoinedSubclassMapping { Name = "Granchild" });
+            joinedSubclassMapping.Subclasses.First().AddSubclass(new JoinedSubclassMapping { Name = "Grandchild" });
 
             var writer = new HbmJoinedSubclassWriter(null, null, null, null);
             writer.VerifyXml(joinedSubclassMapping)
                 .Element("joined-subclass").Exists().HasAttribute("name", "Child")
-                .Element("joined-subclass").Exists().HasAttribute("name", "Granchild");
+                .Element("joined-subclass").Exists().HasAttribute("name", "Grandchild");
         }
 
         [Test]

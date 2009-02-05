@@ -102,6 +102,26 @@ namespace FluentNHibernate.Testing.MappingModel.Conventions
 
             manyToOneMapping.Name.ShouldEqual(manyToOneMapping.PropertyInfo.Name);
         }
+
+        [Test]
+        public void Should_apply_to_joined_subclass_mapping()
+        {
+            var joinedSubclassMapping = new JoinedSubclassMapping();
+            joinedSubclassMapping.Type = typeof(Album);
+            _namingConvention.ProcessJoinedSubclass(joinedSubclassMapping);
+
+            joinedSubclassMapping.Name.ShouldEqual(joinedSubclassMapping.Type.AssemblyQualifiedName);
+        }
+
+        [Test]
+        public void Should_apply_to_subclass_mapping()
+        {
+            var subclassMapping = new SubclassMapping();
+            subclassMapping.Type = typeof(Album);
+            _namingConvention.ProcessSubclass(subclassMapping);
+
+            subclassMapping.Name.ShouldEqual(subclassMapping.Type.AssemblyQualifiedName);  
+        }
         
     }
 }

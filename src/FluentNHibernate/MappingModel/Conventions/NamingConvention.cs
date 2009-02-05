@@ -21,7 +21,7 @@ namespace FluentNHibernate.MappingModel.Conventions
             }
         }
 
-        public override void ProcessClass(ClassMapping classMapping)
+        protected override void ProcessClassBase(ClassMappingBase classMapping)
         {
             if (!classMapping.IsNameSpecified)
             {
@@ -55,6 +55,7 @@ namespace FluentNHibernate.MappingModel.Conventions
         {
             Process(manyToOneMapping, manyToOneMapping.PropertyInfo);
         }
+
     }    
 
 }

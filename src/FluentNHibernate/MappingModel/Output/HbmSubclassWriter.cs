@@ -1,25 +1,59 @@
+using System;
+using FluentNHibernate.MappingModel.Collections;
+using NHibernate.Cfg.MappingSchema;
+
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmSubclassWriter : NullMappingModelVisitor, IHbmWriter<ISubclassMapping>
+    public class HbmSubclassWriter : NullMappingModelVisitor, IHbmWriter<SubclassMapping>
     {
-        private readonly IHbmWriter<JoinedSubclassMapping> _joinedSubClassWriter;
+        private readonly IHbmWriter<ICollectionMapping> _collectionWriter;
+        private readonly IHbmWriter<PropertyMapping> _propertyWriter;
+        private readonly IHbmWriter<ManyToOneMapping> _manyToOneWriter;
 
-        private object _hbm;
+        private HbmSubclass _hbm;
 
-        public HbmSubclassWriter(IHbmWriter<JoinedSubclassMapping> joinedSubClassWriter)
+        public HbmSubclassWriter(IHbmWriter<ICollectionMapping> collectionWriter, IHbmWriter<PropertyMapping> propertyWriter, IHbmWriter<ManyToOneMapping> manyToOneWriter)
         {
-            _joinedSubClassWriter = joinedSubClassWriter;
+            _collectionWriter = collectionWriter;
+            _manyToOneWriter = manyToOneWriter;
+            _propertyWriter = propertyWriter;
         }
 
-        public object Write(ISubclassMapping mappingModel)
+        public object Write(SubclassMapping mappingModel)
         {
             mappingModel.AcceptVisitor(this);
             return _hbm;
         }
 
-        public override void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
+        public override void ProcessSubclass(SubclassMapping subclassMapping)
         {
-            _hbm = _joinedSubClassWriter.Write(subclassMapping);
+            _hbm = new HbmSubclass();
+            _hbm.name = subclassMapping.Name;
+        }
+
+        public override void Visit(SubclassMapping subclassMapping)
+        {
+            var writer = new HbmSubclassWriter(_collectionWriter, _propertyWriter, _manyToOneWriter);
+            var subclassHbm = (HbmSubclass)writer.Write(subclassMapping);
+            subclassHbm.AddTo(ref _hbm.subclass1);
+        }
+
+        public override void Visit(ICollectionMapping collectionMapping)
+        {
+            object collectionHbm = _collectionWriter.Write(collectionMapping);
+            collectionHbm.AddTo(ref _hbm.Items);
+        }
+
+        public override void Visit(PropertyMapping propertyMapping)
+        {
+            object propertyHbm = _propertyWriter.Write(propertyMapping);
+            propertyHbm.AddTo(ref _hbm.Items);
+        }
+
+        public override void Visit(ManyToOneMapping manyToOneMapping)
+        {
+            object manyHbm = _manyToOneWriter.Write(manyToOneMapping);
+            manyHbm.AddTo(ref _hbm.Items);
         }
     }
 }

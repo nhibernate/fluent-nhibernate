@@ -56,6 +56,30 @@ namespace FluentNHibernate.MappingModel
         }
         #endregion
 
+        #region Classes
+
+        protected virtual void ProcessClassBase(ClassMappingBase classMapping)
+        {
+            
+        }
+
+        public override void ProcessClass(ClassMapping classMapping)
+        {
+            ProcessClassBase(classMapping);
+        }
+
+        public override void ProcessSubclass(SubclassMapping subclassMapping)
+        {
+            ProcessClassBase(subclassMapping);
+        }
+
+        public override void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
+        {
+            ProcessClassBase(subclassMapping);
+        }
+
+        #endregion
+
 
         public override void Visit(ClassMapping classMapping)
         {

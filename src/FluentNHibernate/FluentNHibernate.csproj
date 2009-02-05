@@ -62,6 +62,7 @@
     <Compile Include="Cfg\SQLiteConfiguration.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="MappingModel\AttributeStore.cs" />
+    <Compile Include="MappingModel\ClassMappingBase.cs" />
     <Compile Include="MappingModel\Collections\CollectionAttributes.cs" />
     <Compile Include="MappingModel\Collections\CollectionMappingBase.cs" />
     <Compile Include="MappingModel\Collections\SetMapping.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="MappingModel\Output\HbmOneToManyWriter.cs" />
     <Compile Include="MappingModel\Output\HbmPropertyWriter.cs" />
     <Compile Include="MappingModel\Output\HbmSetWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmInheritanceWriter.cs" />
     <Compile Include="MappingModel\Output\HbmSubclassWriter.cs" />
     <Compile Include="MappingModel\Output\HbmWriterFactory.cs" />
     <Compile Include="MappingModel\Output\IHbmWriter.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="MappingModel\Collections\OneToManyMapping.cs" />
     <Compile Include="MappingModel\PropertyMapping.cs" />
     <Compile Include="MappingModel\Conventions\NamingConvention.cs" />
+    <Compile Include="MappingModel\SubclassMapping.cs" />
     <Compile Include="PersistenceModel.cs" />
     <Compile Include="Reflection\Accessor.cs" />
     <Compile Include="Reflection\PropertyChain.cs" />

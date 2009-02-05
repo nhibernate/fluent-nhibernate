@@ -99,5 +99,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer.VerifyXml(classMapping)
                 .Element("joined-subclass").Exists();
         }
+
     }
 }
