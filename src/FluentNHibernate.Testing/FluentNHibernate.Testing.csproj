@@ -68,9 +68,8 @@
     <Compile Include="DomainModel\Employees.cs" />
     <Compile Include="DomainModel\Music.cs" />
     <Compile Include="FluentInterface\ClassMapTester.cs" />
-    <Compile Include="FluentInterface\EmployeesTablePerClassTester.cs" />
     <Compile Include="FluentInterface\DiscriminatorPartTester.cs" />
-    <Compile Include="FluentInterface\EmployeesTablePerHierarchyTester.cs" />
+    <Compile Include="FluentInterface\EmployeesTester.cs" />
     <Compile Include="FluentInterface\IntegrationTestHelper.cs" />
     <Compile Include="FluentInterface\MusicMappingTester.cs" />
     <Compile Include="FluentInterface\SubclassPartTester.cs" />
