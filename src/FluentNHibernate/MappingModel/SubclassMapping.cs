@@ -7,8 +7,8 @@ namespace FluentNHibernate.MappingModel
 {
     public class SubclassMapping : ClassMappingBase, ISubclassMapping
     {
-        private AttributeStore<SubclassMapping> _attributes;
-        private IList<SubclassMapping> _subclasses;
+        private readonly AttributeStore<SubclassMapping> _attributes;
+        private readonly IList<SubclassMapping> _subclasses;
 
         public SubclassMapping()
             : this(new AttributeStore())
@@ -19,6 +19,11 @@ namespace FluentNHibernate.MappingModel
         {
             _attributes = new AttributeStore<SubclassMapping>(underlyingStore);
             _subclasses = new List<SubclassMapping>();
+        }
+
+        public AttributeStore<SubclassMapping> Attributes
+        {
+            get { return _attributes; }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)

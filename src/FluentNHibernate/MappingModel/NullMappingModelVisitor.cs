@@ -75,6 +75,11 @@ namespace FluentNHibernate.MappingModel
 
         }
 
+        public virtual void ProcessDiscriminator(DiscriminatorMapping discriminatorMapping)
+        {
+            
+        }
+
         public virtual void Visit(ClassMapping classMapping)
         {
 
