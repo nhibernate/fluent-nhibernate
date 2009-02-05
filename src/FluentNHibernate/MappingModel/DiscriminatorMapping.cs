@@ -8,11 +8,10 @@ namespace FluentNHibernate.MappingModel
     public class DiscriminatorMapping : MappingBase
     {
         private readonly AttributeStore<DiscriminatorMapping> _attributes;
-        private readonly IList<ColumnMapping> _columns;
+        public ColumnMapping Column { get; set; }
 
         public DiscriminatorMapping()
         {
-            _columns = new List<ColumnMapping>();
             _attributes = new AttributeStore<DiscriminatorMapping>();
             _attributes.SetDefault(x => x.IsNotNullable, true);
             _attributes.SetDefault(x => x.DiscriminatorType, DiscriminatorType.String);
@@ -27,17 +26,16 @@ namespace FluentNHibernate.MappingModel
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessDiscriminator(this);
+
+            if(Column != null)
+                visitor.Visit(Column);
         }
         
-        public IEnumerable<ColumnMapping> Columns
-        {
-            get { return _columns; }
-        }
 
-        public string Column
+        public string ColumnName
         {
-            get { return _attributes.Get(x => x.Column); }
-            set { _attributes.Set(x => x.Column, value); }
+            get { return _attributes.Get(x => x.ColumnName); }
+            set { _attributes.Set(x => x.ColumnName, value); }
         }
 
         public bool IsNotNullable

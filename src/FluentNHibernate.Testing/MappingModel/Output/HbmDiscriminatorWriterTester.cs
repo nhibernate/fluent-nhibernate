@@ -6,6 +6,7 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Output;
 using NHibernate.Cfg.MappingSchema;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.MappingModel.Output
 {
@@ -17,7 +18,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var discriminator = new DiscriminatorMapping();
 
-            var writer = new HbmDiscriminatorWriter();
+            var writer = new HbmDiscriminatorWriter(null);
             writer.ShouldGenerateValidOutput(discriminator);
         }
 
@@ -25,7 +26,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void Should_write_the_attributes()
         {
             var testHelper = new HbmTestHelper<DiscriminatorMapping>();
-            testHelper.Check(x => x.Column, "col1").MapsToAttribute("column");
+            testHelper.Check(x => x.ColumnName, "col1").MapsToAttribute("column");
             testHelper.Check(x => x.DiscriminatorType, DiscriminatorType.Char).MapsToAttribute("type", DiscriminatorType.Char.ToString());
             testHelper.Check(x => x.Force, true).MapsToAttribute("force");
             testHelper.Check(x => x.Formula, "some formula").MapsToAttribute("formula");
@@ -33,8 +34,22 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             testHelper.Check(x => x.IsNotNullable, false).MapsToAttribute("not-null");
             testHelper.Check(x => x.Length, 50).MapsToAttribute("length");
 
-            var writer = new HbmDiscriminatorWriter();
+            var writer = new HbmDiscriminatorWriter(null);
             testHelper.VerifyAll(writer);
         }
+
+        [Test]
+        public void Should_write_the_column()
+        {
+            var discriminator = new DiscriminatorMapping { Column = new ColumnMapping() };
+
+            var columnWriter = MockRepository.GenerateStub<IHbmWriter<ColumnMapping>>();
+            columnWriter.Expect(x => x.Write(discriminator.Column)).Return(new HbmColumn());
+
+            var writer = new HbmDiscriminatorWriter(columnWriter);
+            writer.VerifyXml(discriminator)
+                .Element("column").Exists();
+        }
+        
     }
 }
