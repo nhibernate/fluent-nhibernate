@@ -39,5 +39,20 @@ namespace FluentNHibernate.Testing.FluentInterface
             hibernateMapping.ShouldBeValidAgainstSchema();
         }
 
+        [Test]
+        public void Should_allow_employee_entities_to_be_saved()
+        {
+            var integrationHelper = new IntegrationTestHelper();
+            integrationHelper.PersistenceModel.Add(new EmployeeMap());
+
+            integrationHelper.Execute(session =>
+            {
+                var joe = new SalaryEmployee { Name = "Joe", Salary = 50000 };
+                session.Save(joe);
+
+                var jeff = new CasualEmployee { Name = "Jeff", HourlyWage = 30 };
+                session.Save(jeff);
+            });
+        }
     }
 }

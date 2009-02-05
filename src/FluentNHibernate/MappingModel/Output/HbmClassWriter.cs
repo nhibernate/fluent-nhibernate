@@ -14,11 +14,13 @@ namespace FluentNHibernate.MappingModel.Output
         private readonly IHbmWriter<PropertyMapping> _propertyWriter;
         private readonly IHbmWriter<ManyToOneMapping> _manyToOneWriter;
         private readonly IHbmWriter<ISubclassMapping> _subclassWriter;
+        private readonly IHbmWriter<DiscriminatorMapping> _discriminatorWriter;
         private HbmClass _hbmClass;
 
-        public HbmClassWriter(IHbmWriter<IIdentityMapping> identityWriter, IHbmWriter<ICollectionMapping> collectionWriter, IHbmWriter<PropertyMapping> propertyWriter, IHbmWriter<ManyToOneMapping> manyToOneWriter, IHbmWriter<ISubclassMapping> subclassWriter)
+        public HbmClassWriter(IHbmWriter<IIdentityMapping> identityWriter, IHbmWriter<ICollectionMapping> collectionWriter, IHbmWriter<PropertyMapping> propertyWriter, IHbmWriter<ManyToOneMapping> manyToOneWriter, IHbmWriter<ISubclassMapping> subclassWriter, IHbmWriter<DiscriminatorMapping> discriminatorWriter)
         {
             _identityWriter = identityWriter;
+            _discriminatorWriter = discriminatorWriter;
             _collectionWriter = collectionWriter;
             _propertyWriter = propertyWriter;
             _manyToOneWriter = manyToOneWriter;
@@ -36,18 +38,18 @@ namespace FluentNHibernate.MappingModel.Output
             _hbmClass = new HbmClass();
             _hbmClass.name = classMapping.Name;
 
-            if(classMapping.Attributes.IsSpecified(x => x.Tablename))
-        	    _hbmClass.table = classMapping.Tablename;
+            if (classMapping.Attributes.IsSpecified(x => x.Tablename))
+                _hbmClass.table = classMapping.Tablename;
         }
 
         public override void Visit(IIdentityMapping idMapping)
         {
             object idHbm = _identityWriter.Write(idMapping);
-            _hbmClass.SetId(idHbm);            
+            _hbmClass.SetId(idHbm);
         }
 
         public override void Visit(ICollectionMapping collectionMapping)
-        {            
+        {
             object collectionHbm = _collectionWriter.Write(collectionMapping);
             collectionHbm.AddTo(ref _hbmClass.Items);
         }
@@ -69,5 +71,11 @@ namespace FluentNHibernate.MappingModel.Output
             object subclassHbm = _subclassWriter.Write(subclassMapping);
             subclassHbm.AddTo(ref _hbmClass.Items1);
         }
+
+        public override void Visit(DiscriminatorMapping discriminatorMapping)
+        {
+            _hbmClass.discriminator = (HbmDiscriminator) _discriminatorWriter.Write(discriminatorMapping);
+        }
+
     }
 }
