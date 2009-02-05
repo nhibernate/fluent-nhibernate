@@ -11,6 +11,7 @@ namespace FluentNHibernate.MappingModel
         private readonly AttributeStore<ClassMapping> _attributes;
         private readonly IList<ISubclassMapping> _subclasses;
         public IIdentityMapping Id { get; set; }
+        public DiscriminatorMapping Discriminator { get; set; }
 
         public ClassMapping()
             : this(new AttributeStore())
@@ -41,6 +42,9 @@ namespace FluentNHibernate.MappingModel
             if (Id != null)
                 visitor.Visit(Id);
 
+            if (Discriminator != null)
+                visitor.Visit(Discriminator);
+
             foreach (var subclass in Subclasses)
                 visitor.Visit(subclass);
 
@@ -58,6 +62,6 @@ namespace FluentNHibernate.MappingModel
             get { return _attributes; }
         }
 
-
+        
     }
 }

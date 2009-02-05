@@ -121,6 +121,20 @@ namespace FluentNHibernate.Testing.MappingModel
             visitor.VerifyAllExpectations();           
         }
 
+        [Test]
+        public void Should_pass_the_discriminator_to_the_visitor()
+        {
+            var classMap = MappingMother.CreateClassMapping();
+            classMap.Discriminator = new DiscriminatorMapping();
+
+            var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
+            visitor.Expect(x => x.Visit(classMap.Discriminator));
+
+            classMap.AcceptVisitor(visitor);
+
+            visitor.VerifyAllExpectations();     
+        }
+
         
     }
 }
