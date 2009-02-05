@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             testHelper.Check(x => x.DiscriminatorType, DiscriminatorType.Char).MapsToAttribute("type", DiscriminatorType.Char.ToString());
             testHelper.Check(x => x.Force, true).MapsToAttribute("force");
             testHelper.Check(x => x.Formula, "some formula").MapsToAttribute("formula");
-            testHelper.Check(x => x.Insert, true).MapsToAttribute("insert");
+            testHelper.Check(x => x.Insert, false).MapsToAttribute("insert");
             testHelper.Check(x => x.IsNotNullable, false).MapsToAttribute("not-null");
             testHelper.Check(x => x.Length, 50).MapsToAttribute("length");
 

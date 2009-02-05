@@ -1,5 +1,6 @@
 using System;
 using NHibernate.Cfg.MappingSchema;
+using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -24,7 +25,7 @@ namespace FluentNHibernate.MappingModel.Output
             _hbm = new HbmDiscriminator();
 
             if (discriminatorMapping.Attributes.IsSpecified(x => x.ColumnName))
-                _hbm.column1 = discriminatorMapping.ColumnName;
+                _hbm.SetColumn(discriminatorMapping.ColumnName);
 
             if (discriminatorMapping.Attributes.IsSpecified(x => x.DiscriminatorType))
                 _hbm.type = discriminatorMapping.DiscriminatorType.ToString();
@@ -37,8 +38,7 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (discriminatorMapping.Attributes.IsSpecified(x => x.Insert))
             {
-                _hbm.insertSpecified = true;
-                _hbm.insert = discriminatorMapping.Insert;
+                _hbm.SetInsert(discriminatorMapping.Insert);
             }
 
             if (discriminatorMapping.Attributes.IsSpecified(x => x.IsNotNullable))
@@ -50,7 +50,7 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(ColumnMapping columnMapping)
         {
-            _hbm.column = (HbmColumn) _columnWriter.Write(columnMapping);
+            _hbm.SetColumn((HbmColumn) _columnWriter.Write(columnMapping));
         }
     }
 }
