@@ -8,6 +8,7 @@ namespace FluentNHibernate.MappingModel
     public class DiscriminatorMapping : MappingBase
     {
         private readonly AttributeStore<DiscriminatorMapping> _attributes;
+        public ClassMapping ParentClass { get; internal set; }
         public ColumnMapping Column { get; set; }
 
         public DiscriminatorMapping()
@@ -75,7 +76,7 @@ namespace FluentNHibernate.MappingModel
             set { _attributes.Set(x => x.DiscriminatorType, value); }
         }
 
-
+        
     }
 
     public enum DiscriminatorType

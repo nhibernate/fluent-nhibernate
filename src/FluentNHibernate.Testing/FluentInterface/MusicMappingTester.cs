@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using FluentNHibernate.FluentInterface;
 using FluentNHibernate.Cfg;
@@ -133,57 +132,24 @@ namespace FluentNHibernate.Testing.FluentInterface
         [Test]
         public void Should_allow_music_entities_to_be_saved()
         {
-            var model = new PersistenceModel();
-            model.Add(new ArtistMap());
-            model.Add(new AlbumMap());
-            model.Add(new TrackMap());
+            var integrationHelper = new IntegrationTestHelper();
+            integrationHelper.PersistenceModel.Add(new ArtistMap());
+            integrationHelper.PersistenceModel.Add(new AlbumMap());
+            integrationHelper.PersistenceModel.Add(new TrackMap());
 
-            model.AddConvention(new NamingConvention());
-
-            var cfg = new SQLiteConfiguration()
-                .InMemory()
-                .ShowSql()
-                .ConfigureProperties(new Configuration());
-
-            // UGLY HACK
-            var nhVersion = typeof (Configuration).Assembly.GetName().Version;
-            if (!nhVersion.ToString().StartsWith("2.0."))
+            integrationHelper.Execute(session =>
             {
-                cfg.SetProperty("proxyfactory.factory_class",
-                                "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle");
-            }
+                var inflames = new Artist {Name = "In Flames"};
+                session.Save(inflames);
 
-            model.Configure(cfg);
+                var whoracle = new Album {Title = "Whoracle"};
+                whoracle.Artist = inflames;
+                session.Save(whoracle);
 
-            var sessionFactory = cfg.BuildSessionFactory();
-
-            using (var session = sessionFactory.OpenSession())
-            {                
-                using (var tx = session.BeginTransaction())
-                {
-                    SchemaExport export = new SchemaExport(cfg);
-                    export.Execute(true, true, false, false, session.Connection, null);
-                    tx.Commit();
-                }
-
-                using (var tx = session.BeginTransaction())
-                {
-                    var inflames = new Artist {Name = "In Flames"};
-                    session.Save(inflames);
-
-                    var whoracle = new Album {Title = "Whoracle"};
-                    whoracle.Artist = inflames;                    
-                    session.Save(whoracle);
-
-                    var jotun = new Track {Name = "Jotun"};
-                    jotun.Album = whoracle;
-                    session.Save(jotun);
-
-                    tx.Commit();
-                }
-
-            }
-
+                var jotun = new Track {Name = "Jotun"};
+                jotun.Album = whoracle;
+                session.Save(jotun);
+            });
         }
 
     }

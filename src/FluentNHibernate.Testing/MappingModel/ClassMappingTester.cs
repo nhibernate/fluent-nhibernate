@@ -122,6 +122,27 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
+        public void Should_set_the_parent_class_for_the_discriminator()
+        {
+            var classMap = MappingMother.CreateClassMapping();
+            classMap.Discriminator = new DiscriminatorMapping();
+
+            classMap.Discriminator.ParentClass.ShouldEqual(classMap);
+        }
+
+        [Test]
+        public void Should_clear_the_parent_class_for_the_discriminator()
+        {
+            var classMap = MappingMother.CreateClassMapping();
+            var discriminator = new DiscriminatorMapping();
+
+            classMap.Discriminator = discriminator;
+            classMap.Discriminator = null;
+
+            discriminator.ParentClass.ShouldBeNull();
+        }
+
+        [Test]
         public void Should_pass_the_discriminator_to_the_visitor()
         {
             var classMap = MappingMother.CreateClassMapping();

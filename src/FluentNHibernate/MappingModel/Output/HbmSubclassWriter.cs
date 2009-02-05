@@ -29,6 +29,9 @@ namespace FluentNHibernate.MappingModel.Output
         {
             _hbm = new HbmSubclass();
             _hbm.name = subclassMapping.Name;
+
+            if (subclassMapping.Attributes.IsSpecified(x => x.DiscriminatorValue))
+                _hbm.discriminatorvalue = subclassMapping.DiscriminatorValue.ToString();
         }
 
         public override void Visit(SubclassMapping subclassMapping)

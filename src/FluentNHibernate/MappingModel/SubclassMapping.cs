@@ -45,5 +45,11 @@ namespace FluentNHibernate.MappingModel
         {
             get { return _subclasses; }
         }
+
+        public object DiscriminatorValue
+        {
+            get { return _attributes.Get(x => x.DiscriminatorValue); }
+            set { _attributes.Set(x => x.DiscriminatorValue, value); }
+        }
     }
 }

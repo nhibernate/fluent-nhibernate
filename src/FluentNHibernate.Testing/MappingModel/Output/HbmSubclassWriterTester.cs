@@ -25,6 +25,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var testHelper = new HbmTestHelper<SubclassMapping>();
             testHelper.Check(x => x.Name, "mapping1").MapsToAttribute("name");
+            testHelper.Check(x => x.DiscriminatorValue, "SalaryEmployee").MapsToAttribute("discriminator-value");
 
             var writer = new HbmSubclassWriter(null, null, null);
             testHelper.VerifyAll(writer);

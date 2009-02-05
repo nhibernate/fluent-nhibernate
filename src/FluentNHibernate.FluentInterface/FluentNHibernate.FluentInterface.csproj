@@ -46,11 +46,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassMap.cs" />
+    <Compile Include="ClassMapBase.cs" />
+    <Compile Include="DiscriminatorPart.cs" />
     <Compile Include="IDeferredCollectionMapping.cs" />
+    <Compile Include="JoinedSubclassPart.cs" />
     <Compile Include="ManyToOnePart.cs" />
     <Compile Include="OneToManyPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyMap.cs" />
+    <Compile Include="SubclassPart.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">

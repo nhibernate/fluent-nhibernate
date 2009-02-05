@@ -18,8 +18,8 @@ namespace FluentNHibernate.Testing.FluentInterface
             var classMap = new ClassMap<Artist>();
             ClassMapping mapping = classMap.GetClassMapping();
 
-            mapping.Type.ShouldEqual(typeof (Artist));
-               
+            mapping.Type.ShouldEqual(typeof(Artist));
+
         }
 
         [Test]
@@ -68,6 +68,32 @@ namespace FluentNHibernate.Testing.FluentInterface
             var reference = mapping.References.FirstOrDefault();
             reference.ShouldNotBeNull();
             reference.PropertyInfo.ShouldEqual(ReflectionHelper.GetProperty<Album>(x => x.Artist));
+        }
+
+        [Test]
+        public void CanMapTablePerHierarchy()
+        {
+            var classMap = new ClassMap<Employee>();
+            classMap.DiscriminateSubClassesOnColumn("EmployeeType");
+            ClassMapping mapping = classMap.GetClassMapping();
+
+            var discriminator = mapping.Discriminator;
+            discriminator.ShouldNotBeNull();
+            discriminator.ColumnName.ShouldEqual("EmployeeType");
+        }
+
+        [Test]
+        public void CanMapTablePerClass()
+        {
+            var classMap = new ClassMap<Employee>();
+            classMap.JoinedSubClass<SalaryEmployee>("SalaryEmployeeID", salaryMap => salaryMap.Map(x => x.Salary));
+
+            var classmapping = classMap.GetClassMapping();
+            var salaryMapping = classmapping.Subclasses.FirstOrDefault() as JoinedSubclassMapping;
+            salaryMapping.ShouldNotBeNull();
+            salaryMapping.Type.ShouldEqual(typeof (SalaryEmployee));
+            salaryMapping.Key.Column.ShouldEqual("SalaryEmployeeID");
+            salaryMapping.Properties.ShouldHaveCount(1);
         }
     }
 }

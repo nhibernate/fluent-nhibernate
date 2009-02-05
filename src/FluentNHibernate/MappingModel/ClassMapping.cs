@@ -10,8 +10,8 @@ namespace FluentNHibernate.MappingModel
     {
         private readonly AttributeStore<ClassMapping> _attributes;
         private readonly IList<ISubclassMapping> _subclasses;
+        private DiscriminatorMapping _discriminator;
         public IIdentityMapping Id { get; set; }
-        public DiscriminatorMapping Discriminator { get; set; }
 
         public ClassMapping()
             : this(new AttributeStore())
@@ -24,11 +24,25 @@ namespace FluentNHibernate.MappingModel
             _subclasses = new List<ISubclassMapping>();
         }
 
+        public DiscriminatorMapping Discriminator
+        {
+            get { return _discriminator; }
+            set
+            {
+                if (_discriminator != null)
+                    _discriminator.ParentClass = null;
+
+                _discriminator = value;
+
+                if (_discriminator != null)
+                    _discriminator.ParentClass = this;
+            }
+        }
+
         public IEnumerable<ISubclassMapping> Subclasses
         {
             get { return _subclasses; }
         }
-
 
         public void AddSubclass(ISubclassMapping subclass)
         {

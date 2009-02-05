@@ -6,18 +6,25 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Reflection;
 using System.Collections.Generic;
+using FluentNHibernate.Testing.FluentInterface;
 
 namespace FluentNHibernate.FluentInterface
 {
-    public class ClassMap<T> : IMappingProvider
+    public class ClassMap<T> : ClassMapBase<T>, IMappingProvider
     {
         private readonly ClassMapping _classMapping;
         private readonly IList<IDeferredCollectionMapping> _deferredCollections;
 
         public ClassMap()
+            : this(new ClassMapping { Type = typeof(T) })
         {
-            _classMapping = new ClassMapping();
-            _classMapping.Type = typeof (T);
+
+        }
+
+        protected ClassMap(ClassMapping classMapping)
+            : base(classMapping)
+        {
+            _classMapping = classMapping;
             _deferredCollections = new List<IDeferredCollectionMapping>();
         }
 
@@ -35,20 +42,11 @@ namespace FluentNHibernate.FluentInterface
         {
             PropertyInfo info = ReflectionHelper.GetProperty(expression);
 
-            _classMapping.Id = new IdMapping(new ColumnMapping { PropertyInfo = info})
-                                   {                                       
+            _classMapping.Id = new IdMapping(new ColumnMapping { PropertyInfo = info })
+                                   {
                                        PropertyInfo = info,
                                        Generator = IdGeneratorMapping.NativeGenerator
                                    };
-        }
-
-        public PropertyMap Map(Expression<Func<T, object>> expression)
-        {
-            PropertyInfo info = ReflectionHelper.GetProperty(expression);
-            var propertyMapping = new PropertyMapping {PropertyInfo = info};
-
-            _classMapping.AddProperty(propertyMapping);
-            return new PropertyMap(propertyMapping);
         }
 
         public OneToManyPart<T, CHILD> HasMany<CHILD>(Expression<Func<T, object>> expression)
@@ -64,9 +62,26 @@ namespace FluentNHibernate.FluentInterface
         {
             PropertyInfo info = ReflectionHelper.GetProperty(expression);
 
-            var mapping = new ManyToOneMapping {PropertyInfo = info};
+            var mapping = new ManyToOneMapping { PropertyInfo = info };
             _classMapping.AddReference(mapping);
             return new ManyToOnePart(mapping);
+        }
+
+        public DiscriminatorPart DiscriminateSubClassesOnColumn(string columnName)
+        {
+            var mapping = new DiscriminatorMapping { ColumnName = columnName };
+            _classMapping.Discriminator = mapping;
+            return new DiscriminatorPart(mapping);
+        }
+
+        public JoinedSubclassPart<TSubclassType> JoinedSubClass<TSubclassType>(string keyColumn, Action<JoinedSubclassPart<TSubclassType>> action)
+        {
+            var mapping = new JoinedSubclassMapping { Type = typeof(TSubclassType), Key = new KeyMapping { Column = keyColumn } };
+            _classMapping.AddSubclass(mapping);
+
+            var part = new JoinedSubclassPart<TSubclassType>(mapping);
+            action(part);
+            return part;
         }
     }
 }

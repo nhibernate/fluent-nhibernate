@@ -43,7 +43,7 @@ namespace FluentNHibernate.MappingModel.Output
                 });
             });
 
-            Debug.Write(ObjectFactory.WhatDoIHave());
+            //Debug.Write(ObjectFactory.WhatDoIHave());
             _initialized = true;
         }
     }
