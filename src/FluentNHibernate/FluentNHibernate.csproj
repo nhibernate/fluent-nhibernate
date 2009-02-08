@@ -63,7 +63,6 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="MappingModel\AttributeStore.cs" />
     <Compile Include="MappingModel\ClassMappingBase.cs" />
-    <Compile Include="MappingModel\Collections\CollectionAttributes.cs" />
     <Compile Include="MappingModel\Collections\CollectionMappingBase.cs" />
     <Compile Include="MappingModel\Collections\SetMapping.cs" />
     <Compile Include="MappingModel\Collections\BagMapping.cs" />

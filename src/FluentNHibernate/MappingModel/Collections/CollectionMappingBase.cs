@@ -7,11 +7,14 @@ namespace FluentNHibernate.MappingModel.Collections
 {
     public abstract class CollectionMappingBase : MappingBase, ICollectionMapping
     {
-        private readonly CollectionAttributes _attributes;
+        private readonly AttributeStore<ICollectionMapping> _attributes;
+        public KeyMapping Key { get; set; }
+        public ICollectionContentsMapping Contents { get; set; }
+        public PropertyInfo PropertyInfo { get; set; }
 
         public CollectionMappingBase(AttributeStore underlyingStore)
         {
-            _attributes = new CollectionAttributes(underlyingStore);
+            _attributes = new AttributeStore<ICollectionMapping>(underlyingStore);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -23,40 +26,33 @@ namespace FluentNHibernate.MappingModel.Collections
                 visitor.Visit(Contents);
         }
 
-        public PropertyInfo PropertyInfo { get; set; }
-
-        CollectionAttributes ICollectionMapping.Attributes
+        AttributeStore<ICollectionMapping> ICollectionMapping.Attributes
         {
             get { return _attributes; }
         }
 
         public bool IsLazy
         {
-            get { return _attributes.IsLazy; }
-            set { _attributes.IsLazy = value; }
+            get { return _attributes.Get(x => x.IsLazy); }
+            set { _attributes.Set(x => x.IsLazy, value); }
         }
 
         public bool IsInverse
         {
-            get { return _attributes.IsInverse; }
-            set { _attributes.IsInverse = value; }
+            get { return _attributes.Get(x => x.IsInverse); }
+            set { _attributes.Set(x => x.IsInverse, value); }
+        }
+
+        public string Name
+        {
+            get { return _attributes.Get(x => x.Name); }
+            set { _attributes.Set(x => x.Name, value); }
         }
 
         public bool IsNameSpecified
         {
             get { return _attributes.IsSpecified(x => x.Name); }
         }
-
-        public string Name
-        {
-            get { return _attributes.Name; }
-            set { _attributes.Name = value;}
-        }
-
-        public KeyMapping Key { get; set; }
-        public ICollectionContentsMapping Contents { get; set; }
-
-
 
     }
 

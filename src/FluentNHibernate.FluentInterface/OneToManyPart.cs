@@ -8,18 +8,18 @@ namespace FluentNHibernate.FluentInterface
     public class OneToManyPart<PARENT, CHILD> : IDeferredCollectionMapping
     {
         private readonly PropertyInfo _info;
-        private readonly CollectionAttributes _attributes;
+        private readonly AttributeStore<ICollectionMapping> _attributes;
 
         private Func<ICollectionMapping> _collectionBuilder;
 
         public OneToManyPart(PropertyInfo info)
         {
             _info = info;
-            _attributes = new CollectionAttributes();
+            _attributes = new AttributeStore<ICollectionMapping>();
             AsBag();   
         }
 
-        private OneToManyPart<PARENT, CHILD> AsBag()
+        public OneToManyPart<PARENT, CHILD> AsBag()
         {
             _collectionBuilder = () => new BagMapping();
             return this;
@@ -33,7 +33,7 @@ namespace FluentNHibernate.FluentInterface
 
         public OneToManyPart<PARENT, CHILD> IsInverse()
         {
-            _attributes.IsInverse = true;
+            _attributes.Set(x => x.IsInverse, true);
             return this;
         }
 

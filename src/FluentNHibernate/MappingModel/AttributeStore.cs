@@ -37,11 +37,6 @@ namespace FluentNHibernate.MappingModel
             return _attributes.ContainsKey(key);
         }
 
-        public void Clear()
-        {
-            _attributes.Clear();
-        }
-
         public void CopyTo(AttributeStore store)
         {
             foreach (KeyValuePair<string, object> pair in _attributes)
@@ -83,7 +78,6 @@ namespace FluentNHibernate.MappingModel
         {
             _store.SetDefault(GetKey(exp), value);
         }
-        
 
         public bool IsSpecified<U>(Expression<Func<T, U>> exp)
         {

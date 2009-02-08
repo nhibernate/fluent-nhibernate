@@ -10,12 +10,12 @@ namespace FluentNHibernate.MappingModel.Conventions
     {
         public Func<MemberInfo, string> DetermineNameFromMember = info => info.Name;
         public Func<Type, string> DetermineNameFromType = type => type.AssemblyQualifiedName;
-        
+
         protected void Process(INameable nameable, MemberInfo info)
         {
             if (!nameable.IsNameSpecified)
             {
-                if(info == null)
+                if (info == null)
                     throw new ConventionException("Cannot apply the naming convention. No member specified.", nameable);
                 nameable.Name = DetermineNameFromMember(info);
             }
@@ -25,7 +25,7 @@ namespace FluentNHibernate.MappingModel.Conventions
         {
             if (!classMapping.IsNameSpecified)
             {
-                if(classMapping.Type == null)
+                if (classMapping.Type == null)
                     throw new ConventionException("Cannot apply the naming convention. No type specified.", classMapping);
                 classMapping.Name = DetermineNameFromType(classMapping.Type);
             }
@@ -66,6 +66,6 @@ namespace FluentNHibernate.MappingModel.Conventions
             }
         }
 
-    }    
+    }
 
 }
