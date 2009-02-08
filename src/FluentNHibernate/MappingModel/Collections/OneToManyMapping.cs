@@ -7,6 +7,7 @@ namespace FluentNHibernate.MappingModel.Collections
     public class OneToManyMapping : MappingBase, ICollectionContentsMapping
     {
         private readonly AttributeStore<OneToManyMapping> _attributes;
+        public Type ChildType { get; set; }
 
         public OneToManyMapping()
         {

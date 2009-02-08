@@ -44,7 +44,7 @@ namespace FluentNHibernate.FluentInterface
 
             collection.PropertyInfo = _info;            
             collection.Key = new KeyMapping();
-            collection.Contents = new OneToManyMapping {ClassName = typeof (CHILD).AssemblyQualifiedName};
+            collection.Contents = new OneToManyMapping {ChildType = typeof (CHILD)};
 
             return collection;
         }

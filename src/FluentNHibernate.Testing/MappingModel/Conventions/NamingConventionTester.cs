@@ -122,6 +122,17 @@ namespace FluentNHibernate.Testing.MappingModel.Conventions
 
             subclassMapping.Name.ShouldEqual(subclassMapping.Type.AssemblyQualifiedName);  
         }
+
+        [Test]
+        public void Should_apply_to_one_to_many_mapping()
+        {
+            var oneToManyMapping = new OneToManyMapping();
+            oneToManyMapping.ChildType = typeof (Album);
+            _namingConvention.ProcessOneToMany(oneToManyMapping);
+
+            oneToManyMapping.ClassName.ShouldEqual(oneToManyMapping.ChildType.AssemblyQualifiedName);
+
+        }
         
     }
 }
