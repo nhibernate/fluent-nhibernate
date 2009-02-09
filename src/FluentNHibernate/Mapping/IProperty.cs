@@ -30,6 +30,12 @@ namespace FluentNHibernate.Mapping
         IProperty Unique();
 
         /// <summary>
+        /// Specifies the name of a multi-column unique constraint.
+        /// </summary>
+        /// <param name="keyName">Name of constraint</param>
+        IProperty UniqueKey(string keyName);
+
+        /// <summary>
         /// Inverts the next boolean
         /// </summary>
         IProperty Not { get; }

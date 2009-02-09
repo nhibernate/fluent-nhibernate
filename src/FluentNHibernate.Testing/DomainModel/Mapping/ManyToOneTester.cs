@@ -43,6 +43,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void Many_to_one_uniqueKey_should_render_uniquekey_attribute()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map => map.References(x => x.Parent).UniqueKey("uniqueKey"))
+                .Element("class/many-to-one")
+                    .HasAttribute("unique-key", "uniqueKey");
+        }
+
+        [Test]
         public void Many_to_one_unique_should_render_unique_attribute()
         {
             new MappingTester<MappedObject>()
@@ -82,12 +91,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void Many_to_one_reference_can_be_set_as_not_nullable()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map => 
+                .ForMapping(map =>
                     map.References(x => x.Parent)
                       .Not.Nullable()
                 )
                 .Element("class/many-to-one")
-                    .HasAttribute("not-null", "true");                    
+                    .HasAttribute("not-null", "true");
         }
 
         [Test]

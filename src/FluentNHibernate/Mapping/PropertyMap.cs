@@ -239,6 +239,16 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
+        /// Specifies the name of a multi-column unique constraint.
+        /// </summary>
+        /// <param name="keyName">Name of constraint</param>
+        public IProperty UniqueKey(string keyName)
+        {
+            _extendedProperties.Store("unique-key", keyName);
+            return this;
+        }
+
+        /// <summary>
         /// Inverts the next boolean
         /// </summary>
         public IProperty Not

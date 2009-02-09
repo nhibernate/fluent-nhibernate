@@ -58,6 +58,16 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies the name of a multi-column unique constraint.
+        /// </summary>
+        /// <param name="keyName">Name of constraint</param>
+        public ManyToOnePart<OTHER> UniqueKey(string keyName)
+        {
+            _properties.Store("unique-key", keyName);
+            return this;
+        }
+
         public ManyToOnePart<OTHER> LazyLoad()
         {
             _properties.Store("lazy", nextBool ? "proxy" : "false");

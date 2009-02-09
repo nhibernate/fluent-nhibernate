@@ -233,6 +233,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void Map_WithFluentLength_UsesUniqueKey_PropertyColumnAttribute()
+        {
+            var classMap = new ClassMap<PropertyTarget>();
+
+            classMap.Map(x => x.Name)
+                .UniqueKey("uniqueKey");
+
+            var document = classMap.CreateMapping(new MappingVisitor());
+
+            // attribute on property
+            var classElement = document.DocumentElement.SelectSingleNode("class");
+            var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
+            propertyElement.AttributeShouldEqual("unique-key", "uniqueKey");
+        }
+
+        [Test]
         public void Map_WithFluentLength_UsesNotReadOnly_PropertyColumnAttribute()
         {
             var classMap = new ClassMap<PropertyTarget>();
