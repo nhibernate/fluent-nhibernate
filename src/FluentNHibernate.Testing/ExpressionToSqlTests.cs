@@ -93,5 +93,70 @@ namespace FluentNHibernate.Testing
 
             sql.ShouldEqual("Position != 1");
         }
+
+        [Test]
+        public void ConvertLocalVariable()
+        {
+            var local = "someValue";
+            var sql = ExpressionToSql.Convert<ChildObject>(x => local);
+
+            sql.ShouldEqual("'someValue'");
+        }
+
+        private const string someValue = "someValue";
+
+        [Test]
+        public void ConvertConst()
+        {
+            var sql = ExpressionToSql.Convert<ChildObject>(x => someValue);
+
+            sql.ShouldEqual("'someValue'");
+        }
+
+        private class StaticExample
+        {
+            public static string Value = "someValue";
+            public static string Method()
+            {
+                return "someValue";
+            }
+        }
+
+        [Test]
+        public void ConvertStaticMemberReference()
+        {
+            var sql = ExpressionToSql.Convert<ChildObject>(x => StaticExample.Value);
+
+            sql.ShouldEqual("'someValue'");
+        }
+
+        [Test]
+        public void ConvertStaticMethodCall()
+        {
+            var sql = ExpressionToSql.Convert<ChildObject>(x => StaticExample.Method());
+
+            sql.ShouldEqual("'someValue'");
+        }
+
+        private enum Something
+        {
+            Else = 10
+        }
+
+        [Test]
+        public void ConvertEnumMemberReferenceMethodCall()
+        {
+            var sql = ExpressionToSql.Convert<ChildObject>(x => Something.Else.ToString());
+
+            sql.ShouldEqual("'Else'");
+        }
+
+        [Test]
+        public void ConvertEnumMemberReference()
+        {
+            var sql = ExpressionToSql.Convert<ChildObject>(x => Something.Else);
+
+            sql.ShouldEqual("10");
+        }
     }
 }

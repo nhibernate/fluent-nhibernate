@@ -318,6 +318,49 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .HasAttribute("name", "OtherChildren");
         }
 
+        private class StaticExample
+        {
+            public static string SomeValue = "SomeValue";
+        }
+
+        [Test]
+        public void Can_specify_where_fluently_with_static_class_member_reference()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m =>
+                    m.HasMany(x => x.ListOfChildren)
+                        .Where(x => x.Name == StaticExample.SomeValue)
+                )
+               .Element("class/bag").HasAttribute("where", "Name = 'SomeValue'");
+        }
+
+        const string someValue = "SomeValue";
+
+        [Test]
+        public void Can_specify_where_fluently_with_const()
+        {
+
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m =>
+                    m.HasMany(x => x.ListOfChildren)
+                        .Where(x => x.Name == someValue)
+                )
+               .Element("class/bag").HasAttribute("where", "Name = 'SomeValue'");
+        }
+
+        [Test]
+        public void Can_specify_where_fluently_with_local_variable()
+        {
+            var local = "someValue";
+
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m =>
+                    m.HasMany(x => x.ListOfChildren)
+                        .Where(x => x.Name == local)
+                )
+               .Element("class/bag").HasAttribute("where", "Name = 'someValue'");
+        }
+
         [Test]
         public void Can_specify_where_fluently_int_equals_int()
         {
