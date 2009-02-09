@@ -33,9 +33,9 @@ namespace FluentNHibernate
         public Func<PropertyInfo, bool> FindMappablePrivateProperties = null;
         public Action<IIdentityPart> IdConvention = id => { };
         public Action<IOneToManyPart> OneToManyConvention = m => { };
-        public Action<IMappingPart> ManyToOneConvention = m => { };
+        public Action<IManyToOnePart> ManyToOneConvention = m => { };
         public Action<IMappingPart> JoinConvention = m => { };
-        public Action<IMappingPart> OneToOneConvention = m => { };
+        public Action<IOneToOnePart> OneToOneConvention = m => { };
         public Func<CachePart, CachePart> DefaultCache = cache => null;
         public Func<PropertyInfo, string> GetVersionColumnName;
         public bool DefaultLazyLoad = false;
