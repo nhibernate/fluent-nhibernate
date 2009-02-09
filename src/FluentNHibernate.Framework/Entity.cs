@@ -7,6 +7,13 @@ namespace FluentNHibernate.Framework
     {
         public virtual long Id { get; set; }
 
+        /// <summary>
+        /// Indicates whether the current <see cref="T:FluentNHibernate.Framework.Entity" /> is equal to another <see cref="T:FluentNHibernate.Framework.Entity" />.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="obj" /> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="obj">An Entity to compare with this object.</param>
         public virtual bool Equals(Entity obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -15,6 +22,14 @@ namespace FluentNHibernate.Framework
             return obj.Id == Id;
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="T:FluentNHibernate.Framework.Entity" /> is equal to the current <see cref="T:System.Object" />.
+        /// </summary>
+        /// <returns>
+        /// true if the specified <see cref="T:FluentNHibernate.Framework.Entity" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />. </param>
+        /// <exception cref="T:System.NullReferenceException">The <paramref name="obj" /> parameter is null.</exception><filterpriority>2</filterpriority>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -23,6 +38,13 @@ namespace FluentNHibernate.Framework
             return Equals((Entity) obj);
         }
 
+        /// <summary>
+        /// Serves as a hash function for a Entity. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object" />.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
         {
             return (Id.GetHashCode() * 397) ^ GetType().GetHashCode();
