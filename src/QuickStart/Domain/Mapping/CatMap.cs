@@ -17,7 +17,7 @@ namespace FluentNHibernate.QuickStart.Domain.Mapping
             //non-nullable string with a length of 16
             Map(x => x.Name)
                 .WithLengthOf(16)
-                .CanNotBeNull();
+                .Not.Nullable();
 
             //simple properties
             Map(x => x.Sex);
