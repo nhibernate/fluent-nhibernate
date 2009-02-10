@@ -7,6 +7,7 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures.Basic;
+using FluentNHibernate.Testing.Fixtures.MixedMappingsInSameLocation;
 using NHibernate.Cfg;
 using NUnit.Framework;
 
@@ -59,6 +60,23 @@ namespace FluentNHibernate.Testing.Cfg
                     m.ShouldNotBeNull();
                     m.ShouldBeOfType(typeof(MappingConfiguration));
                 });
+        }
+
+        [Test]
+        public void MappingsCanBeMixedAndDontConflict()
+        {
+            var sessionFactory = Fluently.Configure()
+                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Mappings(m =>
+                {
+                    m.FluentMappings.AddFromAssemblyOf<Foo>();
+                    m.AutoMappings.Add(
+                        AutoPersistenceModel.MapEntitiesFromAssemblyOf<Bar>()
+                            .Where(t => t.Namespace == typeof(Bar).Namespace));
+                })
+                .BuildSessionFactory();
+
+            sessionFactory.ShouldNotBeNull();
         }
 
         [Test]

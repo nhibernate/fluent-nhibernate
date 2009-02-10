@@ -35,7 +35,8 @@ namespace FluentNHibernate
 
         public virtual void AddMappingDocument(XmlDocument document, Type type)
         {
-            _configuration.AddDocument(document);
+            if (_configuration.GetClassMapping(type) == null)
+                _configuration.AddDocument(document);
         }
 
         public void RegisterDependency(Type parentType)

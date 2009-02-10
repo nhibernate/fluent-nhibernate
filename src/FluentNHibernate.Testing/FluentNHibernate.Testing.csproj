@@ -84,6 +84,9 @@
     <Compile Include="AutoMap\ManyToManyAutomapperTester.cs" />
     <Compile Include="AutoMap\PrivateAutoMappingTester.cs" />
     <Compile Include="AutoMap\TestFixtures.cs" />
+    <Compile Include="Fixtures\MixedMappingsInSameLocation\Bar.cs" />
+    <Compile Include="Fixtures\MixedMappingsInSameLocation\Foo.cs" />
+    <Compile Include="Fixtures\MixedMappingsInSameLocation\Mappings\FooMap.cs" />
     <Compile Include="AutoMap\VersionTests.cs" />
     <Compile Include="AutoMap\XXAppenderPropertyConvention.cs" />
     <Compile Include="Cfg\Db\CacheSettingsBuilderTester.cs" />
@@ -167,6 +170,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AutoMap\TestFixtures\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
