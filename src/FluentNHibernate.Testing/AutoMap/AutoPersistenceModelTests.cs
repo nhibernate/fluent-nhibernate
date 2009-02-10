@@ -3,6 +3,8 @@ using System.Diagnostics;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
+using FluentNHibernate.Testing.DomainModel;
+using NHibernate.Cfg;
 using NUnit.Framework;
 using SuperTypes = FluentNHibernate.AutoMap.TestFixtures.SuperTypes;
 using FluentNHibernate.AutoMap.TestFixtures;
@@ -12,6 +14,19 @@ namespace FluentNHibernate.Testing.AutoMap
     [TestFixture]
     public class AutoPersistenceModelTests : BaseAutoPersistenceTests
     {
+        [Test]
+        public void CanMixMappingTypes()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+            autoMapper.addMappingsFromAssembly(typeof(ExampleClass).Assembly);
+            autoMapper.Configure(cfg);
+
+            cfg.ClassMappings.ShouldContain(c => c.ClassName == typeof(ExampleClass).AssemblyQualifiedName);
+            cfg.ClassMappings.ShouldContain(c => c.ClassName == typeof(Record).AssemblyQualifiedName);
+        }
+
         [Test]
         public void MapsPropertyWithPropertyConvention()
         {

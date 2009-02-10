@@ -50,12 +50,12 @@ namespace FluentNHibernate
                 if (!type.IsGenericType && typeof(IMapping).IsAssignableFrom(type))
                 {
                     IMapping mapping = (IMapping)type.InstantiateUsingParameterlessConstructor();
-                    addMapping(mapping);
+                    AddMapping(mapping);
                 }
             }
         }
 
-        protected void addMapping(IMapping mapping)
+        public void AddMapping(IMapping mapping)
         {
             _mappings.Add(mapping);
         }

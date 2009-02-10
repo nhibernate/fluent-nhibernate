@@ -14,8 +14,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             public override void Configure(Configuration configuration)
             {
-                addMapping(new ChildObjectMap());
-                addMapping(new ManyToManyTargetMap());
+                AddMapping(new ChildObjectMap());
+                AddMapping(new ManyToManyTargetMap());
                 base.Configure(configuration);
             }
 

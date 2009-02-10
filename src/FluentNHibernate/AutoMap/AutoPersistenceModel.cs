@@ -103,7 +103,7 @@ namespace FluentNHibernate.AutoMap
             Type typeToMap = GetTypeToMap(type);
             var mapping = InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
                 autoMapper, a => a.Map<object>(mappingTypes), new object[] {mappingTypes}, typeToMap);
-            addMapping((IMapping)mapping);
+            AddMapping((IMapping)mapping);
         }
 
         private Type GetTypeToMap(Type type)
@@ -142,7 +142,7 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel AutoMap<T>()
         {
-            addMapping(autoMapper.Map<T>(mappingTypes));
+            AddMapping(autoMapper.Map<T>(mappingTypes));
             return this;
         }
 
@@ -153,13 +153,28 @@ namespace FluentNHibernate.AutoMap
 
         public IClassMap FindMapping(Type type)
         {
-            var mapping = _mappings.Find(t =>
-                t.GetType().GetGenericArguments()[0] == type) as IClassMap;
+            Func<Type, Type, bool> finder = (mappingType, expectedType) =>
+            {
+                if (mappingType.IsGenericType)
+                {
+                    // instance of a generic type (probably AutoMap<T>)
+                    return mappingType.GetGenericArguments()[0] == expectedType;
+                }
+                else if (mappingType.BaseType.IsGenericType && mappingType.BaseType.GetGenericTypeDefinition() == typeof(ClassMap<>))
+                {
+                    // base type is a generic type of ClassMap<T>, so we've got a XXXMap instance
+                    return mappingType.BaseType.GetGenericArguments()[0] == expectedType;
+                }
+
+                return false;
+            };
+ 
+            var mapping = _mappings.Find(t => finder(t.GetType(), type)) as IClassMap;
 
             if (mapping != null) return mapping;
 
             // standard AutoMap<T> not found for the type, so looking for one for it's base type.
-            return _mappings.Find(t => t.GetType().GetGenericArguments()[0] == type.BaseType) as IClassMap;
+            return _mappings.Find(t => finder(t.GetType(), type.BaseType)) as IClassMap;
         }
 
         public void OutputMappings()
