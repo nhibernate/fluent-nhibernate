@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using FluentNHibernate.AutoMap.Alterations;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.AutoMap
@@ -13,16 +14,27 @@ namespace FluentNHibernate.AutoMap
         private Func<Type, bool> shouldIncludeType;
         private readonly List<AutoMapType> mappingTypes = new List<AutoMapType>();
         private bool autoMappingsCreated;
-        private readonly AutoMappingAlterationContainer alterations = new AutoMappingAlterationContainer();
+        private readonly AutoMappingAlterationCollection alterations = new AutoMappingAlterationCollection();
 
         /// <summary>
         /// Specify alterations to be used with this AutoPersisteceModel
         /// </summary>
         /// <param name="alterationDelegate">Lambda to declare alterations</param>
         /// <returns>AutoPersistenceModel</returns>
-        public AutoPersistenceModel WithAlterations(Action<AutoMappingAlterationContainer> alterationDelegate)
+        public AutoPersistenceModel WithAlterations(Action<AutoMappingAlterationCollection> alterationDelegate)
         {
             alterationDelegate(alterations);
+            return this;
+        }
+
+        /// <summary>
+        /// Use auto mapping overrides defined in the assembly of T.
+        /// </summary>
+        /// <typeparam name="T">Type to get assembly from</typeparam>
+        /// <returns>AutoPersistenceModel</returns>
+        public AutoPersistenceModel UseOverridesFromAssemblyOf<T>()
+        {
+            alterations.Add(new AutoMappingOverrideAlteration(typeof(T).Assembly));
             return this;
         }
 

@@ -59,7 +59,9 @@
     </Compile>
     <Compile Include="Accessor.cs" />
     <Compile Include="AttributeConvention.cs" />
+    <Compile Include="AutoMap\Alterations\AutoMappingOverrideAlteration.cs" />
     <Compile Include="AutoMap\Alterations\IAutoMappingAlteration.cs" />
+    <Compile Include="AutoMap\Alterations\IAutoMappingOverride.cs" />
     <Compile Include="AutoMap\AutoJoinedSubClassPart.cs" />
     <Compile Include="AutoMap\AutoMap.cs" />
     <Compile Include="AutoMap\AutoMapColumn.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="AutoMap\AutoMapManyToOne.cs" />
     <Compile Include="AutoMap\AutoMapOneToMany.cs" />
     <Compile Include="AutoMap\AutoMapper.cs" />
+    <Compile Include="AutoMap\AutoMappingAlterationCollection.cs" />
     <Compile Include="AutoMap\AutoMappingException.cs" />
     <Compile Include="AutoMap\AutoMapVersion.cs" />
     <Compile Include="AutoMap\AutoPersistenceModel.cs" />

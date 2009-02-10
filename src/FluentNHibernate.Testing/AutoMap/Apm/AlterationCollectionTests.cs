@@ -1,21 +1,19 @@
-using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.AutoMap;
-using FluentNHibernate.AutoMap.Alterations;
 using FluentNHibernate.Testing.Fixtures.AutoMappingAlterations;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.AutoMap.Apm
 {
     [TestFixture]
-    public class AlterationContainerTests
+    public class AlterationCollectionTests
     {
-        private ExposedAlterationContainer alterations;
+        private AutoMappingAlterationCollection alterations;
 
         [SetUp]
         public void CreateAlterationsContainer()
         {
-            alterations = new ExposedAlterationContainer();
+            alterations = new AutoMappingAlterationCollection();
         }
 
         [Test]
@@ -23,8 +21,8 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         {
             alterations.AddFromAssembly(typeof(DummyAlteration1).Assembly);
 
-            alterations.Added.ShouldContain(a => a is DummyAlteration1);
-            alterations.Added.ShouldContain(a => a is DummyAlteration2);
+            alterations.ShouldContain(a => a is DummyAlteration1);
+            alterations.ShouldContain(a => a is DummyAlteration2);
         }
 
         [Test]
@@ -32,8 +30,8 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         {
             alterations.AddFromAssemblyOf<DummyAlteration1>();
 
-            alterations.Added.ShouldContain(a => a is DummyAlteration1);
-            alterations.Added.ShouldContain(a => a is DummyAlteration2);
+            alterations.ShouldContain(a => a is DummyAlteration1);
+            alterations.ShouldContain(a => a is DummyAlteration2);
         }
 
         [Test]
@@ -41,7 +39,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         {
             alterations.Add(new DummyAlteration1());
 
-            alterations.Added.ShouldContain(a => a is DummyAlteration1);
+            alterations.ShouldContain(a => a is DummyAlteration1);
         }
 
         [Test]
@@ -49,7 +47,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         {
             alterations.Add<DummyAlteration1>();
 
-            alterations.Added.ShouldContain(a => a is DummyAlteration1);
+            alterations.ShouldContain(a => a is DummyAlteration1);
         }
 
         [Test]
@@ -57,21 +55,13 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         {
             alterations.AddFromAssemblyOf<DummyAlteration1>();
 
-            alterations.Added.ShouldContain(a => a is DummyAlteration1);
+            alterations.ShouldContain(a => a is DummyAlteration1);
 
-            var originalCount = alterations.Added.Count();
+            var originalCount = alterations.Count();
 
             alterations.Add<DummyAlteration1>();
 
-            (alterations.Added.Count() == originalCount).ShouldBeTrue();
-        }
-
-        private class ExposedAlterationContainer : AutoMappingAlterationContainer
-        {
-            public IEnumerable<IAutoMappingAlteration> Added
-            {
-                get { return Alterations; }
-            }
+            (alterations.Count() == originalCount).ShouldBeTrue();
         }
     }
 }

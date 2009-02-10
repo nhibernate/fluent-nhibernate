@@ -76,8 +76,9 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AutoMap\Apm\AlterationContainerTests.cs" />
+    <Compile Include="AutoMap\Apm\AlterationCollectionTests.cs" />
     <Compile Include="AutoMap\Apm\AlterationTests.cs" />
+    <Compile Include="AutoMap\Apm\AutoMappingOverrideAlterationTests.cs" />
     <Compile Include="AutoMap\AutoMappingTester.cs" />
     <Compile Include="AutoMap\AutoMapTests.cs" />
     <Compile Include="AutoMap\Apm\AutoPersistenceModelTests.cs" />
@@ -88,6 +89,8 @@
     <Compile Include="AutoMap\TestFixtures.cs" />
     <Compile Include="Fixtures\AutoMappingAlterations\DummyAlteration1.cs" />
     <Compile Include="Fixtures\AutoMappingAlterations\DummyAlteration2.cs" />
+    <Compile Include="Fixtures\AutoMappingAlterations\DummyOverride.cs" />
+    <Compile Include="Fixtures\AutoMappingAlterations\Model\Baz.cs" />
     <Compile Include="Fixtures\MixedMappingsInSameLocation\Bar.cs" />
     <Compile Include="Fixtures\MixedMappingsInSameLocation\Foo.cs" />
     <Compile Include="Fixtures\MixedMappingsInSameLocation\Mappings\FooMap.cs" />

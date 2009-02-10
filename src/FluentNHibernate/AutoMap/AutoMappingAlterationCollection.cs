@@ -1,18 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.AutoMap.Alterations;
 
 namespace FluentNHibernate.AutoMap
 {
-    public class AutoMappingAlterationContainer
+    public class AutoMappingAlterationCollection : IEnumerable<IAutoMappingAlteration>
     {
-        protected internal List<IAutoMappingAlteration> Alterations { get; private set; }
-
-        public AutoMappingAlterationContainer()
-        {
-            Alterations = new List<IAutoMappingAlteration>();
-        }
+        private readonly List<IAutoMappingAlteration> alterations = new List<IAutoMappingAlteration>();
 
         /// <summary>
         /// Creates an instance of an IAutoMappingAlteration from a type instance, then adds it to the alterations collection.
@@ -28,7 +24,7 @@ namespace FluentNHibernate.AutoMap
         /// </summary>
         /// <typeparam name="T">Type of an IAutoMappingAlteration</typeparam>
         /// <returns>Container</returns>
-        public AutoMappingAlterationContainer Add<T>() where T : IAutoMappingAlteration
+        public AutoMappingAlterationCollection Add<T>() where T : IAutoMappingAlteration
         {
             Add(typeof(T));
             return this;
@@ -39,10 +35,10 @@ namespace FluentNHibernate.AutoMap
         /// </summary>
         /// <param name="alteration">Alteration to add</param>
         /// <returns>Container</returns>
-        public AutoMappingAlterationContainer Add(IAutoMappingAlteration alteration)
+        public AutoMappingAlterationCollection Add(IAutoMappingAlteration alteration)
         {
-            if (!Alterations.Exists(a => a.GetType() == alteration.GetType()))
-                Alterations.Add(alteration);
+            if (!alterations.Exists(a => a.GetType() == alteration.GetType()))
+                alterations.Add(alteration);
             return this;
         }
 
@@ -51,7 +47,7 @@ namespace FluentNHibernate.AutoMap
         /// </summary>
         /// <param name="assembly">Assembly to search</param>
         /// <returns>Container</returns>
-        public AutoMappingAlterationContainer AddFromAssembly(Assembly assembly)
+        public AutoMappingAlterationCollection AddFromAssembly(Assembly assembly)
         {
             foreach (var type in assembly.GetExportedTypes())
             {
@@ -67,7 +63,7 @@ namespace FluentNHibernate.AutoMap
         /// </summary>
         /// <typeparam name="T">Type who's assembly to search</typeparam>
         /// <returns>Container</returns>
-        public AutoMappingAlterationContainer AddFromAssemblyOf<T>()
+        public AutoMappingAlterationCollection AddFromAssemblyOf<T>()
         {
             return AddFromAssembly(typeof(T).Assembly);
         }
@@ -78,10 +74,20 @@ namespace FluentNHibernate.AutoMap
         /// <param name="model">AutoPersistenceModel instance to apply alterations to</param>
         protected internal void Apply(AutoPersistenceModel model)
         {
-            foreach (var alteration in Alterations)
+            foreach (var alteration in alterations)
             {
                 alteration.Alter(model);
             }
+        }
+
+        public IEnumerator<IAutoMappingAlteration> GetEnumerator()
+        {
+            return alterations.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

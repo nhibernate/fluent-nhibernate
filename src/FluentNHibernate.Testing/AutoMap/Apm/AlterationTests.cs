@@ -29,5 +29,13 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
 
             alteration.AssertWasCalled(x => x.Alter(model));
         }
+
+        [Test]
+        public void UseOverridesAddsAlteration()
+        {
+            model.UseOverridesFromAssemblyOf<ExampleClass>()
+                .WithAlterations(alterations =>
+                    alterations.ShouldContain(a => a is AutoMappingOverrideAlteration));
+        }
     }
 }
