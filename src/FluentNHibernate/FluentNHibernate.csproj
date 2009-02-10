@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="Accessor.cs" />
     <Compile Include="AttributeConvention.cs" />
+    <Compile Include="AutoMap\Alterations\IAutoMappingAlteration.cs" />
     <Compile Include="AutoMap\AutoJoinedSubClassPart.cs" />
     <Compile Include="AutoMap\AutoMap.cs" />
     <Compile Include="AutoMap\AutoMapColumn.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="AutoMap\ConventionBuilder.cs" />
     <Compile Include="AutoMap\ExpressionBuilder.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />
+    <Compile Include="AutoMap\IAutoMappingAlteration.cs" />
     <Compile Include="AutoMap\ManyToManyAutoMapper.cs" />
     <Compile Include="AutoMap\PrivateAutoMapper.cs" />
     <Compile Include="Cache.cs" />

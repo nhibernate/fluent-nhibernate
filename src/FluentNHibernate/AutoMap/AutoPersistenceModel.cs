@@ -13,6 +13,18 @@ namespace FluentNHibernate.AutoMap
         private Func<Type, bool> shouldIncludeType;
         private readonly List<AutoMapType> mappingTypes = new List<AutoMapType>();
         private bool autoMappingsCreated;
+        private readonly AutoMappingAlterationContainer alterations = new AutoMappingAlterationContainer();
+
+        /// <summary>
+        /// Specify alterations to be used with this AutoPersisteceModel
+        /// </summary>
+        /// <param name="alterationDelegate">Lambda to declare alterations</param>
+        /// <returns>AutoPersistenceModel</returns>
+        public AutoPersistenceModel WithAlterations(Action<AutoMappingAlterationContainer> alterationDelegate)
+        {
+            alterationDelegate(alterations);
+            return this;
+        }
 
         public AutoPersistenceModel WithConvention(Conventions convention)
         {
@@ -49,6 +61,8 @@ namespace FluentNHibernate.AutoMap
         {
             if (assemblyContainingMaps != null)
                 addMappingsFromAssembly(assemblyContainingMaps);
+
+            alterations.Apply(this);
 
             foreach (var type in entityAssembly.GetTypes())
             {

@@ -76,14 +76,18 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AutoMap\Apm\AlterationContainerTests.cs" />
+    <Compile Include="AutoMap\Apm\AlterationTests.cs" />
     <Compile Include="AutoMap\AutoMappingTester.cs" />
     <Compile Include="AutoMap\AutoMapTests.cs" />
-    <Compile Include="AutoMap\AutoPersistenceModelTests.cs" />
+    <Compile Include="AutoMap\Apm\AutoPersistenceModelTests.cs" />
     <Compile Include="AutoMap\BaseAutoPersistenceTests.cs" />
     <Compile Include="AutoMap\ManyToMany.cs" />
     <Compile Include="AutoMap\ManyToManyAutomapperTester.cs" />
     <Compile Include="AutoMap\PrivateAutoMappingTester.cs" />
     <Compile Include="AutoMap\TestFixtures.cs" />
+    <Compile Include="Fixtures\AutoMappingAlterations\DummyAlteration1.cs" />
+    <Compile Include="Fixtures\AutoMappingAlterations\DummyAlteration2.cs" />
     <Compile Include="Fixtures\MixedMappingsInSameLocation\Bar.cs" />
     <Compile Include="Fixtures\MixedMappingsInSameLocation\Foo.cs" />
     <Compile Include="Fixtures\MixedMappingsInSameLocation\Mappings\FooMap.cs" />
@@ -170,9 +174,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="AutoMap\TestFixtures\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

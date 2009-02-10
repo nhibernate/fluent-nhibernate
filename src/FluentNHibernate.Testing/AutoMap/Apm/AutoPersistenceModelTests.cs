@@ -9,7 +9,7 @@ using NUnit.Framework;
 using SuperTypes = FluentNHibernate.AutoMap.TestFixtures.SuperTypes;
 using FluentNHibernate.AutoMap.TestFixtures;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.AutoMap.Apm
 {
     [TestFixture]
     public class AutoPersistenceModelTests : BaseAutoPersistenceTests
@@ -166,9 +166,9 @@ namespace FluentNHibernate.Testing.AutoMap
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
                 .WithConvention(c =>
-                                    {
-                                        c.GetForeignKeyName = p => p.Name + "Id";
-                                    });
+                {
+                    c.GetForeignKeyName = p => p.Name + "Id";
+                });
 
             autoMapper.Configure(cfg);
 
@@ -216,12 +216,12 @@ namespace FluentNHibernate.Testing.AutoMap
         public void TestInheritanceMappingSkipsSuperTypes()
         {
             var autoMapper = AutoPersistenceModel
-                    .MapEntitiesFromAssemblyOf<ExampleClass>()
-                    .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures.SuperTypes")
-                    .WithConvention(c =>
-                                        {
-                                            c.IsBaseType = b => b == typeof(SuperTypes.SuperType);
-                                        });
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures.SuperTypes")
+                .WithConvention(c =>
+                {
+                    c.IsBaseType = b => b == typeof(SuperTypes.SuperType);
+                });
 
             autoMapper.Configure(cfg);
 
@@ -232,8 +232,8 @@ namespace FluentNHibernate.Testing.AutoMap
         public void TestInheritanceMapping()
         {
             var autoMapper = AutoPersistenceModel
-                    .MapEntitiesFromAssemblyOf<ExampleClass>()
-                    .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             autoMapper.Configure(cfg);
 
@@ -249,8 +249,8 @@ namespace FluentNHibernate.Testing.AutoMap
         public void TestInheritanceMappingProperties()
         {
             var autoMapper = AutoPersistenceModel
-                    .MapEntitiesFromAssemblyOf<ExampleClass>()
-                    .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             autoMapper.Configure(cfg);
 
@@ -263,8 +263,8 @@ namespace FluentNHibernate.Testing.AutoMap
         public void TestInheritanceMappingDoesntIncludeBaseTypeProperties()
         {
             var autoMapper = AutoPersistenceModel
-                    .MapEntitiesFromAssemblyOf<ExampleClass>()
-                    .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             autoMapper.Configure(cfg);
 
@@ -277,9 +277,9 @@ namespace FluentNHibernate.Testing.AutoMap
         public void TestInheritanceOverridingMappingProperties()
         {
             var autoMapper = AutoPersistenceModel
-                    .MapEntitiesFromAssemblyOf<ExampleClass>()
-                    .ForTypesThatDeriveFrom<ExampleClass>(t => t.JoinedSubClass<ExampleInheritedClass>("OverridenKey", p =>p.Map(c => c.ExampleProperty, "columnName")))
-                    .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .ForTypesThatDeriveFrom<ExampleClass>(t => t.JoinedSubClass<ExampleInheritedClass>("OverridenKey", p =>p.Map(c => c.ExampleProperty, "columnName")))
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             autoMapper.Configure(cfg);
 
@@ -458,11 +458,11 @@ namespace FluentNHibernate.Testing.AutoMap
                         type => type == typeof(object) || type == typeof(EntityBase<>);
                 });
 
-           autoMapper.Configure(cfg);
+            autoMapper.Configure(cfg);
 
-           new AutoMappingTester<ClassUsingGenericBase>(autoMapper)
-               .Element("class/id")
-               .HasAttribute("name", "Id");
+            new AutoMappingTester<ClassUsingGenericBase>(autoMapper)
+                .Element("class/id")
+                .HasAttribute("name", "Id");
         }
     }
 
