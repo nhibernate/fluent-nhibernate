@@ -355,5 +355,31 @@ namespace FluentNHibernate.Mapping
             attributes.Store("mutable", (!nextBool).ToString().ToLowerInvariant());
             nextBool = true;
         }
+
+        /// <summary>
+        /// Sets this entity to be dynamic update
+        /// </summary>
+        public void DynamicUpdate()
+        {
+            attributes.Store("dynamic-update", nextBool.ToString().ToLowerInvariant());
+            nextBool = true;
+        }
+
+        /// <summary>
+        /// Sets this entity to be dynamic insert
+        /// </summary>
+        public void DynamicInsert()
+        {
+            attributes.Store("dynamic-insert", nextBool.ToString().ToLowerInvariant());
+            nextBool = true;
+        }
+
+        /// <summary>
+        /// Sets the optimistic locking strategy
+        /// </summary>
+        public OptimisticLock OptimisticLock
+        {
+            get { return new OptimisticLock(attributes); }
+        }
     }
 }
