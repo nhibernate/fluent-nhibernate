@@ -38,6 +38,10 @@ namespace FluentNHibernate
         public Action<IOneToOnePart> OneToOneConvention = m => { };
         public Func<CachePart, CachePart> DefaultCache = cache => null;
         public Func<PropertyInfo, string> GetVersionColumnName;
+
+        /// <summary>
+		/// Sets the value of the default-lazy attribute for all entities mapped
+		/// </summary>
         public bool DefaultLazyLoad = false;
         public Func<Type, string> GetPrimaryKeyNameFromType;
         public Func<Type, bool> IsBaseType = b => b == typeof(object);
