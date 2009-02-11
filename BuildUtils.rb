@@ -75,7 +75,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 <% @properties.each {|k, v| %>
-[assembly: Assembly<%=k%>Attribute("<%=v%>")]
+[assembly: Assembly<%=k%>("<%=v%>")]
 <% } %>
 		}.gsub(/^    /, '')
 		  

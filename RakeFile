@@ -12,7 +12,7 @@ require 'zip/zipfilesystem'
 RESULTS_DIR = "results"
 BUILD_NUMBER = "0.1.0."
 PRODUCT = "FluentNHibernate"
-COPYRIGHT = 'Copyright 2008 Jeremy D. Miller, James Gregory, Andrew Stewart, Paul Batum, Chad Myers et al. All rights reserved.';
+COPYRIGHT = 'Copyright 2008-2009 James Gregory and contributors (Paul Batum, Andrew Stewart, Chad Myers et al). All rights reserved.';
 COMMON_ASSEMBLY_INFO = 'src/CommonAssemblyInfo.cs';
 CLR_VERSION = "v3.5"
 
