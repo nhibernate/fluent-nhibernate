@@ -51,6 +51,29 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new Conventions().DefaultLazyLoad.ShouldBeTrue();
         }
+
+        [Test]
+        public void DynamicUpdate_should_be_unset()
+        {
+            new Conventions().DynamicUpdate(typeof(object)).ShouldBeNull();
+        }
+
+        [Test]
+        public void DynamicInsert_should_be_unset()
+        {
+            new Conventions().DynamicInsert(typeof(object)).ShouldBeNull();
+        }
+
+        [Test]
+        public void OptimisticLock_should_be_unset()
+        {
+            var attributes = new Cache<string, string>();
+            var optimisticLock = new OptimisticLock(attributes);
+
+            new Conventions().OptimisticLock(typeof(object), optimisticLock);
+
+            attributes.Count.ShouldEqual(0);
+        }
     }
 
     public class Invoice{}

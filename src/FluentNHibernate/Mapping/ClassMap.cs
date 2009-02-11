@@ -63,6 +63,37 @@ namespace FluentNHibernate.Mapping
 
             if (String.IsNullOrEmpty(TableName))
                 TableName = visitor.Conventions.GetTableName.Invoke(typeof(T));
+
+            PrepareDynamicUpdate(visitor);
+            PrepareDynamicInsert(visitor);
+            PrepareOptimisticLock(visitor);
+        }
+
+        private void PrepareDynamicUpdate(IMappingVisitor visitor)
+        {
+            if (attributes.Has("dynamic-update")) return;
+
+            var value = visitor.Conventions.DynamicUpdate(typeof(T));
+
+            if (value != null)
+                attributes.Store("dynamic-update", value.ToString().ToLowerInvariant());
+        }
+
+        private void PrepareDynamicInsert(IMappingVisitor visitor)
+        {
+            if (attributes.Has("dynamic-insert")) return;
+
+            var value = visitor.Conventions.DynamicInsert(typeof(T));
+
+            if (value != null)
+                attributes.Store("dynamic-insert", value.ToString().ToLowerInvariant());
+        }
+
+        private void PrepareOptimisticLock(IMappingVisitor visitor)
+        {
+            if (attributes.Has("optimistic-lock")) return;
+
+            visitor.Conventions.OptimisticLock(typeof(T), OptimisticLock);
         }
 
         public void UseIdentityForKey(Expression<Func<T, object>> expression, string columnName)

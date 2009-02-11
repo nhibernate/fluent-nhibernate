@@ -532,30 +532,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void DefaultLazyLoad_should_be_false_if_set_by_convention()
-        {
-            var visitor = new MappingVisitor();
-            visitor.Conventions.DefaultLazyLoad = false;
-
-            new MappingTester<MappedObject>()
-                .UsingVisitor(visitor)
-                .ForMapping(c => { })
-                .HasAttribute("default-lazy", "false");
-        }
-
-        [Test]
-        public void DefaultLazyLoad_convention_should_not_override_direct_setting_on_classmap()
-        {
-            var visitor = new MappingVisitor();
-            visitor.Conventions.DefaultLazyLoad = false;
-
-            new MappingTester<MappedObject>()
-                .UsingVisitor(visitor)
-                .ForMapping(c =>c.SetHibernateMappingAttribute(ClassMap<MappedObject>.DefaultLazyAttributeKey, "true"))
-                .HasAttribute("default-lazy", "true");
-        }
-
-        [Test]
         public void Can_set_readonly()
         {
             new MappingTester<MappedObject>()

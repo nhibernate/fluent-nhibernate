@@ -44,6 +44,22 @@ namespace FluentNHibernate
 		/// Sets the value of the default-lazy attribute for all entities mapped
 		/// </summary>
         public bool DefaultLazyLoad = false;
+
+        /// <summary>
+        /// Sets the value of the dynamic-update attribute for the supplied type. Return null for no setting, or a bool otherwise.
+        /// </summary>
+        public Func<Type, bool?> DynamicUpdate = type => null;
+
+        /// <summary>
+        /// Sets the value of the dynamic-insert attribute for the supplied type. Return null for no setting, or a bool otherwise.
+        /// </summary>
+        public Func<Type, bool?> DynamicInsert = type => null;
+
+        /// <summary>
+        /// Sets the optimistic locking for the supplied type. Use the 2nd parameter to set the locking for the type.
+        /// </summary>
+        public Action<Type, OptimisticLock> OptimisticLock = (type, locking) => { };
+
         public Func<Type, string> GetPrimaryKeyNameFromType;
         public Func<Type, bool> IsBaseType = b => b == typeof(object);
         public Func<Type, bool> IsComponentType = type => false;

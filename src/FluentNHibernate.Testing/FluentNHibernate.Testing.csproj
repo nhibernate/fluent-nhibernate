@@ -83,6 +83,7 @@
     <Compile Include="AutoMap\ManyToManyAutomapperTester.cs" />
     <Compile Include="AutoMap\PrivateAutoMappingTester.cs" />
     <Compile Include="AutoMap\TestFixtures.cs" />
+    <Compile Include="DomainModel\Mapping\ClassMapConventionsTester.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapDynamicInsertTester.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapDynamicUpdateTester.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapOptimisticLockTester.cs" />
