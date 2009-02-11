@@ -74,7 +74,11 @@ end
 
 desc "Update the version information for the build"
 task :version do
-  builder = AsmInfoBuilder.new(BUILD_NUMBER, {'Product' => PRODUCT, 'Copyright' => COPYRIGHT})
+  builder = AsmInfoBuilder.new BUILD_NUMBER,
+                               :product => PRODUCT,
+                               :copyright => COPYRIGHT,
+                               :company => 'http://fluentnhibernate.org',
+                               :allow_partially_trusted_callers => true
   buildNumber = builder.buildnumber
   puts "The build number is #{buildNumber}"
   builder.write COMMON_ASSEMBLY_INFO  

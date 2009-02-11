@@ -1,4 +1,5 @@
 require 'erb'
+require 'activesupport'
 
 class NUnitRunner
 	include FileTest
@@ -57,26 +58,27 @@ class AspNetCompilerRunner
 end
 
 class AsmInfoBuilder
-	attr_reader :buildnumber
+	attr_reader :buildnumber, :parameterless_attributes
 
 	def initialize(baseVersion, properties)
 		@properties = properties;
 		
 		@buildnumber = baseVersion + (ENV["CCNetLabel"].nil? ? '0' : ENV["CCNetLabel"].to_s)
 		@properties['Version'] = @properties['InformationalVersion'] = buildnumber;
+		@parameterless_attributes = [:allow_partially_trusted_callers]
 	end
-
-
 	
 	def write(file)
-		template = %q{
-using System;
-using System.Reflection;
-using System.Runtime.InteropServices;
+		template = %q{using System.Reflection;
+using System.Security;
 
-<% @properties.each {|k, v| %>
-[assembly: Assembly<%=k%>("<%=v%>")]
-<% } %>
+<% @properties.each do |k, v| %>
+<% if @parameterless_attributes.include? k %>
+[assembly: <%= k.to_s.camelize %>]
+<% else %>
+[assembly: Assembly<%= k.to_s.camelize %>("<%= v %>")]
+<% end %>
+<% end %>
 		}.gsub(/^    /, '')
 		  
 	  erb = ERB.new(template, 0, "%<>")
