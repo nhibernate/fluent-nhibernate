@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E775193E-E0C6-4C2D-8D9A-3B927493DAA9}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -34,10 +34,6 @@
     <DocumentationFile>bin\Release\FluentNHibernate.Framework.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="fit, Version=1.4.2970.22359, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\fit\fit.dll</HintPath>
-    </Reference>
     <Reference Include="Iesi.Collections, Version=1.0.0.3, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\Iesi.Collections.dll</HintPath>
@@ -68,19 +64,6 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Entity.cs" />
-    <Compile Include="Fixtures\DomainClassFixture.cs" />
-    <Compile Include="Fixtures\DomainFixtureWatcher.cs" />
-    <Compile Include="Fixtures\DomainListFixture.cs" />
-    <Compile Include="Fixtures\DomainObjectFinder.cs" />
-    <Compile Include="Fixtures\ExampleAttribute.cs" />
-    <Compile Include="Fixtures\TestContext.cs" />
-    <Compile Include="Generation\CodeFile.cs" />
-    <Compile Include="Generation\DomainFixture.cs" />
-    <Compile Include="Generation\DomainProperty.cs" />
-    <Compile Include="Generation\GenericSimpleProperty.cs" />
-    <Compile Include="Generation\IProperty.cs" />
-    <Compile Include="Generation\PropertyBuilder.cs" />
-    <Compile Include="Generation\SimpleProperty.cs" />
     <Compile Include="InMemoryRepository.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="PersistenceSpecification.cs" />

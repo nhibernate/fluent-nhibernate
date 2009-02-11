@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Framework;
-using FluentNHibernate.Framework.Fixtures;
 using FluentNHibernate.Framework.Query;
 using NHibernate;
 using NUnit.Framework;
@@ -35,8 +34,6 @@ namespace FluentNHibernate.Testing.DomainModel
 
             _source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new TestModel());
             _source.BuildSchema();
-
-            DomainObjectFinder.ClearAllFinders();
         }
 
         [Test]
@@ -152,66 +149,6 @@ namespace FluentNHibernate.Testing.DomainModel
             records.ShouldHaveCount(1);
             records[0].Name.ShouldEqual("Jeremy");
             records[0].Age.ShouldEqual(35);
-        }
-
-        [Test]
-        public void Try_out_DomainObjectFinder()
-        {
-            ISession session = _source.CreateSession();
-
-            session.SaveOrUpdate(new Record { Name = "Jeremy", Age = 34 });
-            session.SaveOrUpdate(new Record { Name = "Jeremy", Age = 35 });
-            session.SaveOrUpdate(new Record { Name = "Jessica", Age = 29 });
-            session.SaveOrUpdate(new Record { Name = "Natalie", Age = 25 });
-            session.SaveOrUpdate(new Record { Name = "Hank", Age = 29 });
-            session.SaveOrUpdate(new Record { Name = "Darrell", Age = 34 });
-            session.SaveOrUpdate(new Record { Name = "Bill", Age = 34 });
-            session.SaveOrUpdate(new Record { Name = "Chad", Age = 35 });
-            session.SaveOrUpdate(new Record { Name = "Earl", Age = 36 });
-
-            Repository repository = new Repository(_source.CreateSession());
-
-            
-            
-            
-            DomainObjectFinder.Type<Record>().IsFoundByProperty(repository, r => r.Name);
-            
-            
-            
-            
-            Record record = DomainObjectFinder.Find<Record>("Chad");
-            record.Name.ShouldEqual("Chad");
-        }
-
-
-        [Test]
-        public void Try_out_DomainObjectFinder2()
-        {
-            ISession session = _source.CreateSession();
-
-            session.SaveOrUpdate(new Record { Name = "Jeremy", Age = 34 });
-            session.SaveOrUpdate(new Record { Name = "Jeremy", Age = 35 });
-            session.SaveOrUpdate(new Record { Name = "Jessica", Age = 29 });
-            session.SaveOrUpdate(new Record { Name = "Natalie", Age = 25 });
-            session.SaveOrUpdate(new Record { Name = "Hank", Age = 29 });
-            session.SaveOrUpdate(new Record { Name = "Darrell", Age = 34 });
-            session.SaveOrUpdate(new Record { Name = "Bill", Age = 34 });
-            session.SaveOrUpdate(new Record { Name = "Chad", Age = 35 });
-            session.SaveOrUpdate(new Record { Name = "Earl", Age = 36 });
-
-            Repository repository = new Repository(_source.CreateSession());
-
-
-
-
-            DomainObjectFinder.Type<Record>().IsFoundBy(name =>
-            {
-                return new Record{Name = name};
-            });
-
-
-            Record record = DomainObjectFinder.Find<Record>("Chad");
-            record.Name.ShouldEqual("Chad");
         }
 
         [Test]
