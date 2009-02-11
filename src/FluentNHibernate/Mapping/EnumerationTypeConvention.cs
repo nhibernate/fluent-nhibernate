@@ -12,10 +12,9 @@ namespace FluentNHibernate.Mapping
         public void AlterMap(IProperty propertyMapping)
         {
             Type mapperType = typeof(GenericEnumMapper<>).MakeGenericType(propertyMapping.PropertyType);
-            propertyMapping.SetAttribute("type", mapperType.AssemblyQualifiedName);
-
-            propertyMapping.SetAttributeOnColumnElement("sql-type", "string");
-            propertyMapping.SetAttributeOnColumnElement("length", "50");
+            
+            propertyMapping.CustomTypeIs(mapperType);
+            propertyMapping.CustomSqlTypeIs("string");
         }
     }
 }

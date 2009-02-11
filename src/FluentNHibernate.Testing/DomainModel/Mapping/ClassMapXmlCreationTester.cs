@@ -301,19 +301,29 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void Map_an_enumeration()
         {
-            var map = new ClassMap<MappedObject>();
-            map.Map(x => x.Color);
-
-            document = map.CreateMapping(new MappingVisitor());
-            XmlElement element = elementForProperty("Color");
-
-            Debug.WriteLine(element.OuterXml);
-
-            element.AttributeShouldEqual("type", typeof (GenericEnumMapper<ColorEnum>).AssemblyQualifiedName);
-            element["column"].AttributeShouldEqual("name", "Color");
-            element["column"].AttributeShouldEqual("sql-type", "string");
-            element["column"].AttributeShouldEqual("length", "50");
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Map(x => x.Color))
+                .Element("class/property[@name='Color']")
+                    .Exists()
+                    .HasAttribute("type", typeof(GenericEnumMapper<ColorEnum>).AssemblyQualifiedName)
+                .Element("class/property[@name='Color']/column")
+                    .Exists()
+                    .HasAttribute("sql-type", "string");
         }
+
+        [Test]
+		public void Map_a_nullable_enumeration()
+		{
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Map(x => x.NullableColor))
+                .Element("class/property[@name='NullableColor']")
+                    .Exists()
+                    .HasAttribute("type", typeof(GenericEnumMapper<ColorEnum>).AssemblyQualifiedName)
+                    .HasAttribute("not-null", "false")
+                .Element("class/property[@name='NullableColor']/column")
+                    .Exists()
+                    .HasAttribute("sql-type", "string");
+		}
 
         [Test]
         public void MapASimplePropertyWithNoOverrides()
@@ -587,6 +597,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     public class MappedObject
     {
         public ColorEnum Color { get; set; }
+
+        public ColorEnum? NullableColor { get; set; }
 
         public ComponentOfMappedObject Component { get; set; }
 

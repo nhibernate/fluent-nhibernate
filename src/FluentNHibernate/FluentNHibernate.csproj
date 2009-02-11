@@ -118,6 +118,7 @@
     <Compile Include="Mapping\PartPosition.cs" />
     <Compile Include="Mapping\ToManyBase.cs" />
     <Compile Include="MissingConstructorException.cs" />
+    <Compile Include="Mapping\NullableEnumerationTypeConvention.cs" />
     <Compile Include="RestrictionsHelper.cs" />
     <Compile Include="IMappingVisitor.cs" />
     <Compile Include="MappingVisitor.cs" />

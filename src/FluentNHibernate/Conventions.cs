@@ -19,6 +19,7 @@ namespace FluentNHibernate
 
             AddTypeConvention(new IgnoreNullableTypeConvention());
             AddTypeConvention(new EnumerationTypeConvention());
+            AddTypeConvention(new NullableEnumerationTypeConvention());
         }
 
         public Func<Type, Type, Type> GetParentSideForManyToMany = (one, two) =>
