@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
@@ -27,6 +28,11 @@ namespace FluentNHibernate.Cfg
             mappingCfg = new MappingConfiguration();
         }
 
+        public Configuration Configuration
+        {
+            get { return cfg; }
+        }
+
         /// <summary>
         /// Apply database settings
         /// </summary>
@@ -44,7 +50,7 @@ namespace FluentNHibernate.Cfg
         /// <returns>Fluent configuration</returns>
         public FluentConfiguration Database(IPersistenceConfigurer config)
         {
-            config.ConfigureProperties(cfg);
+            config.ConfigureProperties(Configuration);
             dbSet = true;
             return this;
         }
@@ -80,12 +86,12 @@ namespace FluentNHibernate.Cfg
         {
             try
             {
-                mappingCfg.Apply(cfg);
+                mappingCfg.Apply(Configuration);
 
                 if (configAlteration != null)
-                    configAlteration(cfg);
+                    configAlteration(Configuration);
 
-                return cfg.BuildSessionFactory();
+                return Configuration.BuildSessionFactory();
             }
             catch (Exception ex)
             {

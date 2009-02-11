@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 using FluentNHibernate.Cfg;
 using NHibernate;
 using NHibernate.Cfg;
@@ -14,14 +12,12 @@ namespace FluentNHibernate.Framework
     {
         ISession CreateSession();
         void BuildSchema();
-        PersistenceModel Model { get; }
     }
 
     public class SessionSource : ISessionSource
     {
         private ISessionFactory _sessionFactory;
         private Configuration _configuration;
-        private PersistenceModel _model;
         private Dialect _dialect;
 
         public SessionSource(PersistenceModel model) 
@@ -34,23 +30,25 @@ namespace FluentNHibernate.Framework
     		Initialize(new Configuration().AddProperties(properties), model);
     	}
 
+        public SessionSource(FluentConfiguration config)
+        {
+            _configuration = config.Configuration;
+
+            _sessionFactory = config.BuildSessionFactory();
+            _dialect = _sessionFactory.Dialect;
+        }
+
     	protected void Initialize(Configuration nhibernateConfig, PersistenceModel model)
 		{
 			if( model == null ) throw new ArgumentNullException("model", "Model cannot be null");
 
 			_configuration = nhibernateConfig;
-			_model = model;
-			
-			model.Configure(_configuration);
+
+    	    model.Configure(_configuration);
 
 			_sessionFactory = _configuration.BuildSessionFactory();
     	    _dialect = Dialect.GetDialect(_configuration.Properties);
 		}
-
-    	public PersistenceModel Model
-        {
-            get { return _model; }
-        }
 
         public virtual ISession CreateSession()
         {

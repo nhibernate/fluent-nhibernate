@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FluentNHibernate.Cfg;
 using NHibernate;
 
 namespace FluentNHibernate.Framework
@@ -8,6 +9,10 @@ namespace FluentNHibernate.Framework
         private ISession _session;
 
         public SingleConnectionSessionSourceForSQLiteInMemoryTesting(IDictionary<string, string> properties, PersistenceModel model) : base(properties, model)
+        {
+        }
+
+        public SingleConnectionSessionSourceForSQLiteInMemoryTesting(FluentConfiguration config) : base(config)
         {
         }
 
