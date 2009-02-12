@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate", "FluentN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate.Testing", "FluentNHibernate.Testing\FluentNHibernate.Testing.csproj", "{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate.Framework", "FluentNHibernate.Framework\FluentNHibernate.Framework.csproj", "{E775193E-E0C6-4C2D-8D9A-3B927493DAA9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples.FirstProject", "Examples.FirstProject\Examples.FirstProject.csproj", "{B43FC076-1704-409A-A4F5-91A5DB22B4CF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{83F17668-79F5-46CB-9C33-AF30F48FAAD8}"
@@ -38,14 +36,6 @@ Global
 		{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}.Release|Any CPU.Build.0 = Release|x86
 		{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}.Release|Mixed Platforms.Build.0 = Release|x86
-		{E775193E-E0C6-4C2D-8D9A-3B927493DAA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E775193E-E0C6-4C2D-8D9A-3B927493DAA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E775193E-E0C6-4C2D-8D9A-3B927493DAA9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{E775193E-E0C6-4C2D-8D9A-3B927493DAA9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{E775193E-E0C6-4C2D-8D9A-3B927493DAA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E775193E-E0C6-4C2D-8D9A-3B927493DAA9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E775193E-E0C6-4C2D-8D9A-3B927493DAA9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E775193E-E0C6-4C2D-8D9A-3B927493DAA9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B43FC076-1704-409A-A4F5-91A5DB22B4CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B43FC076-1704-409A-A4F5-91A5DB22B4CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B43FC076-1704-409A-A4F5-91A5DB22B4CF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

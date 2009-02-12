@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
-using FluentNHibernate.Framework;
 using NHibernate;
 using System.Collections;
 
-namespace FluentNHibernate.Testing.Framework
+namespace FluentNHibernate.Testing.Testing
 {
     [TestFixture]
     public class PersistenceSpecificationTester
@@ -58,29 +57,29 @@ namespace FluentNHibernate.Testing.Framework
         {
             var firstKitten = new Kitten { Id = 1, Name = "Kitten" };
             _cat = new Cat
+            {
+                Id = 100,
+                Name = "Cat",
+                FirstKitten = firstKitten,
+                AllKittens = new List<Kitten>
                 {
-                    Id = 100,
-                    Name = "Cat",
-                    FirstKitten = firstKitten,
-                    AllKittens = new List<Kitten>
-                        {
-                            firstKitten,
-                            new Kitten {Id = 2, Name = "Kitten2"},
-                        }
-                };
+                    firstKitten,
+                    new Kitten {Id = 2, Name = "Kitten2"},
+                }
+            };
 
             firstKitten = new Kitten { Id = 1, Name = "IdenticalKitten" };
             _identicalCat = new Cat
+            {
+                Id = 100,
+                Name = "IdenticalCat",
+                FirstKitten = firstKitten,
+                AllKittens = new List<Kitten>
                 {
-                    Id = 100,
-                    Name = "IdenticalCat",
-                    FirstKitten = firstKitten,
-                    AllKittens = new List<Kitten>
-                        {
-                            firstKitten,
-                            new Kitten {Id = 2, Name = "IdenticalKitten2"},
-                        }
-                };
+                    firstKitten,
+                    new Kitten {Id = 2, Name = "IdenticalKitten2"},
+                }
+            };
 
             _transaction = MockRepository.GenerateStub<ITransaction>();
 

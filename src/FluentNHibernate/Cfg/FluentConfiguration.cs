@@ -28,7 +28,7 @@ namespace FluentNHibernate.Cfg
             mappingCfg = new MappingConfiguration();
         }
 
-        public Configuration Configuration
+        internal Configuration Configuration
         {
             get { return cfg; }
         }

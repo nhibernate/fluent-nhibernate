@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using FluentNHibernate.Framework;
+using FluentNHibernate.Data;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel

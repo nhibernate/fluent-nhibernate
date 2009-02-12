@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq.Expressions;
 using FluentNHibernate.Cfg.Db;
-using FluentNHibernate.Framework;
+using FluentNHibernate.Data;
 using NHibernate;
 using NUnit.Framework;
 using FluentNHibernate.Mapping;

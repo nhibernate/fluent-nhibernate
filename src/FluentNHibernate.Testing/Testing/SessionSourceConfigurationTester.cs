@@ -1,10 +1,9 @@
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-using FluentNHibernate.Framework;
 using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.Framework
+namespace FluentNHibernate.Testing.Testing
 {
     public class when_building_a_session_source : with_fluent_configuration
     {
@@ -60,4 +59,4 @@ namespace FluentNHibernate.Testing.Framework
             return new SingleConnectionSessionSourceForSQLiteInMemoryTesting(config);
         }
     }
-}
+}

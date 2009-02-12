@@ -6,7 +6,7 @@ using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Dialect;
 
-namespace FluentNHibernate.Framework
+namespace FluentNHibernate
 {
     public interface ISessionSource
     {
@@ -21,14 +21,14 @@ namespace FluentNHibernate.Framework
         private Dialect _dialect;
 
         public SessionSource(PersistenceModel model) 
-    	{
-    		Initialize(new Configuration().Configure(), model);
-    	}
+        {
+            Initialize(new Configuration().Configure(), model);
+        }
 
-    	public SessionSource(IDictionary<string, string> properties, PersistenceModel model)
-    	{
-    		Initialize(new Configuration().AddProperties(properties), model);
-    	}
+        public SessionSource(IDictionary<string, string> properties, PersistenceModel model)
+        {
+            Initialize(new Configuration().AddProperties(properties), model);
+        }
 
         public SessionSource(FluentConfiguration config)
         {
@@ -38,17 +38,17 @@ namespace FluentNHibernate.Framework
             _dialect = _sessionFactory.Dialect;
         }
 
-    	protected void Initialize(Configuration nhibernateConfig, PersistenceModel model)
-		{
-			if( model == null ) throw new ArgumentNullException("model", "Model cannot be null");
+        protected void Initialize(Configuration nhibernateConfig, PersistenceModel model)
+        {
+            if( model == null ) throw new ArgumentNullException("model", "Model cannot be null");
 
-			_configuration = nhibernateConfig;
+            _configuration = nhibernateConfig;
 
-    	    model.Configure(_configuration);
+            model.Configure(_configuration);
 
-			_sessionFactory = _configuration.BuildSessionFactory();
-    	    _dialect = Dialect.GetDialect(_configuration.Properties);
-		}
+            _sessionFactory = _configuration.BuildSessionFactory();
+            _dialect = Dialect.GetDialect(_configuration.Properties);
+        }
 
         public virtual ISession CreateSession()
         {
@@ -63,9 +63,9 @@ namespace FluentNHibernate.Framework
             }
         }
 
-		public void BuildSchema(ISession session)
-		{
-    		IDbConnection connection = session.Connection;
+        public void BuildSchema(ISession session)
+        {
+            IDbConnection connection = session.Connection;
 
             string[] drops = _configuration.GenerateDropSchemaScript(_dialect);
             executeScripts(drops, connection);

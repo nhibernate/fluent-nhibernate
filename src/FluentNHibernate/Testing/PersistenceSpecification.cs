@@ -4,25 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using FluentNHibernate.Framework;
 using FluentNHibernate.Utils;
-using Iesi.Collections;
 using Iesi.Collections.Generic;
+using Iesi.Collections;
 using NHibernate;
 using NHibernate.Util;
 
-namespace FluentNHibernate.Framework
+namespace FluentNHibernate.Testing
 {
     public class PersistenceSpecification<T>
     {
         private readonly List<PropertyValue> _allProperties = new List<PropertyValue>();
-    	private readonly ISession _currentSession;
+        private readonly ISession _currentSession;
         private readonly IEqualityComparer _entityEqualityComparer;
 
-    	public PersistenceSpecification(ISessionSource source)
-			: this(source.CreateSession())
-    	{
-    	}
+        public PersistenceSpecification(ISessionSource source)
+            : this(source.CreateSession())
+        {
+        }
 
         public PersistenceSpecification(ISessionSource source, IEqualityComparer entityEqualityComparer) 
             : this(source.CreateSession(), entityEqualityComparer)
@@ -33,11 +32,11 @@ namespace FluentNHibernate.Framework
         {
         }
 
-		public PersistenceSpecification(ISession session, IEqualityComparer entityEqualityComparer)
-		{
-		    _currentSession = session;
+        public PersistenceSpecification(ISession session, IEqualityComparer entityEqualityComparer)
+        {
+            _currentSession = session;
             _entityEqualityComparer = entityEqualityComparer;
-		}
+        }
 
         public PersistenceSpecification<T> CheckProperty(Expression<Func<T, object>> expression, object propertyValue)
         {
@@ -66,7 +65,7 @@ namespace FluentNHibernate.Framework
 
 
         public PersistenceSpecification<T> CheckList<LIST>(Expression<Func<T, object>> expression,
-                                                           IList<LIST> propertyValue)
+            IList<LIST> propertyValue)
         {
             foreach (LIST item in propertyValue)
             {
@@ -107,9 +106,9 @@ namespace FluentNHibernate.Framework
 
             object firstId = _currentSession.GetIdentifier(first);
 
-			// Clear and reset the current session
-        	_currentSession.Flush();
-        	_currentSession.Clear();
+            // Clear and reset the current session
+            _currentSession.Flush();
+            _currentSession.Clear();
 
             // "Find" the same entity from the second IRepository
             var second = _currentSession.Get<T>(firstId);
@@ -133,7 +132,7 @@ namespace FluentNHibernate.Framework
 
         internal class ListValue<LISTELEMENT> : PropertyValue
         {
-			private readonly IList<LISTELEMENT> _expected;
+            private readonly IList<LISTELEMENT> _expected;
 
             public ListValue(PropertyInfo property, IList<LISTELEMENT> propertyValue, IEqualityComparer entityEqualityComparer)
                 : base(property, propertyValue, entityEqualityComparer)
@@ -182,10 +181,10 @@ namespace FluentNHibernate.Framework
             {
                 if (actualEnumerable == null)
                     throw new ArgumentNullException("actualEnumerable",
-                                                    "Actual and expected are not equal (Actual was null).");
+                        "Actual and expected are not equal (Actual was null).");
                 if (expectedEnumerable == null)
                     throw new ArgumentNullException("expectedEnumerable",
-                                                    "Actual and expected are not equal (expected was null).");
+                        "Actual and expected are not equal (expected was null).");
 
                 var actual = actualEnumerable.ToList();
                 var expected = expectedEnumerable.ToList();
@@ -194,17 +193,17 @@ namespace FluentNHibernate.Framework
                     throw new ApplicationException("Actual count does not equal expected count");
 
                 var equalsFunc = (_entityEqualityComparer != null)
-                                                            ? new Func<object, object, bool>((a, b) => _entityEqualityComparer.Equals(a, b))
-                                                            : new Func<object, object, bool>(Equals);
+                    ? new Func<object, object, bool>((a, b) => _entityEqualityComparer.Equals(a, b))
+                    : new Func<object, object, bool>(Equals);
 
                 for (var i = 0; i < actual.Count; i++)
                 {
                     if (equalsFunc(actual[i], expected[i])) continue;
 
                     var message = string.Format("Expected '{0}' but got '{1}' at position {2}",
-                                                expected[i],
-                                                actual[i],
-                                                i);
+                        expected[i],
+                        actual[i],
+                        i);
 
                     throw new ApplicationException(message);
                 }

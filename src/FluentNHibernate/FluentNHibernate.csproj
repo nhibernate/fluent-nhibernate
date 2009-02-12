@@ -34,9 +34,17 @@
     <DocumentationFile>bin\Release\FluentNHibernate.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Iesi.Collections, Version=1.0.0.3, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\NHibernate\Iesi.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate, Version=2.0.0.1001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.Linq, Version=1.0.0.0, Culture=neutral, PublicKeyToken=444cf6a87fdab271, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\NHibernate\NHibernate.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -98,6 +106,9 @@
     <Compile Include="Cfg\Db\PersistenceConfiguration.cs" />
     <Compile Include="Cfg\Db\PostgreSQLConfiguration.cs" />
     <Compile Include="Cfg\Db\SQLiteConfiguration.cs" />
+    <Compile Include="Data\Entity.cs" />
+    <Compile Include="Data\InMemoryRepository.cs" />
+    <Compile Include="Data\IRepository.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Cfg\Db\MsSqlConfiguration.cs" />
     <Compile Include="Conventions.cs" />
@@ -106,6 +117,9 @@
     <Compile Include="Mapping\Attributes.cs" />
     <Compile Include="Mapping\CachePart.cs" />
     <Compile Include="Mapping\DynamicComponentPart.cs" />
+    <Compile Include="SessionSource.cs" />
+    <Compile Include="Testing\PersistenceSpecification.cs" />
+    <Compile Include="Testing\SingleConnectionSessionSourceForSQLiteInMemoryTesting.cs" />
     <Compile Include="Utils\ExpressionToSql.cs" />
     <Compile Include="Mapping\IIdentityPart.cs" />
     <Compile Include="Mapping\ImportPart.cs" />

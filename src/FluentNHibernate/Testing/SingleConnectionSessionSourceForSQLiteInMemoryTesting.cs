@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using FluentNHibernate.Cfg;
 using NHibernate;
 
-namespace FluentNHibernate.Framework
+namespace FluentNHibernate.Testing
 {
     public class SingleConnectionSessionSourceForSQLiteInMemoryTesting : SessionSource
     {

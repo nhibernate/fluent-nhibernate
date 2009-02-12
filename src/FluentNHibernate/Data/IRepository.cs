@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using FluentNHibernate.Framework;
 using FluentNHibernate.Utils;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
-using Action=System.Action;
 
-namespace FluentNHibernate.Framework
+namespace FluentNHibernate.Data
 {
     public interface IRepository
     {

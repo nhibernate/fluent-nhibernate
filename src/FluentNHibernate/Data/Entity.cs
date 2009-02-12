@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FluentNHibernate.Framework
+namespace FluentNHibernate.Data
 {
     [Serializable]
     public class Entity : IEquatable<Entity>
