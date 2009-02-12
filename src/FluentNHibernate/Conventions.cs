@@ -41,8 +41,8 @@ namespace FluentNHibernate
         public Func<PropertyInfo, string> GetVersionColumnName;
 
         /// <summary>
-		/// Sets the value of the default-lazy attribute for all entities mapped
-		/// </summary>
+        /// Sets the value of the default-lazy attribute for all entities mapped
+        /// </summary>
         public bool DefaultLazyLoad = false;
 
         /// <summary>
