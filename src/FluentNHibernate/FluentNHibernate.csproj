@@ -56,7 +56,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Accessor.cs" />
     <Compile Include="AttributeConvention.cs" />
     <Compile Include="AutoMap\Alterations\AutoMappingOverrideAlteration.cs" />
     <Compile Include="AutoMap\Alterations\IAutoMappingAlteration.cs" />
@@ -166,9 +165,7 @@
     <Compile Include="Metadata\TypeDependency.cs" />
     <Compile Include="PersistenceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyChain.cs" />
     <Compile Include="ReflectionHelper.cs" />
-    <Compile Include="SingleProperty.cs" />
     <Compile Include="Reveal.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="UnknownPropertyException.cs" />

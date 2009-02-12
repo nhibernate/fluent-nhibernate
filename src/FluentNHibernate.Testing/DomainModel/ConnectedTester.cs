@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Framework;
-using FluentNHibernate.Framework.Query;
 using NHibernate;
 using NUnit.Framework;
 using FluentNHibernate.Mapping;
@@ -119,32 +118,6 @@ namespace FluentNHibernate.Testing.DomainModel
 
             Repository repository = new Repository(_source.CreateSession());
             Record[] records = repository.Query<Record>(r => r.Age >= 35 && r.Name == "Jeremy");
-
-            records.ShouldHaveCount(1);
-            records[0].Name.ShouldEqual("Jeremy");
-            records[0].Age.ShouldEqual(35);
-        }
-
-        [Test]
-        public void Try_out_EntityQuery()
-        {
-            var queryDef = new EntityQueryDefinitionBuilder<Record>()
-                .AllowFilterOn(r => r.Age)
-                .AllowFilterOn(r => r.Name)
-                .QueryDefinition;
-
-            ISession session = _source.CreateSession();
-
-            session.SaveOrUpdate(new Record { Name = "Jeremy", Age = 34 });
-            session.SaveOrUpdate(new Record { Name = "Jeremy", Age = 35 });
-
-            Repository repository = new Repository(_source.CreateSession());
-
-            var query = new EntityQueryBuilder<Record>(queryDef);
-            query.AddFilter(new BinaryFilterType { FilterExpressionType = ExpressionType.Equal }, queryDef.GetFilterPropertyForKey("Age"), "35");
-            query.AddFilter(new StringFilterType { StringMethod = s => s.EndsWith("") }, queryDef.GetFilterPropertyForKey("Name"), "emy");
-
-            Record[] records = repository.Query(query.FilterExpression);
 
             records.ShouldHaveCount(1);
             records[0].Name.ShouldEqual("Jeremy");

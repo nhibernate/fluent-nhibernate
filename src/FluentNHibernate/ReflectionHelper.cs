@@ -95,40 +95,7 @@ namespace FluentNHibernate
 		    return memberExpression;
 		}
 
-		public static Accessor GetAccessor<MODEL>(Expression<Func<MODEL, object>> expression)
-		{
-			MemberExpression memberExpression = getMemberExpression(expression);
-
-			return getAccessor(memberExpression);
-		}
-
-		private static Accessor getAccessor(MemberExpression memberExpression)
-		{
-			var list = new List<PropertyInfo>();
-
-			while (memberExpression != null)
-			{
-				list.Add((PropertyInfo) memberExpression.Member);
-				memberExpression = memberExpression.Expression as MemberExpression;
-			}
-
-			if (list.Count == 1)
-			{
-				return new SingleProperty(list[0]);
-			}
-
-			list.Reverse();
-			return new PropertyChain(list.ToArray());
-		}
-
-		public static Accessor GetAccessor<MODEL, T>(Expression<Func<MODEL, T>> expression)
-		{
-			MemberExpression memberExpression = getMemberExpression(expression);
-
-			return getAccessor(memberExpression);
-		}
-
-		public static MethodInfo GetMethod<T>(Expression<Func<T, object>> expression)
+	    public static MethodInfo GetMethod<T>(Expression<Func<T, object>> expression)
 		{
 			MethodCallExpression methodCall = (MethodCallExpression) expression.Body;
 			return methodCall.Method;
