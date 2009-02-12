@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures;
-using FluentNHibernate.Metadata;
 using FluentNHibernate.Testing.AutoMap.ManyToMany;
 using NHibernate.Cfg;
 using NUnit.Framework;
@@ -150,7 +149,7 @@ namespace FluentNHibernate.Testing.AutoMap
             conventions.DefaultCache = cache => cache.AsReadOnly();
 
             var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
-            var document = map.CreateMapping(new MappingVisitor(conventions, new Configuration(), new DependencyChain()));
+            var document = map.CreateMapping(new MappingVisitor(conventions, new Configuration()));
             var cacheElement = document.DocumentElement.SelectSingleNode("//cache");
 
             Assert.That(cacheElement, Is.Not.Null);

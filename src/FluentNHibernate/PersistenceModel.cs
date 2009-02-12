@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Threading;
 using System.Xml;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.Metadata;
 using NHibernate.Cfg;
 
 namespace FluentNHibernate
@@ -15,7 +14,6 @@ namespace FluentNHibernate
     {
         protected List<IMapping> _mappings = new List<IMapping>();
         private Conventions _conventions = new Conventions();
-        private DependencyChain _chain = new DependencyChain();
         private bool _configured = false;
 
         public PersistenceModel()
@@ -85,31 +83,17 @@ namespace FluentNHibernate
             return callingAssembly;
         }
 
-        public DependencyChain Chain
-        {
-            get
-            {
-                if (!_configured)
-                {
-                    Configure(new Configuration());
-                }
-
-                return _chain;
-            }
-        }
-
-
         public virtual void Configure(Configuration configuration)
         {
             _configured = true;
 
-            MappingVisitor visitor = new MappingVisitor(_conventions, configuration, _chain);
+            MappingVisitor visitor = new MappingVisitor(_conventions, configuration);
             _mappings.ForEach(mapping => mapping.ApplyMappings(visitor));
         }
 
         public void WriteMappingsTo(string folder)
         {
-            DiagnosticMappingVisitor visitor = new DiagnosticMappingVisitor(folder, _conventions, null, _chain);
+            DiagnosticMappingVisitor visitor = new DiagnosticMappingVisitor(folder, _conventions, null);
             _mappings.ForEach(m => m.ApplyMappings(visitor));
         }
     }
@@ -118,7 +102,7 @@ namespace FluentNHibernate
     {
         private string _folder;
 
-        public DiagnosticMappingVisitor(string folder, Conventions conventions, Configuration configuration, DependencyChain chain) : base(conventions, configuration, chain)
+        public DiagnosticMappingVisitor(string folder, Conventions conventions, Configuration configuration) : base(conventions, configuration)
         {
             _folder = folder;            
         }

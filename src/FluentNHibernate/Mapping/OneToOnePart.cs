@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
@@ -58,8 +59,8 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public void Write(XmlElement classElement, IMappingVisitor visitor) {
-            visitor.RegisterDependency(_property.PropertyType);
+        public void Write(XmlElement classElement, IMappingVisitor visitor)
+        {
             visitor.Conventions.AlterOneToOneMap(this);
 
             _properties.Store("name", _property.Name);
@@ -68,7 +69,8 @@ namespace FluentNHibernate.Mapping
             classElement.AddElement("one-to-one").WithProperties(_properties);
         }
 
-        public void SetAttribute(string name, string value) {
+        public void SetAttribute(string name, string value)
+        {
             _properties.Store(name, value);
         }
 

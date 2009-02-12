@@ -8,6 +8,5 @@ namespace FluentNHibernate
         Conventions Conventions { get;}
         Type CurrentType { get; set; }
         void AddMappingDocument(XmlDocument document, Type type);
-        void RegisterDependency(Type parentType);
     }
 }

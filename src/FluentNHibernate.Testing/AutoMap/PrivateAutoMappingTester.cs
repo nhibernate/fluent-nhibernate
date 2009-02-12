@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Utils;
 using NUnit.Framework;
 using System.Linq.Expressions;
 

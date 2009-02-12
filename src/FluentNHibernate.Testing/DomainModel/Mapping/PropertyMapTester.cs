@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.Utils;
 using NHibernate.Properties;
 using NHibernate.SqlTypes;
 using NHibernate.Type;

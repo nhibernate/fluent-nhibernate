@@ -98,7 +98,7 @@
     <Compile Include="Cfg\Db\PersistenceConfiguration.cs" />
     <Compile Include="Cfg\Db\PostgreSQLConfiguration.cs" />
     <Compile Include="Cfg\Db\SQLiteConfiguration.cs" />
-    <Compile Include="ConfigurationHelper.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Cfg\Db\MsSqlConfiguration.cs" />
     <Compile Include="Conventions.cs" />
     <Compile Include="DummyPropertyInfo.cs" />
@@ -106,7 +106,7 @@
     <Compile Include="Mapping\Attributes.cs" />
     <Compile Include="Mapping\CachePart.cs" />
     <Compile Include="Mapping\DynamicComponentPart.cs" />
-    <Compile Include="ExpressionToSql.cs" />
+    <Compile Include="Utils\ExpressionToSql.cs" />
     <Compile Include="Mapping\IIdentityPart.cs" />
     <Compile Include="Mapping\ImportPart.cs" />
     <Compile Include="Mapping\IOneToManyPart.cs" />
@@ -119,7 +119,6 @@
     <Compile Include="Mapping\ToManyBase.cs" />
     <Compile Include="MissingConstructorException.cs" />
     <Compile Include="Mapping\NullableEnumerationTypeConvention.cs" />
-    <Compile Include="RestrictionsHelper.cs" />
     <Compile Include="IMappingVisitor.cs" />
     <Compile Include="MappingVisitor.cs" />
     <Compile Include="Mapping\AccessStrategyBuilder.cs" />
@@ -157,17 +156,11 @@
     <Compile Include="Mapping\TypeMapping.cs" />
     <Compile Include="Mapping\VersionPart.cs" />
     <Compile Include="Mapping\XmlExtensions.cs" />
-    <Compile Include="Metadata\Deleter.cs" />
-    <Compile Include="Metadata\DependencyChain.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Metadata\IDeleter.cs" />
-    <Compile Include="Metadata\TypeDependency.cs" />
     <Compile Include="PersistenceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReflectionHelper.cs" />
+    <Compile Include="Utils\InvocationHelper.cs" />
+    <Compile Include="Utils\ReflectionHelper.cs" />
     <Compile Include="Reveal.cs" />
-    <Compile Include="TypeExtensions.cs" />
     <Compile Include="UnknownPropertyException.cs" />
   </ItemGroup>
   <ItemGroup>

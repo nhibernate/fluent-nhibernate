@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Xml;
 using FluentNHibernate.AutoMap.TestFixtures.SuperTypes;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Utils;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping

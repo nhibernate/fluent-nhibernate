@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using FluentNHibernate.Framework;
+using FluentNHibernate.Utils;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;

@@ -1,8 +1,7 @@
 using System;
 using System.Linq.Expressions;
-using System.Reflection;
 
-namespace FluentNHibernate
+namespace FluentNHibernate.Utils
 {
     /// <summary>
     /// Converts an expression to a best guess SQL string

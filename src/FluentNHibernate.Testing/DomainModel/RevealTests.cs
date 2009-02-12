@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.AutoMap.TestFixtures;
 using FluentNHibernate.Testing.DomainModel.Mapping;
+using FluentNHibernate.Utils;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel

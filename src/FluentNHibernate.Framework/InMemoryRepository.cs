@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Framework;
 using System.Linq;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Framework
 {
