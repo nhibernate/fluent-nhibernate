@@ -1,5 +1,9 @@
+require 'rubygems'
+
 require 'erb'
 require 'activesupport'
+require 'find'
+require 'zip/zip'
 
 class NUnitRunner
 	include FileTest
@@ -60,10 +64,16 @@ end
 class AsmInfoBuilder
 	attr_reader :buildnumber, :parameterless_attributes
 
-	def initialize(baseVersion, properties)
-		@properties = properties;
+	def initialize(baseVersion, svn_revision, properties)
+		@properties = properties
 		
-		@buildnumber = baseVersion + (ENV["CCNetLabel"].nil? ? '0' : ENV["CCNetLabel"].to_s)
+		if ENV["CCNetLabel"].nil?
+			generated_version = svn_revision
+		else
+			generated_version = ENV['CCNetLabel'].to_s
+		end
+		
+		@buildnumber = baseVersion + generated_version
 		@properties['Version'] = @properties['InformationalVersion'] = buildnumber;
 		@parameterless_attributes = [:allow_partially_trusted_callers]
 	end
@@ -110,5 +120,14 @@ class InstallUtilRunner
 
 end
 
-
-
+def create_zip(filename, root, excludes=/^$/)
+  File.delete(filename) if File.exists? filename
+  Zip::ZipFile.open(filename, Zip::ZipFile::CREATE) do |zip|
+    Find.find(root) do |path|
+	  next if path =~ excludes
+	  
+	  zip_path = path.gsub(root, '')
+	  zip.add(zip_path, path)
+	end
+  end
+end
