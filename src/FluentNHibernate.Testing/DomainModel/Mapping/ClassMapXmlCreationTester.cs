@@ -220,7 +220,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void Create_a_component_mapping()
         {
             var map = new ClassMap<MappedObject>();
-            map.Component<ComponentOfMappedObject>(x => x.Component, c =>
+            map.Component(x => x.Component, c =>
                                                                          {
                                                                              c.Map(x => x.Name);
                                                                              c.Map(x => x.Age);

@@ -14,7 +14,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m =>
-                    m.Component<ComponentTarget>(x => x.Component, c =>
+                    m.Component(x => x.Component, c =>
                     {
                         c.Map(x => x.Name);
                         c.WithParentReference(x => x.MyParent);
@@ -28,7 +28,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m =>
-                    m.Component<ComponentTarget>(x => x.Component, c =>
+                    m.Component(x => x.Component, c =>
                     {
                         c.Map(x => x.Name);
                         c.WithParentReference(x => x.MyParent);

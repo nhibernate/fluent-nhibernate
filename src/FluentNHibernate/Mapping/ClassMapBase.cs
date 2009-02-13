@@ -81,10 +81,34 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+        /// <summary>
+        /// Maps a component
+        /// </summary>
+        /// <typeparam name="C">Type of component</typeparam>
+        /// <param name="expression">Component property</param>
+        /// <param name="action">Component mapping</param>
+        public virtual ComponentPart<C> Component<C>(Expression<Func<T, C>> expression, Action<ComponentPart<C>> action)
+        {
+            var property = ReflectionHelper.GetProperty(expression);
+
+            return CreateComponent(property, action);
+        }
+
+        /// <summary>
+        /// Maps a component
+        /// </summary>
+        /// <typeparam name="C">Type of component</typeparam>
+        /// <param name="expression">Component property</param>
+        /// <param name="action">Component mapping</param>
         public virtual ComponentPart<C> Component<C>(Expression<Func<T, object>> expression, Action<ComponentPart<C>> action)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            var property = ReflectionHelper.GetProperty(expression);
 
+            return CreateComponent(property, action);
+        }
+
+        private ComponentPart<C> CreateComponent<C>(PropertyInfo property, Action<ComponentPart<C>> action)
+        {
             ComponentPart<C> part = new ComponentPart<C>(property, parentIsRequired);
             AddPart(part);
 
