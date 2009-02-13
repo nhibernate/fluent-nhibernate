@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.AutoMap
 {
@@ -44,9 +45,7 @@ namespace FluentNHibernate.AutoMap
 
         private object CreateComponentPart<T>(PropertyInfo property, Type componentType, AutoMap<T> classMap)
         {
-            var componentMethod = typeof(AutoMap<T>).GetMethod("Component").MakeGenericMethod(componentType);
-
-            return componentMethod.Invoke(classMap, new object[] { ExpressionBuilder.Create<T>(property), null });
+            return InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(classMap, map => map.Component<object>(null, null), new object[] {ExpressionBuilder.Create<T>(property), null}, componentType);
         }
 
         private MethodInfo GetMapMethod(Type componentType, object componentPart)
