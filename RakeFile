@@ -51,23 +51,9 @@ def switch_nhib_libs(nhib_lib_dir)
 end
 
 def get_svn_revision
-	if File.exists? '.git'
-		# git repository
-		log = `git log --grep=git-svn-id -1`
-		find_revision_regex = /(?:git-svn-id)(?:.*@)([0-9]{1,})/
-		
-		return find_revision_regex.match(log)[1] if log =~ find_revision_regex
-	elsif File.exists? '.svn' or File.exists? '_svn'
-		# svn repository
-		info = `svn info`
-		find_revision_regex = /Revision: ([0-9]{1,})/
-		
-		return find_revision_regex.match(info)[1] if info =~ find_revision_regex
-	else
-		return 0 # can't figure it out
-	end
+	return ENV['BUILD_VCS_NUMBER'].to_s unless ENV['BUILD_VCS_NUMBER'].nil?
+	return 0
 end
-
 
 desc "Displays a list of tasks"
 task :help do
