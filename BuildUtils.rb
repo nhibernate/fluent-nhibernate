@@ -68,7 +68,7 @@ class AsmInfoBuilder
 		@properties = properties
 		
 		if ENV["CCNetLabel"].nil?
-			generated_version = svn_revision
+			generated_version = svn_revision.to_s
 		else
 			generated_version = ENV['CCNetLabel'].to_s
 		end
