@@ -1,5 +1,6 @@
 COMPILE_TARGET = "debug"
 require "BuildUtils.rb"
+require 'fileutils'
 
 include FileTest
 
@@ -107,7 +108,7 @@ end
 
 desc "Clear built zips"
 task :clear_dist do
-  Dir.delete DIST_DIR if File.exists? DIST_DIR
+  FileUtils.rm_rf DIST_DIR if File.exists? DIST_DIR
 end
 
 desc "Creates a source zip"
