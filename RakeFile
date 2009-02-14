@@ -110,19 +110,15 @@ task :create_source_zip do
   puts "Creating source zip"
 
   Dir.mkdir DIST_DIR unless File.exists? DIST_DIR
-  revision = get_svn_revision()
-  
-  create_zip("#{DIST_DIR}/fluentnhibernate-source-#{BUILD_NUMBER}#{revision}.zip", './', /.git|build|dist|results|_ReSharper|bin|obj|.user|.suo|.resharper|.cache/)
+  create_zip("#{DIST_DIR}/fluentnhibernate-source.zip", './', /.git|build|dist|results|_ReSharper|bin|obj|.user|.suo|.resharper|.cache/)
 end
 
 desc "Create a binary zip"
 task :create_binary_zip do
   puts "Creating binary zip"
 
-  Dir.mkdir DIST_DIR unless File.exists? DIST_DIR
-  revision = get_svn_revision()
-  
-  create_zip("#{DIST_DIR}/fluentnhibernate-binary-#{BUILD_NUMBER}#{revision}.zip", 'build/')
+  Dir.mkdir DIST_DIR unless File.exists? DIST_DIR  
+  create_zip("#{DIST_DIR}/fluentnhibernate-binary.zip", 'build/')
 end
 
 desc "Creates binary and source zip files"
