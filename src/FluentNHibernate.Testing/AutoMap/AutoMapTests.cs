@@ -52,8 +52,10 @@ namespace FluentNHibernate.Testing.AutoMap
             var document = map.CreateMapping(new MappingVisitor());
 
             var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//property");
-            keyElement.AttributeShouldEqual("column", "LineOne");
             keyElement.AttributeShouldEqual("name", "LineOne");
+
+            var columnElement = (XmlElement)keyElement.SelectSingleNode("column");
+            columnElement.AttributeShouldEqual("name", "LineOne");
         }
 
         [Test]
@@ -67,8 +69,10 @@ namespace FluentNHibernate.Testing.AutoMap
             var document = map.CreateMapping(new MappingVisitor());
 
             var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//property");
-            keyElement.AttributeShouldEqual("column", "LineOne");
             keyElement.AttributeShouldEqual("name", "LineOne");
+
+            var columnElement = (XmlElement)keyElement.SelectSingleNode("column");
+            columnElement.AttributeShouldEqual("name", "LineOne");
         }
 
         [Test]

@@ -41,7 +41,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             autoMapper.Configure(cfg);
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("class/property[@name='LineOne']").HasAttribute("column", "LineOneXX");
+                .Element("class/property[@name='LineOne']/column").HasAttribute("name", "LineOneXX");
         }
 
         [Test]
@@ -409,7 +409,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             autoMapper.Configure(cfg);
 
             new AutoMappingTester<Customer>(autoMapper)
-                .Element("class/component[@name='WorkAddress']/property[@name='Number']").HasAttribute("column", "WorkAddress_Number");
+                .Element("class/component[@name='WorkAddress']/property[@name='Number']/column").HasAttribute("name", "WorkAddress_Number");
         }
 
         [Test]
@@ -430,8 +430,8 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             autoMapper.Configure(cfg);
 
             new AutoMappingTester<Customer>(autoMapper)
-                .Element("class/component[@name='WorkAddress']/property[@name='Number']")
-                .HasAttribute("column", value => value.StartsWith("WorkAddress_"));
+                .Element("class/component[@name='WorkAddress']/property[@name='Number']/column")
+                .HasAttribute("name", value => value.StartsWith("WorkAddress_"));
         }
 
         [Test]

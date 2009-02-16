@@ -48,7 +48,6 @@ namespace FluentNHibernate.Mapping
 
             XmlElement element = classElement.AddElement("property")
                 .WithAtt("name", _property.Name)
-                .WithAtt("column", _columnName)
                 .WithProperties(_extendedProperties);
 
 

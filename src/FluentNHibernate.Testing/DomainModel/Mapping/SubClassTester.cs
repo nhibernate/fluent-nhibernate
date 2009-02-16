@@ -38,9 +38,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .Exists()
                     .HasAttribute("name", typeof(SecondMappedObject).AssemblyQualifiedName)
                     .HasAttribute("discriminator-value", "red")
-                .Element("//subclass/property")
-                    .Exists()
-                    .HasAttribute("column", "Name");
+                .Element("//subclass/property/column")
+                    .HasAttribute("name", "Name");
         }
 
         [Test]

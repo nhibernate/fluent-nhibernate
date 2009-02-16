@@ -328,15 +328,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void MapASimplePropertyWithNoOverrides()
         {
-            var map = new ClassMap<MappedObject>();
-            map.Map(x => x.Name);
-
-            document = map.CreateMapping(new MappingVisitor());
-            XmlElement element = elementForProperty("Name");
-
-            element.AttributeShouldEqual("name", "Name");
-            element.AttributeShouldEqual("column", "Name");
-            element.AttributeShouldEqual("type", "String");
+            new MappingTester<MappedObject>()
+                .ForMapping(map => map.Map(x => x.Name))
+                .Element("//property[@name='Name']")
+                    .Exists()
+                    .HasAttribute("type", "String")
+                .Element("//property[@name='Name']/column")
+                    .Exists()
+                    .HasAttribute("name", "Name");
         }
 
         [Test]
