@@ -35,7 +35,7 @@ namespace FluentNHibernate
             _configuration = config.Configuration;
 
             _sessionFactory = config.BuildSessionFactory();
-            _dialect = _sessionFactory.Dialect;
+            _dialect = Dialect.GetDialect(_configuration.Properties);
         }
 
         protected void Initialize(Configuration nhibernateConfig, PersistenceModel model)
