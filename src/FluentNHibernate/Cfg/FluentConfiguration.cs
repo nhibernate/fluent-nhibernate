@@ -23,8 +23,12 @@ namespace FluentNHibernate.Cfg
         private Action<Configuration> configAlteration;
 
         internal FluentConfiguration()
+            : this(new Configuration())
+        {}
+
+        internal FluentConfiguration(Configuration cfg)
         {
-            cfg = new Configuration();
+            this.cfg = cfg;
             mappingCfg = new MappingConfiguration();
         }
 

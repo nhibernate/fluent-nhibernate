@@ -1,8 +1,5 @@
 using System.IO;
 using FluentNHibernate.AutoMap;
-using FluentNHibernate.AutoMap.TestFixtures;
-using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
-using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Testing.DomainModel;
@@ -22,9 +19,18 @@ namespace FluentNHibernate.Testing.Cfg
             Fluently.Configure()
                 .ExposeConfiguration(cfg =>
                 {
-                    SpecificationExtensions.ShouldNotBeNull(cfg);;
-                    SpecificationExtensions.ShouldBeOfType(cfg, typeof(Configuration));
+                    cfg.ShouldNotBeNull();
+                    cfg.ShouldBeOfType(typeof(Configuration));
                 });
+        }
+
+        [Test]
+        public void ExposeConfigurationHasSameCfgInstanceAsPassedInThroughConstructor()
+        {
+            var config = new Configuration();
+
+            Fluently.Configure(config)
+                .ExposeConfiguration(cfg => cfg.ShouldEqual(config));
         }
 
         [Test]

@@ -1,4 +1,5 @@
 ﻿using FluentNHibernate.Cfg;
+using NHibernate.Cfg;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Cfg
@@ -16,6 +17,12 @@ namespace FluentNHibernate.Testing.Cfg
         public void ConfigureReturnsNewInstance()
         {
             (Fluently.Configure() == Fluently.Configure()).ShouldBeFalse();
+        }
+
+        [Test]
+        public void ConfigureCanAcceptExistingConfig()
+        {
+            Fluently.Configure(new Configuration()).ShouldNotBeNull();
         }
     }
 }
