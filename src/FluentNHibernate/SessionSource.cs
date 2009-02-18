@@ -5,6 +5,7 @@ using FluentNHibernate.Cfg;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Dialect;
+using NHibernate.Tool.hbm2ddl;
 
 namespace FluentNHibernate
 {
@@ -63,27 +64,23 @@ namespace FluentNHibernate
             }
         }
 
-        public void BuildSchema(ISession session)
+        public virtual void BuildSchema(bool script)
         {
-            IDbConnection connection = session.Connection;
-
-            string[] drops = _configuration.GenerateDropSchemaScript(_dialect);
-            executeScripts(drops, connection);
-
-            string[] scripts = _configuration.GenerateSchemaCreationScript(_dialect);
-            executeScripts(scripts, connection);
-        }
-
-        private static void executeScripts(IEnumerable<string> scripts, IDbConnection connection)
-        {
-            foreach (var script in scripts)
+            using (var session = CreateSession())
             {
-                IDbCommand command = connection.CreateCommand();
-                command.CommandText = script;
-                command.ExecuteNonQuery();
+                BuildSchema(session, script);
             }
         }
 
+        public void BuildSchema(ISession session)
+        {
+            BuildSchema(session, false);
+        }
 
+        public void BuildSchema(ISession session, bool script)
+        {
+            new SchemaExport(_configuration)
+                .Execute(script, true, false, true, session.Connection, null);
+        }
     }
 }

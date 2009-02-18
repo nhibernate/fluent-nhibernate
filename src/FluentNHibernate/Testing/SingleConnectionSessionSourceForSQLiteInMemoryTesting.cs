@@ -33,5 +33,10 @@ namespace FluentNHibernate.Testing
         {
             BuildSchema(CreateSession());
         }
+
+        public override void BuildSchema(bool script)
+        {
+            BuildSchema(CreateSession(), script);
+        }
     }
 }
