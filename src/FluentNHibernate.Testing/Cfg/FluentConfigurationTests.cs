@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.Cfg;
@@ -31,6 +32,21 @@ namespace FluentNHibernate.Testing.Cfg
 
             Fluently.Configure(config)
                 .ExposeConfiguration(cfg => cfg.ShouldEqual(config));
+        }
+
+        [Test]
+        public void ExposeConfigurationCanBeCalledMultipleTimesWithDifferentBodies()
+        {
+            var calls = new List<string>();
+
+            Fluently.Configure()
+                .Database(SQLiteConfiguration.Standard.InMemory)
+                .ExposeConfiguration(cfg => calls.Add("One"))
+                .ExposeConfiguration(cfg => calls.Add("Two"))
+                .BuildSessionFactory();
+
+            calls.ShouldContain("One");
+            calls.ShouldContain("Two");
         }
 
         [Test]

@@ -20,7 +20,7 @@ namespace FluentNHibernate.Cfg
         private readonly MappingConfiguration mappingCfg;
         private bool dbSet;
         private bool mappingsSet;
-        private Action<Configuration> configAlteration;
+        private readonly IList<Action<Configuration>> configAlterations = new List<Action<Configuration>>();
 
         internal FluentConfiguration()
             : this(new Configuration())
@@ -78,7 +78,8 @@ namespace FluentNHibernate.Cfg
         /// <returns>Fluent configuration</returns>
         public FluentConfiguration ExposeConfiguration(Action<Configuration> config)
         {
-            configAlteration = config;
+            if (config != null)
+                configAlterations.Add(config);
             return this;
         }
 
@@ -92,7 +93,7 @@ namespace FluentNHibernate.Cfg
             {
                 mappingCfg.Apply(Configuration);
 
-                if (configAlteration != null)
+                foreach (var configAlteration in configAlterations)
                     configAlteration(Configuration);
 
                 return Configuration.BuildSessionFactory();
