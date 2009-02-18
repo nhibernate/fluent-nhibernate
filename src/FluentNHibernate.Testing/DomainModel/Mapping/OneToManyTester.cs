@@ -4,6 +4,8 @@ using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
+    using System.Linq;
+
     public class OneToManyTarget
     {
         public virtual int Id { get; set; }
@@ -18,6 +20,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         private IList<ChildObject> otherChildren = new List<ChildObject>();
         public virtual IList<ChildObject> GetOtherChildren() { return otherChildren; }
+
+        private IList<ChildObject> listToArrayChild = new List<ChildObject>();
+        public virtual ChildObject[] ListToArrayChild { get { return listToArrayChild.ToArray(); } }
     }
 
     public class OneToManyComponentTarget
@@ -506,6 +511,24 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     map.HasMany<string, ChildObject>(x => x.MapOfChildren)
                         .AsMap(x => x.Name))
                 .Element("class/map").Exists();
+        }
+
+        [Test]
+        public void ArraysShouldntHaveCollectionTypeDefined()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany(x => x.ArrayOfChildren))
+                .Element("class/bag").DoesntHaveAttribute("collection-type");
+        }
+
+        [Test]
+        public void CanMapToInternalListExposedAsArray()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany(x => x.ListToArrayChild)
+                                       .Access.AsCamelCaseField().AsList())
+                .Element("class/list")
+                .DoesntHaveAttribute("collection-type");
         }
     }
 }

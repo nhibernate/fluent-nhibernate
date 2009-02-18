@@ -34,7 +34,7 @@ namespace FluentNHibernate.Mapping
 
         private void SetCustomCollectionType(Type type)
         {
-            if (type.Namespace.StartsWith("Iesi") || type.Namespace.StartsWith("System"))
+            if (type.Namespace.StartsWith("Iesi") || type.Namespace.StartsWith("System") || type.IsArray)
                 return;
 
             _properties.Store("collection-type", type.AssemblyQualifiedName);
