@@ -28,6 +28,7 @@ namespace FluentNHibernate.Cfg.Db
         protected const string DefaultConnectionProviderClassName = "NHibernate.Connection.DriverConnectionProvider";
         protected const string DriverClassKey = "connection.driver_class";
         protected const string ConnectionStringKey = "connection.connection_string";
+        protected const string ProxyFactoryFactoryClassKey = "proxyfactory.factory_class";
 
         private readonly Dictionary<string, string> _rawValues;
 
@@ -182,6 +183,18 @@ namespace FluentNHibernate.Cfg.Db
         {
             _values.Store(key, value);
             return (TThisConfiguration) this;
+        }
+
+        /// <summary>
+        /// Sets the proxyfactory.factory_class property.
+        /// NOTE: NHibernate 2.1 only
+        /// </summary>
+        /// <param name="proxyFactoryFactoryClass">factory class</param>
+        /// <returns>Configuration</returns>
+        public TThisConfiguration ProxyFactoryFactory(string proxyFactoryFactoryClass)
+        {
+            _values.Store(ProxyFactoryFactoryClassKey, proxyFactoryFactoryClass);
+            return (TThisConfiguration)this;
         }
     }
 }
