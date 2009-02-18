@@ -54,7 +54,7 @@ namespace FluentNHibernate.AutoMap
 
         protected void TryToMapProperty<T>(AutoMap<T> map, PropertyInfo property)
         {
-            if (!property.PropertyType.IsEnum && property.GetIndexParameters().Length == 0)
+            if (property.GetIndexParameters().Length == 0)
             {
                 foreach (var rule in _mappingRules)
                 {

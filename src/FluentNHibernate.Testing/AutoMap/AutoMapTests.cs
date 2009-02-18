@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures;
+using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Testing.AutoMap.ManyToMany;
 using NHibernate.Cfg;
 using NUnit.Framework;
@@ -9,7 +10,7 @@ using NUnit.Framework;
 namespace FluentNHibernate.Testing.AutoMap
 {
     [TestFixture]
-    public class AutoMapTests
+    public class AutoMapTests : BaseAutoPersistenceTests
     {
         [Test]
         public void AutoMapIdentification()
@@ -51,8 +52,8 @@ namespace FluentNHibernate.Testing.AutoMap
 
             var document = map.CreateMapping(new MappingVisitor());
 
-            var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//property");
-            keyElement.AttributeShouldEqual("name", "LineOne");
+            var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//property[@name='LineOne']");
+            keyElement.ShouldNotBeNull();
 
             var columnElement = (XmlElement)keyElement.SelectSingleNode("column");
             columnElement.AttributeShouldEqual("name", "LineOne");
@@ -68,11 +69,26 @@ namespace FluentNHibernate.Testing.AutoMap
 
             var document = map.CreateMapping(new MappingVisitor());
 
-            var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//property");
-            keyElement.AttributeShouldEqual("name", "LineOne");
+            var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//property[@name='LineOne']");
+            keyElement.ShouldNotBeNull();
 
             var columnElement = (XmlElement)keyElement.SelectSingleNode("column");
             columnElement.AttributeShouldEqual("name", "LineOne");
+        }
+
+        [Test]
+        public void ShouldAutoMapEnums()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .ForTypesThatDeriveFrom<ExampleClass>(mapping =>
+                    mapping.Map(x => x.Enum).SetAttribute("type", "Int32"))
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("//property[@name='Enum']").Exists();
         }
 
         [Test]

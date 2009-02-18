@@ -11,6 +11,8 @@ namespace FluentNHibernate.Mapping
 
         public void AlterMap(IProperty propertyMapping)
         {
+            if (propertyMapping.HasAttribute("type")) return;
+
             Type mapperType = typeof(GenericEnumMapper<>).MakeGenericType(propertyMapping.PropertyType);
             
             propertyMapping.CustomTypeIs(mapperType);
