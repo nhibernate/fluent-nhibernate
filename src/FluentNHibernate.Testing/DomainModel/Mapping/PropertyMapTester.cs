@@ -174,17 +174,10 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void Map_WithFluentLength_UsesCanNotBeNull_PropertyColumnAttribute()
         {
-            var classMap = new ClassMap<PropertyTarget>();
-
-            classMap.Map(x => x.Name)
-                .Not.Nullable();
-
-            var document = classMap.CreateMapping(new MappingVisitor());
-
-            // attribute on property
-            var classElement = document.DocumentElement.SelectSingleNode("class");
-            var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
-            propertyElement.AttributeShouldEqual("not-null", "true");
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Name).Not.Nullable())
+                .Element("class/property[@name='Name']").DoesntHaveAttribute("not-null")
+                .Element("class/property[@name='Name']/column").HasAttribute("not-null", "true");
         }
 
         [Test]

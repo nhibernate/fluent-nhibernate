@@ -171,7 +171,7 @@ namespace FluentNHibernate.Mapping
 
         public IProperty Nullable()
         {
-            _extendedProperties.Store("not-null", (!nextBool).ToString().ToLowerInvariant());
+            SetAttributeOnColumnElement("not-null", (!nextBool).ToString().ToLowerInvariant());
             nextBool = true;
             return this;
         }

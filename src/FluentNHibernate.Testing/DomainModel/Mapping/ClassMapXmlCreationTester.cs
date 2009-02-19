@@ -319,10 +319,10 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/property[@name='NullableColor']")
                     .Exists()
                     .HasAttribute("type", typeof(GenericEnumMapper<ColorEnum>).AssemblyQualifiedName)
-                    .HasAttribute("not-null", "false")
                 .Element("class/property[@name='NullableColor']/column")
                     .Exists()
-                    .HasAttribute("sql-type", "string");
+                    .HasAttribute("sql-type", "string")
+                    .HasAttribute("not-null", "false");
 		}
 
         [Test]
