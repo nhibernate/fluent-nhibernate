@@ -199,7 +199,7 @@ namespace FluentNHibernate.Mapping
         public IProperty CustomTypeIs<CUSTOMTYPE>()
             where CUSTOMTYPE : IUserType
         {
-            return CustomTypeIs(typeof (CUSTOMTYPE));
+            return CustomTypeIs(typeof(CUSTOMTYPE));
         }
        
         /// <summary>
@@ -209,7 +209,7 @@ namespace FluentNHibernate.Mapping
         /// <returns>This property mapping to continue the method chain</returns>
         public IProperty CustomTypeIs(Type type)
         {
-            this.AddAlteration(x => x.SetAttribute("type", type.AssemblyQualifiedName));
+            SetAttribute("type", type.AssemblyQualifiedName);
             return this;
         }
 
@@ -220,7 +220,7 @@ namespace FluentNHibernate.Mapping
         /// <returns>This property mapping to continue the method chain</returns>
         public IProperty CustomTypeIs(string typeName)
         {
-            this.AddAlteration(x => x.SetAttribute("type", typeName));
+            SetAttribute("type", typeName);
             return this;
         }
 

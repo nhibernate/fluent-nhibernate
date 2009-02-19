@@ -160,5 +160,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(c => c.OptimisticLock.Dirty())
                 .Element("class").HasAttribute("optimistic-lock", "dirty");
         }
+
+        [Test]
+        public void EnumsDontGetTypeOverriddenByConventionsIfExplicitlySet()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Map(x => x.Color).CustomTypeIs("int"))
+                .Element("class/property[@name='Color']").HasAttribute("type", "int");
+        }
     }
 }
