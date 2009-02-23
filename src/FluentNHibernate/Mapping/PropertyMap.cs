@@ -157,7 +157,7 @@ namespace FluentNHibernate.Mapping
         public IProperty WithLengthOf(int length)
         {
             if (CanApplyLengthAttribute())
-                this.AddAlteration(x => x.SetAttribute("length", length.ToString()));
+                this.AddAlteration(x => x.SetColumnProperty("length", length.ToString()));
             else
                 throw new InvalidOperationException(String.Format("{0} is not a string.", this._property.Name));
             return this;

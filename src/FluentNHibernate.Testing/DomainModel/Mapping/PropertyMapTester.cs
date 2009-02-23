@@ -129,33 +129,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void Map_WithFluentLength_OnString_UsesWithLengthOf_PropertyColumnAttribute()
         {
-            var classMap = new ClassMap<PropertyTarget>();
-
-            classMap.Map(x => x.Name)
-                .WithLengthOf(20);
-
-            var document = classMap.CreateMapping(new MappingVisitor());
-
-            // attribute on property
-            var classElement = document.DocumentElement.SelectSingleNode("class");
-            var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
-            propertyElement.AttributeShouldEqual("length", "20");
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Name).WithLengthOf(20))
+                .Element("class/property[@name='Name']/column").HasAttribute("length", "20");
         }
 
 		[Test]
 		public void Map_WithFluentLength_OnDecimal_UsesWithLengthOf_PropertyColumnAttribute()
 		{
-			var classMap = new ClassMap<PropertyTarget>();
-
-			classMap.Map(x => x.DecimalProperty)
-				.WithLengthOf(1);
-
-			var document = classMap.CreateMapping(new MappingVisitor());
-
-			// attribute on property
-			var classElement = document.DocumentElement.SelectSingleNode("class");
-			var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
-			propertyElement.AttributeShouldEqual("length", "1");
+		    new MappingTester<PropertyTarget>()
+		        .ForMapping(m => m.Map(x => x.DecimalProperty).WithLengthOf(1))
+		        .Element("class/property[@name='DecimalProperty']/column").HasAttribute("length", "1");
 		}
 
         [Test]
