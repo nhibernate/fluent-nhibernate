@@ -307,8 +307,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .Exists()
                     .HasAttribute("type", typeof(GenericEnumMapper<ColorEnum>).AssemblyQualifiedName)
                 .Element("class/property[@name='Color']/column")
-                    .Exists()
-                    .HasAttribute("sql-type", "string");
+                    .Exists();
         }
 
         [Test]

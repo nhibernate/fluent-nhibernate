@@ -16,7 +16,6 @@ namespace FluentNHibernate.Mapping
             Type mapperType = typeof(GenericEnumMapper<>).MakeGenericType(propertyMapping.PropertyType);
             
             propertyMapping.CustomTypeIs(mapperType);
-            propertyMapping.CustomSqlTypeIs("string");
         }
     }
 }
