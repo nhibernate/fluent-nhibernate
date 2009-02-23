@@ -75,9 +75,12 @@
     <Compile Include="AutoMap\Apm\AlterationCollectionTests.cs" />
     <Compile Include="AutoMap\Apm\AlterationTests.cs" />
     <Compile Include="AutoMap\Apm\AutoMappingOverrideAlterationTests.cs" />
+    <Compile Include="AutoMap\AutoMapManyToOneTester.cs" />
+    <Compile Include="AutoMap\AutoMapOneToManyTester.cs" />
     <Compile Include="AutoMap\AutoMappingTester.cs" />
     <Compile Include="AutoMap\AutoMapTests.cs" />
     <Compile Include="AutoMap\Apm\AutoPersistenceModelTests.cs" />
+    <Compile Include="AutoMap\BaseAutoMapTester.cs" />
     <Compile Include="AutoMap\BaseAutoPersistenceTests.cs" />
     <Compile Include="AutoMap\ManyToMany.cs" />
     <Compile Include="AutoMap\ManyToManyAutomapperTester.cs" />
