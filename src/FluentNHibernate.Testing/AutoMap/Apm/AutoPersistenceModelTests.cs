@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
+using FluentNHibernate.AutoMap.TestFixtures.CustomCompositeTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Testing.DomainModel;
 using NHibernate.Cfg;
@@ -330,6 +331,23 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
 
             new AutoMappingTester<ClassWithUserType>(autoMapper)
                 .Element("class/property").HasAttribute("name", "Custom");
+        }
+
+        [Test]
+        public void TypeConventionShouldForceCompositePropertyToBeMappedWithCorrectNumberOfColumns()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ClassWithCompositeUserType>()
+                .WithConvention(convention =>
+                {
+                    convention.AddTypeConvention(new CustomCompositeTypeConvention());
+                })
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            var mappedColumns = new AutoMappingTester<ClassWithCompositeUserType>(autoMapper)
+                .Element("class/property");
+
+            mappedColumns.HasThisManyChildNodes(2);
         }
 
         [Test]

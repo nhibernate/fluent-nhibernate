@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing.AutoMap
 
         public void Process(IProperty propertyMapping)
         {
-            propertyMapping.TheColumnNameIs(propertyMapping.Property.Name + "XX");
+            propertyMapping.ColumnName(propertyMapping.Property.Name + "XX");
         }
     }
 }

@@ -88,7 +88,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             var classMap = new ClassMap<PropertyTarget>();
 
             classMap.Map(x => x.Name)
-                .TheColumnNameIs("column_name");
+                .ColumnName("column_name");
 
             var document = classMap.CreateMapping(new MappingVisitor());
 
@@ -98,32 +98,51 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             columnElement.AttributeShouldEqual("name", "column_name");
         }
 
+        private MappingTester<T> Model<T>(Action<ClassMap<T>> mapping)
+        {
+            return new MappingTester<T>()
+                .ForMapping(mapping);
+        }
+
+        [Test]
+        public void ShouldAddOnlyOneColumnWhenNotSpecified()
+        {
+            Model<PropertyTarget>(m => m.Map(x => x.Name))
+                .Element("class/property[@name='Name']").HasThisManyChildNodes(1);
+        }
+
+        [Test]
+        public void ShouldAddAllColumns()
+        {
+            Model<PropertyTarget>(m => m.Map(x => x.Name).ColumnNames("one", "two", "three"))
+                .Element("class/property[@name='Name']").HasThisManyChildNodes(3)
+                .Element("class/property[@name='Name']/column[@name='one']").Exists()
+                .Element("class/property[@name='Name']/column[@name='two']").Exists()
+                .Element("class/property[@name='Name']/column[@name='three']").Exists();
+        }
+
         [Test]
         public void ColumnName_IsPropertyName_WhenNoColumnNameGiven()
         {
-            var property = new ClassMap<PropertyTarget>()
-                .Map(x => x.Name);
-
-            Assert.AreEqual("Name", property.ColumnName());
+            Model<PropertyTarget>(m => m.Map(x => x.Name))
+                .Element("class/property[@name='Name']/column")
+                .HasAttribute("name", "Name");
         }
 
         [Test]
         public void ColumnName_IsColumnName_WhenColumnNameGiven()
         {
-            var property = new ClassMap<PropertyTarget>()
-                .Map(x => x.Name, "column_name");
-
-            Assert.AreEqual("column_name", property.ColumnName());
+            Model<PropertyTarget>(m => m.Map(x => x.Name, "column_name"))
+                .Element("class/property[@name='Name']/column")
+                .HasAttribute("name", "column_name");
         }
 
         [Test]
         public void ColumnName_IsColumnName_WhenColumnNameFluentGiven()
         {
-            var property = new ClassMap<PropertyTarget>()
-                .Map(x => x.Name)
-                .TheColumnNameIs("column_name");
-
-            Assert.AreEqual("column_name", property.ColumnName());
+            Model<PropertyTarget>(m => m.Map(x => x.Name).ColumnName("column_name"))
+                .Element("class/property[@name='Name']/column")
+                .HasAttribute("name", "column_name");
         }
 
         [Test]

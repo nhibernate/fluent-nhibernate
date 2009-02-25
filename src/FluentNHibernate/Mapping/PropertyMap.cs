@@ -14,9 +14,9 @@ namespace FluentNHibernate.Mapping
         private readonly Type _parentType;
         private readonly PropertyInfo _property;
         private readonly bool _parentIsRequired;
-        private string _columnName;
         private readonly AccessStrategyBuilder<PropertyMap> access;
         private bool nextBool = true;
+        private readonly List<string> columnNames = new List<string>();
 
         public PropertyMap(PropertyInfo property, bool parentIsRequired, Type parentType)
         {
@@ -24,10 +24,7 @@ namespace FluentNHibernate.Mapping
 
             _property = property;
             _parentIsRequired = parentIsRequired;
-            _columnName = property.Name;
             _parentType = parentType;
-
-            _columnProperties.Store("name", _columnName);
         }
 
         public bool ParentIsRequired
@@ -50,13 +47,23 @@ namespace FluentNHibernate.Mapping
                 .WithAtt("name", _property.Name)
                 .WithProperties(_extendedProperties);
 
-
-            element.AddElement("column").WithProperties(_columnProperties);
+            AddColumnElements(element);
 
             foreach (var action in _alterations)
             {
                 action(element);
             }
+        }
+
+        private void AddColumnElements(XmlNode element)
+        {
+            if (columnNames.Count == 0)
+                columnNames.Add(_property.Name);
+
+            columnNames.ForEach(column =>
+                element.AddElement("column")
+                    .WithAtt("name", column)
+                    .WithProperties(_columnProperties));
         }
 
         public int Level
@@ -70,13 +77,6 @@ namespace FluentNHibernate.Mapping
         }
 
         #endregion
-
-        #region IProperty Members
-
-        public string ColumnName()
-        {
-            return _columnName;
-        }
 
         public void AddAlteration(Action<XmlElement> action)
         {
@@ -126,14 +126,18 @@ namespace FluentNHibernate.Mapping
             get { return _parentType; }
         }
 
-        #endregion
-
-        public IProperty TheColumnNameIs(string name)
+        public IProperty ColumnName(string name)
         {
-            _columnName = name;
+            columnNames.Add(name);
+            return this;
+        }
 
-            _columnProperties.Remove("column");
-            _columnProperties.Store("name", _columnName);
+        public IProperty ColumnNames(params string[] names)
+        {
+            foreach (var name in names)
+            {
+                ColumnName(name);
+            }
 
             return this;
         }
@@ -197,7 +201,6 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="CUSTOMTYPE">A type which implements <see cref="IUserType"/>.</typeparam>
         /// <returns>This property mapping to continue the method chain</returns>
         public IProperty CustomTypeIs<CUSTOMTYPE>()
-            where CUSTOMTYPE : IUserType
         {
             return CustomTypeIs(typeof(CUSTOMTYPE));
         }
@@ -209,19 +212,31 @@ namespace FluentNHibernate.Mapping
         /// <returns>This property mapping to continue the method chain</returns>
         public IProperty CustomTypeIs(Type type)
         {
-            SetAttribute("type", type.AssemblyQualifiedName);
-            return this;
+            if (typeof(ICompositeUserType).IsAssignableFrom(type))
+                AddColumnsFromCompositeUserType(type);
+
+            return CustomTypeIs(type.AssemblyQualifiedName);
         }
 
         /// <summary>
         /// Specifies that a custom type (an implementation of <see cref="IUserType"/>) should be used for this property for mapping it to/from one or more database columns whose format or type doesn't match this .NET property.
         /// </summary>
-        /// <param name="typeName">The assembly-qualified type name of a type which implements <see cref="IUserType"/>.</param>
+        /// <param name="type">A type name.</param>
         /// <returns>This property mapping to continue the method chain</returns>
-        public IProperty CustomTypeIs(string typeName)
+        public IProperty CustomTypeIs(string type)
         {
-            SetAttribute("type", typeName);
+            SetAttribute("type", type);
             return this;
+        }
+
+        private void AddColumnsFromCompositeUserType(Type compositeUserType)
+        {
+            var inst = (ICompositeUserType)Activator.CreateInstance(compositeUserType);
+
+            foreach (var name in inst.PropertyNames)
+            {
+                ColumnName(name);
+            }
         }
 
         public IProperty CustomSqlTypeIs(string sqlType)

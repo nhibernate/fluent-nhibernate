@@ -49,6 +49,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             return this;
         }
 
+        public virtual MappingTester<T> HasThisManyChildNodes(int expected)
+        {
+            currentElement.ChildNodeCountShouldEqual(expected);
+
+            return this;
+        }
+
         public virtual MappingTester<T> HasAttribute(string name, string value)
         {
             currentElement.AttributeShouldEqual(name, value);

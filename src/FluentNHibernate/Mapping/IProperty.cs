@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using NHibernate.UserTypes;
@@ -10,22 +11,22 @@ namespace FluentNHibernate.Mapping
         void AddAlteration(Action<XmlElement> action);
         void SetAttributeOnColumnElement(string name, string value);
         Type PropertyType { get; }
-        string ColumnName();
         Type ParentType { get; }
         PropertyInfo Property { get; }
         bool ParentIsRequired { get; }
 
         // Possibly should be moved to IHasAttributes.
         bool HasAttribute(string name);
-        IProperty TheColumnNameIs(string name);
+        IProperty ColumnName(string name);
+        IProperty ColumnNames(params string[] names);
         IProperty AutoNumber();
         IProperty WithLengthOf(int length);
         IProperty Nullable();
         IProperty ReadOnly();
         IProperty FormulaIs(string forumla);
-        IProperty CustomTypeIs<T>() where T : IUserType;
+        IProperty CustomTypeIs<T>();
         IProperty CustomTypeIs(Type type);
-        IProperty CustomTypeIs(string typeName);
+        IProperty CustomTypeIs(string type);
         IProperty CustomSqlTypeIs(string sqlType);
         IProperty Unique();
 

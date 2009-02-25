@@ -191,10 +191,14 @@ namespace FluentNHibernate.Testing
         public static object AttributeShouldEqual(this XmlElement element, string attributeName, object expected)
         {
             Assert.IsNotNull(element, "The Element is null");
-
             string actual = element.GetAttribute(attributeName);
             Assert.AreEqual(expected, actual);
             return expected;
+        }
+
+        public static void ChildNodeCountShouldEqual(this XmlElement element, int expected)
+        {
+            Assert.AreEqual(expected, element.ChildNodes.Count);
         }
 
         public static XmlElement ShouldHaveChild(this XmlElement element, string xpath)

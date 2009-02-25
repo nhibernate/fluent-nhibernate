@@ -8,6 +8,7 @@ public class AutoMappingTester<T> : MappingTester<T>
 {
     public AutoMappingTester(AutoPersistenceModel mapper)
     {
+        mapper.CompileMappings();
         document = mapper.FindMapping<T>().CreateMapping(new MappingVisitor(mapper.Conventions, new Configuration()));
         currentElement = document.DocumentElement;
     }
