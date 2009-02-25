@@ -8,7 +8,7 @@ namespace FluentNHibernate.Data
         public virtual long Id { get; set; }
 
         /// <summary>
-        /// Indicates whether the current <see cref="T:FluentNHibernate.Framework.Entity" /> is equal to another <see cref="T:FluentNHibernate.Framework.Entity" />.
+        /// Indicates whether the current <see cref="T:FluentNHibernate.Data.Entity" /> is equal to another <see cref="T:FluentNHibernate.Data.Entity" />.
         /// </summary>
         /// <returns>
         /// true if the current object is equal to the <paramref name="obj" /> parameter; otherwise, false.
@@ -23,10 +23,10 @@ namespace FluentNHibernate.Data
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="T:FluentNHibernate.Framework.Entity" /> is equal to the current <see cref="T:System.Object" />.
+        /// Determines whether the specified <see cref="T:FluentNHibernate.Data.Entity" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <returns>
-        /// true if the specified <see cref="T:FluentNHibernate.Framework.Entity" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.
+        /// true if the specified <see cref="T:FluentNHibernate.Data.Entity" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.
         /// </returns>
         /// <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />. </param>
         /// <exception cref="T:System.NullReferenceException">The <paramref name="obj" /> parameter is null.</exception><filterpriority>2</filterpriority>
