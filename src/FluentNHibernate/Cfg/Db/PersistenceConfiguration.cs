@@ -29,6 +29,7 @@ namespace FluentNHibernate.Cfg.Db
         protected const string DriverClassKey = "connection.driver_class";
         protected const string ConnectionStringKey = "connection.connection_string";
         protected const string ProxyFactoryFactoryClassKey = "proxyfactory.factory_class";
+        protected const string AdoNetBatchSizeKey = "adonet.batch_size";
 
         private readonly Dictionary<string, string> _rawValues;
 
@@ -194,6 +195,17 @@ namespace FluentNHibernate.Cfg.Db
         public TThisConfiguration ProxyFactoryFactory(string proxyFactoryFactoryClass)
         {
             _values.Store(ProxyFactoryFactoryClassKey, proxyFactoryFactoryClass);
+            return (TThisConfiguration)this;
+        }
+
+        /// <summary>
+        /// Sets the adonet.batch_size property.
+        /// </summary>
+        /// <param name="size">Batch size</param>
+        /// <returns>Configuration</returns>
+        public TThisConfiguration AdoNetBatchSize(int size)
+        {
+            _values.Store(AdoNetBatchSizeKey, size.ToString());
             return (TThisConfiguration)this;
         }
     }

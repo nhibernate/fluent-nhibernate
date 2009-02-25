@@ -168,6 +168,13 @@ namespace FluentNHibernate.Testing.Cfg.Db
             ValueOf("use_outer_join").ShouldEqual("false");
         }
 
+        [Test]
+        public void AdoNetBatchSize_should_set_property_value()
+        {
+            _config.AdoNetBatchSize(500);
+            ValueOf("adonet.batch_size").ShouldEqual("500");
+        }
+
         public class ConfigTester : PersistenceConfiguration<ConfigTester>
         {
         }
