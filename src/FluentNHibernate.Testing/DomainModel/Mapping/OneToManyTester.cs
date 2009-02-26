@@ -80,9 +80,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<OneToManyTarget>()
                 .ForMapping(map => map.HasMany(x => x.SetOfChildren).AsSet())
-                .Element("class/set").Exists()
-                .OutputToConsole();
-                
+                .Element("class/set").Exists();                
         }
 
         [Test]
