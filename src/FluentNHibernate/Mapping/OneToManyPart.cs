@@ -62,11 +62,10 @@ namespace FluentNHibernate.Mapping
 
         private void WriteMappingTypeElement(IMappingVisitor visitor, XmlElement collectionElement)
         {
-            if (!string.IsNullOrEmpty(_elementColumn)) 
-            { 
-                collectionElement.AddElement("element") 
-                    .SetAttribute("column", _elementColumn);
-                collectionElement.SetAttributeOnChild("element", "type", typeof(CHILD).AssemblyQualifiedName); 
+            if (_elementMapping != null) 
+            {
+                var elementElement = collectionElement.AddElement("element");                
+                _elementMapping.WriteAttributesToIndexElement(elementElement);                
             } 
             else if (_componentMapping == null) 
             {

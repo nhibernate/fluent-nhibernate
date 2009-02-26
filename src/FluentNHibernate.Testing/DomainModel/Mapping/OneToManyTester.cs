@@ -16,13 +16,26 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public virtual ChildObject[] ArrayOfChildren { get; set; }
         public virtual IList<string> ListOfSimpleChildren { get; set; }
         public virtual CustomCollection<ChildObject> CustomCollection { get; set; }
-
+        public virtual IDictionary<MapIndex, MapContents> MapOfEnums { get; set; }
 
         private IList<ChildObject> otherChildren = new List<ChildObject>();
         public virtual IList<ChildObject> GetOtherChildren() { return otherChildren; }
 
         private IList<ChildObject> listToArrayChild = new List<ChildObject>();
         public virtual ChildObject[] ListToArrayChild { get { return listToArrayChild.ToArray(); } }
+
+    }
+
+    public enum MapIndex
+    {
+        Index1,
+        Index2
+    }
+
+    public enum MapContents
+    {
+        Contents1,
+        Contents2
     }
 
     public class OneToManyComponentTarget
@@ -67,7 +80,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<OneToManyTarget>()
                 .ForMapping(map => map.HasMany(x => x.SetOfChildren).AsSet())
-                .Element("class/set").Exists();
+                .Element("class/set").Exists()
+                .OutputToConsole();
+                
         }
 
         [Test]
@@ -77,6 +92,25 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(map => map.HasMany(x => x.MapOfChildren).AsMap(x => x.Name))
                 .Element("class/map").Exists();
         }
+
+
+        [Test]
+        public void CanSpecifyCollectionTypeAsMapOfEnums()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany(x => x.MapOfEnums)
+                                       .AsMap<MapIndex>(
+                                       index => index.WithColumn("IndexColumn").WithType<MapIndex>(),
+                                       element => element.WithColumn("ElementColumn").WithType<MapContents>()))
+                .Element("class/map/index")
+                .HasAttribute("column", "IndexColumn")
+                .HasAttribute("type", typeof (MapIndex).AssemblyQualifiedName)
+                .Element("class/map/element")
+                .HasAttribute("column", "ElementColumn")
+                .HasAttribute("type", typeof (MapContents).AssemblyQualifiedName);                                
+        }
+
+
 
         [Test]
         public void CanSpecifyCollectionTypeAsArray()

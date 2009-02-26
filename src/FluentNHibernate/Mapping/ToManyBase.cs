@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Xml;
 using FluentNHibernate.Utils;
 
@@ -11,7 +12,7 @@ namespace FluentNHibernate.Mapping
         protected readonly Cache<string, string> _keyProperties = new Cache<string, string>();
         private readonly AccessStrategyBuilder<T> access;
         protected IndexMapping _indexMapping;
-        protected string _elementColumn;
+        protected ElementMapping _elementMapping;
         protected CompositeElementPart<CHILD> _componentMapping;
         protected string _tableName;
         protected string _collectionType;
@@ -96,6 +97,17 @@ namespace FluentNHibernate.Mapping
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 
+        // I'm not proud of this. The fluent interface for maps really needs to be rethought. But I've let maps sit unsupported for way too long
+        // so a hack is better than nothing.
+        public T AsMap<INDEX_TYPE>(Action<IndexMapping> customIndexMapping, Action<ElementMapping> customElementMapping)
+        {
+            _collectionType = "map";
+            AsIndexedCollection<INDEX_TYPE>(string.Empty, customIndexMapping);
+            AsElement(string.Empty);
+            customElementMapping(_elementMapping);
+            return (T)this;
+        }
+
         public T AsArray<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector)
         {
             return AsArray(indexSelector, null);
@@ -110,9 +122,14 @@ namespace FluentNHibernate.Mapping
         private T AsIndexedCollection<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector, Action<IndexMapping> customIndexMapping)
         {
             var indexProperty = ReflectionHelper.GetProperty(indexSelector);
+            return AsIndexedCollection<INDEX_TYPE>(indexProperty.Name, customIndexMapping);
+        }
+
+        private T AsIndexedCollection<INDEX_TYPE>(string indexColumn, Action<IndexMapping> customIndexMapping)
+        {
             _indexMapping = new IndexMapping();
             _indexMapping.WithType<INDEX_TYPE>();
-            _indexMapping.WithColumn(indexProperty.Name);
+            _indexMapping.WithColumn(indexColumn);
 
             if (customIndexMapping != null)
                 customIndexMapping(_indexMapping);
@@ -122,7 +139,9 @@ namespace FluentNHibernate.Mapping
 
         public T AsElement(string columnName)
         {
-            _elementColumn = columnName;
+            _elementMapping = new ElementMapping();
+            _elementMapping.WithColumn(columnName);
+            _elementMapping.WithType<CHILD>();            
             return (T)this;
         }
 
@@ -232,6 +251,28 @@ namespace FluentNHibernate.Mapping
             }
 
             public IndexMapping WithType<INDEXTYPE>()
+            {
+                _properties.Store("type", typeof(INDEXTYPE).AssemblyQualifiedName);
+                return this;
+            }
+
+            internal void WriteAttributesToIndexElement(XmlElement indexElement)
+            {
+                indexElement.WithProperties(_properties);
+            }
+        }
+
+        public class ElementMapping
+        {
+            private readonly Cache<string, string> _properties = new Cache<string, string>();
+
+            public ElementMapping WithColumn(string indexColumnName)
+            {
+                _properties.Store("column", indexColumnName);
+                return this;
+            }
+
+            public ElementMapping WithType<INDEXTYPE>()
             {
                 _properties.Store("type", typeof(INDEXTYPE).AssemblyQualifiedName);
                 return this;
