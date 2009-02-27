@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="AutoMap\AutoPersistenceModel.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />
+    <Compile Include="AutoMap\IdAutoMapper.cs" />
     <Compile Include="ClassMap.cs" />
     <Compile Include="ClassMapBase.cs" />
     <Compile Include="DiscriminatorPart.cs" />
