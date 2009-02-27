@@ -34,7 +34,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=2.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+    <Reference Include="NHibernate, Version=2.0.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
     </Reference>
@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoMap\AutoPersistenceModelTests.cs" />
     <Compile Include="DomainModel\Employees.cs" />
     <Compile Include="DomainModel\Music.cs" />
     <Compile Include="FluentInterface\ClassMapTester.cs" />
