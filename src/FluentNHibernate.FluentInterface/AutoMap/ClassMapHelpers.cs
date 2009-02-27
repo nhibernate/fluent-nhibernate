@@ -17,7 +17,6 @@ namespace FluentNHibernate.FluentInterface.AutoMap
                 {
                     if (column.PropertyInfo == propertyInfo)
                         return true;
-
                 }
             }
 

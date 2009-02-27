@@ -69,6 +69,17 @@ namespace FluentNHibernate.FluentInterface.AutoMap
             }
         }
 
+        public AutoPersistenceModel ForTypesThatDeriveFrom<T>(Action<ClassMap<T>> populateMap)
+        {
+            var map = new ClassMap<T>();
+            populateMap.Invoke(map);
+            
+            classesFound.RemoveAll(q => q.Type == typeof (T));
+            classesFound.Add(map.GetClassMapping());
+
+            return this;
+        }
+
         public List<ClassMapping> ClassesFound
         {
             get { return classesFound; }

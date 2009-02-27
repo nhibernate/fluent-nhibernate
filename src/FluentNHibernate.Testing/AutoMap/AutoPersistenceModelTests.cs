@@ -59,11 +59,23 @@ namespace FluentNHibernate.Testing.AutoMap
             autoMapper1.VerifyAllExpectations();
             autoMapper2.VerifyAllExpectations();
         }
+
+        [Test]
+        public void ShouldMergeClassMapsTogether()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t == typeof (ExampleClass))
+                .ForTypesThatDeriveFrom<ExampleClass>(q => q.Id(p => p.ExampleId));
+
+            Assert.IsNotNull(autoMapper.ClassesFound[0].Id); 
+        }
     }
 
     public class ExampleClass
     {
         public int Id { get; set; }
+        public int ExampleId { get; set; }
     }
     public class ExampleClass2 {}
 }
