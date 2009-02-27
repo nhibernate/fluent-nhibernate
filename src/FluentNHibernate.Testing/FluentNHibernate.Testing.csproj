@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMap\AutoPersistenceModelTests.cs" />
+    <Compile Include="AutoMap\IdAutoMapperTests.cs" />
     <Compile Include="DomainModel\Employees.cs" />
     <Compile Include="DomainModel\Music.cs" />
     <Compile Include="FluentInterface\ClassMapTester.cs" />
