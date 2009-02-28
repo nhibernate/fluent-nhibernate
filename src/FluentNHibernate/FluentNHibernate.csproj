@@ -73,6 +73,7 @@
     <Compile Include="MappingModel\Conventions\ConventionException.cs" />
     <Compile Include="MappingModel\Conventions\ManyToManyTableConvention.cs" />
     <Compile Include="MappingModel\DiscriminatorMapping.cs" />
+    <Compile Include="MappingModel\MappedMembers.cs" />
     <Compile Include="MappingModel\NullMappingModelVisitor.cs" />
     <Compile Include="MappingModel\INameable.cs" />
     <Compile Include="MappingModel\ISubclassMapping.cs" />

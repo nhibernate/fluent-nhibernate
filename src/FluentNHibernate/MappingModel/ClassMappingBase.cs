@@ -4,35 +4,16 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.MappingModel
 {
-    public abstract class ClassMappingBase : MappingBase, INameable
+    public abstract class ClassMappingBase : MappingBase, INameable, IHasMappedMembers
     {
         private readonly AttributeStore<ClassMappingBase> _attributes;
-        protected IList<PropertyMapping> _properties;
-        protected IList<ICollectionMapping> _collections;
-        protected IList<ManyToOneMapping> _references;
+        private readonly MappedMembers _mappedMembers;
         public Type Type { get; set; }
 
         protected ClassMappingBase(AttributeStore underlyingStore)
         {
             _attributes = new AttributeStore<ClassMappingBase>(underlyingStore);
-            _properties = new List<PropertyMapping>();
-            _collections = new List<ICollectionMapping>();
-            _references = new List<ManyToOneMapping>();
-        }
-
-        public IEnumerable<PropertyMapping> Properties
-        {
-            get { return _properties; }
-        }
-
-        public IEnumerable<ICollectionMapping> Collections
-        {
-            get { return _collections; }
-        }
-
-        public IEnumerable<ManyToOneMapping> References
-        {
-            get { return _references; }
+            _mappedMembers = new MappedMembers();
         }
 
         public string Name
@@ -46,31 +27,44 @@ namespace FluentNHibernate.MappingModel
             get { return _attributes.IsSpecified(x => x.Name); }
         }
 
+        public override void AcceptVisitor(IMappingModelVisitor visitor)
+        {
+            _mappedMembers.AcceptVisitor(visitor);
+        }
+
+        #region IHasMappedMembers
+
+        public IEnumerable<ManyToOneMapping> References
+        {
+            get { return _mappedMembers.References; }
+        }
+
+        public IEnumerable<ICollectionMapping> Collections
+        {
+            get { return _mappedMembers.Collections; }
+        }
+
+        public IEnumerable<PropertyMapping> Properties
+        {
+            get { return _mappedMembers.Properties; }
+        }
+
         public void AddProperty(PropertyMapping property)
         {
-            _properties.Add(property);
+            _mappedMembers.AddProperty(property);
         }
 
         public void AddCollection(ICollectionMapping collection)
         {
-            _collections.Add(collection);
+            _mappedMembers.AddCollection(collection);
         }
 
         public void AddReference(ManyToOneMapping manyToOne)
         {
-            _references.Add(manyToOne);
+            _mappedMembers.AddReference(manyToOne);
         }
 
-        public override void AcceptVisitor(IMappingModelVisitor visitor)
-        {
-            foreach (var collection in Collections)
-                visitor.Visit(collection);
+        #endregion
 
-            foreach (var property in Properties)
-                visitor.Visit(property);
-
-            foreach (var reference in References)
-                visitor.Visit(reference);
-        }
     }
 }
