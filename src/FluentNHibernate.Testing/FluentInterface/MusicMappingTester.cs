@@ -160,10 +160,14 @@ namespace FluentNHibernate.Testing.FluentInterface
 
             integrationHelper.Execute(session =>
             {
+                var melodicDeath = new Tag { Description = "Melodic Death Metal" };
+                session.Save(melodicDeath);
+
                 var inflames = new Artist {Name = "In Flames"};
                 session.Save(inflames);
 
                 var whoracle = new Album {Title = "Whoracle"};
+                whoracle.Tags.Add(melodicDeath);
                 whoracle.Artist = inflames;
                 session.Save(whoracle);
 

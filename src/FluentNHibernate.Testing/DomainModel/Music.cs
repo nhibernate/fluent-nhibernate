@@ -29,6 +29,7 @@ namespace FluentNHibernate.Testing.DomainModel
         public Album()
         {
             Tracks = new HashedSet<Track>();
+            Tags = new HashedSet<Tag>();
         }
     }
 
