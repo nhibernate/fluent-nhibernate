@@ -87,6 +87,7 @@
     <Compile Include="MappingModel\Output\HbmBagWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmClassWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmCollectionContentsWriterTester.cs" />
+    <Compile Include="MappingModel\Output\HbmComponentWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmDiscriminatorWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmIdWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmJoinedSubclassWriterTester.cs" />

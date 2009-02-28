@@ -85,6 +85,11 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void ProcessComponent(ComponentMapping componentMapping)
+        {
+            
+        }
+
         public virtual void Visit(ClassMapping classMapping)
         {
 

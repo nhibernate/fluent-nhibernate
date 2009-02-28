@@ -6,16 +6,6 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.MappingModel
 {
-    public interface IHasMappedMembers
-    {
-        IEnumerable<PropertyMapping> Properties { get; }
-        IEnumerable<ICollectionMapping> Collections { get; }
-        IEnumerable<ManyToOneMapping> References { get; }
-        void AddProperty(PropertyMapping property);
-        void AddCollection(ICollectionMapping collection);
-        void AddReference(ManyToOneMapping manyToOne);
-    }
-
     internal class MappedMembers : IMappingBase, IHasMappedMembers
     {
         protected IList<PropertyMapping> _properties;

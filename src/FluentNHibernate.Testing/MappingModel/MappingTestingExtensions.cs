@@ -24,6 +24,7 @@ namespace FluentNHibernate.Testing.MappingModel
         public static void ShouldGenerateValidOutput<T>(this IHbmWriter<T> writer, T model)
         {
             object hbm = writer.Write(model);
+            hbm.ShouldNotBeNull();  
             var serializer = new MappingXmlSerializer();
             XmlDocument document = serializer.SerializeHbmFragment(hbm);
             Validate(document);
