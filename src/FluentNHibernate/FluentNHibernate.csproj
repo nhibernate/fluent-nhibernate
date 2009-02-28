@@ -64,12 +64,14 @@
     <Compile Include="MappingModel\AttributeStore.cs" />
     <Compile Include="MappingModel\ClassMappingBase.cs" />
     <Compile Include="MappingModel\Collections\CollectionMappingBase.cs" />
+    <Compile Include="MappingModel\Collections\ManyToManyMapping.cs" />
     <Compile Include="MappingModel\Collections\SetMapping.cs" />
     <Compile Include="MappingModel\Collections\BagMapping.cs" />
     <Compile Include="MappingModel\Collections\ICollectionContentsMapping.cs" />
     <Compile Include="MappingModel\Collections\ICollectionMapping.cs" />
     <Compile Include="MappingModel\ColumnMapping.cs" />
     <Compile Include="MappingModel\Conventions\ConventionException.cs" />
+    <Compile Include="MappingModel\Conventions\ManyToManyTableConvention.cs" />
     <Compile Include="MappingModel\DiscriminatorMapping.cs" />
     <Compile Include="MappingModel\NullMappingModelVisitor.cs" />
     <Compile Include="MappingModel\INameable.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="MappingModel\Output\HbmIdentityWriter.cs" />
     <Compile Include="MappingModel\Output\HbmIdGeneratorWriter.cs" />
     <Compile Include="MappingModel\Output\HbmIdWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmManyToManyWriter.cs" />
     <Compile Include="MappingModel\Output\HbmManyToOneWriter.cs" />
     <Compile Include="MappingModel\Output\HbmOneToManyWriter.cs" />
     <Compile Include="MappingModel\Output\HbmPropertyWriter.cs" />

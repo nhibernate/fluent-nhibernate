@@ -13,7 +13,7 @@ namespace FluentNHibernate.MappingModel.Output
         private readonly IHbmWriter<ICollectionContentsMapping> _contentsWriter;
         private readonly IHbmWriter<KeyMapping> _keyWriter;
 
-        private HbmSet _hbmSet;
+        private HbmSet _hbm;
 
         public HbmSetWriter(IHbmWriter<ICollectionContentsMapping> contentsWriter, IHbmWriter<KeyMapping> keyWriter)
         {
@@ -23,37 +23,38 @@ namespace FluentNHibernate.MappingModel.Output
 
         public object Write(SetMapping mappingModel)
         {
+            _hbm = null;
             mappingModel.AcceptVisitor(this);
-            return _hbmSet;
+            return _hbm;
         }
 
         public override void ProcessSet(SetMapping setMapping)
         {
-            _hbmSet = new HbmSet();
-            _hbmSet.name = setMapping.Name;
+            _hbm = new HbmSet();
+            _hbm.name = setMapping.Name;
 
             if(setMapping.Attributes.IsSpecified(x => x.OrderBy))
-                _hbmSet.orderby = setMapping.OrderBy;
+                _hbm.orderby = setMapping.OrderBy;
 
             if (setMapping.Attributes.IsSpecified(x => x.IsInverse))
-                _hbmSet.inverse = setMapping.IsInverse;
+                _hbm.inverse = setMapping.IsInverse;
 
             if (setMapping.Attributes.IsSpecified(x => x.IsLazy))
             {
-                _hbmSet.SetLazy(setMapping.IsLazy);
+                _hbm.SetLazy(setMapping.IsLazy);
             }
         }
 
         public override void Visit(ICollectionContentsMapping contentsMapping)
         {
             object contentsHbm = _contentsWriter.Write(contentsMapping);
-            _hbmSet.SetContents(contentsHbm);
+            _hbm.SetContents(contentsHbm);
         }
 
         public override void Visit(KeyMapping keyMapping)
         {
             HbmKey keyHbm = (HbmKey)_keyWriter.Write(keyMapping);
-            _hbmSet.key = keyHbm;
+            _hbm.key = keyHbm;
         }
     }
 }

@@ -16,6 +16,7 @@ namespace FluentNHibernate.MappingModel
         void ProcessColumn(ColumnMapping columnMapping);
         void ProcessBag(BagMapping bagMapping);
         void ProcessOneToMany(OneToManyMapping oneToManyMapping);
+        void ProcessManyToMany(ManyToManyMapping manyToManyMapping);
         void ProcessSet(SetMapping setMapping);
         void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping);
         void ProcessSubclass(SubclassMapping subclassMapping);
@@ -34,5 +35,6 @@ namespace FluentNHibernate.MappingModel
         void Visit(JoinedSubclassMapping subclassMapping);
         void Visit(SubclassMapping subclassMapping);
         void Visit(DiscriminatorMapping discriminatorMapping);
+        
     }
 }

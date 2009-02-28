@@ -10,22 +10,23 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class HbmOneToManyWriter : NullMappingModelVisitor, IHbmWriter<OneToManyMapping>
     {
-        private HbmOneToMany _hbmOneToMany;
+        private HbmOneToMany _hbm;
 
         public object Write(OneToManyMapping mappingModel)
         {
+            _hbm = null;
             mappingModel.AcceptVisitor(this);
-            return _hbmOneToMany;
+            return _hbm;
         }
 
         public override void ProcessOneToMany(OneToManyMapping oneToManyMapping)
         {
-            _hbmOneToMany = new HbmOneToMany();
-            _hbmOneToMany.@class = oneToManyMapping.ClassName;
+            _hbm = new HbmOneToMany();
+            _hbm.@class = oneToManyMapping.ClassName;
 
             if(oneToManyMapping.Attributes.IsSpecified(x => x.ExceptionOnNotFound))
             {
-                _hbmOneToMany.SetNotFound(oneToManyMapping.ExceptionOnNotFound);
+                _hbm.SetNotFound(oneToManyMapping.ExceptionOnNotFound);
             }
         }
     }

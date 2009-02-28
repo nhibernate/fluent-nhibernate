@@ -4,45 +4,46 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class HbmColumnWriter : NullMappingModelVisitor, IHbmWriter<ColumnMapping>
     {
-        private HbmColumn _hbmColumn;
+        private HbmColumn _hbm;
 
         public object Write(ColumnMapping mappingModel)
         {
+            _hbm = null;
             mappingModel.AcceptVisitor(this);
-            return _hbmColumn;
+            return _hbm;
         }
 
         public override void ProcessColumn(ColumnMapping columnMapping)
         {
-            _hbmColumn = new HbmColumn();
-            _hbmColumn.name = columnMapping.Name;
+            _hbm = new HbmColumn();
+            _hbm.name = columnMapping.Name;
             
             if(columnMapping.Attributes.IsSpecified(x => x.IsNotNullable))
             {
-                _hbmColumn.notnull = columnMapping.IsNotNullable;
-                _hbmColumn.notnullSpecified = true;
+                _hbm.notnull = columnMapping.IsNotNullable;
+                _hbm.notnullSpecified = true;
             }
 
             if (columnMapping.Attributes.IsSpecified(x => x.Length))
-                _hbmColumn.length = columnMapping.Length.ToString();
+                _hbm.length = columnMapping.Length.ToString();
 
             if(columnMapping.Attributes.IsSpecified(x => x.IsUnique))
             {
-                _hbmColumn.unique = columnMapping.IsUnique;
-                _hbmColumn.uniqueSpecified = true;
+                _hbm.unique = columnMapping.IsUnique;
+                _hbm.uniqueSpecified = true;
             }
 
             if (columnMapping.Attributes.IsSpecified(x => x.UniqueKey))
-                _hbmColumn.uniquekey = columnMapping.UniqueKey;
+                _hbm.uniquekey = columnMapping.UniqueKey;
 
             if (columnMapping.Attributes.IsSpecified(x => x.SqlType))
-                _hbmColumn.sqltype = columnMapping.SqlType;
+                _hbm.sqltype = columnMapping.SqlType;
 
             if (columnMapping.Attributes.IsSpecified(x => x.Index))
-                _hbmColumn.index = columnMapping.Index;
+                _hbm.index = columnMapping.Index;
 
             if (columnMapping.Attributes.IsSpecified(x => x.Check))
-                _hbmColumn.check = columnMapping.Check;
+                _hbm.check = columnMapping.Check;
         }
     }
 }

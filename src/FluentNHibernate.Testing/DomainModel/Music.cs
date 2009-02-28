@@ -24,6 +24,7 @@ namespace FluentNHibernate.Testing.DomainModel
         public string Title { get; set;}
         public Artist Artist { get; set; }
         public ISet<Track> Tracks { get; set; }
+        public ISet<Tag> Tags { get; set; }
 
         public Album()
         {
@@ -37,5 +38,11 @@ namespace FluentNHibernate.Testing.DomainModel
         public Album Album { get; set; }
         public string Name { get; set; }
         public int TrackNumber { get; set; }
+    }
+
+    public class Tag
+    {
+        public int ID { get; set; }
+        public string Description { get; set; }
     }
 }

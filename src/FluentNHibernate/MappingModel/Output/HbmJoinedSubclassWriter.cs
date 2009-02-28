@@ -22,6 +22,7 @@ namespace FluentNHibernate.MappingModel.Output
 
         public object Write(JoinedSubclassMapping mappingModel)
         {
+            _hbm = null;
             mappingModel.AcceptVisitor(this);
             return _hbm;
         }

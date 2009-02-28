@@ -9,18 +9,19 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class HbmIdGeneratorWriter : NullMappingModelVisitor, IHbmWriter<IdGeneratorMapping>
     {
-        private HbmGenerator _hbmGenerator;
+        private HbmGenerator _hbm;
 
         public object Write(IdGeneratorMapping mappingModel)
         {
+            _hbm = null;
             mappingModel.AcceptVisitor(this);
-            return _hbmGenerator;
+            return _hbm;
         }
 
         public override void ProcessIdGenerator(IdGeneratorMapping generatorMapping)
         {
-            _hbmGenerator = new HbmGenerator();
-            _hbmGenerator.@class = generatorMapping.ClassName;
+            _hbm = new HbmGenerator();
+            _hbm.@class = generatorMapping.ClassName;
         }
     }
 }

@@ -66,6 +66,16 @@ namespace FluentNHibernate.MappingModel.Conventions
             }
         }
 
+        public override void ProcessManyToMany(ManyToManyMapping manyToManyMapping)
+        {
+            if (!manyToManyMapping.Attributes.IsSpecified(x => x.ClassName))
+            {
+                if (manyToManyMapping.ChildType == null)
+                    throw new ConventionException("Cannot apply the naming convention. No type specified.", manyToManyMapping);
+                manyToManyMapping.ClassName = DetermineNameFromType(manyToManyMapping.ChildType);
+            }
+        }
+
     }
 
 }

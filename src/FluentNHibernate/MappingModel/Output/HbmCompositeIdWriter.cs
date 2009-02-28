@@ -9,17 +9,18 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class HbmCompositeIdWriter : NullMappingModelVisitor, IHbmWriter<CompositeIdMapping>
     {
-        private HbmCompositeId _hbmCompositeId;
+        private HbmCompositeId _hbm;
 
         public object Write(CompositeIdMapping mappingModel)
         {
+            _hbm = null;
             mappingModel.AcceptVisitor(this);
-            return _hbmCompositeId;
+            return _hbm;
         }
 
         public override void ProcessCompositeId(CompositeIdMapping idMapping)
         {
-            _hbmCompositeId = new HbmCompositeId();
+            _hbm = new HbmCompositeId();
         }
     }
 }

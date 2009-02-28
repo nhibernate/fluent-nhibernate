@@ -131,7 +131,16 @@ namespace FluentNHibernate.Testing.MappingModel.Conventions
             _namingConvention.ProcessOneToMany(oneToManyMapping);
 
             oneToManyMapping.ClassName.ShouldEqual(oneToManyMapping.ChildType.AssemblyQualifiedName);
+        }
 
+        [Test]
+        public void Should_apply_to_many_to_many_mapping()
+        {
+            var manyToManyMapping = new ManyToManyMapping();
+            manyToManyMapping.ChildType = typeof (Album);
+            _namingConvention.ProcessManyToMany(manyToManyMapping);
+
+            manyToManyMapping.ClassName.ShouldEqual(manyToManyMapping.ChildType.AssemblyQualifiedName);
         }
         
     }

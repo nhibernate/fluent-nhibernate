@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using FluentNHibernate.FluentInterface;
 using FluentNHibernate.Cfg;
@@ -43,7 +44,10 @@ namespace FluentNHibernate.Testing.FluentInterface
                 HasMany<Track>(x => x.Tracks)
                     .AsSet()
                     .IsInverse();
+                HasManyToMany<Tag>(x => x.Tags)
+                    .AsSet();
             }
+            
         }
 
         private class TrackMap : ClassMap<Track>
@@ -57,6 +61,15 @@ namespace FluentNHibernate.Testing.FluentInterface
                 Map(x => x.TrackNumber);
                 References(x => x.Album)
                     .CanNotBeNull();
+            }
+        }
+
+        private class TagMap : ClassMap<Tag>
+        {
+            public TagMap()
+            {
+                Id(x => x.ID);
+                Map(x => x.Description);
             }
         }
 
@@ -91,10 +104,16 @@ namespace FluentNHibernate.Testing.FluentInterface
             ManyToOneMapping reference = mapping.References.First();
             reference.PropertyInfo.ShouldEqual(ReflectionHelper.GetProperty<Album>(x => x.Artist));
 
-            ICollectionMapping col = mapping.Collections.First();
-            col.PropertyInfo.ShouldNotBeNull();
-            col.ShouldBeOfType(typeof(SetMapping));
-            col.IsInverse.ShouldBeTrue();
+            ICollectionMapping tracks = mapping.Collections.First();
+            tracks.PropertyInfo.ShouldNotBeNull();
+            tracks.ShouldBeOfType(typeof(SetMapping));
+            tracks.Contents.ShouldBeOfType(typeof(OneToManyMapping));
+            tracks.IsInverse.ShouldBeTrue();
+
+            ICollectionMapping tags = mapping.Collections.Skip(1).First();
+            tags.PropertyInfo.ShouldNotBeNull();
+            tags.ShouldBeOfType(typeof (SetMapping));
+            tags.Contents.ShouldBeOfType(typeof(ManyToManyMapping));            
         }
 
         [Test]
@@ -122,6 +141,7 @@ namespace FluentNHibernate.Testing.FluentInterface
             model.Add(new ArtistMap());
             model.Add(new AlbumMap());
             model.Add(new TrackMap());
+            model.Add(new TagMap());
 
             model.AddConvention(new NamingConvention());
             var hibernateMapping = model.BuildHibernateMapping();
@@ -136,6 +156,7 @@ namespace FluentNHibernate.Testing.FluentInterface
             integrationHelper.PersistenceModel.Add(new ArtistMap());
             integrationHelper.PersistenceModel.Add(new AlbumMap());
             integrationHelper.PersistenceModel.Add(new TrackMap());
+            integrationHelper.PersistenceModel.Add(new TagMap());
 
             integrationHelper.Execute(session =>
             {

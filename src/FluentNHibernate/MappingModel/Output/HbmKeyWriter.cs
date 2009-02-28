@@ -10,30 +10,31 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class HbmKeyWriter : NullMappingModelVisitor, IHbmWriter<KeyMapping>
     {
-        private HbmKey _hbmKey;
+        private HbmKey _hbm;
 
         public object Write(KeyMapping mappingModel)
         {
+            _hbm = null;
             mappingModel.AcceptVisitor(this);
-            return _hbmKey;
+            return _hbm;
         }
 
         public override void ProcessKey(KeyMapping keyMapping)
         {
-            _hbmKey = new HbmKey();
+            _hbm = new HbmKey();
 
             if (keyMapping.Attributes.IsSpecified(x => x.Column))
-                _hbmKey.column1 = keyMapping.Column;
+                _hbm.column1 = keyMapping.Column;
 
             if (keyMapping.Attributes.IsSpecified(x => x.ForeignKey))
-                _hbmKey.foreignkey = keyMapping.ForeignKey;
+                _hbm.foreignkey = keyMapping.ForeignKey;
 
             if (keyMapping.Attributes.IsSpecified(x => x.PropertyReference))
-                _hbmKey.propertyref = keyMapping.PropertyReference;
+                _hbm.propertyref = keyMapping.PropertyReference;
 
             if (keyMapping.Attributes.IsSpecified(x => x.CascadeOnDelete))
             {
-                _hbmKey.SetCascadeOnDelete(keyMapping.CascadeOnDelete);
+                _hbm.SetCascadeOnDelete(keyMapping.CascadeOnDelete);
             }
         }
     }

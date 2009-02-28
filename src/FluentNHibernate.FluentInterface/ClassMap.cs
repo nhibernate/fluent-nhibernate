@@ -58,6 +58,15 @@ namespace FluentNHibernate.FluentInterface
             return part;
         }
 
+        public ManyToManyPart<T, CHILD> HasManyToMany<CHILD>(Expression<Func<T, object>> expression)
+        {
+            PropertyInfo info = ReflectionHelper.GetProperty(expression);
+
+            var part = new ManyToManyPart<T, CHILD>(info);
+            _deferredCollections.Add(part);
+            return part;
+        }
+
         public ManyToOnePart References(Expression<Func<T, object>> expression)
         {
             PropertyInfo info = ReflectionHelper.GetProperty(expression);

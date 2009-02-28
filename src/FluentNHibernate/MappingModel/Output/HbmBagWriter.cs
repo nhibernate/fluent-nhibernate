@@ -14,7 +14,7 @@ namespace FluentNHibernate.MappingModel.Output
         private readonly IHbmWriter<ICollectionContentsMapping> _contentsWriter;
         private readonly IHbmWriter<KeyMapping> _keyWriter;
 
-        private HbmBag _hbmBag;
+        private HbmBag _hbm;
 
         public HbmBagWriter(IHbmWriter<ICollectionContentsMapping> contentsWriter, 
             IHbmWriter<KeyMapping> keyWriter)
@@ -25,37 +25,38 @@ namespace FluentNHibernate.MappingModel.Output
 
         public object Write(BagMapping mappingModel)
         {
+            _hbm = null;
             mappingModel.AcceptVisitor(this);
-            return _hbmBag;
+            return _hbm;
         }
 
         public override void ProcessBag(BagMapping bagMapping)
         {
-            _hbmBag = new HbmBag();
-            _hbmBag.name = bagMapping.Name;
+            _hbm = new HbmBag();
+            _hbm.name = bagMapping.Name;
 
             if(bagMapping.Attributes.IsSpecified(x => x.OrderBy))
-                _hbmBag.orderby = bagMapping.OrderBy;
+                _hbm.orderby = bagMapping.OrderBy;
 
             if (bagMapping.Attributes.IsSpecified(x => x.IsInverse))
-                _hbmBag.inverse = bagMapping.IsInverse;
+                _hbm.inverse = bagMapping.IsInverse;
 
             if( bagMapping.Attributes.IsSpecified(x => x.IsLazy))
             {
-                _hbmBag.SetLazy(bagMapping.IsLazy);
+                _hbm.SetLazy(bagMapping.IsLazy);
             }
         }
 
         public override void Visit(ICollectionContentsMapping contentsMapping)
         {
             object contentsHbm = _contentsWriter.Write(contentsMapping);
-            _hbmBag.SetContents(contentsHbm);
+            _hbm.SetContents(contentsHbm);
         }
 
         public override void Visit(KeyMapping keyMapping)
         {
             HbmKey keyHbm = (HbmKey)_keyWriter.Write(keyMapping);
-            _hbmBag.key = keyHbm;
+            _hbm.key = keyHbm;
         }
     }
 

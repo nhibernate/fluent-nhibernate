@@ -12,7 +12,7 @@ namespace FluentNHibernate.MappingModel.Output
         private readonly IHbmWriter<ColumnMapping> _columnWriter;
         private readonly IHbmWriter<IdGeneratorMapping> _generatorWriter;
 
-        private HbmId _hbmId;
+        private HbmId _hbm;
 
         public HbmIdWriter(IHbmWriter<ColumnMapping> columnWriter, IHbmWriter<IdGeneratorMapping> generatorWriter)
         {
@@ -22,28 +22,29 @@ namespace FluentNHibernate.MappingModel.Output
 
         public object Write(IdMapping mappingModel)
         {
+            _hbm = null; 
             mappingModel.AcceptVisitor(this);
-            return _hbmId;
+            return _hbm;
         }
 
         public override void ProcessId(IdMapping idMapping)
         {
-            _hbmId = new HbmId();
+            _hbm = new HbmId();
 
             if(idMapping.Attributes.IsSpecified(x => x.Name))
-                _hbmId.name = idMapping.Name;
+                _hbm.name = idMapping.Name;
         }
 
         public override void Visit(ColumnMapping columnMapping)
         {
             var columnHbm = (HbmColumn) _columnWriter.Write(columnMapping);
-            columnHbm.AddTo(ref _hbmId.column);
+            columnHbm.AddTo(ref _hbm.column);
         }
 
         public override void Visit(IdGeneratorMapping generatorMapping)
         {
             var generatorHbm = (HbmGenerator) _generatorWriter.Write(generatorMapping);
-            _hbmId.generator = generatorHbm;
+            _hbm.generator = generatorHbm;
         }
     }
 }

@@ -59,6 +59,7 @@
     <Compile Include="DiscriminatorPart.cs" />
     <Compile Include="IDeferredCollectionMapping.cs" />
     <Compile Include="JoinedSubclassPart.cs" />
+    <Compile Include="ManyToManyPart.cs" />
     <Compile Include="ManyToOnePart.cs" />
     <Compile Include="OneToManyPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

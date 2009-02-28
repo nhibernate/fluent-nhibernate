@@ -60,6 +60,11 @@ namespace FluentNHibernate.MappingModel
 
         }
 
+        public virtual void ProcessManyToMany(ManyToManyMapping manyToManyMapping)
+        {
+            
+        }
+
         public virtual void ProcessSet(SetMapping setMapping)
         {
 

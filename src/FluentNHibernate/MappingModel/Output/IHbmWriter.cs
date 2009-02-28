@@ -4,7 +4,7 @@ using NHibernate.Cfg.MappingSchema;
 namespace FluentNHibernate.MappingModel.Output
 {
 
-    public interface IHbmWriter<T> : IMappingModelVisitor
+    public interface IHbmWriter<T> //: IMappingModelVisitor
     {
         object Write(T mappingModel);        
     }    
