@@ -65,6 +65,9 @@ namespace FluentNHibernate.MappingModel
         }
 
         #endregion
-
+		public override string ToString()
+		{
+			return string.Format("ClassMapping({0})", this.Name);
+		}
     }
 }
