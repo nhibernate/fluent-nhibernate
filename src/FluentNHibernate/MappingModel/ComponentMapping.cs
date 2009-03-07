@@ -60,6 +60,11 @@ namespace FluentNHibernate.MappingModel
             _mappedMembers.AddReference(manyToOne);
         }
 
+        public void AddComponent(ComponentMapping component)
+        {
+            _mappedMembers.AddComponent(component);
+        }
+
         public IEnumerable<ManyToOneMapping> References
         {
             get { return _mappedMembers.References; }
@@ -75,7 +80,10 @@ namespace FluentNHibernate.MappingModel
             get { return _mappedMembers.Properties; }
         }
 
-        
+        public IEnumerable<ComponentMapping> Components
+        {
+            get { return _mappedMembers.Components; }
+        }
 
         #endregion
     }

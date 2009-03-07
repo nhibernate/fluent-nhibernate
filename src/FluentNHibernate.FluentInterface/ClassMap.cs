@@ -10,7 +10,7 @@ using FluentNHibernate.Testing.FluentInterface;
 
 namespace FluentNHibernate.FluentInterface
 {
-    public class ClassMap<T> : ClassMapBase<T>, IMappingProvider
+    public class ClassMap<T> : MapBase<T>, IMappingProvider
     {
         private readonly ClassMapping _classMapping;
         private readonly IList<IDeferredCollectionMapping> _deferredCollections;

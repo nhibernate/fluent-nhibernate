@@ -47,5 +47,11 @@ namespace FluentNHibernate.MappingModel
             get { return _attributes.Get(x => x.IsNotNullable); }
             set { _attributes.Set(x => x.IsNotNullable, value); }
         }
+
+        public string ColumnName
+        {
+            get { return _attributes.Get(x => x.ColumnName); }
+            set { _attributes.Set(x => x.ColumnName, value); }
+        }
     }
 }

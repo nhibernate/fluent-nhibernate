@@ -135,5 +135,20 @@ namespace FluentNHibernate.MappingModel
         {
             subclassMapping.AcceptVisitor(this);
         }
+
+        public override void Visit(SubclassMapping subclassMapping)
+        {
+            subclassMapping.AcceptVisitor(this);
+        }
+
+        public override void Visit(DiscriminatorMapping discriminatorMapping)
+        {
+            discriminatorMapping.AcceptVisitor(this);
+        }
+
+        public override void Visit(ComponentMapping componentMapping)
+        {
+            componentMapping.AcceptVisitor(this);
+        }
     }
 }

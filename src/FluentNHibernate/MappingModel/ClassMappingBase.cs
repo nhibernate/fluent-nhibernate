@@ -49,6 +49,11 @@ namespace FluentNHibernate.MappingModel
             get { return _mappedMembers.Properties; }
         }
 
+        public IEnumerable<ComponentMapping> Components
+        {
+            get { return _mappedMembers.Components; }
+        }
+
         public void AddProperty(PropertyMapping property)
         {
             _mappedMembers.AddProperty(property);
@@ -64,10 +69,17 @@ namespace FluentNHibernate.MappingModel
             _mappedMembers.AddReference(manyToOne);
         }
 
+        public void AddComponent(ComponentMapping componentMapping)
+        {
+            _mappedMembers.AddComponent(componentMapping);
+        }
+
         #endregion
+
 		public override string ToString()
 		{
 			return string.Format("ClassMapping({0})", this.Type.Name);
 		}
+
     }
 }

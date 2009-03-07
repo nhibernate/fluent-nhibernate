@@ -8,15 +8,17 @@ namespace FluentNHibernate.MappingModel
 {
     internal class MappedMembers : IMappingBase, IHasMappedMembers
     {
-        protected IList<PropertyMapping> _properties;
-        protected IList<ICollectionMapping> _collections;
-        protected IList<ManyToOneMapping> _references;
+        private readonly IList<PropertyMapping> _properties;
+        private readonly IList<ICollectionMapping> _collections;
+        private readonly IList<ManyToOneMapping> _references;
+        private readonly IList<ComponentMapping> _components;
 
         public MappedMembers()
         {
             _properties = new List<PropertyMapping>();
             _collections = new List<ICollectionMapping>();
             _references = new List<ManyToOneMapping>();    
+            _components = new List<ComponentMapping>();
         }
 
         public IEnumerable<PropertyMapping> Properties
@@ -34,6 +36,11 @@ namespace FluentNHibernate.MappingModel
             get { return _references; }
         }
 
+        public IEnumerable<ComponentMapping> Components
+        {
+            get { return _components; }
+        }
+
         public void AddProperty(PropertyMapping property)
         {
             _properties.Add(property);
@@ -49,6 +56,11 @@ namespace FluentNHibernate.MappingModel
             _references.Add(manyToOne);
         }
 
+        public void AddComponent(ComponentMapping componentMapping)
+        {
+            _components.Add(componentMapping);
+        }
+
         public virtual void AcceptVisitor(IMappingModelVisitor visitor)
         {
             foreach (var collection in Collections)
@@ -59,8 +71,12 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var reference in References)
                 visitor.Visit(reference);
+
+            foreach( var component in Components)
+                visitor.Visit(component);
         }
 
 
+        
     }
 }

@@ -36,7 +36,6 @@ namespace FluentNHibernate.MappingModel
         void Visit(JoinedSubclassMapping subclassMapping);
         void Visit(SubclassMapping subclassMapping);
         void Visit(DiscriminatorMapping discriminatorMapping);
-
-        
+        void Visit(ComponentMapping componentMapping);
     }
 }

@@ -154,5 +154,10 @@ namespace FluentNHibernate.MappingModel
         {
             
         }
+
+        public virtual void Visit(ComponentMapping componentMapping)
+        {
+            
+        }
     }
 }

@@ -27,6 +27,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (propertyMapping.Attributes.IsSpecified(x => x.Length))
                 _hbm.length = propertyMapping.Length.ToString();
+
+            if (propertyMapping.Attributes.IsSpecified(x => x.ColumnName))
+                _hbm.column1 = propertyMapping.ColumnName;
         }
     }
 }

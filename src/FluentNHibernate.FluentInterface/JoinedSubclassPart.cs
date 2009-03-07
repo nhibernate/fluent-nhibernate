@@ -3,7 +3,7 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Testing.FluentInterface
 {
-    public class JoinedSubclassPart<TSubclassType> : ClassMapBase<TSubclassType>
+    public class JoinedSubclassPart<TSubclassType> : MapBase<TSubclassType>
     {
         private readonly JoinedSubclassMapping _subclass;
 

@@ -22,5 +22,11 @@ namespace FluentNHibernate.FluentInterface
             _mapping.IsNotNullable = true;
             return this;
         }
+
+        public PropertyMap ColumnName(string columnName)
+        {
+            _mapping.ColumnName = columnName;
+            return this;
+        }
     }
 }

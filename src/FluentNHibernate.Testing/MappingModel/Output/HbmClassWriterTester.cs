@@ -124,5 +124,18 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Element("discriminator").Exists();
         }
 
+        [Test]
+        public void Should_write_the_components()
+        {
+            var classMapping = new ClassMapping();
+            classMapping.AddComponent(new ComponentMapping());
+
+            _mocker.Get<IHbmWriter<ComponentMapping>>()
+                .Expect(x => x.Write(classMapping.Components.First())).Return(new HbmComponent());
+
+            _classWriter.VerifyXml(classMapping)
+                .Element("component").Exists();
+        }
+
     }
 }

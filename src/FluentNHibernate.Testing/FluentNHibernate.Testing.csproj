@@ -76,6 +76,7 @@
     <Compile Include="FluentInterface\EmployeesTester.cs" />
     <Compile Include="FluentInterface\IntegrationTestHelper.cs" />
     <Compile Include="FluentInterface\MusicMappingTester.cs" />
+    <Compile Include="FluentInterface\PropertyMapTester.cs" />
     <Compile Include="FluentInterface\SubclassPartTester.cs" />
     <Compile Include="MappingModel\AttributeStoreTester.cs" />
     <Compile Include="MappingModel\ClassMappingTester.cs" />
@@ -102,7 +103,6 @@
     <Compile Include="MappingModel\Output\HbmSetWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmSubclassWriterTester.cs" />
     <Compile Include="MappingModel\Output\HbmTestHelper.cs" />
-    <Compile Include="MappingModel\PropertyMappingTester.cs" />
     <Compile Include="ReflectionHelperTester.cs" />
     <Compile Include="Xml\MappingXmlTestHelper.cs" />
     <Compile Include="Xml\MappingXmlValidatorTester.cs" />

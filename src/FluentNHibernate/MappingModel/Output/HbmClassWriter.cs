@@ -9,73 +9,80 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class HbmClassWriter : NullMappingModelVisitor, IHbmWriter<ClassMapping>
     {
-        private readonly IHbmWriter<IIdentityMapping> _identityWriter;
-        private readonly IHbmWriter<ICollectionMapping> _collectionWriter;
-        private readonly IHbmWriter<PropertyMapping> _propertyWriter;
-        private readonly IHbmWriter<ManyToOneMapping> _manyToOneWriter;
+        private readonly IHbmWriter<IIdentityMapping> _identityWriter;        
         private readonly IHbmWriter<ISubclassMapping> _subclassWriter;
         private readonly IHbmWriter<DiscriminatorMapping> _discriminatorWriter;
-        private HbmClass _hbmClass;
+        private readonly HbmMappedMemberWriterHelper _mappedMemberHelper;
+        
+        private HbmClass _hbm;
 
-        public HbmClassWriter(IHbmWriter<IIdentityMapping> identityWriter, IHbmWriter<ICollectionMapping> collectionWriter, IHbmWriter<PropertyMapping> propertyWriter, IHbmWriter<ManyToOneMapping> manyToOneWriter, IHbmWriter<ISubclassMapping> subclassWriter, IHbmWriter<DiscriminatorMapping> discriminatorWriter)
+        public HbmClassWriter(IHbmWriter<IIdentityMapping> identityWriter, IHbmWriter<ICollectionMapping> collectionWriter, IHbmWriter<PropertyMapping> propertyWriter, IHbmWriter<ManyToOneMapping> manyToOneWriter, IHbmWriter<ISubclassMapping> subclassWriter, IHbmWriter<DiscriminatorMapping> discriminatorWriter, IHbmWriter<ComponentMapping> componentWriter)
         {
             _identityWriter = identityWriter;
             _discriminatorWriter = discriminatorWriter;
-            _collectionWriter = collectionWriter;
-            _propertyWriter = propertyWriter;
-            _manyToOneWriter = manyToOneWriter;
             _subclassWriter = subclassWriter;
+
+            _mappedMemberHelper = new HbmMappedMemberWriterHelper(collectionWriter, propertyWriter, manyToOneWriter, componentWriter);
         }
 
         public object Write(ClassMapping mapping)
         {
+            _hbm = null;
             mapping.AcceptVisitor(this);
-            return _hbmClass;
+            return _hbm;
         }
 
         public override void ProcessClass(ClassMapping classMapping)
         {
-            _hbmClass = new HbmClass();
-            _hbmClass.name = classMapping.Name;
+            _hbm = new HbmClass();
+            _hbm.name = classMapping.Name;
 
             if (classMapping.Attributes.IsSpecified(x => x.Tablename))
-                _hbmClass.table = classMapping.Tablename;
+                _hbm.table = classMapping.Tablename;
         }
 
         public override void Visit(IIdentityMapping idMapping)
         {
             object idHbm = _identityWriter.Write(idMapping);
-            _hbmClass.SetId(idHbm);
+            _hbm.SetId(idHbm);
         }
 
         public override void Visit(ICollectionMapping collectionMapping)
         {
-            object collectionHbm = _collectionWriter.Write(collectionMapping);
-            collectionHbm.AddTo(ref _hbmClass.Items);
+            object collectionHbm = _mappedMemberHelper.Write(collectionMapping);
+            collectionHbm.AddTo(ref _hbm.Items);
         }
 
         public override void Visit(PropertyMapping propertyMapping)
         {
-            object propertyHbm = _propertyWriter.Write(propertyMapping);
-            propertyHbm.AddTo(ref _hbmClass.Items);
+            object propertyHbm = _mappedMemberHelper.Write(propertyMapping);
+            propertyHbm.AddTo(ref _hbm.Items);
         }
 
         public override void Visit(ManyToOneMapping manyToOneMapping)
         {
-            object manyHbm = _manyToOneWriter.Write(manyToOneMapping);
-            manyHbm.AddTo(ref _hbmClass.Items);
+            object manyHbm = _mappedMemberHelper.Write(manyToOneMapping);
+            manyHbm.AddTo(ref _hbm.Items);
+        }
+
+        public override void Visit(ComponentMapping componentMapping)
+        {
+            object componentHbm = _mappedMemberHelper.Write(componentMapping);
+            componentHbm.AddTo(ref _hbm.Items);
         }
 
         public override void Visit(ISubclassMapping subclassMapping)
         {
             object subclassHbm = _subclassWriter.Write(subclassMapping);
-            subclassHbm.AddTo(ref _hbmClass.Items1);
+            subclassHbm.AddTo(ref _hbm.Items1);
         }
 
         public override void Visit(DiscriminatorMapping discriminatorMapping)
         {
-            _hbmClass.discriminator = (HbmDiscriminator) _discriminatorWriter.Write(discriminatorMapping);
+            _hbm.discriminator = (HbmDiscriminator) _discriminatorWriter.Write(discriminatorMapping);
         }
+
+        
 
     }
 }

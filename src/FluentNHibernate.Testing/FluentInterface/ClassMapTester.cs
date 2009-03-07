@@ -95,5 +95,21 @@ namespace FluentNHibernate.Testing.FluentInterface
             salaryMapping.Key.Column.ShouldEqual("SalaryEmployeeID");
             salaryMapping.Properties.ShouldHaveCount(1);
         }
+
+        [Test]
+        public void CanMapComponent()
+        {
+            var classMap = new ClassMap<SalaryEmployee>();
+            classMap.Component(x => x.Salary, c =>
+                {
+                    c.Map(x => x.Amount);
+                    c.Map(x => x.Currency);
+                });
+
+            var classmapping = classMap.GetClassMapping();
+            ComponentMapping componentMapping = classmapping.Components.FirstOrDefault();
+            componentMapping.ShouldNotBeNull();
+            componentMapping.Properties.ShouldHaveCount(2);
+        }
     }
 }

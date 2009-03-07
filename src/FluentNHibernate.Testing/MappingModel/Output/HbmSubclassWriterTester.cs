@@ -5,19 +5,29 @@ using FluentNHibernate.MappingModel.Output;
 using NHibernate.Cfg.MappingSchema;
 using NUnit.Framework;
 using Rhino.Mocks;
+using StructureMap.AutoMocking;
 
 namespace FluentNHibernate.Testing.MappingModel.Output
 {
     [TestFixture]
     public class HbmSubclassWriterTester
     {
+        private RhinoAutoMocker<HbmSubclassWriter> _mocker;
+        private HbmSubclassWriter _subclassWriter;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _mocker = new RhinoAutoMocker<HbmSubclassWriter>();
+            _subclassWriter = _mocker.ClassUnderTest;
+        }
+
         [Test]
         public void Should_produce_valid_hbm()
         {
             var subclassMapping = new SubclassMapping { Name = "joinedsubclass1" };
-            var writer = new HbmSubclassWriter(null, null, null);
 
-            writer.ShouldGenerateValidOutput(subclassMapping);
+            _subclassWriter.ShouldGenerateValidOutput(subclassMapping);
         }
 
         [Test]
@@ -27,8 +37,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             testHelper.Check(x => x.Name, "mapping1").MapsToAttribute("name");
             testHelper.Check(x => x.DiscriminatorValue, "SalaryEmployee").MapsToAttribute("discriminator-value");
 
-            var writer = new HbmSubclassWriter(null, null, null);
-            testHelper.VerifyAll(writer);
+            testHelper.VerifyAll(_subclassWriter);
         }
 
         [Test]
@@ -37,8 +46,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var subclassMapping = new SubclassMapping();
             subclassMapping.AddSubclass(new SubclassMapping());
 
-            var writer = new HbmSubclassWriter(null, null, null);
-            writer.VerifyXml(subclassMapping)
+            _subclassWriter.VerifyXml(subclassMapping)
                 .Element("subclass").Exists();
         }
 
@@ -50,8 +58,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             subclassMapping.AddSubclass(new SubclassMapping { Name = "Child" });
             subclassMapping.Subclasses.First().AddSubclass(new SubclassMapping { Name = "Grandchild" });
 
-            var writer = new HbmSubclassWriter(null, null, null);
-            writer.VerifyXml(subclassMapping)
+            _subclassWriter.VerifyXml(subclassMapping)
                 .Element("subclass").Exists().HasAttribute("name", "Child")
                 .Element("subclass").Exists().HasAttribute("name", "Grandchild");
         }
@@ -62,11 +69,10 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var subclassMapping = new SubclassMapping();
             subclassMapping.AddCollection(new BagMapping());
 
-            var collectionWriter = MockRepository.GenerateStub<IHbmWriter<ICollectionMapping>>();
-            collectionWriter.Expect(x => x.Write(subclassMapping.Collections.First())).Return(new HbmBag());
+            _mocker.Get<IHbmWriter<ICollectionMapping>>()
+                .Expect(x => x.Write(subclassMapping.Collections.First())).Return(new HbmBag());
 
-            var writer = new HbmSubclassWriter(collectionWriter, null, null);
-            writer.VerifyXml(subclassMapping)
+            _subclassWriter.VerifyXml(subclassMapping)
                 .Element("bag").Exists();
         }
 
@@ -76,11 +82,10 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var subclassMapping = new SubclassMapping();
             subclassMapping.AddProperty(new PropertyMapping());
 
-            var propertyWriter = MockRepository.GenerateStub<IHbmWriter<PropertyMapping>>();
-            propertyWriter.Expect(x => x.Write(subclassMapping.Properties.First())).Return(new HbmProperty());
+            _mocker.Get<IHbmWriter<PropertyMapping>>()
+                .Expect(x => x.Write(subclassMapping.Properties.First())).Return(new HbmProperty());
 
-            var writer = new HbmSubclassWriter(null, propertyWriter, null);
-            writer.VerifyXml(subclassMapping)
+            _subclassWriter.VerifyXml(subclassMapping)
                 .Element("property").Exists();
         }
 
@@ -90,12 +95,24 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var subclassMapping = new SubclassMapping();
             subclassMapping.AddReference(new ManyToOneMapping());
 
-            var referenceWriter = MockRepository.GenerateStub<IHbmWriter<ManyToOneMapping>>();
-            referenceWriter.Expect(x => x.Write(subclassMapping.References.First())).Return(new HbmManyToOne());
+            _mocker.Get<IHbmWriter<ManyToOneMapping>>()
+                .Expect(x => x.Write(subclassMapping.References.First())).Return(new HbmManyToOne());
 
-            var writer = new HbmSubclassWriter(null, null, referenceWriter);
-            writer.VerifyXml(subclassMapping)
+            _subclassWriter.VerifyXml(subclassMapping)
                 .Element("many-to-one").Exists();
+        }
+
+        [Test]
+        public void Should_write_the_components()
+        {
+            var classMapping = new SubclassMapping();
+            classMapping.AddComponent(new ComponentMapping());
+
+            _mocker.Get<IHbmWriter<ComponentMapping>>()
+                .Expect(x => x.Write(classMapping.Components.First())).Return(new HbmComponent());
+
+            _subclassWriter.VerifyXml(classMapping)
+                .Element("component").Exists();
         }
     }
 }

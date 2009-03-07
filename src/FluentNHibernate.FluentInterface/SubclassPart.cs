@@ -6,7 +6,7 @@ using FluentNHibernate.Reflection;
 
 namespace FluentNHibernate.FluentInterface
 {
-    public class SubclassPart<TSubclassType> : ClassMapBase<TSubclassType>
+    public class SubclassPart<TSubclassType> : MapBase<TSubclassType>
     {
         private readonly SubclassMapping _subclass;
 

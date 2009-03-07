@@ -55,7 +55,8 @@
     <Compile Include="AutoMap\IdAutoMapper.cs" />
     <Compile Include="AutoMap\PropertyAutoMapper.cs" />
     <Compile Include="ClassMap.cs" />
-    <Compile Include="ClassMapBase.cs" />
+    <Compile Include="MapBase.cs" />
+    <Compile Include="ComponentMap.cs" />
     <Compile Include="DiscriminatorPart.cs" />
     <Compile Include="IDeferredCollectionMapping.cs" />
     <Compile Include="JoinedSubclassPart.cs" />

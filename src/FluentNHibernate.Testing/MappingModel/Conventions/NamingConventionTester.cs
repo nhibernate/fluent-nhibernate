@@ -142,6 +142,17 @@ namespace FluentNHibernate.Testing.MappingModel.Conventions
 
             manyToManyMapping.ClassName.ShouldEqual(manyToManyMapping.ChildType.AssemblyQualifiedName);
         }
+
+        [Test]
+        public void Should_apply_to_components()
+        {
+            var propertyInfo = ReflectionHelper.GetProperty((SalaryEmployee e) => e.Salary);
+            var componentMapping = new ComponentMapping {PropertyInfo = propertyInfo};
+
+            _namingConvention.ProcessComponent(componentMapping);
+
+            componentMapping.PropertyName.ShouldEqual(propertyInfo.Name);
+        }
         
     }
 }

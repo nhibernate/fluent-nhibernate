@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FluentNHibernate.FluentInterface;
 using FluentNHibernate.MappingModel.Conventions;
-using FluentNHibernate.Reflection;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.MappingModel;
 using NUnit.Framework;
@@ -36,13 +34,13 @@ namespace FluentNHibernate.Testing.FluentInterface
             integrationHelper.PersistenceModel.Add(GetClassMap());
 
             integrationHelper.Execute(session =>
-            {
-                var joe = new SalaryEmployee { Name = "Joe", Salary = 50000 };
-                session.Save(joe);
+                {
+                    var joe = new SalaryEmployee {Name = "Joe", Salary = new Money(50000, "AUD")};
+                    session.Save(joe);
 
-                var jeff = new CasualEmployee { Name = "Jeff", HourlyWage = 30 };
-                session.Save(jeff);
-            });
+                    var jeff = new CasualEmployee {Name = "Jeff", HourlyWage = new Money(30, "AUD")};
+                    session.Save(jeff);
+                });
         }
 
         protected class EmployeeTablePerHierarchyMap : ClassMap<Employee>
@@ -53,8 +51,16 @@ namespace FluentNHibernate.Testing.FluentInterface
                 Map(x => x.Name);
                 DiscriminateSubClassesOnColumn("EmployeeType")
                     .ColumnType(DiscriminatorType.String)
-                    .SubClass<SalaryEmployee>("Salary", salaryMap => salaryMap.Map(x => x.Salary))
-                    .SubClass<CasualEmployee>("Casual", casualMap => casualMap.Map(x => x.HourlyWage));
+                    .SubClass<SalaryEmployee>("Salary", salaryMap => salaryMap.Component(x => x.Salary, c =>
+                        {
+                            c.Map(x => x.Amount).ColumnName("Salary");
+                            c.Map(x => x.Currency).ColumnName("SalaryCurrency");
+                        }))
+                    .SubClass<CasualEmployee>("Casual", casualMap => casualMap.Component(x => x.HourlyWage, c =>
+                        {
+                            c.Map(x => x.Amount).ColumnName("HourlyWage");
+                            c.Map(x => x.Currency).ColumnName("HourlyWageCurrency");
+                        }));
             }
         }
 
@@ -64,11 +70,19 @@ namespace FluentNHibernate.Testing.FluentInterface
             {
                 Id(x => x.ID);
                 Map(x => x.Name);
-                JoinedSubClass<SalaryEmployee>("SalaryEmployeeID", salaryMap => salaryMap.Map(x => x.Salary));
-                JoinedSubClass<CasualEmployee>("CasualEmployeeID", casualMap => casualMap.Map(x => x.HourlyWage));
+                JoinedSubClass<SalaryEmployee>("SalaryEmployeeID", salaryMap => salaryMap.Component(x => x.Salary, c =>
+                    {
+                        c.Map(x => x.Amount).ColumnName("Salary");
+                        c.Map(x => x.Currency).ColumnName("SalaryCurrency");
+                    }));
+                JoinedSubClass<CasualEmployee>("CasualEmployeeID", casualMap => casualMap.Component(x => x.HourlyWage, c =>
+                   {
+                       c.Map(x => x.Amount).ColumnName("HourlyWage");
+                       c.Map(x => x.Currency).ColumnName("HourlyWageCurrency");
+                   }));
             }
         }
-    }   
+    }
 
     [TestFixture]
     public class EmployeesTablePerHierarchyTester : EmployeesTestBase
@@ -87,6 +101,4 @@ namespace FluentNHibernate.Testing.FluentInterface
             return new EmployeeTablePerClassMap();
         }
     }
-
-    
 }
