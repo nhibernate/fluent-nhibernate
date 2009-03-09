@@ -29,7 +29,7 @@ namespace FluentNHibernate.MappingModel.Output
                 _hbm.length = propertyMapping.Length.ToString();
 
             if (propertyMapping.Attributes.IsSpecified(x => x.ColumnName))
-                _hbm.column1 = propertyMapping.ColumnName;
+                _hbm.SetColumn(propertyMapping.ColumnName);
         }
     }
 }

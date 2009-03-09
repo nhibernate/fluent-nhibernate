@@ -12,5 +12,10 @@ namespace FluentNHibernate.Versioning.HbmExtensions
         {
             hbmProperty.notnull = isNotNullable;            
         }
+
+        public static void SetColumn(this HbmProperty hbmProperty, string column)
+        {
+            hbmProperty.column1 = column;
+        }
     }
 }
