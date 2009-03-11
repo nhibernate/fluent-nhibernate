@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.AutoMap.Alterations;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.Mapping.Conventions;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.AutoMap

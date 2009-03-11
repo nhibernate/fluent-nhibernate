@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.Mapping.Conventions;
+using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate
 {

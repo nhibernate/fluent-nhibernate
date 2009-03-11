@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Threading;
 using System.Xml;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.Mapping.Conventions;
+using FluentNHibernate.Conventions;
 using NHibernate.Cfg;
 
 namespace FluentNHibernate

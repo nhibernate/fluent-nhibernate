@@ -5,7 +5,7 @@ using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomCompositeTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.Mapping.Conventions;
+using FluentNHibernate.Conventions;
 using Iesi.Collections.Generic;
 using NHibernate;
 using NHibernate.Engine;
@@ -140,7 +140,7 @@ namespace FluentNHibernate.AutoMap.TestFixtures.CustomTypes
 
     }
 
-    public class CustomTypeConvention : BaseUserTypeConvention<Custom, CustomUserType>
+    public class CustomTypeConvention : UserTypeConvention<Custom, CustomUserType>
     {}
 
     public class CustomUserType : IUserType

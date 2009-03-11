@@ -1,6 +1,6 @@
 using System.Runtime.Remoting.Messaging;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.Mapping.Conventions;
+using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate.Testing.AutoMap
 {

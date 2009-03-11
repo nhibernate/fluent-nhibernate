@@ -1,4 +1,4 @@
-using FluentNHibernate.Mapping.Conventions;
+using FluentNHibernate.Conventions;
 using NUnit.Framework;
 using Rhino.Mocks;
 
