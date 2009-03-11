@@ -95,11 +95,28 @@ namespace FluentNHibernate.Testing.Cfg
         [Test]
         public void AlteringConventionsShouldAffectProducedClasses()
         {
-            mapping.FluentMappings.AddFromAssemblyOf<Record>();
-            mapping.FluentMappings.AlterConventions(conventions => conventions.Add(Table.Is(map => map.EntityType.Name + "Table")));
+            mapping.FluentMappings
+                .AddFromAssemblyOf<Record>()
+                .ConventionDiscovery.Add(
+                    ConventionBuilder.Class.Always(x => x.WithTable(x.EntityType.Name + "Table"))
+                );
             mapping.Apply(cfg);
 
             cfg.ClassMappings.ShouldContain(c => c.Table.Name == "RecordTable");
+        }
+
+        [Test]
+        public void CanAddMultipleConventions()
+        {
+            mapping.FluentMappings
+                .AddFromAssemblyOf<Record>()
+                .ConventionDiscovery.Add(
+                    ConventionBuilder.Class.Always(x => x.WithTable(x.EntityType.Name + "Table")),
+                    ConventionBuilder.Class.Always(x => x.DynamicInsert())
+                );
+            mapping.Apply(cfg);
+
+            cfg.ClassMappings.ShouldContain(c => c.Table.Name == "RecordTable" && c.DynamicInsert == true);
         }
 
         [Test]

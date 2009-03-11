@@ -54,14 +54,11 @@ namespace FluentNHibernate.Cfg
         }
 
         /// <summary>
-        /// Alter the conventions used
+        /// Alter convention discovery
         /// </summary>
-        /// <param name="conventions">Lambda expression used to alter the conventions</param>
-        /// <returns>Fluent mappings configuration</returns>
-        public FluentMappingsContainer AlterConventions(Action<IConventionFinder> conventions)
+        public SetupConventionFinder ConventionDiscovery
         {
-            conventions(model.ConventionFinder);
-            return this;
+            get { return new SetupConventionFinder(this, model.ConventionFinder); }
         }
 
         /// <summary>

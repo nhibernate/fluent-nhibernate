@@ -3,6 +3,9 @@ using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate.Conventions.Defaults
 {
+    /// <summary>
+    /// Default HasManyToMany foreign key naming convention
+    /// </summary>
     public class HasManyToManyParentForeignKeyConvention : IHasManyToManyConvention
     {
         public bool Accept(IManyToManyPart target)

@@ -3,7 +3,11 @@ using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Discovery
 {
-    public class ClassDiscoveryConvention : IAssemblyConvention
+    /// <summary>
+    /// Discovers any <see cref="IClassConvention"/> implementations and applies them to all the
+    /// <see cref="IClassMap"/>s in the domain.
+    /// </summary>
+    public class ClassDiscoveryConvention : IEntireMappingsConvention
     {
         private readonly IConventionFinder conventionFinder;
 

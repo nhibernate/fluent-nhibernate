@@ -3,6 +3,10 @@ using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Discovery
 {
+    /// <summary>
+    /// Discovers any <see cref="IPropertyConvention"/> implementations and applies them to
+    /// an <see cref="IProperty"/> instance.
+    /// </summary>
     public class PropertyDiscoveryConvention : IMappingPartConvention
     {
         private readonly IConventionFinder conventionFinder;

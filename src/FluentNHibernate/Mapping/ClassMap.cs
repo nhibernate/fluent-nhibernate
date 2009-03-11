@@ -9,7 +9,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IClassMap : IClassMapBase, IHasAttributes
+    public interface IClassMap : IClasslike, IHasAttributes
     {
         void ApplyMappings(IMappingVisitor visitor);
         XmlDocument CreateMapping(IMappingVisitor visitor);
@@ -93,7 +93,7 @@ namespace FluentNHibernate.Mapping
         IClassMap Not { get; }
     }
 
-    public class ClassMap<T> : ClassMapBase<T>, IClassMap
+    public class ClassMap<T> : ClasslikeMapBase<T>, IClassMap
     {
         public Cache<string, string> Attributes { get; private set; }
         public Cache<string, string> HibernateMappingAttributes { get; private set; }

@@ -8,7 +8,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public abstract class ClassMapBase<T> : IClassMapBase
+    public abstract class ClasslikeMapBase<T> : IClasslike
     {
         private bool _parentIsRequired = true;
         private readonly List<IMappingPart> _properties = new List<IMappingPart>();
@@ -274,49 +274,49 @@ namespace FluentNHibernate.Mapping
             get { return _properties; }
         }
 
-        #region Explicit IClassMapBase implementation
+        #region Explicit IClasslike implementation
 
-        IDynamicComponent IClassMapBase.DynamicComponent<TEntity>(Expression<Func<TEntity, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action)
+        IDynamicComponent IClasslike.DynamicComponent<TEntity>(Expression<Func<TEntity, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action)
         {
             return DynamicComponent(ReflectionHelper.GetProperty(expression), action);
         }
 
-        IVersion IClassMapBase.Version<TEntity>(Expression<Func<TEntity, object>> expression)
+        IVersion IClasslike.Version<TEntity>(Expression<Func<TEntity, object>> expression)
         {
             return Version(ReflectionHelper.GetProperty(expression));
         }
 
-        IProperty IClassMapBase.Map<TEntity>(Expression<Func<TEntity, object>> expression)
+        IProperty IClasslike.Map<TEntity>(Expression<Func<TEntity, object>> expression)
         {
             return Map(ReflectionHelper.GetProperty(expression), null);
         }
 
-        IManyToOnePart IClassMapBase.References<TEntity, OTHER>(Expression<Func<TEntity, OTHER>> expression)
+        IManyToOnePart IClasslike.References<TEntity, OTHER>(Expression<Func<TEntity, OTHER>> expression)
         {
             return References<OTHER>(ReflectionHelper.GetProperty(expression), null);
         }
 
-        IOneToOnePart IClassMapBase.HasOne<TEntity, OTHER>(Expression<Func<TEntity, OTHER>> expression)
+        IOneToOnePart IClasslike.HasOne<TEntity, OTHER>(Expression<Func<TEntity, OTHER>> expression)
         {
             return HasOne<OTHER>(ReflectionHelper.GetProperty(expression));
         }
 
-        IComponent IClassMapBase.Component<TEntity, TComponent>(Expression<Func<TEntity, TComponent>> expression, Action<ComponentPart<TComponent>> action)
+        IComponent IClasslike.Component<TEntity, TComponent>(Expression<Func<TEntity, TComponent>> expression, Action<ComponentPart<TComponent>> action)
         {
             return Component(ReflectionHelper.GetProperty(expression), action);
         }
 
-        IOneToManyPart IClassMapBase.HasMany<TEntity, CHILD>(Expression<Func<TEntity, IEnumerable<CHILD>>> expression)
+        IOneToManyPart IClasslike.HasMany<TEntity, CHILD>(Expression<Func<TEntity, IEnumerable<CHILD>>> expression)
         {
             return HasMany<CHILD>(ReflectionHelper.GetProperty(expression));
         }
 
-        IOneToManyPart IClassMapBase.HasMany<TEntity, KEY, CHILD>(Expression<Func<TEntity, IDictionary<KEY, CHILD>>> expression)
+        IOneToManyPart IClasslike.HasMany<TEntity, KEY, CHILD>(Expression<Func<TEntity, IDictionary<KEY, CHILD>>> expression)
         {
             return HasMany<CHILD>(ReflectionHelper.GetProperty(expression));
         }
 
-        IManyToManyPart IClassMapBase.HasManyToMany<TEntity, CHILD>(Expression<Func<TEntity, IEnumerable<CHILD>>> expression)
+        IManyToManyPart IClasslike.HasManyToMany<TEntity, CHILD>(Expression<Func<TEntity, IEnumerable<CHILD>>> expression)
         {
             return HasManyToMany<CHILD>(ReflectionHelper.GetProperty(expression));
         }

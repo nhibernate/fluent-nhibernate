@@ -3,6 +3,9 @@ using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate.Conventions.Defaults
 {
+    /// <summary>
+    /// Default entity table name convention
+    /// </summary>
     public class TableNameConvention : IClassConvention
     {
         public bool Accept(IClassMap classMap)

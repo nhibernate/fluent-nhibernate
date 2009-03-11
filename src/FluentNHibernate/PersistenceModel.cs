@@ -96,7 +96,7 @@ namespace FluentNHibernate
         {
             if (conventionsApplied) return;
 
-            var conventions = ConventionFinder.Find<IAssemblyConvention>() ?? new List<IAssemblyConvention>();
+            var conventions = ConventionFinder.Find<IEntireMappingsConvention>() ?? new List<IEntireMappingsConvention>();
 
             foreach (var convention in conventions)
             {

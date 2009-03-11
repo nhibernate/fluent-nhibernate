@@ -4,6 +4,10 @@ using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate.Conventions.Defaults
 {
+    /// <summary>
+    /// Specifies a custom type (of <see cref="GenericEnumMapper{TEnum}"/>) for any properties
+    /// that are an enum.
+    /// </summary>
     public class EnumerationPropertyConvention : IPropertyConvention
     {
         public bool Accept(IProperty target)
@@ -13,7 +17,7 @@ namespace FluentNHibernate.Conventions.Defaults
 
         public void Apply(IProperty target)
         {
-            Type mapperType = typeof(GenericEnumMapper<>).MakeGenericType(target.PropertyType);
+            var mapperType = typeof(GenericEnumMapper<>).MakeGenericType(target.PropertyType);
             
             target.CustomTypeIs(mapperType);
         }

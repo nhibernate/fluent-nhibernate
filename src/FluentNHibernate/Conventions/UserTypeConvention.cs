@@ -4,7 +4,13 @@ using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Conventions
 {
-    public abstract class UserTypeConvention<TType, TUserType> : IUserTypeConvention
+    /// <summary>
+    /// Base class for user type conventions. Create a subclass of this to automatically
+    /// map all properties that the user type can be used against. Override Accept or
+    /// Apply to alter the behavior.
+    /// </summary>
+    /// <typeparam name="TUserType">IUserType implementation</typeparam>
+    public abstract class UserTypeConvention<TUserType> : IUserTypeConvention
         where TUserType : IUserType, new()
     {
         bool IConvention<IProperty>.Accept(IProperty target)
@@ -14,7 +20,9 @@ namespace FluentNHibernate.Conventions
 
         public virtual bool Accept(Type type)
         {
-            return type == typeof(TType);
+            var userType = Activator.CreateInstance<TUserType>();
+
+            return type == userType.ReturnedType;
         }
 
         public virtual void Apply(IProperty target)

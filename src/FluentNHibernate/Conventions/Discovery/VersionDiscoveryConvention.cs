@@ -2,6 +2,10 @@ using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Discovery
 {
+    /// <summary>
+    /// Discovers any <see cref="IVersionConvention"/> implementations and applies them to
+    /// an <see cref="IVersion"/> instance.
+    /// </summary>
     public class VersionDiscoveryConvention : IMappingPartConvention
     {
         private readonly IConventionFinder conventionFinder;

@@ -7,7 +7,7 @@ namespace FluentNHibernate.Mapping
     /// Component-element for component HasMany's.
     /// </summary>
     /// <typeparam name="T">Component type</typeparam>
-    public class CompositeElementPart<T> : ClassMapBase<T>, IMappingPart
+    public class CompositeElementPart<T> : ClasslikeMapBase<T>, IMappingPart
     {
         private readonly Cache<string, string> properties = new Cache<string, string>();
 

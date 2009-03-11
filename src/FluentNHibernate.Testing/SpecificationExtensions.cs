@@ -60,9 +60,19 @@ namespace FluentNHibernate.Testing
             Assert.IsInstanceOfType(expected, actual);
         }
 
+        public static void ShouldBeOfType<T>(this object actual)
+        {
+            actual.ShouldBeOfType(typeof(T));
+        }
+
         public static void ShouldNotBeOfType(this object actual, Type expected)
         {
             Assert.IsNotInstanceOfType(expected, actual);
+        }
+
+        public static void ShouldNotBeOfType<T>(this object actual)
+        {
+            actual.ShouldNotBeOfType(typeof(T));
         }
 
         public static void ShouldContain(this IList actual, object expected)

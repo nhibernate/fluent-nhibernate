@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace FluentNHibernate.Testing.ConventionFinderTests
 {
     [TestFixture]
-    public class DefaultConventionFinderTests
+    public class FindTests
     {
         private DefaultConventionFinder finder;
 
@@ -20,7 +20,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         [Test]
         public void ShouldFindNothingWhenNoAssembliesGiven()
         {
-            finder.Find<IAssemblyConvention>()
+            finder.Find<IEntireMappingsConvention>()
                 .ShouldBeEmpty();
         }
 
@@ -28,7 +28,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         public void ShouldFindTypesFromAssembly()
         {
             finder.AddAssembly(GetType().Assembly);
-            finder.Find<IAssemblyConvention>()
+            finder.Find<IEntireMappingsConvention>()
                 .ShouldContain(c => c is DummyAssemblyConvention);
         }
 
@@ -36,7 +36,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         public void ShouldFindTypesThatHaveConstructorNeedingFinder()
         {
             finder.AddAssembly(GetType().Assembly);
-            finder.Find<IAssemblyConvention>()
+            finder.Find<IEntireMappingsConvention>()
                 .ShouldContain(c => c is DummyFinderAssemblyConvention);
         }
 
@@ -44,7 +44,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         public void ShouldntFindGenericTypes()
         {
             finder.AddAssembly(GetType().Assembly);
-            finder.Find<IAssemblyConvention>()
+            finder.Find<IEntireMappingsConvention>()
                 .ShouldNotContain(c => c.GetType() == typeof(OpenGenericAssemblyConvention<>));
         }
 
@@ -52,7 +52,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         public void ShouldOnlyFindExplicitAdded()
         {
             finder.Add<DummyAssemblyConvention>();
-            finder.Find<IAssemblyConvention>()
+            finder.Find<IEntireMappingsConvention>()
                 .ShouldHaveCount(1)
                 .ShouldContain(c => c is DummyAssemblyConvention);
         }
@@ -80,6 +80,26 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         }
 
         [Test]
+        public void ShouldOnlyAddInstanceOnce()
+        {
+            finder.Add<DummyAssemblyConvention>();
+            finder.Add<DummyAssemblyConvention>();
+            var conventions = finder.Find<IEntireMappingsConvention>();
+
+            conventions.ShouldHaveCount(1);
+        }
+
+        [Test]
+        public void ShouldAllowAddingInstanceMultipleTimesIfHasMultipleAttribute()
+        {
+            finder.Add<DummyAssemblyWithMultipleAttributeConvention>();
+            finder.Add<DummyAssemblyWithMultipleAttributeConvention>();
+            var conventions = finder.Find<IEntireMappingsConvention>();
+
+            conventions.ShouldHaveCount(2);
+        }
+
+        [Test]
         public void ShouldOnlyAddInstanceOnceIfHasMultipleInterfacesWhenAddedByAssembly()
         {
             finder.AddAssembly(typeof(MultiPartConvention).Assembly);
@@ -91,10 +111,9 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
 
             ids.First().ShouldEqual(properties.First());
         }
-
     }
 
-    public class OpenGenericAssemblyConvention<T> : IAssemblyConvention
+    public class OpenGenericAssemblyConvention<T> : IEntireMappingsConvention
     {
         public bool Accept(IEnumerable<IClassMap> target)
         {
@@ -106,7 +125,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         }
     }
 
-    public class DummyAssemblyConvention : IAssemblyConvention
+    public class DummyAssemblyConvention : IEntireMappingsConvention
     {
         public bool Accept(IEnumerable<IClassMap> target)
         {
@@ -118,7 +137,20 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         }
     }
 
-    public class DummyFinderAssemblyConvention : IAssemblyConvention
+    [Multiple]
+    public class DummyAssemblyWithMultipleAttributeConvention : IEntireMappingsConvention
+    {
+        public bool Accept(IEnumerable<IClassMap> target)
+        {
+            return false;
+        }
+
+        public void Apply(IEnumerable<IClassMap> target)
+        {
+        }
+    }
+
+    public class DummyFinderAssemblyConvention : IEntireMappingsConvention
     {
         public DummyFinderAssemblyConvention(IConventionFinder finder)
         {

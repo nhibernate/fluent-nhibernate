@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public class SubClassPart<TDiscriminator, TParent, TSubClass> : ClassMapBase<TSubClass>, IMappingPart
+    public class SubClassPart<TDiscriminator, TParent, TSubClass> : ClasslikeMapBase<TSubClass>, IMappingPart
     {
         private readonly bool discriminatorSet;
         private readonly TDiscriminator _discriminator;

@@ -4,67 +4,134 @@ using System.Reflection;
 
 namespace FluentNHibernate.Conventions
 {
+    /// <summary>
+    /// Default convention finder - doesn't do anything special.
+    /// </summary>
     public class DefaultConventionFinder : IConventionFinder
     {
-        private readonly IList<Type> addedTypes = new List<Type>();
-        private readonly IDictionary<Type, object> instances = new Dictionary<Type, object>();
+        private readonly ConventionsCollection conventions = new ConventionsCollection();
 
+        /// <summary>
+        /// Find any conventions implementing T.
+        /// </summary>
+        /// <typeparam name="T">Convention interface type</typeparam>
+        /// <returns>IEnumerable of T</returns>
         public IEnumerable<T> Find<T>() where T : IConvention
         {
-            foreach (var type in addedTypes)
+            foreach (var type in conventions)
             {
                 if (!typeof(T).IsAssignableFrom(type)) continue;
-                
-                yield return (T)instances[type];
+
+                foreach (var instance in conventions[type])
+                {
+                    yield return (T)instance;
+                }
             }
         }
 
+        /// <summary>
+        /// Add an assembly to be queried.
+        /// </summary>
+        /// <remarks>
+        /// All convention types must have a parameterless constructor, or a single parameter of IConventionFinder.
+        /// </remarks>
+        /// <param name="assembly">Assembly instance to query</param>
         public void AddAssembly(Assembly assembly)
         {
             foreach (var type in assembly.GetExportedTypes())
             {
                 if (type.IsAbstract || type.IsGenericType || !typeof(IConvention).IsAssignableFrom(type)) continue;
 
-                Add(type);
+                Add(type, MissingConstructor.Ignore);
             }
         }
 
+        /// <summary>
+        /// Add a single convention by type.
+        /// </summary>
+        /// <remarks>
+        /// Type must have a parameterless constructor, or a single parameter of IConventionFinder.
+        /// </remarks>
+        /// <typeparam name="T">Convention type</typeparam>
         public void Add<T>() where T : IConvention
         {
-            Add(typeof(T));
+            Add(typeof(T), MissingConstructor.Throw);
         }
 
+        /// <summary>
+        /// Add an instance of a convention.
+        /// </summary>
+        /// <remarks>
+        /// Useful for supplying conventions that require extra constructor parameters.
+        /// </remarks>
+        /// <typeparam name="T">Convention type</typeparam>
+        /// <param name="instance">Instance of convention</param>
         public void Add<T>(T instance) where T : IConvention
         {
-            addedTypes.Add(typeof(T));
-            instances[typeof(T)] = instance;
+            if (conventions.Contains(typeof(T)) && !AllowMultiplesOf(instance.GetType())) return;
+
+            conventions.Add(typeof(T), instance);
         }
 
-        private void Add(Type type)
+        private void Add(Type type, MissingConstructor missingConstructor)
         {
-            addedTypes.Add(type);
-            instances[type] = Instantiate(type);
+            if (missingConstructor == MissingConstructor.Throw && !HasValidConstructor(type))
+                throw new MissingConstructorException(type);
+
+            if (conventions.Contains(type) && !AllowMultiplesOf(type)) return;
+
+            conventions.Add(type, Instantiate(type));
+        }
+
+        private bool AllowMultiplesOf(Type type)
+        {
+            return Attribute.GetCustomAttribute(type, typeof(MultipleAttribute), true) != null;
         }
 
         private object Instantiate(Type type)
         {
-            var constructors = type.GetConstructors();
             object instance = null;
 
             // messy - find either ctor(IConventionFinder) or ctor()
-            foreach (var constructor in constructors)
+            foreach (var constructor in type.GetConstructors())
             {
-                var parameters = constructor.GetParameters();
-
-                if (parameters.Length == 1 && parameters[0].ParameterType == typeof(IConventionFinder))
+                if (IsFinderConstructor(constructor))
                     instance = constructor.Invoke(new[] { this });
-                else if (parameters.Length == 0)
+                else if (IsParameterlessConstructor(constructor))
                     instance = constructor.Invoke(new object[] { });
-                else
-                    throw new MissingConstructorException(type);
             }
 
             return instance;
+        }
+
+        private bool HasValidConstructor(Type type)
+        {
+            foreach (var constructor in type.GetConstructors())
+            {
+                if (IsFinderConstructor(constructor) || IsParameterlessConstructor(constructor)) return true;
+            }
+
+            return false;
+        }
+
+        private bool IsFinderConstructor(ConstructorInfo constructor)
+        {
+            var parameters = constructor.GetParameters();
+
+            return parameters.Length == 1 && parameters[0].ParameterType == typeof (IConventionFinder);
+        }
+
+        private bool IsParameterlessConstructor(ConstructorInfo constructor)
+        {
+            var parameters = constructor.GetParameters();
+
+            return parameters.Length == 0;
+        }
+
+        private enum MissingConstructor
+        {
+            Throw,
+            Ignore
         }
     }
 }

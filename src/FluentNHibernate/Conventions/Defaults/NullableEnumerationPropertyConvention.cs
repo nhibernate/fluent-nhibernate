@@ -4,6 +4,10 @@ using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate.Conventions.Defaults
 {
+    /// <summary>
+    /// Nullable enum convention. Same behavior as <see cref="EnumerationPropertyConvention"/> but sets the
+    /// property to nullable aswell.
+    /// </summary>
     public class NullableEnumerationPropertyConvention : IPropertyConvention
     {
         public bool Accept(IProperty target)

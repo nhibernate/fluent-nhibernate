@@ -3,6 +3,10 @@ using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Discovery
 {
+    /// <summary>
+    /// Discovers any <see cref="IHasManyConvention"/> implementations and applies them to
+    /// an <see cref="IOneToManyPart"/> instance.
+    /// </summary>
     public class HasManyDiscoveryConvention : IRelationshipConvention
     {
         private readonly IConventionFinder conventionFinder;

@@ -1,4 +1,5 @@
 using System;
+using FluentNHibernate.Conventions.Helpers.Prebuilt;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Helpers
@@ -18,7 +19,7 @@ namespace FluentNHibernate.Conventions.Helpers
 
         public IIdConvention Is(Func<IIdentityPart, string> nameFunc)
         {
-            return new BuiltIdConvention(id =>
+            return new BuiltIdConvention(x => true, id =>
             {
                 var columnName = nameFunc(id);
                 id.TheColumnNameIs(columnName);

@@ -1,4 +1,6 @@
-﻿namespace FluentNHibernate.Conventions.Helpers
+﻿using FluentNHibernate.Conventions.Helpers.Prebuilt;
+
+namespace FluentNHibernate.Conventions.Helpers
 {
     public static class DynamicInsert
     {

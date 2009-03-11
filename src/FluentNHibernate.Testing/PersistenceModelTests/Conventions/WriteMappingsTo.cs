@@ -37,15 +37,15 @@ namespace FluentNHibernate.Testing.PersistenceModelTests.Conventions
         {
             model.WriteMappingsTo(TempDir);
 
-            conventionFinder.AssertWasCalled(x => x.Find<IAssemblyConvention>());
+            conventionFinder.AssertWasCalled(x => x.Find<IEntireMappingsConvention>());
         }
 
         [Test]
         public void ShouldCheckIfConventionsWillAcceptTheMappings()
         {
-            var convention = MockRepository.GenerateMock<IAssemblyConvention>();
+            var convention = MockRepository.GenerateMock<IEntireMappingsConvention>();
 
-            conventionFinder.Stub(x => x.Find<IAssemblyConvention>())
+            conventionFinder.Stub(x => x.Find<IEntireMappingsConvention>())
                 .Return(new[] { convention });
 
             model.WriteMappingsTo(TempDir);
@@ -57,9 +57,9 @@ namespace FluentNHibernate.Testing.PersistenceModelTests.Conventions
         [Test]
         public void ShouldApplyConventionsIfAcceptIsTrue()
         {
-            var convention = MockRepository.GenerateMock<IAssemblyConvention>();
+            var convention = MockRepository.GenerateMock<IEntireMappingsConvention>();
 
-            conventionFinder.Stub(x => x.Find<IAssemblyConvention>())
+            conventionFinder.Stub(x => x.Find<IEntireMappingsConvention>())
                 .Return(new[] { convention });
 
             convention.Stub(x => x.Accept(null))
@@ -75,9 +75,9 @@ namespace FluentNHibernate.Testing.PersistenceModelTests.Conventions
         [Test]
         public void ShouldntApplyConventionsIfAcceptIsFalse()
         {
-            var convention = MockRepository.GenerateMock<IAssemblyConvention>();
+            var convention = MockRepository.GenerateMock<IEntireMappingsConvention>();
 
-            conventionFinder.Stub(x => x.Find<IAssemblyConvention>())
+            conventionFinder.Stub(x => x.Find<IEntireMappingsConvention>())
                 .Return(new[] { convention });
 
             convention.Stub(x => x.Accept(null))

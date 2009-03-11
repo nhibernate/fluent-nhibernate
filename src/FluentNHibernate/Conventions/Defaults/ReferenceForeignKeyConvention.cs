@@ -3,7 +3,10 @@ using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate.Conventions.Defaults
 {
-    public class ReferencesForeignKeyConvention : IReferenceConvention
+    /// <summary>
+    /// Reference/many-to-one foreign key naming convention
+    /// </summary>
+    public class ReferenceForeignKeyConvention : IReferenceConvention
     {
         public bool Accept(IManyToOnePart target)
         {

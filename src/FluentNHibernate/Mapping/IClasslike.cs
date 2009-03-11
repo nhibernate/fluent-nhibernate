@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IClassMapBase
+    public interface IClasslike
     {
         IEnumerable<IMappingPart> Parts { get; }
         IProperty Map<TEntity>(Expression<Func<TEntity, object>> expression);

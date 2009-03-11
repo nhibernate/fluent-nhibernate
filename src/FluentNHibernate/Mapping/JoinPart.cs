@@ -2,7 +2,7 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IJoin : IClassMapBase, IMappingPart
+    public interface IJoin : IClasslike, IMappingPart
     {
         void WithKeyColumn(string column);
     }
@@ -10,7 +10,7 @@ namespace FluentNHibernate.Mapping
     /// Maps to the Join element in NH 2.0
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class JoinPart<T> : ClassMapBase<T>, IJoin
+    public class JoinPart<T> : ClasslikeMapBase<T>, IJoin
     {
         private readonly Cache<string, string> properties = new Cache<string, string>();
         private string keyColumnName;

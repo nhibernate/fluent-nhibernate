@@ -3,6 +3,9 @@ using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate.Conventions.Defaults
 {
+    /// <summary>
+    /// Default primary key name convention.
+    /// </summary>
     public class PrimaryKeyConvention : IIdConvention
     {
         public bool Accept(IIdentityPart target)

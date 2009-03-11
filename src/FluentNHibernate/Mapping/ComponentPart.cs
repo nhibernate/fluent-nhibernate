@@ -6,12 +6,12 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IComponent : IClassMapBase, IMappingPart
+    public interface IComponent : IClasslike, IMappingPart
     {
         IComponent WithParentReference<TEntity>(Expression<Func<TEntity, object>> exp);
     }
 
-    public class ComponentPart<T> : ClassMapBase<T>, IComponent, IAccessStrategy<ComponentPart<T>>
+    public class ComponentPart<T> : ClasslikeMapBase<T>, IComponent, IAccessStrategy<ComponentPart<T>>
     {
         private readonly PropertyInfo _property;
         private readonly AccessStrategyBuilder<ComponentPart<T>> access;

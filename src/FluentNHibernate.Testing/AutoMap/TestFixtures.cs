@@ -140,7 +140,7 @@ namespace FluentNHibernate.AutoMap.TestFixtures.CustomTypes
 
     }
 
-    public class CustomTypeConvention : UserTypeConvention<Custom, CustomUserType>
+    public class CustomTypeConvention : UserTypeConvention<CustomUserType>
     {}
 
     public class CustomUserType : IUserType
