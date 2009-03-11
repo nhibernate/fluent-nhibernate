@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -12,6 +11,7 @@ namespace FluentNHibernate.Mapping
 {
     public interface IClassMap : IClassMapBase, IHasAttributes
     {
+        void ApplyMappings(IMappingVisitor visitor);
         XmlDocument CreateMapping(IMappingVisitor visitor);
         Type EntityType { get; }
         string TableName { get; }

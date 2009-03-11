@@ -1,3 +1,4 @@
+using System.Runtime.Remoting.Messaging;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Conventions;
 
@@ -12,7 +13,8 @@ namespace FluentNHibernate.Testing.AutoMap
 
         public void Apply(IProperty propertyMapping, ConventionOverrides overrides)
         {
-            propertyMapping.ColumnName(propertyMapping.Property.Name + "XX");
+            if (CallContext.GetData("XXAppender") != null)
+                propertyMapping.TheColumnNameIs(propertyMapping.Property.Name + "XX");
         }
     }
 }

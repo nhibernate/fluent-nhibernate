@@ -18,55 +18,49 @@ namespace FluentNHibernate.AutoMap
             set { propertiesMapped = value; }
         }
 
-        protected override OneToManyPart<T, CHILD> MapHasMany<CHILD, RETURN>(Expression<Func<T, RETURN>> expression)
+        protected override OneToManyPart<T, CHILD> HasMany<CHILD>(PropertyInfo property)
         {
-            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
-            return base.MapHasMany<CHILD, RETURN>(expression);
+            propertiesMapped.Add(property);
+            return base.HasMany<CHILD>(property);
         }
 
-        public void IgnoreProperty(System.Linq.Expressions.Expression<Func<T, object>> expression)
+        public void IgnoreProperty(Expression<Func<T, object>> expression)
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
         }
 
-        public override IIdentityPart Id(System.Linq.Expressions.Expression<Func<T, object>> expression)
+        public override IIdentityPart Id(Expression<Func<T, object>> expression)
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
             return base.Id(expression);
         }
 
-        public override PropertyMap Map(System.Linq.Expressions.Expression<Func<T, object>> expression)
+        protected override PropertyMap Map(PropertyInfo property, string columnName)
         {
-            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
-            return base.Map(expression);
+            propertiesMapped.Add(property);
+            return base.Map(property, columnName);
         }
 
-        public override ManyToOnePart<OTHER> References<OTHER>(System.Linq.Expressions.Expression<Func<T, OTHER>> expression)
+        protected override ManyToOnePart<OTHER> References<OTHER>(PropertyInfo property, string columnName)
         {
-            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
-            return base.References(expression);
+            propertiesMapped.Add(property);
+            return base.References<OTHER>(property, columnName);
         }
 
-        protected override ManyToManyPart<T, CHILD> MapHasManyToMany<CHILD, RETURN>(Expression<Func<T, RETURN>> expression)
+        protected override ManyToManyPart<T, CHILD> HasManyToMany<CHILD>(PropertyInfo property)
         {
-            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
-            return base.MapHasManyToMany<CHILD, RETURN>(expression);
+            propertiesMapped.Add(property);
+            return base.HasManyToMany<CHILD>(property);
         }
 
-        public override ComponentPart<C> Component<C>(Expression<Func<T, object>> expression, Action<ComponentPart<C>> action)
+        protected override ComponentPart<C> Component<C>(PropertyInfo property, Action<ComponentPart<C>> action)
         {
-            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
+            propertiesMapped.Add(property);
 
             if (action == null)
                 action = c => { };
 
-            return base.Component(expression, action);
-        }
-
-        public override PropertyMap Map(System.Linq.Expressions.Expression<Func<T, object>> expression, string columnName)
-        {
-            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
-            return base.Map(expression, columnName);
+            return base.Component(property, action);
         }
 
         public override IIdentityPart Id(System.Linq.Expressions.Expression<Func<T, object>> expression, string column)
@@ -75,22 +69,16 @@ namespace FluentNHibernate.AutoMap
             return base.Id(expression, column);
         }
 
-        public override ManyToOnePart<OTHER> References<OTHER>(System.Linq.Expressions.Expression<Func<T, OTHER>> expression, string columnName)
+        protected override OneToOnePart<OTHER> HasOne<OTHER>(PropertyInfo property)
         {
-            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
-            return base.References(expression, columnName);
+            propertiesMapped.Add(property);
+            return base.HasOne<OTHER>(property);
         }
 
-        public override OneToOnePart<OTHER> HasOne<OTHER>(System.Linq.Expressions.Expression<Func<T, OTHER>> expression)
+        protected override VersionPart Version(PropertyInfo property)
         {
-            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
-            return base.HasOne(expression);
-        }
-
-        public override VersionPart Version(System.Linq.Expressions.Expression<Func<T, object>> expression)
-        {
-            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
-            return base.Version(expression);
+            propertiesMapped.Add(property);
+            return base.Version(property);
         }
 
         public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)

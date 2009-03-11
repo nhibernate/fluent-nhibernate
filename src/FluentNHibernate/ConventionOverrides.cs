@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Conventions;
+using FluentNHibernate.Mapping.Conventions.Defaults;
 
 namespace FluentNHibernate
 {
     public class ConventionOverrides
     {
         public IConventionFinder Finder { get; private set; }
-        private readonly List<ITypeConvention> _typeConventions = new List<ITypeConvention>();
-        private readonly List<IPropertyConvention> _propertyConventions = new List<IPropertyConvention>();
 
         internal ConventionOverrides(IConventionFinder conventionFinder)
             : this()
@@ -21,10 +20,6 @@ namespace FluentNHibernate
         public ConventionOverrides()
         {
             DefaultLazyLoad = true;
-
-            AddTypeConvention(new IgnoreNullableTypeConvention());
-            AddTypeConvention(new EnumerationTypeConvention());
-            AddTypeConvention(new NullableEnumerationTypeConvention());
         }
 
         /// <summary>

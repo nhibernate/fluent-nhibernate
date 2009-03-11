@@ -1,17 +1,19 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Conventions;
 
 namespace FluentNHibernate.AutoMap
 {
     public class AutoMapColumn : IAutoMapper
     {
-        private readonly ConventionOverrides conventions;
+        private readonly ConventionOverrides conventionOverrides;
 
-        public AutoMapColumn(ConventionOverrides conventions)
+        public AutoMapColumn(ConventionOverrides conventionOverrides)
         {
-            this.conventions = conventions;
+            this.conventionOverrides = conventionOverrides;
         }
 
         public bool MapsProperty(PropertyInfo property)
@@ -27,12 +29,11 @@ namespace FluentNHibernate.AutoMap
 
         private bool HasExplicitTypeConvention(PropertyInfo property)
         {
-            var convention = conventions.FindConvention(property.PropertyType);
+            var conventions = conventionOverrides.Finder
+                .Find<IUserTypeConvention>()
+                .Where(c => c.Accept(property.PropertyType));
 
-            if (convention is DefaultConvention || convention == null)
-                return false;
-
-            return true;
+            return conventions.FirstOrDefault() != null;
         }
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)

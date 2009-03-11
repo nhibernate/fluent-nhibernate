@@ -7,9 +7,17 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.AutoMap
 {
+    public class PrivateAutoPersistenceModel : AutoPersistenceModel
+    {
+        public PrivateAutoPersistenceModel()
+        {
+            autoMapper = new PrivateAutoMapper(Conventions);
+        }
+    }
+
     public class AutoPersistenceModel : PersistenceModel
     {
-        private readonly AutoMapper autoMapper;
+        protected AutoMapper autoMapper;
         private Assembly assemblyContainingMaps;
         private Assembly entityAssembly;
         private Func<Type, bool> shouldIncludeType;

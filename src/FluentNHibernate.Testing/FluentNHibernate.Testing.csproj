@@ -146,7 +146,6 @@
     <Compile Include="DomainModel\Mapping\ManyToOneTester.cs" />
     <Compile Include="DomainModel\Mapping\OneToOneTester.cs" />
     <Compile Include="DomainModel\Mapping\ManyToManyIntegrationTester.cs" />
-    <Compile Include="DomainModel\Mapping\DefaultConventionTester.cs" />
     <Compile Include="DomainModel\Mapping\ManyToManyTester.cs" />
     <Compile Include="DomainModel\Mapping\MappingPartOutputOrderTests.cs" />
     <Compile Include="DomainModel\Mapping\FetchTypeExpressionTester.cs" />

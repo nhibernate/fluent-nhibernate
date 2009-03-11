@@ -15,6 +15,8 @@ namespace FluentNHibernate.Testing.AutoMap
     [TestFixture]
     public class PrivateAutoMappingTester
     {
+        private AutoPersistenceModel model;
+
         private class ExampleClass
         {
             private string _privateProperty { get; set; }
@@ -38,51 +40,43 @@ namespace FluentNHibernate.Testing.AutoMap
         [Test]
         public void WillMapPrivatePropertyMatchingTheConvention()
         {
-            var conventions = new ConventionOverrides();
-            conventions.FindMappablePrivateProperties = p => p.Name.StartsWith("_");
-            var autoMapper = new PrivateAutoMapper(conventions);
-            var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
-            
-            Assert.Contains(ReflectionHelper.GetProperty(ExampleClass.PrivateProperties.Property), (ICollection) map.PropertiesMapped);
-            
+            Model<ExampleClass>(p => p.Name.StartsWith("_"));
+
+            Test<ExampleClass>(mapping =>
+                Assert.Contains(ReflectionHelper.GetProperty(ExampleClass.PrivateProperties.Property), (ICollection)mapping.PropertiesMapped));
         }
 
         [Test]
         public void DoNotMapPrivatePropertiesThatDoNotMatchConvention()
         {
-            var conventions = new ConventionOverrides();
-            conventions.FindMappablePrivateProperties = p => p.Name.StartsWith("asdf");
-            var autoMapper = new PrivateAutoMapper(conventions);
-            var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
-            map.PropertiesMapped.ShouldBeEmpty();
-        }
+            Model<ExampleClass>(p => p.Name.StartsWith("asdf"));
 
-        [Test]
-        public void AutoPersistenceModelCanUsePrivateAutoMapper()
-        {
-            var conventions = new ConventionOverrides();
-            conventions.FindMappablePrivateProperties = p => p.Name.StartsWith("_");
-            
-            var model = new AutoPersistenceModel(new PrivateAutoMapper(conventions));
-            model.AutoMap<ExampleClass>();
-
-            IClassMap map = model.FindMapping<ExampleClass>();
-            var autoMap = (AutoMap<ExampleClass>) map;
-            Assert.Contains(ReflectionHelper.GetProperty(ExampleClass.PrivateProperties.Property), (ICollection)autoMap.PropertiesMapped);
+            Test<ExampleClass>(mapping =>
+                mapping.PropertiesMapped.ShouldBeEmpty());
         }
 
         [Test]
         public void CanMapPrivateCollection()
         {
-            var conventions = new ConventionOverrides();
-            conventions.FindMappablePrivateProperties = p => p.Name.StartsWith("_");
-            var autoMapper = new PrivateAutoMapper(conventions);
-            var map = autoMapper.Map<ExampleParent>(new List<AutoMapType>());
+            Model<ExampleParent>(p => p.Name.StartsWith("_"));
 
-            Assert.Contains(ReflectionHelper.GetProperty(ExampleParent.PrivateProperties.Children), (ICollection)map.PropertiesMapped);
+            Test<ExampleParent>(mapping =>
+                Assert.Contains(ReflectionHelper.GetProperty(ExampleParent.PrivateProperties.Children), (ICollection)mapping.PropertiesMapped));
         }
 
-    }
+        private void Model<T>(Func<PropertyInfo, bool> convention)
+        {
+            model = new PrivateAutoPersistenceModel()
+                .WithConvention(conventions => conventions.FindMappablePrivateProperties = convention);
 
-    
+            model.AutoMap<T>();
+        }
+
+        private void Test<T>(Action<AutoMap<T>> mapping)
+        {
+            var map = model.FindMapping<T>();
+
+            mapping((AutoMap<T>)map);
+        }
+    }
 }

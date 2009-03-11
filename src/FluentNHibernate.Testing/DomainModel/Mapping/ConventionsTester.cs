@@ -27,12 +27,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 property.SetAttributeOnColumnElement("My", "true");
             }
 
-            using (mocks.Playback())
-            {
-                var conventions = new ConventionOverrides();
-                conventions.ForAttribute<MyAttribute>((a, p) => p.SetAttributeOnColumnElement("My", "true"));
-                conventions.AlterMap(property);
-            }
+            //using (mocks.Playback())
+            //{
+            //    var conventions = new ConventionOverrides();
+            //    conventions.ForAttribute<MyAttribute>((a, p) => p.SetAttributeOnColumnElement("My", "true"));
+            //    conventions.AlterMap(property);
+            //}
         }
 
         [Test]

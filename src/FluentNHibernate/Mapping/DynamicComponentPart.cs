@@ -6,7 +6,12 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public class DynamicComponentPart<T> : ClassMapBase<T>, IMappingPart, IAccessStrategy<DynamicComponentPart<T>>
+    public interface IDynamicComponent : IClassMapBase, IMappingPart
+    {
+        IDynamicComponent WithParentReference<TEntity>(Expression<Func<TEntity, object>> exp);
+    }
+
+    public class DynamicComponentPart<T> : ClassMapBase<T>, IDynamicComponent, IAccessStrategy<DynamicComponentPart<T>>
     {
         private readonly PropertyInfo _property;
         private readonly AccessStrategyBuilder<DynamicComponentPart<T>> access;
@@ -73,8 +78,22 @@ namespace FluentNHibernate.Mapping
 
         public DynamicComponentPart<T> WithParentReference(Expression<Func<T, object>> exp)
         {
-            _parentReference = ReflectionHelper.GetProperty(exp);
+            return WithParentReference(ReflectionHelper.GetProperty(exp));
+        }
+
+        private DynamicComponentPart<T> WithParentReference(PropertyInfo property)
+        {
+            _parentReference = property;
             return this;
         }
+
+        #region Explicit IDynamicComponent implementation
+
+        IDynamicComponent IDynamicComponent.WithParentReference<TExplicit>(Expression<Func<TExplicit, object>> exp)
+        {
+            return WithParentReference(ReflectionHelper.GetProperty(exp));
+        }
+
+        #endregion
     }
 }

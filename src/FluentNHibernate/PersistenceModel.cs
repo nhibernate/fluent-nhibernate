@@ -38,11 +38,6 @@ namespace FluentNHibernate
             }
         }
 
-        protected void addTypeConvention(ITypeConvention convention)
-        {
-            conventionOverrides.AddTypeConvention(convention);
-        }
-
         protected void addMappingsFromThisAssembly()
         {
             Assembly assembly = findTheCallingAssembly();
@@ -53,7 +48,7 @@ namespace FluentNHibernate
         {
             foreach (Type type in assembly.GetExportedTypes())
             {
-                if (!type.IsGenericType && typeof(IMapping).IsAssignableFrom(type))
+                if (!type.IsGenericType && typeof(IClassMap).IsAssignableFrom(type))
                 {
                     var mapping = (IClassMap)type.InstantiateUsingParameterlessConstructor();
                     AddMapping(mapping);

@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Runtime.Remoting.Messaging;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomCompositeTypes;
@@ -31,6 +32,8 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         [Test]
         public void MapsPropertyWithPropertyConvention()
         {
+            CallContext.SetData("XXAppender", "active");
+
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleCustomColumn>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
@@ -41,6 +44,8 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/property[@name='LineOne']/column").HasAttribute("name", "LineOneXX");
+
+            CallContext.SetData("XXAppender", null);
         }
 
         [Test]
@@ -322,7 +327,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .MapEntitiesFromAssemblyOf<ClassWithUserType>()
                 .WithConvention(convention =>
                 {
-                    convention.AddTypeConvention(new CustomTypeConvention());
+                    convention.Finder.AddAssembly(typeof(CustomTypeConvention).Assembly);
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
@@ -358,7 +363,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 {
                     convention.IsComponentType =
                         type => type == typeof(Address);
-                    convention.AddTypeConvention(new CustomTypeConvention());
+                    convention.Finder.AddAssembly(typeof(CustomTypeConvention).Assembly);
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
@@ -378,7 +383,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 {
                     convention.IsComponentType =
                         type => type == typeof(Address);
-                    convention.AddTypeConvention(new CustomTypeConvention());
+                    convention.Finder.AddAssembly(typeof(CustomTypeConvention).Assembly);
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
@@ -398,7 +403,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 {
                     convention.IsComponentType =
                         type => type == typeof(Address);
-                    convention.AddTypeConvention(new CustomTypeConvention());
+                    convention.Finder.AddAssembly(typeof(CustomTypeConvention).Assembly);
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
@@ -419,7 +424,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                         type => type == typeof(Address);
                     convention.GetComponentColumnPrefix =
                         property => property.Name + "_";
-                    convention.AddTypeConvention(new CustomTypeConvention());
+                    convention.Finder.AddAssembly(typeof(CustomTypeConvention).Assembly);
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
@@ -440,7 +445,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                         type => type == typeof(Address);
                     convention.GetComponentColumnPrefix =
                         property => property.Name + "_";
-                    convention.AddTypeConvention(new CustomTypeConvention());
+                    convention.Finder.AddAssembly(typeof(CustomTypeConvention).Assembly);
                 })
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 

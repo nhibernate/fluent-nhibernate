@@ -5,6 +5,7 @@ using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomCompositeTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Conventions;
 using Iesi.Collections.Generic;
 using NHibernate;
 using NHibernate.Engine;
@@ -139,18 +140,8 @@ namespace FluentNHibernate.AutoMap.TestFixtures.CustomTypes
 
     }
 
-    public class CustomTypeConvention : ITypeConvention
-    {
-        public bool CanHandle(Type type)
-        {
-            return type == typeof(Custom);
-        }
-
-        public void AlterMap(IProperty propertyMapping)
-        {
-            propertyMapping.CustomTypeIs<CustomUserType>();
-        }
-    }
+    public class CustomTypeConvention : BaseUserTypeConvention<Custom, CustomUserType>
+    {}
 
     public class CustomUserType : IUserType
     {

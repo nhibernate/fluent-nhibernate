@@ -41,8 +41,6 @@ namespace FluentNHibernate.Mapping
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-            visitor.Conventions.AlterMap(this);
-
             XmlElement element = classElement.AddElement("property")
                 .WithAtt("name", _property.Name)
                 .WithProperties(_extendedProperties);

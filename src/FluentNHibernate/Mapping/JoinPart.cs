@@ -2,7 +2,7 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IJoin : IMappingPart
+    public interface IJoin : IClassMapBase, IMappingPart
     {
         void WithKeyColumn(string column);
     }

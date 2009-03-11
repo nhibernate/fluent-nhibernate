@@ -17,9 +17,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(c =>
                     c.DynamicComponent(x => x.ExtensionData, m =>
                     {
-                        m.Map(x => (string)x.ExtensionData["Name"]);
-                        m.Map(x => (int)x.ExtensionData["Age"]);
-                        m.Map(x => (string)x.ExtensionData["Profession"]);
+                        m.Map(x => (string)x["Name"]);
+                        m.Map(x => (int)x["Age"]);
+                        m.Map(x => (string)x["Profession"]);
                     }))
                 .Element("//class/dynamic-component/property[@name='Name']").Exists()
                 .Element("//class/dynamic-component/property[@name='Age']").Exists()
@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(c =>
                     c.DynamicComponent(x => x.ExtensionData, m =>
                     {
-                        m.Map(x => (int)x.ExtensionData["Age"]);
+                        m.Map(x => (int)x["Age"]);
                     })).Element("//class/dynamic-component/property").HasAttribute("type","Int32");
 
         }
@@ -46,7 +46,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(c =>
                     c.DynamicComponent(x => x.ExtensionData, m =>
                     {
-                        m.Map(x => (string)x.ExtensionData["Name"]);
+                        m.Map(x => (string)x["Name"]);
                     })).Element("//class/dynamic-component/property").HasAttribute("type", "String");
 
         }

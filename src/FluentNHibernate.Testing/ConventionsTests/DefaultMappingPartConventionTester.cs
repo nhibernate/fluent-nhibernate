@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
     [TestFixture]
     public class DefaultMappingPartConventionTester
     {
-        private DefaultMappingPartConvention convention;
+        private DefaultClassMappingPartConvention convention;
         private IConventionFinder conventionFinder;
         private readonly ConventionOverrides Overrides = new ConventionOverrides();
 
@@ -17,7 +17,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         public void CreateConvention()
         {
             conventionFinder = MockRepository.GenerateMock<IConventionFinder>();
-            convention = new DefaultMappingPartConvention(conventionFinder);
+            convention = new DefaultClassMappingPartConvention(conventionFinder);
         }
 
         [Test]
