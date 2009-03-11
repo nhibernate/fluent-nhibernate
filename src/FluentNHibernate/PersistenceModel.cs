@@ -14,15 +14,14 @@ namespace FluentNHibernate
     public class PersistenceModel
     {
         protected List<IClassMap> _mappings = new List<IClassMap>();
-        private readonly ConventionOverrides conventionOverrides;
         private readonly IConventionFinder conventionFinder;
         private bool conventionsApplied;
+        private ConventionOverrides conventionOverrides;
 
         public PersistenceModel(IConventionFinder conventionFinder)
         {
             this.conventionFinder = conventionFinder;
             this.conventionFinder.AddAssembly(typeof(PersistenceModel).Assembly);
-            this.conventionOverrides = new ConventionOverrides(conventionFinder);
         }
 
         public PersistenceModel()
@@ -63,7 +62,18 @@ namespace FluentNHibernate
 
         public ConventionOverrides Conventions
         {
-            get { return conventionOverrides; }
+            get
+            {
+                if (conventionOverrides == null)
+                    conventionOverrides = CreateConventions(conventionFinder);
+
+                return conventionOverrides;
+            }
+        }
+
+        protected virtual ConventionOverrides CreateConventions(IConventionFinder finder)
+        {
+            return new ConventionOverrides(finder);
         }
 
         private static Assembly findTheCallingAssembly()
@@ -87,14 +97,14 @@ namespace FluentNHibernate
 
         public virtual void Configure(Configuration configuration)
         {
-            var visitor = new MappingVisitor(conventionOverrides, configuration);
+            var visitor = new MappingVisitor(Conventions, configuration);
 
             ApplyMappings(visitor);
         }
 
         public void WriteMappingsTo(string folder)
         {
-            var visitor = new DiagnosticMappingVisitor(folder, conventionOverrides, null);
+            var visitor = new DiagnosticMappingVisitor(folder, Conventions, null);
 
             ApplyMappings(visitor);
         }
@@ -108,7 +118,7 @@ namespace FluentNHibernate
             foreach (var convention in conventions)
             {
                 if (convention.Accept(_mappings))
-                    convention.Apply(_mappings, conventionOverrides);
+                    convention.Apply(_mappings, Conventions);
             }
 
             conventionsApplied = true;

@@ -87,6 +87,7 @@
     <Compile Include="AutoMap\IAutoMappingAlteration.cs" />
     <Compile Include="AutoMap\ManyToManyAutoMapper.cs" />
     <Compile Include="AutoMap\PrivateAutoMapper.cs" />
+    <Compile Include="AutoMap\PrivateAutoPersistenceModel.cs" />
     <Compile Include="Cache.cs" />
     <Compile Include="Cfg\AutoMappingsContainer.cs" />
     <Compile Include="Cfg\Db\CacheSettingsBuilder.cs" />

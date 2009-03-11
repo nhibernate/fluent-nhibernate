@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Conventions;
-using FluentNHibernate.Mapping.Conventions.Defaults;
 
 namespace FluentNHibernate
 {
@@ -21,6 +19,11 @@ namespace FluentNHibernate
         {
             DefaultLazyLoad = true;
         }
+
+        /// <summary>
+        /// Sets the default length for strings
+        /// </summary>
+        public int DefaultStringLength { get; set; }
 
         /// <summary>
         /// Overrides the table name convention
@@ -56,9 +59,6 @@ namespace FluentNHibernate
         /// The convention is used for finding the name of 'entities'.
         /// </remarks>
         public Func<MethodInfo, string> GetMethodCollectionAccessorBackingFieldName;
-
-        public Func<PropertyInfo, bool> FindIdentity = p => p.Name == "Id";
-        public Func<PropertyInfo, bool> FindMappablePrivateProperties = null;
 
         #region General alterations
 

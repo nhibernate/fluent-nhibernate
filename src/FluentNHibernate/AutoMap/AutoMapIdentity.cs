@@ -7,9 +7,9 @@ namespace FluentNHibernate.AutoMap
 {
     public class AutoMapIdentity : IAutoMapper
     {
-        private readonly ConventionOverrides conventions;
+        private readonly AutoMapConventionOverrides conventions;
 
-        public AutoMapIdentity(ConventionOverrides conventions)
+        public AutoMapIdentity(AutoMapConventionOverrides conventions)
         {
             this.conventions = conventions;
         }

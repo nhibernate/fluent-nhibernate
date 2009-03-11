@@ -16,7 +16,7 @@ namespace FluentNHibernate.Testing.AutoMap
             var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
             var autoMap = new AutoMap<ManyToMany1>();
 
-            var mapper = new ManyToManyAutoMapper(new ConventionOverrides());
+            var mapper = new ManyToManyAutoMapper(new AutoMapConventionOverrides());
             mapper.Map(autoMap, propertyInfo);
 
             autoMap.PropertiesMapped.ShouldHaveCount(1);
@@ -28,7 +28,7 @@ namespace FluentNHibernate.Testing.AutoMap
             var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
             var autoMap = new AutoMap<ManyToMany1>();
 
-            var mapper = new ManyToManyAutoMapper(new ConventionOverrides());
+            var mapper = new ManyToManyAutoMapper(new AutoMapConventionOverrides());
             object manyToManyPart = mapper.GetManyToManyPart(autoMap, propertyInfo);
 
             manyToManyPart.ShouldBeOfType(typeof(ManyToManyPart<ManyToMany1, ManyToMany2>));
@@ -38,7 +38,10 @@ namespace FluentNHibernate.Testing.AutoMap
         public void CanApplyInverse()
         {
             var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
+            var autoMap = new AutoMap<ManyToMany1>();
+
             var mapper = new ManyToManyAutoMapper(new AutoMapConventionOverrides());
+
             var manyToManyPart = MockRepository.GenerateMock<IManyToManyPart>();
 
             mapper.ApplyInverse(propertyInfo, typeof(ManyToMany1), manyToManyPart);

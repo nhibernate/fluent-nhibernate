@@ -3,18 +3,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.AutoMap.Alterations;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Conventions;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.AutoMap
 {
-    public class PrivateAutoPersistenceModel : AutoPersistenceModel
-    {
-        public PrivateAutoPersistenceModel()
-        {
-            autoMapper = new PrivateAutoMapper(Conventions);
-        }
-    }
-
     public class AutoPersistenceModel : PersistenceModel
     {
         protected AutoMapper autoMapper;
@@ -36,6 +29,16 @@ namespace FluentNHibernate.AutoMap
             return this;
         }
 
+        public new AutoMapConventionOverrides Conventions
+        {
+            get { return (AutoMapConventionOverrides)base.Conventions; }
+        }
+
+        protected override ConventionOverrides CreateConventions(IConventionFinder finder)
+        {
+            return new AutoMapConventionOverrides(finder);
+        }
+
         /// <summary>
         /// Use auto mapping overrides defined in the assembly of T.
         /// </summary>
@@ -47,7 +50,7 @@ namespace FluentNHibernate.AutoMap
             return this;
         }
 
-        public AutoPersistenceModel WithConvention(Action<ConventionOverrides> conventionAction)
+        public AutoPersistenceModel WithConvention(Action<AutoMapConventionOverrides> conventionAction)
         {
             conventionAction(Conventions);
             return this;
