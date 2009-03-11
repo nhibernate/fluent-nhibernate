@@ -304,20 +304,6 @@ namespace FluentNHibernate.AutoMap.TestFixtures.CustomCompositeTypes
         }
     }
 
-
-    public class CustomCompositeTypeConvention : ITypeConvention
-    {
-        public bool CanHandle(Type type)
-        {
-            return type == typeof(DoubleStringType);
-        }
-
-        public void AlterMap(IProperty propertyMapping)
-        {
-            propertyMapping.CustomTypeIs(typeof (CustomCompositeUserType));
-        }
-    }
-
     /// <summary>
     /// Extracted from the NHibernate.Model
     /// </summary>

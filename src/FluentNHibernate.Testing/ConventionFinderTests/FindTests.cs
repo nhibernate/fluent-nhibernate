@@ -58,15 +58,6 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         }
 
         [Test]
-        public void ShouldOnlyFindExplicitAdded()
-        {
-            finder.Add<DummyAssemblyConvention>();
-            finder.Find<IAssemblyConvention>()
-                .ShouldHaveCount(1)
-                .ShouldContain(c => c is DummyAssemblyConvention);
-        }
-
-        [Test]
         public void ShouldOnlyAddInstanceOnceIfHasMultipleInterfaces()
         {
             finder.Add<MultiPartConvention>();

@@ -286,23 +286,6 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         }
 
         [Test]
-        public void TypeConventionShouldForceCompositePropertyToBeMappedWithCorrectNumberOfColumns()
-        {
-            var autoMapper = AutoPersistenceModel
-                .MapEntitiesFromAssemblyOf<ClassWithCompositeUserType>()
-                .WithConvention(convention =>
-                {
-                    convention.AddTypeConvention(new CustomCompositeTypeConvention());
-                })
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
-
-            var mappedColumns = new AutoMappingTester<ClassWithCompositeUserType>(autoMapper)
-                .Element("class/property");
-
-            mappedColumns.HasThisManyChildNodes(2);
-        }
-
-        [Test]
         public void ComponentTypesAutoMapped()
         {
             var autoMapper = AutoPersistenceModel
