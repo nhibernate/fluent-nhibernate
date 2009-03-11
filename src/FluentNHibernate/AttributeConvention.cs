@@ -1,5 +1,6 @@
 using System;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Conventions;
 
 namespace FluentNHibernate
 {
@@ -7,19 +8,22 @@ namespace FluentNHibernate
     {
         private readonly Action<T, IProperty> _action;
 
+        public AttributeConvention()
+        {}
+
         public AttributeConvention(Action<T, IProperty> action)
         {
             _action = action;
         }
 
-        public bool CanHandle(IProperty property)
+        public bool Accept(IProperty property)
         {
             var att = Attribute.GetCustomAttribute(property.Property, typeof(T), true) as T;
 
             return att != null;
         }
 
-        public void Process(IProperty property)
+        public void Apply(IProperty property, ConventionOverrides overrides)
         {
             T att = Attribute.GetCustomAttribute(property.Property, typeof (T), true) as T;
 

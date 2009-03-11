@@ -42,7 +42,7 @@ namespace FluentNHibernate.AutoMap.Alterations
             foreach (var typeMatch in types)
             {
                 var mappingOverride = Activator.CreateInstance(typeMatch.OverrideType);
-                var mapping = (IMapping)Activator.CreateInstance(typeof(AutoMap<>).MakeGenericType(typeMatch.EntityType));
+                var mapping = (IClassMap)Activator.CreateInstance(typeof(AutoMap<>).MakeGenericType(typeMatch.EntityType));
 
                 // HACK: call the Override method with the generic AutoMap<T>
                 typeMatch.OverrideType

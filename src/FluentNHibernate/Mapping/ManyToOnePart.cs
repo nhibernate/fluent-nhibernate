@@ -7,16 +7,19 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IManyToOnePart : IMappingPart
+    public interface IManyToOnePart : IRelationship
     {
         CascadeExpression<IManyToOnePart> Cascade { get; }
+        string ColumnName { get; }
+        PropertyInfo Property { get; }
+        IManyToOnePart TheColumnNameIs(string columnName);
     }
 
     public class ManyToOnePart<OTHER> : IManyToOnePart, IAccessStrategy<ManyToOnePart<OTHER>>
     {
 		private readonly Cache<string, string> _properties = new Cache<string, string>();
-        private readonly PropertyInfo _property;
-        private string _columnName;
+        public PropertyInfo Property { get; private set; }
+        public string ColumnName { get; private set; }
         private readonly AccessStrategyBuilder<ManyToOnePart<OTHER>> access;
         private readonly IList<string> _columns = new List<string>();
         private bool nextBool = true;
@@ -25,7 +28,7 @@ namespace FluentNHibernate.Mapping
         {
             access = new AccessStrategyBuilder<ManyToOnePart<OTHER>>(this);
 
-            _property = property;
+            Property = property;
         }
 
 		public FetchTypeExpression<ManyToOnePart<OTHER>> FetchType
@@ -77,7 +80,7 @@ namespace FluentNHibernate.Mapping
 		
 		public ManyToOnePart<OTHER> WithForeignKey()
 		{
-			return WithForeignKey(string.Format("FK_{0}To{1}", _property.DeclaringType.Name, _property.Name));
+			return WithForeignKey(string.Format("FK_{0}To{1}", Property.DeclaringType.Name, Property.Name));
 		}
 		
 		public ManyToOnePart<OTHER> WithForeignKey(string foreignKeyName)
@@ -118,17 +121,10 @@ namespace FluentNHibernate.Mapping
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-            visitor.Conventions.AlterManyToOneMap(this);
-
-            string columnName = _columnName;
-            
-            if (string.IsNullOrEmpty(_columnName))
-                columnName = visitor.Conventions.GetForeignKeyName(_property);
-
-        	_properties.Store("name", _property.Name);
+        	_properties.Store("name", Property.Name);
 
             if (_columns.Count == 0)
-                _properties.Store("column", columnName);
+                _properties.Store("column", ColumnName);
 
             var manyToOneElement = classElement.AddElement("many-to-one").WithProperties(_properties);
 
@@ -156,9 +152,14 @@ namespace FluentNHibernate.Mapping
             }
         }
 
+        IManyToOnePart IManyToOnePart.TheColumnNameIs(string name)
+        {
+            return TheColumnNameIs(name);
+        }
+
         public ManyToOnePart<OTHER> TheColumnNameIs(string name)
         {
-            _columnName = name;
+            ColumnName = name;
 
             return this;
         }

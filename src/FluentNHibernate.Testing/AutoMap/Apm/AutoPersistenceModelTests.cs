@@ -35,9 +35,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .MapEntitiesFromAssemblyOf<ExampleCustomColumn>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
                 .WithConvention(convention =>
-                {
-                    convention.AddPropertyConvention(new XXAppenderPropertyConvention());
-                });
+                    convention.Finder.AddAssembly(typeof(XXAppenderPropertyConvention).Assembly));
 
             autoMapper.Configure(cfg);
 
@@ -68,7 +66,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             autoMapper.Configure(cfg);
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("//property").HasAttribute("name", "ExampleClassId");
+                .Element("//property[@name='ExampleClassId']").Exists();
         }
 
         [Test]
@@ -134,7 +132,8 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .WithConvention(c=> c.GetPrimaryKeyName = p=> p.Name + "Id");
+                .WithConvention(c => c.GetPrimaryKeyName =
+                    id => id.Property.Name + "Id");
 
             autoMapper.Configure(cfg);
 
@@ -185,7 +184,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .WithConvention(c => c.GetForeignKeyNameOfParent =  t => t.Name + "Id");
+                .WithConvention(c => c.GetForeignKeyNameForType =  t => t.Name + "Id");
 
             autoMapper.Configure(cfg);
 

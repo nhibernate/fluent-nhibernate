@@ -2,7 +2,7 @@ using System;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IOneToManyPart : IMappingPart
+    public interface IOneToManyPart : ICollectionRelationship
     {
         CollectionCascadeExpression<IOneToManyPart> Cascade { get; }
         IOneToManyPart Inverse();
@@ -27,5 +27,8 @@ namespace FluentNHibernate.Mapping
         /// Inverts the next boolean
         /// </summary>
         IOneToManyPart Not { get; }
+        string ColumnName { get; }
+        Type ParentType { get; }
+        IOneToManyPart WithKeyColumn(string name);
     }
 }

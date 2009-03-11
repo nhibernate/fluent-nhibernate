@@ -1,9 +1,11 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 using NHibernate.Cfg;
 
 namespace FluentNHibernate.AutoMap
 {
+    // what's this? it doesn't seem to be used anywhere
     public class ConventionBuilder
     {
         private readonly AutoPersistenceModel model;
@@ -13,7 +15,7 @@ namespace FluentNHibernate.AutoMap
             this.model = model;
         }
 
-        public ConventionBuilder SetPrimaryKey(Func<PropertyInfo, string> columnName)
+        public ConventionBuilder SetPrimaryKey(Func<IIdentityPart, string> columnName)
         {
             model.Conventions.GetPrimaryKeyName = columnName;
             return this;
@@ -38,7 +40,7 @@ namespace FluentNHibernate.AutoMap
 
         public ConventionBuilder SetOneToManyKey(Func<Type, string> columnName)
         {
-            model.Conventions.GetForeignKeyNameOfParent = columnName;
+            model.Conventions.GetForeignKeyNameForType = columnName;
             return this;
         }
     }

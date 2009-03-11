@@ -2,7 +2,16 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public class CachePart : IMappingPart
+    public interface ICache : IMappingPart
+    {
+        void AsReadWrite();
+        void AsNonStrictReadWrite();
+        void AsReadOnly();
+        void AsCustom(string custom);
+        bool IsDirty { get; }
+    }
+
+    public class CachePart : ICache
     {
         private readonly Cache<string, string> attributes = new Cache<string, string>();
         private string usage;
@@ -22,6 +31,8 @@ namespace FluentNHibernate.Mapping
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
+            if (!IsDirty) return;
+
             var cacheElement = classElement.AddElement("cache");
 
             cacheElement.SetAttribute("usage", usage);
@@ -37,28 +48,29 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.First; }
         }
 
-        public CachePart AsReadWrite()
+        public void AsReadWrite()
         {
             usage = "read-write";
-            return this;
         }
 
-        public CachePart AsNonStrictReadWrite()
+        public void AsNonStrictReadWrite()
         {
             usage = "nonstrict-read-write";
-            return this;
         }
 
-        public CachePart AsReadOnly()
+        public void AsReadOnly()
         {
             usage = "read-only";
-            return this;
         }
 
-        public CachePart AsCustom(string custom)
+        public void AsCustom(string custom)
         {
             usage = custom;
-            return this;
+        }
+
+        public bool IsDirty
+        {
+            get { return !string.IsNullOrEmpty(usage); }
         }
     }
 }

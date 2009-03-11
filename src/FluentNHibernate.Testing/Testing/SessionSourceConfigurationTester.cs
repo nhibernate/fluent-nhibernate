@@ -1,6 +1,7 @@
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Testing.DomainModel;
+using FluentNHibernate.Testing.Fixtures;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Testing
@@ -54,7 +55,7 @@ namespace FluentNHibernate.Testing.Testing
         {
             FluentConfiguration config = Fluently.Configure()
                 .Database(() => new SQLiteConfiguration().InMemory().UseOuterJoin().ShowSql())
-                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<TestModel>());
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<TestPersistenceModel>());
 
             return new SingleConnectionSessionSourceForSQLiteInMemoryTesting(config);
         }

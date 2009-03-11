@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
@@ -340,52 +341,34 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void WriteTheClassNode()
         {
-            var map = new ClassMap<MappedObject>();
-            document = map.CreateMapping(new MappingVisitor());
-
-            XmlElement classElement = document.DocumentElement["class"];
-            classElement.ShouldNotBeNull();
-
-            classElement.AttributeShouldEqual("name", typeof (MappedObject).Name);
-            classElement.AttributeShouldEqual("table", map.TableName);
+            new MappingTester<MappedObject>()
+                .ForMapping(m => { })
+                .Element("class")
+                    .HasAttribute("name", typeof(MappedObject).Name)
+                    .HasAttribute("table", "`MappedObject`");
         }
 
 		[Test]
 		public void DomainClassMapWithId()
 		{
-			var map = new ClassMap<MappedObject>();
-			map.Id(x => x.Id, "id");
-			document = map.CreateMapping(new MappingVisitor());
-
-			XmlElement idElement = document.DocumentElement["class"]["id"];
-			idElement.ShouldNotBeNull();
-
-			idElement.GetAttribute("name").ShouldEqual("Id");
-			idElement.GetAttribute("column").ShouldEqual("id");
-			idElement.GetAttribute("type").ShouldEqual("Int64");
-
-			XmlElement generatorElement = idElement["generator"];
-			generatorElement.ShouldNotBeNull();
-			generatorElement.GetAttribute("class").ShouldEqual("identity");
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Id(x => x.Id, "id"))
+                .Element("class/id")
+                    .Exists()
+                    .HasAttribute("name", "Id")
+                    .HasAttribute("column", "id")
+                    .HasAttribute("type", "Int64")
+                .Element("class/id/generator")
+                    .Exists()
+                    .HasAttribute("class", "identity");
 		}
 
 		[Test]
 		public void DomainClassMapWithIdNoColumn()
 		{
-			var map = new ClassMap<MappedObject>();
-			map.Id(x => x.Id);
-			document = map.CreateMapping(new MappingVisitor());
-
-			XmlElement idElement = document.DocumentElement["class"]["id"];
-			idElement.ShouldNotBeNull();
-
-			idElement.GetAttribute("name").ShouldEqual("Id");
-			idElement.GetAttribute("column").ShouldEqual("Id");
-			idElement.GetAttribute("type").ShouldEqual("Int64");
-
-			XmlElement generatorElement = idElement["generator"];
-			generatorElement.ShouldNotBeNull();
-			generatorElement.GetAttribute("class").ShouldEqual("identity");
+		    new MappingTester<MappedObject>()
+		        .ForMapping(m => m.Id(x => x.Id))
+		        .Element("class/id").HasAttribute("column", "Id");
 		}
 
         [Test]

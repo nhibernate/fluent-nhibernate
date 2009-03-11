@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Data;
+using FluentNHibernate.Testing.Fixtures;
 using NHibernate;
 using NUnit.Framework;
 using FluentNHibernate.Mapping;
@@ -31,7 +32,7 @@ namespace FluentNHibernate.Testing.DomainModel
             //    .CreateProperties
             //    .ToProperties();
 
-            _source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new TestModel());
+            _source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new TestPersistenceModel());
             _source.BuildSchema();
         }
 
@@ -163,14 +164,6 @@ namespace FluentNHibernate.Testing.DomainModel
                 .CheckProperty(r => r.Another, "Lady")
                 .CheckProperty(r => r.Third, "Yeah")
                 .VerifyTheMappings();
-        }
-    }
-
-    public class TestModel : PersistenceModel
-    {
-        public TestModel()
-        {
-            addMappingsFromThisAssembly();
         }
     }
 

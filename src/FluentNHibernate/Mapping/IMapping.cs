@@ -4,7 +4,7 @@ namespace FluentNHibernate.Mapping
 {
     public interface IMapping
     {
-        IList<IMappingPart> Parts { get; }
+        IEnumerable<IMappingPart> Parts { get; }
         void ApplyMappings(IMappingVisitor visitor);
     }
 }

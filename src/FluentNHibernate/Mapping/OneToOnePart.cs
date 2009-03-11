@@ -6,7 +6,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IOneToOnePart : IMappingPart
+    public interface IOneToOnePart : IMappingPart, IRelationship
     {
         CascadeExpression<IOneToOnePart> Cascade { get; }
     }
@@ -61,8 +61,6 @@ namespace FluentNHibernate.Mapping
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-            visitor.Conventions.AlterOneToOneMap(this);
-
             _properties.Store("name", _property.Name);
             _properties.Store("class", typeof(OTHER).AssemblyQualifiedName);
 

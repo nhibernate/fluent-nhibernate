@@ -57,7 +57,7 @@ namespace FluentNHibernate.Cfg
         /// </summary>
         /// <param name="conventions">Lambda expression used to alter the conventions</param>
         /// <returns>Fluent mappings configuration</returns>
-        public FluentMappingsContainer AlterConventions(Action<Conventions> conventions)
+        public FluentMappingsContainer AlterConventions(Action<ConventionOverrides> conventions)
         {
             conventions(model.Conventions);
             return this;

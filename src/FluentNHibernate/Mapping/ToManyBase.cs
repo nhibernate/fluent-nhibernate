@@ -6,20 +6,23 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public abstract class ToManyBase<T, PARENT, CHILD> : IMappingPart where T : ToManyBase<T, PARENT, CHILD>, IMappingPart, IHasAttributes
+    public abstract class ToManyBase<T, PARENT, CHILD>
+        : IMappingPart where T : ToManyBase<T, PARENT, CHILD>, ICollectionRelationship, IMappingPart, IHasAttributes
     {
+        public MemberInfo Member { get; private set; }
         protected readonly Cache<string, string> _properties = new Cache<string, string>();
         protected readonly Cache<string, string> _keyProperties = new Cache<string, string>();
         private readonly AccessStrategyBuilder<T> access;
         protected IndexMapping _indexMapping;
         protected ElementMapping _elementMapping;
         protected CompositeElementPart<CHILD> _componentMapping;
-        protected string _tableName;
+        public string TableName { get; private set; }
         protected string _collectionType;
         private bool nextBool = true;
 
-        protected ToManyBase(Type type)
+        protected ToManyBase(MemberInfo member, Type type)
         {
+            Member = member;
             _collectionType = "bag";
             access = new AccessStrategyBuilder<T>((T)this);
 
@@ -164,7 +167,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="name">Table name</param>
         public T WithTableName(string name)
         {
-            _tableName = name;
+            TableName = name;
             return (T)this;
         }
 
@@ -238,6 +241,11 @@ namespace FluentNHibernate.Mapping
         {
             _properties.Store("collection-type", type);
             return (T)this;
+        }
+
+        public bool IsMethodAccess
+        {
+            get { return Member is MethodInfo; }
         }
 
         public class IndexMapping

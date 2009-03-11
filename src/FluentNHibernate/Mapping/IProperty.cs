@@ -6,7 +6,7 @@ using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IProperty : IHasAttributes
+    public interface IProperty : IMappingPart
     {
         void AddAlteration(Action<XmlElement> action);
         void SetAttributeOnColumnElement(string name, string value);

@@ -6,7 +6,7 @@ namespace FluentNHibernate.Mapping
 {
     public class IdentityPart<T> : IIdentityPart
     {
-		private string _columnName;
+		public string ColumnName { get; private set; }
 		private readonly IdentityGenerationStrategyBuilder _generatedBy;
 		private readonly Cache<string, string> _generatorParameters = new Cache<string, string>();
         private readonly Cache<string, string> _elementAttributes = new Cache<string, string>();
@@ -20,7 +20,7 @@ namespace FluentNHibernate.Mapping
             access = new AccessStrategyBuilder<IIdentityPart>(this);
 
 			_property = property;
-			_columnName = columnName;
+			ColumnName = columnName;
 			_generatedBy = new IdentityGenerationStrategyBuilder(this);
 		}
 
@@ -50,17 +50,16 @@ namespace FluentNHibernate.Mapping
 			get { return _property.PropertyType; }
 		}
 
+        public PropertyInfo Property
+        {
+            get { return _property; }
+        }
+
 		public void Write(XmlElement classElement, IMappingVisitor visitor)
 		{
-            visitor.Conventions.AlterId(this);
-
-            var columnName = (String.IsNullOrEmpty(_columnName))
-             ? visitor.Conventions.CalculatePrimaryKey(typeof(T), _property)
-             : _columnName;
-
 			XmlElement element = classElement.AddElement("id")
 				.WithAtt("name", _property.Name)
-                .WithAtt("column", columnName)
+                .WithAtt("column", ColumnName)
 				.WithAtt("type", TypeMapping.GetTypeString(_property.PropertyType));
 
             if (_unsavedValue != null)
@@ -137,7 +136,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="columnName">Column name</param>
         public IIdentityPart TheColumnNameIs(string columnName)
         {
-            _columnName = columnName;
+            ColumnName = columnName;
             return this;
         }
     }

@@ -22,56 +22,43 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void CanSpecifyVersion()
         {
-            var versionPart = _classMap.Version(p => p.VersionNumber);
-            Assert.IsNotNull(versionPart);
-
-            var document = _classMap.CreateMapping(new MappingVisitor());
-            var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//version");
-            keyElement.AttributeShouldEqual("column", "VersionNumber");
+            new MappingTester<VersionTarget>()
+                .ForMapping(map => map.Version(x => x.VersionNumber))
+                .Element("//version")
+                    .Exists()
+                    .HasAttribute("column", "VersionNumber");
         }
 
         [Test]
         public void CanSpecifyVersionOverrideColumnName()
         {
-            var versionPart = _classMap
-                                    .Version(p => p.VersionNumber)
-                                    .TheColumnNameIs("Version");
-
-            Assert.IsNotNull(versionPart);
-
-            var document = _classMap.CreateMapping(new MappingVisitor());
-            var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//version");
-            keyElement.AttributeShouldEqual("name", "VersionNumber");
-            keyElement.AttributeShouldEqual("column", "Version");
+            new MappingTester<VersionTarget>()
+                .ForMapping(map => map.Version(x => x.VersionNumber).TheColumnNameIs("Version"))
+                .Element("//version").HasAttribute("column", "Version");
         }
 
         [Test]
         public void CanSepecifyAccessType()
         {
-            var versionPart = _classMap
-                        .Version(p => p.VersionNumber)
-                        .Access.AsField();
+            new MappingTester<VersionTarget>()
+                .ForMapping(map => map.Version(x => x.VersionNumber).Access.AsField())
+                .Element("//version").HasAttribute("access", "field");
+        }
 
-            Assert.IsNotNull(versionPart);
-
-            var document = _classMap.CreateMapping(new MappingVisitor());
-            var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//version");
-            keyElement.AttributeShouldEqual("name", "VersionNumber");
-            keyElement.AttributeShouldEqual("column", "VersionNumber");
-            keyElement.AttributeShouldEqual("access", "field");
+        [Test]
+        public void CanSpecifyTimestamp()
+        {
+            new MappingTester<VersionTarget>()
+                .ForMapping(map => map.Version(x => x.TimeStamp))
+                .Element("//version").HasAttribute("type", "timestamp");
         }
 
         [Test]
         public void CanSepecifyAsNeverGenerated()
         {
-            var versionPart = _classMap
-                        .Version(p => p.TimeStamp);
-
-            Assert.IsNotNull(versionPart);
-
-            var document = _classMap.CreateMapping(new MappingVisitor());
-            var keyElement = (XmlElement)document.DocumentElement.SelectSingleNode("//version");
-            keyElement.AttributeShouldEqual("type", "timestamp");
+            new MappingTester<VersionTarget>()
+                .ForMapping(map => map.Version(x => x.VersionNumber).NeverGenerated())
+                .Element("//version").HasAttribute("generated", "never");
         }
     }
 

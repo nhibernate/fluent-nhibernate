@@ -92,6 +92,34 @@ namespace FluentNHibernate.Testing
             actual[key].ShouldEqual(value);
         }
 
+        public static void ShouldNotContain(this IList actual, object expected)
+        {
+            Assert.That(actual, Has.None.Member(expected));
+        }
+
+        public static void ShouldNotContain<T>(this IEnumerable<T> actual, T expected)
+        {
+            Assert.That(actual, Has.None.Member(expected));
+        }
+
+        public static void ShouldNotContain<T>(this IEnumerable<T> actual, Func<T, bool> expected)
+        {
+            foreach (var t in actual)
+            {
+                expected(t).ShouldBeFalse();
+            }
+        }
+
+        public static void ShouldNotContain(this IDictionary actual, string key, string value)
+        {
+            Assert.That(actual.Contains(key), Is.False);
+        }
+
+        public static void ShouldNotContain<KEY, VALUE>(this IDictionary<KEY, VALUE> actual, KEY key, VALUE value)
+        {
+            actual.Keys.Contains(key).ShouldBeFalse();
+        }
+
         public static void ShouldBeEmpty<T>(this IEnumerable<T> actual)
         {
             actual.Count().ShouldEqual(0);

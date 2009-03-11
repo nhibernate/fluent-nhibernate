@@ -11,7 +11,7 @@ namespace FluentNHibernate.AutoMap
         protected readonly List<IAutoMapper> _mappingRules;
         protected List<AutoMapType> mappingTypes;
 
-        public AutoMapper(Conventions conventions)
+        public AutoMapper(ConventionOverrides conventions)
         {
             _mappingRules = new List<IAutoMapper>
                                 {

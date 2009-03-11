@@ -4,46 +4,50 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IManyToManyPart
+    public interface IManyToManyPart : ICollectionRelationship
     {
         void Inverse();
         void WithTableName(string tableName);
+        string ChildKeyColumn { get; }
+        string ParentKeyColumn { get; }
+        Type ParentType { get; }
+        Type ChildType { get; }
+        void WithChildKeyColumn(string name);
+        void WithParentKeyColumn(string name);
     }
 
 	public class ManyToManyPart<PARENT, CHILD> : ToManyBase<ManyToManyPart<PARENT, CHILD>, PARENT, CHILD>, IManyToManyPart
     {
-    	private string _childKeyColumn;
+        public string ChildKeyColumn { get; private set; }
+        public string ParentKeyColumn { get; private set; }
         private readonly Cache<string, string> _parentKeyProperties = new Cache<string, string>();
         private readonly Cache<string, string> _manyToManyProperties = new Cache<string, string>();
-	    private readonly MethodInfo _collectionMethod;
         private readonly AccessStrategyBuilder<ManyToManyPart<PARENT, CHILD>> access;
 
 	    public ManyToManyPart(PropertyInfo property)
-            : this(property.Name, property.PropertyType)
+            : this(property, property.PropertyType)
 	    {}
 
 	    public ManyToManyPart(MethodInfo method)
-	        : this(method.Name, method.ReturnType)
-        {
-	        _collectionMethod = method;
-        }
+	        : this(method, method.ReturnType)
+        {}
 
-        protected ManyToManyPart(string memberName, Type collectionType)
-            : base(collectionType)
+        protected ManyToManyPart(MemberInfo member, Type collectionType)
+            : base(member, collectionType)
         {
             access = new AccessStrategyBuilder<ManyToManyPart<PARENT, CHILD>>(this);
-            _properties.Store("name", memberName);
+            _properties.Store("name", member.Name);
         }
 
 	    public ManyToManyPart<PARENT, CHILD> WithChildKeyColumn(string childKeyColumn)
 		{
-			_childKeyColumn = childKeyColumn;
+			ChildKeyColumn = childKeyColumn;
 			return this;
 		}
 		
 		public ManyToManyPart<PARENT, CHILD> WithParentKeyColumn(string parentKeyColumn)
 		{
-			_parentKeyProperties.Store("column", parentKeyColumn);
+		    ParentKeyColumn = parentKeyColumn;
 			return this;
 		}
 
@@ -63,61 +67,20 @@ namespace FluentNHibernate.Mapping
 
 		public override void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-            var conventions = visitor.Conventions;
+		    XmlElement set = classElement.AddElement(_collectionType).WithProperties(_properties);
 
-            if (_collectionMethod != null)
-            {
-                var conventionName = conventions.GetReadOnlyCollectionBackingFieldName(_collectionMethod);
-                _properties.Store("name", conventionName);
-            }
-
-
-			string tableName = GetTableName(conventions);
-			string parentKeyName = GetParentKeyName(conventions);
-			string childForeignKeyName = GetChildKeyName(conventions);
-
-			XmlElement set = classElement.AddElement(_collectionType).WithProperties(_properties);
-			set.WithAtt("table", tableName);
+            if (!string.IsNullOrEmpty(TableName))
+                set.WithAtt("table", TableName);
 
 			XmlElement key = set.AddElement("key");
-			key.WithAtt("column", parentKeyName);
+			key.WithAtt("column", ParentKeyColumn);
 		    key.WithProperties(_parentKeyProperties);
 
 			XmlElement manyToManyElement = set.AddElement("many-to-many");
-			manyToManyElement.WithAtt("column", childForeignKeyName);
+			manyToManyElement.WithAtt("column", ChildKeyColumn);
 			manyToManyElement.WithAtt("class", typeof(CHILD).AssemblyQualifiedName);
 			manyToManyElement.WithProperties(_manyToManyProperties);
         }
-
-		private string GetParentKeyName(Conventions conventions)
-		{
-			string parentKeyName;
-			if (!_parentKeyProperties.Has("column"))
-				parentKeyName = conventions.GetForeignKeyNameOfParent(typeof(PARENT));
-			else
-				parentKeyName = _parentKeyProperties.Get("column");
-			return parentKeyName;
-		}
-
-		private string GetChildKeyName(Conventions conventions)
-    	{
-    		string childKeyName;
-    		if (string.IsNullOrEmpty(_childKeyColumn))
-				childKeyName = conventions.GetForeignKeyNameOfParent(typeof(CHILD));
-			else
-    			childKeyName = _childKeyColumn;
-    		return childKeyName;
-    	}
-
-    	private string GetTableName(Conventions conventions)
-    	{
-    		string tableName;
-    		if (string.IsNullOrEmpty(_tableName))
-    			tableName = conventions.GetManyToManyTableName(typeof(CHILD), typeof(PARENT));
-    		else
-    			tableName = _tableName;
-    		return tableName;
-    	}
 
     	/// <summary>
         /// Set an attribute on the xml element produced by this many-to-many mapping.
@@ -155,6 +118,26 @@ namespace FluentNHibernate.Mapping
         void IManyToManyPart.WithTableName(string tableName)
         {
             this.WithTableName(tableName);
+        }
+
+        void IManyToManyPart.WithChildKeyColumn(string name)
+        {
+            WithChildKeyColumn(name);
+        }
+
+        void IManyToManyPart.WithParentKeyColumn(string name)
+        {
+            WithParentKeyColumn(name);
+        }
+
+	    public Type ParentType
+	    {
+            get { return typeof(PARENT); }
+	    }
+
+        public Type ChildType
+        {
+            get { return typeof(CHILD); }
         }
     }
 }

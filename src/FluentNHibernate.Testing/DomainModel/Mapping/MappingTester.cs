@@ -1,6 +1,7 @@
 using System;
 using System.Xml;
 using FluentNHibernate.Mapping;
+using NHibernate.Cfg;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
@@ -9,7 +10,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     {
         protected XmlElement currentElement;
         protected XmlDocument document;
-        protected IMappingVisitor _visitor = new MappingVisitor();
+        protected IMappingVisitor _visitor;
+        private readonly PersistenceModel model;
+
+        public MappingTester()
+        {
+            model = new PersistenceModel();
+            _visitor = new MappingVisitor(model.Conventions, new Configuration());
+        }
 
         public virtual MappingTester<T> RootElement
         {
@@ -20,9 +28,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             }
         }
 
-        public virtual MappingTester<T> UsingVisitor(IMappingVisitor visitor)
+        public virtual MappingTester<T> WithConventions(Action<ConventionOverrides> conventions)
         {
-            _visitor = visitor;
+            conventions(model.Conventions);
             return this;
         }
 
@@ -36,6 +44,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public virtual MappingTester<T> ForMapping(ClassMap<T> classMap)
         {
+            model.AddMapping(classMap);
+            model.ApplyConventions();
+
             document = classMap.CreateMapping(_visitor);
             currentElement = document.DocumentElement;
 

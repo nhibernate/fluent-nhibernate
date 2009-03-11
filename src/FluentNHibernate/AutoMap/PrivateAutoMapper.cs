@@ -8,9 +8,9 @@ namespace FluentNHibernate.AutoMap
 {
     public class PrivateAutoMapper : AutoMapper
     {
-        private readonly Conventions _conventions;
+        private readonly ConventionOverrides _conventions;
 
-        public PrivateAutoMapper(Conventions conventions)
+        public PrivateAutoMapper(ConventionOverrides conventions)
             : base(conventions)
         {
             _conventions = conventions;

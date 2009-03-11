@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 namespace FluentNHibernate.Mapping
 {
@@ -6,7 +7,9 @@ namespace FluentNHibernate.Mapping
     {
         IdentityGenerationStrategyBuilder GeneratedBy { get; }
         Type IdentityType { get; }
-        
+        PropertyInfo Property { get; }
+        string ColumnName { get; }
+
         /// <summary>
         /// Set the access and naming strategy for this identity.
         /// </summary>

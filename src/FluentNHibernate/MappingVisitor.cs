@@ -7,22 +7,22 @@ namespace FluentNHibernate
     public class MappingVisitor : IMappingVisitor
     {
         private readonly Configuration _configuration;
-        private readonly Conventions _conventions;
+        private readonly ConventionOverrides _conventions;
         
 
-        public MappingVisitor(Conventions conventions, Configuration configuration)
+        public MappingVisitor(ConventionOverrides conventions, Configuration configuration)
         {
             _conventions = conventions;
             _configuration = configuration;
         }
 
-		public MappingVisitor() : this(new Conventions(), new Configuration())
+		public MappingVisitor() : this(new ConventionOverrides(), new Configuration())
 		{
 		}
 
         #region IMappingVisitor Members
 
-        public Conventions Conventions
+        public ConventionOverrides Conventions
         {
             get { return _conventions; }
         }

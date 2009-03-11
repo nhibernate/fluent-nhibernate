@@ -370,36 +370,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void Each_visitor_should_be_asked_to_specify_the_primary_key_name_convention()
         {
-            var visitor1 = new MappingVisitor();
-            var visitor2 = new MappingVisitor();
-            var classMap = new ClassMap<IdentityTarget>();
-            classMap.Id(x => x.LongId);
-
-            visitor1.Conventions.GetPrimaryKeyName = prop => "foo";
-            visitor2.Conventions.GetPrimaryKeyName = prop => "bar";
-
             new MappingTester<IdentityTarget>()
-                .UsingVisitor(visitor1)
-                    .ForMapping(classMap)
-                    .Element("class/id").HasAttribute("column", "foo")
-                .UsingVisitor(visitor2)
-                    .ForMapping(classMap)
-                    .Element("class/id").HasAttribute("column", "bar");
-            
-        }
-
-        [Test]
-        public void Key_convention_receives_superclass_type()
-        {
-            var visitor = new MappingVisitor();
-
-            visitor.Conventions.GetPrimaryKeyNameFromType =
-                type => type.Name + "Id";
-
-            new MappingTester<ExampleClass>()
-                .UsingVisitor(visitor)
-                    .ForMapping(mapping => mapping.Id(x => x.Id))
-                    .Element("class/id").HasAttribute("column", "ExampleClassId");
+                .WithConventions(conventions =>
+                    conventions.GetPrimaryKeyName = prop => "foo")
+                .ForMapping(map => map.Id(x => x.LongId))
+                    .Element("class/id").HasAttribute("column", "foo");
         }
 	}
 

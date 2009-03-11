@@ -38,7 +38,7 @@ namespace FluentNHibernate.Testing.AutoMap
         [Test]
         public void WillMapPrivatePropertyMatchingTheConvention()
         {
-            var conventions = new Conventions();
+            var conventions = new ConventionOverrides();
             conventions.FindMappablePrivateProperties = p => p.Name.StartsWith("_");
             var autoMapper = new PrivateAutoMapper(conventions);
             var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
@@ -50,7 +50,7 @@ namespace FluentNHibernate.Testing.AutoMap
         [Test]
         public void DoNotMapPrivatePropertiesThatDoNotMatchConvention()
         {
-            var conventions = new Conventions();
+            var conventions = new ConventionOverrides();
             conventions.FindMappablePrivateProperties = p => p.Name.StartsWith("asdf");
             var autoMapper = new PrivateAutoMapper(conventions);
             var map = autoMapper.Map<ExampleClass>(new List<AutoMapType>());
@@ -60,7 +60,7 @@ namespace FluentNHibernate.Testing.AutoMap
         [Test]
         public void AutoPersistenceModelCanUsePrivateAutoMapper()
         {
-            var conventions = new Conventions();
+            var conventions = new ConventionOverrides();
             conventions.FindMappablePrivateProperties = p => p.Name.StartsWith("_");
             
             var model = new AutoPersistenceModel(new PrivateAutoMapper(conventions));
@@ -74,7 +74,7 @@ namespace FluentNHibernate.Testing.AutoMap
         [Test]
         public void CanMapPrivateCollection()
         {
-            var conventions = new Conventions();
+            var conventions = new ConventionOverrides();
             conventions.FindMappablePrivateProperties = p => p.Name.StartsWith("_");
             var autoMapper = new PrivateAutoMapper(conventions);
             var map = autoMapper.Map<ExampleParent>(new List<AutoMapType>());

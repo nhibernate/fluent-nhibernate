@@ -2,11 +2,15 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
+    public interface IJoin : IMappingPart
+    {
+        void WithKeyColumn(string column);
+    }
     /// <summary>
     /// Maps to the Join element in NH 2.0
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class JoinPart<T> : ClassMapBase<T>, IMappingPart
+    public class JoinPart<T> : ClassMapBase<T>, IJoin
     {
         private readonly Cache<string, string> properties = new Cache<string, string>();
         private string keyColumnName;
@@ -32,8 +36,6 @@ namespace FluentNHibernate.Mapping
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-            visitor.Conventions.AlterJoin(this);
-
             var joinElement = classElement.AddElement("join")
                 .WithProperties(properties);
 

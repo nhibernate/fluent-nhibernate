@@ -39,15 +39,9 @@ namespace FluentNHibernate.AutoMap
             return this;
         }
 
-        public AutoPersistenceModel WithConvention(Conventions convention)
+        public AutoPersistenceModel WithConvention(Action<ConventionOverrides> conventionAction)
         {
-            Conventions = convention;
-            return this;
-        }
-
-        public AutoPersistenceModel WithConvention(Action<Conventions> conventionAction)
-        {
-            conventionAction.Invoke(Conventions);
+            conventionAction(Conventions);
             return this;
         }
 
@@ -130,7 +124,7 @@ namespace FluentNHibernate.AutoMap
             Type typeToMap = GetTypeToMap(type);
             var mapping = InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
                 autoMapper, a => a.Map<object>(mappingTypes), new object[] {mappingTypes}, typeToMap);
-            AddMapping((IMapping)mapping);
+            AddMapping((IClassMap)mapping);
         }
 
         private Type GetTypeToMap(Type type)

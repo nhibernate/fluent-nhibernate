@@ -10,18 +10,100 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IClassMap : IMapping
+    public interface IClassMap : IClassMapBase, IHasAttributes
     {
         XmlDocument CreateMapping(IMappingVisitor visitor);
+        Type EntityType { get; }
+        string TableName { get; }
+        ICache Cache { get; }
+        Cache<string, string> Attributes { get; }
+        Cache<string, string> HibernateMappingAttributes { get; }
+        /// <summary>
+        /// Sets the optimistic locking strategy
+        /// </summary>
+        OptimisticLock OptimisticLock { get; }
+
+        /// <summary>
+        /// Sets the table for the class.
+        /// </summary>
+        /// <param name="tableName">Table name</param>
+        void WithTable(string tableName);
+
+        void SetHibernateMappingAttribute(string name, string value);
+        void SetHibernateMappingAttribute(string name, bool value);
+
+        /// <summary>
+        /// Sets the hibernate-mapping schema for this class.
+        /// </summary>
+        /// <param name="schema">Schema name</param>
+        void SchemaIs(string schema);
+
+        /// <summary>
+        /// Sets the hibernate-mapping auto-import for this class.
+        /// </summary>
+        void AutoImport();
+
+        /// <summary>
+        /// Override the inferred assembly for this class
+        /// </summary>
+        /// <param name="assembly">Assembly to use</param>
+        void OverrideAssembly(Assembly assembly);
+
+        /// <summary>
+        /// Override the inferred assembly for this class
+        /// </summary>
+        /// <param name="assembly">Assembly to use</param>
+        void OverrideAssembly(string assembly);
+
+        /// <summary>
+        /// Override the inferred namespace for this class
+        /// </summary>
+        /// <param name="namespace">Namespace to use</param>
+        void OverrideNamespace(string @namespace);
+
+        /// <summary>
+        /// Sets this entity to be lazy-loaded (overrides the default lazy load configuration).
+        /// </summary>
+        void LazyLoad();
+
+        /// <summary>
+        /// Imports an existing type for use in the mapping.
+        /// </summary>
+        /// <typeparam name="TImport">Type to import.</typeparam>
+        ImportPart ImportType<TImport>();
+
+        /// <summary>
+        /// Set the mutability of this class, sets the mutable attribute.
+        /// </summary>
+        void ReadOnly();
+
+        /// <summary>
+        /// Sets this entity to be dynamic update
+        /// </summary>
+        void DynamicUpdate();
+
+        /// <summary>
+        /// Sets this entity to be dynamic insert
+        /// </summary>
+        void DynamicInsert();
+
+        /// <summary>
+        /// Inverse next boolean
+        /// </summary>
+        IClassMap Not { get; }
     }
 
-    public class ClassMap<T> : ClassMapBase<T>, IClassMap, IHasAttributes
+    public class ClassMap<T> : ClassMapBase<T>, IClassMap
     {
-        public const string DefaultLazyAttributeKey = "default-lazy";
-        private readonly Cache<string, string> attributes = new Cache<string, string>();
-        private readonly Cache<string, string> hibernateMappingAttributes = new Cache<string, string>();
+        public Cache<string, string> Attributes { get; private set; }
+        public Cache<string, string> HibernateMappingAttributes { get; private set; }
         private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
-        private CachePart cache;
+        
+        /// <summary>
+        /// Specify caching for this entity.
+        /// </summary>
+        public ICache Cache { get; private set; }
+        
         private readonly IList<ImportPart> imports = new List<ImportPart>();
         private string assemblyName;
         private string namespaceName;
@@ -29,14 +111,17 @@ namespace FluentNHibernate.Mapping
 
         public ClassMap()
         {
+            Attributes = new Cache<string, string>();
+            HibernateMappingAttributes = new Cache<string, string>();
             defaultAccess = new DefaultAccessStrategyBuilder<T>(this);
+            Cache = new CachePart();
         }
 
         public string TableName { get; private set; }
 
         public XmlDocument CreateMapping(IMappingVisitor visitor)
         {
-            PrepareBeforeCreateMapping(visitor);
+            AddPart(Cache);
 
             visitor.CurrentType = typeof(T);
             XmlDocument document = getBaseDocument();
@@ -54,47 +139,9 @@ namespace FluentNHibernate.Mapping
             return document;
         }
 
-        private void PrepareBeforeCreateMapping(IMappingVisitor visitor)
+        public Type EntityType
         {
-            if (cache == null)
-                cache = visitor.Conventions.DefaultCache(new CachePart());
-
-            if (cache != null)
-                AddPart(cache);
-
-            if (String.IsNullOrEmpty(TableName))
-                TableName = visitor.Conventions.GetTableName.Invoke(typeof(T));
-
-            PrepareDynamicUpdate(visitor);
-            PrepareDynamicInsert(visitor);
-            PrepareOptimisticLock(visitor);
-        }
-
-        private void PrepareDynamicUpdate(IMappingVisitor visitor)
-        {
-            if (attributes.Has("dynamic-update")) return;
-
-            var value = visitor.Conventions.DynamicUpdate(typeof(T));
-
-            if (value != null)
-                attributes.Store("dynamic-update", value.ToString().ToLowerInvariant());
-        }
-
-        private void PrepareDynamicInsert(IMappingVisitor visitor)
-        {
-            if (attributes.Has("dynamic-insert")) return;
-
-            var value = visitor.Conventions.DynamicInsert(typeof(T));
-
-            if (value != null)
-                attributes.Store("dynamic-insert", value.ToString().ToLowerInvariant());
-        }
-
-        private void PrepareOptimisticLock(IMappingVisitor visitor)
-        {
-            if (attributes.Has("optimistic-lock")) return;
-
-            visitor.Conventions.OptimisticLock(typeof(T), OptimisticLock);
+            get { return typeof(T); }
         }
 
         public void UseIdentityForKey(Expression<Func<T, object>> expression, string columnName)
@@ -143,25 +190,17 @@ namespace FluentNHibernate.Mapping
                 .WithAtt("name", typeof (T).Name)
                 .WithAtt("table", TableName)
                 .WithAtt("xmlns", "urn:nhibernate-mapping-2.2")
-                .WithProperties(attributes);
+                .WithProperties(Attributes);
         }
 
         private void setHeaderValues(IMappingVisitor visitor, XmlDocument document)
         {
             var documentElement = document.DocumentElement;
 
-            //TODO: Law of Demeter violation here. The convention stuff smells, perhaps some double-dispatch is in order?
-            var defaultLazyValue = visitor.Conventions.DefaultLazyLoad.ToString().ToLowerInvariant();
-            
-            if (!hibernateMappingAttributes.Has(DefaultLazyAttributeKey))
-            {
-                documentElement.SetAttribute(DefaultLazyAttributeKey, defaultLazyValue);
-            }
-
             documentElement.SetAttribute("assembly", assemblyName ?? typeof(T).Assembly.GetName().Name);
             documentElement.SetAttribute("namespace", namespaceName ?? typeof (T).Namespace);
 
-            hibernateMappingAttributes.ForEachPair(documentElement.SetAttribute);
+            HibernateMappingAttributes.ForEachPair(documentElement.SetAttribute);
         }
 
         private static XmlDocument getBaseDocument()
@@ -208,7 +247,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="value">Attribute value</param>
         public virtual void SetAttribute(string name, string value)
         {
-            attributes.Store(name, value);
+            Attributes.Store(name, value);
         }
 
         public virtual void SetAttributes(Attributes atts)
@@ -221,12 +260,12 @@ namespace FluentNHibernate.Mapping
 
         public void SetHibernateMappingAttribute(string name, string value)
         {
-            hibernateMappingAttributes.Store(name, value);
+            HibernateMappingAttributes.Store(name, value);
         }
 
         public void SetHibernateMappingAttribute(string name, bool value)
         {
-            hibernateMappingAttributes.Store(name, value.ToString().ToLowerInvariant());
+            HibernateMappingAttributes.Store(name, value.ToString().ToLowerInvariant());
         }
 
         public virtual IIdentityPart Id(Expression<Func<T, object>> expression)
@@ -311,19 +350,6 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Specify caching for this entity.
-        /// </summary>
-        public CachePart Cache
-        {
-            get
-            {
-                cache = new CachePart();
-
-                return cache;
-            }
-        }
-
-        /// <summary>
         /// Sets the table for the class.
         /// </summary>
         /// <param name="tableName">Table name</param>
@@ -344,12 +370,17 @@ namespace FluentNHibernate.Mapping
             }
         }
 
+        IClassMap IClassMap.Not
+        {
+            get { return Not; }
+        }
+
         /// <summary>
         /// Sets this entity to be lazy-loaded (overrides the default lazy load configuration).
         /// </summary>
         public void LazyLoad()
         {
-            attributes.Store("lazy", nextBool.ToString().ToLowerInvariant());
+            Attributes.Store("lazy", nextBool.ToString().ToLowerInvariant());
             nextBool = true;
         }
 
@@ -384,7 +415,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void ReadOnly()
         {
-            attributes.Store("mutable", (!nextBool).ToString().ToLowerInvariant());
+            Attributes.Store("mutable", (!nextBool).ToString().ToLowerInvariant());
             nextBool = true;
         }
 
@@ -393,7 +424,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void DynamicUpdate()
         {
-            attributes.Store("dynamic-update", nextBool.ToString().ToLowerInvariant());
+            Attributes.Store("dynamic-update", nextBool.ToString().ToLowerInvariant());
             nextBool = true;
         }
 
@@ -402,7 +433,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void DynamicInsert()
         {
-            attributes.Store("dynamic-insert", nextBool.ToString().ToLowerInvariant());
+            Attributes.Store("dynamic-insert", nextBool.ToString().ToLowerInvariant());
             nextBool = true;
         }
 
@@ -411,7 +442,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public OptimisticLock OptimisticLock
         {
-            get { return new OptimisticLock(attributes); }
+            get { return new OptimisticLock(Attributes); }
         }
     }
 }

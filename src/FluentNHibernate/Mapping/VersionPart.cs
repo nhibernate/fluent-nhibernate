@@ -5,10 +5,19 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public class VersionPart : IMappingPart
+    public interface IVersion : IMappingPart
     {
-        private readonly PropertyInfo _property;
-        private string _columnName;
+        AccessStrategyBuilder<VersionPart> Access { get; }
+        string ColumnName { get; }
+        PropertyInfo Property { get; }
+        IVersion TheColumnNameIs(string columnName);
+        IVersion NeverGenerated();
+    }
+
+    public class VersionPart : IVersion
+    {
+        public PropertyInfo Property { get; private set; }
+        public string ColumnName { get; private set; }
         private readonly AccessStrategyBuilder<VersionPart> _access;
         private Dictionary<string,string> _properties;
         private bool _neverGenerated;
@@ -17,8 +26,7 @@ namespace FluentNHibernate.Mapping
         {
             _access = new AccessStrategyBuilder<VersionPart>(this);
             _properties = new Dictionary<string, string>();
-            _property = property;
-            _columnName = _property.Name;
+            Property = property;
         }
 
         public void SetAttribute(string name, string value)
@@ -41,13 +49,13 @@ namespace FluentNHibernate.Mapping
                                     .WithProperties(_properties);
             
             versionElement 
-                .WithAtt("column", _columnName)
-                .WithAtt("name", _property.Name);
+                .WithAtt("column", ColumnName)
+                .WithAtt("name", Property.Name);
 
             if (_neverGenerated)
                 versionElement.WithAtt("generated", "never");
 
-            if (_property.PropertyType == typeof(DateTime))
+            if (Property.PropertyType == typeof(DateTime))
                 versionElement.WithAtt("type", "timestamp");
         }
 
@@ -69,13 +77,13 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.Anywhere; }
         }
 
-        public VersionPart TheColumnNameIs(string columnName)
+        public IVersion TheColumnNameIs(string columnName)
         {
-            _columnName = columnName;
+            ColumnName = columnName;
             return this;
         }
 
-        public VersionPart NeverGenerated()
+        public IVersion NeverGenerated()
         {
             _neverGenerated = true;
             return this;

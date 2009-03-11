@@ -1,15 +1,16 @@
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Conventions;
 
 namespace FluentNHibernate.Testing.AutoMap
 {
-    internal class XXAppenderPropertyConvention : IPropertyConvention
+    public class XXAppenderPropertyConvention : IPropertyConvention
     {
-        public bool CanHandle(IProperty property)
+        public bool Accept(IProperty property)
         {
             return true;
         }
 
-        public void Process(IProperty propertyMapping)
+        public void Apply(IProperty propertyMapping, ConventionOverrides overrides)
         {
             propertyMapping.ColumnName(propertyMapping.Property.Name + "XX");
         }

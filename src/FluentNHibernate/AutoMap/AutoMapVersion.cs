@@ -11,9 +11,9 @@ namespace FluentNHibernate.AutoMap
         private static readonly IList<Type> VersionTypes = new List<Type> { typeof(int), typeof(long), typeof(TimeSpan) };
         private readonly Func<PropertyInfo, bool> findPropertyconvention = p => (p.Name.ToLower() == "version" || p.Name.ToLower() == "timestamp") && VersionTypes.Contains(p.PropertyType);
         private readonly Func<PropertyInfo, string> columnConvention;
-        private readonly Conventions conventions;
+        private readonly ConventionOverrides conventions;
 
-        public AutoMapVersion(Conventions conventions)
+        public AutoMapVersion(ConventionOverrides conventions)
         {
             this.conventions = conventions;
             columnConvention = conventions.GetVersionColumnName;

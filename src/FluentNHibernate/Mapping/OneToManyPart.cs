@@ -7,37 +7,24 @@ namespace FluentNHibernate.Mapping
 {
     public class OneToManyPart<PARENT, CHILD> : ToManyBase<OneToManyPart<PARENT, CHILD>, PARENT, CHILD>, IOneToManyPart, IAccessStrategy<OneToManyPart<PARENT, CHILD>> 
     {
-        private readonly MethodInfo _collectionMethod;
         private readonly IList<string> _columnNames = new List<string>();
 
         public OneToManyPart(PropertyInfo property)
-            : this(property.Name, property.PropertyType)
+            : this(property, property.PropertyType)
         {}
 
         public OneToManyPart(MethodInfo method)
-            : this(method.Name, method.ReturnType)
-        {
-            _collectionMethod = method;
-        }
+            : this(method, method.ReturnType)
+        {}
 
-        protected OneToManyPart(string memberName, Type collectionType)
-            : base(collectionType)
+        protected OneToManyPart(MemberInfo member, Type collectionType)
+            : base(member, collectionType)
         {
-            _properties.Store("name", memberName);          
+            _properties.Store("name", member.Name);          
         }
-
-        #region IMappingPart Members
 
         public override void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-            if (_collectionMethod != null )
-            {
-                var conventionName = visitor.Conventions.GetReadOnlyCollectionBackingFieldName(_collectionMethod);
-                _properties.Store("name", conventionName);
-            }
-
-            visitor.Conventions.AlterOneToManyMap(this);
-
             XmlElement collectionElement = WriteCollectionElement(classElement);
             WriteKeyElement(visitor, collectionElement);
 
@@ -55,8 +42,9 @@ namespace FluentNHibernate.Mapping
             XmlElement collectionElement = classElement.AddElement(_collectionType)
                 .WithProperties(_properties);
 
-            if (!string.IsNullOrEmpty(_tableName))
-                collectionElement.SetAttribute("table", _tableName);
+            if (!string.IsNullOrEmpty(TableName))
+                collectionElement.SetAttribute("table", TableName);
+
             return collectionElement;
         }
 
@@ -88,9 +76,7 @@ namespace FluentNHibernate.Mapping
 
         private void WriteKeyElement(IMappingVisitor visitor, XmlElement collectionElement)
         {
-            if (_columnNames.Count == 0)
-                _keyProperties.Store("column", visitor.Conventions.GetForeignKeyNameOfParent(typeof(PARENT)));
-            else if (_columnNames.Count == 1)
+            if (_columnNames.Count == 1)
                 _keyProperties.Store("column", _columnNames[0]);
 
             var key = collectionElement.AddElement("key")
@@ -151,13 +137,21 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public Type ParentType
+        {
+            get { return typeof(PARENT); }
+        }
+       
+        public string ColumnName
+        {
+            get { return _columnNames.Count > 0 ? _columnNames[0] : null; }
+        }
+
         public OneToManyPart<PARENT, CHILD> WithKeyColumn(string columnName)
         {
             _columnNames.Add(columnName);
             return this;
         }
-
-        #endregion
 
         #region Explicit IOneToManyPart Implementation
 
@@ -203,6 +197,11 @@ namespace FluentNHibernate.Mapping
         IOneToManyPart IOneToManyPart.CollectionType(string type)
         {
             return this.CollectionType(type);
+        }
+
+        IOneToManyPart IOneToManyPart.WithKeyColumn(string name)
+        {
+            return WithKeyColumn(name);
         }
 
         #endregion

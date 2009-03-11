@@ -9,9 +9,9 @@ namespace FluentNHibernate.AutoMap
 {
     public class ManyToManyAutoMapper : IAutoMapper
     {
-        private readonly Conventions conventions;
+        private readonly ConventionOverrides conventions;
 
-        public ManyToManyAutoMapper(Conventions conventions)
+        public ManyToManyAutoMapper(ConventionOverrides conventions)
         {
             this.conventions = conventions;
         }
@@ -54,9 +54,7 @@ namespace FluentNHibernate.AutoMap
 
         public void ApplyInverse(PropertyInfo property, Type parentSide, IManyToManyPart manyToManyPart)
         {
-            string manyTableName = conventions.GetManyToManyTableName(property.DeclaringType, parentSide);
             manyToManyPart.Inverse();
-            manyToManyPart.WithTableName(manyTableName);
         }
 
         public IManyToManyPart GetManyToManyPart<T>(AutoMap<T> classMap, PropertyInfo property)

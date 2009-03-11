@@ -225,7 +225,7 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public IList<IMappingPart> Parts
+        public IEnumerable<IMappingPart> Parts
         {
             get { return _properties; }
         }

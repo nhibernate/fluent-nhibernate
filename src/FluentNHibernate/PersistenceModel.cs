@@ -6,20 +6,28 @@ using System.Reflection;
 using System.Threading;
 using System.Xml;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Conventions;
 using NHibernate.Cfg;
 
 namespace FluentNHibernate
 {
     public class PersistenceModel
     {
-        protected List<IMapping> _mappings = new List<IMapping>();
-        private Conventions _conventions = new Conventions();
-        private bool _configured = false;
+        protected List<IClassMap> _mappings = new List<IClassMap>();
+        private readonly ConventionOverrides conventionOverrides;
+        private readonly IConventionFinder conventionFinder;
+        private bool conventionsApplied;
+
+        public PersistenceModel(IConventionFinder conventionFinder)
+        {
+            this.conventionFinder = conventionFinder;
+            this.conventionFinder.AddAssembly(typeof(PersistenceModel).Assembly);
+            this.conventionOverrides = new ConventionOverrides(conventionFinder);
+        }
 
         public PersistenceModel()
-        {
-
-        }
+            : this(new DefaultConventionFinder())
+        {}
 
         public void ForEach<T>(Action<T> action) where T : class
         {
@@ -32,7 +40,7 @@ namespace FluentNHibernate
 
         protected void addTypeConvention(ITypeConvention convention)
         {
-            _conventions.AddTypeConvention(convention);
+            conventionOverrides.AddTypeConvention(convention);
         }
 
         protected void addMappingsFromThisAssembly()
@@ -47,21 +55,20 @@ namespace FluentNHibernate
             {
                 if (!type.IsGenericType && typeof(IMapping).IsAssignableFrom(type))
                 {
-                    IMapping mapping = (IMapping)type.InstantiateUsingParameterlessConstructor();
+                    var mapping = (IClassMap)type.InstantiateUsingParameterlessConstructor();
                     AddMapping(mapping);
                 }
             }
         }
 
-        public void AddMapping(IMapping mapping)
+        public void AddMapping(IClassMap mapping)
         {
             _mappings.Add(mapping);
         }
 
-        public Conventions Conventions
+        public ConventionOverrides Conventions
         {
-            get { return _conventions; }
-            protected set { _conventions = value; }
+            get { return conventionOverrides; }
         }
 
         private static Assembly findTheCallingAssembly()
@@ -85,16 +92,38 @@ namespace FluentNHibernate
 
         public virtual void Configure(Configuration configuration)
         {
-            _configured = true;
+            var visitor = new MappingVisitor(conventionOverrides, configuration);
 
-            MappingVisitor visitor = new MappingVisitor(_conventions, configuration);
-            _mappings.ForEach(mapping => mapping.ApplyMappings(visitor));
+            ApplyMappings(visitor);
         }
 
         public void WriteMappingsTo(string folder)
         {
-            DiagnosticMappingVisitor visitor = new DiagnosticMappingVisitor(folder, _conventions, null);
-            _mappings.ForEach(m => m.ApplyMappings(visitor));
+            var visitor = new DiagnosticMappingVisitor(folder, conventionOverrides, null);
+
+            ApplyMappings(visitor);
+        }
+
+        public void ApplyConventions()
+        {
+            if (conventionsApplied) return;
+
+            var conventions = conventionFinder.Find<IAssemblyConvention>() ?? new List<IAssemblyConvention>();
+
+            foreach (var convention in conventions)
+            {
+                if (convention.Accept(_mappings))
+                    convention.Apply(_mappings, conventionOverrides);
+            }
+
+            conventionsApplied = true;
+        }
+
+        private void ApplyMappings(IMappingVisitor visitor)
+        {
+            ApplyConventions();
+
+            _mappings.ForEach(mapping => mapping.ApplyMappings(visitor));
         }
     }
 
@@ -102,7 +131,7 @@ namespace FluentNHibernate
     {
         private string _folder;
 
-        public DiagnosticMappingVisitor(string folder, Conventions conventions, Configuration configuration) : base(conventions, configuration)
+        public DiagnosticMappingVisitor(string folder, ConventionOverrides conventions, Configuration configuration) : base(conventions, configuration)
         {
             _folder = folder;            
         }
