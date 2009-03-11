@@ -10,14 +10,6 @@ namespace FluentNHibernate.AutoMap
     {
         private static readonly IList<Type> VersionTypes = new List<Type> { typeof(int), typeof(long), typeof(TimeSpan) };
         private readonly Func<PropertyInfo, bool> findPropertyconvention = p => (p.Name.ToLower() == "version" || p.Name.ToLower() == "timestamp") && VersionTypes.Contains(p.PropertyType);
-        private readonly Func<PropertyInfo, string> columnConvention;
-        private readonly ConventionOverrides conventions;
-
-        public AutoMapVersion(ConventionOverrides conventions)
-        {
-            this.conventions = conventions;
-            columnConvention = conventions.GetVersionColumnName;
-        }
 
         public bool MapsProperty(PropertyInfo property)
         {
@@ -29,12 +21,7 @@ namespace FluentNHibernate.AutoMap
             if (classMap is AutoJoinedSubClassPart<T>)
                 return;
 
-            var verionMap = classMap
-                .Version(ExpressionBuilder.Create<T>(property));
-
-            if (columnConvention != null)
-                verionMap.TheColumnNameIs(columnConvention.Invoke(property));
-
+            classMap.Version(ExpressionBuilder.Create<T>(property));
         }
     }
 }

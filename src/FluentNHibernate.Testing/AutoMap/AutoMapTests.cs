@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.AutoMap.TestFixtures;
+using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Testing.AutoMap.ManyToMany;
 using NUnit.Framework;
 
@@ -123,8 +124,7 @@ namespace FluentNHibernate.Testing.AutoMap
         public void AutoMapSetsCacheOnClassUsingConvention()
         {
             Model<ExampleClass>(model => model
-                .WithConvention(conventions =>
-                    conventions.DefaultCache = cache => cache.AsReadOnly())
+                .WithConventions(conventions => conventions.Add(Cache.Is(cache => cache.AsReadOnly())))
                 .Where(type => type == typeof(ExampleClass)));
 
             Test<ExampleClass>(mapping =>

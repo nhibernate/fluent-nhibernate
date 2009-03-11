@@ -16,7 +16,7 @@ namespace FluentNHibernate.Conventions.Discovery
             return (target is IDynamicComponent);
         }
 
-        public void Apply(IMappingPart target, ConventionOverrides overrides)
+        public void Apply(IMappingPart target)
         {
             var conventions = conventionFinder.Find<IDynamicComponentConvention>();
             var component = (IDynamicComponent)target;
@@ -24,7 +24,7 @@ namespace FluentNHibernate.Conventions.Discovery
             foreach (var convention in conventions)
             {
                 if (convention.Accept(component))
-                    convention.Apply(component, overrides);
+                    convention.Apply(component);
             }
         }
     }

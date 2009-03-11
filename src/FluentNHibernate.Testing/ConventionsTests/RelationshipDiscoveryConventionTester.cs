@@ -11,7 +11,6 @@ namespace FluentNHibernate.Testing.ConventionsTests
     {
         private RelationshipDiscoveryConvention convention;
         private IConventionFinder conventionFinder;
-        private readonly ConventionOverrides Overrides = new ConventionOverrides();
 
         [SetUp]
         public void CreateConvention()
@@ -40,7 +39,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             conventionFinder.Stub(x => x.Find<IRelationshipConvention>())
                 .Return(new IRelationshipConvention[] { });
 
-            convention.Apply(MockRepository.GenerateStub<IRelationship>(), Overrides);
+            convention.Apply(MockRepository.GenerateStub<IRelationship>());
             conventionFinder.AssertWasCalled(x => x.Find<IRelationshipConvention>());
         }
 
@@ -57,7 +56,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             conventionFinder.Stub(x => x.Find<IRelationshipConvention>())
                 .Return(conventions);
 
-            convention.Apply(relationship, Overrides);
+            convention.Apply(relationship);
 
             conventions[0].AssertWasCalled(x => x.Accept(relationship));
             conventions[1].AssertWasCalled(x => x.Accept(relationship));
@@ -79,11 +78,11 @@ namespace FluentNHibernate.Testing.ConventionsTests
             conventions[0].Stub(x => x.Accept(relationship)).Return(true);
             conventions[1].Stub(x => x.Accept(relationship)).Return(false);
 
-            convention.Apply(relationship, Overrides);
+            convention.Apply(relationship);
 
             // each convention gets Apply called for any properties it returned true for Accept
-            conventions[0].AssertWasCalled(x => x.Apply(relationship, Overrides));
-            conventions[1].AssertWasNotCalled(x => x.Apply(relationship, Overrides));
+            conventions[0].AssertWasCalled(x => x.Apply(relationship));
+            conventions[1].AssertWasNotCalled(x => x.Apply(relationship));
         }
     }
 }

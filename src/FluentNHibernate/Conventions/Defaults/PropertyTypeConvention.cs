@@ -10,7 +10,7 @@ namespace FluentNHibernate.Conventions.Defaults
             return !target.HasAttribute("type") && !target.PropertyType.IsEnum;
         }
 
-        public void Apply(IProperty target, ConventionOverrides overrides)
+        public void Apply(IProperty target)
         {            
             target.SetAttribute("type", TypeMapping.GetTypeString(target.PropertyType));
         }

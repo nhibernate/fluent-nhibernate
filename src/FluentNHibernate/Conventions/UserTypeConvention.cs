@@ -17,7 +17,7 @@ namespace FluentNHibernate.Conventions
             return type == typeof(TType);
         }
 
-        public virtual void Apply(IProperty target, ConventionOverrides overrides)
+        public virtual void Apply(IProperty target)
         {
             target.CustomTypeIs<TUserType>();
         }

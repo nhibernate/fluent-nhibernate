@@ -7,16 +7,16 @@ namespace FluentNHibernate.AutoMap
 {
     public class AutoMapIdentity : IAutoMapper
     {
-        private readonly AutoMapConventionOverrides conventions;
+        private readonly AutoMappingExpressions expressions;
 
-        public AutoMapIdentity(AutoMapConventionOverrides conventions)
+        public AutoMapIdentity(AutoMappingExpressions conventions)
         {
-            this.conventions = conventions;
+            this.expressions = conventions;
         }
 
         public bool MapsProperty(PropertyInfo property)
         {
-            return conventions.FindIdentity.Invoke(property);
+            return expressions.FindIdentity(property);
         }
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)

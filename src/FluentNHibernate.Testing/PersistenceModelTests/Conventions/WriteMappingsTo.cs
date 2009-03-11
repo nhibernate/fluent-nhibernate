@@ -68,7 +68,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests.Conventions
 
             model.WriteMappingsTo(TempDir);
 
-            convention.AssertWasCalled(x => x.Apply(null, null),
+            convention.AssertWasCalled(x => x.Apply(null),
                 constraints => constraints.IgnoreArguments());
         }
 
@@ -86,7 +86,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests.Conventions
 
             model.WriteMappingsTo(TempDir);
 
-            convention.AssertWasNotCalled(x => x.Apply(null, null),
+            convention.AssertWasNotCalled(x => x.Apply(null),
                 constraints => constraints.IgnoreArguments());
         }
     }

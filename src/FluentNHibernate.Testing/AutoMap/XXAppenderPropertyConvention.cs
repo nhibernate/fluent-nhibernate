@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing.AutoMap
             return true;
         }
 
-        public void Apply(IProperty propertyMapping, ConventionOverrides overrides)
+        public void Apply(IProperty propertyMapping)
         {
             propertyMapping.TheColumnNameIs(propertyMapping.Property.Name + "XX");
         }

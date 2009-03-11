@@ -10,12 +10,9 @@ namespace FluentNHibernate.Conventions.Defaults
             return string.IsNullOrEmpty(classMap.TableName);
         }
 
-        public void Apply(IClassMap classMap, ConventionOverrides overrides)
+        public void Apply(IClassMap classMap)
         {
-            if (overrides.GetTableName == null)
-                classMap.WithTable("`" + classMap.EntityType.Name + "`");
-            else
-                classMap.WithTable(overrides.GetTableName(classMap.EntityType));
+            classMap.WithTable("`" + classMap.EntityType.Name + "`");
         }
     }
 }

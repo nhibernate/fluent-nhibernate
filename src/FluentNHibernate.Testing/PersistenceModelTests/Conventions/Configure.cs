@@ -54,7 +54,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests.Conventions
 
             model.Configure(new Configuration());
 
-            convention.AssertWasCalled(x => x.Apply(null, null),
+            convention.AssertWasCalled(x => x.Apply(null),
                 constraints => constraints.IgnoreArguments());
         }
 
@@ -72,7 +72,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests.Conventions
 
             model.Configure(new Configuration());
 
-            convention.AssertWasNotCalled(x => x.Apply(null, null),
+            convention.AssertWasNotCalled(x => x.Apply(null),
                 constraints => constraints.IgnoreArguments());
         }
     }

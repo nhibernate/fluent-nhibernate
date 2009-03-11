@@ -17,7 +17,7 @@ namespace FluentNHibernate.Conventions.Discovery
             return (relationship is IManyToManyPart);
         }
 
-        public void Apply(IRelationship relationship, ConventionOverrides overrides)
+        public void Apply(IRelationship relationship)
         {
             var conventions = conventionFinder.Find<IHasManyToManyConvention>();
             var m2m = (IManyToManyPart)relationship;
@@ -25,7 +25,7 @@ namespace FluentNHibernate.Conventions.Discovery
             foreach (var convention in conventions)
             {
                 if (convention.Accept(m2m))
-                    convention.Apply(m2m, overrides);
+                    convention.Apply(m2m);
             }
         }
     }

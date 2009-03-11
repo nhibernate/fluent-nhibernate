@@ -16,17 +16,10 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void add_property_convention_for_type_of_attribute()
         {
             new MappingTester<Site>()
-                .WithConventions(conventions =>
-                    conventions.Finder.Add<MyAttributeConvention>())
+                .Conventions(conventions => conventions.Add<MyAttributeConvention>())
                 .ForMapping(m => m.Map(x => x.Name))
                 .Element("class/property[@name='Name']")
                     .HasAttribute("My", "true");
-        }
-
-        [Test]
-        public void DefaultLazyLoad_should_be_true_by_default_for_compatibility_with_NHibernate()
-        {
-            new ConventionOverrides().DefaultLazyLoad.ShouldBeTrue();
         }
     }
 
@@ -51,7 +44,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
     public class MyAttributeConvention : AttributePropertyConvention<MyAttribute>
     {
-        protected override void Apply(MyAttribute attribute, IProperty target, ConventionOverrides overrides)
+        protected override void Apply(MyAttribute attribute, IProperty target)
         {
             target.SetAttribute("My", "true");
         }

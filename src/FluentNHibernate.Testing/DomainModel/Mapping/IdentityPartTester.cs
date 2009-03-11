@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Xml;
 using FluentNHibernate.AutoMap.TestFixtures.SuperTypes;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Utils;
 using NUnit.Framework;
@@ -368,17 +369,29 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Each_visitor_should_be_asked_to_specify_the_primary_key_name_convention()
+        public void AppliesConventions()
         {
             new MappingTester<IdentityTarget>()
-                .WithConventions(conventions =>
-                    conventions.GetPrimaryKeyName = prop => "foo")
+                .Conventions(conventions => conventions.Add(new TestIdConvention()))
                 .ForMapping(map => map.Id(x => x.LongId))
-                    .Element("class/id").HasAttribute("column", "foo");
+                    .Element("class/id").HasAttribute("test", "true");
+        }
+
+        private class TestIdConvention : IIdConvention
+        {
+            public bool Accept(IIdentityPart target)
+            {
+                return true;
+            }
+
+            public void Apply(IIdentityPart target)
+            {
+                target.SetAttribute("test", "true");
+            }
         }
 	}
 
-	public class IdentityTarget
+    public class IdentityTarget
 	{
 		public virtual int IntId { get; set; }
 		public virtual long LongId { get; set; }

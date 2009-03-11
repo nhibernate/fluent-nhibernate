@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1C988DFB-1EC5-484E-87D9-1D3C775BA435}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -64,7 +64,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AutoMapConventionOverrides.cs" />
+    <Compile Include="AutoMappingExpressions.cs" />
     <Compile Include="AutoMap\Alterations\AutoMappingOverrideAlteration.cs" />
     <Compile Include="AutoMap\Alterations\IAutoMappingAlteration.cs" />
     <Compile Include="AutoMap\Alterations\IAutoMappingOverride.cs" />
@@ -80,7 +80,6 @@
     <Compile Include="AutoMap\AutoMappingException.cs" />
     <Compile Include="AutoMap\AutoMapVersion.cs" />
     <Compile Include="AutoMap\AutoPersistenceModel.cs" />
-    <Compile Include="AutoMap\ConventionBuilder.cs" />
     <Compile Include="AutoMap\ExpressionBuilder.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />
     <Compile Include="AutoMap\IAutoMappingAlteration.cs" />
@@ -125,12 +124,20 @@
     <Compile Include="Conventions\Discovery\ReferenceDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\RelationshipDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\VersionDiscoveryConvention.cs" />
+    <Compile Include="Conventions\Helpers\BuiltClassConvention.cs" />
+    <Compile Include="Conventions\Helpers\BuiltIdConvention.cs" />
+    <Compile Include="Conventions\Helpers\Cache.cs" />
+    <Compile Include="Conventions\Helpers\DefaultLazy.cs" />
+    <Compile Include="Conventions\Helpers\DynamicInsert.cs" />
+    <Compile Include="Conventions\Helpers\DynamicUpdate.cs" />
+    <Compile Include="Conventions\Helpers\OptimisticLock.cs" />
+    <Compile Include="Conventions\Helpers\PrimaryKey.cs" />
+    <Compile Include="Conventions\Helpers\Table.cs" />
     <Compile Include="Data\Entity.cs" />
     <Compile Include="Data\InMemoryRepository.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Cfg\Db\MsSqlConfiguration.cs" />
-    <Compile Include="ConventionOverrides.cs" />
     <Compile Include="DummyPropertyInfo.cs" />
     <Compile Include="Mapping\Attributes.cs" />
     <Compile Include="Mapping\CachePart.cs" />
@@ -145,16 +152,6 @@
     <Compile Include="Conventions\Defaults\HasManyToManyChildForeignKeyConvention.cs" />
     <Compile Include="Conventions\Defaults\HasManyToManyParentForeignKeyConvention.cs" />
     <Compile Include="Conventions\Defaults\PrimaryKeyConvention.cs" />
-    <Compile Include="Conventions\UserAlterations\DefaultCacheConvention.cs" />
-    <Compile Include="Conventions\UserAlterations\DefaultLazyConvention.cs" />
-    <Compile Include="Conventions\UserAlterations\DynamicInsertConvention.cs" />
-    <Compile Include="Conventions\UserAlterations\DynamicUpdateConvention.cs" />
-    <Compile Include="Conventions\UserAlterations\HasManyConvention.cs" />
-    <Compile Include="Conventions\UserAlterations\HasOneConvention.cs" />
-    <Compile Include="Conventions\UserAlterations\IdConvention.cs" />
-    <Compile Include="Conventions\UserAlterations\JoinConvention.cs" />
-    <Compile Include="Conventions\UserAlterations\OptimisticLockConvention.cs" />
-    <Compile Include="Conventions\UserAlterations\ReferencesConvention.cs" />
     <Compile Include="Conventions\Defaults\VersionColumnNameConvention.cs" />
     <Compile Include="Conventions\IAssemblyConvention.cs" />
     <Compile Include="Conventions\IClassConvention.cs" />
@@ -189,7 +186,7 @@
     <Compile Include="Mapping\MappingPartComparer.cs" />
     <Compile Include="Mapping\NotFoundExpression.cs" />
     <Compile Include="Mapping\OneToOnePart.cs" />
-    <Compile Include="Mapping\OptimisticLock.cs" />
+    <Compile Include="Mapping\OptimisticLockBuilder.cs" />
     <Compile Include="Mapping\PartPosition.cs" />
     <Compile Include="Mapping\ToManyBase.cs" />
     <Compile Include="MissingConstructorException.cs" />

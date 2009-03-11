@@ -16,7 +16,7 @@ namespace FluentNHibernate.Conventions.Discovery
             return (target is IJoin);
         }
 
-        public void Apply(IMappingPart target, ConventionOverrides overrides)
+        public void Apply(IMappingPart target)
         {
             var conventions = conventionFinder.Find<IJoinConvention>();
             var join = (IJoin)target;
@@ -24,7 +24,7 @@ namespace FluentNHibernate.Conventions.Discovery
             foreach (var convention in conventions)
             {
                 if (convention.Accept(join))
-                    convention.Apply(join, overrides);
+                    convention.Apply(join);
             }
         }
     }

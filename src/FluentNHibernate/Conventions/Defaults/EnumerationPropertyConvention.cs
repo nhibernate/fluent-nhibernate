@@ -11,12 +11,11 @@ namespace FluentNHibernate.Conventions.Defaults
             return target.PropertyType.IsEnum && !target.HasAttribute("type");
         }
 
-        public void Apply(IProperty target, ConventionOverrides overrides)
+        public void Apply(IProperty target)
         {
             Type mapperType = typeof(GenericEnumMapper<>).MakeGenericType(target.PropertyType);
             
             target.CustomTypeIs(mapperType);
-            target.CustomSqlTypeIs("string");
         }
     }
 }

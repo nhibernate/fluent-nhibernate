@@ -9,9 +9,9 @@ namespace FluentNHibernate.AutoMap
 {
     public class ManyToManyAutoMapper : IAutoMapper
     {
-        private readonly AutoMapConventionOverrides conventions;
+        private readonly AutoMappingExpressions conventions;
 
-        public ManyToManyAutoMapper(AutoMapConventionOverrides conventions)
+        public ManyToManyAutoMapper(AutoMappingExpressions conventions)
         {
             this.conventions = conventions;
         }

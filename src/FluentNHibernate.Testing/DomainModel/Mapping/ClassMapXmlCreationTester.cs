@@ -321,7 +321,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .HasAttribute("type", typeof(GenericEnumMapper<ColorEnum>).AssemblyQualifiedName)
                 .Element("class/property[@name='NullableColor']/column")
                     .Exists()
-                    .HasAttribute("sql-type", "string")
                     .HasAttribute("not-null", "false");
 		}
 
@@ -502,14 +501,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<MappedObject>()
                 .ForMapping(x => x.ImportType<SecondMappedObject>().As("MappedObject"))
                 .Element("import").HasAttribute("rename", "MappedObject");
-        }
-
-        [Test]
-        public void DefaultLazyLoad_should_be_true_by_default_for_compatibility_with_NHibernate()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(c => { })
-                .HasAttribute("default-lazy", "true");
         }
 
         [Test]

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using FluentNHibernate.Conventions;
+using FluentNHibernate.Mapping;
 using Iesi.Collections.Generic;
 using NUnit.Framework;
 
@@ -282,15 +284,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void SetsLazyLoadingOnThroughConvention()
+        public void AppliesConventions()
         {
             new MappingTester<OneToManyComponentTarget>()
-                .WithConventions(conventions =>
-                    conventions.OneToManyConvention = p => p.LazyLoad())
+                .Conventions(conventions => conventions.Add(new TestO2MConvention()))
                 .ForMapping(m => m.HasMany(x => x.SetOfComponents).Component(c => c.Map(x => x.Name)))
-                .Element("class/set").HasAttribute("lazy", "true");
+                .Element("class/set").HasAttribute("test", "true");
         }
-
 
         [Test]
         public void SetsCascadeOffAsDefault()
@@ -299,16 +299,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.HasMany(x => x.SetOfComponents)
                                     .Component(c => c.Map(x => x.Name)))
                 .Element("class/set").DoesntHaveAttribute("cascade");
-        }
-
-        [Test]
-        public void SetsCascadeOnThroughConvention()
-        {
-            new MappingTester<OneToManyComponentTarget>()
-                .WithConventions(conventions =>
-                    conventions.OneToManyConvention = p => p.Cascade.All())
-                .ForMapping(m => m.HasMany(x => x.SetOfComponents).Component(c => c.Map(x => x.Name)))
-                .Element("class/set").HasAttribute("cascade", "all");
         }
 
         [Test] 
@@ -557,6 +547,19 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                                        .Access.AsCamelCaseField().AsList())
                 .Element("class/list")
                 .DoesntHaveAttribute("collection-type");
+        }
+
+        private class TestO2MConvention : IHasManyConvention
+        {
+            public bool Accept(IOneToManyPart target)
+            {
+                return true;
+            }
+
+            public void Apply(IOneToManyPart target)
+            {
+                target.SetAttribute("test", "true");
+            }
         }
     }
 }

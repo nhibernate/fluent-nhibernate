@@ -10,12 +10,9 @@ namespace FluentNHibernate.Conventions.Defaults
             return string.IsNullOrEmpty(target.ChildKeyColumn);
         }
 
-        public void Apply(IManyToManyPart target, ConventionOverrides overrides)
+        public void Apply(IManyToManyPart target)
         {
-            if (overrides.GetForeignKeyNameForType == null)
-                target.WithChildKeyColumn(target.ChildType.Name + "_id");
-            else
-                target.WithChildKeyColumn(overrides.GetForeignKeyNameForType(target.ChildType));
+            target.WithChildKeyColumn(target.ChildType.Name + "_id");
         }
     }
 }

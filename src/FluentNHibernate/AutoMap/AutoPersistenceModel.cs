@@ -29,16 +29,6 @@ namespace FluentNHibernate.AutoMap
             return this;
         }
 
-        public new AutoMapConventionOverrides Conventions
-        {
-            get { return (AutoMapConventionOverrides)base.Conventions; }
-        }
-
-        protected override ConventionOverrides CreateConventions(IConventionFinder finder)
-        {
-            return new AutoMapConventionOverrides(finder);
-        }
-
         /// <summary>
         /// Use auto mapping overrides defined in the assembly of T.
         /// </summary>
@@ -50,11 +40,19 @@ namespace FluentNHibernate.AutoMap
             return this;
         }
 
-        public AutoPersistenceModel WithConvention(Action<AutoMapConventionOverrides> conventionAction)
+        public AutoPersistenceModel WithConventions(Action<IConventionFinder> conventionFinderAction)
         {
-            conventionAction(Conventions);
+            conventionFinderAction(ConventionFinder);
             return this;
         }
+
+        public AutoPersistenceModel WithMappingExpressions(Action<AutoMappingExpressions> expressionsAction)
+        {
+            expressionsAction(Expressions);
+            return this;
+        }
+
+        public AutoMappingExpressions Expressions { get; private set; }
 
         public static AutoPersistenceModel MapEntitiesFromAssemblyOf<T>()
         {
@@ -90,7 +88,7 @@ namespace FluentNHibernate.AutoMap
                         continue;
                 }
 
-                if (Conventions.IsBaseType(type) || type == typeof(object) || type.IsAbstract)
+                if (Expressions.IsBaseType(type) || type == typeof(object) || type.IsAbstract)
                     continue;
 
                 mappingTypes.Add(new AutoMapType(type));
@@ -113,6 +111,8 @@ namespace FluentNHibernate.AutoMap
             }
 
             autoMappingsCreated = true;
+
+            ApplyConventions();
         }
 
         public override void Configure(NHibernate.Cfg.Configuration configuration)
@@ -140,7 +140,7 @@ namespace FluentNHibernate.AutoMap
 
         private Type GetTypeToMap(Type type)
         {
-            return Conventions.IsBaseType(type.BaseType) || type.BaseType == typeof(object) ? type : type.BaseType;
+            return Expressions.IsBaseType(type.BaseType) || type.BaseType == typeof(object) ? type : type.BaseType;
         }
 
         private void MergeMap(Type type, object mapping)
@@ -154,7 +154,8 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel()
         {
-            autoMapper = new AutoMapper(Conventions);
+            Expressions = new AutoMappingExpressions();
+            autoMapper = new AutoMapper(Expressions, ConventionFinder);
         }
 
         /// <summary>
@@ -163,12 +164,14 @@ namespace FluentNHibernate.AutoMap
         /// <param name="mapAssembly">Assembly Containing Maps</param>
         public AutoPersistenceModel(Assembly mapAssembly)
         {
+            Expressions = new AutoMappingExpressions();
             addMappingsFromAssembly(mapAssembly);
-            autoMapper = new AutoMapper(Conventions);
+            autoMapper = new AutoMapper(Expressions, ConventionFinder);
         }
 
         public AutoPersistenceModel(AutoMapper customAutomapper)
         {
+            Expressions = new AutoMappingExpressions();
             autoMapper = customAutomapper;
         }
 

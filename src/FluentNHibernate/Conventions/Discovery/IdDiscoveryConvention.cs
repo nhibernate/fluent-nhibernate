@@ -16,7 +16,7 @@ namespace FluentNHibernate.Conventions.Discovery
             return (part is IIdentityPart);
         }
 
-        public void Apply(IMappingPart part, ConventionOverrides overrides)
+        public void Apply(IMappingPart part)
         {
             var conventions = conventionFinder.Find<IIdConvention>();
             var id = (IIdentityPart)part;
@@ -24,7 +24,7 @@ namespace FluentNHibernate.Conventions.Discovery
             foreach (var convention in conventions)
             {
                 if (convention.Accept(id))
-                    convention.Apply(id, overrides);
+                    convention.Apply(id);
             }
         }
     }

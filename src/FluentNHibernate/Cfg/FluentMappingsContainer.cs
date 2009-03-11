@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using FluentNHibernate.Conventions;
 using NHibernate.Cfg;
 
 namespace FluentNHibernate.Cfg
@@ -57,9 +58,9 @@ namespace FluentNHibernate.Cfg
         /// </summary>
         /// <param name="conventions">Lambda expression used to alter the conventions</param>
         /// <returns>Fluent mappings configuration</returns>
-        public FluentMappingsContainer AlterConventions(Action<ConventionOverrides> conventions)
+        public FluentMappingsContainer AlterConventions(Action<IConventionFinder> conventions)
         {
-            conventions(model.Conventions);
+            conventions(model.ConventionFinder);
             return this;
         }
 

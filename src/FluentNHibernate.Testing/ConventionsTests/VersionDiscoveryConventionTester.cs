@@ -11,7 +11,6 @@ namespace FluentNHibernate.Testing.ConventionsTests
     {
         private VersionDiscoveryConvention convention;
         private IConventionFinder conventionFinder;
-        private readonly ConventionOverrides Overrides = new ConventionOverrides();
 
         [SetUp]
         public void CreateConvention()
@@ -40,7 +39,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             conventionFinder.Stub(x => x.Find<IVersionConvention>())
                 .Return(new IVersionConvention[] { });
 
-            convention.Apply(MockRepository.GenerateStub<IVersion>(), Overrides);
+            convention.Apply(MockRepository.GenerateStub<IVersion>());
             conventionFinder.AssertWasCalled(x => x.Find<IVersionConvention>());
         }
 
@@ -57,7 +56,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             conventionFinder.Stub(x => x.Find<IVersionConvention>())
                 .Return(conventions);
 
-            convention.Apply(id, Overrides);
+            convention.Apply(id);
 
             conventions[0].AssertWasCalled(x => x.Accept(id));
             conventions[1].AssertWasCalled(x => x.Accept(id));
@@ -79,11 +78,11 @@ namespace FluentNHibernate.Testing.ConventionsTests
             conventions[0].Stub(x => x.Accept(id)).Return(true);
             conventions[1].Stub(x => x.Accept(id)).Return(false);
 
-            convention.Apply(id, Overrides);
+            convention.Apply(id);
 
             // each convention gets Apply called for any properties it returned true for Accept
-            conventions[0].AssertWasCalled(x => x.Apply(id, Overrides));
-            conventions[1].AssertWasNotCalled(x => x.Apply(id, Overrides));
+            conventions[0].AssertWasCalled(x => x.Apply(id));
+            conventions[1].AssertWasNotCalled(x => x.Apply(id));
         }
     }
 }

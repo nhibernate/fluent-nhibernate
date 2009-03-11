@@ -10,12 +10,9 @@ namespace FluentNHibernate.Conventions.Defaults
             return string.IsNullOrEmpty(target.TableName);
         }
 
-        public void Apply(IManyToManyPart target, ConventionOverrides overrides)
+        public void Apply(IManyToManyPart target)
         {
-            if (overrides.GetManyToManyTableName == null)
-                target.WithTableName(target.ChildType.Name + "To" + target.ParentType.Name);
-            else
-                target.WithTableName(overrides.GetManyToManyTableName(target));
+            target.WithTableName(target.ChildType.Name + "To" + target.ParentType.Name);
         }
     }
 }

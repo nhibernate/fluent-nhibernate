@@ -1,6 +1,7 @@
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures;
 using NHibernate.Cfg;
@@ -95,8 +96,7 @@ namespace FluentNHibernate.Testing.Cfg
         public void AlteringConventionsShouldAffectProducedClasses()
         {
             mapping.FluentMappings.AddFromAssemblyOf<Record>();
-            mapping.FluentMappings.AlterConventions(conventions =>
-                conventions.GetTableName = type => type.Name + "Table");
+            mapping.FluentMappings.AlterConventions(conventions => conventions.Add(Table.Is(map => map.EntityType.Name + "Table")));
             mapping.Apply(cfg);
 
             cfg.ClassMappings.ShouldContain(c => c.Table.Name == "RecordTable");

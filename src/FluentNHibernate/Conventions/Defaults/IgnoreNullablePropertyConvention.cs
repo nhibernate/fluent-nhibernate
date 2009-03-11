@@ -13,7 +13,7 @@ namespace FluentNHibernate.Conventions.Defaults
             return type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)) && !type.GetGenericArguments()[0].IsEnum;
         }
 
-        public void Apply(IProperty target, ConventionOverrides overrides)
+        public void Apply(IProperty target)
         {
             // no-op;
         }

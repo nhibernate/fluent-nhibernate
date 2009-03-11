@@ -13,7 +13,6 @@ namespace FluentNHibernate.Testing.ConventionsTests
         private readonly List<IClassMap> EmptyList = new List<IClassMap>();
         private ClassDiscoveryConvention convention;
         private IConventionFinder conventionFinder;
-        private readonly ConventionOverrides Overrides = new ConventionOverrides();
 
         [SetUp]
         public void CreateConvention()
@@ -25,7 +24,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ApplyFindsConventions()
         {
-            convention.Apply(EmptyList, Overrides);
+            convention.Apply(EmptyList);
             conventionFinder.AssertWasCalled(x => x.Find<IClassConvention>());
         }
 
@@ -47,7 +46,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             conventionFinder.Stub(x => x.Find<IClassConvention>())
                 .Return(conventions);
 
-            convention.Apply(classes, new ConventionOverrides());
+            convention.Apply(classes);
 
             // each convention gets Accept called for each class
             conventions[0].AssertWasCalled(x => x.Accept(classes[0]));
@@ -74,11 +73,11 @@ namespace FluentNHibernate.Testing.ConventionsTests
             conventions[0].Stub(x => x.Accept(classes[0])).Return(true);
             conventions[1].Stub(x => x.Accept(classes[0])).Return(false);
 
-            convention.Apply(classes, Overrides);
+            convention.Apply(classes);
 
             // each convention gets Apply called for any classes it returned true for Accept
-            conventions[0].AssertWasCalled(x => x.Apply(classes[0], Overrides));
-            conventions[1].AssertWasNotCalled(x => x.Apply(classes[0], Overrides));
+            conventions[0].AssertWasCalled(x => x.Apply(classes[0]));
+            conventions[1].AssertWasNotCalled(x => x.Apply(classes[0]));
         }
     }
 }

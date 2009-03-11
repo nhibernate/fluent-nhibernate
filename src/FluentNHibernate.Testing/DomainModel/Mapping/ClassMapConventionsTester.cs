@@ -1,4 +1,4 @@
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Helpers;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
@@ -10,20 +10,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void DefaultLazyLoad_should_be_false_if_set_by_convention()
         {
             new MappingTester<MappedObject>()
-                .WithConventions(conventions =>
-                    conventions.DefaultLazyLoad = false)
+                .Conventions(conventions => conventions.Add(DefaultLazy.AlwaysFalse()))
                 .ForMapping(c => { })
                 .HasAttribute("default-lazy", "false");
-        }
-
-        [Test]
-        public void DefaultLazyLoad_convention_should_not_override_direct_setting_on_classmap()
-        {
-            new MappingTester<MappedObject>()
-                .WithConventions(conventions =>
-                    conventions.DefaultLazyLoad = false)
-                .ForMapping(c => c.SetHibernateMappingAttribute("default-lazy", "true"))
-                .HasAttribute("default-lazy", "true");
         }
 
         [Test]
@@ -38,8 +27,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void DynamicUpdateShouldSetAttributeIfTrue()
         {
             new MappingTester<MappedObject>()
-                .WithConventions(conventions =>
-                    conventions.DynamicUpdate = type => true)
+                .Conventions(conventions => conventions.Add(DynamicUpdate.AlwaysTrue()))
                 .ForMapping(c => { })
                 .Element("class").HasAttribute("dynamic-update", "true");
         }
@@ -48,8 +36,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void DynamicUpdateShouldSetAttributeIfFalse()
         {
             new MappingTester<MappedObject>()
-                .WithConventions(conventions =>
-                    conventions.DynamicUpdate = type => false)
+                .Conventions(conventions => conventions.Add(DynamicUpdate.AlwaysFalse()))
                 .ForMapping(c => { })
                 .Element("class").HasAttribute("dynamic-update", "false");
         }
@@ -58,8 +45,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void DynamicUpdateShouldntOverrideDirectSetting()
         {
             new MappingTester<MappedObject>()
-                .WithConventions(conventions =>
-                    conventions.DynamicUpdate = type => true)
+                .Conventions(conventions => conventions.Add(DynamicUpdate.AlwaysTrue()))
                 .ForMapping(c => c.SetAttribute("dynamic-update", "false"))
                 .Element("class").HasAttribute("dynamic-update", "false");
         }
@@ -76,8 +62,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void DynamicInsertShouldSetAttributeIfTrue()
         {
             new MappingTester<MappedObject>()
-                .WithConventions(conventions =>
-                    conventions.DynamicInsert = type => true)
+                .Conventions(conventions => conventions.Add(DynamicInsert.AlwaysTrue()))
                 .ForMapping(c => { })
                 .Element("class").HasAttribute("dynamic-insert", "true");
         }
@@ -86,8 +71,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void DynamicInsertShouldSetAttributeIfFalse()
         {
             new MappingTester<MappedObject>()
-                .WithConventions(conventions =>
-                    conventions.DynamicInsert = type => false)
+                .Conventions(conventions => conventions.Add(DynamicInsert.AlwaysFalse()))
                 .ForMapping(c => { })
                 .Element("class").HasAttribute("dynamic-insert", "false");
         }
@@ -96,8 +80,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void DynamicInsertShouldntOverrideDirectSetting()
         {
             new MappingTester<MappedObject>()
-                .WithConventions(conventions =>
-                    conventions.DynamicInsert = type => true)
+                .Conventions(conventions => conventions.Add(DynamicInsert.AlwaysTrue()))
                 .ForMapping(c => c.SetAttribute("dynamic-insert", "false"))
                 .Element("class").HasAttribute("dynamic-insert", "false");
         }
@@ -114,8 +97,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void OptimisticLockShouldSetAttributeIfSupplied()
         {
             new MappingTester<MappedObject>()
-                .WithConventions(conventions =>
-                    conventions.OptimisticLock = (type, locking) => locking.All())
+                .Conventions(conventions => conventions.Add(OptimisticLock.Is(x => x.All())))
                 .ForMapping(c => { })
                 .Element("class").HasAttribute("optimistic-lock", "all");
         }
@@ -124,8 +106,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void OptimisticLockShouldntOverrideDirectSetting()
         {
             new MappingTester<MappedObject>()
-                .WithConventions(conventions =>
-                    conventions.OptimisticLock = (type, locking) => locking.All())
+                .Conventions(conventions => conventions.Add(OptimisticLock.Is(x => x.All())))
                 .ForMapping(c => c.OptimisticLock.Dirty())
                 .Element("class").HasAttribute("optimistic-lock", "dirty");
         }

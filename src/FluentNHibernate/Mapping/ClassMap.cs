@@ -21,7 +21,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the optimistic locking strategy
         /// </summary>
-        OptimisticLock OptimisticLock { get; }
+        OptimisticLockBuilder OptimisticLock { get; }
 
         /// <summary>
         /// Sets the table for the class.
@@ -440,9 +440,9 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the optimistic locking strategy
         /// </summary>
-        public OptimisticLock OptimisticLock
+        public OptimisticLockBuilder OptimisticLock
         {
-            get { return new OptimisticLock(Attributes); }
+            get { return new OptimisticLockBuilder(Attributes); }
         }
     }
 }

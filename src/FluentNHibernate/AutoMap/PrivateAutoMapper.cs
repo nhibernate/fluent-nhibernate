@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate.AutoMap
 {
     public class PrivateAutoMapper : AutoMapper
     {
-        private readonly AutoMapConventionOverrides _conventions;
+        private readonly AutoMappingExpressions expressions;
 
-        internal PrivateAutoMapper(AutoMapConventionOverrides conventions)
-            : base(conventions)
+        internal PrivateAutoMapper(AutoMappingExpressions expressions, IConventionFinder conventionFinder)
+            : base(expressions, conventionFinder)
         {
-            _conventions = conventions;
+            this.expressions = expressions;
         }
 
         public override void mapEverythingInClass<T>(AutoMap<T> map)
         {
             // This will ONLY map private properties. Do not call base.
 
-            var rule = _conventions.FindMappablePrivateProperties;
+            var rule = expressions.FindMappablePrivateProperties;
             if (rule == null)
                 throw new InvalidOperationException("The FindMappablePrivateProperties convention must be supplied to use the PrivateAutoMapper. ");
 

@@ -17,7 +17,7 @@ namespace FluentNHibernate.Conventions.Discovery
             return (relationship is IOneToOnePart);
         }
 
-        public void Apply(IRelationship relationship, ConventionOverrides overrides)
+        public void Apply(IRelationship relationship)
         {
             var conventions = conventionFinder.Find<IHasOneConvention>();
             var o2o = (IOneToOnePart)relationship;
@@ -25,7 +25,7 @@ namespace FluentNHibernate.Conventions.Discovery
             foreach (var convention in conventions)
             {
                 if (convention.Accept(o2o))
-                    convention.Apply(o2o, overrides);
+                    convention.Apply(o2o);
             }
         }
     }

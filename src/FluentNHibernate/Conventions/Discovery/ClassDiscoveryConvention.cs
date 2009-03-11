@@ -17,7 +17,7 @@ namespace FluentNHibernate.Conventions.Discovery
             return true;
         }
 
-        public void Apply(IEnumerable<IClassMap> classes, ConventionOverrides overrides)
+        public void Apply(IEnumerable<IClassMap> classes)
         {
             var conventions = conventionFinder.Find<IClassConvention>();
 
@@ -26,7 +26,7 @@ namespace FluentNHibernate.Conventions.Discovery
                 foreach (var classConvention in conventions)
                 {
                     if (classConvention.Accept(classMap))
-                        classConvention.Apply(classMap, overrides);
+                        classConvention.Apply(classMap);
                 }
             }
         }

@@ -13,14 +13,13 @@ namespace FluentNHibernate.Conventions.Defaults
             return type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)) && type.GetGenericArguments()[0].IsEnum;
         }
 
-        public void Apply(IProperty target, ConventionOverrides overrides)
+        public void Apply(IProperty target)
         {
             var enumerationType = target.PropertyType.GetGenericArguments()[0];
             var mapperType = typeof(GenericEnumMapper<>).MakeGenericType(enumerationType);
 
             target.CustomTypeIs(mapperType);
             target.Nullable();
-            target.CustomSqlTypeIs("string");
         }
     }
 }

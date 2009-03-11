@@ -13,8 +13,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         public void CanApplySameInstanceToMultipleParts()
         {
             new MappingTester<ExampleClass>()
-                .WithConventions(conventions =>
-                    conventions.Finder.Add(new CustomConvention()))
+                .Conventions(conventions => conventions.Add(new CustomConvention()))
                 .ForMapping(m =>
                 {
                     m.Id(x => x.Id);
@@ -31,7 +30,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
                 return true;
             }
 
-            public void Apply(IIdentityPart target, ConventionOverrides overrides)
+            public void Apply(IIdentityPart target)
             {
                 target.SetAttribute("applied", "true");
             }
@@ -41,7 +40,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
                 return true;
             }
 
-            public void Apply(IProperty target, ConventionOverrides overrides)
+            public void Apply(IProperty target)
             {
                 target.SetAttribute("applied", "true");
             }

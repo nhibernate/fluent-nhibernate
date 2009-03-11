@@ -16,7 +16,7 @@ namespace FluentNHibernate.Conventions.Discovery
             return (part is IVersion);
         }
 
-        public void Apply(IMappingPart part, ConventionOverrides overrides)
+        public void Apply(IMappingPart part)
         {
             var conventions = conventionFinder.Find<IVersionConvention>();
             var version = (IVersion)part;
@@ -24,7 +24,7 @@ namespace FluentNHibernate.Conventions.Discovery
             foreach (var convention in conventions)
             {
                 if (convention.Accept(version))
-                    convention.Apply(version, overrides);
+                    convention.Apply(version);
             }
         }
     }

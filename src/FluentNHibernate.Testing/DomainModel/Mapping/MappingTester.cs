@@ -1,5 +1,6 @@
 using System;
 using System.Xml;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
 using NHibernate.Cfg;
 using NUnit.Framework;
@@ -16,7 +17,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public MappingTester()
         {
             model = new PersistenceModel();
-            _visitor = new MappingVisitor(model.Conventions, new Configuration());
+            _visitor = new MappingVisitor(new Configuration());
         }
 
         public virtual MappingTester<T> RootElement
@@ -28,9 +29,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             }
         }
 
-        public virtual MappingTester<T> WithConventions(Action<ConventionOverrides> conventions)
+        public virtual MappingTester<T> Conventions(Action<IConventionFinder> conventionFinderAction)
         {
-            conventions(model.Conventions);
+            conventionFinderAction(model.ConventionFinder);
             return this;
         }
 

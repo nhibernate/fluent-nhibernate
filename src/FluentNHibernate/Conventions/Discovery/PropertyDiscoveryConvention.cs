@@ -17,7 +17,7 @@ namespace FluentNHibernate.Conventions.Discovery
             return (part is IProperty);
         }
 
-        public void Apply(IMappingPart part, ConventionOverrides overrides)
+        public void Apply(IMappingPart part)
         {
             var conventions = conventionFinder.Find<IPropertyConvention>();
             var property = (IProperty)part;
@@ -25,7 +25,7 @@ namespace FluentNHibernate.Conventions.Discovery
             foreach (var convention in conventions)
             {
                 if (convention.Accept(property))
-                    convention.Apply(property, overrides);
+                    convention.Apply(property);
             }
         }
     }

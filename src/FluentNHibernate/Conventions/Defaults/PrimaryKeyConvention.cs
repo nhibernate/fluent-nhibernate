@@ -10,12 +10,9 @@ namespace FluentNHibernate.Conventions.Defaults
             return string.IsNullOrEmpty(target.ColumnName);
         }
 
-        public void Apply(IIdentityPart target, ConventionOverrides overrides)
+        public void Apply(IIdentityPart target)
         {
-            if (overrides.GetPrimaryKeyName == null)
-                target.TheColumnNameIs(target.Property.Name);
-            else
-                target.TheColumnNameIs(overrides.GetPrimaryKeyName(target));
+            target.TheColumnNameIs(target.Property.Name);
         }
     }
 }

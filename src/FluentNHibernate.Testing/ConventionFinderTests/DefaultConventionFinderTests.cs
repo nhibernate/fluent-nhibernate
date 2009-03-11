@@ -101,7 +101,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
             return false;
         }
 
-        public void Apply(IEnumerable<IClassMap> target, ConventionOverrides overrides)
+        public void Apply(IEnumerable<IClassMap> target)
         {
         }
     }
@@ -113,7 +113,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
             return false;
         }
 
-        public void Apply(IEnumerable<IClassMap> target, ConventionOverrides overrides)
+        public void Apply(IEnumerable<IClassMap> target)
         {
         }
     }
@@ -130,7 +130,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
             return false;
         }
 
-        public void Apply(IEnumerable<IClassMap> target, ConventionOverrides overrides)
+        public void Apply(IEnumerable<IClassMap> target)
         {
         }
     }
@@ -142,7 +142,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
             return false;
         }
 
-        public void Apply(IIdentityPart target, ConventionOverrides overrides)
+        public void Apply(IIdentityPart target)
         {
         }
 
@@ -151,7 +151,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
             return false;
         }
 
-        public void Apply(IProperty target, ConventionOverrides overrides)
+        public void Apply(IProperty target)
         {
         }
     }

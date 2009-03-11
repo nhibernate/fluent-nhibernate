@@ -9,11 +9,11 @@ namespace FluentNHibernate.AutoMap
 {
     public class AutoMapColumn : IAutoMapper
     {
-        private readonly ConventionOverrides conventionOverrides;
+        private IConventionFinder conventionFinder;
 
-        public AutoMapColumn(ConventionOverrides conventionOverrides)
+        public AutoMapColumn(IConventionFinder conventionFinder)
         {
-            this.conventionOverrides = conventionOverrides;
+            this.conventionFinder = conventionFinder;
         }
 
         public bool MapsProperty(PropertyInfo property)
@@ -29,7 +29,7 @@ namespace FluentNHibernate.AutoMap
 
         private bool HasExplicitTypeConvention(PropertyInfo property)
         {
-            var conventions = conventionOverrides.Finder
+            var conventions = conventionFinder
                 .Find<IUserTypeConvention>()
                 .Where(c => c.Accept(property.PropertyType));
 

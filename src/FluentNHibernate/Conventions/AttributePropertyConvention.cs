@@ -13,13 +13,13 @@ namespace FluentNHibernate.Conventions
             return attribute != null;
         }
 
-        public void Apply(IProperty target, ConventionOverrides overrides)
+        public void Apply(IProperty target)
         {
             var attribute = Attribute.GetCustomAttribute(target.Property, typeof(T)) as T;
             
-            Apply(attribute, target, overrides);
+            Apply(attribute, target);
         }
 
-        protected abstract void Apply(T attribute, IProperty target, ConventionOverrides overrides);
+        protected abstract void Apply(T attribute, IProperty target);
     }
 }

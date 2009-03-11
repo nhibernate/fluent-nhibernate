@@ -11,12 +11,9 @@ namespace FluentNHibernate.Conventions.Defaults
             return target.IsMethodAccess;
         }
 
-        public void Apply(TPart target, ConventionOverrides overrides)
+        public void Apply(TPart target)
         {
-            if (overrides.GetMethodCollectionAccessorBackingFieldName == null)
-                target.SetAttribute("name", target.Member.Name.Replace("Get", ""));
-            else
-                target.SetAttribute("name", overrides.GetMethodCollectionAccessorBackingFieldName(target.Member as MethodInfo));
+            target.SetAttribute("name", target.Member.Name.Replace("Get", ""));
         }
     }
 }

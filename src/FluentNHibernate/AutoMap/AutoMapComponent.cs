@@ -8,16 +8,16 @@ namespace FluentNHibernate.AutoMap
 {
     public class AutoMapComponent : IAutoMapper
     {
-        private readonly AutoMapConventionOverrides conventions;
+        private readonly AutoMappingExpressions expressions;
 
-        public AutoMapComponent(AutoMapConventionOverrides conventions)
+        public AutoMapComponent(AutoMappingExpressions expressions)
         {
-            this.conventions = conventions;
+            this.expressions = expressions;
         }
 
         public bool MapsProperty(PropertyInfo property)
         {
-            return conventions.IsComponentType(property.PropertyType);
+            return expressions.IsComponentType(property.PropertyType);
         }
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
@@ -31,7 +31,7 @@ namespace FluentNHibernate.AutoMap
         private void MapComponentProperties(PropertyInfo componentProperty, Type componentType, object componentPart)
         {
             var mapMethod = GetMapMethod(componentType, componentPart);
-            var columnNamePrefix = conventions.GetComponentColumnPrefix(componentProperty);
+            var columnNamePrefix = expressions.GetComponentColumnPrefix(componentProperty);
 
             foreach (var property in componentType.GetProperties())
             {

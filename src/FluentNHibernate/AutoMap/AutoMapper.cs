@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
 using System.Reflection;
 
@@ -11,18 +12,18 @@ namespace FluentNHibernate.AutoMap
         protected readonly List<IAutoMapper> _mappingRules;
         protected List<AutoMapType> mappingTypes;
 
-        public AutoMapper(AutoMapConventionOverrides conventions)
+        public AutoMapper(AutoMappingExpressions expressions, IConventionFinder conventionFinder)
         {
             _mappingRules = new List<IAutoMapper>
-                                {
-                                    new AutoMapIdentity(conventions), 
-                                    new AutoMapVersion(conventions), 
-                                    new AutoMapComponent(conventions),
-                                    new AutoMapColumn(conventions),
-                                    new ManyToManyAutoMapper(conventions),
-                                    new AutoMapManyToOne(),
-                                    new AutoMapOneToMany(),
-                                };
+            {
+                new AutoMapIdentity(expressions), 
+                new AutoMapVersion(), 
+                new AutoMapComponent(expressions),
+                new AutoMapColumn(conventionFinder),
+                new ManyToManyAutoMapper(expressions),
+                new AutoMapManyToOne(),
+                new AutoMapOneToMany(),
+            };
         }
 
         public AutoMap<T> MergeMap<T>(AutoMap<T> map)

@@ -1,11 +1,11 @@
 namespace FluentNHibernate.Mapping
 {
-    public class OptimisticLock
+    public class OptimisticLockBuilder
     {
         private const string AttributeKey = "optimistic-lock";
         private readonly Cache<string, string> attributes;
 
-        public OptimisticLock(Cache<string, string> attributes)
+        public OptimisticLockBuilder(Cache<string, string> attributes)
         {
             this.attributes = attributes;
         }

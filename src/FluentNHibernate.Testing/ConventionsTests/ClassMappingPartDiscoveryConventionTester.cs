@@ -12,7 +12,6 @@ namespace FluentNHibernate.Testing.ConventionsTests
     {
         private ClassMappingPartDiscoveryConvention convention;
         private IConventionFinder conventionFinder;
-        private readonly ConventionOverrides Overrides = new ConventionOverrides();
 
         [SetUp]
         public void CreateConvention()
@@ -28,7 +27,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
             cm.Stub(x => x.Parts).Return(new List<IMappingPart>());
 
-            convention.Apply(cm, Overrides);
+            convention.Apply(cm);
             conventionFinder.AssertWasCalled(x => x.Find<IMappingPartConvention>());
         }
 
@@ -53,7 +52,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             conventionFinder.Stub(x => x.Find<IMappingPartConvention>())
                 .Return(conventions);
 
-            convention.Apply(cm, Overrides);
+            convention.Apply(cm);
 
             // each convention gets Accept called
             foreach (var part in cm.Parts)
@@ -83,11 +82,11 @@ namespace FluentNHibernate.Testing.ConventionsTests
             conventions[0].Stub(x => x.Accept(part)).Return(true);
             conventions[1].Stub(x => x.Accept(part)).Return(false);
 
-            convention.Apply(cm, Overrides);
+            convention.Apply(cm);
 
             // each convention gets Apply called for any parts it returned true for Accept
-            conventions[0].AssertWasCalled(x => x.Apply(part, Overrides));
-            conventions[1].AssertWasNotCalled(x => x.Apply(part, Overrides));
+            conventions[0].AssertWasCalled(x => x.Apply(part));
+            conventions[1].AssertWasNotCalled(x => x.Apply(part));
         }
     }
 }

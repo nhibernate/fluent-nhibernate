@@ -14,14 +14,13 @@ namespace FluentNHibernate
     public class PersistenceModel
     {
         protected List<IClassMap> _mappings = new List<IClassMap>();
-        private readonly IConventionFinder conventionFinder;
+        public IConventionFinder ConventionFinder { get; private set; }
         private bool conventionsApplied;
-        private ConventionOverrides conventionOverrides;
 
         public PersistenceModel(IConventionFinder conventionFinder)
         {
-            this.conventionFinder = conventionFinder;
-            this.conventionFinder.AddAssembly(typeof(PersistenceModel).Assembly);
+            ConventionFinder = conventionFinder;
+            ConventionFinder.AddAssembly(typeof(PersistenceModel).Assembly);
         }
 
         public PersistenceModel()
@@ -60,22 +59,6 @@ namespace FluentNHibernate
             _mappings.Add(mapping);
         }
 
-        public ConventionOverrides Conventions
-        {
-            get
-            {
-                if (conventionOverrides == null)
-                    conventionOverrides = CreateConventions(conventionFinder);
-
-                return conventionOverrides;
-            }
-        }
-
-        protected virtual ConventionOverrides CreateConventions(IConventionFinder finder)
-        {
-            return new ConventionOverrides(finder);
-        }
-
         private static Assembly findTheCallingAssembly()
         {
             StackTrace trace = new StackTrace(Thread.CurrentThread, false);
@@ -97,14 +80,14 @@ namespace FluentNHibernate
 
         public virtual void Configure(Configuration configuration)
         {
-            var visitor = new MappingVisitor(Conventions, configuration);
+            var visitor = new MappingVisitor(configuration);
 
             ApplyMappings(visitor);
         }
 
         public void WriteMappingsTo(string folder)
         {
-            var visitor = new DiagnosticMappingVisitor(folder, Conventions, null);
+            var visitor = new DiagnosticMappingVisitor(folder, null);
 
             ApplyMappings(visitor);
         }
@@ -113,12 +96,12 @@ namespace FluentNHibernate
         {
             if (conventionsApplied) return;
 
-            var conventions = conventionFinder.Find<IAssemblyConvention>() ?? new List<IAssemblyConvention>();
+            var conventions = ConventionFinder.Find<IAssemblyConvention>() ?? new List<IAssemblyConvention>();
 
             foreach (var convention in conventions)
             {
                 if (convention.Accept(_mappings))
-                    convention.Apply(_mappings, Conventions);
+                    convention.Apply(_mappings);
             }
 
             conventionsApplied = true;
@@ -136,7 +119,7 @@ namespace FluentNHibernate
     {
         private string _folder;
 
-        public DiagnosticMappingVisitor(string folder, ConventionOverrides conventions, Configuration configuration) : base(conventions, configuration)
+        public DiagnosticMappingVisitor(string folder, Configuration configuration) : base(configuration)
         {
             _folder = folder;            
         }

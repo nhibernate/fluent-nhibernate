@@ -11,7 +11,6 @@ namespace FluentNHibernate.Testing.ConventionsTests
     {
         private PropertyDiscoveryConvention convention;
         private IConventionFinder conventionFinder;
-        private readonly ConventionOverrides Overrides = new ConventionOverrides();
 
         [SetUp]
         public void CreateConvention()
@@ -40,7 +39,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             conventionFinder.Stub(x => x.Find<IPropertyConvention>())
                 .Return(new IPropertyConvention[] { });
 
-            convention.Apply(MockRepository.GenerateStub<IProperty>(), Overrides);
+            convention.Apply(MockRepository.GenerateStub<IProperty>());
             conventionFinder.AssertWasCalled(x => x.Find<IPropertyConvention>());
         }
 
@@ -57,7 +56,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             conventionFinder.Stub(x => x.Find<IPropertyConvention>())
                 .Return(conventions);
 
-            convention.Apply(property, Overrides);
+            convention.Apply(property);
 
             conventions[0].AssertWasCalled(x => x.Accept(property));
             conventions[1].AssertWasCalled(x => x.Accept(property));
@@ -79,11 +78,11 @@ namespace FluentNHibernate.Testing.ConventionsTests
             conventions[0].Stub(x => x.Accept(property)).Return(true);
             conventions[1].Stub(x => x.Accept(property)).Return(false);
 
-            convention.Apply(property, Overrides);
+            convention.Apply(property);
 
             // each convention gets Apply called for any properties it returned true for Accept
-            conventions[0].AssertWasCalled(x => x.Apply(property, Overrides));
-            conventions[1].AssertWasNotCalled(x => x.Apply(property, Overrides));
+            conventions[0].AssertWasCalled(x => x.Apply(property));
+            conventions[1].AssertWasNotCalled(x => x.Apply(property));
         }
     }
 }
