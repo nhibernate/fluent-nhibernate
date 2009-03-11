@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.Mapping.Conventions.Defaults;
 using FluentNHibernate.Utils;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -11,28 +12,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     [TestFixture]
     public class ConventionsTester
     {
-        [Test, Ignore]
+        [Test]
         public void add_property_convention_for_type_of_attribute()
         {
-            MockRepository mocks = new MockRepository();
-            IProperty property = mocks.DynamicMock<IProperty>();
-
-
-            using (mocks.Record())
-            {
-                PropertyInfo propertyInfo = ReflectionHelper.GetProperty<Site>(s => s.Name);
-                Expect.Call(property.Property).Return(propertyInfo).Repeat.Any();
-                Expect.Call(property.PropertyType).Return(typeof(string)).Repeat.Any();
-
-                property.SetAttributeOnColumnElement("My", "true");
-            }
-
-            //using (mocks.Playback())
-            //{
-            //    var conventions = new ConventionOverrides();
-            //    conventions.ForAttribute<MyAttribute>((a, p) => p.SetAttributeOnColumnElement("My", "true"));
-            //    conventions.AlterMap(property);
-            //}
+            new MappingTester<Site>()
+                .WithConventions(conventions =>
+                    conventions.Finder.AddAssembly(typeof(MyAttributeConvention).Assembly))
+                .ForMapping(m => m.Map(x => x.Name))
+                .Element("class/property[@name='Name']")
+                    .HasAttribute("My", "true");
         }
 
         [Test]
@@ -59,5 +47,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     public class MyAttribute : Attribute
     {
         
+    }
+
+    public class MyAttributeConvention : AttributePropertyConvention<MyAttribute>
+    {
+        protected override void Apply(MyAttribute attribute, IProperty target, ConventionOverrides overrides)
+        {
+            target.SetAttribute("My", "true");
+        }
     }
 }

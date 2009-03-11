@@ -64,7 +64,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AttributeConvention.cs" />
     <Compile Include="AutoMapConventionOverrides.cs" />
     <Compile Include="AutoMap\Alterations\AutoMappingOverrideAlteration.cs" />
     <Compile Include="AutoMap\Alterations\IAutoMappingAlteration.cs" />
@@ -129,6 +128,7 @@
     <Compile Include="Mapping\Conventions\DefaultHasOneConvention.cs" />
     <Compile Include="Mapping\Conventions\DefaultJoinConvention.cs" />
     <Compile Include="Mapping\Conventions\DefaultJoinMappingPartConvention.cs" />
+    <Compile Include="Mapping\Conventions\Defaults\AttributePropertyConvention.cs" />
     <Compile Include="Mapping\Conventions\Defaults\BaseMethodAccessorBackingFieldNamingConvention.cs" />
     <Compile Include="Mapping\Conventions\Defaults\HasManyForeignKeyNameConvention.cs" />
     <Compile Include="Mapping\Conventions\Defaults\HasManyMethodAccessorBackingFieldNamingConvention.cs" />
