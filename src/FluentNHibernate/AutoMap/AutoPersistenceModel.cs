@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.AutoMap.Alterations;
+using FluentNHibernate.Cfg;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Utils;
@@ -40,19 +41,26 @@ namespace FluentNHibernate.AutoMap
             return this;
         }
 
-        public AutoPersistenceModel WithConventions(Action<IConventionFinder> conventionFinderAction)
+        /// <summary>
+        /// Alter convention discovery
+        /// </summary>
+        public SetupConventionFinder<AutoPersistenceModel> ConventionDiscovery
         {
-            conventionFinderAction(ConventionFinder);
-            return this;
+            get { return new SetupConventionFinder<AutoPersistenceModel>(this, ConventionFinder); }
         }
 
-        public AutoPersistenceModel WithMappingExpressions(Action<AutoMappingExpressions> expressionsAction)
+        /// <summary>
+        /// Setup the auto mapper
+        /// </summary>
+        /// <param name="expressionsAction"></param>
+        /// <returns></returns>
+        public AutoPersistenceModel WithSetup(Action<AutoMappingExpressions> expressionsAction)
         {
             expressionsAction(Expressions);
             return this;
         }
 
-        public AutoMappingExpressions Expressions { get; private set; }
+        internal AutoMappingExpressions Expressions { get; private set; }
 
         public static AutoPersistenceModel MapEntitiesFromAssemblyOf<T>()
         {

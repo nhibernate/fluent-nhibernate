@@ -5,21 +5,21 @@ using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate.Cfg
 {
-    public class SetupConventionFinder : IConventionFinder
+    public class SetupConventionFinder<TReturn> : IConventionFinder
     {
-        private readonly FluentMappingsContainer container;
+        private readonly TReturn parent;
         private readonly IConventionFinder conventionFinder;
 
-        public SetupConventionFinder(FluentMappingsContainer container, IConventionFinder conventionFinder)
+        public SetupConventionFinder(TReturn container, IConventionFinder conventionFinder)
         {
-            this.container = container;
+            this.parent = container;
             this.conventionFinder = conventionFinder;
         }
 
-        public FluentMappingsContainer AddAssembly(Assembly assembly)
+        public TReturn AddAssembly(Assembly assembly)
         {
             conventionFinder.AddAssembly(assembly);
-            return container;
+            return parent;
         }
 
         void IConventionFinder.AddAssembly(Assembly assembly)
@@ -27,10 +27,10 @@ namespace FluentNHibernate.Cfg
             AddAssembly(assembly);
         }
 
-        public FluentMappingsContainer Add<T>() where T : IConvention
+        public TReturn Add<T>() where T : IConvention
         {
             conventionFinder.Add<T>();
-            return container;
+            return parent;
         }
 
         void IConventionFinder.Add<T>()
@@ -38,20 +38,20 @@ namespace FluentNHibernate.Cfg
             Add<T>();
         }
 
-        public FluentMappingsContainer Add<T>(T instance) where T : IConvention
+        public TReturn Add<T>(T instance) where T : IConvention
         {
             conventionFinder.Add(instance);
-            return container;
+            return parent;
         }
 
-        public FluentMappingsContainer Add<T>(params T[] instances) where T : IConvention
+        public TReturn Add<T>(params T[] instances) where T : IConvention
         {
             foreach (var instance in instances)
             {
                 conventionFinder.Add(instance);
             }
 
-            return container;
+            return parent;
         }
 
         void IConventionFinder.Add<T>(T instance)
@@ -59,10 +59,10 @@ namespace FluentNHibernate.Cfg
             Add(instance);
         }
 
-        public FluentMappingsContainer Setup(Action<IConventionFinder> setupAction)
+        public TReturn Setup(Action<IConventionFinder> setupAction)
         {
             setupAction(this);
-            return container;
+            return parent;
         }
 
         public IEnumerable<T> Find<T>() where T : IConvention
