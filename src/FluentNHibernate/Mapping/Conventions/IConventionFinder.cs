@@ -13,37 +13,45 @@ namespace FluentNHibernate.Mapping.Conventions
 
     public class DefaultConventionFinder : IConventionFinder
     {
-        private readonly IList<Assembly> assemblies = new List<Assembly>();
+        private readonly IList<Type> addedTypes = new List<Type>();
+        private readonly IDictionary<Type, object> instances = new Dictionary<Type, object>();
 
         public IEnumerable<T> Find<T>()
         {
-            var types = from assembly in assemblies
-                        from type in assembly.GetExportedTypes()
-                        where typeof(T).IsAssignableFrom(type) && !type.IsAbstract && !type.IsGenericType
-                        select type;
-
             // messy - find either ctor(IConventionFinder) or ctor()
-            foreach (var type in types)
+            foreach (var type in addedTypes)
             {
+                if (!typeof(T).IsAssignableFrom(type)) continue;
+                if (instances.ContainsKey(type)) yield return (T)instances[type];
+
                 var constructors = type.GetConstructors();
+                T instance = default(T);
 
                 foreach (var constructor in constructors)
                 {
                     var parameters = constructor.GetParameters();
 
                     if (parameters.Length == 1 && parameters[0].ParameterType == typeof(IConventionFinder))
-                        yield return (T)constructor.Invoke(new[] { this });
+                        instance = (T)constructor.Invoke(new[] { this });
                     else if (parameters.Length == 0)
-                        yield return (T)constructor.Invoke(new object[] {});
+                        instance = (T)constructor.Invoke(new object[] {});
                     else
                         throw new MissingConstructorException(type);
                 }
+
+                instances[type] = instance;
+                yield return instance;
             }
         }
 
         public void AddAssembly(Assembly assembly)
         {
-            assemblies.Add(assembly);
+            foreach (var type in assembly.GetExportedTypes())
+            {
+                if (type.IsAbstract || type.IsGenericType) continue;
+
+                addedTypes.Add(type);
+            }
         }
     }
 }
