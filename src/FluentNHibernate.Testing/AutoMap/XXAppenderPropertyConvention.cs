@@ -13,8 +13,7 @@ namespace FluentNHibernate.Testing.AutoMap
 
         public void Apply(IProperty propertyMapping, ConventionOverrides overrides)
         {
-            if (CallContext.GetData("XXAppender") != null)
-                propertyMapping.TheColumnNameIs(propertyMapping.Property.Name + "XX");
+            propertyMapping.TheColumnNameIs(propertyMapping.Property.Name + "XX");
         }
     }
 }

@@ -125,9 +125,10 @@ namespace FluentNHibernate.Testing
             actual.Count().ShouldEqual(0);
         }
 
-        public static void ShouldHaveCount<T>(this IEnumerable<T> actual, int expected)
+        public static IEnumerable<T> ShouldHaveCount<T>(this IEnumerable<T> actual, int expected)
         {
             actual.Count().ShouldEqual(expected);
+            return actual;
         }
 
         public static IComparable ShouldBeGreaterThan(this IComparable arg1, IComparable arg2)

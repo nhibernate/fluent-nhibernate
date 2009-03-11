@@ -10,7 +10,8 @@ namespace FluentNHibernate.AutoMap
         private Func<PropertyInfo, bool> findPropertyconvention = p => (
             p.PropertyType.Namespace != "System" && // ignore clr types (won't be entities)
             p.PropertyType.Namespace != "System.Collections.Generic" &&
-            p.PropertyType.Namespace != "Iesi.Collections.Generic");
+            p.PropertyType.Namespace != "Iesi.Collections.Generic" &&
+	    !p.PropertyType.IsEnum);
 
         public bool MapsProperty(PropertyInfo property)
         {

@@ -17,7 +17,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<Site>()
                 .WithConventions(conventions =>
-                    conventions.Finder.AddAssembly(typeof(MyAttributeConvention).Assembly))
+                    conventions.Finder.Add<MyAttributeConvention>())
                 .ForMapping(m => m.Map(x => x.Name))
                 .Element("class/property[@name='Name']")
                     .HasAttribute("My", "true");

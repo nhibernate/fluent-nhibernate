@@ -40,7 +40,7 @@ namespace FluentNHibernate.Testing.AutoMap
                 model.Where(type => type == typeof(ExampleClass)));
 
             Test<ExampleClass>(mapping =>
-                mapping.Element("//property[@name='LineOne']").HasAttribute("column", "LineOne"));
+                mapping.Element("//property[@name='LineOne']/column").HasAttribute("name", "LineOne"));
         }
 
         [Test]
@@ -52,6 +52,18 @@ namespace FluentNHibernate.Testing.AutoMap
 
             Test<ExampleClass>(mapping =>
                 mapping.Element("//property[@name='LineOne']").DoesntExist());
+        }
+
+        [Test]
+        public void ShouldAutoMapEnums()
+        {
+            Model<ExampleClass>(model => model
+                .ForTypesThatDeriveFrom<ExampleClass>(mapping =>
+                    mapping.Map(x => x.Enum).SetAttribute("type", "Int32"))
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures"));
+
+            Test<ExampleClass>(mapping =>
+                mapping.Element("//property[@name='Enum']").Exists());
         }
 
         [Test]

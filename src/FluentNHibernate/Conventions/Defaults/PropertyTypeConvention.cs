@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Defaults
     {
         public bool Accept(IProperty target)
         {
-            return !target.HasAttribute("type");
+            return !target.HasAttribute("type") && !target.PropertyType.IsEnum;
         }
 
         public void Apply(IProperty target, ConventionOverrides overrides)

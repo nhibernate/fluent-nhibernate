@@ -29,7 +29,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         {
             finder.AddAssembly(GetType().Assembly);
             finder.Find<IAssemblyConvention>()
-                .ShouldContain(c => c.GetType() == typeof(DummyAssemblyConvention));
+                .ShouldContain(c => c is DummyAssemblyConvention);
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         {
             finder.AddAssembly(GetType().Assembly);
             finder.Find<IAssemblyConvention>()
-                .ShouldContain(c => c.GetType() == typeof(DummyFinderAssemblyConvention));
+                .ShouldContain(c => c is DummyFinderAssemblyConvention);
         }
 
         [Test]
@@ -46,6 +46,15 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
             finder.AddAssembly(GetType().Assembly);
             finder.Find<IAssemblyConvention>()
                 .ShouldNotContain(c => c.GetType() == typeof(OpenGenericAssemblyConvention<>));
+        }
+
+        [Test]
+        public void ShouldOnlyFindExplicitAdded()
+        {
+            finder.Add<DummyAssemblyConvention>();
+            finder.Find<IAssemblyConvention>()
+                .ShouldHaveCount(1)
+                .ShouldContain(c => c is DummyAssemblyConvention);
         }
 
         [Test]
@@ -83,45 +92,46 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
             ids.First().ShouldEqual(properties.First());
         }
 
-        private class OpenGenericAssemblyConvention<T> : IAssemblyConvention
-        {
-            public bool Accept(IEnumerable<IClassMap> target)
-            {
-                return false;
-            }
+    }
 
-            public void Apply(IEnumerable<IClassMap> target, ConventionOverrides overrides)
-            {
-            }
+    public class OpenGenericAssemblyConvention<T> : IAssemblyConvention
+    {
+        public bool Accept(IEnumerable<IClassMap> target)
+        {
+            return false;
         }
 
-        private class DummyAssemblyConvention : IAssemblyConvention
+        public void Apply(IEnumerable<IClassMap> target, ConventionOverrides overrides)
         {
-            public bool Accept(IEnumerable<IClassMap> target)
-            {
-                return false;
-            }
+        }
+    }
 
-            public void Apply(IEnumerable<IClassMap> target, ConventionOverrides overrides)
-            {
-            }
+    public class DummyAssemblyConvention : IAssemblyConvention
+    {
+        public bool Accept(IEnumerable<IClassMap> target)
+        {
+            return false;
         }
 
-        private class DummyFinderAssemblyConvention : IAssemblyConvention
+        public void Apply(IEnumerable<IClassMap> target, ConventionOverrides overrides)
         {
-            public DummyFinderAssemblyConvention(IConventionFinder finder)
-            {
+        }
+    }
 
-            }
+    public class DummyFinderAssemblyConvention : IAssemblyConvention
+    {
+        public DummyFinderAssemblyConvention(IConventionFinder finder)
+        {
 
-            public bool Accept(IEnumerable<IClassMap> target)
-            {
-                return false;
-            }
+        }
 
-            public void Apply(IEnumerable<IClassMap> target, ConventionOverrides overrides)
-            {
-            }
+        public bool Accept(IEnumerable<IClassMap> target)
+        {
+            return false;
+        }
+
+        public void Apply(IEnumerable<IClassMap> target, ConventionOverrides overrides)
+        {
         }
     }
 
