@@ -19,6 +19,14 @@ namespace FluentNHibernate.Conventions
         void AddAssembly(Assembly assembly);
 
         /// <summary>
+        /// Adds all conventions found in the assembly that contains T.
+        /// </summary>
+        /// <remarks>
+        /// All convention types must have a parameterless constructor, or a single parameter of IConventionFinder.
+        /// </remarks>
+        void AddFromAssemblyOf<T>();
+
+        /// <summary>
         /// Add a single convention by type.
         /// </summary>
         /// <remarks>

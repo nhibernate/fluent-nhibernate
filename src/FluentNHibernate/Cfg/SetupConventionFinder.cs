@@ -22,6 +22,17 @@ namespace FluentNHibernate.Cfg
             return parent;
         }
 
+        public TReturn AddFromAssemblyOf<T>()
+        {
+            conventionFinder.AddFromAssemblyOf<T>();
+            return parent;
+        }
+
+        void IConventionFinder.AddFromAssemblyOf<T>()
+        {
+            AddFromAssemblyOf<T>();
+        }
+
         void IConventionFinder.AddAssembly(Assembly assembly)
         {
             AddAssembly(assembly);
