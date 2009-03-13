@@ -8,7 +8,7 @@ namespace FluentNHibernate.Mapping
         IdentityGenerationStrategyBuilder GeneratedBy { get; }
         Type IdentityType { get; }
         PropertyInfo Property { get; }
-        string ColumnName { get; }
+        string GetColumnName();
 
         /// <summary>
         /// Set the access and naming strategy for this identity.
@@ -26,6 +26,6 @@ namespace FluentNHibernate.Mapping
         /// Sets the column name for the identity field.
         /// </summary>
         /// <param name="columnName">Column name</param>
-        IIdentityPart TheColumnNameIs(string columnName);
+        IIdentityPart ColumnName(string columnName);
     }
 }

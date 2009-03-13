@@ -124,7 +124,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyForeignKeyColumnAsString()
         {
             new MappingTester<OneToManyTarget>()
-                .ForMapping(map => map.HasMany(x => x.BagOfChildren).WithKeyColumn("ParentID"))
+                .ForMapping(map => map.HasMany(x => x.BagOfChildren).KeyColumnNames.Add("ParentID"))
                 .Element("class/bag/key")
                 .HasAttribute("column", "ParentID");
         }
@@ -135,7 +135,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyTarget>()
                 .ForMapping(map =>
                     map.HasMany(x => x.BagOfChildren)
-                        .WithKeyColumns("ID1", "ID2")
+                        .KeyColumnNames.Add("ID1", "ID2")
                 )
                 .Element("class/bag/key/column").Exists()
                 .Element("class/bag/key/column[@name='ID1']").Exists()
@@ -148,8 +148,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyTarget>()
                 .ForMapping(map =>
                     map.HasMany(x => x.BagOfChildren)
-                        .WithKeyColumn("ID1")
-                        .WithKeyColumn("ID2")
+                        .KeyColumnNames.Add("ID1")
+                        .KeyColumnNames.Add("ID2")
                 )
                 .Element("class/bag/key/column").Exists()
                 .Element("class/bag/key/column[@name='ID1']").Exists()

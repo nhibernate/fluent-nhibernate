@@ -10,12 +10,12 @@ namespace FluentNHibernate.Conventions.Defaults
     {
         public bool Accept(IOneToManyPart target)
         {
-            return string.IsNullOrEmpty(target.ColumnName);
+            return target.KeyColumnNames.List().Count == 0;
         }
 
         public void Apply(IOneToManyPart target)
         {
-            target.WithKeyColumn(target.ParentType.Name + "_id");
+            target.KeyColumnNames.Add(target.ParentType.Name + "_id");
         }
     }
 }

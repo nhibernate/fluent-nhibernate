@@ -7,7 +7,7 @@ namespace FluentNHibernate.Mapping
 {
     public class OneToManyPart<PARENT, CHILD> : ToManyBase<OneToManyPart<PARENT, CHILD>, PARENT, CHILD>, IOneToManyPart, IAccessStrategy<OneToManyPart<PARENT, CHILD>> 
     {
-        private readonly IList<string> _columnNames = new List<string>();
+        private readonly ColumnNameCollection<OneToManyPart<PARENT, CHILD>> columnNames;
 
         public OneToManyPart(PropertyInfo property)
             : this(property, property.PropertyType)
@@ -20,7 +20,8 @@ namespace FluentNHibernate.Mapping
         protected OneToManyPart(MemberInfo member, Type collectionType)
             : base(member, collectionType)
         {
-            _properties.Store("name", member.Name);          
+            columnNames = new ColumnNameCollection<OneToManyPart<PARENT, CHILD>>(this);
+            _properties.Store("name", member.Name);
         }
 
         public override void Write(XmlElement classElement, IMappingVisitor visitor)
@@ -76,15 +77,17 @@ namespace FluentNHibernate.Mapping
 
         private void WriteKeyElement(IMappingVisitor visitor, XmlElement collectionElement)
         {
-            if (_columnNames.Count == 1)
-                _keyProperties.Store("column", _columnNames[0]);
+            var columns = columnNames.List();
+
+            if (columns.Count == 1)
+                _keyProperties.Store("column", columns[0]);
 
             var key = collectionElement.AddElement("key")
                 .WithProperties(_keyProperties);
 
-            if (_columnNames.Count <= 1) return;
+            if (columns.Count <= 1) return;
 
-            foreach (var columnName in _columnNames)
+            foreach (var columnName in columns)
             {
                 key.AddElement("column")
                     .WithAtt("name", columnName);
@@ -127,30 +130,14 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public OneToManyPart<PARENT, CHILD> WithKeyColumns(params string[] columnNames)
-        {
-            foreach (var columnName in columnNames)
-            {
-                WithKeyColumn(columnName);
-            }
-
-            return this;
-        }
-
         public Type ParentType
         {
             get { return typeof(PARENT); }
         }
-       
-        public string ColumnName
-        {
-            get { return _columnNames.Count > 0 ? _columnNames[0] : null; }
-        }
 
-        public OneToManyPart<PARENT, CHILD> WithKeyColumn(string columnName)
+        public ColumnNameCollection<OneToManyPart<PARENT, CHILD>> KeyColumnNames
         {
-            _columnNames.Add(columnName);
-            return this;
+            get { return columnNames; }
         }
 
         #region Explicit IOneToManyPart Implementation
@@ -199,9 +186,9 @@ namespace FluentNHibernate.Mapping
             return this.CollectionType(type);
         }
 
-        IOneToManyPart IOneToManyPart.WithKeyColumn(string name)
+        IColumnNameCollection IOneToManyPart.KeyColumnNames
         {
-            return WithKeyColumn(name);
+            get { return KeyColumnNames; }
         }
 
         #endregion

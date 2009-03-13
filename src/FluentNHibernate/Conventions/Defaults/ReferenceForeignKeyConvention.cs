@@ -10,12 +10,12 @@ namespace FluentNHibernate.Conventions.Defaults
     {
         public bool Accept(IManyToOnePart target)
         {
-            return string.IsNullOrEmpty(target.ColumnName);
+            return string.IsNullOrEmpty(target.GetColumnName());
         }
 
         public void Apply(IManyToOnePart target)
         {
-            target.TheColumnNameIs(target.Property.Name + "_id");
+            target.ColumnName(target.Property.Name + "_id");
         }
     }
 }

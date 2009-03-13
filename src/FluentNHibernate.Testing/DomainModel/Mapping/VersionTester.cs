@@ -33,7 +33,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyVersionOverrideColumnName()
         {
             new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.VersionNumber).TheColumnNameIs("Version"))
+                .ForMapping(map => map.Version(x => x.VersionNumber).ColumnName("Version"))
                 .Element("//version").HasAttribute("column", "Version");
         }
 

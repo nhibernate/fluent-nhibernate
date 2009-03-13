@@ -10,16 +10,16 @@ namespace FluentNHibernate.Mapping
     public interface IManyToOnePart : IRelationship
     {
         CascadeExpression<IManyToOnePart> Cascade { get; }
-        string ColumnName { get; }
+        string GetColumnName();
         PropertyInfo Property { get; }
-        IManyToOnePart TheColumnNameIs(string columnName);
+        IManyToOnePart ColumnName(string columnName);
     }
 
     public class ManyToOnePart<OTHER> : IManyToOnePart, IAccessStrategy<ManyToOnePart<OTHER>>
     {
 		private readonly Cache<string, string> _properties = new Cache<string, string>();
         public PropertyInfo Property { get; private set; }
-        public string ColumnName { get; private set; }
+        private string columnName;
         private readonly AccessStrategyBuilder<ManyToOnePart<OTHER>> access;
         private readonly IList<string> _columns = new List<string>();
         private bool nextBool = true;
@@ -124,7 +124,7 @@ namespace FluentNHibernate.Mapping
         	_properties.Store("name", Property.Name);
 
             if (_columns.Count == 0)
-                _properties.Store("column", ColumnName);
+                _properties.Store("column", columnName);
 
             var manyToOneElement = classElement.AddElement("many-to-one").WithProperties(_properties);
 
@@ -152,16 +152,21 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        IManyToOnePart IManyToOnePart.TheColumnNameIs(string name)
+        IManyToOnePart IManyToOnePart.ColumnName(string name)
         {
-            return TheColumnNameIs(name);
+            return ColumnName(name);
         }
 
-        public ManyToOnePart<OTHER> TheColumnNameIs(string name)
+        public ManyToOnePart<OTHER> ColumnName(string name)
         {
-            ColumnName = name;
+            columnName = name;
 
             return this;
+        }
+
+        public string GetColumnName()
+        {
+            return columnName;
         }
 
         public int Level

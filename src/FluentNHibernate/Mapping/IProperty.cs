@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using NHibernate.UserTypes;
@@ -17,8 +16,12 @@ namespace FluentNHibernate.Mapping
 
         // Possibly should be moved to IHasAttributes.
         bool HasAttribute(string name);
-        IProperty ColumnName(string name);
-        IProperty ColumnNames(params string[] names);
+
+        IColumnNameCollection ColumnNames { get; }
+
+        //string GetColumnName();
+        //IProperty ColumnName(string name);
+        //IProperty ColumnNames(params string[] names);
         IProperty AutoNumber();
         IProperty WithLengthOf(int length);
         IProperty Nullable();

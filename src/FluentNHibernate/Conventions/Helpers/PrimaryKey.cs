@@ -22,7 +22,7 @@ namespace FluentNHibernate.Conventions.Helpers
             return new BuiltIdConvention(x => true, id =>
             {
                 var columnName = nameFunc(id);
-                id.TheColumnNameIs(columnName);
+                id.ColumnName(columnName);
             });
         }
     }

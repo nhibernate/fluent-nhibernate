@@ -6,7 +6,6 @@ namespace FluentNHibernate.Mapping
 {
     public class IdentityPart<T> : IIdentityPart
     {
-		public string ColumnName { get; private set; }
 		private readonly IdentityGenerationStrategyBuilder _generatedBy;
 		private readonly Cache<string, string> _generatorParameters = new Cache<string, string>();
         private readonly Cache<string, string> _elementAttributes = new Cache<string, string>();
@@ -20,7 +19,7 @@ namespace FluentNHibernate.Mapping
             access = new AccessStrategyBuilder<IIdentityPart>(this);
 
 			_property = property;
-			ColumnName = columnName;
+			ColumnName(columnName);
 			_generatedBy = new IdentityGenerationStrategyBuilder(this);
 		}
 
@@ -59,7 +58,6 @@ namespace FluentNHibernate.Mapping
 		{
 			XmlElement element = classElement.AddElement("id")
 				.WithAtt("name", _property.Name)
-                .WithAtt("column", ColumnName)
 				.WithAtt("type", TypeMapping.GetTypeString(_property.PropertyType));
 
             if (_unsavedValue != null)
@@ -134,10 +132,22 @@ namespace FluentNHibernate.Mapping
         /// Sets the column name for the identity field.
         /// </summary>
         /// <param name="columnName">Column name</param>
-        public IIdentityPart TheColumnNameIs(string columnName)
+        public IIdentityPart ColumnName(string columnName)
         {
-            ColumnName = columnName;
+            SetAttribute("column", columnName);
             return this;
+        }
+
+        /// <summary>
+        /// Gets the column name
+        /// </summary>
+        /// <returns></returns>
+        public string GetColumnName()
+        {
+            if (_elementAttributes.Has("column"))
+                return _elementAttributes.Get("column");
+
+            return null;
         }
     }
 }

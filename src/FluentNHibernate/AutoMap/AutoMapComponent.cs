@@ -39,7 +39,7 @@ namespace FluentNHibernate.AutoMap
 
                 var propertyMap = (IProperty)mapMethod.Invoke(componentPart, new[] {ExpressionBuilder.Create(property, componentType)});
 
-                propertyMap.ColumnName(columnNamePrefix + property.Name);
+                propertyMap.ColumnNames.Add(columnNamePrefix + property.Name);
             }
         }
 

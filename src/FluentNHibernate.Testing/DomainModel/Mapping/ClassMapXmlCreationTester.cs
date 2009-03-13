@@ -419,10 +419,10 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		}
 
         [Test]
-        public void Creating_a_many_to_one_reference_with_column_specified_through_TheColumnNameIs_method()
+        public void Creating_a_many_to_one_reference_with_column_specified_through_ColumnName_method()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.References(x => x.Parent).TheColumnNameIs("MyParentId"))
+                .ForMapping(m => m.References(x => x.Parent).ColumnName("MyParentId"))
                 .Element("class/many-to-one").HasAttribute("column", "MyParentId");
         }
 

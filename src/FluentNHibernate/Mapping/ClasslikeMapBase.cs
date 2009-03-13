@@ -39,7 +39,7 @@ namespace FluentNHibernate.Mapping
             var map = new PropertyMap(property, parentIsRequired, typeof(T));
 
             if (columnName != null)
-                map.ColumnName(columnName);
+                map.ColumnNames.Add(columnName);
 
             _properties.Add(map);
 
@@ -61,7 +61,7 @@ namespace FluentNHibernate.Mapping
             var part = new ManyToOnePart<OTHER>(property);
 
             if (columnName != null)
-                part.TheColumnNameIs(columnName);
+                part.ColumnName(columnName);
 
             AddPart(part);
 

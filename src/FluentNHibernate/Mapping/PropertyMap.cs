@@ -16,10 +16,11 @@ namespace FluentNHibernate.Mapping
         private readonly bool _parentIsRequired;
         private readonly AccessStrategyBuilder<PropertyMap> access;
         private bool nextBool = true;
-        private readonly List<string> columnNames = new List<string>();
+        private readonly ColumnNameCollection<IProperty> columnNames;
 
         public PropertyMap(PropertyInfo property, bool parentIsRequired, Type parentType)
         {
+            columnNames = new ColumnNameCollection<IProperty>(this);
             access = new AccessStrategyBuilder<PropertyMap>(this);
 
             _property = property;
@@ -55,13 +56,15 @@ namespace FluentNHibernate.Mapping
 
         private void AddColumnElements(XmlNode element)
         {
-            if (columnNames.Count == 0)
+            if (columnNames.List().Count == 0)
                 columnNames.Add(_property.Name);
 
-            columnNames.ForEach(column =>
+            foreach (var column in columnNames.List())
+            {
                 element.AddElement("column")
                     .WithAtt("name", column)
-                    .WithProperties(_columnProperties));
+                    .WithProperties(_columnProperties);
+            }
         }
 
         public int Level
@@ -124,21 +127,31 @@ namespace FluentNHibernate.Mapping
             get { return _parentType; }
         }
 
-        public IProperty ColumnName(string name)
+        public ColumnNameCollection<IProperty> ColumnNames
         {
-            columnNames.Add(name);
-            return this;
+            get { return columnNames; }
         }
 
-        public IProperty ColumnNames(params string[] names)
+        IColumnNameCollection IProperty.ColumnNames
         {
-            foreach (var name in names)
-            {
-                ColumnName(name);
-            }
-
-            return this;
+            get { return ColumnNames; }
         }
+
+        //public IProperty ColumnName(string name)
+        //{
+        //    columnNames.Add(name);
+        //    return this;
+        //}
+
+        //public IProperty ColumnNames(params string[] names)
+        //{
+        //    foreach (var name in names)
+        //    {
+        //        ColumnName(name);
+        //    }
+
+        //    return this;
+        //}
 
         /// <summary>
         /// Set the access and naming strategy for this property.
@@ -233,7 +246,7 @@ namespace FluentNHibernate.Mapping
 
             foreach (var name in inst.PropertyNames)
             {
-                ColumnName(name);
+                ColumnNames.Add(name);
             }
         }
 

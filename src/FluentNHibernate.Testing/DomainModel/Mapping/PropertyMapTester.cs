@@ -88,7 +88,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             var classMap = new ClassMap<PropertyTarget>();
 
             classMap.Map(x => x.Name)
-                .ColumnName("column_name");
+                .ColumnNames.Add("column_name");
 
             var document = classMap.CreateMapping(new MappingVisitor());
 
@@ -114,7 +114,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void ShouldAddAllColumns()
         {
-            Model<PropertyTarget>(m => m.Map(x => x.Name).ColumnNames("one", "two", "three"))
+            Model<PropertyTarget>(m => m.Map(x => x.Name).ColumnNames.Add("one", "two", "three"))
                 .Element("class/property[@name='Name']").HasThisManyChildNodes(3)
                 .Element("class/property[@name='Name']/column[@name='one']").Exists()
                 .Element("class/property[@name='Name']/column[@name='two']").Exists()
@@ -140,7 +140,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void ColumnName_IsColumnName_WhenColumnNameFluentGiven()
         {
-            Model<PropertyTarget>(m => m.Map(x => x.Name).ColumnName("column_name"))
+            Model<PropertyTarget>(m => m.Map(x => x.Name).ColumnNames.Add("column_name"))
                 .Element("class/property[@name='Name']/column")
                 .HasAttribute("name", "column_name");
         }

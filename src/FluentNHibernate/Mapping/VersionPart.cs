@@ -8,18 +8,17 @@ namespace FluentNHibernate.Mapping
     public interface IVersion : IMappingPart
     {
         AccessStrategyBuilder<VersionPart> Access { get; }
-        string ColumnName { get; }
+        string GetColumnName();
         PropertyInfo Property { get; }
-        IVersion TheColumnNameIs(string columnName);
+        IVersion ColumnName(string name);
         IVersion NeverGenerated();
     }
 
     public class VersionPart : IVersion
     {
         public PropertyInfo Property { get; private set; }
-        public string ColumnName { get; private set; }
         private readonly AccessStrategyBuilder<VersionPart> _access;
-        private Dictionary<string,string> _properties;
+        private readonly Dictionary<string,string> _properties;
         private bool _neverGenerated;
 
         public VersionPart(PropertyInfo property)
@@ -49,7 +48,6 @@ namespace FluentNHibernate.Mapping
                                     .WithProperties(_properties);
             
             versionElement 
-                .WithAtt("column", ColumnName)
                 .WithAtt("name", Property.Name);
 
             if (_neverGenerated)
@@ -77,10 +75,18 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.Anywhere; }
         }
 
-        public IVersion TheColumnNameIs(string columnName)
+        public IVersion ColumnName(string name)
         {
-            ColumnName = columnName;
+            SetAttribute("column", name);
             return this;
+        }
+
+        public string GetColumnName()
+        {
+            if (_properties.ContainsKey("column"))
+                return _properties["column"];
+
+            return null;
         }
 
         public IVersion NeverGenerated()

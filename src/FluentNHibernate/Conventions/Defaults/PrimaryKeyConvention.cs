@@ -10,12 +10,12 @@ namespace FluentNHibernate.Conventions.Defaults
     {
         public bool Accept(IIdentityPart target)
         {
-            return string.IsNullOrEmpty(target.ColumnName);
+            return string.IsNullOrEmpty(target.GetColumnName());
         }
 
         public void Apply(IIdentityPart target)
         {
-            target.TheColumnNameIs(target.Property.Name);
+            target.ColumnName(target.Property.Name);
         }
     }
 }

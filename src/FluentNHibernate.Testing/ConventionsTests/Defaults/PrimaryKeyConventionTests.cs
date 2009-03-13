@@ -21,7 +21,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
         {
             var target = MockRepository.GenerateStub<IIdentityPart>();
 
-            target.Stub(x => x.ColumnName)
+            target.Stub(x => x.GetColumnName())
                 .Return(null);
 
             convention.Accept(target)
@@ -33,7 +33,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
         {
             var target = MockRepository.GenerateStub<IIdentityPart>();
 
-            target.Stub(x => x.ColumnName)
+            target.Stub(x => x.GetColumnName())
                 .Return("column_name");
 
             convention.Accept(target)
@@ -50,7 +50,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
 
             convention.Apply(target);
 
-            target.AssertWasCalled(x => x.TheColumnNameIs("Id"));
+            target.AssertWasCalled(x => x.ColumnName("Id"));
         }
     }
 }

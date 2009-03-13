@@ -211,9 +211,11 @@
     <Compile Include="Conventions\IRelationshipConvention.cs" />
     <Compile Include="Conventions\IUserTypeConvention.cs" />
     <Compile Include="Conventions\IVersionConvention.cs" />
+    <Compile Include="Mapping\ColumnNameCollection.cs" />
     <Compile Include="Mapping\DynamicComponentPart.cs" />
     <Compile Include="Mapping\IClasslike.cs" />
     <Compile Include="Mapping\ICollectionRelationship.cs" />
+    <Compile Include="Mapping\IColumnNameCollection.cs" />
     <Compile Include="Mapping\IJoinedSubclass.cs" />
     <Compile Include="Mapping\IRelationship.cs" />
     <Compile Include="SessionSource.cs" />

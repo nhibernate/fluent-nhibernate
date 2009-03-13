@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentNHibernate.AutoMap.TestFixtures;
 using FluentNHibernate.Conventions.Defaults;
 using FluentNHibernate.Mapping;
@@ -21,9 +22,13 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
         public void ShouldAcceptIfNoColumnNameSet()
         {
             var target = MockRepository.GenerateStub<IOneToManyPart>();
+            var columnNames = MockRepository.GenerateStub<IColumnNameCollection>();
 
-            target.Stub(x => x.ColumnName)
-                .Return(null);
+            columnNames.Stub(x => x.List())
+                .Return(new List<string>());
+
+            target.Stub(x => x.KeyColumnNames)
+                .Return(columnNames);
 
             convention.Accept(target)
                 .ShouldBeTrue();
@@ -33,9 +38,13 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
         public void ShouldntAcceptIfColumnNameSet()
         {
             var target = MockRepository.GenerateStub<IOneToManyPart>();
+            var columnNames = MockRepository.GenerateStub<IColumnNameCollection>();
 
-            target.Stub(x => x.ColumnName)
-                .Return("column_name");
+            columnNames.Stub(x => x.List())
+                .Return(new List<string>{ "column_name" });
+
+            target.Stub(x => x.KeyColumnNames)
+                .Return(columnNames);
 
             convention.Accept(target)
                 .ShouldBeFalse();
@@ -44,14 +53,17 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
         [Test]
         public void ShouldSetKeyColumnName()
         {
-            var target = MockRepository.GenerateMock<IOneToManyPart>();
+            var target = MockRepository.GenerateStub<IOneToManyPart>();
+            var columnNames = MockRepository.GenerateMock<IColumnNameCollection>();
 
+            target.Stub(x => x.KeyColumnNames)
+                .Return(columnNames);
             target.Stub(x => x.ParentType)
                 .Return(typeof(ExampleClass));
 
             convention.Apply(target);
 
-            target.AssertWasCalled(x => x.WithKeyColumn("ExampleClass_id"));
+            columnNames.AssertWasCalled(x => x.Add("ExampleClass_id"));
         }
     }
 }
