@@ -127,6 +127,8 @@
     <Compile Include="Conventions\Discovery\PropertyDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\ReferenceDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\RelationshipDiscoveryConvention.cs" />
+    <Compile Include="Conventions\Discovery\SubclassDiscoveryConvention.cs" />
+    <Compile Include="Conventions\Discovery\SubclassMappingPartDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\VersionDiscoveryConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltClassConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
@@ -166,6 +168,7 @@
     <Compile Include="Conventions\Helpers\Builders\RelationshipConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Table.cs" />
     <Compile Include="Conventions\Helpers\Builders\VersionConventionBuilder.cs" />
+    <Compile Include="Conventions\ISubclassConvention.cs" />
     <Compile Include="Conventions\MultipleAttribute.cs" />
     <Compile Include="Data\Entity.cs" />
     <Compile Include="Data\InMemoryRepository.cs" />

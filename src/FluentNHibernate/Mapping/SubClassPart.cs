@@ -3,7 +3,24 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public class SubClassPart<TDiscriminator, TParent, TSubClass> : ClasslikeMapBase<TSubClass>, IMappingPart
+    public interface ISubclass : IClasslike, IMappingPart
+    {
+        void SubClass<TChild>(object discriminatorValue, Action<ISubclass> action);
+        void SubClass<TChild>(Action<ISubclass> action);
+
+        /// <summary>
+        /// Sets whether this subclass is lazy loaded
+        /// </summary>
+        /// <returns></returns>
+        ISubclass LazyLoad();
+
+        /// <summary>
+        /// Inverts the next boolean
+        /// </summary>
+        ISubclass Not { get; }
+    }
+
+    public class SubClassPart<TDiscriminator, TParent, TSubClass> : ClasslikeMapBase<TSubClass>, ISubclass
     {
         private readonly bool discriminatorSet;
         private readonly TDiscriminator _discriminator;
@@ -78,6 +95,15 @@ namespace FluentNHibernate.Mapping
             return parent;
         }
 
+        void ISubclass.SubClass<TChild>(object discriminatorValue, Action<ISubclass> action)
+        {
+            var subclass = new SubClassPart<TDiscriminator, TParent, TChild>((TDiscriminator)discriminatorValue, parent);
+
+            action(subclass);
+
+            AddPart(subclass);
+        }
+
         public DiscriminatorPart<TDiscriminator, TParent> SubClass<TChild>(Action<SubClassPart<TDiscriminator, TParent, TChild>> action)
         {
             var subclass = new SubClassPart<TDiscriminator, TParent, TChild>(default(TDiscriminator), parent);
@@ -87,6 +113,15 @@ namespace FluentNHibernate.Mapping
             AddPart(subclass);
 
             return parent;
+        }
+
+        void ISubclass.SubClass<TChild>(Action<ISubclass> action)
+        {
+            var subclass = new SubClassPart<TDiscriminator, TParent, TChild>(default(TDiscriminator), parent);
+
+            action(subclass);
+
+            AddPart(subclass);
         }
 
         /// <summary>
@@ -110,6 +145,16 @@ namespace FluentNHibernate.Mapping
                 nextBool = !nextBool;
                 return this;
             }
+        }
+
+        ISubclass ISubclass.LazyLoad()
+        {
+            return LazyLoad();
+        }
+
+        ISubclass ISubclass.Not
+        {
+            get { return Not; }
         }
     }
 }
