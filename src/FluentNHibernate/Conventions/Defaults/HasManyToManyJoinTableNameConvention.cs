@@ -15,7 +15,7 @@ namespace FluentNHibernate.Conventions.Defaults
 
         public void Apply(IManyToManyPart target)
         {
-            target.WithTableName(target.ChildType.Name + "To" + target.ParentType.Name);
+            target.WithTableName(target.ChildType.Name + "To" + target.EntityType.Name);
         }
     }
 }

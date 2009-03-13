@@ -18,7 +18,7 @@ namespace FluentNHibernate.AutoMap
             set { propertiesMapped = value; }
         }
 
-        protected override OneToManyPart<T, CHILD> HasMany<CHILD>(PropertyInfo property)
+        protected override OneToManyPart<CHILD> HasMany<CHILD>(PropertyInfo property)
         {
             propertiesMapped.Add(property);
             return base.HasMany<CHILD>(property);
@@ -47,7 +47,7 @@ namespace FluentNHibernate.AutoMap
             return base.References<OTHER>(property, columnName);
         }
 
-        protected override ManyToManyPart<T, CHILD> HasManyToMany<CHILD>(PropertyInfo property)
+        protected override ManyToManyPart<CHILD> HasManyToMany<CHILD>(PropertyInfo property)
         {
             propertiesMapped.Add(property);
             return base.HasManyToMany<CHILD>(property);

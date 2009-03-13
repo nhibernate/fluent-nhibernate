@@ -5,22 +5,22 @@ using System;
 
 namespace FluentNHibernate.Mapping
 {
-    public class OneToManyPart<PARENT, CHILD> : ToManyBase<OneToManyPart<PARENT, CHILD>, PARENT, CHILD>, IOneToManyPart, IAccessStrategy<OneToManyPart<PARENT, CHILD>> 
+    public class OneToManyPart<CHILD> : ToManyBase<OneToManyPart<CHILD>, CHILD>, IOneToManyPart, IAccessStrategy<OneToManyPart<CHILD>> 
     {
-        private readonly ColumnNameCollection<OneToManyPart<PARENT, CHILD>> columnNames;
+        private readonly ColumnNameCollection<OneToManyPart<CHILD>> columnNames;
 
-        public OneToManyPart(PropertyInfo property)
-            : this(property, property.PropertyType)
+        public OneToManyPart(Type entity, PropertyInfo property)
+            : this(entity, property, property.PropertyType)
         {}
 
-        public OneToManyPart(MethodInfo method)
-            : this(method, method.ReturnType)
+        public OneToManyPart(Type entity, MethodInfo method)
+            : this(entity, method, method.ReturnType)
         {}
 
-        protected OneToManyPart(MemberInfo member, Type collectionType)
-            : base(member, collectionType)
+        protected OneToManyPart(Type entity, MemberInfo member, Type collectionType)
+            : base(entity, member, collectionType)
         {
-            columnNames = new ColumnNameCollection<OneToManyPart<PARENT, CHILD>>(this);
+            columnNames = new ColumnNameCollection<OneToManyPart<CHILD>>(this);
             _properties.Store("name", member.Name);
         }
 
@@ -122,20 +122,15 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.Anywhere; }
         }
 
-        public FetchTypeExpression<OneToManyPart<PARENT, CHILD>> FetchType
+        public FetchTypeExpression<OneToManyPart<CHILD>> FetchType
         {
             get
             {
-                return new FetchTypeExpression<OneToManyPart<PARENT, CHILD>>(this, _properties);
+                return new FetchTypeExpression<OneToManyPart<CHILD>>(this, _properties);
             }
         }
 
-        public Type ParentType
-        {
-            get { return typeof(PARENT); }
-        }
-
-        public ColumnNameCollection<OneToManyPart<PARENT, CHILD>> KeyColumnNames
+        public ColumnNameCollection<OneToManyPart<CHILD>> KeyColumnNames
         {
             get { return columnNames; }
         }

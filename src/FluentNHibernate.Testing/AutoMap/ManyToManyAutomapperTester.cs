@@ -31,7 +31,7 @@ namespace FluentNHibernate.Testing.AutoMap
             var mapper = new ManyToManyAutoMapper(new AutoMappingExpressions());
             object manyToManyPart = mapper.GetManyToManyPart(autoMap, propertyInfo);
 
-            manyToManyPart.ShouldBeOfType(typeof(ManyToManyPart<ManyToMany1, ManyToMany2>));
+            manyToManyPart.ShouldBeOfType(typeof(ManyToManyPart<ManyToMany2>));
         }
 
         [Test]

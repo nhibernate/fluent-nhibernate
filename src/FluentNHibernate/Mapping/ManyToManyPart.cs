@@ -10,58 +10,57 @@ namespace FluentNHibernate.Mapping
         void WithTableName(string tableName);
         string ChildKeyColumn { get; }
         string ParentKeyColumn { get; }
-        Type ParentType { get; }
         Type ChildType { get; }
         void WithChildKeyColumn(string name);
         void WithParentKeyColumn(string name);
     }
 
-	public class ManyToManyPart<PARENT, CHILD> : ToManyBase<ManyToManyPart<PARENT, CHILD>, PARENT, CHILD>, IManyToManyPart
+	public class ManyToManyPart<CHILD> : ToManyBase<ManyToManyPart<CHILD>, CHILD>, IManyToManyPart
     {
         public string ChildKeyColumn { get; private set; }
         public string ParentKeyColumn { get; private set; }
         private readonly Cache<string, string> _parentKeyProperties = new Cache<string, string>();
         private readonly Cache<string, string> _manyToManyProperties = new Cache<string, string>();
-        private readonly AccessStrategyBuilder<ManyToManyPart<PARENT, CHILD>> access;
+        private readonly AccessStrategyBuilder<ManyToManyPart<CHILD>> access;
 
-	    public ManyToManyPart(PropertyInfo property)
-            : this(property, property.PropertyType)
+	    public ManyToManyPart(Type entity, PropertyInfo property)
+            : this(entity, property, property.PropertyType)
 	    {}
 
-	    public ManyToManyPart(MethodInfo method)
-	        : this(method, method.ReturnType)
+	    public ManyToManyPart(Type entity, MethodInfo method)
+	        : this(entity, method, method.ReturnType)
         {}
 
-        protected ManyToManyPart(MemberInfo member, Type collectionType)
-            : base(member, collectionType)
+        protected ManyToManyPart(Type entity, MemberInfo member, Type collectionType)
+            : base(entity, member, collectionType)
         {
-            access = new AccessStrategyBuilder<ManyToManyPart<PARENT, CHILD>>(this);
+            access = new AccessStrategyBuilder<ManyToManyPart<CHILD>>(this);
             _properties.Store("name", member.Name);
         }
 
-	    public ManyToManyPart<PARENT, CHILD> WithChildKeyColumn(string childKeyColumn)
+	    public ManyToManyPart<CHILD> WithChildKeyColumn(string childKeyColumn)
 		{
 			ChildKeyColumn = childKeyColumn;
 			return this;
 		}
 		
-		public ManyToManyPart<PARENT, CHILD> WithParentKeyColumn(string parentKeyColumn)
+		public ManyToManyPart<CHILD> WithParentKeyColumn(string parentKeyColumn)
 		{
 		    ParentKeyColumn = parentKeyColumn;
 			return this;
 		}
 
-        public ManyToManyPart<PARENT, CHILD> WithForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName) {
+        public ManyToManyPart<CHILD> WithForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName) {
             _parentKeyProperties.Store("foreign-key", parentForeignKeyName);
             _manyToManyProperties.Store("foreign-key", childForeignKeyName);
             return this;
         }
 		
-		public FetchTypeExpression<ManyToManyPart<PARENT, CHILD>> FetchType
+		public FetchTypeExpression<ManyToManyPart<CHILD>> FetchType
 		{
 			get
 			{
-				return new FetchTypeExpression<ManyToManyPart<PARENT, CHILD>>(this, _manyToManyProperties);
+				return new FetchTypeExpression<ManyToManyPart<CHILD>>(this, _manyToManyProperties);
 			}
 		}
 
@@ -129,11 +128,6 @@ namespace FluentNHibernate.Mapping
         {
             WithParentKeyColumn(name);
         }
-
-	    public Type ParentType
-	    {
-            get { return typeof(PARENT); }
-	    }
 
         public Type ChildType
         {

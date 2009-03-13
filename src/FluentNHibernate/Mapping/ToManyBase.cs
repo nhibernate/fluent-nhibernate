@@ -6,8 +6,8 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public abstract class ToManyBase<T, PARENT, CHILD>
-        : IMappingPart where T : ToManyBase<T, PARENT, CHILD>, ICollectionRelationship, IMappingPart, IHasAttributes
+    public abstract class ToManyBase<T, CHILD>
+        : IMappingPart where T : ToManyBase<T, CHILD>, ICollectionRelationship, IMappingPart, IHasAttributes
     {
         public MemberInfo Member { get; private set; }
         protected readonly Cache<string, string> _properties = new Cache<string, string>();
@@ -17,11 +17,13 @@ namespace FluentNHibernate.Mapping
         protected ElementMapping _elementMapping;
         protected CompositeElementPart<CHILD> _componentMapping;
         public string TableName { get; private set; }
+        public Type EntityType { get; private set; }
         protected string _collectionType;
         private bool nextBool = true;
 
-        protected ToManyBase(MemberInfo member, Type type)
+        protected ToManyBase(Type entity, MemberInfo member, Type type)
         {
+            EntityType = entity;
             Member = member;
             _collectionType = "bag";
             access = new AccessStrategyBuilder<T>((T)this);

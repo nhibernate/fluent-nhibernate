@@ -16,8 +16,10 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> _properties = new Cache<string, string>();
         private readonly PropertyInfo _property;
         private readonly AccessStrategyBuilder<OneToOnePart<OTHER>> access;
+        public Type EntityType { get; private set; }
 
-        public OneToOnePart(PropertyInfo property) {
+        public OneToOnePart(Type entity, PropertyInfo property) {
+            EntityType = entity;
             access = new AccessStrategyBuilder<OneToOnePart<OTHER>>(this);
             _property = property;
         }

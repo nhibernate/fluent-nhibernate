@@ -15,7 +15,7 @@ namespace FluentNHibernate.Conventions.Defaults
 
         public void Apply(IOneToManyPart target)
         {
-            target.KeyColumnNames.Add(target.ParentType.Name + "_id");
+            target.KeyColumnNames.Add(target.EntityType.Name + "_id");
         }
     }
 }

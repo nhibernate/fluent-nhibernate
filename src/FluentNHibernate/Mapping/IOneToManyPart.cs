@@ -27,7 +27,6 @@ namespace FluentNHibernate.Mapping
         /// Inverts the next boolean
         /// </summary>
         IOneToManyPart Not { get; }
-        Type ParentType { get; }
         IColumnNameCollection KeyColumnNames { get; }
     }
 }

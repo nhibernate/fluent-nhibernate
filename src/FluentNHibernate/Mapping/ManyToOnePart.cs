@@ -19,13 +19,15 @@ namespace FluentNHibernate.Mapping
     {
 		private readonly Cache<string, string> _properties = new Cache<string, string>();
         public PropertyInfo Property { get; private set; }
+        public Type EntityType { get; private set; }
         private string columnName;
         private readonly AccessStrategyBuilder<ManyToOnePart<OTHER>> access;
         private readonly IList<string> _columns = new List<string>();
         private bool nextBool = true;
 
-        public ManyToOnePart(PropertyInfo property) 
+        public ManyToOnePart(Type entity, PropertyInfo property) 
         {
+            EntityType = entity;
             access = new AccessStrategyBuilder<ManyToOnePart<OTHER>>(this);
 
             Property = property;

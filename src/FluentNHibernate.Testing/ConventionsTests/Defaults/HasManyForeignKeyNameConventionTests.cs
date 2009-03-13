@@ -58,7 +58,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
 
             target.Stub(x => x.KeyColumnNames)
                 .Return(columnNames);
-            target.Stub(x => x.ParentType)
+            target.Stub(x => x.EntityType)
                 .Return(typeof(ExampleClass));
 
             convention.Apply(target);
