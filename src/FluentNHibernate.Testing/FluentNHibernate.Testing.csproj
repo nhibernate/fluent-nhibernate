@@ -108,6 +108,8 @@
     <Compile Include="ConventionsTests\DynamicComponentDiscoveryConventionTester.cs" />
     <Compile Include="ConventionsTests\DynamicComponentMappingPartDiscoveryConventionTester.cs" />
     <Compile Include="ConventionsTests\JoinDiscoveryConventionTester.cs" />
+    <Compile Include="ConventionsTests\JoinedSubclassDiscoveryConventionTester.cs" />
+    <Compile Include="ConventionsTests\JoinedSubclassMappingPartDiscoveryConventionTester.cs" />
     <Compile Include="ConventionsTests\JoinMappingPartDiscoveryConventionTester.cs" />
     <Compile Include="ConventionsTests\MixedConventionInstanceTester.cs" />
     <Compile Include="ConventionsTests\ReferenceDiscoveryConventionTester.cs" />

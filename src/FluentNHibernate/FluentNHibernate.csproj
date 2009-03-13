@@ -123,6 +123,8 @@
     <Compile Include="Conventions\Discovery\HasOneDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\IdDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\JoinDiscoveryConvention.cs" />
+    <Compile Include="Conventions\Discovery\JoinedSubclassDiscoveryConvention.cs" />
+    <Compile Include="Conventions\Discovery\JoinedSubclassMappingPartDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\JoinMappingPartDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\PropertyDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\ReferenceDiscoveryConvention.cs" />
@@ -168,6 +170,7 @@
     <Compile Include="Conventions\Helpers\Builders\RelationshipConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Table.cs" />
     <Compile Include="Conventions\Helpers\Builders\VersionConventionBuilder.cs" />
+    <Compile Include="Conventions\IJoinedSubclassConvention.cs" />
     <Compile Include="Conventions\ISubclassConvention.cs" />
     <Compile Include="Conventions\MultipleAttribute.cs" />
     <Compile Include="Data\Entity.cs" />
@@ -211,6 +214,7 @@
     <Compile Include="Mapping\DynamicComponentPart.cs" />
     <Compile Include="Mapping\IClasslike.cs" />
     <Compile Include="Mapping\ICollectionRelationship.cs" />
+    <Compile Include="Mapping\IJoinedSubclass.cs" />
     <Compile Include="Mapping\IRelationship.cs" />
     <Compile Include="SessionSource.cs" />
     <Compile Include="Conventions\Defaults\TableNameConvention.cs" />

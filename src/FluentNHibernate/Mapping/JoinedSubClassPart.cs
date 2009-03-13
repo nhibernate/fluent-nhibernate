@@ -2,7 +2,7 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public class JoinedSubClassPart<T> : ClasslikeMapBase<T>, IMappingPart
+    public class JoinedSubClassPart<T> : ClasslikeMapBase<T>, IJoinedSubclass
     {
         private readonly string _keyColumn;
         private readonly Cache<string, string> attributes = new Cache<string, string>();
@@ -50,6 +50,11 @@ namespace FluentNHibernate.Mapping
         {             
             attributes.Store("table", tableName);
             return this;
+        }
+
+        void IJoinedSubclass.WithTableName(string tableName)
+        {
+            WithTableName(tableName);
         }
     }
 }
