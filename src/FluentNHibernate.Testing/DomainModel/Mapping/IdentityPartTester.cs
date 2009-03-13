@@ -17,7 +17,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void Scratch()
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-			var id = new IdentityPart<IdentityTarget>(property);
+			var id = new IdentityPart(typeof(IdentityTarget), property);
 
 			var document = new XmlDocument();
 			var element = document.CreateElement("root");
@@ -253,7 +253,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void IdentityType_MustBeIntegral_ForIncrement()
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.Increment();
+            new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.Increment();
 		}
 
 		[Test]
@@ -262,7 +262,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.Identity();
+            new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.Identity();
 		}
 
 		[Test]
@@ -271,7 +271,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.Sequence("no");
+            new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.Sequence("no");
 		}
 
 		[Test]
@@ -280,7 +280,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.HiLo("no", "no", "no");
+            new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.HiLo("no", "no", "no");
 		}
 
 		[Test]
@@ -289,7 +289,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.SeqHiLo("no", "no");
+            new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.SeqHiLo("no", "no");
 		}
 
 		[Test]
@@ -298,7 +298,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.UuidHex("format");
+            new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.UuidHex("format");
 		}
 
 		[Test]
@@ -307,7 +307,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.UuidString();
+            new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.UuidString();
 		}
 
 		[Test]
@@ -316,7 +316,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.Guid();
+            new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.Guid();
 		}
 
 		[Test]
@@ -325,7 +325,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.GuidComb();
+            new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.GuidComb();
 		}
 
 		[Test]
@@ -333,7 +333,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void IdentityType_MustBeIntegral_ForNative()
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId);
-            new IdentityPart<IdentityTarget>(property).GeneratedBy.Native();
+            new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.Native();
 		}
 
         [Test]

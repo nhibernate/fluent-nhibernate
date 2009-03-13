@@ -7,6 +7,7 @@ namespace FluentNHibernate.Mapping
     {
         IdentityGenerationStrategyBuilder GeneratedBy { get; }
         Type IdentityType { get; }
+        Type EntityType { get; }
         PropertyInfo Property { get; }
         string GetColumnName();
 

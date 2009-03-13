@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public class IdentityPart<T> : IIdentityPart
+    public class IdentityPart : IIdentityPart
     {
 		private readonly IdentityGenerationStrategyBuilder _generatedBy;
 		private readonly Cache<string, string> _generatorParameters = new Cache<string, string>();
@@ -14,16 +14,17 @@ namespace FluentNHibernate.Mapping
         private readonly AccessStrategyBuilder<IIdentityPart> access;
 	    private object _unsavedValue;
 
-	    public IdentityPart(PropertyInfo property, string columnName)
+	    public IdentityPart(Type entity, PropertyInfo property, string columnName)
 		{
             access = new AccessStrategyBuilder<IIdentityPart>(this);
 
+	        EntityType = entity;
 			_property = property;
 			ColumnName(columnName);
 			_generatedBy = new IdentityGenerationStrategyBuilder(this);
 		}
 
-		public IdentityPart(PropertyInfo property) : this(property, null)
+		public IdentityPart(Type entity, PropertyInfo property) : this(entity, property, null)
 		{
 		}
 
@@ -48,6 +49,8 @@ namespace FluentNHibernate.Mapping
 		{
 			get { return _property.PropertyType; }
 		}
+
+        public Type EntityType { get; private set; }
 
         public PropertyInfo Property
         {
