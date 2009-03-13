@@ -9,6 +9,7 @@ namespace FluentNHibernate.Mapping
     {
         AccessStrategyBuilder<VersionPart> Access { get; }
         string GetColumnName();
+        Type EntityType { get; }
         PropertyInfo Property { get; }
         IVersion ColumnName(string name);
         IVersion NeverGenerated();
@@ -17,12 +18,14 @@ namespace FluentNHibernate.Mapping
     public class VersionPart : IVersion
     {
         public PropertyInfo Property { get; private set; }
+        public Type EntityType { get; private set; }
         private readonly AccessStrategyBuilder<VersionPart> _access;
         private readonly Dictionary<string,string> _properties;
         private bool _neverGenerated;
 
-        public VersionPart(PropertyInfo property)
+        public VersionPart(Type entity, PropertyInfo property)
         {
+            EntityType = entity;
             _access = new AccessStrategyBuilder<VersionPart>(this);
             _properties = new Dictionary<string, string>();
             Property = property;

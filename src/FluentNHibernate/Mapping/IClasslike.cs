@@ -7,6 +7,7 @@ namespace FluentNHibernate.Mapping
 {
     public interface IClasslike
     {
+        Type EntityType { get; }
         IEnumerable<IMappingPart> Parts { get; }
         IProperty Map<TEntity>(Expression<Func<TEntity, object>> expression);
         IManyToOnePart References<TEntity, OTHER>(Expression<Func<TEntity, OTHER>> expression);

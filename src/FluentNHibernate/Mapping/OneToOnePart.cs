@@ -6,7 +6,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IOneToOnePart : IMappingPart, IRelationship
+    public interface IOneToOnePart : IRelationship
     {
         CascadeExpression<IOneToOnePart> Cascade { get; }
     }

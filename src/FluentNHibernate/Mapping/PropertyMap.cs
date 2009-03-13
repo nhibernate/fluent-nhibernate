@@ -6,7 +6,7 @@ using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping
 {
-    public class PropertyMap : IMappingPart, IProperty, IAccessStrategy<PropertyMap>
+    public class PropertyMap : IProperty, IAccessStrategy<PropertyMap>
     {
         private readonly List<Action<XmlElement>> _alterations = new List<Action<XmlElement>>();
         private readonly Cache<string, string> _extendedProperties = new Cache<string, string>();

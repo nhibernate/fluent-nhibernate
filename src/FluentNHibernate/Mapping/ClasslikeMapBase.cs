@@ -36,7 +36,7 @@ namespace FluentNHibernate.Mapping
 
         protected virtual PropertyMap Map(PropertyInfo property, string columnName)
         {
-            var map = new PropertyMap(property, parentIsRequired, typeof(T));
+            var map = new PropertyMap(property, parentIsRequired, EntityType);
 
             if (columnName != null)
                 map.ColumnNames.Add(columnName);
@@ -58,7 +58,7 @@ namespace FluentNHibernate.Mapping
 
         protected virtual ManyToOnePart<OTHER> References<OTHER>(PropertyInfo property, string columnName)
         {
-            var part = new ManyToOnePart<OTHER>(typeof(T), property);
+            var part = new ManyToOnePart<OTHER>(EntityType, property);
 
             if (columnName != null)
                 part.ColumnName(columnName);
@@ -75,7 +75,7 @@ namespace FluentNHibernate.Mapping
 
         protected virtual OneToOnePart<OTHER> HasOne<OTHER>(PropertyInfo property)
         {
-            var part = new OneToOnePart<OTHER>(typeof(T), property);
+            var part = new OneToOnePart<OTHER>(EntityType, property);
             AddPart(part);
 
             return part;
@@ -144,7 +144,7 @@ namespace FluentNHibernate.Mapping
 
         protected virtual OneToManyPart<CHILD> HasMany<CHILD>(MethodInfo method)
         {
-            var part = new OneToManyPart<CHILD>(typeof(T), method);
+            var part = new OneToManyPart<CHILD>(EntityType, method);
 
             AddPart(part);
 
@@ -153,7 +153,7 @@ namespace FluentNHibernate.Mapping
 
         protected virtual OneToManyPart<CHILD> HasMany<CHILD>(PropertyInfo property)
         {
-            var part = new OneToManyPart<CHILD>(typeof(T), property);
+            var part = new OneToManyPart<CHILD>(EntityType, property);
 
             AddPart(part);
 
@@ -210,7 +210,7 @@ namespace FluentNHibernate.Mapping
 
         protected virtual ManyToManyPart<CHILD> HasManyToMany<CHILD>(MethodInfo method)
         {
-            var part = new ManyToManyPart<CHILD>(typeof(T), method);
+            var part = new ManyToManyPart<CHILD>(EntityType, method);
 
             AddPart(part);
 
@@ -219,7 +219,7 @@ namespace FluentNHibernate.Mapping
 
         protected virtual ManyToManyPart<CHILD> HasManyToMany<CHILD>(PropertyInfo property)
         {
-            var part = new ManyToManyPart<CHILD>(typeof(T), property);
+            var part = new ManyToManyPart<CHILD>(EntityType, property);
 
             AddPart(part);
 
@@ -255,7 +255,7 @@ namespace FluentNHibernate.Mapping
 
         protected virtual VersionPart Version(PropertyInfo property)
         {
-            var versionPart = new VersionPart(property);
+            var versionPart = new VersionPart(EntityType, property);
             AddPart(versionPart);
             return versionPart;
         }
@@ -272,6 +272,11 @@ namespace FluentNHibernate.Mapping
         public IEnumerable<IMappingPart> Parts
         {
             get { return _properties; }
+        }
+
+        public Type EntityType
+        {
+            get { return typeof(T); }
         }
 
         #region Explicit IClasslike implementation
