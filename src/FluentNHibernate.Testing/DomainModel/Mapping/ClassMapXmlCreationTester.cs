@@ -193,8 +193,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             var map = new ClassMap<MappedObject>();
             document = map.CreateMapping(new MappingVisitor());
 
-            document.DocumentElement.GetAttribute("assembly").ShouldEqual(typeof (MappedObject).Assembly.GetName().Name);
+            document.DocumentElement.GetAttribute("assembly").ShouldEqual(typeof (MappedObject).Assembly.GetName().FullName);
             document.DocumentElement.GetAttribute("namespace").ShouldEqual(typeof (MappedObject).Namespace);
+        }
+
+        [Test]
+        public void HeaderShouldHaveFullAssemblyName()
+        {
+            var map = new ClassMap<MappedObject>();
+            document = map.CreateMapping(new MappingVisitor());
+
+            document.DocumentElement.GetAttribute("assembly").ShouldEqual(typeof(MappedObject).Assembly.GetName().FullName);
         }
 
         [Test]

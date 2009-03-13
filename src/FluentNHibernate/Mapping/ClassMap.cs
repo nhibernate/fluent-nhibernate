@@ -197,7 +197,7 @@ namespace FluentNHibernate.Mapping
         {
             var documentElement = document.DocumentElement;
 
-            documentElement.SetAttribute("assembly", assemblyName ?? typeof(T).Assembly.GetName().Name);
+            documentElement.SetAttribute("assembly", assemblyName ?? typeof(T).Assembly.GetName().FullName);
             documentElement.SetAttribute("namespace", namespaceName ?? typeof (T).Namespace);
 
             HibernateMappingAttributes.ForEachPair(documentElement.SetAttribute);
