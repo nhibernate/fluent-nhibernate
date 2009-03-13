@@ -112,6 +112,18 @@ namespace FluentNHibernate.Testing.Cfg
 
             sessionFactory.ShouldNotBeNull();
         }
+
+		[Test]
+		public void ShouldGetAConfigurationIfEverythingIsOK()
+		{
+			var configuration = Fluently.Configure()
+				.Database(SQLiteConfiguration.Standard.InMemory)
+				.Mappings(m =>
+					m.FluentMappings.AddFromAssemblyOf<Record>())
+				.BuildConfiguration();
+
+			configuration.ShouldNotBeNull();
+		}
     }
 
     [TestFixture]

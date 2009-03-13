@@ -91,18 +91,35 @@ namespace FluentNHibernate.Cfg
         {
             try
             {
-                mappingCfg.Apply(Configuration);
-
-                foreach (var configAlteration in configAlterations)
-                    configAlteration(Configuration);
-
-                return Configuration.BuildSessionFactory();
+				return BuildConfiguration()
+                    .BuildSessionFactory();
             }
             catch (Exception ex)
             {
                 throw CreateConfigurationException(ex);
             }
         }
+
+        /// <summary>
+        /// Verifies the configuration and populates the NHibernate Configuration instance.
+        /// </summary>
+        /// <returns>NHibernate Configuration instance</returns>
+		public Configuration BuildConfiguration()
+		{
+			try
+			{
+				mappingCfg.Apply(Configuration);
+
+				foreach (var configAlteration in configAlterations)
+					configAlteration(Configuration);
+
+				return Configuration;
+			}
+			catch (Exception ex)
+			{
+				throw CreateConfigurationException(ex);
+			}
+		}
 
         /// <summary>
         /// Creates an exception based on the current state of the configuration.
