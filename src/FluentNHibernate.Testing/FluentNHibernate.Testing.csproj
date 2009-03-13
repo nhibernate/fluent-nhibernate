@@ -90,6 +90,8 @@
     <Compile Include="Cfg\Db\OracleConfigurationTester.cs" />
     <Compile Include="ConventionFinderTests\AddingTypeTests.cs" />
     <Compile Include="ConventionFinderTests\FindTests.cs" />
+    <Compile Include="ConventionsTests\ComponentDiscoveryConventionTester.cs" />
+    <Compile Include="ConventionsTests\ComponentMappingPartDiscoveryConventionTester.cs" />
     <Compile Include="ConventionsTests\ConventionsCollectionTests.cs" />
     <Compile Include="ConventionsTests\Defaults\EnumerationPropertyConventionTests.cs" />
     <Compile Include="ConventionsTests\Defaults\HasManyForeignKeyNameConventionTests.cs" />
@@ -103,7 +105,10 @@
     <Compile Include="ConventionsTests\Defaults\ReferenceForeignKeyConventionTests.cs" />
     <Compile Include="ConventionsTests\Defaults\TableNameConventionTests.cs" />
     <Compile Include="ConventionsTests\Defaults\VersionColumnNameConventionTests.cs" />
+    <Compile Include="ConventionsTests\DynamicComponentDiscoveryConventionTester.cs" />
+    <Compile Include="ConventionsTests\DynamicComponentMappingPartDiscoveryConventionTester.cs" />
     <Compile Include="ConventionsTests\JoinDiscoveryConventionTester.cs" />
+    <Compile Include="ConventionsTests\JoinMappingPartDiscoveryConventionTester.cs" />
     <Compile Include="ConventionsTests\MixedConventionInstanceTester.cs" />
     <Compile Include="ConventionsTests\ReferenceDiscoveryConventionTester.cs" />
     <Compile Include="ConventionsTests\HasOneDiscoveryConventionTester.cs" />
