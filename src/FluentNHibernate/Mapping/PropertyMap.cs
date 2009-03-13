@@ -122,7 +122,7 @@ namespace FluentNHibernate.Mapping
             get { return _property.PropertyType; }
         }
 
-        public Type ParentType
+        public Type EntityType
         {
             get { return _parentType; }
         }

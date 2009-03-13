@@ -10,7 +10,7 @@ namespace FluentNHibernate.Mapping
         void AddAlteration(Action<XmlElement> action);
         void SetAttributeOnColumnElement(string name, string value);
         Type PropertyType { get; }
-        Type ParentType { get; }
+        Type EntityType { get; }
         PropertyInfo Property { get; }
         bool ParentIsRequired { get; }
 
