@@ -356,6 +356,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .HasAttribute("table", "`MappedObject`");
         }
 
+        [Test]
+		public void WriteTheClassNodeForGenerics()
+		{
+            new MappingTester<MappedGenericObject<MappedObject>>()
+                .ForMapping(m => { })
+                .Element("class")
+                    .HasAttribute("name", typeof(MappedGenericObject<MappedObject>).FullName)
+                    .HasAttribute("table", "`MappedGenericObject_MappedObject`");
+		}
+
 		[Test]
 		public void DomainClassMapWithId()
 		{
@@ -578,4 +588,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public virtual string Name { get; set; }
         public virtual int Position { get; set; }
     }
+
+    public class MappedGenericObject<T>
+	{
+		public T Owner { get; set; }
+	}
 }

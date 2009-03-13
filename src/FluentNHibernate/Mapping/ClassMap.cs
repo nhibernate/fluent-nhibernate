@@ -186,8 +186,11 @@ namespace FluentNHibernate.Mapping
 
         protected virtual XmlElement createClassValues(XmlDocument document, XmlNode parentNode)
         {
-            return parentNode.AddElement("class")
-                .WithAtt("name", typeof (T).Name)
+            var type = typeof(T);
+			var typeName = type.IsGenericType ? type.FullName : type.Name;
+            
+			return parentNode.AddElement("class")
+                .WithAtt("name", typeName)
                 .WithAtt("table", TableName)
                 .WithAtt("xmlns", "urn:nhibernate-mapping-2.2")
                 .WithProperties(Attributes);

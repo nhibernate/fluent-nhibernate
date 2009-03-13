@@ -15,7 +15,21 @@ namespace FluentNHibernate.Conventions.Defaults
 
         public void Apply(IClassMap classMap)
         {
-            classMap.WithTable("`" + classMap.EntityType.Name + "`");
+            string tableName = classMap.EntityType.Name;
+
+            if (classMap.EntityType.IsGenericType)
+            {
+                // special case for generics: GenericType_GenericParameterType
+                tableName = classMap.EntityType.Name.Substring(0, classMap.EntityType.Name.IndexOf('`'));
+
+                foreach (var argument in classMap.EntityType.GetGenericArguments())
+                {
+                    tableName += "_";
+                    tableName += argument.Name;
+                }
+            }
+            
+            classMap.WithTable("`" + tableName + "`");
         }
     }
 }
