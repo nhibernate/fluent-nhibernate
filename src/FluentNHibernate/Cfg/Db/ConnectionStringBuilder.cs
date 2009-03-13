@@ -27,7 +27,7 @@ namespace FluentNHibernate.Cfg.Db
             return this;
         }
 
-        internal bool IsDirty { get; set; }
+        protected internal bool IsDirty { get; set; }
 
         protected internal virtual string Create()
         {
