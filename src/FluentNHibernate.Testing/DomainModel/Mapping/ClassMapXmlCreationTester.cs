@@ -453,7 +453,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
                 .ForMapping(m => m.Map(x => x.Name).Unique())
-                .Element("class/property").HasAttribute("unique", "true");
+                .Element("class/property").DoesntHaveAttribute("unique")
+                .Element("class/property/column").HasAttribute("unique", "true");
         }
 
         [Test]
@@ -461,7 +462,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
                 .ForMapping(m => m.Map(x => x.Name).Not.Unique())
-                .Element("class/property").HasAttribute("unique", "false");
+                .Element("class/property").DoesntHaveAttribute("unique")
+                .Element("class/property/column").HasAttribute("unique", "false");
         }
 
         [Test]

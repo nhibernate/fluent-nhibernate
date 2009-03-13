@@ -245,7 +245,7 @@ namespace FluentNHibernate.Mapping
 
         public IProperty Unique()
         {
-            _extendedProperties.Store("unique", nextBool.ToString().ToLowerInvariant());
+            _columnProperties.Store("unique", nextBool.ToString().ToLowerInvariant());
             nextBool = true;
             return this;
         }
