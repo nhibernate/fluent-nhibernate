@@ -137,28 +137,17 @@ namespace FluentNHibernate.Mapping
             get { return ColumnNames; }
         }
 
-        //public IProperty ColumnName(string name)
-        //{
-        //    columnNames.Add(name);
-        //    return this;
-        //}
-
-        //public IProperty ColumnNames(params string[] names)
-        //{
-        //    foreach (var name in names)
-        //    {
-        //        ColumnName(name);
-        //    }
-
-        //    return this;
-        //}
-
         /// <summary>
         /// Set the access and naming strategy for this property.
         /// </summary>
         public AccessStrategyBuilder<PropertyMap> Access
         {
             get { return access; }
+        }
+
+        IAccessStrategyBuilder IProperty.Access
+        {
+            get { return Access; }
         }
 
         public IProperty AutoNumber()

@@ -13,6 +13,7 @@ namespace FluentNHibernate.Mapping
         Type EntityType { get; }
         PropertyInfo Property { get; }
         bool ParentIsRequired { get; }
+        IAccessStrategyBuilder Access { get; }
 
         // Possibly should be moved to IHasAttributes.
         bool HasAttribute(string name);
