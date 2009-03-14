@@ -133,5 +133,10 @@ namespace FluentNHibernate.Mapping
         {
             get { return typeof(CHILD); }
         }
+
+        IAccessStrategyBuilder IRelationship.Access
+        {
+            get { return Access; }
+        }
     }
 }

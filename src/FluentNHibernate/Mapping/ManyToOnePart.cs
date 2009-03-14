@@ -214,6 +214,12 @@ namespace FluentNHibernate.Mapping
         {
             get { return new CascadeExpression<IManyToOnePart>(this); }
         }
+
+        IAccessStrategyBuilder IRelationship.Access
+        {
+            get { return Access; }
+        }
+
         #endregion
     }
 }

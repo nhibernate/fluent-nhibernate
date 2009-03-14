@@ -100,6 +100,12 @@ namespace FluentNHibernate.Mapping
         {
             get { return new CascadeExpression<IOneToOnePart>(this); }
         }
+
+        IAccessStrategyBuilder IRelationship.Access
+        {
+            get { return Access; }
+        }
+
         #endregion
     }
 }

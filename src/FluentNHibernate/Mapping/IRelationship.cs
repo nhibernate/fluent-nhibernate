@@ -5,5 +5,6 @@ namespace FluentNHibernate.Mapping
     public interface IRelationship : IMappingPart
     {
         Type EntityType { get; }
+        IAccessStrategyBuilder Access { get; }
     }
 }

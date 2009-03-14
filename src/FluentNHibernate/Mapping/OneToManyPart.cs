@@ -186,6 +186,11 @@ namespace FluentNHibernate.Mapping
             get { return KeyColumnNames; }
         }
 
+        IAccessStrategyBuilder IRelationship.Access
+        {
+            get { return Access; }
+        }
+
         #endregion
     }
 }
