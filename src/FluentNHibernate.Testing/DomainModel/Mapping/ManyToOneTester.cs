@@ -134,5 +134,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/many-to-one/column[@name='IdPart2']").Exists()
                 .Element("class/many-to-one/column[@name='IdPart3']").Exists();
         }
+
+        [Test]
+        public void NotFound_sets_attribute()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.References(x => x.Parent)
+                        .NotFound.Ignore())
+                .Element("class/many-to-one").HasAttribute("not-found", "ignore");
+        }
     }
 }

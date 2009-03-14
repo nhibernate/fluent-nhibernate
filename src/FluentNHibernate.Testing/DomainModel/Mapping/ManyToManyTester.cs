@@ -97,5 +97,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 )
                 .Element("class/bag").HasAttribute("collection-type", "name");
         }
+
+        [Test]
+        public void NotFound_sets_attribute()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map =>
+                    map.HasManyToMany(x => x.BagOfChildren)
+                        .NotFound.Ignore())
+                .Element("class/bag/many-to-many").HasAttribute("not-found", "ignore");
+        }
     }
 }

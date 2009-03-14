@@ -13,6 +13,7 @@ namespace FluentNHibernate.Mapping
         string GetColumnName();
         PropertyInfo Property { get; }
         IManyToOnePart ColumnName(string columnName);
+        INotFoundExpression NotFound { get; }
     }
 
     public class ManyToOnePart<OTHER> : IManyToOnePart, IAccessStrategy<ManyToOnePart<OTHER>>
@@ -47,6 +48,11 @@ namespace FluentNHibernate.Mapping
             {
                 return new NotFoundExpression<ManyToOnePart<OTHER>>( this, _properties );
             }
+        }
+
+        INotFoundExpression IManyToOnePart.NotFound
+        {
+            get { return NotFound; }
         }
 
         public ManyToOnePart<OTHER> PropertyRef(Expression<Func<OTHER, object>> propRefExpression)

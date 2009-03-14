@@ -7,6 +7,7 @@ namespace FluentNHibernate.Mapping
         CollectionCascadeExpression<IOneToManyPart> Cascade { get; }
         IOneToManyPart Inverse();
         IOneToManyPart LazyLoad();
+        INotFoundExpression NotFound { get; }
 
         /// <summary>
         /// Sets a custom collection type

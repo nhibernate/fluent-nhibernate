@@ -8,6 +8,7 @@ namespace FluentNHibernate.Mapping
     public class OneToManyPart<CHILD> : ToManyBase<OneToManyPart<CHILD>, CHILD>, IOneToManyPart, IAccessStrategy<OneToManyPart<CHILD>> 
     {
         private readonly ColumnNameCollection<OneToManyPart<CHILD>> columnNames;
+        private readonly Cache<string, string> collectionProperties = new Cache<string, string>();
 
         public OneToManyPart(Type entity, PropertyInfo property)
             : this(entity, property, property.PropertyType)
@@ -60,7 +61,9 @@ namespace FluentNHibernate.Mapping
             {
                 // standard one-to-many element
                 collectionElement.AddElement("one-to-many")
+                    .WithProperties(collectionProperties)
                     .SetAttribute("class", typeof(CHILD).AssemblyQualifiedName);
+                    
             }
             else
             {
@@ -189,6 +192,19 @@ namespace FluentNHibernate.Mapping
         IAccessStrategyBuilder IRelationship.Access
         {
             get { return Access; }
+        }
+
+        public NotFoundExpression<OneToManyPart<CHILD>> NotFound
+        {
+            get
+            {
+                return new NotFoundExpression<OneToManyPart<CHILD>>(this, collectionProperties);
+            }
+        }
+
+        INotFoundExpression IOneToManyPart.NotFound
+        {
+            get { return NotFound; }
         }
 
         #endregion

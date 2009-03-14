@@ -549,6 +549,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .DoesntHaveAttribute("collection-type");
         }
 
+        [Test]
+        public void NotFound_sets_attribute()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map =>
+                    map.HasMany(x => x.BagOfChildren)
+                        .NotFound.Ignore())
+                .Element("class/bag/one-to-many").HasAttribute("not-found", "ignore");
+        }
+
         private class TestO2MConvention : IHasManyConvention
         {
             public bool Accept(IOneToManyPart target)

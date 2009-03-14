@@ -217,6 +217,7 @@
     <Compile Include="Mapping\ICollectionRelationship.cs" />
     <Compile Include="Mapping\IColumnNameCollection.cs" />
     <Compile Include="Mapping\IJoinedSubclass.cs" />
+    <Compile Include="Mapping\INotFoundExpression.cs" />
     <Compile Include="Mapping\IRelationship.cs" />
     <Compile Include="SessionSource.cs" />
     <Compile Include="Conventions\Defaults\TableNameConvention.cs" />

@@ -13,6 +13,7 @@ namespace FluentNHibernate.Mapping
         Type ChildType { get; }
         void WithChildKeyColumn(string name);
         void WithParentKeyColumn(string name);
+        INotFoundExpression NotFound { get; }
     }
 
 	public class ManyToManyPart<CHILD> : ToManyBase<ManyToManyPart<CHILD>, CHILD>, IManyToManyPart
@@ -137,6 +138,19 @@ namespace FluentNHibernate.Mapping
         IAccessStrategyBuilder IRelationship.Access
         {
             get { return Access; }
+        }
+
+        public NotFoundExpression<ManyToManyPart<CHILD>> NotFound
+        {
+            get
+            {
+                return new NotFoundExpression<ManyToManyPart<CHILD>>(this, _manyToManyProperties);
+            }
+        }
+
+        INotFoundExpression IManyToManyPart.NotFound
+        {
+            get { return NotFound; }
         }
     }
 }
