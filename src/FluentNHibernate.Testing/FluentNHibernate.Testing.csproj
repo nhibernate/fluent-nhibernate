@@ -87,6 +87,7 @@
     <Compile Include="AutoMap\ManyToManyAutomapperTester.cs" />
     <Compile Include="AutoMap\PrivateAutoMappingTester.cs" />
     <Compile Include="AutoMap\TestFixtures.cs" />
+    <Compile Include="Cfg\Db\JetDriverConfigurationTester.cs" />
     <Compile Include="Cfg\Db\OracleConfigurationTester.cs" />
     <Compile Include="ConventionFinderTests\AddingTypeTests.cs" />
     <Compile Include="ConventionFinderTests\FindTests.cs" />

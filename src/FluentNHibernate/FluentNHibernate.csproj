@@ -92,6 +92,8 @@
     <Compile Include="Cfg\Db\ConnectionStringBuilder.cs" />
     <Compile Include="Cfg\Db\FirebirdConfiguration.cs" />
     <Compile Include="Cfg\Db\IPersistenceConfigurer.cs" />
+    <Compile Include="Cfg\Db\JetDriverConfiguration.cs" />
+    <Compile Include="Cfg\Db\JetDriverConnectionStringBuilder.cs" />
     <Compile Include="Cfg\Db\MsSqlConnectionStringBuilder.cs" />
     <Compile Include="Cfg\Db\MySQLConnectionStringBuilder.cs" />
     <Compile Include="Cfg\Db\OracleConfiguration.cs" />
