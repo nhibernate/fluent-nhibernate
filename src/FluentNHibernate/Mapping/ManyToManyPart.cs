@@ -14,6 +14,7 @@ namespace FluentNHibernate.Mapping
         void WithChildKeyColumn(string name);
         void WithParentKeyColumn(string name);
         INotFoundExpression NotFound { get; }
+        CollectionCascadeExpression<IManyToManyPart> Cascade { get; }
     }
 
 	public class ManyToManyPart<CHILD> : ToManyBase<ManyToManyPart<CHILD>, CHILD>, IManyToManyPart
@@ -151,6 +152,11 @@ namespace FluentNHibernate.Mapping
         INotFoundExpression IManyToManyPart.NotFound
         {
             get { return NotFound; }
+        }
+
+        CollectionCascadeExpression<IManyToManyPart> IManyToManyPart.Cascade
+        {
+            get { return new CollectionCascadeExpression<IManyToManyPart>(this); }
         }
     }
 }
