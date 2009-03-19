@@ -4,3 +4,5 @@
 bin
 obj
 _ReSharper*
+dist
+output

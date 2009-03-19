@@ -4,6 +4,7 @@ require 'erb'
 require 'activesupport'
 require 'find'
 require 'zip/zip'
+require 'fileutils'
 
 class NUnitRunner
 	include FileTest
@@ -130,4 +131,12 @@ def create_zip(filename, root, excludes=/^$/)
 	  zip.add(zip_path, path)
 	end
   end
+end
+
+def docu(dll_name)
+	FileUtils.rm_r('output') if File.exists? 'output'
+	
+	docu_exe = "tools/docu/docu.exe"
+	
+	`#{docu_exe} #{dll_name}`
 end

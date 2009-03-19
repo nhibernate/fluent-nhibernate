@@ -1,4 +1,4 @@
-COMPILE_TARGET = "debug"
+COMPILE_TARGET = "release"
 require "BuildUtils.rb"
 require 'fileutils'
 
@@ -133,3 +133,21 @@ end
 
 desc "Creates binary and source zip files"
 task :create_zips => [:create_source_zip, :create_binary_zip]
+
+desc "Builds the API documentation and puts it in 'output'"
+task :build_docs do
+  puts "Creating docs"
+  
+  docu("src/FluentNHibernate/bin/#{COMPILE_TARGET}/FluentNHibernate.dll")
+end
+
+desc "Creates a zip of the API documentation"
+task :create_zip_docs => :build_docs do
+  puts "Creating docs zip"
+  Dir.mkdir DIST_DIR unless File.exists? DIST_DIR
+  revision = get_svn_revision()
+  
+  create_zip("#{DIST_DIR}/fluentnhibernate-docs-#{BUILD_NUMBER}#{revision}.zip", 'output/')
+  
+  FileUtils.rm_r('output') if File.exists? 'output'
+end
