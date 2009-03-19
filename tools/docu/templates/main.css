@@ -6,8 +6,8 @@
 }
 
 .header {
-	background: #048;
-	border-bottom: 3px solid #006;
+	background: #900;
+	border-bottom: 3px solid #600;
 	margin: 0;
 	color: #FFF;
 	padding: 10px;
@@ -140,18 +140,18 @@ div.scroll
 }
 
 a {
-	background: #eef;
-	color: #039;
+	background: #EFEEE4;
+	color: #900;
 	text-decoration: none;
 }
 
 a:hover {
 	color: #FFF;
-	background: #039;
+	background: #900;
 }
 
 #namespaces a.current, #types a.current {
-	background: #039;
+	background: #900;
 	color: #FFF;
 	text-decoration: none;
 }
