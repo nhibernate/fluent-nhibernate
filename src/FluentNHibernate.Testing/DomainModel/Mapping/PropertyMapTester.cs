@@ -344,6 +344,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public PropertyReferenceTarget Reference { get; set; }
         public IList<PropertyReferenceTarget> References { get; set; }
         public ComponentTarget Component { get; set; }
+        public IList<ComponentTarget> Components { get; set; }
         public int Id { get; set; }
         public byte[] Data { get; set; }
 		public decimal DecimalProperty { get; set; }

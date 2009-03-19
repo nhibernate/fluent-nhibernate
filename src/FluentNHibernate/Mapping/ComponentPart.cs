@@ -8,6 +8,11 @@ namespace FluentNHibernate.Mapping
 {
     public interface IComponent : IClasslike, IMappingPart
     {
+        /// <summary>
+        /// Maps a property of the component class as a reference back to the containing entity
+        /// </summary>
+        /// <param name="exp">Parent reference property</param>
+        /// <returns>Component being mapped</returns>
         IComponent WithParentReference<TEntity>(Expression<Func<TEntity, object>> exp);
     }
 
@@ -76,6 +81,11 @@ namespace FluentNHibernate.Mapping
             get { return access; }
         }
 
+        /// <summary>
+        /// Maps a property of the component class as a reference back to the containing entity
+        /// </summary>
+        /// <param name="exp">Parent reference property</param>
+        /// <returns>Component being mapped</returns>
         public ComponentPart<T> WithParentReference(Expression<Func<T, object>> exp)
         {
             return WithParentReference(ReflectionHelper.GetProperty(exp));

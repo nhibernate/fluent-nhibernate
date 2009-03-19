@@ -1,5 +1,8 @@
+using System;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
@@ -10,6 +13,7 @@ namespace FluentNHibernate.Mapping
     public class CompositeElementPart<T> : ClasslikeMapBase<T>, IMappingPart
     {
         private readonly Cache<string, string> properties = new Cache<string, string>();
+        private PropertyInfo parentReference;
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
@@ -17,7 +21,26 @@ namespace FluentNHibernate.Mapping
                 .WithAtt("class", typeof(T).AssemblyQualifiedName)
                 .WithProperties(properties);
 
+            if (parentReference != null)
+                element.AddElement("parent").WithAtt("name", parentReference.Name);
+
             writeTheParts(element, visitor);
+        }
+
+        /// <summary>
+        /// Maps a property of the component class as a reference back to the containing entity
+        /// </summary>
+        /// <param name="exp">Parent reference property</param>
+        /// <returns>Component being mapped</returns>
+        public CompositeElementPart<T> WithParentReference(Expression<Func<T, object>> exp)
+        {
+            return WithParentReference(ReflectionHelper.GetProperty(exp));
+        }
+
+        private CompositeElementPart<T> WithParentReference(PropertyInfo property)
+        {
+            parentReference = property;
+            return this;
         }
 
         /// <summary>
@@ -25,6 +48,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="name">Attribute name</param>
         /// <param name="value">Attribute value</param>
+        /// <include file='' path='[@name=""]'/>
         public void SetAttribute(string name, string value)
         {
             properties.Store(name, value);
