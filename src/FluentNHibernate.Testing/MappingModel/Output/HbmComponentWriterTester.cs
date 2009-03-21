@@ -84,6 +84,29 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Element("many-to-one").Exists();
         }
 
+        [Test]
+        public void Should_write_the_components()
+        {
+            var componentMapping = new ComponentMapping();
+            componentMapping.AddComponent(new ComponentMapping());
+
+            _componentWriter.VerifyXml(componentMapping)
+                .Element("component").Exists();
+        }
+
+        [Test]
+        public void Should_write_multiple_nestings_of_components()
+        {
+            var componentMapping = new ComponentMapping();
+
+            componentMapping.AddComponent(new ComponentMapping { PropertyName = "Child"});
+            componentMapping.Components.First().AddComponent(new ComponentMapping { PropertyName = "Grandchild" });
+
+            _componentWriter.VerifyXml(componentMapping)
+                .Element("component").Exists().HasAttribute("name", "Child")
+                .Element("component").Exists().HasAttribute("name", "Grandchild");
+        }
+
        
 
     }

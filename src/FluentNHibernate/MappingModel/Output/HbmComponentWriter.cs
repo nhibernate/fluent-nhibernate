@@ -10,18 +10,17 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class HbmComponentWriter : NullMappingModelVisitor, IHbmWriter<ComponentMapping>
     {
-        private readonly IHbmWriter<IIdentityMapping> _identityWriter;
-        private readonly IHbmWriter<ICollectionMapping> _collectionWriter;
-        private readonly IHbmWriter<PropertyMapping> _propertyWriter;
-        private readonly IHbmWriter<ManyToOneMapping> _manyToOneWriter;
+        private readonly HbmMappedMemberWriterHelper _mappedMemberHelper;
         private HbmComponent _hbm;
 
-        public HbmComponentWriter(IHbmWriter<IIdentityMapping> identityWriter, IHbmWriter<ICollectionMapping> collectionWriter, IHbmWriter<PropertyMapping> propertyWriter, IHbmWriter<ManyToOneMapping> manyToOneWriter)
+        private HbmComponentWriter(HbmMappedMemberWriterHelper mappedMemberHelper)
         {
-            _identityWriter = identityWriter;
-            _manyToOneWriter = manyToOneWriter;
-            _propertyWriter = propertyWriter;
-            _collectionWriter = collectionWriter;
+            _mappedMemberHelper = mappedMemberHelper;
+        }
+
+        public HbmComponentWriter(IHbmWriter<IIdentityMapping> identityWriter, IHbmWriter<ICollectionMapping> collectionWriter, IHbmWriter<PropertyMapping> propertyWriter, IHbmWriter<ManyToOneMapping> manyToOneWriter)
+            : this(new HbmMappedMemberWriterHelper(collectionWriter, propertyWriter, manyToOneWriter, null))
+        {
         }
 
         public object Write(ComponentMapping mappingModel)
@@ -43,20 +42,27 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(PropertyMapping propertyMapping)
         {
-            object hbmProperty = _propertyWriter.Write(propertyMapping);
+            object hbmProperty = _mappedMemberHelper.Write(propertyMapping);
             hbmProperty.AddTo(ref _hbm.Items);
         }
 
         public override void Visit(ICollectionMapping collectionMapping)
         {
-            object hbmCollection = _collectionWriter.Write(collectionMapping);
+            object hbmCollection = _mappedMemberHelper.Write(collectionMapping);
             hbmCollection.AddTo(ref _hbm.Items);
         }
 
         public override void Visit(ManyToOneMapping manyToOneMapping)
         {
-            object hbmManyToOne = _manyToOneWriter.Write(manyToOneMapping);
+            object hbmManyToOne = _mappedMemberHelper.Write(manyToOneMapping);
             hbmManyToOne.AddTo(ref _hbm.Items);
+        }
+
+        public override void Visit(ComponentMapping componentMapping)
+        {
+            var componentWriter = new HbmComponentWriter(_mappedMemberHelper);
+            object hbmComponent = componentWriter.Write(componentMapping);
+            hbmComponent.AddTo(ref _hbm.Items);
         }
     }
 }
