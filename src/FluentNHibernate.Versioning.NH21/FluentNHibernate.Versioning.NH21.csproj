@@ -59,6 +59,7 @@
     <Compile Include="HbmExtensions\HbmClassExtensions.cs" />
     <Compile Include="HbmExtensions\HbmDiscriminatorExtensions.cs" />
     <Compile Include="HbmExtensions\HbmKeyExtensions.cs" />
+    <Compile Include="HbmExtensions\HbmListExtensions.cs" />
     <Compile Include="HbmExtensions\HbmManyToOneExtensions.cs" />
     <Compile Include="HbmExtensions\HbmOneToManyExtensions.cs" />
     <Compile Include="HbmExtensions\HbmPropertyExtensions.cs" />

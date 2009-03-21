@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HbmExtensions\HbmDiscriminatorExtensions.cs" />
+    <Compile Include="HbmExtensions\HbmListExtensions.cs" />
     <Compile Include="HbmExtensions\HbmPropertyExtensions.cs" />
     <Compile Include="HbmExtensions\HbmClassExtensions.cs" />
     <Compile Include="HbmExtensions\HbmKeyExtensions.cs" />

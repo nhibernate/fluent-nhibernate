@@ -22,6 +22,8 @@ namespace FluentNHibernate.MappingModel
         void ProcessSubclass(SubclassMapping subclassMapping);
         void ProcessDiscriminator(DiscriminatorMapping discriminatorMapping);
         void ProcessComponent(ComponentMapping componentMapping);
+        void ProcessList(ListMapping listMapping);
+        void ProcessIndex(IndexMapping indexMapping);
 
         void Visit(ClassMapping classMapping);
         void Visit(IIdentityMapping identityMapping);
@@ -37,5 +39,6 @@ namespace FluentNHibernate.MappingModel
         void Visit(SubclassMapping subclassMapping);
         void Visit(DiscriminatorMapping discriminatorMapping);
         void Visit(ComponentMapping componentMapping);
+        void Visit(IndexMapping indexMapping);
     }
 }

@@ -64,6 +64,8 @@
     <Compile Include="MappingModel\AttributeStore.cs" />
     <Compile Include="MappingModel\ClassMappingBase.cs" />
     <Compile Include="MappingModel\Collections\CollectionMappingBase.cs" />
+    <Compile Include="MappingModel\Collections\IndexMapping.cs" />
+    <Compile Include="MappingModel\Collections\ListMapping.cs" />
     <Compile Include="MappingModel\Collections\ManyToManyMapping.cs" />
     <Compile Include="MappingModel\Collections\SetMapping.cs" />
     <Compile Include="MappingModel\Collections\BagMapping.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="MappingModel\Output\HbmCollectionContentsWriter.cs" />
     <Compile Include="MappingModel\Output\HbmComponentWriter.cs" />
     <Compile Include="MappingModel\Output\HbmDiscriminatorWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmIndexWriter.cs" />
     <Compile Include="MappingModel\Output\HbmJoinedSubclassWriter.cs" />
     <Compile Include="MappingModel\Output\HbmKeyWriter.cs" />
     <Compile Include="MappingModel\Output\HbmCollectionWriter.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="MappingModel\Output\HbmIdentityWriter.cs" />
     <Compile Include="MappingModel\Output\HbmIdGeneratorWriter.cs" />
     <Compile Include="MappingModel\Output\HbmIdWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmListWriter.cs" />
     <Compile Include="MappingModel\Output\HbmManyToManyWriter.cs" />
     <Compile Include="MappingModel\Output\HbmManyToOneWriter.cs" />
     <Compile Include="MappingModel\Output\HbmMappedMemberWriterHelper.cs" />

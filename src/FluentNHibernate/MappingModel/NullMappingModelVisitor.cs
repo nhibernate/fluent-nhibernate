@@ -90,6 +90,16 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void ProcessList(ListMapping listMapping)
+        {
+            
+        }
+
+        public virtual void ProcessIndex(IndexMapping indexMapping)
+        {
+            
+        }
+
         public virtual void Visit(ClassMapping classMapping)
         {
 
@@ -156,6 +166,11 @@ namespace FluentNHibernate.MappingModel
         }
 
         public virtual void Visit(ComponentMapping componentMapping)
+        {
+            
+        }
+
+        public virtual void Visit(IndexMapping indexMapping)
         {
             
         }

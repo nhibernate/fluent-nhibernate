@@ -22,6 +22,11 @@ namespace FluentNHibernate.MappingModel
             ProcessCollection(setMapping);
         }
 
+        public override void ProcessList(ListMapping listMapping)
+        {
+            ProcessCollection(listMapping);
+        }
+
         #endregion
 
         #region Collection Contents
