@@ -59,7 +59,7 @@ namespace FluentNHibernate.MappingModel.Output
         public override void Visit(IndexMapping indexMapping)
         {
             HbmIndex indexHbm = (HbmIndex) _indexWriter.Write(indexMapping);
-            _hbm.Item1 = indexHbm;
+            _hbm.SetIndex(indexHbm);
         }
     }
 
