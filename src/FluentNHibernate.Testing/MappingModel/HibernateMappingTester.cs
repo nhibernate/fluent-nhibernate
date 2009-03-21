@@ -16,8 +16,8 @@ namespace FluentNHibernate.Testing.MappingModel
         public void CanAddClassMappings()
         {
             var hibMap = new HibernateMapping();
-            var classMap1 = MappingMother.CreateClassMapping();
-            var classMap2 = MappingMother.CreateClassMapping();
+            var classMap1 = new ClassMapping {Name = "class1" };
+            var classMap2 = new ClassMapping {Name = "class1" };
             
             hibMap.AddClass(classMap1);
             hibMap.AddClass(classMap2);
@@ -38,7 +38,7 @@ namespace FluentNHibernate.Testing.MappingModel
         public void Should_pass_classmappings_to_the_visitor()
         {
             var hibMap = new HibernateMapping();
-            var classMap = MappingMother.CreateClassMapping();
+            var classMap = new ClassMapping {Name = "class1" };
             hibMap.AddClass(classMap);
 
             var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();

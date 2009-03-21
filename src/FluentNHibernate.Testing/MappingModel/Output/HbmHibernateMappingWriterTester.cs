@@ -16,18 +16,18 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void Should_write_default_lazy()
         {
-            var hibMap = new HibernateMapping {DefaultLazy = true};
+            var hibMap = new HibernateMapping { DefaultLazy = true };
             var writer = new HbmHibernateMappingWriter(null);
             var hbm = writer.Write(hibMap);
 
-            hbm.defaultlazy.ShouldBeTrue();            
+            hbm.defaultlazy.ShouldBeTrue();
         }
 
         [Test]
         public void Should_append_class_mappings()
         {
             var hibernateMap = new HibernateMapping();
-            hibernateMap.AddClass(MappingMother.CreateClassMapping());
+            hibernateMap.AddClass(new ClassMapping { Name = "class1" });
 
             var classWriter = MockRepository.GenerateStub<IHbmWriter<ClassMapping>>();
             classWriter.Stub((x => x.Write(hibernateMap.Classes.First()))).Return(new HbmClass());
@@ -36,6 +36,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer.VerifyXml(hibernateMap)
                 .Element("class").Exists();
         }
-        
+
     }
 }
