@@ -24,7 +24,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             testHelper.Check(x => x.Name, "test").MapsToAttribute("name");
             testHelper.Check(x => x.Length, 50).MapsToAttribute("length");
             testHelper.Check(x => x.IsNotNullable, true).MapsToAttribute("not-null");
-            testHelper.Check(x => x.ColumnName, "column1").MapsToAttribute("column");
+            testHelper.Check(x => x.ColumnName, "thecolumn").MapsToAttribute("column");
             var writer = new HbmPropertyWriter();
             testHelper.VerifyAll(writer);
         }

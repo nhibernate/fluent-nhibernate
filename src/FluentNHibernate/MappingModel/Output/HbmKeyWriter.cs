@@ -33,9 +33,7 @@ namespace FluentNHibernate.MappingModel.Output
                 _hbm.propertyref = keyMapping.PropertyReference;
 
             if (keyMapping.Attributes.IsSpecified(x => x.CascadeOnDelete))
-            {
                 _hbm.SetCascadeOnDelete(keyMapping.CascadeOnDelete);
-            }
         }
     }
 }

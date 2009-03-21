@@ -17,13 +17,10 @@ namespace FluentNHibernate.MappingModel.Output
         public override void ProcessProperty(PropertyMapping propertyMapping)
         {
             _hbm = new HbmProperty();
-
             _hbm.name = propertyMapping.Name;
 
             if(propertyMapping.Attributes.IsSpecified(x => x.IsNotNullable))
-            {
                 _hbm.SetNotNull(propertyMapping.IsNotNullable);
-            }
 
             if (propertyMapping.Attributes.IsSpecified(x => x.Length))
                 _hbm.length = propertyMapping.Length.ToString();
