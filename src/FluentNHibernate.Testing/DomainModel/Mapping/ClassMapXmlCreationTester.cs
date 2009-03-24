@@ -539,6 +539,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.Not.ReadOnly())
                 .Element("class").HasAttribute("mutable", "true");
         }
+
+        [Test]
+        public void ShouldWriteBatchSizeAttributeWhenAssigned()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.BatchSize(15))
+                .Element("class").HasAttribute("batch-size", "15");
+        }
+
+        [Test]
+        public void ShouldNotWriteBatchSizeAttributeWhenEmpty()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => { })
+                .Element("class").DoesntHaveAttribute("batch-size");
+        }
     }
 
     public class SecondMappedObject

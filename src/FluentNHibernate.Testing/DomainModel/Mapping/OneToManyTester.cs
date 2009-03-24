@@ -559,6 +559,55 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/bag/one-to-many").HasAttribute("not-found", "ignore");
         }
 
+        [Test]
+        public void ShouldWriteCacheElementWhenAssigned()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map =>
+                            map.HasMany(x => x.SetOfChildren)
+                                .Cache.AsReadWrite())
+                .Element("class/set/cache").ShouldNotBeNull();
+        }
+
+        [Test]
+        public void ShouldNotWriteCacheElementWhenEmpty()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map =>
+                            map.HasMany(x => x.SetOfChildren))
+                .Element("class/set/cache").DoesntExist();
+        }
+
+        [Test]
+        public void ShouldWriteCacheElementFirst()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map =>
+                            map.HasMany(x => x.SetOfChildren)
+                                .Cache.AsReadWrite())
+                .Element("class/set/cache").ShouldBeInParentAtPosition(0);
+        }
+
+        [Test]
+        public void ShouldWriteBatchSizeAttributeWhenAssigned()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map =>
+                            map.HasMany(x => x.SetOfChildren)
+                                .BatchSize(15))
+                .Element("class/set").HasAttribute("batch-size", "15");
+        }
+
+        [Test]
+        public void ShouldNotWriteBatchSizeAttributeWhenEmpty()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map =>
+                            map.HasMany(x => x.SetOfChildren))
+                .Element("class/set").DoesntHaveAttribute("batch-size");
+        }
+
+
         private class TestO2MConvention : IHasManyConvention
         {
             public bool Accept(IOneToManyPart target)

@@ -73,6 +73,12 @@ namespace FluentNHibernate.Mapping
             if (!string.IsNullOrEmpty(TableName))
                 set.WithAtt("table", TableName);
 
+            if (batchSize > 0)
+                set.WithAtt("batch-size", batchSize.ToString());
+
+		    Cache.Write(set, visitor);
+
+
 			XmlElement key = set.AddElement("key");
 			key.WithAtt("column", ParentKeyColumn);
 		    key.WithProperties(_parentKeyProperties);

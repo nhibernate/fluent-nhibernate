@@ -87,6 +87,8 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         void DynamicInsert();
 
+        IClassMap BatchSize(int size);
+
         /// <summary>
         /// Inverse next boolean
         /// </summary>
@@ -108,6 +110,7 @@ namespace FluentNHibernate.Mapping
         private string assemblyName;
         private string namespaceName;
         private bool nextBool = true;
+        private int batchSize;
 
         public ClassMap()
         {
@@ -187,13 +190,20 @@ namespace FluentNHibernate.Mapping
         protected virtual XmlElement createClassValues(XmlDocument document, XmlNode parentNode)
         {
             var type = typeof(T);
-			var typeName = type.IsGenericType ? type.FullName : type.Name;
-            
-			return parentNode.AddElement("class")
-                .WithAtt("name", typeName)
+            var typeName = type.IsGenericType ? type.FullName : type.Name;
+
+            var classElement = parentNode.AddElement("class");
+
+            classElement.WithAtt("name", typeName)
                 .WithAtt("table", TableName)
-                .WithAtt("xmlns", "urn:nhibernate-mapping-2.2")
-                .WithProperties(Attributes);
+                .WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
+
+            if (batchSize > 0)
+                classElement.WithAtt("batch-size", batchSize.ToString());
+
+            classElement.WithProperties(Attributes);
+
+            return classElement;
         }
 
         private void setHeaderValues(IMappingVisitor visitor, XmlDocument document)
@@ -438,6 +448,12 @@ namespace FluentNHibernate.Mapping
         {
             Attributes.Store("dynamic-insert", nextBool.ToString().ToLowerInvariant());
             nextBool = true;
+        }
+
+        public IClassMap BatchSize(int size)
+        {
+            batchSize = size;
+            return this;
         }
 
         /// <summary>

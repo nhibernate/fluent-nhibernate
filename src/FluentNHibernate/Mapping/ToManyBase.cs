@@ -20,6 +20,7 @@ namespace FluentNHibernate.Mapping
         public Type EntityType { get; private set; }
         protected string _collectionType;
         private bool nextBool = true;
+        protected int batchSize;
 
         protected ToManyBase(Type entity, MemberInfo member, Type type)
         {
@@ -30,6 +31,7 @@ namespace FluentNHibernate.Mapping
 
             SetDefaultCollectionType(type);
             SetCustomCollectionType(type);
+            Cache = new CachePart();
         }
 
         private void SetDefaultCollectionType(Type type)
@@ -45,6 +47,11 @@ namespace FluentNHibernate.Mapping
 
             _properties.Store("collection-type", type.AssemblyQualifiedName);
         }
+
+        /// <summary>
+        /// Specify caching for this entity.
+        /// </summary>
+        public ICache Cache { get; private set; }
 
         public T LazyLoad()
         {
@@ -205,6 +212,12 @@ namespace FluentNHibernate.Mapping
         {
             _properties.Store("where", where);
 
+            return (T)this;
+        }
+
+        public T BatchSize(int size)
+        {
+            batchSize = size;
             return (T)this;
         }
 

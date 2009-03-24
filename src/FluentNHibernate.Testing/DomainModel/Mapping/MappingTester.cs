@@ -144,5 +144,25 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             return this;
         }
+
+         /// <summary>
+        /// Determines if the CurrentElement is located at a specified element position in it's parent
+        /// </summary>
+        /// <param name="elementPosition">Zero based index of elements on the parent</param>
+        public virtual MappingTester<T> ShouldBeInParentAtPosition(int elementPosition)
+        {
+            XmlElement parentElement = (XmlElement)currentElement.ParentNode;
+            if (parentElement == null)
+            {
+                Assert.Fail("Current element has no parent element.");
+            }
+            else
+            {
+                XmlElement elementAtPosition = (XmlElement)currentElement.ParentNode.ChildNodes.Item(elementPosition);
+                Assert.IsTrue(elementAtPosition == currentElement);
+            }
+
+            return this;
+        }
     }
 }

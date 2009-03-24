@@ -4,10 +4,13 @@ namespace FluentNHibernate.Mapping
 {
     public interface ICache : IMappingPart
     {
-        void AsReadWrite();
-        void AsNonStrictReadWrite();
-        void AsReadOnly();
-        void AsCustom(string custom);
+        ICache AsReadWrite();
+        ICache AsNonStrictReadWrite();
+        ICache AsReadOnly();
+        ICache AsCustom(string custom);
+        ICache Region(string name);
+        new ICache SetAttribute(string name, string value);
+        new ICache SetAttributes(Attributes attrs);
         bool IsDirty { get; }
     }
 
@@ -15,27 +18,17 @@ namespace FluentNHibernate.Mapping
     {
         private readonly Cache<string, string> attributes = new Cache<string, string>();
         private string usage;
-
-        public void SetAttribute(string name, string value)
-        {
-            attributes.Store(name, value);
-        }
-
-        public void SetAttributes(Attributes attrs)
-        {
-            foreach (var key in attrs.Keys)
-            {
-                SetAttribute(key, attrs[key]);
-            }
-        }
+        private string region;
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             if (!IsDirty) return;
 
-            var cacheElement = classElement.AddElement("cache");
-
-            cacheElement.SetAttribute("usage", usage);
+            var cacheElement = classElement.AddElement("cache")
+                  .WithAtt("usage", usage);
+            if (!string.IsNullOrEmpty(region))
+                cacheElement.WithAtt("region", region);
+            cacheElement.WithProperties(attributes);
         }
 
         public int Level
@@ -48,24 +41,59 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.First; }
         }
 
-        public void AsReadWrite()
+        public ICache AsReadWrite()
         {
             usage = "read-write";
+           return this;
         }
-
-        public void AsNonStrictReadWrite()
+ 
+        public ICache AsNonStrictReadWrite()
         {
             usage = "nonstrict-read-write";
+            return this;
         }
-
-        public void AsReadOnly()
+ 
+        public ICache AsReadOnly()
         {
             usage = "read-only";
+            return this;
         }
-
-        public void AsCustom(string custom)
+ 
+        public ICache AsCustom(string custom)
         {
             usage = custom;
+            return this;
+        }
+ 
+        public ICache Region(string name)
+        {
+            region = name;
+            return this;
+        }
+
+        public ICache SetAttribute(string name, string value)
+        {
+            attributes.Store(name, value);
+            return this;
+        }
+
+        public ICache SetAttributes(Attributes attrs)
+        {
+            foreach (var key in attrs.Keys)
+            {
+                SetAttribute(key, attrs[key]);
+            }
+            return this;
+        }
+
+        void IHasAttributes.SetAttributes(Attributes attrs)
+        {
+            SetAttributes(attrs);
+        }
+
+        void IHasAttributes.SetAttribute(string name, string value)
+        {
+            SetAttribute(name, value);
         }
 
         public bool IsDirty

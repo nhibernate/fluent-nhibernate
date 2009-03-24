@@ -28,6 +28,7 @@ namespace FluentNHibernate.Mapping
         public override void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             XmlElement collectionElement = WriteCollectionElement(classElement);
+            Cache.Write(collectionElement, visitor);
             WriteKeyElement(visitor, collectionElement);
 
             if (_indexMapping != null)
@@ -46,6 +47,10 @@ namespace FluentNHibernate.Mapping
 
             if (!string.IsNullOrEmpty(TableName))
                 collectionElement.SetAttribute("table", TableName);
+
+            if (batchSize > 0)
+                collectionElement.WithAtt("batch-size", batchSize.ToString());
+
 
             return collectionElement;
         }
