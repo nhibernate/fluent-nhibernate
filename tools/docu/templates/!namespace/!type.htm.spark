@@ -17,10 +17,18 @@
 		<p if="Type.Interfaces.Count > 0"><strong>Interfaces</strong> ${WriteInterfaces(Type.Interfaces)}</p>
 	</div>
     <div class="sub-header">
-		<if condition="Type.Summary.Count > 0">
+		<if condition="Type.Summary.Count > 0 || Type.Remarks.Count > 0">
 			<div id="summary">
-				${WriteSummary(Type.Summary)}
+				<comment content="Type.Summary" />
+				<remarks content="Type.Remarks" />
 			</div>
+		</if>
+		
+		<if condition="Type.Events.Count > 0">
+			<h3 class="section">Events</h3>
+			<ul>
+				<li each="var ev in Type.Events"><a href="#${ev.Name}" class="type">${h(ev.Name)}</a></li>
+			</ul>
 		</if>
 		
 		<if condition="Type.Methods.Count > 0">
@@ -36,7 +44,16 @@
 				<li each="var property in Type.Properties"><a href="#${property.Name}" class="type">${h(property.Name)}</a></li>
 			</ul>
 		</if>
+		
+		<if condition="Type.Fields.Count > 0">
+			<h3 class="section">Fields</h3>
+			<ul>
+				<li each="var field in Type.Fields"><a href="#${field.Name}" class="type">${h(field.Name)}</a></li>
+			</ul>
+		</if>
 	</div>
+	
+	<events events="Type.Events" title="'Events'" />
 	
 	<var publicInstanceMethods="Type.Methods.Where(x => x.IsPublic && !x.IsStatic)" />
 	<methods methods="publicInstanceMethods" title="'Public instance methods'" />
@@ -45,6 +62,7 @@
 	<methods methods="publicStaticMethods" title="'Public static methods'" />
 	
 	<properties properties="Type.Properties" title="'Public properties'" />
+	<fields fields="Type.Fields" title="'Public fields'" />
 	
 	<use file="../_footer" />
   </body>

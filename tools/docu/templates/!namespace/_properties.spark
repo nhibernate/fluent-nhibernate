@@ -4,7 +4,8 @@
   <div id="${property.Name}" class="method" each="var property in properties">
     <h4>${h(property.ReturnType.PrettyName)} <strong>${h(property.Name)}</strong> <if condition="property.HasGet">get;</if> <if condition="property.HasSet">set;</if></h4>
     <div class="content">
-      ${WriteSummary(property.Summary)}
+      <comment content="property.Summary" />
+      <remarks content="property.Remarks" />
       <table>
         <tr>
           <td>

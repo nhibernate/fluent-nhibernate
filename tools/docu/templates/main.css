@@ -81,17 +81,30 @@ div.method
 
 div.method h4 
 {
-	background:#CCC;
-	border-bottom:1px solid #666;
-	color:#000;
-	padding:2px 5px;
-	margin:0;
+	background: #CCC;
+	border-bottom: 1px solid #666;
+	color: #000;
+	padding: 2px 5px;
+	margin: 0 0 10px 0;
 	font-weight: normal;
 }
 
 div.method .content
 {
 	padding: 0 10px 5px 10px;
+}
+
+div.method table caption
+{
+	font-size: 12px;
+	font-weight: bold;
+	margin: 0;
+	text-align: left;
+}
+
+div.method table
+{
+	margin: 10px 0 0 0;
 }
 
 #summary 
@@ -102,11 +115,19 @@ div.method .content
 	padding: 5px 10px;
 }
 
-#namespaces, #types
+#namespaces
 {
 	width: 50%;
 	float: left;
 	background: #FFF;
+}
+
+#types
+{
+	width: 50%;
+	float: left;
+	background: #FFF;
+	margin-left: -1px;
 }
 
 h2.fixed {
@@ -161,4 +182,15 @@ a:hover {
 	text-align: center;
 	font-size: 10px;
 	color: #888;
+	clear: left;
+	padding-top: 10px;
+}
+
+blockquote 
+{
+	margin: 10px;
+	padding: 6px;
+	background: #F5F5F5;
+	border-top: 3px solid #CCC;
+	border-bottom: 3px solid #CCC;
 }

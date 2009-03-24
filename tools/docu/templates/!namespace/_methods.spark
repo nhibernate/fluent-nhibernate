@@ -4,15 +4,21 @@
 	<div id="${method.Name}" class="method" each="var method in methods">
 		<h4>${h(method.ReturnType.PrettyName)} <strong>${h(method.PrettyName)}</strong>(${OutputMethodParams(method)})</h4>
 		<div class="content">
-			${WriteSummary(method.Summary)}
-			<table>
-				<tr if="method.ReturnType.PrettyName != 'void'">
-					<td><code>return ${WriteReference(method.ReturnType)}</code></td>
-					<td></td>
+      <comment content="method.Summary" />
+      <remarks content="method.Remarks" />
+
+      <var hasReturn="method.ReturnType.PrettyName != 'void'" />
+      <var hasParams="method.Parameters.Count > 0" />
+      
+			<table if="hasReturn || hasParams">
+        <caption>Parameters</caption>
+				<tr if="hasReturn">
+					<td>return <code>${WriteReference(method.ReturnType)}</code></td>
+					<td><comment content="method.Returns" /></td>
 				</tr>
 				<tr each="var param in method.Parameters">
-					<td><code>${WriteReference(param.Reference)} ${param.Name}</code></td>
-					<td>${WriteSummary(param.Summary)}</td>
+					<td><code>${WriteReference(param.Reference)}</code> ${param.Name}</td>
+					<td><comment content="param.Summary" /></td>
 				</tr>
 			</table>
 		</div>

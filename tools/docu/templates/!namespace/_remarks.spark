@@ -1,0 +1,3 @@
+﻿<blockquote if="content.Count > 0">
+  ${WriteSummary(content)}
+</blockquote>
