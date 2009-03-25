@@ -93,6 +93,24 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/map").Exists();
         }
 
+        [Test]
+        public void CanSpecifyCollectionTypeAsMapWithStringColumnName()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map
+                    .HasMany(x => x.MapOfChildren)
+                        .AsMap("Name")
+                        .KeyColumnNames.Add("ParentId"))
+                .Element("class/map/key")
+                    .Exists()
+                    .HasAttribute("column", "ParentId")
+                .Element("class/map/index")
+                    .Exists()
+                    .HasAttribute("column", "Name")
+                .Element("class/map/one-to-many")
+                    .Exists()
+                    .HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName);
+        }
 
         [Test]
         public void CanSpecifyCollectionTypeAsMapOfEnums()

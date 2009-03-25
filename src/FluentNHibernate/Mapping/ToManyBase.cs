@@ -103,6 +103,20 @@ namespace FluentNHibernate.Mapping
             return AsMap(indexSelector, null);
         }
 
+        public T AsMap(string indexColumnName)
+        {
+            _collectionType = "map";
+            AsIndexedCollection<string>(indexColumnName, null);
+            return (T)this;
+        }
+
+        public T AsMap<INDEX_TYPE>(string indexColumnName)
+        {
+            _collectionType = "map";
+            AsIndexedCollection<INDEX_TYPE>(indexColumnName, null);
+            return (T)this;
+        }
+
         public T AsMap<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector, Action<IndexMapping> customIndexMapping)
         {
             _collectionType = "map";
