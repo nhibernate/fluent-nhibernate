@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using Examples.FirstProject.Entities;
-using FluentNHibernate.AutoMap;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
@@ -58,7 +56,10 @@ namespace Examples.FirstProject
 
                     transaction.Commit();
                 }
+            }
 
+            using (var session = sessionFactory.OpenSession())
+            {
                 // retreive all stores and display them
                 using (session.BeginTransaction())
                 {
@@ -70,9 +71,9 @@ namespace Examples.FirstProject
                         WriteStorePretty(store);
                     }
                 }
-
-                Console.ReadKey();
             }
+
+            Console.ReadKey();
         }
 
         private static ISessionFactory CreateSessionFactory()

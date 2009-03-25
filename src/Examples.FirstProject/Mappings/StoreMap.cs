@@ -13,6 +13,7 @@ namespace Examples.FirstProject.Mappings
                 .Cascade.All()
                 .WithTableName("StoreProduct");
             HasMany(x => x.Staff)
+                .Cascade.All()
                 .Inverse();
         }
     }
