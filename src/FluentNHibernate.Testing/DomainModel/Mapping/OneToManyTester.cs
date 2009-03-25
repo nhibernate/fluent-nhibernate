@@ -607,6 +607,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/set").DoesntHaveAttribute("batch-size");
         }
 
+        [Test]
+        public void CanSetForeignKeyToCascadeDeletes()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map =>
+                            map.HasMany(x => x.BagOfChildren)
+                                .ForeignKeyCascadeOnDelete())
+                .Element("class/bag/key").HasAttribute("on-delete", "cascade");
+        }
+
 
         private class TestO2MConvention : IHasManyConvention
         {

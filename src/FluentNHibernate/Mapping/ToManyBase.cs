@@ -186,6 +186,12 @@ namespace FluentNHibernate.Mapping
             return (T)this;
         }
 
+        public T ForeignKeyCascadeOnDelete()
+        {
+            _keyProperties.Store("on-delete", "cascade");
+            return (T)this;
+        }
+
         /// <summary>
         /// Set the access and naming strategy for this one-to-many.
         /// </summary>
