@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Mapping;
 using NHibernate.Cfg;
 
 namespace FluentNHibernate.Cfg
@@ -12,6 +13,7 @@ namespace FluentNHibernate.Cfg
     public class FluentMappingsContainer
     {
         private readonly IList<Assembly> assemblies = new List<Assembly>();
+        protected List<Type> types = new List<Type>();
         private string exportPath;
         private readonly PersistenceModel model;
 
@@ -40,9 +42,33 @@ namespace FluentNHibernate.Cfg
             assemblies.Add(assembly);
             WasUsed = true;
             return this;
+		}
+
+        /// <summary>
+        /// Adds a single <see cref="IClassMap" /> represented by the specified type.
+        /// </summary>
+        /// <returns>Fluent mappings configuration</returns>
+        public FluentMappingsContainer Add<T>() where T : IClassMap
+        {
+            return Add(typeof(T));
         }
 
         /// <summary>
+        /// Adds a single <see cref="IClassMap" /> represented by the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>Fluent mappings configuration</returns>
+        public FluentMappingsContainer Add(Type type)
+        {
+            if (type == null)
+                throw new ArgumentNullException("type");
+
+            types.Add(type);
+            WasUsed = true;
+            return this;
+        }
+
+		/// <summary>
         /// Sets the export location for generated mappings
         /// </summary>
         /// <param name="path">Path to folder for mappings</param>
@@ -75,6 +101,11 @@ namespace FluentNHibernate.Cfg
             foreach (var assembly in assemblies)
             {
                 model.addMappingsFromAssembly(assembly);
+            }
+
+            foreach (var type in types)
+            {
+                model.AddMapping(type);
             }
 
             if (!string.IsNullOrEmpty(exportPath))
