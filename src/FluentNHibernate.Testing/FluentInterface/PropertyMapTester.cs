@@ -20,5 +20,15 @@ namespace FluentNHibernate.Testing.FluentInterface
             propertyMap.ColumnName("Column1");
             model.ColumnName.ShouldEqual("Column1");
         }
+
+        [Test]
+        public void Can_set_uniqueness()
+        {
+            var model = new PropertyMapping();
+            var propertyMap = new PropertyMap(model);
+
+            propertyMap.Unique();
+            model.Unique.ShouldBeTrue();
+        }
     }
 }

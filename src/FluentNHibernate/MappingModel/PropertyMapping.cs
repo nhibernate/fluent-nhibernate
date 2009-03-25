@@ -53,5 +53,11 @@ namespace FluentNHibernate.MappingModel
             get { return _attributes.Get(x => x.ColumnName); }
             set { _attributes.Set(x => x.ColumnName, value); }
         }
+
+        public bool Unique
+        {
+            get { return _attributes.Get(x => x.Unique); }
+            set { _attributes.Set(x => x.Unique, value); }
+        }
     }
 }

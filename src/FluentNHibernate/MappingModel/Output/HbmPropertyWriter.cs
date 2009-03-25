@@ -27,6 +27,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (propertyMapping.Attributes.IsSpecified(x => x.ColumnName))
                 _hbm.SetColumn(propertyMapping.ColumnName);
+
+            if (propertyMapping.Attributes.IsSpecified(x => x.Unique))
+                _hbm.unique = propertyMapping.Unique;
         }
     }
 }

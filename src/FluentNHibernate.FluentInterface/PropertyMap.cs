@@ -28,5 +28,11 @@ namespace FluentNHibernate.FluentInterface
             _mapping.ColumnName = columnName;
             return this;
         }
+
+        public PropertyMap Unique()
+        {
+            _mapping.Unique = true;
+            return this;
+        }
     }
 }
