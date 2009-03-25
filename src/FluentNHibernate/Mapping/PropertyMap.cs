@@ -160,18 +160,9 @@ namespace FluentNHibernate.Mapping
 
         public IProperty WithLengthOf(int length)
         {
-            if (CanApplyLengthAttribute())
-                this.AddAlteration(x => x.SetColumnProperty("length", length.ToString()));
-            else
-                throw new InvalidOperationException(String.Format("{0} is not a string.", this._property.Name));
+            AddAlteration(x => x.SetColumnProperty("length", length.ToString()));
             return this;
         }
-
-    	private bool CanApplyLengthAttribute()
-    	{
-    		var propertyType = this._property.PropertyType;
-    		return  propertyType == typeof(string) || propertyType == typeof(decimal);
-    	}
 
         public IProperty Nullable()
         {

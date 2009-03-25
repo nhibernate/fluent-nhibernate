@@ -162,20 +162,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		}
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void Map_WithFluentLength_UsesInvalidWithLengthOf_PropertyColumnAttribute()
+        public void Map_WithFluentLength_AllowOnAnything_PropertyColumnAttribute()
         {
-            var classMap = new ClassMap<PropertyTarget>();
-
-            classMap.Map(x => x.Id)
-                .WithLengthOf(20);
-
-            classMap.CreateMapping(new MappingVisitor());
-
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Id).WithLengthOf(20))
+                .Element("class/property[@name='Id']/column").HasAttribute("length", "20");
         }
 
         [Test]
-        public void Map_WithFluentLength_UsesCanNotBeNull_PropertyColumnAttribute()
+        public void Map_UsesCanNotBeNull_PropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name).Not.Nullable())
@@ -184,7 +179,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Map_WithFluentLength_UsesAsReadOnly_PropertyColumnAttribute()
+        public void Map_UsesAsReadOnly_PropertyColumnAttribute()
         {
             var classMap = new ClassMap<PropertyTarget>();
 
@@ -201,7 +196,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Map_WithFluentLength_UsesUniqueKey_PropertyColumnAttribute()
+        public void Map_UsesUniqueKey_PropertyColumnAttribute()
         {
             var classMap = new ClassMap<PropertyTarget>();
 
@@ -217,7 +212,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Map_WithFluentLength_UsesNotReadOnly_PropertyColumnAttribute()
+        public void Map_UsesNotReadOnly_PropertyColumnAttribute()
         {
             var classMap = new ClassMap<PropertyTarget>();
 
@@ -263,6 +258,18 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<PropertyTarget>()
                 .ForMapping(c=>c.Map(x => x.Data).CustomTypeIs(typeof (custom_type_for_testing)))
                 .Element("class/property").HasAttribute("type", typeof(custom_type_for_testing).AssemblyQualifiedName);
+        }
+
+        [Test]
+        public void CanSpecifyCustomSqlType()
+        {
+            var classMap = new ClassMap<PropertyTarget>();
+            var propertyMap = classMap.Map(x => x.Data)
+                .CustomSqlTypeIs("image");
+
+            new MappingTester<PropertyTarget>()
+                .ForMapping(classMap)
+                .Element("class/property/column").HasAttribute("sql-type", "image");
         }
 
         #region Custom IUserType impl for testing
@@ -324,18 +331,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             }
         }
         #endregion
-
-        [Test]
-        public void CanSpecifyCustomSqlType()
-        {
-            var classMap = new ClassMap<PropertyTarget>();
-            var propertyMap = classMap.Map(x => x.Data)
-                .CustomSqlTypeIs("image");
-
-            new MappingTester<PropertyTarget>()
-                .ForMapping(classMap)                
-                .Element("class/property/column").HasAttribute("sql-type", "image");
-        }
     }
 
     public class PropertyTarget
