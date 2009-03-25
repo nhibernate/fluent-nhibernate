@@ -124,6 +124,7 @@
     <Compile Include="ConventionsTests\PropertyDiscoveryConventionTester.cs" />
     <Compile Include="ConventionsTests\SubclassDiscoveryConventionTester.cs" />
     <Compile Include="ConventionsTests\SubclassMappingPartDiscoveryConventionTester.cs" />
+    <Compile Include="ConventionsTests\UserDefinedConventionsTester.cs" />
     <Compile Include="ConventionsTests\VersionDiscoveryConventionTester.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapConventionsTester.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapDynamicInsertTester.cs" />

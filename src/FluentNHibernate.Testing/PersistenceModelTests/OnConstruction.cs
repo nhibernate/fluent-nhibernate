@@ -1,4 +1,6 @@
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions.Defaults;
+using FluentNHibernate.Conventions.Discovery;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -8,20 +10,36 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
     public class OnConstruction
     {
         private IConventionFinder conventionFinder;
+        private PersistenceModel model;
 
         [SetUp]
         public void CreatePersistenceModel()
         {
             conventionFinder = MockRepository.GenerateMock<IConventionFinder>();
-            new PersistenceModel(conventionFinder);
+            model = new PersistenceModel(conventionFinder);
         }
 
         [Test]
-        public void ConstructorShouldAddFNHAssemblyToFinder()
+        public void ConstructorShouldAddDiscoveryConventionsToFinder()
         {
-            var fluentNHibernateAssembly = typeof(PersistenceModel).Assembly;
+            conventionFinder.AssertWasCalled(x => x.Add(typeof(ClassDiscoveryConvention)));
+            conventionFinder.AssertWasCalled(x => x.Add(typeof(IdDiscoveryConvention)));
+        }
 
-            conventionFinder.AssertWasCalled(x => x.AddAssembly(fluentNHibernateAssembly));
+        [Test]
+        public void ConstructorShouldntAddDefaultConventionsToFinder()
+        {
+            conventionFinder.AssertWasNotCalled(x => x.Add(typeof(TableNameConvention)));
+            conventionFinder.AssertWasNotCalled(x => x.Add(typeof(PrimaryKeyConvention)));
+        }
+
+        [Test]
+        public void ApplyShouldAddDefaultConventionsToFinder()
+        {
+            model.ApplyConventions();
+
+            conventionFinder.AssertWasCalled(x => x.Add(typeof(TableNameConvention)));
+            conventionFinder.AssertWasCalled(x => x.Add(typeof(PrimaryKeyConvention)));
         }
     }
 }

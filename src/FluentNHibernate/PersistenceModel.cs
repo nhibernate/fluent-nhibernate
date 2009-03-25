@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Xml;
+using FluentNHibernate.Conventions.Defaults;
+using FluentNHibernate.Conventions.Discovery;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Conventions;
 using NHibernate.Cfg;
@@ -20,12 +23,33 @@ namespace FluentNHibernate
         public PersistenceModel(IConventionFinder conventionFinder)
         {
             ConventionFinder = conventionFinder;
-            ConventionFinder.AddAssembly(typeof(PersistenceModel).Assembly);
+
+            AddDiscoveryConventions();
         }
 
         public PersistenceModel()
             : this(new DefaultConventionFinder())
         {}
+
+        private void AddDiscoveryConventions()
+        {
+            foreach (var foundType in from type in typeof(PersistenceModel).Assembly.GetTypes()
+                                      where type.Namespace == typeof(ClassDiscoveryConvention).Namespace && !type.IsAbstract
+                                      select type)
+            {
+                ConventionFinder.Add(foundType);
+            }
+        }
+
+        private void AddDefaultConventions()
+        {
+            foreach (var foundType in from type in typeof(PersistenceModel).Assembly.GetTypes()
+                                      where type.Namespace == typeof(TableNameConvention).Namespace && !type.IsAbstract
+                                      select type)
+            {
+                ConventionFinder.Add(foundType);
+            }
+        }
 
         public void ForEach<T>(Action<T> action) where T : class
         {
@@ -96,6 +120,9 @@ namespace FluentNHibernate
         {
             if (conventionsApplied) return;
 
+            // we do this now so user conventions are applied first, then any defaults
+            AddDefaultConventions();
+            
             var conventions = ConventionFinder.Find<IEntireMappingsConvention>() ?? new List<IEntireMappingsConvention>();
 
             foreach (var convention in conventions)

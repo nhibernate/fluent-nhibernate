@@ -70,6 +70,18 @@ namespace FluentNHibernate.Conventions
         }
 
         /// <summary>
+        /// Add a single convention by type.
+        /// </summary>
+        /// <remarks>
+        /// Types must have a parameterless constructor, or a single parameter of <see cref="IConventionFinder" />.
+        /// </remarks>
+        /// <param name="type">Type of convention</param>
+        public void Add(Type type)
+        {
+            Add(type, MissingConstructor.Throw);
+        }
+
+        /// <summary>
         /// Add an instance of a convention.
         /// </summary>
         /// <remarks>

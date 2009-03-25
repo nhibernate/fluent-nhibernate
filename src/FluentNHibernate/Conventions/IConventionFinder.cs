@@ -13,16 +13,16 @@ namespace FluentNHibernate.Conventions
         /// Add an assembly to be queried.
         /// </summary>
         /// <remarks>
-        /// All convention types must have a parameterless constructor, or a single parameter of IConventionFinder.
+        /// All convention types must have a parameterless constructor, or a single parameter of <see cref="IConventionFinder" />.
         /// </remarks>
         /// <param name="assembly">Assembly instance to query</param>
         void AddAssembly(Assembly assembly);
 
         /// <summary>
-        /// Adds all conventions found in the assembly that contains T.
+        /// Adds all conventions found in the assembly that contains <typeparam name="T" />.
         /// </summary>
         /// <remarks>
-        /// All convention types must have a parameterless constructor, or a single parameter of IConventionFinder.
+        /// All convention types must have a parameterless constructor, or a single parameter of <see cref="IConventionFinder" />.
         /// </remarks>
         void AddFromAssemblyOf<T>();
 
@@ -30,10 +30,19 @@ namespace FluentNHibernate.Conventions
         /// Add a single convention by type.
         /// </summary>
         /// <remarks>
-        /// Type must have a parameterless constructor, or a single parameter of IConventionFinder.
+        /// Type must have a parameterless constructor, or a single parameter of <see cref="IConventionFinder" />.
         /// </remarks>
         /// <typeparam name="T">Convention type</typeparam>
         void Add<T>() where T : IConvention;
+
+        /// <summary>
+        /// Add a single convention by type.
+        /// </summary>
+        /// <remarks>
+        /// Types must have a parameterless constructor, or a single parameter of <see cref="IConventionFinder" />.
+        /// </remarks>
+        /// <param name="type">Type of convention</param>
+        void Add(Type type);
 
         /// <summary>
         /// Add an instance of a convention.

@@ -55,6 +55,22 @@ namespace FluentNHibernate.Cfg
             return parent;
         }
 
+        void IConventionFinder.Add(Type type)
+        {
+            Add(type);
+        }
+
+        public TReturn Add(Type type)
+        {
+            conventionFinder.Add(type);
+            return parent;
+        }
+
+        void IConventionFinder.Add<T>(T instance)
+        {
+            Add(instance);
+        }
+
         public TReturn Add<T>(params T[] instances) where T : IConvention
         {
             foreach (var instance in instances)
@@ -63,11 +79,6 @@ namespace FluentNHibernate.Cfg
             }
 
             return parent;
-        }
-
-        void IConventionFinder.Add<T>(T instance)
-        {
-            Add(instance);
         }
 
         public TReturn Setup(Action<IConventionFinder> setupAction)
