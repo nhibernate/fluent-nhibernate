@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
 using Iesi.Collections.Generic;
@@ -635,6 +636,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/bag/key").HasAttribute("on-delete", "cascade");
         }
 
+        [Test]
+        public void IndexTypeDefaultsToInt32()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map =>
+                            map.HasMany(x => x.MapOfChildren)
+                                .AsMap("indexCol"))
+                .Element("class/map/index").HasAttribute("type", typeof(Int32).AssemblyQualifiedName);
+        }
 
         private class TestO2MConvention : IHasManyConvention
         {

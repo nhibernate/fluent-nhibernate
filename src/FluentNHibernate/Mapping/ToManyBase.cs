@@ -106,7 +106,7 @@ namespace FluentNHibernate.Mapping
         public T AsMap(string indexColumnName)
         {
             _collectionType = "map";
-            AsIndexedCollection<string>(indexColumnName, null);
+            AsIndexedCollection<Int32>(indexColumnName, null);
             return (T)this;
         }
 
