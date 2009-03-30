@@ -104,7 +104,7 @@ namespace FluentNHibernate.Mapping
 
 		public int Level
 		{
-			get { return 1; }
+			get { return 2; }
 		}
 
 	    public PartPosition Position

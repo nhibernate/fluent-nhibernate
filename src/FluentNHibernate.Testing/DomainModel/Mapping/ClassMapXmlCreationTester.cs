@@ -555,6 +555,61 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => { })
                 .Element("class").DoesntHaveAttribute("batch-size");
         }
+
+        [Test]
+        public void ShouldAddCacheElementBeforeId()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(x => { x.Id(y => y.Id); x.Cache.AsReadWrite(); })
+                .Element("class/cache")
+                    .ShouldBeInParentAtPosition(0)
+                .Element("class/id")
+                    .ShouldBeInParentAtPosition(1);
+        }
+
+        [Test]
+        public void ShouldAddCacheElementBeforeCompositeId()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(x => { x.UseCompositeId().WithKeyProperty(y => y.Id).WithKeyProperty(y => y.Name); x.Cache.AsReadWrite(); })
+                .Element("class/cache")
+                    .ShouldBeInParentAtPosition(0)
+                .Element("class/composite-id")
+                    .ShouldBeInParentAtPosition(1);
+        }
+
+        [Test]
+        public void ShouldAddCompositeIdBeforeDiscriminator()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(x => { x.DiscriminateSubClassesOnColumn("test"); x.UseCompositeId().WithKeyProperty(y => y.Id).WithKeyProperty(y => y.Name); })
+                .Element("class/composite-id")
+                    .ShouldBeInParentAtPosition(0)
+                .Element("class/discriminator")
+                    .ShouldBeInParentAtPosition(1);
+        }
+
+        [Test]
+        public void ShouldAddIdBeforeDiscriminator()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(x => { x.DiscriminateSubClassesOnColumn("test"); x.Id(y => y.Id); })
+                .Element("class/id")
+                    .ShouldBeInParentAtPosition(0)
+                .Element("class/discriminator")
+                    .ShouldBeInParentAtPosition(1);
+        }
+
+        [Test]
+        public void ShouldAddDiscriminatorBeforeVersion()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(x => { x.Version(y => y.Version); x.DiscriminateSubClassesOnColumn("test"); })
+                .Element("class/discriminator")
+                    .ShouldBeInParentAtPosition(0)
+                .Element("class/version")
+                    .ShouldBeInParentAtPosition(1);
+        }
     }
 
     public class SecondMappedObject
@@ -596,6 +651,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public IList<ChildObject> Children { get; set; }
 
         public long Id { get; set; }
+
+        public int Version { get; set; }
     }
 
     public class ChildObject

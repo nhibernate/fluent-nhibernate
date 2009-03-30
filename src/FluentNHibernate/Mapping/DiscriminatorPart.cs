@@ -63,12 +63,12 @@ namespace FluentNHibernate.Mapping
 
         public int Level
         {
-            get { return 1; }
+            get { return 3; }
         }
 
         public PartPosition Position
         {
-            get { return PartPosition.Anywhere; }
+            get { return PartPosition.First; }
         }
 
         #endregion

@@ -93,7 +93,7 @@ namespace FluentNHibernate.Mapping
 
 	    public int Level
 		{
-			get { return 0; }
+			get { return 2; }
 		}
 
 	    public PartPosition Position
