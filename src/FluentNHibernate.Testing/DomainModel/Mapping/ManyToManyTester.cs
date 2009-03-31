@@ -155,5 +155,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                             map.HasMany(x => x.SetOfChildren))
                 .Element("class/set").DoesntHaveAttribute("batch-size");
         }
+
+        [Test]
+        public void ArrayHasIndexElement()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map => map.HasManyToMany(x => x.ArrayOfChildren).AsArray(x => x.Position))
+                .Element("class/array/index").Exists();
+        }
     }
 }

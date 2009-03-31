@@ -163,6 +163,12 @@ namespace FluentNHibernate.Mapping
             return (T)this;
         }
 
+        protected void WriteIndexElement(XmlElement collectionElement)
+        {
+            var indexElement = collectionElement.AddElement("index");
+            _indexMapping.WriteAttributesToIndexElement(indexElement);
+        }
+
         public T AsElement(string columnName)
         {
             _elementMapping = new ElementMapping();
@@ -332,5 +338,7 @@ namespace FluentNHibernate.Mapping
         public abstract void Write(XmlElement classElement, IMappingVisitor visitor);
         public abstract int Level { get; }
         public abstract PartPosition Position { get; }
+
+
     }
 }

@@ -77,12 +77,6 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        private void WriteIndexElement(XmlElement collectionElement)
-        {
-            var indexElement = collectionElement.AddElement("index");
-            _indexMapping.WriteAttributesToIndexElement(indexElement);
-        }
-
         private void WriteKeyElement(IMappingVisitor visitor, XmlElement collectionElement)
         {
             var columns = columnNames.List();

@@ -68,22 +68,24 @@ namespace FluentNHibernate.Mapping
 
 		public override void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-		    XmlElement set = classElement.AddElement(_collectionType).WithProperties(_properties);
+		    XmlElement collectionElement = classElement.AddElement(_collectionType).WithProperties(_properties);
 
             if (!string.IsNullOrEmpty(TableName))
-                set.WithAtt("table", TableName);
+                collectionElement.WithAtt("table", TableName);
 
             if (batchSize > 0)
-                set.WithAtt("batch-size", batchSize.ToString());
+                collectionElement.WithAtt("batch-size", batchSize.ToString());
 
-		    Cache.Write(set, visitor);
+		    Cache.Write(collectionElement, visitor);
 
+            if (_indexMapping != null)
+                WriteIndexElement(collectionElement);
 
-			XmlElement key = set.AddElement("key");
+			XmlElement key = collectionElement.AddElement("key");
 			key.WithAtt("column", ParentKeyColumn);
 		    key.WithProperties(_parentKeyProperties);
 
-			XmlElement manyToManyElement = set.AddElement("many-to-many");
+			XmlElement manyToManyElement = collectionElement.AddElement("many-to-many");
 			manyToManyElement.WithAtt("column", ChildKeyColumn);
 			manyToManyElement.WithAtt("class", typeof(CHILD).AssemblyQualifiedName);
 			manyToManyElement.WithProperties(_manyToManyProperties);
