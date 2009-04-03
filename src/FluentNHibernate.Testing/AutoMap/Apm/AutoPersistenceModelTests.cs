@@ -220,6 +220,40 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         }
 
         [Test]
+        public void TestDoNotAddJoinedSubclassesForConcreteBaseTypes()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .WithSetup(c =>
+                           c.IsConcreteBaseType = b =>
+                                                  b == typeof (ExampleClass));
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/joined-subclass").DoesntExist();
+        }
+
+        [Test]
+        public void TestClassIsMappedForConcreteSubClass()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .WithSetup(c =>
+                           c.IsConcreteBaseType = b =>
+                                                  b == typeof(ExampleClass));
+
+            autoMapper.Configure(cfg);
+
+            new AutoMappingTester<ExampleInheritedClass>(autoMapper)
+                .Element("class")
+                .HasAttribute("name", "ExampleInheritedClass")
+                .Exists();
+        }
+
+        [Test]
         public void TestInheritanceMappingDoesntIncludeBaseTypeProperties()
         {
             var autoMapper = AutoPersistenceModel

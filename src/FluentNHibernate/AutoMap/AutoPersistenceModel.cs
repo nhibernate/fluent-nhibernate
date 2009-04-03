@@ -148,7 +148,9 @@ namespace FluentNHibernate.AutoMap
 
         private Type GetTypeToMap(Type type)
         {
-            return Expressions.IsBaseType(type.BaseType) || type.BaseType == typeof(object) ? type : type.BaseType;
+            return Expressions.IsBaseType(type.BaseType) || 
+                Expressions.IsConcreteBaseType(type.BaseType) ||
+                type.BaseType == typeof(object) ? type : type.BaseType;
         }
 
         private void MergeMap(Type type, object mapping)
@@ -203,7 +205,8 @@ namespace FluentNHibernate.AutoMap
                     // instance of a generic type (probably AutoMap<T>)
                     return mappingType.GetGenericArguments()[0] == expectedType;
                 }
-                else if (mappingType.BaseType.IsGenericType && mappingType.BaseType.GetGenericTypeDefinition() == typeof(ClassMap<>))
+                if (mappingType.BaseType.IsGenericType && 
+                    mappingType.BaseType.GetGenericTypeDefinition() == typeof(ClassMap<>))
                 {
                     // base type is a generic type of ClassMap<T>, so we've got a XXXMap instance
                     return mappingType.BaseType.GetGenericArguments()[0] == expectedType;
@@ -211,13 +214,16 @@ namespace FluentNHibernate.AutoMap
 
                 return false;
             };
- 
-            var mapping = _mappings.Find(t => finder(t.GetType(), type)) as IClassMap;
+
+            var mapping = _mappings.Find(t => finder(t.GetType(), type));
 
             if (mapping != null) return mapping;
 
-            // standard AutoMap<T> not found for the type, so looking for one for it's base type.
-            return _mappings.Find(t => finder(t.GetType(), type.BaseType)) as IClassMap;
+            // if we haven't found a map yet then try to find a map of the
+            // base type to merge if not a concrete base type
+
+            return _mappings.Find(t => !Expressions.IsConcreteBaseType(type.BaseType) &&
+                finder(t.GetType(), type.BaseType));
         }
 
         public void OutputMappings()

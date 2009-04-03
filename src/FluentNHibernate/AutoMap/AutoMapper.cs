@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Conventions;
-using FluentNHibernate.Mapping;
 using System.Reflection;
 
 namespace FluentNHibernate.AutoMap
@@ -11,9 +10,12 @@ namespace FluentNHibernate.AutoMap
     {
         protected readonly List<IAutoMapper> _mappingRules;
         protected List<AutoMapType> mappingTypes;
+        protected AutoMappingExpressions expressions;
 
         public AutoMapper(AutoMappingExpressions expressions, IConventionFinder conventionFinder)
         {
+            this.expressions = expressions;
+
             _mappingRules = new List<IAutoMapper>
             {
                 new AutoMapIdentity(expressions), 
@@ -30,10 +32,12 @@ namespace FluentNHibernate.AutoMap
         {
             if (mappingTypes != null)
             {
-                foreach (var inheritedClass in mappingTypes.Where(q => q.Type.BaseType == typeof (T)))
+                foreach (var inheritedClass in mappingTypes.Where(q =>
+                    q.Type.BaseType == typeof(T) &&
+                    !expressions.IsConcreteBaseType.Invoke(q.Type.BaseType)))
                 {
                     object joinedClass = map.JoinedSubClass(inheritedClass.Type, typeof (T).Name + "Id");
-                    var method = this.GetType().GetMethod("mapEverythingInClass");
+                    var method = GetType().GetMethod("mapEverythingInClass");
                     var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
                     genericMethod.Invoke(this, new[] {joinedClass});
                     inheritedClass.IsMapped = true;
