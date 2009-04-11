@@ -143,7 +143,7 @@ namespace FluentNHibernate.AutoMap
             Type typeToMap = GetTypeToMap(type);
             var mapping = InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
                 autoMapper, a => a.Map<object>(mappingTypes), new object[] {mappingTypes}, typeToMap);
-            AddMapping((IClassMap)mapping);
+            Add((IMappingProvider)mapping);
         }
 
         private Type GetTypeToMap(Type type)
@@ -187,7 +187,7 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel AutoMap<T>()
         {
-            AddMapping(autoMapper.Map<T>(mappingTypes));
+            Add(autoMapper.Map<T>(mappingTypes));
             return this;
         }
 
@@ -198,38 +198,39 @@ namespace FluentNHibernate.AutoMap
 
         public IClassMap FindMapping(Type type)
         {
-            Func<Type, Type, bool> finder = (mappingType, expectedType) =>
-            {
-                if (mappingType.IsGenericType)
-                {
-                    // instance of a generic type (probably AutoMap<T>)
-                    return mappingType.GetGenericArguments()[0] == expectedType;
-                }
-                if (mappingType.BaseType.IsGenericType && 
-                    mappingType.BaseType.GetGenericTypeDefinition() == typeof(ClassMap<>))
-                {
-                    // base type is a generic type of ClassMap<T>, so we've got a XXXMap instance
-                    return mappingType.BaseType.GetGenericArguments()[0] == expectedType;
-                }
+            //Func<Type, Type, bool> finder = (mappingType, expectedType) =>
+            //{
+            //    if (mappingType.IsGenericType)
+            //    {
+            //        // instance of a generic type (probably AutoMap<T>)
+            //        return mappingType.GetGenericArguments()[0] == expectedType;
+            //    }
+            //    if (mappingType.BaseType.IsGenericType && 
+            //        mappingType.BaseType.GetGenericTypeDefinition() == typeof(ClassMap<>))
+            //    {
+            //        // base type is a generic type of ClassMap<T>, so we've got a XXXMap instance
+            //        return mappingType.BaseType.GetGenericArguments()[0] == expectedType;
+            //    }
 
-                return false;
-            };
+            //    return false;
+            //};
 
-            var mapping = _mappings.Find(t => finder(t.GetType(), type));
+            //var mapping = _mappings.Find(t => finder(t.GetType(), type));
 
-            if (mapping != null) return mapping;
+            //if (mapping != null) return mapping;
 
-            // if we haven't found a map yet then try to find a map of the
-            // base type to merge if not a concrete base type
+            //// if we haven't found a map yet then try to find a map of the
+            //// base type to merge if not a concrete base type
 
-            return _mappings.Find(t => !Expressions.IsConcreteBaseType(type.BaseType) &&
-                finder(t.GetType(), type.BaseType));
+            //return _mappings.Find(t => !Expressions.IsConcreteBaseType(type.BaseType) &&
+            //    finder(t.GetType(), type.BaseType));
+            throw new NotImplementedException();
         }
 
         public void OutputMappings()
         {
-            foreach(var map in _mappings)
-                Console.WriteLine(map);
+            //foreach(var map in _mappings)
+            //    Console.WriteLine(map);
         }
 
         public AutoPersistenceModel AddEntityAssembly(Assembly assembly)
@@ -240,12 +241,12 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel ForTypesThatDeriveFrom<T>(Action<AutoMap<T>> populateMap)
         {
-            if (_mappings.Exists(m => m.GetType() == typeof(AutoMap<T>)))
-                throw new AutoMappingException("ForTypesThatDeriveFrom<T> called more than once for '" + typeof(T).Name + "'. Merge your calls into one.");
+            //if (_mappings.Exists(m => m.GetType() == typeof(AutoMap<T>)))
+            //    throw new AutoMappingException("ForTypesThatDeriveFrom<T> called more than once for '" + typeof(T).Name + "'. Merge your calls into one.");
 
-            var map= (AutoMap<T>) Activator.CreateInstance(typeof (AutoMap<T>));
-            populateMap.Invoke(map);
-            _mappings.Add(map);
+            //var map= (AutoMap<T>) Activator.CreateInstance(typeof (AutoMap<T>));
+            //populateMap.Invoke(map);
+            //_mappings.Add(map);
             return this;
         }
     }

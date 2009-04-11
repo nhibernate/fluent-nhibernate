@@ -86,7 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
-      <Project>{1C988DFB-1EC5-484E-87D9-1D3C775BA435}</Project>
+      <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>
       <Name>FluentNHibernate</Name>
     </ProjectReference>
   </ItemGroup>

@@ -130,6 +130,11 @@ namespace FluentNHibernate.Testing
             actual.Keys.Contains(key).ShouldBeFalse();
         }
 
+        public static void ShouldContain<T>(this T[] actual, T expected)
+        {
+            ShouldContain((IList)actual, expected);
+        }
+
         public static void ShouldBeEmpty<T>(this IEnumerable<T> actual)
         {
             actual.Count().ShouldEqual(0);

@@ -1,4 +1,5 @@
-﻿using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.FluentInterface;
+using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Testing.Fixtures.MixedMappingsInSameLocation.Mappings
 {

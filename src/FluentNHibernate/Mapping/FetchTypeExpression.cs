@@ -1,7 +1,7 @@
 namespace FluentNHibernate.Mapping
 {
 	public class FetchTypeExpression<PARENTPART> 
-		where PARENTPART : IMappingPart
+		where PARENTPART : IHasAttributes
 	{
 		private readonly Cache<string, string> _properties;
 		protected PARENTPART MappingPart { get; set; }

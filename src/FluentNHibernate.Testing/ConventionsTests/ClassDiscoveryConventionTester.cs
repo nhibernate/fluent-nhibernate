@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using FluentNHibernate.Conventions.Discovery;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.FluentInterface;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Mapping;
 using NUnit.Framework;
 using Rhino.Mocks;
 

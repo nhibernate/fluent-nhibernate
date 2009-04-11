@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.FluentInterface;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Utils;
+using PropertyMap=FluentNHibernate.Mapping.PropertyMap;
 
 namespace FluentNHibernate.AutoMap
 {

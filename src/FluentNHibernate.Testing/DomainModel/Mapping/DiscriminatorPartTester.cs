@@ -1,3 +1,4 @@
+using FluentNHibernate.FluentInterface;
 using NUnit.Framework;
 using FluentNHibernate.Mapping;
 using System.Collections.Generic;

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.FluentInterface;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.Utils;
 using NHibernate.Properties;
 using NHibernate.SqlTypes;
@@ -11,7 +13,7 @@ using NHibernate.Type;
 using NHibernate.UserTypes;
 using NUnit.Framework;
 using FluentNHibernate;
-using FluentNHibernate.Mapping;
+using PropertyMap=FluentNHibernate.Mapping.PropertyMap;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {

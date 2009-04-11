@@ -105,7 +105,7 @@ namespace FluentNHibernate.Cfg
 
             foreach (var type in types)
             {
-                model.AddMapping(type);
+                model.Add(type);
             }
 
             if (!string.IsNullOrEmpty(exportPath))

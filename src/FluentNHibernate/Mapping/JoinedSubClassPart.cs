@@ -8,6 +8,7 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> attributes = new Cache<string, string>();
 
         public JoinedSubClassPart(string keyColumn)
+            : base(null)
         {
             _keyColumn = keyColumn;
         }

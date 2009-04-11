@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Xml;
+using FluentNHibernate.FluentInterface;
+using FluentNHibernate.MappingModel.Collections;
 using NUnit.Framework;
 using FluentNHibernate.Mapping;
 
@@ -21,17 +24,27 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void BasicManyToManyMapping()
         {
-        	new MappingTester<MappedObject>()
+            new ModelTester<MappedObject>()
         		.ForMapping(map => map.HasManyToMany(x => x.Children))
-        		.Element("class/bag")
-        			.HasAttribute("name", "Children")
-					.DoesntHaveAttribute("cascade")
-        		.Element("class/bag/key")
-        			.HasAttribute("column", "MappedObject_id")
-        		.Element("class/bag/many-to-many")
-        			.HasAttribute("class", typeof (ChildObject).AssemblyQualifiedName)
-        			.HasAttribute("column", "ChildObject_id")
-					.DoesntHaveAttribute("fetch");
+                .VerifyClass(c =>
+                {
+                    c.Collections.Count().ShouldEqual(1);
+                    c.Collections.First().ShouldBeOfType<BagMapping>();
+
+                    var bag = (BagMapping)c.Collections.First();
+
+                    bag.Name.ShouldEqual("Children");
+                    //bag.Key.Column.ShouldEqual("MappedObject_id");
+
+                    bag.Contents.ShouldBeOfType<ManyToManyMapping>();
+
+                    var contents = (ManyToManyMapping)bag.Contents;
+
+                    contents.ChildType.ShouldEqual(typeof(ChildObject));
+                    // .HasAttribute("column", "ChildObject_id")
+
+                    Assert.Fail("Not fully implemented");
+                });
         }
         
         [Test]
@@ -252,17 +265,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void DetermineTheTableName()
         {
-            new MappingTester<MappedObject>()
+            new ModelTester<MappedObject>()
                 .ForMapping(m => { })
-                .Element("class").HasAttribute("table", "`MappedObject`");
+                .VerifyClass(c => c.Tablename.ShouldEqual("`MappedObject`"));
         }
 
         [Test]
         public void CanSetTableName()
         {
-            new MappingTester<MappedObject>()
+            new ModelTester<MappedObject>()
                 .ForMapping(m => m.WithTable("myTableName"))
-                .Element("class").HasAttribute("table", "myTableName");
+                .VerifyClass(clazz => clazz.Tablename.ShouldEqual("myTableName"));
         }
 
         [Test]

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.FluentInterface;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
@@ -12,6 +14,13 @@ namespace FluentNHibernate.Mapping
     {
         private bool _parentIsRequired = true;
         private readonly List<IMappingPart> _properties = new List<IMappingPart>();
+        private readonly IHasMappedMembers _hasMappedMembers;
+        protected readonly IList<IDeferredCollectionMapping> _deferredCollections = new List<IDeferredCollectionMapping>();
+
+        protected ClasslikeMapBase(IHasMappedMembers hasMappedMembers)
+        {
+            _hasMappedMembers = hasMappedMembers;
+        }
 
         protected bool parentIsRequired
         {
@@ -63,7 +72,7 @@ namespace FluentNHibernate.Mapping
             if (columnName != null)
                 part.ColumnName(columnName);
 
-            AddPart(part);
+            //_deferredCollections.Add(part);
 
             return part;
         }
@@ -76,7 +85,7 @@ namespace FluentNHibernate.Mapping
         protected virtual OneToOnePart<OTHER> HasOne<OTHER>(PropertyInfo property)
         {
             var part = new OneToOnePart<OTHER>(EntityType, property);
-            AddPart(part);
+            //AddPart(part);
 
             return part;
         }
@@ -146,7 +155,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new OneToManyPart<CHILD>(EntityType, method);
 
-            AddPart(part);
+            //AddPart(part);
 
             return part;
         }
@@ -155,7 +164,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new OneToManyPart<CHILD>(EntityType, property);
 
-            AddPart(part);
+            //AddPart(part);
 
             return part;
         }
@@ -212,7 +221,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new ManyToManyPart<CHILD>(EntityType, method);
 
-            AddPart(part);
+            _deferredCollections.Add(part);
 
             return part;
         }
@@ -221,7 +230,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new ManyToManyPart<CHILD>(EntityType, property);
 
-            AddPart(part);
+            _deferredCollections.Add(part);
 
             return part;
         }

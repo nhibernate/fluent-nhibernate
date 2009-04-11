@@ -1,4 +1,5 @@
 using FluentNHibernate.Conventions;
+using FluentNHibernate.FluentInterface;
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FluentNHibernate.Conventions.Discovery;
+using FluentNHibernate.FluentInterface;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Conventions;
 using NUnit.Framework;

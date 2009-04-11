@@ -11,6 +11,21 @@
         </Variables>
         <CustomProperties />
       </Template>
+<<<<<<< HEAD:src/FluentNHibernate.4.1.resharper
+=======
+      <Template uid="96a2564d-d0cf-407c-a732-e2d23726bd29" text="public $ReturnType$ $PropertyName$&#xD;&#xA;{&#xD;&#xA;    get { return $_attributes$.Get(x =&gt; x.$PropertyName$); }&#xD;&#xA;    set { $_attributes$.Set(x =&gt; x.$PropertyName$, value); }&#xD;&#xA;}" shortcut="attprop" description="" reformat="true" shortenQualifiedReferences="true">
+        <Context>
+          <CSharpContext context="Everywhere" minimumLanguageVersion="2.0" />
+        </Context>
+        <Categories />
+        <Variables>
+          <Variable name="PropertyName" expression="" initialRange="0" />
+          <Variable name="ReturnType" expression="" initialRange="0" />
+          <Variable name="_attributes" expression="" initialRange="0" />
+        </Variables>
+        <CustomProperties />
+      </Template>
+>>>>>>> semantic-model:src/FluentNHibernate.4.1.resharper
     </LiveTemplates>
     <Surrounds />
     <FileTemplates>

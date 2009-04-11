@@ -6,6 +6,7 @@ using FluentNHibernate.AutoMap.TestFixtures.CustomCompositeTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Helpers;
+using FluentNHibernate.FluentInterface;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;

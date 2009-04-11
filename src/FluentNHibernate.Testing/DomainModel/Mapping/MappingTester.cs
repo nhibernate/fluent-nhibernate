@@ -1,7 +1,11 @@
 using System;
+using System.Linq;
 using System.Xml;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.FluentInterface;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel;
+using FluentNHibernate.Xml;
 using NHibernate.Cfg;
 using NUnit.Framework;
 
@@ -13,6 +17,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         protected XmlDocument document;
         protected IMappingVisitor _visitor;
         private readonly PersistenceModel model;
+        private HibernateMapping hbm;
 
         public MappingTester()
         {
@@ -45,11 +50,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public virtual MappingTester<T> ForMapping(ClassMap<T> classMap)
         {
-            model.AddMapping(classMap);
+            model.Add(classMap);
             model.ApplyConventions();
-
-            document = classMap.CreateMapping(_visitor);
-            currentElement = document.DocumentElement;
 
             return this;
         }

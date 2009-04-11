@@ -127,6 +127,12 @@ namespace FluentNHibernate.Mapping
             get { return _parentType; }
         }
 
+        public void ColumnName(string columnName)
+        {
+            ColumnNames.Clear();
+            ColumnNames.Add(columnName);
+        }
+
         public ColumnNameCollection<IProperty> ColumnNames
         {
             get { return columnNames; }
@@ -195,7 +201,7 @@ namespace FluentNHibernate.Mapping
         {
             return CustomTypeIs(typeof(CUSTOMTYPE));
         }
-       
+
         /// <summary>
         /// Specifies that a custom type (an implementation of <see cref="IUserType"/>) should be used for this property for mapping it to/from one or more database columns whose format or type doesn't match this .NET property.
         /// </summary>

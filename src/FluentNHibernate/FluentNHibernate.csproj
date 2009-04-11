@@ -3,9 +3,9 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1C988DFB-1EC5-484E-87D9-1D3C775BA435}</ProjectGuid>
+    <ProjectGuid>{529145D5-6CC3-4016-89B5-826563024AF1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FluentNHibernate</RootNamespace>
@@ -38,13 +38,21 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=2.0.0.1001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
-    </Reference>
     <Reference Include="NHibernate.Linq, Version=1.0.0.0, Culture=neutral, PublicKeyToken=444cf6a87fdab271, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\NHibernate.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate.Versioning, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\VersioningLib\FluentNHibernate.Versioning.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=2.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap, Version=2.5.2.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\StructureMap\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -52,9 +60,6 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
@@ -179,9 +184,24 @@
     <Compile Include="Data\InMemoryRepository.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="DummyMethodInfo.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="Cfg\Db\MsSqlConfiguration.cs" />
     <Compile Include="DummyPropertyInfo.cs" />
+    <Compile Include="Extensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FluentInterface\ClassMap.cs" />
+    <Compile Include="FluentInterface\ClassMapOld.cs" />
+    <Compile Include="FluentInterface\ComponentMap.cs" />
+    <Compile Include="FluentInterface\DiscriminatorPart.cs" />
+    <Compile Include="FluentInterface\DiscriminatorPartOld.cs" />
+    <Compile Include="FluentInterface\IDeferredCollectionMapping.cs" />
+    <Compile Include="FluentInterface\JoinedSubclassPart.cs" />
+    <Compile Include="FluentInterface\ManyToManyPart.cs" />
+    <Compile Include="FluentInterface\ManyToOnePart.cs" />
+    <Compile Include="FluentInterface\MapBase.cs" />
+    <Compile Include="FluentInterface\OneToManyPart.cs" />
+    <Compile Include="FluentInterface\PropertyMap.cs" />
+    <Compile Include="FluentInterface\SubclassPart.cs" />
     <Compile Include="Mapping\Attributes.cs" />
     <Compile Include="Mapping\CachePart.cs" />
     <Compile Include="Conventions\UserTypeConvention.cs" />
@@ -213,14 +233,26 @@
     <Compile Include="Conventions\IRelationshipConvention.cs" />
     <Compile Include="Conventions\IUserTypeConvention.cs" />
     <Compile Include="Conventions\IVersionConvention.cs" />
+    <Compile Include="Mapping\CascadeExpression.cs" />
+    <Compile Include="Mapping\CollectionCascadeExpression.cs" />
     <Compile Include="Mapping\ColumnNameCollection.cs" />
+    <Compile Include="Mapping\DefaultAccessStrategyBuilder.cs" />
     <Compile Include="Mapping\DynamicComponentPart.cs" />
+    <Compile Include="Mapping\FetchTypeExpression.cs" />
+    <Compile Include="Mapping\GenericEnumMapper.cs" />
+    <Compile Include="Mapping\IAccessStrategy.cs" />
     <Compile Include="Mapping\IClasslike.cs" />
     <Compile Include="Mapping\ICollectionRelationship.cs" />
     <Compile Include="Mapping\IColumnNameCollection.cs" />
+    <Compile Include="Mapping\IHasAttributes.cs" />
     <Compile Include="Mapping\IJoinedSubclass.cs" />
+    <Compile Include="Mapping\IMappingPart.cs" />
     <Compile Include="Mapping\INotFoundExpression.cs" />
+    <Compile Include="Mapping\InvalidPrefixException.cs" />
     <Compile Include="Mapping\IRelationship.cs" />
+    <Compile Include="Mapping\MappingPartComparer.cs" />
+    <Compile Include="Mapping\Prefix.cs" />
+    <Compile Include="Mapping\XmlExtensions.cs" />
     <Compile Include="SessionSource.cs" />
     <Compile Include="Conventions\Defaults\TableNameConvention.cs" />
     <Compile Include="Testing\PersistenceSpecification.cs" />
@@ -230,7 +262,6 @@
     <Compile Include="Mapping\ImportPart.cs" />
     <Compile Include="Mapping\IOneToManyPart.cs" />
     <Compile Include="Mapping\JoinPart.cs" />
-    <Compile Include="Mapping\MappingPartComparer.cs" />
     <Compile Include="Mapping\NotFoundExpression.cs" />
     <Compile Include="Mapping\OneToOnePart.cs" />
     <Compile Include="Mapping\OptimisticLockBuilder.cs" />
@@ -241,38 +272,94 @@
     <Compile Include="IMappingVisitor.cs" />
     <Compile Include="MappingVisitor.cs" />
     <Compile Include="Mapping\AccessStrategyBuilder.cs" />
-    <Compile Include="Mapping\CascadeExpression.cs" />
-    <Compile Include="Mapping\ClassMap.cs" />
     <Compile Include="Mapping\ClasslikeMapBase.cs" />
-    <Compile Include="Mapping\ClassToTableMapping.cs" />
-    <Compile Include="Mapping\CollectionCascadeExpression.cs" />
     <Compile Include="Mapping\ComponentPart.cs" />
     <Compile Include="Mapping\CompositeElementPart.cs" />
     <Compile Include="Mapping\CompositeIdentityPart.cs" />
-    <Compile Include="Mapping\FetchTypeExpression.cs" />
-    <Compile Include="Mapping\DefaultAccessStrategyBuilder.cs" />
     <Compile Include="Conventions\Defaults\PropertyTypeConvention.cs" />
-    <Compile Include="Mapping\DiscriminatorPart.cs" />
     <Compile Include="Conventions\Defaults\EnumerationPropertyConvention.cs" />
-    <Compile Include="Mapping\GenericEnumMapper.cs" />
-    <Compile Include="Mapping\IAccessStrategy.cs" />
     <Compile Include="Mapping\IdentityGenerationStrategyBuilder.cs" />
     <Compile Include="Mapping\IdentityPart.cs" />
-    <Compile Include="Mapping\IMappingPart.cs" />
-    <Compile Include="Mapping\IHasAttributes.cs" />
-    <Compile Include="Mapping\InvalidPrefixException.cs" />
     <Compile Include="Mapping\IProperty.cs" />
     <Compile Include="Mapping\JoinedSubClassPart.cs" />
     <Compile Include="Mapping\ManyToManyPart.cs" />
     <Compile Include="Mapping\ManyToOnePart.cs" />
     <Compile Include="Mapping\OneToManyPart.cs" />
-    <Compile Include="Mapping\Prefix.cs" />
     <Compile Include="Mapping\PropertyMap.cs" />
     <Compile Include="Mapping\SubClassPart.cs" />
     <Compile Include="Mapping\TypeMapping.cs" />
     <Compile Include="Mapping\VersionPart.cs" />
-    <Compile Include="Mapping\XmlExtensions.cs" />
+    <Compile Include="MappingModel\AttributeStore.cs" />
+    <Compile Include="MappingModel\ClassMappingBase.cs" />
+    <Compile Include="MappingModel\Collections\CollectionMappingBase.cs" />
+    <Compile Include="MappingModel\Collections\IndexMapping.cs" />
+    <Compile Include="MappingModel\Collections\ListMapping.cs" />
+    <Compile Include="MappingModel\Collections\ManyToManyMapping.cs" />
+    <Compile Include="MappingModel\Collections\SetMapping.cs" />
+    <Compile Include="MappingModel\Collections\BagMapping.cs" />
+    <Compile Include="MappingModel\Collections\ICollectionContentsMapping.cs" />
+    <Compile Include="MappingModel\Collections\ICollectionMapping.cs" />
+    <Compile Include="MappingModel\ColumnMapping.cs" />
+    <Compile Include="MappingModel\ComponentMapping.cs" />
+    <Compile Include="MappingModel\Conventions\ConventionException.cs" />
+    <Compile Include="MappingModel\Conventions\ManyToManyTableConvention.cs" />
+    <Compile Include="MappingModel\DiscriminatorMapping.cs" />
+    <Compile Include="MappingModel\IHasMappedMembers.cs" />
+    <Compile Include="MappingModel\MappedMembers.cs" />
+    <Compile Include="MappingModel\NullMappingModelVisitor.cs" />
+    <Compile Include="MappingModel\INameable.cs" />
+    <Compile Include="MappingModel\ISubclassMapping.cs" />
+    <Compile Include="MappingModel\JoinedSubclassMapping.cs" />
+    <Compile Include="MappingModel\KeyMapping.cs" />
+    <Compile Include="MappingModel\Output\HbmBagWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmCollectionContentsWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmComponentWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmDiscriminatorWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmIndexWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmJoinedSubclassWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmKeyWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmCollectionWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmCompositeIdWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmExtensions.cs" />
+    <Compile Include="MappingModel\IMappingModelVisitor.cs" />
+    <Compile Include="MappingModel\DefaultMappingModelVisitor.cs" />
+    <Compile Include="MappingModel\Output\HbmClassWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmHibernateMappingWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmColumnWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmIdentityWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmIdGeneratorWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmIdWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmListWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmManyToManyWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmManyToOneWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmMappedMemberWriterHelper.cs" />
+    <Compile Include="MappingModel\Output\HbmOneToManyWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmPropertyWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmSetWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmInheritanceWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmSubclassWriter.cs" />
+    <Compile Include="MappingModel\Output\HbmWriterFactory.cs" />
+    <Compile Include="MappingModel\Output\IHbmWriter.cs" />
+    <Compile Include="MappingModel\Identity\IdGeneratorMapping.cs" />
+    <Compile Include="MappingModel\Identity\CompositeIdMapping.cs" />
+    <Compile Include="MappingModel\HibernateMapping.cs" />
+    <Compile Include="MappingModel\Identity\IdMapping.cs" />
+    <Compile Include="MappingModel\Identity\IIdentityMapping.cs" />
+    <Compile Include="MappingModel\ClassMapping.cs" />
+    <Compile Include="MappingModel\IMappingBase.cs" />
+    <Compile Include="MappingModel\ManyToOneMapping.cs" />
+    <Compile Include="MappingModel\MappingBase.cs" />
+    <Compile Include="MappingModel\Collections\OneToManyMapping.cs" />
+    <Compile Include="MappingModel\PropertyMapping.cs" />
+    <Compile Include="MappingModel\Conventions\NamingConvention.cs" />
+    <Compile Include="MappingModel\SubclassMapping.cs" />
     <Compile Include="PersistenceModel.cs" />
+    <Compile Include="Reflection\Accessor.cs" />
+    <Compile Include="Reflection\PropertyChain.cs" />
+    <Compile Include="Reflection\ReflectionHelper.cs" />
+    <Compile Include="Reflection\SingleProperty.cs" />
+    <Compile Include="Xml\MappingXmlSerializer.cs" />
+    <Compile Include="Xml\MappingXmlValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\InvocationHelper.cs" />
     <Compile Include="Utils\ReflectionHelper.cs" />
@@ -280,7 +367,10 @@
     <Compile Include="UnknownPropertyException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mapping\Template.xml" />
+    <None Include="..\..\tools\NHibernate\nhibernate-mapping.xsd">
+      <Link>nhibernate-mapping.xsd</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\FluentKey.snk">

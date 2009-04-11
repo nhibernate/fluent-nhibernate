@@ -1,5 +1,6 @@
 using FluentNHibernate.AutoMap.TestFixtures;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.FluentInterface;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;

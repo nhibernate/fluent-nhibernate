@@ -2,12 +2,15 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.FluentInterface;
+using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public abstract class ToManyBase<T, CHILD>
-        : IMappingPart where T : ToManyBase<T, CHILD>, ICollectionRelationship, IMappingPart, IHasAttributes
+    public abstract class ToManyBase<T, CHILD> : IDeferredCollectionMapping
+        where T : ToManyBase<T, CHILD>, ICollectionRelationship, IHasAttributes
     {
         public MemberInfo Member { get; private set; }
         protected readonly Cache<string, string> _properties = new Cache<string, string>();
@@ -21,12 +24,14 @@ namespace FluentNHibernate.Mapping
         protected string _collectionType;
         private bool nextBool = true;
         protected int batchSize;
+        private Func<ICollectionMapping> _collectionBuilder;
+        private readonly AttributeStore<ICollectionMapping> _attributes = new AttributeStore<ICollectionMapping>();
 
         protected ToManyBase(Type entity, MemberInfo member, Type type)
         {
             EntityType = entity;
             Member = member;
-            _collectionType = "bag";
+            _collectionBuilder = () => new BagMapping();
             access = new AccessStrategyBuilder<T>((T)this);
 
             SetDefaultCollectionType(type);
@@ -74,13 +79,13 @@ namespace FluentNHibernate.Mapping
 
         public T AsSet()
         {
-            _collectionType = "set";
+            _collectionBuilder = () => new SetMapping();
             return (T)this;
         }
 
         public T AsBag()
         {
-            _collectionType = "bag";
+            _collectionBuilder = () => new BagMapping();
             return (T)this;
         }
 
@@ -335,10 +340,20 @@ namespace FluentNHibernate.Mapping
 
         public abstract void SetAttribute(string name, string value);
         public abstract void SetAttributes(Attributes attributes);
-        public abstract void Write(XmlElement classElement, IMappingVisitor visitor);
         public abstract int Level { get; }
         public abstract PartPosition Position { get; }
 
+        public ICollectionMapping ResolveCollectionMapping()
+        {
+            var collection = _collectionBuilder();
+            _attributes.CopyTo(collection.Attributes);
 
+            collection.Name = Member.Name;
+            collection.PropertyInfo = (PropertyInfo)Member; // BAD!
+            collection.Key = new KeyMapping();
+            collection.Contents = new ManyToManyMapping { ChildType = typeof(CHILD) };
+
+            return collection;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -6,22 +6,28 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Xml;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Defaults;
 using FluentNHibernate.Conventions.Discovery;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.Conventions;
+using FluentNHibernate.MappingModel;
 using NHibernate.Cfg;
+using FluentNHibernate.Xml;
+using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate
 {
     public class PersistenceModel
     {
-        protected List<IClassMap> _mappings = new List<IClassMap>();
+        private readonly IList<ClassMapping> _mappings;
+        private readonly IList<IMappingModelVisitor> _visitors;
         public IConventionFinder ConventionFinder { get; private set; }
         private bool conventionsApplied;
 
         public PersistenceModel(IConventionFinder conventionFinder)
         {
+            _mappings = new List<ClassMapping>();
+            _visitors = new List<IMappingModelVisitor>();
             ConventionFinder = conventionFinder;
 
             AddDiscoveryConventions();
@@ -51,13 +57,11 @@ namespace FluentNHibernate
             }
         }
 
-        public void ForEach<T>(Action<T> action) where T : class
+        public PersistenceModel(IEnumerable<IMappingProvider> providers, IList<IMappingModelVisitor> visitors)
         {
-            foreach (var mapping in _mappings)
-            {
-                T t = mapping as T;
-                if (t != null) action(t);
-            }
+            foreach(var mapping in providers.Select(p => p.GetClassMapping()))
+                Add(mapping);
+            _visitors = visitors;
         }
 
         protected void addMappingsFromThisAssembly()
@@ -71,19 +75,8 @@ namespace FluentNHibernate
             foreach (Type type in assembly.GetExportedTypes())
             {
                 if (!type.IsGenericType && typeof(IClassMap).IsAssignableFrom(type))
-                    AddMapping(type);
+                    Add(type);
             }
-        }
-
-        public void AddMapping(Type type)
-        {
-            var mapping = (IClassMap)type.InstantiateUsingParameterlessConstructor();
-            AddMapping(mapping);
-        }
-
-        public void AddMapping(IClassMap mapping)
-        {
-            _mappings.Add(mapping);
         }
 
         private static Assembly findTheCallingAssembly()
@@ -105,11 +98,47 @@ namespace FluentNHibernate
             return callingAssembly;
         }
 
-        public virtual void Configure(Configuration configuration)
+        public void Add(IMappingProvider provider)
         {
-            var visitor = new MappingVisitor(configuration);
+            Add(provider.GetClassMapping());
+        }
 
-            ApplyMappings(visitor);
+        public void Add(ClassMapping mapping)
+        {
+            _mappings.Add(mapping);
+        }
+
+        public void AddConvention(IMappingModelVisitor visitor)
+        {
+            _visitors.Add(visitor);
+        }
+
+        public void Add(Type type)
+        {
+            var mapping = (IMappingProvider)type.InstantiateUsingParameterlessConstructor();
+            Add(mapping);
+        }
+
+        public IEnumerable<ClassMapping> Mappings
+        {
+            get { return _mappings; }
+        }
+
+        public HibernateMapping BuildHibernateMapping()
+        {
+            var rootMapping = new HibernateMapping();
+            rootMapping.DefaultLazy = false;
+
+            foreach (var classMapping in _mappings)
+                rootMapping.AddClass(classMapping);
+
+            return rootMapping;
+        }
+
+        public void ApplyVisitors(HibernateMapping rootMapping)
+        {
+            foreach (var visitor in _visitors)
+                rootMapping.AcceptVisitor(visitor);
         }
 
         public void WriteMappingsTo(string folder)
@@ -128,11 +157,11 @@ namespace FluentNHibernate
             
             var conventions = ConventionFinder.Find<IEntireMappingsConvention>() ?? new List<IEntireMappingsConvention>();
 
-            foreach (var convention in conventions)
-            {
-                if (convention.Accept(_mappings))
-                    convention.Apply(_mappings);
-            }
+            //foreach (var convention in conventions)
+            //{
+            //    if (convention.Accept(_mappings))
+            //        convention.Apply(_mappings);
+            //}
 
             conventionsApplied = true;
         }
@@ -141,13 +170,25 @@ namespace FluentNHibernate
         {
             ApplyConventions();
 
-            _mappings.ForEach(mapping => mapping.ApplyMappings(visitor));
+            //_mappings.ForEach(mapping => mapping.ApplyMappings(visitor));
+        }
+
+        public virtual void Configure(Configuration cfg)
+        {
+            var rootMapping = BuildHibernateMapping();         
+   
+            ApplyVisitors(rootMapping);
+
+            var serializer = new MappingXmlSerializer();
+            XmlDocument document = serializer.Serialize(rootMapping);            
+
+            cfg.AddDocument(document);
         }
     }
 
-    public class DiagnosticMappingVisitor : MappingVisitor
-    {
-        private string _folder;
+public class DiagnosticMappingVisitor : MappingVisitor
+{
+            private string _folder;
 
         public DiagnosticMappingVisitor(string folder, Configuration configuration) : base(configuration)
         {
@@ -159,5 +200,10 @@ namespace FluentNHibernate
             string filename = Path.Combine(_folder, type.FullName + ".hbm.xml");
             document.Save(filename);
         }
+}
+
+    public interface IMappingProvider
+    {
+        ClassMapping GetClassMapping();
     }
 }
