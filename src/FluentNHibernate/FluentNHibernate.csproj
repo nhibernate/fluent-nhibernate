@@ -182,6 +182,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Cfg\Db\MsSqlConfiguration.cs" />
     <Compile Include="DummyPropertyInfo.cs" />
+    <Compile Include="Mapping\AnyPart.cs" />
     <Compile Include="Mapping\Attributes.cs" />
     <Compile Include="Mapping\CachePart.cs" />
     <Compile Include="Conventions\UserTypeConvention.cs" />

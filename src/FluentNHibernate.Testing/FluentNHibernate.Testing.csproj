@@ -131,6 +131,7 @@
     <Compile Include="DomainModel\Mapping\ClassMapDynamicUpdateTester.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapOptimisticLockTester.cs" />
     <Compile Include="DomainModel\Mapping\ComponentElementPartTester.cs" />
+    <Compile Include="DomainModel\Mapping\AnyPartTester.cs" />
     <Compile Include="Fixtures\TestPersistenceModel.cs" />
     <Compile Include="Fixtures\AutoMappingAlterations\DummyAlteration1.cs" />
     <Compile Include="Fixtures\AutoMappingAlterations\DummyAlteration2.cs" />
