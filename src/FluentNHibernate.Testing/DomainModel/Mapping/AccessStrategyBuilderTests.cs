@@ -295,12 +295,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             }
         }
 
-        public int Level
+        public int LevelWithinPosition
         {
             get { throw new System.NotImplementedException(); }
         }
 
-        public PartPosition Position
+        public PartPosition PositionOnDocument
         {
             get { throw new System.NotImplementedException(); }
         }

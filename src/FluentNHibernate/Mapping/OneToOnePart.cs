@@ -82,11 +82,11 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public int Level {
-            get { return 3; }
+        public int LevelWithinPosition {
+            get { return 1; }
         }
 
-        public PartPosition Position
+        public PartPosition PositionOnDocument
         {
             get { return PartPosition.Anywhere; }
         }

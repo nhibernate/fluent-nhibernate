@@ -336,8 +336,8 @@ namespace FluentNHibernate.Mapping
         public abstract void SetAttribute(string name, string value);
         public abstract void SetAttributes(Attributes attributes);
         public abstract void Write(XmlElement classElement, IMappingVisitor visitor);
-        public abstract int Level { get; }
-        public abstract PartPosition Position { get; }
+        public abstract int LevelWithinPosition { get; }
+        public abstract PartPosition PositionOnDocument { get; }
 
 
     }

@@ -36,12 +36,12 @@ namespace FluentNHibernate.Mapping
             writeTheParts(subclassElement, visitor);
         }
 
-        public int Level
+        public int LevelWithinPosition
         {
-            get { return 4; }
+            get { return 1; }
         }
 
-        public PartPosition Position
+        public PartPosition PositionOnDocument
         {
             get { return PartPosition.Anywhere; }
         }

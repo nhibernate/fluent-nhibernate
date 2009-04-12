@@ -274,7 +274,7 @@ namespace FluentNHibernate.Mapping
 
         protected void writeTheParts(XmlElement classElement, IMappingVisitor visitor)
         {
-            _properties.Sort(new MappingPartComparer());
+            _properties.Sort(new MappingPartComparer(_properties));
             foreach (IMappingPart part in _properties)
             {
                 part.Write(classElement, visitor);

@@ -114,15 +114,15 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Indicates the level within the Position, that this Part should be written at. The Any part has no intrinsic level it's required to appear at.
         /// </summary>
-        public int Level
+        public int LevelWithinPosition
         {
-            get { return 3; }
+            get { return 1; }
         }
 
         /// <summary>
         /// The general ordering of which the Part should be written in the HBM mapping. The Any Part can be placed anywhere in a mapping file after the header components have been set.
         /// </summary>
-        public PartPosition Position
+        public PartPosition PositionOnDocument
         {
             get { return PartPosition.Anywhere; }
         }

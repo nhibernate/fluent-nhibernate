@@ -61,12 +61,12 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public int Level
+        public int LevelWithinPosition
         {
             get { return 3; }
         }
 
-        public PartPosition Position
+        public PartPosition PositionOnDocument
         {
             get { return PartPosition.First; }
         }

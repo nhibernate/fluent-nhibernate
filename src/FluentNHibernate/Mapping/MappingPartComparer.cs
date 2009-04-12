@@ -1,18 +1,28 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FluentNHibernate.Mapping
 {
     public class MappingPartComparer : IComparer<IMappingPart>
     {
+        private readonly IMappingPart[] originalPartOrder;
+
+        public MappingPartComparer(IEnumerable<IMappingPart> originalCollection)
+        {
+            //We create a copy of the collection to maintain the order in which the elements were originally added
+            originalPartOrder = originalCollection.ToArray();
+        }
+
         public int Compare(IMappingPart x, IMappingPart y)
         {
-            // this isn't exactly nice, but it works (and it's covered by tests... hint hint)
-            if (x.Position == PartPosition.First && y.Position != PartPosition.First) return -1;
-            if (x.Position == PartPosition.Last && y.Position != PartPosition.Last) return 1;
-            if (x.Position == PartPosition.Anywhere && y.Position == PartPosition.First) return 1;
-            if (x.Position == PartPosition.Anywhere && y.Position == PartPosition.Last) return -1;
+            //General Position
+            if (x.PositionOnDocument != y.PositionOnDocument) return x.PositionOnDocument.CompareTo(y.PositionOnDocument);
+            //Sub-Position if positions are the same
+            if (x.LevelWithinPosition != y.LevelWithinPosition) return x.LevelWithinPosition.CompareTo(y.LevelWithinPosition);
 
-            return x.Level.CompareTo(y.Level);
+            //Relative Index based on the order the part was added
+            return Array.IndexOf(originalPartOrder, x).CompareTo(Array.IndexOf(originalPartOrder, y));
         }
     }
 }

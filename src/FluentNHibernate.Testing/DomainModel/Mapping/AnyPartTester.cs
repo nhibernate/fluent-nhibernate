@@ -160,13 +160,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void PositionIsSetToAnywhere()
         {
-            Assert.AreEqual(PartPosition.Anywhere, new AnyPart<SecondMappedObject>(null).Position);
+            Assert.AreEqual(PartPosition.Anywhere, new AnyPart<SecondMappedObject>(null).PositionOnDocument);
         }
 
         [Test]
-        public void LevelIsSetToThree()
+        public void LevelIsSetToOne()
         {
-            Assert.AreEqual(3, new AnyPart<SecondMappedObject>(null).Level);
+            Assert.AreEqual(1, new AnyPart<SecondMappedObject>(null).LevelWithinPosition);
         }
     }
 }

@@ -114,12 +114,12 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public override int Level
+        public override int LevelWithinPosition
         {
-            get { return 3; }
+            get { return 1; }
         }
 
-        public override PartPosition Position
+        public override PartPosition PositionOnDocument
         {
             get { return PartPosition.Anywhere; }
         }

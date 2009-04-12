@@ -31,12 +31,12 @@ namespace FluentNHibernate.Mapping
             cacheElement.WithProperties(attributes);
         }
 
-        public int Level
+        public int LevelWithinPosition
         {
             get { return 1; }
         }
 
-        public PartPosition Position
+        public PartPosition PositionOnDocument
         {
             get { return PartPosition.First; }
         }

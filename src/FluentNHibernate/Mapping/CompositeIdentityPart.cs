@@ -48,12 +48,12 @@ namespace FluentNHibernate.Mapping
 			}
 		}
 
-		public int Level
+		public int LevelWithinPosition
 		{
 			get { return 0; }
 		}
 
-	    public PartPosition Position
+	    public PartPosition PositionOnDocument
 	    {
             get { return PartPosition.Anywhere; }
 	    }
@@ -102,12 +102,12 @@ namespace FluentNHibernate.Mapping
 			//    (name, innerXml) => generatorElement.AddElement("param").WithAtt("name", name).InnerXml = innerXml);
 		}
 
-		public int Level
+		public int LevelWithinPosition
 		{
 			get { return 2; }
 		}
 
-	    public PartPosition Position
+	    public PartPosition PositionOnDocument
 	    {
             get { return PartPosition.First; }
 	    }
