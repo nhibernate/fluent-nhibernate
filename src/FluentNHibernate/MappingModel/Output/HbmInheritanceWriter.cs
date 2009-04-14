@@ -1,12 +1,12 @@
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmInheritanceWriter : NullMappingModelVisitor, IHbmWriter<ISubclassMapping>
+    public class HbmInheritanceWriter : NullMappingModelVisitor, IXmlWriter<ISubclassMapping>
     {
-        private readonly IHbmWriter<JoinedSubclassMapping> _joinedSubClassWriter;
-        private readonly IHbmWriter<SubclassMapping> _subClassWriter;
+        private readonly IXmlWriter<JoinedSubclassMapping> _joinedSubClassWriter;
+        private readonly IXmlWriter<SubclassMapping> _subClassWriter;
         private object _hbm;
 
-        public HbmInheritanceWriter(IHbmWriter<JoinedSubclassMapping> joinedSubClassWriter, IHbmWriter<SubclassMapping> subClassWriter)
+        public HbmInheritanceWriter(IXmlWriter<JoinedSubclassMapping> joinedSubClassWriter, IXmlWriter<SubclassMapping> subClassWriter)
         {
             _joinedSubClassWriter = joinedSubClassWriter;
             _subClassWriter = subClassWriter;

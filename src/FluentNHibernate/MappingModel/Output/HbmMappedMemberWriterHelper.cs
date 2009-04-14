@@ -8,12 +8,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     internal class HbmMappedMemberWriterHelper
     {
-        private readonly IHbmWriter<ICollectionMapping> _collectionWriter;
-        private readonly IHbmWriter<PropertyMapping> _propertyWriter;
-        private readonly IHbmWriter<ManyToOneMapping> _manyToOneWriter;
-        private readonly IHbmWriter<ComponentMapping> _componentWriter;
+        private readonly IXmlWriter<ICollectionMapping> _collectionWriter;
+        private readonly IXmlWriter<PropertyMapping> _propertyWriter;
+        private readonly IXmlWriter<ManyToOneMapping> _manyToOneWriter;
+        private readonly IXmlWriter<ComponentMapping> _componentWriter;
 
-        public HbmMappedMemberWriterHelper(IHbmWriter<ICollectionMapping> collectionWriter, IHbmWriter<PropertyMapping> propertyWriter, IHbmWriter<ManyToOneMapping> manyToOneWriter, IHbmWriter<ComponentMapping> componentWriter)
+        public HbmMappedMemberWriterHelper(IXmlWriter<ICollectionMapping> collectionWriter, IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ManyToOneMapping> manyToOneWriter, IXmlWriter<ComponentMapping> componentWriter)
         {
             _collectionWriter = collectionWriter;
             _componentWriter = componentWriter;

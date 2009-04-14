@@ -1,9 +1,6 @@
 using System;
 using System.Reflection;
 using System.Xml;
-using FluentNHibernate.FluentInterface;
-using FluentNHibernate.MappingModel;
-using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Mapping
 {
@@ -20,7 +17,7 @@ namespace FluentNHibernate.Mapping
         CollectionCascadeExpression<IManyToManyPart> Cascade { get; }
     }
 
-    public class ManyToManyPart<CHILD> : ToManyBase<ManyToManyPart<CHILD>, CHILD>, IManyToManyPart
+	public class ManyToManyPart<CHILD> : ToManyBase<ManyToManyPart<CHILD>, CHILD>, IManyToManyPart
     {
         public string ChildKeyColumn { get; private set; }
         public string ParentKeyColumn { get; private set; }
@@ -69,7 +66,7 @@ namespace FluentNHibernate.Mapping
 			}
 		}
 
-		public void Write(XmlElement classElement, IMappingVisitor visitor)
+		public override void Write(XmlElement classElement, IMappingVisitor visitor)
         {
 		    XmlElement collectionElement = classElement.AddElement(_collectionType).WithProperties(_properties);
 

@@ -8,7 +8,7 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmComponentWriter : NullMappingModelVisitor, IHbmWriter<ComponentMapping>
+    public class HbmComponentWriter : NullMappingModelVisitor, IXmlWriter<ComponentMapping>
     {
         private readonly HbmMappedMemberWriterHelper _mappedMemberHelper;
         private HbmComponent _hbm;
@@ -18,7 +18,7 @@ namespace FluentNHibernate.MappingModel.Output
             _mappedMemberHelper = mappedMemberHelper;
         }
 
-        public HbmComponentWriter(IHbmWriter<IIdentityMapping> identityWriter, IHbmWriter<ICollectionMapping> collectionWriter, IHbmWriter<PropertyMapping> propertyWriter, IHbmWriter<ManyToOneMapping> manyToOneWriter)
+        public HbmComponentWriter(IXmlWriter<IIdentityMapping> identityWriter, IXmlWriter<ICollectionMapping> collectionWriter, IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ManyToOneMapping> manyToOneWriter)
             : this(new HbmMappedMemberWriterHelper(collectionWriter, propertyWriter, manyToOneWriter, null))
         {
         }

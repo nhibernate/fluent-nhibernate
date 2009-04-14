@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.MappingModel
 {
     internal static class MappingTestingExtensions
     {
-        public static MappingXmlTestHelper VerifyXml<T>(this IHbmWriter<T> writer, T model)
+        public static MappingXmlTestHelper VerifyXml<T>(this IXmlWriter<T> writer, T model)
         {
             object hbm = writer.Write(model);
             var serializer = new MappingXmlSerializer();
@@ -21,7 +21,7 @@ namespace FluentNHibernate.Testing.MappingModel
             return new MappingXmlTestHelper(document);
         }
         
-        public static void ShouldGenerateValidOutput<T>(this IHbmWriter<T> writer, T model)
+        public static void ShouldGenerateValidOutput<T>(this IXmlWriter<T> writer, T model)
         {
             object hbm = writer.Write(model);
             hbm.ShouldNotBeNull();  

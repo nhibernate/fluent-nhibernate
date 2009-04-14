@@ -14,7 +14,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void Should_write_one_to_many()
         {
             var oneToMany = new OneToManyMapping();
-            var oneToManyWriter = MockRepository.GenerateStub<IHbmWriter<OneToManyMapping>>();
+            var oneToManyWriter = MockRepository.GenerateStub<IXmlWriter<OneToManyMapping>>();
             oneToManyWriter.Expect(x => x.Write(oneToMany)).Return(new HbmOneToMany());
             var writer = new HbmCollectionContentsWriter(oneToManyWriter, null);
 
@@ -26,7 +26,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void Should_write_many_to_many()
         {
             var manyToMany = new ManyToManyMapping();
-            var manyTomanyWriter = MockRepository.GenerateStub<IHbmWriter<ManyToManyMapping>>();
+            var manyTomanyWriter = MockRepository.GenerateStub<IXmlWriter<ManyToManyMapping>>();
             manyTomanyWriter.Expect(x => x.Write(manyToMany)).Return(new HbmManyToMany());
 
             var writer = new HbmCollectionContentsWriter(null, manyTomanyWriter);
@@ -39,7 +39,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void Should_return_null_when_writing_unrecognised_object_after_having_processed_a_recognised_object()
         {
             var recognisedMapping = new OneToManyMapping();
-            var oneToManyWriter = MockRepository.GenerateStub<IHbmWriter<OneToManyMapping>>();
+            var oneToManyWriter = MockRepository.GenerateStub<IXmlWriter<OneToManyMapping>>();
             oneToManyWriter.Expect(x => x.Write(recognisedMapping)).Return(new HbmOneToMany());
             var writer = new HbmCollectionContentsWriter(oneToManyWriter, null);
 

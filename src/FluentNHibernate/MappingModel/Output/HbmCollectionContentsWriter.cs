@@ -6,14 +6,14 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmCollectionContentsWriter : NullMappingModelVisitor, IHbmWriter<ICollectionContentsMapping>
+    public class HbmCollectionContentsWriter : NullMappingModelVisitor, IXmlWriter<ICollectionContentsMapping>
     {
-        private readonly IHbmWriter<OneToManyMapping> _oneToManyWriter;
-        private readonly IHbmWriter<ManyToManyMapping> _manyToManyWriter;
+        private readonly IXmlWriter<OneToManyMapping> _oneToManyWriter;
+        private readonly IXmlWriter<ManyToManyMapping> _manyToManyWriter;
 
         private object _hbm;
 
-        public HbmCollectionContentsWriter(IHbmWriter<OneToManyMapping> oneToManyWriter, IHbmWriter<ManyToManyMapping> manyToManyWriter)
+        public HbmCollectionContentsWriter(IXmlWriter<OneToManyMapping> oneToManyWriter, IXmlWriter<ManyToManyMapping> manyToManyWriter)
         {
             _oneToManyWriter = oneToManyWriter;
             _manyToManyWriter = manyToManyWriter;

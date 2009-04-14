@@ -9,16 +9,16 @@ using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmListWriter : NullMappingModelVisitor, IHbmWriter<ListMapping>
+    public class HbmListWriter : NullMappingModelVisitor, IXmlWriter<ListMapping>
     {
-        private readonly IHbmWriter<ICollectionContentsMapping> _contentsWriter;
-        private readonly IHbmWriter<KeyMapping> _keyWriter;
+        private readonly IXmlWriter<ICollectionContentsMapping> _contentsWriter;
+        private readonly IXmlWriter<KeyMapping> _keyWriter;
 
         private HbmList _hbm;
-        private IHbmWriter<IndexMapping> _indexWriter;
+        private IXmlWriter<IndexMapping> _indexWriter;
 
-        public HbmListWriter(IHbmWriter<ICollectionContentsMapping> contentsWriter,
-            IHbmWriter<KeyMapping> keyWriter, IHbmWriter<IndexMapping> indexWriter)
+        public HbmListWriter(IXmlWriter<ICollectionContentsMapping> contentsWriter,
+            IXmlWriter<KeyMapping> keyWriter, IXmlWriter<IndexMapping> indexWriter)
         {
             _contentsWriter = contentsWriter;
             _indexWriter = indexWriter;

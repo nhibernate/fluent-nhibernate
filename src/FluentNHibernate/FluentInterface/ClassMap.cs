@@ -13,10 +13,8 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IClassMap : IClasslike, IHasAttributes
+    public interface IClassMap : IClasslike, IHasAttributes, IMappingProvider
     {
-        void ApplyMappings(IMappingVisitor visitor);
-        XmlDocument CreateMapping(IMappingVisitor visitor);
         Type EntityType { get; }
         string TableName { get; }
         ICache Cache { get; }
@@ -128,39 +126,45 @@ namespace FluentNHibernate.Mapping
         }
 
         public ClassMap(ClassMapping mapping)
-            : base(mapping)
         {
             this.mapping = mapping;
         }
 
-        public string TableName { get; private set; }
-
-        public XmlDocument CreateMapping(IMappingVisitor visitor)
+        public string TableName
         {
-            //AddPart(Cache);
-
-            //visitor.CurrentType = typeof(T);
-            //XmlDocument document = getBaseDocument();
-            //setHeaderValues(visitor, document);
-
-            //foreach (var import in imports)
-            //{
-            //    import.Write(document.DocumentElement, visitor);
-            //}
-
-            //XmlElement classElement = createClassValues(document, document.DocumentElement);
-
-            //writeTheParts(classElement, visitor);
-
-            return null;
+            get { return mapping.Tablename; }
         }
+
+        //public XmlDocument CreateMapping(IMappingVisitor visitor)
+        //{
+        //    //AddPart(Cache);
+
+        //    //visitor.CurrentType = typeof(T);
+        //    //XmlDocument document = getBaseDocument();
+        //    //setHeaderValues(visitor, document);
+
+        //    //foreach (var import in imports)
+        //    //{
+        //    //    import.Write(document.DocumentElement, visitor);
+        //    //}
+
+        //    //XmlElement classElement = createClassValues(document, document.DocumentElement);
+
+        //    //writeTheParts(classElement, visitor);
+
+        //    return null;
+        //}
 
         public ClassMapping GetClassMapping()
         {
-            foreach (var collection in _deferredCollections.Select(x => x.ResolveCollectionMapping()))
-                mapping.AddCollection(collection);
+            AddPart(Cache);
 
-            _deferredCollections.Clear();
+            foreach (var part in Parts)
+            {
+                mapping.AddUnmigratedPart(part);
+            }
+
+            Attributes.ForEachPair(mapping.AddUnmigratedAttribute);
 
             return mapping;
         }
@@ -248,33 +252,33 @@ namespace FluentNHibernate.Mapping
             return document;
         }
 
-        public void ApplyMappings(IMappingVisitor visitor)
-        {
-            XmlDocument mapping = null;
+        //public void ApplyMappings(IMappingVisitor visitor)
+        //{
+        //    XmlDocument mapping = null;
 
-            try
-            {
-                visitor.CurrentType = typeof (T);
-                mapping = CreateMapping(visitor);
-                visitor.AddMappingDocument(mapping, typeof (T));
-            }
-            catch (Exception e)
-            {
-                if (mapping != null)
-                {
-                    var writer = new StringWriter();
-                    var xmlWriter = new XmlTextWriter(writer);
-                    xmlWriter.Formatting = Formatting.Indented;
+        //    try
+        //    {
+        //        visitor.CurrentType = typeof (T);
+        //        mapping = CreateMapping(visitor);
+        //        visitor.AddMappingDocument(mapping, typeof (T));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        if (mapping != null)
+        //        {
+        //            var writer = new StringWriter();
+        //            var xmlWriter = new XmlTextWriter(writer);
+        //            xmlWriter.Formatting = Formatting.Indented;
 
-                    mapping.WriteContentTo(xmlWriter);
-                    Debug.WriteLine(writer.ToString());
-                }
+        //            mapping.WriteContentTo(xmlWriter);
+        //            Debug.WriteLine(writer.ToString());
+        //        }
 
-                string message = string.Format("Error while trying to build the Mapping Document for '{0}'",
-                    typeof (T).FullName);
-                throw new ApplicationException(message, e);
-            }
-        }
+        //        string message = string.Format("Error while trying to build the Mapping Document for '{0}'",
+        //            typeof (T).FullName);
+        //        throw new ApplicationException(message, e);
+        //    }
+        //}
 
         /// <summary>
         /// Set an attribute on the xml element produced by this class mapping.

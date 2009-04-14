@@ -28,7 +28,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var classMapping = new ClassMapping {Name = "class1", Id = new IdMapping()};
 
-            _mocker.Get<IHbmWriter<IIdentityMapping>>()
+            _mocker.Get<IXmlWriter<IIdentityMapping>>()
                 .Expect(x => x.Write(classMapping.Id)).Return(new HbmId { generator = new HbmGenerator { @class = "native" } });
 
             _classWriter.ShouldGenerateValidOutput(classMapping);
@@ -49,7 +49,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void Should_write_the_id()
         {
             var classMapping = new ClassMapping { Id = new IdMapping() };
-            _mocker.Get<IHbmWriter<IIdentityMapping>>()
+            _mocker.Get<IXmlWriter<IIdentityMapping>>()
                 .Expect(x => x.Write(classMapping.Id))
                 .Return(new HbmId());
 
@@ -62,7 +62,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {            
             var classMapping = new ClassMapping();
             classMapping.AddProperty(new PropertyMapping());
-            _mocker.Get<IHbmWriter<PropertyMapping>>()
+            _mocker.Get<IXmlWriter<PropertyMapping>>()
                 .Expect(x => x.Write(classMapping.Properties.First()))
                 .Return(new HbmProperty());
 
@@ -76,7 +76,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var classMapping = new ClassMapping();
             classMapping.AddCollection(new BagMapping());
 
-            _mocker.Get<IHbmWriter<ICollectionMapping>>()
+            _mocker.Get<IXmlWriter<ICollectionMapping>>()
                 .Expect(x => x.Write(classMapping.Collections.First()))
                 .Return(new HbmBag());
             
@@ -90,7 +90,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var classMapping = new ClassMapping();
             classMapping.AddReference(new ManyToOneMapping());
 
-            _mocker.Get<IHbmWriter<ManyToOneMapping>>()
+            _mocker.Get<IXmlWriter<ManyToOneMapping>>()
                 .Expect(x => x.Write(classMapping.References.First()))
                 .Return(new HbmManyToOne());
             
@@ -104,7 +104,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var classMapping = new ClassMapping();
             classMapping.AddSubclass(new JoinedSubclassMapping());
 
-            _mocker.Get<IHbmWriter<ISubclassMapping>>()
+            _mocker.Get<IXmlWriter<ISubclassMapping>>()
                 .Expect(x => x.Write(classMapping.Subclasses.First()))
                 .Return(new HbmJoinedSubclass());
 
@@ -117,7 +117,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var classMapping = new ClassMapping {Discriminator = new DiscriminatorMapping()};
 
-            _mocker.Get<IHbmWriter<DiscriminatorMapping>>()
+            _mocker.Get<IXmlWriter<DiscriminatorMapping>>()
                 .Expect(x => x.Write(classMapping.Discriminator)).Return(new HbmDiscriminator());
 
             _classWriter.VerifyXml(classMapping)
@@ -130,7 +130,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var classMapping = new ClassMapping();
             classMapping.AddComponent(new ComponentMapping());
 
-            _mocker.Get<IHbmWriter<ComponentMapping>>()
+            _mocker.Get<IXmlWriter<ComponentMapping>>()
                 .Expect(x => x.Write(classMapping.Components.First())).Return(new HbmComponent());
 
             _classWriter.VerifyXml(classMapping)

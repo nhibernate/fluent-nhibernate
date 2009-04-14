@@ -16,8 +16,8 @@ namespace FluentNHibernate.Xml
     {
         public XmlDocument Serialize(HibernateMapping mapping)
         {
-            var hbm = BuildHbm(mapping);
-            return PerformSerialize(hbm);
+            return BuildXml(mapping);
+            //return PerformSerialize(hbm);
         }
 
         public XmlDocument Serialize(HbmMapping hbm)
@@ -49,9 +49,16 @@ namespace FluentNHibernate.Xml
             }
         }
 
+        private XmlDocument BuildXml(HibernateMapping rootMapping)
+        {
+            var xmlWriter = XmlWriterFactory.CreateHibernateMappingWriter();
+
+            return (XmlDocument)xmlWriter.Write(rootMapping);
+        }
+
         private HbmMapping BuildHbm(HibernateMapping rootMapping)
         {
-            IHbmWriter<HibernateMapping> rootWriter = HbmWriterFactory.CreateHibernateMappingWriter();               
+            IXmlWriter<HibernateMapping> rootWriter = XmlWriterFactory.CreateHibernateMappingWriter();               
             return (HbmMapping) rootWriter.Write(rootMapping);
         }
     }

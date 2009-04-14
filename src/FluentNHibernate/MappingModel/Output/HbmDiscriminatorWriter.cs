@@ -4,12 +4,12 @@ using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmDiscriminatorWriter : NullMappingModelVisitor, IHbmWriter<DiscriminatorMapping>
+    public class HbmDiscriminatorWriter : NullMappingModelVisitor, IXmlWriter<DiscriminatorMapping>
     {
-        private readonly IHbmWriter<ColumnMapping> _columnWriter;
+        private readonly IXmlWriter<ColumnMapping> _columnWriter;
         private HbmDiscriminator _hbm;
 
-        public HbmDiscriminatorWriter(IHbmWriter<ColumnMapping> columnWriter)
+        public HbmDiscriminatorWriter(IXmlWriter<ColumnMapping> columnWriter)
         {
             _columnWriter = columnWriter;
         }

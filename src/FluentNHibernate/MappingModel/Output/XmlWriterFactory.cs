@@ -8,23 +8,23 @@ using StructureMap.Graph;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public static class HbmWriterFactory
+    public static class XmlWriterFactory
     {
         private static bool _initialized = false;
 
-        public static IHbmWriter<HibernateMapping> CreateHibernateMappingWriter()
+        public static IXmlWriter<HibernateMapping> CreateHibernateMappingWriter()
         {
             if (!_initialized)
                 Initialize();
 
-            return ObjectFactory.GetInstance<IHbmWriter<HibernateMapping>>();
+            return ObjectFactory.GetInstance<IXmlWriter<HibernateMapping>>();
         }
 
-        private class HbmWriterScanner : ITypeScanner
+        private class XmlWriterScanner : ITypeScanner
         {
             public void Process(Type type, PluginGraph graph)
             {
-                Type interfaceType = type.FindInterfaceThatCloses(typeof(IHbmWriter<>));
+                Type interfaceType = type.FindInterfaceThatCloses(typeof(IXmlWriter<>));
                 if (interfaceType != null)
                 {
                     graph.AddType(interfaceType, type);
@@ -39,7 +39,7 @@ namespace FluentNHibernate.MappingModel.Output
                 x.Scan(s =>
                 {
                     s.TheCallingAssembly();
-                    s.With(new HbmWriterScanner());
+                    s.With(new XmlWriterScanner());
                 });
             });
 

@@ -338,8 +338,8 @@
     <Compile Include="MappingModel\Output\HbmSetWriter.cs" />
     <Compile Include="MappingModel\Output\HbmInheritanceWriter.cs" />
     <Compile Include="MappingModel\Output\HbmSubclassWriter.cs" />
-    <Compile Include="MappingModel\Output\HbmWriterFactory.cs" />
-    <Compile Include="MappingModel\Output\IHbmWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlWriterFactory.cs" />
+    <Compile Include="MappingModel\Output\IXmlWriter.cs" />
     <Compile Include="MappingModel\Identity\IdGeneratorMapping.cs" />
     <Compile Include="MappingModel\Identity\CompositeIdMapping.cs" />
     <Compile Include="MappingModel\HibernateMapping.cs" />
@@ -376,6 +376,9 @@
     <None Include="..\FluentKey.snk">
       <Link>FluentKey.snk</Link>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\Template.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

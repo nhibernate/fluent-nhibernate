@@ -19,7 +19,6 @@ namespace FluentNHibernate.Mapping
         private PropertyInfo _parentReference;
 
         public DynamicComponentPart(PropertyInfo property, bool parentIsRequired)
-            : base(null)
         {
             access = new AccessStrategyBuilder<DynamicComponentPart<T>>(this);
             _property = property;

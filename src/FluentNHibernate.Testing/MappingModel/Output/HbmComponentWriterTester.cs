@@ -48,7 +48,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var componentMapping = new ComponentMapping();
             componentMapping.AddProperty(new PropertyMapping());
-            _mocker.Get<IHbmWriter<PropertyMapping>>()
+            _mocker.Get<IXmlWriter<PropertyMapping>>()
                 .Expect(x => x.Write(componentMapping.Properties.First()))
                 .Return(new HbmProperty());
 
@@ -62,7 +62,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var componentMapping = new ComponentMapping();            
             componentMapping.AddCollection(new BagMapping());
 
-            _mocker.Get<IHbmWriter<ICollectionMapping>>()
+            _mocker.Get<IXmlWriter<ICollectionMapping>>()
                 .Expect(x => x.Write(componentMapping.Collections.First()))
                 .Return(new HbmBag());
 
@@ -76,7 +76,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var componentMapping = new ComponentMapping();
             componentMapping.AddReference(new ManyToOneMapping());
 
-            _mocker.Get<IHbmWriter<ManyToOneMapping>>()
+            _mocker.Get<IXmlWriter<ManyToOneMapping>>()
                 .Expect(x => x.Write(componentMapping.References.First()))
                 .Return(new HbmManyToOne());
 

@@ -3,7 +3,7 @@ using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmManyToOneWriter : NullMappingModelVisitor, IHbmWriter<ManyToOneMapping>
+    public class HbmManyToOneWriter : NullMappingModelVisitor, IXmlWriter<ManyToOneMapping>
     {
         private HbmManyToOne _hbm;
 

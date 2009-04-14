@@ -3,14 +3,14 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmIdentityWriter : NullMappingModelVisitor, IHbmWriter<IIdentityMapping>
+    public class HbmIdentityWriter : NullMappingModelVisitor, IXmlWriter<IIdentityMapping>
     {
-        private readonly IHbmWriter<IdMapping> _idWriter;
-        private readonly IHbmWriter<CompositeIdMapping> _compositeIdWriter;
+        private readonly IXmlWriter<IdMapping> _idWriter;
+        private readonly IXmlWriter<CompositeIdMapping> _compositeIdWriter;
 
         private object _hbm;
 
-        public HbmIdentityWriter(IHbmWriter<IdMapping> idWriter, IHbmWriter<CompositeIdMapping> compositeIdWriter)
+        public HbmIdentityWriter(IXmlWriter<IdMapping> idWriter, IXmlWriter<CompositeIdMapping> compositeIdWriter)
         {
             _idWriter = idWriter;
             _compositeIdWriter = compositeIdWriter;

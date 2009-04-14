@@ -19,14 +19,14 @@ namespace FluentNHibernate
 {
     public class PersistenceModel
     {
-        private readonly IList<ClassMapping> _mappings;
+        private readonly IList<IMappingProvider> _mappings;
         private readonly IList<IMappingModelVisitor> _visitors;
         public IConventionFinder ConventionFinder { get; private set; }
         private bool conventionsApplied;
 
         public PersistenceModel(IConventionFinder conventionFinder)
         {
-            _mappings = new List<ClassMapping>();
+            _mappings = new List<IMappingProvider>();
             _visitors = new List<IMappingModelVisitor>();
             ConventionFinder = conventionFinder;
 
@@ -59,7 +59,7 @@ namespace FluentNHibernate
 
         public PersistenceModel(IEnumerable<IMappingProvider> providers, IList<IMappingModelVisitor> visitors)
         {
-            foreach(var mapping in providers.Select(p => p.GetClassMapping()))
+            foreach(var mapping in providers)
                 Add(mapping);
             _visitors = visitors;
         }
@@ -100,12 +100,7 @@ namespace FluentNHibernate
 
         public void Add(IMappingProvider provider)
         {
-            Add(provider.GetClassMapping());
-        }
-
-        public void Add(ClassMapping mapping)
-        {
-            _mappings.Add(mapping);
+            _mappings.Add(provider);
         }
 
         public void AddConvention(IMappingModelVisitor visitor)
@@ -119,18 +114,20 @@ namespace FluentNHibernate
             Add(mapping);
         }
 
-        public IEnumerable<ClassMapping> Mappings
+        public IEnumerable<IMappingProvider> Mappings
         {
             get { return _mappings; }
         }
 
         public HibernateMapping BuildHibernateMapping()
         {
+            ApplyConventions();
+
             var rootMapping = new HibernateMapping();
             rootMapping.DefaultLazy = false;
 
             foreach (var classMapping in _mappings)
-                rootMapping.AddClass(classMapping);
+                rootMapping.AddClass(classMapping.GetClassMapping());
 
             return rootMapping;
         }
@@ -157,11 +154,17 @@ namespace FluentNHibernate
             
             var conventions = ConventionFinder.Find<IEntireMappingsConvention>() ?? new List<IEntireMappingsConvention>();
 
-            //foreach (var convention in conventions)
-            //{
-            //    if (convention.Accept(_mappings))
-            //        convention.Apply(_mappings);
-            //}
+            // HACK: get a list of IClassMap from a list of IMappingProviders
+            var classes = new List<IClassMap>();
+            
+            foreach (var provider in _mappings.Where(x => x is IClassMap))
+                classes.Add((IClassMap)provider);
+
+            foreach (var convention in conventions)
+            {
+                if (convention.Accept(classes))
+                    convention.Apply(classes);
+            }
 
             conventionsApplied = true;
         }

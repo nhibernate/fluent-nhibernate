@@ -7,14 +7,14 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmIdWriter : NullMappingModelVisitor, IHbmWriter<IdMapping>
+    public class HbmIdWriter : NullMappingModelVisitor, IXmlWriter<IdMapping>
     {
-        private readonly IHbmWriter<ColumnMapping> _columnWriter;
-        private readonly IHbmWriter<IdGeneratorMapping> _generatorWriter;
+        private readonly IXmlWriter<ColumnMapping> _columnWriter;
+        private readonly IXmlWriter<IdGeneratorMapping> _generatorWriter;
 
         private HbmId _hbm;
 
-        public HbmIdWriter(IHbmWriter<ColumnMapping> columnWriter, IHbmWriter<IdGeneratorMapping> generatorWriter)
+        public HbmIdWriter(IXmlWriter<ColumnMapping> columnWriter, IXmlWriter<IdGeneratorMapping> generatorWriter)
         {
             _columnWriter = columnWriter;
             _generatorWriter = generatorWriter;

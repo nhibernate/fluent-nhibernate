@@ -3,10 +3,8 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-
-    public interface IHbmWriter<T> //: IMappingModelVisitor
+    public interface IXmlWriter<T> //: IMappingModelVisitor
     {
         object Write(T mappingModel);        
-    }    
-
+    }
 }

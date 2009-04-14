@@ -3,20 +3,20 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmJoinedSubclassWriter : NullMappingModelVisitor, IHbmWriter<JoinedSubclassMapping>
+    public class HbmJoinedSubclassWriter : NullMappingModelVisitor, IXmlWriter<JoinedSubclassMapping>
     {
-        private readonly IHbmWriter<KeyMapping> _keyWriter;
+        private readonly IXmlWriter<KeyMapping> _keyWriter;
         private readonly HbmMappedMemberWriterHelper _mappedMemberHelper;
 
         private HbmJoinedSubclass _hbm;
 
-        private HbmJoinedSubclassWriter(HbmMappedMemberWriterHelper helper, IHbmWriter<KeyMapping> keyWriter)
+        private HbmJoinedSubclassWriter(HbmMappedMemberWriterHelper helper, IXmlWriter<KeyMapping> keyWriter)
         {
             _mappedMemberHelper = helper;
             _keyWriter = keyWriter;
         }
 
-        public HbmJoinedSubclassWriter(IHbmWriter<ICollectionMapping> collectionWriter, IHbmWriter<PropertyMapping> propertyWriter, IHbmWriter<ManyToOneMapping> manyToOneWriter, IHbmWriter<ComponentMapping> componentWriter, IHbmWriter<KeyMapping> keyWriter)
+        public HbmJoinedSubclassWriter(IXmlWriter<ICollectionMapping> collectionWriter, IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ManyToOneMapping> manyToOneWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<KeyMapping> keyWriter)
             : this(new HbmMappedMemberWriterHelper(collectionWriter, propertyWriter, manyToOneWriter, componentWriter), keyWriter)
         { }
 

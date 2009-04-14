@@ -7,7 +7,7 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmIndexWriter : NullMappingModelVisitor, IHbmWriter<IndexMapping>
+    public class HbmIndexWriter : NullMappingModelVisitor, IXmlWriter<IndexMapping>
     {
         private HbmIndex _hbm;
 

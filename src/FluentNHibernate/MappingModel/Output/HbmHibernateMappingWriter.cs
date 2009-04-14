@@ -1,39 +1,49 @@
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Xml;
 using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmHibernateMappingWriter : NullMappingModelVisitor, IHbmWriter<HibernateMapping>
+    public class HbmHibernateMappingWriter : NullMappingModelVisitor, IXmlWriter<HibernateMapping>
     {
-        private readonly IHbmWriter<ClassMapping> _classWriter;
-        private HbmMapping _hbm;
+        private readonly IXmlWriter<ClassMapping> _classWriter;
+        private XmlDocument document;
 
-        public HbmHibernateMappingWriter(IHbmWriter<ClassMapping> classWriter)
+        public HbmHibernateMappingWriter(IXmlWriter<ClassMapping> classWriter)
         {
             _classWriter = classWriter;
         }
 
-        object IHbmWriter<HibernateMapping>.Write(HibernateMapping mapping)
+        object IXmlWriter<HibernateMapping>.Write(HibernateMapping mapping)
         {
             return Write(mapping);
         }
 
-        public HbmMapping Write(HibernateMapping mapping)
+        public XmlDocument Write(HibernateMapping mapping)
         {
             mapping.AcceptVisitor(this);                        
-            return _hbm;
+            return document;
         }
 
         public override void ProcessHibernateMapping(HibernateMapping hibernateMapping)
         {
-            _hbm = new HbmMapping();
-            _hbm.defaultlazy = hibernateMapping.DefaultLazy;
+            Assembly executingAssembly = Assembly.GetExecutingAssembly();
+            Stream stream = executingAssembly.GetManifestResourceStream(executingAssembly.GetName().Name + ".Mapping.Template.xml");
+            
+            document = new XmlDocument();
+            document.Load(stream);
         }
 
         public override void Visit(ClassMapping classMapping)
         {
-            object hbmClass = _classWriter.Write(classMapping);
-            hbmClass.AddTo(ref _hbm.Items);
+            var hbmClass = (XmlDocument)_classWriter.Write(classMapping);
+
+            var newClassNode = document.ImportNode(hbmClass.DocumentElement, true);
+
+            document.DocumentElement.AppendChild(newClassNode);
         }
     }
 }

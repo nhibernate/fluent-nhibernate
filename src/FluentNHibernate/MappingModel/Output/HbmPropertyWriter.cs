@@ -3,7 +3,7 @@ using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmPropertyWriter : NullMappingModelVisitor, IHbmWriter<PropertyMapping>
+    public class HbmPropertyWriter : NullMappingModelVisitor, IXmlWriter<PropertyMapping>
     {
         private HbmProperty _hbm;
 

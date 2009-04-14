@@ -9,15 +9,15 @@ using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmBagWriter : NullMappingModelVisitor, IHbmWriter<BagMapping>
+    public class HbmBagWriter : NullMappingModelVisitor, IXmlWriter<BagMapping>
     {
-        private readonly IHbmWriter<ICollectionContentsMapping> _contentsWriter;
-        private readonly IHbmWriter<KeyMapping> _keyWriter;
+        private readonly IXmlWriter<ICollectionContentsMapping> _contentsWriter;
+        private readonly IXmlWriter<KeyMapping> _keyWriter;
 
         private HbmBag _hbm;
 
-        public HbmBagWriter(IHbmWriter<ICollectionContentsMapping> contentsWriter, 
-            IHbmWriter<KeyMapping> keyWriter)
+        public HbmBagWriter(IXmlWriter<ICollectionContentsMapping> contentsWriter, 
+            IXmlWriter<KeyMapping> keyWriter)
         {
             _contentsWriter = contentsWriter;
             _keyWriter = keyWriter;

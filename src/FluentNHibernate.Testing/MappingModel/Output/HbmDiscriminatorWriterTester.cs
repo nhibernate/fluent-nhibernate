@@ -43,7 +43,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var discriminator = new DiscriminatorMapping { Column = new ColumnMapping() };
 
-            var columnWriter = MockRepository.GenerateStub<IHbmWriter<ColumnMapping>>();
+            var columnWriter = MockRepository.GenerateStub<IXmlWriter<ColumnMapping>>();
             columnWriter.Expect(x => x.Write(discriminator.Column)).Return(new HbmColumn());
 
             var writer = new HbmDiscriminatorWriter(columnWriter);

@@ -16,7 +16,6 @@ namespace FluentNHibernate.Mapping
         private PropertyInfo parentReference;
 
         public CompositeElementPart()
-            : base(null)
         {
         }
 

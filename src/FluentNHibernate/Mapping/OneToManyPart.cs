@@ -25,7 +25,7 @@ namespace FluentNHibernate.Mapping
             _properties.Store("name", member.Name);
         }
 
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
+        public override void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             XmlElement collectionElement = WriteCollectionElement(classElement);
             Cache.Write(collectionElement, visitor);

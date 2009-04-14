@@ -139,96 +139,69 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void AdvancedOneToManyMapping()
         {
-            var map = new ClassMap<MappedObject>();
-            map.HasMany(x => x.Children).LazyLoad().Inverse();
-
-            document = map.CreateMapping(new MappingVisitor());
-
-            var element =
-                (XmlElement)document.DocumentElement.SelectSingleNode("class/bag[@name='Children']");
-
-            element.AttributeShouldEqual("lazy", "true");
-            element.AttributeShouldEqual("inverse", "true");
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.HasMany(x => x.Children).LazyLoad().Inverse())
+                .Element("class/bag[@name='Children']")
+                    .HasAttribute("lazy", "true")
+                    .HasAttribute("inverse", "true");
         }
 
         [Test]
         public void AdvancedOneToManyMapping_NotLazy_NotInverse()
         {
-            var map = new ClassMap<MappedObject>();
-            map.HasMany(x => x.Children)
-                .Not.LazyLoad()
-                .Not.Inverse();
-
-            document = map.CreateMapping(new MappingVisitor());
-
-            var element =
-                (XmlElement)document.DocumentElement.SelectSingleNode("class/bag[@name='Children']");
-
-            element.AttributeShouldEqual("lazy", "false");
-            element.AttributeShouldEqual("inverse", "false");
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.HasMany(x => x.Children).Not.LazyLoad().Not.Inverse())
+                .Element("class/bag[@name='Children']")
+                    .HasAttribute("lazy", "false")
+                    .HasAttribute("inverse", "false");
         }
 
         [Test]
         public void AdvancedManyToManyMapping()
         {
-            var map = new ClassMap<MappedObject>();
-            map.HasManyToMany(x => x.Children).LazyLoad().Inverse();
-
-            document = map.CreateMapping(new MappingVisitor());
-
-            var element =
-                (XmlElement)document.DocumentElement.SelectSingleNode("class/bag[@name='Children']");
-
-            element.AttributeShouldEqual("lazy", "true");
-            element.AttributeShouldEqual("inverse", "true");
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.HasManyToMany(x => x.Children).Not.LazyLoad().Not.Inverse())
+                .Element("class/bag[@name='Children']")
+                    .HasAttribute("lazy", "true")
+                    .HasAttribute("inverse", "true");
         }
 
         [Test]
         public void AdvancedManyToManyMapping_NotLazy_NotInverse()
         {
-            var map = new ClassMap<MappedObject>();
-            map.HasManyToMany(x => x.Children)
-                .Not.LazyLoad()
-                .Not.Inverse();
-
-            document = map.CreateMapping(new MappingVisitor());
-
-            var element =
-                (XmlElement)document.DocumentElement.SelectSingleNode("class/bag[@name='Children']");
-
-            element.AttributeShouldEqual("lazy", "false");
-            element.AttributeShouldEqual("inverse", "false");
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.HasManyToMany(x => x.Children).Not.LazyLoad().Not.Inverse())
+                .Element("class/bag[@name='Children']")
+                    .HasAttribute("lazy", "false")
+                    .HasAttribute("inverse", "false");
         }
 
         [Test]
         public void BuildTheHeaderXmlWithAssemblyAndNamespace()
         {
-            var map = new ClassMap<MappedObject>();
-            document = map.CreateMapping(new MappingVisitor());
-
-            document.DocumentElement.GetAttribute("assembly").ShouldEqual(typeof (MappedObject).Assembly.GetName().FullName);
-            document.DocumentElement.GetAttribute("namespace").ShouldEqual(typeof (MappedObject).Namespace);
+            new MappingTester<MappedObject>()
+                .ForMapping(m => { })
+                .Element("hibernate-mapping")
+                    .HasAttribute("assembly", typeof (MappedObject).Assembly.GetName().FullName)
+                    .HasAttribute("namespace", typeof (MappedObject).Namespace);
         }
 
         [Test]
         public void HeaderShouldHaveFullAssemblyName()
         {
-            var map = new ClassMap<MappedObject>();
-            document = map.CreateMapping(new MappingVisitor());
-
-            document.DocumentElement.GetAttribute("assembly").ShouldEqual(typeof(MappedObject).Assembly.GetName().FullName);
+            new MappingTester<MappedObject>()
+                .ForMapping(m => { })
+                .Element("hibernate-mapping")
+                    .HasAttribute("assembly", typeof(MappedObject).Assembly.GetName().FullName);
         }
 
         [Test]
         public void CascadeAll_with_many_to_many()
         {
-            var map = new ClassMap<MappedObject>();
-            map.HasManyToMany(x => x.Children).Cascade.All();
-
-            document = map.CreateMapping(new MappingVisitor());
-            var element = (XmlElement) document.DocumentElement.SelectSingleNode("class/bag[@name='Children']");
-
-            element.AttributeShouldEqual("cascade", "all");
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.HasManyToMany(x => x.Children).Cascade.All())
+                .Element("class/bag[@name='Children']")
+                    .HasAttribute("cascade", "all");
         }
 
         [Test]
@@ -242,24 +215,18 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void Create_a_component_mapping()
         {
-            var map = new ClassMap<MappedObject>();
-            map.Component(x => x.Component, c =>
-                                                                         {
-                                                                             c.Map(x => x.Name);
-                                                                             c.Map(x => x.Age);
-                                                                         });
-
-            document = map.CreateMapping(new MappingVisitor());
-
-            var componentElement =
-                (XmlElement) document.DocumentElement.SelectSingleNode("class/component");
-
-            componentElement.AttributeShouldEqual("name", "Component");
-            componentElement.AttributeShouldEqual("insert", "true");
-            componentElement.AttributeShouldEqual("update", "true");
-
-            componentElement.ShouldHaveChild("property[@name='Name']");
-            componentElement.ShouldHaveChild("property[@name='Age']");
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Component(x => x.Component, c =>
+                 {
+                     c.Map(x => x.Name);
+                     c.Map(x => x.Age);
+                 }))
+                .Element("class/component")
+                    .HasAttribute("name", "Component")
+                    .HasAttribute("insert", "true")
+                    .HasAttribute("update", "true")
+                .Element("class/component/property[@name='Name']").Exists()
+                .Element("class/component/property[@name='Age']").Exists();
         }
 
         [Test]
@@ -305,20 +272,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void DomainClassMapAutomaticallyCreatesTheId()
         {
-            var map = new ClassMap<MappedObject>();
-            map.UseIdentityForKey(x => x.Id, "id");
-            document = map.CreateMapping(new MappingVisitor());
-
-            XmlElement idElement = document.DocumentElement["class"]["id"];
-            idElement.ShouldNotBeNull();
-
-            idElement.GetAttribute("name").ShouldEqual("Id");
-            idElement.GetAttribute("column").ShouldEqual("id");
-            idElement.GetAttribute("type").ShouldEqual("Int64");
-
-            XmlElement generatorElement = idElement["generator"];
-            generatorElement.ShouldNotBeNull();
-            generatorElement.GetAttribute("class").ShouldEqual("identity");
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.UseIdentityForKey(x => x.Id, "id"))
+                .Element("class/id")
+                    .HasAttribute("name", "Id")
+                    .HasAttribute("column", "id")
+                    .HasAttribute("type", "Int64")
+                .Element("class/id/generator")
+                    .HasAttribute("class", "identity");
         }
 
         [Test]
@@ -413,14 +374,10 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
 		public void DomainClassMapWithIdNoColumnAndGenerator()
 		{
-			var map = new ClassMap<MappedObject>();
-			map.Id(x => x.Id).GeneratedBy.Native();
-			document = map.CreateMapping(new MappingVisitor());
-
-			XmlElement generatorElement = document.DocumentElement["class"]["id"]["generator"];
-
-			generatorElement.ShouldNotBeNull();
-			generatorElement.GetAttribute("class").ShouldEqual("native");
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Id(x => x.Id).GeneratedBy.Native())
+                .Element("class/id/generator")
+                    .HasAttribute("class", "native");
 		}
 
    		[Test]
@@ -469,24 +426,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<MappedObject>()
                 .ForMapping(m => m.SchemaIs("test"))
                 .HasAttribute("schema", "test");
-        }
-
-        [Test]
-        public void CanSetAsUnique()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(m => m.Map(x => x.Name).Unique())
-                .Element("class/property").DoesntHaveAttribute("unique")
-                .Element("class/property/column").HasAttribute("unique", "true");
-        }
-
-        [Test]
-        public void CanSetAsNotUnique()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(m => m.Map(x => x.Name).Not.Unique())
-                .Element("class/property").DoesntHaveAttribute("unique")
-                .Element("class/property/column").HasAttribute("unique", "false");
         }
 
         [Test]

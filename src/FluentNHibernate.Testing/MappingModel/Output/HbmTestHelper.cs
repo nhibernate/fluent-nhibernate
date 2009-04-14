@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
 
-        public void VerifyAll(IHbmWriter<MAPPING_TYPE> writer)
+        public void VerifyAll(IXmlWriter<MAPPING_TYPE> writer)
         {
             foreach (var test in _tests)
             {
@@ -113,7 +113,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
 
-        public void VerifyAll(IHbmWriter<MAPPING_TYPE> writer)
+        public void VerifyAll(IXmlWriter<MAPPING_TYPE> writer)
         {
             foreach (var test in _tests)
             {

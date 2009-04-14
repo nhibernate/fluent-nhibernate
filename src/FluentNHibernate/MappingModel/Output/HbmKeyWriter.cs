@@ -8,7 +8,7 @@ using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmKeyWriter : NullMappingModelVisitor, IHbmWriter<KeyMapping>
+    public class HbmKeyWriter : NullMappingModelVisitor, IXmlWriter<KeyMapping>
     {
         private HbmKey _hbm;
 

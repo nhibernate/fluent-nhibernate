@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.MappingModel.Output;
 using NHibernate.Cfg.MappingSchema;
@@ -12,6 +14,8 @@ namespace FluentNHibernate.MappingModel
         private readonly AttributeStore<ClassMapping> _attributes;
         private readonly IList<ISubclassMapping> _subclasses;
         private DiscriminatorMapping _discriminator;
+        private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
+        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
         public IIdentityMapping Id { get; set; }
 
         public ClassMapping()
@@ -83,6 +87,24 @@ namespace FluentNHibernate.MappingModel
             get { return _attributes; }
         }
 
-        
+        public IEnumerable<IMappingPart> UnmigratedParts
+        {
+            get { return unmigratedParts; }
+        }
+
+        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
+        {
+            get { return unmigratedAttributes; }
+        }
+
+        public void AddUnmigratedPart(IMappingPart part)
+        {
+            unmigratedParts.Add(part);
+        }
+
+        public void AddUnmigratedAttribute(string attribute, string value)
+        {
+            unmigratedAttributes.Add(attribute, value);
+        }
     }
 }

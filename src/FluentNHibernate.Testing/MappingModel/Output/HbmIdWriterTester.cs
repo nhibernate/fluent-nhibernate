@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void Should_produce_valid_hbm()
         {
             var id = new IdMapping { Generator = new IdGeneratorMapping()};
-            var generatorWriter = MockRepository.GenerateStub<IHbmWriter<IdGeneratorMapping>>();
+            var generatorWriter = MockRepository.GenerateStub<IXmlWriter<IdGeneratorMapping>>();
             generatorWriter.Expect(x => x.Write(id.Generator)).Return(new HbmGenerator { @class = "native"});
             var writer = new HbmIdWriter(null, generatorWriter);
 
@@ -40,7 +40,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var idMapping = new IdMapping {Generator = new IdGeneratorMapping()};
 
-            var generatorWriter = MockRepository.GenerateStub<IHbmWriter<IdGeneratorMapping>>();
+            var generatorWriter = MockRepository.GenerateStub<IXmlWriter<IdGeneratorMapping>>();
             generatorWriter.Expect(x => x.Write(idMapping.Generator)).Return(new HbmGenerator());
             var writer = new HbmIdWriter(null, generatorWriter);
 
@@ -53,7 +53,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var idMapping = new IdMapping(new ColumnMapping());
 
-            var columnWriter = MockRepository.GenerateStub<IHbmWriter<ColumnMapping>>();
+            var columnWriter = MockRepository.GenerateStub<IXmlWriter<ColumnMapping>>();
             columnWriter.Expect(x => x.Write(idMapping.Columns.First())).Return(new HbmColumn());
             var writer = new HbmIdWriter(columnWriter, null);
 

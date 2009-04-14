@@ -4,7 +4,7 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmSubclassWriter : NullMappingModelVisitor, IHbmWriter<SubclassMapping>
+    public class HbmSubclassWriter : NullMappingModelVisitor, IXmlWriter<SubclassMapping>
     {
         private readonly HbmMappedMemberWriterHelper _mappedMemberHelper;
 
@@ -15,7 +15,7 @@ namespace FluentNHibernate.MappingModel.Output
             _mappedMemberHelper = helper;
         }
 
-        public HbmSubclassWriter(IHbmWriter<ICollectionMapping> collectionWriter, IHbmWriter<PropertyMapping> propertyWriter, IHbmWriter<ManyToOneMapping> manyToOneWriter, IHbmWriter<ComponentMapping> componentWriter)
+        public HbmSubclassWriter(IXmlWriter<ICollectionMapping> collectionWriter, IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ManyToOneMapping> manyToOneWriter, IXmlWriter<ComponentMapping> componentWriter)
             : this(new HbmMappedMemberWriterHelper(collectionWriter, propertyWriter, manyToOneWriter, componentWriter))
         { }
 

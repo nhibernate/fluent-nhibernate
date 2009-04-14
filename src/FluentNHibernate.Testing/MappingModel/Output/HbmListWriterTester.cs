@@ -26,13 +26,13 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var list = new ListMapping { Name = "list1", Key = new KeyMapping(), Index = new IndexMapping(), Contents = new OneToManyMapping()};
 
-            _mocker.Get<IHbmWriter<ICollectionContentsMapping>>()
+            _mocker.Get<IXmlWriter<ICollectionContentsMapping>>()
                 .Expect(x => x.Write(list.Contents)).Return(new HbmOneToMany { @class = "class1" });
 
-            _mocker.Get<IHbmWriter<KeyMapping>>()
+            _mocker.Get<IXmlWriter<KeyMapping>>()
                 .Expect(x => x.Write(list.Key)).Return(new HbmKey());
 
-            _mocker.Get<IHbmWriter<IndexMapping>>()
+            _mocker.Get<IXmlWriter<IndexMapping>>()
                .Expect(x => x.Write(list.Index)).Return(new HbmIndex());
 
             _listWriter.ShouldGenerateValidOutput(list);
@@ -54,7 +54,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var list = new ListMapping { Contents = new OneToManyMapping() };
 
-            _mocker.Get<IHbmWriter<ICollectionContentsMapping>>()
+            _mocker.Get<IXmlWriter<ICollectionContentsMapping>>()
                 .Expect(x => x.Write(list.Contents))
                 .Return(new HbmOneToMany());
 
@@ -67,7 +67,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var list = new ListMapping { Key = new KeyMapping() };
 
-            _mocker.Get<IHbmWriter<KeyMapping>>()
+            _mocker.Get<IXmlWriter<KeyMapping>>()
                 .Expect(x => x.Write(list.Key))
                 .Return(new HbmKey());
 
@@ -80,7 +80,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var list = new ListMapping {Index = new IndexMapping()};
 
-            _mocker.Get<IHbmWriter<IndexMapping>>()
+            _mocker.Get<IXmlWriter<IndexMapping>>()
                 .Expect(x => x.Write(list.Index))
                 .Return(new HbmIndex());
 

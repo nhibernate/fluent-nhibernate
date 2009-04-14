@@ -17,7 +17,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         protected XmlDocument document;
         protected IMappingVisitor _visitor;
         private readonly PersistenceModel model;
-        private HibernateMapping hbm;
 
         public MappingTester()
         {
@@ -48,10 +47,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             return ForMapping(classMap);
         }
 
-        public virtual MappingTester<T> ForMapping(ClassMap<T> classMap)
+        public virtual MappingTester<T> ForMapping(IClassMap classMap)
         {
             model.Add(classMap);
             model.ApplyConventions();
+
+            var hbm = model.BuildHibernateMapping();
+
+            document = new MappingXmlSerializer()
+                .Serialize(hbm);
+            currentElement = document.DocumentElement;
 
             return this;
         }

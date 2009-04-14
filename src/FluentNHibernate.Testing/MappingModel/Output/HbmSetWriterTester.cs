@@ -19,9 +19,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var set = new SetMapping { Name = "set1", Contents = new OneToManyMapping(), Key = new KeyMapping() };
 
-            var contentsWriter = MockRepository.GenerateStub<IHbmWriter<ICollectionContentsMapping>>();
+            var contentsWriter = MockRepository.GenerateStub<IXmlWriter<ICollectionContentsMapping>>();
             contentsWriter.Expect(x => x.Write(set.Contents)).Return(new HbmOneToMany { @class = "class1" });
-            var keyWriter = MockRepository.GenerateStub<IHbmWriter<KeyMapping>>();
+            var keyWriter = MockRepository.GenerateStub<IXmlWriter<KeyMapping>>();
             keyWriter.Expect(x => x.Write(set.Key)).Return(new HbmKey());
 
             var writer = new HbmSetWriter(contentsWriter, keyWriter);

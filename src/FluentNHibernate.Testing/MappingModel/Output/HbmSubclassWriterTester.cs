@@ -69,7 +69,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var subclassMapping = new SubclassMapping();
             subclassMapping.AddCollection(new BagMapping());
 
-            _mocker.Get<IHbmWriter<ICollectionMapping>>()
+            _mocker.Get<IXmlWriter<ICollectionMapping>>()
                 .Expect(x => x.Write(subclassMapping.Collections.First())).Return(new HbmBag());
 
             _subclassWriter.VerifyXml(subclassMapping)
@@ -82,7 +82,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var subclassMapping = new SubclassMapping();
             subclassMapping.AddProperty(new PropertyMapping());
 
-            _mocker.Get<IHbmWriter<PropertyMapping>>()
+            _mocker.Get<IXmlWriter<PropertyMapping>>()
                 .Expect(x => x.Write(subclassMapping.Properties.First())).Return(new HbmProperty());
 
             _subclassWriter.VerifyXml(subclassMapping)
@@ -95,7 +95,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var subclassMapping = new SubclassMapping();
             subclassMapping.AddReference(new ManyToOneMapping());
 
-            _mocker.Get<IHbmWriter<ManyToOneMapping>>()
+            _mocker.Get<IXmlWriter<ManyToOneMapping>>()
                 .Expect(x => x.Write(subclassMapping.References.First())).Return(new HbmManyToOne());
 
             _subclassWriter.VerifyXml(subclassMapping)
@@ -108,7 +108,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var classMapping = new SubclassMapping();
             classMapping.AddComponent(new ComponentMapping());
 
-            _mocker.Get<IHbmWriter<ComponentMapping>>()
+            _mocker.Get<IXmlWriter<ComponentMapping>>()
                 .Expect(x => x.Write(classMapping.Components.First())).Return(new HbmComponent());
 
             _subclassWriter.VerifyXml(classMapping)

@@ -15,10 +15,10 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var bag = new BagMapping { Name = "bag1", Contents = new OneToManyMapping(), Key = new KeyMapping() };
 
-            var contentsWriter = MockRepository.GenerateStub<IHbmWriter<ICollectionContentsMapping>>();
+            var contentsWriter = MockRepository.GenerateStub<IXmlWriter<ICollectionContentsMapping>>();
             contentsWriter.Expect(x => x.Write(bag.Contents)).Return(new HbmOneToMany { @class = "class1" });
 
-            var keyWriter = MockRepository.GenerateStub<IHbmWriter<KeyMapping>>();
+            var keyWriter = MockRepository.GenerateStub<IXmlWriter<KeyMapping>>();
             keyWriter.Expect(x => x.Write(bag.Key)).Return(new HbmKey());
 
             var writer = new HbmBagWriter(contentsWriter, keyWriter);
@@ -43,7 +43,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var bag = new BagMapping {Contents = new OneToManyMapping()};
 
-            var contentsWriter = MockRepository.GenerateMock<IHbmWriter<ICollectionContentsMapping>>();
+            var contentsWriter = MockRepository.GenerateMock<IXmlWriter<ICollectionContentsMapping>>();
             contentsWriter.Expect(x => x.Write(bag.Contents))
                 .Return(new HbmOneToMany());
 
@@ -58,7 +58,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var bag = new BagMapping { Key = new KeyMapping()};
 
-            var keyWriter = MockRepository.GenerateMock<IHbmWriter<KeyMapping>>();
+            var keyWriter = MockRepository.GenerateMock<IXmlWriter<KeyMapping>>();
             keyWriter.Expect(x => x.Write(bag.Key))
                 .Return(new HbmKey());
 

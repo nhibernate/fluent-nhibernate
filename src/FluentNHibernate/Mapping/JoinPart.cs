@@ -16,7 +16,6 @@ namespace FluentNHibernate.Mapping
         private string keyColumnName;
 
         public JoinPart(string tableName)
-            : base(null)
         {
             properties.Store("table", tableName);
             keyColumnName = GetType().GetGenericArguments()[0].Name + "ID";

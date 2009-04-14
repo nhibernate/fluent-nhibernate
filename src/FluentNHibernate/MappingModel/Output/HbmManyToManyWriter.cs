@@ -7,7 +7,7 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmManyToManyWriter : NullMappingModelVisitor, IHbmWriter<ManyToManyMapping>
+    public class HbmManyToManyWriter : NullMappingModelVisitor, IXmlWriter<ManyToManyMapping>
     {
         private HbmManyToMany _hbm;
 

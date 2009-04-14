@@ -29,7 +29,6 @@ namespace FluentNHibernate.Mapping
         private bool nextBool = true;
 
         public SubClassPart(DiscriminatorPart<TDiscriminator, TParent> parent)
-            : base(null)
         {
             this.parent = parent;
         }

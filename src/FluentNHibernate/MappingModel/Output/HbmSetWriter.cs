@@ -8,14 +8,14 @@ using FluentNHibernate.Versioning.HbmExtensions;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmSetWriter : NullMappingModelVisitor, IHbmWriter<SetMapping>
+    public class HbmSetWriter : NullMappingModelVisitor, IXmlWriter<SetMapping>
     {
-        private readonly IHbmWriter<ICollectionContentsMapping> _contentsWriter;
-        private readonly IHbmWriter<KeyMapping> _keyWriter;
+        private readonly IXmlWriter<ICollectionContentsMapping> _contentsWriter;
+        private readonly IXmlWriter<KeyMapping> _keyWriter;
 
         private HbmSet _hbm;
 
-        public HbmSetWriter(IHbmWriter<ICollectionContentsMapping> contentsWriter, IHbmWriter<KeyMapping> keyWriter)
+        public HbmSetWriter(IXmlWriter<ICollectionContentsMapping> contentsWriter, IXmlWriter<KeyMapping> keyWriter)
         {
             _contentsWriter = contentsWriter;
             _keyWriter = keyWriter;

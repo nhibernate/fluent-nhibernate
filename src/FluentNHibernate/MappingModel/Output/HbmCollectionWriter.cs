@@ -4,14 +4,14 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmCollectionWriter : NullMappingModelVisitor, IHbmWriter<ICollectionMapping>
+    public class HbmCollectionWriter : NullMappingModelVisitor, IXmlWriter<ICollectionMapping>
     {
-        private readonly IHbmWriter<BagMapping> _bagWriter;
-        private readonly IHbmWriter<SetMapping> _setWriter;
+        private readonly IXmlWriter<BagMapping> _bagWriter;
+        private readonly IXmlWriter<SetMapping> _setWriter;
 
         private object _hbm;
 
-        public HbmCollectionWriter(IHbmWriter<BagMapping> bagWriter, IHbmWriter<SetMapping> setWriter)
+        public HbmCollectionWriter(IXmlWriter<BagMapping> bagWriter, IXmlWriter<SetMapping> setWriter)
         {
             _bagWriter = bagWriter;
             _setWriter = setWriter;

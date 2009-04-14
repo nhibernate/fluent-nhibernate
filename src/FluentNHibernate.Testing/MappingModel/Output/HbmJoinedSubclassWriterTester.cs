@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var joinedSubclassMapping = new JoinedSubclassMapping { Name = "joinedsubclass1", Key = new KeyMapping() };
             
-            _mocker.Get<IHbmWriter<KeyMapping>>()
+            _mocker.Get<IXmlWriter<KeyMapping>>()
                 .Expect(x => x.Write(joinedSubclassMapping.Key)).Return(new HbmKey());
 
             _subclassWriter.ShouldGenerateValidOutput(joinedSubclassMapping);
@@ -50,7 +50,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var joinedSubclassMapping = new JoinedSubclassMapping { Key = new KeyMapping() };
 
-            _mocker.Get<IHbmWriter<KeyMapping>>()
+            _mocker.Get<IXmlWriter<KeyMapping>>()
                 .Expect(x => x.Write(joinedSubclassMapping.Key)).Return(new HbmKey());
 
             _subclassWriter.VerifyXml(joinedSubclassMapping)
@@ -86,7 +86,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var joinedSubclassMapping = new JoinedSubclassMapping();
             joinedSubclassMapping.AddCollection(new BagMapping());
 
-            _mocker.Get<IHbmWriter<ICollectionMapping>>()
+            _mocker.Get<IXmlWriter<ICollectionMapping>>()
                 .Expect(x => x.Write(joinedSubclassMapping.Collections.First())).Return(new HbmBag());
 
             _subclassWriter.VerifyXml(joinedSubclassMapping)
@@ -99,7 +99,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var joinedSubclassMapping = new JoinedSubclassMapping();
             joinedSubclassMapping.AddProperty(new PropertyMapping());
 
-            _mocker.Get<IHbmWriter<PropertyMapping>>()
+            _mocker.Get<IXmlWriter<PropertyMapping>>()
                 .Expect(x => x.Write(joinedSubclassMapping.Properties.First())).Return(new HbmProperty());
 
             _subclassWriter.VerifyXml(joinedSubclassMapping)
@@ -112,7 +112,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var joinedSubclassMapping = new JoinedSubclassMapping();            
             joinedSubclassMapping.AddReference(new ManyToOneMapping());
 
-            _mocker.Get<IHbmWriter<ManyToOneMapping>>()
+            _mocker.Get<IXmlWriter<ManyToOneMapping>>()
                 .Expect(x => x.Write(joinedSubclassMapping.References.First())).Return(new HbmManyToOne());
 
             _subclassWriter.VerifyXml(joinedSubclassMapping)
@@ -125,7 +125,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var classMapping = new JoinedSubclassMapping();
             classMapping.AddComponent(new ComponentMapping());
 
-            _mocker.Get<IHbmWriter<ComponentMapping>>()
+            _mocker.Get<IXmlWriter<ComponentMapping>>()
                 .Expect(x => x.Write(classMapping.Components.First())).Return(new HbmComponent());
 
             _subclassWriter.VerifyXml(classMapping)
