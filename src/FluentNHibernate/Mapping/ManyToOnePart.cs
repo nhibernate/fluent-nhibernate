@@ -83,6 +83,7 @@ namespace FluentNHibernate.Mapping
         public ManyToOnePart<OTHER> LazyLoad()
         {
             _properties.Store("lazy", nextBool ? "proxy" : "false");
+            nextBool = true;
             return this;
         }
 		
@@ -190,6 +191,7 @@ namespace FluentNHibernate.Mapping
         public ManyToOnePart<OTHER> Nullable()
         {
             SetAttribute("not-null", (!nextBool).ToString().ToLowerInvariant());
+            nextBool = true;
             return this;
         }
 

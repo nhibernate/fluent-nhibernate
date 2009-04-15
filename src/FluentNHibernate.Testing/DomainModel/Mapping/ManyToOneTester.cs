@@ -144,5 +144,27 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         .NotFound.Ignore())
                 .Element("class/many-to-one").HasAttribute("not-found", "ignore");
         }
+
+        [Test]
+        public void Nullable_Resets_Not_Value()
+        {
+            //Regression test for issue 189
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.References(x => x.Parent)
+                        .Not.Nullable().Not.LazyLoad())
+                .Element("class/many-to-one").HasAttribute("lazy", "false");
+        }
+
+        [Test]
+        public void LazyLoad_Resets_Not_Value()
+        {
+            //Regression test for issue 189
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.References(x => x.Parent)
+                        .Not.LazyLoad().Not.Nullable())
+                .Element("class/many-to-one").HasAttribute("not-null", "true");
+        }
     }
 }
