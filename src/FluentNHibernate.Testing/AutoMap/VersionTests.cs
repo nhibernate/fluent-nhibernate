@@ -1,4 +1,3 @@
-using System;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures;
 using NUnit.Framework;

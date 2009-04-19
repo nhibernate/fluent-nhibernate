@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 
@@ -13,27 +12,37 @@ namespace FluentNHibernate.Mapping
         PropertyInfo Property { get; }
         IVersion ColumnName(string name);
         IVersion NeverGenerated();
+        IVersion UnsavedValue(string value);
     }
 
     public class VersionPart : IVersion
     {
         public PropertyInfo Property { get; private set; }
         public Type EntityType { get; private set; }
-        private readonly AccessStrategyBuilder<VersionPart> _access;
-        private readonly Dictionary<string,string> _properties;
-        private bool _neverGenerated;
+        private readonly AccessStrategyBuilder<VersionPart> access;
+        private readonly Cache<string, string> properties;
+        private bool neverGenerated;
 
         public VersionPart(Type entity, PropertyInfo property)
         {
             EntityType = entity;
-            _access = new AccessStrategyBuilder<VersionPart>(this);
-            _properties = new Dictionary<string, string>();
+            access = new AccessStrategyBuilder<VersionPart>(this);
+            properties = new Cache<string, string>();
             Property = property;
+            InitializeAttributes();
+        }
+
+        private void InitializeAttributes()
+        {
+            SetAttribute("name", Property.Name);
+
+            //Default value for version's unsaved value should be a newly initialized value as string
+            UnsavedValue(Activator.CreateInstance(Property.PropertyType).ToString());
         }
 
         public void SetAttribute(string name, string value)
         {
-            _properties.Add(name, value);
+            properties.Store(name, value);
         }
 
         public void SetAttributes(Attributes atts)
@@ -46,25 +55,22 @@ namespace FluentNHibernate.Mapping
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-            var versionElement = classElement 
+            var versionElement = classElement
                                     .AddElement("version")
-                                    .WithProperties(_properties);
-            
-            versionElement 
-                .WithAtt("name", Property.Name);
+                                    .WithProperties(properties);
 
-            if (_neverGenerated)
-                versionElement.WithAtt("generated", "never");
+            if (neverGenerated)
+            { versionElement.WithAtt("generated", "never"); }
 
             if (Property.PropertyType == typeof(DateTime))
-                versionElement.WithAtt("type", "timestamp");
+            { versionElement.WithAtt("type", "timestamp"); }
         }
 
-        public AccessStrategyBuilder<VersionPart> Access 
-        { 
+        public AccessStrategyBuilder<VersionPart> Access
+        {
             get
             {
-                return _access;
+                return access;
             }
         }
 
@@ -86,15 +92,21 @@ namespace FluentNHibernate.Mapping
 
         public string GetColumnName()
         {
-            if (_properties.ContainsKey("column"))
-                return _properties["column"];
+            if (properties.Has("column"))
+            { return properties.Get("column"); }
 
             return null;
         }
 
         public IVersion NeverGenerated()
         {
-            _neverGenerated = true;
+            neverGenerated = true;
+            return this;
+        }
+
+        public IVersion UnsavedValue(string value)
+        {
+            SetAttribute("unsaved-value", value);
             return this;
         }
     }
