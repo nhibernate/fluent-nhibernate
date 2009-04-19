@@ -1,8 +1,10 @@
+using System;
 using NHibernate.Dialect;
 using NHibernate.Driver;
 
 namespace FluentNHibernate.Cfg.Db
 {
+    [Obsolete("Replaced by OracleDataClientConfiguration. Also, for System.Data.OracleClient, use OracleClientConfiguration.")]
     public class OracleConfiguration : PersistenceConfiguration<OracleConfiguration, OracleConnectionStringBuilder>
     {
         protected OracleConfiguration()

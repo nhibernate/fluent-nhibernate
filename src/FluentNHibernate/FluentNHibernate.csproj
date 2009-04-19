@@ -96,8 +96,10 @@
     <Compile Include="Cfg\Db\JetDriverConnectionStringBuilder.cs" />
     <Compile Include="Cfg\Db\MsSqlConnectionStringBuilder.cs" />
     <Compile Include="Cfg\Db\MySQLConnectionStringBuilder.cs" />
+    <Compile Include="Cfg\Db\OracleClientConfiguration.cs" />
     <Compile Include="Cfg\Db\OracleConfiguration.cs" />
     <Compile Include="Cfg\Db\OracleConnectionStringBuilder.cs" />
+    <Compile Include="Cfg\Db\OracleDataClientConfiguration.cs" />
     <Compile Include="Cfg\Db\PostgreSQLConnectionStringBuilder.cs" />
     <Compile Include="Cfg\FluentConfiguration.cs" />
     <Compile Include="Cfg\FluentConfigurationException.cs" />

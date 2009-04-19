@@ -96,10 +96,11 @@ namespace FluentNHibernate.Testing
             actual[key].ShouldEqual(value);
         }
 
-        public static void ShouldContain<KEY, VALUE>(this IDictionary<KEY, VALUE> actual, KEY key, VALUE value)
+        public static IDictionary<KEY, VALUE> ShouldContain<KEY, VALUE>(this IDictionary<KEY, VALUE> actual, KEY key, VALUE value)
         {
             actual.Keys.Contains(key).ShouldBeTrue();
             actual[key].ShouldEqual(value);
+            return actual;
         }
 
         public static void ShouldNotContain(this IList actual, object expected)
