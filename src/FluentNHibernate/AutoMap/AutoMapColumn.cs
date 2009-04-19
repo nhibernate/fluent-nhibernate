@@ -1,8 +1,6 @@
-using System;
 using System.Linq;
 using System.Reflection;
 using FluentNHibernate.AutoMap;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate.AutoMap
@@ -22,7 +20,7 @@ namespace FluentNHibernate.AutoMap
                 return true;
 
             if (property.CanWrite)
-                return property.PropertyType.Namespace == "System";
+                return IsMappableToColumnType(property);
 
             return false;
         }
@@ -34,6 +32,12 @@ namespace FluentNHibernate.AutoMap
                 .Where(c => c.Accept(property.PropertyType));
 
             return conventions.FirstOrDefault() != null;
+        }
+
+        private static bool IsMappableToColumnType(PropertyInfo property)
+        {
+            return property.PropertyType.Namespace == "System"
+                   || property.PropertyType.FullName == "System.Drawing.Bitmap";
         }
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)

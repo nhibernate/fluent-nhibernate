@@ -130,6 +130,17 @@ namespace FluentNHibernate.Testing.AutoMap
             Test<ExampleClass>(mapping =>
                 mapping.Element("//cache").Exists());
         }
+
+        [Test]
+        public void ShouldAutoMapBitmapPropertyAsColumn()
+        {
+            //This is a regression test for issue 198
+            Model<ClassWithBitmap>(model =>
+                model.Where(type => type == typeof(ClassWithBitmap)));
+
+            Test<ClassWithBitmap>(mapping =>
+                mapping.Element("//property[@name='Bitmap']/column").HasAttribute("name", "Bitmap"));
+        }
     }
 }
 

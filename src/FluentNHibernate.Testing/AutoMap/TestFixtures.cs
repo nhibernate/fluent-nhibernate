@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using System.Data;
+using System.Drawing;
 using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomCompositeTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
@@ -120,6 +121,12 @@ namespace FluentNHibernate.AutoMap.TestFixtures
         public virtual int Id { get; set; }
         public virtual Address HomeAddress { get; set; }
         public virtual Address WorkAddress { get; set; }
+    }
+
+    public class ClassWithBitmap
+    {
+        public virtual int Id { get; set; }
+        public virtual Bitmap Bitmap { get; set; }
     }
 }
 
