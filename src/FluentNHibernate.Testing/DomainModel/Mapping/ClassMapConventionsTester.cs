@@ -7,15 +7,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     public class ClassMapConventionsTester
     {
         [Test]
-        public void DefaultLazyLoad_should_be_false_if_set_by_convention()
-        {
-            new MappingTester<MappedObject>()
-                .Conventions(conventions => conventions.Add(DefaultLazy.AlwaysFalse()))
-                .ForMapping(c => { })
-                .HasAttribute("default-lazy", "false");
-        }
-
-        [Test]
         public void DynamicUpdateShouldntSetAttributeIfUnset()
         {
             new MappingTester<MappedObject>()

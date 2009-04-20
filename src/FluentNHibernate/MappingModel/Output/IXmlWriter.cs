@@ -1,10 +1,9 @@
-using System;
-using NHibernate.Cfg.MappingSchema;
+using System.Xml;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public interface IXmlWriter<T> //: IMappingModelVisitor
+    public interface IXmlWriter<T>
     {
-        object Write(T mappingModel);        
+        XmlDocument Write(T mappingModel);        
     }
 }

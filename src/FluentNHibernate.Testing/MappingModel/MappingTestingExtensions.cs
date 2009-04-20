@@ -23,21 +23,18 @@ namespace FluentNHibernate.Testing.MappingModel
         
         public static void ShouldGenerateValidOutput<T>(this IXmlWriter<T> writer, T model)
         {
-            object hbm = writer.Write(model);
-            hbm.ShouldNotBeNull();  
-            var serializer = new MappingXmlSerializer();
-            XmlDocument document = serializer.SerializeHbmFragment(hbm);
-            Validate(document);
+            var document = writer.Write(model);
+            ShouldBeValidXml(document);
         }
 
         public static void ShouldBeValidAgainstSchema(this HibernateMapping mapping)
         {
             var serializer = new MappingXmlSerializer();
             XmlDocument document = serializer.Serialize(mapping);
-            Validate(document);
+            ShouldBeValidXml(document);
         }
 
-        private static void Validate(XmlDocument document)
+        public static void ShouldBeValidXml(this XmlDocument document)
         {
             MappingXmlValidator validator = new MappingXmlValidator();
             var result = validator.Validate(document);

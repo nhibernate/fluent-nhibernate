@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate", "FluentN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate.Versioning.NH20", "FluentNHibernate.Versioning.NH20\FluentNHibernate.Versioning.NH20.csproj", "{ABDBBA74-1436-4893-9D02-0723022058A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate.FluentInterface", "FluentNHibernate.FluentInterface\FluentNHibernate.FluentInterface.csproj", "{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,14 +44,6 @@ Global
 		{ABDBBA74-1436-4893-9D02-0723022058A0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ABDBBA74-1436-4893-9D02-0723022058A0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{ABDBBA74-1436-4893-9D02-0723022058A0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Release|Any CPU.Build.0 = Release|Any CPU
-		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

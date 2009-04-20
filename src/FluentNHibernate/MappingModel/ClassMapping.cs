@@ -82,6 +82,12 @@ namespace FluentNHibernate.MappingModel
             set { _attributes.Set(x => x.Tablename, value); }
         }
 
+        public int BatchSize
+        {
+            get { return _attributes.Get(x => x.BatchSize); }
+            set { _attributes.Set(x => x.BatchSize, value); }
+        }
+
         public AttributeStore<ClassMapping> Attributes
         {
             get { return _attributes; }

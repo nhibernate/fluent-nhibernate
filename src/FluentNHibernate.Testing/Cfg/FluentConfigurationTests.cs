@@ -231,9 +231,9 @@ namespace FluentNHibernate.Testing.Cfg
                     m.FluentMappings
                         .AddFromAssemblyOf<Record>()
                         .ExportTo(ExportPath))
-                .BuildSessionFactory();
+                .BuildConfiguration();
 
-            Directory.GetFiles(ExportPath).ShouldContain(HbmFor<Record>);
+            Directory.GetFiles(ExportPath).ShouldContain(filename => filename.EndsWith("Mappings.hbm.xml"));
         }
 
         [Test]

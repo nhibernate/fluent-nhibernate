@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -127,6 +127,7 @@
     <Compile Include="DomainModel\Mapping\ClassMapDynamicUpdateTester.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapOptimisticLockTester.cs" />
     <Compile Include="DomainModel\Mapping\ComponentElementPartTester.cs" />
+    <Compile Include="DomainModel\Mapping\ImportTester.cs" />
     <Compile Include="DomainModel\Mapping\ModelTester.cs" />
     <Compile Include="Fixtures\TestPersistenceModel.cs" />
     <Compile Include="Fixtures\AutoMappingAlterations\DummyAlteration1.cs" />
@@ -200,39 +201,13 @@
     <Compile Include="AutoMap\PropertyAutoMapperTests.cs" />
     <Compile Include="DomainModel\Employees.cs" />
     <Compile Include="DomainModel\Music.cs" />
-    <Compile Include="FluentInterface\ClassMapTester.cs" />
-    <Compile Include="FluentInterface\DiscriminatorPartTester.cs" />
-    <Compile Include="FluentInterface\EmployeesTester.cs" />
-    <Compile Include="FluentInterface\IntegrationTestHelper.cs" />
-    <Compile Include="FluentInterface\MusicMappingTester.cs" />
-    <Compile Include="FluentInterface\PropertyMapTester.cs" />
-    <Compile Include="FluentInterface\SubclassPartTester.cs" />
     <Compile Include="MappingModel\AttributeStoreTester.cs" />
     <Compile Include="MappingModel\ClassMappingTester.cs" />
     <Compile Include="MappingModel\Collections\OneToManyMappingTester.cs" />
     <Compile Include="MappingModel\Conventions\NamingConventionTester.cs" />
     <Compile Include="MappingModel\HibernateMappingTester.cs" />
     <Compile Include="MappingModel\MappingTestingExtensions.cs" />
-    <Compile Include="MappingModel\Output\HbmBagWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmClassWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmCollectionContentsWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmComponentWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmDiscriminatorWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmIdWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmIndexWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmJoinedSubclassWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmKeyWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmColumnWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmHibernateMappingWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmIdGeneratorWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmListWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmManyToManyWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmManyToOneWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmOneToManyWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmPropertyWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmSetWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmSubclassWriterTester.cs" />
-    <Compile Include="MappingModel\Output\HbmTestHelper.cs" />
+    <Compile Include="MappingModel\Output\XmlClassWriterTester.cs" />
     <Compile Include="ReflectionHelperTester.cs" />
     <Compile Include="Xml\MappingXmlTestHelper.cs" />
     <Compile Include="Xml\MappingXmlValidatorTester.cs" />
@@ -240,10 +215,6 @@
     <Compile Include="Xml\MappingXmlSerializerTester.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FluentNHibernate.FluentInterface\FluentNHibernate.FluentInterface.csproj">
-      <Project>{27E0F40C-5D2D-42FE-9DA6-3ACFFCAC3F73}</Project>
-      <Name>FluentNHibernate.FluentInterface</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
       <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>
       <Name>FluentNHibernate</Name>

@@ -1,7 +1,7 @@
 <Configuration>
   <SharedSolutionTemplateManager>
     <LiveTemplates>
-      <Template uid="03229c49-6943-46b2-ba6a-400ac9550f85" text="[Test]&#xD;&#xA;public void $TESTNAME$()&#xD;&#xA;{&#xD;&#xA;	$END$&#xD;&#xA;}" shortcut="pvt" description="New Test Case" reformat="true" shortenQualifiedReferences="true">
+      <Template uid="03229c49-6943-46b2-ba6a-400ac9550f85" shortcut="pvt" description="New Test Case" text="[Test]&#xD;&#xA;public void $TESTNAME$()&#xD;&#xA;{&#xD;&#xA;	$END$&#xD;&#xA;}" reformat="True" shortenQualifiedReferences="True">
         <Context>
           <CSharpContext context="TypeMember" minimumLanguageVersion="2.0" />
         </Context>
@@ -12,9 +12,8 @@
         <CustomProperties />
       </Template>
     </LiveTemplates>
-    <Surrounds />
     <FileTemplates>
-      <Template uid="482e6087-caae-4484-b5cc-d7b56a938201" text="using NUnit.Framework;&#xD;&#xA;&#xD;&#xA;namespace $Testing_Namespace$&#xD;&#xA;{&#xD;&#xA;	[TestFixture]&#xD;&#xA;	public class $Test_Fixture_Name$&#xD;&#xA;	{&#xD;&#xA;		[Test]&#xD;&#xA;		public void $Test_Name$()&#xD;&#xA;		{&#xD;&#xA;			$END$&#xD;&#xA;		}&#xD;&#xA;	}&#xD;&#xA;}" shortcut="" description="Test Fixture Class" reformat="true" shortenQualifiedReferences="true">
+      <Template uid="482e6087-caae-4484-b5cc-d7b56a938201" shortcut="" description="Test Fixture Class" text="using NUnit.Framework;&#xD;&#xA;&#xD;&#xA;namespace $Testing_Namespace$&#xD;&#xA;{&#xD;&#xA;	[TestFixture]&#xD;&#xA;	public class $Test_Fixture_Name$&#xD;&#xA;	{&#xD;&#xA;		[Test]&#xD;&#xA;		public void $Test_Name$()&#xD;&#xA;		{&#xD;&#xA;			$END$&#xD;&#xA;		}&#xD;&#xA;	}&#xD;&#xA;}" reformat="True" shortenQualifiedReferences="True">
         <Context>
           <ProjectLanguageContext language="CSharp" />
         </Context>

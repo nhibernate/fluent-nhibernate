@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Xml;
 using FluentNHibernate.Conventions;
@@ -19,10 +20,11 @@ namespace FluentNHibernate
 {
     public class PersistenceModel
     {
-        private readonly IList<IMappingProvider> _mappings;
+        protected readonly IList<IMappingProvider> _mappings;
         private readonly IList<IMappingModelVisitor> _visitors;
         public IConventionFinder ConventionFinder { get; private set; }
         private bool conventionsApplied;
+        private HibernateMapping rootMapping;
 
         public PersistenceModel(IConventionFinder conventionFinder)
         {
@@ -123,26 +125,19 @@ namespace FluentNHibernate
         {
             ApplyConventions();
 
-            var rootMapping = new HibernateMapping();
-            rootMapping.DefaultLazy = false;
+            var mapping = new HibernateMapping();
+            mapping.DefaultLazy = false;
 
             foreach (var classMapping in _mappings)
-                rootMapping.AddClass(classMapping.GetClassMapping());
+                mapping.AddClass(classMapping.GetClassMapping());
 
-            return rootMapping;
+            return mapping;
         }
 
-        public void ApplyVisitors(HibernateMapping rootMapping)
+        public void ApplyVisitors(HibernateMapping mapping)
         {
             foreach (var visitor in _visitors)
-                rootMapping.AcceptVisitor(visitor);
-        }
-
-        public void WriteMappingsTo(string folder)
-        {
-            var visitor = new DiagnosticMappingVisitor(folder, null);
-
-            ApplyMappings(visitor);
+                mapping.AcceptVisitor(visitor);
         }
 
         public void ApplyConventions()
@@ -169,18 +164,31 @@ namespace FluentNHibernate
             conventionsApplied = true;
         }
 
-        private void ApplyMappings(IMappingVisitor visitor)
+        private void EnsureMappingBuilt()
         {
-            ApplyConventions();
+            if (rootMapping != null) return;
 
-            //_mappings.ForEach(mapping => mapping.ApplyMappings(visitor));
+            rootMapping = BuildHibernateMapping();
+
+            ApplyVisitors(rootMapping);
+        }
+
+        public void WriteMappingsTo(string folder)
+        {
+            EnsureMappingBuilt();
+
+            var serializer = new MappingXmlSerializer();
+            var document = serializer.Serialize(rootMapping);
+
+            using (var writer = new XmlTextWriter(Path.Combine(folder, "Mappings.hbm.xml"), Encoding.Default))
+            {
+                document.WriteTo(writer);
+            }
         }
 
         public virtual void Configure(Configuration cfg)
         {
-            var rootMapping = BuildHibernateMapping();         
-   
-            ApplyVisitors(rootMapping);
+            EnsureMappingBuilt();
 
             var serializer = new MappingXmlSerializer();
             XmlDocument document = serializer.Serialize(rootMapping);            

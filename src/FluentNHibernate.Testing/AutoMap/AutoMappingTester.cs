@@ -1,6 +1,7 @@
 using System;
 using FluentNHibernate;
 using FluentNHibernate.AutoMap;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NHibernate.Cfg;
 
@@ -12,6 +13,6 @@ public class AutoMappingTester<T> : MappingTester<T>
         
         var mapping = mapper.FindMapping<T>();
         
-        ForMapping(mapping);
+        ForMapping((IClassMap)mapping);
     }
 }

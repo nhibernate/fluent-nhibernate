@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Xml;
 using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Reflection;
@@ -42,13 +43,13 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public class HbmTest
         {
             private readonly IDictionary<string, object> _checks;
-            private readonly Accessor _sourceProperty;
+            private readonly PropertyInfo _sourceProperty;
             private readonly object _sourceValue;
 
             public HbmTest(Expression<Func<MAPPING_TYPE, object>> sourceProperty, object value)
             {
                 _checks = new Dictionary<string, object>();
-                _sourceProperty = ReflectionHelper.GetAccessor(sourceProperty);
+                _sourceProperty = ReflectionHelper.GetProperty(sourceProperty);
                 _sourceValue = value;
             }
 
@@ -66,7 +67,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             internal void ApplyToSource(MAPPING_TYPE mapping)
             {
-                _sourceProperty.SetValue(mapping, _sourceValue);
+                _sourceProperty.SetValue(mapping, _sourceValue, null);
             }
 
             internal void Check(XmlDocument document)
@@ -83,7 +84,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
                     Assert.That(areEqual, 
                                     "Property '{0}' was set to '{1}' and was expected to be written to attribute '{2}' with value '{3}'. The value was instead '{4}'",
-                                    _sourceProperty.InnerProperty.ReflectedType.Name + "." + _sourceProperty.Name,
+                                    _sourceProperty.ReflectedType.Name + "." + _sourceProperty.Name,
                                     _sourceValue, check.Key, check.Value, attributeValue
                         );
                     //string.Equals()
@@ -127,13 +128,13 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public class HbmTest
         {
             private readonly IDictionary<Expression<Func<HBM_TYPE, object>>, object> _checks;
-            private readonly Accessor _sourceProperty;
+            private readonly PropertyInfo _sourceProperty;
             private readonly object _sourceValue;
 
             public HbmTest(Expression<Func<MAPPING_TYPE, object>> sourceProperty, object value)
             {
                 _checks = new Dictionary<Expression<Func<HBM_TYPE, object>>, object>();
-                _sourceProperty = ReflectionHelper.GetAccessor(sourceProperty);
+                _sourceProperty = ReflectionHelper.GetProperty(sourceProperty);
                 _sourceValue = value;
             }
 
@@ -151,7 +152,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             public void ApplyToSource(MAPPING_TYPE mapping)
             {
-                _sourceProperty.SetValue(mapping, _sourceValue);
+                _sourceProperty.SetValue(mapping, _sourceValue, null);
             }
 
             public void Check(HBM_TYPE hbm)
@@ -161,7 +162,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                     object val = check.Key.Compile()(hbm);
                     Assert.AreEqual(check.Value, val,
                                     "Property {0} was set to {1} and was expected to be written to {2} with value {3}. The value was instead {4}",
-                                    _sourceProperty.InnerProperty.ReflectedType.Name + "." + _sourceProperty.Name,
+                                    _sourceProperty.ReflectedType.Name + "." + _sourceProperty.Name,
                                     FullyQualifiedValue(_sourceValue), check.Key.ToString(), FullyQualifiedValue(check.Value), FullyQualifiedValue(val)
                         );
                 }

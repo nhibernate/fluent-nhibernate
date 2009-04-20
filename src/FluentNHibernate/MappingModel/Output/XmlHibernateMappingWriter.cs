@@ -7,24 +7,19 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmHibernateMappingWriter : NullMappingModelVisitor, IXmlWriter<HibernateMapping>
+    public class XmlHibernateMappingWriter : NullMappingModelVisitor, IXmlWriter<HibernateMapping>
     {
         private readonly IXmlWriter<ClassMapping> _classWriter;
         private XmlDocument document;
 
-        public HbmHibernateMappingWriter(IXmlWriter<ClassMapping> classWriter)
+        public XmlHibernateMappingWriter(IXmlWriter<ClassMapping> classWriter)
         {
             _classWriter = classWriter;
         }
 
-        object IXmlWriter<HibernateMapping>.Write(HibernateMapping mapping)
-        {
-            return Write(mapping);
-        }
-
         public XmlDocument Write(HibernateMapping mapping)
         {
-            mapping.AcceptVisitor(this);                        
+            mapping.AcceptVisitor(this);
             return document;
         }
 
@@ -39,7 +34,7 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(ClassMapping classMapping)
         {
-            var hbmClass = (XmlDocument)_classWriter.Write(classMapping);
+            var hbmClass = _classWriter.Write(classMapping);
 
             var newClassNode = document.ImportNode(hbmClass.DocumentElement, true);
 

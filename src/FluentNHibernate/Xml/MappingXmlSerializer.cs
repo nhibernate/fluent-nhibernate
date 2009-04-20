@@ -53,13 +53,7 @@ namespace FluentNHibernate.Xml
         {
             var xmlWriter = XmlWriterFactory.CreateHibernateMappingWriter();
 
-            return (XmlDocument)xmlWriter.Write(rootMapping);
-        }
-
-        private HbmMapping BuildHbm(HibernateMapping rootMapping)
-        {
-            IXmlWriter<HibernateMapping> rootWriter = XmlWriterFactory.CreateHibernateMappingWriter();               
-            return (HbmMapping) rootWriter.Write(rootMapping);
+            return xmlWriter.Write(rootMapping);
         }
     }
 }
