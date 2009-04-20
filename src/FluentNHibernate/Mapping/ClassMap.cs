@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
@@ -100,11 +101,24 @@ namespace FluentNHibernate.Mapping
         public Cache<string, string> Attributes { get; private set; }
         public Cache<string, string> HibernateMappingAttributes { get; private set; }
         private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
-        
+
         /// <summary>
         /// Specify caching for this entity.
         /// </summary>
-        public ICache Cache { get; private set; }
+        public ICache Cache
+        {
+            get
+            {
+                return m_Parts.Where(x => x.GetType() == typeof(CachePart)).FirstOrDefault() as ICache;
+            }
+            private set
+            {
+                if (Cache != null)
+                { m_Parts.Remove(Cache); }
+
+                AddPart(value);
+            }
+        }
         
         private readonly IList<ImportPart> imports = new List<ImportPart>();
         private string assemblyName;
@@ -124,8 +138,6 @@ namespace FluentNHibernate.Mapping
 
         public XmlDocument CreateMapping(IMappingVisitor visitor)
         {
-            AddPart(Cache);
-
             visitor.CurrentType = typeof(T);
             XmlDocument document = getBaseDocument();
             setHeaderValues(visitor, document);

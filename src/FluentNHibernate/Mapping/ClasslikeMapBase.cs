@@ -10,18 +10,22 @@ namespace FluentNHibernate.Mapping
 {
     public abstract class ClasslikeMapBase<T> : IClasslike
     {
-        private bool _parentIsRequired = true;
-        private readonly List<IMappingPart> _properties = new List<IMappingPart>();
+        protected readonly List<IMappingPart> m_Parts = new List<IMappingPart>();
+        public IEnumerable<IMappingPart> Parts
+        {
+            get { return m_Parts; }
+        }
 
+        private bool m_parentIsRequired = true;
         protected bool parentIsRequired
         {
-            get { return _parentIsRequired; }
-            set { _parentIsRequired = value; }
+            get { return m_parentIsRequired; }
+            set { m_parentIsRequired = value; }
         }
 
         protected internal void AddPart(IMappingPart part)
         {
-            _properties.Add(part);
+            m_Parts.Add(part);
         }
 
         public PropertyMap Map(Expression<Func<T, object>> expression)
@@ -41,7 +45,7 @@ namespace FluentNHibernate.Mapping
             if (columnName != null)
                 map.ColumnNames.Add(columnName);
 
-            _properties.Add(map);
+            m_Parts.Add(map);
 
             return map;
         }
@@ -274,16 +278,11 @@ namespace FluentNHibernate.Mapping
 
         protected void writeTheParts(XmlElement classElement, IMappingVisitor visitor)
         {
-            _properties.Sort(new MappingPartComparer(_properties));
-            foreach (IMappingPart part in _properties)
+            m_Parts.Sort(new MappingPartComparer(m_Parts));
+            foreach (IMappingPart part in m_Parts)
             {
                 part.Write(classElement, visitor);
             }
-        }
-
-        public IEnumerable<IMappingPart> Parts
-        {
-            get { return _properties; }
         }
 
         public Type EntityType

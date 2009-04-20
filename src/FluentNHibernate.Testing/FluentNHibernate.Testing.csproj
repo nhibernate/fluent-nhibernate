@@ -214,6 +214,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Cfg\hibernate.cfg.xml" />
     <Content Include="DeclarativeTesting.htm" />
     <EmbeddedResource Include="Fixtures\HbmOne.hbm.xml" />
     <EmbeddedResource Include="Fixtures\HbmTwo.hbm.xml" />

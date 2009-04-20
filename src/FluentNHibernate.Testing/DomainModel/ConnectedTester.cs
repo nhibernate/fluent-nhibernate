@@ -224,9 +224,25 @@ namespace FluentNHibernate.Testing.DomainModel
             Map(x => x.BinaryValue).Not.Nullable();
         }
     }
-
     public class BinaryRecord : Entity
     {
         public virtual byte[] BinaryValue { get; set; }
     }
+
+    public class CachedRecordMap 
+    {
+        private readonly ClassMap<CachedRecord> classMap = new ClassMap<CachedRecord>();
+        public ClassMap<CachedRecord> ClassMap
+        {
+            get { return classMap; }
+        }
+
+        public CachedRecordMap()
+        {
+            classMap.Cache.AsReadWrite();
+            classMap.Id(x => x.Id, "id");
+        }
+    }
+    public class CachedRecord : Entity
+    { }
 }

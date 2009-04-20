@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using FluentNHibernate.AutoMap;
@@ -254,7 +255,7 @@ namespace FluentNHibernate.Testing.Cfg
         public void WritesBothOut()
         {
             Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Database(SQLiteConfiguration.Standard.InMemory())
                 .Mappings(m =>
                 {
                     m.FluentMappings
@@ -271,6 +272,19 @@ namespace FluentNHibernate.Testing.Cfg
             
             files.ShouldContain(HbmFor<Record>);
             files.ShouldContain(HbmFor<Person>);
+        }
+
+        [Test]
+        public void DoesNotThrowWhenExportToIsBeforeBuildConfigurationOnCachePartMapping()
+        {
+            //Regression test for isue 131
+            Fluently.Configure()
+                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Mappings(m =>
+                    m.FluentMappings
+                        .AddFromAssemblyOf<CachedRecord>()
+                        .ExportTo(ExportPath))
+                .BuildConfiguration();
         }
 
         private static bool HbmFor<T>(string path)
