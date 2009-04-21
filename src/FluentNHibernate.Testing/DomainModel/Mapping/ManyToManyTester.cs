@@ -113,7 +113,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<ManyToManyTarget>()
                 .ForMapping(map =>
-                            map.HasMany(x => x.SetOfChildren)
+                            map.HasManyToMany(x => x.SetOfChildren)
                                 .Cache.AsReadWrite())
                 .Element("class/set/cache").ShouldNotBeNull();
         }
@@ -123,7 +123,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<ManyToManyTarget>()
                 .ForMapping(map =>
-                            map.HasMany(x => x.SetOfChildren))
+                            map.HasManyToMany(x => x.SetOfChildren))
                 .Element("class/set/cache").DoesntExist();
         }
 
@@ -132,7 +132,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<ManyToManyTarget>()
                 .ForMapping(map =>
-                            map.HasMany(x => x.SetOfChildren)
+                            map.HasManyToMany(x => x.SetOfChildren)
                                 .Cache.AsReadWrite())
                 .Element("class/set/cache").ShouldBeInParentAtPosition(0);
         }
@@ -142,7 +142,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<ManyToManyTarget>()
                 .ForMapping(map =>
-                            map.HasMany(x => x.SetOfChildren)
+                            map.HasManyToMany(x => x.SetOfChildren)
                                 .BatchSize(15))
                 .Element("class/set").HasAttribute("batch-size", "15");
         }
@@ -152,7 +152,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<OneToManyTarget>()
                 .ForMapping(map =>
-                            map.HasMany(x => x.SetOfChildren))
+                            map.HasManyToMany(x => x.SetOfChildren))
                 .Element("class/set").DoesntHaveAttribute("batch-size");
         }
 
@@ -163,5 +163,28 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(map => map.HasManyToMany(x => x.ArrayOfChildren).AsArray(x => x.Position))
                 .Element("class/array/index").Exists();
         }
+
+        [Test]
+        public void ShouldWriteIndexWhenAssigned()
+        {
+           new MappingTester<OneToManyTarget>()
+               .ForMapping(map =>
+                           map.HasManyToMany(x => x.SetOfChildren)
+                           .AsMap("indexColumn"))
+               .Element("class/map/index").ShouldNotBeNull();
+        }
+
+       [Test]
+       public void ShouldWriteIndexAtCorrectPosition()
+       {
+           new MappingTester<OneToManyTarget>()
+               .ForMapping(map =>
+                           map.HasManyToMany(x => x.SetOfChildren)
+                           .AsMap("indexColumn")
+                           .WithParentKeyColumn("ParentID")
+                           .WithChildKeyColumn("ChildID")
+                           .Cache.AsReadWrite())
+               .Element("class/map/index").ShouldBeInParentAtPosition(2);
+       }
     }
 }

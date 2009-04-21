@@ -78,12 +78,12 @@ namespace FluentNHibernate.Mapping
 
 		    Cache.Write(collectionElement, visitor);
 
-            if (_indexMapping != null)
-                WriteIndexElement(collectionElement);
-
-			XmlElement key = collectionElement.AddElement("key");
+            XmlElement key = collectionElement.AddElement("key");
 			key.WithAtt("column", ParentKeyColumn);
 		    key.WithProperties(_parentKeyProperties);
+
+            if (_indexMapping != null)
+                WriteIndexElement(collectionElement);
 
 			XmlElement manyToManyElement = collectionElement.AddElement("many-to-many");
 			manyToManyElement.WithAtt("column", ChildKeyColumn);
