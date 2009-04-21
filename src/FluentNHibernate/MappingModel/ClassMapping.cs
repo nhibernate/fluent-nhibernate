@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
-using System.Linq;
 using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Identity;
-using FluentNHibernate.MappingModel.Output;
-using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel
 {

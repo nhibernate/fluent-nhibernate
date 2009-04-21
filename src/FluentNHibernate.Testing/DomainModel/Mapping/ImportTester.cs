@@ -22,5 +22,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(x => x.ImportType<SecondMappedObject>())
                 .Element("class/import").DoesntExist();
         }
+
+        [Test]
+        public void ShouldAddRenameAttributeWhenDifferentNameSpecified()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(x => x.ImportType<SecondMappedObject>().As("MappedObject"))
+                .Element("import").HasAttribute("rename", "MappedObject");
+        }
     }
 }

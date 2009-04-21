@@ -250,7 +250,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
 
             new AutoMappingTester<ExampleInheritedClass>(autoMapper)
                 .Element("class")
-                .HasAttribute("name", "ExampleInheritedClass")
+                .HasAttribute("name", typeof(ExampleInheritedClass).AssemblyQualifiedName)
                 .Exists();
         }
 

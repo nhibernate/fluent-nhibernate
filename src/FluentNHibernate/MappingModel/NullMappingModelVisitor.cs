@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 
@@ -18,6 +19,11 @@ namespace FluentNHibernate.MappingModel
         public virtual void ProcessClass(ClassMapping classMapping)
         {
 
+        }
+
+        public virtual void ProcessImport(ImportMapping importMapping)
+        {
+            
         }
 
         public virtual void ProcessHibernateMapping(HibernateMapping hibernateMapping)
@@ -101,6 +107,11 @@ namespace FluentNHibernate.MappingModel
         }
 
         public virtual void Visit(ClassMapping classMapping)
+        {
+
+        }
+
+        public virtual void Visit(ImportMapping importMapping)
         {
 
         }

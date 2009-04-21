@@ -189,17 +189,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void DetermineTheTableName()
         {
-            new ModelTester<MappedObject>()
+            new MappingTester<MappedObject>()
                 .ForMapping(m => { })
-                .VerifyClass(c => c.Tablename.ShouldEqual("`MappedObject`"));
+                .Element("class").HasAttribute("table", "`MappedObject`");
         }
 
         [Test]
         public void CanSetTableName()
         {
-            new ModelTester<MappedObject>()
+            new MappingTester<MappedObject>()
                 .ForMapping(m => m.WithTable("myTableName"))
-                .VerifyClass(clazz => clazz.Tablename.ShouldEqual("myTableName"));
+                .Element("class").HasAttribute("table", "myTableName");
         }
 
         [Test]
@@ -405,14 +405,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class")
                     .HasAttribute("first", "value")
                     .HasAttribute("second", "secondValue");
-        }
-
-        [Test]
-        public void ShouldAddRenameAttributeWhenDifferentNameSpecified()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(x => x.ImportType<SecondMappedObject>().As("MappedObject"))
-                .Element("import").HasAttribute("rename", "MappedObject");
         }
 
         [Test]

@@ -233,7 +233,8 @@ namespace FluentNHibernate.Testing.Cfg
                         .ExportTo(ExportPath))
                 .BuildConfiguration();
 
-            Directory.GetFiles(ExportPath).ShouldContain(filename => filename.EndsWith("Mappings.hbm.xml"));
+            Directory.GetFiles(ExportPath)
+                .ShouldContain(HbmFor<Record>);
         }
 
         [Test]
@@ -247,7 +248,8 @@ namespace FluentNHibernate.Testing.Cfg
                         .ExportTo(ExportPath))
                 .BuildSessionFactory();
 
-            Directory.GetFiles(ExportPath).ShouldContain(HbmFor<Person>);
+            Directory.GetFiles(ExportPath)
+                .ShouldContain(HbmFor<Person>);
         }
 
         [Test]

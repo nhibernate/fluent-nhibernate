@@ -52,10 +52,10 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             model.Add(classMap);
             model.ApplyConventions();
 
-            var hbm = model.BuildHibernateMapping();
+            var mappings = model.BuildMappings();
 
             document = new MappingXmlSerializer()
-                .Serialize(hbm);
+                .Serialize(mappings.First());
             currentElement = document.DocumentElement;
 
             return this;

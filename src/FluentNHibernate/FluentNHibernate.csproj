@@ -202,9 +202,11 @@
     <Compile Include="FluentInterface\OneToManyPart.cs" />
     <Compile Include="FluentInterface\PropertyMap.cs" />
     <Compile Include="FluentInterface\SubclassPart.cs" />
+    <Compile Include="MappingModel\ImportMapping.cs" />
     <Compile Include="MappingModel\Output\XmlHibernateMappingWriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MappingModel\Output\XmlImportWriter.cs" />
     <Compile Include="Mapping\Attributes.cs" />
     <Compile Include="Mapping\CachePart.cs" />
     <Compile Include="Conventions\UserTypeConvention.cs" />
@@ -352,9 +354,6 @@
     <None Include="..\FluentKey.snk">
       <Link>FluentKey.snk</Link>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Mapping\Template.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

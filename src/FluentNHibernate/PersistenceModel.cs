@@ -24,7 +24,7 @@ namespace FluentNHibernate
         private readonly IList<IMappingModelVisitor> _visitors;
         public IConventionFinder ConventionFinder { get; private set; }
         private bool conventionsApplied;
-        private HibernateMapping rootMapping;
+        private IEnumerable<HibernateMapping> compiledMappings;
 
         public PersistenceModel(IConventionFinder conventionFinder)
         {
@@ -121,17 +121,22 @@ namespace FluentNHibernate
             get { return _mappings; }
         }
 
-        public HibernateMapping BuildHibernateMapping()
+        public IEnumerable<HibernateMapping> BuildMappings()
         {
             ApplyConventions();
 
-            var mapping = new HibernateMapping();
-            mapping.DefaultLazy = false;
+            var hbms = new List<HibernateMapping>();
 
-            foreach (var classMapping in _mappings)
-                mapping.AddClass(classMapping.GetClassMapping());
+            foreach (var classMap in _mappings)
+            {
+                var hbm = classMap.GetHibernateMapping();
 
-            return mapping;
+                hbm.AddClass(classMap.GetClassMapping());
+
+                hbms.Add(hbm);
+            }
+
+            return hbms;
         }
 
         public void ApplyVisitors(HibernateMapping mapping)
@@ -164,42 +169,52 @@ namespace FluentNHibernate
             conventionsApplied = true;
         }
 
-        private void EnsureMappingBuilt()
+        private void EnsureMappingsBuilt()
         {
-            if (rootMapping != null) return;
+            if (compiledMappings != null) return;
 
-            rootMapping = BuildHibernateMapping();
+            compiledMappings = BuildMappings();
 
-            ApplyVisitors(rootMapping);
+            foreach (var mapping in compiledMappings)
+            {
+                ApplyVisitors(mapping);
+            }
         }
 
         public void WriteMappingsTo(string folder)
         {
-            EnsureMappingBuilt();
+            EnsureMappingsBuilt();
 
-            var serializer = new MappingXmlSerializer();
-            var document = serializer.Serialize(rootMapping);
-
-            using (var writer = new XmlTextWriter(Path.Combine(folder, "Mappings.hbm.xml"), Encoding.Default))
+            foreach (var mapping in compiledMappings)
             {
-                document.WriteTo(writer);
+                var serializer = new MappingXmlSerializer();
+                var document = serializer.Serialize(mapping);
+
+                using (var writer = new XmlTextWriter(Path.Combine(folder, mapping.Classes.First().Name + ".hbm.xml"), Encoding.Default))
+                {
+                    document.WriteTo(writer);
+                }    
             }
         }
 
         public virtual void Configure(Configuration cfg)
         {
-            EnsureMappingBuilt();
+            EnsureMappingsBuilt();
 
-            var serializer = new MappingXmlSerializer();
-            XmlDocument document = serializer.Serialize(rootMapping);            
+            foreach (var mapping in compiledMappings)
+            {
+                var serializer = new MappingXmlSerializer();
+                XmlDocument document = serializer.Serialize(mapping);
 
-            cfg.AddDocument(document);
+                if (cfg.GetClassMapping(mapping.Classes.First().Type) == null)
+                    cfg.AddDocument(document);
+            }
         }
     }
 
-public class DiagnosticMappingVisitor : MappingVisitor
-{
-            private string _folder;
+    public class DiagnosticMappingVisitor : MappingVisitor
+    {
+        private string _folder;
 
         public DiagnosticMappingVisitor(string folder, Configuration configuration) : base(configuration)
         {
@@ -211,10 +226,12 @@ public class DiagnosticMappingVisitor : MappingVisitor
             string filename = Path.Combine(_folder, type.FullName + ".hbm.xml");
             document.Save(filename);
         }
-}
+    }
 
     public interface IMappingProvider
     {
         ClassMapping GetClassMapping();
+        // HACK: In place just to keep compatibility until verdict is made
+        HibernateMapping GetHibernateMapping();
     }
 }

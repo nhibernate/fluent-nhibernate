@@ -1,43 +1,34 @@
 using System;
 using System.Xml;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
     public class ImportPart : IMappingPart
     {
-        private readonly Cache<string, string> attributes = new Cache<string, string>();
-        private readonly Type importType;
+        private readonly ImportMapping mapping = new ImportMapping();
 
         public ImportPart(Type importType)
         {
-            this.importType = importType;
+            mapping.Type = importType;
         }
 
         public void SetAttribute(string name, string value)
         {
-            attributes.Store(name, value);
+            throw new NotImplementedException();
         }
 
         public void SetAttributes(Attributes attrs)
         {
-            foreach (var key in attrs.Keys)
-            {
-                SetAttribute(key, attrs[key]);
-            }
+            throw new NotImplementedException();
         }
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            var importElement = classElement.AddElement("import")
-                .WithAtt("class", importType.AssemblyQualifiedName)
-                .WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
-
-            attributes.ForEachPair((name, value) => importElement.WithAtt(name, value));
-        }
+        {}
 
         public void As(string alternativeName)
         {
-            SetAttribute("rename", alternativeName);
+            mapping.Rename = alternativeName;
         }
 
         public int Level
@@ -48,6 +39,11 @@ namespace FluentNHibernate.Mapping
         public PartPosition Position
         {
             get { return PartPosition.First; }
+        }
+
+        public ImportMapping GetImportMapping()
+        {
+            return mapping;
         }
     }
 }

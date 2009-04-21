@@ -3,6 +3,7 @@ namespace FluentNHibernate.Mapping
     internal class DefaultAccessStrategyBuilder<T> : AccessStrategyBuilder<ClassMap<T>>
     {
         private readonly ClassMap<T> parent;
+        private string accessValue;
 
         public DefaultAccessStrategyBuilder(ClassMap<T> parent) : base(parent)
         {
@@ -11,9 +12,13 @@ namespace FluentNHibernate.Mapping
 
         protected override void SetAccessAttribute(string value)
         {
-            // forces the builder to set the attributes on the hibernate-mapping element
-            // rather than the class
-            parent.SetHibernateMappingAttribute("default-access", value);
+            // HACK: fix to use HibernateMapping instead of hardcoded attributes
+            accessValue = value;
+        }
+
+        public string GetValue()
+        {
+            return accessValue;
         }
     }
 }

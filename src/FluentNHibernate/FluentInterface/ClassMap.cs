@@ -11,7 +11,7 @@ namespace FluentNHibernate.Mapping
     {
         public Cache<string, string> Attributes { get; private set; }
         public Cache<string, string> HibernateMappingAttributes { get; private set; }
-        private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
+        private readonly DefaultAccessStrategyBuilder<T> defaultAccess;
         
         /// <summary>
         /// Specify caching for this entity.
@@ -22,19 +22,19 @@ namespace FluentNHibernate.Mapping
         private bool nextBool = true;
 
         private readonly ClassMapping mapping;
+        private readonly HibernateMapping hibernateMapping = new HibernateMapping();
 
         public ClassMap()
             : this(new ClassMapping(typeof(T)))
-        {
-            Attributes = new Cache<string, string>();
-            HibernateMappingAttributes = new Cache<string, string>();
-            //defaultAccess = new DefaultAccessStrategyBuilder<T>(this);
-            Cache = new CachePart();
-        }
+        {}
 
         public ClassMap(ClassMapping mapping)
         {
             this.mapping = mapping;
+            Attributes = new Cache<string, string>();
+            HibernateMappingAttributes = new Cache<string, string>();
+            defaultAccess = new DefaultAccessStrategyBuilder<T>(this);
+            Cache = new CachePart();
         }
 
         public string TableName
@@ -46,6 +46,8 @@ namespace FluentNHibernate.Mapping
         {
             AddPart(Cache);
 
+            mapping.Name = typeof(T).FullName;
+
             foreach (var part in Parts)
             {
                 mapping.AddUnmigratedPart(part);
@@ -54,6 +56,16 @@ namespace FluentNHibernate.Mapping
             Attributes.ForEachPair(mapping.AddUnmigratedAttribute);
 
             return mapping;
+        }
+
+        public HibernateMapping GetHibernateMapping()
+        {
+            hibernateMapping.DefaultAccess = defaultAccess.GetValue();
+
+            foreach (var import in imports)
+                hibernateMapping.AddImport(import.GetImportMapping());
+
+            return hibernateMapping;
         }
 
         public Type EntityType
@@ -166,32 +178,8 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void AutoImport()
         {
-            SetHibernateMappingAttribute("auto-import", nextBool);
+            hibernateMapping.AutoImport = nextBool;
             nextBool = true;
-        }
-
-        /// <summary>
-        /// Override the inferred assembly for this class
-        /// </summary>
-        /// <param name="assembly">Assembly to use</param>
-        public void OverrideAssembly(Assembly assembly)
-        {
-        }
-
-        /// <summary>
-        /// Override the inferred assembly for this class
-        /// </summary>
-        /// <param name="assembly">Assembly to use</param>
-        public void OverrideAssembly(string assembly)
-        {
-        }
-
-        /// <summary>
-        /// Override the inferred namespace for this class
-        /// </summary>
-        /// <param name="namespace">Namespace to use</param>
-        public void OverrideNamespace(string @namespace)
-        {
         }
 
         public string FileName

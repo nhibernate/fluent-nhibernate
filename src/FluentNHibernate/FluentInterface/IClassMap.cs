@@ -36,24 +36,6 @@ namespace FluentNHibernate.Mapping
         void AutoImport();
 
         /// <summary>
-        /// Override the inferred assembly for this class
-        /// </summary>
-        /// <param name="assembly">Assembly to use</param>
-        void OverrideAssembly(Assembly assembly);
-
-        /// <summary>
-        /// Override the inferred assembly for this class
-        /// </summary>
-        /// <param name="assembly">Assembly to use</param>
-        void OverrideAssembly(string assembly);
-
-        /// <summary>
-        /// Override the inferred namespace for this class
-        /// </summary>
-        /// <param name="namespace">Namespace to use</param>
-        void OverrideNamespace(string @namespace);
-
-        /// <summary>
         /// Sets this entity to be lazy-loaded (overrides the default lazy load configuration).
         /// </summary>
         void LazyLoad();

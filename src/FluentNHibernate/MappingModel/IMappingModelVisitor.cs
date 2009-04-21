@@ -8,6 +8,7 @@ namespace FluentNHibernate.MappingModel
         void ProcessId(IdMapping idMapping);
         void ProcessCompositeId(CompositeIdMapping idMapping);
         void ProcessClass(ClassMapping classMapping);
+        void ProcessImport(ImportMapping importMapping);
         void ProcessHibernateMapping(HibernateMapping hibernateMapping);
         void ProcessProperty(PropertyMapping propertyMapping);
         void ProcessManyToOne(ManyToOneMapping  manyToOneMapping);
@@ -26,6 +27,7 @@ namespace FluentNHibernate.MappingModel
         void ProcessIndex(IndexMapping indexMapping);
 
         void Visit(ClassMapping classMapping);
+        void Visit(ImportMapping importMapping);
         void Visit(IIdentityMapping identityMapping);
         void Visit(ICollectionMapping collectionMapping);
         void Visit(PropertyMapping propertyMapping);
