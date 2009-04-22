@@ -1,3 +1,5 @@
+using System;
+
 namespace FluentNHibernate.MappingModel
 {
     public class KeyMapping : MappingBase

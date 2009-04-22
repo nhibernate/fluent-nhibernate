@@ -2,39 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Reflection;
-using System.Xml;
-using FluentNHibernate.FluentInterface;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.Utils;
 using NHibernate.Properties;
 using NHibernate.SqlTypes;
-using NHibernate.Type;
 using NHibernate.UserTypes;
 using NUnit.Framework;
-using FluentNHibernate;
-using PropertyMap=FluentNHibernate.Mapping.PropertyMap;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
     [TestFixture]
     public class PropertyMapTester
     {
-        [Test]
-        public void SetAttributeOnColumnElement()
-        {
-            PropertyInfo property = ReflectionHelper.GetProperty<PropertyTarget>(x => x.Name);
-            var map = new PropertyMap(property, false, typeof(PropertyTarget));
-            map.SetAttributeOnColumnElement("unique", "true");
-
-            var document = new XmlDocument();
-            XmlElement classElement = document.CreateElement("root");
-            map.Write(classElement, new MappingVisitor());
-
-            var columnElement = (XmlElement) classElement.SelectSingleNode("property/column");
-            columnElement.AttributeShouldEqual("unique", "true");
-        }
-
         [Test]
         public void Map_WithoutColumnName_UsesPropertyNameFor_PropertyColumnAttribute()
         {
@@ -51,7 +29,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.Map(x => x.Name))
                 .Element("class/property/column").HasAttribute("name", "Name");
         }
-
 
         [Test]
         public void Map_WithColumnName_UsesColumnNameFor_PropertyColumnAttribute()
@@ -193,14 +170,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name).FormulaIs("foo(bar)"))
                 .Element("class/property").HasAttribute("formula", "foo(bar)");
-        }
-
-        [Test]
-        public void CanSpecifyCustomType()
-        {
-            new MappingTester<PropertyTarget>()
-                .ForMapping(c=>c.Map(x => x.Data).CustomTypeIs("BinaryBlob"))
-                .Element("class/property").HasAttribute("type", "BinaryBlob");
         }
 
         [Test]

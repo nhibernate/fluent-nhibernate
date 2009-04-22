@@ -94,6 +94,15 @@ namespace FluentNHibernate.MappingModel
             PropertyInfo info = ReflectionHelper.GetProperty(exp);
             return info.Name;
         }
+
+        public AttributeStore<T> Clone()
+        {
+            var clonedStore = new AttributeStore<T>();
+
+            _store.CopyTo(clonedStore._store);
+
+            return clonedStore;
+        }
     }
 
 }

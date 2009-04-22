@@ -107,7 +107,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
                 .ForMapping(m => m.Map(x => x.Color).CustomTypeIs(typeof(int)))
-                .Element("class/property[@name='Color']").HasAttribute("type", typeof(int).AssemblyQualifiedName);
+                .Element("class/property[@name='Color']").HasAttribute("type", typeof(int).Name);
         }
     }
 }

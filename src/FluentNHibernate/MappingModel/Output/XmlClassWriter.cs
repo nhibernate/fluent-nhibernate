@@ -7,6 +7,12 @@ namespace FluentNHibernate.MappingModel.Output
     public class XmlClassWriter : NullMappingModelVisitor, IXmlWriter<ClassMapping>
     {
         private XmlDocument document;
+        private readonly IXmlWriter<PropertyMapping> propertyWriter;
+
+        public XmlClassWriter(IXmlWriter<PropertyMapping> propertyWriter)
+        {
+            this.propertyWriter = propertyWriter;
+        }
 
         public XmlDocument Write(ClassMapping mapping)
         {
@@ -52,6 +58,14 @@ namespace FluentNHibernate.MappingModel.Output
                 classElement.WithAtt("batch-size", classMapping.BatchSize.ToString());
 
             return classElement;
+        }
+
+        public override void Visit(PropertyMapping propertyMapping)
+        {
+            var propertyXml = propertyWriter.Write(propertyMapping);
+            var propertyNode = document.ImportNode(propertyXml.DocumentElement, true);
+
+            document.DocumentElement.AppendChild(propertyNode);
         }
     }
 }

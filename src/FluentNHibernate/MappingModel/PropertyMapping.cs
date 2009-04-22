@@ -1,63 +1,84 @@
 using System;
-using NHibernate.Cfg.MappingSchema;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
     public class PropertyMapping : MappingBase, INameable
     {
-        private readonly AttributeStore<PropertyMapping> _attributes;        
+        private readonly List<ColumnMapping> columns = new List<ColumnMapping>();
+        private readonly AttributeStore<PropertyMapping> attributes = new AttributeStore<PropertyMapping>();
+        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
-        public PropertyMapping()
-        {
-            _attributes = new AttributeStore<PropertyMapping>();   
-        }        
-       
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessProperty(this);
-        }
 
-        public PropertyInfo PropertyInfo { get; set; }
+            foreach (var column in columns)
+                visitor.Visit(column);
+        }
 
         public AttributeStore<PropertyMapping> Attributes
         {
-            get { return _attributes; }
+            get { return attributes; }
         }
 
-        public bool IsNameSpecified
+        public IDictionary<string, string> UnmigratedAttributes
         {
-            get { return Attributes.IsSpecified(x => x.Name); }
+            get { return unmigratedAttributes; }
         }
 
         public string Name
         {
-            get { return _attributes.Get(x => x.Name); }
-            set { _attributes.Set(x => x.Name, value); }
+            get { return attributes.Get(x => x.Name); }
+            set { attributes.Set(x => x.Name, value); }
         }
 
-        public int Length
+        public bool IsNameSpecified
         {
-            get { return _attributes.Get(x => x.Length); }
-            set { _attributes.Set(x => x.Length, value); }
+            get { return attributes.IsSpecified(x => x.Name); }
         }
 
-        public bool IsNotNullable
+        public bool Insert
         {
-            get { return _attributes.Get(x => x.IsNotNullable); }
-            set { _attributes.Set(x => x.IsNotNullable, value); }
+            get { return attributes.Get(x => x.Insert); }
+            set { attributes.Set(x => x.Insert, value); }
         }
 
-        public string ColumnName
+        public bool Update
         {
-            get { return _attributes.Get(x => x.ColumnName); }
-            set { _attributes.Set(x => x.ColumnName, value); }
+            get { return attributes.Get(x => x.Update); }
+            set { attributes.Set(x => x.Update, value); }
         }
 
-        public bool Unique
+        public string Formula
         {
-            get { return _attributes.Get(x => x.Unique); }
-            set { _attributes.Set(x => x.Unique, value); }
+            get { return attributes.Get(x => x.Formula); }
+            set { attributes.Set(x => x.Formula, value); }
+        }
+
+        public Type Type
+        {
+            get { return attributes.Get(x => x.Type); }
+            set { attributes.Set(x => x.Type, value); }
+        }
+
+        public string UniqueKey
+        {
+            get { return attributes.Get(x => x.UniqueKey); }
+            set { attributes.Set(x => x.UniqueKey, value); }
+        }
+
+        public PropertyInfo PropertyInfo { get; set; }
+
+        public void AddColumn(ColumnMapping mapping)
+        {
+            columns.Add(mapping);
+        }
+
+        public void AddUnmigratedAttribute(string name, string value)
+        {
+            unmigratedAttributes[name] = value;
         }
     }
 }

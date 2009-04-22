@@ -12,12 +12,12 @@ namespace FluentNHibernate.Mapping
             _keyColumn = keyColumn;
         }
 
-        public void SetAttribute(string name, string value)
+        public virtual void SetAttribute(string name, string value)
         {
             attributes.Store(name, value);
         }
 
-        public void SetAttributes(Attributes atts)
+        public virtual void SetAttributes(Attributes atts)
         {
             foreach (var key in atts.Keys)
             {

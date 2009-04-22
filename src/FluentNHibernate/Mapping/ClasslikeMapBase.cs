@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
@@ -11,7 +12,8 @@ namespace FluentNHibernate.Mapping
     public abstract class ClasslikeMapBase<T> : IClasslike
     {
         private bool _parentIsRequired = true;
-        private readonly List<IMappingPart> _properties = new List<IMappingPart>();
+        private readonly List<IMappingPart> parts = new List<IMappingPart>();
+        protected readonly IList<PropertyMap> properties = new List<PropertyMap>();
 
         protected bool parentIsRequired
         {
@@ -21,7 +23,7 @@ namespace FluentNHibernate.Mapping
 
         protected internal void AddPart(IMappingPart part)
         {
-            _properties.Add(part);
+            parts.Add(part);
         }
 
         public PropertyMap Map(Expression<Func<T, object>> expression)
@@ -36,14 +38,20 @@ namespace FluentNHibernate.Mapping
 
         protected virtual PropertyMap Map(PropertyInfo property, string columnName)
         {
-            var map = new PropertyMap(property, parentIsRequired, EntityType);
+            var propertyMapping = new PropertyMapping()
+            {
+                Name = property.Name,
+                PropertyInfo = property
+            };
 
-            if (columnName != null)
-                map.ColumnNames.Add(columnName);
+            var propertyMap = new PropertyMap(propertyMapping);
 
-            _properties.Add(map);
+            if (!string.IsNullOrEmpty(columnName))
+                propertyMap.ColumnName(columnName);
 
-            return map;
+            parts.Add(propertyMap); // backwards compatibility
+
+            return propertyMap;
         }
 
         public ManyToOnePart<OTHER> References<OTHER>(Expression<Func<T, OTHER>> expression)
@@ -262,8 +270,8 @@ namespace FluentNHibernate.Mapping
 
         protected void writeTheParts(XmlElement classElement, IMappingVisitor visitor)
         {
-            _properties.Sort(new MappingPartComparer());
-            foreach (IMappingPart part in _properties)
+            parts.Sort(new MappingPartComparer());
+            foreach (IMappingPart part in parts)
             {
                 part.Write(classElement, visitor);
             }
@@ -271,7 +279,12 @@ namespace FluentNHibernate.Mapping
 
         public IEnumerable<IMappingPart> Parts
         {
-            get { return _properties; }
+            get { return parts; }
+        }
+
+        public IEnumerable<PropertyMap> Properties
+        {
+            get { return properties; }
         }
 
         public Type EntityType

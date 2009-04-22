@@ -7,8 +7,12 @@ namespace FluentNHibernate.MappingModel
         private readonly AttributeStore<ColumnMapping> _attributes;
 
         public ColumnMapping()
+            : this(new AttributeStore<ColumnMapping>())
+        {}
+
+        public ColumnMapping(AttributeStore<ColumnMapping> attributes)
         {
-            _attributes = new AttributeStore<ColumnMapping>();
+            _attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -40,16 +44,16 @@ namespace FluentNHibernate.MappingModel
             set { _attributes.Set(x => x.Length, value); }
         }
 
-        public bool IsNotNullable
+        public bool NotNull
         {
-            get { return _attributes.Get(x => x.IsNotNullable); }
-            set { _attributes.Set(x => x.IsNotNullable, value); }
+            get { return _attributes.Get(x => x.NotNull); }
+            set { _attributes.Set(x => x.NotNull, value); }
         }
 
-        public bool IsUnique
+        public bool Unique
         {
-            get { return _attributes.Get(x => x.IsUnique); }
-            set { _attributes.Set(x => x.IsUnique, value); }
+            get { return _attributes.Get(x => x.Unique); }
+            set { _attributes.Set(x => x.Unique, value); }
         }
 
         public string UniqueKey

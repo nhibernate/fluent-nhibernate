@@ -92,7 +92,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
 
             convention.Apply(target);
 
-            target.AssertWasCalled(x => x.SetAttribute("type", "String"));
+            target.AssertWasCalled(x => x.CustomTypeIs(typeof(string)));
         }
 
         [Test]
@@ -105,7 +105,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
 
             convention.Apply(target);
 
-            target.AssertWasCalled(x => x.SetAttribute("type", typeof(ExampleClass).AssemblyQualifiedName));
+            target.AssertWasCalled(x => x.CustomTypeIs(typeof(ExampleClass)));
         }
 
         private enum TestEnum

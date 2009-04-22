@@ -61,7 +61,69 @@ namespace FluentNHibernate.MappingModel.Output
 
             var newClassNode = document.ImportNode(hbmClass.DocumentElement, true);
 
+            SortChildren(newClassNode);
+
             document.DocumentElement.AppendChild(newClassNode);
+        }
+        
+        private class SortValue
+        {
+            public PartPosition Position { get; set; }
+            public int Level { get; set; }
+        }
+
+        private void SortChildren(XmlNode node)
+        {
+            var sorting = new Dictionary<string, SortValue>
+            {
+                { "cache", new SortValue { Position = PartPosition.First, Level = 1 } },
+                { "id", new SortValue { Position = PartPosition.First, Level = 2 } },
+                { "composite-id", new SortValue { Position = PartPosition.First, Level = 2 } },
+                { "discriminator", new SortValue { Position = PartPosition.First, Level = 3 } },
+                { "version", new SortValue { Position = PartPosition.First, Level = 4 } },
+                { "property", new SortValue { Position = PartPosition.Anywhere, Level = 2 } },
+                { "many-to-one", new SortValue { Position = PartPosition.Anywhere, Level = 3 } },
+                { "bag", new SortValue { Position = PartPosition.Anywhere, Level = 3 } },
+                { "set", new SortValue { Position = PartPosition.Anywhere, Level = 3 } },
+                { "map", new SortValue { Position = PartPosition.Anywhere, Level = 3 } },
+                { "list", new SortValue { Position = PartPosition.Anywhere, Level = 3 } },
+                { "joined-subclass", new SortValue { Position = PartPosition.Anywhere, Level = 4 } },
+                { "subclass", new SortValue { Position = PartPosition.Last, Level = 3 } },
+                { "join", new SortValue { Position = PartPosition.Last, Level = 3 } },
+            };
+            var children = new List<XmlNode>();
+
+            foreach (XmlNode childNode in node.ChildNodes)
+            {
+                children.Add(childNode);
+            }
+
+            children.Sort((x, y) =>
+            {
+                if (!sorting.ContainsKey(x.Name) || !sorting.ContainsKey(y.Name)) return 0;
+
+                var xSort = sorting[x.Name];
+                var ySort = sorting[y.Name];
+
+                // this isn't exactly nice, but it works (and it's covered by tests... hint hint)
+                if (xSort.Position == PartPosition.First && ySort.Position != PartPosition.First) return -1;
+                if (xSort.Position == PartPosition.Last && ySort.Position != PartPosition.Last) return 1;
+                if (xSort.Position == PartPosition.Anywhere && ySort.Position == PartPosition.First) return 1;
+                if (xSort.Position == PartPosition.Anywhere && ySort.Position == PartPosition.Last) return -1;
+
+                return xSort.Level.CompareTo(ySort.Level);
+            });
+
+            for (var i = 0; i < node.ChildNodes.Count; i++)
+            {
+                node.RemoveChild(node.ChildNodes[i]);
+            }
+
+            foreach (var child in children)
+            {
+                Console.WriteLine(child.Name);
+                node.AppendChild(child);
+            }
         }
     }
 }

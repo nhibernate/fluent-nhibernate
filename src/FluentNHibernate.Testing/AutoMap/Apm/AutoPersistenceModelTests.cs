@@ -213,11 +213,8 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
-            autoMapper.Configure(cfg);
-
             var tester = new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("class/joined-subclass/property")
-                .HasAttribute("name", "ExampleProperty");
+                .Element("class/joined-subclass/property[@name='ExampleProperty']").Exists();
         }
 
         [Test]

@@ -26,7 +26,7 @@ namespace FluentNHibernate.AutoMap
             if (!classMap.CanMapProperty(property))
                 return;
 
-            classMap.References<object>(ExpressionBuilder.Create<T>(property));
+            classMap.References(ExpressionBuilder.Create<T>(property));
         }
     }
 }

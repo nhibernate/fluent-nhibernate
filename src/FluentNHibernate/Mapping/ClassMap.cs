@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.AutoMap;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
@@ -48,10 +49,11 @@ namespace FluentNHibernate.Mapping
 
             mapping.Name = typeof(T).FullName;
 
+            foreach (var property in properties)
+                mapping.AddProperty(property.GetPropertyMapping());
+
             foreach (var part in Parts)
-            {
                 mapping.AddUnmigratedPart(part);
-            }
 
             Attributes.ForEachPair(mapping.AddUnmigratedAttribute);
 
@@ -79,6 +81,28 @@ namespace FluentNHibernate.Mapping
             var part = new IdentityPart(EntityType, property, columnName);
 
             AddPart(part);
+        }
+
+        protected override PropertyMap Map(PropertyInfo property, string columnName)
+        {
+            // horrible hack because AutoJoinedSubClassPart inherits from AutoMap instead of JoinedSubClassPart?!
+            if (this is AutoJoinedSubClassPart<T>)
+                return base.Map(property, columnName);
+
+            var propertyMapping = new PropertyMapping()
+            {
+                Name = property.Name,
+                PropertyInfo = property
+            };
+
+            var propertyMap = new PropertyMap(propertyMapping);
+
+            if (!string.IsNullOrEmpty(columnName))
+                propertyMap.ColumnName(columnName);
+
+            properties.Add(propertyMap); // new
+
+            return propertyMap;
         }
 
         public CompositeIdentityPart<T> UseCompositeId()

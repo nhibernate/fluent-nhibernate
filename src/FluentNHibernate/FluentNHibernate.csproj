@@ -189,18 +189,20 @@
     <Compile Include="Extensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FluentInterface\ClassMap.cs" />
+    <Compile Include="MappingModel\Output\XmlColumnWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlPropertyWriter.cs" />
+    <Compile Include="MappingModel\PropertyMapping.cs" />
+    <Compile Include="Mapping\ClassMap.cs" />
     <Compile Include="FluentInterface\ComponentMap.cs" />
     <Compile Include="FluentInterface\DiscriminatorPart.cs" />
     <Compile Include="FluentInterface\DiscriminatorPartOld.cs" />
-    <Compile Include="FluentInterface\IClassMap.cs" />
+    <Compile Include="Mapping\IClassMap.cs" />
     <Compile Include="FluentInterface\IDeferredCollectionMapping.cs" />
     <Compile Include="FluentInterface\JoinedSubclassPart.cs" />
     <Compile Include="FluentInterface\ManyToManyPart.cs" />
     <Compile Include="FluentInterface\ManyToOnePart.cs" />
     <Compile Include="FluentInterface\MapBase.cs" />
     <Compile Include="FluentInterface\OneToManyPart.cs" />
-    <Compile Include="FluentInterface\PropertyMap.cs" />
     <Compile Include="FluentInterface\SubclassPart.cs" />
     <Compile Include="MappingModel\ImportMapping.cs" />
     <Compile Include="MappingModel\Output\XmlHibernateMappingWriter.cs">
@@ -331,7 +333,6 @@
     <Compile Include="MappingModel\ManyToOneMapping.cs" />
     <Compile Include="MappingModel\MappingBase.cs" />
     <Compile Include="MappingModel\Collections\OneToManyMapping.cs" />
-    <Compile Include="MappingModel\PropertyMapping.cs" />
     <Compile Include="MappingModel\Conventions\NamingConvention.cs" />
     <Compile Include="MappingModel\SubclassMapping.cs" />
     <Compile Include="PersistenceModel.cs" />
