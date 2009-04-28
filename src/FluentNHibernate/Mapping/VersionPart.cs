@@ -29,15 +29,7 @@ namespace FluentNHibernate.Mapping
             access = new AccessStrategyBuilder<VersionPart>(this);
             properties = new Cache<string, string>();
             Property = property;
-            InitializeAttributes();
-        }
-
-        private void InitializeAttributes()
-        {
             SetAttribute("name", Property.Name);
-
-            //Default value for version's unsaved value should be a newly initialized value as string
-            UnsavedValue(Activator.CreateInstance(Property.PropertyType).ToString());
         }
 
         public void SetAttribute(string name, string value)

@@ -62,22 +62,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void UnsavedValueDefaultsToNewInstanceDefaultValue_Int()
-        {
-            new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.VersionNumber))
-                .Element("//version").HasAttribute("unsaved-value", new int().ToString());
-        }
-
-        [Test]
-        public void UnsavedValueDefaultsToNewInstanceDefaultValue_Timestamp()
-        {
-            new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.TimeStamp))
-                .Element("//version").HasAttribute("unsaved-value", new DateTime().ToString());
-        }
-
-        [Test]
         public void CanSepecifyUnsavedValue()
         {
             new MappingTester<VersionTarget>()
