@@ -13,14 +13,15 @@
 			<table if="hasReturn || hasParams">
         <caption>Parameters</caption>
 				<tr if="hasReturn">
-					<td>return <code>${WriteReference(method.ReturnType)}</code></td>
+					<td>return <code>${Format(method.ReturnType)}</code></td>
 					<td><comment content="method.Returns" /></td>
 				</tr>
 				<tr each="var param in method.Parameters">
-					<td><code>${WriteReference(param.Reference)}</code> ${param.Name}</td>
+					<td><code>${Format(param.Reference)}</code> ${param.Name}</td>
 					<td><comment content="param.Summary" /></td>
 				</tr>
 			</table>
+      <value content="method.Value" />
 		</div>
 	</div>
 </if>

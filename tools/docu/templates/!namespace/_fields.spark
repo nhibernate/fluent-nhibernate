@@ -9,7 +9,7 @@
       <table>
         <tr>
           <td>
-            <code>return ${WriteReference(field.ReturnType)}</code>
+            <code>return ${Format(field.ReturnType)}</code>
           </td>
         </tr>
       </table>
