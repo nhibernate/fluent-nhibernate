@@ -14,8 +14,8 @@ namespace FluentNHibernate.Conventions.Defaults
         }
 
         public void Apply(IProperty target)
-        {            
-            target.SetAttribute("type", TypeMapping.GetTypeString(target.PropertyType));
+        {
+            target.CustomTypeIs(target.PropertyType);
         }
     }
 }

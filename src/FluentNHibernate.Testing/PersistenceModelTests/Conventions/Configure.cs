@@ -1,3 +1,5 @@
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Conventions;
 using NHibernate.Cfg;
 using NUnit.Framework;
@@ -10,18 +12,23 @@ namespace FluentNHibernate.Testing.PersistenceModelTests.Conventions
     {
         private PersistenceModel model;
         private IConventionFinder conventionFinder;
+        private Configuration cfg;
 
         [SetUp]
         public void CreatePersistenceModel()
         {
             conventionFinder = MockRepository.GenerateMock<IConventionFinder>();
             model = new PersistenceModel(conventionFinder);
+
+            cfg = Fluently.Configure()
+                .Database(SQLiteConfiguration.Standard.InMemory)
+                .BuildConfiguration();
         }
 
         [Test]
         public void ShouldFindConventions()
         {
-            model.Configure(new Configuration());
+            model.Configure(cfg);
             
             conventionFinder.AssertWasCalled(x => x.Find<IEntireMappingsConvention>());
         }
@@ -34,7 +41,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests.Conventions
             conventionFinder.Stub(x => x.Find<IEntireMappingsConvention>())
                 .Return(new[] { convention });
 
-            model.Configure(new Configuration());
+            model.Configure(cfg);
 
             convention.AssertWasCalled(x => x.Accept(null),
                 constraints => constraints.IgnoreArguments());
@@ -52,7 +59,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests.Conventions
                 .IgnoreArguments()
                 .Return(true);
 
-            model.Configure(new Configuration());
+            model.Configure(cfg);
 
             convention.AssertWasCalled(x => x.Apply(null),
                 constraints => constraints.IgnoreArguments());
@@ -70,7 +77,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests.Conventions
                 .IgnoreArguments()
                 .Return(false);
 
-            model.Configure(new Configuration());
+            model.Configure(cfg);
 
             convention.AssertWasNotCalled(x => x.Apply(null),
                 constraints => constraints.IgnoreArguments());

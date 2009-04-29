@@ -15,6 +15,10 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> properties = new Cache<string, string>();
         private PropertyInfo parentReference;
 
+        public CompositeElementPart()
+        {
+        }
+
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             XmlElement element = classElement.AddElement("composite-element")

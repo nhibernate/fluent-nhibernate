@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using FluentNHibernate.Mapping;
-using System.Collections.Generic;
 using System.Xml;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping {

@@ -1,6 +1,6 @@
 namespace FluentNHibernate.Mapping
 {
-    public class NotFoundExpression<PARENTPART> : INotFoundExpression where PARENTPART : IMappingPart
+    public class NotFoundExpression<PARENTPART> : INotFoundExpression where PARENTPART : IHasAttributes
     {
         private readonly Cache<string, string> _properties;
         protected PARENTPART MappingPart { get; set; }

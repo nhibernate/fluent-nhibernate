@@ -46,7 +46,7 @@ namespace FluentNHibernate.AutoMap
 
             PropertyInfo inverseProperty = GetInverseProperty(property);
             Type parentSide = conventions.GetParentSideForManyToMany(property.DeclaringType, inverseProperty.DeclaringType);
-            IManyToManyPart manyToManyPart = GetManyToManyPart(classMap, property);
+            IManyToManyPart manyToManyPart = GetManyToManyPart<T>(classMap, property);
 
             if (parentSide != property.DeclaringType)
                 ApplyInverse(property, parentSide, manyToManyPart);

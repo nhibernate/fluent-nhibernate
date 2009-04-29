@@ -1,106 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Xml;
+using FluentNHibernate.AutoMap;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IClassMap : IClasslike, IHasAttributes
-    {
-        void ApplyMappings(IMappingVisitor visitor);
-        XmlDocument CreateMapping(IMappingVisitor visitor);
-        Type EntityType { get; }
-        string TableName { get; }
-        ICache Cache { get; }
-        Cache<string, string> Attributes { get; }
-        Cache<string, string> HibernateMappingAttributes { get; }
-        /// <summary>
-        /// Sets the optimistic locking strategy
-        /// </summary>
-        OptimisticLockBuilder OptimisticLock { get; }
-
-        /// <summary>
-        /// Sets the table for the class.
-        /// </summary>
-        /// <param name="tableName">Table name</param>
-        void WithTable(string tableName);
-
-        void SetHibernateMappingAttribute(string name, string value);
-        void SetHibernateMappingAttribute(string name, bool value);
-
-        /// <summary>
-        /// Sets the hibernate-mapping schema for this class.
-        /// </summary>
-        /// <param name="schema">Schema name</param>
-        void SchemaIs(string schema);
-
-        /// <summary>
-        /// Sets the hibernate-mapping auto-import for this class.
-        /// </summary>
-        void AutoImport();
-
-        /// <summary>
-        /// Override the inferred assembly for this class
-        /// </summary>
-        /// <param name="assembly">Assembly to use</param>
-        void OverrideAssembly(Assembly assembly);
-
-        /// <summary>
-        /// Override the inferred assembly for this class
-        /// </summary>
-        /// <param name="assembly">Assembly to use</param>
-        void OverrideAssembly(string assembly);
-
-        /// <summary>
-        /// Override the inferred namespace for this class
-        /// </summary>
-        /// <param name="namespace">Namespace to use</param>
-        void OverrideNamespace(string @namespace);
-
-        /// <summary>
-        /// Sets this entity to be lazy-loaded (overrides the default lazy load configuration).
-        /// </summary>
-        void LazyLoad();
-
-        /// <summary>
-        /// Imports an existing type for use in the mapping.
-        /// </summary>
-        /// <typeparam name="TImport">Type to import.</typeparam>
-        ImportPart ImportType<TImport>();
-
-        /// <summary>
-        /// Set the mutability of this class, sets the mutable attribute.
-        /// </summary>
-        void ReadOnly();
-
-        /// <summary>
-        /// Sets this entity to be dynamic update
-        /// </summary>
-        void DynamicUpdate();
-
-        /// <summary>
-        /// Sets this entity to be dynamic insert
-        /// </summary>
-        void DynamicInsert();
-
-        IClassMap BatchSize(int size);
-
-        /// <summary>
-        /// Inverse next boolean
-        /// </summary>
-        IClassMap Not { get; }
-    }
-
     public class ClassMap<T> : ClasslikeMapBase<T>, IClassMap
     {
         public Cache<string, string> Attributes { get; private set; }
         public Cache<string, string> HibernateMappingAttributes { get; private set; }
-        private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
+        private readonly DefaultAccessStrategyBuilder<T> defaultAccess;
 
         /// <summary>
         /// Specify caching for this entity.
@@ -121,37 +34,52 @@ namespace FluentNHibernate.Mapping
         }
         
         private readonly IList<ImportPart> imports = new List<ImportPart>();
-        private string assemblyName;
-        private string namespaceName;
         private bool nextBool = true;
-        private int batchSize;
+
+        private readonly ClassMapping mapping;
+        private readonly HibernateMapping hibernateMapping = new HibernateMapping();
 
         public ClassMap()
+            : this(new ClassMapping(typeof(T)))
+        {}
+
+        public ClassMap(ClassMapping mapping)
         {
+            this.mapping = mapping;
             Attributes = new Cache<string, string>();
             HibernateMappingAttributes = new Cache<string, string>();
             defaultAccess = new DefaultAccessStrategyBuilder<T>(this);
             Cache = new CachePart();
         }
 
-        public string TableName { get; private set; }
-
-        public XmlDocument CreateMapping(IMappingVisitor visitor)
+        public string TableName
         {
-            visitor.CurrentType = typeof(T);
-            XmlDocument document = getBaseDocument();
-            setHeaderValues(visitor, document);
+            get { return mapping.Tablename; }
+        }
+
+        public ClassMapping GetClassMapping()
+        {
+            mapping.Name = typeof(T).FullName;
+
+            foreach (var property in properties)
+                mapping.AddProperty(property.GetPropertyMapping());
+
+            foreach (var part in Parts)
+                mapping.AddUnmigratedPart(part);
+
+            Attributes.ForEachPair(mapping.AddUnmigratedAttribute);
+
+            return mapping;
+        }
+
+        public HibernateMapping GetHibernateMapping()
+        {
+            hibernateMapping.DefaultAccess = defaultAccess.GetValue();
 
             foreach (var import in imports)
-            {
-                import.Write(document.DocumentElement, visitor);
-            }
+                hibernateMapping.AddImport(import.GetImportMapping());
 
-            XmlElement classElement = createClassValues(document, document.DocumentElement);
-
-            writeTheParts(classElement, visitor);
-
-            return document;
+            return hibernateMapping;
         }
 
         public Type EntityType
@@ -167,14 +95,36 @@ namespace FluentNHibernate.Mapping
             AddPart(part);
         }
 
-		public CompositeIdentityPart<T> UseCompositeId()
-		{
-			var part = new CompositeIdentityPart<T>();
+        protected override PropertyMap Map(PropertyInfo property, string columnName)
+        {
+            // horrible hack because AutoJoinedSubClassPart inherits from AutoMap instead of JoinedSubClassPart?!
+            if (this is AutoJoinedSubClassPart<T>)
+                return base.Map(property, columnName);
+
+            var propertyMapping = new PropertyMapping()
+            {
+                Name = property.Name,
+                PropertyInfo = property
+            };
+
+            var propertyMap = new PropertyMap(propertyMapping);
+
+            if (!string.IsNullOrEmpty(columnName))
+                propertyMap.ColumnName(columnName);
+
+            properties.Add(propertyMap); // new
+
+            return propertyMap;
+        }
+
+        public CompositeIdentityPart<T> UseCompositeId()
+        {
+            var part = new CompositeIdentityPart<T>();
 			
             AddPart(part);
 
-			return part;
-		}
+            return part;
+        }
 
         public virtual DiscriminatorPart<TDiscriminator, T> DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
         {
@@ -197,72 +147,6 @@ namespace FluentNHibernate.Mapping
         public virtual DiscriminatorPart<string, T> DiscriminateSubClassesOnColumn(string columnName)
         {
             return DiscriminateSubClassesOnColumn<string>(columnName);
-        }
-
-        protected virtual XmlElement createClassValues(XmlDocument document, XmlNode parentNode)
-        {
-            var type = typeof(T);
-            var typeName = type.IsGenericType ? type.FullName : type.Name;
-
-            var classElement = parentNode.AddElement("class");
-
-            classElement.WithAtt("name", typeName)
-                .WithAtt("table", TableName)
-                .WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
-
-            if (batchSize > 0)
-                classElement.WithAtt("batch-size", batchSize.ToString());
-
-            classElement.WithProperties(Attributes);
-
-            return classElement;
-        }
-
-        private void setHeaderValues(IMappingVisitor visitor, XmlDocument document)
-        {
-            var documentElement = document.DocumentElement;
-
-            documentElement.SetAttribute("assembly", assemblyName ?? typeof(T).Assembly.GetName().FullName);
-            documentElement.SetAttribute("namespace", namespaceName ?? typeof (T).Namespace);
-
-            HibernateMappingAttributes.ForEachPair(documentElement.SetAttribute);
-        }
-
-        private static XmlDocument getBaseDocument()
-        {
-            Assembly executingAssembly = Assembly.GetExecutingAssembly();
-            Stream stream = executingAssembly.GetManifestResourceStream(executingAssembly.GetName().Name + ".Mapping.Template.xml");
-            var document = new XmlDocument();
-            document.Load(stream);
-            return document;
-        }
-
-        public void ApplyMappings(IMappingVisitor visitor)
-        {
-            XmlDocument mapping = null;
-
-            try
-            {
-                visitor.CurrentType = typeof (T);
-                mapping = CreateMapping(visitor);
-                visitor.AddMappingDocument(mapping, typeof (T));
-            }
-            catch (Exception e)
-            {
-                if (mapping != null)
-                {
-                    var writer = new StringWriter();
-                    var xmlWriter = new XmlTextWriter(writer);
-                    xmlWriter.Formatting = Formatting.Indented;
-
-                    mapping.WriteContentTo(xmlWriter);
-                    Debug.WriteLine(writer.ToString());
-                }
-
-                string message = string.Format("Error while trying to build the Mapping Document for '{0}'",
-                                               typeof (T).FullName);
-                throw new ApplicationException(message, e);
-            }
         }
 
         /// <summary>
@@ -294,17 +178,17 @@ namespace FluentNHibernate.Mapping
         }
 
         public virtual IIdentityPart Id(Expression<Func<T, object>> expression)
-		{
-			return Id(expression, null);
-		}
+        {
+            return Id(expression, null);
+        }
 
         public virtual IIdentityPart Id(Expression<Func<T, object>> expression, string column)
-    	{
-			PropertyInfo property = ReflectionHelper.GetProperty(expression);
+        {
+            PropertyInfo property = ReflectionHelper.GetProperty(expression);
             var id = column == null ? new IdentityPart(EntityType, property) : new IdentityPart(EntityType, property, column);
-    		AddPart(id);
-    		return id;
-    	}
+            AddPart(id);
+            return id;
+        }
 
         public virtual JoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<JoinedSubClassPart<TSubclass>> action) where TSubclass : T
         {
@@ -322,7 +206,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="schema">Schema name</param>
         public void SchemaIs(string schema)
         {
-            SetHibernateMappingAttribute("schema", schema);
+            SetAttribute("schema", schema);
         }
 
         /// <summary>
@@ -330,35 +214,8 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void AutoImport()
         {
-            SetHibernateMappingAttribute("auto-import", nextBool);
+            hibernateMapping.AutoImport = nextBool;
             nextBool = true;
-        }
-
-        /// <summary>
-        /// Override the inferred assembly for this class
-        /// </summary>
-        /// <param name="assembly">Assembly to use</param>
-        public void OverrideAssembly(Assembly assembly)
-        {
-            assemblyName = assembly.GetName().Name;
-        }
-
-        /// <summary>
-        /// Override the inferred assembly for this class
-        /// </summary>
-        /// <param name="assembly">Assembly to use</param>
-        public void OverrideAssembly(string assembly)
-        {
-            assemblyName = assembly;
-        }
-
-        /// <summary>
-        /// Override the inferred namespace for this class
-        /// </summary>
-        /// <param name="namespace">Namespace to use</param>
-        public void OverrideNamespace(string @namespace)
-        {
-            namespaceName = @namespace;
         }
 
         public string FileName
@@ -380,7 +237,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="tableName">Table name</param>
         public void WithTable(string tableName)
         {
-            TableName = tableName;
+            mapping.Tablename = tableName;
         }
 
         /// <summary>
@@ -464,7 +321,7 @@ namespace FluentNHibernate.Mapping
 
         public IClassMap BatchSize(int size)
         {
-            batchSize = size;
+            mapping.BatchSize = size;
             return this;
         }
 

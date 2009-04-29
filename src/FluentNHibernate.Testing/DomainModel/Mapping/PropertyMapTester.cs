@@ -2,37 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Reflection;
-using System.Xml;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Mapping;
 using NHibernate.Properties;
 using NHibernate.SqlTypes;
-using NHibernate.Type;
 using NHibernate.UserTypes;
 using NUnit.Framework;
-using FluentNHibernate;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
     [TestFixture]
     public class PropertyMapTester
     {
-        [Test]
-        public void SetAttributeOnColumnElement()
-        {
-            PropertyInfo property = ReflectionHelper.GetProperty<PropertyTarget>(x => x.Name);
-            var map = new PropertyMap(property, false, typeof(PropertyTarget));
-            map.SetAttributeOnColumnElement("unique", "true");
-
-            var document = new XmlDocument();
-            XmlElement classElement = document.CreateElement("root");
-            map.Write(classElement, new MappingVisitor());
-
-            var columnElement = (XmlElement) classElement.SelectSingleNode("property/column");
-            columnElement.AttributeShouldEqual("unique", "true");
-        }
-
         [Test]
         public void Map_WithoutColumnName_UsesPropertyNameFor_PropertyColumnAttribute()
         {
@@ -45,18 +25,10 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void Map_WithoutColumnName_UsesPropertyNameFor_ColumnNameAttribute()
         {
-            var classMap = new ClassMap<PropertyTarget>();
-
-            classMap.Map(x => x.Name);
-
-            var document = classMap.CreateMapping(new MappingVisitor());
-
-            // attribute on property
-            var classElement = document.DocumentElement.SelectSingleNode("class");
-            var columnElement = (XmlElement)classElement.SelectSingleNode("property/column");
-            columnElement.AttributeShouldEqual("name", "Name");
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Name))
+                .Element("class/property/column").HasAttribute("name", "Name");
         }
-
 
         [Test]
         public void Map_WithColumnName_UsesColumnNameFor_PropertyColumnAttribute()
@@ -70,32 +42,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void Map_WithColumnName_UsesColumnNameFor_ColumnNameAttribute()
         {
-            var classMap = new ClassMap<PropertyTarget>();
-
-            classMap.Map(x => x.Name, "column_name");
-
-            var document = classMap.CreateMapping(new MappingVisitor());
-
-            // attribute on property
-            var classElement = document.DocumentElement.SelectSingleNode("class");
-            var columnElement = (XmlElement)classElement.SelectSingleNode("property/column");
-            columnElement.AttributeShouldEqual("name", "column_name");
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Name, "column_name"))
+                .Element("class/property/column").HasAttribute("name", "column_name");
         }
         
         [Test]
         public void Map_WithFluentColumnName_UsesColumnNameFor_ColumnNameAttribute()
         {
-            var classMap = new ClassMap<PropertyTarget>();
-
-            classMap.Map(x => x.Name)
-                .ColumnNames.Add("column_name");
-
-            var document = classMap.CreateMapping(new MappingVisitor());
-
-            // attribute on property
-            var classElement = document.DocumentElement.SelectSingleNode("class");
-            var columnElement = (XmlElement)classElement.SelectSingleNode("property/column");
-            columnElement.AttributeShouldEqual("name", "column_name");
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Name).ColumnName("column_name"))
+                .Element("class/property/column").HasAttribute("name", "column_name");
         }
 
         private MappingTester<T> Model<T>(Action<ClassMap<T>> mapping)
@@ -181,51 +138,30 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void Map_UsesAsReadOnly_PropertyColumnAttribute()
         {
-            var classMap = new ClassMap<PropertyTarget>();
-
-            classMap.Map(x => x.Name)
-                .ReadOnly();
-
-            var document = classMap.CreateMapping(new MappingVisitor());
-
-            // attribute on property
-            var classElement = document.DocumentElement.SelectSingleNode("class");
-            var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
-            propertyElement.AttributeShouldEqual("insert", "false");
-            propertyElement.AttributeShouldEqual("update", "false");
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Name).ReadOnly())
+                .Element("class/property")
+                    .HasAttribute("insert", "false")
+                    .HasAttribute("update", "false");
         }
 
         [Test]
         public void Map_UsesUniqueKey_PropertyColumnAttribute()
         {
-            var classMap = new ClassMap<PropertyTarget>();
-
-            classMap.Map(x => x.Name)
-                .UniqueKey("uniqueKey");
-
-            var document = classMap.CreateMapping(new MappingVisitor());
-
-            // attribute on property
-            var classElement = document.DocumentElement.SelectSingleNode("class");
-            var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
-            propertyElement.AttributeShouldEqual("unique-key", "uniqueKey");
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Name).UniqueKey("uniquekey"))
+                .Element("class/property")
+                    .HasAttribute("unique-key", "uniquekey");
         }
 
         [Test]
         public void Map_UsesNotReadOnly_PropertyColumnAttribute()
         {
-            var classMap = new ClassMap<PropertyTarget>();
-
-            classMap.Map(x => x.Name)
-                .Not.ReadOnly();
-
-            var document = classMap.CreateMapping(new MappingVisitor());
-
-            // attribute on property
-            var classElement = document.DocumentElement.SelectSingleNode("class");
-            var propertyElement = (XmlElement)classElement.SelectSingleNode("property");
-            propertyElement.AttributeShouldEqual("insert", "true");
-            propertyElement.AttributeShouldEqual("update", "true");
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Name).Not.ReadOnly())
+                .Element("class/property")
+                    .HasAttribute("insert", "true")
+                    .HasAttribute("update", "true");
         }
 
         [Test]
@@ -234,14 +170,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name).FormulaIs("foo(bar)"))
                 .Element("class/property").HasAttribute("formula", "foo(bar)");
-        }
-
-        [Test]
-        public void CanSpecifyCustomType()
-        {
-            new MappingTester<PropertyTarget>()
-                .ForMapping(c=>c.Map(x => x.Data).CustomTypeIs("BinaryBlob"))
-                .Element("class/property").HasAttribute("type", "BinaryBlob");
         }
 
         [Test]
@@ -270,6 +198,24 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<PropertyTarget>()
                 .ForMapping(classMap)
                 .Element("class/property/column").HasAttribute("sql-type", "image");
+        }
+
+        [Test]
+        public void CanSetAsUnique()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Map(x => x.Name).Unique())
+                .Element("class/property").DoesntHaveAttribute("unique")
+                .Element("class/property/column").HasAttribute("unique", "true");
+        }
+
+        [Test]
+        public void CanSetAsNotUnique()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Map(x => x.Name).Not.Unique())
+                .Element("class/property").DoesntHaveAttribute("unique")
+                .Element("class/property/column").HasAttribute("unique", "false");
         }
 
         #region Custom IUserType impl for testing

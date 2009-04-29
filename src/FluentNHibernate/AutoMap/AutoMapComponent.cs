@@ -23,7 +23,7 @@ namespace FluentNHibernate.AutoMap
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
             var componentType = property.PropertyType;
-            var componentPart = CreateComponentPart(property, componentType, classMap);
+            var componentPart = CreateComponentPart<T>(property, componentType, classMap);
 
             MapComponentProperties(property, componentType, componentPart);
         }

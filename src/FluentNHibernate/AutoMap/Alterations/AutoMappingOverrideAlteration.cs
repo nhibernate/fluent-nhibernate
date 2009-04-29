@@ -42,14 +42,14 @@ namespace FluentNHibernate.AutoMap.Alterations
             foreach (var typeMatch in types)
             {
                 var mappingOverride = Activator.CreateInstance(typeMatch.OverrideType);
-                var mapping = (IClassMap)Activator.CreateInstance(typeof(AutoMap<>).MakeGenericType(typeMatch.EntityType));
+                var mapping = (IMappingProvider)Activator.CreateInstance(typeof(AutoMap<>).MakeGenericType(typeMatch.EntityType));
 
                 // HACK: call the Override method with the generic AutoMap<T>
                 typeMatch.OverrideType
                     .GetMethod("Override")
                     .Invoke(mappingOverride, new[] { mapping });
 
-                model.AddMapping(mapping);
+                model.Add(mapping);
             }
         }
     }

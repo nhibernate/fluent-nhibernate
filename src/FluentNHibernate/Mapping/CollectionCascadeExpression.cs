@@ -1,7 +1,7 @@
 namespace FluentNHibernate.Mapping
 {
 	public class CollectionCascadeExpression<PARENTPART> : CascadeExpression<PARENTPART>
-		where PARENTPART : IMappingPart
+		where PARENTPART : IHasAttributes
 	{
 		public CollectionCascadeExpression(PARENTPART mappingPart)
 			: base(mappingPart)

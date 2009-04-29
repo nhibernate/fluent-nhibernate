@@ -36,13 +36,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<ManyToManyTarget>()
                 .ForMapping(m =>
-                {
-                    m.DefaultAccess.AsCamelCaseField();
-                    m.HasManyToMany(x => x.GetOtherChildren());
-                })
-                .HasAttribute("default-access", "field.camelcase")
+                    m.HasManyToMany(x => x.GetOtherChildren())
+                        .Access.AsCamelCaseField())
                 .Element("class/bag")
-                .HasAttribute("name", "OtherChildren");
+                .HasAttribute("name", "OtherChildren")
+                .HasAttribute("access", "field.camelcase");
         }
 
         [Test]

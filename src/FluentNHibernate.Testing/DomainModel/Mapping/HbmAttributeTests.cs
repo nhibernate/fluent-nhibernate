@@ -6,14 +6,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     public class HbmAttributeTests
     {
         [Test]
-        public void Can_specify_schema()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(m => m.SchemaIs("schema-name"))
-                .RootElement.HasAttribute("schema", "schema-name");
-        }
-
-        [Test]
         public void Can_specify_default_cascade()
         {
             new MappingTester<MappedObject>()
@@ -35,30 +27,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<MappedObject>()
                 .ForMapping(m => m.Not.AutoImport())
                 .RootElement.HasAttribute("auto-import", "false");
-        }
-
-        [Test]
-        public void Can_override_assembly_with_instance()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(m => m.OverrideAssembly(typeof(string).Assembly))
-                .RootElement.HasAttribute("assembly", "mscorlib");
-        }
-
-        [Test]
-        public void Can_override_assembly_with_name()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(m => m.OverrideAssembly("myAssembly"))
-                .RootElement.HasAttribute("assembly", "myAssembly");
-        }
-
-        [Test]
-        public void Can_override_namespace()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(m => m.OverrideNamespace("Some.Namespace"))
-                .RootElement.HasAttribute("namespace", "Some.Namespace");
         }
     }
 }

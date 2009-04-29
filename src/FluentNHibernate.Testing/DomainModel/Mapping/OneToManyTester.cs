@@ -351,13 +351,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<OneToManyTarget>()
                 .ForMapping(m =>
-                {
-                    m.DefaultAccess.AsCamelCaseField();
-                    m.HasMany(x => x.GetOtherChildren());
-                })
-                .HasAttribute("default-access", "field.camelcase")
+                    m.HasMany(x => x.GetOtherChildren())
+                        .Access.AsCamelCaseField())
                 .Element("class/bag")
-                .HasAttribute("name", "OtherChildren");
+                .HasAttribute("name", "OtherChildren")
+                .HasAttribute("access", "field.camelcase");
         }
 
         private class StaticExample

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.MappingModel;
 using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping
@@ -12,20 +13,21 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> _extendedProperties = new Cache<string, string>();
         private readonly Cache<string, string> _columnProperties = new Cache<string, string>();
         private readonly Type _parentType;
-        private readonly PropertyInfo _property;
         private readonly bool _parentIsRequired;
         private readonly AccessStrategyBuilder<PropertyMap> access;
         private bool nextBool = true;
         private readonly ColumnNameCollection<IProperty> columnNames;
+        private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
 
-        public PropertyMap(PropertyInfo property, bool parentIsRequired, Type parentType)
+        private readonly PropertyMapping mapping;
+        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
+
+        public PropertyMap(PropertyMapping mapping)
         {
             columnNames = new ColumnNameCollection<IProperty>(this);
             access = new AccessStrategyBuilder<PropertyMap>(this);
 
-            _property = property;
-            _parentIsRequired = parentIsRequired;
-            _parentType = parentType;
+            this.mapping = mapping;
         }
 
         public bool ParentIsRequired
@@ -33,17 +35,33 @@ namespace FluentNHibernate.Mapping
             get { return _parentIsRequired; }
         }
 
-        public PropertyInfo Property
-        {
-            get { return _property; }
-        }
-
         #region IMappingPart Members
+
+        public PropertyMapping GetPropertyMapping()
+        {
+            if (columnNames.List().Count == 0)
+                columnNames.Add(mapping.Name);
+
+            foreach (var column in columnNames.List())
+            {
+                var columnMapping = new ColumnMapping(columnAttributes.Clone())
+                {
+                    Name = column
+                };
+
+                mapping.AddColumn(columnMapping);
+            }
+
+            foreach (var attribute in unmigratedAttributes)
+                mapping.AddUnmigratedAttribute(attribute.Key, attribute.Value);
+
+            return mapping;
+        }
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             XmlElement element = classElement.AddElement("property")
-                .WithAtt("name", _property.Name)
+                .WithAtt("name", mapping.Name)
                 .WithProperties(_extendedProperties);
 
             AddColumnElements(element);
@@ -57,7 +75,7 @@ namespace FluentNHibernate.Mapping
         private void AddColumnElements(XmlNode element)
         {
             if (columnNames.List().Count == 0)
-                columnNames.Add(_property.Name);
+                columnNames.Add(Property.Name);
 
             foreach (var column in columnNames.List())
             {
@@ -79,19 +97,9 @@ namespace FluentNHibernate.Mapping
 
         #endregion
 
-        public void AddAlteration(Action<XmlElement> action)
-        {
-            _alterations.Add(action);
-        }
-
         public bool HasAttribute(string name)
         {
-            return _extendedProperties.Has(name);
-        }
-
-        public string GetAttribute(string name)
-        {
-            return _extendedProperties.Get(name);
+            return _extendedProperties.Has(name) || unmigratedAttributes.ContainsKey(name);
         }
 
         /// <summary>
@@ -102,6 +110,7 @@ namespace FluentNHibernate.Mapping
         public void SetAttribute(string name, string value)
         {
             _extendedProperties.Store(name, value);
+            unmigratedAttributes.Add(name, value);
         }
 
         public void SetAttributes(Attributes atts)
@@ -117,14 +126,25 @@ namespace FluentNHibernate.Mapping
             _columnProperties.Store(name, value);
         }
 
+        public PropertyInfo Property
+        {
+            get { return mapping.PropertyInfo; }
+        }
+
         public Type PropertyType
         {
-            get { return _property.PropertyType; }
+            get { return mapping.PropertyInfo.PropertyType; }
         }
 
         public Type EntityType
         {
             get { return _parentType; }
+        }
+
+        public void ColumnName(string columnName)
+        {
+            ColumnNames.Clear();
+            ColumnNames.Add(columnName);
         }
 
         public ColumnNameCollection<IProperty> ColumnNames
@@ -152,7 +172,7 @@ namespace FluentNHibernate.Mapping
 
         public IProperty AutoNumber()
         {
-            _extendedProperties.Store("insert", nextBool.ToString().ToLowerInvariant());
+            mapping.Insert = nextBool;
             nextBool = true;
 
             return this;
@@ -160,13 +180,15 @@ namespace FluentNHibernate.Mapping
 
         public IProperty WithLengthOf(int length)
         {
-            AddAlteration(x => x.SetColumnProperty("length", length.ToString()));
+            _columnProperties.Store("length", length.ToString());
+            columnAttributes.Set(x => x.Length, length);
             return this;
         }
 
         public IProperty Nullable()
         {
-            SetAttributeOnColumnElement("not-null", (!nextBool).ToString().ToLowerInvariant());
+            _columnProperties.Store("not-null", (!nextBool).ToString().ToLowerInvariant());
+            columnAttributes.Set(x => x.NotNull, !nextBool);
             nextBool = true;
             return this;
         }
@@ -175,14 +197,16 @@ namespace FluentNHibernate.Mapping
         {
             _extendedProperties.Store("insert", (!nextBool).ToString().ToLowerInvariant());
             _extendedProperties.Store("update", (!nextBool).ToString().ToLowerInvariant());
+            mapping.Insert = !nextBool;
+            mapping.Update = !nextBool;
             nextBool = true;
             return this;
         }
 
-        public IProperty FormulaIs(string forumla) 
+        public IProperty FormulaIs(string formula) 
         {
-            this.AddAlteration(x => x.SetAttribute("formula", forumla));
-
+            mapping.Formula = formula;
+            _extendedProperties.Store("formula", formula);
             return this;
         }
 
@@ -195,7 +219,7 @@ namespace FluentNHibernate.Mapping
         {
             return CustomTypeIs(typeof(CUSTOMTYPE));
         }
-       
+
         /// <summary>
         /// Specifies that a custom type (an implementation of <see cref="IUserType"/>) should be used for this property for mapping it to/from one or more database columns whose format or type doesn't match this .NET property.
         /// </summary>
@@ -206,17 +230,9 @@ namespace FluentNHibernate.Mapping
             if (typeof(ICompositeUserType).IsAssignableFrom(type))
                 AddColumnsFromCompositeUserType(type);
 
-            return CustomTypeIs(type.AssemblyQualifiedName);
-        }
+            mapping.Type = type;
+            _extendedProperties.Store("type", TypeMapping.GetTypeString(type));
 
-        /// <summary>
-        /// Specifies that a custom type (an implementation of <see cref="IUserType"/>) should be used for this property for mapping it to/from one or more database columns whose format or type doesn't match this .NET property.
-        /// </summary>
-        /// <param name="type">A type name.</param>
-        /// <returns>This property mapping to continue the method chain</returns>
-        public IProperty CustomTypeIs(string type)
-        {
-            SetAttribute("type", type);
             return this;
         }
 
@@ -232,12 +248,14 @@ namespace FluentNHibernate.Mapping
 
         public IProperty CustomSqlTypeIs(string sqlType)
         {
-            this.AddAlteration(x => x.SetColumnProperty("sql-type", sqlType));
+            columnAttributes.Set(x => x.SqlType, sqlType);
+            _columnProperties.Store("sql-type", sqlType);
             return this;
         }
 
         public IProperty Unique()
         {
+            columnAttributes.Set(x => x.Unique, nextBool);
             _columnProperties.Store("unique", nextBool.ToString().ToLowerInvariant());
             nextBool = true;
             return this;
@@ -249,6 +267,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="keyName">Name of constraint</param>
         public IProperty UniqueKey(string keyName)
         {
+            mapping.UniqueKey = keyName;
             _extendedProperties.Store("unique-key", keyName);
             return this;
         }

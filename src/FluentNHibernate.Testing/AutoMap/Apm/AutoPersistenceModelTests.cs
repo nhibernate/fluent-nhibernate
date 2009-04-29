@@ -2,7 +2,6 @@ using System;
 using System.Runtime.Remoting.Messaging;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
-using FluentNHibernate.AutoMap.TestFixtures.CustomCompositeTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Helpers;
@@ -212,11 +211,8 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
-            autoMapper.Configure(cfg);
-
             var tester = new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("class/joined-subclass/property")
-                .HasAttribute("name", "ExampleProperty");
+                .Element("class/joined-subclass/property[@name='ExampleProperty']").Exists();
         }
 
         [Test]
@@ -249,7 +245,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
 
             new AutoMappingTester<ExampleInheritedClass>(autoMapper)
                 .Element("class")
-                .HasAttribute("name", "ExampleInheritedClass")
+                .HasAttribute("name", typeof(ExampleInheritedClass).AssemblyQualifiedName)
                 .Exists();
         }
 

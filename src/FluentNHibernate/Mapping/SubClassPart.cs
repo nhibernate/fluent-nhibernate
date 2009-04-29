@@ -34,14 +34,13 @@ namespace FluentNHibernate.Mapping
         }
 
         public SubClassPart(TDiscriminator discriminator, DiscriminatorPart<TDiscriminator, TParent> parent)
+            : this(parent)
         {
             if (discriminator != null)
             {
                 _discriminator = discriminator;
                 discriminatorSet = true;
-            }
-
-            this.parent = parent;
+            }   
         }
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)

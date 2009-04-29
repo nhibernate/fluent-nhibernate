@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using System.Xml;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Xml;
 using NHibernate.Cfg;
 using NUnit.Framework;
 
@@ -43,12 +45,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             return ForMapping(classMap);
         }
 
-        public virtual MappingTester<T> ForMapping(ClassMap<T> classMap)
+        public virtual MappingTester<T> ForMapping(IClassMap classMap)
         {
-            model.AddMapping(classMap);
+            model.Add(classMap);
             model.ApplyConventions();
 
-            document = classMap.CreateMapping(_visitor);
+            var mappings = model.BuildMappings();
+
+            document = new MappingXmlSerializer()
+                .Serialize(mappings.First());
             currentElement = document.DocumentElement;
 
             return this;

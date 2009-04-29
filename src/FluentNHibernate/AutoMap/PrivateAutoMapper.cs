@@ -28,7 +28,7 @@ namespace FluentNHibernate.AutoMap
             foreach (var property in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.NonPublic))
             {
                 if (rule(property))
-                    TryToMapProperty(map, property);
+                    TryToMapProperty<T>(map, property);
             }
         }
     }

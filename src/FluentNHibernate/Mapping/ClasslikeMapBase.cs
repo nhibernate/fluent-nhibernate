@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
@@ -15,6 +16,8 @@ namespace FluentNHibernate.Mapping
         {
             get { return m_Parts; }
         }
+        private bool _parentIsRequired = true;
+        protected readonly IList<PropertyMap> properties = new List<PropertyMap>();
 
         private bool m_parentIsRequired = true;
         protected bool parentIsRequired
@@ -40,14 +43,20 @@ namespace FluentNHibernate.Mapping
 
         protected virtual PropertyMap Map(PropertyInfo property, string columnName)
         {
-            var map = new PropertyMap(property, parentIsRequired, EntityType);
+            var propertyMapping = new PropertyMapping()
+            {
+                Name = property.Name,
+                PropertyInfo = property
+            };
 
-            if (columnName != null)
-                map.ColumnNames.Add(columnName);
+            var propertyMap = new PropertyMap(propertyMapping);
 
-            m_Parts.Add(map);
+            if (!string.IsNullOrEmpty(columnName))
+                propertyMap.ColumnName(columnName);
 
-            return map;
+            m_Parts.Add(propertyMap); // backwards compatibility
+
+            return propertyMap;
         }
 
         public ManyToOnePart<OTHER> References<OTHER>(Expression<Func<T, OTHER>> expression)
@@ -283,6 +292,11 @@ namespace FluentNHibernate.Mapping
             {
                 part.Write(classElement, visitor);
             }
+        }
+
+        public IEnumerable<PropertyMap> Properties
+        {
+            get { return properties; }
         }
 
         public Type EntityType

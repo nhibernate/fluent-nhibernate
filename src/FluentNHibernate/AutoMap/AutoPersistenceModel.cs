@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using FluentNHibernate.AutoMap.Alterations;
 using FluentNHibernate.Cfg;
@@ -143,7 +144,7 @@ namespace FluentNHibernate.AutoMap
             Type typeToMap = GetTypeToMap(type);
             var mapping = InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
                 autoMapper, a => a.Map<object>(mappingTypes), new object[] {mappingTypes}, typeToMap);
-            AddMapping((IClassMap)mapping);
+            Add((IMappingProvider)mapping);
         }
 
         private Type GetTypeToMap(Type type)
@@ -187,16 +188,16 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel AutoMap<T>()
         {
-            AddMapping(autoMapper.Map<T>(mappingTypes));
+            Add(autoMapper.Map<T>(mappingTypes));
             return this;
         }
 
-        public IClassMap FindMapping<T>()
+        public IMappingProvider FindMapping<T>()
         {
             return FindMapping(typeof(T));
         }
 
-        public IClassMap FindMapping(Type type)
+        public IMappingProvider FindMapping(Type type)
         {
             Func<Type, Type, bool> finder = (mappingType, expectedType) =>
             {
@@ -205,7 +206,7 @@ namespace FluentNHibernate.AutoMap
                     // instance of a generic type (probably AutoMap<T>)
                     return mappingType.GetGenericArguments()[0] == expectedType;
                 }
-                if (mappingType.BaseType.IsGenericType && 
+                if (mappingType.BaseType.IsGenericType &&
                     mappingType.BaseType.GetGenericTypeDefinition() == typeof(ClassMap<>))
                 {
                     // base type is a generic type of ClassMap<T>, so we've got a XXXMap instance
@@ -215,21 +216,21 @@ namespace FluentNHibernate.AutoMap
                 return false;
             };
 
-            var mapping = _mappings.Find(t => finder(t.GetType(), type));
+            var mapping = _mappings.FirstOrDefault(t => finder(t.GetType(), type));
 
             if (mapping != null) return mapping;
 
             // if we haven't found a map yet then try to find a map of the
             // base type to merge if not a concrete base type
 
-            return _mappings.Find(t => !Expressions.IsConcreteBaseType(type.BaseType) &&
+            return _mappings.FirstOrDefault(t => !Expressions.IsConcreteBaseType(type.BaseType) &&
                 finder(t.GetType(), type.BaseType));
         }
 
         public void OutputMappings()
         {
-            foreach(var map in _mappings)
-                Console.WriteLine(map);
+            //foreach(var map in _mappings)
+            //    Console.WriteLine(map);
         }
 
         public AutoPersistenceModel AddEntityAssembly(Assembly assembly)
@@ -240,10 +241,10 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel ForTypesThatDeriveFrom<T>(Action<AutoMap<T>> populateMap)
         {
-            if (_mappings.Exists(m => m.GetType() == typeof(AutoMap<T>)))
+            if (_mappings.Count(m => m.GetType() == typeof(AutoMap<T>)) > 0)
                 throw new AutoMappingException("ForTypesThatDeriveFrom<T> called more than once for '" + typeof(T).Name + "'. Merge your calls into one.");
 
-            var map= (AutoMap<T>) Activator.CreateInstance(typeof (AutoMap<T>));
+            var map = (AutoMap<T>)Activator.CreateInstance(typeof(AutoMap<T>));
             populateMap.Invoke(map);
             _mappings.Add(map);
             return this;

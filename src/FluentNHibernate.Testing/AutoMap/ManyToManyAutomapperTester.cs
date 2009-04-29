@@ -17,7 +17,7 @@ namespace FluentNHibernate.Testing.AutoMap
             var autoMap = new AutoMap<ManyToMany1>();
 
             var mapper = new ManyToManyAutoMapper(new AutoMappingExpressions());
-            mapper.Map(autoMap, propertyInfo);
+            mapper.Map<ManyToMany1>(autoMap, propertyInfo);
 
             autoMap.PropertiesMapped.ShouldHaveCount(1);
         }
@@ -29,7 +29,7 @@ namespace FluentNHibernate.Testing.AutoMap
             var autoMap = new AutoMap<ManyToMany1>();
 
             var mapper = new ManyToManyAutoMapper(new AutoMappingExpressions());
-            object manyToManyPart = mapper.GetManyToManyPart(autoMap, propertyInfo);
+            object manyToManyPart = mapper.GetManyToManyPart<ManyToMany1>(autoMap, propertyInfo);
 
             manyToManyPart.ShouldBeOfType(typeof(ManyToManyPart<ManyToMany2>));
         }

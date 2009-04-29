@@ -38,6 +38,17 @@ namespace FluentNHibernate.Conventions.Discovery
                         convention.Apply(part);
                 }
             }
+
+            if (target.Properties == null) return;
+
+            foreach (var property in target.Properties)
+            {
+                foreach (var convention in conventions)
+                {
+                    if (convention.Accept(property))
+                        convention.Apply(property);
+                }
+            }
         }
     }
 }

@@ -1,8 +1,4 @@
 using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Xml;
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
 

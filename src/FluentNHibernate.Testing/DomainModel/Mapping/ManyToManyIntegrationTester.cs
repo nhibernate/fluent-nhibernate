@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentNHibernate.Cfg.Db;
-using NUnit.Framework;
+﻿using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
+using NUnit.Framework;
 using NHibernate.Cfg;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
@@ -14,8 +12,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             public override void Configure(Configuration configuration)
             {
-                AddMapping(new ChildObjectMap());
-                AddMapping(new ManyToManyTargetMap());
+                Add(new ChildObjectMap());
+                Add(new ManyToManyTargetMap());
                 base.Configure(configuration);
             }
 

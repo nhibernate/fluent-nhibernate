@@ -1,11 +1,10 @@
 ﻿using System.Diagnostics;
-using System.Linq.Expressions;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Data;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.Fixtures;
 using NHibernate;
 using NUnit.Framework;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Testing.DomainModel
 {

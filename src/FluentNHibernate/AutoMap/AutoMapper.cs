@@ -53,7 +53,7 @@ namespace FluentNHibernate.AutoMap
         {
             foreach (var property in typeof(T).GetProperties())
             {
-                TryToMapProperty(map, property);
+                TryToMapProperty<T>(map, property);
             }
         }
 
@@ -67,7 +67,7 @@ namespace FluentNHibernate.AutoMap
                     {
                         if (map.PropertiesMapped.Count(p => p.Name == property.Name) == 0)
                         {
-                            rule.Map(map, property);
+                            rule.Map<T>(map, property);
                             break;
                         }
                     }
