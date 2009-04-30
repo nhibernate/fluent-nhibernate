@@ -10,12 +10,12 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
     [TestFixture]
     public class HasManyForeignKeyNameConventionTests
     {
-        private HasManyForeignKeyNameConvention convention;
+        private DefaultForeignKeyConvention convention;
 
         [SetUp]
         public void CreateConvention()
         {
-            convention = new HasManyForeignKeyNameConvention();
+            convention = new DefaultForeignKeyConvention();
         }
 
         [Test]

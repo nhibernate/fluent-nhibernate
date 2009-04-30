@@ -9,12 +9,12 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
     [TestFixture]
     public class HasManyToManyChildForeignKeyConventionTests
     {
-        private HasManyToManyChildForeignKeyConvention convention;
+        private DefaultForeignKeyConvention convention;
 
         [SetUp]
         public void CreateConvention()
         {
-            convention = new HasManyToManyChildForeignKeyConvention();
+            convention = new DefaultForeignKeyConvention();
         }
 
         [Test]
@@ -27,18 +27,6 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
 
             convention.Accept(target)
                 .ShouldBeTrue();
-        }
-
-        [Test]
-        public void ShouldntAcceptIfColumnNameSet()
-        {
-            var target = MockRepository.GenerateStub<IManyToManyPart>();
-
-            target.Stub(x => x.ChildKeyColumn)
-                .Return("column_name");
-
-            convention.Accept(target)
-                .ShouldBeFalse();
         }
 
         [Test]

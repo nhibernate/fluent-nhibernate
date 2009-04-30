@@ -111,6 +111,8 @@
     <Compile Include="Cfg\Db\SQLiteConfiguration.cs" />
     <Compile Include="Cfg\SetupConventionFinder.cs" />
     <Compile Include="Conventions\ConventionsCollection.cs" />
+    <Compile Include="Conventions\ForeignKeyConvention.cs" />
+    <Compile Include="Conventions\Defaults\DefaultForeignKeyConvention.cs" />
     <Compile Include="Conventions\Discovery\BaseMappingPartDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\ClassDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\ClassMappingPartDiscoveryConvention.cs" />
@@ -133,6 +135,10 @@
     <Compile Include="Conventions\Discovery\SubclassDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\SubclassMappingPartDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\VersionDiscoveryConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltForeignKeyConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltFuncForeignKeyConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltSuffixForeignKeyConvention.cs" />
+    <Compile Include="Conventions\Helpers\ForeignKey.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltClassConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltConventionBase.cs" />
@@ -203,13 +209,9 @@
     <Compile Include="Conventions\UserTypeConvention.cs" />
     <Compile Include="Conventions\AttributePropertyConvention.cs" />
     <Compile Include="Conventions\Defaults\BaseMethodAccessorBackingFieldNamingConvention.cs" />
-    <Compile Include="Conventions\Defaults\HasManyForeignKeyNameConvention.cs" />
     <Compile Include="Conventions\Defaults\HasManyMethodAccessorBackingFieldNamingConvention.cs" />
     <Compile Include="Conventions\Defaults\HasManyToManyJoinTableNameConvention.cs" />
     <Compile Include="Conventions\Defaults\HasManyToManyMethodAccessorBackingFieldNamingConvention.cs" />
-    <Compile Include="Conventions\Defaults\ReferenceForeignKeyConvention.cs" />
-    <Compile Include="Conventions\Defaults\HasManyToManyChildForeignKeyConvention.cs" />
-    <Compile Include="Conventions\Defaults\HasManyToManyParentForeignKeyConvention.cs" />
     <Compile Include="Conventions\Defaults\PrimaryKeyConvention.cs" />
     <Compile Include="Conventions\Defaults\VersionColumnNameConvention.cs" />
     <Compile Include="Conventions\IEntireMappingsConvention.cs" />
