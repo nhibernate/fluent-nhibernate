@@ -1,7 +1,7 @@
 namespace FluentNHibernate.Mapping
 {
-	public class CascadeExpression<PARENTPART> 
-		where PARENTPART : IHasAttributes
+    public class CascadeExpression<PARENTPART> : ICascadeExpression
+        where PARENTPART : IHasAttributes
 	{
 		protected PARENTPART MappingPart { get; set; }
 
@@ -16,11 +16,21 @@ namespace FluentNHibernate.Mapping
 			return MappingPart;
 		}
 
+        void ICascadeExpression.All()
+        {
+            All();
+        }
+
 		public PARENTPART None()
 		{
 			MappingPart.SetAttribute("cascade", "none");
 			return MappingPart;
 		}
+
+        void ICascadeExpression.None()
+        {
+            None();
+        }
 
 		public PARENTPART SaveUpdate()
 		{
@@ -28,10 +38,20 @@ namespace FluentNHibernate.Mapping
 			return MappingPart;
 		}
 
+        void ICascadeExpression.SaveUpdate()
+        {
+            SaveUpdate();
+        }
+
 		public PARENTPART Delete()
 		{
 			MappingPart.SetAttribute("cascade", "delete");
 			return MappingPart;
 		}
+
+        void ICascadeExpression.Delete()
+        {
+            Delete();
+        }
 	}
 }

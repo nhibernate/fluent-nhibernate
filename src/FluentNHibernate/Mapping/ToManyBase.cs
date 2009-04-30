@@ -6,8 +6,8 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public abstract class ToManyBase<T, CHILD>
-        : IMappingPart where T : ToManyBase<T, CHILD>, ICollectionRelationship, IMappingPart, IHasAttributes
+    public abstract class ToManyBase<T, CHILD> : ICollectionRelationship
+        where T : ToManyBase<T, CHILD>, ICollectionRelationship, IMappingPart, IHasAttributes
     {
         public MemberInfo Member { get; private set; }
         protected readonly Cache<string, string> _properties = new Cache<string, string>();
@@ -145,13 +145,13 @@ namespace FluentNHibernate.Mapping
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 
-        private T AsIndexedCollection<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector, Action<IndexMapping> customIndexMapping)
+        public T AsIndexedCollection<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector, Action<IndexMapping> customIndexMapping)
         {
             var indexProperty = ReflectionHelper.GetProperty(indexSelector);
             return AsIndexedCollection<INDEX_TYPE>(indexProperty.Name, customIndexMapping);
         }
 
-        private T AsIndexedCollection<INDEX_TYPE>(string indexColumn, Action<IndexMapping> customIndexMapping)
+        public T AsIndexedCollection<INDEX_TYPE>(string indexColumn, Action<IndexMapping> customIndexMapping)
         {
             _indexMapping = new IndexMapping();
             _indexMapping.WithType<INDEX_TYPE>();
@@ -288,6 +288,132 @@ namespace FluentNHibernate.Mapping
         {
             get { return Member is MethodInfo; }
         }
+
+        #region Implementation of ICollectionRelationship
+
+        ICollectionCascadeExpression ICollectionRelationship.Cascade
+        {
+            get { return Cascade; }
+        }
+
+        /// <summary>
+        /// Inverts the next boolean
+        /// </summary>
+        ICollectionRelationship ICollectionRelationship.Not
+        {
+            get { return Not; }
+        }
+        ICollectionRelationship ICollectionRelationship.LazyLoad()
+        {
+            return LazyLoad();
+        }
+
+        ICollectionRelationship ICollectionRelationship.Inverse()
+        {
+            return Inverse();
+        }
+
+        ICollectionRelationship ICollectionRelationship.AsSet()
+        {
+            return AsSet();
+        }
+
+        ICollectionRelationship ICollectionRelationship.AsBag()
+        {
+            return AsBag();
+        }
+
+        ICollectionRelationship ICollectionRelationship.AsList()
+        {
+            return AsList();
+        }
+
+        ICollectionRelationship ICollectionRelationship.AsMap(string indexColumnName)
+        {
+            return AsMap(indexColumnName);
+        }
+
+        ICollectionRelationship ICollectionRelationship.AsMap<INDEX_TYPE>(string indexColumnName)
+        {
+            return AsMap(indexColumnName);
+        }
+
+        ICollectionRelationship ICollectionRelationship.AsElement(string columnName)
+        {
+            return AsElement(columnName);
+        }
+
+        /// <summary>
+        /// Maps this collection as a collection of components.
+        /// </summary>
+        /// <param name="action">Component mapping</param>
+        ICollectionRelationship ICollectionRelationship.Component(Action<IClasslike> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Sets the table name for this one-to-many.
+        /// </summary>
+        /// <param name="name">Table name</param>
+        ICollectionRelationship ICollectionRelationship.WithTableName(string name)
+        {
+            return WithTableName(name);
+        }
+
+        ICollectionRelationship ICollectionRelationship.WithForeignKeyConstraintName(string foreignKeyName)
+        {
+            return WithForeignKeyConstraintName(foreignKeyName);
+        }
+
+        ICollectionRelationship ICollectionRelationship.ForeignKeyCascadeOnDelete()
+        {
+            return ForeignKeyCascadeOnDelete();
+        }
+
+        /// <summary>
+        /// Sets the where clause for this one-to-many relationship.
+        /// </summary>
+        ICollectionRelationship ICollectionRelationship.Where(string where)
+        {
+            return Where(where);
+        }
+
+        ICollectionRelationship ICollectionRelationship.BatchSize(int size)
+        {
+            return BatchSize(size);
+        }
+
+        /// <summary>
+        /// Sets a custom collection type
+        /// </summary>
+        ICollectionRelationship ICollectionRelationship.CollectionType<TCollection>()
+        {
+            return CollectionType<TCollection>();
+        }
+
+        /// <summary>
+        /// Sets a custom collection type
+        /// </summary>
+        ICollectionRelationship ICollectionRelationship.CollectionType(Type type)
+        {
+            return CollectionType(type);
+        }
+
+        /// <summary>
+        /// Sets a custom collection type
+        /// </summary>
+        ICollectionRelationship ICollectionRelationship.CollectionType(string type)
+        {
+            return CollectionType(type);
+        }
+
+        IAccessStrategyBuilder IRelationship.Access
+        {
+            get { return Access; }
+        }
+
+        #endregion
 
         public class IndexMapping
         {
