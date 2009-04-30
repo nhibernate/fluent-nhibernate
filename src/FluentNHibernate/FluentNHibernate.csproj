@@ -184,6 +184,8 @@
     <Compile Include="DummyMethodInfo.cs" />
     <Compile Include="Cfg\Db\MsSqlConfiguration.cs" />
     <Compile Include="DummyPropertyInfo.cs" />
+    <Compile Include="Infrastructure\Container.cs" />
+    <Compile Include="MappingModel\Output\XmlWriterContainer.cs" />
     <Compile Include="Mapping\AnyPart.cs" />
     <Compile Include="Extensions.cs">
       <SubType>Code</SubType>
