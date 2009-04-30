@@ -1,4 +1,5 @@
-﻿using FluentNHibernate.Infrastructure;
+﻿using System;
+using FluentNHibernate.Infrastructure;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Infrastructure
@@ -22,6 +23,19 @@ namespace FluentNHibernate.Testing.Infrastructure
             container.Resolve<IExample>()
                 .ShouldNotBeNull()
                 .ShouldBeOfType<Example>();
+        }
+
+        [Test]
+        public void ShouldThrowExceptionWhenResolvingUnregisteredType()
+        {
+            var ex = Catch.Exception(() => container.Resolve<IExample>());
+
+            ex
+                .ShouldNotBeNull()
+                .ShouldBeOfType<ResolveException>();
+
+            ex.Message
+                .ShouldEqual("Unable to resolve dependency: '" + typeof(IExample).FullName + "'");
         }
 
         private interface IExample

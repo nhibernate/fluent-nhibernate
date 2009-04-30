@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4A693F88-A29A-4FC9-B086-24956848FD99}</ProjectGuid>
+    <ProjectGuid>{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FluentNHibernate.Testing</RootNamespace>
@@ -45,10 +45,6 @@
     <Reference Include="Rhino.Mocks, Version=3.5.0.1, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\rhino\Rhino.Mocks.dll</HintPath>
-    </Reference>
-    <Reference Include="StructureMap.AutoMocking, Version=2.5.2.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\StructureMap\StructureMap.AutoMocking.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -191,6 +187,7 @@
     <Compile Include="Fixtures\HbmOne.cs" />
     <Compile Include="Fixtures\HbmTwo.cs" />
     <Compile Include="Infrastructure\ContainerTester.cs" />
+    <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
     <Compile Include="PersistenceModelTests\Conventions\Configure.cs" />
     <Compile Include="PersistenceModelTests\OnConstruction.cs" />
     <Compile Include="PersistenceModelTests\Conventions\WriteMappingsTo.cs" />
@@ -240,7 +237,6 @@
   <ItemGroup>
     <Folder Include="Fixtures\Conventions\" />
     <Folder Include="MappingModel\Identity\" />
-    <Folder Include="MappingModel\Output\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,19 +7,24 @@ namespace FluentNHibernate.Infrastructure
     {
         private readonly IDictionary<Type, Func<Container, object>> registeredTypes = new Dictionary<Type, Func<Container, object>>();
 
-        public void Register<T>(Func<Container, object> instantiate)
+        public void Register<T>(Func<Container, object> instantiateFunc)
         {
-            registeredTypes.Add(typeof(T), instantiate);
+            registeredTypes[typeof(T)] = instantiateFunc;
+        }
+
+        public object Resolve(Type type)
+        {
+            if (!registeredTypes.ContainsKey(type))
+                throw new ResolveException(type);
+
+            var instantiationFunc = registeredTypes[type];
+
+            return instantiationFunc(this);
         }
 
         public T Resolve<T>()
         {
-            if (!registeredTypes.ContainsKey(typeof(T)))
-                throw new InvalidOperationException("Can't resolve dependency: '" + typeof(T).FullName + "'");
-
-            var instantiationFunc = registeredTypes[typeof(T)];
-
-            return (T)instantiationFunc(this);
+            return (T)Resolve(typeof(T));
         }
     }
 }
