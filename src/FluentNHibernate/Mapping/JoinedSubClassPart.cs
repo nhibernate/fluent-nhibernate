@@ -11,6 +11,7 @@ namespace FluentNHibernate.Mapping
         private readonly string keyColumn;
         private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
         private readonly JoinedSubclassMapping mapping;
+        private bool nextBool = true;
 
         public JoinedSubClassPart(string keyColumn)
             : this(new JoinedSubclassMapping())
@@ -72,6 +73,65 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public JoinedSubClassPart<TSubclass> Proxy(Type type)
+        {
+            mapping.Proxy = type;
+            return this;
+        }
+
+        public JoinedSubClassPart<TSubclass> Proxy<T>()
+        {
+            mapping.Proxy = typeof(T);
+            return this;
+        }
+
+        public JoinedSubClassPart<TSubclass> LazyLoad()
+        {
+            mapping.Lazy = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public JoinedSubClassPart<TSubclass> DynamicUpdate()
+        {
+            mapping.DynamicUpdate = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public JoinedSubClassPart<TSubclass> DynamicInsert()
+        {
+            mapping.DynamicInsert = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public JoinedSubClassPart<TSubclass> SelectBeforeUpdate()
+        {
+            mapping.SelectBeforeUpdate = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public JoinedSubClassPart<TSubclass> Abstract()
+        {
+            mapping.Abstract = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Inverts the next boolean
+        /// </summary>
+        public JoinedSubClassPart<TSubclass> Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
+        }
+
         public JoinedSubclassMapping GetJoinedSubclassMapping()
         {
             mapping.Key = new KeyMapping
@@ -104,6 +164,46 @@ namespace FluentNHibernate.Mapping
         void IJoinedSubclass.CheckConstraint(string checkConstraint)
         {
             CheckConstraint(checkConstraint);
+        }
+
+        void IJoinedSubclass.Proxy(Type type)
+        {
+            Proxy(type);
+        }
+
+        void IJoinedSubclass.Proxy<T>()
+        {
+            Proxy<T>();
+        }
+
+        void IJoinedSubclass.LazyLoad()
+        {
+            LazyLoad();
+        }
+
+        void IJoinedSubclass.DynamicUpdate()
+        {
+            DynamicUpdate();
+        }
+
+        void IJoinedSubclass.DynamicInsert()
+        {
+            DynamicInsert();
+        }
+
+        void IJoinedSubclass.SelectBeforeUpdate()
+        {
+            SelectBeforeUpdate();
+        }
+
+        void IJoinedSubclass.Abstract()
+        {
+            Abstract();
+        }
+
+        IJoinedSubclass IJoinedSubclass.Not
+        {
+            get { return Not; }
         }
 
         void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)

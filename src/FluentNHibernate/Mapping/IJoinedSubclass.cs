@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
@@ -7,6 +8,15 @@ namespace FluentNHibernate.Mapping
         void WithTableName(string tableName);
         void SchemaIs(string schema);
         void CheckConstraint(string constraintName);
+        void Proxy(Type type);
+        void Proxy<T>();
+        void LazyLoad();
+        void DynamicUpdate();
+        void DynamicInsert();
+        void SelectBeforeUpdate();
+        void Abstract();
+        IJoinedSubclass Not { get; }
+
         JoinedSubclassMapping GetJoinedSubclassMapping();
     }
 }

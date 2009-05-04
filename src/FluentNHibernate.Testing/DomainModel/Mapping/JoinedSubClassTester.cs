@@ -19,7 +19,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
           new MappingTester<SuperClass>()
             .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Map(x => x.Name)))
             .Element("class/joined-subclass").HasAttribute("name", typeof(SubClass).AssemblyQualifiedName);
-                
         }
 
         [Test]
@@ -28,6 +27,70 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<SuperClass>()
               .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.CheckConstraint("name")))
               .Element("class/joined-subclass").HasAttribute("check", "name");
+        }
+
+        [Test]
+        public void CanSpecifyProxyByType()
+        {
+            new MappingTester<SuperClass>()
+              .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Proxy(typeof(ProxyClass))))
+              .Element("class/joined-subclass").HasAttribute("proxy", typeof(ProxyClass).AssemblyQualifiedName);
+        }
+
+        [Test]
+        public void CanSpecifyProxyByTypeInstance()
+        {
+            new MappingTester<SuperClass>()
+              .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Proxy<ProxyClass>()))
+              .Element("class/joined-subclass").HasAttribute("proxy", typeof(ProxyClass).AssemblyQualifiedName);
+        }
+
+        [Test]
+        public void CanSpecifyLazy()
+        {
+            new MappingTester<SuperClass>()
+              .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.LazyLoad()))
+              .Element("class/joined-subclass").HasAttribute("lazy", "true");
+        }
+
+        [Test]
+        public void CanSpecifyNotLazy()
+        {
+            new MappingTester<SuperClass>()
+              .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Not.LazyLoad()))
+              .Element("class/joined-subclass").HasAttribute("lazy", "false");
+        }
+
+        [Test]
+        public void CanSpecifyDynamicUpdate()
+        {
+            new MappingTester<SuperClass>()
+              .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.DynamicUpdate()))
+              .Element("class/joined-subclass").HasAttribute("dynamic-update", "true");
+        }
+
+        [Test]
+        public void CanSpecifyDynamicInsert()
+        {
+            new MappingTester<SuperClass>()
+              .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.DynamicInsert()))
+              .Element("class/joined-subclass").HasAttribute("dynamic-insert", "true");
+        }
+
+        [Test]
+        public void CanSpecifySelectBeforeUpdate()
+        {
+            new MappingTester<SuperClass>()
+              .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.SelectBeforeUpdate()))
+              .Element("class/joined-subclass").HasAttribute("select-before-update", "true");
+        }
+
+        [Test]
+        public void CanSpecifyAbstract()
+        {
+            new MappingTester<SuperClass>()
+              .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Abstract()))
+              .Element("class/joined-subclass").HasAttribute("abstract", "true");
         }
 
         [Test]
@@ -177,5 +240,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             public string Name { get; set; }
         }
+
+        private class ProxyClass
+        {}
     }
 }

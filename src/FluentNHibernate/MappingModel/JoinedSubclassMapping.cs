@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 
@@ -64,6 +65,42 @@ namespace FluentNHibernate.MappingModel
         {
             get { return attributes.Get(x => x.Check); }
             set { attributes.Set(x => x.Check, value); }
+        }
+
+        public Type Proxy
+        {
+            get { return attributes.Get(x => x.Proxy); }
+            set { attributes.Set(x => x.Proxy, value); }
+        }
+
+        public bool Lazy
+        {
+            get { return attributes.Get(x => x.Lazy); }
+            set { attributes.Set(x => x.Lazy, value); }
+        }
+
+        public bool DynamicUpdate
+        {
+            get { return attributes.Get(x => x.DynamicUpdate); }
+            set { attributes.Set(x => x.DynamicUpdate, value); }
+        }
+
+        public bool DynamicInsert
+        {
+            get { return attributes.Get(x => x.DynamicInsert); }
+            set { attributes.Set(x => x.DynamicInsert, value); }
+        }
+
+        public bool SelectBeforeUpdate
+        {
+            get { return attributes.Get(x => x.SelectBeforeUpdate); }
+            set { attributes.Set(x => x.SelectBeforeUpdate, value); }
+        }
+
+        public bool Abstract
+        {
+            get { return attributes.Get(x => x.Abstract); }
+            set { attributes.Set(x => x.Abstract, value); }
         }
 
         public IEnumerable<IMappingPart> UnmigratedParts
