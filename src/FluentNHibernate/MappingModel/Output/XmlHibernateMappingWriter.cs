@@ -72,10 +72,14 @@ namespace FluentNHibernate.MappingModel.Output
         private static readonly IDictionary<string, SortValue> sorting = new Dictionary<string, SortValue>
             {
                 { "cache", new SortValue { Position = PartPosition.First, Level = 1 } },
+                { "key", new SortValue { Position = PartPosition.First, Level = 1 } },
                 { "id", new SortValue { Position = PartPosition.First, Level = 2 } },
                 { "composite-id", new SortValue { Position = PartPosition.First, Level = 2 } },
                 { "discriminator", new SortValue { Position = PartPosition.First, Level = 3 } },
                 { "version", new SortValue { Position = PartPosition.First, Level = 4 } },
+                { "component", new SortValue { Position = PartPosition.Anywhere, Level = 1 } },
+                { "dynamic-component", new SortValue { Position = PartPosition.Anywhere, Level = 1 } },
+                { "one-to-one", new SortValue { Position = PartPosition.Anywhere, Level = 1 } },
                 { "property", new SortValue { Position = PartPosition.Anywhere, Level = 2 } },
                 { "many-to-one", new SortValue { Position = PartPosition.Anywhere, Level = 3 } },
                 { "array", new SortValue { Position = PartPosition.Anywhere, Level = 3 } },
@@ -94,6 +98,9 @@ namespace FluentNHibernate.MappingModel.Output
             foreach (XmlNode childNode in node.ChildNodes)
             {
                 children.Add(childNode);
+
+                if (childNode.Name == "subclass" || childNode.Name == "joined-subclass")
+                    SortChildren(childNode);
             }
 
             //Creates a copy of the sort order the elments were added in on the node
