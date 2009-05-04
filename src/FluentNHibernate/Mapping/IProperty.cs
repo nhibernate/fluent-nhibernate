@@ -17,7 +17,8 @@ namespace FluentNHibernate.Mapping
 
         IColumnNameCollection ColumnNames { get; }
 
-        IProperty AutoNumber();
+        IProperty Insert();
+        IProperty Update();
         IProperty WithLengthOf(int length);
         IProperty Nullable();
         IProperty ReadOnly();

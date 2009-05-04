@@ -174,9 +174,19 @@ namespace FluentNHibernate.Mapping
             get { return Access; }
         }
 
-        public IProperty AutoNumber()
+        public IProperty Insert()
         {
+            _extendedProperties.Store("insert", (!nextBool).ToString().ToLowerInvariant());
             mapping.Insert = nextBool;
+            nextBool = true;
+
+            return this;
+        }
+
+        public IProperty Update()
+        {
+            _extendedProperties.Store("update", (!nextBool).ToString().ToLowerInvariant());
+            mapping.Update = nextBool;
             nextBool = true;
 
             return this;

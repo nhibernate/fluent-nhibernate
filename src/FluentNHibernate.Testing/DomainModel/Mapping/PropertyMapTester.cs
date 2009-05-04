@@ -218,6 +218,38 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/property/column").HasAttribute("unique", "false");
         }
 
+        [Test]
+        public void CanSpecifyInsert()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Map(x => x.Name).Insert())
+                .Element("class/property").HasAttribute("insert", "true");
+        }
+
+        [Test]
+        public void CanSpecifyNotInsert()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Map(x => x.Name).Not.Insert())
+                .Element("class/property").HasAttribute("insert", "false");
+        }
+
+        [Test]
+        public void CanSpecifyUpdate()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Map(x => x.Name).Update())
+                .Element("class/property").HasAttribute("update", "true");
+        }
+
+        [Test]
+        public void CanSpecifyNotUpdate()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Map(x => x.Name).Not.Update())
+                .Element("class/property").HasAttribute("update", "false");
+        }
+
         #region Custom IUserType impl for testing
         public class custom_type_for_testing : IUserType
         {
