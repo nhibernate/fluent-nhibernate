@@ -8,57 +8,69 @@ namespace FluentNHibernate.MappingModel
 {
     internal class MappedMembers : IMappingBase, IHasMappedMembers
     {
-        private readonly IList<PropertyMapping> _properties;
-        private readonly IList<ICollectionMapping> _collections;
-        private readonly IList<ManyToOneMapping> _references;
-        private readonly IList<ComponentMapping> _components;
+        private readonly IList<PropertyMapping> properties;
+        private readonly IList<ICollectionMapping> collections;
+        private readonly IList<ManyToOneMapping> references;
+        private readonly IList<ComponentMapping> components;
+        private readonly IList<DynamicComponentMapping> dynamicComponents;
 
         public MappedMembers()
         {
-            _properties = new List<PropertyMapping>();
-            _collections = new List<ICollectionMapping>();
-            _references = new List<ManyToOneMapping>();    
-            _components = new List<ComponentMapping>();
+            properties = new List<PropertyMapping>();
+            collections = new List<ICollectionMapping>();
+            references = new List<ManyToOneMapping>();    
+            components = new List<ComponentMapping>();
+            dynamicComponents = new List<DynamicComponentMapping>();
         }
 
         public IEnumerable<PropertyMapping> Properties
         {
-            get { return _properties; }
+            get { return properties; }
         }
 
         public IEnumerable<ICollectionMapping> Collections
         {
-            get { return _collections; }
+            get { return collections; }
         }
 
         public IEnumerable<ManyToOneMapping> References
         {
-            get { return _references; }
+            get { return references; }
         }
 
         public IEnumerable<ComponentMapping> Components
         {
-            get { return _components; }
+            get { return components; }
+        }
+
+        public IEnumerable<DynamicComponentMapping> DynamicComponents
+        {
+            get { return dynamicComponents; }
         }
 
         public void AddProperty(PropertyMapping property)
         {
-            _properties.Add(property);
+            properties.Add(property);
         }
 
         public void AddCollection(ICollectionMapping collection)
         {
-            _collections.Add(collection);
+            collections.Add(collection);
         }
 
         public void AddReference(ManyToOneMapping manyToOne)
         {
-            _references.Add(manyToOne);
+            references.Add(manyToOne);
         }
 
         public void AddComponent(ComponentMapping componentMapping)
         {
-            _components.Add(componentMapping);
+            components.Add(componentMapping);
+        }
+
+        public void AddDynamicComponent(DynamicComponentMapping componentMapping)
+        {
+            dynamicComponents.Add(componentMapping);
         }
 
         public virtual void AcceptVisitor(IMappingModelVisitor visitor)
@@ -72,11 +84,11 @@ namespace FluentNHibernate.MappingModel
             foreach (var reference in References)
                 visitor.Visit(reference);
 
-            foreach( var component in Components)
+            foreach (var component in Components)
                 visitor.Visit(component);
+
+            foreach (var dynamicComponent in DynamicComponents)
+                visitor.Visit(dynamicComponent);
         }
-
-
-        
     }
 }

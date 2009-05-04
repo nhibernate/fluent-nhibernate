@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Reflection;
 using System.Xml;
 using FluentNHibernate.MappingModel;
@@ -32,6 +33,9 @@ namespace FluentNHibernate.Mapping
             
             foreach (var property in Properties)
                 mapping.AddProperty(property.GetPropertyMapping());
+
+            foreach (var dynamicComponent in dynamicComponents)
+                mapping.AddDynamicComponent(dynamicComponent.GetDynamicComponentMapping());
 
             foreach (var part in Parts)
                 mapping.AddUnmigratedPart(part);
@@ -75,6 +79,17 @@ namespace FluentNHibernate.Mapping
             properties.Add(propertyMap); // new
 
             return propertyMap;
+        }
+
+        public override DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
+        {
+            var part = new DynamicComponentPart<IDictionary>(property);
+
+            dynamicComponents.Add(part);
+
+            action(part);
+
+            return part;
         }
 
         public DiscriminatorPart SubClass<TChild>(object discriminatorValue, Action<SubClassPart<TChild>> action)

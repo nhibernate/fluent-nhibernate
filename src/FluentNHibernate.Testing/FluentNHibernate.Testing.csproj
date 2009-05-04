@@ -209,6 +209,7 @@
     <Compile Include="MappingModel\Conventions\NamingConventionTester.cs" />
     <Compile Include="MappingModel\HibernateMappingTester.cs" />
     <Compile Include="MappingModel\MappingTestingExtensions.cs" />
+    <Compile Include="Utils\ReflectionHelperTests.cs" />
     <Compile Include="Xml\MappingXmlTestHelper.cs" />
     <Compile Include="Xml\MappingXmlValidatorTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

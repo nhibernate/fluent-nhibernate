@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -65,6 +66,9 @@ namespace FluentNHibernate.Mapping
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());
 
+            foreach (var dynamicComponent in dynamicComponents)
+                mapping.AddDynamicComponent(dynamicComponent.GetDynamicComponentMapping());
+
             if (discriminator != null)
                 mapping.Discriminator = discriminator.GetDiscriminatorMapping();
 
@@ -119,6 +123,17 @@ namespace FluentNHibernate.Mapping
             properties.Add(propertyMap); // new
 
             return propertyMap;
+        }
+
+        public override DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
+        {
+            var part = new DynamicComponentPart<IDictionary>(property);
+
+            action(part);
+
+            dynamicComponents.Add(part);
+
+            return part;
         }
 
         public CompositeIdentityPart<T> UseCompositeId()

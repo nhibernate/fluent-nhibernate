@@ -6,13 +6,7 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlDiscriminatorWriter : NullMappingModelVisitor, IXmlWriter<DiscriminatorMapping>
     {
-        private readonly IXmlWriter<ColumnMapping> _columnWriter;
         private XmlDocument document;
-
-        public XmlDiscriminatorWriter(IXmlWriter<ColumnMapping> columnWriter)
-        {
-            _columnWriter = columnWriter;
-        }
 
         public XmlDocument Write(DiscriminatorMapping mappingModel)
         {

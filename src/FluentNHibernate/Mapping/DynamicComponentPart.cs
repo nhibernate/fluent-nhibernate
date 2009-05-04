@@ -1,43 +1,48 @@
 using System;
+using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IDynamicComponent : IClasslike, IMappingPart
-    {
-        IDynamicComponent WithParentReference<TEntity>(Expression<Func<TEntity, object>> exp);
-    }
-
     public class DynamicComponentPart<T> : ClasslikeMapBase<T>, IDynamicComponent, IAccessStrategy<DynamicComponentPart<T>>
     {
-        private readonly PropertyInfo _property;
+        private readonly PropertyInfo propertyInfo;
         private readonly AccessStrategyBuilder<DynamicComponentPart<T>> access;
-        private readonly Cache<string, string> properties = new Cache<string, string>();
-        private PropertyInfo _parentReference;
+        private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
+        private readonly DynamicComponentMapping mapping;
 
-        public DynamicComponentPart(PropertyInfo property, bool parentIsRequired)
+        public DynamicComponentPart(PropertyInfo property)
+            : this(new DynamicComponentMapping())
         {
             access = new AccessStrategyBuilder<DynamicComponentPart<T>>(this);
-            _property = property;
-            //TODO: Need some support for this
-            //this.parentIsRequired = parentIsRequired && RequiredAttribute.IsRequired(_property) && parentIsRequired;
+            propertyInfo = property;
         }
 
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
+        public DynamicComponentPart(DynamicComponentMapping mapping)
         {
-            XmlElement element = classElement.AddElement("dynamic-component")
-                .WithAtt("name", _property.Name)
-                .WithAtt("insert", "true")
-                .WithAtt("update", "true")
-                .WithProperties(properties);
+            this.mapping = mapping;
+        }
 
-            if (_parentReference != null)
-                element.AddElement("parent").WithAtt("name", _parentReference.Name);
+        public DynamicComponentMapping GetDynamicComponentMapping()
+        {
+            mapping.Name = propertyInfo.Name;
 
-            writeTheParts(element, visitor);
+            foreach (var property in Properties)
+                mapping.AddProperty(property.GetPropertyMapping());
+
+            foreach (var dynamicComponent in dynamicComponents)
+                mapping.AddDynamicComponent(dynamicComponent.GetDynamicComponentMapping());
+
+            foreach (var part in Parts)
+                mapping.AddUnmigratedPart(part);
+
+            unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
+
+            return mapping;
         }
 
         /// <summary>
@@ -47,7 +52,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="value">Attribute value</param>
         public void SetAttribute(string name, string value)
         {
-            properties.Store(name, value);
+            unmigratedAttributes.Store(name, value);
         }
 
         public void SetAttributes(Attributes atts)
@@ -57,17 +62,7 @@ namespace FluentNHibernate.Mapping
                 SetAttribute(key, atts[key]);
             }
         }
-
-        public int LevelWithinPosition
-        {
-            get { return 1; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.Anywhere; }
-        }
-
+        
         /// <summary>
         /// Set the access and naming strategy for this component.
         /// </summary>
@@ -83,8 +78,41 @@ namespace FluentNHibernate.Mapping
 
         private DynamicComponentPart<T> WithParentReference(PropertyInfo property)
         {
-            _parentReference = property;
+            mapping.Parent = new ParentMapping
+            {
+                Name = property.Name
+            };
+
             return this;
+        }
+
+        protected override PropertyMap Map(PropertyInfo property, string columnName)
+        {
+            var propertyMapping = new PropertyMapping()
+            {
+                Name = property.Name,
+                PropertyInfo = property
+            };
+
+            var propertyMap = new PropertyMap(propertyMapping);
+
+            if (!string.IsNullOrEmpty(columnName))
+                propertyMap.ColumnName(columnName);
+
+            properties.Add(propertyMap); // new
+
+            return propertyMap;
+        }
+
+        public override DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
+        {
+            var part = new DynamicComponentPart<IDictionary>(property);
+
+            action(part);
+
+            dynamicComponents.Add(part);
+
+            return part;
         }
 
         #region Explicit IDynamicComponent implementation
@@ -92,6 +120,21 @@ namespace FluentNHibernate.Mapping
         IDynamicComponent IDynamicComponent.WithParentReference<TExplicit>(Expression<Func<TExplicit, object>> exp)
         {
             return WithParentReference(ReflectionHelper.GetProperty(exp));
+        }
+
+        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        public int LevelWithinPosition
+        {
+            get { throw new NotSupportedException("Obsolete"); }
+        }
+
+        public PartPosition PositionOnDocument
+        {
+            get { throw new NotSupportedException("Obsolete"); }
         }
 
         #endregion

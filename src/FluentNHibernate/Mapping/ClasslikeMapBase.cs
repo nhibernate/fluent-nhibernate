@@ -18,6 +18,7 @@ namespace FluentNHibernate.Mapping
         }
         private bool _parentIsRequired = true;
         protected readonly IList<PropertyMap> properties = new List<PropertyMap>();
+        protected readonly IList<IDynamicComponent> dynamicComponents = new List<IDynamicComponent>();
 
         private bool m_parentIsRequired = true;
         protected bool parentIsRequired
@@ -106,15 +107,16 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public IDynamicComponent DynamicComponent(Expression<Func<T, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action)
+        public DynamicComponentPart<IDictionary> DynamicComponent(Expression<Func<T, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action)
         {
             return DynamicComponent(ReflectionHelper.GetProperty(expression), action);
         }
 
-        public virtual IDynamicComponent DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
+        public virtual DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
         {
-            var part = new DynamicComponentPart<IDictionary>(property, parentIsRequired);
-            AddPart(part);
+            var part = new DynamicComponentPart<IDictionary>(property);
+
+            AddPart(part); // old
 
             action(part);
 

@@ -46,10 +46,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="StructureMap, Version=2.5.2.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\StructureMap\StructureMap.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -191,14 +187,18 @@
     <Compile Include="Cfg\Db\MsSqlConfiguration.cs" />
     <Compile Include="DummyPropertyInfo.cs" />
     <Compile Include="Infrastructure\ResolveException.cs" />
+    <Compile Include="MappingModel\DynamicComponentMapping.cs" />
+    <Compile Include="MappingModel\Output\XmlDynamicComponentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlKeyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlClasslikeWriterBase.cs" />
     <Compile Include="MappingModel\Output\XmlInheritanceWriter.cs" />
     <Compile Include="MappingModel\Output\XmlJoinedSubclassWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlParentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlSubclassWriter.cs" />
     <Compile Include="MappingModel\Output\XmlDiscriminatorWriter.cs" />
     <Compile Include="Infrastructure\Container.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainer.cs" />
+    <Compile Include="MappingModel\ParentMapping.cs" />
     <Compile Include="Mapping\AnyPart.cs" />
     <Compile Include="Extensions.cs">
       <SubType>Code</SubType>
@@ -257,6 +257,7 @@
     <Compile Include="Mapping\ICollectionRelationship.cs" />
     <Compile Include="Mapping\IColumnNameCollection.cs" />
     <Compile Include="Mapping\IDiscriminatorPart.cs" />
+    <Compile Include="Mapping\IDynamicComponent.cs" />
     <Compile Include="Mapping\IHasAttributes.cs" />
     <Compile Include="Mapping\IJoinedSubclass.cs" />
     <Compile Include="Mapping\IMappingPart.cs" />

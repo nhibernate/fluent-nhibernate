@@ -33,7 +33,7 @@ namespace FluentNHibernate.Utils
             return (PropertyInfo) memberExpression.Member;
         }
 
-        private static PropertyInfo GetDynamicComponentProperty<MODEL>(Expression<Func<MODEL, object>> expression)
+        private static PropertyInfo GetDynamicComponentProperty<MODEL, T>(Expression<Func<MODEL, T>> expression)
         {
             Type desiredConversionType = null;
             MethodCallExpression methodCallExpression = null;
@@ -44,6 +44,7 @@ namespace FluentNHibernate.Utils
                 if (nextOperand.NodeType == ExpressionType.Call)
                 {
                     methodCallExpression = nextOperand as MethodCallExpression;
+                    desiredConversionType = desiredConversionType ?? methodCallExpression.Method.ReturnType;
                     break;
                 }
 
@@ -62,6 +63,11 @@ namespace FluentNHibernate.Utils
 
         public static PropertyInfo GetProperty<MODEL, T>(Expression<Func<MODEL, T>> expression)
         {
+            var isExpressionOfDynamicComponent = expression.ToString().Contains("get_Item");
+
+            if (isExpressionOfDynamicComponent)
+                return GetDynamicComponentProperty<MODEL, T>(expression);
+
             MemberExpression memberExpression = getMemberExpression(expression);
 
             return (PropertyInfo)memberExpression.Member;
