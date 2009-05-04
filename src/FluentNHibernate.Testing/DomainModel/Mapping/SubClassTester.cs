@@ -294,6 +294,105 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .HasAttribute("type", "String");
         }
 
+        [Test]
+        public void CanSpecifyForceOnDiscriminator()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .AlwaysSelectWithValue())
+                .Element("class/discriminator")
+                    .HasAttribute("force", "true");
+        }
+
+        [Test]
+        public void CanSpecifyNotForcedOnDiscriminator()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .Not.AlwaysSelectWithValue())
+                .Element("class/discriminator")
+                    .HasAttribute("force", "false");
+        }
+
+        [Test]
+        public void CanSpecifyReadOnlyOnDiscriminator()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .ReadOnly())
+                .Element("class/discriminator")
+                    .HasAttribute("insert", "false");
+        }
+
+        [Test]
+        public void CanSpecifyNotReadOnlyOnDiscriminator()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .Not.ReadOnly())
+                .Element("class/discriminator")
+                    .HasAttribute("insert", "true");
+        }
+
+        [Test]
+        public void CanSpecifyNullableOnDiscriminator()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .Nullable())
+                .Element("class/discriminator")
+                    .HasAttribute("not-null", "false");
+        }
+
+        [Test]
+        public void CanSpecifyNotNullableOnDiscriminator()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .Not.Nullable())
+                .Element("class/discriminator")
+                    .HasAttribute("not-null", "true");
+        }
+
+        [Test]
+        public void CanSpecifyFormulaOnDiscriminator()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .Formula("formula"))
+                .Element("class/discriminator")
+                    .HasAttribute("formula", "formula");
+        }
+
+        [Test]
+        public void CanSpecifyLengthOnDiscriminator()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .WithLengthOf(1234))
+                .Element("class/discriminator")
+                    .HasAttribute("length", "1234");
+        }
+
+        [Test]
+        public void CanSpecifyCustomAttributeOnDiscriminator()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .SetAttribute("attr", "value"))
+                .Element("class/discriminator")
+                    .HasAttribute("attr", "value");
+        }
+
         private class ProxyClass
         {}
     }
