@@ -1,29 +1,28 @@
-using System;
 using System.Collections.Generic;
-using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.MappingModel
 {
     public class JoinedSubclassMapping : ClassMappingBase, ISubclassMapping
     {
-        private readonly AttributeStore<JoinedSubclassMapping> _attributes;
-        private readonly IList<JoinedSubclassMapping> _subclasses;
+        private readonly AttributeStore<JoinedSubclassMapping> attributes;
+        private readonly IList<JoinedSubclassMapping> subclasses;
+        private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
+        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
         public KeyMapping Key { get; set; }
 
         public JoinedSubclassMapping() : this(new AttributeStore())
-        {
-            
-        }
+        {}
 
         protected JoinedSubclassMapping(AttributeStore store) : base(store)
         {
-            _subclasses = new List<JoinedSubclassMapping>();
-            _attributes = new AttributeStore<JoinedSubclassMapping>(store);
+            subclasses = new List<JoinedSubclassMapping>();
+            attributes = new AttributeStore<JoinedSubclassMapping>(store);
         }
 
         public AttributeStore<JoinedSubclassMapping> Attributes
         {
-            get { return _attributes; }
+            get { return attributes; }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -33,7 +32,7 @@ namespace FluentNHibernate.MappingModel
             if(Key != null)
                 visitor.Visit(Key);
 
-            foreach (var subclass in _subclasses)
+            foreach (var subclass in subclasses)
                 visitor.Visit(subclass);
 
             base.AcceptVisitor(visitor);
@@ -41,13 +40,44 @@ namespace FluentNHibernate.MappingModel
 
         public IEnumerable<JoinedSubclassMapping> Subclasses
         {
-            get { return _subclasses; }
+            get { return subclasses; }
         }
 
         public void AddSubclass(JoinedSubclassMapping joinedSubclassMapping)
         {
-            _subclasses.Add(joinedSubclassMapping);
+            subclasses.Add(joinedSubclassMapping);
         }
-        
+
+        public string TableName
+        {
+            get { return attributes.Get(x => x.TableName); }
+            set { attributes.Set(x => x.TableName, value); }
+        }
+
+        public string Schema
+        {
+            get { return attributes.Get(x => x.Schema); }
+            set { attributes.Set(x => x.Schema, value); }
+        }
+
+        public IEnumerable<IMappingPart> UnmigratedParts
+        {
+            get { return unmigratedParts; }
+        }
+
+        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
+        {
+            get { return unmigratedAttributes; }
+        }
+
+        public void AddUnmigratedPart(IMappingPart part)
+        {
+            unmigratedParts.Add(part);
+        }
+
+        public void AddUnmigratedAttribute(string attribute, string value)
+        {
+            unmigratedAttributes.Add(attribute, value);
+        }
     }
 }

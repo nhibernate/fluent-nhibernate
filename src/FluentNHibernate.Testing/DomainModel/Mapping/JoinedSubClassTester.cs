@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
           new MappingTester<SuperClass>()
             .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Map(x => x.Name)))
-            .Element("class/joined-subclass").HasAttribute("name", typeof (SubClass).AssemblyQualifiedName);
+            .Element("class/joined-subclass").HasAttribute("name", typeof(SubClass).AssemblyQualifiedName);
                 
         }
 
@@ -71,6 +71,91 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                             sc.Map(x => x.Name));
                 })
                 .Element("class/*[last()]").HasName("subclass");
+        }
+
+        [Test]
+        public void SchemaSuported()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.SchemaIs("test")))
+                .Element("//joined-subclass").HasAttribute("schema", "test");
+        }
+
+        [Test]
+        public void MapsComponent()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.Component(x => x.Component, c => { })))
+                .Element("//joined-subclass/component").Exists();
+        }
+
+        [Test]
+        public void MapsDynamicComponent()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.DynamicComponent(x => x.Dictionary, c => { })))
+                .Element("//joined-subclass/dynamic-component").Exists();
+        }
+
+        [Test]
+        public void MapsHasMany()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.HasMany(x => x.Children)))
+                .Element("//joined-subclass/bag").Exists();
+        }
+
+        [Test]
+        public void MapsHasManyToMany()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.HasManyToMany(x => x.Children)))
+                .Element("//joined-subclass/bag").Exists();
+        }
+
+        [Test]
+        public void MapsHasOne()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.HasOne(x => x.Parent)))
+                .Element("//joined-subclass/one-to-one").Exists();
+        }
+
+        [Test]
+        public void MapsReferences()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.References(x => x.Parent)))
+                .Element("//joined-subclass/many-to-one").Exists();
+        }
+
+        [Test]
+        public void MapsReferencesAny()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.JoinedSubClass<MappedObjectSubclass>("id", sc =>
+                        sc.ReferencesAny(x => x.Parent)
+                            .IdentityType(x => x.Id)
+                            .EntityIdentifierColumn("col")
+                            .EntityTypeColumn("col")))
+                .Element("//joined-subclass/any").Exists();
+        }
+
+        [Test]
+        public void MapsVersion()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.Version(x => x.Version)))
+                .Element("//joined-subclass/version").Exists();
         }
 
         private class SuperClass

@@ -25,12 +25,18 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterWriter<DiscriminatorMapping>(c =>
                 new XmlDiscriminatorWriter(c.Resolve<IXmlWriter<ColumnMapping>>()));
 
+            RegisterWriter<KeyMapping>(c =>
+                new XmlKeyWriter());
+
             // subclasses
             RegisterWriter<ISubclassMapping>(c =>
-                new XmlInheritanceWriter(c.Resolve<IXmlWriter<SubclassMapping>>()));
+                new XmlInheritanceWriter(c.Resolve<IXmlWriter<SubclassMapping>>(), c.Resolve<IXmlWriter<JoinedSubclassMapping>>()));
 
             RegisterWriter<SubclassMapping>(c =>
                 new XmlSubclassWriter(c.Resolve<IXmlWriter<PropertyMapping>>()));
+
+            RegisterWriter<JoinedSubclassMapping>(c =>
+                new XmlJoinedSubclassWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<KeyMapping>>()));
         }
 
         private void RegisterWriter<T>(Func<Container, object> instantiate)

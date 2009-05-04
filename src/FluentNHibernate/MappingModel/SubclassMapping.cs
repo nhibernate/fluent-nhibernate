@@ -8,8 +8,8 @@ namespace FluentNHibernate.MappingModel
 {
     public class SubclassMapping : ClassMappingBase, ISubclassMapping
     {
-        private readonly AttributeStore<SubclassMapping> _attributes;
-        private readonly IList<SubclassMapping> _subclasses;
+        private readonly AttributeStore<SubclassMapping> attributes;
+        private readonly IList<SubclassMapping> subclasses;
         private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
         private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
@@ -20,13 +20,13 @@ namespace FluentNHibernate.MappingModel
         protected SubclassMapping(AttributeStore underlyingStore)
             : base(underlyingStore)
         {
-            _attributes = new AttributeStore<SubclassMapping>(underlyingStore);
-            _subclasses = new List<SubclassMapping>();
+            attributes = new AttributeStore<SubclassMapping>(underlyingStore);
+            subclasses = new List<SubclassMapping>();
         }
 
         public AttributeStore<SubclassMapping> Attributes
         {
-            get { return _attributes; }
+            get { return attributes; }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -41,24 +41,24 @@ namespace FluentNHibernate.MappingModel
 
         public void AddSubclass(SubclassMapping subclassMapping)
         {
-            _subclasses.Add(subclassMapping);
+            subclasses.Add(subclassMapping);
         }
 
         public IEnumerable<SubclassMapping> Subclasses
         {
-            get { return _subclasses; }
+            get { return subclasses; }
         }
 
         public object DiscriminatorValue
         {
-            get { return _attributes.Get(x => x.DiscriminatorValue); }
-            set { _attributes.Set(x => x.DiscriminatorValue, value); }
+            get { return attributes.Get(x => x.DiscriminatorValue); }
+            set { attributes.Set(x => x.DiscriminatorValue, value); }
         }
 
         public bool LazyLoad
         {
-            get { return _attributes.Get(x => x.LazyLoad); }
-            set { _attributes.Set(x => x.LazyLoad, value); }
+            get { return attributes.Get(x => x.LazyLoad); }
+            set { attributes.Set(x => x.LazyLoad, value); }
         }
 
         public IEnumerable<IMappingPart> UnmigratedParts

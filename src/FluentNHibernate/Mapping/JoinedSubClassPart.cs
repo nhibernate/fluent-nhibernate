@@ -1,21 +1,49 @@
+using System;
+using System.Reflection;
 using System.Xml;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public class JoinedSubClassPart<T> : ClasslikeMapBase<T>, IJoinedSubclass
+    public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, IJoinedSubclass
     {
-        private readonly string _keyColumn;
-        private readonly Cache<string, string> attributes = new Cache<string, string>();
+        private readonly string keyColumn;
+        private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
+        private readonly JoinedSubclassMapping mapping;
 
         public JoinedSubClassPart(string keyColumn)
+            : this(new JoinedSubclassMapping())
         {
-            _keyColumn = keyColumn;
+            this.keyColumn = keyColumn;
+        }
+
+        public JoinedSubClassPart(JoinedSubclassMapping mapping)
+        {
+            this.mapping = mapping;
+        }
+
+        protected override PropertyMap Map(PropertyInfo property, string columnName)
+        {
+            var propertyMapping = new PropertyMapping
+            {
+                Name = property.Name,
+                PropertyInfo = property
+            };
+
+            var propertyMap = new PropertyMap(propertyMapping);
+
+            if (!string.IsNullOrEmpty(columnName))
+                propertyMap.ColumnName(columnName);
+
+            properties.Add(propertyMap); // new
+
+            return propertyMap;
         }
 
         public virtual void SetAttribute(string name, string value)
         {
-            attributes.Store(name, value);
+            unmigratedAttributes.Store(name, value);
         }
 
         public virtual void SetAttributes(Attributes atts)
@@ -26,36 +54,55 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
+        public JoinedSubClassPart<TSubclass> WithTableName(string tableName)
         {
-            XmlElement subclassElement = classElement.AddElement("joined-subclass")
-                .WithAtt("name", typeof(T).AssemblyQualifiedName);
-            subclassElement.AddElement("key")
-                .WithAtt("column", _keyColumn);
-            subclassElement.WithProperties(attributes);
-
-            writeTheParts(subclassElement, visitor);
-        }
-
-        public int LevelWithinPosition
-        {
-            get { return 1; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.Anywhere; }
-        }
-
-        public JoinedSubClassPart<T> WithTableName(string tableName)
-        {             
-            attributes.Store("table", tableName);
+            mapping.TableName = tableName;
             return this;
+        }
+
+        public JoinedSubClassPart<TSubclass> SchemaIs(string schema)
+        {
+            mapping.Schema = schema;
+            return this;
+        }
+
+        public JoinedSubclassMapping GetJoinedSubclassMapping()
+        {
+            mapping.Key = new KeyMapping
+            {
+                Column = keyColumn
+            };
+            mapping.Name = typeof(TSubclass).AssemblyQualifiedName;
+
+            foreach (var property in Properties)
+                mapping.AddProperty(property.GetPropertyMapping());
+
+            foreach (var part in Parts)
+                mapping.AddUnmigratedPart(part);
+
+            unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
+
+            return mapping;
         }
 
         void IJoinedSubclass.WithTableName(string tableName)
         {
             WithTableName(tableName);
+        }
+
+        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        int IMappingPart.LevelWithinPosition
+        {
+            get { throw new NotSupportedException("Obsolete"); }
+        }
+
+        PartPosition IMappingPart.PositionOnDocument
+        {
+            get { throw new NotSupportedException("Obsolete"); }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace FluentNHibernate.Mapping
 {
     public class ClassMap<T> : ClasslikeMapBase<T>, IClassMap
     {
-        public Cache<string, string> Attributes { get; private set; }
+        private readonly Cache<string, string> unmigratedAttributes;
         public Cache<string, string> HibernateMappingAttributes { get; private set; }
         private readonly DefaultAccessStrategyBuilder<T> defaultAccess;
 
@@ -47,7 +47,7 @@ namespace FluentNHibernate.Mapping
         public ClassMap(ClassMapping mapping)
         {
             this.mapping = mapping;
-            Attributes = new Cache<string, string>();
+            unmigratedAttributes = new Cache<string, string>();
             HibernateMappingAttributes = new Cache<string, string>();
             defaultAccess = new DefaultAccessStrategyBuilder<T>(this);
             Cache = new CachePart();
@@ -65,13 +65,13 @@ namespace FluentNHibernate.Mapping
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());
 
-            foreach (var part in Parts)
-                mapping.AddUnmigratedPart(part);
-
             if (discriminator != null)
                 mapping.Discriminator = discriminator.GetDiscriminatorMapping();
 
-            Attributes.ForEachPair(mapping.AddUnmigratedAttribute);
+            foreach (var part in Parts)
+                mapping.AddUnmigratedPart(part);
+
+            unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
 
             return mapping;
         }
@@ -162,7 +162,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="value">Attribute value</param>
         public virtual void SetAttribute(string name, string value)
         {
-            Attributes.Store(name, value);
+            unmigratedAttributes.Store(name, value);
         }
 
         public virtual void SetAttributes(Attributes atts)
@@ -196,14 +196,13 @@ namespace FluentNHibernate.Mapping
             return id;
         }
 
-        public virtual JoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<JoinedSubClassPart<TSubclass>> action) where TSubclass : T
+        public virtual void JoinedSubClass<TSubclass>(string keyColumn, Action<JoinedSubClassPart<TSubclass>> action) where TSubclass : T
         {
             var subclass = new JoinedSubClassPart<TSubclass>(keyColumn);
 
             action(subclass);
-            AddPart(subclass);
-
-            return subclass;
+            
+            mapping.AddSubclass(subclass.GetJoinedSubclassMapping());
         }
 
         /// <summary>
@@ -331,7 +330,12 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public OptimisticLockBuilder OptimisticLock
         {
-            get { return new OptimisticLockBuilder(Attributes); }
+            get { return new OptimisticLockBuilder(unmigratedAttributes); }
+        }
+
+        Cache<string, string> IClassMap.Attributes
+        {
+            get { return unmigratedAttributes; }
         }
     }
 }

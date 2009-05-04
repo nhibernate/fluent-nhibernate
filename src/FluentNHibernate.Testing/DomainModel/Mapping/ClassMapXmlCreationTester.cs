@@ -532,6 +532,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public int Version { get; set; }
     }
 
+    public class MappedObjectSubclass : MappedObject
+    {}
+
     public class ChildObject
     {
         public virtual int Id { get; set; }

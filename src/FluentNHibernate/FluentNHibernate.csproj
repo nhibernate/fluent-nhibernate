@@ -191,8 +191,10 @@
     <Compile Include="Cfg\Db\MsSqlConfiguration.cs" />
     <Compile Include="DummyPropertyInfo.cs" />
     <Compile Include="Infrastructure\ResolveException.cs" />
+    <Compile Include="MappingModel\Output\XmlKeyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlClasslikeWriterBase.cs" />
     <Compile Include="MappingModel\Output\XmlInheritanceWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlJoinedSubclassWriter.cs" />
     <Compile Include="MappingModel\Output\XmlSubclassWriter.cs" />
     <Compile Include="MappingModel\Output\XmlDiscriminatorWriter.cs" />
     <Compile Include="Infrastructure\Container.cs" />
