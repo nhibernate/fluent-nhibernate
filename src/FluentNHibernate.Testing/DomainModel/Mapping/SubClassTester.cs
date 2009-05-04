@@ -1,3 +1,4 @@
+using FluentNHibernate.Mapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
@@ -128,6 +129,26 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                   m.DiscriminateSubClassesOnColumn<string>("Type")
                         .SubClass<SecondMappedObject>("columnName", sm => sm.Abstract()))
               .Element("class/subclass").HasAttribute("abstract", "true");
+        }
+
+        [Test]
+        public void CanSpecifySpecialNullValue()
+        {
+            new MappingTester<MappedObject>()
+              .ForMapping(m =>
+                  m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>(DiscriminatorValue.Null, sm => { }))
+              .Element("class/subclass").HasAttribute("discriminator-value", "null");
+        }
+
+        [Test]
+        public void CanSpecifySpecialNotNullValue()
+        {
+            new MappingTester<MappedObject>()
+              .ForMapping(m =>
+                  m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>(DiscriminatorValue.NotNull, sm => { }))
+              .Element("class/subclass").HasAttribute("discriminator-value", "not null");
         }
 
         [Test]

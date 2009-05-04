@@ -208,6 +208,7 @@
     <Compile Include="MappingModel\PropertyMapping.cs" />
     <Compile Include="Mapping\ClassMap.cs" />
     <Compile Include="Mapping\DiscriminatorPart.cs" />
+    <Compile Include="Mapping\DiscriminatorValue.cs" />
     <Compile Include="Mapping\IAccessStrategyBuilder.cs" />
     <Compile Include="Mapping\ICascadeExpression.cs" />
     <Compile Include="Mapping\IClassMap.cs" />
