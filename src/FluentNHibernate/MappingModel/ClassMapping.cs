@@ -90,6 +90,36 @@ namespace FluentNHibernate.MappingModel
             set { _attributes.Set(x => x.DiscriminatorBaseValue, value); }
         }
 
+        public string Schema
+        {
+            get { return _attributes.Get(x => x.Schema); }
+            set { _attributes.Set(x => x.Schema, value); }
+        }
+
+        public bool LazyLoad
+        {
+            get { return _attributes.Get(x => x.LazyLoad); }
+            set { _attributes.Set(x => x.LazyLoad, value); }
+        }
+
+        public bool Mutable
+        {
+            get { return _attributes.Get(x => x.Mutable); }
+            set { _attributes.Set(x => x.Mutable, value); }
+        }
+
+        public bool DynamicUpdate
+        {
+            get { return _attributes.Get(x => x.DynamicUpdate); }
+            set { _attributes.Set(x => x.DynamicUpdate, value); }
+        }
+
+        public bool DynamicInsert
+        {
+            get { return _attributes.Get(x => x.DynamicInsert); }
+            set { _attributes.Set(x => x.DynamicInsert, value); }
+        }
+
         public AttributeStore<ClassMapping> Attributes
         {
             get { return _attributes; }

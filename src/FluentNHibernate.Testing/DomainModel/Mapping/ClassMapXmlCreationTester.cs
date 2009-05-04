@@ -322,14 +322,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		}
 
         [Test]
-        public void ClassMapHasCorrectHBMFileName()
-        {
-            var expectedFileName = "MappedObject.hbm.xml";
-            var map = new ClassMap<MappedObject>();
-            Assert.AreEqual(expectedFileName , map.FileName);
-        }
-
-        [Test]
 		public void DomainClassMapWithIdNoColumnAndGenerator()
 		{
             new MappingTester<MappedObject>()

@@ -212,7 +212,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="schema">Schema name</param>
         public void SchemaIs(string schema)
         {
-            SetAttribute("schema", schema);
+            mapping.Schema = schema;
         }
 
         /// <summary>
@@ -222,11 +222,6 @@ namespace FluentNHibernate.Mapping
         {
             hibernateMapping.AutoImport = nextBool;
             nextBool = true;
-        }
-
-        public string FileName
-        {
-            get { return string.Format("{0}.hbm.xml", typeof (T).Name); }
         }
 
         /// <summary>
@@ -268,7 +263,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void LazyLoad()
         {
-            Attributes.Store("lazy", nextBool.ToString().ToLowerInvariant());
+            mapping.LazyLoad = nextBool;
             nextBool = true;
         }
 
@@ -303,7 +298,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void ReadOnly()
         {
-            Attributes.Store("mutable", (!nextBool).ToString().ToLowerInvariant());
+            mapping.Mutable = !nextBool;
             nextBool = true;
         }
 
@@ -312,7 +307,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void DynamicUpdate()
         {
-            Attributes.Store("dynamic-update", nextBool.ToString().ToLowerInvariant());
+            mapping.DynamicUpdate = nextBool;
             nextBool = true;
         }
 
@@ -321,7 +316,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void DynamicInsert()
         {
-            Attributes.Store("dynamic-insert", nextBool.ToString().ToLowerInvariant());
+            mapping.DynamicInsert = nextBool;
             nextBool = true;
         }
 

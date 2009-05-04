@@ -30,6 +30,11 @@ namespace FluentNHibernate.Utils
             return WithAtt(element, key, value.ToString().ToLowerInvariant());
         }
 
+        public static XmlElement WithAtt(this XmlElement element, string key, int value)
+        {
+            return WithAtt(element, key, value.ToString());
+        }
+
         public static XmlElement WithAtt(this XmlElement element, string key, string attValue)
         {
             element.SetAttribute(key, attValue);

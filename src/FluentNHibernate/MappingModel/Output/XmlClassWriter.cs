@@ -57,11 +57,26 @@ namespace FluentNHibernate.MappingModel.Output
                 .WithAtt("table", classMapping.TableName)
                 .WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
 
-            if (classMapping.BatchSize > 0)
-                classElement.WithAtt("batch-size", classMapping.BatchSize.ToString());
+            if (classMapping.Attributes.IsSpecified(x => x.BatchSize))
+                classElement.WithAtt("batch-size", classMapping.BatchSize);
 
             if (classMapping.Attributes.IsSpecified(x => x.DiscriminatorBaseValue))
                 classElement.WithAtt("discriminator-value", classMapping.DiscriminatorBaseValue.ToString());
+
+            if (classMapping.Attributes.IsSpecified(x => x.DynamicInsert))
+                classElement.WithAtt("dynamic-insert", classMapping.DynamicInsert);
+
+            if (classMapping.Attributes.IsSpecified(x => x.DynamicUpdate))
+                classElement.WithAtt("dynamic-update", classMapping.DynamicUpdate);
+
+            if (classMapping.Attributes.IsSpecified(x => x.LazyLoad))
+                classElement.WithAtt("lazy", classMapping.LazyLoad);
+
+            if (classMapping.Attributes.IsSpecified(x => x.Schema))
+                classElement.WithAtt("schema", classMapping.Schema);
+
+            if (classMapping.Attributes.IsSpecified(x => x.Mutable))
+                classElement.WithAtt("mutable", classMapping.Mutable);
 
             return classElement;
         }
