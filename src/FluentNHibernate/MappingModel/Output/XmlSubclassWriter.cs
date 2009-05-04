@@ -33,8 +33,23 @@ namespace FluentNHibernate.MappingModel.Output
             if (subclassMapping.Attributes.IsSpecified(x => x.DiscriminatorValue))
                 subclassElement.WithAtt("discriminator-value", subclassMapping.DiscriminatorValue.ToString());
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.LazyLoad))
-                subclassElement.WithAtt("lazy", subclassMapping.LazyLoad);
+            if (subclassMapping.Attributes.IsSpecified(x => x.Proxy))
+                subclassElement.WithAtt("proxy", subclassMapping.Proxy.AssemblyQualifiedName);
+
+            if (subclassMapping.Attributes.IsSpecified(x => x.Lazy))
+                subclassElement.WithAtt("lazy", subclassMapping.Lazy);
+
+            if (subclassMapping.Attributes.IsSpecified(x => x.DynamicUpdate))
+                subclassElement.WithAtt("dynamic-update", subclassMapping.DynamicUpdate);
+
+            if (subclassMapping.Attributes.IsSpecified(x => x.DynamicInsert))
+                subclassElement.WithAtt("dynamic-insert", subclassMapping.DynamicInsert);
+
+            if (subclassMapping.Attributes.IsSpecified(x => x.SelectBeforeUpdate))
+                subclassElement.WithAtt("select-before-update", subclassMapping.SelectBeforeUpdate);
+
+            if (subclassMapping.Attributes.IsSpecified(x => x.Abstract))
+                subclassElement.WithAtt("abstract", subclassMapping.Abstract);
 
             var sortedUnmigratedParts = new List<IMappingPart>(subclassMapping.UnmigratedParts);
 

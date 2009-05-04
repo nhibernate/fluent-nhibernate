@@ -69,6 +69,66 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         .SubClass<SecondMappedObject>(sc => sc.Not.LazyLoad()))
                 .Element("//subclass").HasAttribute("lazy", "false");
         }
+        
+        [Test]
+        public void CanSpecifyProxyByType()
+        {
+            new MappingTester<MappedObject>()
+              .ForMapping(m =>
+                  m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>("columnName", sm => sm.Proxy(typeof(ProxyClass))))
+              .Element("class/subclass").HasAttribute("proxy", typeof(ProxyClass).AssemblyQualifiedName);
+        }
+
+        [Test]
+        public void CanSpecifyProxyByTypeInstance()
+        {
+            new MappingTester<MappedObject>()
+              .ForMapping(m =>
+                  m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>("columnName", sm => sm.Proxy<ProxyClass>()))
+              .Element("class/subclass").HasAttribute("proxy", typeof(ProxyClass).AssemblyQualifiedName);
+        }
+
+        [Test]
+        public void CanSpecifyDynamicUpdate()
+        {
+            new MappingTester<MappedObject>()
+              .ForMapping(m =>
+                  m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>("columnName", sm => sm.DynamicUpdate()))
+              .Element("class/subclass").HasAttribute("dynamic-update", "true");
+        }
+
+        [Test]
+        public void CanSpecifyDynamicInsert()
+        {
+            new MappingTester<MappedObject>()
+              .ForMapping(m =>
+                  m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>("columnName", sm => sm.DynamicInsert()))
+              .Element("class/subclass").HasAttribute("dynamic-insert", "true");
+        }
+
+        [Test]
+        public void CanSpecifySelectBeforeUpdate()
+        {
+            new MappingTester<MappedObject>()
+              .ForMapping(m =>
+                  m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>("columnName", sm => sm.SelectBeforeUpdate()))
+              .Element("class/subclass").HasAttribute("select-before-update", "true");
+        }
+
+        [Test]
+        public void CanSpecifyAbstract()
+        {
+            new MappingTester<MappedObject>()
+              .ForMapping(m =>
+                  m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>("columnName", sm => sm.Abstract()))
+              .Element("class/subclass").HasAttribute("abstract", "true");
+        }
 
         [Test]
         public void MapsComponent()
@@ -212,5 +272,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/discriminator")
                     .HasAttribute("type", "String");
         }
+
+        private class ProxyClass
+        {}
     }
 }

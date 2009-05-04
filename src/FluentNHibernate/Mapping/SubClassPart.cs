@@ -99,7 +99,47 @@ namespace FluentNHibernate.Mapping
         /// <returns></returns>
         public SubClassPart<TSubclass> LazyLoad()
         {
-            mapping.LazyLoad = nextBool;
+            mapping.Lazy = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public SubClassPart<TSubclass> Proxy(Type type)
+        {
+            mapping.Proxy = type;
+            return this;
+        }
+
+        public SubClassPart<TSubclass> Proxy<T>()
+        {
+            mapping.Proxy = typeof(T);
+            return this;
+        }
+
+        public SubClassPart<TSubclass> DynamicUpdate()
+        {
+            mapping.DynamicUpdate = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public SubClassPart<TSubclass> DynamicInsert()
+        {
+            mapping.DynamicInsert = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public SubClassPart<TSubclass> SelectBeforeUpdate()
+        {
+            mapping.SelectBeforeUpdate = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public SubClassPart<TSubclass> Abstract()
+        {
+            mapping.Abstract = nextBool;
             nextBool = true;
             return this;
         }
@@ -116,9 +156,39 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        ISubclass ISubclass.LazyLoad()
+        void ISubclass.Proxy(Type type)
         {
-            return LazyLoad();
+            Proxy(type);
+        }
+
+        void ISubclass.Proxy<T>()
+        {
+            Proxy<T>();
+        }
+
+        void ISubclass.LazyLoad()
+        {
+            LazyLoad();
+        }
+
+        void ISubclass.DynamicUpdate()
+        {
+            DynamicUpdate();
+        }
+
+        void ISubclass.DynamicInsert()
+        {
+            DynamicInsert();
+        }
+
+        void ISubclass.SelectBeforeUpdate()
+        {
+            SelectBeforeUpdate();
+        }
+
+        void ISubclass.Abstract()
+        {
+            Abstract();
         }
 
         ISubclass ISubclass.Not

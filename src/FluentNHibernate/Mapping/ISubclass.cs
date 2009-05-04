@@ -5,11 +5,18 @@ namespace FluentNHibernate.Mapping
 {
     public interface ISubclass : IClasslike, IMappingPart
     {
+        void Proxy(Type type);
+        void Proxy<T>();
+        void DynamicUpdate();
+        void DynamicInsert();
+        void SelectBeforeUpdate();
+        void Abstract();
+
         /// <summary>
         /// Sets whether this subclass is lazy loaded
         /// </summary>
         /// <returns></returns>
-        ISubclass LazyLoad();
+        void LazyLoad();
 
         /// <summary>
         /// Inverts the next boolean

@@ -55,10 +55,40 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.DiscriminatorValue, value); }
         }
 
-        public bool LazyLoad
+        public bool Lazy
         {
-            get { return attributes.Get(x => x.LazyLoad); }
-            set { attributes.Set(x => x.LazyLoad, value); }
+            get { return attributes.Get(x => x.Lazy); }
+            set { attributes.Set(x => x.Lazy, value); }
+        }
+
+        public Type Proxy
+        {
+            get { return attributes.Get(x => x.Proxy); }
+            set { attributes.Set(x => x.Proxy, value); }
+        }
+
+        public bool DynamicUpdate
+        {
+            get { return attributes.Get(x => x.DynamicUpdate); }
+            set { attributes.Set(x => x.DynamicUpdate, value); }
+        }
+
+        public bool DynamicInsert
+        {
+            get { return attributes.Get(x => x.DynamicInsert); }
+            set { attributes.Set(x => x.DynamicInsert, value); }
+        }
+
+        public bool SelectBeforeUpdate
+        {
+            get { return attributes.Get(x => x.SelectBeforeUpdate); }
+            set { attributes.Set(x => x.SelectBeforeUpdate, value); }
+        }
+
+        public bool Abstract
+        {
+            get { return attributes.Get(x => x.Abstract); }
+            set { attributes.Set(x => x.Abstract, value); }
         }
 
         public IEnumerable<IMappingPart> UnmigratedParts
