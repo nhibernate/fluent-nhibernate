@@ -16,6 +16,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         protected IMappingVisitor _visitor;
         private readonly PersistenceModel model;
 
+        public MappingTester(XmlDocument document)
+            :this()
+        {
+            this.document = document;
+        }
+
         public MappingTester()
         {
             model = new PersistenceModel();

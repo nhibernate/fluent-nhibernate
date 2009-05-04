@@ -1,11 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Xml;
 using FluentNHibernate.Mapping;
-using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -30,7 +26,7 @@ namespace FluentNHibernate.MappingModel.Output
         public override void ProcessHibernateMapping(HibernateMapping hibernateMapping)
         {
             document = new XmlDocument();
-            
+
             var element = document.CreateElement("hibernate-mapping");
 
             element.WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
@@ -65,16 +61,14 @@ namespace FluentNHibernate.MappingModel.Output
 
             document.DocumentElement.AppendChild(newClassNode);
         }
-        
+
         private class SortValue
         {
             public PartPosition Position { get; set; }
             public int Level { get; set; }
         }
 
-        private void SortChildren(XmlNode node)
-        {
-            var sorting = new Dictionary<string, SortValue>
+        private static readonly IDictionary<string, SortValue> sorting = new Dictionary<string, SortValue>
             {
                 { "cache", new SortValue { Position = PartPosition.First, Level = 1 } },
                 { "id", new SortValue { Position = PartPosition.First, Level = 2 } },
@@ -92,13 +86,17 @@ namespace FluentNHibernate.MappingModel.Output
                 { "subclass", new SortValue { Position = PartPosition.Last, Level = 3 } },
                 { "join", new SortValue { Position = PartPosition.Last, Level = 3 } },
             };
-            var children = new List<XmlNode>();
 
+        private static void SortChildren(XmlNode node)
+        {
+            var children = new List<XmlNode>();
             foreach (XmlNode childNode in node.ChildNodes)
             {
                 children.Add(childNode);
             }
 
+            //Creates a copy of the sort order the elments were added in on the node
+            var originalSortOrder = children.ToArray();
             children.Sort((x, y) =>
             {
                 if (!sorting.ContainsKey(x.Name) || !sorting.ContainsKey(y.Name)) return 0;
@@ -106,13 +104,13 @@ namespace FluentNHibernate.MappingModel.Output
                 var xSort = sorting[x.Name];
                 var ySort = sorting[y.Name];
 
-                // this isn't exactly nice, but it works (and it's covered by tests... hint hint)
-                if (xSort.Position == PartPosition.First && ySort.Position != PartPosition.First) return -1;
-                if (xSort.Position == PartPosition.Last && ySort.Position != PartPosition.Last) return 1;
-                if (xSort.Position == PartPosition.Anywhere && ySort.Position == PartPosition.First) return 1;
-                if (xSort.Position == PartPosition.Anywhere && ySort.Position == PartPosition.Last) return -1;
+                //General Position
+                if (xSort.Position != ySort.Position) return xSort.Position.CompareTo(ySort.Position);
+                //Sub-Position if positions are the same
+                if (xSort.Level != ySort.Level) return xSort.Level.CompareTo(ySort.Level);
 
-                return xSort.Level.CompareTo(ySort.Level);
+                //Relative Index based on the order the part was added
+                return Array.IndexOf(originalSortOrder, x).CompareTo(Array.IndexOf(originalSortOrder, y));
             });
 
             for (var i = 0; i < node.ChildNodes.Count; i++)
