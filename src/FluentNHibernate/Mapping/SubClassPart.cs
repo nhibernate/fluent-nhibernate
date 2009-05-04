@@ -1,46 +1,23 @@
 ﻿using System;
 using System.Xml;
+using FluentNHibernate.MappingModel;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface ISubclass : IClasslike, IMappingPart
-    {
-        void SubClass<TChild>(object discriminatorValue, Action<ISubclass> action);
-        void SubClass<TChild>(Action<ISubclass> action);
-
-        /// <summary>
-        /// Sets whether this subclass is lazy loaded
-        /// </summary>
-        /// <returns></returns>
-        ISubclass LazyLoad();
-
-        /// <summary>
-        /// Inverts the next boolean
-        /// </summary>
-        ISubclass Not { get; }
-    }
-
     public class SubClassPart<TDiscriminator, TParent, TSubClass> : ClasslikeMapBase<TSubClass>, ISubclass
     {
+        private readonly SubclassMapping mapping;
         private readonly bool discriminatorSet;
         private readonly TDiscriminator _discriminator;
         private readonly Cache<string, string> attributes = new Cache<string, string>();
         private readonly DiscriminatorPart<TDiscriminator, TParent> parent;
         private bool nextBool = true;
 
-        public SubClassPart(DiscriminatorPart<TDiscriminator, TParent> parent)
+        public SubClassPart(SubclassMapping mapping)
         {
+            this.mapping = mapping;
             this.parent = parent;
-        }
-
-        public SubClassPart(TDiscriminator discriminator, DiscriminatorPart<TDiscriminator, TParent> parent)
-            : this(parent)
-        {
-            if (discriminator != null)
-            {
-                _discriminator = discriminator;
-                discriminatorSet = true;
-            }   
         }
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
@@ -85,42 +62,42 @@ namespace FluentNHibernate.Mapping
 
         public DiscriminatorPart<TDiscriminator, TParent> SubClass<TChild>(TDiscriminator discriminatorValue, Action<SubClassPart<TDiscriminator, TParent, TChild>> action)
         {
-            var subclass = new SubClassPart<TDiscriminator, TParent, TChild>(discriminatorValue, parent);
+            //var subclass = new SubClassPart<TDiscriminator, TParent, TChild>(discriminatorValue, parent);
 
-            action(subclass);
+            //action(subclass);
 
-            AddPart(subclass);
+            //AddPart(subclass);
 
             return parent;
         }
 
         void ISubclass.SubClass<TChild>(object discriminatorValue, Action<ISubclass> action)
         {
-            var subclass = new SubClassPart<TDiscriminator, TParent, TChild>((TDiscriminator)discriminatorValue, parent);
+            //var subclass = new SubClassPart<TDiscriminator, TParent, TChild>((TDiscriminator)discriminatorValue, parent);
 
-            action(subclass);
+            //action(subclass);
 
-            AddPart(subclass);
+            //AddPart(subclass);
         }
 
         public DiscriminatorPart<TDiscriminator, TParent> SubClass<TChild>(Action<SubClassPart<TDiscriminator, TParent, TChild>> action)
         {
-            var subclass = new SubClassPart<TDiscriminator, TParent, TChild>(default(TDiscriminator), parent);
+            //var subclass = new SubClassPart<TDiscriminator, TParent, TChild>(default(TDiscriminator), parent);
 
-            action(subclass);
+            //action(subclass);
 
-            AddPart(subclass);
+            //AddPart(subclass);
 
             return parent;
         }
 
         void ISubclass.SubClass<TChild>(Action<ISubclass> action)
         {
-            var subclass = new SubClassPart<TDiscriminator, TParent, TChild>(default(TDiscriminator), parent);
+            //var subclass = new SubClassPart<TDiscriminator, TParent, TChild>(default(TDiscriminator), parent);
 
-            action(subclass);
+            //action(subclass);
 
-            AddPart(subclass);
+            //AddPart(subclass);
         }
 
         /// <summary>

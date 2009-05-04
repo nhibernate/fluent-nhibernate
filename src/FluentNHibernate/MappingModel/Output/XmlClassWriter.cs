@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -8,10 +9,14 @@ namespace FluentNHibernate.MappingModel.Output
     {
         private XmlDocument document;
         private readonly IXmlWriter<PropertyMapping> propertyWriter;
+        private readonly IXmlWriter<DiscriminatorMapping> discriminatorWriter;
+        private readonly IXmlWriter<ISubclassMapping> subclassWriter;
 
-        public XmlClassWriter(IXmlWriter<PropertyMapping> propertyWriter)
+        public XmlClassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<DiscriminatorMapping> discriminatorWriter, IXmlWriter<ISubclassMapping> subclassWriter)
         {
             this.propertyWriter = propertyWriter;
+            this.discriminatorWriter = discriminatorWriter;
+            this.subclassWriter = subclassWriter;
         }
 
         public XmlDocument Write(ClassMapping mapping)
@@ -63,9 +68,22 @@ namespace FluentNHibernate.MappingModel.Output
         public override void Visit(PropertyMapping propertyMapping)
         {
             var propertyXml = propertyWriter.Write(propertyMapping);
-            var propertyNode = document.ImportNode(propertyXml.DocumentElement, true);
 
-            document.DocumentElement.AppendChild(propertyNode);
+            document.ImportAndAppendChild(propertyXml);
+        }
+
+        public override void Visit(DiscriminatorMapping discriminatorMapping)
+        {
+            var discriminatorXml = discriminatorWriter.Write(discriminatorMapping);
+
+            document.ImportAndAppendChild(discriminatorXml);
+        }
+
+        public override void Visit(ISubclassMapping subclassMapping)
+        {
+            var subclassXml = subclassWriter.Write(subclassMapping);
+
+            document.ImportAndAppendChild(subclassXml);
         }
     }
 }

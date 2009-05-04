@@ -4,10 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace FluentNHibernate.Mapping
+namespace FluentNHibernate.Utils
 {
     public static class XmlExtensions
     {
+        public static XmlElement AddElement(this XmlDocument document, string name)
+        {
+            var child = document.CreateElement(name);
+
+            document.AppendChild(child);
+
+            return child;
+        }
+
         public static XmlElement AddElement(this XmlNode element, string name)
         {
             XmlElement child = element.OwnerDocument.CreateElement(name);
@@ -15,8 +24,6 @@ namespace FluentNHibernate.Mapping
 
             return child;
         }
-
-
 
         public static XmlElement WithAtt(this XmlElement element, string key, string attValue)
         {
@@ -58,6 +65,13 @@ namespace FluentNHibernate.Mapping
             columnElement.WithAtt(name, value);
 
             return element;
+        }
+
+        public static void ImportAndAppendChild(this XmlDocument document, XmlDocument toImport)
+        {
+            var importedNode = document.ImportNode(toImport.DocumentElement, true);
+
+            document.DocumentElement.AppendChild(importedNode);
         }
     }
 }

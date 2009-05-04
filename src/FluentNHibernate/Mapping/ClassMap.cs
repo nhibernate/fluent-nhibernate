@@ -128,20 +128,16 @@ namespace FluentNHibernate.Mapping
 
         public virtual DiscriminatorPart<TDiscriminator, T> DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
         {
-            var part = new DiscriminatorPart<TDiscriminator, T>(columnName, baseClassDiscriminator, this);
-            
-            AddPart(part);
+            mapping.Discriminator = new DiscriminatorMapping { ColumnName = columnName };
 
-            return part;
+            return new DiscriminatorPart<TDiscriminator, T>(mapping.Discriminator);
         }
 
         public virtual DiscriminatorPart<TDiscriminator, T> DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
         {
-            var part = new DiscriminatorPart<TDiscriminator, T>(columnName, this);
-            
-            AddPart(part);
+            mapping.Discriminator = new DiscriminatorMapping { ColumnName = columnName };
 
-            return part;
+            return new DiscriminatorPart<TDiscriminator, T>(mapping.Discriminator);
         }
 
         public virtual DiscriminatorPart<string, T> DiscriminateSubClassesOnColumn(string columnName)

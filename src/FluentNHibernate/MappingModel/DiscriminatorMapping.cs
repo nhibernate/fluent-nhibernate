@@ -16,7 +16,7 @@ namespace FluentNHibernate.MappingModel
             _attributes = new AttributeStore<DiscriminatorMapping>();
             _attributes.SetDefault(x => x.IsNotNullable, true);
             _attributes.SetDefault(x => x.Insert, true);
-            _attributes.SetDefault(x => x.DiscriminatorType, DiscriminatorType.String);
+            _attributes.SetDefault(x => x.Type, typeof(string));
             
         }
 
@@ -70,24 +70,10 @@ namespace FluentNHibernate.MappingModel
             set { _attributes.Set(x => x.Formula, value); }
         }
 
-        public DiscriminatorType DiscriminatorType
+        public Type Type
         {
-            get { return _attributes.Get(x => x.DiscriminatorType); }
-            set { _attributes.Set(x => x.DiscriminatorType, value); }
+            get { return _attributes.Get(x => x.Type); }
+            set { _attributes.Set(x => x.Type, value); }
         }
-
-        
-    }
-
-    public enum DiscriminatorType
-    {
-        String,
-        Char,
-        Int32,
-        Byte,
-        Short,
-        Boolean,
-        YesNo,
-        TrueFalse
     }
 }

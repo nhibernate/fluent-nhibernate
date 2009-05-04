@@ -1,4 +1,5 @@
 using System.Xml;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {

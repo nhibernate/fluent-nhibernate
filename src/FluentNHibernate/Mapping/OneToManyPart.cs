@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Xml;
 using System;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {

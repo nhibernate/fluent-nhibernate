@@ -3,45 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
     public class DiscriminatorPart<TDiscriminator, TParent> : IMappingPart
     {
+        private readonly DiscriminatorMapping mapping;
         private readonly string _columnName;
         private TDiscriminator _discriminatorValue;
 		private bool _discriminatorValueSet;
         private readonly Cache<string, string> attributes = new Cache<string, string>();
         private ClassMap<TParent> _parent;
 
-        public DiscriminatorPart(string columnName, TDiscriminator discriminatorValue, ClassMap<TParent> parent)
-            : this(columnName, parent) 
-		{
-			if (discriminatorValue != null)
-            {
-				_discriminatorValue = discriminatorValue;
-				_discriminatorValueSet = true;
-			}
-		}
-
-        public DiscriminatorPart(string columnName, ClassMap<TParent> parent)
+        public DiscriminatorPart(DiscriminatorMapping mapping)
         {
-            _columnName = columnName;
-            _parent = parent;
+            this.mapping = mapping;
         }
 
         #region IMappingPart Members
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-            string typeString = TypeMapping.GetTypeString(typeof (TDiscriminator));
-            classElement.AddElement("discriminator")
-                .WithAtt("column", _columnName)
-                .WithAtt("type", typeString)
-                .WithProperties(attributes);
-
-            if (_discriminatorValueSet) 
-				classElement.WithAtt("discriminator-value", _discriminatorValue.ToString());
+            
         }
 
         /// <summary>
@@ -76,22 +60,31 @@ namespace FluentNHibernate.Mapping
 
         public DiscriminatorPart<TDiscriminator, TParent> SubClass<TSubClass>(TDiscriminator discriminatorValue, Action<SubClassPart<TDiscriminator, TParent, TSubClass>> action)
         {
-            var subclass = new SubClassPart<TDiscriminator, TParent, TSubClass>(discriminatorValue, this);
-                
-            action(subclass);
+            var subclassMapping = new SubclassMapping
+            {
+                Type = typeof(TSubClass),
+                DiscriminatorValue = discriminatorValue
+            };
 
-            _parent.AddPart(subclass);
+            mapping.ParentClass.AddSubclass(subclassMapping);
+
+            var subclass = new SubClassPart<TDiscriminator, TParent, TSubClass>(subclassMapping);
+
+            action(subclass);
 
             return this;
         }
 
         public DiscriminatorPart<TDiscriminator, TParent> SubClass<TSubClass>(Action<SubClassPart<TDiscriminator, TParent, TSubClass>> action)
         {
-            var subclass = new SubClassPart<TDiscriminator, TParent, TSubClass>(this);
+            var subclassMapping = new SubclassMapping
+            {
+                Type = typeof(TSubClass),
+            };
+
+            var subclass = new SubClassPart<TDiscriminator, TParent, TSubClass>(subclassMapping);
 
             action(subclass);
-
-            _parent.AddPart(subclass);
 
             return this;
         }

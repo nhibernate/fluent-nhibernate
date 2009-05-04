@@ -46,6 +46,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="StructureMap, Version=2.5.2.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\StructureMap\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -111,8 +115,6 @@
     <Compile Include="Cfg\Db\SQLiteConfiguration.cs" />
     <Compile Include="Cfg\SetupConventionFinder.cs" />
     <Compile Include="Conventions\ConventionsCollection.cs" />
-    <Compile Include="Conventions\ForeignKeyConvention.cs" />
-    <Compile Include="Conventions\Defaults\DefaultForeignKeyConvention.cs" />
     <Compile Include="Conventions\Discovery\BaseMappingPartDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\ClassDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\ClassMappingPartDiscoveryConvention.cs" />
@@ -135,10 +137,6 @@
     <Compile Include="Conventions\Discovery\SubclassDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\SubclassMappingPartDiscoveryConvention.cs" />
     <Compile Include="Conventions\Discovery\VersionDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltForeignKeyConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltFuncForeignKeyConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltSuffixForeignKeyConvention.cs" />
-    <Compile Include="Conventions\Helpers\ForeignKey.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltClassConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltConventionBase.cs" />
@@ -186,8 +184,9 @@
     <Compile Include="DummyMethodInfo.cs" />
     <Compile Include="Cfg\Db\MsSqlConfiguration.cs" />
     <Compile Include="DummyPropertyInfo.cs" />
+    <Compile Include="MappingModel\Output\XmlSubclassWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlDiscriminatorWriter.cs" />
     <Compile Include="Infrastructure\Container.cs" />
-    <Compile Include="Infrastructure\ResolveException.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainer.cs" />
     <Compile Include="Mapping\AnyPart.cs" />
     <Compile Include="Extensions.cs">
@@ -198,8 +197,6 @@
     <Compile Include="MappingModel\PropertyMapping.cs" />
     <Compile Include="Mapping\ClassMap.cs" />
     <Compile Include="Mapping\DiscriminatorPart.cs" />
-    <Compile Include="Mapping\IAccessStrategyBuilder.cs" />
-    <Compile Include="Mapping\ICascadeExpression.cs" />
     <Compile Include="Mapping\IClassMap.cs" />
     <Compile Include="MappingModel\ImportMapping.cs" />
     <Compile Include="MappingModel\Output\XmlHibernateMappingWriter.cs">
@@ -211,9 +208,13 @@
     <Compile Include="Conventions\UserTypeConvention.cs" />
     <Compile Include="Conventions\AttributePropertyConvention.cs" />
     <Compile Include="Conventions\Defaults\BaseMethodAccessorBackingFieldNamingConvention.cs" />
+    <Compile Include="Conventions\Defaults\HasManyForeignKeyNameConvention.cs" />
     <Compile Include="Conventions\Defaults\HasManyMethodAccessorBackingFieldNamingConvention.cs" />
     <Compile Include="Conventions\Defaults\HasManyToManyJoinTableNameConvention.cs" />
     <Compile Include="Conventions\Defaults\HasManyToManyMethodAccessorBackingFieldNamingConvention.cs" />
+    <Compile Include="Conventions\Defaults\ReferenceForeignKeyConvention.cs" />
+    <Compile Include="Conventions\Defaults\HasManyToManyChildForeignKeyConvention.cs" />
+    <Compile Include="Conventions\Defaults\HasManyToManyParentForeignKeyConvention.cs" />
     <Compile Include="Conventions\Defaults\PrimaryKeyConvention.cs" />
     <Compile Include="Conventions\Defaults\VersionColumnNameConvention.cs" />
     <Compile Include="Conventions\IEntireMappingsConvention.cs" />
@@ -242,7 +243,6 @@
     <Compile Include="Mapping\GenericEnumMapper.cs" />
     <Compile Include="Mapping\IAccessStrategy.cs" />
     <Compile Include="Mapping\IClasslike.cs" />
-    <Compile Include="Mapping\ICollectionCascadeExpression.cs" />
     <Compile Include="Mapping\ICollectionRelationship.cs" />
     <Compile Include="Mapping\IColumnNameCollection.cs" />
     <Compile Include="Mapping\IHasAttributes.cs" />
@@ -251,9 +251,10 @@
     <Compile Include="Mapping\INotFoundExpression.cs" />
     <Compile Include="Mapping\InvalidPrefixException.cs" />
     <Compile Include="Mapping\IRelationship.cs" />
+    <Compile Include="Mapping\ISubclass.cs" />
     <Compile Include="Mapping\MappingPartComparer.cs" />
     <Compile Include="Mapping\Prefix.cs" />
-    <Compile Include="Mapping\XmlExtensions.cs" />
+    <Compile Include="Utils\XmlExtensions.cs" />
     <Compile Include="SessionSource.cs" />
     <Compile Include="Conventions\Defaults\TableNameConvention.cs" />
     <Compile Include="Testing\PersistenceSpecification.cs" />

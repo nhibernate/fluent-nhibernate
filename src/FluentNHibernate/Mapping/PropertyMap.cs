@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.Utils;
 using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping
