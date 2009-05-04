@@ -5,16 +5,14 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class XmlClassWriter : NullMappingModelVisitor, IXmlWriter<ClassMapping>
+    public class XmlClassWriter : XmlClasslikeWriterBase, IXmlWriter<ClassMapping>
     {
-        private XmlDocument document;
-        private readonly IXmlWriter<PropertyMapping> propertyWriter;
         private readonly IXmlWriter<DiscriminatorMapping> discriminatorWriter;
         private readonly IXmlWriter<ISubclassMapping> subclassWriter;
 
         public XmlClassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<DiscriminatorMapping> discriminatorWriter, IXmlWriter<ISubclassMapping> subclassWriter)
+            : base(propertyWriter)
         {
-            this.propertyWriter = propertyWriter;
             this.discriminatorWriter = discriminatorWriter;
             this.subclassWriter = subclassWriter;
         }
@@ -56,20 +54,16 @@ namespace FluentNHibernate.MappingModel.Output
             document.AppendChild(classElement);
 
             classElement.WithAtt("name", typeName)
-                .WithAtt("table", classMapping.Tablename)
+                .WithAtt("table", classMapping.TableName)
                 .WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
 
             if (classMapping.BatchSize > 0)
                 classElement.WithAtt("batch-size", classMapping.BatchSize.ToString());
 
+            if (classMapping.Attributes.IsSpecified(x => x.DiscriminatorBaseValue))
+                classElement.WithAtt("discriminator-value", classMapping.DiscriminatorBaseValue.ToString());
+
             return classElement;
-        }
-
-        public override void Visit(PropertyMapping propertyMapping)
-        {
-            var propertyXml = propertyWriter.Write(propertyMapping);
-
-            document.ImportAndAppendChild(propertyXml);
         }
 
         public override void Visit(DiscriminatorMapping discriminatorMapping)

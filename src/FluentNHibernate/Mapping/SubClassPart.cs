@@ -1,35 +1,44 @@
 ﻿using System;
+using System.Reflection;
 using System.Xml;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public class SubClassPart<TDiscriminator, TParent, TSubClass> : ClasslikeMapBase<TSubClass>, ISubclass
+    public class SubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclass
     {
+        private readonly DiscriminatorPart parent;
         private readonly SubclassMapping mapping;
-        private readonly bool discriminatorSet;
-        private readonly TDiscriminator _discriminator;
-        private readonly Cache<string, string> attributes = new Cache<string, string>();
-        private readonly DiscriminatorPart<TDiscriminator, TParent> parent;
+        private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
         private bool nextBool = true;
+
+        public SubClassPart(DiscriminatorPart parent, object discriminatorValue)
+            : this(new SubclassMapping())
+        {
+            this.parent = parent;
+
+            if (discriminatorValue != null)
+                mapping.DiscriminatorValue = discriminatorValue;
+        }
 
         public SubClassPart(SubclassMapping mapping)
         {
             this.mapping = mapping;
-            this.parent = parent;
         }
 
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
+        public SubclassMapping GetSubclassMapping()
         {
-            XmlElement subclassElement = classElement.AddElement("subclass")
-                .WithAtt("name", typeof(TSubClass).AssemblyQualifiedName)
-                .WithProperties(attributes);
+            mapping.Type = typeof(TSubclass);
+            
+            foreach (var property in Properties)
+                mapping.AddProperty(property.GetPropertyMapping());
 
-            if (discriminatorSet)
-                subclassElement.WithAtt("discriminator-value", _discriminator.ToString());
+            foreach (var part in Parts)
+                mapping.AddUnmigratedPart(part);
 
-            writeTheParts(subclassElement, visitor);
+            unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
+
+            return mapping;
         }
 
         /// <summary>
@@ -39,7 +48,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="value">Attribute value</param>
         public void SetAttribute(string name, string value)
         {
-            attributes.Store(name, value);
+            unmigratedAttributes.Store(name, value);
         }
 
         public void SetAttributes(Attributes atts)
@@ -50,63 +59,47 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public int LevelWithinPosition
+        protected override PropertyMap Map(PropertyInfo property, string columnName)
         {
-            get { return 3; }
+            var propertyMapping = new PropertyMapping()
+            {
+                Name = property.Name,
+                PropertyInfo = property
+            };
+
+            var propertyMap = new PropertyMap(propertyMapping);
+
+            if (!string.IsNullOrEmpty(columnName))
+                propertyMap.ColumnName(columnName);
+
+            properties.Add(propertyMap); // new
+
+            return propertyMap;
         }
 
-        public PartPosition PositionOnDocument
+        public DiscriminatorPart SubClass<TChild>(object discriminatorValue, Action<SubClassPart<TChild>> action)
         {
-            get { return PartPosition.Last; }
-        }
+            var subclass = new SubClassPart<TChild>(parent, discriminatorValue);
 
-        public DiscriminatorPart<TDiscriminator, TParent> SubClass<TChild>(TDiscriminator discriminatorValue, Action<SubClassPart<TDiscriminator, TParent, TChild>> action)
-        {
-            //var subclass = new SubClassPart<TDiscriminator, TParent, TChild>(discriminatorValue, parent);
+            action(subclass);
 
-            //action(subclass);
-
-            //AddPart(subclass);
+            mapping.AddSubclass(subclass.GetSubclassMapping());
 
             return parent;
         }
 
-        void ISubclass.SubClass<TChild>(object discriminatorValue, Action<ISubclass> action)
+        public DiscriminatorPart SubClass<TChild>(Action<SubClassPart<TChild>> action)
         {
-            //var subclass = new SubClassPart<TDiscriminator, TParent, TChild>((TDiscriminator)discriminatorValue, parent);
-
-            //action(subclass);
-
-            //AddPart(subclass);
-        }
-
-        public DiscriminatorPart<TDiscriminator, TParent> SubClass<TChild>(Action<SubClassPart<TDiscriminator, TParent, TChild>> action)
-        {
-            //var subclass = new SubClassPart<TDiscriminator, TParent, TChild>(default(TDiscriminator), parent);
-
-            //action(subclass);
-
-            //AddPart(subclass);
-
-            return parent;
-        }
-
-        void ISubclass.SubClass<TChild>(Action<ISubclass> action)
-        {
-            //var subclass = new SubClassPart<TDiscriminator, TParent, TChild>(default(TDiscriminator), parent);
-
-            //action(subclass);
-
-            //AddPart(subclass);
+            return SubClass(null, action);
         }
 
         /// <summary>
         /// Sets whether this subclass is lazy loaded
         /// </summary>
         /// <returns></returns>
-        public SubClassPart<TDiscriminator, TParent, TSubClass> LazyLoad()
+        public SubClassPart<TSubclass> LazyLoad()
         {
-            attributes.Store("lazy", nextBool.ToString().ToLowerInvariant());
+            mapping.LazyLoad = nextBool;
             nextBool = true;
             return this;
         }
@@ -114,7 +107,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Inverts the next boolean
         /// </summary>
-        public SubClassPart<TDiscriminator, TParent, TSubClass> Not
+        public SubClassPart<TSubclass> Not
         {
             get
             {
@@ -132,5 +125,29 @@ namespace FluentNHibernate.Mapping
         {
             get { return Not; }
         }
+
+        #region Implementation of IMappingPart
+
+        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Indicates a constant, general position on the document the part should be written to
+        /// </summary>
+        PartPosition IMappingPart.PositionOnDocument
+        {
+            get { throw new NotImplementedException(); }
+        }
+        /// <summary>
+        /// Indicates a constant sub-position within a similar grouping of positions the element will be written in
+        /// </summary>
+        int IMappingPart.LevelWithinPosition
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
     }
 }

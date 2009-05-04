@@ -11,8 +11,10 @@ namespace FluentNHibernate.MappingModel
         public ClassMapping ParentClass { get; internal set; }
         public ColumnMapping Column { get; set; }
 
-        public DiscriminatorMapping()
+        public DiscriminatorMapping(ClassMapping parentClass)
         {
+            ParentClass = parentClass;
+
             _attributes = new AttributeStore<DiscriminatorMapping>();
             _attributes.SetDefault(x => x.IsNotNullable, true);
             _attributes.SetDefault(x => x.Insert, true);

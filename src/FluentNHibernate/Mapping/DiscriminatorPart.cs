@@ -1,31 +1,25 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Xml;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
-    public class DiscriminatorPart<TDiscriminator, TParent> : IMappingPart
+    public class DiscriminatorPart : IDiscriminatorPart
     {
         private readonly DiscriminatorMapping mapping;
-        private readonly string _columnName;
-        private TDiscriminator _discriminatorValue;
-		private bool _discriminatorValueSet;
-        private readonly Cache<string, string> attributes = new Cache<string, string>();
-        private ClassMap<TParent> _parent;
+        private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
+
+        public DiscriminatorPart(ClassMapping parentMapping, string columnName)
+            : this(new DiscriminatorMapping(parentMapping) { ColumnName = columnName })
+        {}
 
         public DiscriminatorPart(DiscriminatorMapping mapping)
         {
             this.mapping = mapping;
         }
 
-        #region IMappingPart Members
-
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
+        public DiscriminatorMapping GetDiscriminatorMapping()
         {
-            
+            return mapping;
         }
 
         /// <summary>
@@ -35,7 +29,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="value">Attribute value</param>
         public void SetAttribute(string name, string value)
         {
-            attributes.Store(name, value);
+            unmigratedAttributes.Store(name, value);
         }
 
         public void SetAttributes(Attributes atts)
@@ -46,47 +40,20 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public int LevelWithinPosition
+        public DiscriminatorPart SubClass<TSubClass>(object discriminatorValue, Action<SubClassPart<TSubClass>> action)
         {
-            get { return 3; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.First; }
-        }
-
-        #endregion
-
-        public DiscriminatorPart<TDiscriminator, TParent> SubClass<TSubClass>(TDiscriminator discriminatorValue, Action<SubClassPart<TDiscriminator, TParent, TSubClass>> action)
-        {
-            var subclassMapping = new SubclassMapping
-            {
-                Type = typeof(TSubClass),
-                DiscriminatorValue = discriminatorValue
-            };
-
-            mapping.ParentClass.AddSubclass(subclassMapping);
-
-            var subclass = new SubClassPart<TDiscriminator, TParent, TSubClass>(subclassMapping);
+            var subclass = new SubClassPart<TSubClass>(this, discriminatorValue);
 
             action(subclass);
+
+            mapping.ParentClass.AddSubclass(subclass.GetSubclassMapping());
 
             return this;
         }
 
-        public DiscriminatorPart<TDiscriminator, TParent> SubClass<TSubClass>(Action<SubClassPart<TDiscriminator, TParent, TSubClass>> action)
+        public DiscriminatorPart SubClass<TSubClass>(Action<SubClassPart<TSubClass>> action)
         {
-            var subclassMapping = new SubclassMapping
-            {
-                Type = typeof(TSubClass),
-            };
-
-            var subclass = new SubClassPart<TDiscriminator, TParent, TSubClass>(subclassMapping);
-
-            action(subclass);
-
-            return this;
+            return SubClass(null, action);
         }
     }
 }

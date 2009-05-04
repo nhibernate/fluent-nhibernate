@@ -15,6 +15,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         protected XmlDocument document;
         protected IMappingVisitor _visitor;
         private readonly PersistenceModel model;
+        private string currentPath;
 
         public MappingTester(XmlDocument document)
             :this()
@@ -68,6 +69,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public virtual MappingTester<T> Element(string elementPath)
         {
             currentElement = (XmlElement)document.DocumentElement.SelectSingleNode(elementPath);
+            currentPath = elementPath;
 
             return this;
         }
@@ -104,7 +106,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public virtual MappingTester<T> Exists()
         {
-            Assert.IsNotNull(currentElement);
+            Assert.IsNotNull(currentElement, "Couldn't find element matching '" + currentPath + "'");
 
             return this;
         }
@@ -170,7 +172,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             else
             {
                 XmlElement elementAtPosition = (XmlElement)currentElement.ParentNode.ChildNodes.Item(elementPosition);
-                Assert.IsTrue(elementAtPosition == currentElement);
+                Assert.IsTrue(elementAtPosition == currentElement, "Expected '" + currentElement.Name + "' but was '" + elementAtPosition.Name + "'");
             }
 
             return this;

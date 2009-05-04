@@ -33,13 +33,21 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
                     map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>("red", sc => sc.Map(x => x.Name)))
+                        .SubClass<SecondMappedObject>("red", sc => { }))
                 .Element("//subclass")
                     .Exists()
                     .HasAttribute("name", typeof(SecondMappedObject).AssemblyQualifiedName)
-                    .HasAttribute("discriminator-value", "red")
-                .Element("//subclass/property/column")
-                    .HasAttribute("name", "Name");
+                    .HasAttribute("discriminator-value", "red");
+        }
+
+        [Test]
+        public void MapsProperty()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>(sc => sc.Map(x => x.Name)))
+                .Element("//subclass/property").HasAttribute("name", "Name");
         }
 
         [Test]
@@ -48,11 +56,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
                     map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>("red", sc =>
-                        {
-                            sc.Map(x => x.Name);
-                            sc.LazyLoad();
-                        }))
+                        .SubClass<SecondMappedObject>(sc => sc.LazyLoad()))
                 .Element("//subclass").HasAttribute("lazy", "true");
         }
 
@@ -62,12 +66,116 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
                     map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>("red", sc =>
-                        {
-                            sc.Map(x => x.Name);
-                            sc.Not.LazyLoad();
-                        }))
+                        .SubClass<SecondMappedObject>(sc => sc.Not.LazyLoad()))
                 .Element("//subclass").HasAttribute("lazy", "false");
+        }
+
+        [Test]
+        public void MapsComponent()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.Component(x => x.Component, c => { })))
+                .Element("//subclass/component").Exists();
+        }
+
+        [Test]
+        public void MapsDynamicComponent()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.DynamicComponent(x => x.Dictionary, c => { })))
+                .Element("//subclass/dynamic-component").Exists();
+        }
+
+        [Test]
+        public void MapsHasMany()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.HasMany(x => x.Children)))
+                .Element("//subclass/bag").Exists();
+        }
+
+        [Test]
+        public void MapsHasManyToMany()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.HasManyToMany(x => x.Children)))
+                .Element("//subclass/bag").Exists();
+        }
+
+        [Test]
+        public void MapsHasOne()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.HasOne(x => x.Parent)))
+                .Element("//subclass/one-to-one").Exists();
+        }
+
+        [Test]
+        public void MapsReferences()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.References(x => x.Parent)))
+                .Element("//subclass/many-to-one").Exists();
+        }
+
+        [Test]
+        public void MapsReferencesAny()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc =>
+                            sc.ReferencesAny(x => x.Parent)
+                                .IdentityType(x => x.Id)
+                                .EntityIdentifierColumn("col")
+                                .EntityTypeColumn("col")))
+                .Element("//subclass/any").Exists();
+        }
+
+        [Test]
+        public void MapsSubSubclass()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.SubClass<SecondMappedObject>(sc2 => { })))
+                .Element("//subclass/subclass").Exists();
+        }
+
+        [Test]
+        public void SubSubclassIsLast()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc =>
+                        {
+                            sc.SubClass<SecondMappedObject>(sc2 => { });
+                            sc.Map(x => x.Name);
+                        }))
+                .Element("//subclass/subclass").ShouldBeInParentAtPosition(1);
+        }
+
+        [Test]
+        public void MapsVersion()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.Version(x => x.Version)))
+                .Element("//subclass/version").Exists();
         }
 
         [Test]

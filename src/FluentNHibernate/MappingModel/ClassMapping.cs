@@ -9,7 +9,7 @@ namespace FluentNHibernate.MappingModel
     {
         private readonly AttributeStore<ClassMapping> _attributes;
         private readonly IList<ISubclassMapping> _subclasses;
-        private DiscriminatorMapping _discriminator;
+        private DiscriminatorMapping discriminator;
         private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
         private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
         public IIdentityMapping Id { get; set; }
@@ -33,16 +33,16 @@ namespace FluentNHibernate.MappingModel
 
         public DiscriminatorMapping Discriminator
         {
-            get { return _discriminator; }
+            get { return discriminator; }
             set
             {
-                if (_discriminator != null)
-                    _discriminator.ParentClass = null;
+                if (discriminator != null)
+                    discriminator.ParentClass = null;
 
-                _discriminator = value;
+                discriminator = value;
 
-                if (_discriminator != null)
-                    _discriminator.ParentClass = this;
+                if (discriminator != null)
+                    discriminator.ParentClass = this;
             }
         }
 
@@ -72,16 +72,22 @@ namespace FluentNHibernate.MappingModel
             base.AcceptVisitor(visitor);
         }
 
-        public string Tablename
+        public string TableName
         {
-            get { return _attributes.Get(x => x.Tablename); }
-            set { _attributes.Set(x => x.Tablename, value); }
+            get { return _attributes.Get(x => x.TableName); }
+            set { _attributes.Set(x => x.TableName, value); }
         }
 
         public int BatchSize
         {
             get { return _attributes.Get(x => x.BatchSize); }
             set { _attributes.Set(x => x.BatchSize, value); }
+        }
+
+        public object DiscriminatorBaseValue
+        {
+            get { return _attributes.Get(x => x.DiscriminatorBaseValue); }
+            set { _attributes.Set(x => x.DiscriminatorBaseValue, value); }
         }
 
         public AttributeStore<ClassMapping> Attributes

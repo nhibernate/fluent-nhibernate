@@ -38,6 +38,7 @@ namespace FluentNHibernate.Mapping
 
         private readonly ClassMapping mapping;
         private readonly HibernateMapping hibernateMapping = new HibernateMapping();
+        private IDiscriminatorPart discriminator;
 
         public ClassMap()
             : this(new ClassMapping(typeof(T)))
@@ -54,7 +55,7 @@ namespace FluentNHibernate.Mapping
 
         public string TableName
         {
-            get { return mapping.Tablename; }
+            get { return mapping.TableName; }
         }
 
         public ClassMapping GetClassMapping()
@@ -66,6 +67,9 @@ namespace FluentNHibernate.Mapping
 
             foreach (var part in Parts)
                 mapping.AddUnmigratedPart(part);
+
+            if (discriminator != null)
+                mapping.Discriminator = discriminator.GetDiscriminatorMapping();
 
             Attributes.ForEachPair(mapping.AddUnmigratedAttribute);
 
@@ -126,21 +130,27 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public virtual DiscriminatorPart<TDiscriminator, T> DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
+        public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
         {
-            mapping.Discriminator = new DiscriminatorMapping { ColumnName = columnName };
+            var part = new DiscriminatorPart(mapping, columnName);
 
-            return new DiscriminatorPart<TDiscriminator, T>(mapping.Discriminator);
+            discriminator = part;
+
+            mapping.DiscriminatorBaseValue = baseClassDiscriminator;
+
+            return part;
         }
 
-        public virtual DiscriminatorPart<TDiscriminator, T> DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
+        public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
         {
-            mapping.Discriminator = new DiscriminatorMapping { ColumnName = columnName };
+            var part = new DiscriminatorPart(mapping, columnName);
 
-            return new DiscriminatorPart<TDiscriminator, T>(mapping.Discriminator);
+            discriminator = part;
+
+            return part;
         }
 
-        public virtual DiscriminatorPart<string, T> DiscriminateSubClassesOnColumn(string columnName)
+        public virtual DiscriminatorPart DiscriminateSubClassesOnColumn(string columnName)
         {
             return DiscriminateSubClassesOnColumn<string>(columnName);
         }
@@ -233,7 +243,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="tableName">Table name</param>
         public void WithTable(string tableName)
         {
-            mapping.Tablename = tableName;
+            mapping.TableName = tableName;
         }
 
         /// <summary>

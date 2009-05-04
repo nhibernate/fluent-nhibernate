@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -9,6 +10,8 @@ namespace FluentNHibernate.MappingModel
     {
         private readonly AttributeStore<SubclassMapping> _attributes;
         private readonly IList<SubclassMapping> _subclasses;
+        private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
+        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
         public SubclassMapping()
             : this(new AttributeStore())
@@ -50,6 +53,32 @@ namespace FluentNHibernate.MappingModel
         {
             get { return _attributes.Get(x => x.DiscriminatorValue); }
             set { _attributes.Set(x => x.DiscriminatorValue, value); }
+        }
+
+        public bool LazyLoad
+        {
+            get { return _attributes.Get(x => x.LazyLoad); }
+            set { _attributes.Set(x => x.LazyLoad, value); }
+        }
+
+        public IEnumerable<IMappingPart> UnmigratedParts
+        {
+            get { return unmigratedParts; }
+        }
+
+        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
+        {
+            get { return unmigratedAttributes; }
+        }
+
+        public void AddUnmigratedPart(IMappingPart part)
+        {
+            unmigratedParts.Add(part);
+        }
+
+        public void AddUnmigratedAttribute(string attribute, string value)
+        {
+            unmigratedAttributes.Add(attribute, value);
         }
     }
 }

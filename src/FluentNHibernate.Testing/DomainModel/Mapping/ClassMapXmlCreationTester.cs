@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using FluentNHibernate.Mapping;
@@ -532,6 +533,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public string NickName { get; set; }
 
         public IList<ChildObject> Children { get; set; }
+        public IDictionary Dictionary { get; set; }
 
         public long Id { get; set; }
 

@@ -125,7 +125,7 @@ namespace FluentNHibernate.Testing.MappingModel
         public void Should_set_the_parent_class_for_the_discriminator()
         {
             var classMap = new ClassMapping {Name = "class1" };
-            classMap.Discriminator = new DiscriminatorMapping();
+            classMap.Discriminator = new DiscriminatorMapping(classMap);
 
             classMap.Discriminator.ParentClass.ShouldEqual(classMap);
         }
@@ -134,7 +134,7 @@ namespace FluentNHibernate.Testing.MappingModel
         public void Should_clear_the_parent_class_for_the_discriminator()
         {
             var classMap = new ClassMapping {Name = "class1" };
-            var discriminator = new DiscriminatorMapping();
+            var discriminator = new DiscriminatorMapping(classMap);
 
             classMap.Discriminator = discriminator;
             classMap.Discriminator = null;
@@ -146,7 +146,7 @@ namespace FluentNHibernate.Testing.MappingModel
         public void Should_pass_the_discriminator_to_the_visitor()
         {
             var classMap = new ClassMapping {Name = "class1" };
-            classMap.Discriminator = new DiscriminatorMapping();
+            classMap.Discriminator = new DiscriminatorMapping(classMap);
 
             var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
             visitor.Expect(x => x.Visit(classMap.Discriminator));

@@ -1,12 +1,10 @@
 using System;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
     public interface ISubclass : IClasslike, IMappingPart
     {
-        void SubClass<TChild>(object discriminatorValue, Action<ISubclass> action);
-        void SubClass<TChild>(Action<ISubclass> action);
-
         /// <summary>
         /// Sets whether this subclass is lazy loaded
         /// </summary>
@@ -17,5 +15,7 @@ namespace FluentNHibernate.Mapping
         /// Inverts the next boolean
         /// </summary>
         ISubclass Not { get; }
+
+        SubclassMapping GetSubclassMapping();
     }
 }
