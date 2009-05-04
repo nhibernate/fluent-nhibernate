@@ -23,6 +23,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void CanSpecifyCheckConstraintName()
+        {
+            new MappingTester<SuperClass>()
+              .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.CheckConstraint("name")))
+              .Element("class/joined-subclass").HasAttribute("check", "name");
+        }
+
+        [Test]
         public void JoinedSubClassHasKeyElement()
         {
             new MappingTester<SuperClass>()

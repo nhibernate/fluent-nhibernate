@@ -60,6 +60,12 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Schema, value); }
         }
 
+        public string Check
+        {
+            get { return attributes.Get(x => x.Check); }
+            set { attributes.Set(x => x.Check, value); }
+        }
+
         public IEnumerable<IMappingPart> UnmigratedParts
         {
             get { return unmigratedParts; }

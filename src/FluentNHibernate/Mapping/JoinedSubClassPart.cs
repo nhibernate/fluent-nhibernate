@@ -66,6 +66,12 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public JoinedSubClassPart<TSubclass> CheckConstraint(string constraintName)
+        {
+            mapping.Check = constraintName;
+            return this;
+        }
+
         public JoinedSubclassMapping GetJoinedSubclassMapping()
         {
             mapping.Key = new KeyMapping
@@ -88,6 +94,16 @@ namespace FluentNHibernate.Mapping
         void IJoinedSubclass.WithTableName(string tableName)
         {
             WithTableName(tableName);
+        }
+
+        void IJoinedSubclass.SchemaIs(string schema)
+        {
+            SchemaIs(schema);
+        }
+
+        void IJoinedSubclass.CheckConstraint(string checkConstraint)
+        {
+            CheckConstraint(checkConstraint);
         }
 
         void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)

@@ -36,6 +36,9 @@ namespace FluentNHibernate.MappingModel.Output
             if (subclassMapping.Attributes.IsSpecified(x => x.Schema))
                 subclassElement.WithAtt("schema", subclassMapping.Schema);
 
+            if (subclassMapping.Attributes.IsSpecified(x => x.Check))
+                subclassElement.WithAtt("check", subclassMapping.Check);
+
             var sortedUnmigratedParts = new List<IMappingPart>(subclassMapping.UnmigratedParts);
 
             sortedUnmigratedParts.Sort(new MappingPartComparer(subclassMapping.UnmigratedParts));
