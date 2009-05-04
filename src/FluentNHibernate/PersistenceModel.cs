@@ -192,6 +192,7 @@ namespace FluentNHibernate
 
                 using (var writer = new XmlTextWriter(Path.Combine(folder, mapping.Classes.First().Name + ".hbm.xml"), Encoding.Default))
                 {
+                    writer.Formatting = Formatting.Indented;
                     document.WriteTo(writer);
                 }    
             }
