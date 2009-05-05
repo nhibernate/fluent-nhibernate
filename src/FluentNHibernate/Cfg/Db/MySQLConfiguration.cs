@@ -1,5 +1,4 @@
-﻿using FluentNHibernate.Cfg.Db;
-using NHibernate.Dialect;
+﻿using NHibernate.Dialect;
 using NHibernate.Driver;
 
 namespace FluentNHibernate.Cfg.Db

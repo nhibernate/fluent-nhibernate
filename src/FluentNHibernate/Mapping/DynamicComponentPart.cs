@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
@@ -88,7 +89,7 @@ namespace FluentNHibernate.Mapping
 
         protected override PropertyMap Map(PropertyInfo property, string columnName)
         {
-            var propertyMapping = new PropertyMapping()
+            var propertyMapping = new PropertyMapping
             {
                 Name = property.Name,
                 PropertyInfo = property

@@ -1,35 +1,33 @@
 using System;
-using FluentNHibernate.MappingModel.Collections;
-using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
     public class OneToManyMapping : MappingBase, ICollectionContentsMapping
     {
-        private readonly AttributeStore<OneToManyMapping> _attributes;
+        private readonly AttributeStore<OneToManyMapping> attributes;
         public Type ChildType { get; set; }
 
         public OneToManyMapping()
         {
-            _attributes = new AttributeStore<OneToManyMapping>();
-            _attributes.SetDefault(x => x.ExceptionOnNotFound, true);
+            attributes = new AttributeStore<OneToManyMapping>();
+            attributes.SetDefault(x => x.ExceptionOnNotFound, true);
         }
 
         public AttributeStore<OneToManyMapping> Attributes
         {
-            get { return _attributes; }
+            get { return attributes; }
         }
 
         public string ClassName
         {
-            get { return _attributes.Get(x => x.ClassName); }
-            set { _attributes.Set(x => x.ClassName, value); }
+            get { return attributes.Get(x => x.ClassName); }
+            set { attributes.Set(x => x.ClassName, value); }
         }
 
         public bool ExceptionOnNotFound
         {
-            get { return _attributes.Get(x => x.ExceptionOnNotFound); }
-            set { _attributes.Set(x => x.ExceptionOnNotFound, value); }
+            get { return attributes.Get(x => x.ExceptionOnNotFound); }
+            set { attributes.Set(x => x.ExceptionOnNotFound, value); }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)

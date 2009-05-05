@@ -6,7 +6,7 @@ namespace FluentNHibernate.Testing
 {
     public class SingleConnectionSessionSourceForSQLiteInMemoryTesting : SessionSource
     {
-        private ISession _session;
+        private ISession session;
 
         public SingleConnectionSessionSourceForSQLiteInMemoryTesting(IDictionary<string, string> properties, PersistenceModel model) : base(properties, model)
         {
@@ -16,17 +16,17 @@ namespace FluentNHibernate.Testing
         {
         }
 
-        protected void ensure_current_session()
+        protected void EnsureCurrentSession()
         {
-            if (_session == null)
-                _session = base.CreateSession();
+            if (session == null)
+                session = base.CreateSession();
         }
 
         public override ISession CreateSession()
         {
-            ensure_current_session();
-            _session.Clear();
-            return _session;
+            EnsureCurrentSession();
+            session.Clear();
+            return session;
         }
 
         public override void BuildSchema()

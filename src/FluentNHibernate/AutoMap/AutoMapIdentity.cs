@@ -1,7 +1,4 @@
-using System;
 using System.Reflection;
-using FluentNHibernate.AutoMap;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.AutoMap
 {

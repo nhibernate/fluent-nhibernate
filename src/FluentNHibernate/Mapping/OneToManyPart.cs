@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Reflection;
 using System.Xml;
-using System;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public class OneToManyPart<CHILD> : ToManyBase<OneToManyPart<CHILD>, CHILD>, IOneToManyPart, IAccessStrategy<OneToManyPart<CHILD>> 
+    public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild>, IOneToManyPart, IAccessStrategy<OneToManyPart<TChild>> 
     {
-        private readonly ColumnNameCollection<OneToManyPart<CHILD>> columnNames;
+        private readonly ColumnNameCollection<OneToManyPart<TChild>> columnNames;
         private readonly Cache<string, string> collectionProperties = new Cache<string, string>();
 
         public OneToManyPart(Type entity, PropertyInfo property)
@@ -22,8 +21,8 @@ namespace FluentNHibernate.Mapping
         protected OneToManyPart(Type entity, MemberInfo member, Type collectionType)
             : base(entity, member, collectionType)
         {
-            columnNames = new ColumnNameCollection<OneToManyPart<CHILD>>(this);
-            _properties.Store("name", member.Name);
+            columnNames = new ColumnNameCollection<OneToManyPart<TChild>>(this);
+            properties.Store("name", member.Name);
         }
 
         public override void Write(XmlElement classElement, IMappingVisitor visitor)
@@ -32,7 +31,7 @@ namespace FluentNHibernate.Mapping
             Cache.Write(collectionElement, visitor);
             WriteKeyElement(visitor, collectionElement);
 
-            if (_indexMapping != null)
+            if (indexMapping != null)
                 WriteIndexElement(collectionElement);
 
             WriteMappingTypeElement(visitor, collectionElement);
@@ -40,11 +39,11 @@ namespace FluentNHibernate.Mapping
 
         private XmlElement WriteCollectionElement(XmlElement classElement)
         {
-            if (_collectionType == "array")
-                _properties.Remove("collection-type");
+            if (collectionType == "array")
+                properties.Remove("collection-type");
 
-            XmlElement collectionElement = classElement.AddElement(_collectionType)
-                .WithProperties(_properties);
+            XmlElement collectionElement = classElement.AddElement(collectionType)
+                .WithProperties(properties);
 
             if (!string.IsNullOrEmpty(TableName))
                 collectionElement.SetAttribute("table", TableName);
@@ -58,23 +57,23 @@ namespace FluentNHibernate.Mapping
 
         private void WriteMappingTypeElement(IMappingVisitor visitor, XmlElement collectionElement)
         {
-            if (_elementMapping != null) 
+            if (elementMapping != null) 
             {
                 var elementElement = collectionElement.AddElement("element");                
-                _elementMapping.WriteAttributesToIndexElement(elementElement);                
+                elementMapping.WriteAttributesToIndexElement(elementElement);                
             } 
-            else if (_componentMapping == null) 
+            else if (componentMapping == null) 
             {
                 // standard one-to-many element
                 collectionElement.AddElement("one-to-many")
                     .WithProperties(collectionProperties)
-                    .SetAttribute("class", typeof(CHILD).AssemblyQualifiedName);
+                    .SetAttribute("class", typeof(TChild).AssemblyQualifiedName);
                     
             }
             else
             {
                 // specified a component, so output that instead
-                _componentMapping.Write(collectionElement, visitor);
+                componentMapping.Write(collectionElement, visitor);
             }
         }
 
@@ -83,10 +82,10 @@ namespace FluentNHibernate.Mapping
             var columns = columnNames.List();
 
             if (columns.Count == 1)
-                _keyProperties.Store("column", columns[0]);
+                keyProperties.Store("column", columns[0]);
 
             var key = collectionElement.AddElement("key")
-                .WithProperties(_keyProperties);
+                .WithProperties(keyProperties);
 
             if (columns.Count <= 1) return;
 
@@ -104,7 +103,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="value">Attribute value</param>
         public override void SetAttribute(string name, string value)
         {
-            _properties.Store(name, value);
+            properties.Store(name, value);
         }
 
         public override void SetAttributes(Attributes atts)
@@ -125,15 +124,15 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.Anywhere; }
         }
 
-        public FetchTypeExpression<OneToManyPart<CHILD>> FetchType
+        public FetchTypeExpression<OneToManyPart<TChild>> FetchType
         {
             get
             {
-                return new FetchTypeExpression<OneToManyPart<CHILD>>(this, _properties);
+                return new FetchTypeExpression<OneToManyPart<TChild>>(this, properties);
             }
         }
 
-        public ColumnNameCollection<OneToManyPart<CHILD>> KeyColumnNames
+        public ColumnNameCollection<OneToManyPart<TChild>> KeyColumnNames
         {
             get { return columnNames; }
         }
@@ -147,17 +146,17 @@ namespace FluentNHibernate.Mapping
 
         IOneToManyPart IOneToManyPart.Inverse()
         {
-            return this.Inverse();
+            return Inverse();
         }
 
         IOneToManyPart IOneToManyPart.LazyLoad()
         {
-            return this.LazyLoad();
+            return LazyLoad();
         }
 
         IOneToManyPart IOneToManyPart.Not
         {
-            get { return this.Not; }
+            get { return Not; }
         }
 
         /// <summary>
@@ -165,7 +164,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         IOneToManyPart IOneToManyPart.CollectionType<TCollection>()
         {
-            return this.CollectionType<TCollection>();
+            return CollectionType<TCollection>();
         }
 
         /// <summary>
@@ -173,7 +172,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         IOneToManyPart IOneToManyPart.CollectionType(Type type)
         {
-            return this.CollectionType(type);
+            return CollectionType(type);
         }
 
         /// <summary>
@@ -181,7 +180,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         IOneToManyPart IOneToManyPart.CollectionType(string type)
         {
-            return this.CollectionType(type);
+            return CollectionType(type);
         }
 
         IColumnNameCollection IOneToManyPart.KeyColumnNames
@@ -194,11 +193,11 @@ namespace FluentNHibernate.Mapping
             get { return Access; }
         }
 
-        public NotFoundExpression<OneToManyPart<CHILD>> NotFound
+        public NotFoundExpression<OneToManyPart<TChild>> NotFound
         {
             get
             {
-                return new NotFoundExpression<OneToManyPart<CHILD>>(this, collectionProperties);
+                return new NotFoundExpression<OneToManyPart<TChild>>(this, collectionProperties);
             }
         }
 

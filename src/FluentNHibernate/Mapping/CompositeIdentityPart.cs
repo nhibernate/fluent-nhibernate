@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
@@ -61,18 +60,18 @@ namespace FluentNHibernate.Mapping
 
 	public class CompositeIdentityPart<T> : IMappingPart, IAccessStrategy<CompositeIdentityPart<T>>
 	{
-		private readonly AccessStrategyBuilder<CompositeIdentityPart<T>> _access;
-		private readonly IList<KeyProperty> _keyProperties;
+		private readonly AccessStrategyBuilder<CompositeIdentityPart<T>> access;
+		private readonly IList<KeyProperty> keyProperties;
 
 		public CompositeIdentityPart()
 		{
-			_keyProperties = new List<KeyProperty>();
-			_access = new AccessStrategyBuilder<CompositeIdentityPart<T>>(this);
+			keyProperties = new List<KeyProperty>();
+			access = new AccessStrategyBuilder<CompositeIdentityPart<T>>(this);
 		}
 
 		public void SetAttribute(string name, string value)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
         public void SetAttributes(Attributes atts)
@@ -87,7 +86,7 @@ namespace FluentNHibernate.Mapping
 		{
 			XmlElement element = classElement.AddElement("composite-id");
 
-			foreach( var keyProp in _keyProperties )
+			foreach( var keyProp in keyProperties )
 			{
 				keyProp.Write(element, visitor);
 			}
@@ -137,7 +136,7 @@ namespace FluentNHibernate.Mapping
 			              		ColumnName = columnName
 			              	};
 
-			_keyProperties.Add( keyProp );
+			keyProperties.Add( keyProp );
 
 			return this;
 		}
@@ -168,7 +167,7 @@ namespace FluentNHibernate.Mapping
 			              		ColumnName = columnName
 			              	};
 
-			_keyProperties.Add(keyProp);
+			keyProperties.Add(keyProp);
 
 			return this;
 		}
@@ -178,7 +177,7 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
 		public AccessStrategyBuilder<CompositeIdentityPart<T>> Access
 		{
-			get { return _access; }
+			get { return access; }
 		}
 	}
 }

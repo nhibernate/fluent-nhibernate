@@ -16,37 +16,37 @@ namespace FluentNHibernate.Mapping
         INotFoundExpression NotFound { get; }
     }
 
-    public class ManyToOnePart<OTHER> : IManyToOnePart, IAccessStrategy<ManyToOnePart<OTHER>>
+    public class ManyToOnePart<TOther> : IManyToOnePart, IAccessStrategy<ManyToOnePart<TOther>>
     {
-		private readonly Cache<string, string> _properties = new Cache<string, string>();
+		private readonly Cache<string, string> properties = new Cache<string, string>();
         public PropertyInfo Property { get; private set; }
         public Type EntityType { get; private set; }
         private string columnName;
-        private readonly AccessStrategyBuilder<ManyToOnePart<OTHER>> access;
-        private readonly IList<string> _columns = new List<string>();
+        private readonly AccessStrategyBuilder<ManyToOnePart<TOther>> access;
+        private readonly IList<string> columns = new List<string>();
         private bool nextBool = true;
 
         public ManyToOnePart(Type entity, PropertyInfo property) 
         {
             EntityType = entity;
-            access = new AccessStrategyBuilder<ManyToOnePart<OTHER>>(this);
+            access = new AccessStrategyBuilder<ManyToOnePart<TOther>>(this);
 
             Property = property;
         }
 
-		public FetchTypeExpression<ManyToOnePart<OTHER>> FetchType
+		public FetchTypeExpression<ManyToOnePart<TOther>> FetchType
 		{
 			get
 			{
-				return new FetchTypeExpression<ManyToOnePart<OTHER>>(this, _properties);
+				return new FetchTypeExpression<ManyToOnePart<TOther>>(this, properties);
 			}
 		}
 
-        public NotFoundExpression<ManyToOnePart<OTHER>> NotFound
+        public NotFoundExpression<ManyToOnePart<TOther>> NotFound
         {
             get
             {
-                return new NotFoundExpression<ManyToOnePart<OTHER>>( this, _properties );
+                return new NotFoundExpression<ManyToOnePart<TOther>>( this, properties );
             }
         }
 
@@ -55,17 +55,17 @@ namespace FluentNHibernate.Mapping
             get { return NotFound; }
         }
 
-        public ManyToOnePart<OTHER> PropertyRef(Expression<Func<OTHER, object>> propRefExpression)
+        public ManyToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> propRefExpression)
         {
             var prop = ReflectionHelper.GetProperty(propRefExpression);
-            _properties.Store("property-ref", prop.Name);
+            properties.Store("property-ref", prop.Name);
 
             return this;
         }
 
-        public ManyToOnePart<OTHER> Unique()
+        public ManyToOnePart<TOther> Unique()
         {
-            _properties.Store("unique", nextBool.ToString().ToLowerInvariant());
+            properties.Store("unique", nextBool.ToString().ToLowerInvariant());
             nextBool = true;
             return this;
         }
@@ -74,41 +74,41 @@ namespace FluentNHibernate.Mapping
         /// Specifies the name of a multi-column unique constraint.
         /// </summary>
         /// <param name="keyName">Name of constraint</param>
-        public ManyToOnePart<OTHER> UniqueKey(string keyName)
+        public ManyToOnePart<TOther> UniqueKey(string keyName)
         {
-            _properties.Store("unique-key", keyName);
+            properties.Store("unique-key", keyName);
             return this;
         }
 
-        public ManyToOnePart<OTHER> LazyLoad()
+        public ManyToOnePart<TOther> LazyLoad()
         {
-            _properties.Store("lazy", nextBool ? "proxy" : "false");
+            properties.Store("lazy", nextBool ? "proxy" : "false");
             nextBool = true;
             return this;
         }
 		
-		public ManyToOnePart<OTHER> WithForeignKey()
+		public ManyToOnePart<TOther> WithForeignKey()
 		{
 			return WithForeignKey(string.Format("FK_{0}To{1}", Property.DeclaringType.Name, Property.Name));
 		}
 		
-		public ManyToOnePart<OTHER> WithForeignKey(string foreignKeyName)
+		public ManyToOnePart<TOther> WithForeignKey(string foreignKeyName)
 		{
-			_properties.Store("foreign-key", foreignKeyName);
+			properties.Store("foreign-key", foreignKeyName);
 			return this;
 		}
 
-        public ManyToOnePart<OTHER> WithColumns(params string[] columns)
+        public ManyToOnePart<TOther> WithColumns(params string[] columns)
         {
             foreach (var column in columns)
             {
-                _columns.Add(column);
+                this.columns.Add(column);
             }
 
             return this;
         }
 
-        public ManyToOnePart<OTHER> WithColumns(params Expression<Func<OTHER, object>>[] columns)
+        public ManyToOnePart<TOther> WithColumns(params Expression<Func<TOther, object>>[] columns)
         {
             foreach (var expression in columns)
             {
@@ -120,26 +120,26 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 		
-		public CascadeExpression<ManyToOnePart<OTHER>> Cascade
+		public CascadeExpression<ManyToOnePart<TOther>> Cascade
 		{
 			get
 			{
-				return new CascadeExpression<ManyToOnePart<OTHER>>(this);
+				return new CascadeExpression<ManyToOnePart<TOther>>(this);
 			}
 		}
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-        	_properties.Store("name", Property.Name);
+        	properties.Store("name", Property.Name);
 
-            if (_columns.Count == 0)
-                _properties.Store("column", columnName);
+            if (columns.Count == 0)
+                properties.Store("column", columnName);
 
-            var manyToOneElement = classElement.AddElement("many-to-one").WithProperties(_properties);
+            var manyToOneElement = classElement.AddElement("many-to-one").WithProperties(properties);
 
-            if (_columns.Count > 0)
+            if (columns.Count > 0)
             {
-                foreach (var column in _columns)
+                foreach (var column in columns)
                 {
                     manyToOneElement.AddElement("column")
                         .WithAtt("name", column);
@@ -150,7 +150,7 @@ namespace FluentNHibernate.Mapping
 
         public void SetAttribute(string name, string value)
         {
-			_properties.Store(name, value);
+			properties.Store(name, value);
         }
 
         public void SetAttributes(Attributes atts)
@@ -166,7 +166,7 @@ namespace FluentNHibernate.Mapping
             return ColumnName(name);
         }
 
-        public ManyToOnePart<OTHER> ColumnName(string name)
+        public ManyToOnePart<TOther> ColumnName(string name)
         {
             columnName = name;
 
@@ -188,14 +188,14 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.Anywhere; }
         }
 
-        public ManyToOnePart<OTHER> Nullable()
+        public ManyToOnePart<TOther> Nullable()
         {
             SetAttribute("not-null", (!nextBool).ToString().ToLowerInvariant());
             nextBool = true;
             return this;
         }
 
-        public AccessStrategyBuilder<ManyToOnePart<OTHER>> Access
+        public AccessStrategyBuilder<ManyToOnePart<TOther>> Access
         {
             get { return access; }
         }
@@ -208,7 +208,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Inverts the next boolean
         /// </summary>
-        public ManyToOnePart<OTHER> Not
+        public ManyToOnePart<TOther> Not
         {
             get
             {

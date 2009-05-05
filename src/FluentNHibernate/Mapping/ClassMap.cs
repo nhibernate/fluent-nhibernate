@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
@@ -90,11 +91,6 @@ namespace FluentNHibernate.Mapping
             return hibernateMapping;
         }
 
-        public Type EntityType
-        {
-            get { return typeof(T); }
-        }
-
         public void UseIdentityForKey(Expression<Func<T, object>> expression, string columnName)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
@@ -109,7 +105,7 @@ namespace FluentNHibernate.Mapping
             if (this is AutoJoinedSubClassPart<T>)
                 return base.Map(property, columnName);
 
-            var propertyMapping = new PropertyMapping()
+            var propertyMapping = new PropertyMapping
             {
                 Name = property.Name,
                 PropertyInfo = property

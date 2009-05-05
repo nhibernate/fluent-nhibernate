@@ -11,10 +11,10 @@ namespace FluentNHibernate.Mapping
         IEnumerable<IMappingPart> Parts { get; }
         IEnumerable<PropertyMap> Properties { get; }
         IProperty Map<TEntity>(Expression<Func<TEntity, object>> expression);
-        IManyToOnePart References<TEntity, OTHER>(Expression<Func<TEntity, OTHER>> expression);
-        IOneToOnePart HasOne<TEntity, OTHER>(Expression<Func<TEntity, OTHER>> expression);
+        IManyToOnePart References<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression);
+        IOneToOnePart HasOne<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression);
         IDynamicComponent DynamicComponent<TEntity>(Expression<Func<TEntity, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action);
-        IAnyPart<OTHER> ReferencesAny<TEntity, OTHER>(Expression<Func<TEntity, OTHER>> expression);
+        IAnyPart<TOther> ReferencesAny<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression);
 
         /// <summary>
         /// Maps a component
@@ -27,27 +27,27 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// CreateProperties a one-to-many relationship
         /// </summary>
-        /// <typeparam name="CHILD">Child object type</typeparam>
+        /// <typeparam name="TChild">Child object type</typeparam>
         /// <param name="expression">Expression to get property from</param>
         /// <returns>one-to-many part</returns>
-        IOneToManyPart HasMany<TEntity, CHILD>(Expression<Func<TEntity, IEnumerable<CHILD>>> expression);
+        IOneToManyPart HasMany<TEntity, TChild>(Expression<Func<TEntity, IEnumerable<TChild>>> expression);
 
         /// <summary>
         /// CreateProperties a one-to-many relationship with a IDictionary
         /// </summary>
-        /// <typeparam name="KEY">Dictionary key type</typeparam>
-        /// <typeparam name="CHILD">Child object type / Dictionary value type</typeparam>
+        /// <typeparam name="TKey">Dictionary key type</typeparam>
+        /// <typeparam name="TChild">Child object type / Dictionary value type</typeparam>
         /// <param name="expression">Expression to get property from</param>
         /// <returns>one-to-many part</returns>
-        IOneToManyPart HasMany<TEntity, KEY, CHILD>(Expression<Func<TEntity, IDictionary<KEY, CHILD>>> expression);
+        IOneToManyPart HasMany<TEntity, TKey, TChild>(Expression<Func<TEntity, IDictionary<TKey, TChild>>> expression);
 
         /// <summary>
         /// CreateProperties a many-to-many relationship
         /// </summary>
-        /// <typeparam name="CHILD">Child object type</typeparam>
+        /// <typeparam name="TChild">Child object type</typeparam>
         /// <param name="expression">Expression to get property from</param>
         /// <returns>many-to-many part</returns>
-        IManyToManyPart HasManyToMany<TEntity, CHILD>(Expression<Func<TEntity, IEnumerable<CHILD>>> expression);
+        IManyToManyPart HasManyToMany<TEntity, TChild>(Expression<Func<TEntity, IEnumerable<TChild>>> expression);
 
         IVersion Version<T>(Expression<Func<T, object>> expression);
     }

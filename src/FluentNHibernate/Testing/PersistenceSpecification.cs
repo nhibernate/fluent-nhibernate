@@ -5,18 +5,17 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Utils;
-using Iesi.Collections.Generic;
 using Iesi.Collections;
+using Iesi.Collections.Generic;
 using NHibernate;
-using NHibernate.Util;
 
 namespace FluentNHibernate.Testing
 {
     public class PersistenceSpecification<T>
     {
-        private readonly List<PropertyValue> _allProperties = new List<PropertyValue>();
-        private readonly ISession _currentSession;
-        private readonly IEqualityComparer _entityEqualityComparer;
+        private readonly List<PropertyValue> allProperties = new List<PropertyValue>();
+        private readonly ISession currentSession;
+        private readonly IEqualityComparer entityEqualityComparer;
 
         public PersistenceSpecification(ISessionSource source)
             : this(source.CreateSession())
@@ -34,22 +33,22 @@ namespace FluentNHibernate.Testing
 
         public PersistenceSpecification(ISession session, IEqualityComparer entityEqualityComparer)
         {
-            _currentSession = session;
-            _entityEqualityComparer = entityEqualityComparer;
+            currentSession = session;
+            this.entityEqualityComparer = entityEqualityComparer;
         }
 
         public PersistenceSpecification<T> CheckProperty(Expression<Func<T, object>> expression, object propertyValue)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            _allProperties.Add(new PropertyValue(property, propertyValue, _entityEqualityComparer));
+            allProperties.Add(new PropertyValue(property, propertyValue, entityEqualityComparer));
 
             return this;
         }
 
-        public PersistenceSpecification<T> CheckProperty<ELEMENTTYPE>(Expression<Func<T, Array>> expression, IList<ELEMENTTYPE> propertyValue)
+        public PersistenceSpecification<T> CheckProperty<TElement>(Expression<Func<T, Array>> expression, IList<TElement> propertyValue)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            _allProperties.Add(new ListValue<ELEMENTTYPE>(property, propertyValue, _entityEqualityComparer));
+            allProperties.Add(new ListValue<TElement>(property, propertyValue, entityEqualityComparer));
 
             return this;
         }
@@ -58,22 +57,22 @@ namespace FluentNHibernate.Testing
             TransactionalSave(propertyValue);
 
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            _allProperties.Add(new PropertyValue(property, propertyValue, _entityEqualityComparer));
+            allProperties.Add(new PropertyValue(property, propertyValue, entityEqualityComparer));
 
             return this;
         }
 
 
-        public PersistenceSpecification<T> CheckList<LIST>(Expression<Func<T, object>> expression,
-            IList<LIST> propertyValue)
+        public PersistenceSpecification<T> CheckList<TList>(Expression<Func<T, object>> expression,
+            IList<TList> propertyValue)
         {
-            foreach (LIST item in propertyValue)
+            foreach (TList item in propertyValue)
             {
                 TransactionalSave(item);
             }
 
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            _allProperties.Add(new ListValue<LIST>(property, propertyValue, _entityEqualityComparer));
+            allProperties.Add(new ListValue<TList>(property, propertyValue, entityEqualityComparer));
 
             return this;
         }
@@ -81,13 +80,13 @@ namespace FluentNHibernate.Testing
         /// <summary>
         /// Checks a list of components for validity.
         /// </summary>
-        /// <typeparam name="LIST">Type of list element</typeparam>
+        /// <typeparam name="TList">Type of list element</typeparam>
         /// <param name="expression">Property</param>
         /// <param name="propertyValue">Value to save</param>
-        public PersistenceSpecification<T> CheckComponentList<LIST>(Expression<Func<T, object>> expression, IList<LIST> propertyValue)
+        public PersistenceSpecification<T> CheckComponentList<TList>(Expression<Func<T, object>> expression, IList<TList> propertyValue)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            _allProperties.Add(new ListValue<LIST>(property, propertyValue, _entityEqualityComparer));
+            allProperties.Add(new ListValue<TList>(property, propertyValue, entityEqualityComparer));
 
             return this;
         }
@@ -99,45 +98,45 @@ namespace FluentNHibernate.Testing
 
             // Set the "suggested" properties, including references
             // to other entities and possibly collections
-            _allProperties.ForEach(p => p.SetValue(first));
+            allProperties.ForEach(p => p.SetValue(first));
 
             // Save the first copy
             TransactionalSave(first);
 
-            object firstId = _currentSession.GetIdentifier(first);
+            object firstId = currentSession.GetIdentifier(first);
 
             // Clear and reset the current session
-            _currentSession.Flush();
-            _currentSession.Clear();
+            currentSession.Flush();
+            currentSession.Clear();
 
             // "Find" the same entity from the second IRepository
-            var second = _currentSession.Get<T>(firstId);
+            var second = currentSession.Get<T>(firstId);
 
             // Validate that each specified property and value
             // made the round trip
             // It's a bit naive right now because it fails on the first failure
-            _allProperties.ForEach(p => p.CheckValue(second));
+            allProperties.ForEach(p => p.CheckValue(second));
         }
 
         private void TransactionalSave(object propertyValue)
         {
-            using (var tx = _currentSession.BeginTransaction())
+            using (var tx = currentSession.BeginTransaction())
             {
-                _currentSession.Save(propertyValue);
+                currentSession.Save(propertyValue);
                 tx.Commit();
             }
         }
 
         #region Nested type: ListValue
 
-        internal class ListValue<LISTELEMENT> : PropertyValue
+        internal class ListValue<TListelement> : PropertyValue
         {
-            private readonly IList<LISTELEMENT> _expected;
+            private readonly IList<TListelement> expected;
 
-            public ListValue(PropertyInfo property, IList<LISTELEMENT> propertyValue, IEqualityComparer entityEqualityComparer)
+            public ListValue(PropertyInfo property, IList<TListelement> propertyValue, IEqualityComparer entityEqualityComparer)
                 : base(property, propertyValue, entityEqualityComparer)
             {
-                _expected = propertyValue;
+                expected = propertyValue;
             }
 
             internal override void SetValue(object target)
@@ -150,34 +149,34 @@ namespace FluentNHibernate.Testing
                     // on the user to pass in the correct collection type (especially if they're using
                     // an interface). I've tried to create the common ones, but I'm sure this won't be
                     // infallable.
-                    if (_property.PropertyType.IsAssignableFrom(typeof(ISet<LISTELEMENT>)))
-                        collection = new HashedSet<LISTELEMENT>(_expected);
-                    else if (_property.PropertyType.IsAssignableFrom(typeof(ISet)))
-                        collection = new HashedSet((ICollection)_expected);
-                    else if (_property.PropertyType.IsArray)
+                    if (property.PropertyType.IsAssignableFrom(typeof(ISet<TListelement>)))
+                        collection = new HashedSet<TListelement>(expected);
+                    else if (property.PropertyType.IsAssignableFrom(typeof(ISet)))
+                        collection = new HashedSet((ICollection)expected);
+                    else if (property.PropertyType.IsArray)
                     {
-                        collection = Array.CreateInstance(typeof (LISTELEMENT), _expected.Count);
-                        Array.Copy((Array)_expected, (Array)collection, _expected.Count);
+                        collection = Array.CreateInstance(typeof (TListelement), expected.Count);
+                        Array.Copy((Array)expected, (Array)collection, expected.Count);
                     }
                     else
-                        collection = new List<LISTELEMENT>(_expected);
+                        collection = new List<TListelement>(expected);
 
-                    _property.SetValue(target, collection, null);
+                    property.SetValue(target, collection, null);
                 }
                 catch (Exception e)
                 {
-                    string message = "Error while trying to set property " + _property.Name;
+                    string message = "Error while trying to set property " + property.Name;
                     throw new ApplicationException(message, e);
                 }
             }
 
             internal override void CheckValue(object target)
             {
-                var actual = (IEnumerable<LISTELEMENT>)_property.GetValue(target, null);
-                assertGenericListMatches<LISTELEMENT>(actual, _expected);
+                var actual = (IEnumerable<TListelement>)property.GetValue(target, null);
+                AssertGenericListMatches(actual, expected);
             }
 
-            private void assertGenericListMatches<ITEM>(IEnumerable<ITEM> actualEnumerable, IEnumerable<ITEM> expectedEnumerable)
+            private void AssertGenericListMatches<TItem>(IEnumerable<TItem> actualEnumerable, IEnumerable<TItem> expectedEnumerable)
             {
                 if (actualEnumerable == null)
                     throw new ArgumentNullException("actualEnumerable",
@@ -186,23 +185,23 @@ namespace FluentNHibernate.Testing
                     throw new ArgumentNullException("expectedEnumerable",
                         "Actual and expected are not equal (expected was null).");
 
-                var actual = actualEnumerable.ToList();
-                var expected = expectedEnumerable.ToList();
+                var actualList = actualEnumerable.ToList();
+                var expectedList = expectedEnumerable.ToList();
 
-                if (actual.Count != expected.Count)
+                if (actualList.Count != expectedList.Count)
                     throw new ApplicationException("Actual count does not equal expected count");
 
-                var equalsFunc = (_entityEqualityComparer != null)
-                    ? new Func<object, object, bool>((a, b) => _entityEqualityComparer.Equals(a, b))
+                var equalsFunc = (entityEqualityComparer != null)
+                    ? new Func<object, object, bool>((a, b) => entityEqualityComparer.Equals(a, b))
                     : new Func<object, object, bool>(Equals);
 
-                for (var i = 0; i < actual.Count; i++)
+                for (var i = 0; i < actualList.Count; i++)
                 {
-                    if (equalsFunc(actual[i], expected[i])) continue;
+                    if (equalsFunc(actualList[i], expectedList[i])) continue;
 
                     var message = string.Format("Expected '{0}' but got '{1}' at position {2}",
-                        expected[i],
-                        actual[i],
+                        expectedList[i],
+                        actualList[i],
                         i);
 
                     throw new ApplicationException(message);
@@ -216,42 +215,42 @@ namespace FluentNHibernate.Testing
 
         internal class PropertyValue
         {
-            protected readonly PropertyInfo _property;
-            protected readonly object _propertyValue;
-            protected readonly IEqualityComparer _entityEqualityComparer;
+            protected readonly PropertyInfo property;
+            protected readonly object propertyValue;
+            protected readonly IEqualityComparer entityEqualityComparer;
 
             internal PropertyValue(PropertyInfo property, object propertyValue, IEqualityComparer entityEqualityComparer)
             {
-                _property = property;
-                _propertyValue = propertyValue;
-                _entityEqualityComparer = entityEqualityComparer;
+                this.property = property;
+                this.propertyValue = propertyValue;
+                this.entityEqualityComparer = entityEqualityComparer;
             }
 
             internal virtual void SetValue(object target)
             {
                 try
                 {
-                    _property.SetValue(target, _propertyValue, null);
+                    property.SetValue(target, propertyValue, null);
                 }
                 catch (Exception e)
                 {
-                    string message = "Error while trying to set property " + _property.Name;
+                    string message = "Error while trying to set property " + property.Name;
                     throw new ApplicationException(message, e);
                 }
             }
 
             internal virtual void CheckValue(object target)
             {
-                object actual = _property.GetValue(target, null);
+                object actual = property.GetValue(target, null);
 
                 bool areEqual;
-                if (_entityEqualityComparer != null)
+                if (entityEqualityComparer != null)
                 {
-                    areEqual = _entityEqualityComparer.Equals(_propertyValue, actual);
+                    areEqual = entityEqualityComparer.Equals(propertyValue, actual);
                 }
                 else
                 {
-                    areEqual = _propertyValue.Equals(actual);
+                    areEqual = propertyValue.Equals(actual);
                 }
 
                 if (!areEqual)
@@ -259,8 +258,8 @@ namespace FluentNHibernate.Testing
                     string message =
                         string.Format(
                             "Expected '{0}' but got '{1}' for Property '{2}'",
-                            _propertyValue,
-                            actual, _property.Name);
+                            propertyValue,
+                            actual, property.Name);
 
                     throw new ApplicationException(message);
                 }

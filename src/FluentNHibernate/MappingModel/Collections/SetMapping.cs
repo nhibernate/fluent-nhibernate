@@ -1,12 +1,8 @@
-using System;
-using FluentNHibernate.MappingModel.Collections;
-using NHibernate.Cfg.MappingSchema;
-
 namespace FluentNHibernate.MappingModel.Collections
 {
     public class SetMapping : CollectionMappingBase
     {
-        private readonly AttributeStore<SetMapping> _attributes;
+        private readonly AttributeStore<SetMapping> attributes;
 
         public SetMapping() : this(new AttributeStore())
         {
@@ -15,12 +11,12 @@ namespace FluentNHibernate.MappingModel.Collections
         
         protected SetMapping(AttributeStore underlyingStore) : base(underlyingStore)
         {
-            _attributes = new AttributeStore<SetMapping>(underlyingStore);
+            attributes = new AttributeStore<SetMapping>(underlyingStore);
         }
 
         public AttributeStore<SetMapping> Attributes
         {
-            get { return _attributes; }
+            get { return attributes; }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -31,8 +27,8 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public string OrderBy
         {
-            get { return _attributes.Get(x => x.OrderBy); }
-            set { _attributes.Set(x => x.OrderBy, value); }
+            get { return attributes.Get(x => x.OrderBy); }
+            set { attributes.Set(x => x.OrderBy, value); }
         }
     }
 }

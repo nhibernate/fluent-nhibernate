@@ -3,7 +3,7 @@ using System.Collections;
 using System.Reflection;
 using System.Xml;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.Utils;
+using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {

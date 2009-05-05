@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FluentNHibernate.MappingModel.Collections
+﻿namespace FluentNHibernate.MappingModel.Collections
 {
     public class ListMapping : CollectionMappingBase
     {
-        private readonly AttributeStore<BagMapping> _attributes;
+        private readonly AttributeStore<BagMapping> attributes;
         public IndexMapping Index { get; set; }
 
         public ListMapping()
@@ -19,7 +14,7 @@ namespace FluentNHibernate.MappingModel.Collections
         protected ListMapping(AttributeStore underlyingStore)
             : base(underlyingStore)
         {
-            _attributes = new AttributeStore<BagMapping>(underlyingStore);
+            attributes = new AttributeStore<BagMapping>(underlyingStore);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -34,7 +29,7 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public AttributeStore<BagMapping> Attributes
         {
-            get { return _attributes; }
+            get { return attributes; }
         }
 
         

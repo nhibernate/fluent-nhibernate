@@ -2,20 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlHibernateMappingWriter : NullMappingModelVisitor, IXmlWriter<HibernateMapping>
     {
-        private readonly IXmlWriter<ClassMapping> _classWriter;
-        private readonly IXmlWriter<ImportMapping> _importWriter;
+        private readonly IXmlWriter<ClassMapping> classWriter;
+        private readonly IXmlWriter<ImportMapping> importWriter;
         private XmlDocument document;
 
         public XmlHibernateMappingWriter(IXmlWriter<ClassMapping> classWriter, IXmlWriter<ImportMapping> importWriter)
         {
-            _classWriter = classWriter;
-            _importWriter = importWriter;
+            this.classWriter = classWriter;
+            this.importWriter = importWriter;
         }
 
         public XmlDocument Write(HibernateMapping mapping)
@@ -43,7 +44,7 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(ImportMapping importMapping)
         {
-            var import = _importWriter.Write(importMapping);
+            var import = importWriter.Write(importMapping);
             var newNode = document.ImportNode(import.DocumentElement, true);
 
             if (document.DocumentElement.ChildNodes.Count > 0)
@@ -54,7 +55,7 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(ClassMapping classMapping)
         {
-            var hbmClass = _classWriter.Write(classMapping);
+            var hbmClass = classWriter.Write(classMapping);
 
             var newClassNode = document.ImportNode(hbmClass.DocumentElement, true);
 

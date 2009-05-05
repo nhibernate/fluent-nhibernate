@@ -1,14 +1,14 @@
 namespace FluentNHibernate.Mapping
 {
-    public class NotFoundExpression<PARENTPART> : INotFoundExpression where PARENTPART : IHasAttributes
+    public class NotFoundExpression<TParentpart> : INotFoundExpression where TParentpart : IHasAttributes
     {
-        private readonly Cache<string, string> _properties;
-        protected PARENTPART MappingPart { get; set; }
+        private readonly Cache<string, string> properties;
+        protected TParentpart MappingPart { get; set; }
 
-        public NotFoundExpression( PARENTPART mappingPart, Cache<string, string> properties )
+        public NotFoundExpression( TParentpart mappingPart, Cache<string, string> properties )
         {
             MappingPart = mappingPart;
-            _properties = properties;
+            this.properties = properties;
         }
 
         /// <summary>
@@ -16,9 +16,9 @@ namespace FluentNHibernate.Mapping
         /// return a null object rather then throw an exception when the join fails
         /// </summary>
         /// <returns></returns>
-        public PARENTPART Ignore()
+        public TParentpart Ignore()
         {
-            _properties.Store( "not-found", "ignore" );
+            properties.Store( "not-found", "ignore" );
             return MappingPart;
         }
 
@@ -36,9 +36,9 @@ namespace FluentNHibernate.Mapping
         /// tells NHibernate to throw an exception when the join fails
         /// </summary>
         /// <returns></returns>
-        public PARENTPART Exception()
+        public TParentpart Exception()
         {
-            _properties.Store( "not-found", "exception" );
+            properties.Store( "not-found", "exception" );
             return MappingPart;
         }
 

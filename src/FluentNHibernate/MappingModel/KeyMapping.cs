@@ -1,14 +1,12 @@
-using System;
-
 namespace FluentNHibernate.MappingModel
 {
     public class KeyMapping : MappingBase
     {
-        private readonly AttributeStore<KeyMapping> _attributes;
+        private readonly AttributeStore<KeyMapping> attributes;
 
         public KeyMapping()
         {
-            _attributes = new AttributeStore<KeyMapping>();
+            attributes = new AttributeStore<KeyMapping>();
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -18,33 +16,31 @@ namespace FluentNHibernate.MappingModel
 
         public AttributeStore<KeyMapping> Attributes
         {
-            get { return _attributes; }
+            get { return attributes; }
         }
 
         public string Column
         {
-            get { return _attributes.Get(x => x.Column); }
-            set { _attributes.Set(x => x.Column, value); }
+            get { return attributes.Get(x => x.Column); }
+            set { attributes.Set(x => x.Column, value); }
         }
 
         public string ForeignKey
         {
-            get { return _attributes.Get(x => x.ForeignKey); }
-            set { _attributes.Set(x => x.ForeignKey, value); }
+            get { return attributes.Get(x => x.ForeignKey); }
+            set { attributes.Set(x => x.ForeignKey, value); }
         }
 
         public string PropertyReference
         {
-            get { return _attributes.Get(x => x.PropertyReference); }
-            set { _attributes.Set(x => x.PropertyReference, value); }
+            get { return attributes.Get(x => x.PropertyReference); }
+            set { attributes.Set(x => x.PropertyReference, value); }
         }
 
         public bool CascadeOnDelete
         {
-            get { return _attributes.Get(x => x.CascadeOnDelete); }
-            set { _attributes.Set(x => x.CascadeOnDelete, value); }
+            get { return attributes.Get(x => x.CascadeOnDelete); }
+            set { attributes.Set(x => x.CascadeOnDelete, value); }
         }
-
-
     }
 }

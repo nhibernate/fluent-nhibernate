@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.MappingModel.ClassBased
 {
     public abstract class ClassMappingBase : MappingBase, INameable, IHasMappedMembers
     {
@@ -81,10 +81,10 @@ namespace FluentNHibernate.MappingModel
 
         #endregion
 
-		public override string ToString()
-		{
-			return string.Format("ClassMapping({0})", this.Type.Name);
-		}
+        public override string ToString()
+        {
+            return string.Format("ClassMapping({0})", this.Type.Name);
+        }
 
     }
 }

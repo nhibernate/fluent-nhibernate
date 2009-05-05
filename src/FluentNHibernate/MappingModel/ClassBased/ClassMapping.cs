@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Identity;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.MappingModel.ClassBased
 {
     public class ClassMapping : ClassMappingBase
     {
-        private readonly AttributeStore<ClassMapping> _attributes;
-        private readonly IList<ISubclassMapping> _subclasses;
+        private readonly AttributeStore<ClassMapping> attributes;
+        private readonly IList<ISubclassMapping> subclasses;
         private DiscriminatorMapping discriminator;
         private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
         private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
@@ -27,8 +27,8 @@ namespace FluentNHibernate.MappingModel
         protected ClassMapping(AttributeStore store)
             : base(store)
         {
-            _attributes = new AttributeStore<ClassMapping>(store);
-            _subclasses = new List<ISubclassMapping>();
+            attributes = new AttributeStore<ClassMapping>(store);
+            subclasses = new List<ISubclassMapping>();
         }
 
         public DiscriminatorMapping Discriminator
@@ -48,12 +48,12 @@ namespace FluentNHibernate.MappingModel
 
         public IEnumerable<ISubclassMapping> Subclasses
         {
-            get { return _subclasses; }
+            get { return subclasses; }
         }
 
         public void AddSubclass(ISubclassMapping subclass)
         {
-            _subclasses.Add(subclass);
+            subclasses.Add(subclass);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -74,55 +74,55 @@ namespace FluentNHibernate.MappingModel
 
         public string TableName
         {
-            get { return _attributes.Get(x => x.TableName); }
-            set { _attributes.Set(x => x.TableName, value); }
+            get { return attributes.Get(x => x.TableName); }
+            set { attributes.Set(x => x.TableName, value); }
         }
 
         public int BatchSize
         {
-            get { return _attributes.Get(x => x.BatchSize); }
-            set { _attributes.Set(x => x.BatchSize, value); }
+            get { return attributes.Get(x => x.BatchSize); }
+            set { attributes.Set(x => x.BatchSize, value); }
         }
 
         public object DiscriminatorBaseValue
         {
-            get { return _attributes.Get(x => x.DiscriminatorBaseValue); }
-            set { _attributes.Set(x => x.DiscriminatorBaseValue, value); }
+            get { return attributes.Get(x => x.DiscriminatorBaseValue); }
+            set { attributes.Set(x => x.DiscriminatorBaseValue, value); }
         }
 
         public string Schema
         {
-            get { return _attributes.Get(x => x.Schema); }
-            set { _attributes.Set(x => x.Schema, value); }
+            get { return attributes.Get(x => x.Schema); }
+            set { attributes.Set(x => x.Schema, value); }
         }
 
         public bool LazyLoad
         {
-            get { return _attributes.Get(x => x.LazyLoad); }
-            set { _attributes.Set(x => x.LazyLoad, value); }
+            get { return attributes.Get(x => x.LazyLoad); }
+            set { attributes.Set(x => x.LazyLoad, value); }
         }
 
         public bool Mutable
         {
-            get { return _attributes.Get(x => x.Mutable); }
-            set { _attributes.Set(x => x.Mutable, value); }
+            get { return attributes.Get(x => x.Mutable); }
+            set { attributes.Set(x => x.Mutable, value); }
         }
 
         public bool DynamicUpdate
         {
-            get { return _attributes.Get(x => x.DynamicUpdate); }
-            set { _attributes.Set(x => x.DynamicUpdate, value); }
+            get { return attributes.Get(x => x.DynamicUpdate); }
+            set { attributes.Set(x => x.DynamicUpdate, value); }
         }
 
         public bool DynamicInsert
         {
-            get { return _attributes.Get(x => x.DynamicInsert); }
-            set { _attributes.Set(x => x.DynamicInsert, value); }
+            get { return attributes.Get(x => x.DynamicInsert); }
+            set { attributes.Set(x => x.DynamicInsert, value); }
         }
 
         public AttributeStore<ClassMapping> Attributes
         {
-            get { return _attributes; }
+            get { return attributes; }
         }
 
         public IEnumerable<IMappingPart> UnmigratedParts

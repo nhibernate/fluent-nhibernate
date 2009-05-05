@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -30,7 +26,7 @@ namespace FluentNHibernate.Xml
             return PerformSerialize(hbm);
         }
 
-        private XmlDocument PerformSerialize(object hbm)
+        private static XmlDocument PerformSerialize(object hbm)
         {
             using (var stream = new MemoryStream())
             using (var writer = new XmlTextWriter(stream, System.Text.Encoding.Default))
@@ -42,14 +38,14 @@ namespace FluentNHibernate.Xml
                 var doc = new XmlDocument();
                 doc.Load(stream);
 
-                using (XmlTextReader reader = new XmlTextReader("nhibernate-mapping.xsd"))
+                using (var reader = new XmlTextReader("nhibernate-mapping.xsd"))
                     doc.Schemas.Add(XmlSchema.Read(reader, null));
 
                 return doc;
             }
         }
 
-        private XmlDocument BuildXml(HibernateMapping rootMapping)
+        private static XmlDocument BuildXml(HibernateMapping rootMapping)
         {
             var xmlWriter = XmlWriterFactory.CreateHibernateMappingWriter();
 

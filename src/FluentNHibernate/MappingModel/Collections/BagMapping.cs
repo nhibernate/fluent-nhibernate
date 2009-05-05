@@ -1,10 +1,8 @@
-using NHibernate.Cfg.MappingSchema;
-
 namespace FluentNHibernate.MappingModel.Collections
 {
     public class BagMapping : CollectionMappingBase
     {
-        private readonly AttributeStore<BagMapping> _attributes;
+        private readonly AttributeStore<BagMapping> attributes;
 
         public BagMapping() : this(new AttributeStore())
         {
@@ -14,7 +12,7 @@ namespace FluentNHibernate.MappingModel.Collections
         protected BagMapping(AttributeStore underlyingStore)
             : base(underlyingStore)
         {
-            _attributes = new AttributeStore<BagMapping>(underlyingStore);
+            attributes = new AttributeStore<BagMapping>(underlyingStore);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -25,13 +23,13 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public AttributeStore<BagMapping> Attributes
         {
-            get { return _attributes; }
+            get { return attributes; }
         }
 
         public string OrderBy
         {
-            get { return _attributes.Get(x => x.OrderBy); }
-            set { _attributes.Set(x => x.OrderBy, value); }
+            get { return attributes.Get(x => x.OrderBy); }
+            set { attributes.Set(x => x.OrderBy, value); }
         }
     }
 

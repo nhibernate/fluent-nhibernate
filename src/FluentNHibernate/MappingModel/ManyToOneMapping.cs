@@ -1,6 +1,4 @@
-using System;
 using System.Reflection;
-using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel
 {

@@ -2,19 +2,19 @@ namespace FluentNHibernate.Cfg.Db
 {
     public class OracleConnectionStringBuilder : ConnectionStringBuilder
     {
-        private string _instance;
-        private string _otherOptions;
-        private string _password;
-        private int _port;
-        private string _server;
-        private string _username;
-        private bool _pooling;
-        private int _statementCacheSize;
+        private string instance;
+        private string otherOptions;
+        private string password;
+        private int port;
+        private string server;
+        private string username;
+        private bool pooling;
+        private int statementCacheSize;
 
         public OracleConnectionStringBuilder()
         {
             // Port is pre-slugged as 1521 is the default Oracle port.
-            _port = 1521;
+            port = 1521;
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace FluentNHibernate.Cfg.Db
         /// <returns></returns>
         public OracleConnectionStringBuilder Server(string server)
         {
-            _server = server;
+            this.server = server;
             IsDirty = true;
             return this;
         }
@@ -38,7 +38,7 @@ namespace FluentNHibernate.Cfg.Db
         /// <returns></returns>
         public OracleConnectionStringBuilder Instance(string instance)
         {
-            _instance = instance;
+            this.instance = instance;
             IsDirty = true;
             return this;
         }
@@ -50,7 +50,7 @@ namespace FluentNHibernate.Cfg.Db
         /// <returns></returns>
         public OracleConnectionStringBuilder Username(string username)
         {
-            _username = username;
+            this.username = username;
             IsDirty = true;
             return this;
         }
@@ -62,7 +62,7 @@ namespace FluentNHibernate.Cfg.Db
         /// <returns></returns>
         public OracleConnectionStringBuilder Password(string password)
         {
-            _password = password;
+            this.password = password;
             IsDirty = true;
             return this;
         }
@@ -74,7 +74,7 @@ namespace FluentNHibernate.Cfg.Db
         /// <returns></returns>
         public OracleConnectionStringBuilder Port(int port)
         {
-            _port = port;
+            this.port = port;
             IsDirty = true;
             return this;
         }
@@ -86,7 +86,7 @@ namespace FluentNHibernate.Cfg.Db
         /// <returns></returns>
         public OracleConnectionStringBuilder Pooling(bool pooling)
         {
-            _pooling = pooling;
+            this.pooling = pooling;
             IsDirty = true;
             return this;
         }
@@ -98,7 +98,7 @@ namespace FluentNHibernate.Cfg.Db
         /// <returns></returns>
         public OracleConnectionStringBuilder StatementCacheSize(int cacheSize)
         {
-            _statementCacheSize = cacheSize;
+            statementCacheSize = cacheSize;
             IsDirty = true;
             return this;
         }
@@ -110,7 +110,7 @@ namespace FluentNHibernate.Cfg.Db
         /// <returns></returns>
         public OracleConnectionStringBuilder OtherOptions(string otherOptions)
         {
-            _otherOptions = string.Format("{0};", otherOptions);
+            this.otherOptions = string.Format("{0};", otherOptions);
             IsDirty = true;
             return this;
         }
@@ -125,7 +125,7 @@ namespace FluentNHibernate.Cfg.Db
 
             connectionString = string.Format(
                      "User Id={0};Password={1};Pooling={2};Statement Cache Size={3};{4}Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={5})(PORT={6})))(CONNECT_DATA=(SERVICE_NAME={7})))",
-                     _username, _password, _pooling, _statementCacheSize, _otherOptions, _server, _port, _instance);
+                     username, password, pooling, statementCacheSize, otherOptions, server, port, instance);
             
             return connectionString;
         }

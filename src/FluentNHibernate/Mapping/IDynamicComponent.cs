@@ -1,6 +1,6 @@
 using System;
 using System.Linq.Expressions;
-using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {

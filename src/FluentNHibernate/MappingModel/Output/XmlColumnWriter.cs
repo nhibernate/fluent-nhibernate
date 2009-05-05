@@ -1,6 +1,5 @@
 ﻿using System.Xml;
 using FluentNHibernate.Utils;
-using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {

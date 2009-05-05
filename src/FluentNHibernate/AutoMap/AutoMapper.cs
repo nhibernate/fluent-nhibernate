@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentNHibernate.Conventions;
 using System.Reflection;
+using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate.AutoMap
 {
     public class AutoMapper
     {
-        protected readonly List<IAutoMapper> _mappingRules;
+        protected readonly List<IAutoMapper> mappingRules;
         protected List<AutoMapType> mappingTypes;
         protected AutoMappingExpressions expressions;
 
@@ -16,7 +16,7 @@ namespace FluentNHibernate.AutoMap
         {
             this.expressions = expressions;
 
-            _mappingRules = new List<IAutoMapper>
+            mappingRules = new List<IAutoMapper>
             {
                 new AutoMapIdentity(expressions), 
                 new AutoMapVersion(), 
@@ -37,23 +37,23 @@ namespace FluentNHibernate.AutoMap
                     !expressions.IsConcreteBaseType.Invoke(q.Type.BaseType)))
                 {
                     object joinedClass = map.JoinedSubClass(inheritedClass.Type, typeof (T).Name + "Id");
-                    var method = GetType().GetMethod("mapEverythingInClass");
+                    var method = GetType().GetMethod("MapEverythingInClass");
                     var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
                     genericMethod.Invoke(this, new[] {joinedClass});
                     inheritedClass.IsMapped = true;
                 }
             }
 
-            mapEverythingInClass(map);
+            MapEverythingInClass(map);
             
             return map;
         }
 
-        public virtual void mapEverythingInClass<T>(AutoMap<T> map)
+        public virtual void MapEverythingInClass<T>(AutoMap<T> map)
         {
             foreach (var property in typeof(T).GetProperties())
             {
-                TryToMapProperty<T>(map, property);
+                TryToMapProperty(map, property);
             }
         }
 
@@ -61,13 +61,13 @@ namespace FluentNHibernate.AutoMap
         {
             if (property.GetIndexParameters().Length == 0)
             {
-                foreach (var rule in _mappingRules)
+                foreach (var rule in mappingRules)
                 {
                     if (rule.MapsProperty(property))
                     {
                         if (map.PropertiesMapped.Count(p => p.Name == property.Name) == 0)
                         {
-                            rule.Map<T>(map, property);
+                            rule.Map(map, property);
                             break;
                         }
                     }

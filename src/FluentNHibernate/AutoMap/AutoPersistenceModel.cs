@@ -5,7 +5,6 @@ using System.Reflection;
 using FluentNHibernate.AutoMap.Alterations;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.Conventions;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.AutoMap
@@ -85,7 +84,7 @@ namespace FluentNHibernate.AutoMap
         public void CompileMappings()
         {
             if (assemblyContainingMaps != null)
-                addMappingsFromAssembly(assemblyContainingMaps);
+                AddMappingsFromAssembly(assemblyContainingMaps);
 
             alterations.Apply(this);
 
@@ -105,7 +104,7 @@ namespace FluentNHibernate.AutoMap
 
             foreach (var type in mappingTypes)
             {
-                if (type.Type.IsClass && isnotAnonymousMethodClass(type))
+                if (type.Type.IsClass && IsnotAnonymousMethodClass(type))
                 {
                     if (!type.IsMapped)
                     {
@@ -132,7 +131,7 @@ namespace FluentNHibernate.AutoMap
             base.Configure(configuration);
         }
 
-        private bool isnotAnonymousMethodClass(AutoMapType type)
+        private static bool IsnotAnonymousMethodClass(AutoMapType type)
         {
             return type.Type.ReflectedType == null;
         }
@@ -176,7 +175,7 @@ namespace FluentNHibernate.AutoMap
         public AutoPersistenceModel(Assembly mapAssembly)
         {
             Expressions = new AutoMappingExpressions();
-            addMappingsFromAssembly(mapAssembly);
+            AddMappingsFromAssembly(mapAssembly);
             autoMapper = new AutoMapper(Expressions, ConventionFinder);
         }
 
@@ -216,20 +215,20 @@ namespace FluentNHibernate.AutoMap
                 return false;
             };
 
-            var mapping = _mappings.FirstOrDefault(t => finder(t.GetType(), type));
+            var mapping = mappings.FirstOrDefault(t => finder(t.GetType(), type));
 
             if (mapping != null) return mapping;
 
             // if we haven't found a map yet then try to find a map of the
             // base type to merge if not a concrete base type
 
-            return _mappings.FirstOrDefault(t => !Expressions.IsConcreteBaseType(type.BaseType) &&
+            return mappings.FirstOrDefault(t => !Expressions.IsConcreteBaseType(type.BaseType) &&
                 finder(t.GetType(), type.BaseType));
         }
 
         public void OutputMappings()
         {
-            //foreach(var map in _mappings)
+            //foreach(var map in mappings)
             //    Console.WriteLine(map);
         }
 
@@ -241,12 +240,12 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel ForTypesThatDeriveFrom<T>(Action<AutoMap<T>> populateMap)
         {
-            if (_mappings.Count(m => m.GetType() == typeof(AutoMap<T>)) > 0)
+            if (mappings.Count(m => m.GetType() == typeof(AutoMap<T>)) > 0)
                 throw new AutoMappingException("ForTypesThatDeriveFrom<T> called more than once for '" + typeof(T).Name + "'. Merge your calls into one.");
 
             var map = (AutoMap<T>)Activator.CreateInstance(typeof(AutoMap<T>));
             populateMap.Invoke(map);
-            _mappings.Add(map);
+            mappings.Add(map);
             return this;
         }
     }

@@ -187,8 +187,14 @@
     <Compile Include="Cfg\Db\MsSqlConfiguration.cs" />
     <Compile Include="DummyPropertyInfo.cs" />
     <Compile Include="Infrastructure\ResolveException.cs" />
-    <Compile Include="MappingModel\ComponentMappingBase.cs" />
-    <Compile Include="MappingModel\DynamicComponentMapping.cs" />
+    <Compile Include="MappingModel\ClassBased\ClassMapping.cs" />
+    <Compile Include="MappingModel\ClassBased\ClassMappingBase.cs" />
+    <Compile Include="MappingModel\ClassBased\ComponentMapping.cs" />
+    <Compile Include="MappingModel\ClassBased\ComponentMappingBase.cs" />
+    <Compile Include="MappingModel\ClassBased\DynamicComponentMapping.cs" />
+    <Compile Include="MappingModel\ClassBased\ISubclassMapping.cs" />
+    <Compile Include="MappingModel\ClassBased\JoinedSubclassMapping.cs" />
+    <Compile Include="MappingModel\ClassBased\SubclassMapping.cs" />
     <Compile Include="MappingModel\Output\XmlClassWriterBase.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriterBase.cs" />
@@ -309,7 +315,6 @@
     <Compile Include="Mapping\TypeMapping.cs" />
     <Compile Include="Mapping\VersionPart.cs" />
     <Compile Include="MappingModel\AttributeStore.cs" />
-    <Compile Include="MappingModel\ClassMappingBase.cs" />
     <Compile Include="MappingModel\Collections\CollectionMappingBase.cs" />
     <Compile Include="MappingModel\Collections\IndexMapping.cs" />
     <Compile Include="MappingModel\Collections\ListMapping.cs" />
@@ -319,7 +324,6 @@
     <Compile Include="MappingModel\Collections\ICollectionContentsMapping.cs" />
     <Compile Include="MappingModel\Collections\ICollectionMapping.cs" />
     <Compile Include="MappingModel\ColumnMapping.cs" />
-    <Compile Include="MappingModel\ComponentMapping.cs" />
     <Compile Include="MappingModel\Conventions\ConventionException.cs" />
     <Compile Include="MappingModel\Conventions\ManyToManyTableConvention.cs" />
     <Compile Include="MappingModel\DiscriminatorMapping.cs" />
@@ -327,8 +331,6 @@
     <Compile Include="MappingModel\MappedMembers.cs" />
     <Compile Include="MappingModel\NullMappingModelVisitor.cs" />
     <Compile Include="MappingModel\INameable.cs" />
-    <Compile Include="MappingModel\ISubclassMapping.cs" />
-    <Compile Include="MappingModel\JoinedSubclassMapping.cs" />
     <Compile Include="MappingModel\KeyMapping.cs" />
     <Compile Include="MappingModel\IMappingModelVisitor.cs" />
     <Compile Include="MappingModel\DefaultMappingModelVisitor.cs" />
@@ -340,13 +342,11 @@
     <Compile Include="MappingModel\HibernateMapping.cs" />
     <Compile Include="MappingModel\Identity\IdMapping.cs" />
     <Compile Include="MappingModel\Identity\IIdentityMapping.cs" />
-    <Compile Include="MappingModel\ClassMapping.cs" />
     <Compile Include="MappingModel\IMappingBase.cs" />
     <Compile Include="MappingModel\ManyToOneMapping.cs" />
     <Compile Include="MappingModel\MappingBase.cs" />
     <Compile Include="MappingModel\Collections\OneToManyMapping.cs" />
     <Compile Include="MappingModel\Conventions\NamingConvention.cs" />
-    <Compile Include="MappingModel\SubclassMapping.cs" />
     <Compile Include="PersistenceModel.cs" />
     <Compile Include="Xml\MappingXmlSerializer.cs" />
     <Compile Include="Xml\MappingXmlValidator.cs" />

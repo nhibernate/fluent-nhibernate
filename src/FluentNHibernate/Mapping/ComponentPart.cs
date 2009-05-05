@@ -1,8 +1,8 @@
-﻿using System.Reflection;
-using System.Xml;
-using System;
+﻿using System;
 using System.Linq.Expressions;
-using FluentNHibernate.MappingModel;
+using System.Reflection;
+using System.Xml;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
@@ -10,31 +10,31 @@ namespace FluentNHibernate.Mapping
 
     public class ComponentPart<T> : ClasslikeMapBase<T>, IComponent, IAccessStrategy<ComponentPart<T>>
     {
-        private readonly PropertyInfo _property;
+        private readonly PropertyInfo property;
         private readonly AccessStrategyBuilder<ComponentPart<T>> access;
-        private readonly Cache<string, string> properties = new Cache<string, string>();
-        private PropertyInfo _parentReference;
+        private new readonly Cache<string, string> properties = new Cache<string, string>();
+        private PropertyInfo parentReference;
 
         public ComponentPart(PropertyInfo property, bool parentIsRequired)
         {
             access = new AccessStrategyBuilder<ComponentPart<T>>(this);
-            _property = property;
+            this.property = property;
 			//TODO: Need some support for this
-            //this.parentIsRequired = parentIsRequired && RequiredAttribute.IsRequired(_property) && parentIsRequired;
+            //this.parentIsRequired = parentIsRequired && RequiredAttribute.IsRequired(this.property) && parentIsRequired;
         }
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             XmlElement element = classElement.AddElement("component")
-                .WithAtt("name", _property.Name)
+                .WithAtt("name", property.Name)
                 .WithAtt("insert", "true")
                 .WithAtt("update", "true")
                 .WithProperties(properties);
 
-            if (_parentReference != null)
-                element.AddElement("parent").WithAtt("name", _parentReference.Name);
+            if (parentReference != null)
+                element.AddElement("parent").WithAtt("name", parentReference.Name);
 
-            writeTheParts(element, visitor);
+            WriteTheParts(element, visitor);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace FluentNHibernate.Mapping
 
         private ComponentPart<T> WithParentReference(PropertyInfo property)
         {
-            _parentReference = property;
+            parentReference = property;
             return this;
         }
 

@@ -1,4 +1,5 @@
 ﻿using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 using Rhino.Mocks;
 

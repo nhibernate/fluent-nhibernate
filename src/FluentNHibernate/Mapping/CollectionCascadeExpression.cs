@@ -1,13 +1,13 @@
 namespace FluentNHibernate.Mapping
 {
-    public class CollectionCascadeExpression<PARENTPART> : CascadeExpression<PARENTPART>, ICollectionCascadeExpression
-        where PARENTPART : IHasAttributes
+    public class CollectionCascadeExpression<TParentpart> : CascadeExpression<TParentpart>, ICollectionCascadeExpression
+        where TParentpart : IHasAttributes
 	{
-		public CollectionCascadeExpression(PARENTPART mappingPart)
+		public CollectionCascadeExpression(TParentpart mappingPart)
 			: base(mappingPart)
 		{}
 
-		public PARENTPART AllDeleteOrphan()
+		public TParentpart AllDeleteOrphan()
 		{
 			MappingPart.SetAttribute("cascade", "all-delete-orphan");
 			return MappingPart;

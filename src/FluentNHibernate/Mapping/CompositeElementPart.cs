@@ -12,23 +12,19 @@ namespace FluentNHibernate.Mapping
     /// <typeparam name="T">Component type</typeparam>
     public class CompositeElementPart<T> : ClasslikeMapBase<T>, IMappingPart
     {
-        private readonly Cache<string, string> properties = new Cache<string, string>();
+        private readonly Cache<string, string> localProperties = new Cache<string, string>();
         private PropertyInfo parentReference;
-
-        public CompositeElementPart()
-        {
-        }
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             XmlElement element = classElement.AddElement("composite-element")
                 .WithAtt("class", typeof(T).AssemblyQualifiedName)
-                .WithProperties(properties);
+                .WithProperties(localProperties);
 
             if (parentReference != null)
                 element.AddElement("parent").WithAtt("name", parentReference.Name);
 
-            writeTheParts(element, visitor);
+            WriteTheParts(element, visitor);
         }
 
         /// <summary>
@@ -55,7 +51,7 @@ namespace FluentNHibernate.Mapping
         /// <include file='' path='[@name=""]'/>
         public void SetAttribute(string name, string value)
         {
-            properties.Store(name, value);
+            localProperties.Store(name, value);
         }
 
         public void SetAttributes(Attributes atts)

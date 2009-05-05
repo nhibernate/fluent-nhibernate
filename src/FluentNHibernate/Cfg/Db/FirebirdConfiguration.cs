@@ -1,4 +1,3 @@
-using FluentNHibernate.Cfg.Db;
 using NHibernate.Dialect;
 using NHibernate.Driver;
 

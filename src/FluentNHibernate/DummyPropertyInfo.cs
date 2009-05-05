@@ -6,16 +6,16 @@ namespace FluentNHibernate
 {
     public sealed class DummyPropertyInfo : PropertyInfo
     {
-        private readonly string _name;
-        private readonly Type _type;
+        private readonly string name;
+        private readonly Type type;
 
         public DummyPropertyInfo(string name, Type type)
         {
             if (name == null) throw new ArgumentNullException("name");
             if (type == null) throw new ArgumentNullException("type");
 
-            _name = name;
-            _type = type;
+            this.name = name;
+            this.type = type;
         }
 
         public override object[] GetCustomAttributes(bool inherit)
@@ -60,7 +60,7 @@ namespace FluentNHibernate
 
         public override string Name
         {
-            get { return _name; }
+            get { return name; }
         }
 
         public override Type DeclaringType
@@ -75,7 +75,7 @@ namespace FluentNHibernate
 
         public override Type PropertyType
         {
-            get { return _type; }
+            get { return type; }
         }
 
         public override PropertyAttributes Attributes

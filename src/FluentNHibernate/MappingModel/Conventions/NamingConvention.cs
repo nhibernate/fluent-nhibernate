@@ -1,7 +1,6 @@
 using System;
-using System.Linq.Expressions;
 using System.Reflection;
-using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.MappingModel.Conventions

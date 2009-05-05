@@ -1,13 +1,11 @@
 using System;
 using System.Reflection;
-using FluentNHibernate.AutoMap;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.AutoMap
 {
     public class AutoMapManyToOne : IAutoMapper
     {
-        private Func<PropertyInfo, bool> findPropertyconvention = p => (
+        private readonly Func<PropertyInfo, bool> findPropertyconvention = p => (
             p.PropertyType.Namespace != "System" && // ignore clr types (won't be entities)
             p.PropertyType.Namespace != "System.Collections.Generic" &&
             p.PropertyType.Namespace != "Iesi.Collections.Generic" &&

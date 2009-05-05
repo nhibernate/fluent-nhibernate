@@ -5,7 +5,8 @@ namespace FluentNHibernate.Mapping
         private readonly ClassMap<T> parent;
         private string accessValue;
 
-        public DefaultAccessStrategyBuilder(ClassMap<T> parent) : base(parent)
+        public DefaultAccessStrategyBuilder(ClassMap<T> parent) 
+            : base(parent)
         {
             this.parent = parent;
         }

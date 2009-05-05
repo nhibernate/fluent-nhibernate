@@ -6,19 +6,19 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public abstract class ToManyBase<T, CHILD> : ICollectionRelationship
-        where T : ToManyBase<T, CHILD>, ICollectionRelationship, IMappingPart, IHasAttributes
+    public abstract class ToManyBase<T, TChild> : ICollectionRelationship
+        where T : ToManyBase<T, TChild>, ICollectionRelationship, IMappingPart, IHasAttributes
     {
         public MemberInfo Member { get; private set; }
-        protected readonly Cache<string, string> _properties = new Cache<string, string>();
-        protected readonly Cache<string, string> _keyProperties = new Cache<string, string>();
+        protected readonly Cache<string, string> properties = new Cache<string, string>();
+        protected readonly Cache<string, string> keyProperties = new Cache<string, string>();
         private readonly AccessStrategyBuilder<T> access;
-        protected IndexMapping _indexMapping;
-        protected ElementMapping _elementMapping;
-        protected CompositeElementPart<CHILD> _componentMapping;
+        protected IndexMapping indexMapping;
+        protected ElementMapping elementMapping;
+        protected CompositeElementPart<TChild> componentMapping;
         public string TableName { get; private set; }
         public Type EntityType { get; private set; }
-        protected string _collectionType;
+        protected string collectionType;
         private bool nextBool = true;
         protected int batchSize;
 
@@ -26,7 +26,7 @@ namespace FluentNHibernate.Mapping
         {
             EntityType = entity;
             Member = member;
-            _collectionType = "bag";
+            collectionType = "bag";
             access = new AccessStrategyBuilder<T>((T)this);
 
             SetDefaultCollectionType(type);
@@ -45,7 +45,7 @@ namespace FluentNHibernate.Mapping
             if (type.Namespace.StartsWith("Iesi") || type.Namespace.StartsWith("System") || type.IsArray)
                 return;
 
-            _properties.Store("collection-type", type.AssemblyQualifiedName);
+            properties.Store("collection-type", type.AssemblyQualifiedName);
         }
 
         /// <summary>
@@ -55,14 +55,14 @@ namespace FluentNHibernate.Mapping
 
         public T LazyLoad()
         {
-            _properties.Store("lazy", nextBool.ToString().ToLowerInvariant());
+            properties.Store("lazy", nextBool.ToString().ToLowerInvariant());
             nextBool = true;
             return (T)this;
         }
 
         public T Inverse()
         {
-            _properties.Store("inverse", nextBool.ToString().ToLowerInvariant());
+            properties.Store("inverse", nextBool.ToString().ToLowerInvariant());
             nextBool = true;
             return (T)this;
         }
@@ -74,91 +74,91 @@ namespace FluentNHibernate.Mapping
 
         public T AsSet()
         {
-            _collectionType = "set";
+            collectionType = "set";
             return (T)this;
         }
 
         public T AsBag()
         {
-            _collectionType = "bag";
+            collectionType = "bag";
             return (T)this;
         }
 
         public T AsList()
         {
-            _indexMapping = new IndexMapping();
-            _collectionType = "list";
+            indexMapping = new IndexMapping();
+            collectionType = "list";
             return (T)this;
         }
 
         public T AsList(Action<IndexMapping> customIndexMapping)
         {
             AsList();
-            customIndexMapping(_indexMapping);
+            customIndexMapping(indexMapping);
             return (T)this;
         }
 
-        public T AsMap<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector)
+        public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector)
         {
             return AsMap(indexSelector, null);
         }
 
         public T AsMap(string indexColumnName)
         {
-            _collectionType = "map";
+            collectionType = "map";
             AsIndexedCollection<Int32>(indexColumnName, null);
             return (T)this;
         }
 
-        public T AsMap<INDEX_TYPE>(string indexColumnName)
+        public T AsMap<TIndex>(string indexColumnName)
         {
-            _collectionType = "map";
-            AsIndexedCollection<INDEX_TYPE>(indexColumnName, null);
+            collectionType = "map";
+            AsIndexedCollection<TIndex>(indexColumnName, null);
             return (T)this;
         }
 
-        public T AsMap<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector, Action<IndexMapping> customIndexMapping)
+        public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexMapping> customIndexMapping)
         {
-            _collectionType = "map";
+            collectionType = "map";
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 
         // I'm not proud of this. The fluent interface for maps really needs to be rethought. But I've let maps sit unsupported for way too long
         // so a hack is better than nothing.
-        public T AsMap<INDEX_TYPE>(Action<IndexMapping> customIndexMapping, Action<ElementMapping> customElementMapping)
+        public T AsMap<TIndex>(Action<IndexMapping> customIndexMapping, Action<ElementMapping> customElementMapping)
         {
-            _collectionType = "map";
-            AsIndexedCollection<INDEX_TYPE>(string.Empty, customIndexMapping);
+            collectionType = "map";
+            AsIndexedCollection<TIndex>(string.Empty, customIndexMapping);
             AsElement(string.Empty);
-            customElementMapping(_elementMapping);
+            customElementMapping(elementMapping);
             return (T)this;
         }
 
-        public T AsArray<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector)
+        public T AsArray<TIndex>(Expression<Func<TChild, TIndex>> indexSelector)
         {
             return AsArray(indexSelector, null);
         }
 
-        public T AsArray<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector, Action<IndexMapping> customIndexMapping)
+        public T AsArray<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexMapping> customIndexMapping)
         {
-            _collectionType = "array";
+            collectionType = "array";
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 
-        public T AsIndexedCollection<INDEX_TYPE>(Expression<Func<CHILD, INDEX_TYPE>> indexSelector, Action<IndexMapping> customIndexMapping)
+        public T AsIndexedCollection<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexMapping> customIndexMapping)
         {
             var indexProperty = ReflectionHelper.GetProperty(indexSelector);
-            return AsIndexedCollection<INDEX_TYPE>(indexProperty.Name, customIndexMapping);
+            return AsIndexedCollection<TIndex>(indexProperty.Name, customIndexMapping);
         }
 
-        public T AsIndexedCollection<INDEX_TYPE>(string indexColumn, Action<IndexMapping> customIndexMapping)
+        public T AsIndexedCollection<TIndex>(string indexColumn, Action<IndexMapping> customIndexMapping)
         {
-            _indexMapping = new IndexMapping();
-            _indexMapping.WithType<INDEX_TYPE>();
-            _indexMapping.WithColumn(indexColumn);
+            indexMapping = new IndexMapping();
+            indexMapping.WithType<TIndex>();
+            indexMapping.WithColumn(indexColumn);
 
             if (customIndexMapping != null)
-                customIndexMapping(_indexMapping);
+                customIndexMapping(indexMapping);
 
             return (T)this;
         }
@@ -166,14 +166,14 @@ namespace FluentNHibernate.Mapping
         protected void WriteIndexElement(XmlElement collectionElement)
         {
             var indexElement = collectionElement.AddElement("index");
-            _indexMapping.WriteAttributesToIndexElement(indexElement);
+            indexMapping.WriteAttributesToIndexElement(indexElement);
         }
 
         public T AsElement(string columnName)
         {
-            _elementMapping = new ElementMapping();
-            _elementMapping.WithColumn(columnName);
-            _elementMapping.WithType<CHILD>();            
+            elementMapping = new ElementMapping();
+            elementMapping.WithColumn(columnName);
+            elementMapping.WithType<TChild>();            
             return (T)this;
         }
 
@@ -181,11 +181,11 @@ namespace FluentNHibernate.Mapping
         /// Maps this collection as a collection of components.
         /// </summary>
         /// <param name="action">Component mapping</param>
-        public T Component(Action<CompositeElementPart<CHILD>> action)
+        public T Component(Action<CompositeElementPart<TChild>> action)
         {
-            _componentMapping = new CompositeElementPart<CHILD>();
+            componentMapping = new CompositeElementPart<TChild>();
 
-            action(_componentMapping);
+            action(componentMapping);
 
             return (T)this;
         }
@@ -202,13 +202,13 @@ namespace FluentNHibernate.Mapping
 
         public T WithForeignKeyConstraintName(string foreignKeyName)
         {
-            _keyProperties.Store("foreign-key", foreignKeyName);
+            keyProperties.Store("foreign-key", foreignKeyName);
             return (T)this;
         }
 
         public T ForeignKeyCascadeOnDelete()
         {
-            _keyProperties.Store("on-delete", "cascade");
+            keyProperties.Store("on-delete", "cascade");
             return (T)this;
         }
 
@@ -224,7 +224,7 @@ namespace FluentNHibernate.Mapping
         /// Sets the where clause for this one-to-many relationship.
         /// Note: This only supports simple cases, use the string overload for more complex clauses.
         /// </summary>
-        public T Where(Expression<Func<CHILD, bool>> where)
+        public T Where(Expression<Func<TChild, bool>> where)
         {
             var sql = ExpressionToSql.Convert(where);
 
@@ -236,7 +236,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public T Where(string where)
         {
-            _properties.Store("where", where);
+            properties.Store("where", where);
 
             return (T)this;
         }
@@ -280,7 +280,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public T CollectionType(string type)
         {
-            _properties.Store("collection-type", type);
+            properties.Store("collection-type", type);
             return (T)this;
         }
 
@@ -333,7 +333,7 @@ namespace FluentNHibernate.Mapping
             return AsMap(indexColumnName);
         }
 
-        ICollectionRelationship ICollectionRelationship.AsMap<INDEX_TYPE>(string indexColumnName)
+        ICollectionRelationship ICollectionRelationship.AsMap<TIndex>(string indexColumnName)
         {
             return AsMap(indexColumnName);
         }
@@ -417,45 +417,45 @@ namespace FluentNHibernate.Mapping
 
         public class IndexMapping
         {
-            private readonly Cache<string, string> _properties = new Cache<string, string>();
+            private readonly Cache<string, string> properties = new Cache<string, string>();
 
             public IndexMapping WithColumn(string indexColumnName)
             {
-                _properties.Store("column", indexColumnName);
+                properties.Store("column", indexColumnName);
                 return this;
             }
 
-            public IndexMapping WithType<INDEXTYPE>()
+            public IndexMapping WithType<TIndex>()
             {
-                _properties.Store("type", typeof(INDEXTYPE).AssemblyQualifiedName);
+                properties.Store("type", typeof(TIndex).AssemblyQualifiedName);
                 return this;
             }
 
             internal void WriteAttributesToIndexElement(XmlElement indexElement)
             {
-                indexElement.WithProperties(_properties);
+                indexElement.WithProperties(properties);
             }
         }
 
         public class ElementMapping
         {
-            private readonly Cache<string, string> _properties = new Cache<string, string>();
+            private readonly Cache<string, string> properties = new Cache<string, string>();
 
             public ElementMapping WithColumn(string indexColumnName)
             {
-                _properties.Store("column", indexColumnName);
+                properties.Store("column", indexColumnName);
                 return this;
             }
 
-            public ElementMapping WithType<INDEXTYPE>()
+            public ElementMapping WithType<TIndex>()
             {
-                _properties.Store("type", typeof(INDEXTYPE).AssemblyQualifiedName);
+                properties.Store("type", typeof(TIndex).AssemblyQualifiedName);
                 return this;
             }
 
             internal void WriteAttributesToIndexElement(XmlElement indexElement)
             {
-                indexElement.WithProperties(_properties);
+                indexElement.WithProperties(properties);
             }
         }
 

@@ -1,13 +1,12 @@
 using System.Linq;
 using System.Reflection;
-using FluentNHibernate.AutoMap;
 using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate.AutoMap
 {
     public class AutoMapColumn : IAutoMapper
     {
-        private IConventionFinder conventionFinder;
+        private readonly IConventionFinder conventionFinder;
 
         public AutoMapColumn(IConventionFinder conventionFinder)
         {

@@ -1,19 +1,17 @@
-using System;
-using System.Reflection;
-using NHibernate.Cfg.MappingSchema;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
     public class IdMapping : MappingBase, IIdentityMapping, INameable
     {
-        private readonly AttributeStore<IdMapping> _attributes;
-        private readonly IList<ColumnMapping> _columns;
+        private readonly AttributeStore<IdMapping> attributes;
+        private readonly IList<ColumnMapping> columns;
 
         public IdMapping()
         {
-            _attributes = new AttributeStore<IdMapping>();
-            _columns = new List<ColumnMapping>();
+            attributes = new AttributeStore<IdMapping>();
+            columns = new List<ColumnMapping>();
         }
 
         public IdMapping(ColumnMapping columnMapping) : this()
@@ -25,12 +23,12 @@ namespace FluentNHibernate.MappingModel.Identity
 
         public void AddIdColumn(ColumnMapping column)
         {
-            _columns.Add(column);
+            columns.Add(column);
         }
 
         public IEnumerable<ColumnMapping> Columns
         {
-            get { return _columns; }
+            get { return columns; }
         }
 
         public PropertyInfo PropertyInfo { get; set; }
@@ -53,13 +51,13 @@ namespace FluentNHibernate.MappingModel.Identity
 
         public string Name
         {
-            get { return _attributes.Get(x => x.Name); }
-            set { _attributes.Set(x => x.Name, value); }
+            get { return attributes.Get(x => x.Name); }
+            set { attributes.Set(x => x.Name, value); }
         }
 
         public AttributeStore<IdMapping> Attributes
         {
-            get { return _attributes; }
+            get { return attributes; }
         }
         
     }

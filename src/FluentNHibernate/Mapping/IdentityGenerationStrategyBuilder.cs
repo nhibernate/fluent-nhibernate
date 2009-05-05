@@ -4,39 +4,39 @@ namespace FluentNHibernate.Mapping
 {
     public class IdentityGenerationStrategyBuilder
 	{
-        private readonly IIdentityPart _parent;
+        private readonly IIdentityPart parent;
 
         public IdentityGenerationStrategyBuilder(IIdentityPart parent)
 		{
-			_parent = parent;
+			this.parent = parent;
 		}
 
-		private void setGenerator(string generator)
+		private void SetGenerator(string generator)
 		{
-			_parent.SetGeneratorClass(generator);
+			parent.SetGeneratorClass(generator);
 		}
 
-		private void addGeneratorParam(string name, string innerXml)
+		private void AddGeneratorParam(string name, string innerXml)
 		{
-			_parent.AddGeneratorParam(name, innerXml);
+			parent.AddGeneratorParam(name, innerXml);
 		}
 
-		private void ensureIntegralIdenityType()
+		private void EnsureIntegralIdenityType()
 		{
-			if (!isIntegralType(_parent.IdentityType)) throw new InvalidOperationException("Identity type must be integral (int, long, uint, ulong)");
+			if (!IsIntegralType(parent.IdentityType)) throw new InvalidOperationException("Identity type must be integral (int, long, uint, ulong)");
 		}
 
-		private void ensureGuidIdentityType()
+		private void EnsureGuidIdentityType()
 		{
-			if (_parent.IdentityType != typeof(Guid) && _parent.IdentityType != typeof(Guid?)) throw new InvalidOperationException("Identity type must be Guid");
+			if (parent.IdentityType != typeof(Guid) && parent.IdentityType != typeof(Guid?)) throw new InvalidOperationException("Identity type must be Guid");
 		}
 
-		private void ensureStringIdentityType()
+		private void EnsureStringIdentityType()
 		{
-			if (_parent.IdentityType != typeof(string)) throw new InvalidOperationException("Identity type must be string");
+			if (parent.IdentityType != typeof(string)) throw new InvalidOperationException("Identity type must be string");
 		}
 
-		private static bool isIntegralType(Type t)
+		private static bool IsIntegralType(Type t)
 		{
 			// do we think we'll encounter more?
             return t == typeof(int) || t == typeof(int?) 
@@ -56,9 +56,9 @@ namespace FluentNHibernate.Mapping
 		/// <returns></returns>
         public IIdentityPart Increment()
 		{
-			ensureIntegralIdenityType();
-			setGenerator("increment");
-			return _parent;
+			EnsureIntegralIdenityType();
+			SetGenerator("increment");
+			return parent;
 		}
 
 		/// <summary>
@@ -69,9 +69,9 @@ namespace FluentNHibernate.Mapping
 		/// <returns></returns>
         public IIdentityPart Identity()
 		{
-			ensureIntegralIdenityType();
-			setGenerator("identity");
-			return _parent;
+			EnsureIntegralIdenityType();
+			SetGenerator("identity");
+			return parent;
 		}
 
 		/// <summary>
@@ -83,10 +83,10 @@ namespace FluentNHibernate.Mapping
 		/// <returns></returns>
         public IIdentityPart Sequence(string sequenceName)
 		{
-			ensureIntegralIdenityType();
-			setGenerator("sequence");
-			addGeneratorParam("sequence", sequenceName);
-			return _parent;
+			EnsureIntegralIdenityType();
+			SetGenerator("sequence");
+			AddGeneratorParam("sequence", sequenceName);
+			return parent;
 		}
 
 		/// <summary>
@@ -98,13 +98,13 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
 		/// <param name="table"></param>
 		/// <param name="column"></param>
-		/// <param name="max_lo"></param>
+		/// <param name="maxLo"></param>
 		/// <returns></returns>
-        public IIdentityPart HiLo(string table, string column, string max_lo)
+        public IIdentityPart HiLo(string table, string column, string maxLo)
 		{
-			addGeneratorParam("table", table);
-			addGeneratorParam("column", column);
-			return HiLo(max_lo);
+			AddGeneratorParam("table", table);
+			AddGeneratorParam("column", column);
+			return HiLo(maxLo);
 		}
 
 		/// <summary>
@@ -114,29 +114,29 @@ namespace FluentNHibernate.Mapping
 		/// only for a particular database. Do not use this generator with a user-supplied connection.
 		/// requires a "special" database table to hold the next available "hi" value
 		/// </summary>
-		/// <param name="max_lo"></param>
+		/// <param name="maxLo"></param>
 		/// <returns></returns>
-        public IIdentityPart HiLo(string max_lo)
+        public IIdentityPart HiLo(string maxLo)
 		{
-			ensureIntegralIdenityType();
-			setGenerator("hilo");
-			addGeneratorParam("max_lo", max_lo);
-			return _parent;
+			EnsureIntegralIdenityType();
+			SetGenerator("hilo");
+			AddGeneratorParam("max_lo", maxLo);
+			return parent;
 		}
 
 		/// <summary>
 		/// uses an Oracle-style sequence (where supported)
 		/// </summary>
 		/// <param name="sequence"></param>
-		/// <param name="max_lo"></param>
+		/// <param name="maxLo"></param>
 		/// <returns></returns>
-        public IIdentityPart SeqHiLo(string sequence, string max_lo)
+        public IIdentityPart SeqHiLo(string sequence, string maxLo)
 		{
-			ensureIntegralIdenityType();
-			setGenerator("seqhilo");
-			addGeneratorParam("sequence", sequence);
-			addGeneratorParam("max_lo", max_lo);
-			return _parent;
+			EnsureIntegralIdenityType();
+			SetGenerator("seqhilo");
+			AddGeneratorParam("sequence", sequence);
+			AddGeneratorParam("max_lo", maxLo);
+			return parent;
 		}
 
 		/// <summary>
@@ -147,10 +147,10 @@ namespace FluentNHibernate.Mapping
 		/// <returns></returns>
         public IIdentityPart UuidHex(string format)
 		{
-			ensureStringIdentityType();
-			setGenerator("uuid.hex");
-			addGeneratorParam("format", format);
-			return _parent;
+			EnsureStringIdentityType();
+			SetGenerator("uuid.hex");
+			AddGeneratorParam("format", format);
+			return parent;
 		}
 
 		/// <summary>
@@ -159,9 +159,9 @@ namespace FluentNHibernate.Mapping
 		/// <returns></returns>
         public IIdentityPart UuidString()
 		{
-			ensureStringIdentityType();
-			setGenerator("uuid.string");
-			return _parent;
+			EnsureStringIdentityType();
+			SetGenerator("uuid.string");
+			return parent;
 		}
 
 		/// <summary>
@@ -170,9 +170,9 @@ namespace FluentNHibernate.Mapping
 		/// <returns></returns>
         public IIdentityPart Guid()
 		{
-			ensureGuidIdentityType();
-			setGenerator("guid");
-			return _parent;
+			EnsureGuidIdentityType();
+			SetGenerator("guid");
+			return parent;
 		}
 
 		/// <summary>
@@ -183,9 +183,9 @@ namespace FluentNHibernate.Mapping
 		/// <returns></returns>
         public IIdentityPart GuidComb()
 		{
-			ensureGuidIdentityType();
-			setGenerator("guid.comb");
-			return _parent;
+			EnsureGuidIdentityType();
+			SetGenerator("guid.comb");
+			return parent;
 		}
 
 		/// <summary>
@@ -194,8 +194,8 @@ namespace FluentNHibernate.Mapping
 		/// <returns></returns>
         public IIdentityPart Assigned()
 		{
-			setGenerator("assigned");
-			return _parent;
+			SetGenerator("assigned");
+			return parent;
 		}
 
 		/// <summary>
@@ -204,9 +204,9 @@ namespace FluentNHibernate.Mapping
 		/// <returns></returns>
         public IIdentityPart Native()
 		{
-			ensureIntegralIdenityType();
-			setGenerator("native");
-			return _parent;
+			EnsureIntegralIdenityType();
+			SetGenerator("native");
+			return parent;
 		}
 
 		/// <summary>
@@ -216,9 +216,9 @@ namespace FluentNHibernate.Mapping
 		/// <returns></returns>
         public IIdentityPart Foreign(string property)
 		{
-			setGenerator("foreign");
-			addGeneratorParam("property", property);
-			return _parent;
+			SetGenerator("foreign");
+			AddGeneratorParam("property", property);
+			return parent;
 		}
 	}
 }

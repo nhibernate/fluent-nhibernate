@@ -6,11 +6,11 @@ namespace FluentNHibernate
 {
     public class MappingVisitor : IMappingVisitor
     {
-        private readonly Configuration _configuration;
+        private readonly Configuration configuration;
 
         public MappingVisitor(Configuration configuration)
         {
-            _configuration = configuration;
+            this.configuration = configuration;
         }
 
 		public MappingVisitor() : this(new Configuration())
@@ -23,8 +23,8 @@ namespace FluentNHibernate
 
         public virtual void AddMappingDocument(XmlDocument document, Type type)
         {
-            if (_configuration.GetClassMapping(type) == null)
-                _configuration.AddDocument(document);
+            if (configuration.GetClassMapping(type) == null)
+                configuration.AddDocument(document);
         }
 
         #endregion

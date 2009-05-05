@@ -10,7 +10,7 @@ namespace FluentNHibernate.AutoMap
     public class AutoMap<T> : ClassMap<T>
     {
         private IList<PropertyInfo> propertiesMapped = new List<PropertyInfo>();
-        private Dictionary<Type, object> joinedSubClasses = new Dictionary<Type, object>();
+        private readonly Dictionary<Type, object> joinedSubClasses = new Dictionary<Type, object>();
 
         public IList<PropertyInfo> PropertiesMapped
         {
@@ -18,10 +18,10 @@ namespace FluentNHibernate.AutoMap
             set { propertiesMapped = value; }
         }
 
-        protected override OneToManyPart<CHILD> HasMany<CHILD>(PropertyInfo property)
+        protected override OneToManyPart<TChild> HasMany<TChild>(PropertyInfo property)
         {
             propertiesMapped.Add(property);
-            return base.HasMany<CHILD>(property);
+            return base.HasMany<TChild>(property);
         }
 
         public void IgnoreProperty(Expression<Func<T, object>> expression)
@@ -41,19 +41,19 @@ namespace FluentNHibernate.AutoMap
             return base.Map(property, columnName);
         }
 
-        protected override ManyToOnePart<OTHER> References<OTHER>(PropertyInfo property, string columnName)
+        protected override ManyToOnePart<TOther> References<TOther>(PropertyInfo property, string columnName)
         {
             propertiesMapped.Add(property);
-            return base.References<OTHER>(property, columnName);
+            return base.References<TOther>(property, columnName);
         }
 
-        protected override ManyToManyPart<CHILD> HasManyToMany<CHILD>(PropertyInfo property)
+        protected override ManyToManyPart<TChild> HasManyToMany<TChild>(PropertyInfo property)
         {
             propertiesMapped.Add(property);
-            return base.HasManyToMany<CHILD>(property);
+            return base.HasManyToMany<TChild>(property);
         }
 
-        protected override ComponentPart<C> Component<C>(PropertyInfo property, Action<ComponentPart<C>> action)
+        protected override ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
         {
             propertiesMapped.Add(property);
 
@@ -63,16 +63,16 @@ namespace FluentNHibernate.AutoMap
             return base.Component(property, action);
         }
 
-        public override IIdentityPart Id(System.Linq.Expressions.Expression<Func<T, object>> expression, string column)
+        public override IIdentityPart Id(Expression<Func<T, object>> expression, string column)
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
             return base.Id(expression, column);
         }
 
-        protected override OneToOnePart<OTHER> HasOne<OTHER>(PropertyInfo property)
+        protected override OneToOnePart<TOther> HasOne<TOther>(PropertyInfo property)
         {
             propertiesMapped.Add(property);
-            return base.HasOne<OTHER>(property);
+            return base.HasOne<TOther>(property);
         }
 
         protected override VersionPart Version(PropertyInfo property)

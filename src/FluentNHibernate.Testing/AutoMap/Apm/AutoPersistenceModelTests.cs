@@ -22,7 +22,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
-            autoMapper.addMappingsFromAssembly(typeof(ExampleClass).Assembly);
+            autoMapper.AddMappingsFromAssembly(typeof(ExampleClass).Assembly);
             autoMapper.Configure(cfg);
 
             cfg.ClassMappings.ShouldContain(c => c.ClassName == typeof(ExampleClass).AssemblyQualifiedName);

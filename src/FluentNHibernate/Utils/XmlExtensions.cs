@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml;
 
 namespace FluentNHibernate.Utils
@@ -64,7 +61,7 @@ namespace FluentNHibernate.Utils
 
         public static XmlElement WithProperties(this XmlElement element, Cache<string, string> properties)
         {
-            properties.ForEachPair((k, v) => element.SetAttribute(k, v));
+            properties.ForEachPair(element.SetAttribute);
 
             return element;
         }

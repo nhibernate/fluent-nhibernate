@@ -1,5 +1,4 @@
 using System;
-using System.Linq.Expressions;
 using System.Reflection;
 
 namespace FluentNHibernate.Mapping
@@ -25,7 +24,7 @@ namespace FluentNHibernate.Mapping
         ICollectionRelationship AsBag();
         ICollectionRelationship AsList();
         ICollectionRelationship AsMap(string indexColumnName);
-        ICollectionRelationship AsMap<INDEX_TYPE>(string indexColumnName);
+        ICollectionRelationship AsMap<TIndex>(string indexColumnName);
         ICollectionRelationship AsElement(string columnName);
 
         /// <summary>

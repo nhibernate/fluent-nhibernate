@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output

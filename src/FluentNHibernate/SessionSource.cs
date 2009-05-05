@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using FluentNHibernate.Cfg;
 using NHibernate;
 using NHibernate.Cfg;
@@ -17,9 +16,9 @@ namespace FluentNHibernate
 
     public class SessionSource : ISessionSource
     {
-        private ISessionFactory _sessionFactory;
-        private Configuration _configuration;
-        private Dialect _dialect;
+        private ISessionFactory sessionFactory;
+        private Configuration configuration;
+        private Dialect dialect;
 
         public SessionSource(PersistenceModel model) 
         {
@@ -33,27 +32,27 @@ namespace FluentNHibernate
 
         public SessionSource(FluentConfiguration config)
         {
-            _configuration = config.Configuration;
+            configuration = config.Configuration;
 
-            _sessionFactory = config.BuildSessionFactory();
-            _dialect = Dialect.GetDialect(_configuration.Properties);
+            sessionFactory = config.BuildSessionFactory();
+            dialect = Dialect.GetDialect(configuration.Properties);
         }
 
         protected void Initialize(Configuration nhibernateConfig, PersistenceModel model)
         {
             if( model == null ) throw new ArgumentNullException("model", "Model cannot be null");
 
-            _configuration = nhibernateConfig;
+            configuration = nhibernateConfig;
 
-            model.Configure(_configuration);
+            model.Configure(configuration);
 
-            _sessionFactory = _configuration.BuildSessionFactory();
-            _dialect = Dialect.GetDialect(_configuration.Properties);
+            sessionFactory = configuration.BuildSessionFactory();
+            dialect = Dialect.GetDialect(configuration.Properties);
         }
 
         public virtual ISession CreateSession()
         {
-            return _sessionFactory.OpenSession();
+            return sessionFactory.OpenSession();
         }
 
         public virtual void BuildSchema()
@@ -79,7 +78,7 @@ namespace FluentNHibernate
 
         public void BuildSchema(ISession session, bool script)
         {
-            new SchemaExport(_configuration)
+            new SchemaExport(configuration)
                 .Execute(script, true, false, true, session.Connection, null);
         }
     }

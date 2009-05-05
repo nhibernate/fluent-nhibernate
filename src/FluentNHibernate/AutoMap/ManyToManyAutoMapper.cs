@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Utils;
@@ -27,7 +26,7 @@ namespace FluentNHibernate.AutoMap
             return hasInverse;
         }
 
-        private PropertyInfo GetInverseProperty(PropertyInfo property)
+        private static PropertyInfo GetInverseProperty(PropertyInfo property)
         {
             Type type = property.PropertyType;
             var inverseSide = type.GetGenericTypeDefinition()
@@ -46,7 +45,7 @@ namespace FluentNHibernate.AutoMap
 
             PropertyInfo inverseProperty = GetInverseProperty(property);
             Type parentSide = conventions.GetParentSideForManyToMany(property.DeclaringType, inverseProperty.DeclaringType);
-            IManyToManyPart manyToManyPart = GetManyToManyPart<T>(classMap, property);
+            IManyToManyPart manyToManyPart = GetManyToManyPart(classMap, property);
 
             if (parentSide != property.DeclaringType)
                 ApplyInverse(property, parentSide, manyToManyPart);

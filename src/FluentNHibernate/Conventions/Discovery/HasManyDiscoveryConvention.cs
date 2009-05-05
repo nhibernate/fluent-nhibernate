@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Discovery
@@ -24,12 +23,12 @@ namespace FluentNHibernate.Conventions.Discovery
         public void Apply(IRelationship relationship)
         {
             var conventions = conventionFinder.Find<IHasManyConvention>();
-            var o2m = (IOneToManyPart)relationship;
+            var oneToMany = (IOneToManyPart)relationship;
 
             foreach (var convention in conventions)
             {
-                if (convention.Accept(o2m))
-                    convention.Apply(o2m);
+                if (convention.Accept(oneToMany))
+                    convention.Apply(oneToMany);
             }
         }
     }

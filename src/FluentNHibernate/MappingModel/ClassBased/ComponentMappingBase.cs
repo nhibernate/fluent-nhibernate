@@ -2,7 +2,7 @@
 using System.Reflection;
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.MappingModel.ClassBased
 {
     public abstract class ComponentMappingBase<T> : ClassMappingBase where T : ComponentMappingBase<T> 
     {

@@ -1,57 +1,54 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using IEnumerable=System.Collections.IEnumerable;
 
 namespace FluentNHibernate
 {
-	public class Cache<KEY, VALUE> : IEnumerable<VALUE> where VALUE : class
+	public class Cache<TKey, TValue> : IEnumerable<TValue> where TValue : class
 	{
-		private readonly Dictionary<KEY, VALUE> _values = new Dictionary<KEY, VALUE>();
-		private readonly Func<KEY, VALUE> _onMissing = delegate(KEY key)
+		private readonly Dictionary<TKey, TValue> values = new Dictionary<TKey, TValue>();
+		private readonly Func<TKey, TValue> onMissing = delegate(TKey key)
 		                                               	{
 		                                               		string message = string.Format("Key '{0}' could not be found", key);
 		                                               		throw new KeyNotFoundException(message);
 		                                               	};
 
-		private Func<VALUE, KEY> _getKey = delegate { throw new NotImplementedException(); };
+		private Func<TValue, TKey> getKey = delegate { throw new NotImplementedException(); };
 
 		public Cache()
 		{
 		}
 
-		public Cache(Dictionary<KEY, VALUE> values, Func<KEY, VALUE> onMissing)
+		public Cache(Dictionary<TKey, TValue> values, Func<TKey, TValue> onMissing)
 			: this(onMissing)
 		{
-			_values = values;
+			this.values = values;
 		}
 
-		public Cache(Func<KEY, VALUE> onMissing)
+		public Cache(Func<TKey, TValue> onMissing)
 		{
-			_onMissing = onMissing;
+			this.onMissing = onMissing;
 		}
 
-		public Func<VALUE, KEY> GetKey
+		public Func<TValue, TKey> GetKey
 		{
-			get { return _getKey; }
-			set { _getKey = value; }
+			get { return getKey; }
+			set { getKey = value; }
 		}
 
 		public int Count
 		{
 			get
 			{
-				return _values.Count;
+				return values.Count;
 			}
 		}
 
-		public VALUE First
+		public TValue First
 		{
 			get
 			{
-				foreach (KeyValuePair<KEY, VALUE> pair in _values)
+				foreach (KeyValuePair<TKey, TValue> pair in values)
 				{
 					return pair.Value;
 				}
@@ -60,67 +57,67 @@ namespace FluentNHibernate
 			}
 		}
 
-		public VALUE Store(KEY key, VALUE value)
+		public TValue Store(TKey key, TValue value)
 		{
-			if (_values.ContainsKey(key))
+			if (values.ContainsKey(key))
 			{
-				_values[key] = value;
+				values[key] = value;
 			}
 			else
 			{
-				_values.Add(key, value);
+				values.Add(key, value);
 			}
 
 			return value;
 		}
 
-		public void Fill(KEY key, VALUE value)
+		public void Fill(TKey key, TValue value)
 		{
-			if (_values.ContainsKey(key))
+			if (values.ContainsKey(key))
 			{
 				return;
 			}
 
-			_values.Add(key, value);
+			values.Add(key, value);
 		}
 
-		public VALUE Get(KEY key)
+		public TValue Get(TKey key)
 		{
-			if (!_values.ContainsKey(key))
+			if (!values.ContainsKey(key))
 			{
-				VALUE value = _onMissing(key);
-				_values.Add(key, value);
+				TValue value = onMissing(key);
+				values.Add(key, value);
 			}
 
-			return _values[key];
+			return values[key];
 		}
 
-		public void Each(Action<VALUE> action)
+		public void Each(Action<TValue> action)
 		{
-			foreach (KeyValuePair<KEY, VALUE> pair in _values)
+			foreach (KeyValuePair<TKey, TValue> pair in values)
 			{
 				action(pair.Value);
 			}
 		}
 
-		public void ForEachPair(Action<KEY, VALUE> action)
+		public void ForEachPair(Action<TKey, TValue> action)
 		{
-			foreach (var pair in _values)
+			foreach (var pair in values)
 			{
 				action(pair.Key, pair.Value);
 			}
 		}
 
-		public bool Has(KEY key)
+		public bool Has(TKey key)
 		{
-			return _values.ContainsKey(key);
+			return values.ContainsKey(key);
 		}
 
-		public bool Exists(Predicate<VALUE> predicate)
+		public bool Exists(Predicate<TValue> predicate)
 		{
 			bool returnValue = false;
 
-			Each(delegate(VALUE value)
+			Each(delegate(TValue value)
 			     	{
 			     		returnValue |= predicate(value);
 			     	});
@@ -128,9 +125,9 @@ namespace FluentNHibernate
 			return returnValue;
 		}
 
-		public VALUE Find(Predicate<VALUE> predicate)
+		public TValue Find(Predicate<TValue> predicate)
 		{
-			foreach (KeyValuePair<KEY, VALUE> pair in _values)
+			foreach (KeyValuePair<TKey, TValue> pair in values)
 			{
 				if (predicate(pair.Value))
 				{
@@ -141,35 +138,35 @@ namespace FluentNHibernate
 			return null;
 		}
 
-		public VALUE[] GetAll()
+		public TValue[] GetAll()
 		{
-			VALUE[] returnValue = new VALUE[Count];
-			_values.Values.CopyTo(returnValue, 0);
+			TValue[] returnValue = new TValue[Count];
+			values.Values.CopyTo(returnValue, 0);
 
 			return returnValue;
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return ((IEnumerable<VALUE>)this).GetEnumerator();
+			return ((IEnumerable<TValue>)this).GetEnumerator();
 		}
 
-		public IEnumerator<VALUE> GetEnumerator()
+		public IEnumerator<TValue> GetEnumerator()
 		{
-			return _values.Values.GetEnumerator();
+			return values.Values.GetEnumerator();
 		}
 
-		public void Remove(KEY key)
+		public void Remove(TKey key)
 		{
-			if (_values.ContainsKey(key))
+			if (values.ContainsKey(key))
 			{
-				_values.Remove(key);
+				values.Remove(key);
 			}
 		}
 
 		public void ClearAll()
 		{
-			_values.Clear();
+			values.Clear();
 		}
 	}
 }

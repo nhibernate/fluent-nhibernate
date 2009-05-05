@@ -1,5 +1,6 @@
 using System;
 using FluentNHibernate.Infrastructure;
+using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.MappingModel.Output
 {

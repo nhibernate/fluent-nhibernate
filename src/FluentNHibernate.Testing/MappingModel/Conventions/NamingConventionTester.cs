@@ -1,3 +1,4 @@
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Conventions;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils;

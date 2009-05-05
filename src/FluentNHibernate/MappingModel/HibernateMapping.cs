@@ -1,43 +1,44 @@
 using System.Collections.Generic;
+using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.MappingModel
 {
     public class HibernateMapping : MappingBase
     {
-        private readonly IList<ClassMapping> _classes;
-        private readonly IList<ImportMapping> _imports;
-        private readonly AttributeStore<HibernateMapping> _attributes;
+        private readonly IList<ClassMapping> classes;
+        private readonly IList<ImportMapping> imports;
+        private readonly AttributeStore<HibernateMapping> attributes;
 
         public HibernateMapping()
         {
-            _attributes = new AttributeStore<HibernateMapping>();
-            _classes = new List<ClassMapping>();
-            _imports = new List<ImportMapping>();
+            attributes = new AttributeStore<HibernateMapping>();
+            classes = new List<ClassMapping>();
+            imports = new List<ImportMapping>();
         }        
 
         public IEnumerable<ClassMapping> Classes
         {
-            get { return _classes; }
+            get { return classes; }
         }
 
         public IEnumerable<ImportMapping> Imports
         {
-            get { return _imports; }
+            get { return imports; }
         }
 
         public AttributeStore<HibernateMapping> Attributes
         {
-            get { return _attributes; }
+            get { return attributes; }
         }
 
         public void AddClass(ClassMapping classMapping)
         {
-            _classes.Add(classMapping);            
+            classes.Add(classMapping);            
         }
 
         public void AddImport(ImportMapping importMapping)
         {
-            _imports.Add(importMapping);
+            imports.Add(importMapping);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -53,20 +54,20 @@ namespace FluentNHibernate.MappingModel
 
         public bool DefaultLazy
         {
-            get { return _attributes.Get(x => x.DefaultLazy); }
-            set { _attributes.Set(x => x.DefaultLazy, value); }
+            get { return attributes.Get(x => x.DefaultLazy); }
+            set { attributes.Set(x => x.DefaultLazy, value); }
         }
 
         public string DefaultAccess
         {
-            get { return _attributes.Get(x => x.DefaultAccess); }
-            set { _attributes.Set(x => x.DefaultAccess, value); }
+            get { return attributes.Get(x => x.DefaultAccess); }
+            set { attributes.Set(x => x.DefaultAccess, value); }
         }
 
         public bool AutoImport
         {
-            get { return _attributes.Get(x => x.AutoImport); }
-            set { _attributes.Set(x => x.AutoImport, value); }
+            get { return attributes.Get(x => x.AutoImport); }
+            set { attributes.Set(x => x.AutoImport, value); }
         }
     }
 }

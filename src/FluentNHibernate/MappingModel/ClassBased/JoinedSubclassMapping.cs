@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.MappingModel.ClassBased
 {
     public class JoinedSubclassMapping : ClassMappingBase, ISubclassMapping
     {

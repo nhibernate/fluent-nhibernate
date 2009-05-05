@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.MappingModel.Output
 {

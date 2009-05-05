@@ -1,11 +1,7 @@
-using System;
-using System.Reflection;
-
 namespace FluentNHibernate.Mapping
 {
     public interface IClassMap : IClasslike, IHasAttributes, IMappingProvider
     {
-        Type EntityType { get; }
         string TableName { get; }
         ICache Cache { get; }
         Cache<string, string> Attributes { get; }

@@ -13,14 +13,14 @@ namespace FluentNHibernate.Data
         T Find<T>(long id) where T : Entity;
         void Delete<T>(T target);
         T[] Query<T>(Expression<Func<T, bool>> where);
-        T FindBy<T, U>(Expression<Func<T, U>> expression, U search) where T : class;
+        T FindBy<T, TResult>(Expression<Func<T, TResult>> expression, TResult search) where T : class;
         T FindBy<T>(Expression<Func<T, bool>> where);
         void Save<T>(T target);
     }
 
     public class Repository : IRepository
     {
-        private readonly ISession _session;
+        private readonly ISession session;
 
         public Repository(ISessionSource source) : this(source.CreateSession())
         {
@@ -30,15 +30,15 @@ namespace FluentNHibernate.Data
 
         public Repository(ISession session)
         {
-            _session = session;
-            _session.FlushMode = FlushMode.Commit;
+            this.session = session;
+            this.session.FlushMode = FlushMode.Commit;
         }
 
         #region IRepository Members
 
-        private void withinTransaction(Action action)
+        private void WithinTransaction(Action action)
         {
-            ITransaction transaction = _session.BeginTransaction();
+            ITransaction transaction = session.BeginTransaction();
             try
             {
                 action();
@@ -58,36 +58,36 @@ namespace FluentNHibernate.Data
 
         public T Find<T>(long id) where T : Entity
         {
-            return _session.Get<T>(id);
+            return session.Get<T>(id);
         }
 
         public void Delete<T>(T target)
         {
-            withinTransaction(() => _session.Delete(target));
+            WithinTransaction(() => session.Delete(target));
         }
 
         public T[] Query<T>(Expression<System.Func<T, bool>> where)
         {
-            return _session.Linq<T>().Where(where).ToArray();
+            return session.Linq<T>().Where(where).ToArray();
         }
 
         #endregion
 
         public void Save<T>(T target)
         {
-            withinTransaction(() => _session.SaveOrUpdate(target));
+            WithinTransaction(() => session.SaveOrUpdate(target));
         }
 
-        public T FindBy<T, U>(Expression<System.Func<T, U>> expression, U search) where T : class
+        public T FindBy<T, TResult>(Expression<Func<T, TResult>> expression, TResult search) where T : class
         {
             string propertyName = ReflectionHelper.GetProperty(expression).Name;
-            var criteria = _session.CreateCriteria(typeof (T)).Add(Restrictions.Eq(propertyName, search));
+            var criteria = session.CreateCriteria(typeof (T)).Add(Restrictions.Eq(propertyName, search));
             return criteria.UniqueResult() as T;
         }
         
-        public T FindBy<T>(Expression<System.Func<T, bool>> where)
+        public T FindBy<T>(Expression<Func<T, bool>> where)
         {
-            return _session.Linq<T>().First(where);
+            return session.Linq<T>().First(where);
         }
     }
 }

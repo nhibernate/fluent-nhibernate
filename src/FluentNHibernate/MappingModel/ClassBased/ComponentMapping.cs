@@ -1,4 +1,4 @@
-﻿namespace FluentNHibernate.MappingModel
+﻿namespace FluentNHibernate.MappingModel.ClassBased
 {
     public class ComponentMapping : ComponentMappingBase<ComponentMapping>
     {

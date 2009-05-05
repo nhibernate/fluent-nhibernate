@@ -1,4 +1,3 @@
-using System.Reflection;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Defaults

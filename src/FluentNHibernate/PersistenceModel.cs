@@ -12,24 +12,24 @@ using FluentNHibernate.Conventions.Defaults;
 using FluentNHibernate.Conventions.Discovery;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
-using NHibernate.Cfg;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Xml;
-using NHibernate.Cfg.MappingSchema;
+using NHibernate.Cfg;
 
 namespace FluentNHibernate
 {
     public class PersistenceModel
     {
-        protected readonly IList<IMappingProvider> _mappings;
-        private readonly IList<IMappingModelVisitor> _visitors;
+        protected readonly IList<IMappingProvider> mappings;
+        private readonly IList<IMappingModelVisitor> visitors;
         public IConventionFinder ConventionFinder { get; private set; }
         private bool conventionsApplied;
         private IEnumerable<HibernateMapping> compiledMappings;
 
         public PersistenceModel(IConventionFinder conventionFinder)
         {
-            _mappings = new List<IMappingProvider>();
-            _visitors = new List<IMappingModelVisitor>();
+            mappings = new List<IMappingProvider>();
+            visitors = new List<IMappingModelVisitor>();
             ConventionFinder = conventionFinder;
 
             AddDiscoveryConventions();
@@ -63,16 +63,16 @@ namespace FluentNHibernate
         {
             foreach(var mapping in providers)
                 Add(mapping);
-            _visitors = visitors;
+            this.visitors = visitors;
         }
 
-        protected void addMappingsFromThisAssembly()
+        protected void AddMappingsFromThisAssembly()
         {
-            Assembly assembly = findTheCallingAssembly();
-            addMappingsFromAssembly(assembly);
+            Assembly assembly = FindTheCallingAssembly();
+            AddMappingsFromAssembly(assembly);
         }
 
-        public void addMappingsFromAssembly(Assembly assembly)
+        public void AddMappingsFromAssembly(Assembly assembly)
         {
             foreach (Type type in assembly.GetExportedTypes())
             {
@@ -81,7 +81,7 @@ namespace FluentNHibernate
             }
         }
 
-        private static Assembly findTheCallingAssembly()
+        private static Assembly FindTheCallingAssembly()
         {
             StackTrace trace = new StackTrace(Thread.CurrentThread, false);
 
@@ -102,12 +102,12 @@ namespace FluentNHibernate
 
         public void Add(IMappingProvider provider)
         {
-            _mappings.Add(provider);
+            mappings.Add(provider);
         }
 
         public void AddConvention(IMappingModelVisitor visitor)
         {
-            _visitors.Add(visitor);
+            visitors.Add(visitor);
         }
 
         public void Add(Type type)
@@ -118,7 +118,7 @@ namespace FluentNHibernate
 
         public IEnumerable<IMappingProvider> Mappings
         {
-            get { return _mappings; }
+            get { return mappings; }
         }
 
         public IEnumerable<HibernateMapping> BuildMappings()
@@ -127,7 +127,7 @@ namespace FluentNHibernate
 
             var hbms = new List<HibernateMapping>();
 
-            foreach (var classMap in _mappings)
+            foreach (var classMap in mappings)
             {
                 var hbm = classMap.GetHibernateMapping();
 
@@ -141,7 +141,7 @@ namespace FluentNHibernate
 
         public void ApplyVisitors(HibernateMapping mapping)
         {
-            foreach (var visitor in _visitors)
+            foreach (var visitor in visitors)
                 mapping.AcceptVisitor(visitor);
         }
 
@@ -157,7 +157,7 @@ namespace FluentNHibernate
             // HACK: get a list of IClassMap from a list of IMappingProviders
             var classes = new List<IClassMap>();
             
-            foreach (var provider in _mappings.Where(x => x is IClassMap))
+            foreach (var provider in mappings.Where(x => x is IClassMap))
                 classes.Add((IClassMap)provider);
 
             foreach (var convention in conventions)
@@ -215,16 +215,16 @@ namespace FluentNHibernate
 
     public class DiagnosticMappingVisitor : MappingVisitor
     {
-        private string _folder;
+        private readonly string folder;
 
         public DiagnosticMappingVisitor(string folder, Configuration configuration) : base(configuration)
         {
-            _folder = folder;            
+            this.folder = folder;            
         }
 
         public override void AddMappingDocument(XmlDocument document, Type type)
         {
-            string filename = Path.Combine(_folder, type.FullName + ".hbm.xml");
+            string filename = Path.Combine(folder, type.FullName + ".hbm.xml");
             document.Save(filename);
         }
     }

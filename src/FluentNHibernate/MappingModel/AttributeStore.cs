@@ -8,50 +8,50 @@ namespace FluentNHibernate.MappingModel
 {
     public class AttributeStore
     {
-        private readonly IDictionary<string, object> _attributes;
-        private readonly IDictionary<string, object> _defaults;
+        private readonly IDictionary<string, object> attributes;
+        private readonly IDictionary<string, object> defaults;
 
         public AttributeStore()
         {
-            _attributes = new Dictionary<string, object>();
-            _defaults = new Dictionary<string, object>();
+            attributes = new Dictionary<string, object>();
+            defaults = new Dictionary<string, object>();
         }
 
         public object this[string key]
         {
             get
             {
-                if (_attributes.ContainsKey(key))
-                    return _attributes[key];
+                if (attributes.ContainsKey(key))
+                    return attributes[key];
                 
-                if (_defaults.ContainsKey(key))
-                    return _defaults[key];
+                if (defaults.ContainsKey(key))
+                    return defaults[key];
 
                 return null;
             }
-            set { _attributes[key] = value; }
+            set { attributes[key] = value; }
         }
 
         public bool IsSpecified(string key)
         {
-            return _attributes.ContainsKey(key);
+            return attributes.ContainsKey(key);
         }
 
         public void CopyTo(AttributeStore store)
         {
-            foreach (KeyValuePair<string, object> pair in _attributes)
-                store._attributes[pair.Key] = pair.Value;
+            foreach (KeyValuePair<string, object> pair in attributes)
+                store.attributes[pair.Key] = pair.Value;
         }
 
         public void SetDefault(string key, object value)
         {
-            _defaults[key] = value;
+            defaults[key] = value;
         }
     }
 
     public class AttributeStore<T>
     {
-        private readonly AttributeStore _store;
+        private readonly AttributeStore store;
 
         public AttributeStore()
             : this(new AttributeStore())
@@ -61,35 +61,35 @@ namespace FluentNHibernate.MappingModel
 
         public AttributeStore(AttributeStore store)
         {
-            _store = store;
+            this.store = store;
         }
 
-        public U Get<U>(Expression<Func<T, U>> exp)
+        public TResult Get<TResult>(Expression<Func<T, TResult>> exp)
         {
-            return (U)(_store[GetKey(exp)] ?? default(U));
+            return (TResult)(store[GetKey(exp)] ?? default(TResult));
         }
 
-        public void Set<U>(Expression<Func<T, U>> exp, U value)
+        public void Set<TResult>(Expression<Func<T, TResult>> exp, TResult value)
         {
-            _store[GetKey(exp)] = value;
+            store[GetKey(exp)] = value;
         }
 
-        public void SetDefault<U>(Expression<Func<T, U>> exp, U value)
+        public void SetDefault<TResult>(Expression<Func<T, TResult>> exp, TResult value)
         {
-            _store.SetDefault(GetKey(exp), value);
+            store.SetDefault(GetKey(exp), value);
         }
 
-        public bool IsSpecified<U>(Expression<Func<T, U>> exp)
+        public bool IsSpecified<TResult>(Expression<Func<T, TResult>> exp)
         {
-            return _store.IsSpecified(GetKey(exp));
+            return store.IsSpecified(GetKey(exp));
         }
 
         public void CopyTo(AttributeStore<T> target)
         {
-            _store.CopyTo(target._store);
+            store.CopyTo(target.store);
         }
 
-        private string GetKey<U>(Expression<Func<T, U>> exp)
+        private static string GetKey<TResult>(Expression<Func<T, TResult>> exp)
         {
             PropertyInfo info = ReflectionHelper.GetProperty(exp);
             return info.Name;
@@ -99,7 +99,7 @@ namespace FluentNHibernate.MappingModel
         {
             var clonedStore = new AttributeStore<T>();
 
-            _store.CopyTo(clonedStore._store);
+            store.CopyTo(clonedStore.store);
 
             return clonedStore;
         }

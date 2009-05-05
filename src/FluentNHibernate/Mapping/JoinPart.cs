@@ -13,18 +13,18 @@ namespace FluentNHibernate.Mapping
     /// <typeparam name="T"></typeparam>
     public class JoinPart<T> : ClasslikeMapBase<T>, IJoin
     {
-        private readonly Cache<string, string> properties = new Cache<string, string>();
+        private readonly Cache<string, string> localProperties = new Cache<string, string>();
         private string keyColumnName;
 
         public JoinPart(string tableName)
         {
-            properties.Store("table", tableName);
+            localProperties.Store("table", tableName);
             keyColumnName = GetType().GetGenericArguments()[0].Name + "ID";
         }
 
         public void SetAttribute(string name, string value)
         {
-            properties.Store(name, value);
+            localProperties.Store(name, value);
         }
 
         public void SetAttributes(Attributes atts)
@@ -38,12 +38,12 @@ namespace FluentNHibernate.Mapping
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             var joinElement = classElement.AddElement("join")
-                .WithProperties(properties);
+                .WithProperties(localProperties);
 
             joinElement.AddElement("key")
                 .SetAttribute("column", keyColumnName);
 
-            writeTheParts(joinElement, visitor);
+            WriteTheParts(joinElement, visitor);
         }
 
         public int LevelWithinPosition

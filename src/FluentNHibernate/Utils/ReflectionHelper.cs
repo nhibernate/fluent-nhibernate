@@ -6,34 +6,34 @@ namespace FluentNHibernate.Utils
 {
     public static class ReflectionHelper
     {
-        public static bool IsMethodExpression<MODEL>(Expression<Func<MODEL, object>> expression)
+        public static bool IsMethodExpression<TModel>(Expression<Func<TModel, object>> expression)
         {
-            return IsMethodExpression<MODEL, object>(expression);
+            return IsMethodExpression<TModel, object>(expression);
         }
 
-        public static bool IsMethodExpression<MODEL, RETURN>(Expression<Func<MODEL, RETURN>> expression)
+        public static bool IsMethodExpression<TModel, TResult>(Expression<Func<TModel, TResult>> expression)
         {
             return expression.Body is MethodCallExpression;
         }
 
-        public static bool IsPropertyExpression<MODEL>(Expression<Func<MODEL, object>> expression)
+        public static bool IsPropertyExpression<TModel>(Expression<Func<TModel, object>> expression)
         {
-            return getMemberExpression(expression, false) != null;
+            return GetMemberExpression(expression, false) != null;
         }
 
-        public static PropertyInfo GetProperty<MODEL>(Expression<Func<MODEL, object>> expression)
+        public static PropertyInfo GetProperty<TModel>(Expression<Func<TModel, object>> expression)
         {
             var isExpressionOfDynamicComponent = expression.ToString().Contains("get_Item");
 
             if (isExpressionOfDynamicComponent)
                 return GetDynamicComponentProperty(expression);
 		    
-            var memberExpression = getMemberExpression(expression);
+            var memberExpression = GetMemberExpression(expression);
 
             return (PropertyInfo) memberExpression.Member;
         }
 
-        private static PropertyInfo GetDynamicComponentProperty<MODEL, T>(Expression<Func<MODEL, T>> expression)
+        private static PropertyInfo GetDynamicComponentProperty<TModel, T>(Expression<Func<TModel, T>> expression)
         {
             Type desiredConversionType = null;
             MethodCallExpression methodCallExpression = null;
@@ -61,24 +61,24 @@ namespace FluentNHibernate.Utils
             return new DummyPropertyInfo((string)constExpression.Value, desiredConversionType);
         }
 
-        public static PropertyInfo GetProperty<MODEL, T>(Expression<Func<MODEL, T>> expression)
+        public static PropertyInfo GetProperty<TModel, T>(Expression<Func<TModel, T>> expression)
         {
             var isExpressionOfDynamicComponent = expression.ToString().Contains("get_Item");
 
             if (isExpressionOfDynamicComponent)
-                return GetDynamicComponentProperty<MODEL, T>(expression);
+                return GetDynamicComponentProperty(expression);
 
-            MemberExpression memberExpression = getMemberExpression(expression);
+            MemberExpression memberExpression = GetMemberExpression(expression);
 
             return (PropertyInfo)memberExpression.Member;
         }
 
-        private static MemberExpression getMemberExpression<MODEL, T>(Expression<Func<MODEL, T>> expression)
+        private static MemberExpression GetMemberExpression<TModel, T>(Expression<Func<TModel, T>> expression)
         {
-            return getMemberExpression(expression, true);
+            return GetMemberExpression(expression, true);
         }
 
-        private static MemberExpression getMemberExpression<MODEL, T>(Expression<Func<MODEL, T>> expression, bool enforceCheck)
+        private static MemberExpression GetMemberExpression<TModel, T>(Expression<Func<TModel, T>> expression, bool enforceCheck)
         {
             MemberExpression memberExpression = null;
             if (expression.Body.NodeType == ExpressionType.Convert)
@@ -93,7 +93,7 @@ namespace FluentNHibernate.Utils
 
             if (enforceCheck && memberExpression == null)
             {
-                throw new ArgumentException("Not a member access", "member");
+                throw new ArgumentException("Not a member access", "expression");
             }
 
             return memberExpression;
@@ -105,7 +105,7 @@ namespace FluentNHibernate.Utils
             return methodCall.Method;
         }
 
-        public static MethodInfo GetMethod<T, U>(Expression<Func<T, U>> expression)
+        public static MethodInfo GetMethod<T, TResult>(Expression<Func<T, TResult>> expression)
         {
             MethodCallExpression methodCall = (MethodCallExpression)expression.Body;
             return methodCall.Method;

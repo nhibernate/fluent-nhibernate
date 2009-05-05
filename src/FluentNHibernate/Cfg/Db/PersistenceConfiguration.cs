@@ -31,19 +31,19 @@ namespace FluentNHibernate.Cfg.Db
         protected const string ProxyFactoryFactoryClassKey = "proxyfactory.factory_class";
         protected const string AdoNetBatchSizeKey = "adonet.batch_size";
 
-        private readonly Dictionary<string, string> _rawValues;
+        private readonly Dictionary<string, string> rawValues;
 
-        private readonly Cache<string, string> _values;
+        private readonly Cache<string, string> values;
 
-        private bool _nextBoolSettingValue = true;
+        private bool nextBoolSettingValue = true;
         private readonly TConnectionString connectionString;
         private readonly CacheSettingsBuilder cache = new CacheSettingsBuilder();
 
         protected PersistenceConfiguration()
         {
-            _rawValues = new Dictionary<string, string>();
-            _values = new Cache<string, string>(_rawValues, s=>"");
-            _values.Store(ConnectionProviderKey, DefaultConnectionProviderClassName);
+            rawValues = new Dictionary<string, string>();
+            values = new Cache<string, string>(rawValues, s=>"");
+            values.Store(ConnectionProviderKey, DefaultConnectionProviderClassName);
             connectionString = new TConnectionString();
         }
 
@@ -60,7 +60,7 @@ namespace FluentNHibernate.Cfg.Db
                 }
             }
 
-            return _rawValues;
+            return rawValues;
         }
 
         public NHibConfiguration ConfigureProperties(NHibConfiguration nhibernateConfig)
@@ -77,28 +77,28 @@ namespace FluentNHibernate.Cfg.Db
             return CreateProperties();
         }
 
-        protected void toggleBooleanSetting(string settingKey)
+        protected void ToggleBooleanSetting(string settingKey)
         {
-            var value = _nextBoolSettingValue.ToString().ToLowerInvariant();
+            var value = nextBoolSettingValue.ToString().ToLowerInvariant();
 
-            _values.Store(settingKey, value);
+            values.Store(settingKey, value);
 
-            _nextBoolSettingValue = true;
+            nextBoolSettingValue = true;
         }
 
         public TThisConfiguration DoNot
         {
             get
             {
-                _nextBoolSettingValue = false;
+                nextBoolSettingValue = false;
                 return (TThisConfiguration)this;
             }
         }
 
         public TThisConfiguration Dialect(string dialect)
         {
-            _values.Store(DialectKey, dialect);
-            _values.Store(AltDialectKey, dialect);
+            values.Store(DialectKey, dialect);
+            values.Store(AltDialectKey, dialect);
             return (TThisConfiguration) this;
         }
 
@@ -110,43 +110,43 @@ namespace FluentNHibernate.Cfg.Db
 
         public TThisConfiguration DefaultSchema(string schema)
         {
-            _values.Store(DefaultSchemaKey, schema);
+            values.Store(DefaultSchemaKey, schema);
             return (TThisConfiguration) this;
         }
 
         public TThisConfiguration UseOuterJoin()
         {
-            toggleBooleanSetting(UseOuterJoinKey);
+            ToggleBooleanSetting(UseOuterJoinKey);
             return (TThisConfiguration) this;
         }
 
         public TThisConfiguration MaxFetchDepth(int maxFetchDepth)
         {
-            _values.Store(MaxFetchDepthKey, maxFetchDepth.ToString());
+            values.Store(MaxFetchDepthKey, maxFetchDepth.ToString());
             return (TThisConfiguration)this;
         }
 
         public TThisConfiguration UseReflectionOptimizer()
         {
-            toggleBooleanSetting(UseReflectionOptimizerKey);
+            ToggleBooleanSetting(UseReflectionOptimizerKey);
             return (TThisConfiguration) this;
         }
 
         public TThisConfiguration QuerySubstitutions(string query)
         {
-            _values.Store(QuerySubstitutionsKey, query);
+            values.Store(QuerySubstitutionsKey, query);
             return (TThisConfiguration)this;
         }
 
         public TThisConfiguration ShowSql()
         {
-            toggleBooleanSetting(ShowSqlKey);
+            ToggleBooleanSetting(ShowSqlKey);
             return (TThisConfiguration)this;
         }
 
         public TThisConfiguration Provider(string provider)
         {
-            _values.Store(ConnectionProviderKey, provider);
+            values.Store(ConnectionProviderKey, provider);
             return (TThisConfiguration)this;
         }
 
@@ -158,7 +158,7 @@ namespace FluentNHibernate.Cfg.Db
 
         public TThisConfiguration Driver(string driverClass)
         {
-            _values.Store(DriverClassKey, driverClass);
+            values.Store(DriverClassKey, driverClass);
             return (TThisConfiguration)this;
         }
 
@@ -182,7 +182,7 @@ namespace FluentNHibernate.Cfg.Db
 
         public TThisConfiguration Raw(string key, string value)
         {
-            _values.Store(key, value);
+            values.Store(key, value);
             return (TThisConfiguration) this;
         }
 
@@ -194,7 +194,7 @@ namespace FluentNHibernate.Cfg.Db
         /// <returns>Configuration</returns>
         public TThisConfiguration ProxyFactoryFactory(string proxyFactoryFactoryClass)
         {
-            _values.Store(ProxyFactoryFactoryClassKey, proxyFactoryFactoryClass);
+            values.Store(ProxyFactoryFactoryClassKey, proxyFactoryFactoryClass);
             return (TThisConfiguration)this;
         }
 
@@ -205,7 +205,7 @@ namespace FluentNHibernate.Cfg.Db
         /// <returns>Configuration</returns>
         public TThisConfiguration AdoNetBatchSize(int size)
         {
-            _values.Store(AdoNetBatchSizeKey, size.ToString());
+            values.Store(AdoNetBatchSizeKey, size.ToString());
             return (TThisConfiguration)this;
         }
     }

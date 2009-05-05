@@ -1,5 +1,4 @@
 ﻿using FluentNHibernate.Conventions.Helpers.Prebuilt;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Helpers
 {

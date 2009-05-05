@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
 using NHibernate.Cfg;
 
@@ -100,7 +99,7 @@ namespace FluentNHibernate.Cfg
         {
             foreach (var assembly in assemblies)
             {
-                model.addMappingsFromAssembly(assembly);
+                model.AddMappingsFromAssembly(assembly);
             }
 
             foreach (var type in types)

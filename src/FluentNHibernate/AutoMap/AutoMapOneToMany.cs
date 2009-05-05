@@ -1,14 +1,13 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using FluentNHibernate.AutoMap;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.AutoMap
 {
     public class AutoMapOneToMany : IAutoMapper
     {
-        private Func<PropertyInfo, bool> findPropertyconvention = 
+        private readonly Func<PropertyInfo, bool> findPropertyconvention = 
             p => (p.PropertyType.Namespace == "System.Collections.Generic" ||
                   p.PropertyType.Namespace == "Iesi.Collections.Generic");
 

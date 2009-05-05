@@ -11,67 +11,67 @@ namespace FluentNHibernate.Mapping
         CascadeExpression<IOneToOnePart> Cascade { get; }
     }
 
-    public class OneToOnePart<OTHER> : IOneToOnePart, IAccessStrategy<OneToOnePart<OTHER>>
+    public class OneToOnePart<TOther> : IOneToOnePart, IAccessStrategy<OneToOnePart<TOther>>
     {
-        private readonly Cache<string, string> _properties = new Cache<string, string>();
-        private readonly PropertyInfo _property;
-        private readonly AccessStrategyBuilder<OneToOnePart<OTHER>> access;
+        private readonly Cache<string, string> properties = new Cache<string, string>();
+        private readonly PropertyInfo property;
+        private readonly AccessStrategyBuilder<OneToOnePart<TOther>> access;
         public Type EntityType { get; private set; }
 
         public OneToOnePart(Type entity, PropertyInfo property) {
             EntityType = entity;
-            access = new AccessStrategyBuilder<OneToOnePart<OTHER>>(this);
-            _property = property;
+            access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this);
+            this.property = property;
         }
 
-        public FetchTypeExpression<OneToOnePart<OTHER>> FetchType {
+        public FetchTypeExpression<OneToOnePart<TOther>> FetchType {
             get {
-                return new FetchTypeExpression<OneToOnePart<OTHER>>(this, _properties);
+                return new FetchTypeExpression<OneToOnePart<TOther>>(this, properties);
             }
         }
         
-        public OneToOnePart<OTHER> WithForeignKey() {
-            return WithForeignKey(string.Format("FK_{0}To{1}", _property.DeclaringType.Name, _property.Name));
+        public OneToOnePart<TOther> WithForeignKey() {
+            return WithForeignKey(string.Format("FK_{0}To{1}", property.DeclaringType.Name, property.Name));
         }
 
-        public OneToOnePart<OTHER> WithForeignKey(string foreignKeyName) {
-            _properties.Store("foreign-key", foreignKeyName);
+        public OneToOnePart<TOther> WithForeignKey(string foreignKeyName) {
+            properties.Store("foreign-key", foreignKeyName);
             return this;
         }
 
-        public OneToOnePart<OTHER> PropertyRef(Expression<Func<OTHER, object>> propRefExpression)
+        public OneToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> propRefExpression)
         {
             var prop = ReflectionHelper.GetProperty(propRefExpression);
-            _properties.Store("property-ref", prop.Name);
+            properties.Store("property-ref", prop.Name);
 
             return this;
         }
 
-        public OneToOnePart<OTHER> Constrained()
+        public OneToOnePart<TOther> Constrained()
         {
-            _properties.Store("constrained", "true");
+            properties.Store("constrained", "true");
 
             return this;
         }
 
-        public CascadeExpression<OneToOnePart<OTHER>> Cascade
+        public CascadeExpression<OneToOnePart<TOther>> Cascade
         {
             get {
-                return new CascadeExpression<OneToOnePart<OTHER>>(this);
+                return new CascadeExpression<OneToOnePart<TOther>>(this);
             }
         }
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
-            _properties.Store("name", _property.Name);
-            _properties.Store("class", typeof(OTHER).AssemblyQualifiedName);
+            properties.Store("name", property.Name);
+            properties.Store("class", typeof(TOther).AssemblyQualifiedName);
 
-            classElement.AddElement("one-to-one").WithProperties(_properties);
+            classElement.AddElement("one-to-one").WithProperties(properties);
         }
 
         public void SetAttribute(string name, string value)
         {
-            _properties.Store(name, value);
+            properties.Store(name, value);
         }
 
         public void SetAttributes(Attributes atts)
@@ -91,7 +91,7 @@ namespace FluentNHibernate.Mapping
             get { return PartPosition.Anywhere; }
         }
 
-        public AccessStrategyBuilder<OneToOnePart<OTHER>> Access {
+        public AccessStrategyBuilder<OneToOnePart<TOther>> Access {
             get { return access; }
         }
 

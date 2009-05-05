@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using NHibernate.Cache;
 
 namespace FluentNHibernate.Cfg.Db

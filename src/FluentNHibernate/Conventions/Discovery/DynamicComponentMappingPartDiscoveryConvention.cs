@@ -1,4 +1,3 @@
-using FluentNHibernate.Conventions.Discovery;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Discovery

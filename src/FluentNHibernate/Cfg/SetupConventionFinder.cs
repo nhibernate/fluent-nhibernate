@@ -12,7 +12,7 @@ namespace FluentNHibernate.Cfg
 
         public SetupConventionFinder(TReturn container, IConventionFinder conventionFinder)
         {
-            this.parent = container;
+            parent = container;
             this.conventionFinder = conventionFinder;
         }
 

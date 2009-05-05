@@ -23,7 +23,7 @@ namespace FluentNHibernate.AutoMap
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
             var componentType = property.PropertyType;
-            var componentPart = CreateComponentPart<T>(property, componentType, classMap);
+            var componentPart = CreateComponentPart(property, componentType, classMap);
 
             MapComponentProperties(property, componentType, componentPart);
         }
@@ -43,12 +43,12 @@ namespace FluentNHibernate.AutoMap
             }
         }
 
-        private object CreateComponentPart<T>(PropertyInfo property, Type componentType, AutoMap<T> classMap)
+        private static object CreateComponentPart<T>(PropertyInfo property, Type componentType, AutoMap<T> classMap)
         {
             return InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(classMap, map => map.Component<object>(null, null), new object[] {ExpressionBuilder.Create<T>(property), null}, componentType);
         }
 
-        private MethodInfo GetMapMethod(Type componentType, object componentPart)
+        private static MethodInfo GetMapMethod(Type componentType, object componentPart)
         {
             var funcType = typeof(Func<,>).MakeGenericType(componentType, typeof(object));
             var mapType = typeof(Expression<>).MakeGenericType(funcType);

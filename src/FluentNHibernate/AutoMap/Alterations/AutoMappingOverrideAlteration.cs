@@ -1,7 +1,6 @@
 using System;
-using System.Reflection;
 using System.Linq;
-using FluentNHibernate.Mapping;
+using System.Reflection;
 
 namespace FluentNHibernate.AutoMap.Alterations
 {
