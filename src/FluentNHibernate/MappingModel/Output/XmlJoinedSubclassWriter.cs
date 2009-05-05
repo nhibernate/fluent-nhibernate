@@ -6,7 +6,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class XmlJoinedSubclassWriter : XmlClasslikeWriterBase, IXmlWriter<JoinedSubclassMapping>
+    public class XmlJoinedSubclassWriter : XmlClassWriterBase, IXmlWriter<JoinedSubclassMapping>
     {
         private readonly IXmlWriter<KeyMapping> keyWriter;
         private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentMapping;

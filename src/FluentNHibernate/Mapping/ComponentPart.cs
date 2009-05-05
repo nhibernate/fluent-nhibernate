@@ -2,19 +2,11 @@
 using System.Xml;
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IComponent : IClasslike, IMappingPart
-    {
-        /// <summary>
-        /// Maps a property of the component class as a reference back to the containing entity
-        /// </summary>
-        /// <param name="exp">Parent reference property</param>
-        /// <returns>Component being mapped</returns>
-        IComponent WithParentReference<TEntity>(Expression<Func<TEntity, object>> exp);
-    }
 
     public class ComponentPart<T> : ClasslikeMapBase<T>, IComponent, IAccessStrategy<ComponentPart<T>>
     {
@@ -102,6 +94,11 @@ namespace FluentNHibernate.Mapping
         IComponent IComponent.WithParentReference<TEntity>(Expression<Func<TEntity, object>> exp)
         {
             return WithParentReference(ReflectionHelper.GetProperty(exp));
+        }
+
+        public ComponentMapping GetComponentMapping()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

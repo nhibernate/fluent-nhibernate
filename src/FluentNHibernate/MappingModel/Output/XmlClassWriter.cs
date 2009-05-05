@@ -5,7 +5,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class XmlClassWriter : XmlClasslikeWriterBase, IXmlWriter<ClassMapping>
+    public class XmlClassWriter : XmlClassWriterBase, IXmlWriter<ClassMapping>
     {
         private readonly IXmlWriter<DiscriminatorMapping> discriminatorWriter;
         private readonly IXmlWriter<ISubclassMapping> subclassWriter;

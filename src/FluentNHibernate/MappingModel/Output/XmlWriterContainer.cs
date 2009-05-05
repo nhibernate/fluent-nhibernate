@@ -19,6 +19,9 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterWriter<PropertyMapping>(c =>
                 new XmlPropertyWriter(c.Resolve<IXmlWriter<ColumnMapping>>()));
 
+            RegisterWriter<ComponentMapping>(c =>
+                new XmlComponentWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<ParentMapping>>()));
+
             RegisterWriter<DynamicComponentMapping>(c =>
                 new XmlDynamicComponentWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<ParentMapping>>()));
 

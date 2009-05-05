@@ -3,12 +3,12 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public abstract class XmlClasslikeWriterBase : NullMappingModelVisitor
+    public abstract class XmlClassWriterBase : NullMappingModelVisitor
     {
         private readonly IXmlWriter<PropertyMapping> propertyWriter;
         protected XmlDocument document;
 
-        protected XmlClasslikeWriterBase(IXmlWriter<PropertyMapping> propertyWriter)
+        protected XmlClassWriterBase(IXmlWriter<PropertyMapping> propertyWriter)
         {
             this.propertyWriter = propertyWriter;
         }

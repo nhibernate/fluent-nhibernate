@@ -16,15 +16,15 @@ namespace FluentNHibernate.Mapping
         private readonly DynamicComponentMapping mapping;
 
         public DynamicComponentPart(PropertyInfo property)
-            : this(new DynamicComponentMapping())
+            : this(new DynamicComponentMapping(), property)
         {
-            access = new AccessStrategyBuilder<DynamicComponentPart<T>>(this);
-            propertyInfo = property;
         }
 
-        public DynamicComponentPart(DynamicComponentMapping mapping)
+        public DynamicComponentPart(DynamicComponentMapping mapping, PropertyInfo property)
         {
             this.mapping = mapping;
+            access = new AccessStrategyBuilder<DynamicComponentPart<T>>(this);
+            propertyInfo = property;
         }
 
         public DynamicComponentMapping GetDynamicComponentMapping()

@@ -152,6 +152,17 @@ namespace FluentNHibernate.Testing.MappingModel.Conventions
 
             componentMapping.PropertyName.ShouldEqual(propertyInfo.Name);
         }
+
+        [Test]
+        public void Should_apply_to_DynamicComponents()
+        {
+            var propertyInfo = ReflectionHelper.GetProperty((SalaryEmployee e) => e.Salary);
+            var componentMapping = new DynamicComponentMapping { PropertyInfo = propertyInfo };
+
+            _namingConvention.ProcessDynamicComponent(componentMapping);
+
+            componentMapping.PropertyName.ShouldEqual(propertyInfo.Name);
+        }
         
     }
 }
