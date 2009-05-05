@@ -18,6 +18,8 @@ namespace FluentNHibernate.Mapping
         }
         protected readonly IList<PropertyMap> properties = new List<PropertyMap>();
         protected readonly IList<IDynamicComponent> dynamicComponents = new List<IDynamicComponent>();
+        protected readonly IList<ISubclass> subclasses = new List<ISubclass>();
+        protected readonly IList<IJoinedSubclass> joinedSubclasses = new List<IJoinedSubclass>();
 
         private bool parentIsRequired = true;
 
@@ -290,9 +292,29 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public IEnumerable<PropertyMap> Properties
+        IEnumerable<PropertyMap> IClasslike.Properties
         {
             get { return properties; }
+        }
+
+        IEnumerable<IDynamicComponent> IClasslike.DynamicComponents
+        {
+            get { return dynamicComponents; }
+        }
+
+        IEnumerable<ISubclass> IClasslike.Subclasses
+        {
+            get { return subclasses; }
+        }
+
+        IEnumerable<IJoinedSubclass> IClasslike.JoinedSubclasses
+        {
+            get { return joinedSubclasses; }
+        }
+
+        void IClasslike.AddSubclass(ISubclass subclass)
+        {
+            subclasses.Add(subclass);
         }
 
         public Type EntityType

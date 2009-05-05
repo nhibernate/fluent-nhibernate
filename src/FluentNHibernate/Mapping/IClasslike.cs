@@ -10,6 +10,11 @@ namespace FluentNHibernate.Mapping
         Type EntityType { get; }
         IEnumerable<IMappingPart> Parts { get; }
         IEnumerable<PropertyMap> Properties { get; }
+        IEnumerable<IDynamicComponent> DynamicComponents { get; }
+        IEnumerable<ISubclass> Subclasses { get; }
+        IEnumerable<IJoinedSubclass> JoinedSubclasses { get; }
+        void AddSubclass(ISubclass subclass);
+
         IProperty Map<TEntity>(Expression<Func<TEntity, object>> expression);
         IManyToOnePart References<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression);
         IOneToOnePart HasOne<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression);

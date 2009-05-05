@@ -152,7 +152,7 @@ namespace FluentNHibernate.Mapping
             };
             mapping.Name = typeof(TSubclass).AssemblyQualifiedName;
 
-            foreach (var property in Properties)
+            foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());
 
             foreach (var dynamicComponent in dynamicComponents)

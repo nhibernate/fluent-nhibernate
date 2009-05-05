@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Discovery
@@ -30,23 +32,23 @@ namespace FluentNHibernate.Conventions.Discovery
         {
             var conventions = conventionFinder.Find<IMappingPartConvention>();
 
-            foreach (var part in target.Parts)
+            ApplyConventions(conventions, target.Parts);
+            ApplyConventions(conventions, target.Properties);
+            ApplyConventions(conventions, target.Subclasses);
+            ApplyConventions(conventions, target.JoinedSubclasses);
+            ApplyConventions(conventions, target.DynamicComponents);
+        }
+
+        private void ApplyConventions(IEnumerable<IMappingPartConvention> conventions, IEnumerable parts)
+        {
+            if (parts == null) return;
+
+            foreach (IMappingPart part in parts)
             {
                 foreach (var convention in conventions)
                 {
                     if (convention.Accept(part))
                         convention.Apply(part);
-                }
-            }
-
-            if (target.Properties == null) return;
-
-            foreach (var property in target.Properties)
-            {
-                foreach (var convention in conventions)
-                {
-                    if (convention.Accept(property))
-                        convention.Apply(property);
                 }
             }
         }

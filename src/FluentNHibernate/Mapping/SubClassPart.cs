@@ -32,7 +32,7 @@ namespace FluentNHibernate.Mapping
         {
             mapping.Type = typeof(TSubclass);
             
-            foreach (var property in Properties)
+            foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());
 
             foreach (var dynamicComponent in dynamicComponents)

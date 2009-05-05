@@ -143,7 +143,7 @@ namespace FluentNHibernate.Mapping
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
         {
-            var part = new DiscriminatorPart(mapping, columnName);
+            var part = new DiscriminatorPart(this, mapping, columnName);
 
             discriminator = part;
 
@@ -154,7 +154,7 @@ namespace FluentNHibernate.Mapping
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
         {
-            var part = new DiscriminatorPart(mapping, columnName);
+            var part = new DiscriminatorPart(this, mapping, columnName);
 
             discriminator = part;
 
@@ -212,6 +212,8 @@ namespace FluentNHibernate.Mapping
             var subclass = new JoinedSubClassPart<TSubclass>(keyColumn);
 
             action(subclass);
+
+            joinedSubclasses.Add(subclass);
             
             mapping.AddSubclass(subclass.GetJoinedSubclassMapping());
         }
