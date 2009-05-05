@@ -187,6 +187,10 @@
     <Compile Include="Fixtures\Basic\Person.cs" />
     <Compile Include="Fixtures\HbmOne.cs" />
     <Compile Include="Fixtures\HbmTwo.cs" />
+    <Compile Include="FluentInterfaceTests\BaseClassMapModelFixture.cs" />
+    <Compile Include="FluentInterfaceTests\ClassMapMutablePropertyModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\ClassMapSubPartModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\ModelTester.cs" />
     <Compile Include="Infrastructure\ContainerTester.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
     <Compile Include="PersistenceModelTests\Conventions\Configure.cs" />
