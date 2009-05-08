@@ -20,19 +20,14 @@ desc "Compiles, unit tests, generates the database, and then runs integration te
 task :all => [:default]
 
 desc "**Default**, compiles and runs tests"
-task :default => [:use_nhib_20, :compile, :unit_test]
+task :default => [:use_nhib_201, :compile, :unit_test]
 
 desc "Builds Fluent NHibernate against the NHibernate 2.1 libs (instead of the normal NHibernate 2.0GA"
-task :nhib21 =>[:use_nhib_21, :compile, :unit_test, :use_nhib_20]
+task :nhib21 =>[:use_nhib_21, :compile, :unit_test, :use_nhib_201]
 
 desc "Switches NHibernate dependencies to NHibernate 2.1"
 task :use_nhib_21 do
 	switch_nhib_libs('nhib2.1')
-end
-
-desc "Switches NHibernate dependencies to NHibernate 2.0"
-task :use_nhib_20 do	
-	switch_nhib_libs('nhib2.0GA')
 end
 
 desc "Switches NHibernate dependencies to NHibernate 2.0.1"
