@@ -54,7 +54,7 @@ namespace FluentNHibernate.Mapping
             }
 
             if (!mapping.Attributes.IsSpecified(x => x.Type))
-                mapping.Type = Property.PropertyType;
+                mapping.Type = TypeMapping.GetTypeString(Property.PropertyType);
 
             foreach (var attribute in unmigratedAttributes)
                 mapping.AddUnmigratedAttribute(attribute.Key, attribute.Value);
@@ -244,8 +244,18 @@ namespace FluentNHibernate.Mapping
             if (typeof(ICompositeUserType).IsAssignableFrom(type))
                 AddColumnsFromCompositeUserType(type);
 
+            return CustomTypeIs(TypeMapping.GetTypeString(type));
+        }
+
+        /// <summary>
+        /// Specifies that a custom type (an implementation of <see cref="IUserType"/>) should be used for this property for mapping it to/from one or more database columns whose format or type doesn't match this .NET property.
+        /// </summary>
+        /// <param name="type">A type which implements <see cref="IUserType"/>.</param>
+        /// <returns>This property mapping to continue the method chain</returns>
+        public IProperty CustomTypeIs(string type)
+        {
             mapping.Type = type;
-            extendedProperties.Store("type", TypeMapping.GetTypeString(type));
+            extendedProperties.Store("type", type);
 
             return this;
         }

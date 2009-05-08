@@ -189,6 +189,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void CanSpecifyCustomTypeAsString()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(c => c.Map(x => x.Data).CustomTypeIs("name"))
+                .Element("class/property").HasAttribute("type", "name");
+        }
+
+        [Test]
         public void CanSpecifyCustomSqlType()
         {
             var classMap = new ClassMap<PropertyTarget>();
