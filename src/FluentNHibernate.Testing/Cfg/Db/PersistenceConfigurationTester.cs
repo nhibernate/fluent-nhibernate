@@ -89,7 +89,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
         public void Use_Minimal_Puts_should_set_value_to_const_true()
         {
             _config.Cache(c => c
-                .UseMininmalPuts());
+                .UseMinimalPuts());
             ValueOf("cache.use_minimal_puts").ShouldEqual("true");
         }
 

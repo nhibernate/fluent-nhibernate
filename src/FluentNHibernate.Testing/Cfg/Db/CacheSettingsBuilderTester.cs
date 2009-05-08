@@ -35,7 +35,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
         [Test]
         public void CanUseMinimalPuts()
         {
-            cache.UseMininmalPuts();
+            cache.UseMinimalPuts();
 
             HasProperty("cache.use_minimal_puts", "true");
         }
@@ -43,7 +43,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
         [Test]
         public void CanNotUseMinimalPuts()
         {
-            cache.Not.UseMininmalPuts();
+            cache.Not.UseMinimalPuts();
 
             HasProperty("cache.use_minimal_puts", "false");
         }
@@ -94,7 +94,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
             cache.ProviderClass("provider")
                 .QueryCacheFactory("factory")
                 .RegionPrefix("prefix")
-                .UseMininmalPuts()
+                .UseMinimalPuts()
                 .UseQueryCache();
 
             HasProperty("cache.provider_class", "provider");

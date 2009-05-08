@@ -36,7 +36,7 @@ namespace FluentNHibernate.Cfg.Db
             return ProviderClass(typeof(T).AssemblyQualifiedName);
         }
 
-        public CacheSettingsBuilder UseMininmalPuts()
+        public CacheSettingsBuilder UseMinimalPuts()
         {
             settings.Add(CacheUseMininmalPutsKey, nextBool.ToString().ToLowerInvariant());
             nextBool = true;
