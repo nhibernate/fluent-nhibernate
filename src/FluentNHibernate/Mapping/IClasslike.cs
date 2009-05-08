@@ -24,6 +24,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Maps a component
         /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
         /// <typeparam name="TComponent">Type of component</typeparam>
         /// <param name="expression">Component property</param>
         /// <param name="action">Component mapping</param>
@@ -32,6 +33,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// CreateProperties a one-to-many relationship
         /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
         /// <typeparam name="TChild">Child object type</typeparam>
         /// <param name="expression">Expression to get property from</param>
         /// <returns>one-to-many part</returns>
@@ -40,6 +42,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// CreateProperties a one-to-many relationship with a IDictionary
         /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
         /// <typeparam name="TKey">Dictionary key type</typeparam>
         /// <typeparam name="TChild">Child object type / Dictionary value type</typeparam>
         /// <param name="expression">Expression to get property from</param>
@@ -49,6 +52,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// CreateProperties a many-to-many relationship
         /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
         /// <typeparam name="TChild">Child object type</typeparam>
         /// <param name="expression">Expression to get property from</param>
         /// <returns>many-to-many part</returns>

@@ -5,7 +5,7 @@ using System.Reflection;
 namespace FluentNHibernate.AutoMap.Alterations
 {
     /// <summary>
-    /// Built-in alteration for altering an AutoPersistenceModel with instance of IAutoMappingOverride<T>.
+    /// Built-in alteration for altering an AutoPersistenceModel with instance of IAutoMappingOverride&lt;T&gt;.
     /// </summary>
     public class AutoMappingOverrideAlteration : IAutoMappingAlteration
     {
@@ -24,8 +24,8 @@ namespace FluentNHibernate.AutoMap.Alterations
         /// Alter the model
         /// </summary>
         /// <remarks>
-        /// Finds all types in the assembly (passed in the constructor) that implement IAutoMappingOverride<T>, then
-        /// creates an AutoMap<T> and applies the override to it.
+        /// Finds all types in the assembly (passed in the constructor) that implement IAutoMappingOverride&lt;T&gt;, then
+        /// creates an AutoMap&lt;T&gt; and applies the override to it.
         /// </remarks>
         /// <param name="model">AutoPersistenceModel instance to alter</param>
         public void Alter(AutoPersistenceModel model)
