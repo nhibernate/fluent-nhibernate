@@ -35,8 +35,8 @@ namespace FluentNHibernate.Mapping
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());
 
-            foreach (var dynamicComponent in dynamicComponents)
-                mapping.AddDynamicComponent(dynamicComponent.GetDynamicComponentMapping());
+            foreach (var component in components)
+                mapping.AddComponent(component.GetComponentMapping());
 
             foreach (var part in Parts)
                 mapping.AddUnmigratedPart(part);
@@ -85,10 +85,17 @@ namespace FluentNHibernate.Mapping
         public override DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
         {
             var part = new DynamicComponentPart<IDictionary>(property);
-
-            dynamicComponents.Add(part);
-
+            components.Add(part);
             action(part);
+
+            return part;
+        }
+
+        protected override ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
+        {
+            var part = new ComponentPart<TComponent>(property);
+            action(part);
+            components.Add(part);
 
             return part;
         }

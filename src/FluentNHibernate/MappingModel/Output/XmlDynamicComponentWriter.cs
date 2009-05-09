@@ -9,17 +9,12 @@ namespace FluentNHibernate.MappingModel.Output
             : base(propertyWriter, parentWriter)
         {
         }
-        
+
         public XmlDocument Write(DynamicComponentMapping mappingModel)
         {
             document = null;
             mappingModel.AcceptVisitor(this);
             return document;
-        }
-
-        public override void ProcessDynamicComponent(DynamicComponentMapping componentMapping)
-        {
-            ProcessComponentBase(componentMapping);
         }
     }
 }

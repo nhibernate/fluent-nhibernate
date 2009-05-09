@@ -49,7 +49,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mappedMembers.Properties; }
         }
 
-        public IEnumerable<ComponentMapping> Components
+        public IEnumerable<ComponentMappingBase> Components
         {
             get { return mappedMembers.Components; }
         }
@@ -69,21 +69,16 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers.AddReference(manyToOne);
         }
 
-        public void AddComponent(ComponentMapping componentMapping)
+        public void AddComponent(ComponentMappingBase componentMapping)
         {
             mappedMembers.AddComponent(componentMapping);
-        }
-
-        public void AddDynamicComponent(DynamicComponentMapping componentMapping)
-        {
-            mappedMembers.AddDynamicComponent(componentMapping);
         }
 
         #endregion
 
         public override string ToString()
         {
-            return string.Format("ClassMapping({0})", this.Type.Name);
+            return string.Format("ClassMapping({0})", Type.Name);
         }
 
     }

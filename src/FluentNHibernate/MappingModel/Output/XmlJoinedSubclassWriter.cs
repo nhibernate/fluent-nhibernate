@@ -9,13 +9,15 @@ namespace FluentNHibernate.MappingModel.Output
     public class XmlJoinedSubclassWriter : XmlClassWriterBase, IXmlWriter<JoinedSubclassMapping>
     {
         private readonly IXmlWriter<KeyMapping> keyWriter;
-        private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentMapping;
+        private readonly IXmlWriter<ComponentMapping> componentWriter;
+        private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentWriter;
 
-        public XmlJoinedSubclassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<KeyMapping> keyWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentMapping)
+        public XmlJoinedSubclassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<KeyMapping> keyWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter)
             : base(propertyWriter)
         {
             this.keyWriter = keyWriter;
-            this.dynamicComponentMapping = dynamicComponentMapping;
+            this.componentWriter = componentWriter;
+            this.dynamicComponentWriter = dynamicComponentWriter;
         }
 
         public XmlDocument Write(JoinedSubclassMapping mappingModel)
@@ -81,11 +83,14 @@ namespace FluentNHibernate.MappingModel.Output
             document.ImportAndAppendChild(keyXml);
         }
 
-        public override void Visit(DynamicComponentMapping componentMapping)
+        public override void Visit(ComponentMappingBase componentMapping)
         {
-            var dynamicComponentXml = dynamicComponentMapping.Write(componentMapping);
+            var dynamicComponentMapping = componentMapping as DynamicComponentMapping;
+            XmlDocument componentXml = (dynamicComponentMapping != null)
+                                        ? dynamicComponentWriter.Write(dynamicComponentMapping)
+                                        : componentWriter.Write((ComponentMapping)componentMapping);
 
-            document.ImportAndAppendChild(dynamicComponentXml);
+            document.ImportAndAppendChild(componentXml);
         }
     }
 }

@@ -156,7 +156,5 @@ namespace FluentNHibernate.Testing.MappingModel
 
             visitor.VerifyAllExpectations();     
         }
-
-        
     }
 }

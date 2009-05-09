@@ -218,6 +218,7 @@
     <Compile Include="MappingModel\Output\XmlPropertyWriter.cs" />
     <Compile Include="MappingModel\PropertyMapping.cs" />
     <Compile Include="Mapping\ClassMap.cs" />
+    <Compile Include="Mapping\ComponentPartBase.cs" />
     <Compile Include="Mapping\DiscriminatorPart.cs" />
     <Compile Include="Mapping\DiscriminatorValue.cs" />
     <Compile Include="Mapping\IAccessStrategyBuilder.cs" />
@@ -268,6 +269,7 @@
     <Compile Include="Mapping\ICollectionRelationship.cs" />
     <Compile Include="Mapping\IColumnNameCollection.cs" />
     <Compile Include="Mapping\IComponent.cs" />
+    <Compile Include="Mapping\IComponentBase.cs" />
     <Compile Include="Mapping\IDiscriminatorPart.cs" />
     <Compile Include="Mapping\IDynamicComponent.cs" />
     <Compile Include="Mapping\IHasAttributes.cs" />

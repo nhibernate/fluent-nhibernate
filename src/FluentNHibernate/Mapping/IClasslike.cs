@@ -10,7 +10,7 @@ namespace FluentNHibernate.Mapping
         Type EntityType { get; }
         IEnumerable<IMappingPart> Parts { get; }
         IEnumerable<PropertyMap> Properties { get; }
-        IEnumerable<IDynamicComponent> DynamicComponents { get; }
+        IEnumerable<IComponentBase> Components { get; }
         IEnumerable<ISubclass> Subclasses { get; }
         IEnumerable<IJoinedSubclass> JoinedSubclasses { get; }
         void AddSubclass(ISubclass subclass);
@@ -18,7 +18,7 @@ namespace FluentNHibernate.Mapping
         IProperty Map<TEntity>(Expression<Func<TEntity, object>> expression);
         IManyToOnePart References<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression);
         IOneToOnePart HasOne<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression);
-        IDynamicComponent DynamicComponent<TEntity>(Expression<Func<TEntity, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action);
+        IComponentBase DynamicComponent<TEntity>(Expression<Func<TEntity, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action);
         IAnyPart<TOther> ReferencesAny<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression);
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="TComponent">Type of component</typeparam>
         /// <param name="expression">Component property</param>
         /// <param name="action">Component mapping</param>
-        IComponent Component<TEntity, TComponent>(Expression<Func<TEntity, TComponent>> expression, Action<ComponentPart<TComponent>> action);
+        IComponentBase Component<TEntity, TComponent>(Expression<Func<TEntity, TComponent>> expression, Action<ComponentPart<TComponent>> action);
 
         /// <summary>
         /// CreateProperties a one-to-many relationship

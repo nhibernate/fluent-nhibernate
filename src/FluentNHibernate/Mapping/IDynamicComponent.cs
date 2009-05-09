@@ -1,12 +1,6 @@
-using System;
-using System.Linq.Expressions;
-using FluentNHibernate.MappingModel.ClassBased;
-
 namespace FluentNHibernate.Mapping
 {
-    public interface IDynamicComponent : IClasslike, IMappingPart
+    public interface IDynamicComponent : IComponentBase
     {
-        IDynamicComponent WithParentReference<TEntity>(Expression<Func<TEntity, object>> exp);
-        DynamicComponentMapping GetDynamicComponentMapping();
     }
 }

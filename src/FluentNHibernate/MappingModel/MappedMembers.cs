@@ -9,16 +9,14 @@ namespace FluentNHibernate.MappingModel
         private readonly IList<PropertyMapping> properties;
         private readonly IList<ICollectionMapping> collections;
         private readonly IList<ManyToOneMapping> references;
-        private readonly IList<ComponentMapping> components;
-        private readonly IList<DynamicComponentMapping> dynamicComponents;
+        private readonly IList<ComponentMappingBase> components;
 
         public MappedMembers()
         {
             properties = new List<PropertyMapping>();
             collections = new List<ICollectionMapping>();
             references = new List<ManyToOneMapping>();    
-            components = new List<ComponentMapping>();
-            dynamicComponents = new List<DynamicComponentMapping>();
+            components = new List<ComponentMappingBase>();
         }
 
         public IEnumerable<PropertyMapping> Properties
@@ -36,14 +34,9 @@ namespace FluentNHibernate.MappingModel
             get { return references; }
         }
 
-        public IEnumerable<ComponentMapping> Components
+        public IEnumerable<ComponentMappingBase> Components
         {
             get { return components; }
-        }
-
-        public IEnumerable<DynamicComponentMapping> DynamicComponents
-        {
-            get { return dynamicComponents; }
         }
 
         public void AddProperty(PropertyMapping property)
@@ -61,14 +54,9 @@ namespace FluentNHibernate.MappingModel
             references.Add(manyToOne);
         }
 
-        public void AddComponent(ComponentMapping componentMapping)
+        public void AddComponent(ComponentMappingBase componentMapping)
         {
             components.Add(componentMapping);
-        }
-
-        public void AddDynamicComponent(DynamicComponentMapping componentMapping)
-        {
-            dynamicComponents.Add(componentMapping);
         }
 
         public virtual void AcceptVisitor(IMappingModelVisitor visitor)
@@ -84,9 +72,6 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var component in Components)
                 visitor.Visit(component);
-
-            foreach (var dynamicComponent in DynamicComponents)
-                visitor.Visit(dynamicComponent);
         }
     }
 }

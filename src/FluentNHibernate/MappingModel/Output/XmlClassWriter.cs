@@ -10,13 +10,15 @@ namespace FluentNHibernate.MappingModel.Output
     {
         private readonly IXmlWriter<DiscriminatorMapping> discriminatorWriter;
         private readonly IXmlWriter<ISubclassMapping> subclassWriter;
+        private readonly IXmlWriter<ComponentMapping> componentWriter;
         private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentWriter;
 
-        public XmlClassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<DiscriminatorMapping> discriminatorWriter, IXmlWriter<ISubclassMapping> subclassWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter)
+        public XmlClassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<DiscriminatorMapping> discriminatorWriter, IXmlWriter<ISubclassMapping> subclassWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter)
             : base(propertyWriter)
         {
             this.discriminatorWriter = discriminatorWriter;
             this.subclassWriter = subclassWriter;
+            this.componentWriter = componentWriter;
             this.dynamicComponentWriter = dynamicComponentWriter;
         }
 
@@ -44,7 +46,7 @@ namespace FluentNHibernate.MappingModel.Output
 
             foreach (var attribute in classMapping.UnmigratedAttributes)
             {
-                classElement.WithAtt(attribute.Key, attribute.Value); 
+                classElement.WithAtt(attribute.Key, attribute.Value);
             }
         }
 
@@ -98,11 +100,14 @@ namespace FluentNHibernate.MappingModel.Output
             document.ImportAndAppendChild(subclassXml);
         }
 
-        public override void Visit(DynamicComponentMapping componentMapping)
+        public override void Visit(ComponentMappingBase componentMapping)
         {
-            var dynamicComponentXml = dynamicComponentWriter.Write(componentMapping);
+            var dynamicComponentMapping = componentMapping as DynamicComponentMapping;
+            XmlDocument componentXml = (dynamicComponentMapping != null)
+                                       ? dynamicComponentWriter.Write(dynamicComponentMapping)
+                                       : componentWriter.Write((ComponentMapping)componentMapping);
 
-            document.ImportAndAppendChild(dynamicComponentXml);
+            document.ImportAndAppendChild(componentXml);
         }
     }
 }

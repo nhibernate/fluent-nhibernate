@@ -75,18 +75,7 @@ namespace FluentNHibernate.MappingModel.Conventions
             }
         }
 
-        public override void ProcessComponent(ComponentMapping componentMapping)
-        {
-            if (!componentMapping.Attributes.IsSpecified(x => x.PropertyName))
-            {
-                if (componentMapping.PropertyInfo == null)
-                    throw new ConventionException("Cannot apply the naming convention. No member specified.", componentMapping);
-
-                componentMapping.PropertyName = DetermineNameFromMember(componentMapping.PropertyInfo);
-            }
-        }
-
-        public override void ProcessDynamicComponent(DynamicComponentMapping componentMapping)
+        public override void ProcessComponent(ComponentMappingBase componentMapping)
         {
             if (!componentMapping.Attributes.IsSpecified(x => x.PropertyName))
             {

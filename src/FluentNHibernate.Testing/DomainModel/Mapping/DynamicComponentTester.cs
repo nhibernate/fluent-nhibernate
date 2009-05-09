@@ -21,7 +21,19 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("//class/dynamic-component/property[@name='Name']").Exists()
                 .Element("//class/dynamic-component/property[@name='Age']").Exists()
                 .Element("//class/dynamic-component/property[@name='Profession']").Exists();
+        }
 
+        [Test]
+        public void DynamicComponentIsGeneratedWithOnlyOnePropertyReference()
+        {
+            //Regression test for issue 223
+            new MappingTester<PropertyTarget>()
+                .ForMapping(c =>
+                    c.DynamicComponent(x => x.ExtensionData, m =>
+                    {
+                        m.Map(x => (string)x["Name"]);
+                    }))
+                .Element("//class/dynamic-component").HasThisManyChildNodes(1);
         }
 
         [Test]

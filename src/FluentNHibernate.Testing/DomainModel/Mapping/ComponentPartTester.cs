@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
@@ -34,6 +30,19 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         c.WithParentReference(x => x.MyParent);
                     }))
                 .Element("class/component").DoesntHaveAttribute("unique");
+        }
+
+        [Test]
+        public void ComponentIsGeneratedWithOnlyOnePropertyReference()
+        {
+            //Regression test for issue 223
+             new MappingTester<PropertyTarget>()
+                .ForMapping(m =>
+                    m.Component(x => x.Component, c =>
+                    {
+                        c.Map(x => x.Name);
+                    }))
+                .Element("//class/component").HasThisManyChildNodes(1);
         }
     }
 }

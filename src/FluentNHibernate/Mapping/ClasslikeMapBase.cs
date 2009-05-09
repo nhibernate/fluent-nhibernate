@@ -17,7 +17,7 @@ namespace FluentNHibernate.Mapping
             get { return m_Parts; }
         }
         protected readonly IList<PropertyMap> properties = new List<PropertyMap>();
-        protected readonly IList<IDynamicComponent> dynamicComponents = new List<IDynamicComponent>();
+        protected readonly IList<IComponentBase> components = new List<IComponentBase>();
         protected readonly IList<ISubclass> subclasses = new List<ISubclass>();
         protected readonly IList<IJoinedSubclass> joinedSubclasses = new List<IJoinedSubclass>();
 
@@ -111,9 +111,7 @@ namespace FluentNHibernate.Mapping
         public virtual DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
         {
             var part = new DynamicComponentPart<IDictionary>(property);
-
             AddPart(part); // old
-
             action(part);
 
             return part;
@@ -140,12 +138,11 @@ namespace FluentNHibernate.Mapping
         {
             return Component(ReflectionHelper.GetProperty(expression), action);
         }
-
+        
         protected virtual ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
         {
-            var part = new ComponentPart<TComponent>(property, parentIsRequired);
-            AddPart(part);
-
+            var part = new ComponentPart<TComponent>(property);
+            AddPart(part); // old
             action(part);
 
             return part;
@@ -297,9 +294,9 @@ namespace FluentNHibernate.Mapping
             get { return properties; }
         }
 
-        IEnumerable<IDynamicComponent> IClasslike.DynamicComponents
+        IEnumerable<IComponentBase> IClasslike.Components
         {
-            get { return dynamicComponents; }
+            get { return components; }
         }
 
         IEnumerable<ISubclass> IClasslike.Subclasses
@@ -324,9 +321,14 @@ namespace FluentNHibernate.Mapping
 
         #region Explicit IClasslike implementation
 
-        IDynamicComponent IClasslike.DynamicComponent<TEntity>(Expression<Func<TEntity, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action)
+        IComponentBase IClasslike.DynamicComponent<TEntity>(Expression<Func<TEntity, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action)
         {
             return DynamicComponent(ReflectionHelper.GetProperty(expression), action);
+        }
+
+        IComponentBase IClasslike.Component<TEntity, TComponent>(Expression<Func<TEntity, TComponent>> expression, Action<ComponentPart<TComponent>> action)
+        {
+            return Component(ReflectionHelper.GetProperty(expression), action);
         }
 
         IVersion IClasslike.Version<TEntity>(Expression<Func<TEntity, object>> expression)
@@ -352,11 +354,6 @@ namespace FluentNHibernate.Mapping
         IOneToOnePart IClasslike.HasOne<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression)
         {
             return HasOne<TOther>(ReflectionHelper.GetProperty(expression));
-        }
-
-        IComponent IClasslike.Component<TEntity, TComponent>(Expression<Func<TEntity, TComponent>> expression, Action<ComponentPart<TComponent>> action)
-        {
-            return Component(ReflectionHelper.GetProperty(expression), action);
         }
 
         IOneToManyPart IClasslike.HasMany<TEntity, TChild>(Expression<Func<TEntity, IEnumerable<TChild>>> expression)

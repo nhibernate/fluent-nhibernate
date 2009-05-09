@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
@@ -91,14 +92,9 @@ namespace FluentNHibernate.MappingModel
             
         }
 
-        public virtual void ProcessComponent(ComponentMapping componentMapping)
+        public virtual void ProcessComponent(ComponentMappingBase componentMapping)
         {
             
-        }
-
-        public virtual void ProcessDynamicComponent(DynamicComponentMapping componentMapping)
-        {
-
         }
 
         public virtual void ProcessList(ListMapping listMapping)
@@ -186,14 +182,9 @@ namespace FluentNHibernate.MappingModel
             
         }
 
-        public virtual void Visit(ComponentMapping componentMapping)
+        public virtual void Visit(ComponentMappingBase componentMapping)
         {
             
-        }
-
-        public virtual void Visit(DynamicComponentMapping componentMapping)
-        {
-
         }
 
         public virtual void Visit(IndexMapping indexMapping)

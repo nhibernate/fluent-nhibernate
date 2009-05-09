@@ -36,7 +36,7 @@ namespace FluentNHibernate.Conventions.Discovery
             ApplyConventions(conventions, target.Properties);
             ApplyConventions(conventions, target.Subclasses);
             ApplyConventions(conventions, target.JoinedSubclasses);
-            ApplyConventions(conventions, target.DynamicComponents);
+            ApplyConventions(conventions, target.Components);
         }
 
         private void ApplyConventions(IEnumerable<IMappingPartConvention> conventions, IEnumerable parts)

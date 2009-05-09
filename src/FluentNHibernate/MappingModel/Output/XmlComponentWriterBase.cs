@@ -7,7 +7,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public abstract class XmlComponentWriterBase<TModel> : XmlClassWriterBase where TModel : ComponentMappingBase<TModel>
+    public abstract class XmlComponentWriterBase<TModel> : XmlClassWriterBase
     {
         protected readonly IXmlWriter<PropertyMapping> propertyWriter;
         protected readonly IXmlWriter<ParentMapping> parentWriter;
@@ -19,7 +19,7 @@ namespace FluentNHibernate.MappingModel.Output
             this.parentWriter = parentWriter;
         }
 
-        protected void ProcessComponentBase(ComponentMappingBase<TModel> componentMapping)
+        public override void ProcessComponent(ComponentMappingBase componentMapping)
         {
             document = new XmlDocument();
 
@@ -53,18 +53,18 @@ namespace FluentNHibernate.MappingModel.Output
             throw new NotSupportedException("The chosen component type is not supported by Fluent NHibernate.");
         }
 
-        public override void Visit(DynamicComponentMapping componentMapping)
+        public override void Visit(ComponentMappingBase componentMapping)
         {
-            var dynamicComponentWriter = new XmlDynamicComponentWriter(propertyWriter, parentWriter);
-            var dynamicComponentXml = dynamicComponentWriter.Write(componentMapping);
+            XmlDocument componentXml;
+            var componentWriter = (componentMapping is ComponentMapping) ? new XmlComponentWriter(propertyWriter, parentWriter) : null;
+            var dynamicComponentWriter = (componentMapping is DynamicComponentMapping) ? new XmlDynamicComponentWriter(propertyWriter, parentWriter) : null;
 
-            document.ImportAndAppendChild(dynamicComponentXml);
-        }
-
-        public override void Visit(ComponentMapping componentMapping)
-        {
-            var componentWriter = new XmlComponentWriter(propertyWriter, parentWriter);
-            var componentXml = componentWriter.Write(componentMapping);
+            if (componentWriter != null)
+                componentXml = componentWriter.Write((ComponentMapping)componentMapping);
+            else if (dynamicComponentWriter != null)
+                componentXml = dynamicComponentWriter.Write((DynamicComponentMapping)componentMapping);
+            else
+                throw new ArgumentException("Not of ComponentMapping or DynamicComponentMapping type", "componentMapping");
 
             document.ImportAndAppendChild(componentXml);
         }

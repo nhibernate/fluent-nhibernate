@@ -9,12 +9,14 @@ namespace FluentNHibernate.MappingModel.Output
     public class XmlSubclassWriter : XmlClassWriterBase, IXmlWriter<SubclassMapping>
     {
         private readonly IXmlWriter<PropertyMapping> propertyWriter;
+        private readonly IXmlWriter<ComponentMapping> componentWriter;
         private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentWriter;
 
-        public XmlSubclassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter)
+        public XmlSubclassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter)
             : base(propertyWriter)
         {
             this.propertyWriter = propertyWriter;
+            this.componentWriter = componentWriter;
             this.dynamicComponentWriter = dynamicComponentWriter;
         }
 
@@ -71,17 +73,20 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(SubclassMapping subclassMapping)
         {
-            var subWriter = new XmlSubclassWriter(propertyWriter, dynamicComponentWriter);
+            var subWriter = new XmlSubclassWriter(propertyWriter, componentWriter, dynamicComponentWriter);
             var subclassXml = subWriter.Write(subclassMapping);
 
             document.ImportAndAppendChild(subclassXml);
         }
 
-        public override void Visit(DynamicComponentMapping componentMapping)
+        public override void Visit(ComponentMappingBase componentMapping)
         {
-            var dynamicComponentXml = dynamicComponentWriter.Write(componentMapping);
+            var dynamicComponentMapping = componentMapping as DynamicComponentMapping;
+            XmlDocument componentXml = (dynamicComponentMapping != null) 
+                                        ? dynamicComponentWriter.Write(dynamicComponentMapping) 
+                                        : componentWriter.Write((ComponentMapping)componentMapping);
 
-            document.ImportAndAppendChild(dynamicComponentXml);
+            document.ImportAndAppendChild(componentXml);
         }
     }
 }

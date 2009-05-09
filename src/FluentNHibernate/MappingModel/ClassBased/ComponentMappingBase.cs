@@ -4,9 +4,9 @@ using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
-    public abstract class ComponentMappingBase<T> : ClassMappingBase where T : ComponentMappingBase<T> 
+    public abstract class ComponentMappingBase : ClassMappingBase
     {
-        protected readonly AttributeStore<T> attributes;
+        protected readonly AttributeStore<ComponentMappingBase> attributes;
         protected readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
         protected readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
@@ -17,13 +17,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
         protected ComponentMappingBase(AttributeStore store)
             : base(store)
         {
-            attributes = new AttributeStore<T>(store);
+            attributes = new AttributeStore<ComponentMappingBase>(store);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
-            foreach (var property in Properties)
-                visitor.Visit(property);
+            visitor.ProcessComponent(this);
 
             if (Parent != null)
                 visitor.Visit(Parent);
@@ -41,7 +40,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.PropertyName, value); }
         }
 
-        public AttributeStore<T> Attributes
+        public AttributeStore<ComponentMappingBase> Attributes
         {
             get { return attributes; }
         }
