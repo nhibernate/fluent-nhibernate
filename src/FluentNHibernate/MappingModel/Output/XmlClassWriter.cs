@@ -12,11 +12,13 @@ namespace FluentNHibernate.MappingModel.Output
         private readonly IXmlWriter<ISubclassMapping> subclassWriter;
         private readonly IXmlWriter<ComponentMapping> componentWriter;
         private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentWriter;
+        private readonly IXmlWriter<JoinMapping> joinWriter;
 
-        public XmlClassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<DiscriminatorMapping> discriminatorWriter, IXmlWriter<ISubclassMapping> subclassWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter)
+        public XmlClassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<DiscriminatorMapping> discriminatorWriter, IXmlWriter<ISubclassMapping> subclassWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter, , IXmlWriter<JoinMapping> joinWriter)
             : base(propertyWriter)
         {
             this.discriminatorWriter = discriminatorWriter;
+            this.joinWriter = joinWriter;
             this.subclassWriter = subclassWriter;
             this.componentWriter = componentWriter;
             this.dynamicComponentWriter = dynamicComponentWriter;
@@ -52,7 +54,7 @@ namespace FluentNHibernate.MappingModel.Output
 
         protected virtual XmlElement CreateClassElement(ClassMapping classMapping)
         {
-            var typeName = classMapping.Type.IsGenericType ? classMapping.Type.AssemblyQualifiedName : classMapping.Type.AssemblyQualifiedName;
+            var typeName = classMapping.Type != null ? classMapping.Type.AssemblyQualifiedName : string.Empty;
 
             var classElement = document.CreateElement("class");
 
@@ -109,5 +111,12 @@ namespace FluentNHibernate.MappingModel.Output
 
             document.ImportAndAppendChild(componentXml);
         }
+
+        public override void Visit(JoinMapping joinMapping)
+        {
+            var joinXml = joinWriter.Write(joinMapping);
+            document.ImportAndAppendChild(joinXml);
+        }
+
     }
 }

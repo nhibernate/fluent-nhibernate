@@ -156,5 +156,10 @@ namespace FluentNHibernate.MappingModel
         {
             componentMapping.AcceptVisitor(this);
         }
+
+        public override void Visit(JoinMapping joinMapping)
+        {
+            joinMapping.AcceptVisitor(this);
+        }
     }
 }

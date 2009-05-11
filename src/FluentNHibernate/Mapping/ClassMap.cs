@@ -294,9 +294,8 @@ namespace FluentNHibernate.Mapping
         public void WithTable(string tableName, Action<JoinPart<T>> action)
         {
             var join = new JoinPart<T>(tableName);
-
             action(join);
-            AddPart(join);
+            mapping.AddJoin(join.GetJoinMapping());
         }
 
         /// <summary>

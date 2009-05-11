@@ -12,7 +12,7 @@ namespace FluentNHibernate.MappingModel.Output
                 new XmlHibernateMappingWriter(c.Resolve<IXmlWriter<ClassMapping>>(), c.Resolve<IXmlWriter<ImportMapping>>()));
 
             RegisterWriter<ClassMapping>(c =>
-                new XmlClassWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<DiscriminatorMapping>>(), c.Resolve<IXmlWriter<ISubclassMapping>>(), c.Resolve<IXmlWriter<ComponentMapping>>(), c.Resolve<IXmlWriter<DynamicComponentMapping>>()));
+                new XmlClassWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<DiscriminatorMapping>>(), c.Resolve<IXmlWriter<ISubclassMapping>>(), c.Resolve<IXmlWriter<ComponentMapping>>(), c.Resolve<IXmlWriter<DynamicComponentMapping>>(), , c.Resolve<IXmlWriter<JoinMapping>>()));
 
             RegisterWriter<ImportMapping>(c =>
                 new XmlImportWriter());

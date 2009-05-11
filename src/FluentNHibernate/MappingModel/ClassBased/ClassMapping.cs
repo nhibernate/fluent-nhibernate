@@ -9,6 +9,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
     {
         private readonly AttributeStore<ClassMapping> attributes;
         private readonly IList<ISubclassMapping> subclasses;
+        private readonly IList<JoinMapping> joins;
         private DiscriminatorMapping discriminator;
         private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
         private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
@@ -29,6 +30,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             attributes = new AttributeStore<ClassMapping>(store);
             subclasses = new List<ISubclassMapping>();
+            joins = new List<JoinMapping>();
         }
 
         public DiscriminatorMapping Discriminator
@@ -51,9 +53,19 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return subclasses; }
         }
 
+        public IEnumerable<JoinMapping> Joins
+        {
+            get { return joins; }
+        }
+
         public void AddSubclass(ISubclassMapping subclass)
         {
             subclasses.Add(subclass);
+        }
+
+        public void AddJoin(JoinMapping join)
+        {
+            joins.Add(join);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -68,6 +80,9 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
             foreach (var subclass in Subclasses)
                 visitor.Visit(subclass);
+
+            foreach (var join in Joins)
+                visitor.Visit(join);
 
             base.AcceptVisitor(visitor);
         }
@@ -144,5 +159,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             unmigratedAttributes.Add(attribute, value);
         }
+
+
     }
 }

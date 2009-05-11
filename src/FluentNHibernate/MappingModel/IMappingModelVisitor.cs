@@ -46,6 +46,6 @@ namespace FluentNHibernate.MappingModel
         void Visit(ComponentMappingBase componentMapping);
         void Visit(IndexMapping indexMapping);
         void Visit(ParentMapping parentMapping);
-        
+        void Visit(JoinMapping joinMapping);
     }
 }

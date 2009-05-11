@@ -3,62 +3,61 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.MappingModel
 {
     public class JoinMapping : IMappingBase
     {
-        private readonly AttributeStore<JoinMapping> _attributes;
-
-        private readonly IList<PropertyMapping> _properties;
-        private readonly IList<ManyToOneMapping> _references;
-        private readonly IList<ComponentMapping> _components;
+        private readonly AttributeStore<JoinMapping> attributes;
 
         public KeyMapping Key { get; set; }
+        private readonly MappedMembers mappedMembers;
+
+        private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
+        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
         public JoinMapping()
         {
-            _attributes = new AttributeStore<JoinMapping>();
-            _properties = new List<PropertyMapping>();
-            _references = new List<ManyToOneMapping>();
-            _components = new List<ComponentMapping>();
+            attributes = new AttributeStore<JoinMapping>();
+            mappedMembers = new MappedMembers();
         }
 
         public IEnumerable<PropertyMapping> Properties
         {
-            get { return _properties; }
+            get { return mappedMembers.Properties; }
         }
 
         public IEnumerable<ManyToOneMapping> References
         {
-            get { return _references; }
+            get { return mappedMembers.References; }
         }
 
         public IEnumerable<ComponentMapping> Components
         {
-            get { return _components; }
+            get { return mappedMembers.Components; }
         }
 
         public void AddProperty(PropertyMapping property)
         {
-            _properties.Add(property);
+            mappedMembers.AddProperty(property);
         }
 
         public void AddReference(ManyToOneMapping manyToOne)
         {
-            _references.Add(manyToOne);
+            mappedMembers.AddReference(manyToOne);
         }
 
         public void AddComponent(ComponentMapping componentMapping)
         {
-            _components.Add(componentMapping);
+            mappedMembers.AddComponent(componentMapping);
         }
 
         public string TableName
         {
-            get { return _attributes.Get(x => x.TableName); }
-            set { _attributes.Set(x => x.TableName, value); }
+            get { return attributes.Get(x => x.TableName); }
+            set { attributes.Set(x => x.TableName, value); }
         }
 
         public virtual void AcceptVisitor(IMappingModelVisitor visitor)
@@ -68,14 +67,27 @@ namespace FluentNHibernate.MappingModel
             if (Key != null)
                 visitor.Visit(Key);
 
-            foreach (var property in Properties)
-                visitor.Visit(property);
+            mappedMembers.AcceptVisitor(visitor);
+        }
 
-            foreach (var reference in References)
-                visitor.Visit(reference);
+        public IEnumerable<IMappingPart> UnmigratedParts
+        {
+            get { return unmigratedParts; }
+        }
 
-            foreach (var component in Components)
-                visitor.Visit(component);
+        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
+        {
+            get { return unmigratedAttributes; }
+        }
+
+        public void AddUnmigratedPart(IMappingPart part)
+        {
+            unmigratedParts.Add(part);
+        }
+
+        public void AddUnmigratedAttribute(string attribute, string value)
+        {
+            unmigratedAttributes.Add(attribute, value);
         }
     }
 }

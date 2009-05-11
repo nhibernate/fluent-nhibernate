@@ -31,8 +31,21 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.CreateElement("join");
             element.WithAtt("table", joinMapping.TableName);
+            
+            if(joinMapping.Key != null)
+                element.AddElement("key").SetAttribute("column", joinMapping.Key.Column);
 
             document.AppendChild(element);
+
+            var sortedUnmigratedParts = new List<IMappingPart>(joinMapping.UnmigratedParts);
+            sortedUnmigratedParts.Sort(new MappingPartComparer(joinMapping.UnmigratedParts));
+
+            foreach (var part in sortedUnmigratedParts)
+                part.Write(element, null);
+
+            foreach (var attribute in joinMapping.UnmigratedAttributes)
+                element.WithAtt(attribute.Key, attribute.Value);
+
         }
 
         public override void Visit(PropertyMapping propertyMapping)

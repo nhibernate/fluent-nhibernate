@@ -200,5 +200,10 @@ namespace FluentNHibernate.MappingModel
         {
             
         }
+
+        public virtual void Visit(JoinMapping joinMapping)
+        {
+            
+        }
     }
 }

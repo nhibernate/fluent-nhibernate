@@ -1,3 +1,4 @@
+using System;
 using System.Xml;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
@@ -7,6 +8,7 @@ namespace FluentNHibernate.Mapping
     public interface IJoin : IClasslike, IMappingPart
     {
         void WithKeyColumn(string column);
+        JoinMapping GetJoinMapping();
     }
     /// <summary>
     /// Maps to the Join element in NH 2.0
@@ -14,7 +16,7 @@ namespace FluentNHibernate.Mapping
     /// <typeparam name="T"></typeparam>
     public class JoinPart<T> : ClasslikeMapBase<T>, IJoin
     {
-        private readonly Cache<string, string> properties = new Cache<string, string>();
+        private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
 
         private readonly JoinMapping joinMapping = new JoinMapping();
 
@@ -26,7 +28,7 @@ namespace FluentNHibernate.Mapping
 
         public void SetAttribute(string name, string value)
         {
-            properties.Store(name, value);
+            unmigratedAttributes.Store(name, value);
         }
 
         public void SetAttributes(Attributes atts)
@@ -35,18 +37,6 @@ namespace FluentNHibernate.Mapping
             {
                 SetAttribute(key, atts[key]);
             }
-        }
-
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            var joinElement = classElement.AddElement("join")
-                .WithProperties(properties)
-                .WithAtt("table", joinMapping.TableName);
-
-            joinElement.AddElement("key")
-                .SetAttribute("column", joinMapping.Key.Column);
-
-            WriteTheParts(joinElement, visitor);
         }
 
         public int LevelWithinPosition
@@ -62,6 +52,24 @@ namespace FluentNHibernate.Mapping
         public void WithKeyColumn(string column)
         {
             joinMapping.Key.Column = column;
+        }
+
+        public JoinMapping GetJoinMapping()
+        {
+            foreach (var property in properties)
+                joinMapping.AddProperty(property.GetPropertyMapping());
+            
+            foreach (var part in Parts)
+                joinMapping.AddUnmigratedPart(part);
+
+            unmigratedAttributes.ForEachPair(joinMapping.AddUnmigratedAttribute);
+
+            return joinMapping;
+        }
+
+        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
+        {
+            throw new NotSupportedException("Obsolete");
         }
     }
 }
