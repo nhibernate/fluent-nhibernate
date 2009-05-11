@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {

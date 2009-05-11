@@ -46,10 +46,10 @@ namespace FluentNHibernate.MappingModel.Output
                 new XmlInheritanceWriter(c.Resolve<IXmlWriter<SubclassMapping>>(), c.Resolve<IXmlWriter<JoinedSubclassMapping>>()));
 
             RegisterWriter<SubclassMapping>(c =>
-                new XmlSubclassWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<ComponentMapping>>(), c.Resolve<IXmlWriter<DynamicComponentMapping>>()));
+                new XmlSubclassWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<DynamicComponentMapping>>()));
 
             RegisterWriter<JoinedSubclassMapping>(c =>
-                new XmlJoinedSubclassWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<KeyMapping>>(), c.Resolve<IXmlWriter<ComponentMapping>>(), c.Resolve<IXmlWriter<DynamicComponentMapping>>()));
+                new XmlJoinedSubclassWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<KeyMapping>>(), c.Resolve<IXmlWriter<DynamicComponentMapping>>()));
         }
 
         private void RegisterWriter<T>(Func<Container, object> instantiate)

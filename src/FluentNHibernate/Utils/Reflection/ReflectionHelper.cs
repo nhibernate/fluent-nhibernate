@@ -102,7 +102,7 @@ namespace FluentNHibernate.Utils
 
         public static Accessor GetAccessor<MODEL>(Expression<Func<MODEL, object>> expression)
         {
-            MemberExpression memberExpression = getMemberExpression(expression);
+            MemberExpression memberExpression = GetMemberExpression(expression);
 
             return getAccessor(memberExpression);
         }
@@ -128,7 +128,7 @@ namespace FluentNHibernate.Utils
 
         public static Accessor GetAccessor<MODEL, T>(Expression<Func<MODEL, T>> expression)
         {
-            MemberExpression memberExpression = getMemberExpression(expression);
+            MemberExpression memberExpression = GetMemberExpression(expression);
 
             return getAccessor(memberExpression);
         }

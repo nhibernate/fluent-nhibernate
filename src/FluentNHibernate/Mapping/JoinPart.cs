@@ -1,5 +1,6 @@
 using System.Xml;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
@@ -45,7 +46,7 @@ namespace FluentNHibernate.Mapping
             joinElement.AddElement("key")
                 .SetAttribute("column", joinMapping.Key.Column);
 
-            writeTheParts(joinElement, visitor);
+            WriteTheParts(joinElement, visitor);
         }
 
         public int LevelWithinPosition
