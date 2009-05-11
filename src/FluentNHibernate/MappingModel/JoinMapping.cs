@@ -34,7 +34,7 @@ namespace FluentNHibernate.MappingModel
             get { return mappedMembers.References; }
         }
 
-        public IEnumerable<ComponentMapping> Components
+        public IEnumerable<ComponentMappingBase> Components
         {
             get { return mappedMembers.Components; }
         }

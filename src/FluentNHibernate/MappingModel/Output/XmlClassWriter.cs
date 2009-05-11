@@ -14,7 +14,7 @@ namespace FluentNHibernate.MappingModel.Output
         private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentWriter;
         private readonly IXmlWriter<JoinMapping> joinWriter;
 
-        public XmlClassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<DiscriminatorMapping> discriminatorWriter, IXmlWriter<ISubclassMapping> subclassWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter, , IXmlWriter<JoinMapping> joinWriter)
+        public XmlClassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<DiscriminatorMapping> discriminatorWriter, IXmlWriter<ISubclassMapping> subclassWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter, IXmlWriter<JoinMapping> joinWriter)
             : base(propertyWriter)
         {
             this.discriminatorWriter = discriminatorWriter;
