@@ -352,11 +352,14 @@
     <Compile Include="MappingModel\Collections\OneToManyMapping.cs" />
     <Compile Include="MappingModel\Conventions\NamingConvention.cs" />
     <Compile Include="PersistenceModel.cs" />
+    <Compile Include="Utils\Reflection\Accessor.cs" />
+    <Compile Include="Utils\Reflection\PropertyChain.cs" />
+    <Compile Include="Utils\Reflection\SingleProperty.cs" />
     <Compile Include="Xml\MappingXmlSerializer.cs" />
     <Compile Include="Xml\MappingXmlValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\InvocationHelper.cs" />
-    <Compile Include="Utils\ReflectionHelper.cs" />
+    <Compile Include="Utils\Reflection\ReflectionHelper.cs" />
     <Compile Include="Reveal.cs" />
     <Compile Include="UnknownPropertyException.cs" />
   </ItemGroup>
