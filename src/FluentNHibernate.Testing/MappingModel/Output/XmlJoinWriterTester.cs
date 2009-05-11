@@ -41,7 +41,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Expect(x => x.Write(joinMapping.Properties.First()))
                 .Return(propertyDocument);
 
-
             _writer = new XmlJoinWriter(propertyWriter);
 
             _writer.VerifyXml(joinMapping)

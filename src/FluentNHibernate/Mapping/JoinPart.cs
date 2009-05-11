@@ -1,5 +1,5 @@
 using System.Xml;
-using FluentNHibernate.Utils;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
@@ -13,18 +13,19 @@ namespace FluentNHibernate.Mapping
     /// <typeparam name="T"></typeparam>
     public class JoinPart<T> : ClasslikeMapBase<T>, IJoin
     {
-        private readonly Cache<string, string> localProperties = new Cache<string, string>();
-        private string keyColumnName;
+        private readonly Cache<string, string> properties = new Cache<string, string>();
+
+        private readonly JoinMapping joinMapping = new JoinMapping();
 
         public JoinPart(string tableName)
         {
-            localProperties.Store("table", tableName);
-            keyColumnName = GetType().GetGenericArguments()[0].Name + "ID";
+            joinMapping.TableName = tableName;
+            joinMapping.Key = new KeyMapping {Column = GetType().GetGenericArguments()[0].Name + "ID"};            
         }
 
         public void SetAttribute(string name, string value)
         {
-            localProperties.Store(name, value);
+            properties.Store(name, value);
         }
 
         public void SetAttributes(Attributes atts)
@@ -38,12 +39,13 @@ namespace FluentNHibernate.Mapping
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             var joinElement = classElement.AddElement("join")
-                .WithProperties(localProperties);
+                .WithProperties(properties)
+                .WithAtt("table", joinMapping.TableName);
 
             joinElement.AddElement("key")
-                .SetAttribute("column", keyColumnName);
+                .SetAttribute("column", joinMapping.Key.Column);
 
-            WriteTheParts(joinElement, visitor);
+            writeTheParts(joinElement, visitor);
         }
 
         public int LevelWithinPosition
@@ -58,7 +60,7 @@ namespace FluentNHibernate.Mapping
 
         public void WithKeyColumn(string column)
         {
-            keyColumnName = column;
+            joinMapping.Key.Column = column;
         }
     }
 }

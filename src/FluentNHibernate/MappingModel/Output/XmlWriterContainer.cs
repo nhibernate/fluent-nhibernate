@@ -28,6 +28,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterWriter<ColumnMapping>(c =>
                 new XmlColumnWriter());
+                
+            RegisterWriter<JoinMapping>(c =>
+                new XmlJoinWriter(c.Resolve<IXmlWriter<PropertyMapping>>()));
 
             RegisterWriter<DiscriminatorMapping>(c =>
                 new XmlDiscriminatorWriter());
