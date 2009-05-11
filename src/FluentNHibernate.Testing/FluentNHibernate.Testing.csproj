@@ -192,6 +192,7 @@
     <Compile Include="FluentInterfaceTests\ClassMapSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ModelTester.cs" />
     <Compile Include="Infrastructure\ContainerTester.cs" />
+    <Compile Include="MappingModel\Output\XmlJoinWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
     <Compile Include="PersistenceModelTests\Conventions\Configure.cs" />
     <Compile Include="PersistenceModelTests\OnConstruction.cs" />

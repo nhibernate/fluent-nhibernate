@@ -102,6 +102,11 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void ProcessJoin(JoinMapping joinMapping)
+        {
+
+        }
+
         public virtual void ProcessIndex(IndexMapping indexMapping)
         {
             
@@ -191,7 +196,6 @@ namespace FluentNHibernate.MappingModel
         {
             
         }
-
         public virtual void Visit(ParentMapping parentMapping)
         {
             

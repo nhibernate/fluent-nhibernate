@@ -27,6 +27,7 @@ namespace FluentNHibernate.MappingModel
         void ProcessList(ListMapping listMapping);
         void ProcessIndex(IndexMapping indexMapping);
         void ProcessParent(ParentMapping parentMapping);
+        void ProcessJoin(JoinMapping joinMapping);
 
         void Visit(ClassMapping classMapping);
         void Visit(ImportMapping importMapping);
@@ -45,5 +46,6 @@ namespace FluentNHibernate.MappingModel
         void Visit(ComponentMappingBase componentMapping);
         void Visit(IndexMapping indexMapping);
         void Visit(ParentMapping parentMapping);
+        
     }
 }
