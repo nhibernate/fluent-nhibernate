@@ -1,4 +1,4 @@
-@ECHO *** Installing Rake
+@ECHO *** Installing Rake 
 @call gem install rake --include-dependencies
 
 @ECHO *** Installing ActiveRecord
