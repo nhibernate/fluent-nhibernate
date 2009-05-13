@@ -53,11 +53,6 @@ def get_version
 	return "0.1.0.0"
 end
 
-def get_build
-  version = get_version
-  version.split('.').last
-end
-
 desc "Displays a list of tasks"
 task :help do
   taskHash = Hash[*(`rake.cmd -T`.split(/\n/).collect { |l| l.match(/rake (\S+)\s+\#\s(.+)/).to_a }.collect { |l| [l[1], l[2]] }).flatten] 
@@ -118,9 +113,9 @@ task :create_source_zip do
   puts "Creating source zip"
 
   Dir.mkdir DIST_DIR unless File.exists? DIST_DIR
-  revision = get_build()
+  version = get_version(
   
-  create_zip("#{DIST_DIR}/fluentnhibernate-source-#{BUILD_NUMBER}#{revision}.zip", './', /.git|build|dist|results|_ReSharper|bin|obj|.user|.suo|.resharper|.cache/)
+  create_zip("#{DIST_DIR}/fluentnhibernate-source-#{version}.zip", './', /.git|build|dist|results|_ReSharper|bin|obj|.user|.suo|.resharper|.cache/)
 end
 
 desc "Create a binary zip"
@@ -128,9 +123,9 @@ task :create_binary_zip do
   puts "Creating binary zip"
 
   Dir.mkdir DIST_DIR unless File.exists? DIST_DIR
-  revision = get_build()
+  version = get_version(
   
-  create_zip("#{DIST_DIR}/fluentnhibernate-binary-#{BUILD_NUMBER}#{revision}.zip", 'build/')
+  create_zip("#{DIST_DIR}/fluentnhibernate-binary-#{version}.zip", 'build/')
 end
 
 desc "Creates binary and source zip files"
@@ -147,9 +142,9 @@ desc "Creates a zip of the API documentation"
 task :create_zip_docs => :build_docs do
   puts "Creating docs zip"
   Dir.mkdir DIST_DIR unless File.exists? DIST_DIR
-  revision = get_build()
+  version = get_version()
   
-  create_zip("#{DIST_DIR}/fluentnhibernate-docs-#{BUILD_NUMBER}#{revision}.zip", 'output/')
+  create_zip("#{DIST_DIR}/fluentnhibernate-docs-#{version}.zip", 'output/')
   
   FileUtils.rm_r('output') if File.exists? 'output'
 end
