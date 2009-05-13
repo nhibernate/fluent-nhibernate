@@ -61,6 +61,17 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+        public virtual void JoinedSubClass<TNextSubclass>(string keyColumn, Action<JoinedSubClassPart<TNextSubclass>> action)
+        {
+            var subclass = new JoinedSubClassPart<TNextSubclass>(keyColumn);
+
+            action(subclass);
+
+            joinedSubclasses.Add(subclass);
+
+            mapping.AddSubclass(subclass.GetJoinedSubclassMapping());
+        }
+
         public virtual void SetAttribute(string name, string value)
         {
             unmigratedAttributes.Store(name, value);
