@@ -47,5 +47,13 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.DiscriminateSubClassesOnColumn("col", "base-value"))
                 .ModelShouldMatch(x => x.DiscriminatorBaseValue.ShouldEqual("base-value"));
         }
+
+        [Test]
+        public void DiscriminateSubClassShouldAddSubclassToModelSubclassesCollection()
+        {
+            ClassMap<SuperRecord>()
+                .Mapping(m => m.DiscriminateSubClassesOnColumn("col").SubClass<ChildRecord>(sc => { }))
+                .ModelShouldMatch(x => x.Subclasses.Count().ShouldEqual(1));
+        }
     }
 }

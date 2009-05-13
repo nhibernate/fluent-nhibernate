@@ -20,5 +20,10 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 return new DiscriminatorPart(classMap, classMapping, "column");
             }, x => x.GetDiscriminatorMapping());
         }
+
+        protected ModelTester<SubClassPart<T>, SubclassMapping> SubClass<T>()
+        {
+            return new ModelTester<SubClassPart<T>, SubclassMapping>(() => new SubClassPart<T>(new SubclassMapping()), x => x.GetSubclassMapping());
+        }
     }
 }
