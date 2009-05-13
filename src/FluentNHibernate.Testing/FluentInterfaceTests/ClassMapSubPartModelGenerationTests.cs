@@ -1,4 +1,5 @@
 using System.Linq;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
@@ -70,6 +71,22 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             ClassMap<PropertyTarget>()
                 .Mapping(m => m.DynamicComponent(x => x.ExtensionData, c => { }))
                 .ModelShouldMatch(x => x.Components.Count().ShouldEqual(1));
+        }
+
+        [Test]
+        public void JoinedSubclassShouldAddToModelSubclassesCollection()
+        {
+            ClassMap<SuperRecord>()
+                .Mapping(m => m.JoinedSubClass<ChildRecord>("key", c => {}))
+                .ModelShouldMatch(x => x.Subclasses.Count().ShouldEqual(1));
+        }
+
+        [Test]
+        public void JoinedSubclassShouldSetKeyColumnOnModel()
+        {
+            ClassMap<SuperRecord>()
+                .Mapping(m => m.JoinedSubClass<ChildRecord>("key", c => { }))
+                .ModelShouldMatch(x => ((JoinedSubclassMapping)x.Subclasses.First()).Key.Column.ShouldEqual("key"));
         }
     }
 }
