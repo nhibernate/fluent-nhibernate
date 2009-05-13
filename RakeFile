@@ -113,7 +113,7 @@ task :create_source_zip do
   puts "Creating source zip"
 
   Dir.mkdir DIST_DIR unless File.exists? DIST_DIR
-  version = get_version(
+  version = get_version()
   
   create_zip("#{DIST_DIR}/fluentnhibernate-source-#{version}.zip", './', /.git|build|dist|results|_ReSharper|bin|obj|.user|.suo|.resharper|.cache/)
 end
@@ -123,7 +123,7 @@ task :create_binary_zip do
   puts "Creating binary zip"
 
   Dir.mkdir DIST_DIR unless File.exists? DIST_DIR
-  version = get_version(
+  version = get_version()
   
   create_zip("#{DIST_DIR}/fluentnhibernate-binary-#{version}.zip", 'build/')
 end
