@@ -44,5 +44,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     }))
                 .Element("//class/component").HasThisManyChildNodes(1);
         }
+
+        [Test]
+        public void ComponentInComponent()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m =>
+                    m.Component(x => x.Component, c =>
+                    {
+                        c.Component(x => x.MyParent, c2 => { });
+                    }))
+                .Element("class/component/component").Exists();
+        }
     }
 }
