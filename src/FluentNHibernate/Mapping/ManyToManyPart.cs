@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
 using FluentNHibernate.Utils;
@@ -25,6 +26,7 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> parentKeyProperties = new Cache<string, string>();
         private readonly Cache<string, string> manyToManyProperties = new Cache<string, string>();
         private readonly AccessStrategyBuilder<ManyToManyPart<TChild>> access;
+        private IndexMapping manyToManyIndex;
 
 	    public ManyToManyPart(Type entity, PropertyInfo property)
             : this(entity, property, property.PropertyType)
@@ -85,11 +87,47 @@ namespace FluentNHibernate.Mapping
 
             if (indexMapping != null)
                 WriteIndexElement(collectionElement);
+            if (manyToManyIndex != null)
+                WriteIndexManyToManyElement(collectionElement);
 
 			XmlElement manyToManyElement = collectionElement.AddElement("many-to-many");
 			manyToManyElement.WithAtt("column", ChildKeyColumn);
 			manyToManyElement.WithAtt("class", typeof(TChild).AssemblyQualifiedName);
 			manyToManyElement.WithProperties(manyToManyProperties);
+        }
+
+        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(Expression<Func<TChild, TIndex>> indexSelector)
+        {
+            return AsTernaryAssociation(indexSelector, null);
+        }
+
+        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<ToManyBase<ManyToManyPart<TChild>, TChild>.IndexMapping> customIndexMapping)
+        {
+            var indexProperty = ReflectionHelper.GetProperty(indexSelector);
+            return AsTernaryAssociation<TIndex>(indexProperty.Name, customIndexMapping);
+        }
+
+        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn)
+        {
+            return AsTernaryAssociation<TIndex>(indexColumn, null);
+        }
+
+        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn, Action<ToManyBase<ManyToManyPart<TChild>, TChild>.IndexMapping> customIndexMapping)
+        {
+            manyToManyIndex = new IndexMapping();
+            manyToManyIndex.WithColumn(indexColumn);
+            manyToManyIndex.WithType<TIndex>();
+
+            if (customIndexMapping != null)
+                customIndexMapping(manyToManyIndex);
+
+            return this;
+        }
+
+        protected void WriteIndexManyToManyElement(XmlElement collectionElement)
+        {
+            var indexElement = collectionElement.AddElement("index-many-to-many");
+            manyToManyIndex.WriteAttributesToIndexElement(indexElement);
         }
 
     	/// <summary>
