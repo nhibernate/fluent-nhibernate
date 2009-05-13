@@ -65,16 +65,9 @@ end
 class AsmInfoBuilder
 	attr_reader :buildnumber, :parameterless_attributes
 
-	def initialize(baseVersion, svn_revision, properties)
+	def initialize(version, properties)
 		@properties = properties
-		
-		if ENV["CCNetLabel"].nil?
-			generated_version = svn_revision.to_s
-		else
-			generated_version = ENV['CCNetLabel'].to_s
-		end
-		
-		@buildnumber = baseVersion + generated_version
+		@buildnumber = version
 		@properties['Version'] = @properties['InformationalVersion'] = buildnumber;
 		@parameterless_attributes = [:allow_partially_trusted_callers]
 	end

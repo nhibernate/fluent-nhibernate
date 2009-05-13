@@ -6,13 +6,10 @@ include FileTest
 
 RESULTS_DIR = "results"
 DIST_DIR = 'dist'
-BUILD_NUMBER = "0.1.0."
 PRODUCT = "FluentNHibernate"
 COPYRIGHT = 'Copyright 2008-2009 James Gregory and contributors (Paul Batum, Andrew Stewart, Chad Myers et al). All rights reserved.';
 COMMON_ASSEMBLY_INFO = 'src/CommonAssemblyInfo.cs';
 CLR_VERSION = "v3.5"
-
-versionNumber = ENV["BUILD_NUMBER"].nil? ? 0 : ENV["BUILD_NUMBER"]
 
 props = { :archive => "build" }
 
@@ -51,9 +48,9 @@ def switch_nhib_libs(nhib_lib_dir)
 	}
 end
 
-def get_svn_revision
+def get_version
 	return ENV['BUILD_NUMBER'].to_s unless ENV['BUILD_NUMBER'].nil?
-	return 0
+	return "0.1.0.0"
 end
 
 desc "Displays a list of tasks"
@@ -74,7 +71,7 @@ end
 
 desc "Update the version information for the build"
 task :version do
-  builder = AsmInfoBuilder.new BUILD_NUMBER, get_svn_revision(),
+  builder = AsmInfoBuilder.new get_version(),
                                :product => PRODUCT,
                                :copyright => COPYRIGHT,
                                :company => 'http://fluentnhibernate.org',
