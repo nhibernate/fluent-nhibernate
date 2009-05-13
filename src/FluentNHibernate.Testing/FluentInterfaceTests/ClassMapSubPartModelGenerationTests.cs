@@ -55,5 +55,21 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.DiscriminateSubClassesOnColumn("col").SubClass<ChildRecord>(sc => { }))
                 .ModelShouldMatch(x => x.Subclasses.Count().ShouldEqual(1));
         }
+
+        [Test]
+        public void ComponentShouldAddToModelComponentsCollection()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(m => m.Component(x => x.Component, c => { }))
+                .ModelShouldMatch(x => x.Components.Count().ShouldEqual(1));
+        }
+
+        [Test]
+        public void DynamicComponentShouldAddToModelComponentsCollection()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(m => m.DynamicComponent(x => x.ExtensionData, c => { }))
+                .ModelShouldMatch(x => x.Components.Count().ShouldEqual(1));
+        }
     }
 }
