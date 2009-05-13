@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel.ClassBased;
 
@@ -8,6 +9,7 @@ namespace FluentNHibernate.MappingModel
         private readonly IList<ClassMapping> classes;
         private readonly IList<ImportMapping> imports;
         private readonly AttributeStore<HibernateMapping> attributes;
+        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
         public HibernateMapping()
         {
@@ -31,6 +33,11 @@ namespace FluentNHibernate.MappingModel
             get { return attributes; }
         }
 
+        public IDictionary<string, string> UnmigratedAttributes
+        {
+            get { return unmigratedAttributes; }
+        }
+
         public void AddClass(ClassMapping classMapping)
         {
             classes.Add(classMapping);            
@@ -52,12 +59,6 @@ namespace FluentNHibernate.MappingModel
                 visitor.Visit(classMapping);
         }
 
-        public bool DefaultLazy
-        {
-            get { return attributes.Get(x => x.DefaultLazy); }
-            set { attributes.Set(x => x.DefaultLazy, value); }
-        }
-
         public string DefaultAccess
         {
             get { return attributes.Get(x => x.DefaultAccess); }
@@ -68,6 +69,11 @@ namespace FluentNHibernate.MappingModel
         {
             get { return attributes.Get(x => x.AutoImport); }
             set { attributes.Set(x => x.AutoImport, value); }
+        }
+
+        public void AddUnmigratedAttribute(string key, string value)
+        {
+            unmigratedAttributes.Add(key, value);
         }
     }
 }

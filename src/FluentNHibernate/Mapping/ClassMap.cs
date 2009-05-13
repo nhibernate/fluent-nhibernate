@@ -88,6 +88,8 @@ namespace FluentNHibernate.Mapping
             foreach (var import in imports)
                 hibernateMapping.AddImport(import.GetImportMapping());
 
+            HibernateMappingAttributes.ForEachPair(hibernateMapping.AddUnmigratedAttribute);
+
             return hibernateMapping;
         }
 

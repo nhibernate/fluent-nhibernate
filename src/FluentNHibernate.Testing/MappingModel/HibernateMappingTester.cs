@@ -23,14 +23,6 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
-        public void CanSpecifyDefaultLazy()
-        {
-            var hibMap = new HibernateMapping();
-            hibMap.DefaultLazy = true;
-            hibMap.DefaultLazy.ShouldBeTrue();
-        }
-
-        [Test]
         public void ShouldPassClassmappingsToTheVisitor()
         {
             var hibMap = new HibernateMapping();

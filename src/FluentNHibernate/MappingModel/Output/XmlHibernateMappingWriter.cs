@@ -29,7 +29,7 @@ namespace FluentNHibernate.MappingModel.Output
         {
             document = new XmlDocument();
 
-            var element = document.CreateElement("hibernate-mapping");
+            var element = document.AddElement("hibernate-mapping");
 
             element.WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
 
@@ -39,7 +39,8 @@ namespace FluentNHibernate.MappingModel.Output
             if (hibernateMapping.Attributes.IsSpecified(x => x.AutoImport))
                 element.WithAtt("auto-import", hibernateMapping.AutoImport.ToString().ToLowerInvariant());
 
-            document.AppendChild(element);
+            foreach (var attribute in hibernateMapping.UnmigratedAttributes)
+                element.WithAtt(attribute.Key, attribute.Value);
         }
 
         public override void Visit(ImportMapping importMapping)
