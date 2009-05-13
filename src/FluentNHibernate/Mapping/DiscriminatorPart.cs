@@ -17,7 +17,7 @@ namespace FluentNHibernate.Mapping
             this.classMap = classMap;
         }
 
-        public DiscriminatorPart(DiscriminatorMapping mapping)
+        protected DiscriminatorPart(DiscriminatorMapping mapping)
         {
             this.mapping = mapping;
         }

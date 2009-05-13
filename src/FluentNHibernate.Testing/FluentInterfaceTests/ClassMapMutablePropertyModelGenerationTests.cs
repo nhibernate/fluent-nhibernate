@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
     [TestFixture]
-    public class ClassMapMutablePropertyModelGenerationTests : BaseClassMapModelFixture
+    public class ClassMapMutablePropertyModelGenerationTests : BaseModelFixture
     {
         [Test]
         public void LazyLoadSetsModelPropertyToTrue()
