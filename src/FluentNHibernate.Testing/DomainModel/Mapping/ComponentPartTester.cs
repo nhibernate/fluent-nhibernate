@@ -56,5 +56,29 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     }))
                 .Element("class/component/component").Exists();
         }
+
+        [Test]
+        public void ComponentCanSetInsert()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m =>
+                    m.Component(x => x.Component, c =>
+                    {
+                        c.Insert();
+                    }))
+                .Element("//class/component").HasAttribute("insert", "true");
+        }
+
+        [Test]
+        public void ComponentCanSetUpdate()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m =>
+                    m.Component(x => x.Component, c =>
+                    {
+                        c.Update();
+                    }))
+                .Element("//class/component").HasAttribute("update", "true");
+        }
     }
 }

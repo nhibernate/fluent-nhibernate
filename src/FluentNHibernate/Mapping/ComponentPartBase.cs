@@ -9,18 +9,19 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public class ComponentPartBase<T> : ClasslikeMapBase<T>, IComponentBase, IAccessStrategy<ComponentPartBase<T>> 
+    public abstract class ComponentPartBase<T> : ClasslikeMapBase<T>, IComponentBase, IAccessStrategy<ComponentPartBase<T>> 
     {
-        protected PropertyInfo propertyInfo;
+        protected string propertyName;
         protected AccessStrategyBuilder<ComponentPartBase<T>> access;
         protected readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
         protected ComponentMappingBase mapping;
+        private bool nextBool = true;
 
-        public ComponentPartBase(ComponentMappingBase mapping, PropertyInfo property)
+        public ComponentPartBase(ComponentMappingBase mapping, string propertyName)
         {
             this.mapping = mapping;
             access = new AccessStrategyBuilder<ComponentPartBase<T>>(this);
-            propertyInfo = property;
+            this.propertyName = propertyName;
         }
 
         /// <summary>
@@ -33,13 +34,13 @@ namespace FluentNHibernate.Mapping
 
         ComponentMappingBase IComponentBase.GetComponentMapping()
         {
-            mapping.Name = propertyInfo.Name;
+            mapping.Name = propertyName;
 
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());
 
-            foreach (var dynamicComponent in components)
-                mapping.AddComponent(dynamicComponent.GetComponentMapping());
+            foreach (var component in components)
+                mapping.AddComponent(component.GetComponentMapping());
 
             foreach (var part in Parts)
                 mapping.AddUnmigratedPart(part);
@@ -47,6 +48,38 @@ namespace FluentNHibernate.Mapping
             unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
 
             return mapping;
+        }
+
+        IComponentBase IComponentBase.Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
+        }
+
+        IComponentBase IComponentBase.ReadOnly()
+        {
+            mapping.Insert = !nextBool;
+            mapping.Update = !nextBool;
+            nextBool = true;
+
+            return this;
+        }
+
+        IComponentBase IComponentBase.Insert()
+        {
+            mapping.Insert = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        IComponentBase IComponentBase.Update()
+        {
+            mapping.Update = nextBool;
+            nextBool = true;
+            return this;
         }
 
         /// <summary>
@@ -127,6 +160,7 @@ namespace FluentNHibernate.Mapping
         {
             get { throw new NotSupportedException("Obsolete"); }
         }
+
         void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
         {
             throw new NotSupportedException("Obsolete");

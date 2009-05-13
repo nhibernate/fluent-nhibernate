@@ -40,6 +40,18 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.PropertyName, value); }
         }
 
+        public bool Insert
+        {
+            get { return attributes.Get(x => x.Insert); }
+            set { attributes.Set(x => x.Insert, value); }
+        }
+
+        public bool Update
+        {
+            get { return attributes.Get(x => x.Update); }
+            set { attributes.Set(x => x.Update, value); }
+        }
+
         public AttributeStore<ComponentMappingBase> Attributes
         {
             get { return attributes; }

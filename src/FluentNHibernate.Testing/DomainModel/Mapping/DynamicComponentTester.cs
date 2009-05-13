@@ -137,5 +137,29 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         c.WithParentReference(x => x["Parent"])))
                 .Element("class/dynamic-component/parent").HasAttribute("name", "Parent");
         }
+
+        [Test]
+        public void ComponentCanSetInsert()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m =>
+                    m.DynamicComponent(x => x.ExtensionData, c =>
+                    {
+                        c.Insert();
+                    }))
+                .Element("class/dynamic-component").HasAttribute("insert", "true");
+        }
+
+        [Test]
+        public void ComponentCanSetUpdate()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m =>
+                    m.DynamicComponent(x => x.ExtensionData, c =>
+                    {
+                        c.Update();
+                    }))
+                .Element("class/dynamic-component").HasAttribute("update", "true");
+        }
     }
 }

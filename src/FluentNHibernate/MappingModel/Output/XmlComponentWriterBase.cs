@@ -28,6 +28,12 @@ namespace FluentNHibernate.MappingModel.Output
             if (componentMapping.Attributes.IsSpecified(x => x.Name))
                 componentElement.WithAtt("name", componentMapping.Name);
 
+            if (componentMapping.Attributes.IsSpecified(x => x.Insert))
+                componentElement.WithAtt("insert", componentMapping.Insert);
+
+            if (componentMapping.Attributes.IsSpecified(x => x.Update))
+                componentElement.WithAtt("update", componentMapping.Update);
+
             var sortedUnmigratedParts = new List<IMappingPart>(componentMapping.UnmigratedParts);
 
             sortedUnmigratedParts.Sort(new MappingPartComparer(componentMapping.UnmigratedParts));
