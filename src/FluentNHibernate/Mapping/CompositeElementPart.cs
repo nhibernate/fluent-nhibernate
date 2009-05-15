@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
+using NHibernate.Type;
 
 namespace FluentNHibernate.Mapping
 {
@@ -10,8 +13,69 @@ namespace FluentNHibernate.Mapping
     /// Component-element for component HasMany's.
     /// </summary>
     /// <typeparam name="T">Component type</typeparam>
-    public class CompositeElementPart<T> : ClasslikeMapBase<T>, IMappingPart
+    public class CompositeElementPart<T> : IMappingPart
     {
+        protected readonly List<IMappingPart> m_Parts = new List<IMappingPart>();
+        public IEnumerable<IMappingPart> Parts
+        {
+            get { return m_Parts; }
+        }
+        protected internal void AddPart(IMappingPart part)
+        {
+            m_Parts.Add(part);
+        }
+
+        public PropertyMap Map(Expression<Func<T, object>> expression)
+        {
+            return Map(expression, null);
+        }
+
+        public PropertyMap Map(Expression<Func<T, object>> expression, string columnName)
+        {
+            return Map(ReflectionHelper.GetProperty(expression), columnName);
+        }
+
+        protected virtual PropertyMap Map(PropertyInfo property, string columnName)
+        {
+            var propertyMapping = new PropertyMapping
+            {
+                Name = property.Name,
+                PropertyInfo = property
+            };
+
+            var propertyMap = new PropertyMap(propertyMapping);
+
+            if (!string.IsNullOrEmpty(columnName))
+                propertyMap.ColumnName(columnName);
+
+            m_Parts.Add(propertyMap);
+
+            return propertyMap;
+        }
+
+        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> expression)
+        {
+            return References(expression, null);
+        }
+
+        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> expression, string columnName)
+        {
+            return References<TOther>(ReflectionHelper.GetProperty(expression), columnName);
+        }
+
+        protected virtual ManyToOnePart<TOther> References<TOther>(PropertyInfo property, string columnName)
+        {
+            var part = new ManyToOnePart<TOther>(typeof(T), property);
+
+            if (columnName != null)
+                part.ColumnName(columnName);
+
+            AddPart(part);
+
+            return part;
+        }
+
+
         private readonly Cache<string, string> localProperties = new Cache<string, string>();
         private PropertyInfo parentReference;
 
@@ -24,7 +88,12 @@ namespace FluentNHibernate.Mapping
             if (parentReference != null)
                 element.AddElement("parent").WithAtt("name", parentReference.Name);
 
-            WriteTheParts(element, visitor);
+            //Write the parts
+            m_Parts.Sort(new MappingPartComparer(m_Parts));
+            foreach (IMappingPart part in m_Parts)
+            {
+                part.Write(element, visitor);
+            }
         }
 
         /// <summary>
