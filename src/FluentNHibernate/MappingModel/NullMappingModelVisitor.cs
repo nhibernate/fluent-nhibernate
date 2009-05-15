@@ -107,6 +107,11 @@ namespace FluentNHibernate.MappingModel
 
         }
 
+        public virtual void ProcessCompositeElement(CompositeElementMapping compositeElementMapping)
+        {
+            
+        }
+
         public virtual void ProcessIndex(IndexMapping indexMapping)
         {
             
@@ -202,6 +207,11 @@ namespace FluentNHibernate.MappingModel
         }
 
         public virtual void Visit(JoinMapping joinMapping)
+        {
+            
+        }
+
+        public virtual void Visit(CompositeElementMapping compositeElementMapping)
         {
             
         }

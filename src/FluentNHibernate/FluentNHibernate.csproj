@@ -191,10 +191,11 @@
     <Compile Include="MappingModel\ClassBased\ISubclassMapping.cs" />
     <Compile Include="MappingModel\ClassBased\JoinedSubclassMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassMapping.cs" />
-    <Compile Include="MappingModel\CompositeElementMapping.cs" />
+    <Compile Include="MappingModel\Collections\CompositeElementMapping.cs" />
     <Compile Include="MappingModel\Output\XmlClassWriterBase.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriterBase.cs" />
+    <Compile Include="MappingModel\Output\XmlCompositeElementWriter.cs" />
     <Compile Include="MappingModel\Output\XmlDynamicComponentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlKeyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlInheritanceWriter.cs" />
