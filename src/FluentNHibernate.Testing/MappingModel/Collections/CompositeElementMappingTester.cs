@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentNHibernate.MappingModel;
+﻿using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.MappingModel.Collections
@@ -19,9 +15,21 @@ namespace FluentNHibernate.Testing.MappingModel.Collections
         }
 
         [Test]
-        public void ShouldWriteFullTests()
+        public void CanAddReference()
         {
-            Assert.Inconclusive();
+            var reference = new ManyToOneMapping { Name = "parent" };
+            compositeElementMapping.AddReference(reference);
+
+            compositeElementMapping.References.ShouldContain(reference);
+        }
+
+        [Test]
+        public void CanAddProperty()
+        {
+            var property = new PropertyMapping { Name = "Property1" };
+            compositeElementMapping.AddProperty(property);
+
+            compositeElementMapping.Properties.ShouldContain(property);
         }
     }
 }

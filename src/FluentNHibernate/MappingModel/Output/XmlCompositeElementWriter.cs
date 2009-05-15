@@ -18,7 +18,7 @@ namespace FluentNHibernate.MappingModel.Output
         public override void Visit(PropertyMapping propertyMapping)
         {
             var propertyXml = propertyWriter.Write(propertyMapping);
-            
+
             document.ImportAndAppendChild(propertyXml);
         }
 
@@ -36,8 +36,8 @@ namespace FluentNHibernate.MappingModel.Output
             document = new XmlDocument();
             var element = document.CreateElement("composite-element");
 
-            if (compositeElementMapping.Attributes.IsSpecified(x => x.Type))
-                element.WithAtt("class", compositeElementMapping.Type.FullName);
+            var typeName = compositeElementMapping.Type != null ? compositeElementMapping.Type.AssemblyQualifiedName : string.Empty;
+            element.WithAtt("class", typeName);
 
             foreach (var attribute in compositeElementMapping.UnmigratedAttributes)
                 element.WithAtt(attribute.Key, attribute.Value);

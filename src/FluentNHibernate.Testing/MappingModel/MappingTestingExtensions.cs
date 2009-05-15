@@ -2,11 +2,9 @@ using System;
 using System.Xml;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Xml;
-using NHibernate.Cfg.MappingSchema;
 using NUnit.Framework;
 using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Xml;
-using System.Linq;
 
 namespace FluentNHibernate.Testing.MappingModel
 {

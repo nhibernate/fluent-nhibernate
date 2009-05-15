@@ -19,6 +19,7 @@ namespace FluentNHibernate.MappingModel
         public CompositeElementMapping(AttributeStore store)
         {
             attributes = new AttributeStore<CompositeElementMapping>(store);
+            mappedMembers = new MappedMembers();
         }
 
         public Type Type { get; set; }
@@ -26,6 +27,8 @@ namespace FluentNHibernate.MappingModel
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessCompositeElement(this);
+
+            mappedMembers.AcceptVisitor(visitor);
         }
         
         public string Name
