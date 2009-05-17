@@ -1,7 +1,7 @@
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-using FluentNHibernate.Conventions.Helpers;
+//using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures;
 using NHibernate.Cfg;
@@ -92,32 +92,32 @@ namespace FluentNHibernate.Testing.Cfg
             cfg.ClassMappings.ShouldContain(c => c.MappedClass == typeof(HbmTwo));
         }
 
-        [Test]
-        public void AlteringConventionsShouldAffectProducedClasses()
-        {
-            mapping.FluentMappings
-                .AddFromAssemblyOf<Record>()
-                .ConventionDiscovery.Add(
-                    ConventionBuilder.Class.Always(x => x.WithTable(x.EntityType.Name + "Table"))
-                );
-            mapping.Apply(cfg);
+        //[Test]
+        //public void AlteringConventionsShouldAffectProducedClasses()
+        //{
+        //    mapping.FluentMappings
+        //        .AddFromAssemblyOf<Record>()
+        //        .ConventionDiscovery.Add(
+        //            ConventionBuilder.Class.Always(x => x.WithTable(x.EntityType.Name + "Table"))
+        //        );
+        //    mapping.Apply(cfg);
 
-            cfg.ClassMappings.ShouldContain(c => c.Table.Name == "RecordTable");
-        }
+        //    cfg.ClassMappings.ShouldContain(c => c.Table.Name == "RecordTable");
+        //}
 
-        [Test]
-        public void CanAddMultipleConventions()
-        {
-            mapping.FluentMappings
-                .AddFromAssemblyOf<Record>()
-                .ConventionDiscovery.Add(
-                    ConventionBuilder.Class.Always(x => x.WithTable(x.EntityType.Name + "Table")),
-                    ConventionBuilder.Class.Always(x => x.DynamicInsert())
-                );
-            mapping.Apply(cfg);
+        //[Test]
+        //public void CanAddMultipleConventions()
+        //{
+        //    mapping.FluentMappings
+        //        .AddFromAssemblyOf<Record>()
+        //        .ConventionDiscovery.Add(
+        //            ConventionBuilder.Class.Always(x => x.WithTable(x.EntityType.Name + "Table")),
+        //            ConventionBuilder.Class.Always(x => x.DynamicInsert())
+        //        );
+        //    mapping.Apply(cfg);
 
-            cfg.ClassMappings.ShouldContain(c => c.Table.Name == "RecordTable" && c.DynamicInsert == true);
-        }
+        //    cfg.ClassMappings.ShouldContain(c => c.Table.Name == "RecordTable" && c.DynamicInsert == true);
+        //}
 
         [Test]
         public void WasUsedIsFalseWhenNothingCalled()

@@ -1,3 +1,5 @@
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.InspectionDsl;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Defaults
@@ -7,14 +9,14 @@ namespace FluentNHibernate.Conventions.Defaults
     /// </summary>
     public class PrimaryKeyConvention : IIdConvention
     {
-        public bool Accept(IIdentityPart target)
+        public void Accept(IAcceptanceCriteria<IIdentityInspector> acceptance)
         {
-            return string.IsNullOrEmpty(target.GetColumnName());
+            acceptance.Expect(x => x.ColumnName, Is.Not.Set);
         }
 
-        public void Apply(IIdentityPart target)
+        public void Apply(IIdentityInspector target)
         {
-            target.ColumnName(target.Property.Name);
+            //target.ColumnName(target.Property.Name);
         }
     }
 }

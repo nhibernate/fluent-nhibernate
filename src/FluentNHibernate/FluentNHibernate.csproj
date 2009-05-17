@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{529145D5-6CC3-4016-89B5-826563024AF1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -108,73 +108,33 @@
     <Compile Include="Cfg\Db\PostgreSQLConfiguration.cs" />
     <Compile Include="Cfg\Db\SQLiteConfiguration.cs" />
     <Compile Include="Cfg\SetupConventionFinder.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\EvalExpectation.cs" />
+    <Compile Include="Conventions\ConventionVisitor.cs" />
+    <Compile Include="Conventions\InspectionDsl\Access.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\ConcreteAcceptanceCriteria.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\EqualCriterion.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\Expectation.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\IAcceptanceCriteria.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\IAcceptanceCriterion.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\IExpectation.cs" />
+    <Compile Include="Conventions\InspectionDsl\Cache.cs" />
+    <Compile Include="Conventions\InspectionDsl\Generator.cs" />
+    <Compile Include="Conventions\InspectionDsl\IClassInspector.cs" />
+    <Compile Include="Conventions\InspectionDsl\IExposedThroughPropertyInspector.cs" />
+    <Compile Include="Conventions\InspectionDsl\IIdentityInspector.cs" />
+    <Compile Include="Conventions\InspectionDsl\IInspector.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\InverseIs.cs" />
+    <Compile Include="Conventions\InspectionDsl\ILazyLoadInspector.cs" />
+    <Compile Include="Conventions\InspectionDsl\IPropertyInspector.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\Is.cs" />
+    <Compile Include="Conventions\InspectionDsl\IReadOnlyInspector.cs" />
+    <Compile Include="Conventions\InspectionDsl\OptimisticLock.cs" />
+    <Compile Include="Conventions\InspectionDsl\PropertyDsl.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\SetCriterion.cs" />
     <Compile Include="Conventions\ConventionsCollection.cs" />
     <Compile Include="Conventions\Defaults\DefaultForeignKeyConvention.cs" />
-    <Compile Include="Conventions\Discovery\BaseMappingPartDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\ClassDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\ClassMappingPartDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\ComponentDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\ComponentMappingPartDiscoveryConvention.cs" />
     <Compile Include="Conventions\DefaultConventionFinder.cs" />
-    <Compile Include="Conventions\Discovery\DynamicComponentDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\DynamicComponentMappingPartDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\HasManyDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\HasManyToManyDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\HasOneDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\IdDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\JoinDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\JoinedSubclassDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\JoinedSubclassMappingPartDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\JoinMappingPartDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\PropertyDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\ReferenceDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\RelationshipDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\SubclassDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\SubclassMappingPartDiscoveryConvention.cs" />
-    <Compile Include="Conventions\Discovery\VersionDiscoveryConvention.cs" />
     <Compile Include="Conventions\ForeignKeyConvention.cs" />
-    <Compile Include="Conventions\Helpers\ForeignKey.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltClassConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltConventionBase.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltDynamicComponentConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltEntireMappingsConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltForeignKeyConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltFuncForeignKeyConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltHasManyConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltHasManyToManyConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltHasOneConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltIdConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltJoinConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltMappingPartConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltPropertyConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltReferenceConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltRelationshipConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltSuffixForeignKeyConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltVersionConvention.cs" />
-    <Compile Include="Conventions\Helpers\Cache.cs" />
-    <Compile Include="Conventions\Helpers\Builders\ClassConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\Builders\ComponentConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\ConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\DefaultLazy.cs" />
-    <Compile Include="Conventions\Helpers\Builders\DynamicComponentConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\DynamicInsert.cs" />
-    <Compile Include="Conventions\Helpers\DynamicUpdate.cs" />
-    <Compile Include="Conventions\Helpers\Builders\EverythingConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\Builders\HasManyConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\Builders\HasOneConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\Builders\HasManyToManyConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\IConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\Builders\IdConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\Builders\JoinConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\Builders\MappingPartConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\OptimisticLock.cs" />
-    <Compile Include="Conventions\Helpers\PrimaryKey.cs" />
-    <Compile Include="Conventions\Helpers\Builders\PropertyConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\Builders\ReferenceConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\Builders\RelationshipConventionBuilder.cs" />
-    <Compile Include="Conventions\Helpers\Table.cs" />
-    <Compile Include="Conventions\Helpers\Builders\VersionConventionBuilder.cs" />
     <Compile Include="Conventions\IJoinedSubclassConvention.cs" />
     <Compile Include="Conventions\ISubclassConvention.cs" />
     <Compile Include="Conventions\MultipleAttribute.cs" />
@@ -252,7 +212,6 @@
     <Compile Include="Conventions\IPropertyConvention.cs" />
     <Compile Include="Conventions\IReferenceConvention.cs" />
     <Compile Include="Conventions\IRelationshipConvention.cs" />
-    <Compile Include="Conventions\IUserTypeConvention.cs" />
     <Compile Include="Conventions\IVersionConvention.cs" />
     <Compile Include="Mapping\CascadeExpression.cs" />
     <Compile Include="Mapping\CollectionCascadeExpression.cs" />

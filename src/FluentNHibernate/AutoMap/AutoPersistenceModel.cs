@@ -119,8 +119,6 @@ namespace FluentNHibernate.AutoMap
             }
 
             autoMappingsCreated = true;
-
-            ApplyConventions();
         }
 
         public override void Configure(NHibernate.Cfg.Configuration configuration)

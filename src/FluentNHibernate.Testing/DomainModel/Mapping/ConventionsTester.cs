@@ -12,15 +12,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     [TestFixture]
     public class ConventionsTester
     {
-        [Test]
-        public void add_property_convention_for_type_of_attribute()
-        {
-            new MappingTester<Site>()
-                .Conventions(conventions => conventions.Add<MyAttributeConvention>())
-                .ForMapping(m => m.Map(x => x.Name))
-                .Element("class/property[@name='Name']")
-                    .HasAttribute("My", "true");
-        }
+        //[Test]
+        //public void add_property_convention_for_type_of_attribute()
+        //{
+        //    new MappingTester<Site>()
+        //        .Conventions(conventions => conventions.Add<MyAttributeConvention>())
+        //        .ForMapping(m => m.Map(x => x.Name))
+        //        .Element("class/property[@name='Name']")
+        //            .HasAttribute("My", "true");
+        //}
     }
 
     public class Invoice{}
@@ -42,11 +42,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         
     }
 
-    public class MyAttributeConvention : AttributePropertyConvention<MyAttribute>
-    {
-        protected override void Apply(MyAttribute attribute, IProperty target)
-        {
-            target.SetAttribute("My", "true");
-        }
-    }
+    //public class MyAttributeConvention : AttributePropertyConvention<MyAttribute>
+    //{
+    //    protected override void Apply(MyAttribute attribute, IProperty target)
+    //    {
+    //        target.SetAttribute("My", "true");
+    //    }
+    //}
 }

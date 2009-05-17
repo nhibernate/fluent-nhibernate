@@ -368,27 +368,27 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/id").HasAttribute("type", typeof(Guid?).FullName);
         }
 
-        [Test]
-        public void AppliesConventions()
-        {
-            new MappingTester<IdentityTarget>()
-                .Conventions(conventions => conventions.Add(new TestIdConvention()))
-                .ForMapping(map => map.Id(x => x.LongId))
-                    .Element("class/id").HasAttribute("test", "true");
-        }
+        //[Test]
+        //public void AppliesConventions()
+        //{
+        //    new MappingTester<IdentityTarget>()
+        //        .Conventions(conventions => conventions.Add(new TestIdConvention()))
+        //        .ForMapping(map => map.Id(x => x.LongId))
+        //            .Element("class/id").HasAttribute("test", "true");
+        //}
 
-        private class TestIdConvention : IIdConvention
-        {
-            public bool Accept(IIdentityPart target)
-            {
-                return true;
-            }
+        //private class TestIdConvention : IIdConvention
+        //{
+        //    public bool Accept(IIdentityPart target)
+        //    {
+        //        return true;
+        //    }
 
-            public void Apply(IIdentityPart target)
-            {
-                target.SetAttribute("test", "true");
-            }
-        }
+        //    public void Apply(IIdentityPart target)
+        //    {
+        //        target.SetAttribute("test", "true");
+        //    }
+        //}
 	}
 
     public class IdentityTarget

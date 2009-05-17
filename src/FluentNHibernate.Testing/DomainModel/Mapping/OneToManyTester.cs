@@ -302,14 +302,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/set").DoesntHaveAttribute("lazy");
         }
 
-        [Test]
-        public void AppliesConventions()
-        {
-            new MappingTester<OneToManyComponentTarget>()
-                .Conventions(conventions => conventions.Add(new TestO2MConvention()))
-                .ForMapping(m => m.HasMany(x => x.SetOfComponents).Component(c => c.Map(x => x.Name)))
-                .Element("class/set").HasAttribute("test", "true");
-        }
+        //[Test]
+        //public void AppliesConventions()
+        //{
+        //    new MappingTester<OneToManyComponentTarget>()
+        //        .Conventions(conventions => conventions.Add(new TestO2MConvention()))
+        //        .ForMapping(m => m.HasMany(x => x.SetOfComponents).Component(c => c.Map(x => x.Name)))
+        //        .Element("class/set").HasAttribute("test", "true");
+        //}
 
         [Test]
         public void SetsCascadeOffAsDefault()
@@ -644,17 +644,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/map/index").HasAttribute("type", typeof(Int32).AssemblyQualifiedName);
         }
 
-        private class TestO2MConvention : IHasManyConvention
-        {
-            public bool Accept(IOneToManyPart target)
-            {
-                return true;
-            }
+        //private class TestO2MConvention : IHasManyConvention
+        //{
+        //    public bool Accept(IOneToManyPart target)
+        //    {
+        //        return true;
+        //    }
 
-            public void Apply(IOneToManyPart target)
-            {
-                target.SetAttribute("test", "true");
-            }
-        }
+        //    public void Apply(IOneToManyPart target)
+        //    {
+        //        target.SetAttribute("test", "true");
+        //    }
+        //}
     }
 }

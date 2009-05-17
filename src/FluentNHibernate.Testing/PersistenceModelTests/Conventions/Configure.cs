@@ -25,62 +25,62 @@ namespace FluentNHibernate.Testing.PersistenceModelTests.Conventions
                 .BuildConfiguration();
         }
 
-        [Test]
-        public void ShouldFindConventions()
-        {
-            model.Configure(cfg);
+        //[Test]
+        //public void ShouldFindConventions()
+        //{
+        //    model.Configure(cfg);
             
-            conventionFinder.AssertWasCalled(x => x.Find<IEntireMappingsConvention>());
-        }
+        //    conventionFinder.AssertWasCalled(x => x.Find<IEntireMappingsConvention>());
+        //}
 
-        [Test]
-        public void ShouldCheckIfConventionsWillAcceptTheMappings()
-        {
-            var convention = MockRepository.GenerateMock<IEntireMappingsConvention>();
+        //[Test]
+        //public void ShouldCheckIfConventionsWillAcceptTheMappings()
+        //{
+        //    var convention = MockRepository.GenerateMock<IEntireMappingsConvention>();
             
-            conventionFinder.Stub(x => x.Find<IEntireMappingsConvention>())
-                .Return(new[] { convention });
+        //    conventionFinder.Stub(x => x.Find<IEntireMappingsConvention>())
+        //        .Return(new[] { convention });
 
-            model.Configure(cfg);
+        //    model.Configure(cfg);
 
-            convention.AssertWasCalled(x => x.Accept(null),
-                constraints => constraints.IgnoreArguments());
-        }
+        //    convention.AssertWasCalled(x => x.Accept(null),
+        //        constraints => constraints.IgnoreArguments());
+        //}
 
-        [Test]
-        public void ShouldApplyConventionsIfAcceptIsTrue()
-        {
-            var convention = MockRepository.GenerateMock<IEntireMappingsConvention>();
+        //[Test]
+        //public void ShouldApplyConventionsIfAcceptIsTrue()
+        //{
+        //    var convention = MockRepository.GenerateMock<IEntireMappingsConvention>();
 
-            conventionFinder.Stub(x => x.Find<IEntireMappingsConvention>())
-                .Return(new[] { convention });
+        //    conventionFinder.Stub(x => x.Find<IEntireMappingsConvention>())
+        //        .Return(new[] { convention });
 
-            convention.Stub(x => x.Accept(null))
-                .IgnoreArguments()
-                .Return(true);
+        //    convention.Stub(x => x.Accept(null))
+        //        .IgnoreArguments()
+        //        .Return(true);
 
-            model.Configure(cfg);
+        //    model.Configure(cfg);
 
-            convention.AssertWasCalled(x => x.Apply(null),
-                constraints => constraints.IgnoreArguments());
-        }
+        //    convention.AssertWasCalled(x => x.Apply(null),
+        //        constraints => constraints.IgnoreArguments());
+        //}
 
-        [Test]
-        public void ShouldntApplyConventionsIfAcceptIsFalse()
-        {
-            var convention = MockRepository.GenerateMock<IEntireMappingsConvention>();
+        //[Test]
+        //public void ShouldntApplyConventionsIfAcceptIsFalse()
+        //{
+        //    var convention = MockRepository.GenerateMock<IEntireMappingsConvention>();
 
-            conventionFinder.Stub(x => x.Find<IEntireMappingsConvention>())
-                .Return(new[] { convention });
+        //    conventionFinder.Stub(x => x.Find<IEntireMappingsConvention>())
+        //        .Return(new[] { convention });
 
-            convention.Stub(x => x.Accept(null))
-                .IgnoreArguments()
-                .Return(false);
+        //    convention.Stub(x => x.Accept(null))
+        //        .IgnoreArguments()
+        //        .Return(false);
 
-            model.Configure(cfg);
+        //    model.Configure(cfg);
 
-            convention.AssertWasNotCalled(x => x.Apply(null),
-                constraints => constraints.IgnoreArguments());
-        }
+        //    convention.AssertWasNotCalled(x => x.Apply(null),
+        //        constraints => constraints.IgnoreArguments());
+        //}
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Conventions;
@@ -26,11 +27,12 @@ namespace FluentNHibernate.AutoMap
 
         private bool HasExplicitTypeConvention(PropertyInfo property)
         {
-            var conventions = conventionFinder
-                .Find<IUserTypeConvention>()
-                .Where(c => c.Accept(property.PropertyType));
+            //var conventions = conventionFinder
+            //    .Find<IUserTypeConvention>()
+            //    .Where(c => c.Accept(property.PropertyType));
 
-            return conventions.FirstOrDefault() != null;
+            //return conventions.FirstOrDefault() != null;
+            throw new NotImplementedException();
         }
 
         private static bool IsMappableToColumnType(PropertyInfo property)

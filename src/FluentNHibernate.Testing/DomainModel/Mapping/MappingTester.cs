@@ -55,7 +55,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public virtual MappingTester<T> ForMapping(IClassMap classMap)
         {
             model.Add(classMap);
-            model.ApplyConventions();
 
             var mappings = model.BuildMappings();
 
@@ -153,7 +152,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public MappingTester<T> ValueEquals(string value)
         {
-            Assert.That(currentElement.InnerXml, Is.EqualTo(value));
+            currentElement.InnerXml.ShouldEqual(value);
 
             return this;
         }

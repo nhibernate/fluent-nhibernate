@@ -19,50 +19,50 @@ namespace FluentNHibernate.Testing.ConventionsTests
             collection = new ConventionsCollection();
         }
 
-        [Test]
-        public void CanAddType()
-        {
-            collection.Add(new DummyAssemblyConvention());
-            collection.Contains(typeof(DummyAssemblyConvention))
-                .ShouldBeTrue();
-        }
+        //[Test]
+        //public void CanAddType()
+        //{
+        //    collection.Add(new DummyAssemblyConvention());
+        //    collection.Contains(typeof(DummyAssemblyConvention))
+        //        .ShouldBeTrue();
+        //}
 
-        [Test]
-        public void CanAddInstanceOfType()
-        {
-            collection.Add(new DummyAssemblyConvention());
-            collection[typeof(DummyAssemblyConvention)]
-                .ShouldNotBeNull();
-        }
+        //[Test]
+        //public void CanAddInstanceOfType()
+        //{
+        //    collection.Add(new DummyAssemblyConvention());
+        //    collection[typeof(DummyAssemblyConvention)]
+        //        .ShouldNotBeNull();
+        //}
 
-        [Test]
-        public void CanAddMultipleInstances()
-        {
-            collection.Add(new DummyAssemblyConvention());
-            collection.Add(new DummyAssemblyConvention());
-            collection[typeof(DummyAssemblyConvention)]
-                .ShouldHaveCount(2);
-        }
+        //[Test]
+        //public void CanAddMultipleInstances()
+        //{
+        //    collection.Add(new DummyAssemblyConvention());
+        //    collection.Add(new DummyAssemblyConvention());
+        //    collection[typeof(DummyAssemblyConvention)]
+        //        .ShouldHaveCount(2);
+        //}
 
-        [Test]
-        public void CanIterateCollection()
-        {
-            collection.Add(new DummyAssemblyConvention());
-            collection.Add(new MultiPartConvention());
+        //[Test]
+        //public void CanIterateCollection()
+        //{
+        //    collection.Add(new DummyAssemblyConvention());
+        //    collection.Add(new MultiPartConvention());
 
-            var oneFound = false;
-            var twoFound = false;
+        //    var oneFound = false;
+        //    var twoFound = false;
 
-            foreach (var type in collection)
-            {
-                if (type == typeof(DummyAssemblyConvention))
-                    oneFound = true;
-                if (type == typeof(MultiPartConvention))
-                    twoFound = true;
-            }
+        //    foreach (var type in collection)
+        //    {
+        //        if (type == typeof(DummyAssemblyConvention))
+        //            oneFound = true;
+        //        if (type == typeof(MultiPartConvention))
+        //            twoFound = true;
+        //    }
             
-            oneFound.ShouldBeTrue();
-            twoFound.ShouldBeTrue();
-        }
+        //    oneFound.ShouldBeTrue();
+        //    twoFound.ShouldBeTrue();
+        //}
     }
 }

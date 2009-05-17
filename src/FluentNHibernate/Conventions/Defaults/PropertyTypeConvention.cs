@@ -1,4 +1,5 @@
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.InspectionDsl;
 
 namespace FluentNHibernate.Conventions.Defaults
 {
@@ -7,14 +8,16 @@ namespace FluentNHibernate.Conventions.Defaults
     /// </summary>
     public class PropertyTypeConvention : IPropertyConvention
     {
-        public bool Accept(IProperty target)
+        public void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
         {
-            return !target.HasAttribute("type") && !target.PropertyType.IsEnum;
+            acceptance
+                .Expect(x => x.CustomType, Is.Not.Set)
+                .Expect(x => x.PropertyType.IsEnum == false);
         }
 
-        public void Apply(IProperty target)
+        public void Apply(IPropertyInspector target)
         {
-            target.CustomTypeIs(target.PropertyType);
+            //target.CustomTypeIs(target.PropertyType);
         }
     }
 }

@@ -1,3 +1,4 @@
+using FluentNHibernate.Conventions.InspectionDsl;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions
@@ -6,6 +7,6 @@ namespace FluentNHibernate.Conventions
     /// Convention for identities, implement this interface to apply changes to
     /// identity mappings.
     /// </summary>
-    public interface IIdConvention : IConvention<IIdentityPart>
+    public interface IIdConvention : IConvention<IIdentityInspector>
     {}
 }

@@ -1,3 +1,5 @@
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.InspectionDsl;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Defaults
@@ -7,28 +9,28 @@ namespace FluentNHibernate.Conventions.Defaults
     /// </summary>
     public class TableNameConvention : IClassConvention
     {
-        public bool Accept(IClassMap classMap)
+        public void Accept(IAcceptanceCriteria<IClassInspector> acceptance)
         {
-            return string.IsNullOrEmpty(classMap.TableName);
+            acceptance.Expect(x => x.TableName, Is.Not.Set);
         }
 
-        public void Apply(IClassMap classMap)
+        public void Apply(IClassInspector classMap)
         {
-            string tableName = classMap.EntityType.Name;
+            //string tableName = classMap.EntityType.Name;
 
-            if (classMap.EntityType.IsGenericType)
-            {
-                // special case for generics: GenericType_GenericParameterType
-                tableName = classMap.EntityType.Name.Substring(0, classMap.EntityType.Name.IndexOf('`'));
+            //if (classMap.EntityType.IsGenericType)
+            //{
+            //    // special case for generics: GenericType_GenericParameterType
+            //    tableName = classMap.EntityType.Name.Substring(0, classMap.EntityType.Name.IndexOf('`'));
 
-                foreach (var argument in classMap.EntityType.GetGenericArguments())
-                {
-                    tableName += "_";
-                    tableName += argument.Name;
-                }
-            }
+            //    foreach (var argument in classMap.EntityType.GetGenericArguments())
+            //    {
+            //        tableName += "_";
+            //        tableName += argument.Name;
+            //    }
+            //}
             
-            classMap.WithTable("`" + tableName + "`");
+            //classMap.WithTable("`" + tableName + "`");
         }
     }
 }

@@ -1,4 +1,6 @@
 using System;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.InspectionDsl;
 using FluentNHibernate.Mapping;
 using NHibernate.UserTypes;
 
@@ -10,24 +12,19 @@ namespace FluentNHibernate.Conventions
     /// Apply to alter the behavior.
     /// </summary>
     /// <typeparam name="TUserType">IUserType implementation</typeparam>
-    public abstract class UserTypeConvention<TUserType> : IUserTypeConvention
+    public abstract class UserTypeConvention<TUserType> : IPropertyConvention
         where TUserType : IUserType, new()
     {
-        bool IConvention<IProperty>.Accept(IProperty target)
-        {
-            return Accept(target.PropertyType);
-        }
-
-        public virtual bool Accept(Type type)
+        public virtual void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
         {
             var userType = Activator.CreateInstance<TUserType>();
 
-            return type == userType.ReturnedType;
+            acceptance.Expect(x => x.PropertyType == userType.ReturnedType);
         }
 
-        public virtual void Apply(IProperty target)
+        public virtual void Apply(IPropertyInspector target)
         {
-            target.CustomTypeIs<TUserType>();
+            //target.CustomTypeIs<TUserType>();
         }
     }
 }

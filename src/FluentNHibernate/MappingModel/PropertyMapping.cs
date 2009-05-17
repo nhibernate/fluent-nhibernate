@@ -69,7 +69,18 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.UniqueKey, value); }
         }
 
+        public string Access
+        {
+            get { return attributes.Get(x => x.Access); }
+            set { attributes.Set(x => x.Access, value); }
+        }
+
         public PropertyInfo PropertyInfo { get; set; }
+        
+        public IEnumerable<ColumnMapping> Columns
+        {
+            get { return columns; }
+        }
 
         public void AddColumn(ColumnMapping mapping)
         {
