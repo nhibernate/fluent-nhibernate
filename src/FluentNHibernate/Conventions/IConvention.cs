@@ -1,5 +1,5 @@
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.InspectionDsl;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions
 {
@@ -12,21 +12,23 @@ namespace FluentNHibernate.Conventions
     /// <summary>
     /// Basic convention interface. Don't use directly.
     /// </summary>
-    /// <typeparam name="T">Mapping to apply conventions to</typeparam>
-    public interface IConvention<T> : IConvention
-        where T : IInspector
+    /// <typeparam name="TInspector">Inspector instance for use in retrieving values and setting expectations</typeparam>
+    /// <typeparam name="TAlteration">Alteration instance for altering the model</typeparam>
+    public interface IConvention<TInspector, TAlteration> : IConvention
+        where TInspector : IInspector
     {
         /// <summary>
         /// Whether this convention will be applied to the target.
         /// </summary>
         /// <param name="target">Instace that could be supplied</param>
         /// <returns>Apply on this target?</returns>
-        void Accept(IAcceptanceCriteria<T> target);
+        void Accept(IAcceptanceCriteria<TInspector> target);
 
         /// <summary>
         /// Apply changes to the target
         /// </summary>
-        /// <param name="target">Instance to apply changes to</param>
-        void Apply(T target);
+        /// <param name="alteration">Instance to alter</param>
+        /// <param name="inspector">Inspector to retrieve values from if needed</param>
+        void Apply(TAlteration alteration, TInspector inspector);
     }
 }

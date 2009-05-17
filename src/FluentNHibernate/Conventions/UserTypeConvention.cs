@@ -1,7 +1,7 @@
 using System;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.InspectionDsl;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Inspections;
 using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Conventions
@@ -22,9 +22,9 @@ namespace FluentNHibernate.Conventions
             acceptance.Expect(x => x.PropertyType == userType.ReturnedType);
         }
 
-        public virtual void Apply(IPropertyInspector target)
+        public virtual void Apply(IPropertyAlteration alteration, IPropertyInspector inspector)
         {
-            //target.CustomTypeIs<TUserType>();
+            alteration.CustomTypeIs<TUserType>();
         }
     }
 }

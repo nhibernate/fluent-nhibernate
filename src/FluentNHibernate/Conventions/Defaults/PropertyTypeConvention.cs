@@ -1,5 +1,7 @@
+using System;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.InspectionDsl;
+using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Defaults
 {
@@ -15,9 +17,9 @@ namespace FluentNHibernate.Conventions.Defaults
                 .Expect(x => x.PropertyType.IsEnum == false);
         }
 
-        public void Apply(IPropertyInspector target)
+        public void Apply(IPropertyAlteration alteration, IPropertyInspector inspector)
         {
-            //target.CustomTypeIs(target.PropertyType);
+            alteration.CustomTypeIs(inspector.PropertyType);
         }
     }
 }

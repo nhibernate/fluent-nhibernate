@@ -1,5 +1,7 @@
+using System;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.InspectionDsl;
+using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Defaults
@@ -14,23 +16,23 @@ namespace FluentNHibernate.Conventions.Defaults
             acceptance.Expect(x => x.TableName, Is.Not.Set);
         }
 
-        public void Apply(IClassInspector classMap)
+        public void Apply(IClassAlteration alteration, IClassInspector inspector)
         {
-            //string tableName = classMap.EntityType.Name;
+            var tableName = inspector.EntityType.Name;
 
-            //if (classMap.EntityType.IsGenericType)
-            //{
-            //    // special case for generics: GenericType_GenericParameterType
-            //    tableName = classMap.EntityType.Name.Substring(0, classMap.EntityType.Name.IndexOf('`'));
+            if (inspector.EntityType.IsGenericType)
+            {
+                // special case for generics: GenericType_GenericParameterType
+                tableName = inspector.EntityType.Name.Substring(0, inspector.EntityType.Name.IndexOf('`'));
 
-            //    foreach (var argument in classMap.EntityType.GetGenericArguments())
-            //    {
-            //        tableName += "_";
-            //        tableName += argument.Name;
-            //    }
-            //}
-            
-            //classMap.WithTable("`" + tableName + "`");
+                foreach (var argument in inspector.EntityType.GetGenericArguments())
+                {
+                    tableName += "_";
+                    tableName += argument.Name;
+                }
+            }
+
+            alteration.WithTable("`" + tableName + "`");
         }
     }
 }

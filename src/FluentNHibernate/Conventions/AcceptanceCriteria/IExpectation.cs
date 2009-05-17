@@ -1,4 +1,4 @@
-using FluentNHibernate.Conventions.InspectionDsl;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.AcceptanceCriteria
 {

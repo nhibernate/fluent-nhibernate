@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.InspectionDsl;
+using FluentNHibernate.Conventions.DslImplementation;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using TestFixture = NUnit.Framework.TestFixtureAttribute;
 using SetUp = NUnit.Framework.SetUpAttribute;

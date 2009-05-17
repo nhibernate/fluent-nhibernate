@@ -32,6 +32,8 @@ namespace FluentNHibernate
             ConventionFinder = conventionFinder;
 
             visitors.Add(new ConventionVisitor(ConventionFinder));
+
+            AddDefaultConventions();
         }
 
         public PersistenceModel()
@@ -111,6 +113,9 @@ namespace FluentNHibernate
                 hbms.Add(hbm);
             }
 
+            foreach (var mapping in hbms)
+                ApplyVisitors(mapping);
+
             return hbms;
         }
 
@@ -125,11 +130,6 @@ namespace FluentNHibernate
             if (compiledMappings != null) return;
 
             compiledMappings = BuildMappings();
-
-            foreach (var mapping in compiledMappings)
-            {
-                ApplyVisitors(mapping);
-            }
         }
 
         public void WriteMappingsTo(string folder)

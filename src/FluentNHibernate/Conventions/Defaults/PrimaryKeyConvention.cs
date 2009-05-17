@@ -1,6 +1,6 @@
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.InspectionDsl;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Defaults
 {
@@ -14,9 +14,9 @@ namespace FluentNHibernate.Conventions.Defaults
             acceptance.Expect(x => x.ColumnName, Is.Not.Set);
         }
 
-        public void Apply(IIdentityInspector target)
+        public void Apply(IIdentityAlteration alteration, IIdentityInspector inspector)
         {
-            //target.ColumnName(target.Property.Name);
+            alteration.ColumnName(inspector.Property.Name);
         }
     }
 }

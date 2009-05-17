@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using FluentNHibernate.Conventions.InspectionDsl;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.AcceptanceCriteria
 {

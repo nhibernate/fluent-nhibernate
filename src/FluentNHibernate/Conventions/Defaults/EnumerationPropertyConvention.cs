@@ -1,5 +1,7 @@
+using System;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.InspectionDsl;
+using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Defaults
@@ -14,14 +16,14 @@ namespace FluentNHibernate.Conventions.Defaults
         {
             acceptance
                 .Expect(x => x.CustomType, Is.Not.Set)
-                .Expect(x => x.PropertyType.IsEnum == true);
+                .Expect(x => x.PropertyType.IsEnum);
         }
 
-        public void Apply(IPropertyInspector target)
+        public void Apply(IPropertyAlteration alteration, IPropertyInspector inspector)
         {
-            //var mapperType = typeof(GenericEnumMapper<>).MakeGenericType(target.PropertyType);
-            
-            //target.CustomTypeIs(mapperType);
+            var mapperType = typeof(GenericEnumMapper<>).MakeGenericType(inspector.PropertyType);
+
+            alteration.CustomTypeIs(mapperType);
         }
     }
 }

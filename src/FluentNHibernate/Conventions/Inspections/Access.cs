@@ -1,4 +1,4 @@
-namespace FluentNHibernate.Conventions.InspectionDsl
+namespace FluentNHibernate.Conventions.Inspections
 {
     public class Access
     {

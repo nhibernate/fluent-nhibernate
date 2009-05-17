@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace FluentNHibernate.Conventions.InspectionDsl
+namespace FluentNHibernate.Conventions.Inspections
 {
     public interface IInspector
     {

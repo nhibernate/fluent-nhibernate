@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using FluentNHibernate.Conventions.InspectionDsl;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Conventions.AcceptanceCriteria

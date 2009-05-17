@@ -53,9 +53,6 @@ namespace FluentNHibernate.Mapping
                 mapping.AddColumn(columnMapping);
             }
 
-            if (!mapping.Attributes.IsSpecified(x => x.Type))
-                mapping.Type = TypeMapping.GetTypeString(Property.PropertyType);
-
             foreach (var attribute in unmigratedAttributes)
                 mapping.AddUnmigratedAttribute(attribute.Key, attribute.Value);
 
