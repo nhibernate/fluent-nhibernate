@@ -187,6 +187,7 @@
     <Compile Include="Fixtures\HbmOne.cs" />
     <Compile Include="Fixtures\HbmTwo.cs" />
     <Compile Include="FluentInterfaceTests\BaseModelFixture.cs" />
+    <Compile Include="FluentInterfaceTests\CacheMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ClassMapMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ClassMapSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ComponentMutablePropertyModelGenerationTests.cs" />

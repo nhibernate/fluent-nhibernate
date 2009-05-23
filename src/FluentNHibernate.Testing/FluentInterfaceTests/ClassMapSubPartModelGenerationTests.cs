@@ -96,5 +96,13 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.Version(x => x.VersionNumber))
                 .ModelShouldMatch(x => x.Versions.Count().ShouldEqual(1));
         }
+
+        [Test]
+        public void CacheShouldSetCacheModel()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(m => m.Cache.AsReadOnly())
+                .ModelShouldMatch(x => x.Cache.ShouldNotBeNull());
+        }
     }
 }

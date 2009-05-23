@@ -20,20 +20,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specify caching for this entity.
         /// </summary>
-        public ICache Cache
-        {
-            get
-            {
-                return m_Parts.Where(x => x.GetType() == typeof(CachePart)).FirstOrDefault() as ICache;
-            }
-            private set
-            {
-                if (Cache != null)
-                { m_Parts.Remove(Cache); }
-
-                AddPart(value);
-            }
-        }
+        public ICache Cache { get; private set; }
         
         private readonly IList<ImportPart> imports = new List<ImportPart>();
         private bool nextBool = true;
@@ -75,6 +62,9 @@ namespace FluentNHibernate.Mapping
 
             if (discriminator != null)
                 mapping.Discriminator = discriminator.GetDiscriminatorMapping();
+
+            if (Cache.IsDirty)
+                mapping.Cache = Cache.GetCacheMapping();
 
             foreach (var part in Parts)
                 mapping.AddUnmigratedPart(part);

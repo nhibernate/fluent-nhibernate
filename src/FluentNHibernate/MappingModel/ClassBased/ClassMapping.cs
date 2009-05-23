@@ -33,6 +33,8 @@ namespace FluentNHibernate.MappingModel.ClassBased
             joins = new List<JoinMapping>();
         }
 
+        public CacheMapping Cache { get; set; }
+
         public DiscriminatorMapping Discriminator
         {
             get { return discriminator; }
@@ -77,6 +79,9 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
             if (Discriminator != null)
                 visitor.Visit(Discriminator);
+
+            if (Cache != null)
+                visitor.Visit(Cache);
 
             foreach (var subclass in Subclasses)
                 visitor.Visit(subclass);
