@@ -12,6 +12,11 @@ namespace FluentNHibernate.MappingModel
 
         }
 
+        public virtual void ProcessCache(CacheMapping mapping)
+        {
+            
+        }
+
         public virtual void ProcessCompositeId(CompositeIdMapping idMapping)
         {
 
@@ -130,6 +135,11 @@ namespace FluentNHibernate.MappingModel
         public virtual void Visit(ClassMapping classMapping)
         {
 
+        }
+
+        public virtual void Visit(CacheMapping mapping)
+        {
+            
         }
 
         public virtual void Visit(ImportMapping importMapping)

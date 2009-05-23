@@ -183,6 +183,7 @@
     <Compile Include="Cfg\Db\MsSqlConfiguration.cs" />
     <Compile Include="DummyPropertyInfo.cs" />
     <Compile Include="Infrastructure\ResolveException.cs" />
+    <Compile Include="MappingModel\CacheMapping.cs" />
     <Compile Include="MappingModel\ClassBased\ClassMapping.cs" />
     <Compile Include="MappingModel\ClassBased\ClassMappingBase.cs" />
     <Compile Include="MappingModel\ClassBased\ComponentMapping.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="MappingModel\ClassBased\JoinedSubclassMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassMapping.cs" />
     <Compile Include="MappingModel\Collections\CompositeElementMapping.cs" />
+    <Compile Include="MappingModel\Output\XmlCacheWriter.cs" />
     <Compile Include="MappingModel\Output\XmlClassWriterBase.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriterBase.cs" />
