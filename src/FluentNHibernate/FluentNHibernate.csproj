@@ -218,6 +218,7 @@
     <Compile Include="MappingModel\Output\XmlColumnWriter.cs" />
     <Compile Include="MappingModel\Output\XmlPropertyWriter.cs" />
     <Compile Include="MappingModel\PropertyMapping.cs" />
+    <Compile Include="Mapping\BaseAccessStrategyBuilder.cs" />
     <Compile Include="Mapping\ClassMap.cs" />
     <Compile Include="Mapping\ComponentPartBase.cs" />
     <Compile Include="Mapping\DiscriminatorPart.cs" />
@@ -260,7 +261,6 @@
     <Compile Include="Mapping\CascadeExpression.cs" />
     <Compile Include="Mapping\CollectionCascadeExpression.cs" />
     <Compile Include="Mapping\ColumnNameCollection.cs" />
-    <Compile Include="Mapping\DefaultAccessStrategyBuilder.cs" />
     <Compile Include="Mapping\DynamicComponentPart.cs" />
     <Compile Include="Mapping\FetchTypeExpression.cs" />
     <Compile Include="Mapping\GenericEnumMapper.cs" />

@@ -20,7 +20,7 @@ namespace FluentNHibernate.Mapping
         public ComponentPartBase(ComponentMappingBase mapping, string propertyName)
         {
             this.mapping = mapping;
-            access = new AccessStrategyBuilder<ComponentPartBase<T>>(this);
+            access = new AccessStrategyBuilder<ComponentPartBase<T>>(this, value => SetAttribute("access", value));
             this.propertyName = propertyName;
         }
 

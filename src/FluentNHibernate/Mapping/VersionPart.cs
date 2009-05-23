@@ -27,7 +27,7 @@ namespace FluentNHibernate.Mapping
         public VersionPart(Type entity, PropertyInfo property)
         {
             EntityType = entity;
-            access = new AccessStrategyBuilder<VersionPart>(this);
+            access = new AccessStrategyBuilder<VersionPart>(this, value => SetAttribute("access", value));
             properties = new Cache<string, string>();
             Property = property;
             SetAttribute("name", Property.Name);

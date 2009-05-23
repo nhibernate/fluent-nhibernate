@@ -39,7 +39,7 @@ namespace FluentNHibernate.Mapping
         protected ManyToManyPart(Type entity, MemberInfo member, Type collectionType)
             : base(entity, member, collectionType)
         {
-            access = new AccessStrategyBuilder<ManyToManyPart<TChild>>(this);
+            access = new AccessStrategyBuilder<ManyToManyPart<TChild>>(this, value => SetAttribute("access", value));
             properties.Store("name", member.Name);
         }
 

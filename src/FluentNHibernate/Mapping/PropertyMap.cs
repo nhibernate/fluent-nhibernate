@@ -21,7 +21,7 @@ namespace FluentNHibernate.Mapping
         public PropertyMap(PropertyMapping mapping, Type parentType)
         {
             columnNames = new ColumnNameCollection<IProperty>(this);
-            access = new AccessStrategyBuilder<PropertyMap>(this);
+            access = new AccessStrategyBuilder<PropertyMap>(this, value => mapping.Access = value);
 
             this.mapping = mapping;
             this.parentType = parentType;

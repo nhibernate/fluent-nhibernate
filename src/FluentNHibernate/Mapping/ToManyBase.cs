@@ -27,7 +27,7 @@ namespace FluentNHibernate.Mapping
             EntityType = entity;
             Member = member;
             collectionType = "bag";
-            access = new AccessStrategyBuilder<T>((T)this);
+            access = new AccessStrategyBuilder<T>((T)this, value => SetAttribute("access", value));
 
             SetDefaultCollectionType(type);
             SetCustomCollectionType(type);

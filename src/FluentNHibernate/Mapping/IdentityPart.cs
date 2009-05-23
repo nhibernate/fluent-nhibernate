@@ -16,7 +16,7 @@ namespace FluentNHibernate.Mapping
 
 	    public IdentityPart(Type entity, PropertyInfo property, string columnName)
 		{
-            access = new AccessStrategyBuilder<IIdentityPart>(this);
+            access = new AccessStrategyBuilder<IIdentityPart>(this, value => SetAttribute("access", value));
 
 	        EntityType = entity;
 			this.property = property;

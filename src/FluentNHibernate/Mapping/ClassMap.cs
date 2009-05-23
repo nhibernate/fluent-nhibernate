@@ -15,7 +15,7 @@ namespace FluentNHibernate.Mapping
     {
         private readonly Cache<string, string> unmigratedAttributes;
         public Cache<string, string> HibernateMappingAttributes { get; private set; }
-        private readonly DefaultAccessStrategyBuilder<T> defaultAccess;
+        private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
 
         /// <summary>
         /// Specify caching for this entity.
@@ -51,7 +51,7 @@ namespace FluentNHibernate.Mapping
             this.mapping = mapping;
             unmigratedAttributes = new Cache<string, string>();
             HibernateMappingAttributes = new Cache<string, string>();
-            defaultAccess = new DefaultAccessStrategyBuilder<T>(this);
+            defaultAccess = new AccessStrategyBuilder<ClassMap<T>>(this, value => hibernateMapping.DefaultAccess = value);
             Cache = new CachePart();
         }
 
@@ -83,8 +83,6 @@ namespace FluentNHibernate.Mapping
 
         public HibernateMapping GetHibernateMapping()
         {
-            hibernateMapping.DefaultAccess = defaultAccess.GetValue();
-
             foreach (var import in imports)
                 hibernateMapping.AddImport(import.GetImportMapping());
 

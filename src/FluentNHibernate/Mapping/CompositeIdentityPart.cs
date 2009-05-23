@@ -66,7 +66,7 @@ namespace FluentNHibernate.Mapping
 		public CompositeIdentityPart()
 		{
 			keyProperties = new List<KeyProperty>();
-			access = new AccessStrategyBuilder<CompositeIdentityPart<T>>(this);
+            access = new AccessStrategyBuilder<CompositeIdentityPart<T>>(this, value => SetAttribute("access", value));
 		}
 
 		public void SetAttribute(string name, string value)

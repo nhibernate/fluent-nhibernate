@@ -29,7 +29,7 @@ namespace FluentNHibernate.Mapping
         public ManyToOnePart(Type entity, PropertyInfo property) 
         {
             EntityType = entity;
-            access = new AccessStrategyBuilder<ManyToOnePart<TOther>>(this);
+            access = new AccessStrategyBuilder<ManyToOnePart<TOther>>(this, value => SetAttribute("access", value));
 
             Property = property;
         }

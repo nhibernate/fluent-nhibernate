@@ -53,7 +53,7 @@ namespace FluentNHibernate.Mapping
 
         public AnyPart(PropertyInfo property)
         {
-            access = new AccessStrategyBuilder<IAnyPart<T>>(this);
+            access = new AccessStrategyBuilder<IAnyPart<T>>(this, value => SetAttribute("access", value));
             AnyProperty = property;
         }
 

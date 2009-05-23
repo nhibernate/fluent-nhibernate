@@ -33,6 +33,12 @@ namespace FluentNHibernate.MappingModel
             get { return attributes.IsSpecified(x => x.Name); }
         }
 
+        public string Access
+        {
+            get { return attributes.Get(x => x.Access); }
+            set { attributes.Set(x => x.Access, value); }
+        }
+
         public bool Insert
         {
             get { return attributes.Get(x => x.Insert); }
