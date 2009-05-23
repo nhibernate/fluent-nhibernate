@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 using System.Xml;
-using FluentNHibernate.Utils;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
@@ -11,9 +11,10 @@ namespace FluentNHibernate.Mapping
         string GetColumnName();
         Type EntityType { get; }
         PropertyInfo Property { get; }
+        VersionGeneratedBuilder<IVersion> Generated { get; }
         IVersion ColumnName(string name);
-        IVersion NeverGenerated();
         IVersion UnsavedValue(string value);
+        VersionMapping GetVersionMapping();
     }
 
     public class VersionPart : IVersion
@@ -22,85 +23,77 @@ namespace FluentNHibernate.Mapping
         public Type EntityType { get; private set; }
         private readonly AccessStrategyBuilder<VersionPart> access;
         private readonly Cache<string, string> properties;
-        private bool neverGenerated;
+        private readonly VersionGeneratedBuilder<IVersion> generated;
+
+        private readonly VersionMapping mapping = new VersionMapping();
 
         public VersionPart(Type entity, PropertyInfo property)
         {
             EntityType = entity;
-            access = new AccessStrategyBuilder<VersionPart>(this, value => SetAttribute("access", value));
+            access = new AccessStrategyBuilder<VersionPart>(this, value => mapping.Access = value);
+            generated = new VersionGeneratedBuilder<IVersion>(this, value => mapping.Generated = value);
             properties = new Cache<string, string>();
             Property = property;
-            SetAttribute("name", Property.Name);
         }
 
-        public void SetAttribute(string name, string value)
+        VersionMapping IVersion.GetVersionMapping()
         {
-            properties.Store(name, value);
+            mapping.Name = Property.Name;
+            mapping.Type = Property.PropertyType.AssemblyQualifiedName;
+
+            return mapping;
         }
 
-        public void SetAttributes(Attributes atts)
+        public VersionGeneratedBuilder<IVersion> Generated
         {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            var versionElement = classElement
-                                    .AddElement("version")
-                                    .WithProperties(properties);
-
-            if (neverGenerated)
-            { versionElement.WithAtt("generated", "never"); }
-
-            if (Property.PropertyType == typeof(DateTime))
-            { versionElement.WithAtt("type", "timestamp"); }
+            get { return generated; }
         }
 
         public AccessStrategyBuilder<VersionPart> Access
         {
-            get
-            {
-                return access;
-            }
-        }
-
-        public int LevelWithinPosition
-        {
-            get { return 4; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.First; }
+            get { return access; }
         }
 
         public IVersion ColumnName(string name)
         {
-            SetAttribute("column", name);
+            mapping.Column = name;
             return this;
         }
 
         public string GetColumnName()
         {
-            if (properties.Has("column"))
-            { return properties.Get("column"); }
-
-            return null;
-        }
-
-        public IVersion NeverGenerated()
-        {
-            neverGenerated = true;
-            return this;
+            return mapping.Column;
         }
 
         public IVersion UnsavedValue(string value)
         {
-            SetAttribute("unsaved-value", value);
+            mapping.UnsavedValue = value;
             return this;
+        }
+
+        void IHasAttributes.SetAttribute(string name, string value)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        void IHasAttributes.SetAttributes(Attributes atts)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        int IMappingPart.LevelWithinPosition
+        {
+            get { throw new NotSupportedException("Obsolete"); }
+        }
+
+        PartPosition IMappingPart.PositionOnDocument
+        {
+            get { throw new NotSupportedException("Obsolete"); }
         }
     }
 }

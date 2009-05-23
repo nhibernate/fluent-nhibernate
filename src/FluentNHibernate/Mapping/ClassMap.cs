@@ -70,6 +70,9 @@ namespace FluentNHibernate.Mapping
             foreach (var component in components)
                 mapping.AddComponent(component.GetComponentMapping());
 
+            foreach (var version in versions)
+                mapping.AddVersion(version.GetVersionMapping());
+
             if (discriminator != null)
                 mapping.Discriminator = discriminator.GetDiscriminatorMapping();
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 
@@ -10,6 +11,7 @@ namespace FluentNHibernate.MappingModel
         private readonly IList<ICollectionMapping> collections;
         private readonly IList<ManyToOneMapping> references;
         private readonly IList<ComponentMappingBase> components;
+        private readonly IList<VersionMapping> versions;
 
         public MappedMembers()
         {
@@ -17,6 +19,7 @@ namespace FluentNHibernate.MappingModel
             collections = new List<ICollectionMapping>();
             references = new List<ManyToOneMapping>();    
             components = new List<ComponentMappingBase>();
+            versions = new List<VersionMapping>();
         }
 
         public IEnumerable<PropertyMapping> Properties
@@ -39,9 +42,19 @@ namespace FluentNHibernate.MappingModel
             get { return components; }
         }
 
+        public IList<VersionMapping> Versions
+        {
+            get { return versions; }
+        }
+
         public void AddProperty(PropertyMapping property)
         {
             properties.Add(property);
+        }
+
+        public void AddVersion(VersionMapping version)
+        {
+            versions.Add(version);
         }
 
         public void AddCollection(ICollectionMapping collection)
@@ -72,6 +85,9 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var component in Components)
                 visitor.Visit(component);
+
+            foreach (var version in versions)
+                visitor.Visit(version);
         }
     }
 }

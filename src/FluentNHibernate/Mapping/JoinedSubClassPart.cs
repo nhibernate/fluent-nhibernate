@@ -176,6 +176,9 @@ namespace FluentNHibernate.Mapping
             foreach (var component in components)
                 mapping.AddComponent(component.GetComponentMapping());
 
+            foreach (var version in versions)
+                mapping.AddVersion(version.GetVersionMapping());
+
             foreach (var part in Parts)
                 mapping.AddUnmigratedPart(part);
 

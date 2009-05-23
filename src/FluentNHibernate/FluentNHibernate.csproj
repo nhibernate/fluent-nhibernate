@@ -209,7 +209,6 @@
     <Compile Include="MappingModel\Output\XmlVersionWriter.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainer.cs" />
     <Compile Include="MappingModel\ParentMapping.cs" />
-    <Compile Include="MappingModel\VersionGenerated.cs" />
     <Compile Include="MappingModel\VersionMapping.cs" />
     <Compile Include="Mapping\AnyPart.cs" />
     <Compile Include="Extensions.cs">
@@ -282,6 +281,7 @@
     <Compile Include="Mapping\ISubclass.cs" />
     <Compile Include="Mapping\MappingPartComparer.cs" />
     <Compile Include="Mapping\Prefix.cs" />
+    <Compile Include="Mapping\VersionGeneratedBuilder.cs" />
     <Compile Include="Utils\XmlExtensions.cs" />
     <Compile Include="SessionSource.cs" />
     <Compile Include="Conventions\Defaults\TableNameConvention.cs" />

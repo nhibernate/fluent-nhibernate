@@ -54,9 +54,19 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mappedMembers.Components; }
         }
 
+        public IList<VersionMapping> Versions
+        {
+            get { return mappedMembers.Versions; }
+        }
+
         public void AddProperty(PropertyMapping property)
         {
             mappedMembers.AddProperty(property);
+        }
+
+        public void AddVersion(VersionMapping version)
+        {
+            mappedMembers.AddVersion(version);
         }
 
         public void AddCollection(ICollectionMapping collection)

@@ -1,6 +1,9 @@
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Testing.DomainModel;
+using FluentNHibernate.Testing.DomainModel.Mapping;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
@@ -39,6 +42,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         protected ModelTester<DynamicComponentPart<T>, DynamicComponentMapping> DynamicComponent<T>()
         {
             return new ModelTester<DynamicComponentPart<T>, DynamicComponentMapping>(() => new DynamicComponentPart<T>(new DynamicComponentMapping(), "prop"), x => (DynamicComponentMapping)((IDynamicComponent)x).GetComponentMapping());
+        }
+
+        protected ModelTester<IVersion, VersionMapping> Version()
+        {
+            return new ModelTester<IVersion, VersionMapping>(() => new VersionPart(typeof(VersionTarget), ReflectionHelper.GetProperty<VersionTarget>(x => x.VersionNumber)), x => x.GetVersionMapping());
         }
     }
 }

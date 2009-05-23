@@ -20,8 +20,7 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<IComponentBase> components = new List<IComponentBase>();
         protected readonly IList<ISubclass> subclasses = new List<ISubclass>();
         protected readonly IList<IJoinedSubclass> joinedSubclasses = new List<IJoinedSubclass>();
-
-        private bool parentIsRequired = true;
+        protected readonly IList<IVersion> versions = new List<IVersion>();
 
         protected internal void AddPart(IMappingPart part)
         {
@@ -276,7 +275,9 @@ namespace FluentNHibernate.Mapping
         protected virtual VersionPart Version(PropertyInfo property)
         {
             var versionPart = new VersionPart(EntityType, property);
-            AddPart(versionPart);
+
+            versions.Add(versionPart);
+            
             return versionPart;
         }
 

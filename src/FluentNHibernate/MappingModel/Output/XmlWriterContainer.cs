@@ -57,6 +57,9 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterWriter<CompositeElementMapping>(c =>
                 new XmlCompositeElementWriter(c.Resolve<IXmlWriter<PropertyMapping>>()));
 
+            RegisterWriter<VersionMapping>(c =>
+                new XmlVersionWriter());
+
             // subclasses
             RegisterWriter<ISubclassMapping>(c =>
                 new XmlInheritanceWriter(c.Resolve<IXmlWriter<SubclassMapping>>(), c.Resolve<IXmlWriter<JoinedSubclassMapping>>()));

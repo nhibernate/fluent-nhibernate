@@ -46,7 +46,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.UnsavedValue, value); }
         }
 
-        public VersionGenerated Generated
+        public string Generated
         {
             get { return attributes.Get(x => x.Generated); }
             set { attributes.Set(x => x.Generated, value); }

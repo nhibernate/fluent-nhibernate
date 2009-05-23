@@ -159,7 +159,5 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             unmigratedAttributes.Add(attribute, value);
         }
-
-
     }
 }

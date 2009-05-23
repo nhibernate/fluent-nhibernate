@@ -88,5 +88,13 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.JoinedSubClass<ChildRecord>("key", c => { }))
                 .ModelShouldMatch(x => ((JoinedSubclassMapping)x.Subclasses.First()).Key.Column.ShouldEqual("key"));
         }
+
+        [Test]
+        public void VersionShouldAddToModelVersionsCollection()
+        {
+            ClassMap<VersionTarget>()
+                .Mapping(m => m.Version(x => x.VersionNumber))
+                .ModelShouldMatch(x => x.Versions.Count().ShouldEqual(1));
+        }
     }
 }
