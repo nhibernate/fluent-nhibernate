@@ -112,6 +112,11 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void ProcessVersion(VersionMapping mapping)
+        {
+            
+        }
+
         public virtual void ProcessIndex(IndexMapping indexMapping)
         {
             
@@ -214,6 +219,11 @@ namespace FluentNHibernate.MappingModel
         public virtual void Visit(CompositeElementMapping compositeElementMapping)
         {
             
+        }
+
+        public virtual void Visit(VersionMapping versionMapping)
+        {
+
         }
     }
 }

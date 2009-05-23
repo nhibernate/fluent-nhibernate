@@ -11,12 +11,14 @@ namespace FluentNHibernate.MappingModel.Output
     {
         protected readonly IXmlWriter<PropertyMapping> propertyWriter;
         protected readonly IXmlWriter<ParentMapping> parentWriter;
+        private readonly IXmlWriter<VersionMapping> versionWriter;
 
-        protected XmlComponentWriterBase(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ParentMapping> parentWriter)
-            : base(propertyWriter)
+        protected XmlComponentWriterBase(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ParentMapping> parentWriter, IXmlWriter<VersionMapping> versionWriter)
+            : base(propertyWriter, versionWriter)
         {
             this.propertyWriter = propertyWriter;
             this.parentWriter = parentWriter;
+            this.versionWriter = versionWriter;
         }
 
         public override void ProcessComponent(ComponentMappingBase componentMapping)
@@ -62,8 +64,8 @@ namespace FluentNHibernate.MappingModel.Output
         public override void Visit(ComponentMappingBase componentMapping)
         {
             XmlDocument componentXml;
-            var componentWriter = (componentMapping is ComponentMapping) ? new XmlComponentWriter(propertyWriter, parentWriter) : null;
-            var dynamicComponentWriter = (componentMapping is DynamicComponentMapping) ? new XmlDynamicComponentWriter(propertyWriter, parentWriter) : null;
+            var componentWriter = (componentMapping is ComponentMapping) ? new XmlComponentWriter(propertyWriter, parentWriter, versionWriter) : null;
+            var dynamicComponentWriter = (componentMapping is DynamicComponentMapping) ? new XmlDynamicComponentWriter(propertyWriter, parentWriter, versionWriter) : null;
 
             if (componentWriter != null)
                 componentXml = componentWriter.Write((ComponentMapping)componentMapping);

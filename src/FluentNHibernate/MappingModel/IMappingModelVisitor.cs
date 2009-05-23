@@ -29,6 +29,7 @@ namespace FluentNHibernate.MappingModel
         void ProcessParent(ParentMapping parentMapping);
         void ProcessJoin(JoinMapping joinMapping);
         void ProcessCompositeElement(CompositeElementMapping compositeElementMapping);
+        void ProcessVersion(VersionMapping mapping);
 
         void Visit(ClassMapping classMapping);
         void Visit(ImportMapping importMapping);
@@ -49,5 +50,6 @@ namespace FluentNHibernate.MappingModel
         void Visit(ParentMapping parentMapping);
         void Visit(JoinMapping joinMapping);
         void Visit(CompositeElementMapping compositeElementMapping);
+        void Visit(VersionMapping versionMapping);
     }
 }

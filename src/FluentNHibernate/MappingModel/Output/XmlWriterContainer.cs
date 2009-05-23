@@ -12,7 +12,14 @@ namespace FluentNHibernate.MappingModel.Output
                 new XmlHibernateMappingWriter(c.Resolve<IXmlWriter<ClassMapping>>(), c.Resolve<IXmlWriter<ImportMapping>>()));
 
             RegisterWriter<ClassMapping>(c =>
-                new XmlClassWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<DiscriminatorMapping>>(), c.Resolve<IXmlWriter<ISubclassMapping>>(), c.Resolve<IXmlWriter<ComponentMapping>>(), c.Resolve<IXmlWriter<DynamicComponentMapping>>(), c.Resolve<IXmlWriter<JoinMapping>>()));
+                new XmlClassWriter(
+                    c.Resolve<IXmlWriter<PropertyMapping>>(),
+                    c.Resolve<IXmlWriter<DiscriminatorMapping>>(),
+                    c.Resolve<IXmlWriter<ISubclassMapping>>(),
+                    c.Resolve<IXmlWriter<ComponentMapping>>(),
+                    c.Resolve<IXmlWriter<DynamicComponentMapping>>(),
+                    c.Resolve<IXmlWriter<JoinMapping>>(),
+                    c.Resolve<IXmlWriter<VersionMapping>>()));
 
             RegisterWriter<ImportMapping>(c =>
                 new XmlImportWriter());
@@ -21,10 +28,16 @@ namespace FluentNHibernate.MappingModel.Output
                 new XmlPropertyWriter(c.Resolve<IXmlWriter<ColumnMapping>>()));
 
             RegisterWriter<ComponentMapping>(c =>
-                new XmlComponentWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<ParentMapping>>()));
+                new XmlComponentWriter(
+                   c.Resolve<IXmlWriter<PropertyMapping>>(),
+                   c.Resolve<IXmlWriter<ParentMapping>>(),
+                   c.Resolve<IXmlWriter<VersionMapping>>()));
 
             RegisterWriter<DynamicComponentMapping>(c =>
-                new XmlDynamicComponentWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<ParentMapping>>()));
+                new XmlDynamicComponentWriter(
+                    c.Resolve<IXmlWriter<PropertyMapping>>(),
+                    c.Resolve<IXmlWriter<ParentMapping>>(),
+                    c.Resolve<IXmlWriter<VersionMapping>>()));
 
             RegisterWriter<ColumnMapping>(c =>
                 new XmlColumnWriter());
@@ -49,10 +62,19 @@ namespace FluentNHibernate.MappingModel.Output
                 new XmlInheritanceWriter(c.Resolve<IXmlWriter<SubclassMapping>>(), c.Resolve<IXmlWriter<JoinedSubclassMapping>>()));
 
             RegisterWriter<SubclassMapping>(c =>
-                new XmlSubclassWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<ComponentMapping>>(), c.Resolve<IXmlWriter<DynamicComponentMapping>>()));
+                new XmlSubclassWriter(
+                    c.Resolve<IXmlWriter<PropertyMapping>>(),
+                    c.Resolve<IXmlWriter<ComponentMapping>>(),
+                    c.Resolve<IXmlWriter<DynamicComponentMapping>>(),
+                    c.Resolve<IXmlWriter<VersionMapping>>()));
 
             RegisterWriter<JoinedSubclassMapping>(c =>
-                new XmlJoinedSubclassWriter(c.Resolve<IXmlWriter<PropertyMapping>>(), c.Resolve<IXmlWriter<KeyMapping>>(), c.Resolve<IXmlWriter<ComponentMapping>>(), c.Resolve<IXmlWriter<DynamicComponentMapping>>()));
+                new XmlJoinedSubclassWriter(
+                    c.Resolve<IXmlWriter<PropertyMapping>>(),
+                    c.Resolve<IXmlWriter<KeyMapping>>(),
+                    c.Resolve<IXmlWriter<ComponentMapping>>(),
+                    c.Resolve<IXmlWriter<DynamicComponentMapping>>(),
+                    c.Resolve<IXmlWriter<VersionMapping>>()));
         }
 
         private void RegisterWriter<T>(Func<Container, object> instantiate)

@@ -5,8 +5,8 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlComponentWriter : XmlComponentWriterBase<ComponentMapping>, IXmlWriter<ComponentMapping>
     {
-        public XmlComponentWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ParentMapping> parentWriter)
-            : base(propertyWriter, parentWriter)
+        public XmlComponentWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ParentMapping> parentWriter, IXmlWriter<VersionMapping> versionWriter)
+            : base(propertyWriter, parentWriter, versionWriter)
         {
         }
 

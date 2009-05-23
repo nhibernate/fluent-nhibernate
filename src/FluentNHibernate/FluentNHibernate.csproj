@@ -206,8 +206,11 @@
     <Compile Include="Infrastructure\Container.cs" />
     <Compile Include="MappingModel\JoinMapping.cs" />
     <Compile Include="MappingModel\Output\XmlJoinWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlVersionWriter.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainer.cs" />
     <Compile Include="MappingModel\ParentMapping.cs" />
+    <Compile Include="MappingModel\VersionGenerated.cs" />
+    <Compile Include="MappingModel\VersionMapping.cs" />
     <Compile Include="Mapping\AnyPart.cs" />
     <Compile Include="Extensions.cs">
       <SubType>Code</SubType>

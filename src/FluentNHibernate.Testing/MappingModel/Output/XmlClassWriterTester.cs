@@ -28,7 +28,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Expect(x => x.Write(classMapping.Joins.First()))
                 .Return(joinDocument);                
 
-            XmlClassWriter writer = new XmlClassWriter(null, null, null, null, null, joinWriter);
+            XmlClassWriter writer = new XmlClassWriter(null, null, null, null, null, joinWriter, null);
 
             writer.VerifyXml(classMapping)
                 .Element("join").Exists();

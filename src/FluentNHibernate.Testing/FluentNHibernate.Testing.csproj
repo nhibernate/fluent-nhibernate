@@ -202,6 +202,7 @@
     <Compile Include="MappingModel\Output\XmlClassWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeElementWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlJoinWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlVersionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
     <Compile Include="PersistenceModelTests\Conventions\Configure.cs" />
     <Compile Include="PersistenceModelTests\OnConstruction.cs" />

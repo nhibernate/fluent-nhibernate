@@ -8,7 +8,6 @@ namespace FluentNHibernate.MappingModel
     {
         private readonly List<ColumnMapping> columns = new List<ColumnMapping>();
         private readonly AttributeStore<PropertyMapping> attributes = new AttributeStore<PropertyMapping>();
-        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {

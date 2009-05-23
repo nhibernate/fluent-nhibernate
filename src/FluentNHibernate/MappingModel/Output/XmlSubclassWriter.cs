@@ -11,13 +11,15 @@ namespace FluentNHibernate.MappingModel.Output
         private readonly IXmlWriter<PropertyMapping> propertyWriter;
         private readonly IXmlWriter<ComponentMapping> componentWriter;
         private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentWriter;
+        private readonly IXmlWriter<VersionMapping> versionWriter;
 
-        public XmlSubclassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter)
-            : base(propertyWriter)
+        public XmlSubclassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter, IXmlWriter<VersionMapping> versionWriter)
+            : base(propertyWriter, versionWriter)
         {
             this.propertyWriter = propertyWriter;
             this.componentWriter = componentWriter;
             this.dynamicComponentWriter = dynamicComponentWriter;
+            this.versionWriter = versionWriter;
         }
 
         public XmlDocument Write(SubclassMapping mappingModel)
@@ -73,7 +75,7 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(SubclassMapping subclassMapping)
         {
-            var subWriter = new XmlSubclassWriter(propertyWriter, componentWriter, dynamicComponentWriter);
+            var subWriter = new XmlSubclassWriter(propertyWriter, componentWriter, dynamicComponentWriter, versionWriter);
             var subclassXml = subWriter.Write(subclassMapping);
 
             document.ImportAndAppendChild(subclassXml);
