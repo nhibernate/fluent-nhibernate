@@ -72,7 +72,7 @@ namespace FluentNHibernate.Mapping
                 PropertyInfo = property
             };
 
-            var propertyMap = new PropertyMap(propertyMapping);
+            var propertyMap = new PropertyMap(propertyMapping, typeof(TSubclass));
 
             if (!string.IsNullOrEmpty(columnName))
                 propertyMap.ColumnName(columnName);

@@ -23,11 +23,6 @@ namespace FluentNHibernate.MappingModel
             get { return attributes; }
         }
 
-        public IDictionary<string, string> UnmigratedAttributes
-        {
-            get { return unmigratedAttributes; }
-        }
-
         public string Name
         {
             get { return attributes.Get(x => x.Name); }
@@ -74,11 +69,6 @@ namespace FluentNHibernate.MappingModel
         public void AddColumn(ColumnMapping mapping)
         {
             columns.Add(mapping);
-        }
-
-        public void AddUnmigratedAttribute(string name, string value)
-        {
-            unmigratedAttributes[name] = value;
         }
     }
 }

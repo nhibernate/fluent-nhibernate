@@ -44,9 +44,6 @@ namespace FluentNHibernate.MappingModel.Output
             if (propertyMapping.Attributes.IsSpecified(x => x.Type))
                 element.WithAtt("type", propertyMapping.Type);
 
-            foreach (var attribute in propertyMapping.UnmigratedAttributes)
-                element.WithAtt(attribute.Key, attribute.Value);
-
             document.AppendChild(element);
         }
 

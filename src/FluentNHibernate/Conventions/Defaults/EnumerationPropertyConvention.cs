@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Defaults
@@ -10,7 +11,9 @@ namespace FluentNHibernate.Conventions.Defaults
     {
         public bool Accept(IProperty target)
         {
-            return target.PropertyType.IsEnum && !target.HasAttribute("type");
+            // TODO: Fix this with convention DSL, tests will fail until then
+            //return target.PropertyType.IsEnum && !target.HasAttribute("type");
+            throw new NotSupportedException("Awaiting convention DSL");
         }
 
         public void Apply(IProperty target)

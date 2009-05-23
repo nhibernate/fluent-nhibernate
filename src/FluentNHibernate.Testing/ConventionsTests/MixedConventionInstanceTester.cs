@@ -19,8 +19,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
                     m.Id(x => x.Id);
                     m.Map(x => x.LineOne);
                 })
-                .Element("class/id").HasAttribute("applied", "true")
-                .Element("class/property[@name='LineOne']").HasAttribute("applied", "true");
+                .Element("class/id").HasAttribute("column", "id-col")
+                .Element("class/property[@name='LineOne']").HasAttribute("column", "prop-col");
         }
 
         private class CustomConvention : IIdConvention, IPropertyConvention
@@ -32,7 +32,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
             public void Apply(IIdentityPart target)
             {
-                target.SetAttribute("applied", "true");
+                target.ColumnName("id-col");
             }
 
             public bool Accept(IProperty target)
@@ -42,7 +42,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
             public void Apply(IProperty target)
             {
-                target.SetAttribute("applied", "true");
+                target.ColumnName("prop-col");
             }
         }
     }
