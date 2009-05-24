@@ -34,7 +34,8 @@ namespace FluentNHibernate.Mapping
             optimisticLock = new OptimisticLockBuilder<IOneToManyPart>(this, value => collectionAttributes.Set(x => x.OptimisticLock, value));
             cascade = new CollectionCascadeExpression<IOneToManyPart>(this, value => collectionAttributes.Set(x => x.Cascade, value));
             notFound = new NotFoundExpression<OneToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
-            properties.Store("name", member.Name);
+
+            collectionAttributes.Set(x => x.Name, member.Name);
         }
 
         public override ICollectionMapping GetCollectionMapping()
@@ -68,43 +69,9 @@ namespace FluentNHibernate.Mapping
             get { return columnNames; }
         }
 
-        public OuterJoinBuilder<IOneToManyPart> OuterJoin
+        public IOneToManyPart WithForeignKeyConstraintName(string foreignKeyName)
         {
-            get { return outerJoin; }
-        }
-
-        public FetchTypeExpression<IOneToManyPart> Fetch
-        {
-            get { return fetch; }
-        }
-
-        public OptimisticLockBuilder<IOneToManyPart> OptimisticLock
-        {
-            get { return optimisticLock; }
-        }
-
-        public IOneToManyPart ScheamIs(string schema)
-        {
-            collectionAttributes.Set(x => x.Schema, schema);
-            return this;
-        }
-
-        public IOneToManyPart Persister<T>() where T : IEntityPersister
-        {
-            collectionAttributes.Set(x => x.Persister, typeof(T).AssemblyQualifiedName);
-            return this;
-        }
-
-        public IOneToManyPart Check(string checkSql)
-        {
-            collectionAttributes.Set(x => x.Check, checkSql);
-            return this;
-        }
-
-        public IOneToManyPart Generic()
-        {
-            collectionAttributes.Set(x => x.Generic, nextBool);
-            nextBool = true;
+            keyAttributes.Set(x => x.ForeignKey, foreignKeyName);
             return this;
         }
 
@@ -118,6 +85,31 @@ namespace FluentNHibernate.Mapping
         IOneToManyPart IOneToManyPart.Inverse()
         {
             return Inverse();
+        }
+
+        OptimisticLockBuilder<IOneToManyPart> IOneToManyPart.OptimisticLock
+        {
+            get { return new OptimisticLockBuilder<IOneToManyPart>(this, value => collectionAttributes.Set(x => x.OptimisticLock, value)); }
+        }
+
+        FetchTypeExpression<IOneToManyPart> IOneToManyPart.Fetch
+        {
+            get { return new FetchTypeExpression<IOneToManyPart>(this, value => collectionAttributes.Set(x => x.Fetch, value)); }
+        }
+
+        IOneToManyPart IOneToManyPart.SchemaIs(string schema)
+        {
+            return SchemaIs(schema);
+        }
+
+        IOneToManyPart IOneToManyPart.Persister<T>()
+        {
+            return Persister<T>();
+        }
+
+        OuterJoinBuilder<IOneToManyPart> IOneToManyPart.OuterJoin
+        {
+            get { return new OuterJoinBuilder<IOneToManyPart>(this, value => collectionAttributes.Set(x => x.OuterJoin, value)); }
         }
 
         public new CollectionCascadeExpression<IOneToManyPart> Cascade
@@ -135,6 +127,11 @@ namespace FluentNHibernate.Mapping
             get { return Not; }
         }
 
+        IOneToManyPart IOneToManyPart.Check(string checkSql)
+        {
+            return Check(checkSql);
+        }
+
         /// <summary>
         /// Sets a custom collection type
         /// </summary>
@@ -149,6 +146,11 @@ namespace FluentNHibernate.Mapping
         IOneToManyPart IOneToManyPart.CollectionType(Type type)
         {
             return CollectionType(type);
+        }
+
+        IOneToManyPart IOneToManyPart.Generic()
+        {
+            return Generic();
         }
 
         /// <summary>

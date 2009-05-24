@@ -165,6 +165,9 @@ namespace FluentNHibernate.Mapping
             foreach (var oneToOne in oneToOnes)
                 mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
 
+            foreach (var collection in collections)
+                mapping.AddCollection(collection.GetCollectionMapping());
+
             foreach (var part in Parts)
                 mapping.AddUnmigratedPart(part);
 

@@ -75,7 +75,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             writer = new XmlPropertyWriter(null);
             var testHelper = new XmlWriterTestHelper<PropertyMapping>();
-            testHelper.Check(x => x.OptimisticLock, "lock").MapsToAttribute("optimistic-lock");
+            testHelper.Check(x => x.OptimisticLock, true).MapsToAttribute("optimistic-lock");
 
             testHelper.VerifyAll(writer);
         }

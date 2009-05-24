@@ -40,7 +40,6 @@ namespace FluentNHibernate.Mapping
         /// <param name="name">Table name</param>
         ICollectionRelationship WithTableName(string name);
 
-        ICollectionRelationship WithForeignKeyConstraintName(string foreignKeyName);
         ICollectionRelationship ForeignKeyCascadeOnDelete();
 
 

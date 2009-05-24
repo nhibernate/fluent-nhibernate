@@ -65,6 +65,9 @@ namespace FluentNHibernate.Mapping
             foreach (var oneToOne in oneToOnes)
                 mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
 
+            foreach (var collection in collections)
+                mapping.AddCollection(collection.GetCollectionMapping());
+
             if (discriminator != null)
                 mapping.Discriminator = discriminator.GetDiscriminatorMapping();
 

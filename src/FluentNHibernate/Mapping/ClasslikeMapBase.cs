@@ -22,6 +22,7 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<IJoinedSubclass> joinedSubclasses = new List<IJoinedSubclass>();
         protected readonly IList<IVersion> versions = new List<IVersion>();
         protected readonly IList<IOneToOnePart> oneToOnes = new List<IOneToOnePart>();
+        protected readonly IList<ICollectionRelationship> collections = new List<ICollectionRelationship>();
 
         protected internal void AddPart(IMappingPart part)
         {
@@ -161,7 +162,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new OneToManyPart<TChild>(EntityType, method);
 
-            AddPart(part);
+            collections.Add(part);
 
             return part;
         }
@@ -170,7 +171,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new OneToManyPart<TChild>(EntityType, property);
 
-            AddPart(part);
+            collections.Add(part);
 
             return part;
         }
@@ -227,7 +228,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new ManyToManyPart<TChild>(EntityType, method);
 
-            AddPart(part);
+            collections.Add(part);
 
             return part;
         }
@@ -236,7 +237,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new ManyToManyPart<TChild>(EntityType, property);
 
-            AddPart(part);
+            collections.Add(part);
 
             return part;
         }

@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             joinMapping.Key = new KeyMapping();
             joinMapping.Key.AddColumn(new ColumnMapping { Name = "Column1" });
             
-            _writer = new XmlJoinWriter(null, null);
+            _writer = new XmlJoinWriter(null, new XmlKeyWriter(new XmlColumnWriter()));
 
             _writer.VerifyXml(joinMapping)
                 .Element("key/column")

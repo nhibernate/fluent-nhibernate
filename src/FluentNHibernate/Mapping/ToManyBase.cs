@@ -5,6 +5,7 @@ using System.Xml;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
+using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Mapping
 {
@@ -13,9 +14,11 @@ namespace FluentNHibernate.Mapping
         where TRelationshipAttributes : ICollectionRelationshipMapping
     {
         public MemberInfo Member { get; private set; }
-        protected readonly Cache<string, string> properties = new Cache<string, string>();
-        protected readonly Cache<string, string> keyProperties = new Cache<string, string>();
         private readonly AccessStrategyBuilder<T> access;
+        private readonly OuterJoinBuilder<T> outerJoin;
+        private readonly FetchTypeExpression<T> fetch;
+        private readonly OptimisticLockBuilder<T> optimisticLock;
+        private readonly CollectionCascadeExpression<T> cascade;
         protected IndexMapping indexMapping;
         protected ElementMapping elementMapping;
         protected CompositeElementPart<TChild> componentMapping;
@@ -34,6 +37,10 @@ namespace FluentNHibernate.Mapping
             Member = member;
             AsBag();
             access = new AccessStrategyBuilder<T>((T)this, value => collectionAttributes.Set(x => x.Access, value));
+            outerJoin = new OuterJoinBuilder<T>((T)this, value => collectionAttributes.Set(x => x.OuterJoin, value));
+            fetch = new FetchTypeExpression<T>((T)this, value => collectionAttributes.Set(x => x.Fetch, value));
+            optimisticLock = new OptimisticLockBuilder<T>((T)this, value => collectionAttributes.Set(x => x.OptimisticLock, value));
+            cascade = new CollectionCascadeExpression<T>((T)this, value => collectionAttributes.Set(x => x.Cascade, value));
 
             SetDefaultCollectionType(type);
             SetCustomCollectionType(type);
@@ -51,7 +58,7 @@ namespace FluentNHibernate.Mapping
             if (type.Namespace.StartsWith("Iesi") || type.Namespace.StartsWith("System") || type.IsArray)
                 return;
 
-            properties.Store("collection-type", type.AssemblyQualifiedName);
+            collectionAttributes.Set(x => x.CollectionType, type.AssemblyQualifiedName);
         }
 
         public virtual ICollectionMapping GetCollectionMapping()
@@ -89,9 +96,9 @@ namespace FluentNHibernate.Mapping
             return (T)this;
         }
 
-        public CollectionCascadeExpression<IManyToManyPart> Cascade
+        public CollectionCascadeExpression<T> Cascade
         {
-            get { return null; }
+            get { return cascade; }
         }
 
         public T AsSet()
@@ -222,16 +229,15 @@ namespace FluentNHibernate.Mapping
             return (T)this;
         }
 
-        public T WithForeignKeyConstraintName(string foreignKeyName)
-        {
-            keyAttributes.Set(x => x.ForeignKey, foreignKeyName);
-            return (T)this;
-        }
-
         public T ForeignKeyCascadeOnDelete()
         {
             keyAttributes.Set(x => x.OnDelete, "cascade");
             return (T)this;
+        }
+
+        public FetchTypeExpression<T> Fetch
+        {
+            get { return fetch; }
         }
 
         /// <summary>
@@ -240,6 +246,30 @@ namespace FluentNHibernate.Mapping
         public AccessStrategyBuilder<T> Access
         {
             get { return access; }
+        }
+
+        public OptimisticLockBuilder<T> OptimisticLock
+        {
+            get { return optimisticLock; }
+        }
+
+        public T Persister<TPersister>() where TPersister : IEntityPersister
+        {
+            collectionAttributes.Set(x => x.Persister, typeof(TPersister).AssemblyQualifiedName);
+            return (T)this;
+        }
+
+        public T Check(string checkSql)
+        {
+            collectionAttributes.Set(x => x.Check, checkSql);
+            return (T)this;
+        }
+
+        public T Generic()
+        {
+            collectionAttributes.Set(x => x.Generic, nextBool);
+            nextBool = true;
+            return (T)this;
         }
 
         /// <summary>
@@ -308,6 +338,17 @@ namespace FluentNHibernate.Mapping
         public bool IsMethodAccess
         {
             get { return Member is MethodInfo; }
+        }
+
+        public T SchemaIs(string schema)
+        {
+            collectionAttributes.Set(x => x.Schema, schema);
+            return (T)this;
+        }
+
+        public OuterJoinBuilder<T> OuterJoin
+        {
+            get { return outerJoin; }
         }
 
         #region Implementation of ICollectionRelationship
@@ -380,11 +421,6 @@ namespace FluentNHibernate.Mapping
         ICollectionRelationship ICollectionRelationship.WithTableName(string name)
         {
             return WithTableName(name);
-        }
-
-        ICollectionRelationship ICollectionRelationship.WithForeignKeyConstraintName(string foreignKeyName)
-        {
-            return WithForeignKeyConstraintName(foreignKeyName);
         }
 
         ICollectionRelationship ICollectionRelationship.ForeignKeyCascadeOnDelete()

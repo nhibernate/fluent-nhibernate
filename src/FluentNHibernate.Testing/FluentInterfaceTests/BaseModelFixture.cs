@@ -77,5 +77,10 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             return new ModelTester<IOneToManyPart, ICollectionMapping>(() => new OneToManyPart<PropertyTarget>(typeof(T), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
         }
+
+        protected ModelTester<IManyToManyPart, ICollectionMapping> ManyToMany<T>(Expression<Func<T, object>> property)
+        {
+            return new ModelTester<IManyToManyPart, ICollectionMapping>(() => new ManyToManyPart<PropertyTarget>(typeof(T), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
+        }
     }
 }

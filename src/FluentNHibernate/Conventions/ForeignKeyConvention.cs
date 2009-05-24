@@ -34,10 +34,11 @@ namespace FluentNHibernate.Conventions
 
         public bool Accept(IManyToManyPart target)
         {
-            acceptParent = string.IsNullOrEmpty(target.ParentKeyColumn);
-            acceptChild = string.IsNullOrEmpty(target.ChildKeyColumn);
+            throw new NotImplementedException("Awaiting convention DSL");
+            //acceptParent = string.IsNullOrEmpty(target.ParentKeyColumn);
+            //acceptChild = string.IsNullOrEmpty(target.ChildKeyColumn);
 
-            return acceptParent || acceptChild;
+            //return acceptParent || acceptChild;
         }
 
         public void Apply(IManyToManyPart target)

@@ -35,10 +35,11 @@ namespace FluentNHibernate.Mapping
         OuterJoinBuilder<IOneToManyPart> OuterJoin { get; }
         FetchTypeExpression<IOneToManyPart> Fetch { get; }
         OptimisticLockBuilder<IOneToManyPart> OptimisticLock { get; }
-        IOneToManyPart ScheamIs(string schema);
+        IOneToManyPart SchemaIs(string schema);
         ICollectionMapping GetCollectionMapping();
         IOneToManyPart Persister<T>() where T : IEntityPersister;
         IOneToManyPart Check(string checkSql);
         IOneToManyPart Generic();
+        IOneToManyPart WithForeignKeyConstraintName(string foreignKeyName);
     }
 }

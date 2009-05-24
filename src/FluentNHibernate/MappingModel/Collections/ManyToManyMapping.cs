@@ -66,6 +66,11 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Lazy, value); }
         }
 
+        public IEnumerable<ColumnMapping> Columns
+        {
+            get { return columns; }
+        }
+
         public void AddColumn(ColumnMapping column)
         {
             columns.Add(column);
