@@ -52,7 +52,7 @@ namespace FluentNHibernate.MappingModel
 
         }
 
-        public virtual void ProcessIdGenerator(IdGeneratorMapping generatorMapping)
+        public virtual void ProcessGenerator(GeneratorMapping generatorMapping)
         {
 
         }
@@ -177,7 +177,7 @@ namespace FluentNHibernate.MappingModel
 
         }
 
-        public virtual void Visit(IdGeneratorMapping generatorMapping)
+        public virtual void Visit(GeneratorMapping generatorMapping)
         {
 
         }

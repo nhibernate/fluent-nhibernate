@@ -15,7 +15,7 @@ namespace FluentNHibernate.MappingModel
         void ProcessProperty(PropertyMapping propertyMapping);
         void ProcessManyToOne(ManyToOneMapping  manyToOneMapping);
         void ProcessKey(KeyMapping keyMapping);
-        void ProcessIdGenerator(IdGeneratorMapping generatorMapping);
+        void ProcessGenerator(GeneratorMapping generatorMapping);
         void ProcessColumn(ColumnMapping columnMapping);
         void ProcessBag(BagMapping bagMapping);
         void ProcessOneToMany(OneToManyMapping oneToManyMapping);
@@ -41,7 +41,7 @@ namespace FluentNHibernate.MappingModel
         void Visit(ManyToOneMapping manyToOneMapping);
         void Visit(KeyMapping keyMapping);
         void Visit(ICollectionContentsMapping contentsMapping);
-        void Visit(IdGeneratorMapping generatorMapping);
+        void Visit(GeneratorMapping generatorMapping);
         void Visit(ColumnMapping columnMapping);
         void Visit(ISubclassMapping subclassMapping);
         void Visit(JoinedSubclassMapping subclassMapping);

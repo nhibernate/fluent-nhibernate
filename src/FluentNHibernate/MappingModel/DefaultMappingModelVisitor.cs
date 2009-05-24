@@ -122,7 +122,7 @@ namespace FluentNHibernate.MappingModel
             contentsMapping.AcceptVisitor(this);
         }
 
-        public override void Visit(IdGeneratorMapping generatorMapping)
+        public override void Visit(GeneratorMapping generatorMapping)
         {
             generatorMapping.AcceptVisitor(this);
         }

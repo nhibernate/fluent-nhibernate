@@ -1,5 +1,3 @@
-using System;
-
 namespace FluentNHibernate.MappingModel
 {
     public class CacheMapping : MappingBase

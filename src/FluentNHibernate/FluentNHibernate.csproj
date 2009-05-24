@@ -199,6 +199,8 @@
     <Compile Include="MappingModel\Output\XmlComponentWriterBase.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeElementWriter.cs" />
     <Compile Include="MappingModel\Output\XmlDynamicComponentWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlGeneratorWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlIdWriter.cs" />
     <Compile Include="MappingModel\Output\XmlKeyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlInheritanceWriter.cs" />
     <Compile Include="MappingModel\Output\XmlJoinedSubclassWriter.cs" />
@@ -344,7 +346,7 @@
     <Compile Include="MappingModel\Output\XmlClassWriter.cs" />
     <Compile Include="MappingModel\Output\XmlWriterFactory.cs" />
     <Compile Include="MappingModel\Output\IXmlWriter.cs" />
-    <Compile Include="MappingModel\Identity\IdGeneratorMapping.cs" />
+    <Compile Include="MappingModel\Identity\GeneratorMapping.cs" />
     <Compile Include="MappingModel\Identity\CompositeIdMapping.cs" />
     <Compile Include="MappingModel\HibernateMapping.cs" />
     <Compile Include="MappingModel\Identity\IdMapping.cs" />

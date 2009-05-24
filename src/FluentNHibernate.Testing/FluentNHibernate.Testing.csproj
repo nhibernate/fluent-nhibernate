@@ -204,6 +204,8 @@
     <Compile Include="MappingModel\Output\XmlCacheWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlClassWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeElementWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlGeneratorWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlIdWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlJoinWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlVersionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
