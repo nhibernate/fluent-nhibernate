@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Mapping
 {

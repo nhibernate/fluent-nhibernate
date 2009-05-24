@@ -21,6 +21,7 @@ namespace FluentNHibernate.MappingModel
         void ProcessOneToMany(OneToManyMapping oneToManyMapping);
         void ProcessManyToMany(ManyToManyMapping manyToManyMapping);
         void ProcessSet(SetMapping setMapping);
+        void ProcessMap(MapMapping mapping);
         void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping);
         void ProcessSubclass(SubclassMapping subclassMapping);
         void ProcessDiscriminator(DiscriminatorMapping discriminatorMapping);

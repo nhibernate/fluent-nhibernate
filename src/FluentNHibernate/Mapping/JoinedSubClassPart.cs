@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using FluentNHibernate.MappingModel;
@@ -9,15 +10,15 @@ namespace FluentNHibernate.Mapping
 {
     public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, IJoinedSubclass
     {
-        private readonly string keyColumn;
         private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
         private readonly JoinedSubclassMapping mapping;
+        private readonly IList<string> columns = new List<string>();
         private bool nextBool = true;
 
         public JoinedSubClassPart(string keyColumn)
             : this(new JoinedSubclassMapping())
         {
-            this.keyColumn = keyColumn;
+            columns.Add(keyColumn);
         }
 
         public JoinedSubClassPart(JoinedSubclassMapping mapping)
@@ -146,11 +147,11 @@ namespace FluentNHibernate.Mapping
 
         public JoinedSubclassMapping GetJoinedSubclassMapping()
         {
-            mapping.Key = new KeyMapping
-            {
-                Column = keyColumn
-            };
+            mapping.Key = new KeyMapping();
             mapping.Name = typeof(TSubclass).AssemblyQualifiedName;
+
+            foreach (var column in columns)
+                mapping.Key.AddColumn(new ColumnMapping { Name = column });
 
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());

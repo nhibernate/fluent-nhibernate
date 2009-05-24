@@ -1,15 +1,15 @@
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public class SetMapping : CollectionMappingBase
+    public class MapMapping : CollectionMappingBase
     {
         private readonly AttributeStore<SetMapping> attributes;
 
-        public SetMapping() : this(new AttributeStore())
-        {
-            
-        }
-        
-        protected SetMapping(AttributeStore underlyingStore) : base(underlyingStore)
+        public MapMapping()
+            : this(new AttributeStore())
+        {}
+
+        protected MapMapping(AttributeStore underlyingStore)
+            : base(underlyingStore)
         {
             attributes = new AttributeStore<SetMapping>(underlyingStore);
         }
@@ -21,7 +21,7 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
-            visitor.ProcessSet(this);
+            visitor.ProcessMap(this);
             base.AcceptVisitor(visitor);
         }
 

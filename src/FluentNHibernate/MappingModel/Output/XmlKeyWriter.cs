@@ -5,7 +5,13 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlKeyWriter : NullMappingModelVisitor, IXmlWriter<KeyMapping>
     {
+        private readonly IXmlWriter<ColumnMapping> columnWriter;
         private XmlDocument document;
+
+        public XmlKeyWriter(IXmlWriter<ColumnMapping> columnWriter)
+        {
+            this.columnWriter = columnWriter;
+        }
 
         public XmlDocument Write(KeyMapping mappingModel)
         {
@@ -14,14 +20,27 @@ namespace FluentNHibernate.MappingModel.Output
             return document;
         }
 
-        public override void ProcessKey(KeyMapping keyMapping)
+        public override void ProcessKey(KeyMapping mapping)
         {
             document = new XmlDocument();
 
-            var keyElement = document.AddElement("key");
+            var element = document.AddElement("key");
 
-            if (keyMapping.Attributes.IsSpecified(x => x.Column))
-                keyElement.WithAtt("column", keyMapping.Column);
+            if (mapping.Attributes.IsSpecified(x => x.ForeignKey))
+                element.WithAtt("foreign-key", mapping.ForeignKey);
+
+            if (mapping.Attributes.IsSpecified(x => x.OnDelete))
+                element.WithAtt("on-delete", mapping.OnDelete);
+
+            if (mapping.Attributes.IsSpecified(x => x.PropertyRef))
+                element.WithAtt("property-ref", mapping.PropertyRef);
+        }
+
+        public override void Visit(ColumnMapping mapping)
+        {
+            var columnXml = columnWriter.Write(mapping);
+
+            document.ImportAndAppendChild(columnXml);
         }
     }
 }

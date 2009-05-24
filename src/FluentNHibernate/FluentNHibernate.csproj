@@ -193,9 +193,13 @@
     <Compile Include="MappingModel\ClassBased\JoinedSubclassMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassMapping.cs" />
     <Compile Include="MappingModel\Collections\CompositeElementMapping.cs" />
+    <Compile Include="MappingModel\Collections\MapMapping.cs" />
     <Compile Include="MappingModel\OneToOneMapping.cs" />
+    <Compile Include="MappingModel\Output\CollectionAttributeWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlBagWriter.cs" />
     <Compile Include="MappingModel\Output\XmlCacheWriter.cs" />
     <Compile Include="MappingModel\Output\XmlClassWriterBase.cs" />
+    <Compile Include="MappingModel\Output\XmlCollectionWriter.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriterBase.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeElementWriter.cs" />

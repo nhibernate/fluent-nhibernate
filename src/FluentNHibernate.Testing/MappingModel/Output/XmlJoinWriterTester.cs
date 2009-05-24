@@ -20,7 +20,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteTheAttributes()
         {
-            _writer = new XmlJoinWriter(null);
+            _writer = new XmlJoinWriter(null, null);
             var testHelper = new XmlWriterTestHelper<JoinMapping>();
             testHelper.Check(x => x.TableName, "Table1").MapsToAttribute("table");
 
@@ -31,12 +31,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteTheKey()
         {
             var joinMapping = new JoinMapping();
-            joinMapping.Key = new KeyMapping {Column = "Column1"};
+            joinMapping.Key = new KeyMapping();
+            joinMapping.Key.AddColumn(new ColumnMapping { Name = "Column1" });
             
-            _writer = new XmlJoinWriter(null);
+            _writer = new XmlJoinWriter(null, null);
 
             _writer.VerifyXml(joinMapping)
-                .Element("key").HasAttribute("column", "Column1");
+                .Element("key/column")
+                    .Exists()
+                    .HasAttribute("name", "Column1");
         }
 
         [Test]
@@ -53,7 +56,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Expect(x => x.Write(joinMapping.Properties.First()))
                 .Return(propertyDocument);
 
-            _writer = new XmlJoinWriter(propertyWriter);
+            _writer = new XmlJoinWriter(propertyWriter, null);
 
             _writer.VerifyXml(joinMapping)
                 .Element("property").Exists();

@@ -86,7 +86,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ClassMap<SuperRecord>()
                 .Mapping(m => m.JoinedSubClass<ChildRecord>("key", c => { }))
-                .ModelShouldMatch(x => ((JoinedSubclassMapping)x.Subclasses.First()).Key.Column.ShouldEqual("key"));
+                .ModelShouldMatch(x => ((JoinedSubclassMapping)x.Subclasses.First()).Key.Columns.First().Name.ShouldEqual("key"));
         }
 
         [Test]

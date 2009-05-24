@@ -82,6 +82,11 @@ namespace FluentNHibernate.MappingModel
 
         }
 
+        public virtual void ProcessMap(MapMapping mapping)
+        {
+            
+        }
+
         public virtual void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
         {
 

@@ -48,13 +48,15 @@ namespace FluentNHibernate.MappingModel.Output
                 new XmlColumnWriter());
                 
             RegisterWriter<JoinMapping>(c =>
-                new XmlJoinWriter(c.Resolve<IXmlWriter<PropertyMapping>>()));
+                new XmlJoinWriter(
+                    c.Resolve<IXmlWriter<PropertyMapping>>(),
+                    c.Resolve<IXmlWriter<KeyMapping>>()));
 
             RegisterWriter<DiscriminatorMapping>(c =>
                 new XmlDiscriminatorWriter());
 
             RegisterWriter<KeyMapping>(c =>
-                new XmlKeyWriter());
+                new XmlKeyWriter(c.Resolve<IXmlWriter<ColumnMapping>>()));
 
             RegisterWriter<ParentMapping>(c =>
                 new XmlParentWriter());

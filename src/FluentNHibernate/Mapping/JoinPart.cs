@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
@@ -17,13 +18,15 @@ namespace FluentNHibernate.Mapping
     public class JoinPart<T> : ClasslikeMapBase<T>, IJoin
     {
         private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
-
+        private readonly IList<string> columns = new List<string>();
         private readonly JoinMapping joinMapping = new JoinMapping();
 
         public JoinPart(string tableName)
         {
             joinMapping.TableName = tableName;
-            joinMapping.Key = new KeyMapping {Column = GetType().GetGenericArguments()[0].Name + "ID"};            
+            joinMapping.Key = new KeyMapping();
+
+            columns.Add(GetType().GetGenericArguments()[0].Name + "ID");
         }
 
         public void SetAttribute(string name, string value)
@@ -51,13 +54,17 @@ namespace FluentNHibernate.Mapping
 
         public void WithKeyColumn(string column)
         {
-            joinMapping.Key.Column = column;
+            columns.Clear(); // only one supported currently
+            columns.Add(column);
         }
 
         public JoinMapping GetJoinMapping()
         {
             foreach (var property in properties)
                 joinMapping.AddProperty(property.GetPropertyMapping());
+
+            foreach (var column in columns)
+                joinMapping.Key.AddColumn(new ColumnMapping { Name = column });
 
             foreach (var part in Parts)
                 joinMapping.AddUnmigratedPart(part);
