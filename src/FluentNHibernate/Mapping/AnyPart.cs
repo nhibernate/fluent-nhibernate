@@ -48,12 +48,14 @@ namespace FluentNHibernate.Mapping
         private readonly AccessStrategyBuilder<IAnyPart<T>> access;
         private readonly Cache<string, string> properties = new Cache<string, string>();
         private readonly Cache<string, string> metaValues = new Cache<string, string>();
+        private readonly CascadeExpression<IAnyPart<T>> cascade;
         private string entityTypeColumn;
         private string entityIdentifierColumn;
 
         public AnyPart(PropertyInfo property)
         {
             access = new AccessStrategyBuilder<IAnyPart<T>>(this, value => SetAttribute("access", value));
+            cascade = new CascadeExpression<IAnyPart<T>>(this, value => SetAttribute("cascade", value));
             AnyProperty = property;
         }
 
@@ -140,10 +142,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public CascadeExpression<IAnyPart<T>> Cascade
         {
-            get
-            {
-                return new CascadeExpression<IAnyPart<T>>(this);
-            }
+            get { return cascade; }
         }
 
         public IAnyPart<T> IdentityType(Expression<Func<T, object>> expression)

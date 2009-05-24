@@ -24,6 +24,8 @@ namespace FluentNHibernate.MappingModel.Collections
                 visitor.Visit(Relationship);
         }
 
+        public CacheMapping Cache { get; set; }
+
         AttributeStore<ICollectionMapping> ICollectionMapping.Attributes
         {
             get { return attributes; }

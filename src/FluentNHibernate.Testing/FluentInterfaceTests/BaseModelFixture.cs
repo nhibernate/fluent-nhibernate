@@ -1,6 +1,9 @@
+using System;
+using System.Linq.Expressions;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
@@ -60,14 +63,19 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             return new ModelTester<IIdentityPart, IdMapping>(() => new IdentityPart(typeof(IdentityTarget), ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId)), x => x.GetIdMapping());
         }
 
-        protected ModelTester<OneToOnePart<PropertyTarget>, OneToOneMapping> OneToOne()
+        protected ModelTester<OneToOnePart<PropertyReferenceTarget>, OneToOneMapping> OneToOne()
         {
-            return new ModelTester<OneToOnePart<PropertyTarget>, OneToOneMapping>(() => new OneToOnePart<PropertyTarget>(typeof(PropertyTarget), ReflectionHelper.GetProperty<PropertyTarget>(x => x.Reference)), x => x.GetOneToOneMapping());
+            return new ModelTester<OneToOnePart<PropertyReferenceTarget>, OneToOneMapping>(() => new OneToOnePart<PropertyReferenceTarget>(typeof(PropertyTarget), ReflectionHelper.GetProperty<PropertyTarget>(x => x.Reference)), x => x.GetOneToOneMapping());
         }
 
         protected ModelTester<IProperty, PropertyMapping> Property()
         {
             return new ModelTester<IProperty, PropertyMapping>(() => new PropertyMap(ReflectionHelper.GetProperty<PropertyTarget>(x => x.Name), typeof(PropertyTarget)), x => x.GetPropertyMapping());
+        }
+
+        protected ModelTester<IOneToManyPart, ICollectionMapping> OneToMany<T>(Expression<Func<T, object>> property)
+        {
+            return new ModelTester<IOneToManyPart, ICollectionMapping>(() => new OneToManyPart<PropertyTarget>(typeof(T), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
         }
     }
 }

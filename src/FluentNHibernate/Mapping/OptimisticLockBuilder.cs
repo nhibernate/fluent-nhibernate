@@ -1,45 +1,72 @@
+using System;
+
 namespace FluentNHibernate.Mapping
 {
-    public class OptimisticLockBuilder
+    public class OptimisticLockBuilder<TParent> : IOptimisticLockBuilder
     {
-        private const string AttributeKey = "optimistic-lock";
-        private readonly Cache<string, string> attributes;
+        private readonly TParent parent;
+        private readonly Action<string> setter;
 
-        public OptimisticLockBuilder(Cache<string, string> attributes)
+        public OptimisticLockBuilder(TParent parent, Action<string> setter)
         {
-            this.attributes = attributes;
+            this.parent = parent;
+            this.setter = setter;
         }
 
         /// <summary>
         /// Use no locking strategy
         /// </summary>
-        public void None()
+        public TParent None()
         {
-            attributes.Store(AttributeKey, "none");
+            setter("none");
+            return parent;
         }
 
         /// <summary>
         /// Use version locking
         /// </summary>
-        public void Version()
+        public TParent Version()
         {
-            attributes.Store(AttributeKey, "version");
+            setter("version");
+            return parent;
         }
 
         /// <summary>
         /// Use dirty locking
         /// </summary>
-        public void Dirty()
+        public TParent Dirty()
         {
-            attributes.Store(AttributeKey, "dirty");
+            setter("dirty");
+            return parent;
         }
 
         /// <summary>
         /// Use all locking
         /// </summary>
-        public void All()
+        public TParent All()
         {
-            attributes.Store(AttributeKey, "all");
+            setter("all");
+            return parent;
+        }
+
+        void IOptimisticLockBuilder.None()
+        {
+            None();
+        }
+
+        void IOptimisticLockBuilder.Version()
+        {
+            Version();
+        }
+
+        void IOptimisticLockBuilder.Dirty()
+        {
+            Dirty();
+        }
+
+        void IOptimisticLockBuilder.All()
+        {
+            All();
         }
     }
 }

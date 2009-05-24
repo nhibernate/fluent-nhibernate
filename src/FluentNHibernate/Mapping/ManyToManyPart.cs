@@ -2,13 +2,13 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
     public interface IManyToManyPart : ICollectionRelationship
     {
-        void Inverse();
         void WithTableName(string tableName);
         string ChildKeyColumn { get; }
         string ParentKeyColumn { get; }
@@ -19,7 +19,7 @@ namespace FluentNHibernate.Mapping
         CollectionCascadeExpression<IManyToManyPart> Cascade { get; }
     }
 
-	public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>, IManyToManyPart
+	public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild, ManyToManyMapping>, IManyToManyPart
     {
         public string ChildKeyColumn { get; private set; }
         public string ParentKeyColumn { get; private set; }
@@ -28,6 +28,7 @@ namespace FluentNHibernate.Mapping
         private readonly AccessStrategyBuilder<ManyToManyPart<TChild>> access;
 	    private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
 	    private IndexMapping manyToManyIndex;
+	    private NotFoundExpression<ManyToManyPart<TChild>> notFound;
 
 	    public ManyToManyPart(Type entity, PropertyInfo property)
             : this(entity, property, property.PropertyType)
@@ -40,8 +41,9 @@ namespace FluentNHibernate.Mapping
         protected ManyToManyPart(Type entity, MemberInfo member, Type collectionType)
             : base(entity, member, collectionType)
         {
-            access = new AccessStrategyBuilder<ManyToManyPart<TChild>>(this, value => SetAttribute("access", value));
-            fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => SetAttribute("fetch", value));
+            access = new AccessStrategyBuilder<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Access, value));
+            fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Fetch, value));
+            notFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
             properties.Store("name", member.Name);
         }
 
@@ -68,39 +70,12 @@ namespace FluentNHibernate.Mapping
 			get { return fetch; }
 		}
 
-		public override void Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-		    XmlElement collectionElement = classElement.AddElement(collectionType).WithProperties(properties);
-
-            if (!string.IsNullOrEmpty(TableName))
-                collectionElement.WithAtt("table", TableName);
-
-            if (batchSize > 0)
-                collectionElement.WithAtt("batch-size", batchSize.ToString());
-
-		    Cache.Write(collectionElement, visitor);
-
-            XmlElement key = collectionElement.AddElement("key");
-			key.WithAtt("column", ParentKeyColumn);
-		    key.WithProperties(parentKeyProperties);
-
-            if (indexMapping != null)
-                WriteIndexElement(collectionElement);
-            if (manyToManyIndex != null)
-                WriteIndexManyToManyElement(collectionElement);
-
-			XmlElement manyToManyElement = collectionElement.AddElement("many-to-many");
-			manyToManyElement.WithAtt("column", ChildKeyColumn);
-			manyToManyElement.WithAtt("class", typeof(TChild).AssemblyQualifiedName);
-			manyToManyElement.WithProperties(manyToManyProperties);
-        }
-
         public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(Expression<Func<TChild, TIndex>> indexSelector)
         {
             return AsTernaryAssociation(indexSelector, null);
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<ToManyBase<ManyToManyPart<TChild>, TChild>.IndexMapping> customIndexMapping)
+        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexMapping> customIndexMapping)
         {
             var indexProperty = ReflectionHelper.GetProperty(indexSelector);
             return AsTernaryAssociation<TIndex>(indexProperty.Name, customIndexMapping);
@@ -111,7 +86,7 @@ namespace FluentNHibernate.Mapping
             return AsTernaryAssociation<TIndex>(indexColumn, null);
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn, Action<ToManyBase<ManyToManyPart<TChild>, TChild>.IndexMapping> customIndexMapping)
+        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn, Action<IndexMapping> customIndexMapping)
         {
             manyToManyIndex = new IndexMapping();
             manyToManyIndex.WithColumn(indexColumn);
@@ -129,40 +104,7 @@ namespace FluentNHibernate.Mapping
             manyToManyIndex.WriteAttributesToIndexElement(indexElement);
         }
 
-    	/// <summary>
-        /// Set an attribute on the xml element produced by this many-to-many mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        public override void SetAttribute(string name, string value)
-        {
-            properties.Store(name, value);
-        }
-
-        public override void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
-        public override int LevelWithinPosition
-        {
-            get { return 1; }
-        }
-
-	    public override PartPosition PositionOnDocument
-	    {
-            get { return PartPosition.Anywhere; }
-	    }
-
-        void IManyToManyPart.Inverse()
-        {
-            Inverse();
-        }
-
-        void IManyToManyPart.WithTableName(string tableName)
+	    void IManyToManyPart.WithTableName(string tableName)
         {
             WithTableName(tableName);
         }
@@ -189,10 +131,7 @@ namespace FluentNHibernate.Mapping
 
         public NotFoundExpression<ManyToManyPart<TChild>> NotFound
         {
-            get
-            {
-                return new NotFoundExpression<ManyToManyPart<TChild>>(this, manyToManyProperties);
-            }
+            get { return notFound; }
         }
 
         INotFoundExpression IManyToManyPart.NotFound
@@ -200,9 +139,18 @@ namespace FluentNHibernate.Mapping
             get { return NotFound; }
         }
 
-        CollectionCascadeExpression<IManyToManyPart> IManyToManyPart.Cascade
+	    protected override ICollectionRelationshipMapping GetRelationship()
+	    {
+            var relationship = new ManyToManyMapping();
+
+            relationshipAttributes.CopyTo(relationship.Attributes);
+
+            return relationship;
+	    }
+
+	    CollectionCascadeExpression<IManyToManyPart> IManyToManyPart.Cascade
         {
-            get { return new CollectionCascadeExpression<IManyToManyPart>(this); }
+            get { return Cascade; }
         }
     }
 }

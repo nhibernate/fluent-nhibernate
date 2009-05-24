@@ -192,6 +192,7 @@
     <Compile Include="MappingModel\ClassBased\ISubclassMapping.cs" />
     <Compile Include="MappingModel\ClassBased\JoinedSubclassMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassMapping.cs" />
+    <Compile Include="MappingModel\Collections\ArrayMapping.cs" />
     <Compile Include="MappingModel\Collections\CompositeElementMapping.cs" />
     <Compile Include="MappingModel\Collections\MapMapping.cs" />
     <Compile Include="MappingModel\OneToOneMapping.cs" />
@@ -294,6 +295,7 @@
     <Compile Include="Mapping\IMappingPart.cs" />
     <Compile Include="Mapping\INotFoundExpression.cs" />
     <Compile Include="Mapping\InvalidPrefixException.cs" />
+    <Compile Include="Mapping\IOptimisticLockBuilder.cs" />
     <Compile Include="Mapping\IRelationship.cs" />
     <Compile Include="Mapping\ISubclass.cs" />
     <Compile Include="Mapping\MappingPartComparer.cs" />

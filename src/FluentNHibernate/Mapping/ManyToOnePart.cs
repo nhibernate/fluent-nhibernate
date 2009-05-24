@@ -24,6 +24,8 @@ namespace FluentNHibernate.Mapping
         private string columnName;
         private readonly AccessStrategyBuilder<ManyToOnePart<TOther>> access;
         private readonly FetchTypeExpression<ManyToOnePart<TOther>> fetch;
+        private readonly NotFoundExpression<ManyToOnePart<TOther>> notFound;
+        private readonly CascadeExpression<IManyToOnePart> cascade;
         private readonly IList<string> columns = new List<string>();
         private bool nextBool = true;
 
@@ -32,6 +34,8 @@ namespace FluentNHibernate.Mapping
             EntityType = entity;
             access = new AccessStrategyBuilder<ManyToOnePart<TOther>>(this, value => SetAttribute("access", value));
             fetch = new FetchTypeExpression<ManyToOnePart<TOther>>(this, value => SetAttribute("fetch", value));
+            cascade = new CascadeExpression<IManyToOnePart>(this, value => SetAttribute("cascade", value));
+            notFound = new NotFoundExpression<ManyToOnePart<TOther>>(this, value => SetAttribute("not-found", value));
 
             Property = property;
         }
@@ -43,10 +47,7 @@ namespace FluentNHibernate.Mapping
 
         public NotFoundExpression<ManyToOnePart<TOther>> NotFound
         {
-            get
-            {
-                return new NotFoundExpression<ManyToOnePart<TOther>>( this, properties );
-            }
+            get { return notFound; }
         }
 
         INotFoundExpression IManyToOnePart.NotFound
@@ -119,12 +120,9 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 		
-		public CascadeExpression<ManyToOnePart<TOther>> Cascade
+		public CascadeExpression<IManyToOnePart> Cascade
 		{
-			get
-			{
-				return new CascadeExpression<ManyToOnePart<TOther>>(this);
-			}
+			get { return cascade; }
 		}
 
         public void Write(XmlElement classElement, IMappingVisitor visitor)
@@ -219,7 +217,7 @@ namespace FluentNHibernate.Mapping
         #region Explicit IManyToOnePart Implementation
         CascadeExpression<IManyToOnePart> IManyToOnePart.Cascade
         {
-            get { return new CascadeExpression<IManyToOnePart>(this); }
+            get { return cascade; }
         }
 
         IAccessStrategyBuilder IRelationship.Access

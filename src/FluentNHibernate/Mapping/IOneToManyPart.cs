@@ -1,4 +1,6 @@
 using System;
+using FluentNHibernate.MappingModel.Collections;
+using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Mapping
 {
@@ -28,6 +30,15 @@ namespace FluentNHibernate.Mapping
         /// Inverts the next boolean
         /// </summary>
         IOneToManyPart Not { get; }
+        IOneToManyPart KeyColumnName(string columnName);
         IColumnNameCollection KeyColumnNames { get; }
+        OuterJoinBuilder<IOneToManyPart> OuterJoin { get; }
+        FetchTypeExpression<IOneToManyPart> Fetch { get; }
+        OptimisticLockBuilder<IOneToManyPart> OptimisticLock { get; }
+        IOneToManyPart ScheamIs(string schema);
+        ICollectionMapping GetCollectionMapping();
+        IOneToManyPart Persister<T>() where T : IEntityPersister;
+        IOneToManyPart Check(string checkSql);
+        IOneToManyPart Generic();
     }
 }

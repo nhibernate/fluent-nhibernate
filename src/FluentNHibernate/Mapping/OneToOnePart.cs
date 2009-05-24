@@ -19,6 +19,7 @@ namespace FluentNHibernate.Mapping
         private readonly AccessStrategyBuilder<OneToOnePart<TOther>> access;
         private readonly OuterJoinBuilder<OneToOnePart<TOther>> outerJoin;
         private readonly FetchTypeExpression<OneToOnePart<TOther>> fetch;
+        private readonly CascadeExpression<IOneToOnePart> cascade;
         private readonly OneToOneMapping mapping = new OneToOneMapping();
         private bool nextBool = true;
         public Type EntityType { get; private set; }
@@ -28,6 +29,7 @@ namespace FluentNHibernate.Mapping
             outerJoin = new OuterJoinBuilder<OneToOnePart<TOther>>(this, value => mapping.OuterJoin = value);
             access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this, value => mapping.Access = value);
             fetch = new FetchTypeExpression<OneToOnePart<TOther>>(this, value => mapping.Fetch = value);
+            cascade = new CascadeExpression<IOneToOnePart>(this, value => mapping.Cascade = value);
             EntityType = entity;
             this.property = property;
         }
@@ -75,9 +77,9 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public CascadeExpression<OneToOnePart<TOther>> Cascade
+        public CascadeExpression<IOneToOnePart> Cascade
         {
-            get { return new CascadeExpression<OneToOnePart<TOther>>(this); }
+            get { return cascade; }
         }
 
         public AccessStrategyBuilder<OneToOnePart<TOther>> Access
@@ -110,7 +112,7 @@ namespace FluentNHibernate.Mapping
 
         CascadeExpression<IOneToOnePart> IOneToOnePart.Cascade
         {
-            get { return new CascadeExpression<IOneToOnePart>(this); }
+            get { return cascade; }
         }
 
         IAccessStrategyBuilder IRelationship.Access

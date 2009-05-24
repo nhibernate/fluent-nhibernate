@@ -9,7 +9,7 @@ namespace FluentNHibernate.MappingModel.Collections
             
         }
         
-        protected SetMapping(AttributeStore underlyingStore) : base(underlyingStore)
+        public SetMapping(AttributeStore underlyingStore) : base(underlyingStore)
         {
             attributes = new AttributeStore<SetMapping>(underlyingStore);
         }

@@ -140,6 +140,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.DynamicInsert, value); }
         }
 
+        public string OptimisticLock
+        {
+            get { return attributes.Get(x => x.OptimisticLock); }
+            set { attributes.Set(x => x.OptimisticLock, value); }
+        }
+
         public AttributeStore<ClassMapping> Attributes
         {
             get { return attributes; }

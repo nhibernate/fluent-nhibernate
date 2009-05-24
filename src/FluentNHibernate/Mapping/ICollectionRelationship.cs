@@ -66,5 +66,7 @@ namespace FluentNHibernate.Mapping
         /// Sets a custom collection type
         /// </summary>
         ICollectionRelationship CollectionType(string type);
+
+        ICollectionMapping GetCollectionMapping();
     }
 }

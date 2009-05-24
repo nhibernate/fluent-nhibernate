@@ -14,6 +14,7 @@ namespace FluentNHibernate.Mapping
     {
         private readonly Cache<string, string> unmigratedAttributes;
         public Cache<string, string> HibernateMappingAttributes { get; private set; }
+        private readonly IOptimisticLockBuilder optimisticLock;
         private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace FluentNHibernate.Mapping
             unmigratedAttributes = new Cache<string, string>();
             HibernateMappingAttributes = new Cache<string, string>();
             defaultAccess = new AccessStrategyBuilder<ClassMap<T>>(this, value => hibernateMapping.DefaultAccess = value);
+            optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => mapping.OptimisticLock = value);
             Cache = new CachePart();
         }
 
@@ -317,9 +319,9 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the optimistic locking strategy
         /// </summary>
-        public OptimisticLockBuilder OptimisticLock
+        public IOptimisticLockBuilder OptimisticLock
         {
-            get { return new OptimisticLockBuilder(unmigratedAttributes); }
+            get { return optimisticLock; }
         }
 
         Cache<string, string> IClassMap.Attributes
