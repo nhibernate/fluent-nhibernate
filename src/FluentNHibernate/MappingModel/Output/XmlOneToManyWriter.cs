@@ -1,4 +1,3 @@
-using System;
 using System.Xml;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
