@@ -3,6 +3,7 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
+using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -40,7 +41,7 @@ namespace FluentNHibernate.Testing.MappingModel
         [Test]
         public void CanAddProperty()
         {
-            var property = new PropertyMapping { Name = "Property1" };
+            var property = new PropertyMapping(typeof(Record)) { Name = "Property1" };
             _classMapping.AddProperty(property);
 
             _classMapping.Properties.ShouldContain(property);

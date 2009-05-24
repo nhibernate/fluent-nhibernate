@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Testing;
 using NHibernate.Cfg.MappingSchema;
 using NUnit.Framework;
@@ -43,7 +44,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteTheProperties()
         {
             var joinMapping = new JoinMapping();
-            joinMapping.AddProperty(new PropertyMapping());
+            joinMapping.AddProperty(new PropertyMapping(typeof(Record)));
 
             var propertyDocument = new XmlDocument();
             propertyDocument.AppendChild(propertyDocument.CreateElement("property"));

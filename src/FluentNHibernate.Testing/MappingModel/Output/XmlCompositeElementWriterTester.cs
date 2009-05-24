@@ -2,6 +2,7 @@
 using System.Xml;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Output;
+using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -25,7 +26,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteTheProperties()
         {
             var compositeElementMapping = new CompositeElementMapping();
-            compositeElementMapping.AddProperty(new PropertyMapping());
+            compositeElementMapping.AddProperty(new PropertyMapping(typeof(Record)));
 
             var propertyDocument = new XmlDocument();
             propertyDocument.AppendChild(propertyDocument.CreateElement("property"));

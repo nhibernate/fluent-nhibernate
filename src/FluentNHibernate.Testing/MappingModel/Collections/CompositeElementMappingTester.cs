@@ -1,4 +1,5 @@
 ﻿using FluentNHibernate.MappingModel;
+using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.MappingModel.Collections
@@ -26,7 +27,7 @@ namespace FluentNHibernate.Testing.MappingModel.Collections
         [Test]
         public void CanAddProperty()
         {
-            var property = new PropertyMapping { Name = "Property1" };
+            var property = new PropertyMapping(typeof(Record)) { Name = "Property1" };
             compositeElementMapping.AddProperty(property);
 
             compositeElementMapping.Properties.ShouldContain(property);

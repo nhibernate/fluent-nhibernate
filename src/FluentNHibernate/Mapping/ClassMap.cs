@@ -107,7 +107,7 @@ namespace FluentNHibernate.Mapping
             if (this is AutoJoinedSubClassPart<T>)
                 return base.Map(property, columnName);
 
-            var propertyMapping = new PropertyMapping
+            var propertyMapping = new PropertyMapping(typeof(T))
             {
                 Name = property.Name,
                 PropertyInfo = property

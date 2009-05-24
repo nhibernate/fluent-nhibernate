@@ -2,6 +2,7 @@ using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
@@ -23,7 +24,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Insert == true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping { Insert = true }))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true }))
                 .ShouldBeTrue();
         }
 
@@ -33,7 +34,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Insert == true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping { Insert = false }))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = false }))
                 .ShouldBeFalse();
         }
 
@@ -43,7 +44,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Insert == true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping()))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
                 .ShouldBeFalse();
         }
 
@@ -53,7 +54,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Insert != true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping { Insert = false }))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = false }))
                 .ShouldBeTrue();
         }
 
@@ -63,7 +64,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Insert != true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping { Insert = true }))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true }))
                 .ShouldBeFalse();
         }
 
@@ -73,7 +74,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Insert != true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping()))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
                 .ShouldBeTrue();
         }
     }

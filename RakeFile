@@ -148,3 +148,71 @@ task :create_zip_docs => :build_docs do
   
   FileUtils.rm_r('output') if File.exists? 'output'
 end
+
+class NCover
+  NCOVER_PATH = 'tools\\ncover\\ncover.console.exe'
+  NUNIT_PATH = 'tools\\nunit\\nunit-console.exe'
+  
+  def initialize(args)
+    @categories = args[:categories]
+	@included_assemblies = args[:included_assemblies]
+	@included_types = args[:included_types]
+	@excluded_types = args[:excluded_types]
+	@excluded_methods = args[:excluded_methods]
+  end
+  
+  def run
+    puts `#{get_ncover_cmd}`
+  end
+  
+  private
+  def get_ncover_cmd
+    [NCOVER_PATH, get_nunit_cmd, get_ncover_args].join(' ')
+  end
+  
+  def get_ncover_args
+    included_assemblies = ncover_concat(escape(@included_assemblies))
+	included_types = ncover_concat(escape(@included_types))
+	excluded_types = ncover_concat(escape(@excluded_types))
+	excluded_methods = ncover_concat(escape(@excluded_methods))
+	
+    ['//w src\\FluentNHibernate.Testing\\bin\\x86\\Debug',
+	 "//ias #{included_assemblies}",
+	 "//it #{included_types}",
+	 "//et #{excluded_types}",
+	 "//em #{excluded_methods}",
+	 "//reg"].join(' ')
+  end
+  
+  def get_nunit_cmd
+    [NUNIT_PATH, 'FluentNHibernate.Testing.dll', "/include=#{get_categories}"].join(' ')
+  end
+  
+  def get_categories
+    escape(@categories).join(',')
+  end
+  
+  def escape(array)
+    array.map { |i| "\"#{i}\"" }
+  end
+  
+  def ncover_concat(array)
+    array.join(';')
+  end
+end
+
+desc "Coverage report for Inspection DSL"
+task :coverage_for_inspection_dsl do
+  puts "Running coverage report for Inspection DSL"
+  
+  ncover = NCover.new :categories => ['Inspection DSL'],
+                      :included_assemblies => ['FluentNHiberate'],
+					  :included_types => ['FluentNHibernate.Conventions.DslImplementation*',
+					                      'FluentNHibernate.Conventions.Inspections.*',
+										  'FluentNHibernate.MappingModel.*'],
+                      :excluded_types => ['FluentNHibernate.MappingMode.(Conventions|Output|).*'],
+					  :excluded_methods => ['.*\.Add.*',             # AddColumn etc...
+					                        '.*\.AcceptVisitor',     # AcceptVisitor
+											'.*\.I.*Alteration\..*'] # Any IXAlteration explicit implementations
+  ncover.run
+end

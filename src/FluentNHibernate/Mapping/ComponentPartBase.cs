@@ -102,7 +102,7 @@ namespace FluentNHibernate.Mapping
 
         protected override PropertyMap Map(PropertyInfo property, string columnName)
         {
-            var propertyMapping = new PropertyMapping
+            var propertyMapping = new PropertyMapping(typeof(T))
             {
                 Name = property.Name,
                 PropertyInfo = property

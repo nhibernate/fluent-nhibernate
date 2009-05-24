@@ -52,7 +52,7 @@ namespace FluentNHibernate.Testing.MappingModel.Conventions
         public void Should_apply_to_property_mapping()
         {
             var propertyInfo = ReflectionHelper.GetProperty((Album a) => a.Title);
-            var propertyMapping = new PropertyMapping {PropertyInfo = propertyInfo};
+            var propertyMapping = new PropertyMapping(typeof(Album)) {PropertyInfo = propertyInfo};
 
             _namingConvention.ProcessProperty(propertyMapping);
 

@@ -2,6 +2,7 @@ using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 using Is=FluentNHibernate.Conventions.AcceptanceCriteria.Is;
 
@@ -24,7 +25,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Access, Is.Equal(Access.AsField()));
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping { Access = "field" }))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Access = "field" }))
                 .ShouldBeTrue();
         }
 
@@ -34,7 +35,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Access, Is.Equal(Access.AsField()));
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping { Access = "property" }))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Access = "property" }))
                 .ShouldBeFalse();
         }
 
@@ -44,7 +45,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Access, Is.Equal(Access.AsField()));
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping()))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
                 .ShouldBeFalse();
         }
 
@@ -54,7 +55,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Access, Is.Not.Equal(Access.AsField()));
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping { Access = "property" }))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Access = "property" }))
                 .ShouldBeTrue();
         }
 
@@ -64,7 +65,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Access, Is.Not.Equal(Access.AsField()));
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping { Access = "field" }))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Access = "field" }))
                 .ShouldBeFalse();
         }
 
@@ -74,7 +75,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Access, Is.Not.Equal(Access.AsField()));
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping()))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
                 .ShouldBeTrue();
         }
     }

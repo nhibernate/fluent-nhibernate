@@ -86,6 +86,7 @@
     <Compile Include="ConventionFinderTests\AddingTypeTests.cs" />
     <Compile Include="ConventionFinderTests\FindTests.cs" />
     <Compile Include="ConventionsTests\ConventionsCollectionTests.cs" />
+    <Compile Include="ConventionsTests\Inspection\PropertyDslMapsToPropertyMapping.cs" />
     <Compile Include="ConventionsTests\Inspectors\PropertyAcceptanceCriteriaEqualSimpleTypeEvalTests.cs" />
     <Compile Include="ConventionsTests\Inspectors\PropertyAcceptanceCriteriaEqualComplexTypeTests.cs" />
     <Compile Include="ConventionsTests\Inspectors\PropertyAcceptanceCriteriaEqualSimpleTypeTests.cs" />

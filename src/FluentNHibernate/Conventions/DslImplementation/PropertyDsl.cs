@@ -21,6 +21,9 @@ namespace FluentNHibernate.Conventions.DslImplementation
             propertyMappings.Map(x => x.Insert, x => x.Insert);
             propertyMappings.Map(x => x.Update, x => x.Update);
             propertyMappings.Map(x => x.CustomType, x => x.Type);
+            propertyMappings.Map(x => x.Access, x => x.Access);
+            propertyMappings.Map(x => x.EntityType, x => x.ContainingEntityType);
+            propertyMappings.Map(x => x.Formula, x => x.Formula);
         }
 
         /// <summary>
@@ -98,7 +101,7 @@ namespace FluentNHibernate.Conventions.DslImplementation
 
         Type IInspector.EntityType
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.ContainingEntityType; }
         }
 
         bool IReadOnlyInspector.ReadOnly

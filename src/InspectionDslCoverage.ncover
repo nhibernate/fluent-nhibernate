@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<NCover3ProjectSetting xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="307">
+  <CoverageDataURL>C:\Documents and Settings\Administrator\dev\fluent-nhibernate\src\FluentNHibernate.Testing\bin\x86\Debug\coverage.xml</CoverageDataURL>
+  <ShowExcludedNodes>false</ShowExcludedNodes>
+  <DefaultViewSetting SatisfactoryCoverageThreshold="95" SatisfactoryFunctionThreshold="80" SatisfactoryUnvisitedSequencePoints="0" WidgetType="TreeView" FilterStyle="None" ReportStyle="SequencePointCoveragePercentage" SortStyle="Name">
+    <DelayFilters>false</DelayFilters>
+    <filters />
+  </DefaultViewSetting>
+  <NCoverRunSettings>
+    <AutoExclude>true</AutoExclude>
+    <CommandLineArgs>FluentNHibernate.Testing.dll /include="Inspection DSL"</CommandLineArgs>
+    <CommandLineExe>C:\Documents and Settings\Administrator\dev\fluent-nhibernate\tools\nunit\nunit-console.exe</CommandLineExe>
+    <CoverageType>Symbol Branch CyclomaticComplexity MethodVisits</CoverageType>
+    <CoverageXml>coverage.xml</CoverageXml>
+    <TypeExclusionPatterns>FluentNHibernate.MappingMode.(Conventions|Output|).*</TypeExclusionPatterns>
+    <MethodExclusionPatterns>.*\.Add.*</MethodExclusionPatterns>
+    <MethodExclusionPatterns>.*\.AcceptVisitor</MethodExclusionPatterns>
+    <MethodExclusionPatterns>.*\.I.*Alteration\..*</MethodExclusionPatterns>
+    <Assemblies>FluentNHibernate</Assemblies>
+    <IncludedClassNames>FluentNHibernate.Conventions.DslImplementation*</IncludedClassNames>
+    <IncludedClassNames>FluentNHibernate.Conventions.Inspections.*</IncludedClassNames>
+    <IncludedClassNames>FluentNHibernate.MappingModel.*</IncludedClassNames>
+    <LogFile>coverage.log</LogFile>
+    <LoggingLevel>None</LoggingLevel>
+    <NCoverExe>C:\Program Files\NCover\ncover.console.exe</NCoverExe>
+    <ProfileIIS>false</ProfileIIS>
+    <ProfileWindowsApplication>true</ProfileWindowsApplication>
+    <ProfileWindowsService>false</ProfileWindowsService>
+    <ProjectName>New Project</ProjectName>
+    <RegisterForUser>true</RegisterForUser>
+    <ServiceTimeout>0</ServiceTimeout>
+    <SymbolSearchPolicy>12</SymbolSearchPolicy>
+    <VersionNumber>158</VersionNumber>
+    <WaitForAppLoad>1</WaitForAppLoad>
+    <WorkingDirectory>C:\Documents and Settings\Administrator\dev\fluent-nhibernate\src\FluentNHibernate.Testing\bin\x86\Debug</WorkingDirectory>
+  </NCoverRunSettings>
+  <ProjectGuid>19d27372-881d-4a6d-b83c-c832f4bcab50</ProjectGuid>
+  <ProjectName>New Project</ProjectName>
+  <RebasedPaths />
+  <ReportPath />
+  <SyncPathWithWorkingDirectory>false</SyncPathWithWorkingDirectory>
+</NCover3ProjectSetting>

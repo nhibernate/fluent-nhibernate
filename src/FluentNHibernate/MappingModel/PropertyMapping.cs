@@ -10,6 +10,11 @@ namespace FluentNHibernate.MappingModel
         private readonly AttributeStore<PropertyMapping> attributes = new AttributeStore<PropertyMapping>();
         private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
+        public PropertyMapping(Type containingEntityType)
+        {
+            ContainingEntityType = containingEntityType;
+        }
+
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessProperty(this);
@@ -26,6 +31,12 @@ namespace FluentNHibernate.MappingModel
         public IDictionary<string, string> UnmigratedAttributes
         {
             get { return unmigratedAttributes; }
+        }
+
+        public Type ContainingEntityType
+        {
+            get { return attributes.Get(x => x.ContainingEntityType); }
+            set { attributes.Set(x => x.ContainingEntityType, value); }
         }
 
         public string Name

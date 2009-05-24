@@ -4,6 +4,7 @@ using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.Testing.DomainModel;
 using TestFixture = NUnit.Framework.TestFixtureAttribute;
 using SetUp = NUnit.Framework.SetUpAttribute;
 using Test = NUnit.Framework.TestAttribute;
@@ -41,7 +42,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Insert, Is.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping { Insert = true }))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true }))
                 .ShouldBeTrue();
         }
 
@@ -51,7 +52,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Insert, Is.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping()))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
                 .ShouldBeFalse();
         }
 
@@ -62,7 +63,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Update, Is.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping { Insert = true, Update = true }))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true, Update = true }))
                 .ShouldBeTrue();
         }
 
@@ -73,7 +74,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Update, Is.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping { Insert = true }))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true }))
                 .ShouldBeFalse();
         }
 
@@ -84,7 +85,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Update, Is.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping()))
+                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
                 .ShouldBeFalse();
         }
     }
