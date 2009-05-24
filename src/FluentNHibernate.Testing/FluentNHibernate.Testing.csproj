@@ -215,6 +215,7 @@
     <Compile Include="MappingModel\Output\XmlIdWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlJoinWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlKeyWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlListWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlManyToManyWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlOneToManyWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlOneToOneWriterTester.cs" />

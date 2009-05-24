@@ -211,6 +211,7 @@
     <Compile Include="MappingModel\Output\XmlKeyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlInheritanceWriter.cs" />
     <Compile Include="MappingModel\Output\XmlJoinedSubclassWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlListWriter.cs" />
     <Compile Include="MappingModel\Output\XmlManyToManyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlOneToManyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlOneToOneWriter.cs" />
