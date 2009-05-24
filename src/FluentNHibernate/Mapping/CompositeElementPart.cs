@@ -37,13 +37,7 @@ namespace FluentNHibernate.Mapping
 
         protected virtual PropertyMap Map(PropertyInfo property, string columnName)
         {
-            var propertyMapping = new PropertyMapping
-            {
-                Name = property.Name,
-                PropertyInfo = property
-            };
-
-            var propertyMap = new PropertyMap(propertyMapping, typeof(T));
+            var propertyMap = new PropertyMap(property, typeof(T));
 
             if (!string.IsNullOrEmpty(columnName))
                 propertyMap.ColumnName(columnName);

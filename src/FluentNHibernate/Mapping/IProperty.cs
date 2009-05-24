@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
@@ -23,6 +24,7 @@ namespace FluentNHibernate.Mapping
         IProperty CustomTypeIs(string type);
         IProperty CustomSqlTypeIs(string sqlType);
         IProperty Unique();
+        IProperty OptimisticLock();
 
         /// <summary>
         /// Specifies the name of a multi-column unique constraint.
@@ -34,5 +36,7 @@ namespace FluentNHibernate.Mapping
         /// Inverts the next boolean
         /// </summary>
         IProperty Not { get; }
+        PropertyGeneratedBuilder Generated { get; }
+        PropertyMapping GetPropertyMapping();
     }
 }

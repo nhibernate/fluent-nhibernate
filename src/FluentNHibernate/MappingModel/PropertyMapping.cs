@@ -57,19 +57,30 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Formula, value); }
         }
 
+        public bool OptimisticLock
+        {
+            get { return attributes.Get(x => x.OptimisticLock); }
+            set { attributes.Set(x => x.OptimisticLock, value); }
+        }
+
+        public string Generated
+        {
+            get { return attributes.Get(x => x.Generated); }
+            set { attributes.Set(x => x.Generated, value); }
+        }
+
         public string Type
         {
             get { return attributes.Get(x => x.Type); }
             set { attributes.Set(x => x.Type, value); }
         }
 
-        public string UniqueKey
-        {
-            get { return attributes.Get(x => x.UniqueKey); }
-            set { attributes.Set(x => x.UniqueKey, value); }
-        }
-
         public PropertyInfo PropertyInfo { get; set; }
+        
+        public IEnumerable<ColumnMapping> Columns
+        {
+            get { return columns; }
+        }
 
         public void AddColumn(ColumnMapping mapping)
         {

@@ -20,19 +20,29 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.CreateElement("column");
 
-            element.WithAtt("name", columnMapping.Name);
+            if (columnMapping.Attributes.IsSpecified(x => x.Name))
+                element.WithAtt("name", columnMapping.Name);
+
+            if (columnMapping.Attributes.IsSpecified(x => x.Check))
+                element.WithAtt("check", columnMapping.Check);
 
             if (columnMapping.Attributes.IsSpecified(x => x.Length))
-                element.WithAtt("length", columnMapping.Length.ToString());
+                element.WithAtt("length", columnMapping.Length);
+
+            if (columnMapping.Attributes.IsSpecified(x => x.Index))
+                element.WithAtt("index", columnMapping.Index);
 
             if (columnMapping.Attributes.IsSpecified(x => x.NotNull))
-                element.WithAtt("not-null", columnMapping.NotNull.ToString().ToLowerInvariant());
+                element.WithAtt("not-null", columnMapping.NotNull);
 
             if (columnMapping.Attributes.IsSpecified(x => x.SqlType))
                 element.WithAtt("sql-type", columnMapping.SqlType);
 
             if (columnMapping.Attributes.IsSpecified(x => x.Unique))
-                element.WithAtt("unique", columnMapping.Unique.ToString().ToLowerInvariant());
+                element.WithAtt("unique", columnMapping.Unique);
+
+            if (columnMapping.Attributes.IsSpecified(x => x.UniqueKey))
+                element.WithAtt("unique-key", columnMapping.UniqueKey);
 
             document.AppendChild(element);
         }

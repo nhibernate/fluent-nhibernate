@@ -55,5 +55,21 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.HasOne(x => x.Reference))
                 .ModelShouldMatch(x => x.OneToOnes.First().Name.ShouldEqual("Reference"));
         }
+
+        [Test]
+        public void PropertyAddsToPropertiesCollectionOnModel()
+        {
+            JoinedSubClass<PropertyTarget>()
+                .Mapping(m => m.Map(x => x.Name))
+                .ModelShouldMatch(x => x.Properties.Count().ShouldEqual(1));
+        }
+
+        [Test]
+        public void PropertyAddsToPropertiesCollectionOnModelWithName()
+        {
+            JoinedSubClass<PropertyTarget>()
+                .Mapping(m => m.Map(x => x.Name))
+                .ModelShouldMatch(x => x.Properties.First().Name.ShouldEqual("Name"));
+        }
     }
 }

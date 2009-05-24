@@ -64,5 +64,10 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             return new ModelTester<OneToOnePart<PropertyTarget>, OneToOneMapping>(() => new OneToOnePart<PropertyTarget>(typeof(PropertyTarget), ReflectionHelper.GetProperty<PropertyTarget>(x => x.Reference)), x => x.GetOneToOneMapping());
         }
+
+        protected ModelTester<IProperty, PropertyMapping> Property()
+        {
+            return new ModelTester<IProperty, PropertyMapping>(() => new PropertyMap(ReflectionHelper.GetProperty<PropertyTarget>(x => x.Name), typeof(PropertyTarget)), x => x.GetPropertyMapping());
+        }
     }
 }

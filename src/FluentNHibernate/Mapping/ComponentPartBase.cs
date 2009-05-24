@@ -100,24 +100,6 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        protected override PropertyMap Map(PropertyInfo property, string columnName)
-        {
-            var propertyMapping = new PropertyMapping
-            {
-                Name = property.Name,
-                PropertyInfo = property
-            };
-
-            var propertyMap = new PropertyMap(propertyMapping, typeof(T));
-
-            if (!string.IsNullOrEmpty(columnName))
-                propertyMap.ColumnName(columnName);
-
-            properties.Add(propertyMap); // new
-
-            return propertyMap;
-        }
-
         public override DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
         {
             var part = new DynamicComponentPart<IDictionary>(property);

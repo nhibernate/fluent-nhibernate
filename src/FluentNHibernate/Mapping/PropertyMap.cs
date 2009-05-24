@@ -12,25 +12,33 @@ namespace FluentNHibernate.Mapping
     {
         private readonly Type parentType;
         private readonly AccessStrategyBuilder<PropertyMap> access;
+        private readonly PropertyGeneratedBuilder generated;
         private readonly ColumnNameCollection<IProperty> columnNames;
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
         private bool nextBool = true;
 
-        private readonly PropertyMapping mapping;
+        private readonly PropertyMapping mapping = new PropertyMapping();
 
-        public PropertyMap(PropertyMapping mapping, Type parentType)
+        public PropertyMap(PropertyInfo property, Type parentType)
         {
             columnNames = new ColumnNameCollection<IProperty>(this);
             access = new AccessStrategyBuilder<PropertyMap>(this, value => mapping.Access = value);
+            generated = new PropertyGeneratedBuilder(this, value => mapping.Generated = value);
 
             this.mapping = mapping;
             this.parentType = parentType;
+            Property = property;
+        }
+
+        public PropertyGeneratedBuilder Generated
+        {
+            get { return generated; }
         }
 
         public PropertyMapping GetPropertyMapping()
         {
             if (columnNames.List().Count == 0)
-                columnNames.Add(mapping.Name);
+                columnNames.Add(Property.Name);
 
             foreach (var column in columnNames.List())
             {
@@ -42,16 +50,16 @@ namespace FluentNHibernate.Mapping
                 mapping.AddColumn(columnMapping);
             }
 
+            if (!mapping.Attributes.IsSpecified(x => x.Name))
+                mapping.Name = Property.Name;
+
             if (!mapping.Attributes.IsSpecified(x => x.Type))
-                mapping.Type = TypeMapping.GetTypeString(Property.PropertyType);
+                mapping.Type = Property.PropertyType.AssemblyQualifiedName;
 
             return mapping;
         }
 
-        public PropertyInfo Property
-        {
-            get { return mapping.PropertyInfo; }
-        }
+        public PropertyInfo Property { get; private set; }
 
         public Type PropertyType
         {
@@ -200,7 +208,14 @@ namespace FluentNHibernate.Mapping
         /// <param name="keyName">Name of constraint</param>
         public IProperty UniqueKey(string keyName)
         {
-            mapping.UniqueKey = keyName;
+            columnAttributes.Set(x => x.UniqueKey, keyName);
+            return this;
+        }
+
+        public IProperty OptimisticLock()
+        {
+            mapping.OptimisticLock = nextBool;
+            nextBool = true;
             return this;
         }
 
