@@ -121,12 +121,6 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        protected void WriteIndexManyToManyElement(XmlElement collectionElement)
-        {
-            var indexElement = collectionElement.AddElement("index-many-to-many");
-            manyToManyIndex.WriteAttributesToIndexElement(indexElement);
-        }
-
 	    void IManyToManyPart.WithTableName(string tableName)
         {
             WithTableName(tableName);
