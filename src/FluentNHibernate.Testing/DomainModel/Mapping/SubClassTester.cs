@@ -382,17 +382,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .HasAttribute("length", "1234");
         }
 
-        [Test]
-        public void CanSpecifyCustomAttributeOnDiscriminator()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .SetAttribute("attr", "value"))
-                .Element("class/discriminator")
-                    .HasAttribute("attr", "value");
-        }
-
         private class ProxyClass
         {}
     }

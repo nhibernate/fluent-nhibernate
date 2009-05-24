@@ -39,9 +39,6 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (discriminatorMapping.Attributes.IsSpecified(x => x.NotNull))
                 discriminatorElement.WithAtt("not-null", discriminatorMapping.NotNull);
-
-            foreach (var attribute in discriminatorMapping.UnmigratedAttributes)
-                discriminatorElement.WithAtt(attribute.Key, attribute.Value);
         }
     }
 }

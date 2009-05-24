@@ -7,7 +7,6 @@ namespace FluentNHibernate.MappingModel
     public class DiscriminatorMapping : MappingBase
     {
         private readonly AttributeStore<DiscriminatorMapping> attributes;
-        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string,string>();
         public ClassMapping ParentClass { get; internal set; }
 
         public DiscriminatorMapping(ClassMapping parentClass)
@@ -71,16 +70,6 @@ namespace FluentNHibernate.MappingModel
         {
             get { return attributes.Get(x => x.Type); }
             set { attributes.Set(x => x.Type, value); }
-        }
-
-        public IDictionary<string, string> UnmigratedAttributes
-        {
-            get { return unmigratedAttributes; }
-        }
-
-        public void AddUnmigratedAttribute(string key, string value)
-        {
-            unmigratedAttributes.Add(key, value);
         }
     }
 }
