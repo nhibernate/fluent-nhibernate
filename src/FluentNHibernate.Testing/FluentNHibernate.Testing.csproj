@@ -208,6 +208,7 @@
     <Compile Include="MappingModel\Output\XmlGeneratorWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlIdWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlJoinWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlOneToOneWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlVersionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
     <Compile Include="PersistenceModelTests\Conventions\Configure.cs" />

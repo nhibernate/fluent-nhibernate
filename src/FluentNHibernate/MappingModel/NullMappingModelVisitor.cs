@@ -122,6 +122,11 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void ProcessOneToOne(OneToOneMapping mapping)
+        {
+            
+        }
+
         public virtual void Visit(IdMapping mapping)
         {
             
@@ -237,6 +242,11 @@ namespace FluentNHibernate.MappingModel
         }
 
         public virtual void Visit(VersionMapping versionMapping)
+        {
+
+        }
+
+        public virtual void Visit(OneToOneMapping mapping)
         {
 
         }

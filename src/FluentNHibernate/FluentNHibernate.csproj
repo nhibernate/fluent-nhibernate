@@ -193,6 +193,7 @@
     <Compile Include="MappingModel\ClassBased\JoinedSubclassMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassMapping.cs" />
     <Compile Include="MappingModel\Collections\CompositeElementMapping.cs" />
+    <Compile Include="MappingModel\OneToOneMapping.cs" />
     <Compile Include="MappingModel\Output\XmlCacheWriter.cs" />
     <Compile Include="MappingModel\Output\XmlClassWriterBase.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriter.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="MappingModel\Output\XmlKeyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlInheritanceWriter.cs" />
     <Compile Include="MappingModel\Output\XmlJoinedSubclassWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlOneToOneWriter.cs" />
     <Compile Include="MappingModel\Output\XmlParentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlSubclassWriter.cs" />
     <Compile Include="MappingModel\Output\XmlDiscriminatorWriter.cs" />
