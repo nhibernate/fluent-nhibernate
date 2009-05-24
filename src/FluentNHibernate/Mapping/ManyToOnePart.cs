@@ -23,6 +23,7 @@ namespace FluentNHibernate.Mapping
         public Type EntityType { get; private set; }
         private string columnName;
         private readonly AccessStrategyBuilder<ManyToOnePart<TOther>> access;
+        private readonly FetchTypeExpression<ManyToOnePart<TOther>> fetch;
         private readonly IList<string> columns = new List<string>();
         private bool nextBool = true;
 
@@ -30,16 +31,14 @@ namespace FluentNHibernate.Mapping
         {
             EntityType = entity;
             access = new AccessStrategyBuilder<ManyToOnePart<TOther>>(this, value => SetAttribute("access", value));
+            fetch = new FetchTypeExpression<ManyToOnePart<TOther>>(this, value => SetAttribute("fetch", value));
 
             Property = property;
         }
 
 		public FetchTypeExpression<ManyToOnePart<TOther>> FetchType
 		{
-			get
-			{
-				return new FetchTypeExpression<ManyToOnePart<TOther>>(this, properties);
-			}
+			get { return fetch; }
 		}
 
         public NotFoundExpression<ManyToOnePart<TOther>> NotFound

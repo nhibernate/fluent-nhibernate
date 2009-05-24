@@ -21,7 +21,8 @@ namespace FluentNHibernate.MappingModel.Output
                     c.Resolve<IXmlWriter<DynamicComponentMapping>>(),
                     c.Resolve<IXmlWriter<JoinMapping>>(),
                     c.Resolve<IXmlWriter<VersionMapping>>(),
-                    c.Resolve<IXmlWriter<IIdentityMapping>>()));
+                    c.Resolve<IXmlWriter<IIdentityMapping>>(),
+                    c.Resolve<IXmlWriter<OneToOneMapping>>()));
 
             RegisterWriter<ImportMapping>(c =>
                 new XmlImportWriter());
@@ -33,13 +34,15 @@ namespace FluentNHibernate.MappingModel.Output
                 new XmlComponentWriter(
                    c.Resolve<IXmlWriter<PropertyMapping>>(),
                    c.Resolve<IXmlWriter<ParentMapping>>(),
-                   c.Resolve<IXmlWriter<VersionMapping>>()));
+                   c.Resolve<IXmlWriter<VersionMapping>>(),
+                   c.Resolve<IXmlWriter<OneToOneMapping>>()));
 
             RegisterWriter<DynamicComponentMapping>(c =>
                 new XmlDynamicComponentWriter(
                     c.Resolve<IXmlWriter<PropertyMapping>>(),
                     c.Resolve<IXmlWriter<ParentMapping>>(),
-                    c.Resolve<IXmlWriter<VersionMapping>>()));
+                    c.Resolve<IXmlWriter<VersionMapping>>(),
+                    c.Resolve<IXmlWriter<OneToOneMapping>>()));
 
             RegisterWriter<ColumnMapping>(c =>
                 new XmlColumnWriter());
@@ -76,6 +79,9 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterWriter<GeneratorMapping>(c =>
                 new XmlGeneratorWriter());
 
+            RegisterWriter<OneToOneMapping>(c =>
+                new XmlOneToOneWriter());
+
             // subclasses
             RegisterWriter<ISubclassMapping>(c =>
                 new XmlInheritanceWriter(c.Resolve<IXmlWriter<SubclassMapping>>(), c.Resolve<IXmlWriter<JoinedSubclassMapping>>()));
@@ -85,7 +91,8 @@ namespace FluentNHibernate.MappingModel.Output
                     c.Resolve<IXmlWriter<PropertyMapping>>(),
                     c.Resolve<IXmlWriter<ComponentMapping>>(),
                     c.Resolve<IXmlWriter<DynamicComponentMapping>>(),
-                    c.Resolve<IXmlWriter<VersionMapping>>()));
+                    c.Resolve<IXmlWriter<VersionMapping>>(),
+                    c.Resolve<IXmlWriter<OneToOneMapping>>()));
 
             RegisterWriter<JoinedSubclassMapping>(c =>
                 new XmlJoinedSubclassWriter(
@@ -93,7 +100,8 @@ namespace FluentNHibernate.MappingModel.Output
                     c.Resolve<IXmlWriter<KeyMapping>>(),
                     c.Resolve<IXmlWriter<ComponentMapping>>(),
                     c.Resolve<IXmlWriter<DynamicComponentMapping>>(),
-                    c.Resolve<IXmlWriter<VersionMapping>>()));
+                    c.Resolve<IXmlWriter<VersionMapping>>(),
+                    c.Resolve<IXmlWriter<OneToOneMapping>>()));
         }
 
         private void RegisterWriter<T>(Func<Container, object> instantiate)

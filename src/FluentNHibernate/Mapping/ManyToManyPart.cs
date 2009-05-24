@@ -26,7 +26,8 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> parentKeyProperties = new Cache<string, string>();
         private readonly Cache<string, string> manyToManyProperties = new Cache<string, string>();
         private readonly AccessStrategyBuilder<ManyToManyPart<TChild>> access;
-        private IndexMapping manyToManyIndex;
+	    private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
+	    private IndexMapping manyToManyIndex;
 
 	    public ManyToManyPart(Type entity, PropertyInfo property)
             : this(entity, property, property.PropertyType)
@@ -40,6 +41,7 @@ namespace FluentNHibernate.Mapping
             : base(entity, member, collectionType)
         {
             access = new AccessStrategyBuilder<ManyToManyPart<TChild>>(this, value => SetAttribute("access", value));
+            fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => SetAttribute("fetch", value));
             properties.Store("name", member.Name);
         }
 
@@ -63,10 +65,7 @@ namespace FluentNHibernate.Mapping
 		
 		public FetchTypeExpression<ManyToManyPart<TChild>> FetchType
 		{
-			get
-			{
-				return new FetchTypeExpression<ManyToManyPart<TChild>>(this, manyToManyProperties);
-			}
+			get { return fetch; }
 		}
 
 		public override void Write(XmlElement classElement, IMappingVisitor visitor)

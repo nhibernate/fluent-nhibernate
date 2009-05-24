@@ -9,13 +9,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 	{
 		#region Test Setup
 		public FetchTypeExpression<IMappingPart> _fetchType;
-		public Cache<string, string> _properties;
+	    private string fetchValue;
 		
 		[SetUp]
 		public virtual void SetUp()
 		{
-			_properties = new Cache<string, string>();
-			_fetchType = new FetchTypeExpression<IMappingPart>(null, _properties);
+		    fetchValue = "";
+			_fetchType = new FetchTypeExpression<IMappingPart>(null, value => fetchValue = value);
 		}
 
 		protected FetchTypeExpressionTester A_call_to(Func<IMappingPart> fetchAction)
@@ -26,7 +26,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
 		private void should_set_the_fetch_value_to(string expected)
 		{
-			_properties.Get("fetch").ShouldEqual(expected);
+			fetchValue.ShouldEqual(expected);
 		}
 
 		#endregion

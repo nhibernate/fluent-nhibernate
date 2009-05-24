@@ -12,6 +12,7 @@ namespace FluentNHibernate.MappingModel
         private readonly IList<ManyToOneMapping> references;
         private readonly IList<ComponentMappingBase> components;
         private readonly IList<VersionMapping> versions;
+        private readonly IList<OneToOneMapping> oneToOnes;
 
         public MappedMembers()
         {
@@ -20,6 +21,7 @@ namespace FluentNHibernate.MappingModel
             references = new List<ManyToOneMapping>();    
             components = new List<ComponentMappingBase>();
             versions = new List<VersionMapping>();
+            oneToOnes = new List<OneToOneMapping>();
         }
 
         public IEnumerable<PropertyMapping> Properties
@@ -47,6 +49,11 @@ namespace FluentNHibernate.MappingModel
             get { return versions; }
         }
 
+        public IEnumerable<OneToOneMapping> OneToOnes
+        {
+            get { return oneToOnes; }
+        }
+
         public void AddProperty(PropertyMapping property)
         {
             properties.Add(property);
@@ -72,6 +79,11 @@ namespace FluentNHibernate.MappingModel
             components.Add(componentMapping);
         }
 
+        public void AddOneToOne(OneToOneMapping mapping)
+        {
+            oneToOnes.Add(mapping);
+        }
+
         public virtual void AcceptVisitor(IMappingModelVisitor visitor)
         {
             foreach (var collection in Collections)
@@ -88,6 +100,9 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var version in versions)
                 visitor.Visit(version);
+
+            foreach (var oneToOne in oneToOnes)
+                visitor.Visit(oneToOne);
         }
     }
 }

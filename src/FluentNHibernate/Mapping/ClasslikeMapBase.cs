@@ -21,6 +21,7 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<ISubclass> subclasses = new List<ISubclass>();
         protected readonly IList<IJoinedSubclass> joinedSubclasses = new List<IJoinedSubclass>();
         protected readonly IList<IVersion> versions = new List<IVersion>();
+        protected readonly IList<IOneToOnePart> oneToOnes = new List<IOneToOnePart>();
 
         protected internal void AddPart(IMappingPart part)
         {
@@ -97,7 +98,8 @@ namespace FluentNHibernate.Mapping
         protected virtual OneToOnePart<TOther> HasOne<TOther>(PropertyInfo property)
         {
             var part = new OneToOnePart<TOther>(EntityType, property);
-            AddPart(part);
+
+            oneToOnes.Add(part);
 
             return part;
         }

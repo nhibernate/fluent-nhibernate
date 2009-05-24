@@ -287,6 +287,7 @@
     <Compile Include="Mapping\IRelationship.cs" />
     <Compile Include="Mapping\ISubclass.cs" />
     <Compile Include="Mapping\MappingPartComparer.cs" />
+    <Compile Include="Mapping\OuterJoinBuilder.cs" />
     <Compile Include="Mapping\ParamBuilder.cs" />
     <Compile Include="Mapping\Prefix.cs" />
     <Compile Include="Mapping\VersionGeneratedBuilder.cs" />

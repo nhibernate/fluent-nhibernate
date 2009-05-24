@@ -197,6 +197,7 @@
     <Compile Include="FluentInterfaceTests\JoinedSubclassMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\DiscriminatorMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ModelTester.cs" />
+    <Compile Include="FluentInterfaceTests\OneToOneMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\SubclassMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\SubclassSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\VersionMutablePropertyModelGenerationTests.cs" />

@@ -5,8 +5,8 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlDynamicComponentWriter : XmlComponentWriterBase<DynamicComponentMapping>, IXmlWriter<DynamicComponentMapping>
     {
-        public XmlDynamicComponentWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ParentMapping> parentWriter, IXmlWriter<VersionMapping> versionWriter)
-            : base(propertyWriter, parentWriter, versionWriter)
+        public XmlDynamicComponentWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ParentMapping> parentWriter, IXmlWriter<VersionMapping> versionWriter, IXmlWriter<OneToOneMapping> oneToOneWriter)
+            : base(propertyWriter, parentWriter, versionWriter, oneToOneWriter)
         {
         }
 

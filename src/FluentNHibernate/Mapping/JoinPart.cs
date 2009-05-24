@@ -58,7 +58,7 @@ namespace FluentNHibernate.Mapping
         {
             foreach (var property in properties)
                 joinMapping.AddProperty(property.GetPropertyMapping());
-            
+
             foreach (var part in Parts)
                 joinMapping.AddUnmigratedPart(part);
 

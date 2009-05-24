@@ -37,6 +37,11 @@ namespace FluentNHibernate.MappingModel
             get { return attributes.Get(x => x.Cascade); }
             set { attributes.Set(x => x.Cascade, value); }
         }
+        public bool Constrained
+        {
+            get { return attributes.Get(x => x.Constrained); }
+            set { attributes.Set(x => x.Constrained, value); }
+        }
 
         public string OuterJoin
         {
@@ -48,12 +53,6 @@ namespace FluentNHibernate.MappingModel
         {
             get { return attributes.Get(x => x.Fetch); }
             set { attributes.Set(x => x.Fetch, value); }
-        }
-
-        public bool Constrained
-        {
-            get { return attributes.Get(x => x.Constrained); }
-            set { attributes.Set(x => x.Constrained, value); }
         }
 
         public string ForeignKey
@@ -68,7 +67,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.PropertyRef, value); }
         }
 
-        public string Lazy
+        public bool Lazy
         {
             get { return attributes.Get(x => x.Lazy); }
             set { attributes.Set(x => x.Lazy, value); }

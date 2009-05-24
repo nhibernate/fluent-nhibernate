@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
@@ -9,93 +10,104 @@ namespace FluentNHibernate.Mapping
     public interface IOneToOnePart : IRelationship
     {
         CascadeExpression<IOneToOnePart> Cascade { get; }
+        OneToOneMapping GetOneToOneMapping();
     }
 
     public class OneToOnePart<TOther> : IOneToOnePart, IAccessStrategy<OneToOnePart<TOther>>
     {
-        private readonly Cache<string, string> properties = new Cache<string, string>();
         private readonly PropertyInfo property;
         private readonly AccessStrategyBuilder<OneToOnePart<TOther>> access;
+        private readonly OuterJoinBuilder<OneToOnePart<TOther>> outerJoin;
+        private readonly FetchTypeExpression<OneToOnePart<TOther>> fetch;
+        private readonly OneToOneMapping mapping = new OneToOneMapping();
+        private bool nextBool = true;
         public Type EntityType { get; private set; }
 
-        public OneToOnePart(Type entity, PropertyInfo property) {
+        public OneToOnePart(Type entity, PropertyInfo property)
+        {
+            outerJoin = new OuterJoinBuilder<OneToOnePart<TOther>>(this, value => mapping.OuterJoin = value);
+            access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this, value => mapping.Access = value);
+            fetch = new FetchTypeExpression<OneToOnePart<TOther>>(this, value => mapping.Fetch = value);
             EntityType = entity;
-            access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this, value => SetAttribute("access", value));
             this.property = property;
         }
 
-        public FetchTypeExpression<OneToOnePart<TOther>> FetchType {
-            get {
-                return new FetchTypeExpression<OneToOnePart<TOther>>(this, properties);
-            }
-        }
-        
-        public OneToOnePart<TOther> WithForeignKey() {
-            return WithForeignKey(string.Format("FK_{0}To{1}", property.DeclaringType.Name, property.Name));
+        public OneToOneMapping GetOneToOneMapping()
+        {
+            if (!mapping.Attributes.IsSpecified(x => x.Class))
+                mapping.Class = typeof(TOther).AssemblyQualifiedName;
+
+            if (!mapping.Attributes.IsSpecified(x => x.Name))
+                mapping.Name = property.Name;
+
+            return mapping;
         }
 
-        public OneToOnePart<TOther> WithForeignKey(string foreignKeyName) {
-            properties.Store("foreign-key", foreignKeyName);
+        public FetchTypeExpression<OneToOnePart<TOther>> Fetch
+        {
+            get { return fetch; }
+        }
+
+        public OneToOnePart<TOther> ForeignKey()
+        {
+            return ForeignKey(string.Format("FK_{0}To{1}", property.DeclaringType.Name, property.Name));
+        }
+
+        public OneToOnePart<TOther> ForeignKey(string foreignKeyName)
+        {
+            mapping.ForeignKey = foreignKeyName;
             return this;
         }
 
         public OneToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> propRefExpression)
         {
             var prop = ReflectionHelper.GetProperty(propRefExpression);
-            properties.Store("property-ref", prop.Name);
+            mapping.PropertyRef = prop.Name;
 
             return this;
         }
 
         public OneToOnePart<TOther> Constrained()
         {
-            properties.Store("constrained", "true");
+            mapping.Constrained = nextBool;
+            nextBool = true;
 
             return this;
         }
 
         public CascadeExpression<OneToOnePart<TOther>> Cascade
         {
-            get {
-                return new CascadeExpression<OneToOnePart<TOther>>(this);
-            }
+            get { return new CascadeExpression<OneToOnePart<TOther>>(this); }
         }
 
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
+        public AccessStrategyBuilder<OneToOnePart<TOther>> Access
         {
-            properties.Store("name", property.Name);
-            properties.Store("class", typeof(TOther).AssemblyQualifiedName);
-
-            classElement.AddElement("one-to-one").WithProperties(properties);
-        }
-
-        public void SetAttribute(string name, string value)
-        {
-            properties.Store(name, value);
-        }
-
-        public void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
-        public int LevelWithinPosition {
-            get { return 1; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.Anywhere; }
-        }
-
-        public AccessStrategyBuilder<OneToOnePart<TOther>> Access {
             get { return access; }
         }
 
+        public OneToOnePart<TOther> LazyLoad()
+        {
+            mapping.Lazy = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public OneToOnePart<TOther> Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
+        }
+
+        public OuterJoinBuilder<OneToOnePart<TOther>> OuterJoin
+        {
+            get { return outerJoin; }
+        }
+
         #region Explicit IOneToOnePart Implementation
+
         CascadeExpression<IOneToOnePart> IOneToOnePart.Cascade
         {
             get { return new CascadeExpression<IOneToOnePart>(this); }
@@ -107,5 +119,30 @@ namespace FluentNHibernate.Mapping
         }
 
         #endregion
+
+        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        void IHasAttributes.SetAttribute(string name, string value)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        void IHasAttributes.SetAttributes(Attributes atts)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        int IMappingPart.LevelWithinPosition
+        {
+            get { throw new NotSupportedException("Obsolete"); }
+        }
+
+        PartPosition IMappingPart.PositionOnDocument
+        {
+            get { throw new NotSupportedException("Obsolete"); }
+        }
     }
 }

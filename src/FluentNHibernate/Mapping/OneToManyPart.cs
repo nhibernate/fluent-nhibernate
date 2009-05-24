@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
@@ -9,6 +10,7 @@ namespace FluentNHibernate.Mapping
     {
         private readonly ColumnNameCollection<OneToManyPart<TChild>> columnNames;
         private readonly Cache<string, string> collectionProperties = new Cache<string, string>();
+        private readonly FetchTypeExpression<OneToManyPart<TChild>> fetch;
 
         public OneToManyPart(Type entity, PropertyInfo property)
             : this(entity, property, property.PropertyType)
@@ -22,6 +24,7 @@ namespace FluentNHibernate.Mapping
             : base(entity, member, collectionType)
         {
             columnNames = new ColumnNameCollection<OneToManyPart<TChild>>(this);
+            fetch = new FetchTypeExpression<OneToManyPart<TChild>>(this, value => SetAttribute("fetch", value));
             properties.Store("name", member.Name);
         }
 
@@ -126,10 +129,7 @@ namespace FluentNHibernate.Mapping
 
         public FetchTypeExpression<OneToManyPart<TChild>> FetchType
         {
-            get
-            {
-                return new FetchTypeExpression<OneToManyPart<TChild>>(this, properties);
-            }
+            get { return fetch; }
         }
 
         public ColumnNameCollection<OneToManyPart<TChild>> KeyColumnNames
