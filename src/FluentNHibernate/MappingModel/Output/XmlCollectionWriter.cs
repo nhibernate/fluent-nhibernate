@@ -9,13 +9,15 @@ namespace FluentNHibernate.MappingModel.Output
         private readonly IXmlWriter<BagMapping> bagWriter;
         private readonly IXmlWriter<SetMapping> setWriter;
         private readonly IXmlWriter<ListMapping> listWriter;
+        private readonly IXmlWriter<MapMapping> mapWriter;
         private XmlDocument document;
 
-        public XmlCollectionWriter(IXmlWriter<BagMapping> bagWriter, IXmlWriter<SetMapping> setWriter, IXmlWriter<ListMapping> listWriter)
+        public XmlCollectionWriter(IXmlWriter<BagMapping> bagWriter, IXmlWriter<SetMapping> setWriter, IXmlWriter<ListMapping> listWriter, IXmlWriter<MapMapping> mapWriter)
         {
             this.bagWriter = bagWriter;
             this.setWriter = setWriter;
             this.listWriter = listWriter;
+            this.mapWriter = mapWriter;
         }
 
         public XmlDocument Write(ICollectionMapping mappingModel)
@@ -38,6 +40,11 @@ namespace FluentNHibernate.MappingModel.Output
         public override void ProcessList(ListMapping mapping)
         {
             document = listWriter.Write(mapping);
+        }
+
+        public override void ProcessMap(MapMapping mapping)
+        {
+            document = mapWriter.Write(mapping);
         }
     }
 }
