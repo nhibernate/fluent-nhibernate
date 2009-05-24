@@ -1,6 +1,6 @@
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public interface ICollectionContentsMapping : IMappingBase
+    public interface ICollectionRelationshipMapping : IMappingBase
     {
     }
 }

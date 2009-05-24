@@ -14,9 +14,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new BagMapping();
 
-            writer = new XmlCollectionWriter();
+            writer = new XmlCollectionWriter(new XmlBagWriter(null));
             writer.VerifyXml(mapping)
-                .Element("bag").Exists();
+                .RootElement.HasName("bag");
         }
 
         [Test]
@@ -24,9 +24,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ListMapping();
 
-            writer = new XmlCollectionWriter();
+            writer = new XmlCollectionWriter(null);
             writer.VerifyXml(mapping)
-                .Element("list").Exists();
+                .RootElement.HasName("list");
         }
 
         [Test]
@@ -34,9 +34,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new SetMapping();
 
-            writer = new XmlCollectionWriter();
+            writer = new XmlCollectionWriter(null);
             writer.VerifyXml(mapping)
-                .Element("set").Exists();
+                .RootElement.HasName("set");
         }
 
         [Test]
@@ -44,9 +44,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new MapMapping();
 
-            writer = new XmlCollectionWriter();
+            writer = new XmlCollectionWriter(null);
             writer.VerifyXml(mapping)
-                .Element("map").Exists();
+                .RootElement.HasName("map");
         }
     }
 }

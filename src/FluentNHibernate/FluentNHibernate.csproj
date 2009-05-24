@@ -199,6 +199,7 @@
     <Compile Include="MappingModel\Output\XmlBagWriter.cs" />
     <Compile Include="MappingModel\Output\XmlCacheWriter.cs" />
     <Compile Include="MappingModel\Output\XmlClassWriterBase.cs" />
+    <Compile Include="MappingModel\Output\XmlCollectionRelationshipWriter.cs" />
     <Compile Include="MappingModel\Output\XmlCollectionWriter.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriterBase.cs" />
@@ -210,6 +211,8 @@
     <Compile Include="MappingModel\Output\XmlKeyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlInheritanceWriter.cs" />
     <Compile Include="MappingModel\Output\XmlJoinedSubclassWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlManyToManyWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlOneToManyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlOneToOneWriter.cs" />
     <Compile Include="MappingModel\Output\XmlParentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlSubclassWriter.cs" />
@@ -340,7 +343,7 @@
     <Compile Include="MappingModel\Collections\ManyToManyMapping.cs" />
     <Compile Include="MappingModel\Collections\SetMapping.cs" />
     <Compile Include="MappingModel\Collections\BagMapping.cs" />
-    <Compile Include="MappingModel\Collections\ICollectionContentsMapping.cs" />
+    <Compile Include="MappingModel\Collections\ICollectionRelationshipMapping.cs" />
     <Compile Include="MappingModel\Collections\ICollectionMapping.cs" />
     <Compile Include="MappingModel\ColumnMapping.cs" />
     <Compile Include="MappingModel\Conventions\ConventionException.cs" />

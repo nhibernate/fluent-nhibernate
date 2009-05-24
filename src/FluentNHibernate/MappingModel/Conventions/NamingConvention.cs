@@ -57,21 +57,21 @@ namespace FluentNHibernate.MappingModel.Conventions
 
         public override void ProcessOneToMany(OneToManyMapping oneToManyMapping)
         {
-            if (!oneToManyMapping.Attributes.IsSpecified(x => x.ClassName))
+            if (!oneToManyMapping.Attributes.IsSpecified(x => x.Class))
             {
                 if (oneToManyMapping.ChildType == null)
                     throw new ConventionException("Cannot apply the naming convention. No type specified.", oneToManyMapping);
-                oneToManyMapping.ClassName = DetermineNameFromType(oneToManyMapping.ChildType);
+                oneToManyMapping.Class = DetermineNameFromType(oneToManyMapping.ChildType);
             }
         }
 
         public override void ProcessManyToMany(ManyToManyMapping manyToManyMapping)
         {
-            if (!manyToManyMapping.Attributes.IsSpecified(x => x.ClassName))
+            if (!manyToManyMapping.Attributes.IsSpecified(x => x.Class))
             {
                 if (manyToManyMapping.ChildType == null)
                     throw new ConventionException("Cannot apply the naming convention. No type specified.", manyToManyMapping);
-                manyToManyMapping.ClassName = DetermineNameFromType(manyToManyMapping.ChildType);
+                manyToManyMapping.Class = DetermineNameFromType(manyToManyMapping.ChildType);
             }
         }
 

@@ -193,5 +193,17 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer.VerifyXml(mapping)
                 .Element("key").Exists();
         }
+
+        [Test]
+        public void ShouldWriteRelationshipElement()
+        {
+            var mapping = new BagMapping();
+
+            mapping.Relationship = new OneToManyMapping();
+
+            writer = new XmlBagWriter(null);
+            writer.VerifyXml(mapping)
+                .Element("one-to-many").Exists();
+        }
     }
 }

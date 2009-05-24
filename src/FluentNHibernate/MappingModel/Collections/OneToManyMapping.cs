@@ -2,15 +2,14 @@ using System;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public class OneToManyMapping : MappingBase, ICollectionContentsMapping
+    public class OneToManyMapping : MappingBase, ICollectionRelationshipMapping
     {
-        private readonly AttributeStore<OneToManyMapping> attributes;
+        private readonly AttributeStore<OneToManyMapping> attributes = new AttributeStore<OneToManyMapping>();
         public Type ChildType { get; set; }
 
-        public OneToManyMapping()
+        public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
-            attributes = new AttributeStore<OneToManyMapping>();
-            attributes.SetDefault(x => x.ExceptionOnNotFound, true);
+            visitor.ProcessOneToMany(this);
         }
 
         public AttributeStore<OneToManyMapping> Attributes
@@ -18,21 +17,16 @@ namespace FluentNHibernate.MappingModel.Collections
             get { return attributes; }
         }
 
-        public string ClassName
+        public string Class
         {
-            get { return attributes.Get(x => x.ClassName); }
-            set { attributes.Set(x => x.ClassName, value); }
+            get { return attributes.Get(x => x.Class); }
+            set { attributes.Set(x => x.Class, value); }
         }
 
-        public bool ExceptionOnNotFound
+        public string NotFound
         {
-            get { return attributes.Get(x => x.ExceptionOnNotFound); }
-            set { attributes.Set(x => x.ExceptionOnNotFound, value); }
-        }
-
-        public override void AcceptVisitor(IMappingModelVisitor visitor)
-        {
-            visitor.ProcessOneToMany(this);
+            get { return attributes.Get(x => x.NotFound); }
+            set { attributes.Set(x => x.NotFound, value); }
         }
     }
 }

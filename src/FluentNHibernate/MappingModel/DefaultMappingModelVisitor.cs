@@ -30,9 +30,9 @@ namespace FluentNHibernate.MappingModel
 
         #endregion
 
-        #region Collection Contents
+        #region Collection Relationship
 
-        protected virtual void ProcessCollectionContents(ICollectionContentsMapping contentsMapping)
+        protected virtual void ProcessCollectionContents(ICollectionRelationshipMapping relationshipMapping)
         {
 
         }
@@ -117,9 +117,9 @@ namespace FluentNHibernate.MappingModel
             keyMapping.AcceptVisitor(this);
         }
 
-        public override void Visit(ICollectionContentsMapping contentsMapping)
+        public override void Visit(ICollectionRelationshipMapping relationshipMapping)
         {
-            contentsMapping.AcceptVisitor(this);
+            relationshipMapping.AcceptVisitor(this);
         }
 
         public override void Visit(GeneratorMapping generatorMapping)

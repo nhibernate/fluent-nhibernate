@@ -20,7 +20,7 @@ namespace FluentNHibernate.MappingModel.Collections
         string OptimisticLock { get; }
         bool Generic { get; }
         KeyMapping Key { get; set; }
-        ICollectionContentsMapping Contents { get; set; }
+        ICollectionRelationshipMapping Relationship { get; set; }
         AttributeStore<ICollectionMapping> Attributes { get; }
         PropertyInfo PropertyInfo { get; set;  }
     }

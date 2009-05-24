@@ -207,6 +207,7 @@
     <Compile Include="MappingModel\Output\XmlBagWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlCacheWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlClassWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlCollectionRelationshipWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlCollectionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlColumnWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeElementWriterTester.cs" />
@@ -214,6 +215,8 @@
     <Compile Include="MappingModel\Output\XmlIdWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlJoinWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlKeyWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlManyToManyWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlOneToManyWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlOneToOneWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlPropertyWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlVersionWriterTester.cs" />
@@ -234,7 +237,6 @@
     <Compile Include="DomainModel\Music.cs" />
     <Compile Include="MappingModel\AttributeStoreTester.cs" />
     <Compile Include="MappingModel\ClassMappingTester.cs" />
-    <Compile Include="MappingModel\Collections\OneToManyMappingTester.cs" />
     <Compile Include="MappingModel\Conventions\NamingConventionTester.cs" />
     <Compile Include="MappingModel\HibernateMappingTester.cs" />
     <Compile Include="MappingModel\MappingTestingExtensions.cs" />

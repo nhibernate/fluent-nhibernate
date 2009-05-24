@@ -187,7 +187,7 @@ namespace FluentNHibernate.MappingModel
 
         }
 
-        public virtual void Visit(ICollectionContentsMapping contentsMapping)
+        public virtual void Visit(ICollectionRelationshipMapping relationshipMapping)
         {
 
         }
@@ -252,6 +252,16 @@ namespace FluentNHibernate.MappingModel
         }
 
         public virtual void Visit(OneToOneMapping mapping)
+        {
+
+        }
+
+        public virtual void Visit(OneToManyMapping mapping)
+        {
+            
+        }
+
+        public virtual void Visit(ManyToManyMapping mapping)
         {
 
         }

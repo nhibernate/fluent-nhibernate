@@ -1,0 +1,96 @@
+using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.MappingModel.Output;
+using FluentNHibernate.Testing.Testing;
+using NUnit.Framework;
+
+namespace FluentNHibernate.Testing.MappingModel.Output
+{
+    [TestFixture]
+    public class XmlManyToManyWriterTester
+    {
+        private XmlManyToManyWriter writer;
+
+        [Test]
+        public void ShouldWriteClassAttribute()
+        {
+            writer = new XmlManyToManyWriter(null);
+            var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
+            testHelper.Check(x => x.Class, "class").MapsToAttribute("class");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteFetchAttribute()
+        {
+            writer = new XmlManyToManyWriter(null);
+            var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
+            testHelper.Check(x => x.Fetch, "f").MapsToAttribute("fetch");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteForeignKeyAttribute()
+        {
+            writer = new XmlManyToManyWriter(null);
+            var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
+            testHelper.Check(x => x.ForeignKey, "fk").MapsToAttribute("foreign-key");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteLazyAttribute()
+        {
+            writer = new XmlManyToManyWriter(null);
+            var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
+            testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteNotFoundAttribute()
+        {
+            writer = new XmlManyToManyWriter(null);
+            var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
+            testHelper.Check(x => x.NotFound, "exception").MapsToAttribute("not-found");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteOuterJoinAttribute()
+        {
+            writer = new XmlManyToManyWriter(null);
+            var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
+            testHelper.Check(x => x.OuterJoin, "oj").MapsToAttribute("outer-join");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteWhereAttribute()
+        {
+            writer = new XmlManyToManyWriter(null);
+            var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
+            testHelper.Check(x => x.Where, "x = 1").MapsToAttribute("where");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteColumns()
+        {
+            var mapping = new ManyToManyMapping();
+
+            mapping.AddColumn(new ColumnMapping { Name = "Column1" });
+
+            writer = new XmlManyToManyWriter(new XmlColumnWriter());
+            writer.VerifyXml(mapping)
+                .Element("column").Exists();
+        }
+    }
+}

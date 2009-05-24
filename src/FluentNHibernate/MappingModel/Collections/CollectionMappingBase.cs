@@ -7,7 +7,7 @@ namespace FluentNHibernate.MappingModel.Collections
     {
         private readonly AttributeStore<ICollectionMapping> attributes;
         public KeyMapping Key { get; set; }
-        public ICollectionContentsMapping Contents { get; set; }
+        public ICollectionRelationshipMapping Relationship { get; set; }
         public PropertyInfo PropertyInfo { get; set; }
 
         protected CollectionMappingBase(AttributeStore underlyingStore)
@@ -20,8 +20,8 @@ namespace FluentNHibernate.MappingModel.Collections
             if (Key != null)
                 visitor.Visit(Key);
 
-            if (Contents != null)
-                visitor.Visit(Contents);
+            if (Relationship != null)
+                visitor.Visit(Relationship);
         }
 
         AttributeStore<ICollectionMapping> ICollectionMapping.Attributes

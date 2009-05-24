@@ -130,7 +130,7 @@ namespace FluentNHibernate.Testing.MappingModel.Conventions
             oneToManyMapping.ChildType = typeof (Album);
             _namingConvention.ProcessOneToMany(oneToManyMapping);
 
-            oneToManyMapping.ClassName.ShouldEqual(oneToManyMapping.ChildType.AssemblyQualifiedName);
+            oneToManyMapping.Class.ShouldEqual(oneToManyMapping.ChildType.AssemblyQualifiedName);
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace FluentNHibernate.Testing.MappingModel.Conventions
             manyToManyMapping.ChildType = typeof (Album);
             _namingConvention.ProcessManyToMany(manyToManyMapping);
 
-            manyToManyMapping.ClassName.ShouldEqual(manyToManyMapping.ChildType.AssemblyQualifiedName);
+            manyToManyMapping.Class.ShouldEqual(manyToManyMapping.ChildType.AssemblyQualifiedName);
         }
 
         [Test]

@@ -1,6 +1,7 @@
 using System;
 using FluentNHibernate.Infrastructure;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.MappingModel.Output
@@ -83,6 +84,25 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterWriter<OneToOneMapping>(c =>
                 new XmlOneToOneWriter());
+
+            // collections
+            RegisterWriter<ICollectionMapping>(c =>
+                new XmlCollectionWriter(c.Resolve<IXmlWriter<BagMapping>>()));
+
+            RegisterWriter<BagMapping>(c =>
+                new XmlBagWriter(c.Resolve<IXmlWriter<KeyMapping>>()));
+
+            // collection relationships
+            RegisterWriter<ICollectionRelationshipMapping>(c =>
+                new XmlCollectionRelationshipWriter(
+                    c.Resolve<IXmlWriter<OneToManyMapping>>(),
+                    c.Resolve<IXmlWriter<ManyToManyMapping>>()));
+
+            RegisterWriter<OneToManyMapping>(c =>
+                new XmlOneToManyWriter());
+
+            RegisterWriter<ManyToManyMapping>(c =>
+                new XmlManyToManyWriter(c.Resolve<IXmlWriter<ColumnMapping>>()));
 
             // subclasses
             RegisterWriter<ISubclassMapping>(c =>

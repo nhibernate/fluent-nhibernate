@@ -43,7 +43,7 @@ namespace FluentNHibernate.MappingModel
         void Visit(PropertyMapping propertyMapping);
         void Visit(ManyToOneMapping manyToOneMapping);
         void Visit(KeyMapping keyMapping);
-        void Visit(ICollectionContentsMapping contentsMapping);
+        void Visit(ICollectionRelationshipMapping relationshipMapping);
         void Visit(GeneratorMapping generatorMapping);
         void Visit(ColumnMapping columnMapping);
         void Visit(ISubclassMapping subclassMapping);
@@ -57,5 +57,7 @@ namespace FluentNHibernate.MappingModel
         void Visit(CompositeElementMapping compositeElementMapping);
         void Visit(VersionMapping versionMapping);
         void Visit(OneToOneMapping mapping);
+        void Visit(OneToManyMapping mapping);
+        void Visit(ManyToManyMapping mapping);
     }
 }
