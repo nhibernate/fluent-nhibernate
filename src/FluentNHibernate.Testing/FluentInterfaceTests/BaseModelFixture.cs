@@ -1,6 +1,7 @@
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using FluentNHibernate.Utils;
@@ -52,6 +53,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         protected ModelTester<ICache, CacheMapping> Cache()
         {
             return new ModelTester<ICache, CacheMapping>(() => new CachePart(), x => x.GetCacheMapping());
+        }
+
+        protected ModelTester<IIdentityPart, IdMapping> Id()
+        {
+            return new ModelTester<IIdentityPart, IdMapping>(() => new IdentityPart(typeof(IdentityTarget), ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId)), x => x.GetIdMapping());
         }
     }
 }

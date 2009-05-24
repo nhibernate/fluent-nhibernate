@@ -1,6 +1,7 @@
 using System;
 using FluentNHibernate.Infrastructure;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -19,7 +20,8 @@ namespace FluentNHibernate.MappingModel.Output
                     c.Resolve<IXmlWriter<ComponentMapping>>(),
                     c.Resolve<IXmlWriter<DynamicComponentMapping>>(),
                     c.Resolve<IXmlWriter<JoinMapping>>(),
-                    c.Resolve<IXmlWriter<VersionMapping>>()));
+                    c.Resolve<IXmlWriter<VersionMapping>>(),
+                    c.Resolve<IXmlWriter<IIdentityMapping>>()));
 
             RegisterWriter<ImportMapping>(c =>
                 new XmlImportWriter());
@@ -59,6 +61,20 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterWriter<VersionMapping>(c =>
                 new XmlVersionWriter());
+
+            RegisterWriter<CacheMapping>(c =>
+                new XmlCacheWriter());
+
+            RegisterWriter<IIdentityMapping>(c =>
+                new XmlIdentityBasedWriter(c.Resolve<IXmlWriter<IdMapping>>()));
+
+            RegisterWriter<IdMapping>(c =>
+                new XmlIdWriter(
+                    c.Resolve<IXmlWriter<GeneratorMapping>>(),
+                    c.Resolve<IXmlWriter<ColumnMapping>>()));
+
+            RegisterWriter<GeneratorMapping>(c =>
+                new XmlGeneratorWriter());
 
             // subclasses
             RegisterWriter<ISubclassMapping>(c =>

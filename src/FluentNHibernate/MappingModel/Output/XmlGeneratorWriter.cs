@@ -23,6 +23,13 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.Attributes.IsSpecified(x => x.Class))
                 element.WithAtt("class", mapping.Class);
+
+            foreach (var param in mapping.Params)
+            {
+                element.AddElement("param")
+                    .WithAtt("name", param.Key)
+                    .InnerXml = param.Value;
+            }
         }
     }
 }

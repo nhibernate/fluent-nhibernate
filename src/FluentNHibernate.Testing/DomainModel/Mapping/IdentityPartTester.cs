@@ -13,31 +13,21 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 	[TestFixture]
 	public class IdentityPartTester
 	{
-		[Test, Explicit]
-		public void Scratch()
-		{
-			PropertyInfo property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId);
-			var id = new IdentityPart(typeof(IdentityTarget), property);
-
-			var document = new XmlDocument();
-			var element = document.CreateElement("root");
-			id.Write(element, new MappingVisitor());
-			Debug.Write(element.InnerXml);
-		}
-
 		[Test]
 		public void Defaults()
 		{
-		    new MappingTester<IdentityTarget>()
-		        .ForMapping(mapping => mapping.Id(x => x.IntId))
-		        .Element("class/id")
-		            .Exists()
-		            .HasAttribute("name", "IntId")
-		            .HasAttribute("column", "IntId")
-		            .HasAttribute("type", "Int32")
-		        .Element("class/id/generator")
-		            .Exists()
-		            .HasAttribute("class", "identity");
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping => mapping.Id(x => x.IntId))
+                .Element("class/id")
+                    .Exists()
+                    .HasAttribute("name", "IntId")
+                    .HasAttribute("type", typeof(int).AssemblyQualifiedName)
+                .Element("class/id/generator")
+                    .Exists()
+                    .HasAttribute("class", "identity")
+                .Element("class/id/column")
+                    .Exists()
+                    .HasAttribute("name", "IntId");
 		}
 
         [Test]
@@ -57,7 +47,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 		    new MappingTester<IdentityTarget>()
 		        .ForMapping(mapping => mapping.Id(x => x.IntId, "Id"))
-		        .Element("class/id").HasAttribute("column", "Id");
+		        .Element("class/id/column").HasAttribute("name", "Id");
 		}
 
         [Test]
@@ -65,7 +55,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<IdentityTarget>()
                 .ForMapping(mapping => mapping.Id(x => x.IntId).ColumnName("Id"))
-                .Element("class/id").HasAttribute("column", "Id");
+                .Element("class/id/column").HasAttribute("name", "Id");
         }
 
 		[Test]
@@ -73,7 +63,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
             new MappingTester<IdentityTarget>()
                 .ForMapping(mapping => mapping.Id(x => x.LongId))
-                .Element("class/id").HasAttribute("type", "Int64")
+                .Element("class/id").HasAttribute("type", typeof(Int64).AssemblyQualifiedName)
                 .Element("class/id/generator").HasAttribute("class", "identity");
 		}
 
@@ -82,7 +72,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
             new MappingTester<IdentityTarget>()
                 .ForMapping(mapping => mapping.Id(x => x.GuidId))
-                .Element("class/id").HasAttribute("type", "Guid")
+                .Element("class/id").HasAttribute("type", typeof(Guid).AssemblyQualifiedName)
                 .Element("class/id/generator").HasAttribute("class", "guid.comb");
 		}
 
@@ -91,7 +81,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
             new MappingTester<IdentityTarget>()
                 .ForMapping(mapping => mapping.Id(x => x.StringId))
-                .Element("class/id").HasAttribute("type", "String")
+                .Element("class/id").HasAttribute("type", typeof(String).AssemblyQualifiedName)
                 .Element("class/id/generator").HasAttribute("class", "assigned");
 		}
 
@@ -340,7 +330,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void WithUnsavedValue_SetsUnsavedValueAttributeOnId()
         {
             new MappingTester<IdentityTarget>()
-                .ForMapping(c => c.Id(x => x.IntId).WithUnsavedValue(-1))
+                .ForMapping(c => c.Id(x => x.IntId).UnsavedValue(-1))
                 .Element("class/id").HasAttribute("unsaved-value", "-1");
         }
 
@@ -356,16 +346,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void TypeIsSetToTypeName()
         {
             new MappingTester<IdentityTarget>()
-                .ForMapping(c => c.Id(x => x.IntId).WithUnsavedValue(-1))
-                .Element("class/id").HasAttribute("type", "Int32");
+                .ForMapping(c => c.Id(x => x.IntId).UnsavedValue(-1))
+                .Element("class/id").HasAttribute("type", typeof(int).AssemblyQualifiedName);
         }
 
         [Test]
         public void TypeIsSetToFullTypeNameIfTypeGeneric()
         {
             new MappingTester<IdentityTarget>()
-                .ForMapping(c => c.Id(x => x.NullableGuidId).WithUnsavedValue(-1))
-                .Element("class/id").HasAttribute("type", typeof(Guid?).FullName);
+                .ForMapping(c => c.Id(x => x.NullableGuidId).UnsavedValue(-1))
+                .Element("class/id").HasAttribute("type", typeof(Guid?).AssemblyQualifiedName);
         }
 
         [Test]
@@ -374,7 +364,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<IdentityTarget>()
                 .Conventions(conventions => conventions.Add(new TestIdConvention()))
                 .ForMapping(map => map.Id(x => x.LongId))
-                    .Element("class/id").HasAttribute("test", "true");
+                    .Element("class/id/column").HasAttribute("name", "col");
         }
 
         private class TestIdConvention : IIdConvention
@@ -386,7 +376,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             public void Apply(IIdentityPart target)
             {
-                target.SetAttribute("test", "true");
+                target.ColumnName("col");
             }
         }
 	}

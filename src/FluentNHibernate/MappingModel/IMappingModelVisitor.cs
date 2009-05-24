@@ -32,6 +32,7 @@ namespace FluentNHibernate.MappingModel
         void ProcessCompositeElement(CompositeElementMapping compositeElementMapping);
         void ProcessVersion(VersionMapping mapping);
 
+        void Visit(IdMapping mapping);
         void Visit(ClassMapping classMapping);
         void Visit(CacheMapping mapping);
         void Visit(ImportMapping importMapping);

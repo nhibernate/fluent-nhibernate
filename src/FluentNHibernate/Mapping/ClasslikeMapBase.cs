@@ -50,7 +50,7 @@ namespace FluentNHibernate.Mapping
             if (!string.IsNullOrEmpty(columnName))
                 propertyMap.ColumnName(columnName);
 
-            m_Parts.Add(propertyMap); // backwards compatibility
+            properties.Add(propertyMap); // backwards compatibility
 
             return propertyMap;
         }

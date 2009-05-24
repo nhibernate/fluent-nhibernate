@@ -192,6 +192,7 @@
     <Compile Include="FluentInterfaceTests\ClassMapSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ComponentMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\DynamicComponentMutablePropertyModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\IdMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\JoinedSubclassSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\JoinedSubclassMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\DiscriminatorMutablePropertyModelGenerationTests.cs" />

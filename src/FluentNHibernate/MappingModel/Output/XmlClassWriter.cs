@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
@@ -13,12 +14,14 @@ namespace FluentNHibernate.MappingModel.Output
         private readonly IXmlWriter<ComponentMapping> componentWriter;
         private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentWriter;
         private readonly IXmlWriter<JoinMapping> joinWriter;
+        private readonly IXmlWriter<IIdentityMapping> idWriter;
 
-        public XmlClassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<DiscriminatorMapping> discriminatorWriter, IXmlWriter<ISubclassMapping> subclassWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter, IXmlWriter<JoinMapping> joinWriter, IXmlWriter<VersionMapping> versionWriter)
+        public XmlClassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<DiscriminatorMapping> discriminatorWriter, IXmlWriter<ISubclassMapping> subclassWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter, IXmlWriter<JoinMapping> joinWriter, IXmlWriter<VersionMapping> versionWriter, IXmlWriter<IIdentityMapping> idWriter)
             : base(propertyWriter, versionWriter)
         {
             this.discriminatorWriter = discriminatorWriter;
             this.joinWriter = joinWriter;
+            this.idWriter = idWriter;
             this.subclassWriter = subclassWriter;
             this.componentWriter = componentWriter;
             this.dynamicComponentWriter = dynamicComponentWriter;
@@ -115,8 +118,15 @@ namespace FluentNHibernate.MappingModel.Output
         public override void Visit(JoinMapping joinMapping)
         {
             var joinXml = joinWriter.Write(joinMapping);
+
             document.ImportAndAppendChild(joinXml);
         }
 
+        public override void Visit(IIdentityMapping mapping)
+        {
+            var idXml = idWriter.Write(mapping);
+
+            document.ImportAndAppendChild(idXml);
+        }
     }
 }

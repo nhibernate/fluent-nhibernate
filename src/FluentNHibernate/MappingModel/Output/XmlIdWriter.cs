@@ -7,11 +7,11 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlIdWriter : NullMappingModelVisitor, IXmlWriter<IdMapping>
     {
-        private readonly XmlGeneratorWriter generatorWriter;
-        private readonly XmlColumnWriter columnWriter;
+        private readonly IXmlWriter<GeneratorMapping> generatorWriter;
+        private readonly IXmlWriter<ColumnMapping> columnWriter;
         private XmlDocument document;
 
-        public XmlIdWriter(XmlGeneratorWriter generatorWriter, XmlColumnWriter columnWriter)
+        public XmlIdWriter(IXmlWriter<GeneratorMapping> generatorWriter, IXmlWriter<ColumnMapping> columnWriter)
         {
             this.generatorWriter = generatorWriter;
             this.columnWriter = columnWriter;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -228,19 +229,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void DomainClassMapAutomaticallyCreatesTheId()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(m => m.UseIdentityForKey(x => x.Id, "id"))
-                .Element("class/id")
-                    .HasAttribute("name", "Id")
-                    .HasAttribute("column", "id")
-                    .HasAttribute("type", "Int64")
-                .Element("class/id/generator")
-                    .HasAttribute("class", "identity");
-        }
-
-        [Test]
         public void Map_an_enumeration()
         {
             new MappingTester<MappedObject>()
@@ -306,11 +294,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/id")
                     .Exists()
                     .HasAttribute("name", "Id")
-                    .HasAttribute("column", "id")
-                    .HasAttribute("type", "Int64")
+                    .HasAttribute("type", typeof(Int64).AssemblyQualifiedName)
                 .Element("class/id/generator")
                     .Exists()
-                    .HasAttribute("class", "identity");
+                    .HasAttribute("class", "identity")
+                .Element("class/id/column")
+                    .Exists()
+                    .HasAttribute("name", "id");
 		}
 
 		[Test]
@@ -318,7 +308,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 		    new MappingTester<MappedObject>()
 		        .ForMapping(m => m.Id(x => x.Id))
-		        .Element("class/id").HasAttribute("column", "Id");
+		        .Element("class/id/column").HasAttribute("name", "Id");
 		}
 
         [Test]

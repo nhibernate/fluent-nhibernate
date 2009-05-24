@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.AutoMap;
@@ -21,7 +20,8 @@ namespace FluentNHibernate.Mapping
         /// Specify caching for this entity.
         /// </summary>
         public ICache Cache { get; private set; }
-        
+        private IIdentityPart id;
+
         private readonly IList<ImportPart> imports = new List<ImportPart>();
         private bool nextBool = true;
 
@@ -66,6 +66,9 @@ namespace FluentNHibernate.Mapping
             if (Cache.IsDirty)
                 mapping.Cache = Cache.GetCacheMapping();
 
+            if (id != null)
+                mapping.Id = id.GetIdMapping();
+
             foreach (var part in Parts)
                 mapping.AddUnmigratedPart(part);
 
@@ -82,14 +85,6 @@ namespace FluentNHibernate.Mapping
             HibernateMappingAttributes.ForEachPair(hibernateMapping.AddUnmigratedAttribute);
 
             return hibernateMapping;
-        }
-
-        public void UseIdentityForKey(Expression<Func<T, object>> expression, string columnName)
-        {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            var part = new IdentityPart(EntityType, property, columnName);
-
-            AddPart(part);
         }
 
         protected override PropertyMap Map(PropertyInfo property, string columnName)
@@ -202,8 +197,9 @@ namespace FluentNHibernate.Mapping
         public virtual IIdentityPart Id(Expression<Func<T, object>> expression, string column)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            var id = column == null ? new IdentityPart(EntityType, property) : new IdentityPart(EntityType, property, column);
-            AddPart(id);
+            
+            id = column == null ? new IdentityPart(EntityType, property) : new IdentityPart(EntityType, property, column);
+            
             return id;
         }
 

@@ -19,5 +19,19 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             testHelper.VerifyAll(writer);
         }
+
+        [Test]
+        public void ShouldWriteParams()
+        {
+            var mapping = new GeneratorMapping();
+
+            mapping.Params.Add("first", "value");
+            mapping.Params.Add("second", "another-value");
+
+            writer = new XmlGeneratorWriter();
+            writer.VerifyXml(mapping)
+                .Element("param[@name='first']").HasInnerXml("value")
+                .Element("param[@name='second']").HasInnerXml("another-value");
+        }
     }
 }

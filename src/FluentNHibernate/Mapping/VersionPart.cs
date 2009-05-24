@@ -39,7 +39,10 @@ namespace FluentNHibernate.Mapping
         VersionMapping IVersion.GetVersionMapping()
         {
             mapping.Name = Property.Name;
-            mapping.Type = Property.PropertyType.AssemblyQualifiedName;
+            mapping.Type = Property.PropertyType == typeof(DateTime) ? "timestamp" : Property.PropertyType.AssemblyQualifiedName;
+
+            if (!mapping.Attributes.IsSpecified(x => x.Column))
+                mapping.Column = Property.Name;
 
             return mapping;
         }

@@ -30,11 +30,7 @@ namespace FluentNHibernate.Testing.Xml
 
         public virtual MappingXmlTestHelper Element(string element)
         {
-            // SCREW XPATH
-            //_currentElement = (XmlElement)_document.DocumentElement.SelectSingleNode(elementPath);            
-            //_currentElement = _document.DocumentElement[element];
-            _currentElement = _currentElement[element];
-            
+            _currentElement = (XmlElement)_document.DocumentElement.SelectSingleNode(element);
 
             return this;
         }
@@ -42,6 +38,13 @@ namespace FluentNHibernate.Testing.Xml
         public virtual MappingXmlTestHelper HasAttribute(string name, string value)
         {
             _currentElement.AttributeShouldEqual(name, value);
+
+            return this;
+        }
+
+        public virtual MappingXmlTestHelper HasInnerXml(string content)
+        {
+            _currentElement.InnerXml.ShouldEqual(content);
 
             return this;
         }

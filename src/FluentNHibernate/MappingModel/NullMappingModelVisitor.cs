@@ -122,6 +122,11 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void Visit(IdMapping mapping)
+        {
+            
+        }
+
         public virtual void ProcessIndex(IndexMapping indexMapping)
         {
             
