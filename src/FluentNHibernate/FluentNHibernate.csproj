@@ -215,6 +215,7 @@
     <Compile Include="MappingModel\Output\XmlOneToManyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlOneToOneWriter.cs" />
     <Compile Include="MappingModel\Output\XmlParentWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlSetWriter.cs" />
     <Compile Include="MappingModel\Output\XmlSubclassWriter.cs" />
     <Compile Include="MappingModel\Output\XmlDiscriminatorWriter.cs" />
     <Compile Include="Infrastructure\Container.cs" />

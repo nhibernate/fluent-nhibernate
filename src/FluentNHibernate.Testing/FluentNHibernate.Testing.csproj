@@ -219,6 +219,7 @@
     <Compile Include="MappingModel\Output\XmlOneToManyWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlOneToOneWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlPropertyWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlSetWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlVersionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
     <Compile Include="PersistenceModelTests\Conventions\Configure.cs" />

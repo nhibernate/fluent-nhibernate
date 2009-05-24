@@ -87,10 +87,19 @@ namespace FluentNHibernate.MappingModel.Output
 
             // collections
             RegisterWriter<ICollectionMapping>(c =>
-                new XmlCollectionWriter(c.Resolve<IXmlWriter<BagMapping>>()));
+                new XmlCollectionWriter(
+                    c.Resolve<IXmlWriter<BagMapping>>(),
+                    c.Resolve<IXmlWriter<SetMapping>>()));
 
             RegisterWriter<BagMapping>(c =>
-                new XmlBagWriter(c.Resolve<IXmlWriter<KeyMapping>>()));
+                new XmlBagWriter(
+                    c.Resolve<IXmlWriter<KeyMapping>>(),
+                    c.Resolve<IXmlWriter<ICollectionRelationshipMapping>>()));
+
+            RegisterWriter<SetMapping>(c =>
+                new XmlSetWriter(
+                    c.Resolve<IXmlWriter<KeyMapping>>(),
+                    c.Resolve<IXmlWriter<ICollectionRelationshipMapping>>()));
 
             // collection relationships
             RegisterWriter<ICollectionRelationshipMapping>(c =>

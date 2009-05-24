@@ -4,29 +4,32 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class XmlBagWriter : BaseXmlCollectionWriter, IXmlWriter<BagMapping>
+    public class XmlSetWriter : BaseXmlCollectionWriter, IXmlWriter<SetMapping>
     {
-        public XmlBagWriter(IXmlWriter<KeyMapping> keyWriter, IXmlWriter<ICollectionRelationshipMapping> relationshipWriter)
+        public XmlSetWriter(IXmlWriter<KeyMapping> keyWriter, IXmlWriter<ICollectionRelationshipMapping> relationshipWriter)
             : base(keyWriter, relationshipWriter)
         {}
 
-        public XmlDocument Write(BagMapping mappingModel)
+        public XmlDocument Write(SetMapping mappingModel)
         {
             document = null;
             mappingModel.AcceptVisitor(this);
             return document;
         }
 
-        public override void ProcessBag(BagMapping mapping)
+        public override void ProcessSet(SetMapping mapping)
         {
             document = new XmlDocument();
 
-            var element = document.AddElement("bag");
+            var element = document.AddElement("set");
 
             WriteBaseCollectionAttributes(element, mapping);
 
             if (mapping.Attributes.IsSpecified(x => x.OrderBy))
                 element.WithAtt("order-by", mapping.OrderBy);
+
+            if (mapping.Attributes.IsSpecified(x => x.Sort))
+                element.WithAtt("sort", mapping.Sort);
         }
     }
 }
