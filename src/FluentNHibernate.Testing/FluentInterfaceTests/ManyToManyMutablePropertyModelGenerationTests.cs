@@ -29,7 +29,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ManyToMany<ManyToManyTarget>(x => x.BagOfChildren)
                 .Mapping(m => m.Cache.AsReadOnly())
-                .ModelShouldMatch(x => x.Cache.ShouldEqual(10));
+                .ModelShouldMatch(x =>
+                {
+                    x.Cache.ShouldNotBeNull();
+                    x.Cache.Usage.ShouldEqual("read-only");
+                });
         }
 
         [Test]

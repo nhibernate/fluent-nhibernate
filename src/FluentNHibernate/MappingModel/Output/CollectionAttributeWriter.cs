@@ -9,11 +9,13 @@ namespace FluentNHibernate.MappingModel.Output
         protected XmlDocument document;
         private readonly IXmlWriter<KeyMapping> keyWriter;
         private readonly IXmlWriter<ICollectionRelationshipMapping> relationshipWriter;
+        private readonly IXmlWriter<CacheMapping> cacheWriter;
 
-        protected BaseXmlCollectionWriter(IXmlWriter<KeyMapping> keyWriter, IXmlWriter<ICollectionRelationshipMapping> relationshipWriter)
+        protected BaseXmlCollectionWriter(IXmlWriter<KeyMapping> keyWriter, IXmlWriter<ICollectionRelationshipMapping> relationshipWriter, IXmlWriter<CacheMapping> cacheWriter)
         {
             this.keyWriter = keyWriter;
             this.relationshipWriter = relationshipWriter;
+            this.cacheWriter = cacheWriter;
         }
 
         public override void Visit(KeyMapping mapping)
@@ -21,6 +23,13 @@ namespace FluentNHibernate.MappingModel.Output
             var keyXml = keyWriter.Write(mapping);
 
             document.ImportAndAppendChild(keyXml);
+        }
+
+        public override void Visit(CacheMapping mapping)
+        {
+            var cacheXml = cacheWriter.Write(mapping);
+
+            document.ImportAndAppendChild(cacheXml);
         }
 
         public override void Visit(ICollectionRelationshipMapping mapping)

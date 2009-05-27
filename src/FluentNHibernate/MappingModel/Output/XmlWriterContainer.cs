@@ -96,22 +96,29 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterWriter<BagMapping>(c =>
                 new XmlBagWriter(
                     c.Resolve<IXmlWriter<KeyMapping>>(),
-                    c.Resolve<IXmlWriter<ICollectionRelationshipMapping>>()));
+                    c.Resolve<IXmlWriter<ICollectionRelationshipMapping>>(),
+                    c.Resolve<IXmlWriter<CacheMapping>>()));
 
             RegisterWriter<SetMapping>(c =>
                 new XmlSetWriter(
                     c.Resolve<IXmlWriter<KeyMapping>>(),
-                    c.Resolve<IXmlWriter<ICollectionRelationshipMapping>>()));
+                    c.Resolve<IXmlWriter<ICollectionRelationshipMapping>>(),
+                    c.Resolve<IXmlWriter<CacheMapping>>()));
 
             RegisterWriter<ListMapping>(c =>
                 new XmlListWriter(
                     c.Resolve<IXmlWriter<KeyMapping>>(),
-                    c.Resolve<IXmlWriter<ICollectionRelationshipMapping>>()));
+                    c.Resolve<IXmlWriter<ICollectionRelationshipMapping>>(),
+                    c.Resolve<IXmlWriter<CacheMapping>>()));
 
             RegisterWriter<MapMapping>(c =>
                 new XmlMapWriter(
                     c.Resolve<IXmlWriter<KeyMapping>>(),
-                    c.Resolve<IXmlWriter<ICollectionRelationshipMapping>>()));
+                    c.Resolve<IXmlWriter<ICollectionRelationshipMapping>>(),
+                    c.Resolve<IXmlWriter<CacheMapping>>()));
+
+            RegisterWriter<OneToManyMapping>(c =>
+                new XmlOneToManyWriter());
 
             // collection relationships
             RegisterWriter<ICollectionRelationshipMapping>(c =>
@@ -119,8 +126,8 @@ namespace FluentNHibernate.MappingModel.Output
                     c.Resolve<IXmlWriter<OneToManyMapping>>(),
                     c.Resolve<IXmlWriter<ManyToManyMapping>>()));
 
-            RegisterWriter<OneToManyMapping>(c =>
-                new XmlOneToManyWriter());
+            RegisterWriter<ManyToOneMapping>(c =>
+                new XmlManyToOneWriter());
 
             RegisterWriter<ManyToManyMapping>(c =>
                 new XmlManyToManyWriter(c.Resolve<IXmlWriter<ColumnMapping>>()));

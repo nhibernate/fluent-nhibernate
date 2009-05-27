@@ -6,8 +6,8 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlBagWriter : BaseXmlCollectionWriter, IXmlWriter<BagMapping>
     {
-        public XmlBagWriter(IXmlWriter<KeyMapping> keyWriter, IXmlWriter<ICollectionRelationshipMapping> relationshipWriter)
-            : base(keyWriter, relationshipWriter)
+        public XmlBagWriter(IXmlWriter<KeyMapping> keyWriter, IXmlWriter<ICollectionRelationshipMapping> relationshipWriter, IXmlWriter<CacheMapping> cacheWriter)
+            : base(keyWriter, relationshipWriter, cacheWriter)
         {}
 
         public XmlDocument Write(BagMapping mappingModel)

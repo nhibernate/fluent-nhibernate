@@ -4,7 +4,7 @@ namespace FluentNHibernate.MappingModel.Collections
 {
     public interface ICollectionMapping : IMappingBase, INameable
     {
-        CacheMapping Cache { get; }
+        CacheMapping Cache { get; set; }
         bool Inverse { get; }
         bool Lazy { get; }
         string Access { get; }

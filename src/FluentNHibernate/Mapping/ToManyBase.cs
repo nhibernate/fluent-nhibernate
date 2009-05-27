@@ -63,16 +63,19 @@ namespace FluentNHibernate.Mapping
 
         public virtual ICollectionMapping GetCollectionMapping()
         {
-            var collection = collectionBuilder();
+            var mapping = collectionBuilder();
 
-            collectionAttributes.CopyTo(collection.Attributes);
+            collectionAttributes.CopyTo(mapping.Attributes);
 
-            collection.Key = new KeyMapping();
-            keyAttributes.CopyTo(collection.Key.Attributes);
+            mapping.Key = new KeyMapping();
+            keyAttributes.CopyTo(mapping.Key.Attributes);
 
-            collection.Relationship = GetRelationship();
+            mapping.Relationship = GetRelationship();
 
-            return collection;
+            if (Cache.IsDirty)
+                mapping.Cache = Cache.GetCacheMapping();
+
+            return mapping;
         }
 
         protected abstract ICollectionRelationshipMapping GetRelationship();

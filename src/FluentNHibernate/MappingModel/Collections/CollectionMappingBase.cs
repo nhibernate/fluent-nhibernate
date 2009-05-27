@@ -22,6 +22,9 @@ namespace FluentNHibernate.MappingModel.Collections
 
             if (Relationship != null)
                 visitor.Visit(Relationship);
+
+            if (Cache != null)
+                visitor.Visit(Cache);
         }
 
         public CacheMapping Cache { get; set; }

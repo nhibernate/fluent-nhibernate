@@ -6,8 +6,8 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlListWriter : BaseXmlCollectionWriter, IXmlWriter<ListMapping>
     {
-        public XmlListWriter(IXmlWriter<KeyMapping> keyWriter, IXmlWriter<ICollectionRelationshipMapping> relationshipWriter)
-            : base(keyWriter, relationshipWriter)
+        public XmlListWriter(IXmlWriter<KeyMapping> keyWriter, IXmlWriter<ICollectionRelationshipMapping> relationshipWriter, IXmlWriter<CacheMapping> cacheWriter)
+            : base(keyWriter, relationshipWriter, cacheWriter)
         {}
 
         public XmlDocument Write(ListMapping mappingModel)
