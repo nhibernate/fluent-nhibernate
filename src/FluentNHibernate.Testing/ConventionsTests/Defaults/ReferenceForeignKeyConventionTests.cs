@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.AutoMap.TestFixtures;
 using FluentNHibernate.Conventions.Defaults;
 using FluentNHibernate.Mapping;
@@ -20,25 +21,27 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
         [Test]
         public void ShouldAcceptIfNoColumnNameSet()
         {
-            var target = MockRepository.GenerateStub<IManyToOnePart>();
+            //var target = MockRepository.GenerateStub<IManyToOnePart>();
 
-            target.Stub(x => x.GetColumnName())
-                .Return(null);
+            //target.Stub(x => x.GetColumnName())
+            //    .Return(null);
 
-            convention.Accept(target)
-                .ShouldBeTrue();
+            //convention.Accept(target)
+            //    .ShouldBeTrue();
+            throw new NotImplementedException("Awaiting convention DSL");
         }
 
         [Test]
         public void ShouldntAcceptIfColumnNameSet()
         {
-            var target = MockRepository.GenerateStub<IManyToOnePart>();
+            //var target = MockRepository.GenerateStub<IManyToOnePart>();
 
-            target.Stub(x => x.GetColumnName())
-                .Return("column_name");
+            //target.Stub(x => x.GetColumnName())
+            //    .Return("column_name");
 
-            convention.Accept(target)
-                .ShouldBeFalse();
+            //convention.Accept(target)
+            //    .ShouldBeFalse();
+            throw new NotImplementedException("Awaiting convention DSL");
         }
 
         [Test]

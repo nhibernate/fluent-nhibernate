@@ -356,7 +356,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void Creating_a_many_to_one_reference_with_fetchtype_set()
 		{
 			new MappingTester<MappedObject>()
-				.ForMapping(m => m.References(x => x.Parent).FetchType.Select())
+				.ForMapping(m => m.References(x => x.Parent).Fetch.Select())
 				.Element("class/many-to-one").HasAttribute("fetch", "select");
 		}
 

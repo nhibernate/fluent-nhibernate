@@ -100,24 +100,6 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public override DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
-        {
-            var part = new DynamicComponentPart<IDictionary>(property);
-            action(part);
-            components.Add(part);
-
-            return part;
-        }
-
-        protected override ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
-        {
-            var part = new ComponentPart<TComponent>(property);
-            action(part);
-            components.Add(part);
-
-            return part;
-        }
-
         public IComponentBase WithParentReference(Expression<Func<T, object>> exp)
         {
             return WithParentReference(ReflectionHelper.GetProperty(exp));

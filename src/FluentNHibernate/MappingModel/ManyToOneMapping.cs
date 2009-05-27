@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -98,6 +99,16 @@ namespace FluentNHibernate.MappingModel
         public AttributeStore<ManyToOneMapping> Attributes
         {
             get { return attributes; }
+        }
+
+        public IEnumerable<ColumnMapping> Columns
+        {
+            get { return columns; }
+        }
+
+        public void AddColumn(ColumnMapping column)
+        {
+            columns.Add(column);
         }
     }
 }

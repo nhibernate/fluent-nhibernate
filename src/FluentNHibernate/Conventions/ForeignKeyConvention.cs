@@ -13,7 +13,8 @@ namespace FluentNHibernate.Conventions
 
         public bool Accept(IManyToOnePart target)
         {
-            return string.IsNullOrEmpty(target.GetColumnName());
+            throw new NotImplementedException("Awaiting convention DSL");
+            //return string.IsNullOrEmpty(target.GetColumnName());
         }
 
         public void Apply(IManyToOnePart target)

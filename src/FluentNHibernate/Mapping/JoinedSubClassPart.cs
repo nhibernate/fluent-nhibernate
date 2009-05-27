@@ -26,24 +26,6 @@ namespace FluentNHibernate.Mapping
             this.mapping = mapping;
         }
 
-        public override DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
-        {
-            var part = new DynamicComponentPart<IDictionary>(property);
-            components.Add(part);
-            action(part);
-
-            return part;
-        }
-
-        protected override ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
-        {
-            var part = new ComponentPart<TComponent>(property);
-            action(part);
-            components.Add(part);
-
-            return part;
-        }
-
         public virtual void JoinedSubClass<TNextSubclass>(string keyColumn, Action<JoinedSubClassPart<TNextSubclass>> action)
         {
             var subclass = new JoinedSubClassPart<TNextSubclass>(keyColumn);
@@ -167,6 +149,9 @@ namespace FluentNHibernate.Mapping
 
             foreach (var collection in collections)
                 mapping.AddCollection(collection.GetCollectionMapping());
+
+            foreach (var reference in references)
+                mapping.AddReference(reference.GetManyToOneMapping());
 
             foreach (var part in Parts)
                 mapping.AddUnmigratedPart(part);

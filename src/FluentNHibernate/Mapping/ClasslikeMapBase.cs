@@ -23,6 +23,7 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<IVersion> versions = new List<IVersion>();
         protected readonly IList<IOneToOnePart> oneToOnes = new List<IOneToOnePart>();
         protected readonly IList<ICollectionRelationship> collections = new List<ICollectionRelationship>();
+        protected readonly IList<IManyToOnePart> references = new List<IManyToOnePart>();
 
         protected internal void AddPart(IMappingPart part)
         {
@@ -68,7 +69,7 @@ namespace FluentNHibernate.Mapping
             if (columnName != null)
                 part.ColumnName(columnName);
 
-            AddPart(part);
+            references.Add(part);
 
             return part;
         }
@@ -104,11 +105,13 @@ namespace FluentNHibernate.Mapping
             return DynamicComponent(ReflectionHelper.GetProperty(expression), action);
         }
 
-        public virtual DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
+        protected DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
         {
             var part = new DynamicComponentPart<IDictionary>(property);
-            AddPart(part); // old
+            
             action(part);
+
+            components.Add(part);
 
             return part;
         }
@@ -138,8 +141,10 @@ namespace FluentNHibernate.Mapping
         protected virtual ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
         {
             var part = new ComponentPart<TComponent>(property);
-            AddPart(part); // old
+
             action(part);
+
+            components.Add(part);
 
             return part;
         }

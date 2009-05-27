@@ -87,5 +87,13 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.HasManyToMany(x => x.BagOfChildren))
                 .ModelShouldMatch(x => x.Collections.Count().ShouldEqual(1));
         }
+
+        [Test]
+        public void ReferencesShouldAddToReferencesCollectionOnModel()
+        {
+            JoinedSubClass<PropertyTarget>()
+                .Mapping(m => m.References(x => x.Reference))
+                .ModelShouldMatch(x => x.References.Count().ShouldEqual(1));
+        }
     }
 }

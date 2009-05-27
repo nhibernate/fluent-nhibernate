@@ -47,6 +47,9 @@ namespace FluentNHibernate.Mapping
             foreach (var collection in collections)
                 mapping.AddCollection(collection.GetCollectionMapping());
 
+            foreach (var reference in references)
+                mapping.AddReference(reference.GetManyToOneMapping());
+
             foreach (var part in Parts)
                 mapping.AddUnmigratedPart(part);
 
@@ -71,24 +74,6 @@ namespace FluentNHibernate.Mapping
             {
                 SetAttribute(key, atts[key]);
             }
-        }
-
-        public override DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
-        {
-            var part = new DynamicComponentPart<IDictionary>(property);
-            components.Add(part);
-            action(part);
-
-            return part;
-        }
-
-        protected override ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
-        {
-            var part = new ComponentPart<TComponent>(property);
-            action(part);
-            components.Add(part);
-
-            return part;
         }
 
         public DiscriminatorPart SubClass<TChild>(object discriminatorValue, Action<SubClassPart<TChild>> action)
