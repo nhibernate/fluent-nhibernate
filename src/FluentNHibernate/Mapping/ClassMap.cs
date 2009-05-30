@@ -116,7 +116,7 @@ namespace FluentNHibernate.Mapping
 
             discriminator = part;
 
-            mapping.DiscriminatorBaseValue = baseClassDiscriminator;
+            mapping.DiscriminatorValue = baseClassDiscriminator;
 
             return part;
         }
@@ -245,7 +245,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void LazyLoad()
         {
-            mapping.LazyLoad = nextBool;
+            mapping.Lazy = nextBool;
             nextBool = true;
         }
 

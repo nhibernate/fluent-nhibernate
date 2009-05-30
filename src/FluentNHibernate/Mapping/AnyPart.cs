@@ -201,12 +201,12 @@ namespace FluentNHibernate.Mapping
             throw new NotSupportedException("Obsolete");
         }
 
-        public int LevelWithinPosition
+        int IMappingPart.LevelWithinPosition
         {
             get { throw new NotSupportedException("Obsolete"); }
         }
 
-        public PartPosition PositionOnDocument
+        PartPosition IMappingPart.PositionOnDocument
         {
             get { throw new NotSupportedException("Obsolete"); }
         }

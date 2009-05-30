@@ -104,10 +104,10 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.BatchSize, value); }
         }
 
-        public object DiscriminatorBaseValue
+        public object DiscriminatorValue
         {
-            get { return attributes.Get(x => x.DiscriminatorBaseValue); }
-            set { attributes.Set(x => x.DiscriminatorBaseValue, value); }
+            get { return attributes.Get(x => x.DiscriminatorValue); }
+            set { attributes.Set(x => x.DiscriminatorValue, value); }
         }
 
         public string Schema
@@ -116,10 +116,10 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Schema, value); }
         }
 
-        public bool LazyLoad
+        public bool Lazy
         {
-            get { return attributes.Get(x => x.LazyLoad); }
-            set { attributes.Set(x => x.LazyLoad, value); }
+            get { return attributes.Get(x => x.Lazy); }
+            set { attributes.Set(x => x.Lazy, value); }
         }
 
         public bool Mutable
@@ -144,6 +144,48 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return attributes.Get(x => x.OptimisticLock); }
             set { attributes.Set(x => x.OptimisticLock, value); }
+        }
+
+        public string Polymorphism
+        {
+            get { return attributes.Get(x => x.Polymorphism); }
+            set { attributes.Set(x => x.Polymorphism, value); }
+        }
+
+        public string Persister
+        {
+            get { return attributes.Get(x => x.Persister); }
+            set { attributes.Set(x => x.Persister, value); }
+        }
+
+        public string Where
+        {
+            get { return attributes.Get(x => x.Where); }
+            set { attributes.Set(x => x.Where, value); }
+        }
+
+        public string Check
+        {
+            get { return attributes.Get(x => x.Check); }
+            set { attributes.Set(x => x.Check, value); }
+        }
+
+        public string Proxy
+        {
+            get { return attributes.Get(x => x.Proxy); }
+            set { attributes.Set(x => x.Proxy, value); }
+        }
+
+        public bool SelectBeforeUpdate
+        {
+            get { return attributes.Get(x => x.SelectBeforeUpdate); }
+            set { attributes.Set(x => x.SelectBeforeUpdate, value); }
+        }
+
+        public bool Abstract
+        {
+            get { return attributes.Get(x => x.Abstract); }
+            set { attributes.Set(x => x.Abstract, value); }
         }
 
         public AttributeStore<ClassMapping> Attributes
