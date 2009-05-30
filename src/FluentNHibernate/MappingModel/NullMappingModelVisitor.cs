@@ -137,6 +137,11 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void ProcessMetaValue(MetaValueMapping mapping)
+        {
+            
+        }
+
         public virtual void Visit(IdMapping mapping)
         {
             
@@ -274,6 +279,11 @@ namespace FluentNHibernate.MappingModel
         public virtual void Visit(AnyMapping mapping)
         {
 
+        }
+
+        public virtual void Visit(MetaValueMapping mapping)
+        {
+            
         }
     }
 }

@@ -186,6 +186,7 @@
     <Compile Include="Fixtures\Basic\Person.cs" />
     <Compile Include="Fixtures\HbmOne.cs" />
     <Compile Include="Fixtures\HbmTwo.cs" />
+    <Compile Include="FluentInterfaceTests\AnyMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\BaseModelFixture.cs" />
     <Compile Include="FluentInterfaceTests\CacheMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ClassMapMutablePropertyModelGenerationTests.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="MappingModel\Output\XmlManyToManyWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlManyToOneWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlMapWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlMetaValueWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlOneToManyWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlOneToOneWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlPropertyWriterTester.cs" />

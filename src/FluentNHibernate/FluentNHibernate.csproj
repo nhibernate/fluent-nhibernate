@@ -196,6 +196,7 @@
     <Compile Include="MappingModel\Collections\ArrayMapping.cs" />
     <Compile Include="MappingModel\Collections\CompositeElementMapping.cs" />
     <Compile Include="MappingModel\Collections\MapMapping.cs" />
+    <Compile Include="MappingModel\MetaValueMapping.cs" />
     <Compile Include="MappingModel\OneToOneMapping.cs" />
     <Compile Include="MappingModel\Output\CollectionAttributeWriter.cs" />
     <Compile Include="MappingModel\Output\XmlAnyWriter.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="MappingModel\Output\XmlManyToManyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlManyToOneWriter.cs" />
     <Compile Include="MappingModel\Output\XmlMapWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlMetaValueWriter.cs" />
     <Compile Include="MappingModel\Output\XmlOneToManyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlOneToOneWriter.cs" />
     <Compile Include="MappingModel\Output\XmlParentWriter.cs" />

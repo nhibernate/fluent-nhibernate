@@ -153,6 +153,9 @@ namespace FluentNHibernate.Mapping
             foreach (var reference in references)
                 mapping.AddReference(reference.GetManyToOneMapping());
 
+            foreach (var any in anys)
+                mapping.AddAny(any.GetAnyMapping());
+
             foreach (var part in Parts)
                 mapping.AddUnmigratedPart(part);
 

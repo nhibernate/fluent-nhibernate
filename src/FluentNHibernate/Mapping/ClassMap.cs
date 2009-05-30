@@ -71,6 +71,9 @@ namespace FluentNHibernate.Mapping
             foreach (var reference in references)
                 mapping.AddReference(reference.GetManyToOneMapping());
 
+            foreach (var any in anys)
+                mapping.AddAny(any.GetAnyMapping());
+
             if (discriminator != null)
                 mapping.Discriminator = discriminator.GetDiscriminatorMapping();
 

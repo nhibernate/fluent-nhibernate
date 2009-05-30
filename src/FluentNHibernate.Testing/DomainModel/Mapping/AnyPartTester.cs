@@ -156,17 +156,5 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                  .HasAttribute("value", "SMO")
                  .HasAttribute("class", typeof(SecondMappedObject).AssemblyQualifiedName);
         }
-
-        [Test]
-        public void PositionIsSetToAnywhere()
-        {
-            Assert.AreEqual(PartPosition.Anywhere, new AnyPart<SecondMappedObject>(null).PositionOnDocument);
-        }
-
-        [Test]
-        public void LevelIsSetToOne()
-        {
-            Assert.AreEqual(1, new AnyPart<SecondMappedObject>(null).LevelWithinPosition);
-        }
     }
 }

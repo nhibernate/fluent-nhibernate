@@ -59,6 +59,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mappedMembers.OneToOnes; }
         }
 
+        public IEnumerable<AnyMapping> Anys
+        {
+            get { return mappedMembers.Anys; }
+        }
+
         public IList<VersionMapping> Versions
         {
             get { return mappedMembers.Versions; }
@@ -92,6 +97,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public void AddOneToOne(OneToOneMapping mapping)
         {
             mappedMembers.AddOneToOne(mapping);
+        }
+
+        public void AddAny(AnyMapping mapping)
+        {
+            mappedMembers.AddAny(mapping);
         }
 
         #endregion

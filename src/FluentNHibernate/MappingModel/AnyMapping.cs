@@ -7,6 +7,7 @@ namespace FluentNHibernate.MappingModel
     {
         private readonly AttributeStore<AnyMapping> attributes = new AttributeStore<AnyMapping>();
         private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
+        private readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
@@ -14,6 +15,9 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var column in columns)
                 visitor.Visit(column);
+
+            foreach (var metaValue in metaValues)
+                visitor.Visit(metaValue);
         }
 
         public bool IsNameSpecified
@@ -73,9 +77,19 @@ namespace FluentNHibernate.MappingModel
             get { return attributes; }
         }
 
+        public IEnumerable<MetaValueMapping> MetaValues
+        {
+            get { return metaValues; }
+        }
+
         public void AddColumn(ColumnMapping column)
         {
             columns.Add(column);
+        }
+
+        public void AddMetaValue(MetaValueMapping metaValue)
+        {
+            metaValues.Add(metaValue);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
@@ -14,6 +15,16 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <returns></returns>
         IAnyPart<T> IdentityType(Expression<Func<T, object>> expression);
+
+        /// <summary>
+        /// (REQUIRED) The identity type of the any mapping
+        /// </summary>
+        IAnyPart<T> IdentityType<TIdentity>();
+
+        /// <summary>
+        /// (REQUIRED) The identity type of the any mapping
+        /// </summary>
+        IAnyPart<T> IdentityType(Type type);
 
         /// <summary>
         /// (REQUIRED) Specifies the column name that will contain the type of the associated entity
@@ -37,25 +48,31 @@ namespace FluentNHibernate.Mapping
         /// Sets the cascade of this part. Valid options are "none", "all", and "save-update"
         /// </summary>
         CascadeExpression<IAnyPart<T>> Cascade { get; }
+        IAnyPart<T> Not { get; }
+        IAnyPart<T> Insert();
+        IAnyPart<T> Update();
+        IAnyPart<T> ReadOnly();
+    }
+
+    public interface IAnyMappingProvider
+    {
+        AnyMapping GetAnyMapping();
     }
 
     /// <summary>
     /// Represents the "Any" mapping in NHibernate. It is impossible to specify a foreign key constraint for this kind of association. For more information
     /// please reference chapter 5.2.4 in the NHibernate online documentation
     /// </summary>
-    public class AnyPart<T> : IAnyPart<T>
+    public class AnyPart<T> : IAnyPart<T>, IAnyMappingProvider
     {
         private readonly AccessStrategyBuilder<IAnyPart<T>> access;
-        private readonly Cache<string, string> properties = new Cache<string, string>();
-        private readonly Cache<string, string> metaValues = new Cache<string, string>();
         private readonly CascadeExpression<IAnyPart<T>> cascade;
-        private string entityTypeColumn;
-        private string entityIdentifierColumn;
+        private readonly AnyMapping mapping = new AnyMapping();
 
         public AnyPart(PropertyInfo property)
         {
-            access = new AccessStrategyBuilder<IAnyPart<T>>(this, value => SetAttribute("access", value));
-            cascade = new CascadeExpression<IAnyPart<T>>(this, value => SetAttribute("cascade", value));
+            access = new AccessStrategyBuilder<IAnyPart<T>>(this, value => mapping.Access = value);
+            cascade = new CascadeExpression<IAnyPart<T>>(this, value => mapping.Cascade = value);
             AnyProperty = property;
         }
 
@@ -63,71 +80,7 @@ namespace FluentNHibernate.Mapping
         /// The property on your class that contains the mapped object
         /// </summary>
         public PropertyInfo AnyProperty { get; private set; }
-        public PropertyInfo IdProperty { get; private set; }
-
-        /// <summary>
-        /// Used to specify attributes on the XML Element if the class does not contain the necessary Fluent mapping
-        /// </summary>
-        public void SetAttribute(string name, string value)
-        {
-            properties.Store(name, value);
-        }
-
-        /// <summary>
-        /// Used to specify attributes on the XML Element if the class does not contain the necessary Fluent mapping
-        /// </summary>
-        public void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
-        /// <summary>
-        /// Writes the Any element to the XmlElement. Typically called during a ClassMap write
-        /// </summary>
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            if (string.IsNullOrEmpty(entityIdentifierColumn) || string.IsNullOrEmpty(entityTypeColumn))
-            { throw new InvalidOperationException("<any> mapping is not valid without specifying an Entity Identifier and Entity Type Column"); }
-            if (IdProperty == null)
-            { throw new InvalidOperationException("<any> mapping is not valid without specifying an IdType"); }
-
-            //Create Any element with attributes
-            properties.Store("name", AnyProperty.Name);
-            properties.Store("id-type", TypeMapping.GetTypeString(IdProperty.PropertyType));
-            string metaType = (metaValues.Any())
-                ? TypeMapping.GetTypeString(typeof(string))
-                : TypeMapping.GetTypeString(AnyProperty.PropertyType);
-            properties.Store("meta-type", metaType);
-            XmlElement anyElement = classElement.AddElement("any").WithProperties(properties);
-
-            //Write Metavalues collection as elements
-            metaValues.ForEachPair((k, v) => anyElement.AddElement("meta-value")
-                .WithAtt("class", k)
-                .WithAtt("value", v));
-
-            //Write EntityTypeColumn then EntityIdentifierColumn (required order based on NHibernate specs)
-            anyElement.AddElement("column").WithAtt("name", entityTypeColumn);
-            anyElement.AddElement("column").WithAtt("name", entityIdentifierColumn);
-        }
-
-        /// <summary>
-        /// Indicates the level within the Position, that this Part should be written at. The Any part has no intrinsic level it's required to appear at.
-        /// </summary>
-        public int LevelWithinPosition
-        {
-            get { return 1; }
-        }
-
-        /// <summary>
-        /// The general ordering of which the Part should be written in the HBM mapping. The Any Part can be placed anywhere in a mapping file after the header components have been set.
-        /// </summary>
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.Anywhere; }
-        }
+        private bool nextBool = true;
 
         /// <summary>
         /// Defines how NHibernate will access the object for persisting/hydrating (Defaults to Property)
@@ -147,26 +100,115 @@ namespace FluentNHibernate.Mapping
 
         public IAnyPart<T> IdentityType(Expression<Func<T, object>> expression)
         {
-            IdProperty = ReflectionHelper.GetProperty(expression);
+            return IdentityType(ReflectionHelper.GetProperty(expression).PropertyType);
+        }
+
+        public IAnyPart<T> IdentityType<TIdentity>()
+        {
+            return IdentityType(typeof(TIdentity));
+        }
+
+        public IAnyPart<T> IdentityType(Type type)
+        {
+            mapping.IdType = type.AssemblyQualifiedName;
             return this;
         }
 
         public IAnyPart<T> EntityTypeColumn(string columnName)
         {
-            entityTypeColumn = columnName;
+            mapping.AddColumn(new ColumnMapping { Name = columnName });
             return this;
         }
 
         public IAnyPart<T> EntityIdentifierColumn(string columnName)
         {
-            entityIdentifierColumn = columnName;
+            mapping.AddColumn(new ColumnMapping { Name = columnName });
             return this;
         }
 
         public IAnyPart<T> AddMetaValue<TModel>(string valueMap)
         {
-            metaValues.Store(TypeMapping.GetTypeString(typeof(TModel)), valueMap);
+            mapping.AddMetaValue(new MetaValueMapping { Class = typeof(TModel).AssemblyQualifiedName, Value = valueMap });
             return this;
+        }
+
+        public IAnyPart<T> Insert()
+        {
+            mapping.Insert = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public IAnyPart<T> Update()
+        {
+            mapping.Update = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public IAnyPart<T> ReadOnly()
+        {
+            mapping.Insert = !nextBool;
+            mapping.Update = !nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public IAnyPart<T> Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
+        }
+
+        AnyMapping IAnyMappingProvider.GetAnyMapping()
+        {
+            if (mapping.Columns.Count() < 2)
+                throw new InvalidOperationException("<any> mapping is not valid without specifying an Entity Identifier and Entity Type Column");
+            if (!mapping.Attributes.IsSpecified(x => x.IdType))
+                throw new InvalidOperationException("<any> mapping is not valid without specifying an IdType");
+
+            if (!mapping.Attributes.IsSpecified(x => x.Name))
+                mapping.Name = AnyProperty.Name;
+
+            if (!mapping.Attributes.IsSpecified(x => x.MetaType))
+            {
+                if (mapping.MetaValues.Count() > 0)
+                    mapping.MetaType = typeof(string).AssemblyQualifiedName;
+                else
+                    mapping.MetaType = AnyProperty.PropertyType.AssemblyQualifiedName;
+            }
+
+
+            return mapping;
+        }
+
+        void IHasAttributes.SetAttribute(string name, string value)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        void IHasAttributes.SetAttributes(Attributes atts)
+        {
+            throw new NotSupportedException("Obsolete");
+
+        }
+
+        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        public int LevelWithinPosition
+        {
+            get { throw new NotSupportedException("Obsolete"); }
+        }
+
+        public PartPosition PositionOnDocument
+        {
+            get { throw new NotSupportedException("Obsolete"); }
         }
     }
 }

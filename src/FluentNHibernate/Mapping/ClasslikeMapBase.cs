@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
@@ -24,6 +23,7 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<IOneToOnePart> oneToOnes = new List<IOneToOnePart>();
         protected readonly IList<ICollectionRelationship> collections = new List<ICollectionRelationship>();
         protected readonly IList<IManyToOnePart> references = new List<IManyToOnePart>();
+        protected readonly IList<IAnyMappingProvider> anys = new List<IAnyMappingProvider>();
 
         protected internal void AddPart(IMappingPart part)
         {
@@ -82,7 +82,9 @@ namespace FluentNHibernate.Mapping
         protected virtual IAnyPart<TOther> ReferencesAny<TOther>(PropertyInfo property)
         {
             var part = new AnyPart<TOther>(property);
-            AddPart(part);
+
+            anys.Add(part);
+
             return part;
         }
 

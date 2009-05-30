@@ -95,5 +95,16 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.References(x => x.Reference))
                 .ModelShouldMatch(x => x.References.Count().ShouldEqual(1));
         }
+
+        [Test]
+        public void ReferencesAnyShouldAddToAnyCollectionOnModel()
+        {
+            JoinedSubClass<PropertyTarget>()
+                .Mapping(m => m.ReferencesAny(x => x.Reference)
+                    .IdentityType<int>()
+                    .EntityIdentifierColumn("col1")
+                    .EntityTypeColumn("col2"))
+                .ModelShouldMatch(x => x.Anys.Count().ShouldEqual(1));
+        }
     }
 }
