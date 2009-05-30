@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{529145D5-6CC3-4016-89B5-826563024AF1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -183,6 +183,7 @@
     <Compile Include="Cfg\Db\MsSqlConfiguration.cs" />
     <Compile Include="DummyPropertyInfo.cs" />
     <Compile Include="Infrastructure\ResolveException.cs" />
+    <Compile Include="MappingModel\AnyMapping.cs" />
     <Compile Include="MappingModel\CacheMapping.cs" />
     <Compile Include="MappingModel\ClassBased\ClassMapping.cs" />
     <Compile Include="MappingModel\ClassBased\ClassMappingBase.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="MappingModel\Collections\MapMapping.cs" />
     <Compile Include="MappingModel\OneToOneMapping.cs" />
     <Compile Include="MappingModel\Output\CollectionAttributeWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlAnyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlBagWriter.cs" />
     <Compile Include="MappingModel\Output\XmlCacheWriter.cs" />
     <Compile Include="MappingModel\Output\XmlClassWriterBase.cs" />

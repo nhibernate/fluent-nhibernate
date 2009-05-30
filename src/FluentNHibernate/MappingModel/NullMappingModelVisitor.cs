@@ -132,6 +132,11 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void ProcessAny(AnyMapping mapping)
+        {
+            
+        }
+
         public virtual void Visit(IdMapping mapping)
         {
             
@@ -262,6 +267,11 @@ namespace FluentNHibernate.MappingModel
         }
 
         public virtual void Visit(ManyToManyMapping mapping)
+        {
+
+        }
+
+        public virtual void Visit(AnyMapping mapping)
         {
 
         }

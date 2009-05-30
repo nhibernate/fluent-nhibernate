@@ -120,6 +120,9 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterWriter<OneToManyMapping>(c =>
                 new XmlOneToManyWriter());
 
+            RegisterWriter<AnyMapping>(c =>
+                new XmlAnyWriter(c.Resolve<IXmlWriter<ColumnMapping>>()));
+
             // collection relationships
             RegisterWriter<ICollectionRelationshipMapping>(c =>
                 new XmlCollectionRelationshipWriter(

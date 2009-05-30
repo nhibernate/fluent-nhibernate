@@ -33,6 +33,7 @@ namespace FluentNHibernate.MappingModel
         void ProcessCompositeElement(CompositeElementMapping compositeElementMapping);
         void ProcessVersion(VersionMapping mapping);
         void ProcessOneToOne(OneToOneMapping mapping);
+        void ProcessAny(AnyMapping mapping);
 
         void Visit(IdMapping mapping);
         void Visit(ClassMapping classMapping);
@@ -59,5 +60,6 @@ namespace FluentNHibernate.MappingModel
         void Visit(OneToOneMapping mapping);
         void Visit(OneToManyMapping mapping);
         void Visit(ManyToManyMapping mapping);
+        void Visit(AnyMapping mapping);
     }
 }
