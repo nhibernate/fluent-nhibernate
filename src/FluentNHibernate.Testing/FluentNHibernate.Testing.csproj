@@ -217,6 +217,7 @@
     <Compile Include="MappingModel\Output\XmlCollectionRelationshipWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlCollectionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlColumnWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlComponentBaseWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeElementWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlGeneratorWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlIdWriterTester.cs" />

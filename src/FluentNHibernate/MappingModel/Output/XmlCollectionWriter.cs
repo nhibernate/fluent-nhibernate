@@ -6,18 +6,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlCollectionWriter : NullMappingModelVisitor, IXmlWriter<ICollectionMapping>
     {
-        private readonly IXmlWriter<BagMapping> bagWriter;
-        private readonly IXmlWriter<SetMapping> setWriter;
-        private readonly IXmlWriter<ListMapping> listWriter;
-        private readonly IXmlWriter<MapMapping> mapWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
 
-        public XmlCollectionWriter(IXmlWriter<BagMapping> bagWriter, IXmlWriter<SetMapping> setWriter, IXmlWriter<ListMapping> listWriter, IXmlWriter<MapMapping> mapWriter)
+        public XmlCollectionWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.bagWriter = bagWriter;
-            this.setWriter = setWriter;
-            this.listWriter = listWriter;
-            this.mapWriter = mapWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(ICollectionMapping mappingModel)
@@ -29,22 +23,26 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void ProcessBag(BagMapping mapping)
         {
-            document = bagWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<BagMapping>();
+            document = writer.Write(mapping);
         }
 
         public override void ProcessSet(SetMapping mapping)
         {
-            document = setWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<SetMapping>();
+            document = writer.Write(mapping);
         }
 
         public override void ProcessList(ListMapping mapping)
         {
-            document = listWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<ListMapping>();
+            document = writer.Write(mapping);
         }
 
         public override void ProcessMap(MapMapping mapping)
         {
-            document = mapWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<MapMapping>();
+            document = writer.Write(mapping);
         }
     }
 }

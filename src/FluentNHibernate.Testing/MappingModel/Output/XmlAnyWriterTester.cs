@@ -8,12 +8,18 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlAnyWriterTester
     {
-        private XmlAnyWriter writer;
+        private IXmlWriter<AnyMapping> writer;
+
+        [SetUp]
+        public void GetWriterFromContainer()
+        {
+            var container = new XmlWriterContainer();
+            writer = container.Resolve<IXmlWriter<AnyMapping>>();
+        }
 
         [Test]
         public void ShouldWriteIdTypeAttribute()
         {
-            writer = new XmlAnyWriter(null, null);
             var testHelper = new XmlWriterTestHelper<AnyMapping>();
             testHelper.Check(x => x.IdType, "id").MapsToAttribute("id-type");
 
@@ -23,7 +29,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteMetaTypeAttribute()
         {
-            writer = new XmlAnyWriter(null, null);
             var testHelper = new XmlWriterTestHelper<AnyMapping>();
             testHelper.Check(x => x.MetaType, "meta").MapsToAttribute("meta-type");
 
@@ -33,7 +38,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteNameAttribute()
         {
-            writer = new XmlAnyWriter(null, null);
             var testHelper = new XmlWriterTestHelper<AnyMapping>();
             testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
 
@@ -43,7 +47,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteAccessAttribute()
         {
-            writer = new XmlAnyWriter(null, null);
             var testHelper = new XmlWriterTestHelper<AnyMapping>();
             testHelper.Check(x => x.Access, "acc").MapsToAttribute("access");
 
@@ -53,7 +56,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteInsertAttribute()
         {
-            writer = new XmlAnyWriter(null, null);
             var testHelper = new XmlWriterTestHelper<AnyMapping>();
             testHelper.Check(x => x.Insert, true).MapsToAttribute("insert");
 
@@ -63,7 +65,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteUpdateAttribute()
         {
-            writer = new XmlAnyWriter(null, null);
             var testHelper = new XmlWriterTestHelper<AnyMapping>();
             testHelper.Check(x => x.Update, true).MapsToAttribute("update");
 
@@ -73,7 +74,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteCascadeAttribute()
         {
-            writer = new XmlAnyWriter(null, null);
             var testHelper = new XmlWriterTestHelper<AnyMapping>();
             testHelper.Check(x => x.Cascade, "all").MapsToAttribute("cascade");
 
@@ -87,8 +87,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             mapping.AddColumn(new ColumnMapping { Name = "Column1" });
 
-            new XmlAnyWriter(new XmlColumnWriter(), null)
-                .VerifyXml(mapping)
+            writer.VerifyXml(mapping)
                 .Element("column").Exists();
         }
 
@@ -99,8 +98,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             mapping.AddMetaValue(new MetaValueMapping());
 
-            new XmlAnyWriter(null, new XmlMetaValueWriter())
-                .VerifyXml(mapping)
+            writer.VerifyXml(mapping)
                 .Element("meta-value").Exists();
         }
     }

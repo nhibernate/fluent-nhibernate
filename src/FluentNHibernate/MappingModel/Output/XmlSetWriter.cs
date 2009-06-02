@@ -6,8 +6,8 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlSetWriter : BaseXmlCollectionWriter, IXmlWriter<SetMapping>
     {
-        public XmlSetWriter(IXmlWriter<KeyMapping> keyWriter, IXmlWriter<ICollectionRelationshipMapping> relationshipWriter, IXmlWriter<CacheMapping> cacheWriter)
-            : base(keyWriter, relationshipWriter, cacheWriter)
+        public XmlSetWriter(IXmlWriterServiceLocator serviceLocator)
+            : base(serviceLocator)
         {}
 
         public XmlDocument Write(SetMapping mappingModel)

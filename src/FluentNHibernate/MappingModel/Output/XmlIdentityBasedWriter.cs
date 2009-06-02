@@ -5,12 +5,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlIdentityBasedWriter : NullMappingModelVisitor, IXmlWriter<IIdentityMapping>
     {
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
-        private readonly IXmlWriter<IdMapping> idWriter;
 
-        public XmlIdentityBasedWriter(IXmlWriter<IdMapping> idWriter)
+        public XmlIdentityBasedWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.idWriter = idWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(IIdentityMapping mappingModel)
@@ -22,7 +22,8 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void ProcessId(IdMapping mapping)
         {
-            document = idWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<IdMapping>();
+            document = writer.Write(mapping);
         }
 
         public override void ProcessCompositeId(CompositeIdMapping idMapping)

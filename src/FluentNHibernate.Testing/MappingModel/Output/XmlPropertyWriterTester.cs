@@ -8,12 +8,18 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlPropertyWriterTester
     {
-        private XmlPropertyWriter writer;
+        private IXmlWriter<PropertyMapping> writer;
+
+        [SetUp]
+        public void GetWriterFromContainer()
+        {
+            var container = new XmlWriterContainer();
+            writer = container.Resolve<IXmlWriter<PropertyMapping>>();
+        }
 
         [Test]
         public void ShouldWriteAccessAttribute()
         {
-            writer = new XmlPropertyWriter(null);
             var testHelper = new XmlWriterTestHelper<PropertyMapping>();
             testHelper.Check(x => x.Access, "access").MapsToAttribute("access");
 
@@ -23,7 +29,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteNameAttribute()
         {
-            writer = new XmlPropertyWriter(null);
             var testHelper = new XmlWriterTestHelper<PropertyMapping>();
             testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
 
@@ -33,7 +38,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteTypeAttribute()
         {
-            writer = new XmlPropertyWriter(null);
             var testHelper = new XmlWriterTestHelper<PropertyMapping>();
             testHelper.Check(x => x.Type, "type").MapsToAttribute("type");
 
@@ -43,7 +47,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteFormulaAttribute()
         {
-            writer = new XmlPropertyWriter(null);
             var testHelper = new XmlWriterTestHelper<PropertyMapping>();
             testHelper.Check(x => x.Formula, "form").MapsToAttribute("formula");
 
@@ -53,7 +56,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteGeneratedAttribute()
         {
-            writer = new XmlPropertyWriter(null);
             var testHelper = new XmlWriterTestHelper<PropertyMapping>();
             testHelper.Check(x => x.Generated, "gen").MapsToAttribute("generated");
 
@@ -63,7 +65,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteInsertAttribute()
         {
-            writer = new XmlPropertyWriter(null);
             var testHelper = new XmlWriterTestHelper<PropertyMapping>();
             testHelper.Check(x => x.Insert, true).MapsToAttribute("insert");
 
@@ -73,7 +74,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteOptimisticLockAttribute()
         {
-            writer = new XmlPropertyWriter(null);
             var testHelper = new XmlWriterTestHelper<PropertyMapping>();
             testHelper.Check(x => x.OptimisticLock, true).MapsToAttribute("optimistic-lock");
 
@@ -83,7 +83,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteUpdateAttribute()
         {
-            writer = new XmlPropertyWriter(null);
             var testHelper = new XmlWriterTestHelper<PropertyMapping>();
             testHelper.Check(x => x.Update, true).MapsToAttribute("update");
 
@@ -97,7 +96,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             mapping.AddColumn(new ColumnMapping { Name = "Column1" });
 
-            writer = new XmlPropertyWriter(new XmlColumnWriter());
             writer.VerifyXml(mapping)
                 .Element("column").Exists();
         }

@@ -41,11 +41,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
-        public void VersionShouldAddToModelVersionsCollection()
+        public void VersionShouldSetModelVersion()
         {
             SubClass<VersionTarget>()
                 .Mapping(m => m.Version(x => x.VersionNumber))
-                .ModelShouldMatch(x => x.Versions.Count().ShouldEqual(1));
+                .ModelShouldMatch(x => x.Version.ShouldNotBeNull());
         }
 
         [Test]

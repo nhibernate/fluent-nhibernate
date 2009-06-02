@@ -7,17 +7,18 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlCompositeElementWriter : NullMappingModelVisitor, IXmlWriter<CompositeElementMapping>
     {
-        private readonly IXmlWriter<PropertyMapping> propertyWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
         protected XmlDocument document;
 
-        public XmlCompositeElementWriter(IXmlWriter<PropertyMapping> propertyWriter)
+        public XmlCompositeElementWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.propertyWriter = propertyWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public override void Visit(PropertyMapping propertyMapping)
         {
-            var propertyXml = propertyWriter.Write(propertyMapping);
+            var writer = serviceLocator.GetWriter<PropertyMapping>();
+            var propertyXml = writer.Write(propertyMapping);
 
             document.ImportAndAppendChild(propertyXml);
         }

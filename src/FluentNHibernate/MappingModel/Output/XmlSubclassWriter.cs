@@ -8,20 +8,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlSubclassWriter : XmlClassWriterBase, IXmlWriter<SubclassMapping>
     {
-        private readonly IXmlWriter<PropertyMapping> propertyWriter;
-        private readonly IXmlWriter<ComponentMapping> componentWriter;
-        private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentWriter;
-        private readonly IXmlWriter<VersionMapping> versionWriter;
-        private readonly IXmlWriter<OneToOneMapping> oneToOneWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
 
-        public XmlSubclassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter, IXmlWriter<VersionMapping> versionWriter, IXmlWriter<OneToOneMapping> oneToOneWriter)
-            : base(propertyWriter, versionWriter, oneToOneWriter)
+        public XmlSubclassWriter(IXmlWriterServiceLocator serviceLocator)
+            : base(serviceLocator)
         {
-            this.propertyWriter = propertyWriter;
-            this.componentWriter = componentWriter;
-            this.dynamicComponentWriter = dynamicComponentWriter;
-            this.versionWriter = versionWriter;
-            this.oneToOneWriter = oneToOneWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(SubclassMapping mappingModel)
@@ -77,18 +69,16 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(SubclassMapping subclassMapping)
         {
-            var subWriter = new XmlSubclassWriter(propertyWriter, componentWriter, dynamicComponentWriter, versionWriter, oneToOneWriter);
-            var subclassXml = subWriter.Write(subclassMapping);
+            var writer = serviceLocator.GetWriter<SubclassMapping>();
+            var subclassXml = writer.Write(subclassMapping);
 
             document.ImportAndAppendChild(subclassXml);
         }
 
         public override void Visit(ComponentMappingBase componentMapping)
         {
-            var dynamicComponentMapping = componentMapping as DynamicComponentMapping;
-            XmlDocument componentXml = (dynamicComponentMapping != null) 
-                                        ? dynamicComponentWriter.Write(dynamicComponentMapping) 
-                                        : componentWriter.Write((ComponentMapping)componentMapping);
+            var writer = serviceLocator.GetWriter<ComponentMappingBase>();
+            var componentXml = writer.Write(componentMapping);
 
             document.ImportAndAppendChild(componentXml);
         }

@@ -16,6 +16,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers = new MappedMembers();
         }
 
+        public VersionMapping Version
+        {
+            get { return mappedMembers.Version; }
+            set { mappedMembers.Version = value; }
+        }
+
         public string Name
         {
             get { return attributes.Get(x => x.Name); }
@@ -64,19 +70,9 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mappedMembers.Anys; }
         }
 
-        public IList<VersionMapping> Versions
-        {
-            get { return mappedMembers.Versions; }
-        }
-
         public void AddProperty(PropertyMapping property)
         {
             mappedMembers.AddProperty(property);
-        }
-
-        public void AddVersion(VersionMapping version)
-        {
-            mappedMembers.AddVersion(version);
         }
 
         public void AddCollection(ICollectionMapping collection)

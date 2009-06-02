@@ -7,14 +7,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlJoinWriter : NullMappingModelVisitor, IXmlWriter<JoinMapping>
     {
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
-        private readonly IXmlWriter<PropertyMapping> propertyWriter;
-        private readonly IXmlWriter<KeyMapping> keyWriter;
 
-        public XmlJoinWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<KeyMapping> keyWriter)
+        public XmlJoinWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.propertyWriter = propertyWriter;
-            this.keyWriter = keyWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(JoinMapping mappingModel)
@@ -46,14 +44,16 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(PropertyMapping mapping)
         {
-            var propertyXml = propertyWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<PropertyMapping>();
+            var propertyXml = writer.Write(mapping);
 
             document.ImportAndAppendChild(propertyXml);
         }
 
         public override void Visit(KeyMapping mapping)
         {
-            var keyXml = keyWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<KeyMapping>();
+            var keyXml = writer.Write(mapping);
 
             document.ImportAndAppendChild(keyXml);
         }

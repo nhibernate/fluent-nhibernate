@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Xml;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.Testing;
-using NHibernate.Cfg.MappingSchema;
 using NUnit.Framework;
 using FluentNHibernate.MappingModel.Output;
 using Rhino.Mocks;
@@ -15,16 +11,22 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlJoinWriterTester
     {
-        private XmlJoinWriter _writer;
+        private IXmlWriter<JoinMapping> writer;
+
+        [SetUp]
+        public void GetWriterFromContainer()
+        {
+            var container = new XmlWriterContainer();
+            writer = container.Resolve<IXmlWriter<JoinMapping>>();
+        }
 
         [Test]
         public void ShouldWriteTheAttributes()
         {
-            _writer = new XmlJoinWriter(null, null);
             var testHelper = new XmlWriterTestHelper<JoinMapping>();
             testHelper.Check(x => x.TableName, "Table1").MapsToAttribute("table");
 
-            testHelper.VerifyAll(_writer);
+            testHelper.VerifyAll(writer);
         }
 
         [Test]
@@ -34,9 +36,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             joinMapping.Key = new KeyMapping();
             joinMapping.Key.AddColumn(new ColumnMapping { Name = "Column1" });
             
-            _writer = new XmlJoinWriter(null, new XmlKeyWriter(new XmlColumnWriter()));
-
-            _writer.VerifyXml(joinMapping)
+            writer.VerifyXml(joinMapping)
                 .Element("key/column")
                     .Exists()
                     .HasAttribute("name", "Column1");
@@ -56,9 +56,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Expect(x => x.Write(joinMapping.Properties.First()))
                 .Return(propertyDocument);
 
-            _writer = new XmlJoinWriter(propertyWriter, null);
-
-            _writer.VerifyXml(joinMapping)
+            writer.VerifyXml(joinMapping)
                 .Element("property").Exists();
         }
     }

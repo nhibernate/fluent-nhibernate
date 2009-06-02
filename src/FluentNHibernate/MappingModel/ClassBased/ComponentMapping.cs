@@ -8,7 +8,13 @@
 
         private ComponentMapping(AttributeStore store)
             : base(store)
+        {}
+
+        public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
+            visitor.ProcessComponent(this);
+
+            base.AcceptVisitor(visitor);
         }
     }
 }

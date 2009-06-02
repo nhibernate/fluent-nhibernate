@@ -9,12 +9,18 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlIdWriterTester
     {
-        private XmlIdWriter writer;
+        private IXmlWriter<IdMapping> writer;
+
+        [SetUp]
+        public void GetWriterFromContainer()
+        {
+            var container = new XmlWriterContainer();
+            writer = container.Resolve<IXmlWriter<IdMapping>>();
+        }
 
         [Test]
         public void ShouldWriteAccessAttribute()
         {
-            writer = new XmlIdWriter(null, null);
             var testHelper = new XmlWriterTestHelper<IdMapping>();
             testHelper.Check(x => x.Access, "access").MapsToAttribute("access");
 
@@ -24,7 +30,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteNameAttribute()
         {
-            writer = new XmlIdWriter(null, null);
             var testHelper = new XmlWriterTestHelper<IdMapping>();
             testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
 
@@ -34,7 +39,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteTypeAttribute()
         {
-            writer = new XmlIdWriter(null, null);
             var testHelper = new XmlWriterTestHelper<IdMapping>();
             testHelper.Check(x => x.Type, "type").MapsToAttribute("type");
 
@@ -44,7 +48,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteUnsavedValueAttribute()
         {
-            writer = new XmlIdWriter(null, null);
             var testHelper = new XmlWriterTestHelper<IdMapping>();
             testHelper.Check(x => x.UnsavedValue, "u-value").MapsToAttribute("unsaved-value");
 
@@ -59,7 +62,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 Generator = new GeneratorMapping { Class = "Class" }
             };
 
-            writer = new XmlIdWriter(new XmlGeneratorWriter(), null);
             writer.VerifyXml(mapping)
                 .Element("generator").Exists();
         }
@@ -70,7 +72,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var mapping = new IdMapping();
             mapping.AddColumn(new ColumnMapping { Name = "Column1" });
 
-            writer = new XmlIdWriter(null, new XmlColumnWriter());
             writer.VerifyXml(mapping)
                 .Element("column").Exists();
         }

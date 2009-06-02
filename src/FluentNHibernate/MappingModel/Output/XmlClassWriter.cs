@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.Mapping;
@@ -9,22 +10,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlClassWriter : XmlClassWriterBase, IXmlWriter<ClassMapping>
     {
-        private readonly IXmlWriter<DiscriminatorMapping> discriminatorWriter;
-        private readonly IXmlWriter<ISubclassMapping> subclassWriter;
-        private readonly IXmlWriter<ComponentMapping> componentWriter;
-        private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentWriter;
-        private readonly IXmlWriter<JoinMapping> joinWriter;
-        private readonly IXmlWriter<IIdentityMapping> idWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
 
-        public XmlClassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<DiscriminatorMapping> discriminatorWriter, IXmlWriter<ISubclassMapping> subclassWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter, IXmlWriter<JoinMapping> joinWriter, IXmlWriter<VersionMapping> versionWriter, IXmlWriter<IIdentityMapping> idWriter, IXmlWriter<OneToOneMapping> oneToOneWriter)
-            : base(propertyWriter, versionWriter, oneToOneWriter)
+        public XmlClassWriter(IXmlWriterServiceLocator serviceLocator)
+            : base(serviceLocator)
         {
-            this.discriminatorWriter = discriminatorWriter;
-            this.joinWriter = joinWriter;
-            this.idWriter = idWriter;
-            this.subclassWriter = subclassWriter;
-            this.componentWriter = componentWriter;
-            this.dynamicComponentWriter = dynamicComponentWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(ClassMapping mapping)
@@ -121,40 +112,58 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(DiscriminatorMapping discriminatorMapping)
         {
-            var discriminatorXml = discriminatorWriter.Write(discriminatorMapping);
+            var writer = serviceLocator.GetWriter<DiscriminatorMapping>();
+            var discriminatorXml = writer.Write(discriminatorMapping);
 
             document.ImportAndAppendChild(discriminatorXml);
         }
 
         public override void Visit(ISubclassMapping subclassMapping)
         {
-            var subclassXml = subclassWriter.Write(subclassMapping);
+            var writer = serviceLocator.GetWriter<ISubclassMapping>();
+            var subclassXml = writer.Write(subclassMapping);
 
             document.ImportAndAppendChild(subclassXml);
         }
 
         public override void Visit(ComponentMappingBase componentMapping)
         {
-            var dynamicComponentMapping = componentMapping as DynamicComponentMapping;
-            XmlDocument componentXml = (dynamicComponentMapping != null)
-                                       ? dynamicComponentWriter.Write(dynamicComponentMapping)
-                                       : componentWriter.Write((ComponentMapping)componentMapping);
+            var writer = serviceLocator.GetWriter<ComponentMappingBase>();
+            var componentXml = writer.Write(componentMapping);
 
             document.ImportAndAppendChild(componentXml);
         }
 
         public override void Visit(JoinMapping joinMapping)
         {
-            var joinXml = joinWriter.Write(joinMapping);
+            var writer = serviceLocator.GetWriter<JoinMapping>();
+            var joinXml = writer.Write(joinMapping);
 
             document.ImportAndAppendChild(joinXml);
         }
 
         public override void Visit(IIdentityMapping mapping)
         {
-            var idXml = idWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<IIdentityMapping>();
+            var idXml = writer.Write(mapping);
 
             document.ImportAndAppendChild(idXml);
+        }
+
+        public override void Visit(CacheMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<CacheMapping>();
+            var cacheXml = writer.Write(mapping);
+
+            document.ImportAndAppendChild(cacheXml);
+        }
+
+        public override void Visit(ManyToOneMapping manyToOneMapping)
+        {
+            var writer = serviceLocator.GetWriter<ManyToOneMapping>();
+            var manyToOneXml = writer.Write(manyToOneMapping);
+
+            document.ImportAndAppendChild(manyToOneXml);
         }
     }
 }

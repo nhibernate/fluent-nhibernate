@@ -9,14 +9,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlHibernateMappingWriter : NullMappingModelVisitor, IXmlWriter<HibernateMapping>
     {
-        private readonly IXmlWriter<ClassMapping> classWriter;
-        private readonly IXmlWriter<ImportMapping> importWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
 
-        public XmlHibernateMappingWriter(IXmlWriter<ClassMapping> classWriter, IXmlWriter<ImportMapping> importWriter)
+        public XmlHibernateMappingWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.classWriter = classWriter;
-            this.importWriter = importWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(HibernateMapping mapping)
@@ -45,7 +43,8 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(ImportMapping importMapping)
         {
-            var import = importWriter.Write(importMapping);
+            var writer = serviceLocator.GetWriter<ImportMapping>();
+            var import = writer.Write(importMapping);
             var newNode = document.ImportNode(import.DocumentElement, true);
 
             if (document.DocumentElement.ChildNodes.Count > 0)
@@ -56,7 +55,8 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(ClassMapping classMapping)
         {
-            var hbmClass = classWriter.Write(classMapping);
+            var writer = serviceLocator.GetWriter<ClassMapping>();
+            var hbmClass = writer.Write(classMapping);
 
             var newClassNode = document.ImportNode(hbmClass.DocumentElement, true);
 

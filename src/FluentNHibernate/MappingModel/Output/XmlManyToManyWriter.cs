@@ -7,12 +7,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlManyToManyWriter : NullMappingModelVisitor, IXmlWriter<ManyToManyMapping>
     {
-        private readonly IXmlWriter<ColumnMapping> columnWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
 
-        public XmlManyToManyWriter(IXmlWriter<ColumnMapping> columnWriter)
+        public XmlManyToManyWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.columnWriter = columnWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(ManyToManyMapping mappingModel)
@@ -52,7 +52,8 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(ColumnMapping mapping)
         {
-            var columnXml = columnWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<ColumnMapping>();
+            var columnXml = writer.Write(mapping);
 
             document.ImportAndAppendChild(columnXml);
         }

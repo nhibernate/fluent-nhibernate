@@ -38,8 +38,8 @@ namespace FluentNHibernate.Mapping
             foreach (var component in components)
                 mapping.AddComponent(component.GetComponentMapping());
 
-            foreach (var version in versions)
-                mapping.AddVersion(version.GetVersionMapping());
+            if (version != null)
+                mapping.Version = version.GetVersionMapping();
 
             foreach (var oneToOne in oneToOnes)
                 mapping.AddOneToOne(oneToOne.GetOneToOneMapping());

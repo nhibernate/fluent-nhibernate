@@ -199,14 +199,16 @@
     <Compile Include="MappingModel\MetaValueMapping.cs" />
     <Compile Include="MappingModel\OneToOneMapping.cs" />
     <Compile Include="MappingModel\Output\CollectionAttributeWriter.cs" />
+    <Compile Include="MappingModel\Output\IXmlWriterServiceLocator.cs" />
     <Compile Include="MappingModel\Output\XmlAnyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlBagWriter.cs" />
     <Compile Include="MappingModel\Output\XmlCacheWriter.cs" />
     <Compile Include="MappingModel\Output\XmlClassWriterBase.cs" />
     <Compile Include="MappingModel\Output\XmlCollectionRelationshipWriter.cs" />
     <Compile Include="MappingModel\Output\XmlCollectionWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlComponentBaseWriter.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriter.cs" />
-    <Compile Include="MappingModel\Output\XmlComponentWriterBase.cs" />
+    <Compile Include="MappingModel\Output\BaseXmlComponentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeElementWriter.cs" />
     <Compile Include="MappingModel\Output\XmlDynamicComponentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlGeneratorWriter.cs" />
@@ -231,6 +233,7 @@
     <Compile Include="MappingModel\Output\XmlJoinWriter.cs" />
     <Compile Include="MappingModel\Output\XmlVersionWriter.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainer.cs" />
+    <Compile Include="MappingModel\Output\XmlWriterServiceLocator.cs" />
     <Compile Include="MappingModel\ParentMapping.cs" />
     <Compile Include="MappingModel\VersionMapping.cs" />
     <Compile Include="Mapping\AnyPart.cs" />

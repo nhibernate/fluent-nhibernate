@@ -8,12 +8,18 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlKeyWriterTester
     {
-        private XmlKeyWriter writer;
+        private IXmlWriter<KeyMapping> writer;
+
+        [SetUp]
+        public void GetWriterFromContainer()
+        {
+            var container = new XmlWriterContainer();
+            writer = container.Resolve<IXmlWriter<KeyMapping>>();
+        }
 
         [Test]
         public void ShouldWriteForeignKeyAttribute()
         {
-            writer = new XmlKeyWriter(null);
             var testHelper = new XmlWriterTestHelper<KeyMapping>();
             testHelper.Check(x => x.ForeignKey, "fk").MapsToAttribute("foreign-key");
 
@@ -23,7 +29,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWritePropertyRefAttribute()
         {
-            writer = new XmlKeyWriter(null);
             var testHelper = new XmlWriterTestHelper<KeyMapping>();
             testHelper.Check(x => x.PropertyRef, "prop").MapsToAttribute("property-ref");
 
@@ -33,7 +38,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteOnDeleteAttribute()
         {
-            writer = new XmlKeyWriter(null);
             var testHelper = new XmlWriterTestHelper<KeyMapping>();
             testHelper.Check(x => x.OnDelete, "cascade").MapsToAttribute("on-delete");
 
@@ -46,7 +50,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var mapping = new KeyMapping();
             mapping.AddColumn(new ColumnMapping { Name = "Column1" });
 
-            writer = new XmlKeyWriter(new XmlColumnWriter());
             writer.VerifyXml(mapping)
                 .Element("column").Exists();
         }

@@ -10,15 +10,22 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlCompositeElementWriterTester
     {
-        private XmlCompositeElementWriter xmlCompositeElementWriter;
+        private IXmlWriter<CompositeElementMapping> writer;
+
+        [SetUp]
+        public void GetWriterFromContainer()
+        {
+            var container = new XmlWriterContainer();
+            writer = container.Resolve<IXmlWriter<CompositeElementMapping>>();
+        }
 
         [Test]
         public void ShouldWriteTheAttributes()
         {
             var compositeElementMapping = new CompositeElementMapping { Type = typeof(object) };
 
-            xmlCompositeElementWriter = new XmlCompositeElementWriter(null);
-            xmlCompositeElementWriter.VerifyXml(compositeElementMapping).HasAttribute("class", typeof(object).AssemblyQualifiedName);
+            writer.VerifyXml(compositeElementMapping)
+                .HasAttribute("class", typeof(object).AssemblyQualifiedName);
         }
 
         [Test]
@@ -27,17 +34,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var compositeElementMapping = new CompositeElementMapping();
             compositeElementMapping.AddProperty(new PropertyMapping());
 
-            var propertyDocument = new XmlDocument();
-            propertyDocument.AppendChild(propertyDocument.CreateElement("property"));
-
-            var propertyWriter = MockRepository.GenerateMock<IXmlWriter<PropertyMapping>>();
-            propertyWriter
-                .Expect(x => x.Write(compositeElementMapping.Properties.First()))
-                .Return(propertyDocument);
-
-            xmlCompositeElementWriter = new XmlCompositeElementWriter(propertyWriter);
-
-            xmlCompositeElementWriter.VerifyXml(compositeElementMapping)
+            writer.VerifyXml(compositeElementMapping)
                 .Element("property").Exists();
         }
     }

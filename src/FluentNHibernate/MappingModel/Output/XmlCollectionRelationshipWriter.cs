@@ -6,14 +6,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlCollectionRelationshipWriter : NullMappingModelVisitor, IXmlWriter<ICollectionRelationshipMapping>
     {
-        private readonly IXmlWriter<OneToManyMapping> oneToManyWriter;
-        private readonly IXmlWriter<ManyToManyMapping> manyToManyWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
 
-        public XmlCollectionRelationshipWriter(IXmlWriter<OneToManyMapping> oneToManyWriter, IXmlWriter<ManyToManyMapping> manyToManyWriter)
+        public XmlCollectionRelationshipWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.oneToManyWriter = oneToManyWriter;
-            this.manyToManyWriter = manyToManyWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(ICollectionRelationshipMapping mappingModel)
@@ -25,12 +23,14 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void ProcessOneToMany(OneToManyMapping mapping)
         {
-            document = oneToManyWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<OneToManyMapping>();
+            document = writer.Write(mapping);
         }
 
         public override void ProcessManyToMany(ManyToManyMapping mapping)
         {
-            document = manyToManyWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<ManyToManyMapping>();
+            document = writer.Write(mapping);
         }
     }
 }

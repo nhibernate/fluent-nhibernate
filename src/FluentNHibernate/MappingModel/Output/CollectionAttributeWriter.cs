@@ -6,35 +6,34 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public abstract class BaseXmlCollectionWriter : NullMappingModelVisitor
     {
+        private readonly IXmlWriterServiceLocator serviceLocator;
         protected XmlDocument document;
-        private readonly IXmlWriter<KeyMapping> keyWriter;
-        private readonly IXmlWriter<ICollectionRelationshipMapping> relationshipWriter;
-        private readonly IXmlWriter<CacheMapping> cacheWriter;
 
-        protected BaseXmlCollectionWriter(IXmlWriter<KeyMapping> keyWriter, IXmlWriter<ICollectionRelationshipMapping> relationshipWriter, IXmlWriter<CacheMapping> cacheWriter)
+        protected BaseXmlCollectionWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.keyWriter = keyWriter;
-            this.relationshipWriter = relationshipWriter;
-            this.cacheWriter = cacheWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public override void Visit(KeyMapping mapping)
         {
-            var keyXml = keyWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<KeyMapping>();
+            var keyXml = writer.Write(mapping);
 
             document.ImportAndAppendChild(keyXml);
         }
 
         public override void Visit(CacheMapping mapping)
         {
-            var cacheXml = cacheWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<CacheMapping>();
+            var cacheXml = writer.Write(mapping);
 
             document.ImportAndAppendChild(cacheXml);
         }
 
         public override void Visit(ICollectionRelationshipMapping mapping)
         {
-            var relationshipXml = relationshipWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<ICollectionRelationshipMapping>();
+            var relationshipXml = writer.Write(mapping);
 
             document.ImportAndAppendChild(relationshipXml);
         }

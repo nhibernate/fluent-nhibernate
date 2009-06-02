@@ -1,4 +1,6 @@
-﻿using FluentNHibernate.MappingModel.ClassBased;
+﻿using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
@@ -8,12 +10,19 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlClassWriterTester
     {
-        private XmlClassWriter writer;
+        private IXmlWriter<ClassMapping> writer;
+
+        [SetUp]
+        public void GetWriterFromContainer()
+        {
+            var container = new XmlWriterContainer();
+            writer = container.Resolve<IXmlWriter<ClassMapping>>();
+        }
 
         [Test]
         public void ShouldWriteTableAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.TableName, "tbl").MapsToAttribute("table");
 
@@ -23,7 +32,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteSchemaAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.Schema, "dbo").MapsToAttribute("schema");
 
@@ -33,7 +42,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteDiscriminatorValueAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.DiscriminatorValue, "val").MapsToAttribute("discriminator-value");
 
@@ -43,7 +52,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteMutableAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.Mutable, true).MapsToAttribute("mutable");
 
@@ -53,7 +62,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWritePolymorphismAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.Polymorphism, "poly").MapsToAttribute("polymorphism");
 
@@ -63,7 +72,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWritePersisterAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.Persister, "p").MapsToAttribute("persister");
 
@@ -73,7 +82,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteWhereAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.Where, "x = 1").MapsToAttribute("where");
 
@@ -83,7 +92,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteBatchSizeAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.BatchSize, 10).MapsToAttribute("batch-size");
 
@@ -93,7 +102,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteOptimisticLockAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.OptimisticLock, "lock").MapsToAttribute("optimistic-lock");
 
@@ -103,7 +112,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteCheckAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.Check, "chk").MapsToAttribute("check");
 
@@ -113,7 +122,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteNameAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
 
@@ -123,7 +132,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteProxyAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.Proxy, "p").MapsToAttribute("proxy");
 
@@ -133,7 +142,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteLazyAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
 
@@ -143,7 +152,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteDynamicUpdateAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.DynamicUpdate, true).MapsToAttribute("dynamic-update");
 
@@ -153,7 +162,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteDynamicInsertAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.DynamicInsert, true).MapsToAttribute("dynamic-insert");
 
@@ -163,7 +172,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteSelectBeforeUpdateAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.SelectBeforeUpdate, true).MapsToAttribute("select-before-update");
 
@@ -173,7 +182,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteAbstractAttribute()
         {
-            writer = new XmlClassWriter(null, null, null, null, null, null, null, null, null);
+
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.Abstract, true).MapsToAttribute("abstract");
 
@@ -183,13 +192,23 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteCache()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.Cache = new CacheMapping();
+
+            writer.VerifyXml(mapping)
+                .Element("cache").Exists();
         }
 
         [Test]
         public void ShouldWriteId()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.Id = new IdMapping();
+
+            writer.VerifyXml(mapping)
+                .Element("id").Exists();
         }
 
         [Test]
@@ -201,37 +220,67 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteVersion()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.Version = new VersionMapping();
+
+            writer.VerifyXml(mapping)
+                .Element("version").Exists();
         }
 
         [Test]
         public void ShouldWriteProperties()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.AddProperty(new PropertyMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("property").Exists();
         }
 
         [Test]
         public void ShouldWriteManyToOnes()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.AddReference(new ManyToOneMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("many-to-one").Exists();
         }
 
         [Test]
         public void ShouldWriteOneToOnes()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.AddOneToOne(new OneToOneMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("one-to-one").Exists();
         }
 
         [Test]
         public void ShouldWriteComponents()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.AddComponent(new ComponentMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("component").Exists();
         }
 
         [Test]
         public void ShouldWriteDynamicComponents()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.AddComponent(new DynamicComponentMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("dynamic-component").Exists();
         }
 
         [Test]

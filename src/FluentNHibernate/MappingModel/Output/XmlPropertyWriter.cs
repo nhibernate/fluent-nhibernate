@@ -5,12 +5,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlPropertyWriter : NullMappingModelVisitor, IXmlWriter<PropertyMapping>
     {
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
-        private readonly IXmlWriter<ColumnMapping> columnWriter;
 
-        public XmlPropertyWriter(IXmlWriter<ColumnMapping> columnWriter)
+        public XmlPropertyWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.columnWriter = columnWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(PropertyMapping property)
@@ -55,7 +55,8 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(ColumnMapping columnMapping)
         {
-            var columnXml = columnWriter.Write(columnMapping);
+            var writer = serviceLocator.GetWriter<ColumnMapping>();
+            var columnXml = writer.Write(columnMapping);
             
             document.ImportAndAppendChild(columnXml);
         }

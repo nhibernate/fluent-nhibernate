@@ -22,8 +22,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
-            visitor.ProcessComponent(this);
-
             if (Parent != null)
                 visitor.Visit(Parent);
 

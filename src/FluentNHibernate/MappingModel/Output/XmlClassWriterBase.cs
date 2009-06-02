@@ -5,35 +5,34 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public abstract class XmlClassWriterBase : NullMappingModelVisitor
     {
-        private readonly IXmlWriter<PropertyMapping> propertyWriter;
-        private readonly IXmlWriter<VersionMapping> versionWriter;
-        private readonly IXmlWriter<OneToOneMapping> oneToOneWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
         protected XmlDocument document;
 
-        protected XmlClassWriterBase(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<VersionMapping> versionWriter, IXmlWriter<OneToOneMapping> oneToOneWriter)
+        protected XmlClassWriterBase(IXmlWriterServiceLocator serviceLocator)
         {
-            this.propertyWriter = propertyWriter;
-            this.versionWriter = versionWriter;
-            this.oneToOneWriter = oneToOneWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public override void Visit(PropertyMapping propertyMapping)
         {
-            var propertyXml = propertyWriter.Write(propertyMapping);
+            var writer = serviceLocator.GetWriter<PropertyMapping>();
+            var propertyXml = writer.Write(propertyMapping);
 
             document.ImportAndAppendChild(propertyXml);
         }
 
         public override void Visit(VersionMapping versionMapping)
         {
-            var versionXml = versionWriter.Write(versionMapping);
+            var writer = serviceLocator.GetWriter<VersionMapping>();
+            var versionXml = writer.Write(versionMapping);
 
             document.ImportAndAppendChild(versionXml);
         }
 
         public override void Visit(OneToOneMapping mapping)
         {
-            var oneToOneXml = oneToOneWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<OneToOneMapping>();
+            var oneToOneXml = writer.Write(mapping);
 
             document.ImportAndAppendChild(oneToOneXml);
         }

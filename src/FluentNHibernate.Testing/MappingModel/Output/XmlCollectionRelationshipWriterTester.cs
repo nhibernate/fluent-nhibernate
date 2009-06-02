@@ -7,14 +7,20 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlCollectionRelationshipWriterTester
     {
-        private XmlCollectionRelationshipWriter writer;
+        private IXmlWriter<ICollectionRelationshipMapping> writer;
+
+        [SetUp]
+        public void GetWriterFromContainer()
+        {
+            var container = new XmlWriterContainer();
+            writer = container.Resolve<IXmlWriter<ICollectionRelationshipMapping>>();
+        }
 
         [Test]
         public void ShouldWriteManyToManyForManyToManyMapping()
         {
             var mapping = new ManyToManyMapping();
 
-            writer = new XmlCollectionRelationshipWriter(null, new XmlManyToManyWriter(null));
             writer.VerifyXml(mapping)
                 .RootElement.HasName("many-to-many");
         }
@@ -24,7 +30,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new OneToManyMapping();
 
-            writer = new XmlCollectionRelationshipWriter(new XmlOneToManyWriter(), null);
             writer.VerifyXml(mapping)
                 .RootElement.HasName("one-to-many");
         }

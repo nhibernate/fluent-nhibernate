@@ -9,12 +9,11 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlManyToManyWriterTester
     {
-        private XmlManyToManyWriter writer;
+        private IXmlWriter<ManyToManyMapping> writer;
 
         [Test]
         public void ShouldWriteClassAttribute()
         {
-            writer = new XmlManyToManyWriter(null);
             var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
             testHelper.Check(x => x.Class, "class").MapsToAttribute("class");
 
@@ -24,7 +23,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteFetchAttribute()
         {
-            writer = new XmlManyToManyWriter(null);
             var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
             testHelper.Check(x => x.Fetch, "f").MapsToAttribute("fetch");
 
@@ -34,7 +32,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteForeignKeyAttribute()
         {
-            writer = new XmlManyToManyWriter(null);
             var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
             testHelper.Check(x => x.ForeignKey, "fk").MapsToAttribute("foreign-key");
 
@@ -44,7 +41,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteLazyAttribute()
         {
-            writer = new XmlManyToManyWriter(null);
             var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
             testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
 
@@ -54,7 +50,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteNotFoundAttribute()
         {
-            writer = new XmlManyToManyWriter(null);
             var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
             testHelper.Check(x => x.NotFound, "exception").MapsToAttribute("not-found");
 
@@ -64,7 +59,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteOuterJoinAttribute()
         {
-            writer = new XmlManyToManyWriter(null);
             var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
             testHelper.Check(x => x.OuterJoin, "oj").MapsToAttribute("outer-join");
 
@@ -74,7 +68,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteWhereAttribute()
         {
-            writer = new XmlManyToManyWriter(null);
             var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
             testHelper.Check(x => x.Where, "x = 1").MapsToAttribute("where");
 
@@ -84,11 +77,12 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteColumns()
         {
+            var container = new XmlWriterContainer();
             var mapping = new ManyToManyMapping();
 
             mapping.AddColumn(new ColumnMapping { Name = "Column1" });
 
-            writer = new XmlManyToManyWriter(new XmlColumnWriter());
+            writer = container.Resolve<IXmlWriter<ManyToManyMapping>>();
             writer.VerifyXml(mapping)
                 .Element("column").Exists();
         }

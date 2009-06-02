@@ -8,22 +8,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlJoinedSubclassWriter : XmlClassWriterBase, IXmlWriter<JoinedSubclassMapping>
     {
-        private readonly IXmlWriter<PropertyMapping> propertyWriter;
-        private readonly IXmlWriter<KeyMapping> keyWriter;
-        private readonly IXmlWriter<ComponentMapping> componentWriter;
-        private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentWriter;
-        private readonly IXmlWriter<VersionMapping> versionWriter;
-        private readonly IXmlWriter<OneToOneMapping> oneToOneWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
 
-        public XmlJoinedSubclassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<KeyMapping> keyWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter, IXmlWriter<VersionMapping> versionWriter, IXmlWriter<OneToOneMapping> oneToOneWriter)
-            : base(propertyWriter, versionWriter, oneToOneWriter)
+        public XmlJoinedSubclassWriter(IXmlWriterServiceLocator serviceLocator)
+            : base(serviceLocator)
         {
-            this.propertyWriter = propertyWriter;
-            this.keyWriter = keyWriter;
-            this.componentWriter = componentWriter;
-            this.dynamicComponentWriter = dynamicComponentWriter;
-            this.versionWriter = versionWriter;
-            this.oneToOneWriter = oneToOneWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(JoinedSubclassMapping mappingModel)
@@ -84,25 +74,24 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(KeyMapping keyMapping)
         {
-            var keyXml = keyWriter.Write(keyMapping);
+            var writer = serviceLocator.GetWriter<KeyMapping>();
+            var keyXml = writer.Write(keyMapping);
 
             document.ImportAndAppendChild(keyXml);
         }
 
         public override void Visit(ComponentMappingBase componentMapping)
         {
-            var dynamicComponentMapping = componentMapping as DynamicComponentMapping;
-            XmlDocument componentXml = (dynamicComponentMapping != null)
-                                        ? dynamicComponentWriter.Write(dynamicComponentMapping)
-                                        : componentWriter.Write((ComponentMapping)componentMapping);
+            var writer = serviceLocator.GetWriter<ComponentMappingBase>();
+            var componentXml = writer.Write(componentMapping);
 
             document.ImportAndAppendChild(componentXml);
         }
 
         public override void Visit(JoinedSubclassMapping subclassMapping)
         {
-            var subWriter = new XmlJoinedSubclassWriter(propertyWriter, keyWriter, componentWriter, dynamicComponentWriter, versionWriter, oneToOneWriter);
-            var subclassXml = subWriter.Write(subclassMapping);
+            var writer = serviceLocator.GetWriter<JoinedSubclassMapping>();
+            var subclassXml = writer.Write(subclassMapping);
 
             document.ImportAndAppendChild(subclassXml);
         }

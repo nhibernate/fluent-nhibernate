@@ -5,14 +5,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlAnyWriter : NullMappingModelVisitor, IXmlWriter<AnyMapping>
     {
-        private readonly IXmlWriter<ColumnMapping> columnWriter;
-        private readonly IXmlWriter<MetaValueMapping> metaValueWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
 
-        public XmlAnyWriter(IXmlWriter<ColumnMapping> columnWriter, IXmlWriter<MetaValueMapping> metaValueWriter)
+        public XmlAnyWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.columnWriter = columnWriter;
-            this.metaValueWriter = metaValueWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(AnyMapping mappingModel)
@@ -52,14 +50,16 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(ColumnMapping columnMapping)
         {
-            var columnXml = columnWriter.Write(columnMapping);
+            var writer = serviceLocator.GetWriter<ColumnMapping>();
+            var columnXml = writer.Write(columnMapping);
 
             document.ImportAndAppendChild(columnXml);
         }
 
         public override void Visit(MetaValueMapping mapping)
         {
-            var metaValueXml = metaValueWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<MetaValueMapping>();
+            var metaValueXml = writer.Write(mapping);
 
             document.ImportAndAppendChild(metaValueXml);
         }

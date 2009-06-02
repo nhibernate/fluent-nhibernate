@@ -7,14 +7,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlIdWriter : NullMappingModelVisitor, IXmlWriter<IdMapping>
     {
-        private readonly IXmlWriter<GeneratorMapping> generatorWriter;
-        private readonly IXmlWriter<ColumnMapping> columnWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
 
-        public XmlIdWriter(IXmlWriter<GeneratorMapping> generatorWriter, IXmlWriter<ColumnMapping> columnWriter)
+        public XmlIdWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.generatorWriter = generatorWriter;
-            this.columnWriter = columnWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(IdMapping mappingModel)
@@ -45,14 +43,16 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(GeneratorMapping mapping)
         {
-            var generatorXml = generatorWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<GeneratorMapping>();
+            var generatorXml = writer.Write(mapping);
 
             document.ImportAndAppendChild(generatorXml);
         }
 
         public override void Visit(ColumnMapping mapping)
         {
-            var columnXml = columnWriter.Write(mapping);
+            var writer = serviceLocator.GetWriter<ColumnMapping>();
+            var columnXml = writer.Write(mapping);
 
             document.ImportAndAppendChild(columnXml);
         }
