@@ -76,6 +76,7 @@
     <Compile Include="AutoMap\BaseAutoMapTester.cs" />
     <Compile Include="AutoMap\BaseAutoMapFixture.cs" />
     <Compile Include="AutoMap\BaseAutoPersistenceTests.cs" />
+    <Compile Include="AutoMap\JoinedSubclassConventionTests.cs" />
     <Compile Include="AutoMap\ManyToMany.cs" />
     <Compile Include="AutoMap\ManyToManyAutomapperTester.cs" />
     <Compile Include="AutoMap\PrivateAutoMappingTester.cs" />
