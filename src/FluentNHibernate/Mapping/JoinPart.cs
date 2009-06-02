@@ -17,66 +17,109 @@ namespace FluentNHibernate.Mapping
     /// <typeparam name="T"></typeparam>
     public class JoinPart<T> : ClasslikeMapBase<T>, IJoin
     {
-        private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
         private readonly IList<string> columns = new List<string>();
-        private readonly JoinMapping joinMapping = new JoinMapping();
+        private readonly JoinMapping mapping = new JoinMapping();
+        private readonly FetchTypeExpression<JoinPart<T>> fetch;
+        private bool nextBool = true;
 
         public JoinPart(string tableName)
         {
-            joinMapping.TableName = tableName;
-            joinMapping.Key = new KeyMapping();
+            fetch = new FetchTypeExpression<JoinPart<T>>(this, value => mapping.Fetch = value);
+            mapping.TableName = tableName;
+            mapping.Key = new KeyMapping();
 
             columns.Add(GetType().GetGenericArguments()[0].Name + "ID");
         }
 
-        public void SetAttribute(string name, string value)
-        {
-            unmigratedAttributes.Store(name, value);
-        }
-
-        public void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
-        public int LevelWithinPosition
-        {
-            get { return 3; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.Last; }
-        }
-
-        public void WithKeyColumn(string column)
+        public JoinPart<T> WithKeyColumn(string column)
         {
             columns.Clear(); // only one supported currently
             columns.Add(column);
+            return this;
+        }
+
+        void IJoin.WithKeyColumn(string column)
+        {
+            WithKeyColumn(column);
+        }
+
+        public JoinPart<T> SchemaIs(string schema)
+        {
+            mapping.Schema = schema;
+            return this;
+        }
+
+        public FetchTypeExpression<JoinPart<T>> Fetch
+        {
+            get { return fetch; }
+        }
+
+        public JoinPart<T> Inverse()
+        {
+            mapping.Inverse = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public JoinPart<T> Optional()
+        {
+            mapping.Optional = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public JoinPart<T> Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
         }
 
         public JoinMapping GetJoinMapping()
         {
             foreach (var property in properties)
-                joinMapping.AddProperty(property.GetPropertyMapping());
+                mapping.AddProperty(property.GetPropertyMapping());
+
+            foreach (var component in components)
+                mapping.AddComponent(component.GetComponentMapping());
+
+            foreach (var reference in references)
+                mapping.AddReference(reference.GetManyToOneMapping());
+
+            foreach (var any in anys)
+                mapping.AddAny(any.GetAnyMapping());
 
             foreach (var column in columns)
-                joinMapping.Key.AddColumn(new ColumnMapping { Name = column });
+                mapping.Key.AddColumn(new ColumnMapping { Name = column });
 
-            foreach (var part in Parts)
-                joinMapping.AddUnmigratedPart(part);
-
-            unmigratedAttributes.ForEachPair(joinMapping.AddUnmigratedAttribute);
-
-            return joinMapping;
+            return mapping;
         }
 
         void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
         {
             throw new NotSupportedException("Obsolete");
+        }
+
+        void IHasAttributes.SetAttribute(string name, string value)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        void IHasAttributes.SetAttributes(Attributes atts)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        int IMappingPart.LevelWithinPosition
+        {
+            get { throw new NotSupportedException("Obsolete"); }
+        }
+
+        PartPosition IMappingPart.PositionOnDocument
+        {
+            get { throw new NotSupportedException("Obsolete"); }
         }
     }
 }

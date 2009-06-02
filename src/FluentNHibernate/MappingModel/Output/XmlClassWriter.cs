@@ -48,8 +48,6 @@ namespace FluentNHibernate.MappingModel.Output
 
         protected virtual XmlElement CreateClassElement(ClassMapping classMapping)
         {
-            var typeName = classMapping.Type != null ? classMapping.Type.AssemblyQualifiedName : string.Empty;
-
             var classElement = document.CreateElement("class");
 
             document.AppendChild(classElement);

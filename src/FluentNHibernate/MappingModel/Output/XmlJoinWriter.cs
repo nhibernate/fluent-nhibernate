@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Xml;
-using FluentNHibernate.Mapping;
+﻿using System.Xml;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
@@ -22,40 +21,66 @@ namespace FluentNHibernate.MappingModel.Output
             return document;
         }
 
-        public override void ProcessJoin(JoinMapping joinMapping)
+        public override void ProcessJoin(JoinMapping mapping)
         {
             document = new XmlDocument();
 
-            var element = document.CreateElement("join");
-            element.WithAtt("table", joinMapping.TableName);
-            
-            document.AppendChild(element);
+            var element = document.AddElement("join");
 
-            var sortedUnmigratedParts = new List<IMappingPart>(joinMapping.UnmigratedParts);
-            sortedUnmigratedParts.Sort(new MappingPartComparer(joinMapping.UnmigratedParts));
+            if (mapping.Attributes.IsSpecified(x => x.TableName))
+                element.WithAtt("table", mapping.TableName);
 
-            foreach (var part in sortedUnmigratedParts)
-                part.Write(element, null);
+            if (mapping.Attributes.IsSpecified(x => x.Schema))
+                element.WithAtt("schema", mapping.Schema);
 
-            foreach (var attribute in joinMapping.UnmigratedAttributes)
-                element.WithAtt(attribute.Key, attribute.Value);
+            if (mapping.Attributes.IsSpecified(x => x.Fetch))
+                element.WithAtt("fetch", mapping.Fetch);
 
+            if (mapping.Attributes.IsSpecified(x => x.Inverse))
+                element.WithAtt("inverse", mapping.Inverse);
+
+            if (mapping.Attributes.IsSpecified(x => x.Optional))
+                element.WithAtt("optional", mapping.Optional);
         }
 
         public override void Visit(PropertyMapping mapping)
         {
             var writer = serviceLocator.GetWriter<PropertyMapping>();
-            var propertyXml = writer.Write(mapping);
+            var xml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(propertyXml);
+            document.ImportAndAppendChild(xml);
         }
 
         public override void Visit(KeyMapping mapping)
         {
             var writer = serviceLocator.GetWriter<KeyMapping>();
-            var keyXml = writer.Write(mapping);
+            var xml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(keyXml);
+            document.ImportAndAppendChild(xml);
+        }
+
+        public override void Visit(ManyToOneMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<ManyToOneMapping>();
+            var xml = writer.Write(mapping);
+
+            document.ImportAndAppendChild(xml);
+        }
+
+        public override void Visit(ComponentMappingBase mapping)
+        {
+            var writer = serviceLocator.GetWriter<ComponentMappingBase>();
+            var xml = writer.Write(mapping);
+
+            document.ImportAndAppendChild(xml);
+        }
+
+        public override void Visit(AnyMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<AnyMapping>();
+            var xml = writer.Write(mapping);
+
+            document.ImportAndAppendChild(xml);
         }
     }
 }

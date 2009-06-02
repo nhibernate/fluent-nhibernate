@@ -51,7 +51,7 @@ namespace FluentNHibernate.Mapping
 
         public ClassMapping GetClassMapping()
         {
-            mapping.Name = typeof(T).FullName;
+            mapping.Name = typeof(T).AssemblyQualifiedName;
 
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());

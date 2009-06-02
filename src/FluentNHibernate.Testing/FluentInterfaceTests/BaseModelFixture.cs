@@ -92,5 +92,10 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             return new ModelTester<AnyPart<T>, AnyMapping>(() => new AnyPart<T>(ReflectionHelper.GetProperty<MappedObject>(x => x.Parent)), x => ((IAnyMappingProvider)x).GetAnyMapping());
         }
+
+        protected ModelTester<JoinPart<T>, JoinMapping> Join<T>(string table)
+        {
+            return new ModelTester<JoinPart<T>, JoinMapping>(() => new JoinPart<T>(table), x => x.GetJoinMapping());
+        }
     }
 }
