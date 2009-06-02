@@ -1,5 +1,6 @@
 ﻿using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
@@ -286,31 +287,56 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteAny()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+            
+            mapping.AddAny(new AnyMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("any").Exists();
         }
 
         [Test]
         public void ShouldWriteMap()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.AddCollection(new MapMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("map").Exists();
         }
 
         [Test]
         public void ShouldWriteSet()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.AddCollection(new SetMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("set").Exists();
         }
 
         [Test]
         public void ShouldWriteList()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.AddCollection(new ListMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("list").Exists();
         }
 
         [Test]
         public void ShouldWriteBag()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.AddCollection(new BagMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("bag").Exists();
         }
 
         [Test]
@@ -334,25 +360,51 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteJoin()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.AddJoin(new JoinMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("join").Exists();
         }
 
         [Test]
         public void ShouldWriteSubclass()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.AddSubclass(new SubclassMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("subclass").Exists();
         }
 
         [Test]
         public void ShouldWriteJoinedSubclass()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.AddSubclass(new JoinedSubclassMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("joined-subclass").Exists();
         }
 
         [Test]
         public void ShouldWriteUnionSubclass()
         {
             Assert.Fail();
+        }
+
+        [Test]
+        public void ShouldWriteDiscriminator()
+        {
+            var mapping = new ClassMapping();
+
+            mapping.Discriminator = new DiscriminatorMapping(mapping);
+
+            writer.VerifyXml(mapping)
+                .Element("discriminator").Exists();
         }
     }
 }

@@ -7,13 +7,13 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlComponentBaseWriterTester
     {
-        private IXmlWriter<ClassMappingBase> writer;
+        private IXmlWriter<ComponentMappingBase> writer;
 
         [SetUp]
         public void GetWriterFromContainer()
         {
             var container = new XmlWriterContainer();
-            writer = container.Resolve<IXmlWriter<ClassMappingBase>>();
+            writer = container.Resolve<IXmlWriter<ComponentMappingBase>>();
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var mapping = new DynamicComponentMapping();
 
             writer.VerifyXml(mapping)
-                .RootElement.HasName("dyamic-component");
+                .RootElement.HasName("dynamic-component");
         }
 
     }

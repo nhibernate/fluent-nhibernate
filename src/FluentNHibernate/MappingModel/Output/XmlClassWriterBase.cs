@@ -1,4 +1,5 @@
 using System.Xml;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
@@ -16,25 +17,41 @@ namespace FluentNHibernate.MappingModel.Output
         public override void Visit(PropertyMapping propertyMapping)
         {
             var writer = serviceLocator.GetWriter<PropertyMapping>();
-            var propertyXml = writer.Write(propertyMapping);
+            var xml = writer.Write(propertyMapping);
 
-            document.ImportAndAppendChild(propertyXml);
+            document.ImportAndAppendChild(xml);
         }
 
         public override void Visit(VersionMapping versionMapping)
         {
             var writer = serviceLocator.GetWriter<VersionMapping>();
-            var versionXml = writer.Write(versionMapping);
+            var xml = writer.Write(versionMapping);
 
-            document.ImportAndAppendChild(versionXml);
+            document.ImportAndAppendChild(xml);
         }
 
         public override void Visit(OneToOneMapping mapping)
         {
             var writer = serviceLocator.GetWriter<OneToOneMapping>();
-            var oneToOneXml = writer.Write(mapping);
+            var xml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(oneToOneXml);
+            document.ImportAndAppendChild(xml);
+        }
+
+        public override void Visit(AnyMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<AnyMapping>();
+            var xml = writer.Write(mapping);
+
+            document.ImportAndAppendChild(xml);
+        }
+
+        public override void Visit(ICollectionMapping collectionMapping)
+        {
+            var writer = serviceLocator.GetWriter<ICollectionMapping>();
+            var xml = writer.Write(collectionMapping);
+
+            document.ImportAndAppendChild(xml);
         }
     }
 }

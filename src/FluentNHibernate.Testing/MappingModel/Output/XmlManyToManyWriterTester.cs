@@ -11,6 +11,13 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     {
         private IXmlWriter<ManyToManyMapping> writer;
 
+        [SetUp]
+        public void GetWriterFromContainer()
+        {
+            var container = new XmlWriterContainer();
+            writer = container.Resolve<IXmlWriter<ManyToManyMapping>>();
+        }
+
         [Test]
         public void ShouldWriteClassAttribute()
         {

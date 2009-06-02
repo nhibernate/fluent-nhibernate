@@ -27,9 +27,10 @@ namespace FluentNHibernate.MappingModel.Output
         {
             document = new XmlDocument();
 
-            var subclassElement = document
-                .AddElement("subclass")
-                .WithAtt("name", subclassMapping.Type.AssemblyQualifiedName);
+            var subclassElement = document.AddElement("subclass");
+
+            if (subclassMapping.Attributes.IsSpecified(x => x.Name))
+                subclassElement.WithAtt("name", subclassMapping.Type.AssemblyQualifiedName);
 
             if (subclassMapping.Attributes.IsSpecified(x => x.DiscriminatorValue))
                 subclassElement.WithAtt("discriminator-value", subclassMapping.DiscriminatorValue.ToString());
