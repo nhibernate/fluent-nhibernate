@@ -23,7 +23,7 @@ namespace FluentNHibernate.MappingModel.Output
             return document;
         }
 
-        public override void ProcessHibernateMapping(HibernateMapping hibernateMapping)
+        public override void ProcessHibernateMapping(HibernateMapping mapping)
         {
             document = new XmlDocument();
 
@@ -31,14 +31,20 @@ namespace FluentNHibernate.MappingModel.Output
 
             element.WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
 
-            if (hibernateMapping.Attributes.IsSpecified(x => x.DefaultAccess))
-                element.WithAtt("default-access", hibernateMapping.DefaultAccess);
+            if (mapping.Attributes.IsSpecified(x => x.DefaultAccess))
+                element.WithAtt("default-access", mapping.DefaultAccess);
 
-            if (hibernateMapping.Attributes.IsSpecified(x => x.AutoImport))
-                element.WithAtt("auto-import", hibernateMapping.AutoImport.ToString().ToLowerInvariant());
+            if (mapping.Attributes.IsSpecified(x => x.AutoImport))
+                element.WithAtt("auto-import", mapping.AutoImport);
 
-            foreach (var attribute in hibernateMapping.UnmigratedAttributes)
-                element.WithAtt(attribute.Key, attribute.Value);
+            if (mapping.Attributes.IsSpecified(x => x.Schema))
+                element.WithAtt("schema", mapping.Schema);
+
+            if (mapping.Attributes.IsSpecified(x => x.DefaultCascade))
+                element.WithAtt("default-cascade", mapping.DefaultCascade);
+
+            if (mapping.Attributes.IsSpecified(x => x.DefaultLazy))
+                element.WithAtt("default-lazy", mapping.DefaultLazy);
         }
 
         public override void Visit(ImportMapping importMapping)

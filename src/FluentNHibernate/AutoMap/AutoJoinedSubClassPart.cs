@@ -16,19 +16,6 @@ namespace FluentNHibernate.AutoMap
             this.keyColumn = keyColumn;
         }
 
-        public override void SetAttribute(string name, string value)
-        {
-            attributes.Store(name, value);
-        }
-
-        public override void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
         public void Write(XmlElement classElement, IMappingVisitor visitor)
         {
             XmlElement subclassElement = classElement.AddElement("joined-subclass")

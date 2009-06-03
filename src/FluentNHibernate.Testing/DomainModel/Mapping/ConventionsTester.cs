@@ -46,7 +46,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     {
         protected override void Apply(MyAttribute attribute, IProperty target)
         {
-            target.SetAttribute("My", "true");
+            target.Access.AsField();
         }
     }
 }

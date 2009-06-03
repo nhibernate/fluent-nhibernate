@@ -102,5 +102,10 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             return new ModelTester<JoinPart<T>, JoinMapping>(() => new JoinPart<T>(table), x => x.GetJoinMapping());
         }
+
+        protected ModelTester<HibernateMappingPart, HibernateMapping> HibernateMapping()
+        {
+            return new ModelTester<HibernateMappingPart, HibernateMapping>(() => new HibernateMappingPart(), x => ((IHibernateMappingProvider)x).GetHibernateMapping());
+        }
     }
 }

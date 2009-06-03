@@ -254,6 +254,7 @@
     <Compile Include="Mapping\ComponentPartBase.cs" />
     <Compile Include="Mapping\DiscriminatorPart.cs" />
     <Compile Include="Mapping\DiscriminatorValue.cs" />
+    <Compile Include="Mapping\HibernateMappingPart.cs" />
     <Compile Include="Mapping\IAccessStrategyBuilder.cs" />
     <Compile Include="Mapping\ICascadeExpression.cs" />
     <Compile Include="Mapping\IClassMap.cs" />
@@ -305,7 +306,7 @@
     <Compile Include="Mapping\ICompositeIdMappingProvider.cs" />
     <Compile Include="Mapping\IDiscriminatorPart.cs" />
     <Compile Include="Mapping\IDynamicComponent.cs" />
-    <Compile Include="Mapping\IHasAttributes.cs" />
+    <Compile Include="Mapping\IHibernateMappingProvider.cs" />
     <Compile Include="Mapping\IJoinedSubclass.cs" />
     <Compile Include="Mapping\IMappingPart.cs" />
     <Compile Include="Mapping\INotFoundExpression.cs" />

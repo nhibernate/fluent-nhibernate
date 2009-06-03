@@ -245,20 +245,5 @@ namespace FluentNHibernate.Mapping
         {
             get { throw new NotSupportedException("Obsolete"); }
         }
-
-        /// <summary>
-        /// Set an attribute on the xml element produced by this property mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        void IHasAttributes.SetAttribute(string name, string value)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
-        void IHasAttributes.SetAttributes(Attributes atts)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
     }
 }

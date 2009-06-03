@@ -8,14 +8,14 @@ namespace FluentNHibernate.Conventions.Helpers
         {
             return new BuiltClassConvention(
                 map => true,
-                map => map.SetHibernateMappingAttribute("default-lazy", "true"));
+                map => map.HibernateMapping.DefaultLazy());
         }
 
         public static IClassConvention AlwaysFalse()
         {
             return new BuiltClassConvention(
                 map => true,
-                map => map.SetHibernateMappingAttribute("default-lazy", "false"));
+                map => map.HibernateMapping.Not.DefaultLazy());
         }
     }
 }

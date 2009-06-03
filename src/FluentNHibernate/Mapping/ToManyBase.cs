@@ -10,7 +10,7 @@ using NHibernate.Persister.Entity;
 namespace FluentNHibernate.Mapping
 {
     public abstract class ToManyBase<T, TChild, TRelationshipAttributes> : ICollectionRelationship
-        where T : ToManyBase<T, TChild, TRelationshipAttributes>, ICollectionRelationship, IMappingPart, IHasAttributes
+        where T : ToManyBase<T, TChild, TRelationshipAttributes>, ICollectionRelationship, IMappingPart
         where TRelationshipAttributes : ICollectionRelationshipMapping
     {
         public MemberInfo Member { get; private set; }
@@ -517,16 +517,6 @@ namespace FluentNHibernate.Mapping
             {
                 indexElement.WithProperties(properties);
             }
-        }
-
-        void IHasAttributes.SetAttribute(string name, string value)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
-        void IHasAttributes.SetAttributes(Attributes attributes)
-        {
-            throw new NotSupportedException("Obsolete");
         }
 
         void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)

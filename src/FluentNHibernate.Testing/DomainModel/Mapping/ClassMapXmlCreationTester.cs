@@ -377,20 +377,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void ShouldAddMultipleAttributesToClassUsingSetAttributes()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(x => x.SetAttributes(new Attributes
-                {
-                    {"first", "value"},
-                    {"second", "secondValue"},
-                }))
-                .Element("class")
-                    .HasAttribute("first", "value")
-                    .HasAttribute("second", "secondValue");
-        }
-
-        [Test]
         public void Can_set_readonly()
         {
             new MappingTester<MappedObject>()

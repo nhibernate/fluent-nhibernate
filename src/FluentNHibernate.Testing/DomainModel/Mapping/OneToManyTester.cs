@@ -653,7 +653,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             public void Apply(IOneToManyPart target)
             {
-                target.SetAttribute("test", "true");
+                target.Access.AsField();
             }
         }
     }

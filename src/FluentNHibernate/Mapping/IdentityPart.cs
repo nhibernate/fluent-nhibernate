@@ -116,21 +116,6 @@ namespace FluentNHibernate.Mapping
             throw new NotSupportedException("Obsolete");
         }
 
-        /// <summary>
-        /// Set an attribute on the xml element produced by this identity mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        void IHasAttributes.SetAttribute(string name, string value)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
-        void IHasAttributes.SetAttributes(Attributes atts)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
         int IMappingPart.LevelWithinPosition
         {
             get { throw new NotSupportedException("Obsolete"); }

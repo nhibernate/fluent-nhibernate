@@ -11,15 +11,28 @@
         </Variables>
         <CustomProperties />
       </Template>
-      <Template uid="96a2564d-d0cf-407c-a732-e2d23726bd29" shortcut="attprop" description="" text="public $ReturnType$ $PropertyName$&#xD;&#xA;{&#xD;&#xA;    get { return $_attributes$.Get(x =&gt; x.$PropertyName$); }&#xD;&#xA;    set { $_attributes$.Set(x =&gt; x.$PropertyName$, value); }&#xD;&#xA;}" reformat="True" shortenQualifiedReferences="True">
+      <Template uid="96a2564d-d0cf-407c-a732-e2d23726bd29" shortcut="attprop" description="" text="public $string$ $PropertyName$&#xD;&#xA;{&#xD;&#xA;    get { return $attributes$.Get(x =&gt; x.$PropertyName$); }&#xD;&#xA;    set { $attributes$.Set(x =&gt; x.$PropertyName$, value); }&#xD;&#xA;}" reformat="True" shortenQualifiedReferences="True">
         <Context>
           <CSharpContext context="Everywhere" minimumLanguageVersion="2.0" />
         </Context>
         <Categories />
         <Variables>
           <Variable name="PropertyName" expression="" initialRange="0" />
-          <Variable name="ReturnType" expression="" initialRange="0" />
-          <Variable name="_attributes" expression="" initialRange="0" />
+          <Variable name="string" expression="" initialRange="0" />
+          <Variable name="attributes" expression="" initialRange="0" />
+        </Variables>
+        <CustomProperties />
+      </Template>
+      <Template uid="bc721957-a213-4697-bdea-b61594bb5a69" shortcut="attisspec" description="If attribute is specified, write property" text="if ($mapping$.Attributes.IsSpecified(x =&gt; x.$property$))&#xD;&#xA;    $element$.WithAtt(&quot;$attribute$&quot;, $mapping$.$property$);" reformat="True" shortenQualifiedReferences="True">
+        <Context>
+          <CSharpContext context="Everywhere" minimumLanguageVersion="2.0" />
+        </Context>
+        <Categories />
+        <Variables>
+          <Variable name="mapping" expression="" initialRange="0" />
+          <Variable name="property" expression="" initialRange="0" />
+          <Variable name="element" expression="" initialRange="0" />
+          <Variable name="attribute" expression="decapitalize(property)" initialRange="0" />
         </Variables>
         <CustomProperties />
       </Template>

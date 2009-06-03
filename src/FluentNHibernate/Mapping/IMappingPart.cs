@@ -2,7 +2,7 @@ using System.Xml;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IMappingPart : IHasAttributes
+    public interface IMappingPart
     {
         void Write(XmlElement classElement, IMappingVisitor visitor);
         

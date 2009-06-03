@@ -2,7 +2,7 @@ using System;
 
 namespace FluentNHibernate.Mapping
 {
-    public class NotFoundExpression<TParent> : INotFoundExpression where TParent : IHasAttributes
+    public class NotFoundExpression<TParent> : INotFoundExpression
     {
         private readonly TParent parent;
         private readonly Action<string> setter;

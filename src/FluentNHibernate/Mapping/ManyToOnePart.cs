@@ -290,16 +290,6 @@ namespace FluentNHibernate.Mapping
             throw new NotSupportedException("Obsolete");
         }
 
-        void IHasAttributes.SetAttribute(string name, string value)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
-        void IHasAttributes.SetAttributes(Attributes atts)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
         int IMappingPart.LevelWithinPosition
         {
             get { return 1; }

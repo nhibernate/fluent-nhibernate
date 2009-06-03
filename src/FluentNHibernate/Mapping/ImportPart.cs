@@ -10,7 +10,7 @@ namespace FluentNHibernate.Mapping
 
         public ImportPart(Type importType)
         {
-            mapping.Type = importType;
+            mapping.Class = importType.AssemblyQualifiedName;
         }
 
         public void SetAttribute(string name, string value)

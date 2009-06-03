@@ -9,14 +9,24 @@ namespace FluentNHibernate.MappingModel
         private readonly IList<ClassMapping> classes;
         private readonly IList<ImportMapping> imports;
         private readonly AttributeStore<HibernateMapping> attributes;
-        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
         public HibernateMapping()
         {
             attributes = new AttributeStore<HibernateMapping>();
             classes = new List<ClassMapping>();
             imports = new List<ImportMapping>();
-        }        
+        }
+
+        public override void AcceptVisitor(IMappingModelVisitor visitor)
+        {
+            visitor.ProcessHibernateMapping(this);
+
+            foreach (var import in Imports)
+                visitor.Visit(import);
+
+            foreach (var classMapping in Classes)
+                visitor.Visit(classMapping);
+        }
 
         public IEnumerable<ClassMapping> Classes
         {
@@ -33,11 +43,6 @@ namespace FluentNHibernate.MappingModel
             get { return attributes; }
         }
 
-        public IDictionary<string, string> UnmigratedAttributes
-        {
-            get { return unmigratedAttributes; }
-        }
-
         public void AddClass(ClassMapping classMapping)
         {
             classes.Add(classMapping);            
@@ -48,21 +53,16 @@ namespace FluentNHibernate.MappingModel
             imports.Add(importMapping);
         }
 
-        public override void AcceptVisitor(IMappingModelVisitor visitor)
-        {
-            visitor.ProcessHibernateMapping(this);
-
-            foreach (var import in Imports)
-                visitor.Visit(import);
-
-            foreach (var classMapping in Classes)
-                visitor.Visit(classMapping);
-        }
-
         public string DefaultAccess
         {
             get { return attributes.Get(x => x.DefaultAccess); }
             set { attributes.Set(x => x.DefaultAccess, value); }
+        }
+
+        public string DefaultCascade
+        {
+            get { return attributes.Get(x => x.DefaultCascade); }
+            set { attributes.Set(x => x.DefaultCascade, value); }
         }
 
         public bool AutoImport
@@ -71,9 +71,16 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.AutoImport, value); }
         }
 
-        public void AddUnmigratedAttribute(string key, string value)
+        public string Schema
         {
-            unmigratedAttributes.Add(key, value);
+            get { return attributes.Get(x => x.Schema); }
+            set { attributes.Set(x => x.Schema, value); }
+        }
+
+        public bool DefaultLazy
+        {
+            get { return attributes.Get(x => x.DefaultLazy); }
+            set { attributes.Set(x => x.DefaultLazy, value); }
         }
     }
 }

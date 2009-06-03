@@ -194,6 +194,7 @@
     <Compile Include="FluentInterfaceTests\ClassMapSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ComponentMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\CompositeIdMutablePropertyModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\HibernateMappingMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\JoinMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\JoinSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\CustomPersister.cs" />
@@ -217,6 +218,7 @@
     <Compile Include="MappingModel\Output\XmlCompositeIdWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlDynamicComponentWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlHibernateMappingWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlIdentityBasedWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlJoinedSubclassWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlKeyManyToOneWriterTester.cs" />

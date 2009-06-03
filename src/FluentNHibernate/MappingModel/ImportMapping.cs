@@ -22,10 +22,10 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Rename, value); }
         }
 
-        public Type Type
+        public string Class
         {
-            get { return attributes.Get(x => x.Type); }
-            set { attributes.Set(x => x.Type, value); }
+            get { return attributes.Get(x => x.Class); }
+            set { attributes.Set(x => x.Class, value); }
         }
     }
 }

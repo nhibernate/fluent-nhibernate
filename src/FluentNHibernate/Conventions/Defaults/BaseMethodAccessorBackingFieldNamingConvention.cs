@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Defaults
@@ -16,7 +17,7 @@ namespace FluentNHibernate.Conventions.Defaults
 
         public void Apply(TPart target)
         {
-            target.SetAttribute("name", target.Member.Name.Replace("Get", ""));
+            throw new NotImplementedException("Awaiting convention DSL");
         }
     }
 }

@@ -59,16 +59,6 @@ namespace FluentNHibernate.Mapping
             get { return mapping.Attributes.IsSpecified(x => x.Region) || mapping.Attributes.IsSpecified(x => x.Usage); }
         }
 
-        void IHasAttributes.SetAttributes(Attributes attrs)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
-        void IHasAttributes.SetAttribute(string name, string value)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
         void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
         {
             throw new NotSupportedException("Obsolete");

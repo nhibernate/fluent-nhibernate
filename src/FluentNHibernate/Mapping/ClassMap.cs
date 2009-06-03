@@ -15,7 +15,6 @@ namespace FluentNHibernate.Mapping
         private readonly Cache<string, string> unmigratedAttributes;
         public Cache<string, string> HibernateMappingAttributes { get; private set; }
         private readonly IOptimisticLockBuilder optimisticLock;
-        private readonly AccessStrategyBuilder<ClassMap<T>> defaultAccess;
 
         /// <summary>
         /// Specify caching for this entity.
@@ -27,10 +26,10 @@ namespace FluentNHibernate.Mapping
         private bool nextBool = true;
 
         private readonly ClassMapping mapping;
-        private readonly HibernateMapping hibernateMapping = new HibernateMapping();
         private IDiscriminatorPart discriminator;
         private IVersion version;
         private ICompositeIdMappingProvider compositeId;
+        private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
 
         public ClassMap()
             : this(new ClassMapping(typeof(T)))
@@ -41,7 +40,6 @@ namespace FluentNHibernate.Mapping
             this.mapping = mapping;
             unmigratedAttributes = new Cache<string, string>();
             HibernateMappingAttributes = new Cache<string, string>();
-            defaultAccess = new AccessStrategyBuilder<ClassMap<T>>(this, value => hibernateMapping.DefaultAccess = value);
             optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => mapping.OptimisticLock = value);
             Cache = new CachePart();
         }
@@ -98,12 +96,17 @@ namespace FluentNHibernate.Mapping
 
         public HibernateMapping GetHibernateMapping()
         {
+            var hibernateMapping = ((IHibernateMappingProvider)hibernateMappingPart).GetHibernateMapping();
+
             foreach (var import in imports)
                 hibernateMapping.AddImport(import.GetImportMapping());
 
-            HibernateMappingAttributes.ForEachPair(hibernateMapping.AddUnmigratedAttribute);
-
             return hibernateMapping;
+        }
+
+        public HibernateMappingPart HibernateMapping
+        {
+            get { return hibernateMappingPart; }
         }
 
         public CompositeIdentityPart<T> CompositeId()
@@ -154,34 +157,6 @@ namespace FluentNHibernate.Mapping
             return DiscriminateSubClassesOnColumn<string>(columnName);
         }
 
-        /// <summary>
-        /// Set an attribute on the xml element produced by this class mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        public virtual void SetAttribute(string name, string value)
-        {
-            unmigratedAttributes.Store(name, value);
-        }
-
-        public virtual void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
-        public void SetHibernateMappingAttribute(string name, string value)
-        {
-            HibernateMappingAttributes.Store(name, value);
-        }
-
-        public void SetHibernateMappingAttribute(string name, bool value)
-        {
-            HibernateMappingAttributes.Store(name, value.ToString().ToLowerInvariant());
-        }
-
         public virtual IIdentityPart Id(Expression<Func<T, object>> expression)
         {
             return Id(expression, null);
@@ -214,23 +189,6 @@ namespace FluentNHibernate.Mapping
         public void SchemaIs(string schema)
         {
             mapping.Schema = schema;
-        }
-
-        /// <summary>
-        /// Sets the hibernate-mapping auto-import for this class.
-        /// </summary>
-        public void AutoImport()
-        {
-            hibernateMapping.AutoImport = nextBool;
-            nextBool = true;
-        }
-
-        /// <summary>
-        /// Set the default access and naming strategies for this entire mapping.
-        /// </summary>
-        public AccessStrategyBuilder<ClassMap<T>> DefaultAccess
-        {
-            get { return defaultAccess; }
         }
 
         /// <summary>
@@ -332,11 +290,6 @@ namespace FluentNHibernate.Mapping
         public IOptimisticLockBuilder OptimisticLock
         {
             get { return optimisticLock; }
-        }
-
-        Cache<string, string> IClassMap.Attributes
-        {
-            get { return unmigratedAttributes; }
         }
     }
 }

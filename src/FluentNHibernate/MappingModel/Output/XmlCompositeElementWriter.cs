@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Xml;
-using FluentNHibernate.Mapping;
+﻿using System.Xml;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 
