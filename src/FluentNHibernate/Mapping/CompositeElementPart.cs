@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Xml;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
-using NHibernate.Type;
 
 namespace FluentNHibernate.Mapping
 {
@@ -13,17 +12,11 @@ namespace FluentNHibernate.Mapping
     /// Component-element for component HasMany's.
     /// </summary>
     /// <typeparam name="T">Component type</typeparam>
-    public class CompositeElementPart<T> : IMappingPart
+    public class CompositeElementPart<T> : ICompositeElementMappingProvider
     {
-        protected readonly List<IMappingPart> m_Parts = new List<IMappingPart>();
-        public IEnumerable<IMappingPart> Parts
-        {
-            get { return m_Parts; }
-        }
-        protected internal void AddPart(IMappingPart part)
-        {
-            m_Parts.Add(part);
-        }
+        private readonly CompositeElementMapping mapping = new CompositeElementMapping();
+        private readonly IList<PropertyMap> properties = new List<PropertyMap>();
+        private readonly IList<IManyToOnePart> references = new List<IManyToOnePart>();
 
         public PropertyMap Map(Expression<Func<T, object>> expression)
         {
@@ -42,7 +35,7 @@ namespace FluentNHibernate.Mapping
             if (!string.IsNullOrEmpty(columnName))
                 propertyMap.ColumnName(columnName);
 
-            m_Parts.Add(propertyMap);
+            properties.Add(propertyMap);
 
             return propertyMap;
         }
@@ -64,7 +57,7 @@ namespace FluentNHibernate.Mapping
             if (columnName != null)
                 part.ColumnName(columnName);
 
-            AddPart(part);
+            references.Add(part);
 
             return part;
         }
@@ -76,12 +69,23 @@ namespace FluentNHibernate.Mapping
         /// <returns>Component being mapped</returns>
         public CompositeElementPart<T> WithParentReference(Expression<Func<T, object>> exp)
         {
-            return WithParentReference(ReflectionHelper.GetProperty(exp));
+            var property = ReflectionHelper.GetProperty(exp);
+            mapping.Parent = new ParentMapping { Name = property.Name };
+            return this;
         }
 
-        private CompositeElementPart<T> WithParentReference(PropertyInfo property)
+        CompositeElementMapping ICompositeElementMappingProvider.GetCompositeElementMapping()
         {
-            return this;
+            if (!mapping.Attributes.IsSpecified(x => x.Class))
+                mapping.Class = typeof(T).AssemblyQualifiedName;
+
+            foreach (var property in properties)
+                mapping.AddProperty(property.GetPropertyMapping());
+
+            foreach (var reference in references)
+                mapping.AddReference(reference.GetManyToOneMapping());
+
+            return mapping;
         }
     }
 }

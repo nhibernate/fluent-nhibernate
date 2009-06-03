@@ -5,7 +5,7 @@ using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public class CompositeElementMapping : MappingBase, INameable
+    public class CompositeElementMapping : MappingBase
     {
         private readonly MappedMembers mappedMembers;
         protected readonly AttributeStore<CompositeElementMapping> attributes;
@@ -37,19 +37,7 @@ namespace FluentNHibernate.MappingModel.Collections
             get { return attributes.Get(x => x.Class); }
             set { attributes.Set(x => x.Class, value); }
         }
-        
-        public string Name
-        {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
-        }
 
-        public bool IsNameSpecified
-        {
-            get { return attributes.IsSpecified(x => x.Name); }
-        }
-
-        public PropertyInfo PropertyInfo { get; set; }
         public ParentMapping Parent { get; set; }
 
         public IEnumerable<PropertyMapping> Properties

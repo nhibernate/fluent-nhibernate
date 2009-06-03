@@ -193,6 +193,8 @@
     <Compile Include="FluentInterfaceTests\ClassMapMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ClassMapSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ComponentMutablePropertyModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\CompositeElementMutablePropertyModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\CompositeElementSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\CompositeIdMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\HibernateMappingMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\JoinMutablePropertyModelGenerationTests.cs" />
@@ -207,6 +209,7 @@
     <Compile Include="FluentInterfaceTests\ManyToOneMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ModelTester.cs" />
     <Compile Include="FluentInterfaceTests\OneToManyMutablePropertyModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\OneToManySubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\OneToManyTypePreditionTests.cs" />
     <Compile Include="FluentInterfaceTests\OneToOneMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\PropertyMutablePropertyModelGenerationTests.cs" />

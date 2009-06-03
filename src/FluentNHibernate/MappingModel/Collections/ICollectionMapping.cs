@@ -24,5 +24,6 @@ namespace FluentNHibernate.MappingModel.Collections
         ICollectionRelationshipMapping Relationship { get; set; }
         AttributeStore<ICollectionMapping> Attributes { get; }
         PropertyInfo PropertyInfo { get; set;  }
+        CompositeElementMapping CompositeElement { get; set; }
     }
 }

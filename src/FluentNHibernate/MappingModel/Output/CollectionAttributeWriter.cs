@@ -38,6 +38,14 @@ namespace FluentNHibernate.MappingModel.Output
             document.ImportAndAppendChild(relationshipXml);
         }
 
+        public override void Visit(CompositeElementMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<CompositeElementMapping>();
+            var xml = writer.Write(mapping);
+
+            document.ImportAndAppendChild(xml);
+        }
+
         protected void WriteBaseCollectionAttributes(XmlElement element, ICollectionMapping mapping)
         {
             if (mapping.Attributes.IsSpecified(x => x.Access))

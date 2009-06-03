@@ -7,6 +7,7 @@ namespace FluentNHibernate.MappingModel.Collections
     {
         private readonly AttributeStore<ICollectionMapping> attributes;
         public KeyMapping Key { get; set; }
+        public CompositeElementMapping CompositeElement { get; set; }
         public ICollectionRelationshipMapping Relationship { get; set; }
         public PropertyInfo PropertyInfo { get; set; }
 
@@ -19,6 +20,9 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             if (Key != null)
                 visitor.Visit(Key);
+
+            if (CompositeElement != null)
+                visitor.Visit(CompositeElement);
 
             if (Relationship != null)
                 visitor.Visit(Relationship);

@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
@@ -8,6 +10,7 @@ using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using FluentNHibernate.Utils;
+using Iesi.Collections.Generic;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
@@ -78,9 +81,19 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             return new ModelTester<IProperty, PropertyMapping>(() => new PropertyMap(ReflectionHelper.GetProperty<PropertyTarget>(x => x.Name), typeof(PropertyTarget)), x => x.GetPropertyMapping());
         }
 
-        protected ModelTester<IOneToManyPart, ICollectionMapping> OneToMany<T>(Expression<Func<T, object>> property)
+        protected ModelTester<OneToManyPart<T>, ICollectionMapping> OneToMany<T>(Expression<Func<OneToManyTarget, IList<T>>> property)
         {
-            return new ModelTester<IOneToManyPart, ICollectionMapping>(() => new OneToManyPart<PropertyTarget>(typeof(T), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
+            return new ModelTester<OneToManyPart<T>, ICollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
+        }
+
+        protected ModelTester<OneToManyPart<T>, ICollectionMapping> OneToMany<T>(Expression<Func<OneToManyTarget, ISet<T>>> property)
+        {
+            return new ModelTester<OneToManyPart<T>, ICollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
+        }
+
+        protected ModelTester<OneToManyPart<T>, ICollectionMapping> OneToMany<T>(Expression<Func<OneToManyTarget, IDictionary<string, T>>> property)
+        {
+            return new ModelTester<OneToManyPart<T>, ICollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
         }
 
         protected ModelTester<IManyToManyPart, ICollectionMapping> ManyToMany<T>(Expression<Func<T, object>> property)
@@ -106,6 +119,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         protected ModelTester<HibernateMappingPart, HibernateMapping> HibernateMapping()
         {
             return new ModelTester<HibernateMappingPart, HibernateMapping>(() => new HibernateMappingPart(), x => ((IHibernateMappingProvider)x).GetHibernateMapping());
+        }
+
+        protected ModelTester<CompositeElementPart<T>, CompositeElementMapping> CompositeElement<T>()
+        {
+            return new ModelTester<CompositeElementPart<T>, CompositeElementMapping>(() => new CompositeElementPart<T>(), x => ((ICompositeElementMappingProvider)x).GetCompositeElementMapping());
         }
     }
 }

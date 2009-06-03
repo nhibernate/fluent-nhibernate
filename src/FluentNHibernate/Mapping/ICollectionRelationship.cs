@@ -29,12 +29,6 @@ namespace FluentNHibernate.Mapping
         ICollectionRelationship AsElement(string columnName);
 
         /// <summary>
-        /// Maps this collection as a collection of components.
-        /// </summary>
-        /// <param name="action">Component mapping</param>
-        ICollectionRelationship Component(Action<IClasslike> action);
-
-        /// <summary>
         /// Sets the table name for this one-to-many.
         /// </summary>
         /// <param name="name">Table name</param>

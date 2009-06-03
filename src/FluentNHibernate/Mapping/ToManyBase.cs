@@ -21,7 +21,7 @@ namespace FluentNHibernate.Mapping
         private readonly CollectionCascadeExpression<T> cascade;
         protected IndexMapping indexMapping;
         protected ElementMapping elementMapping;
-        protected CompositeElementPart<TChild> componentMapping;
+        protected ICompositeElementMappingProvider componentMapping;
         public string TableName { get; private set; }
         public Type EntityType { get; private set; }
         protected bool nextBool = true;
@@ -74,6 +74,9 @@ namespace FluentNHibernate.Mapping
 
             if (Cache.IsDirty)
                 mapping.Cache = Cache.GetCacheMapping();
+
+            if (componentMapping != null)
+                mapping.CompositeElement = componentMapping.GetCompositeElementMapping();
 
             return mapping;
         }
@@ -215,9 +218,11 @@ namespace FluentNHibernate.Mapping
         /// <param name="action">Component mapping</param>
         public T Component(Action<CompositeElementPart<TChild>> action)
         {
-            componentMapping = new CompositeElementPart<TChild>();
+            var part = new CompositeElementPart<TChild>();
 
-            action(componentMapping);
+            action(part);
+
+            componentMapping = part;
 
             return (T)this;
         }
@@ -406,15 +411,6 @@ namespace FluentNHibernate.Mapping
         ICollectionRelationship ICollectionRelationship.AsElement(string columnName)
         {
             return AsElement(columnName);
-        }
-
-        /// <summary>
-        /// Maps this collection as a collection of components.
-        /// </summary>
-        /// <param name="action">Component mapping</param>
-        ICollectionRelationship ICollectionRelationship.Component(Action<IClasslike> action)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
