@@ -152,6 +152,16 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void ProcessKeyProperty(KeyPropertyMapping mapping)
+        {
+            
+        }
+
+        public virtual void ProcessKeyManyToOne(KeyManyToOneMapping mapping)
+        {
+            
+        }
+
         public virtual void Visit(IdMapping mapping)
         {
             
@@ -292,6 +302,16 @@ namespace FluentNHibernate.MappingModel
         }
 
         public virtual void Visit(MetaValueMapping mapping)
+        {
+            
+        }
+
+        public virtual void Visit(KeyPropertyMapping mapping)
+        {
+            
+        }
+
+        public virtual void Visit(KeyManyToOneMapping mapping)
         {
             
         }

@@ -25,6 +25,7 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterWriter<PropertyMapping>(c =>
                 new XmlPropertyWriter(c.Resolve<IXmlWriterServiceLocator>()));
 
+            RegisterIdWriters();
             RegisterComponentWriters();
 
             RegisterWriter<ColumnMapping>(c =>
@@ -50,15 +51,6 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterWriter<CacheMapping>(c =>
                 new XmlCacheWriter());
-
-            RegisterWriter<IIdentityMapping>(c =>
-                new XmlIdentityBasedWriter(c.Resolve<IXmlWriterServiceLocator>()));
-
-            RegisterWriter<IdMapping>(c =>
-                new XmlIdWriter(c.Resolve<IXmlWriterServiceLocator>()));
-
-            RegisterWriter<GeneratorMapping>(c =>
-                new XmlGeneratorWriter());
 
             RegisterWriter<OneToOneMapping>(c =>
                 new XmlOneToOneWriter());
@@ -107,6 +99,27 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterWriter<JoinedSubclassMapping>(c =>
                 new XmlJoinedSubclassWriter(c.Resolve<IXmlWriterServiceLocator>()));
+        }
+
+        private void RegisterIdWriters()
+        {
+            RegisterWriter<IIdentityMapping>(c =>
+                new XmlIdentityBasedWriter(c.Resolve<IXmlWriterServiceLocator>()));
+
+            RegisterWriter<IdMapping>(c =>
+                new XmlIdWriter(c.Resolve<IXmlWriterServiceLocator>()));
+
+            RegisterWriter<CompositeIdMapping>(c =>
+                new XmlCompositeIdWriter(c.Resolve<IXmlWriterServiceLocator>()));
+
+            RegisterWriter<GeneratorMapping>(c =>
+                new XmlGeneratorWriter());
+
+            RegisterWriter<KeyPropertyMapping>(c =>
+                new XmlKeyPropertyWriter(c.Resolve<IXmlWriterServiceLocator>()));
+
+            RegisterWriter<KeyManyToOneMapping>(c =>
+                new XmlKeyManyToOneWriter(c.Resolve<IXmlWriterServiceLocator>()));
         }
 
         private void RegisterComponentWriters()

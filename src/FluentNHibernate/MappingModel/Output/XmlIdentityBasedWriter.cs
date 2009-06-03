@@ -28,7 +28,8 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void ProcessCompositeId(CompositeIdMapping idMapping)
         {
-            base.ProcessCompositeId(idMapping);
+            var writer = serviceLocator.GetWriter<CompositeIdMapping>();
+            document = writer.Write(idMapping);
         }
     }
 }

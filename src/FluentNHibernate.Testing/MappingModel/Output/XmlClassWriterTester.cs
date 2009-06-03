@@ -212,10 +212,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Element("id").Exists();
         }
 
-        [Test, Ignore]
+        [Test]
         public void ShouldWriteCompositeId()
         {
-            Assert.Fail();
+            var mapping = new ClassMapping();
+
+            mapping.Id = new CompositeIdMapping();
+
+            writer.VerifyXml(mapping)
+                .Element("composite-id").Exists();
         }
 
         [Test]
