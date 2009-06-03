@@ -75,7 +75,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             JoinedSubClass<ChildRecord>()
                 .Mapping(m => m.Proxy<FakeProxyType>())
-                .ModelShouldMatch(x => x.Proxy.ShouldEqual(typeof(FakeProxyType)));
+                .ModelShouldMatch(x => x.Proxy.ShouldEqual(typeof(FakeProxyType).AssemblyQualifiedName));
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             JoinedSubClass<ChildRecord>()
                 .Mapping(m => m.Proxy(typeof(FakeProxyType)))
-                .ModelShouldMatch(x => x.Proxy.ShouldEqual(typeof(FakeProxyType)));
+                .ModelShouldMatch(x => x.Proxy.ShouldEqual(typeof(FakeProxyType).AssemblyQualifiedName));
         }
 
         [Test]

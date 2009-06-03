@@ -437,7 +437,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ShouldAddCacheElementBeforeCompositeId()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(x => { x.UseCompositeId().WithKeyProperty(y => y.Id).WithKeyProperty(y => y.Name); x.Cache.AsReadWrite(); })
+                .ForMapping(x => { x.CompositeId().WithKeyProperty(y => y.Id).WithKeyProperty(y => y.Name); x.Cache.AsReadWrite(); })
                 .Element("class/cache")
                     .ShouldBeInParentAtPosition(0)
                 .Element("class/composite-id")
@@ -448,7 +448,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ShouldAddCompositeIdBeforeDiscriminator()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(x => { x.DiscriminateSubClassesOnColumn("test"); x.UseCompositeId().WithKeyProperty(y => y.Id).WithKeyProperty(y => y.Name); })
+                .ForMapping(x => { x.DiscriminateSubClassesOnColumn("test"); x.CompositeId().WithKeyProperty(y => y.Id).WithKeyProperty(y => y.Name); })
                 .Element("class/composite-id")
                     .ShouldBeInParentAtPosition(0)
                 .Element("class/discriminator")

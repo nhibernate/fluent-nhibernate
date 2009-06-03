@@ -302,6 +302,7 @@
     <Compile Include="Mapping\IColumnNameCollection.cs" />
     <Compile Include="Mapping\IComponent.cs" />
     <Compile Include="Mapping\IComponentBase.cs" />
+    <Compile Include="Mapping\ICompositeIdMappingProvider.cs" />
     <Compile Include="Mapping\IDiscriminatorPart.cs" />
     <Compile Include="Mapping\IDynamicComponent.cs" />
     <Compile Include="Mapping\IHasAttributes.cs" />

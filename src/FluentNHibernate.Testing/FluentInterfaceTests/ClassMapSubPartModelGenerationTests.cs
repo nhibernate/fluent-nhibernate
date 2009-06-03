@@ -1,5 +1,6 @@
 using System.Linq;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
@@ -170,6 +171,23 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     .EntityIdentifierColumn("col1")
                     .EntityTypeColumn("col2"))
                 .ModelShouldMatch(x => x.Anys.Count().ShouldEqual(1));
+        }
+
+        [Test]
+        public void IdShouldSetIdPropertyOnModel()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(m => m.Id(x => x.Id))
+                .ModelShouldMatch(x => x.Id.ShouldBeOfType<IdMapping>());
+        }
+
+        [Test]
+        public void CompositeIdShouldSetIdPropertyOnModel()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(m => m.CompositeId()
+                    .WithKeyProperty(x => x.Id))
+                .ModelShouldMatch(x => x.Id.ShouldBeOfType<CompositeIdMapping>());
         }
     }
 }

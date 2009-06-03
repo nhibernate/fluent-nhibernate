@@ -49,6 +49,16 @@ namespace FluentNHibernate.MappingModel.Identity
             get { return attributes; }
         }
 
+        public IEnumerable<KeyPropertyMapping> KeyProperties
+        {
+            get { return keyProperties; }
+        }
+
+        public IEnumerable<KeyManyToOneMapping> KeyManyToOnes
+        {
+            get { return keyManyToOnes; }
+        }
+
         public void AddKeyProperty(KeyPropertyMapping mapping)
         {
             keyProperties.Add(mapping);

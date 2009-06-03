@@ -30,7 +30,7 @@ namespace FluentNHibernate.Mapping
         private readonly HibernateMapping hibernateMapping = new HibernateMapping();
         private IDiscriminatorPart discriminator;
         private IVersion version;
-
+        private ICompositeIdMappingProvider compositeId;
 
         public ClassMap()
             : this(new ClassMapping(typeof(T)))
@@ -85,6 +85,9 @@ namespace FluentNHibernate.Mapping
             if (id != null)
                 mapping.Id = id.GetIdMapping();
 
+            if (compositeId != null)
+                mapping.Id = compositeId.GetCompositeIdMapping();
+
             foreach (var part in Parts)
                 mapping.AddUnmigratedPart(part);
 
@@ -103,11 +106,11 @@ namespace FluentNHibernate.Mapping
             return hibernateMapping;
         }
 
-        public CompositeIdentityPart<T> UseCompositeId()
+        public CompositeIdentityPart<T> CompositeId()
         {
             var part = new CompositeIdentityPart<T>();
-			
-            AddPart(part);
+
+            compositeId = part;
 
             return part;
         }
