@@ -33,14 +33,6 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
-        public void VersionShouldSetModelVersion()
-        {
-            JoinedSubClass<VersionTarget>()
-                .Mapping(m => m.Version(x => x.VersionNumber))
-                .ModelShouldMatch(x => x.Version.ShouldNotBeNull());
-        }
-
-        [Test]
         public void HasOneShouldAddToOneToOneCollectionOnModel()
         {
             JoinedSubClass<PropertyTarget>()

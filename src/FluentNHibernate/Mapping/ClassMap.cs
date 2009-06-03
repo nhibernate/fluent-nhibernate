@@ -29,6 +29,8 @@ namespace FluentNHibernate.Mapping
         private readonly ClassMapping mapping;
         private readonly HibernateMapping hibernateMapping = new HibernateMapping();
         private IDiscriminatorPart discriminator;
+        private IVersion version;
+
 
         public ClassMap()
             : this(new ClassMapping(typeof(T)))
@@ -108,6 +110,20 @@ namespace FluentNHibernate.Mapping
             AddPart(part);
 
             return part;
+        }
+
+        public VersionPart Version(Expression<Func<T, object>> expression)
+        {
+            return Version(ReflectionHelper.GetProperty(expression));
+        }
+
+        protected virtual VersionPart Version(PropertyInfo property)
+        {
+            var versionPart = new VersionPart(EntityType, property);
+
+            version = versionPart;
+
+            return versionPart;
         }
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)

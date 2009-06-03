@@ -57,7 +57,5 @@ namespace FluentNHibernate.Mapping
         /// <param name="expression">Expression to get property from</param>
         /// <returns>many-to-many part</returns>
         IManyToManyPart HasManyToMany<TEntity, TChild>(Expression<Func<TEntity, IEnumerable<TChild>>> expression);
-
-        IVersion Version<T>(Expression<Func<T, object>> expression);
     }
 }

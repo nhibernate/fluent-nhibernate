@@ -23,7 +23,6 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<ICollectionRelationship> collections = new List<ICollectionRelationship>();
         protected readonly IList<IManyToOnePart> references = new List<IManyToOnePart>();
         protected readonly IList<IAnyMappingProvider> anys = new List<IAnyMappingProvider>();
-        protected IVersion version;
 
         protected internal void AddPart(IMappingPart part)
         {
@@ -271,20 +270,6 @@ namespace FluentNHibernate.Mapping
             return MapHasManyToMany<TChild, object>(expression);
         }
 
-        public VersionPart Version(Expression<Func<T, object>> expression)
-        {
-            return Version(ReflectionHelper.GetProperty(expression));
-        }
-
-        protected virtual VersionPart Version(PropertyInfo property)
-        {
-            var versionPart = new VersionPart(EntityType, property);
-
-            version = versionPart;
-            
-            return versionPart;
-        }
-
         protected void WriteTheParts(XmlElement classElement, IMappingVisitor visitor)
         {
             m_Parts.Sort(new MappingPartComparer(m_Parts));
@@ -334,11 +319,6 @@ namespace FluentNHibernate.Mapping
         IComponentBase IClasslike.Component<TEntity, TComponent>(Expression<Func<TEntity, TComponent>> expression, Action<ComponentPart<TComponent>> action)
         {
             return Component(ReflectionHelper.GetProperty(expression), action);
-        }
-
-        IVersion IClasslike.Version<TEntity>(Expression<Func<TEntity, object>> expression)
-        {
-            return Version(ReflectionHelper.GetProperty(expression));
         }
 
         IProperty IClasslike.Map<TEntity>(Expression<Func<TEntity, object>> expression)

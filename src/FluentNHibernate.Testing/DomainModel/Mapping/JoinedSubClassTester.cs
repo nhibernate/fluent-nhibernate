@@ -220,15 +220,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("//joined-subclass/any").Exists();
         }
 
-        [Test]
-        public void MapsVersion()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.Version(x => x.Version)))
-                .Element("//joined-subclass/version").Exists();
-        }
-
         private class SuperClass
         {
             public int Id { get; set; }

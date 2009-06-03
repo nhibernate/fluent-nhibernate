@@ -38,6 +38,14 @@ namespace FluentNHibernate.MappingModel.Output
             document.ImportAndAppendChild(xml);
         }
 
+        public override void Visit(ManyToOneMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<ManyToOneMapping>();
+            var xml = writer.Write(mapping);
+
+            document.ImportAndAppendChild(xml);
+        }
+
         public override void Visit(AnyMapping mapping)
         {
             var writer = serviceLocator.GetWriter<AnyMapping>();

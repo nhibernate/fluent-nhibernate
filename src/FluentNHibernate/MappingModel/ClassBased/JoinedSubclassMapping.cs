@@ -61,13 +61,19 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Schema, value); }
         }
 
+        public string Extends
+        {
+            get { return attributes.Get(x => x.Extends); }
+            set { attributes.Set(x => x.Extends, value); }
+        }
+
         public string Check
         {
             get { return attributes.Get(x => x.Check); }
             set { attributes.Set(x => x.Check, value); }
         }
 
-        public Type Proxy
+        public string Proxy
         {
             get { return attributes.Get(x => x.Proxy); }
             set { attributes.Set(x => x.Proxy, value); }

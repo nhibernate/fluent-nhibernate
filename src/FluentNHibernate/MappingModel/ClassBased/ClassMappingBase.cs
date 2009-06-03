@@ -16,12 +16,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers = new MappedMembers();
         }
 
-        public VersionMapping Version
-        {
-            get { return mappedMembers.Version; }
-            set { mappedMembers.Version = value; }
-        }
-
         public string Name
         {
             get { return attributes.Get(x => x.Name); }
@@ -70,6 +64,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mappedMembers.Anys; }
         }
 
+        public IEnumerable<JoinMapping> Joins
+        {
+            get { return mappedMembers.Joins; }
+        }
+
         public void AddProperty(PropertyMapping property)
         {
             mappedMembers.AddProperty(property);
@@ -98,6 +97,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public void AddAny(AnyMapping mapping)
         {
             mappedMembers.AddAny(mapping);
+        }
+
+        public void AddJoin(JoinMapping mapping)
+        {
+            mappedMembers.AddJoin(mapping);
         }
 
         #endregion

@@ -23,49 +23,38 @@ namespace FluentNHibernate.MappingModel.Output
             return document;
         }
 
-        public override void ProcessSubclass(SubclassMapping subclassMapping)
+        public override void ProcessSubclass(SubclassMapping mapping)
         {
             document = new XmlDocument();
 
-            var subclassElement = document.AddElement("subclass");
+            var element = document.AddElement("subclass");
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.Name))
-                subclassElement.WithAtt("name", subclassMapping.Type.AssemblyQualifiedName);
+            if (mapping.Attributes.IsSpecified(x => x.Name))
+                element.WithAtt("name", mapping.Name);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.DiscriminatorValue))
-                subclassElement.WithAtt("discriminator-value", subclassMapping.DiscriminatorValue.ToString());
+            if (mapping.Attributes.IsSpecified(x => x.DiscriminatorValue))
+                element.WithAtt("discriminator-value", mapping.DiscriminatorValue.ToString());
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.Proxy))
-                subclassElement.WithAtt("proxy", subclassMapping.Proxy.AssemblyQualifiedName);
+            if (mapping.Attributes.IsSpecified(x => x.Extends))
+                element.WithAtt("extends", mapping.Extends);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.Lazy))
-                subclassElement.WithAtt("lazy", subclassMapping.Lazy);
+            if (mapping.Attributes.IsSpecified(x => x.Proxy))
+                element.WithAtt("proxy", mapping.Proxy);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.DynamicUpdate))
-                subclassElement.WithAtt("dynamic-update", subclassMapping.DynamicUpdate);
+            if (mapping.Attributes.IsSpecified(x => x.Lazy))
+                element.WithAtt("lazy", mapping.Lazy);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.DynamicInsert))
-                subclassElement.WithAtt("dynamic-insert", subclassMapping.DynamicInsert);
+            if (mapping.Attributes.IsSpecified(x => x.DynamicUpdate))
+                element.WithAtt("dynamic-update", mapping.DynamicUpdate);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.SelectBeforeUpdate))
-                subclassElement.WithAtt("select-before-update", subclassMapping.SelectBeforeUpdate);
+            if (mapping.Attributes.IsSpecified(x => x.DynamicInsert))
+                element.WithAtt("dynamic-insert", mapping.DynamicInsert);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.Abstract))
-                subclassElement.WithAtt("abstract", subclassMapping.Abstract);
+            if (mapping.Attributes.IsSpecified(x => x.SelectBeforeUpdate))
+                element.WithAtt("select-before-update", mapping.SelectBeforeUpdate);
 
-            var sortedUnmigratedParts = new List<IMappingPart>(subclassMapping.UnmigratedParts);
-
-            sortedUnmigratedParts.Sort(new MappingPartComparer(subclassMapping.UnmigratedParts));
-
-            foreach (var part in sortedUnmigratedParts)
-            {
-                part.Write(subclassElement, null);
-            }
-
-            foreach (var attribute in subclassMapping.UnmigratedAttributes)
-            {
-                subclassElement.WithAtt(attribute.Key, attribute.Value);
-            }
+            if (mapping.Attributes.IsSpecified(x => x.Abstract))
+                element.WithAtt("abstract", mapping.Abstract);
         }
 
         public override void Visit(SubclassMapping subclassMapping)
@@ -82,6 +71,14 @@ namespace FluentNHibernate.MappingModel.Output
             var componentXml = writer.Write(componentMapping);
 
             document.ImportAndAppendChild(componentXml);
+        }
+
+        public override void Visit(JoinMapping joinMapping)
+        {
+            var writer = serviceLocator.GetWriter<JoinMapping>();
+            var xml = writer.Write(joinMapping);
+
+            document.ImportAndAppendChild(xml);
         }
     }
 }

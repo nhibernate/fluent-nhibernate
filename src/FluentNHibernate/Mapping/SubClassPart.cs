@@ -11,7 +11,6 @@ namespace FluentNHibernate.Mapping
     {
         private readonly DiscriminatorPart parent;
         private readonly SubclassMapping mapping;
-        private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
         private bool nextBool = true;
 
         public SubClassPart(DiscriminatorPart parent, object discriminatorValue)
@@ -38,9 +37,6 @@ namespace FluentNHibernate.Mapping
             foreach (var component in components)
                 mapping.AddComponent(component.GetComponentMapping());
 
-            if (version != null)
-                mapping.Version = version.GetVersionMapping();
-
             foreach (var oneToOne in oneToOnes)
                 mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
 
@@ -53,30 +49,7 @@ namespace FluentNHibernate.Mapping
             foreach (var any in anys)
                 mapping.AddAny(any.GetAnyMapping());
 
-            foreach (var part in Parts)
-                mapping.AddUnmigratedPart(part);
-
-            unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
-
             return mapping;
-        }
-
-        /// <summary>
-        /// Set an attribute on the xml element produced by this sub-class mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        public void SetAttribute(string name, string value)
-        {
-            unmigratedAttributes.Store(name, value);
-        }
-
-        public void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
         }
 
         public DiscriminatorPart SubClass<TChild>(object discriminatorValue, Action<SubClassPart<TChild>> action)
@@ -108,14 +81,13 @@ namespace FluentNHibernate.Mapping
 
         public SubClassPart<TSubclass> Proxy(Type type)
         {
-            mapping.Proxy = type;
+            mapping.Proxy = type.AssemblyQualifiedName;
             return this;
         }
 
         public SubClassPart<TSubclass> Proxy<T>()
         {
-            mapping.Proxy = typeof(T);
-            return this;
+            return Proxy(typeof(T));
         }
 
         public SubClassPart<TSubclass> DynamicUpdate()
@@ -198,28 +170,29 @@ namespace FluentNHibernate.Mapping
             get { return Not; }
         }
 
-        #region Implementation of IMappingPart
-
         void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("Obsolete");
         }
 
-        /// <summary>
-        /// Indicates a constant, general position on the document the part should be written to
-        /// </summary>
         PartPosition IMappingPart.PositionOnDocument
         {
-            get { throw new NotImplementedException(); }
+            get { throw new NotSupportedException("Obsolete"); }
         }
-        /// <summary>
-        /// Indicates a constant sub-position within a similar grouping of positions the element will be written in
-        /// </summary>
+        
         int IMappingPart.LevelWithinPosition
         {
-            get { throw new NotImplementedException(); }
+            get { throw new NotSupportedException("Obsolete"); }
         }
 
-        #endregion
+        void IHasAttributes.SetAttribute(string name, string value)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        void IHasAttributes.SetAttributes(Attributes atts)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
     }
 }

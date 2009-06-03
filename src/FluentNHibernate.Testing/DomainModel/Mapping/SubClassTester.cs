@@ -250,16 +250,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void MapsVersion()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<MappedObject>(sc => sc.Version(x => x.Version)))
-                .Element("//subclass/version").Exists();
-        }
-
-        [Test]
         public void SubclassShouldNotHaveDiscriminator()
         {
             new MappingTester<MappedObject>()

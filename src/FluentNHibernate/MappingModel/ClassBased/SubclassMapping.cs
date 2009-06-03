@@ -8,8 +8,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
     {
         private readonly AttributeStore<SubclassMapping> attributes;
         private readonly IList<SubclassMapping> subclasses;
-        private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
-        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
         public SubclassMapping()
             : this(new AttributeStore())
@@ -53,13 +51,19 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.DiscriminatorValue, value); }
         }
 
+        public string Extends
+        {
+            get { return attributes.Get(x => x.Extends); }
+            set { attributes.Set(x => x.Extends, value); }
+        }
+
         public bool Lazy
         {
             get { return attributes.Get(x => x.Lazy); }
             set { attributes.Set(x => x.Lazy, value); }
         }
 
-        public Type Proxy
+        public string Proxy
         {
             get { return attributes.Get(x => x.Proxy); }
             set { attributes.Set(x => x.Proxy, value); }
@@ -87,26 +91,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return attributes.Get(x => x.Abstract); }
             set { attributes.Set(x => x.Abstract, value); }
-        }
-
-        public IEnumerable<IMappingPart> UnmigratedParts
-        {
-            get { return unmigratedParts; }
-        }
-
-        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
-        {
-            get { return unmigratedAttributes; }
-        }
-
-        public void AddUnmigratedPart(IMappingPart part)
-        {
-            unmigratedParts.Add(part);
-        }
-
-        public void AddUnmigratedAttribute(string attribute, string value)
-        {
-            unmigratedAttributes.Add(attribute, value);
         }
     }
 }

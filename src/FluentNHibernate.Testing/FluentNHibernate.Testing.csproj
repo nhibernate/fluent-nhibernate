@@ -213,6 +213,9 @@
     <Compile Include="FluentInterfaceTests\VersionMutablePropertyModelGenerationTests.cs" />
     <Compile Include="Infrastructure\ContainerTester.cs" />
     <Compile Include="MappingModel\Collections\CompositeElementMappingTester.cs" />
+    <Compile Include="MappingModel\Output\XmlJoinedSubclassWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlSubclassWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlInheritanceWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlJoinWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlAnyWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlBagWriterTester.cs" />

@@ -33,6 +33,5 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer.VerifyXml(mapping)
                 .RootElement.HasName("dynamic-component");
         }
-
     }
 }

@@ -70,14 +70,13 @@ namespace FluentNHibernate.Mapping
 
         public JoinedSubClassPart<TSubclass> Proxy(Type type)
         {
-            mapping.Proxy = type;
+            mapping.Proxy = type.AssemblyQualifiedName;
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> Proxy<T>()
         {
-            mapping.Proxy = typeof(T);
-            return this;
+            return Proxy(typeof(T));
         }
 
         public JoinedSubClassPart<TSubclass> LazyLoad()
@@ -140,9 +139,6 @@ namespace FluentNHibernate.Mapping
 
             foreach (var component in components)
                 mapping.AddComponent(component.GetComponentMapping());
-
-            if (version != null)
-                mapping.Version = version.GetVersionMapping();
 
             foreach (var oneToOne in oneToOnes)
                 mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
