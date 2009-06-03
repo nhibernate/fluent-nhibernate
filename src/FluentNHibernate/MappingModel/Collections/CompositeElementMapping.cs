@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.MappingModel.Collections
 {
     public class CompositeElementMapping : MappingBase, INameable
     {
@@ -22,13 +22,20 @@ namespace FluentNHibernate.MappingModel
             mappedMembers = new MappedMembers();
         }
 
-        public Type Type { get; set; }
-
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessCompositeElement(this);
 
             mappedMembers.AcceptVisitor(visitor);
+
+            if (Parent != null)
+                visitor.Visit(Parent);
+        }
+
+        public string Class
+        {
+            get { return attributes.Get(x => x.Class); }
+            set { attributes.Set(x => x.Class, value); }
         }
         
         public string Name
@@ -43,20 +50,23 @@ namespace FluentNHibernate.MappingModel
         }
 
         public PropertyInfo PropertyInfo { get; set; }
+        public ParentMapping Parent { get; set; }
 
-        public string PropertyName
+        public IEnumerable<PropertyMapping> Properties
         {
-            get { return attributes.Get(x => x.PropertyName); }
-            set { attributes.Set(x => x.PropertyName, value); }
+            get { return mappedMembers.Properties; }
         }
 
-        public IEnumerable<PropertyMapping> Properties { get { return mappedMembers.Properties; } }
         public void AddProperty(PropertyMapping property)
         {
             mappedMembers.AddProperty(property);
         }
 
-        public IEnumerable<ManyToOneMapping> References { get { return mappedMembers.References; } }
+        public IEnumerable<ManyToOneMapping> References
+        {
+            get { return mappedMembers.References; }
+        }
+
         public void AddReference(ManyToOneMapping manyToOne)
         {
             mappedMembers.AddReference(manyToOne);
@@ -65,26 +75,6 @@ namespace FluentNHibernate.MappingModel
         public AttributeStore<CompositeElementMapping> Attributes
         {
             get { return attributes; }
-        }
-
-        public IEnumerable<IMappingPart> UnmigratedParts
-        {
-            get { return unmigratedParts; }
-        }
-
-        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
-        {
-            get { return unmigratedAttributes; }
-        }
-
-        public void AddUnmigratedPart(IMappingPart part)
-        {
-            unmigratedParts.Add(part);
-        }
-
-        public void AddUnmigratedAttribute(string attribute, string value)
-        {
-            unmigratedAttributes.Add(attribute, value);
         }
     }
 }

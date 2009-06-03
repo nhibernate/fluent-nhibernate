@@ -1,4 +1,5 @@
 ﻿using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Collections;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.MappingModel.Collections

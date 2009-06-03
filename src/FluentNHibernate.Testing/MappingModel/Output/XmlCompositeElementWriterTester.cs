@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Xml;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Output;
+using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -20,22 +22,48 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldWriteTheAttributes()
+        public void ShouldWriteClassAttribute()
         {
-            var compositeElementMapping = new CompositeElementMapping { Type = typeof(object) };
-
-            writer.VerifyXml(compositeElementMapping)
-                .HasAttribute("class", typeof(object).AssemblyQualifiedName);
+            var testHelper = new XmlWriterTestHelper<CompositeElementMapping>();
+            
+            testHelper.Check(x => x.Class, "t").MapsToAttribute("class");
+            testHelper.VerifyAll(writer);
         }
 
         [Test]
-        public void ShouldWriteTheProperties()
+        public void ShouldWriteProperties()
         {
-            var compositeElementMapping = new CompositeElementMapping();
-            compositeElementMapping.AddProperty(new PropertyMapping());
+            var mapping = new CompositeElementMapping();
+            mapping.AddProperty(new PropertyMapping());
 
-            writer.VerifyXml(compositeElementMapping)
+            writer.VerifyXml(mapping)
                 .Element("property").Exists();
+        }
+
+        [Test]
+        public void ShouldWriteManyToOnes()
+        {
+            var mapping = new CompositeElementMapping();
+            mapping.AddReference(new ManyToOneMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("many-to-one").Exists();
+        }
+
+        [Test, Ignore]
+        public void ShouldWriteNestedCompositeElement()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public void ShouldWriteParent()
+        {
+            var mapping = new CompositeElementMapping();
+            mapping.Parent = new ParentMapping();
+
+            writer.VerifyXml(mapping)
+                .Element("parent").Exists();
         }
     }
 }
