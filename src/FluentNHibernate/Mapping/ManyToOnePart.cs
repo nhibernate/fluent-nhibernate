@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Xml;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
@@ -282,22 +281,6 @@ namespace FluentNHibernate.Mapping
         IAccessStrategyBuilder IRelationship.Access
         {
             get { return Access; }
-        }
-
-
-        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
-        int IMappingPart.LevelWithinPosition
-        {
-            get { return 1; }
-        }
-
-        PartPosition IMappingPart.PositionOnDocument
-        {
-            get { return PartPosition.Anywhere; }
         }
     }
 }

@@ -59,20 +59,6 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.Attributes.IsSpecified(x => x.Abstract))
                 element.WithAtt("abstract", mapping.Abstract);
-
-            var sortedUnmigratedParts = new List<IMappingPart>(mapping.UnmigratedParts);
-
-            sortedUnmigratedParts.Sort(new MappingPartComparer(mapping.UnmigratedParts));
-
-            foreach (var part in sortedUnmigratedParts)
-            {
-                part.Write(element, null);
-            }
-
-            foreach (var attribute in mapping.UnmigratedAttributes)
-            {
-                element.WithAtt(attribute.Key, attribute.Value);
-            }
         }
 
         public override void Visit(KeyMapping keyMapping)

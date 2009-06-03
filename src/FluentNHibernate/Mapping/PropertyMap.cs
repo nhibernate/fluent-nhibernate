@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Xml;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.Utils;
 using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping
@@ -229,21 +226,6 @@ namespace FluentNHibernate.Mapping
                 nextBool = !nextBool;
                 return this;
             }
-        }
-
-        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
-        int IMappingPart.LevelWithinPosition
-        {
-            get { throw new NotSupportedException("Obsolete"); }
-        }
-
-        PartPosition IMappingPart.PositionOnDocument
-        {
-            get { throw new NotSupportedException("Obsolete"); }
         }
     }
 }

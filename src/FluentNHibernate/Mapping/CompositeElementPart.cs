@@ -69,27 +69,6 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-
-        private readonly Cache<string, string> localProperties = new Cache<string, string>();
-        private PropertyInfo parentReference;
-
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            XmlElement element = classElement.AddElement("composite-element")
-                .WithAtt("class", typeof(T).AssemblyQualifiedName)
-                .WithProperties(localProperties);
-
-            if (parentReference != null)
-                element.AddElement("parent").WithAtt("name", parentReference.Name);
-
-            //Write the parts
-            m_Parts.Sort(new MappingPartComparer(m_Parts));
-            foreach (IMappingPart part in m_Parts)
-            {
-                part.Write(element, visitor);
-            }
-        }
-
         /// <summary>
         /// Maps a property of the component class as a reference back to the containing entity
         /// </summary>
@@ -102,37 +81,7 @@ namespace FluentNHibernate.Mapping
 
         private CompositeElementPart<T> WithParentReference(PropertyInfo property)
         {
-            parentReference = property;
             return this;
-        }
-
-        /// <summary>
-        /// Set an attribute on the xml element produced by this component mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        /// <include file='' path='[@name=""]'/>
-        public void SetAttribute(string name, string value)
-        {
-            localProperties.Store(name, value);
-        }
-
-        public void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
-        public int LevelWithinPosition
-        {
-            get { return 1; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.Anywhere; }
         }
     }
 }

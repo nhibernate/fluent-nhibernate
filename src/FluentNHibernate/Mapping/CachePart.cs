@@ -1,5 +1,3 @@
-using System;
-using System.Xml;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
@@ -57,21 +55,6 @@ namespace FluentNHibernate.Mapping
         public bool IsDirty
         {
             get { return mapping.Attributes.IsSpecified(x => x.Region) || mapping.Attributes.IsSpecified(x => x.Usage); }
-        }
-
-        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
-        int IMappingPart.LevelWithinPosition
-        {
-            get { throw new NotSupportedException("Obsolete"); }
-        }
-
-        PartPosition IMappingPart.PositionOnDocument
-        {
-            get { throw new NotSupportedException("Obsolete"); }
         }
     }
 }

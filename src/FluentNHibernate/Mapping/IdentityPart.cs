@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Xml;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
-using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
@@ -109,21 +107,6 @@ namespace FluentNHibernate.Mapping
             var column = mapping.Columns.FirstOrDefault();
 
             return column != null ? column.Name : null;
-        }
-
-        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
-        int IMappingPart.LevelWithinPosition
-        {
-            get { throw new NotSupportedException("Obsolete"); }
-        }
-
-        PartPosition IMappingPart.PositionOnDocument
-        {
-            get { throw new NotSupportedException("Obsolete"); }
         }
     }
 }

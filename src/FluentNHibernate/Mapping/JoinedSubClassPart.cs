@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Xml;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
@@ -10,7 +7,6 @@ namespace FluentNHibernate.Mapping
 {
     public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, IJoinedSubclass
     {
-        private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
         private readonly JoinedSubclassMapping mapping;
         private readonly IList<string> columns = new List<string>();
         private bool nextBool = true;
@@ -35,19 +31,6 @@ namespace FluentNHibernate.Mapping
             joinedSubclasses.Add(subclass);
 
             mapping.AddSubclass(subclass.GetJoinedSubclassMapping());
-        }
-
-        public virtual void SetAttribute(string name, string value)
-        {
-            unmigratedAttributes.Store(name, value);
-        }
-
-        public virtual void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
         }
 
         public JoinedSubClassPart<TSubclass> WithTableName(string tableName)
@@ -152,11 +135,6 @@ namespace FluentNHibernate.Mapping
             foreach (var any in anys)
                 mapping.AddAny(any.GetAnyMapping());
 
-            foreach (var part in Parts)
-                mapping.AddUnmigratedPart(part);
-
-            unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
-
             return mapping;
         }
 
@@ -213,21 +191,6 @@ namespace FluentNHibernate.Mapping
         IJoinedSubclass IJoinedSubclass.Not
         {
             get { return Not; }
-        }
-
-        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
-        int IMappingPart.LevelWithinPosition
-        {
-            get { throw new NotSupportedException("Obsolete"); }
-        }
-
-        PartPosition IMappingPart.PositionOnDocument
-        {
-            get { throw new NotSupportedException("Obsolete"); }
         }
     }
 }

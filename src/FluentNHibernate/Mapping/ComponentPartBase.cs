@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Xml;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
@@ -94,21 +92,6 @@ namespace FluentNHibernate.Mapping
         IComponentBase IComponentBase.WithParentReference<TExplicit>(Expression<Func<TExplicit, object>> exp)
         {
             return WithParentReference(ReflectionHelper.GetProperty(exp));
-        }
-
-        int IMappingPart.LevelWithinPosition
-        {
-            get { throw new NotSupportedException("Obsolete"); }
-        }
-
-        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { throw new NotSupportedException("Obsolete"); }
         }
     }
 }

@@ -8,8 +8,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
     {
         private readonly AttributeStore<JoinedSubclassMapping> attributes;
         private readonly IList<JoinedSubclassMapping> subclasses;
-        private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
-        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
         public KeyMapping Key { get; set; }
 
         public JoinedSubclassMapping() : this(new AttributeStore())
@@ -107,26 +105,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return attributes.Get(x => x.Abstract); }
             set { attributes.Set(x => x.Abstract, value); }
-        }
-
-        public IEnumerable<IMappingPart> UnmigratedParts
-        {
-            get { return unmigratedParts; }
-        }
-
-        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
-        {
-            get { return unmigratedAttributes; }
-        }
-
-        public void AddUnmigratedPart(IMappingPart part)
-        {
-            unmigratedParts.Add(part);
-        }
-
-        public void AddUnmigratedAttribute(string attribute, string value)
-        {
-            unmigratedAttributes.Add(attribute, value);
         }
     }
 }

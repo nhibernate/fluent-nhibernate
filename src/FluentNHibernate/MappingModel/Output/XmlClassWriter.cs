@@ -29,30 +29,8 @@ namespace FluentNHibernate.MappingModel.Output
         {
             document = new XmlDocument();
 
-            // create class node
-            var classElement = CreateClassElement(classMapping);
-            var sortedUnmigratedParts = new List<IMappingPart>(classMapping.UnmigratedParts);
-
-            sortedUnmigratedParts.Sort(new MappingPartComparer(classMapping.UnmigratedParts));
-
-            foreach (var part in sortedUnmigratedParts)
-            {
-                part.Write(classElement, null);
-            }
-
-            foreach (var attribute in classMapping.UnmigratedAttributes)
-            {
-                classElement.WithAtt(attribute.Key, attribute.Value);
-            }
-        }
-
-        protected virtual XmlElement CreateClassElement(ClassMapping classMapping)
-        {
-            var classElement = document.CreateElement("class");
-
-            document.AppendChild(classElement);
-
-            classElement.WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
+            var classElement = document.AddElement("class")
+                .WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
 
             if (classMapping.Attributes.IsSpecified(x => x.BatchSize))
                 classElement.WithAtt("batch-size", classMapping.BatchSize);
@@ -104,8 +82,6 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (classMapping.Attributes.IsSpecified(x => x.Abstract))
                 classElement.WithAtt("abstract", classMapping.Abstract);
-
-            return classElement;
         }
 
         public override void Visit(DiscriminatorMapping discriminatorMapping)

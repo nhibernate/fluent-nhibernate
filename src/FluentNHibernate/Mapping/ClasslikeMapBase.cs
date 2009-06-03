@@ -270,15 +270,6 @@ namespace FluentNHibernate.Mapping
             return MapHasManyToMany<TChild, object>(expression);
         }
 
-        protected void WriteTheParts(XmlElement classElement, IMappingVisitor visitor)
-        {
-            m_Parts.Sort(new MappingPartComparer(m_Parts));
-            foreach (IMappingPart part in m_Parts)
-            {
-                part.Write(classElement, visitor);
-            }
-        }
-
         IEnumerable<PropertyMap> IClasslike.Properties
         {
             get { return properties; }

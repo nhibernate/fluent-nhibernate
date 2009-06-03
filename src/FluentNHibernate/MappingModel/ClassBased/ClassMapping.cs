@@ -10,8 +10,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         private readonly AttributeStore<ClassMapping> attributes;
         private readonly IList<ISubclassMapping> subclasses;
         private DiscriminatorMapping discriminator;
-        private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
-        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
         public IIdentityMapping Id { get; set; }
 
         public ClassMapping()
@@ -184,26 +182,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public AttributeStore<ClassMapping> Attributes
         {
             get { return attributes; }
-        }
-
-        public IEnumerable<IMappingPart> UnmigratedParts
-        {
-            get { return unmigratedParts; }
-        }
-
-        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
-        {
-            get { return unmigratedAttributes; }
-        }
-
-        public void AddUnmigratedPart(IMappingPart part)
-        {
-            unmigratedParts.Add(part);
-        }
-
-        public void AddUnmigratedAttribute(string attribute, string value)
-        {
-            unmigratedAttributes.Add(attribute, value);
         }
     }
 }

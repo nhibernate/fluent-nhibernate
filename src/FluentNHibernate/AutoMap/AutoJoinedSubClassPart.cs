@@ -16,27 +16,6 @@ namespace FluentNHibernate.AutoMap
             this.keyColumn = keyColumn;
         }
 
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            XmlElement subclassElement = classElement.AddElement("joined-subclass")
-                .WithAtt("name", typeof(T).AssemblyQualifiedName);
-            subclassElement.AddElement("key")
-                .WithAtt("column", keyColumn);
-            subclassElement.WithProperties(attributes);
-
-            WriteTheParts(subclassElement, visitor);
-        }
-
-        public int LevelWithinPosition
-        {
-            get { return 4; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.Anywhere; }
-        }
-
         public AutoJoinedSubClassPart<T> WithTableName(string tableName)
         {             
             attributes.Store("table", tableName);

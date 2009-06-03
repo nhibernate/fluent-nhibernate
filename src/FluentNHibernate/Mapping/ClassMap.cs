@@ -12,8 +12,6 @@ namespace FluentNHibernate.Mapping
 {
     public class ClassMap<T> : ClasslikeMapBase<T>, IClassMap
     {
-        private readonly Cache<string, string> unmigratedAttributes;
-        public Cache<string, string> HibernateMappingAttributes { get; private set; }
         private readonly IOptimisticLockBuilder optimisticLock;
 
         /// <summary>
@@ -38,8 +36,6 @@ namespace FluentNHibernate.Mapping
         public ClassMap(ClassMapping mapping)
         {
             this.mapping = mapping;
-            unmigratedAttributes = new Cache<string, string>();
-            HibernateMappingAttributes = new Cache<string, string>();
             optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => mapping.OptimisticLock = value);
             Cache = new CachePart();
         }
@@ -85,11 +81,6 @@ namespace FluentNHibernate.Mapping
 
             if (compositeId != null)
                 mapping.Id = compositeId.GetCompositeIdMapping();
-
-            foreach (var part in Parts)
-                mapping.AddUnmigratedPart(part);
-
-            unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
 
             return mapping;
         }
