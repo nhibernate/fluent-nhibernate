@@ -213,6 +213,8 @@
     <Compile Include="FluentInterfaceTests\VersionMutablePropertyModelGenerationTests.cs" />
     <Compile Include="Infrastructure\ContainerTester.cs" />
     <Compile Include="MappingModel\Collections\CompositeElementMappingTester.cs" />
+    <Compile Include="MappingModel\Output\XmlDynamicComponentWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlComponentWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlJoinedSubclassWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlSubclassWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlInheritanceWriterTester.cs" />
@@ -256,7 +258,6 @@
     <Compile Include="DomainModel\Music.cs" />
     <Compile Include="MappingModel\AttributeStoreTester.cs" />
     <Compile Include="MappingModel\ClassMappingTester.cs" />
-    <Compile Include="MappingModel\Conventions\NamingConventionTester.cs" />
     <Compile Include="MappingModel\HibernateMappingTester.cs" />
     <Compile Include="MappingModel\MappingTestingExtensions.cs" />
     <Compile Include="Utils\ReflectionHelperTests.cs" />

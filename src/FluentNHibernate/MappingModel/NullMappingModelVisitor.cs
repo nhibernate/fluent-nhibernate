@@ -102,7 +102,7 @@ namespace FluentNHibernate.MappingModel
             
         }
 
-        public virtual void ProcessComponent(ComponentMappingBase componentMapping)
+        public virtual void ProcessComponent(IComponentMapping componentMapping)
         {
             
         }
@@ -242,7 +242,7 @@ namespace FluentNHibernate.MappingModel
             
         }
 
-        public virtual void Visit(ComponentMappingBase componentMapping)
+        public virtual void Visit(IComponentMapping componentMapping)
         {
             
         }

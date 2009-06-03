@@ -31,26 +31,15 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.Attributes.IsSpecified(x => x.Update))
                 componentElement.WithAtt("update", mapping.Update);
 
-            var sortedUnmigratedParts = new List<IMappingPart>(mapping.UnmigratedParts);
-
-            sortedUnmigratedParts.Sort(new MappingPartComparer(mapping.UnmigratedParts));
-
-            foreach (var part in sortedUnmigratedParts)
-            {
-                part.Write(componentElement, null);
-            }
-
-            foreach (var attribute in mapping.UnmigratedAttributes)
-            {
-                componentElement.WithAtt(attribute.Key, attribute.Value);
-            }
+            if (mapping.Attributes.IsSpecified(x => x.Access))
+                componentElement.WithAtt("access", mapping.Access);
 
             return doc;
         }
 
-        public override void Visit(ComponentMappingBase componentMapping)
+        public override void Visit(IComponentMapping componentMapping)
         {
-            var writer = serviceLocator.GetWriter<ComponentMappingBase>();
+            var writer = serviceLocator.GetWriter<IComponentMapping>();
             var componentXml = writer.Write(componentMapping);
 
             document.ImportAndAppendChild(componentXml);

@@ -190,6 +190,7 @@
     <Compile Include="MappingModel\ClassBased\ComponentMapping.cs" />
     <Compile Include="MappingModel\ClassBased\ComponentMappingBase.cs" />
     <Compile Include="MappingModel\ClassBased\DynamicComponentMapping.cs" />
+    <Compile Include="MappingModel\ClassBased\IComponentMapping.cs" />
     <Compile Include="MappingModel\ClassBased\ISubclassMapping.cs" />
     <Compile Include="MappingModel\ClassBased\JoinedSubclassMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassMapping.cs" />
@@ -381,7 +382,6 @@
     <Compile Include="MappingModel\ManyToOneMapping.cs" />
     <Compile Include="MappingModel\MappingBase.cs" />
     <Compile Include="MappingModel\Collections\OneToManyMapping.cs" />
-    <Compile Include="MappingModel\Conventions\NamingConvention.cs" />
     <Compile Include="PersistenceModel.cs" />
     <Compile Include="Utils\Reflection\Accessor.cs" />
     <Compile Include="Utils\Reflection\PropertyChain.cs" />

@@ -152,7 +152,7 @@ namespace FluentNHibernate.MappingModel
             discriminatorMapping.AcceptVisitor(this);
         }
 
-        public override void Visit(ComponentMappingBase componentMapping)
+        public override void Visit(IComponentMapping componentMapping)
         {
             componentMapping.AcceptVisitor(this);
         }

@@ -4,11 +4,9 @@ using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
-    public abstract class ComponentMappingBase : ClassMappingBase
+    public abstract class ComponentMappingBase : ClassMappingBase, IComponentMapping
     {
-        protected readonly AttributeStore<ComponentMappingBase> attributes;
-        protected readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
-        protected readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
+        private readonly AttributeStore<ComponentMappingBase> attributes;
 
         protected ComponentMappingBase()
             : this(new AttributeStore())
@@ -32,12 +30,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
         public PropertyInfo PropertyInfo { get; set; }
 
-        public string PropertyName
-        {
-            get { return attributes.Get(x => x.PropertyName); }
-            set { attributes.Set(x => x.PropertyName, value); }
-        }
-
         public bool Insert
         {
             get { return attributes.Get(x => x.Insert); }
@@ -50,29 +42,15 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Update, value); }
         }
 
+        public string Access
+        {
+            get { return attributes.Get(x => x.Access); }
+            set { attributes.Set(x => x.Access, value); }
+        }
+
         public AttributeStore<ComponentMappingBase> Attributes
         {
             get { return attributes; }
-        }
-
-        public IEnumerable<IMappingPart> UnmigratedParts
-        {
-            get { return unmigratedParts; }
-        }
-
-        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
-        {
-            get { return unmigratedAttributes; }
-        }
-
-        public void AddUnmigratedPart(IMappingPart part)
-        {
-            unmigratedParts.Add(part);
-        }
-
-        public void AddUnmigratedAttribute(string attribute, string value)
-        {
-            unmigratedAttributes.Add(attribute, value);
         }
     }
 }

@@ -7,13 +7,13 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlComponentBaseWriterTester
     {
-        private IXmlWriter<ComponentMappingBase> writer;
+        private IXmlWriter<IComponentMapping> writer;
 
         [SetUp]
         public void GetWriterFromContainer()
         {
             var container = new XmlWriterContainer();
-            writer = container.Resolve<IXmlWriter<ComponentMappingBase>>();
+            writer = container.Resolve<IXmlWriter<IComponentMapping>>();
         }
 
         [Test]

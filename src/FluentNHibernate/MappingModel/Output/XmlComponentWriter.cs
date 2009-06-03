@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -19,6 +20,9 @@ namespace FluentNHibernate.MappingModel.Output
         public override void ProcessComponent(ComponentMapping componentMapping)
         {
             document = WriteComponent("component", componentMapping);
+
+            if (componentMapping.Attributes.IsSpecified(x => x.Class))
+                document.DocumentElement.WithAtt("class", componentMapping.Class);
         }
     }
 }

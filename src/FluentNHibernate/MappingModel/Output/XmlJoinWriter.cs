@@ -67,9 +67,9 @@ namespace FluentNHibernate.MappingModel.Output
             document.ImportAndAppendChild(xml);
         }
 
-        public override void Visit(ComponentMappingBase mapping)
+        public override void Visit(IComponentMapping mapping)
         {
-            var writer = serviceLocator.GetWriter<ComponentMappingBase>();
+            var writer = serviceLocator.GetWriter<IComponentMapping>();
             var xml = writer.Write(mapping);
 
             document.ImportAndAppendChild(xml);

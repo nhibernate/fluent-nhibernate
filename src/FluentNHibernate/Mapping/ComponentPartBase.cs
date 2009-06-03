@@ -13,14 +13,13 @@ namespace FluentNHibernate.Mapping
     {
         protected string propertyName;
         protected AccessStrategyBuilder<ComponentPartBase<T>> access;
-        protected readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
         protected ComponentMappingBase mapping;
         private bool nextBool = true;
 
-        public ComponentPartBase(ComponentMappingBase mapping, string propertyName)
+        protected ComponentPartBase(ComponentMappingBase mapping, string propertyName)
         {
             this.mapping = mapping;
-            access = new AccessStrategyBuilder<ComponentPartBase<T>>(this, value => SetAttribute("access", value));
+            access = new AccessStrategyBuilder<ComponentPartBase<T>>(this, value => mapping.Access = value);
             this.propertyName = propertyName;
         }
 
@@ -41,11 +40,6 @@ namespace FluentNHibernate.Mapping
 
             foreach (var component in components)
                 mapping.AddComponent(component.GetComponentMapping());
-
-            foreach (var part in Parts)
-                mapping.AddUnmigratedPart(part);
-
-            unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
 
             return mapping;
         }
@@ -82,24 +76,6 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        /// <summary>
-        /// Set an attribute on the xml element produced by this component mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        public void SetAttribute(string name, string value)
-        {
-            unmigratedAttributes.Store(name, value);
-        }
-
-        public void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
         public IComponentBase WithParentReference(Expression<Func<T, object>> exp)
         {
             return WithParentReference(ReflectionHelper.GetProperty(exp));
@@ -120,7 +96,17 @@ namespace FluentNHibernate.Mapping
             return WithParentReference(ReflectionHelper.GetProperty(exp));
         }
 
-        public int LevelWithinPosition
+        void IHasAttributes.SetAttribute(string name, string value)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        void IHasAttributes.SetAttributes(Attributes atts)
+        {
+            throw new NotSupportedException("Obsolete");
+        }
+
+        int IMappingPart.LevelWithinPosition
         {
             get { throw new NotSupportedException("Obsolete"); }
         }

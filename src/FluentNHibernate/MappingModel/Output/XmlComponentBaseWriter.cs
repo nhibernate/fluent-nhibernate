@@ -4,7 +4,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class XmlComponentBaseWriter : NullMappingModelVisitor, IXmlWriter<ComponentMappingBase>
+    public class XmlComponentBaseWriter : NullMappingModelVisitor, IXmlWriter<IComponentMapping>
     {
         private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
@@ -14,7 +14,7 @@ namespace FluentNHibernate.MappingModel.Output
             this.serviceLocator = serviceLocator;
         }
 
-        public XmlDocument Write(ComponentMappingBase mappingModel)
+        public XmlDocument Write(IComponentMapping mappingModel)
         {
             document = null;
             mappingModel.AcceptVisitor(this);
