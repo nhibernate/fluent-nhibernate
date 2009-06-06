@@ -51,5 +51,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer.VerifyXml(mapping)
                 .RootElement.HasName("map");
         }
+
+        [Test]
+        public void ShouldWriteArrayForArrayMapping()
+        {
+            var mapping = new ArrayMapping();
+
+            writer.VerifyXml(mapping)
+                .RootElement.HasName("array");
+        }
     }
 }

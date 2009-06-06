@@ -167,6 +167,11 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void ProcessArray(ArrayMapping mapping)
+        {
+            
+        }
+
         public virtual void Visit(IdMapping mapping)
         {
             
@@ -322,6 +327,11 @@ namespace FluentNHibernate.MappingModel
         }
 
         public virtual void Visit(ElementMapping mapping)
+        {
+            
+        }
+
+        public virtual void Visit(ArrayMapping mapping)
         {
             
         }

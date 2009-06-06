@@ -205,6 +205,7 @@
     <Compile Include="MappingModel\Output\CollectionAttributeWriter.cs" />
     <Compile Include="MappingModel\Output\IXmlWriterServiceLocator.cs" />
     <Compile Include="MappingModel\Output\XmlAnyWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlArrayWriter.cs" />
     <Compile Include="MappingModel\Output\XmlBagWriter.cs" />
     <Compile Include="MappingModel\Output\XmlCacheWriter.cs" />
     <Compile Include="MappingModel\Output\XmlClassWriterBase.cs" />

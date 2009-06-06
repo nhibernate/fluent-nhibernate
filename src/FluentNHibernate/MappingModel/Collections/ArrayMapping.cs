@@ -2,6 +2,8 @@ namespace FluentNHibernate.MappingModel.Collections
 {
     public class ArrayMapping : CollectionMappingBase
     {
+        public IndexMapping Index { get; set; }
+
         public ArrayMapping()
             : this(new AttributeStore())
         {}
@@ -9,5 +11,15 @@ namespace FluentNHibernate.MappingModel.Collections
         public ArrayMapping(AttributeStore underlyingStore)
             : base(underlyingStore)
         {}
+
+        public override void AcceptVisitor(IMappingModelVisitor visitor)
+        {
+            visitor.ProcessArray(this);
+
+            if (Index != null)
+                visitor.Visit(Index);
+
+            base.AcceptVisitor(visitor);
+        }
     }
 }

@@ -23,27 +23,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ModelShouldMatch(x => x.ShouldBeOfType<SetMapping>());
         }
 
-        [Test]
-        public void ShouldPredictListUsage()
-        {
-            OneToMany(x => x.ListOfChildren)
-                .Mapping(m => m.AsList())
-                .ModelShouldMatch(x => x.ShouldBeOfType<ListMapping>());
-        }
-
-        [Test]
-        public void ShouldPredictMapUsage()
-        {
-            OneToMany(x => x.MapOfChildren)
-                .Mapping(m => m.AsMap("x"))
-                .ModelShouldMatch(x => x.ShouldBeOfType<MapMapping>());
-        }
-
         [Test, Ignore]
         public void ShouldPredictArrayUsage()
         {
             OneToMany(x => x.ArrayOfChildren)
-                .Mapping(m => m.AsElement("x"))
+                .Mapping(m => { })
                 .ModelShouldMatch(x => x.ShouldBeOfType<ArrayMapping>());
         }
     }

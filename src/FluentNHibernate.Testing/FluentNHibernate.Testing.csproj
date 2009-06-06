@@ -218,6 +218,7 @@
     <Compile Include="FluentInterfaceTests\VersionMutablePropertyModelGenerationTests.cs" />
     <Compile Include="Infrastructure\ContainerTester.cs" />
     <Compile Include="MappingModel\Collections\CompositeElementMappingTester.cs" />
+    <Compile Include="MappingModel\Output\XmlArrayWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeIdWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlDynamicComponentWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriterTester.cs" />

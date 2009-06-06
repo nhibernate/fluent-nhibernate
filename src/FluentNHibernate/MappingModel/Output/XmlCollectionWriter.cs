@@ -44,5 +44,11 @@ namespace FluentNHibernate.MappingModel.Output
             var writer = serviceLocator.GetWriter<MapMapping>();
             document = writer.Write(mapping);
         }
+
+        public override void ProcessArray(ArrayMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<ArrayMapping>();
+            document = writer.Write(mapping);
+        }
     }
 }
