@@ -96,9 +96,9 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             return new ModelTester<OneToManyPart<T>, ICollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
         }
 
-        protected ModelTester<IManyToManyPart, ICollectionMapping> ManyToMany<T>(Expression<Func<T, object>> property)
+        protected ModelTester<ManyToManyPart<T>, ICollectionMapping> ManyToMany<T>(Expression<Func<ManyToManyTarget, IList<T>>> property)
         {
-            return new ModelTester<IManyToManyPart, ICollectionMapping>(() => new ManyToManyPart<PropertyTarget>(typeof(T), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
+            return new ModelTester<ManyToManyPart<T>, ICollectionMapping>(() => new ManyToManyPart<T>(typeof(ManyToManyTarget), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
         }
 
         protected ModelTester<IManyToOnePart, ManyToOneMapping> ManyToOne()

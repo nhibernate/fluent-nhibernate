@@ -172,9 +172,9 @@ namespace FluentNHibernate.MappingModel
             
         }
 
-        public virtual void Visit(IdMapping mapping)
+        public virtual void ProcessIndex(IIndexMapping indexMapping)
         {
-            
+
         }
 
         public virtual void ProcessIndex(IndexMapping indexMapping)
@@ -182,7 +182,17 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void ProcessIndex(IndexManyToManyMapping indexMapping)
+        {
+
+        }
+
         public virtual void ProcessParent(ParentMapping parentMapping)
+        {
+            
+        }
+
+        public virtual void Visit(IdMapping mapping)
         {
             
         }
@@ -267,7 +277,7 @@ namespace FluentNHibernate.MappingModel
             
         }
 
-        public virtual void Visit(IndexMapping indexMapping)
+        public virtual void Visit(IIndexMapping indexMapping)
         {
             
         }

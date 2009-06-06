@@ -1,16 +1,15 @@
-﻿using System;
 using System.Collections.Generic;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public class IndexMapping : MappingBase, IIndexMapping
+    public class IndexManyToManyMapping : MappingBase, IIndexMapping
     {
-        private readonly AttributeStore<IndexMapping> attributes;
+        private readonly AttributeStore<IndexManyToManyMapping> attributes;
         private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
 
-        public IndexMapping()
+        public IndexManyToManyMapping()
         {
-            attributes = new AttributeStore<IndexMapping>();
+            attributes = new AttributeStore<IndexManyToManyMapping>();
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -21,15 +20,15 @@ namespace FluentNHibernate.MappingModel.Collections
                 visitor.Visit(column);
         }
 
-        public AttributeStore<IndexMapping> Attributes
+        public AttributeStore<IndexManyToManyMapping> Attributes
         {
             get { return attributes; }
         }
 
-        public string Type
+        public string Class
         {
-            get { return attributes.Get(x => x.Type); }
-            set { attributes.Set(x => x.Type, value); }
+            get { return attributes.Get(x => x.Class); }
+            set { attributes.Set(x => x.Class, value); }
         }
 
         public IEnumerable<ColumnMapping> Columns

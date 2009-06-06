@@ -36,9 +36,9 @@ namespace FluentNHibernate.MappingModel.Output
                 element.WithAtt("sort", mapping.Sort);
         }
 
-        public override void Visit(IndexMapping indexMapping)
+        public override void Visit(IIndexMapping indexMapping)
         {
-            var writer = serviceLocator.GetWriter<IndexMapping>();
+            var writer = serviceLocator.GetWriter<IIndexMapping>();
             var xml = writer.Write(indexMapping);
 
             document.ImportAndAppendChild(xml);

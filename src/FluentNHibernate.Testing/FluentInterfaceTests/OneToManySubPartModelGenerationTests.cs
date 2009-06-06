@@ -42,11 +42,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.AsMap<int>("index-column"))
                 .ModelShouldMatch(x =>
                 {
-                    var list = (MapMapping)x;
+                    var index = (IndexMapping)((MapMapping)x).Index;
 
-                    list.Index.ShouldNotBeNull();
-                    list.Index.Columns.Count().ShouldEqual(1);
-                    list.Index.Type.ShouldEqual(typeof(int).AssemblyQualifiedName);
+                    index.ShouldNotBeNull();
+                    index.Columns.Count().ShouldEqual(1);
+                    index.Type.ShouldEqual(typeof(int).AssemblyQualifiedName);
                 });
         }
 

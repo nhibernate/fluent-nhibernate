@@ -3,7 +3,7 @@ namespace FluentNHibernate.MappingModel.Collections
     public class MapMapping : CollectionMappingBase
     {
         private readonly AttributeStore<SetMapping> attributes;
-        public IndexMapping Index { get; set; }
+        public IIndexMapping Index { get; set; }
 
         public MapMapping()
             : this(new AttributeStore())

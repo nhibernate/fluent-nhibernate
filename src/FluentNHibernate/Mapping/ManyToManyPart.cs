@@ -33,7 +33,7 @@ namespace FluentNHibernate.Mapping
     {
 	    private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
 	    private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
-	    private IndexPart manyToManyIndex;
+	    private IndexManyToManyPart manyToManyIndex;
 	    private readonly IList<string> childColumns = new List<string>();
 	    private readonly IList<string> parentColumns = new List<string>();
 
@@ -63,6 +63,10 @@ namespace FluentNHibernate.Mapping
 
             foreach (var column in childColumns)
                 ((ManyToManyMapping)collection.Relationship).AddColumn(new ColumnMapping { Name = column });
+
+            // HACK: shouldn't have to do this!
+            if (manyToManyIndex != null && collection is MapMapping)
+                ((MapMapping)collection).Index = manyToManyIndex.GetIndexMapping();
 
             return collection;
         }
@@ -98,7 +102,7 @@ namespace FluentNHibernate.Mapping
             return AsTernaryAssociation(indexSelector, null);
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
+        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexManyToManyPart> customIndexMapping)
         {
             var indexProperty = ReflectionHelper.GetProperty(indexSelector);
             return AsTernaryAssociation<TIndex>(indexProperty.Name, customIndexMapping);
@@ -109,9 +113,9 @@ namespace FluentNHibernate.Mapping
             return AsTernaryAssociation<TIndex>(indexColumn, null);
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn, Action<IndexPart> customIndexMapping)
+        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn, Action<IndexManyToManyPart> customIndexMapping)
         {
-            manyToManyIndex = new IndexPart();
+            manyToManyIndex = new IndexManyToManyPart();
             manyToManyIndex.WithColumn(indexColumn);
             manyToManyIndex.WithType<TIndex>();
 
