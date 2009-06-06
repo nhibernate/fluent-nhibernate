@@ -19,7 +19,7 @@ namespace FluentNHibernate.Mapping
         private readonly FetchTypeExpression<T> fetch;
         private readonly OptimisticLockBuilder<T> optimisticLock;
         private readonly CollectionCascadeExpression<T> cascade;
-        protected IndexMapping indexMapping;
+        protected IndexPart indexPart;
         protected ElementMapping elementMapping;
         protected ICompositeElementMappingProvider componentMapping;
         public string TableName { get; private set; }
@@ -78,6 +78,13 @@ namespace FluentNHibernate.Mapping
             if (componentMapping != null)
                 mapping.CompositeElement = componentMapping.GetCompositeElementMapping();
 
+            // HACK: Index only on list and map - shouldn't have to do this!
+            if (indexPart != null && mapping is ListMapping)
+                ((ListMapping)mapping).Index = indexPart.GetIndexMapping();
+
+            if (indexPart != null && mapping is MapMapping)
+                ((MapMapping)mapping).Index = indexPart.GetIndexMapping();
+
             return mapping;
         }
 
@@ -121,15 +128,16 @@ namespace FluentNHibernate.Mapping
 
         public T AsList()
         {
-            indexMapping = new IndexMapping();
+            indexPart = new IndexPart();
             collectionBuilder = () => new ListMapping();
             return (T)this;
         }
 
-        public T AsList(Action<IndexMapping> customIndexMapping)
+        public T AsList(Action<IndexPart> customIndexMapping)
         {
             AsList();
-            customIndexMapping(indexMapping);
+            indexPart = new IndexPart();
+            customIndexMapping(indexPart);
             return (T)this;
         }
 
@@ -152,7 +160,7 @@ namespace FluentNHibernate.Mapping
             return (T)this;
         }
 
-        public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexMapping> customIndexMapping)
+        public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
         {
             collectionBuilder = () => new MapMapping();
             return AsIndexedCollection(indexSelector, customIndexMapping);
@@ -160,7 +168,7 @@ namespace FluentNHibernate.Mapping
 
         // I'm not proud of this. The fluent interface for maps really needs to be rethought. But I've let maps sit unsupported for way too long
         // so a hack is better than nothing.
-        public T AsMap<TIndex>(Action<IndexMapping> customIndexMapping, Action<ElementMapping> customElementMapping)
+        public T AsMap<TIndex>(Action<IndexPart> customIndexMapping, Action<ElementMapping> customElementMapping)
         {
             collectionBuilder = () => new MapMapping();
             AsIndexedCollection<TIndex>(string.Empty, customIndexMapping);
@@ -174,34 +182,28 @@ namespace FluentNHibernate.Mapping
             return AsArray(indexSelector, null);
         }
 
-        public T AsArray<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexMapping> customIndexMapping)
+        public T AsArray<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
         {
             collectionBuilder = () => new ArrayMapping();
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 
-        public T AsIndexedCollection<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexMapping> customIndexMapping)
+        public T AsIndexedCollection<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
         {
             var indexProperty = ReflectionHelper.GetProperty(indexSelector);
             return AsIndexedCollection<TIndex>(indexProperty.Name, customIndexMapping);
         }
 
-        public T AsIndexedCollection<TIndex>(string indexColumn, Action<IndexMapping> customIndexMapping)
+        public T AsIndexedCollection<TIndex>(string indexColumn, Action<IndexPart> customIndexMapping)
         {
-            indexMapping = new IndexMapping();
-            indexMapping.WithType<TIndex>();
-            indexMapping.WithColumn(indexColumn);
+            indexPart = new IndexPart();
+            indexPart.WithType<TIndex>();
+            indexPart.WithColumn(indexColumn);
 
             if (customIndexMapping != null)
-                customIndexMapping(indexMapping);
+                customIndexMapping(indexPart);
 
             return (T)this;
-        }
-
-        protected void WriteIndexElement(XmlElement collectionElement)
-        {
-            var indexElement = collectionElement.AddElement("index");
-            indexMapping.WriteAttributesToIndexElement(indexElement);
         }
 
         public T AsElement(string columnName)
@@ -470,28 +472,6 @@ namespace FluentNHibernate.Mapping
         }
 
         #endregion
-
-        public class IndexMapping
-        {
-            private readonly Cache<string, string> properties = new Cache<string, string>();
-
-            public IndexMapping WithColumn(string indexColumnName)
-            {
-                properties.Store("column", indexColumnName);
-                return this;
-            }
-
-            public IndexMapping WithType<TIndex>()
-            {
-                properties.Store("type", typeof(TIndex).AssemblyQualifiedName);
-                return this;
-            }
-
-            internal void WriteAttributesToIndexElement(XmlElement indexElement)
-            {
-                indexElement.WithProperties(properties);
-            }
-        }
 
         public class ElementMapping
         {

@@ -6,9 +6,13 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlListWriter : BaseXmlCollectionWriter, IXmlWriter<ListMapping>
     {
+        private readonly IXmlWriterServiceLocator serviceLocator;
+
         public XmlListWriter(IXmlWriterServiceLocator serviceLocator)
             : base(serviceLocator)
-        {}
+        {
+            this.serviceLocator = serviceLocator;
+        }
 
         public XmlDocument Write(ListMapping mappingModel)
         {
@@ -24,6 +28,14 @@ namespace FluentNHibernate.MappingModel.Output
             var element = document.AddElement("list");
 
             WriteBaseCollectionAttributes(element, mapping);
+        }
+
+        public override void Visit(IndexMapping indexMapping)
+        {
+            var writer = serviceLocator.GetWriter<IndexMapping>();
+            var xml = writer.Write(indexMapping);
+
+            document.ImportAndAppendChild(xml);
         }
     }
 }

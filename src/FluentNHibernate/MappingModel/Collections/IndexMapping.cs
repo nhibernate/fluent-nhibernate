@@ -1,8 +1,12 @@
-﻿namespace FluentNHibernate.MappingModel.Collections
+﻿using System;
+using System.Collections.Generic;
+
+namespace FluentNHibernate.MappingModel.Collections
 {
     public class IndexMapping : MappingBase
     {
         private readonly AttributeStore<IndexMapping> attributes;
+        private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
 
         public IndexMapping()
         {
@@ -12,6 +16,9 @@
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessIndex(this);
+
+            foreach (var column in columns)
+                visitor.Visit(column);
         }
 
         public AttributeStore<IndexMapping> Attributes
@@ -19,24 +26,20 @@
             get { return attributes; }
         }
 
-        public string Column
+        public string Type
         {
-            get { return attributes.Get(x => x.Column); }
-            set { attributes.Set(x => x.Column, value); }
+            get { return attributes.Get(x => x.Type); }
+            set { attributes.Set(x => x.Type, value); }
         }
 
-        public string IndexType
+        public IEnumerable<ColumnMapping> Columns
         {
-            get { return attributes.Get(x => x.IndexType); }
-            set { attributes.Set(x => x.IndexType, value); }
+            get { return columns; }
         }
 
-        public int Length
+        public void AddColumn(ColumnMapping mapping)
         {
-            get { return attributes.Get(x => x.Length); }
-            set { attributes.Set(x => x.Length, value); }
+            columns.Add(mapping);
         }
-
-        
     }
 }

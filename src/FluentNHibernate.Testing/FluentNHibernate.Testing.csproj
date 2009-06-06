@@ -223,6 +223,7 @@
     <Compile Include="MappingModel\Output\XmlComponentWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlHibernateMappingWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlIdentityBasedWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlIndexWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlJoinedSubclassWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlKeyManyToOneWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlKeyPropertyWriterTester.cs" />

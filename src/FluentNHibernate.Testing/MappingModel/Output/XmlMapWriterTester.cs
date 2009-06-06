@@ -222,6 +222,17 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteIndexElement()
+        {
+            var mapping = new MapMapping();
+
+            mapping.Index = new IndexMapping();
+
+            writer.VerifyXml(mapping)
+                .Element("index").Exists();
+        }
+
+        [Test]
         public void ShouldWriteCacheElement()
         {
             var mapping = new MapMapping();

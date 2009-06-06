@@ -33,7 +33,7 @@ namespace FluentNHibernate.Mapping
     {
 	    private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
 	    private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
-	    private IndexMapping manyToManyIndex;
+	    private IndexPart manyToManyIndex;
 	    private readonly IList<string> childColumns = new List<string>();
 	    private readonly IList<string> parentColumns = new List<string>();
 
@@ -98,7 +98,7 @@ namespace FluentNHibernate.Mapping
             return AsTernaryAssociation(indexSelector, null);
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexMapping> customIndexMapping)
+        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
         {
             var indexProperty = ReflectionHelper.GetProperty(indexSelector);
             return AsTernaryAssociation<TIndex>(indexProperty.Name, customIndexMapping);
@@ -109,9 +109,9 @@ namespace FluentNHibernate.Mapping
             return AsTernaryAssociation<TIndex>(indexColumn, null);
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn, Action<IndexMapping> customIndexMapping)
+        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn, Action<IndexPart> customIndexMapping)
         {
-            manyToManyIndex = new IndexMapping();
+            manyToManyIndex = new IndexPart();
             manyToManyIndex.WithColumn(indexColumn);
             manyToManyIndex.WithType<TIndex>();
 

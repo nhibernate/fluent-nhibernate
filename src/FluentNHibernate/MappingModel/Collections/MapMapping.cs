@@ -3,6 +3,7 @@ namespace FluentNHibernate.MappingModel.Collections
     public class MapMapping : CollectionMappingBase
     {
         private readonly AttributeStore<SetMapping> attributes;
+        public IndexMapping Index { get; set; }
 
         public MapMapping()
             : this(new AttributeStore())
@@ -22,6 +23,10 @@ namespace FluentNHibernate.MappingModel.Collections
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessMap(this);
+
+            if (Index != null)
+                visitor.Visit(Index);
+
             base.AcceptVisitor(visitor);
         }
 
