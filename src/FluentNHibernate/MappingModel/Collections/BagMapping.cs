@@ -17,7 +17,7 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
-            visitor.ProcessBag(this);            
+            visitor.ProcessBag(this);
             base.AcceptVisitor(visitor);
         }
 

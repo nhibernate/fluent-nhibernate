@@ -1,7 +1,5 @@
-using System;
-using System.Xml;
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
@@ -16,60 +14,84 @@ namespace FluentNHibernate.Mapping
     /// <typeparam name="T"></typeparam>
     public class JoinPart<T> : ClasslikeMapBase<T>, IJoin
     {
-        private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
-
-        private readonly JoinMapping joinMapping = new JoinMapping();
+        private readonly IList<string> columns = new List<string>();
+        private readonly JoinMapping mapping = new JoinMapping();
+        private readonly FetchTypeExpression<JoinPart<T>> fetch;
+        private bool nextBool = true;
 
         public JoinPart(string tableName)
         {
-            joinMapping.TableName = tableName;
-            joinMapping.Key = new KeyMapping {Column = GetType().GetGenericArguments()[0].Name + "ID"};            
+            fetch = new FetchTypeExpression<JoinPart<T>>(this, value => mapping.Fetch = value);
+            mapping.TableName = tableName;
+            mapping.Key = new KeyMapping();
+
+            columns.Add(GetType().GetGenericArguments()[0].Name + "ID");
         }
 
-        public void SetAttribute(string name, string value)
+        public JoinPart<T> WithKeyColumn(string column)
         {
-            unmigratedAttributes.Store(name, value);
+            columns.Clear(); // only one supported currently
+            columns.Add(column);
+            return this;
         }
 
-        public void SetAttributes(Attributes atts)
+        void IJoin.WithKeyColumn(string column)
         {
-            foreach (var key in atts.Keys)
+            WithKeyColumn(column);
+        }
+
+        public JoinPart<T> SchemaIs(string schema)
+        {
+            mapping.Schema = schema;
+            return this;
+        }
+
+        public FetchTypeExpression<JoinPart<T>> Fetch
+        {
+            get { return fetch; }
+        }
+
+        public JoinPart<T> Inverse()
+        {
+            mapping.Inverse = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public JoinPart<T> Optional()
+        {
+            mapping.Optional = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public JoinPart<T> Not
+        {
+            get
             {
-                SetAttribute(key, atts[key]);
+                nextBool = !nextBool;
+                return this;
             }
-        }
-
-        public int LevelWithinPosition
-        {
-            get { return 3; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.Last; }
-        }
-
-        public void WithKeyColumn(string column)
-        {
-            joinMapping.Key.Column = column;
         }
 
         public JoinMapping GetJoinMapping()
         {
             foreach (var property in properties)
-                joinMapping.AddProperty(property.GetPropertyMapping());
-            
-            foreach (var part in Parts)
-                joinMapping.AddUnmigratedPart(part);
+                mapping.AddProperty(property.GetPropertyMapping());
 
-            unmigratedAttributes.ForEachPair(joinMapping.AddUnmigratedAttribute);
+            foreach (var component in components)
+                mapping.AddComponent(component.GetComponentMapping());
 
-            return joinMapping;
-        }
+            foreach (var reference in references)
+                mapping.AddReference(reference.GetManyToOneMapping());
 
-        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            throw new NotSupportedException("Obsolete");
+            foreach (var any in anys)
+                mapping.AddAny(any.GetAnyMapping());
+
+            foreach (var column in columns)
+                mapping.Key.AddColumn(new ColumnMapping { Name = column });
+
+            return mapping;
         }
     }
 }

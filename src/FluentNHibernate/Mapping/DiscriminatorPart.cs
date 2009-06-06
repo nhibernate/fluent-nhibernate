@@ -8,7 +8,6 @@ namespace FluentNHibernate.Mapping
     {
         private readonly IClassMap classMap;
         private readonly DiscriminatorMapping mapping;
-        private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
         private bool nextBool = true;
 
         public DiscriminatorPart(IClassMap classMap, ClassMapping parentMapping, string columnName)
@@ -24,8 +23,6 @@ namespace FluentNHibernate.Mapping
 
         public DiscriminatorMapping GetDiscriminatorMapping()
         {
-            unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
-
             return mapping;
         }
 
@@ -99,24 +96,6 @@ namespace FluentNHibernate.Mapping
         {
             mapping.Formula = sql;
             return this;
-        }
-
-        /// <summary>
-        /// Set an attribute on the xml element produced by this discriminator mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        public void SetAttribute(string name, string value)
-        {
-            unmigratedAttributes.Store(name, value);
-        }
-
-        public void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
         }
     }
 }

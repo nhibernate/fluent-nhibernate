@@ -79,7 +79,5 @@ namespace FluentNHibernate.MappingModel
             get { return attributes.Get(x => x.Check); }
             set { attributes.Set(x => x.Check, value); }
         }
-
-        
     }
 }

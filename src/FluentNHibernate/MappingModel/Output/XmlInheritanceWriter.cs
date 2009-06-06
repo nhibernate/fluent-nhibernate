@@ -1,3 +1,4 @@
+using System;
 using System.Xml;
 using FluentNHibernate.MappingModel.ClassBased;
 
@@ -5,14 +6,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlInheritanceWriter : NullMappingModelVisitor, IXmlWriter<ISubclassMapping>
     {
-        private readonly IXmlWriter<SubclassMapping> subclassWriter;
-        private readonly IXmlWriter<JoinedSubclassMapping> joinedSubclassWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
 
-        public XmlInheritanceWriter(IXmlWriter<SubclassMapping> subclassWriter, IXmlWriter<JoinedSubclassMapping> joinedSubclassWriter)
+        public XmlInheritanceWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.subclassWriter = subclassWriter;
-            this.joinedSubclassWriter = joinedSubclassWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(ISubclassMapping mappingModel)
@@ -24,12 +23,14 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void ProcessSubclass(SubclassMapping subclassMapping)
         {
-            document = subclassWriter.Write(subclassMapping);
+            var writer = serviceLocator.GetWriter<SubclassMapping>();
+            document = writer.Write(subclassMapping);
         }
 
         public override void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
         {
-            document = joinedSubclassWriter.Write(subclassMapping);
+            var writer = serviceLocator.GetWriter<JoinedSubclassMapping>();
+            document = writer.Write(subclassMapping);
         }
     }
 }

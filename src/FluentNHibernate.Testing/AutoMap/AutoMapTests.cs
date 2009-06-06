@@ -60,7 +60,7 @@ namespace FluentNHibernate.Testing.AutoMap
         {
             Model<ExampleClass>(model => model
                 .ForTypesThatDeriveFrom<ExampleClass>(mapping =>
-                    mapping.Map(x => x.Enum).SetAttribute("type", "Int32"))
+                    mapping.Map(x => x.Enum))
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures"));
 
             Test<ExampleClass>(mapping =>

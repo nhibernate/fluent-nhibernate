@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Mapping
 {
@@ -28,18 +29,11 @@ namespace FluentNHibernate.Mapping
         ICollectionRelationship AsElement(string columnName);
 
         /// <summary>
-        /// Maps this collection as a collection of components.
-        /// </summary>
-        /// <param name="action">Component mapping</param>
-        ICollectionRelationship Component(Action<IClasslike> action);
-
-        /// <summary>
         /// Sets the table name for this one-to-many.
         /// </summary>
         /// <param name="name">Table name</param>
         ICollectionRelationship WithTableName(string name);
 
-        ICollectionRelationship WithForeignKeyConstraintName(string foreignKeyName);
         ICollectionRelationship ForeignKeyCascadeOnDelete();
 
 
@@ -65,5 +59,7 @@ namespace FluentNHibernate.Mapping
         /// Sets a custom collection type
         /// </summary>
         ICollectionRelationship CollectionType(string type);
+
+        ICollectionMapping GetCollectionMapping();
     }
 }

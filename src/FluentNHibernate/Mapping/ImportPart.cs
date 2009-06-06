@@ -10,35 +10,12 @@ namespace FluentNHibernate.Mapping
 
         public ImportPart(Type importType)
         {
-            mapping.Type = importType;
+            mapping.Class = importType.AssemblyQualifiedName;
         }
-
-        public void SetAttribute(string name, string value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetAttributes(Attributes attrs)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
-        {}
 
         public void As(string alternativeName)
         {
             mapping.Rename = alternativeName;
-        }
-
-        public int LevelWithinPosition
-        {
-            get { return -1; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.First; }
         }
 
         public ImportMapping GetImportMapping()

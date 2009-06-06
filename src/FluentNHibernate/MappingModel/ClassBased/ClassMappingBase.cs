@@ -54,6 +54,21 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mappedMembers.Components; }
         }
 
+        public IEnumerable<OneToOneMapping> OneToOnes
+        {
+            get { return mappedMembers.OneToOnes; }
+        }
+
+        public IEnumerable<AnyMapping> Anys
+        {
+            get { return mappedMembers.Anys; }
+        }
+
+        public IEnumerable<JoinMapping> Joins
+        {
+            get { return mappedMembers.Joins; }
+        }
+
         public void AddProperty(PropertyMapping property)
         {
             mappedMembers.AddProperty(property);
@@ -72,6 +87,21 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public void AddComponent(ComponentMappingBase componentMapping)
         {
             mappedMembers.AddComponent(componentMapping);
+        }
+
+        public void AddOneToOne(OneToOneMapping mapping)
+        {
+            mappedMembers.AddOneToOne(mapping);
+        }
+
+        public void AddAny(AnyMapping mapping)
+        {
+            mappedMembers.AddAny(mapping);
+        }
+
+        public void AddJoin(JoinMapping mapping)
+        {
+            mappedMembers.AddJoin(mapping);
         }
 
         #endregion

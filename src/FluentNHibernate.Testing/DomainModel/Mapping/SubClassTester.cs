@@ -250,16 +250,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void MapsVersion()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<MappedObject>(sc => sc.Version(x => x.Version)))
-                .Element("//subclass/version").Exists();
-        }
-
-        [Test]
         public void SubclassShouldNotHaveDiscriminator()
         {
             new MappingTester<MappedObject>()
@@ -380,17 +370,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         .WithLengthOf(1234))
                 .Element("class/discriminator")
                     .HasAttribute("length", "1234");
-        }
-
-        [Test]
-        public void CanSpecifyCustomAttributeOnDiscriminator()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .SetAttribute("attr", "value"))
-                .Element("class/discriminator")
-                    .HasAttribute("attr", "value");
         }
 
         private class ProxyClass

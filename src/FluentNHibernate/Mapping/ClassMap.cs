@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.AutoMap;
@@ -13,34 +12,22 @@ namespace FluentNHibernate.Mapping
 {
     public class ClassMap<T> : ClasslikeMapBase<T>, IClassMap
     {
-        private readonly Cache<string, string> unmigratedAttributes;
-        public Cache<string, string> HibernateMappingAttributes { get; private set; }
-        private readonly DefaultAccessStrategyBuilder<T> defaultAccess;
+        private readonly IOptimisticLockBuilder optimisticLock;
 
         /// <summary>
         /// Specify caching for this entity.
         /// </summary>
-        public ICache Cache
-        {
-            get
-            {
-                return m_Parts.Where(x => x.GetType() == typeof(CachePart)).FirstOrDefault() as ICache;
-            }
-            private set
-            {
-                if (Cache != null)
-                { m_Parts.Remove(Cache); }
+        public ICache Cache { get; private set; }
+        private IIdentityPart id;
 
-                AddPart(value);
-            }
-        }
-        
         private readonly IList<ImportPart> imports = new List<ImportPart>();
         private bool nextBool = true;
 
         private readonly ClassMapping mapping;
-        private readonly HibernateMapping hibernateMapping = new HibernateMapping();
         private IDiscriminatorPart discriminator;
+        private IVersion version;
+        private ICompositeIdMappingProvider compositeId;
+        private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
 
         public ClassMap()
             : this(new ClassMapping(typeof(T)))
@@ -49,9 +36,7 @@ namespace FluentNHibernate.Mapping
         public ClassMap(ClassMapping mapping)
         {
             this.mapping = mapping;
-            unmigratedAttributes = new Cache<string, string>();
-            HibernateMappingAttributes = new Cache<string, string>();
-            defaultAccess = new DefaultAccessStrategyBuilder<T>(this);
+            optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => mapping.OptimisticLock = value);
             Cache = new CachePart();
         }
 
@@ -62,7 +47,7 @@ namespace FluentNHibernate.Mapping
 
         public ClassMapping GetClassMapping()
         {
-            mapping.Name = typeof(T).FullName;
+            mapping.Name = typeof(T).AssemblyQualifiedName;
 
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());
@@ -70,84 +55,72 @@ namespace FluentNHibernate.Mapping
             foreach (var component in components)
                 mapping.AddComponent(component.GetComponentMapping());
 
+            if (version != null)
+                mapping.Version = version.GetVersionMapping();
+
+            foreach (var oneToOne in oneToOnes)
+                mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
+
+            foreach (var collection in collections)
+                mapping.AddCollection(collection.GetCollectionMapping());
+
+            foreach (var reference in references)
+                mapping.AddReference(reference.GetManyToOneMapping());
+
+            foreach (var any in anys)
+                mapping.AddAny(any.GetAnyMapping());
+
             if (discriminator != null)
                 mapping.Discriminator = discriminator.GetDiscriminatorMapping();
 
-            foreach (var part in Parts)
-                mapping.AddUnmigratedPart(part);
+            if (Cache.IsDirty)
+                mapping.Cache = Cache.GetCacheMapping();
 
-            unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
+            if (id != null)
+                mapping.Id = id.GetIdMapping();
+
+            if (compositeId != null)
+                mapping.Id = compositeId.GetCompositeIdMapping();
 
             return mapping;
         }
 
         public HibernateMapping GetHibernateMapping()
         {
-            hibernateMapping.DefaultAccess = defaultAccess.GetValue();
+            var hibernateMapping = ((IHibernateMappingProvider)hibernateMappingPart).GetHibernateMapping();
 
             foreach (var import in imports)
                 hibernateMapping.AddImport(import.GetImportMapping());
 
-            HibernateMappingAttributes.ForEachPair(hibernateMapping.AddUnmigratedAttribute);
-
             return hibernateMapping;
         }
 
-        public void UseIdentityForKey(Expression<Func<T, object>> expression, string columnName)
+        public HibernateMappingPart HibernateMapping
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            var part = new IdentityPart(EntityType, property, columnName);
-
-            AddPart(part);
+            get { return hibernateMappingPart; }
         }
 
-        protected override PropertyMap Map(PropertyInfo property, string columnName)
-        {
-            // horrible hack because AutoJoinedSubClassPart inherits from AutoMap instead of JoinedSubClassPart?!
-            if (this is AutoJoinedSubClassPart<T>)
-                return base.Map(property, columnName);
-
-            var propertyMapping = new PropertyMapping(typeof(T))
-            {
-                Name = property.Name,
-                PropertyInfo = property
-            };
-
-            var propertyMap = new PropertyMap(propertyMapping);
-
-            if (!string.IsNullOrEmpty(columnName))
-                propertyMap.ColumnName(columnName);
-
-            properties.Add(propertyMap); // new
-
-            return propertyMap;
-        }
-
-        public override DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
-        {
-            var part = new DynamicComponentPart<IDictionary>(property);
-            action(part);
-            components.Add(part);
-
-            return part;
-        }
-
-        protected override ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
-        {
-            var part = new ComponentPart<TComponent>(property);
-            action(part);
-            components.Add(part);
-
-            return part;
-        }
-
-        public CompositeIdentityPart<T> UseCompositeId()
+        public CompositeIdentityPart<T> CompositeId()
         {
             var part = new CompositeIdentityPart<T>();
-			
-            AddPart(part);
+
+            compositeId = part;
 
             return part;
+        }
+
+        public VersionPart Version(Expression<Func<T, object>> expression)
+        {
+            return Version(ReflectionHelper.GetProperty(expression));
+        }
+
+        protected virtual VersionPart Version(PropertyInfo property)
+        {
+            var versionPart = new VersionPart(EntityType, property);
+
+            version = versionPart;
+
+            return versionPart;
         }
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
@@ -156,7 +129,7 @@ namespace FluentNHibernate.Mapping
 
             discriminator = part;
 
-            mapping.DiscriminatorBaseValue = baseClassDiscriminator;
+            mapping.DiscriminatorValue = baseClassDiscriminator;
 
             return part;
         }
@@ -175,34 +148,6 @@ namespace FluentNHibernate.Mapping
             return DiscriminateSubClassesOnColumn<string>(columnName);
         }
 
-        /// <summary>
-        /// Set an attribute on the xml element produced by this class mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        public virtual void SetAttribute(string name, string value)
-        {
-            unmigratedAttributes.Store(name, value);
-        }
-
-        public virtual void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
-        public void SetHibernateMappingAttribute(string name, string value)
-        {
-            HibernateMappingAttributes.Store(name, value);
-        }
-
-        public void SetHibernateMappingAttribute(string name, bool value)
-        {
-            HibernateMappingAttributes.Store(name, value.ToString().ToLowerInvariant());
-        }
-
         public virtual IIdentityPart Id(Expression<Func<T, object>> expression)
         {
             return Id(expression, null);
@@ -211,8 +156,9 @@ namespace FluentNHibernate.Mapping
         public virtual IIdentityPart Id(Expression<Func<T, object>> expression, string column)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            var id = column == null ? new IdentityPart(EntityType, property) : new IdentityPart(EntityType, property, column);
-            AddPart(id);
+            
+            id = column == null ? new IdentityPart(EntityType, property) : new IdentityPart(EntityType, property, column);
+            
             return id;
         }
 
@@ -234,23 +180,6 @@ namespace FluentNHibernate.Mapping
         public void SchemaIs(string schema)
         {
             mapping.Schema = schema;
-        }
-
-        /// <summary>
-        /// Sets the hibernate-mapping auto-import for this class.
-        /// </summary>
-        public void AutoImport()
-        {
-            hibernateMapping.AutoImport = nextBool;
-            nextBool = true;
-        }
-
-        /// <summary>
-        /// Set the default access and naming strategies for this entire mapping.
-        /// </summary>
-        public AccessStrategyBuilder<ClassMap<T>> DefaultAccess
-        {
-            get { return defaultAccess; }
         }
 
         /// <summary>
@@ -284,7 +213,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void LazyLoad()
         {
-            mapping.LazyLoad = nextBool;
+            mapping.Lazy = nextBool;
             nextBool = true;
         }
 
@@ -349,14 +278,9 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the optimistic locking strategy
         /// </summary>
-        public OptimisticLockBuilder OptimisticLock
+        public IOptimisticLockBuilder OptimisticLock
         {
-            get { return new OptimisticLockBuilder(unmigratedAttributes); }
-        }
-
-        Cache<string, string> IClassMap.Attributes
-        {
-            get { return unmigratedAttributes; }
+            get { return optimisticLock; }
         }
     }
 }

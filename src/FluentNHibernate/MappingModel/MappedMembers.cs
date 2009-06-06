@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 
@@ -10,6 +11,9 @@ namespace FluentNHibernate.MappingModel
         private readonly IList<ICollectionMapping> collections;
         private readonly IList<ManyToOneMapping> references;
         private readonly IList<ComponentMappingBase> components;
+        private readonly IList<OneToOneMapping> oneToOnes;
+        private readonly IList<AnyMapping> anys;
+        private readonly IList<JoinMapping> joins;
 
         public MappedMembers()
         {
@@ -17,6 +21,9 @@ namespace FluentNHibernate.MappingModel
             collections = new List<ICollectionMapping>();
             references = new List<ManyToOneMapping>();    
             components = new List<ComponentMappingBase>();
+            oneToOnes = new List<OneToOneMapping>();
+            anys = new List<AnyMapping>();
+            joins = new List<JoinMapping>();
         }
 
         public IEnumerable<PropertyMapping> Properties
@@ -39,6 +46,21 @@ namespace FluentNHibernate.MappingModel
             get { return components; }
         }
 
+        public IEnumerable<OneToOneMapping> OneToOnes
+        {
+            get { return oneToOnes; }
+        }
+
+        public IEnumerable<AnyMapping> Anys
+        {
+            get { return anys; }
+        }
+
+        public IEnumerable<JoinMapping> Joins
+        {
+            get { return joins; }
+        }
+
         public void AddProperty(PropertyMapping property)
         {
             properties.Add(property);
@@ -59,6 +81,21 @@ namespace FluentNHibernate.MappingModel
             components.Add(componentMapping);
         }
 
+        public void AddOneToOne(OneToOneMapping mapping)
+        {
+            oneToOnes.Add(mapping);
+        }
+
+        public void AddAny(AnyMapping mapping)
+        {
+            anys.Add(mapping);
+        }
+
+        public void AddJoin(JoinMapping mapping)
+        {
+            joins.Add(mapping);
+        }
+
         public virtual void AcceptVisitor(IMappingModelVisitor visitor)
         {
             foreach (var collection in Collections)
@@ -72,6 +109,15 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var component in Components)
                 visitor.Visit(component);
+
+            foreach (var oneToOne in oneToOnes)
+                visitor.Visit(oneToOne);
+
+            foreach (var any in anys)
+                visitor.Visit(any);
+
+            foreach (var join in joins)
+                visitor.Visit(join);
         }
     }
 }

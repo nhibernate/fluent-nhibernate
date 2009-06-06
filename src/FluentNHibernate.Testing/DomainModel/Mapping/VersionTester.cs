@@ -53,7 +53,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSepecifyAsNeverGenerated()
         {
             new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.VersionNumber).NeverGenerated())
+                .ForMapping(map => map.Version(x => x.VersionNumber).Generated.Never())
                 .Element("//version").HasAttribute("generated", "never");
         }
 

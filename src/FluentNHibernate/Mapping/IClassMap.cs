@@ -1,15 +1,13 @@
 namespace FluentNHibernate.Mapping
 {
-    public interface IClassMap : IClasslike, IHasAttributes, IMappingProvider
+    public interface IClassMap : IClasslike, IMappingProvider
     {
         string TableName { get; }
         ICache Cache { get; }
-        Cache<string, string> Attributes { get; }
-        Cache<string, string> HibernateMappingAttributes { get; }
         /// <summary>
         /// Sets the optimistic locking strategy
         /// </summary>
-        OptimisticLockBuilder OptimisticLock { get; }
+        IOptimisticLockBuilder OptimisticLock { get; }
 
         /// <summary>
         /// Sets the table for the class.
@@ -17,19 +15,11 @@ namespace FluentNHibernate.Mapping
         /// <param name="tableName">Table name</param>
         void WithTable(string tableName);
 
-        void SetHibernateMappingAttribute(string name, string value);
-        void SetHibernateMappingAttribute(string name, bool value);
-
         /// <summary>
         /// Sets the hibernate-mapping schema for this class.
         /// </summary>
         /// <param name="schema">Schema name</param>
         void SchemaIs(string schema);
-
-        /// <summary>
-        /// Sets the hibernate-mapping auto-import for this class.
-        /// </summary>
-        void AutoImport();
 
         /// <summary>
         /// Sets this entity to be lazy-loaded (overrides the default lazy load configuration).
@@ -63,5 +53,7 @@ namespace FluentNHibernate.Mapping
         /// Inverse next boolean
         /// </summary>
         IClassMap Not { get; }
+
+        HibernateMappingPart HibernateMapping { get; }
     }
 }

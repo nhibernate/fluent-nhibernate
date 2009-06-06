@@ -16,15 +16,6 @@ namespace FluentNHibernate.Mapping
             this.mapping = mapping;
         }
 
-        protected override ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
-        {
-            var part = new ComponentPart<TComponent>(property);
-            action(part);
-            components.Add(part);
-
-            return part;
-        }
-
         public DynamicComponentPart<T> Not
         {
             get

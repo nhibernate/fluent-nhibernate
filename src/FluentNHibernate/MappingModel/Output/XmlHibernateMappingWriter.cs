@@ -9,14 +9,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlHibernateMappingWriter : NullMappingModelVisitor, IXmlWriter<HibernateMapping>
     {
-        private readonly IXmlWriter<ClassMapping> classWriter;
-        private readonly IXmlWriter<ImportMapping> importWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
 
-        public XmlHibernateMappingWriter(IXmlWriter<ClassMapping> classWriter, IXmlWriter<ImportMapping> importWriter)
+        public XmlHibernateMappingWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.classWriter = classWriter;
-            this.importWriter = importWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(HibernateMapping mapping)
@@ -25,7 +23,7 @@ namespace FluentNHibernate.MappingModel.Output
             return document;
         }
 
-        public override void ProcessHibernateMapping(HibernateMapping hibernateMapping)
+        public override void ProcessHibernateMapping(HibernateMapping mapping)
         {
             document = new XmlDocument();
 
@@ -33,19 +31,26 @@ namespace FluentNHibernate.MappingModel.Output
 
             element.WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
 
-            if (hibernateMapping.Attributes.IsSpecified(x => x.DefaultAccess))
-                element.WithAtt("default-access", hibernateMapping.DefaultAccess);
+            if (mapping.Attributes.IsSpecified(x => x.DefaultAccess))
+                element.WithAtt("default-access", mapping.DefaultAccess);
 
-            if (hibernateMapping.Attributes.IsSpecified(x => x.AutoImport))
-                element.WithAtt("auto-import", hibernateMapping.AutoImport.ToString().ToLowerInvariant());
+            if (mapping.Attributes.IsSpecified(x => x.AutoImport))
+                element.WithAtt("auto-import", mapping.AutoImport);
 
-            foreach (var attribute in hibernateMapping.UnmigratedAttributes)
-                element.WithAtt(attribute.Key, attribute.Value);
+            if (mapping.Attributes.IsSpecified(x => x.Schema))
+                element.WithAtt("schema", mapping.Schema);
+
+            if (mapping.Attributes.IsSpecified(x => x.DefaultCascade))
+                element.WithAtt("default-cascade", mapping.DefaultCascade);
+
+            if (mapping.Attributes.IsSpecified(x => x.DefaultLazy))
+                element.WithAtt("default-lazy", mapping.DefaultLazy);
         }
 
         public override void Visit(ImportMapping importMapping)
         {
-            var import = importWriter.Write(importMapping);
+            var writer = serviceLocator.GetWriter<ImportMapping>();
+            var import = writer.Write(importMapping);
             var newNode = document.ImportNode(import.DocumentElement, true);
 
             if (document.DocumentElement.ChildNodes.Count > 0)
@@ -56,7 +61,8 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(ClassMapping classMapping)
         {
-            var hbmClass = classWriter.Write(classMapping);
+            var writer = serviceLocator.GetWriter<ClassMapping>();
+            var hbmClass = writer.Write(classMapping);
 
             var newClassNode = document.ImportNode(hbmClass.DocumentElement, true);
 
@@ -67,31 +73,35 @@ namespace FluentNHibernate.MappingModel.Output
 
         private class SortValue
         {
-            public PartPosition Position { get; set; }
+            public int Position { get; set; }
             public int Level { get; set; }
         }
 
+        private const int First = 0;
+        private const int Anywhere = 1;
+        private const int Last = 2;
+
         private static readonly IDictionary<string, SortValue> sorting = new Dictionary<string, SortValue>
             {
-                { "cache", new SortValue { Position = PartPosition.First, Level = 1 } },
-                { "key", new SortValue { Position = PartPosition.First, Level = 1 } },
-                { "id", new SortValue { Position = PartPosition.First, Level = 2 } },
-                { "composite-id", new SortValue { Position = PartPosition.First, Level = 2 } },
-                { "discriminator", new SortValue { Position = PartPosition.First, Level = 3 } },
-                { "version", new SortValue { Position = PartPosition.First, Level = 4 } },
-                { "component", new SortValue { Position = PartPosition.Anywhere, Level = 1 } },
-                { "dynamic-component", new SortValue { Position = PartPosition.Anywhere, Level = 1 } },
-                { "one-to-one", new SortValue { Position = PartPosition.Anywhere, Level = 1 } },
-                { "property", new SortValue { Position = PartPosition.Anywhere, Level = 2 } },
-                { "many-to-one", new SortValue { Position = PartPosition.Anywhere, Level = 3 } },
-                { "array", new SortValue { Position = PartPosition.Anywhere, Level = 3 } },
-                { "bag", new SortValue { Position = PartPosition.Anywhere, Level = 3 } },
-                { "set", new SortValue { Position = PartPosition.Anywhere, Level = 3 } },
-                { "map", new SortValue { Position = PartPosition.Anywhere, Level = 3 } },
-                { "list", new SortValue { Position = PartPosition.Anywhere, Level = 3 } },
-                { "joined-subclass", new SortValue { Position = PartPosition.Anywhere, Level = 4 } },
-                { "subclass", new SortValue { Position = PartPosition.Last, Level = 3 } },
-                { "join", new SortValue { Position = PartPosition.Last, Level = 3 } },
+                { "cache", new SortValue { Position = First, Level = 1 } },
+                { "key", new SortValue { Position = First, Level = 1 } },
+                { "id", new SortValue { Position = First, Level = 2 } },
+                { "composite-id", new SortValue { Position = First, Level = 2 } },
+                { "discriminator", new SortValue { Position = First, Level = 3 } },
+                { "version", new SortValue { Position = First, Level = 4 } },
+                { "component", new SortValue { Position = Anywhere, Level = 1 } },
+                { "dynamic-component", new SortValue { Position = Anywhere, Level = 1 } },
+                { "one-to-one", new SortValue { Position = Anywhere, Level = 1 } },
+                { "property", new SortValue { Position = Anywhere, Level = 2 } },
+                { "many-to-one", new SortValue { Position = Anywhere, Level = 3 } },
+                { "array", new SortValue { Position = Anywhere, Level = 3 } },
+                { "bag", new SortValue { Position = Anywhere, Level = 3 } },
+                { "set", new SortValue { Position = Anywhere, Level = 3 } },
+                { "map", new SortValue { Position = Anywhere, Level = 3 } },
+                { "list", new SortValue { Position = Anywhere, Level = 3 } },
+                { "joined-subclass", new SortValue { Position = Anywhere, Level = 4 } },
+                { "subclass", new SortValue { Position = Last, Level = 3 } },
+                { "join", new SortValue { Position = Last, Level = 3 } },
             };
 
         private static void SortChildren(XmlNode node)

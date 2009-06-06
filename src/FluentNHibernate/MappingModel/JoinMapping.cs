@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 
@@ -10,9 +11,6 @@ namespace FluentNHibernate.MappingModel
 
         public KeyMapping Key { get; set; }
         private readonly MappedMembers mappedMembers;
-
-        private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
-        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
         public JoinMapping()
         {
@@ -35,6 +33,11 @@ namespace FluentNHibernate.MappingModel
             get { return mappedMembers.Components; }
         }
 
+        public IEnumerable<AnyMapping> Anys
+        {
+            get { return mappedMembers.Anys; }
+        }
+
         public void AddProperty(PropertyMapping property)
         {
             mappedMembers.AddProperty(property);
@@ -45,9 +48,14 @@ namespace FluentNHibernate.MappingModel
             mappedMembers.AddReference(manyToOne);
         }
 
-        public void AddComponent(ComponentMapping componentMapping)
+        public void AddComponent(ComponentMappingBase componentMapping)
         {
             mappedMembers.AddComponent(componentMapping);
+        }
+
+        public void AddAny(AnyMapping mapping)
+        {
+            mappedMembers.AddAny(mapping);
         }
 
         public string TableName
@@ -56,7 +64,31 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.TableName, value); }
         }
 
-        public virtual void AcceptVisitor(IMappingModelVisitor visitor)
+        public string Schema
+        {
+            get { return attributes.Get(x => x.Schema); }
+            set { attributes.Set(x => x.Schema, value); }
+        }
+
+        public string Fetch
+        {
+            get { return attributes.Get(x => x.Fetch); }
+            set { attributes.Set(x => x.Fetch, value); }
+        }
+
+        public bool Inverse
+        {
+            get { return attributes.Get(x => x.Inverse); }
+            set { attributes.Set(x => x.Inverse, value); }
+        }
+
+        public bool Optional
+        {
+            get { return attributes.Get(x => x.Optional); }
+            set { attributes.Set(x => x.Optional, value); }
+        }
+
+        public void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessJoin(this);
 
@@ -66,24 +98,9 @@ namespace FluentNHibernate.MappingModel
             mappedMembers.AcceptVisitor(visitor);
         }
 
-        public IEnumerable<IMappingPart> UnmigratedParts
+        public AttributeStore<JoinMapping> Attributes
         {
-            get { return unmigratedParts; }
-        }
-
-        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
-        {
-            get { return unmigratedAttributes; }
-        }
-
-        public void AddUnmigratedPart(IMappingPart part)
-        {
-            unmigratedParts.Add(part);
-        }
-
-        public void AddUnmigratedAttribute(string attribute, string value)
-        {
-            unmigratedAttributes.Add(attribute, value);
+            get { return attributes; }
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
 
 namespace FluentNHibernate.Conventions.Helpers
@@ -6,16 +7,12 @@ namespace FluentNHibernate.Conventions.Helpers
     {
         public static IClassConvention AlwaysTrue()
         {
-            return new BuiltClassConvention(
-                map => !map.Attributes.Has("dynamic-update"),
-                map => map.DynamicUpdate());
+            throw new NotImplementedException("Awaiting conventions DSL");
         }
 
         public static IClassConvention AlwaysFalse()
         {
-            return new BuiltClassConvention(
-                map => !map.Attributes.Has("dynamic-update"),
-                map => map.Not.DynamicUpdate());
+            throw new NotImplementedException("Awaiting conventions DSL");
         }
     }
 }

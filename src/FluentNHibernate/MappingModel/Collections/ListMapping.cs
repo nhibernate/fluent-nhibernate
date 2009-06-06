@@ -2,19 +2,17 @@
 {
     public class ListMapping : CollectionMappingBase
     {
-        private readonly AttributeStore<BagMapping> attributes;
+        private readonly AttributeStore<ListMapping> attributes;
         public IndexMapping Index { get; set; }
 
         public ListMapping()
             : this(new AttributeStore())
-        {
-
-        }
+        {}
 
         protected ListMapping(AttributeStore underlyingStore)
             : base(underlyingStore)
         {
-            attributes = new AttributeStore<BagMapping>(underlyingStore);
+            attributes = new AttributeStore<ListMapping>(underlyingStore);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -27,11 +25,9 @@
             base.AcceptVisitor(visitor);
         }
 
-        public AttributeStore<BagMapping> Attributes
+        public AttributeStore<ListMapping> Attributes
         {
             get { return attributes; }
         }
-
-        
     }
 }

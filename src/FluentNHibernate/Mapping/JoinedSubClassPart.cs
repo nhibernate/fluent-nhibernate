@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
-using System.Reflection;
-using System.Xml;
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
@@ -9,56 +7,19 @@ namespace FluentNHibernate.Mapping
 {
     public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, IJoinedSubclass
     {
-        private readonly string keyColumn;
-        private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
         private readonly JoinedSubclassMapping mapping;
+        private readonly IList<string> columns = new List<string>();
         private bool nextBool = true;
 
         public JoinedSubClassPart(string keyColumn)
             : this(new JoinedSubclassMapping())
         {
-            this.keyColumn = keyColumn;
+            columns.Add(keyColumn);
         }
 
         public JoinedSubClassPart(JoinedSubclassMapping mapping)
         {
             this.mapping = mapping;
-        }
-
-        protected override PropertyMap Map(PropertyInfo property, string columnName)
-        {
-            var propertyMapping = new PropertyMapping(typeof(TSubclass))
-            {
-                Name = property.Name,
-                PropertyInfo = property
-            };
-
-            var propertyMap = new PropertyMap(propertyMapping);
-
-            if (!string.IsNullOrEmpty(columnName))
-                propertyMap.ColumnName(columnName);
-
-            properties.Add(propertyMap); // new
-
-            return propertyMap;
-        }
-
-        public override DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
-        {
-            var part = new DynamicComponentPart<IDictionary>(property);
-            components.Add(part);
-            action(part);
-
-            return part;
-        }
-
-        protected override ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
-        {
-            var part = new ComponentPart<TComponent>(property);
-            action(part);
-            components.Add(part);
-
-            return part;
         }
 
         public virtual void JoinedSubClass<TNextSubclass>(string keyColumn, Action<JoinedSubClassPart<TNextSubclass>> action)
@@ -70,19 +31,6 @@ namespace FluentNHibernate.Mapping
             joinedSubclasses.Add(subclass);
 
             mapping.AddSubclass(subclass.GetJoinedSubclassMapping());
-        }
-
-        public virtual void SetAttribute(string name, string value)
-        {
-            unmigratedAttributes.Store(name, value);
-        }
-
-        public virtual void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
         }
 
         public JoinedSubClassPart<TSubclass> WithTableName(string tableName)
@@ -105,14 +53,13 @@ namespace FluentNHibernate.Mapping
 
         public JoinedSubClassPart<TSubclass> Proxy(Type type)
         {
-            mapping.Proxy = type;
+            mapping.Proxy = type.AssemblyQualifiedName;
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> Proxy<T>()
         {
-            mapping.Proxy = typeof(T);
-            return this;
+            return Proxy(typeof(T));
         }
 
         public JoinedSubClassPart<TSubclass> LazyLoad()
@@ -164,11 +111,11 @@ namespace FluentNHibernate.Mapping
 
         public JoinedSubclassMapping GetJoinedSubclassMapping()
         {
-            mapping.Key = new KeyMapping
-            {
-                Column = keyColumn
-            };
+            mapping.Key = new KeyMapping();
             mapping.Name = typeof(TSubclass).AssemblyQualifiedName;
+
+            foreach (var column in columns)
+                mapping.Key.AddColumn(new ColumnMapping { Name = column });
 
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());
@@ -176,10 +123,17 @@ namespace FluentNHibernate.Mapping
             foreach (var component in components)
                 mapping.AddComponent(component.GetComponentMapping());
 
-            foreach (var part in Parts)
-                mapping.AddUnmigratedPart(part);
+            foreach (var oneToOne in oneToOnes)
+                mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
 
-            unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
+            foreach (var collection in collections)
+                mapping.AddCollection(collection.GetCollectionMapping());
+
+            foreach (var reference in references)
+                mapping.AddReference(reference.GetManyToOneMapping());
+
+            foreach (var any in anys)
+                mapping.AddAny(any.GetAnyMapping());
 
             return mapping;
         }
@@ -237,21 +191,6 @@ namespace FluentNHibernate.Mapping
         IJoinedSubclass IJoinedSubclass.Not
         {
             get { return Not; }
-        }
-
-        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
-        int IMappingPart.LevelWithinPosition
-        {
-            get { throw new NotSupportedException("Obsolete"); }
-        }
-
-        PartPosition IMappingPart.PositionOnDocument
-        {
-            get { throw new NotSupportedException("Obsolete"); }
         }
     }
 }

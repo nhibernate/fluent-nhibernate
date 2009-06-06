@@ -53,7 +53,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                                        .EntityTypeColumn("AnyType")
                                        .IdentityType(x => x.Id))
                 .Element("class/any")
-                .HasAttribute("id-type", "Int64");
+                .HasAttribute("id-type", typeof(Int64).AssemblyQualifiedName);
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                                        .IdentityType(x => x.Id)
                                        .AddMetaValue<SecondMappedObject>("SMO"))
                 .Element("class/any")
-                .HasAttribute("meta-type", "String");
+                .HasAttribute("meta-type", typeof(string).AssemblyQualifiedName);
         }
 
         [Test]
@@ -155,18 +155,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                  .Element("class/any/meta-value")
                  .HasAttribute("value", "SMO")
                  .HasAttribute("class", typeof(SecondMappedObject).AssemblyQualifiedName);
-        }
-
-        [Test]
-        public void PositionIsSetToAnywhere()
-        {
-            Assert.AreEqual(PartPosition.Anywhere, new AnyPart<SecondMappedObject>(null).PositionOnDocument);
-        }
-
-        [Test]
-        public void LevelIsSetToOne()
-        {
-            Assert.AreEqual(1, new AnyPart<SecondMappedObject>(null).LevelWithinPosition);
         }
     }
 }

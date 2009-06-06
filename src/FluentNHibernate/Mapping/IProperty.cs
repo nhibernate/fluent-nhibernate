@@ -1,18 +1,16 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
     public interface IProperty : IMappingPart
     {
-        void SetAttributeOnColumnElement(string name, string value);
         Type EntityType { get; }
         Type PropertyType { get; }
         PropertyInfo Property { get; }
-        bool ParentIsRequired { get; }
         IAccessStrategyBuilder Access { get; }
-        bool HasAttribute(string name);
-
+        IProperty ColumnName(string columnName);
         IColumnNameCollection ColumnNames { get; }
 
         IProperty Insert();
@@ -26,6 +24,7 @@ namespace FluentNHibernate.Mapping
         IProperty CustomTypeIs(string type);
         IProperty CustomSqlTypeIs(string sqlType);
         IProperty Unique();
+        IProperty OptimisticLock();
 
         /// <summary>
         /// Specifies the name of a multi-column unique constraint.
@@ -37,5 +36,7 @@ namespace FluentNHibernate.Mapping
         /// Inverts the next boolean
         /// </summary>
         IProperty Not { get; }
+        PropertyGeneratedBuilder Generated { get; }
+        PropertyMapping GetPropertyMapping();
     }
 }

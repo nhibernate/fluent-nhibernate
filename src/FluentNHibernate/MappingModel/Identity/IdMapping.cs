@@ -5,23 +5,12 @@ namespace FluentNHibernate.MappingModel.Identity
 {
     public class IdMapping : MappingBase, IIdentityMapping, INameable
     {
-        private readonly AttributeStore<IdMapping> attributes;
-        private readonly IList<ColumnMapping> columns;
+        private readonly AttributeStore<IdMapping> attributes = new AttributeStore<IdMapping>();
+        private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
 
-        public IdMapping()
-        {
-            attributes = new AttributeStore<IdMapping>();
-            columns = new List<ColumnMapping>();
-        }
+        public GeneratorMapping Generator { get; set; }
 
-        public IdMapping(ColumnMapping columnMapping) : this()
-        {
-            AddIdColumn(columnMapping);
-        }
-
-        public IdGeneratorMapping Generator { get; set; }
-
-        public void AddIdColumn(ColumnMapping column)
+        public void AddColumn(ColumnMapping column)
         {
             columns.Add(column);
         }
@@ -55,10 +44,27 @@ namespace FluentNHibernate.MappingModel.Identity
             set { attributes.Set(x => x.Name, value); }
         }
 
+        public string Access
+        {
+            get { return attributes.Get(x => x.Access); }
+            set { attributes.Set(x => x.Access, value); }
+        }
+
+        public string Type
+        {
+            get { return attributes.Get(x => x.Type); }
+            set { attributes.Set(x => x.Type, value); }
+        }
+
+        public string UnsavedValue
+        {
+            get { return attributes.Get(x => x.UnsavedValue); }
+            set { attributes.Set(x => x.UnsavedValue, value); }
+        }
+
         public AttributeStore<IdMapping> Attributes
         {
             get { return attributes; }
         }
-        
     }
 }

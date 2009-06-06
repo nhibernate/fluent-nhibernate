@@ -9,10 +9,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
     {
         private readonly AttributeStore<ClassMapping> attributes;
         private readonly IList<ISubclassMapping> subclasses;
-        private readonly IList<JoinMapping> joins;
         private DiscriminatorMapping discriminator;
-        private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
-        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
         public IIdentityMapping Id { get; set; }
 
         public ClassMapping()
@@ -30,8 +27,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             attributes = new AttributeStore<ClassMapping>(store);
             subclasses = new List<ISubclassMapping>();
-            joins = new List<JoinMapping>();
         }
+
+        public CacheMapping Cache { get; set; }
+
+        public VersionMapping Version { get; set; }
 
         public DiscriminatorMapping Discriminator
         {
@@ -53,19 +53,9 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return subclasses; }
         }
 
-        public IEnumerable<JoinMapping> Joins
-        {
-            get { return joins; }
-        }
-
         public void AddSubclass(ISubclassMapping subclass)
         {
             subclasses.Add(subclass);
-        }
-
-        public void AddJoin(JoinMapping join)
-        {
-            joins.Add(join);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -78,11 +68,17 @@ namespace FluentNHibernate.MappingModel.ClassBased
             if (Discriminator != null)
                 visitor.Visit(Discriminator);
 
+            if (Cache != null)
+                visitor.Visit(Cache);
+
             foreach (var subclass in Subclasses)
                 visitor.Visit(subclass);
 
             foreach (var join in Joins)
                 visitor.Visit(join);
+
+            if (Version != null)
+                visitor.Visit(Version);
 
             base.AcceptVisitor(visitor);
         }
@@ -99,10 +95,10 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.BatchSize, value); }
         }
 
-        public object DiscriminatorBaseValue
+        public object DiscriminatorValue
         {
-            get { return attributes.Get(x => x.DiscriminatorBaseValue); }
-            set { attributes.Set(x => x.DiscriminatorBaseValue, value); }
+            get { return attributes.Get(x => x.DiscriminatorValue); }
+            set { attributes.Set(x => x.DiscriminatorValue, value); }
         }
 
         public string Schema
@@ -111,10 +107,10 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Schema, value); }
         }
 
-        public bool LazyLoad
+        public bool Lazy
         {
-            get { return attributes.Get(x => x.LazyLoad); }
-            set { attributes.Set(x => x.LazyLoad, value); }
+            get { return attributes.Get(x => x.Lazy); }
+            set { attributes.Set(x => x.Lazy, value); }
         }
 
         public bool Mutable
@@ -135,31 +131,57 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.DynamicInsert, value); }
         }
 
+        public string OptimisticLock
+        {
+            get { return attributes.Get(x => x.OptimisticLock); }
+            set { attributes.Set(x => x.OptimisticLock, value); }
+        }
+
+        public string Polymorphism
+        {
+            get { return attributes.Get(x => x.Polymorphism); }
+            set { attributes.Set(x => x.Polymorphism, value); }
+        }
+
+        public string Persister
+        {
+            get { return attributes.Get(x => x.Persister); }
+            set { attributes.Set(x => x.Persister, value); }
+        }
+
+        public string Where
+        {
+            get { return attributes.Get(x => x.Where); }
+            set { attributes.Set(x => x.Where, value); }
+        }
+
+        public string Check
+        {
+            get { return attributes.Get(x => x.Check); }
+            set { attributes.Set(x => x.Check, value); }
+        }
+
+        public string Proxy
+        {
+            get { return attributes.Get(x => x.Proxy); }
+            set { attributes.Set(x => x.Proxy, value); }
+        }
+
+        public bool SelectBeforeUpdate
+        {
+            get { return attributes.Get(x => x.SelectBeforeUpdate); }
+            set { attributes.Set(x => x.SelectBeforeUpdate, value); }
+        }
+
+        public bool Abstract
+        {
+            get { return attributes.Get(x => x.Abstract); }
+            set { attributes.Set(x => x.Abstract, value); }
+        }
+
         public AttributeStore<ClassMapping> Attributes
         {
             get { return attributes; }
         }
-
-        public IEnumerable<IMappingPart> UnmigratedParts
-        {
-            get { return unmigratedParts; }
-        }
-
-        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
-        {
-            get { return unmigratedAttributes; }
-        }
-
-        public void AddUnmigratedPart(IMappingPart part)
-        {
-            unmigratedParts.Add(part);
-        }
-
-        public void AddUnmigratedAttribute(string attribute, string value)
-        {
-            unmigratedAttributes.Add(attribute, value);
-        }
-
-
     }
 }

@@ -6,11 +6,9 @@ namespace FluentNHibernate.Conventions.Helpers
 {
     public static class OptimisticLock
     {
-        public static IClassConvention Is(Action<OptimisticLockBuilder> locking)
+        public static IClassConvention Is(Action<IOptimisticLockBuilder> locking)
         {
-            return new BuiltClassConvention(
-                map => !map.Attributes.Has("optimistic-lock"),
-                map => locking(map.OptimisticLock));
+            throw new NotImplementedException("Awaiting conventions DSL");
         }
     }
 }

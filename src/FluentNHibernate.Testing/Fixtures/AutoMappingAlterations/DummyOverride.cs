@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing.Fixtures.AutoMappingAlterations
     {
         public void Override(AutoMap<Baz> mapping)
         {
-            mapping.SetAttribute("was-overridden", "true");
+            mapping.BatchSize(10);
         }
     }
 }

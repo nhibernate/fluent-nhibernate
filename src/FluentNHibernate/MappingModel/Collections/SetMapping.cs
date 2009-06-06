@@ -9,7 +9,7 @@ namespace FluentNHibernate.MappingModel.Collections
             
         }
         
-        protected SetMapping(AttributeStore underlyingStore) : base(underlyingStore)
+        public SetMapping(AttributeStore underlyingStore) : base(underlyingStore)
         {
             attributes = new AttributeStore<SetMapping>(underlyingStore);
         }
@@ -29,6 +29,12 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             get { return attributes.Get(x => x.OrderBy); }
             set { attributes.Set(x => x.OrderBy, value); }
+        }
+
+        public string Sort
+        {
+            get { return attributes.Get(x => x.Sort); }
+            set { attributes.Set(x => x.Sort, value); }
         }
     }
 }

@@ -12,10 +12,8 @@ namespace FluentNHibernate.Testing.MappingModel
     {
         public static MappingXmlTestHelper VerifyXml<T>(this IXmlWriter<T> writer, T model)
         {
-            object hbm = writer.Write(model);
-            var serializer = new MappingXmlSerializer();
-            XmlDocument document = serializer.SerializeHbmFragment(hbm);        
-            document.OutputXmlToConsole();
+            var document = writer.Write(model);
+
             return new MappingXmlTestHelper(document);
         }
         

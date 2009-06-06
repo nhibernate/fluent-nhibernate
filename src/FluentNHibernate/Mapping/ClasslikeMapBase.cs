@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
@@ -20,8 +19,10 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<IComponentBase> components = new List<IComponentBase>();
         protected readonly IList<ISubclass> subclasses = new List<ISubclass>();
         protected readonly IList<IJoinedSubclass> joinedSubclasses = new List<IJoinedSubclass>();
-
-        private bool parentIsRequired = true;
+        protected readonly IList<IOneToOnePart> oneToOnes = new List<IOneToOnePart>();
+        protected readonly IList<ICollectionRelationship> collections = new List<ICollectionRelationship>();
+        protected readonly IList<IManyToOnePart> references = new List<IManyToOnePart>();
+        protected readonly IList<IAnyMappingProvider> anys = new List<IAnyMappingProvider>();
 
         protected internal void AddPart(IMappingPart part)
         {
@@ -40,18 +41,12 @@ namespace FluentNHibernate.Mapping
 
         protected virtual PropertyMap Map(PropertyInfo property, string columnName)
         {
-            var propertyMapping = new PropertyMapping(typeof(T))
-            {
-                Name = property.Name,
-                PropertyInfo = property
-            };
-
-            var propertyMap = new PropertyMap(propertyMapping);
+            var propertyMap = new PropertyMap(property, typeof(T));
 
             if (!string.IsNullOrEmpty(columnName))
                 propertyMap.ColumnName(columnName);
 
-            m_Parts.Add(propertyMap); // backwards compatibility
+            properties.Add(propertyMap);
 
             return propertyMap;
         }
@@ -73,7 +68,7 @@ namespace FluentNHibernate.Mapping
             if (columnName != null)
                 part.ColumnName(columnName);
 
-            AddPart(part);
+            references.Add(part);
 
             return part;
         }
@@ -86,7 +81,9 @@ namespace FluentNHibernate.Mapping
         protected virtual IAnyPart<TOther> ReferencesAny<TOther>(PropertyInfo property)
         {
             var part = new AnyPart<TOther>(property);
-            AddPart(part);
+
+            anys.Add(part);
+
             return part;
         }
 
@@ -98,7 +95,8 @@ namespace FluentNHibernate.Mapping
         protected virtual OneToOnePart<TOther> HasOne<TOther>(PropertyInfo property)
         {
             var part = new OneToOnePart<TOther>(EntityType, property);
-            AddPart(part);
+
+            oneToOnes.Add(part);
 
             return part;
         }
@@ -108,11 +106,13 @@ namespace FluentNHibernate.Mapping
             return DynamicComponent(ReflectionHelper.GetProperty(expression), action);
         }
 
-        public virtual DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
+        protected DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
         {
             var part = new DynamicComponentPart<IDictionary>(property);
-            AddPart(part); // old
+            
             action(part);
+
+            components.Add(part);
 
             return part;
         }
@@ -142,8 +142,10 @@ namespace FluentNHibernate.Mapping
         protected virtual ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
         {
             var part = new ComponentPart<TComponent>(property);
-            AddPart(part); // old
+
             action(part);
+
+            components.Add(part);
 
             return part;
         }
@@ -166,7 +168,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new OneToManyPart<TChild>(EntityType, method);
 
-            AddPart(part);
+            collections.Add(part);
 
             return part;
         }
@@ -175,7 +177,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new OneToManyPart<TChild>(EntityType, property);
 
-            AddPart(part);
+            collections.Add(part);
 
             return part;
         }
@@ -232,7 +234,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new ManyToManyPart<TChild>(EntityType, method);
 
-            AddPart(part);
+            collections.Add(part);
 
             return part;
         }
@@ -241,7 +243,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new ManyToManyPart<TChild>(EntityType, property);
 
-            AddPart(part);
+            collections.Add(part);
 
             return part;
         }
@@ -266,27 +268,6 @@ namespace FluentNHibernate.Mapping
         public ManyToManyPart<TChild> HasManyToMany<TChild>(Expression<Func<T, object>> expression)
         {
             return MapHasManyToMany<TChild, object>(expression);
-        }
-
-        public VersionPart Version(Expression<Func<T, object>> expression)
-        {
-            return Version(ReflectionHelper.GetProperty(expression));
-        }
-
-        protected virtual VersionPart Version(PropertyInfo property)
-        {
-            var versionPart = new VersionPart(EntityType, property);
-            AddPart(versionPart);
-            return versionPart;
-        }
-
-        protected void WriteTheParts(XmlElement classElement, IMappingVisitor visitor)
-        {
-            m_Parts.Sort(new MappingPartComparer(m_Parts));
-            foreach (IMappingPart part in m_Parts)
-            {
-                part.Write(classElement, visitor);
-            }
         }
 
         IEnumerable<PropertyMap> IClasslike.Properties
@@ -329,11 +310,6 @@ namespace FluentNHibernate.Mapping
         IComponentBase IClasslike.Component<TEntity, TComponent>(Expression<Func<TEntity, TComponent>> expression, Action<ComponentPart<TComponent>> action)
         {
             return Component(ReflectionHelper.GetProperty(expression), action);
-        }
-
-        IVersion IClasslike.Version<TEntity>(Expression<Func<TEntity, object>> expression)
-        {
-            return Version(ReflectionHelper.GetProperty(expression));
         }
 
         IProperty IClasslike.Map<TEntity>(Expression<Func<TEntity, object>> expression)

@@ -1,19 +1,22 @@
+using System;
+
 namespace FluentNHibernate.Mapping
 {
-    public class CascadeExpression<TParentPart> : ICascadeExpression
-        where TParentPart : IHasAttributes
+    public class CascadeExpression<TParent> : ICascadeExpression
 	{
-		protected TParentPart MappingPart { get; set; }
+        private readonly TParent parent;
+        private readonly Action<string> setter;
 
-		public CascadeExpression(TParentPart mappingPart)
-		{
-			MappingPart = mappingPart;
-		}
+        public CascadeExpression(TParent parent, Action<string> setter)
+        {
+            this.parent = parent;
+            this.setter = setter;
+        }
 
-		public TParentPart All()
+        public TParent All()
 		{
-			MappingPart.SetAttribute("cascade", "all");
-			return MappingPart;
+			setter("all");
+			return parent;
 		}
 
         void ICascadeExpression.All()
@@ -21,10 +24,10 @@ namespace FluentNHibernate.Mapping
             All();
         }
 
-		public TParentPart None()
+		public TParent None()
 		{
-			MappingPart.SetAttribute("cascade", "none");
-			return MappingPart;
+			setter("none");
+            return parent;
 		}
 
         void ICascadeExpression.None()
@@ -32,10 +35,10 @@ namespace FluentNHibernate.Mapping
             None();
         }
 
-		public TParentPart SaveUpdate()
+		public TParent SaveUpdate()
 		{
-			MappingPart.SetAttribute("cascade", "save-update");
-			return MappingPart;
+			setter("save-update");
+            return parent;
 		}
 
         void ICascadeExpression.SaveUpdate()
@@ -43,10 +46,10 @@ namespace FluentNHibernate.Mapping
             SaveUpdate();
         }
 
-		public TParentPart Delete()
+		public TParent Delete()
 		{
-			MappingPart.SetAttribute("cascade", "delete");
-			return MappingPart;
+			setter("delete");
+            return parent;
 		}
 
         void ICascadeExpression.Delete()

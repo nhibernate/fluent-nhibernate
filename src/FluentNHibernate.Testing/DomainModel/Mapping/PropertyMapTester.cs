@@ -332,7 +332,10 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public IDictionary ExtensionData { get; set; }
     }
 
-    public class PropertyReferenceTarget {}
+    public class PropertyReferenceTarget
+    {
+        public string Name { get; set; }
+    }
     
     public class ComponentTarget
     {

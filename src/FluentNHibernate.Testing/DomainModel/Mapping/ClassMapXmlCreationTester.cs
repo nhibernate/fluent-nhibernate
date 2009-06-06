@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -228,19 +229,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void DomainClassMapAutomaticallyCreatesTheId()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(m => m.UseIdentityForKey(x => x.Id, "id"))
-                .Element("class/id")
-                    .HasAttribute("name", "Id")
-                    .HasAttribute("column", "id")
-                    .HasAttribute("type", "Int64")
-                .Element("class/id/generator")
-                    .HasAttribute("class", "identity");
-        }
-
-        [Test]
         public void Map_an_enumeration()
         {
             new MappingTester<MappedObject>()
@@ -306,11 +294,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/id")
                     .Exists()
                     .HasAttribute("name", "Id")
-                    .HasAttribute("column", "id")
-                    .HasAttribute("type", "Int64")
+                    .HasAttribute("type", typeof(Int64).AssemblyQualifiedName)
                 .Element("class/id/generator")
                     .Exists()
-                    .HasAttribute("class", "identity");
+                    .HasAttribute("class", "identity")
+                .Element("class/id/column")
+                    .Exists()
+                    .HasAttribute("name", "id");
 		}
 
 		[Test]
@@ -318,7 +308,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 		    new MappingTester<MappedObject>()
 		        .ForMapping(m => m.Id(x => x.Id))
-		        .Element("class/id").HasAttribute("column", "Id");
+		        .Element("class/id/column").HasAttribute("name", "Id");
 		}
 
         [Test]
@@ -366,7 +356,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void Creating_a_many_to_one_reference_with_fetchtype_set()
 		{
 			new MappingTester<MappedObject>()
-				.ForMapping(m => m.References(x => x.Parent).FetchType.Select())
+				.ForMapping(m => m.References(x => x.Parent).Fetch.Select())
 				.Element("class/many-to-one").HasAttribute("fetch", "select");
 		}
 
@@ -384,20 +374,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<MappedObject>()
                 .ForMapping(m => m.WithTable("tableTwo", t => t.Map(x => x.Name)))
                 .Element("class/join").Exists();
-        }
-
-        [Test]
-        public void ShouldAddMultipleAttributesToClassUsingSetAttributes()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(x => x.SetAttributes(new Attributes
-                {
-                    {"first", "value"},
-                    {"second", "secondValue"},
-                }))
-                .Element("class")
-                    .HasAttribute("first", "value")
-                    .HasAttribute("second", "secondValue");
         }
 
         [Test]
@@ -447,7 +423,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ShouldAddCacheElementBeforeCompositeId()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(x => { x.UseCompositeId().WithKeyProperty(y => y.Id).WithKeyProperty(y => y.Name); x.Cache.AsReadWrite(); })
+                .ForMapping(x => { x.CompositeId().WithKeyProperty(y => y.Id).WithKeyProperty(y => y.Name); x.Cache.AsReadWrite(); })
                 .Element("class/cache")
                     .ShouldBeInParentAtPosition(0)
                 .Element("class/composite-id")
@@ -458,7 +434,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ShouldAddCompositeIdBeforeDiscriminator()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(x => { x.DiscriminateSubClassesOnColumn("test"); x.UseCompositeId().WithKeyProperty(y => y.Id).WithKeyProperty(y => y.Name); })
+                .ForMapping(x => { x.DiscriminateSubClassesOnColumn("test"); x.CompositeId().WithKeyProperty(y => y.Id).WithKeyProperty(y => y.Name); })
                 .Element("class/composite-id")
                     .ShouldBeInParentAtPosition(0)
                 .Element("class/discriminator")

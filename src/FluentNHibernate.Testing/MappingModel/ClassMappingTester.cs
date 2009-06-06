@@ -54,7 +54,7 @@ namespace FluentNHibernate.Testing.MappingModel
                           {
                               Name = "bag1",
                               Key = new KeyMapping(),
-                              Contents = new OneToManyMapping { ClassName = "class1" }
+                              Relationship = new OneToManyMapping { Class = "class1" }
                           };
             _classMapping.AddCollection(bag);
 

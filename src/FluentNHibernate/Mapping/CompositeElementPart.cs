@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Xml;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
-using NHibernate.Type;
 
 namespace FluentNHibernate.Mapping
 {
@@ -13,17 +12,11 @@ namespace FluentNHibernate.Mapping
     /// Component-element for component HasMany's.
     /// </summary>
     /// <typeparam name="T">Component type</typeparam>
-    public class CompositeElementPart<T> : IMappingPart
+    public class CompositeElementPart<T> : ICompositeElementMappingProvider
     {
-        protected readonly List<IMappingPart> m_Parts = new List<IMappingPart>();
-        public IEnumerable<IMappingPart> Parts
-        {
-            get { return m_Parts; }
-        }
-        protected internal void AddPart(IMappingPart part)
-        {
-            m_Parts.Add(part);
-        }
+        private readonly CompositeElementMapping mapping = new CompositeElementMapping();
+        private readonly IList<PropertyMap> properties = new List<PropertyMap>();
+        private readonly IList<IManyToOnePart> references = new List<IManyToOnePart>();
 
         public PropertyMap Map(Expression<Func<T, object>> expression)
         {
@@ -37,18 +30,12 @@ namespace FluentNHibernate.Mapping
 
         protected virtual PropertyMap Map(PropertyInfo property, string columnName)
         {
-            var propertyMapping = new PropertyMapping(typeof(T))
-            {
-                Name = property.Name,
-                PropertyInfo = property
-            };
-
-            var propertyMap = new PropertyMap(propertyMapping);
+            var propertyMap = new PropertyMap(property, typeof(T));
 
             if (!string.IsNullOrEmpty(columnName))
                 propertyMap.ColumnName(columnName);
 
-            m_Parts.Add(propertyMap);
+            properties.Add(propertyMap);
 
             return propertyMap;
         }
@@ -70,30 +57,9 @@ namespace FluentNHibernate.Mapping
             if (columnName != null)
                 part.ColumnName(columnName);
 
-            AddPart(part);
+            references.Add(part);
 
             return part;
-        }
-
-
-        private readonly Cache<string, string> localProperties = new Cache<string, string>();
-        private PropertyInfo parentReference;
-
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            XmlElement element = classElement.AddElement("composite-element")
-                .WithAtt("class", typeof(T).AssemblyQualifiedName)
-                .WithProperties(localProperties);
-
-            if (parentReference != null)
-                element.AddElement("parent").WithAtt("name", parentReference.Name);
-
-            //Write the parts
-            m_Parts.Sort(new MappingPartComparer(m_Parts));
-            foreach (IMappingPart part in m_Parts)
-            {
-                part.Write(element, visitor);
-            }
         }
 
         /// <summary>
@@ -103,42 +69,23 @@ namespace FluentNHibernate.Mapping
         /// <returns>Component being mapped</returns>
         public CompositeElementPart<T> WithParentReference(Expression<Func<T, object>> exp)
         {
-            return WithParentReference(ReflectionHelper.GetProperty(exp));
-        }
-
-        private CompositeElementPart<T> WithParentReference(PropertyInfo property)
-        {
-            parentReference = property;
+            var property = ReflectionHelper.GetProperty(exp);
+            mapping.Parent = new ParentMapping { Name = property.Name };
             return this;
         }
 
-        /// <summary>
-        /// Set an attribute on the xml element produced by this component mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        /// <include file='' path='[@name=""]'/>
-        public void SetAttribute(string name, string value)
+        CompositeElementMapping ICompositeElementMappingProvider.GetCompositeElementMapping()
         {
-            localProperties.Store(name, value);
-        }
+            if (!mapping.Attributes.IsSpecified(x => x.Class))
+                mapping.Class = typeof(T).AssemblyQualifiedName;
 
-        public void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
+            foreach (var property in properties)
+                mapping.AddProperty(property.GetPropertyMapping());
 
-        public int LevelWithinPosition
-        {
-            get { return 1; }
-        }
+            foreach (var reference in references)
+                mapping.AddReference(reference.GetManyToOneMapping());
 
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.Anywhere; }
+            return mapping;
         }
     }
 }
