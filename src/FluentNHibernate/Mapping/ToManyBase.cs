@@ -20,7 +20,7 @@ namespace FluentNHibernate.Mapping
         private readonly OptimisticLockBuilder<T> optimisticLock;
         private readonly CollectionCascadeExpression<T> cascade;
         protected IndexPart indexPart;
-        protected ElementMapping elementMapping;
+        protected ElementPart elementPart;
         protected ICompositeElementMappingProvider componentMapping;
         public string TableName { get; private set; }
         public Type EntityType { get; private set; }
@@ -84,6 +84,9 @@ namespace FluentNHibernate.Mapping
 
             if (indexPart != null && mapping is MapMapping)
                 ((MapMapping)mapping).Index = indexPart.GetIndexMapping();
+
+            if (elementPart != null)
+                mapping.Element = elementPart.GetElementMapping();
 
             return mapping;
         }
@@ -168,12 +171,12 @@ namespace FluentNHibernate.Mapping
 
         // I'm not proud of this. The fluent interface for maps really needs to be rethought. But I've let maps sit unsupported for way too long
         // so a hack is better than nothing.
-        public T AsMap<TIndex>(Action<IndexPart> customIndexMapping, Action<ElementMapping> customElementMapping)
+        public T AsMap<TIndex>(Action<IndexPart> customIndexMapping, Action<ElementPart> customElementMapping)
         {
             collectionBuilder = () => new MapMapping();
             AsIndexedCollection<TIndex>(string.Empty, customIndexMapping);
             AsElement(string.Empty);
-            customElementMapping(elementMapping);
+            customElementMapping(elementPart);
             return (T)this;
         }
 
@@ -208,9 +211,9 @@ namespace FluentNHibernate.Mapping
 
         public T AsElement(string columnName)
         {
-            elementMapping = new ElementMapping();
-            elementMapping.WithColumn(columnName);
-            elementMapping.WithType<TChild>();            
+            elementPart = new ElementPart();
+            elementPart.WithColumn(columnName);
+            elementPart.WithType<TChild>();            
             return (T)this;
         }
 
@@ -472,27 +475,5 @@ namespace FluentNHibernate.Mapping
         }
 
         #endregion
-
-        public class ElementMapping
-        {
-            private readonly Cache<string, string> properties = new Cache<string, string>();
-
-            public ElementMapping WithColumn(string indexColumnName)
-            {
-                properties.Store("column", indexColumnName);
-                return this;
-            }
-
-            public ElementMapping WithType<TIndex>()
-            {
-                properties.Store("type", typeof(TIndex).AssemblyQualifiedName);
-                return this;
-            }
-
-            internal void WriteAttributesToIndexElement(XmlElement indexElement)
-            {
-                indexElement.WithProperties(properties);
-            }
-        }
     }
 }

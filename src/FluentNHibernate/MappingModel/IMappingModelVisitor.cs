@@ -39,6 +39,7 @@ namespace FluentNHibernate.MappingModel
         void ProcessMetaValue(MetaValueMapping mapping);
         void ProcessKeyProperty(KeyPropertyMapping mapping);
         void ProcessKeyManyToOne(KeyManyToOneMapping mapping);
+        void ProcessElement(ElementMapping mapping);
 
         void Visit(IdMapping mapping);
         void Visit(ClassMapping classMapping);
@@ -69,5 +70,6 @@ namespace FluentNHibernate.MappingModel
         void Visit(MetaValueMapping mapping);
         void Visit(KeyPropertyMapping mapping);
         void Visit(KeyManyToOneMapping mapping);
+        void Visit(ElementMapping mapping);
     }
 }

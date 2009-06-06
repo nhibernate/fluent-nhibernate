@@ -196,6 +196,7 @@
     <Compile Include="MappingModel\ClassBased\SubclassMapping.cs" />
     <Compile Include="MappingModel\Collections\ArrayMapping.cs" />
     <Compile Include="MappingModel\Collections\CompositeElementMapping.cs" />
+    <Compile Include="MappingModel\Collections\ElementMapping.cs" />
     <Compile Include="MappingModel\Collections\MapMapping.cs" />
     <Compile Include="MappingModel\Identity\KeyManyToOneMapping.cs" />
     <Compile Include="MappingModel\Identity\KeyPropertyMapping.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="MappingModel\Output\XmlCompositeElementWriter.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeIdWriter.cs" />
     <Compile Include="MappingModel\Output\XmlDynamicComponentWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlElementWriter.cs" />
     <Compile Include="MappingModel\Output\XmlGeneratorWriter.cs" />
     <Compile Include="MappingModel\Output\XmlIdentityBasedWriter.cs" />
     <Compile Include="MappingModel\Output\XmlIdWriter.cs" />
@@ -255,6 +257,7 @@
     <Compile Include="Mapping\ComponentPartBase.cs" />
     <Compile Include="Mapping\DiscriminatorPart.cs" />
     <Compile Include="Mapping\DiscriminatorValue.cs" />
+    <Compile Include="Mapping\ElementPart.cs" />
     <Compile Include="Mapping\HibernateMappingPart.cs" />
     <Compile Include="Mapping\IAccessStrategyBuilder.cs" />
     <Compile Include="Mapping\ICascadeExpression.cs" />

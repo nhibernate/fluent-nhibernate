@@ -215,5 +215,16 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer.VerifyXml(mapping)
                 .Element("composite-element").Exists();
         }
+
+        [Test]
+        public void ShouldWriteElement()
+        {
+            var mapping = new BagMapping();
+
+            mapping.Element = new ElementMapping();
+
+            writer.VerifyXml(mapping)
+                .Element("element").Exists();
+        }
     }
 }

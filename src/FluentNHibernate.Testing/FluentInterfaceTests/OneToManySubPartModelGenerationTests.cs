@@ -1,5 +1,6 @@
 using System.Linq;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
@@ -46,6 +47,19 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     list.Index.ShouldNotBeNull();
                     list.Index.Columns.Count().ShouldEqual(1);
                     list.Index.Type.ShouldEqual(typeof(int).AssemblyQualifiedName);
+                });
+        }
+
+        [Test]
+        public void ShouldSetElement()
+        {
+            OneToMany(x => x.ListOfChildren)
+                .Mapping(m => m.AsElement("element"))
+                .ModelShouldMatch(x =>
+                {
+                    x.Element.ShouldNotBeNull();
+                    x.Element.Columns.Count().ShouldEqual(1);
+                    x.Element.Type.ShouldEqual(typeof(ChildObject).AssemblyQualifiedName);
                 });
         }
     }

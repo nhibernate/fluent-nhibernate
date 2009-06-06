@@ -213,5 +213,16 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer.VerifyXml(mapping)
                 .Element("cache").Exists();
         }
+
+        [Test]
+        public void ShouldWriteElement()
+        {
+            var mapping = new SetMapping();
+
+            mapping.Element = new ElementMapping();
+
+            writer.VerifyXml(mapping)
+                .Element("element").Exists();
+        }
     }
 }
