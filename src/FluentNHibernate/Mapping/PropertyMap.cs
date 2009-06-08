@@ -24,7 +24,7 @@ namespace FluentNHibernate.Mapping
 
             this.parentType = parentType;
             Property = property;
-            mapping = new PropertyMapping(parentType);
+            mapping = new PropertyMapping { ContainingEntityType = parentType };
         }
 
         public PropertyGeneratedBuilder Generated
@@ -51,7 +51,7 @@ namespace FluentNHibernate.Mapping
                 mapping.Name = Property.Name;
 
             if (!mapping.Attributes.IsSpecified(x => x.Type))
-                mapping.Type = Property.PropertyType.AssemblyQualifiedName;
+                mapping.Type = new TypeReference(Property.PropertyType);
 
             return mapping;
         }
@@ -171,7 +171,7 @@ namespace FluentNHibernate.Mapping
         /// <returns>This property mapping to continue the method chain</returns>
         public IProperty CustomTypeIs(string type)
         {
-            mapping.Type = type;
+            mapping.Type = new TypeReference(type);
 
             return this;
         }

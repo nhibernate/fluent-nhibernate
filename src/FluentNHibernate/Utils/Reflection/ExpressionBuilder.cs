@@ -2,7 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace FluentNHibernate.AutoMap
+namespace FluentNHibernate.Utils.Reflection
 {
     public class ExpressionBuilder
     {

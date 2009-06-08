@@ -137,10 +137,5 @@ namespace FluentNHibernate.MappingModel.Collections
             get { return attributes.Get(x => x.OptimisticLock); }
             set { attributes.Set(x => x.OptimisticLock, value); }
         }
-
-        public bool IsNameSpecified
-        {
-            get { return attributes.IsSpecified(x => x.Name); }
-        }
     }
 }

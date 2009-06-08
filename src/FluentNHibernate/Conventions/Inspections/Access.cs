@@ -4,7 +4,7 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         public static readonly Access Unset = new Access("");
 
-        private string value;
+        private readonly string value;
 
         private Access(string value)
         {

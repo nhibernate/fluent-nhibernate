@@ -1,3 +1,5 @@
+using System;
+
 namespace FluentNHibernate.Conventions.AcceptanceCriteria
 {
     public class Is
@@ -5,11 +7,6 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
         public static IAcceptanceCriterion Set
         {
             get { return new SetCriterion(false); }
-        }
-
-        public static IAcceptanceCriterion Equal(object value)
-        {
-            return new EqualCriterion(false, value);
         }
 
         public static InverseIs Not

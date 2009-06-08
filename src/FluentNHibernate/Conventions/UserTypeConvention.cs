@@ -19,7 +19,7 @@ namespace FluentNHibernate.Conventions
         {
             var userType = Activator.CreateInstance<TUserType>();
 
-            acceptance.Expect(x => x.PropertyType == userType.ReturnedType);
+            acceptance.Expect(x => x.Type == userType.ReturnedType);
         }
 
         public virtual void Apply(IPropertyAlteration alteration, IPropertyInspector inspector)

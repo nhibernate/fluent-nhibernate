@@ -26,6 +26,11 @@ namespace FluentNHibernate.Conventions.DslImplementation
             get { return mapping.Type; }
         }
         
+        string IInspector.StringIdentifierForModel
+        {
+            get { return mapping.Name; }
+        }
+
         bool ILazyLoadInspector.LazyLoad
         {
             get { throw new NotImplementedException(); }

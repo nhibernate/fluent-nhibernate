@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class ManyToOneMapping : MappingBase, INameable
+    public class ManyToOneMapping : MappingBase
     {
         private readonly AttributeStore<ManyToOneMapping> attributes = new AttributeStore<ManyToOneMapping>();
         private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
@@ -18,11 +18,6 @@ namespace FluentNHibernate.MappingModel
         }
 
         public PropertyInfo PropertyInfo { get; set; }
-
-        public bool IsNameSpecified
-        {
-            get { return Attributes.IsSpecified(x => x.Name); }
-        }
 
         public string Name
         {

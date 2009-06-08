@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class AnyMapping : MappingBase, INameable
+    public class AnyMapping : MappingBase
     {
         private readonly AttributeStore<AnyMapping> attributes = new AttributeStore<AnyMapping>();
         private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
@@ -18,11 +18,6 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var metaValue in metaValues)
                 visitor.Visit(metaValue);
-        }
-
-        public bool IsNameSpecified
-        {
-            get { return attributes.IsSpecified(x => x.Name); }
         }
 
         public string Name

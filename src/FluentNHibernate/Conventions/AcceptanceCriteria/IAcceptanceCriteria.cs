@@ -8,8 +8,22 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
     public interface IAcceptanceCriteria<TInspector>
         where TInspector : IInspector
     {
-        IAcceptanceCriteria<TInspector> Expect(Expression<Func<TInspector, object>> propertyExpression, IAcceptanceCriterion value);
+        IAcceptanceCriteria<TInspector> SameAs<T>()
+            where T : IConventionAcceptance<TInspector>, new();
+        IAcceptanceCriteria<TInspector> OppositeOf<T>()
+            where T : IConventionAcceptance<TInspector>, new();
+
         IAcceptanceCriteria<TInspector> Expect(Expression<Func<TInspector, bool>> evaluation);
+        IAcceptanceCriteria<TInspector> Expect(Expression<Func<TInspector, object>> propertyExpression, IAcceptanceCriterion value);
+
+        // special case for string, because it's actually an IEnumerable<char>, which makes it fall through
+        // to the collection expectations
+        IAcceptanceCriteria<TInspector> Expect(Expression<Func<TInspector, string>> propertyExpression, IAcceptanceCriterion value);
+
+        // collections
+        IAcceptanceCriteria<TInspector> Expect<TCollectionItem>(Expression<Func<TInspector, IEnumerable<TCollectionItem>>> property, ICollectionAcceptanceCriterion<TCollectionItem> value)
+            where TCollectionItem : IInspector;
+
         IEnumerable<IExpectation> Expectations { get; }
         bool Matches(IInspector inspector);
     }

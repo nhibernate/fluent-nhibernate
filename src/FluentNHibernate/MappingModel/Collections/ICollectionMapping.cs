@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public interface ICollectionMapping : IMappingBase, INameable
+    public interface ICollectionMapping : IMappingBase
     {
         CacheMapping Cache { get; set; }
         bool Inverse { get; }
@@ -15,6 +15,7 @@ namespace FluentNHibernate.MappingModel.Collections
         string Cascade { get; }
         string Where { get; }
         string Persister { get; }
+        string Name { get; }
         int BatchSize { get; }
         string Check { get; }
         string CollectionType { get; }

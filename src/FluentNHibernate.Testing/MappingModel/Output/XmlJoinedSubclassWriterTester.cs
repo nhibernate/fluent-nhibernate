@@ -130,7 +130,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new JoinedSubclassMapping();
 
-            mapping.AddProperty(new PropertyMapping(typeof(Record)));
+            mapping.AddProperty(new PropertyMapping());
 
             writer.VerifyXml(mapping)
                 .Element("property").Exists();

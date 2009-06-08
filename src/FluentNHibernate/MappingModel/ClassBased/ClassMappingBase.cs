@@ -4,7 +4,7 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
-    public abstract class ClassMappingBase : MappingBase, INameable, IHasMappedMembers
+    public abstract class ClassMappingBase : MappingBase, IHasMappedMembers
     {
         private readonly AttributeStore<ClassMappingBase> attributes;
         private readonly MappedMembers mappedMembers;
@@ -20,11 +20,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return attributes.Get(x => x.Name); }
             set { attributes.Set(x => x.Name, value); }
-        }
-
-        public bool IsNameSpecified
-        {
-            get { return attributes.IsSpecified(x => x.Name); }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)

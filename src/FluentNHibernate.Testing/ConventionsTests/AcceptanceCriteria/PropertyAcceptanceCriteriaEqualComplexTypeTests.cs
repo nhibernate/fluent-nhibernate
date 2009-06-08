@@ -4,9 +4,8 @@ using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
-using Is=FluentNHibernate.Conventions.AcceptanceCriteria.Is;
 
-namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
+namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
 {
     [TestFixture]
     public class PropertyAcceptanceCriteriaEqualComplexTypeTests
@@ -22,60 +21,60 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
         [Test]
         public void ExpectEqualShouldValidateToTrueIfGivenMatchingModel()
         {
-            acceptance.Expect(x => x.Access, Is.Equal(Access.AsField()));
+            acceptance.Expect(x => x.Access == Access.AsField());
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Access = "field" }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Access = "field" }))
                 .ShouldBeTrue();
         }
 
         [Test]
         public void ExpectEqualShouldValidateToFalseIfNotGivenMatchingModel()
         {
-            acceptance.Expect(x => x.Access, Is.Equal(Access.AsField()));
+            acceptance.Expect(x => x.Access == Access.AsField());
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Access = "property" }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Access = "property" }))
                 .ShouldBeFalse();
         }
 
         [Test]
         public void ExpectEqualShouldValidateToFalseIfUnset()
         {
-            acceptance.Expect(x => x.Access, Is.Equal(Access.AsField()));
+            acceptance.Expect(x => x.Access == Access.AsField());
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
+                .Matches(new PropertyDsl(new PropertyMapping()))
                 .ShouldBeFalse();
         }
 
         [Test]
         public void ExpectNotEqualShouldValidateToTrueIfGivenMatchingModel()
         {
-            acceptance.Expect(x => x.Access, Is.Not.Equal(Access.AsField()));
+            acceptance.Expect(x => x.Access != Access.AsField());
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Access = "property" }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Access = "property" }))
                 .ShouldBeTrue();
         }
 
         [Test]
         public void ExpectNotEqualShouldValidateToFalseIfNotGivenMatchingModel()
         {
-            acceptance.Expect(x => x.Access, Is.Not.Equal(Access.AsField()));
+            acceptance.Expect(x => x.Access != Access.AsField());
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Access = "field" }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Access = "field" }))
                 .ShouldBeFalse();
         }
 
         [Test]
         public void ExpectNotEqualShouldValidateToTrueIfUnset()
         {
-            acceptance.Expect(x => x.Access, Is.Not.Equal(Access.AsField()));
+            acceptance.Expect(x => x.Access != Access.AsField());
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
+                .Matches(new PropertyDsl(new PropertyMapping()))
                 .ShouldBeTrue();
         }
     }

@@ -13,13 +13,13 @@ namespace FluentNHibernate.Conventions.Defaults
         public void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
         {
             acceptance
-                .Expect(x => x.CustomType, Is.Not.Set)
-                .Expect(x => x.PropertyType.IsEnum == false);
+                .Expect(x => x.Type, Is.Not.Set)
+                .Expect(x => x.Type.IsEnum == false);
         }
 
         public void Apply(IPropertyAlteration alteration, IPropertyInspector inspector)
         {
-            alteration.CustomTypeIs(inspector.PropertyType);
+            alteration.CustomTypeIs(inspector.Type);
         }
     }
 }

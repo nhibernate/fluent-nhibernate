@@ -2,18 +2,13 @@ using System;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class VersionMapping : MappingBase, INameable
+    public class VersionMapping : MappingBase
     {
         private readonly AttributeStore<VersionMapping> attributes = new AttributeStore<VersionMapping>();
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessVersion(this);
-        }
-
-        public bool IsNameSpecified
-        {
-            get { return attributes.IsSpecified(x => x.Name); }
         }
 
         public string Name

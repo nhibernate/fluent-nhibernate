@@ -1,27 +1,30 @@
 using System;
+using System.Collections;
 using System.Linq.Expressions;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.AcceptanceCriteria
 {
-    public class EqualCriterion : IAcceptanceCriterion
+    public class EmptyCriterion : IAcceptanceCriterion
     {
         private readonly bool inverse;
-        private readonly object value;
 
-        public EqualCriterion(bool inverse, object value)
+        public EmptyCriterion(bool inverse)
         {
             this.inverse = inverse;
-            this.value = value;
         }
 
         public bool IsSatisfiedBy<T>(Expression<Func<T, object>> propertyExpression, T inspector) where T : IInspector
         {
             var func = propertyExpression.Compile();
             var actualValue = func(inspector);
-            var result = actualValue.Equals(value);
 
-            return (inverse) ? !result : result;
+            if (!(actualValue is IEnumerable))
+                return false;
+
+            var result = ((IEnumerable)actualValue).GetEnumerator().Current != null;
+
+            return inverse ? !result : result;
         }
     }
 }

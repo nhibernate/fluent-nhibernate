@@ -75,7 +75,12 @@
     <Compile Include="AutoMap\AutoMappingException.cs" />
     <Compile Include="AutoMap\AutoMapVersion.cs" />
     <Compile Include="AutoMap\AutoPersistenceModel.cs" />
-    <Compile Include="AutoMap\ExpressionBuilder.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\CollectionExpectation.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\InvertedExpectation.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\InverterAcceptanceCriteria.cs" />
+    <Compile Include="Conventions\EnumerableExtensionsForConventions.cs" />
+    <Compile Include="MappingModel\TypeReference.cs" />
+    <Compile Include="Utils\Reflection\ExpressionBuilder.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />
     <Compile Include="AutoMap\IAutoMappingAlteration.cs" />
     <Compile Include="AutoMap\ManyToManyAutoMapper.cs" />
@@ -108,6 +113,7 @@
     <Compile Include="Cfg\Db\PostgreSQLConfiguration.cs" />
     <Compile Include="Cfg\Db\SQLiteConfiguration.cs" />
     <Compile Include="Cfg\SetupConventionFinder.cs" />
+    <Compile Include="Conventions\AcceptanceCriteria\EmptyCriterion.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\EvalExpectation.cs" />
     <Compile Include="Conventions\Alterations\IAccessAlteration.cs" />
     <Compile Include="Conventions\Alterations\IClassAlteration.cs" />
@@ -120,6 +126,7 @@
     <Compile Include="Conventions\ConventionVisitor.cs" />
     <Compile Include="Conventions\DslImplementation\AccessMappingAlteration.cs" />
     <Compile Include="Conventions\DslImplementation\ClassDsl.cs" />
+    <Compile Include="Conventions\DslImplementation\ColumnDsl.cs" />
     <Compile Include="Conventions\DslImplementation\InspectorModelMapper.cs" />
     <Compile Include="Conventions\DslImplementation\UnmappedPropertyException.cs" />
     <Compile Include="Conventions\Inspections\Access.cs" />
@@ -132,6 +139,7 @@
     <Compile Include="Conventions\Inspections\Cache.cs" />
     <Compile Include="Conventions\Inspections\Generator.cs" />
     <Compile Include="Conventions\Inspections\IClassInspector.cs" />
+    <Compile Include="Conventions\Inspections\IColumnInspector.cs" />
     <Compile Include="Conventions\Inspections\IExposedThroughPropertyInspector.cs" />
     <Compile Include="Conventions\Inspections\IIdentityInspector.cs" />
     <Compile Include="Conventions\Inspections\IInspector.cs" />
@@ -354,7 +362,6 @@
     <Compile Include="MappingModel\IHasMappedMembers.cs" />
     <Compile Include="MappingModel\MappedMembers.cs" />
     <Compile Include="MappingModel\NullMappingModelVisitor.cs" />
-    <Compile Include="MappingModel\INameable.cs" />
     <Compile Include="MappingModel\KeyMapping.cs" />
     <Compile Include="MappingModel\IMappingModelVisitor.cs" />
     <Compile Include="MappingModel\DefaultMappingModelVisitor.cs" />

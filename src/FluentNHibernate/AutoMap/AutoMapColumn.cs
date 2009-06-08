@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.AutoMap
 {

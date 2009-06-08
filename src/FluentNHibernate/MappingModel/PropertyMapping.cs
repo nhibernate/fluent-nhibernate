@@ -4,18 +4,10 @@ using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class PropertyMapping : MappingBase, INameable
+    public class PropertyMapping : MappingBase
     {
         private readonly List<ColumnMapping> columns = new List<ColumnMapping>();
         private readonly AttributeStore<PropertyMapping> attributes = new AttributeStore<PropertyMapping>();
-
-        public PropertyMapping()
-        {}
-
-        public PropertyMapping(Type containingEntityType)
-        {
-            ContainingEntityType = containingEntityType;
-        }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
@@ -40,11 +32,6 @@ namespace FluentNHibernate.MappingModel
         {
             get { return attributes.Get(x => x.Name); }
             set { attributes.Set(x => x.Name, value); }
-        }
-
-        public bool IsNameSpecified
-        {
-            get { return attributes.IsSpecified(x => x.Name); }
         }
 
         public string Access
@@ -83,7 +70,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Generated, value); }
         }
 
-        public string Type
+        public TypeReference Type
         {
             get { return attributes.Get(x => x.Type); }
             set { attributes.Set(x => x.Type, value); }

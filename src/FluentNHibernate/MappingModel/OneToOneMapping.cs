@@ -1,17 +1,12 @@
 namespace FluentNHibernate.MappingModel
 {
-    public class OneToOneMapping : MappingBase, INameable
+    public class OneToOneMapping : MappingBase
     {
         private readonly AttributeStore<OneToOneMapping> attributes = new AttributeStore<OneToOneMapping>();
         
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessOneToOne(this);
-        }
-
-        public bool IsNameSpecified
-        {
-            get { return attributes.IsSpecified(x => x.Name); }
         }
 
         public string Name

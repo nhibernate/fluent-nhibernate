@@ -4,12 +4,11 @@ using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
-using Is=FluentNHibernate.Conventions.AcceptanceCriteria.Is;
 
-namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
+namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
 {
     [TestFixture]
-    public class PropertyAcceptanceCriteriaEqualSimpleTypeTests
+    public class PropertyAcceptanceCriteriaEqualSimpleTypeEvalTests
     {
         private IAcceptanceCriteria<IPropertyInspector> acceptance;
 
@@ -22,60 +21,60 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
         [Test]
         public void ExpectEqualShouldValidateToTrueIfGivenMatchingModel()
         {
-            acceptance.Expect(x => x.Insert, Is.Equal(true));
+            acceptance.Expect(x => x.Insert == true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Insert = true }))
                 .ShouldBeTrue();
         }
 
         [Test]
         public void ExpectEqualShouldValidateToFalseIfNotGivenMatchingModel()
         {
-            acceptance.Expect(x => x.Insert, Is.Equal(true));
+            acceptance.Expect(x => x.Insert == true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = false }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Insert = false }))
                 .ShouldBeFalse();
         }
 
         [Test]
         public void ExpectEqualShouldValidateToFalseIfUnset()
         {
-            acceptance.Expect(x => x.Insert, Is.Equal(true));
+            acceptance.Expect(x => x.Insert == true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
+                .Matches(new PropertyDsl(new PropertyMapping()))
                 .ShouldBeFalse();
         }
 
         [Test]
         public void ExpectNotEqualShouldValidateToTrueIfGivenMatchingModel()
         {
-            acceptance.Expect(x => x.Insert, Is.Not.Equal(true));
+            acceptance.Expect(x => x.Insert != true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = false }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Insert = false }))
                 .ShouldBeTrue();
         }
 
         [Test]
         public void ExpectNotEqualShouldValidateToFalseIfNotGivenMatchingModel()
         {
-            acceptance.Expect(x => x.Insert, Is.Not.Equal(true));
+            acceptance.Expect(x => x.Insert != true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Insert = true }))
                 .ShouldBeFalse();
         }
 
         [Test]
         public void ExpectNotEqualShouldValidateToTrueIfUnset()
         {
-            acceptance.Expect(x => x.Insert, Is.Not.Equal(true));
+            acceptance.Expect(x => x.Insert != true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
+                .Matches(new PropertyDsl(new PropertyMapping()))
                 .ShouldBeTrue();
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Conventions.Alterations;
@@ -20,10 +21,13 @@ namespace FluentNHibernate.Conventions.DslImplementation
 
             propertyMappings.Map(x => x.Insert, x => x.Insert);
             propertyMappings.Map(x => x.Update, x => x.Update);
-            propertyMappings.Map(x => x.CustomType, x => x.Type);
+            propertyMappings.Map(x => x.Type, x => x.Type);
             propertyMappings.Map(x => x.Access, x => x.Access);
             propertyMappings.Map(x => x.EntityType, x => x.ContainingEntityType);
             propertyMappings.Map(x => x.Formula, x => x.Formula);
+            propertyMappings.Map(x => x.Name, x => x.Name);
+            propertyMappings.Map(x => x.OptimisticLock, x => x.OptimisticLock);
+            propertyMappings.Map(x => x.Generated, x => x.Generated);
         }
 
         /// <summary>
@@ -68,7 +72,7 @@ namespace FluentNHibernate.Conventions.DslImplementation
             get { return mapping.Formula; }
         }
 
-        string IPropertyInspector.CustomType
+        TypeReference IPropertyInspector.Type
         {
             get { return mapping.Type; }
         }
@@ -88,6 +92,30 @@ namespace FluentNHibernate.Conventions.DslImplementation
             get { return GetValueFromColumns<string>(x => x.UniqueKey); }
         }
 
+        string IPropertyInspector.Name
+        {
+            get { return mapping.Name; }
+        }
+
+        bool IPropertyInspector.OptimisticLock
+        {
+            get { return mapping.OptimisticLock; }
+        }
+
+        string IPropertyInspector.Generated
+        {
+            get { return mapping.Generated; }
+        }
+
+        public IEnumerable<IColumnInspector> Columns
+        {
+            get
+            {
+                foreach (var column in mapping.Columns)
+                    yield return new ColumnDsl(mapping, column);
+            }
+        }
+
         Access IPropertyInspector.Access
         {
             get
@@ -104,14 +132,14 @@ namespace FluentNHibernate.Conventions.DslImplementation
             get { return mapping.ContainingEntityType; }
         }
 
+        string IInspector.StringIdentifierForModel
+        {
+            get { return mapping.Name; }
+        }
+
         bool IReadOnlyInspector.ReadOnly
         {
             get { return mapping.Insert && mapping.Update; }
-        }
-
-        Type IExposedThroughPropertyInspector.PropertyType
-        {
-            get { return mapping.PropertyInfo.PropertyType; }
         }
 
         PropertyInfo IExposedThroughPropertyInspector.Property
@@ -163,17 +191,22 @@ namespace FluentNHibernate.Conventions.DslImplementation
 
         void IPropertyAlteration.CustomTypeIs<T>()
         {
-            mapping.Type = TypeMapping.GetTypeString(typeof(T));
+            mapping.Type = new TypeReference(typeof(T));
+        }
+
+        void IPropertyAlteration.CustomTypeIs(TypeReference type)
+        {
+            mapping.Type = type;
         }
 
         void IPropertyAlteration.CustomTypeIs(Type type)
         {
-            mapping.Type = TypeMapping.GetTypeString(type);
+            mapping.Type = new TypeReference(type);
         }
 
         void IPropertyAlteration.CustomTypeIs(string type)
         {
-            mapping.Type = type;
+            mapping.Type = new TypeReference(type);
         }
 
         void IPropertyAlteration.CustomSqlTypeIs(string sqlType)

@@ -6,10 +6,10 @@ using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 using Is=FluentNHibernate.Conventions.AcceptanceCriteria.Is;
 
-namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
+namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
 {
     [TestFixture]
-    public class PropertyAcceptanceCriteriaSetTests
+    public class PropertyAcceptanceCriteriaIsSetTests
     {
         private IAcceptanceCriteria<IPropertyInspector> acceptance;
 
@@ -25,7 +25,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Insert, Is.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true }))
+                .Matches(new PropertyDsl(new PropertyMapping() {Insert = true}))
                 .ShouldBeTrue();
         }
 
@@ -35,7 +35,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Insert, Is.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
+                .Matches(new PropertyDsl(new PropertyMapping()))
                 .ShouldBeFalse();
         }
 
@@ -47,7 +47,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
                 .Expect(x => x.Update, Is.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true, Update = true }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Insert = true, Update = true }))
                 .ShouldBeTrue();
         }
 
@@ -59,7 +59,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
                 .Expect(x => x.Update, Is.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Insert = true }))
                 .ShouldBeFalse();
         }
 
@@ -71,7 +71,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
                 .Expect(x => x.Update, Is.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
+                .Matches(new PropertyDsl(new PropertyMapping()))
                 .ShouldBeFalse();
         }
 
@@ -81,7 +81,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Insert, Is.Not.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
+                .Matches(new PropertyDsl(new PropertyMapping()))
                 .ShouldBeTrue();
         }
 
@@ -91,7 +91,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
             acceptance.Expect(x => x.Insert, Is.Not.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Insert = true }))
                 .ShouldBeFalse();
         }
 
@@ -103,7 +103,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
                 .Expect(x => x.Update, Is.Not.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
+                .Matches(new PropertyDsl(new PropertyMapping()))
                 .ShouldBeTrue();
         }
 
@@ -115,7 +115,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
                 .Expect(x => x.Update, Is.Not.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Insert = true }))
                 .ShouldBeFalse();
         }
 
@@ -127,7 +127,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
                 .Expect(x => x.Update, Is.Not.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true, Update = true }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Insert = true, Update = true }))
                 .ShouldBeFalse();
         }
 
@@ -139,7 +139,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
                 .Expect(x => x.Update, Is.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Update = true }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Update = true }))
                 .ShouldBeTrue();
         }
 
@@ -151,7 +151,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
                 .Expect(x => x.Update, Is.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record))))
+                .Matches(new PropertyDsl(new PropertyMapping()))
                 .ShouldBeFalse();
         }
 
@@ -163,7 +163,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspectors
                 .Expect(x => x.Update, Is.Set);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping(typeof(Record)) { Insert = true }))
+                .Matches(new PropertyDsl(new PropertyMapping() { Insert = true }))
                 .ShouldBeFalse();
         }
     }

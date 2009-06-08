@@ -35,7 +35,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteProperties()
         {
             var mapping = new CompositeElementMapping();
-            mapping.AddProperty(new PropertyMapping(typeof(Record)));
+            mapping.AddProperty(new PropertyMapping());
 
             writer.VerifyXml(mapping)
                 .Element("property").Exists();

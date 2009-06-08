@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Alterations
 {
@@ -8,6 +9,7 @@ namespace FluentNHibernate.Conventions.Alterations
           IAccessAlteration
     {
         void CustomTypeIs<T>();
+        void CustomTypeIs(TypeReference type);
         void CustomTypeIs(Type type);
         void CustomTypeIs(string type);
         void CustomSqlTypeIs(string sqlType);

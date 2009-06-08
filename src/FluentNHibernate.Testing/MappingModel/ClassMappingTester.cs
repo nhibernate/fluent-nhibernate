@@ -41,7 +41,7 @@ namespace FluentNHibernate.Testing.MappingModel
         [Test]
         public void CanAddProperty()
         {
-            var property = new PropertyMapping(typeof(Record)) { Name = "Property1" };
+            var property = new PropertyMapping() { Name = "Property1" };
             _classMapping.AddProperty(property);
 
             _classMapping.Properties.ShouldContain(property);

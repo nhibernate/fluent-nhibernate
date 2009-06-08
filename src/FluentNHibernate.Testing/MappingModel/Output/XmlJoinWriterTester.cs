@@ -81,7 +81,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new JoinMapping();
 
-            mapping.AddProperty(new PropertyMapping(typeof(PropertyTarget)));
+            mapping.AddProperty(new PropertyMapping());
 
             writer.VerifyXml(mapping)
                 .Element("property").Exists();

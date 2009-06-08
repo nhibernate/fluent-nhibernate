@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class ColumnMapping : MappingBase, INameable
+    public class ColumnMapping : MappingBase
     {
         private readonly AttributeStore<ColumnMapping> attributes;
 
@@ -25,11 +25,6 @@ namespace FluentNHibernate.MappingModel
         public AttributeStore<ColumnMapping> Attributes
         {
             get { return attributes; }
-        }
-
-        public bool IsNameSpecified
-        {
-            get { return Attributes.IsSpecified(x => x.Name); }
         }
 
         public string Name

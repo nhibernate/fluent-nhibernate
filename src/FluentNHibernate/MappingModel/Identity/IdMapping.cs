@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
-    public class IdMapping : MappingBase, IIdentityMapping, INameable
+    public class IdMapping : MappingBase, IIdentityMapping
     {
         private readonly AttributeStore<IdMapping> attributes = new AttributeStore<IdMapping>();
         private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
@@ -31,11 +31,6 @@ namespace FluentNHibernate.MappingModel.Identity
 
             foreach (var column in Columns)
                 visitor.Visit(column);
-        }
-
-        public bool IsNameSpecified
-        {
-            get { return Attributes.IsSpecified(x => x.Name); }
         }
 
         public string Name

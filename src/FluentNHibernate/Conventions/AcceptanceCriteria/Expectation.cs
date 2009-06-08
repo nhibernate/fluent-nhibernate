@@ -1,7 +1,6 @@
 using System;
 using System.Linq.Expressions;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Conventions.AcceptanceCriteria
 {
