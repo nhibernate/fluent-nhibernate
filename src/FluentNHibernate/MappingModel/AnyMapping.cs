@@ -32,7 +32,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.IdType, value); }
         }
 
-        public string MetaType
+        public TypeReference MetaType
         {
             get { return attributes.Get(x => x.MetaType); }
             set { attributes.Set(x => x.MetaType, value); }

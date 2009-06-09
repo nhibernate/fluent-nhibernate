@@ -58,7 +58,7 @@ namespace FluentNHibernate.Mapping
             if (type.Namespace.StartsWith("Iesi") || type.Namespace.StartsWith("System") || type.IsArray)
                 return;
 
-            collectionAttributes.Set(x => x.CollectionType, type.AssemblyQualifiedName);
+            collectionAttributes.Set(x => x.CollectionType, new TypeReference(type));
         }
 
         public virtual ICollectionMapping GetCollectionMapping()
@@ -336,13 +336,21 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public T CollectionType(Type type)
         {
-            return CollectionType(type.AssemblyQualifiedName);
+            return CollectionType(new TypeReference(type));
         }
 
         /// <summary>
         /// Sets a custom collection type
         /// </summary>
         public T CollectionType(string type)
+        {
+            return CollectionType(new TypeReference(type));
+        }
+
+        /// <summary>
+        /// Sets a custom collection type
+        /// </summary>
+        public T CollectionType(TypeReference type)
         {
             collectionAttributes.Set(x => x.CollectionType, type);
             return (T)this;

@@ -66,7 +66,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Formula, value); }
         }
 
-        public Type Type
+        public TypeReference Type
         {
             get { return attributes.Get(x => x.Type); }
             set { attributes.Set(x => x.Type, value); }

@@ -49,7 +49,7 @@ namespace FluentNHibernate.Mapping
                 mapping.AddColumn(new ColumnMapping(columnAttributes.Clone()) { Name = column });
 
             mapping.Name = Property.Name;
-            mapping.Type = Property.PropertyType.AssemblyQualifiedName;
+            mapping.Type = new TypeReference(Property.PropertyType);
             mapping.Generator = GeneratedBy.GetGeneratorMapping();
 
             return mapping;

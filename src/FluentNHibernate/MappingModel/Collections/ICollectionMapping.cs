@@ -18,7 +18,7 @@ namespace FluentNHibernate.MappingModel.Collections
         string Name { get; }
         int BatchSize { get; }
         string Check { get; }
-        string CollectionType { get; }
+        TypeReference CollectionType { get; }
         string OptimisticLock { get; }
         bool Generic { get; }
         KeyMapping Key { get; set; }

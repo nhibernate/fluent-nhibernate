@@ -3,7 +3,6 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
-using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -54,7 +53,7 @@ namespace FluentNHibernate.Testing.MappingModel
                           {
                               Name = "bag1",
                               Key = new KeyMapping(),
-                              Relationship = new OneToManyMapping { Class = "class1" }
+                              Relationship = new OneToManyMapping { Class = new TypeReference("class1") }
                           };
             _classMapping.AddCollection(bag);
 

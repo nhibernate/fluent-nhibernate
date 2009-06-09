@@ -10,7 +10,7 @@ namespace FluentNHibernate.Mapping
 
         public ImportPart(Type importType)
         {
-            mapping.Class = importType.AssemblyQualifiedName;
+            mapping.Class = new TypeReference(importType);
         }
 
         public void As(string alternativeName)

@@ -66,7 +66,7 @@ namespace FluentNHibernate.Mapping
                 mapping.Name = Property.Name;
 
             if (!mapping.Attributes.IsSpecified(x => x.Class))
-                mapping.Class = Property.PropertyType.AssemblyQualifiedName;
+                mapping.Class = new TypeReference(Property.PropertyType);
 
             if (columns.Count == 0)
                 columns.Add(Property.Name);

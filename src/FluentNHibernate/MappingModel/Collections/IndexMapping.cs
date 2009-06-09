@@ -26,7 +26,7 @@ namespace FluentNHibernate.MappingModel.Collections
             get { return attributes; }
         }
 
-        public string Type
+        public TypeReference Type
         {
             get { return attributes.Get(x => x.Type); }
             set { attributes.Set(x => x.Type, value); }

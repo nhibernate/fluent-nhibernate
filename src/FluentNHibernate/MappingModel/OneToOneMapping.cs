@@ -21,7 +21,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Access, value); }
         }
 
-        public string Class
+        public TypeReference Class
         {
             get { return attributes.Get(x => x.Class); }
             set { attributes.Set(x => x.Class, value); }

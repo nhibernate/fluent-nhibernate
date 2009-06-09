@@ -28,12 +28,11 @@ namespace FluentNHibernate.MappingModel.Identity
             set { attributes.Set(x => x.Name, value); }
         }
 
-        public string Class
+        public TypeReference Class
         {
             get { return attributes.Get(x => x.Class); }
             set { attributes.Set(x => x.Class, value); }
         }
-
 
         public string ForeignKey
         {

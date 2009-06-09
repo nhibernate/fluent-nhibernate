@@ -126,7 +126,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Check, value); }
         }
 
-        public string CollectionType
+        public TypeReference CollectionType
         {
             get { return attributes.Get(x => x.CollectionType); }
             set { attributes.Set(x => x.CollectionType, value); }

@@ -127,7 +127,7 @@ namespace FluentNHibernate.Mapping
 
         public IAnyPart<T> AddMetaValue<TModel>(string valueMap)
         {
-            mapping.AddMetaValue(new MetaValueMapping { Class = typeof(TModel).AssemblyQualifiedName, Value = valueMap });
+            mapping.AddMetaValue(new MetaValueMapping { Class = new TypeReference(typeof(TModel)), Value = valueMap });
             return this;
         }
 
@@ -175,9 +175,9 @@ namespace FluentNHibernate.Mapping
             if (!mapping.Attributes.IsSpecified(x => x.MetaType))
             {
                 if (mapping.MetaValues.Count() > 0)
-                    mapping.MetaType = typeof(string).AssemblyQualifiedName;
+                    mapping.MetaType = new TypeReference(typeof(string));
                 else
-                    mapping.MetaType = AnyProperty.PropertyType.AssemblyQualifiedName;
+                    mapping.MetaType = new TypeReference(AnyProperty.PropertyType);
             }
 
 

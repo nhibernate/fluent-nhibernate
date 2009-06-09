@@ -15,7 +15,7 @@ namespace FluentNHibernate.Mapping
 
         public ElementPart WithType<TElement>()
         {
-            mapping.Type = typeof(TElement).AssemblyQualifiedName;
+            mapping.Type = new TypeReference(typeof(TElement));
             return this;
         }
 

@@ -2,7 +2,7 @@ namespace FluentNHibernate.MappingModel.Collections
 {
     public interface ICollectionRelationshipMapping : IMappingBase
     {
-        string Class { get; }
+        TypeReference Class { get; }
         string NotFound { get; }
     }
 }

@@ -15,7 +15,7 @@ namespace FluentNHibernate.Mapping
 
         public IndexManyToManyPart WithType<TIndex>()
         {
-            mapping.Class = typeof(TIndex).AssemblyQualifiedName;
+            mapping.Class = new TypeReference(typeof(TIndex));
             return this;
         }
 

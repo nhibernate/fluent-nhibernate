@@ -36,7 +36,7 @@ namespace FluentNHibernate.Mapping
         public OneToOneMapping GetOneToOneMapping()
         {
             if (!mapping.Attributes.IsSpecified(x => x.Class))
-                mapping.Class = typeof(TOther).AssemblyQualifiedName;
+                mapping.Class = new TypeReference(typeof(TOther));
 
             if (!mapping.Attributes.IsSpecified(x => x.Name))
                 mapping.Name = property.Name;
