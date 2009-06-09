@@ -51,7 +51,7 @@ namespace FluentNHibernate.Mapping
                 mapping.Name = Property.Name;
 
             if (!mapping.Attributes.IsSpecified(x => x.Type))
-                mapping.Type = new TypeReference(Property.PropertyType);
+                mapping.Attributes.SetDefault(x => x.Type, new TypeReference(Property.PropertyType));
 
             return mapping;
         }

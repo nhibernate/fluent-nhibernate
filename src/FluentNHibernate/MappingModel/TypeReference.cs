@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -33,6 +34,59 @@ namespace FluentNHibernate.MappingModel
 
                 return innerType.IsEnum;
             }
+        }
+
+        public bool IsGenericType
+        {
+            get
+            {
+                if (innerType == null)
+                    return false;
+
+                return innerType.IsGenericType;
+            }
+        }
+
+        public bool IsGenericTypeDefinition
+        {
+            get
+            {
+                if (innerType == null)
+                    return false;
+
+                return innerType.IsGenericTypeDefinition;
+            }
+        }
+
+        public Type GetGenericTypeDefinition()
+        {
+            if (innerType == null)
+                return null;
+
+            return innerType.GetGenericTypeDefinition();
+        }
+
+        public Type GenericTypeDefinition
+        {
+            get { return GetGenericTypeDefinition(); }
+        }
+
+        public bool IsNullable
+        {
+            get { return GenericTypeDefinition == typeof(Nullable<>); }
+        }
+
+        public Type[] GetGenericArguments()
+        {
+            if (innerType == null)
+                return new Type[0];
+
+            return innerType.GetGenericArguments();
+        }
+
+        public IEnumerable<Type> GenericArguments
+        {
+            get { return GetGenericArguments(); }
         }
 
         public override string ToString()

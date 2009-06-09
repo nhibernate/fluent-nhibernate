@@ -15,9 +15,9 @@ namespace FluentNHibernate.Conventions
         /// <summary>
         /// Whether this convention will be applied to the target.
         /// </summary>
-        /// <param name="target">Instace that could be supplied</param>
+        /// <param name="acceptance">Instace that could be supplied</param>
         /// <returns>Apply on this target?</returns>
-        void Accept(IAcceptanceCriteria<TInspector> target);
+        void Accept(IAcceptanceCriteria<TInspector> acceptance);
     }
 
     public interface IConventionApplier<TInspector, TAlteration>
