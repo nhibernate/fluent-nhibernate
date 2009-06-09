@@ -22,11 +22,7 @@ namespace FluentNHibernate.MappingModel
             get { return attributes; }
         }
 
-        public Type ContainingEntityType
-        {
-            get { return attributes.Get(x => x.ContainingEntityType); }
-            set { attributes.Set(x => x.ContainingEntityType, value); }
-        }
+        public Type ContainingEntityType { get; set; }
 
         public string Name
         {

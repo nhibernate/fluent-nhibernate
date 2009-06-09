@@ -1,0 +1,206 @@
+using System;
+using System.Linq.Expressions;
+using System.Reflection;
+using FluentNHibernate.Conventions.DslImplementation;
+using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.MappingModel;
+using FluentNHibernate.Utils;
+using NUnit.Framework;
+
+namespace FluentNHibernate.Testing.ConventionsTests.Inspection
+{
+    [TestFixture, Category("Inspection DSL")]
+    public class ColumnDslMapsToColumnMapping
+    {
+        private ColumnMapping mapping;
+        private IColumnInspector inspector;
+
+        [SetUp]
+        public void CreateDsl()
+        {
+            mapping = new ColumnMapping();
+            inspector = new ColumnDsl(new PropertyMapping(), mapping);
+        }
+
+        [Test]
+        public void CheckMapped()
+        {
+            mapping.Check = "chk";
+            inspector.Check.ShouldEqual("chk");
+        }
+
+        [Test]
+        public void CheckIsSet()
+        {
+            mapping.Check = "chk";
+            inspector.IsSet(Prop(x => x.Check))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void CheckIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Check))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void IndexMapped()
+        {
+            mapping.Index = "ix";
+            inspector.Index.ShouldEqual("ix");
+        }
+
+        [Test]
+        public void IndexIsSet()
+        {
+            mapping.Index = "ix";
+            inspector.IsSet(Prop(x => x.Index))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void IndexIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Index))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void LengthMapped()
+        {
+            mapping.Length = 100;
+            inspector.Length.ShouldEqual(100);
+        }
+
+        [Test]
+        public void LengthIsSet()
+        {
+            mapping.Length = 100;
+            inspector.IsSet(Prop(x => x.Length))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void LengthIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Length))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void NameMapped()
+        {
+            mapping.Name = "name";
+            inspector.Name.ShouldEqual("name");
+        }
+
+        [Test]
+        public void NameIsSet()
+        {
+            mapping.Name = "name";
+            inspector.IsSet(Prop(x => x.Name))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void NameIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Name))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void NotNullMapped()
+        {
+            mapping.NotNull = true;
+            inspector.NotNull.ShouldBeTrue();
+        }
+
+        [Test]
+        public void NotNullIsSet()
+        {
+            mapping.NotNull = true;
+            inspector.IsSet(Prop(x => x.NotNull))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void NotNullIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.NotNull))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void SqlTypeMapped()
+        {
+            mapping.SqlType = "type";
+            inspector.SqlType.ShouldEqual("type");
+        }
+
+        [Test]
+        public void SqlTypeIsSet()
+        {
+            mapping.SqlType = "type";
+            inspector.IsSet(Prop(x => x.SqlType))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void SqlTypeIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.SqlType))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void UniqueMapped()
+        {
+            mapping.Unique = true;
+            inspector.Unique.ShouldBeTrue();
+        }
+
+        [Test]
+        public void UniqueIsSet()
+        {
+            mapping.Unique = true;
+            inspector.IsSet(Prop(x => x.Unique))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void UniqueIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Unique))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void UniqueKeyMapped()
+        {
+            mapping.UniqueKey = "key";
+            inspector.UniqueKey.ShouldEqual("key");
+        }
+
+        [Test]
+        public void UniqueKeyIsSet()
+        {
+            mapping.UniqueKey = "key";
+            inspector.IsSet(Prop(x => x.UniqueKey))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void UniqueKeyIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.UniqueKey))
+                .ShouldBeFalse();
+        }
+
+        private PropertyInfo Prop(Expression<Func<IColumnInspector, object>> propertyExpression)
+        {
+            return ReflectionHelper.GetProperty(propertyExpression);
+        }
+    }
+}
