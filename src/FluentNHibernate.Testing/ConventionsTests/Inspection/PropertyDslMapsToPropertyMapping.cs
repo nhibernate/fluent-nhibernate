@@ -20,7 +20,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void CreateDsl()
         {
             mapping = new PropertyMapping();
-            inspector = new PropertyDsl(mapping);
+            inspector = new PropertyInspector(mapping);
         }
 
         [Test]
@@ -71,13 +71,6 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void EntityTypeMappedToClrType()
         {
             inspector.EntityType.ShouldEqual(mapping.ContainingEntityType);
-        }
-
-        [Test]
-        public void EntityTypeIsSet()
-        {
-            inspector.IsSet(Prop(x => x.EntityType))
-                .ShouldBeTrue();
         }
 
         [Test]

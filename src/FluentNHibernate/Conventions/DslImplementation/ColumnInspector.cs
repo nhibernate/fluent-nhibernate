@@ -5,15 +5,14 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.DslImplementation
 {
-    public class ColumnDsl : IColumnInspector
+    public class ColumnInspector : IColumnInspector
     {
-        private readonly PropertyMapping propertyMapping;
         private readonly ColumnMapping mapping;
         private readonly InspectorModelMapper<IColumnInspector, ColumnMapping> propertyMappings = new InspectorModelMapper<IColumnInspector, ColumnMapping>();
 
-        public ColumnDsl(PropertyMapping propertyMapping, ColumnMapping mapping)
+        public ColumnInspector(Type containingEntityType, ColumnMapping mapping)
         {
-            this.propertyMapping = propertyMapping;
+            EntityType = containingEntityType;
             this.mapping = mapping;
 
             propertyMappings.Map(x => x.Check, x => x.Check);
@@ -26,57 +25,54 @@ namespace FluentNHibernate.Conventions.DslImplementation
             propertyMappings.Map(x => x.UniqueKey, x => x.UniqueKey);
         }
 
-        public Type EntityType
-        {
-            get { return propertyMapping.ContainingEntityType; }
-        }
+        public Type EntityType { get; private set; }
 
-        string IColumnInspector.Name
+        public string Name
         {
             get { return mapping.Name; }
         }
 
-        string IColumnInspector.Check
+        public string Check
         {
             get { return mapping.Check; }
         }
 
-        string IColumnInspector.Index
+        public string Index
         {
             get { return mapping.Index; }
         }
 
-        int IColumnInspector.Length
+        public int Length
         {
             get { return mapping.Length; }
         }
 
-        bool IColumnInspector.NotNull
+        public bool NotNull
         {
             get { return mapping.NotNull; }
         }
 
-        string IColumnInspector.SqlType
+        public string SqlType
         {
             get { return mapping.SqlType; }
         }
 
-        bool IColumnInspector.Unique
+        public bool Unique
         {
             get { return mapping.Unique; }
         }
 
-        string IColumnInspector.UniqueKey
+        public string UniqueKey
         {
             get { return mapping.UniqueKey; }
         }
 
-        string IInspector.StringIdentifierForModel
+        public string StringIdentifierForModel
         {
             get { return mapping.Name; }
         }
 
-        bool IInspector.IsSet(PropertyInfo property)
+        public bool IsSet(PropertyInfo property)
         {
             return mapping.Attributes.IsSpecified(propertyMappings.Get(property));
         }

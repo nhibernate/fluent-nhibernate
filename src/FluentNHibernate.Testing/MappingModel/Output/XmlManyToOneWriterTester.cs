@@ -1,5 +1,6 @@
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Output;
+using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 
@@ -8,12 +9,18 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlManyToOneWriterTester
     {
-        private XmlManyToOneWriter writer;
+        private IXmlWriter<ManyToOneMapping> writer;
+
+        [SetUp]
+        public void GetWriterFromContainer()
+        {
+            var container = new XmlWriterContainer();
+            writer = container.Resolve<IXmlWriter<ManyToOneMapping>>();
+        }
 
         [Test]
         public void ShouldWriteAccessAttribute()
         {
-            writer = new XmlManyToOneWriter();
             var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
             testHelper.Check(x => x.Access, "access").MapsToAttribute("access");
 
@@ -23,7 +30,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteCascadeAttribute()
         {
-            writer = new XmlManyToOneWriter();
             var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
             testHelper.Check(x => x.Cascade, "all").MapsToAttribute("cascade");
 
@@ -33,9 +39,8 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteClassAttribute()
         {
-            writer = new XmlManyToOneWriter();
             var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
-            testHelper.Check(x => x.Class, "type").MapsToAttribute("class");
+            testHelper.Check(x => x.Class, new TypeReference(typeof(Record))).MapsToAttribute("class");
 
             testHelper.VerifyAll(writer);
         }
@@ -43,7 +48,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteFetchAttribute()
         {
-            writer = new XmlManyToOneWriter();
             var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
             testHelper.Check(x => x.Fetch, "select").MapsToAttribute("fetch");
 
@@ -53,7 +57,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteForeignKeyAttribute()
         {
-            writer = new XmlManyToOneWriter();
             var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
             testHelper.Check(x => x.ForeignKey, "fk").MapsToAttribute("foreign-key");
 
@@ -63,7 +66,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteInsertAttribute()
         {
-            writer = new XmlManyToOneWriter();
             var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
             testHelper.Check(x => x.Insert, true).MapsToAttribute("insert");
 
@@ -73,7 +75,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteLazyAttribute()
         {
-            writer = new XmlManyToOneWriter();
             var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
             testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
 
@@ -83,7 +84,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteNameAttribute()
         {
-            writer = new XmlManyToOneWriter();
             var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
             testHelper.Check(x => x.Name, "nm").MapsToAttribute("name");
 
@@ -93,7 +93,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteNotFoundAttribute()
         {
-            writer = new XmlManyToOneWriter();
             var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
             testHelper.Check(x => x.NotFound, "nf").MapsToAttribute("not-found");
 
@@ -103,7 +102,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteOuterJoinAttribute()
         {
-            writer = new XmlManyToOneWriter();
             var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
             testHelper.Check(x => x.OuterJoin, "outer-join").MapsToAttribute("outer-join");
 
@@ -113,7 +111,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWritePropertyRefAttribute()
         {
-            writer = new XmlManyToOneWriter();
             var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
             testHelper.Check(x => x.PropertyRef, "pr").MapsToAttribute("property-ref");
 
@@ -123,11 +120,21 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteUpdateAttribute()
         {
-            writer = new XmlManyToOneWriter();
             var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
             testHelper.Check(x => x.Update, true).MapsToAttribute("update");
 
             testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteColumns()
+        {
+            var mapping = new ManyToOneMapping();
+
+            mapping.AddColumn(new ColumnMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("column").Exists();
         }
 
     }

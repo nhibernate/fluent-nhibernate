@@ -1,52 +1,53 @@
 using System;
 using System.Reflection;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions
 {
-    //public abstract class ForeignKeyConvention : IReferenceConvention, IHasManyConvention, IHasManyToManyConvention
-    //{
-    //    private bool acceptParent = true;
-    //    private bool acceptChild = true;
+    public abstract class ForeignKeyConvention : IReferenceConvention, IHasManyConvention, IHasManyToManyConvention
+    {
+        protected abstract string GetKeyName(PropertyInfo property, Type type);
 
-    //    protected abstract string GetKeyName(PropertyInfo property, Type type);
+        public void Accept(IAcceptanceCriteria<IManyToOneInspector> acceptance)
+        {
+            acceptance.Expect(x => x.Columns.IsEmpty());
+        }
 
-    //    public bool Accept(IManyToOnePart target)
-    //    {
-    //        return string.IsNullOrEmpty(target.GetColumnName());
-    //    }
+        public void Apply(IManyToOneAlteration alteration, IManyToOneInspector inspector)
+        {
+            var columnName = GetKeyName(inspector.Property, inspector.Class);
 
-    //    public void Apply(IManyToOnePart target)
-    //    {
-    //        target.ColumnName(GetKeyName(target.Property, target.Property.PropertyType));
-    //    }
+            alteration.ColumnName(columnName);
+        }
 
-    //    public bool Accept(IOneToManyPart target)
-    //    {
-    //        return target.KeyColumnNames.List().Count == 0;
-    //    }
+        public void Accept(IAcceptanceCriteria<IOneToManyInspector> acceptance)
+        {
+            acceptance.Expect(x => x.KeyColumns.IsEmpty());
+        }
 
-    //    public void Apply(IOneToManyPart target)
-    //    {
-    //        target.KeyColumnNames.Clear();
-    //        target.KeyColumnNames.Add(GetKeyName(null, target.EntityType));
-    //    }
+        public void Apply(IOneToManyAlteration alteration, IOneToManyInspector inspector)
+        {
+            var columnName = GetKeyName(null, inspector.EntityType);
 
-    //    public bool Accept(IManyToManyPart target)
-    //    {
-    //        acceptParent = string.IsNullOrEmpty(target.ParentKeyColumn);
-    //        acceptChild = string.IsNullOrEmpty(target.ChildKeyColumn);
+            alteration.KeyColumnName(columnName);
+        }
 
-    //        return acceptParent || acceptChild;
-    //    }
+        public void Accept(IAcceptanceCriteria<IManyToManyInspector> acceptance)
+        {
+            acceptance.Expect(x => x.ParentKeyColumns.IsEmpty() || x.ChildKeyColumns.IsEmpty());
+        }
 
-    //    public void Apply(IManyToManyPart target)
-    //    {
-    //        if (acceptParent && target.EntityType != null)
-    //            target.WithParentKeyColumn(GetKeyName(null, target.EntityType));
+        public void Apply(IManyToManyAlteration alteration, IManyToManyInspector inspector)
+        {
+            var columnName = GetKeyName(null, inspector.EntityType);
 
-    //        if (acceptChild && target.ChildType != null)
-    //            target.WithChildKeyColumn(GetKeyName(null, target.ChildType));
-    //    }
-    //}
+            if (inspector.ParentKeyColumns.IsEmpty())
+                alteration.ParentKeyColumn(columnName);
+
+            if (inspector.ChildKeyColumns.IsEmpty())
+                alteration.ChildKeyColumn(columnName);
+        }
+    }
 }

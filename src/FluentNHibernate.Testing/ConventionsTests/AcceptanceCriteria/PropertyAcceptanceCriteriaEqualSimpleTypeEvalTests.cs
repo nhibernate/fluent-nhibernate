@@ -23,7 +23,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x => x.Insert == true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping() { Insert = true }))
+                .Matches(new PropertyInspector(new PropertyMapping() { Insert = true }))
                 .ShouldBeTrue();
         }
 
@@ -33,7 +33,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x => x.Insert == true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping() { Insert = false }))
+                .Matches(new PropertyInspector(new PropertyMapping() { Insert = false }))
                 .ShouldBeFalse();
         }
 
@@ -43,7 +43,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x => x.Insert == true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping()))
+                .Matches(new PropertyInspector(new PropertyMapping()))
                 .ShouldBeFalse();
         }
 
@@ -53,7 +53,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x => x.Insert != true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping() { Insert = false }))
+                .Matches(new PropertyInspector(new PropertyMapping() { Insert = false }))
                 .ShouldBeTrue();
         }
 
@@ -63,7 +63,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x => x.Insert != true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping() { Insert = true }))
+                .Matches(new PropertyInspector(new PropertyMapping() { Insert = true }))
                 .ShouldBeFalse();
         }
 
@@ -73,7 +73,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x => x.Insert != true);
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping()))
+                .Matches(new PropertyInspector(new PropertyMapping()))
                 .ShouldBeTrue();
         }
     }

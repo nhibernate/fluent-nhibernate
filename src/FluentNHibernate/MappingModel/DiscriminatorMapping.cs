@@ -16,7 +16,7 @@ namespace FluentNHibernate.MappingModel
             attributes = new AttributeStore<DiscriminatorMapping>();
             attributes.SetDefault(x => x.NotNull, true);
             attributes.SetDefault(x => x.Insert, true);
-            attributes.SetDefault(x => x.Type, typeof(string));
+            attributes.SetDefault(x => x.Type, new TypeReference(typeof(string)));
             
         }
 

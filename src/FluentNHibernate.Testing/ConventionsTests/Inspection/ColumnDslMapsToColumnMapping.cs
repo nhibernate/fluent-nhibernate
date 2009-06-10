@@ -4,6 +4,7 @@ using System.Reflection;
 using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Utils;
 using NUnit.Framework;
 
@@ -19,7 +20,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void CreateDsl()
         {
             mapping = new ColumnMapping();
-            inspector = new ColumnDsl(new PropertyMapping(), mapping);
+            inspector = new ColumnInspector(typeof(Record), mapping);
         }
 
         [Test]

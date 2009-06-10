@@ -5,7 +5,13 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlManyToOneWriter : NullMappingModelVisitor, IXmlWriter<ManyToOneMapping>
     {
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
+
+        public XmlManyToOneWriter(IXmlWriterServiceLocator serviceLocator)
+        {
+            this.serviceLocator = serviceLocator;
+        }
 
         public XmlDocument Write(ManyToOneMapping mappingModel)
         {
@@ -55,6 +61,14 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.Attributes.IsSpecified(x => x.Update))
                 element.WithAtt("update", mapping.Update);
+        }
+
+        public override void Visit(ColumnMapping columnMapping)
+        {
+            var writer = serviceLocator.GetWriter<ColumnMapping>();
+            var xml = writer.Write(columnMapping);
+
+            document.ImportAndAppendChild(xml);
         }
     }
 }

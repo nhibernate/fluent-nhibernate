@@ -39,7 +39,7 @@ namespace FluentNHibernate.Mapping
         private readonly CascadeExpression<IManyToOnePart> cascade;
         private readonly IList<string> columns = new List<string>();
         private bool nextBool = true;
-        private readonly ManyToOneMapping mapping = new ManyToOneMapping();
+        private readonly ManyToOneMapping mapping;
         private readonly OuterJoinBuilder<IManyToOnePart> outerJoin;
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
 
@@ -53,6 +53,8 @@ namespace FluentNHibernate.Mapping
             outerJoin = new OuterJoinBuilder<IManyToOnePart>(this, value => mapping.OuterJoin = value);
 
             Property = property;
+
+            mapping = new ManyToOneMapping { ContainedEntityType = entity };
         }
 
         public OuterJoinBuilder<IManyToOnePart> OuterJoin
@@ -67,9 +69,6 @@ namespace FluentNHibernate.Mapping
 
             if (!mapping.Attributes.IsSpecified(x => x.Class))
                 mapping.Class = new TypeReference(Property.PropertyType);
-
-            if (columns.Count == 0)
-                columns.Add(Property.Name);
 
             foreach (var column in columns)
             {

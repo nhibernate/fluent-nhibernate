@@ -100,7 +100,7 @@ namespace FluentNHibernate.MappingModel.Output
                 new XmlCollectionRelationshipWriter(c.Resolve<IXmlWriterServiceLocator>()));
 
             RegisterWriter<ManyToOneMapping>(c =>
-                new XmlManyToOneWriter());
+                new XmlManyToOneWriter(c.Resolve<IXmlWriterServiceLocator>()));
 
             RegisterWriter<ManyToManyMapping>(c =>
                 new XmlManyToManyWriter(c.Resolve<IXmlWriterServiceLocator>()));

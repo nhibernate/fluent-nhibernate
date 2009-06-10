@@ -4,7 +4,7 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public interface IPropertyInspector : IReadOnlyInspector, IExposedThroughPropertyInspector
+    public interface IPropertyInspector : IReadOnlyInspector, IExposedThroughPropertyInspector, IAccessInspector
     {
         bool Insert { get; }
         bool Update { get; }
@@ -15,7 +15,6 @@ namespace FluentNHibernate.Conventions.Inspections
         string SqlType { get; }
         bool Unique { get; }
         string UniqueKey { get; }
-        Access Access { get; }
         string Name { get; }
         bool OptimisticLock { get; }
         string Generated { get; }

@@ -36,7 +36,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance
                 .SameAs<AnotherConvention>();
 
-            acceptance.Matches(new PropertyDsl(new PropertyMapping
+            acceptance.Matches(new PropertyInspector(new PropertyMapping
             {
                 Insert = false,
                 Update = false
@@ -60,7 +60,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance
                 .OppositeOf<AnotherConvention>();
 
-            acceptance.Matches(new PropertyDsl(new PropertyMapping
+            acceptance.Matches(new PropertyInspector(new PropertyMapping
             {
                 Insert = true,
                 Update = true

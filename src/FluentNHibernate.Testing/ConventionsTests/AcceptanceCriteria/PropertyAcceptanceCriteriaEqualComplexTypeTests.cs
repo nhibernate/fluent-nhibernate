@@ -24,7 +24,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x => x.Access == Access.AsField());
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping() { Access = "field" }))
+                .Matches(new PropertyInspector(new PropertyMapping() { Access = "field" }))
                 .ShouldBeTrue();
         }
 
@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x => x.Access == Access.AsField());
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping() { Access = "property" }))
+                .Matches(new PropertyInspector(new PropertyMapping() { Access = "property" }))
                 .ShouldBeFalse();
         }
 
@@ -44,7 +44,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x => x.Access == Access.AsField());
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping()))
+                .Matches(new PropertyInspector(new PropertyMapping()))
                 .ShouldBeFalse();
         }
 
@@ -54,7 +54,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x => x.Access != Access.AsField());
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping() { Access = "property" }))
+                .Matches(new PropertyInspector(new PropertyMapping() { Access = "property" }))
                 .ShouldBeTrue();
         }
 
@@ -64,7 +64,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x => x.Access != Access.AsField());
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping() { Access = "field" }))
+                .Matches(new PropertyInspector(new PropertyMapping() { Access = "field" }))
                 .ShouldBeFalse();
         }
 
@@ -74,7 +74,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x => x.Access != Access.AsField());
 
             acceptance
-                .Matches(new PropertyDsl(new PropertyMapping()))
+                .Matches(new PropertyInspector(new PropertyMapping()))
                 .ShouldBeTrue();
         }
     }

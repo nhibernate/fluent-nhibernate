@@ -108,8 +108,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 				.ForMapping(map => map.HasMany(x => x.Children))
 				.Element("class/bag")
 					.HasAttribute("name", "Children")
-				.Element("class/bag/key")
-					.HasAttribute("column", "MappedObject_id")
+				.Element("class/bag/key/column")
+					.HasAttribute("name", "MappedObject_id")
 				.Element("class/bag/one-to-many")
 					.HasAttribute("class", typeof (ChildObject).AssemblyQualifiedName);
         }
@@ -241,7 +241,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-		public void Map_a_nullable_enumeration()
+		public void MapANullableEnumeration()
 		{
             new MappingTester<MappedObject>()
                 .ForMapping(m => m.Map(x => x.NullableColor))
@@ -260,7 +260,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(map => map.Map(x => x.Name))
                 .Element("//property[@name='Name']")
                     .Exists()
-                    .HasAttribute("type", "String")
+                    .HasAttribute("type", typeof(string).AssemblyQualifiedName)
                 .Element("//property[@name='Name']/column")
                     .Exists()
                     .HasAttribute("name", "Name");
@@ -321,23 +321,25 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		}
 
    		[Test]
-		public void Creating_a_many_to_one_reference_with_column_specified()
+		public void CreatingAManyToOneReferenceWithColumnSpecified()
 		{
    		    new MappingTester<MappedObject>()
    		        .ForMapping(m => m.References(x => x.Parent, "MyParentId"))
-   		        .Element("class/many-to-one").HasAttribute("column", "MyParentId");
+   		        .Element("class/many-to-one/column")
+                    .HasAttribute("name", "MyParentId");
 		}
 
         [Test]
-        public void Creating_a_many_to_one_reference_with_column_specified_through_ColumnName_method()
+        public void CreatingAManyToOneReferenceWithColumnSpecifiedThroughColumnNameMethod()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(m => m.References(x => x.Parent).ColumnName("MyParentId"))
-                .Element("class/many-to-one").HasAttribute("column", "MyParentId");
+                .Element("class/many-to-one/column")
+                    .HasAttribute("name", "MyParentId");
         }
 
 		[Test]
-		public void Creating_a_many_to_one_reference_using_specified_foreign_key()
+		public void CreatingAManyToOneReferenceUsingSpecifiedForeignKey()
 		{
 		    new MappingTester<MappedObject>()
 		        .ForMapping(m => m.References(x => x.Parent).WithForeignKey("FK_MyForeignKey"))
@@ -345,7 +347,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		}
 
 		[Test]
-		public void Creating_a_many_to_one_reference_with_cascade_specified_as_None()
+		public void CreatingAManyToOneReferenceWithCascadeSpecifiedAsNone()
 		{
 		    new MappingTester<MappedObject>()
 		        .ForMapping(m => m.References(x => x.Parent).Cascade.None())
@@ -353,7 +355,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		}
 
 		[Test]
-		public void Creating_a_many_to_one_reference_with_fetchtype_set()
+		public void CreatingAManyToOneReferenceWithFetchtypeSet()
 		{
 			new MappingTester<MappedObject>()
 				.ForMapping(m => m.References(x => x.Parent).Fetch.Select())
@@ -377,7 +379,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Can_set_readonly()
+        public void CanSetReadonly()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(m => m.ReadOnly())
@@ -385,7 +387,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Can_set_non_readonly()
+        public void CanSetNonReadonly()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(m => m.Not.ReadOnly())

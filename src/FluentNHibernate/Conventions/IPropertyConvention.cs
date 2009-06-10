@@ -1,6 +1,5 @@
 using FluentNHibernate.Conventions.Alterations;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions
 {
