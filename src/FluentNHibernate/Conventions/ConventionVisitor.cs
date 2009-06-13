@@ -6,6 +6,7 @@ using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions
 {
@@ -48,13 +49,24 @@ namespace FluentNHibernate.Conventions
                 new ColumnAlteration(columnMapping));
         }
 
-        public override void ProcessManyToOne(ManyToOneMapping manyToOneMapping)
+        protected override void ProcessCollection(ICollectionMapping mapping)
         {
-            var conventions = finder.Find<IReferenceConvention>();
+            if (mapping.Relationship is ManyToManyMapping)
+            {
+                var conventions = finder.Find<IHasManyToManyConvention>();
 
-            Apply<IManyToOneInspector, IManyToOneAlteration>(conventions,
-                new ManyToOneInspector(manyToOneMapping),
-                new ManyToOneAlteration(manyToOneMapping));
+                Apply<IManyToManyCollectionInspector, ICollectionAlteration>(conventions,
+                    new CollectionInspector(mapping),
+                    new CollectionAlteration(mapping));
+            }
+            else
+            {
+                var conventions = finder.Find<IHasManyConvention>();
+
+                Apply<IOneToManyCollectionInspector, ICollectionAlteration>(conventions,
+                    new CollectionInspector(mapping),
+                    new CollectionAlteration(mapping));
+            }
         }
 
         private void Apply<TInspector, TAlteration>(IEnumerable conventions, TInspector inspection, TAlteration alteration)

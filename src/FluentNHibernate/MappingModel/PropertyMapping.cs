@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class PropertyMapping : MappingBase
+    public class PropertyMapping : MappingBase, IHasColumnMappings
     {
-        private readonly List<ColumnMapping> columns = new List<ColumnMapping>();
+        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
         private readonly AttributeStore<PropertyMapping> attributes = new AttributeStore<PropertyMapping>();
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -74,7 +73,7 @@ namespace FluentNHibernate.MappingModel
 
         public PropertyInfo PropertyInfo { get; set; }
         
-        public IEnumerable<ColumnMapping> Columns
+        public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
         }
@@ -82,6 +81,16 @@ namespace FluentNHibernate.MappingModel
         public void AddColumn(ColumnMapping mapping)
         {
             columns.Add(mapping);
+        }
+
+        public void AddDefaultColumn(ColumnMapping mapping)
+        {
+            columns.AddDefault(mapping);
+        }
+
+        public void ClearColumns()
+        {
+            columns.Clear();
         }
     }
 }

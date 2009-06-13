@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -8,7 +9,7 @@ namespace FluentNHibernate.MappingModel.Collections
         bool Inverse { get; }
         bool Lazy { get; }
         string Access { get; }
-        string TableName { get; }
+        string TableName { get; set; }
         string Schema { get; }
         string OuterJoin { get; }
         string Fetch { get; }
@@ -27,5 +28,7 @@ namespace FluentNHibernate.MappingModel.Collections
         PropertyInfo PropertyInfo { get; set;  }
         ElementMapping Element { get; set; }
         CompositeElementMapping CompositeElement { get; set; }
+        Type ContainedEntityType { get; }
+        Type ChildType { get; }
     }
 }

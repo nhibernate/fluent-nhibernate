@@ -23,9 +23,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         [Test]
         public void ExpectShouldEvaluateSubPropertyWithEvaluation()
         {
-            acceptance.Expect(x => x.Type.Name == typeof(int).Name);
+            acceptance.Expect(x =>
+                x.Type.Name == typeof(Record).Name);
 
-            acceptance.Matches(new PropertyInspector(new PropertyMapping { PropertyInfo = ReflectionHelper.GetProperty<Record>(x => x.Age) }))
+            acceptance.Matches(new PropertyInspector(new PropertyMapping
+            {
+                PropertyInfo = ReflectionHelper.GetProperty<Record>(x => x.Age),
+                Type = new TypeReference(typeof(Record))
+            }))
                 .ShouldBeTrue();
         }
     }

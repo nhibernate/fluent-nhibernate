@@ -1,4 +1,3 @@
-using System;
 using FluentNHibernate.Conventions.Alterations;
 using FluentNHibernate.MappingModel;
 

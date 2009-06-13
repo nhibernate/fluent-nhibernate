@@ -55,7 +55,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             writer = new XmlVersionWriter();
             var testHelper = new XmlWriterTestHelper<VersionMapping>();
-            testHelper.Check(x => x.Type, "a-type").MapsToAttribute("type");
+            testHelper.Check(x => x.Type, new TypeReference("type")).MapsToAttribute("type");
 
             testHelper.VerifyAll(writer);
         }

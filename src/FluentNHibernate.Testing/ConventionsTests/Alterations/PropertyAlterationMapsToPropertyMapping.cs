@@ -1,4 +1,5 @@
-﻿using FluentNHibernate.Conventions.Alterations;
+﻿using System.Linq;
+using FluentNHibernate.Conventions.Alterations;
 using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
@@ -23,6 +24,44 @@ namespace FluentNHibernate.Testing.ConventionsTests.Alterations
         {
             alteration.Access.AsField();
             mapping.Access.ShouldEqual("field");
+        }
+
+        [Test]
+        public void ColumnShouldInheritAttributesFromDefault()
+        {
+            mapping.AddDefaultColumn(new ColumnMapping { NotNull = true });
+
+            alteration.ColumnName("test");
+
+            mapping.Columns.Count().ShouldEqual(1);
+            mapping.Columns.First().Name.ShouldEqual("test");
+            mapping.Columns.First().NotNull.ShouldBeTrue(); ;
+        }
+
+        [Test]
+        public void ColumnShouldHaveAttributesAppliedWhenAddedBeforeSetting()
+        {
+            mapping.AddDefaultColumn(new ColumnMapping());
+
+            alteration.ColumnName("test");
+            alteration.Not.Nullable();
+
+            mapping.Columns.Count().ShouldEqual(1);
+            mapping.Columns.First().Name.ShouldEqual("test");
+            mapping.Columns.First().NotNull.ShouldBeTrue(); ;
+        }
+
+        [Test]
+        public void ColumnShouldHaveAttributesAppliedWhenAddedAfterSetting()
+        {
+            mapping.AddDefaultColumn(new ColumnMapping());
+
+            alteration.Not.Nullable();
+            alteration.ColumnName("test");
+
+            mapping.Columns.Count().ShouldEqual(1);
+            mapping.Columns.First().Name.ShouldEqual("test");
+            mapping.Columns.First().NotNull.ShouldBeTrue(); ;
         }
     }
 }

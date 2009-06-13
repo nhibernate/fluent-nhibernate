@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
@@ -7,7 +6,7 @@ namespace FluentNHibernate.MappingModel
     public class ManyToOneMapping : MappingBase
     {
         private readonly AttributeStore<ManyToOneMapping> attributes = new AttributeStore<ManyToOneMapping>();
-        private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
+        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
@@ -97,7 +96,7 @@ namespace FluentNHibernate.MappingModel
             get { return attributes; }
         }
 
-        public IEnumerable<ColumnMapping> Columns
+        public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
         }
@@ -105,6 +104,11 @@ namespace FluentNHibernate.MappingModel
         public void AddColumn(ColumnMapping column)
         {
             columns.Add(column);
+        }
+
+        public void AddDefaultColumn(ColumnMapping column)
+        {
+            columns.AddDefault(column);
         }
     }
 }

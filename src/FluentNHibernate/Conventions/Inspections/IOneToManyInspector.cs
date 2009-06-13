@@ -1,9 +1,8 @@
-using System.Collections.Generic;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
     public interface IOneToManyInspector : IInspector
     {
-        IEnumerable<IColumnInspector> KeyColumns { get; }
     }
 }

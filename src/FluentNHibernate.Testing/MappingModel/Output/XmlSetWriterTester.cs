@@ -58,7 +58,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteCollectionTypeAttribute()
         {
             var testHelper = new XmlWriterTestHelper<SetMapping>();
-            testHelper.Check(x => x.CollectionType, "type").MapsToAttribute("collection-type");
+            testHelper.Check(x => x.CollectionType, new TypeReference("type")).MapsToAttribute("collection-type");
 
             testHelper.VerifyAll(writer);
         }

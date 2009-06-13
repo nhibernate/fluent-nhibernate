@@ -59,7 +59,7 @@ namespace FluentNHibernate.Conventions.DslImplementation
         {
             get
             {
-                foreach (var column in mapping.Columns)
+                foreach (var column in mapping.Columns.UserDefined)
                 {
                     yield return new ColumnInspector(mapping.ContainedEntityType, column);
                 }

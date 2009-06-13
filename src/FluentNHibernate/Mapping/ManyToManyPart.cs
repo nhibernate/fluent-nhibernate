@@ -31,6 +31,7 @@ namespace FluentNHibernate.Mapping
 
 	public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild, ManyToManyMapping>, IManyToManyPart
     {
+	    private readonly Type entity;
 	    private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
 	    private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
 	    private IndexManyToManyPart manyToManyIndex;
@@ -43,23 +44,36 @@ namespace FluentNHibernate.Mapping
 
 	    public ManyToManyPart(Type entity, MethodInfo method)
 	        : this(entity, method, method.ReturnType)
-        {}
+	    {}
 
-        protected ManyToManyPart(Type entity, MemberInfo member, Type collectionType)
+	    protected ManyToManyPart(Type entity, MemberInfo member, Type collectionType)
             : base(entity, member, collectionType)
         {
-            fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Fetch, value));
+	        this.entity = entity;
+
+	        fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Fetch, value));
             notFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
-            
-            collectionAttributes.Set(x => x.Name, member.Name);
+
+            collectionAttributes.SetDefault(x => x.Name, member.Name);
+            relationshipAttributes.SetDefault(x => x.Class, new TypeReference(typeof(TChild)));
         }
 
         public override ICollectionMapping GetCollectionMapping()
         {
             var collection = base.GetCollectionMapping();
 
+            collectionAttributes.CopyTo(collection.Attributes);
+
+            // key columns
+            if (parentColumns.Count == 0)
+                collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "Id" });
+
             foreach (var column in parentColumns)
                 collection.Key.AddColumn(new ColumnMapping { Name = column });
+
+            // child columns
+            if (childColumns.Count == 0)
+                collection.Key.AddDefaultColumn(new ColumnMapping { Name = typeof(TChild).Name + "Id" });
 
             foreach (var column in childColumns)
                 ((ManyToManyMapping)collection.Relationship).AddColumn(new ColumnMapping { Name = column });

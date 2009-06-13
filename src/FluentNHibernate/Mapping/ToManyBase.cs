@@ -67,7 +67,7 @@ namespace FluentNHibernate.Mapping
 
             collectionAttributes.CopyTo(mapping.Attributes);
 
-            mapping.Key = new KeyMapping();
+            mapping.Key = new KeyMapping { ContainedEntityType = EntityType };
             keyAttributes.CopyTo(mapping.Key.Attributes);
 
             mapping.Relationship = GetRelationship();
@@ -119,20 +119,20 @@ namespace FluentNHibernate.Mapping
 
         public T AsSet()
         {
-            collectionBuilder = () => new SetMapping();
+            collectionBuilder = () => new SetMapping { ContainedEntityType = EntityType, ChildType = typeof(TChild) };
             return (T)this;
         }
 
         public T AsBag()
         {
-            collectionBuilder = () => new BagMapping();
+            collectionBuilder = () => new BagMapping { ContainedEntityType = EntityType, ChildType = typeof(TChild) };
             return (T)this;
         }
 
         public T AsList()
         {
             indexPart = new IndexPart();
-            collectionBuilder = () => new ListMapping();
+            collectionBuilder = () => new ListMapping { ContainedEntityType = EntityType, ChildType = typeof(TChild) };
             return (T)this;
         }
 
@@ -151,21 +151,21 @@ namespace FluentNHibernate.Mapping
 
         public T AsMap(string indexColumnName)
         {
-            collectionBuilder = () => new MapMapping();
+            collectionBuilder = () => new MapMapping { ContainedEntityType = EntityType, ChildType = typeof(TChild) };
             AsIndexedCollection<Int32>(indexColumnName, null);
             return (T)this;
         }
 
         public T AsMap<TIndex>(string indexColumnName)
         {
-            collectionBuilder = () => new MapMapping();
+            collectionBuilder = () => new MapMapping { ContainedEntityType = EntityType, ChildType = typeof(TChild) };
             AsIndexedCollection<TIndex>(indexColumnName, null);
             return (T)this;
         }
 
         public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
         {
-            collectionBuilder = () => new MapMapping();
+            collectionBuilder = () => new MapMapping { ContainedEntityType = EntityType, ChildType = typeof(TChild) };
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 
@@ -173,7 +173,7 @@ namespace FluentNHibernate.Mapping
         // so a hack is better than nothing.
         public T AsMap<TIndex>(Action<IndexPart> customIndexMapping, Action<ElementPart> customElementMapping)
         {
-            collectionBuilder = () => new MapMapping();
+            collectionBuilder = () => new MapMapping { ContainedEntityType = EntityType, ChildType = typeof(TChild) };
             AsIndexedCollection<TIndex>(string.Empty, customIndexMapping);
             AsElement(string.Empty);
             customElementMapping(elementPart);
@@ -187,7 +187,7 @@ namespace FluentNHibernate.Mapping
 
         public T AsArray<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
         {
-            collectionBuilder = () => new ArrayMapping();
+            collectionBuilder = () => new ArrayMapping { ContainedEntityType = EntityType, ChildType = typeof(TChild) };
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 

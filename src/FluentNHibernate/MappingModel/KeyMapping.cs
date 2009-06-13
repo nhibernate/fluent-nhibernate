@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class KeyMapping : MappingBase
+    public class KeyMapping : MappingBase, IHasColumnMappings
     {
         private readonly AttributeStore<KeyMapping> attributes;
-        private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
+        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+        public Type ContainedEntityType { get; set; }
 
         public KeyMapping()
         {
@@ -44,7 +45,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.OnDelete, value); }
         }
 
-        public IEnumerable<ColumnMapping> Columns
+        public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
         }
@@ -52,6 +53,16 @@ namespace FluentNHibernate.MappingModel
         public void AddColumn(ColumnMapping mapping)
         {
             columns.Add(mapping);
+        }
+
+        public void AddDefaultColumn(ColumnMapping mapping)
+        {
+            columns.AddDefault(mapping);
+        }
+
+        public void ClearColumns()
+        {
+            columns.Clear();
         }
     }
 }

@@ -1,3 +1,4 @@
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
@@ -15,7 +16,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             writer = new XmlOneToManyWriter();
             var testHelper = new XmlWriterTestHelper<OneToManyMapping>();
-            testHelper.Check(x => x.Class, "class").MapsToAttribute("class");
+            testHelper.Check(x => x.Class, new TypeReference("type")).MapsToAttribute("class");
 
             testHelper.VerifyAll(writer);
         }

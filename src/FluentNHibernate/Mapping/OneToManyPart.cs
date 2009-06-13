@@ -35,6 +35,9 @@ namespace FluentNHibernate.Mapping
         {
             var collection = base.GetCollectionMapping();
 
+            if (columnNames.List().Count == 0)
+                collection.Key.AddDefaultColumn(new ColumnMapping { Name = Member.Name });
+
             foreach (var column in columnNames.List())
                 collection.Key.AddColumn(new ColumnMapping { Name = column });
 

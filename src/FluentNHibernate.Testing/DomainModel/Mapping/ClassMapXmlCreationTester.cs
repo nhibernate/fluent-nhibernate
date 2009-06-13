@@ -17,12 +17,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/bag")
                     .HasAttribute("name", "Children")
                     .DoesntHaveAttribute("cascade")
-                .Element("class/bag/key")
-                    .HasAttribute("column", "MappedObject_id")
+                .Element("class/bag/key/column").HasAttribute("name", "MappedObject_id")
                 .Element("class/bag/many-to-many")
-                    .HasAttribute("class", typeof (ChildObject).AssemblyQualifiedName)
-                    .HasAttribute("column", "ChildObject_id")
-                    .DoesntHaveAttribute("fetch");
+                    .HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
+                    .DoesntHaveAttribute("fetch")
+                .Element("class/bag/many-to-many/column").HasAttribute("name", "ChildObject_id");
         }
         
         [Test]
@@ -33,11 +32,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/set")
                     .HasAttribute("name", "Children")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
-                .Element("class/set/key")
-                    .HasAttribute("column", "MappedObject_id")
-                .Element("class/set/many-to-many")
-                    .HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
-                    .HasAttribute("column", "ChildObject_id");
+                .Element("class/set/key/column").HasAttribute("name", "MappedObject_id")
+                .Element("class/set/many-to-many").HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
+                .Element("class/set/many-to-many/column").HasAttribute("name", "ChildObject_id");
 		}
 
 		[Test]
@@ -48,11 +45,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/bag")
                     .HasAttribute("name", "Children")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
-                .Element("class/bag/key")
-                    .HasAttribute("column", "MappedObject_id")
-                .Element("class/bag/many-to-many")
-                    .HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
-                    .HasAttribute("column", "ChildObject_id");
+                .Element("class/bag/key/column").HasAttribute("name", "MappedObject_id")
+                .Element("class/bag/many-to-many").HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
+                .Element("class/bag/many-to-many/column").HasAttribute("name", "ChildObject_id");
 		}
 		
 		[Test]
@@ -63,11 +58,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/set")
                     .HasAttribute("name", "Children")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
-                .Element("class/set/key")
-                    .HasAttribute("column", "MappedObject_id")
-                .Element("class/set/many-to-many")
-                    .HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
-                    .HasAttribute("column", "TheKids_ID");
+                .Element("class/set/key/column").HasAttribute("name", "MappedObject_id")
+                .Element("class/set/many-to-many").HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
+                .Element("class/set/many-to-many/column").HasAttribute("name", "TheKids_ID");
 		}
 
 		[Test]
@@ -78,11 +71,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 				.Element("class/set")
 					.HasAttribute("name", "Children")
 					.HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
-				.Element("class/set/key")
-					.HasAttribute("column", "TheParentID")
-				.Element("class/set/many-to-many")
-					.HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
-					.HasAttribute("column", "ChildObject_id");
+				.Element("class/set/key/column").HasAttribute("name", "TheParentID")
+				.Element("class/set/many-to-many").HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
+				.Element("class/set/many-to-many/column").HasAttribute("name", "ChildObject_id");
 		}
 
 		[Test]
@@ -93,12 +84,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/set")
                     .HasAttribute("name", "Children")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
-                .Element("class/set/key")
-                    .HasAttribute("column", "MappedObject_id")
+                    .HasAttribute("fetch", "join")
+                .Element("class/set/key/column").HasAttribute("name", "MappedObject_id")
                 .Element("class/set/many-to-many")
                     .HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
-                    .HasAttribute("column", "ChildObject_id")
-                    .HasAttribute("fetch", "join");
+                .Element("class/set/many-to-many/column").HasAttribute("name", "ChildObject_id");
 		}
 
 		[Test]

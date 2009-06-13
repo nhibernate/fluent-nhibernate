@@ -25,7 +25,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             writer = new XmlMetaValueWriter();
             var testHelper = new XmlWriterTestHelper<MetaValueMapping>();
-            testHelper.Check(x => x.Class, "cl").MapsToAttribute("class");
+            testHelper.Check(x => x.Class, new TypeReference("type")).MapsToAttribute("class");
 
             testHelper.VerifyAll(writer);
         }

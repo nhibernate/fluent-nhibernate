@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var testHelper = new XmlWriterTestHelper<CompositeElementMapping>();
             
-            testHelper.Check(x => x.Class, "t").MapsToAttribute("class");
+            testHelper.Check(x => x.Class, new TypeReference("t")).MapsToAttribute("class");
             testHelper.VerifyAll(writer);
         }
 

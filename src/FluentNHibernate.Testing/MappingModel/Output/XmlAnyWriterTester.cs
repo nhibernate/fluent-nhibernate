@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteMetaTypeAttribute()
         {
             var testHelper = new XmlWriterTestHelper<AnyMapping>();
-            testHelper.Check(x => x.MetaType, "meta").MapsToAttribute("meta-type");
+            testHelper.Check(x => x.MetaType, new TypeReference("meta")).MapsToAttribute("meta-type");
 
             testHelper.VerifyAll(writer);
         }

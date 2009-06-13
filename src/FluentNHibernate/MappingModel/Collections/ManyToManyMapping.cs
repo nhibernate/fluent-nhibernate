@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public class ManyToManyMapping : MappingBase, ICollectionRelationshipMapping
+    public class ManyToManyMapping : MappingBase, ICollectionRelationshipMapping, IHasColumnMappings
     {
         private readonly AttributeStore<ManyToManyMapping> attributes = new AttributeStore<ManyToManyMapping>();
-        private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
+        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
         
         public Type ParentType { get; set; }
         public Type ChildType { get; set; }
@@ -66,7 +66,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Lazy, value); }
         }
 
-        public IEnumerable<ColumnMapping> Columns
+        public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
         }
@@ -74,6 +74,16 @@ namespace FluentNHibernate.MappingModel.Collections
         public void AddColumn(ColumnMapping column)
         {
             columns.Add(column);
+        }
+
+        public void AddDefaultColumn(ColumnMapping column)
+        {
+            columns.AddDefault(column);
+        }
+
+        public void ClearColumns()
+        {
+            columns.Clear();
         }
     }
 }

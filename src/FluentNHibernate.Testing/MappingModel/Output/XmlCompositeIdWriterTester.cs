@@ -1,3 +1,4 @@
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
@@ -39,7 +40,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteClassAttribute()
         {
             var testHelper = new XmlWriterTestHelper<CompositeIdMapping>();
-            testHelper.Check(x => x.Class, "class").MapsToAttribute("class");
+            testHelper.Check(x => x.Class, new TypeReference("class")).MapsToAttribute("class");
 
             testHelper.VerifyAll(writer);
         }

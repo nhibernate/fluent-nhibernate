@@ -70,16 +70,25 @@ namespace FluentNHibernate.Mapping
             if (!mapping.Attributes.IsSpecified(x => x.Class))
                 mapping.Class = new TypeReference(Property.PropertyType);
 
+            if (columns.Count == 0)
+                mapping.AddDefaultColumn(CreateColumn(Property.Name));
+
             foreach (var column in columns)
             {
-                var columnMapping = new ColumnMapping { Name = column };
-
-                columnAttributes.CopyTo(columnMapping.Attributes);
+                var columnMapping = CreateColumn(column);
 
                 mapping.AddColumn(columnMapping);
             }
 
             return mapping;
+        }
+
+        private ColumnMapping CreateColumn(string column)
+        {
+            var columnMapping = new ColumnMapping { Name = column };
+
+            columnAttributes.CopyTo(columnMapping.Attributes);
+            return columnMapping;
         }
 
         public FetchTypeExpression<IManyToOnePart> Fetch

@@ -22,32 +22,33 @@ namespace FluentNHibernate.Conventions
             alteration.ColumnName(columnName);
         }
 
-        public void Accept(IAcceptanceCriteria<IOneToManyInspector> acceptance)
+        public void Accept(IAcceptanceCriteria<IOneToManyCollectionInspector> acceptance)
         {
-            acceptance.Expect(x => x.KeyColumns.IsEmpty());
+            acceptance.Expect(x => x.Key.Columns.IsEmpty());
         }
 
-        public void Apply(IOneToManyAlteration alteration, IOneToManyInspector inspector)
+        public void Apply(ICollectionAlteration alteration, IOneToManyCollectionInspector inspector)
         {
             var columnName = GetKeyName(null, inspector.EntityType);
-
-            alteration.KeyColumnName(columnName);
+            
+            alteration.Key.ColumnName(columnName);
         }
 
-        public void Accept(IAcceptanceCriteria<IManyToManyInspector> acceptance)
+        public void Accept(IAcceptanceCriteria<IManyToManyCollectionInspector> acceptance)
         {
-            acceptance.Expect(x => x.ParentKeyColumns.IsEmpty() || x.ChildKeyColumns.IsEmpty());
+            acceptance.Expect(x => x.Key.Columns.IsEmpty() || x.ManyToMany.Columns.IsEmpty());
         }
 
-        public void Apply(IManyToManyAlteration alteration, IManyToManyInspector inspector)
+        public void Apply(ICollectionAlteration alteration, IManyToManyCollectionInspector inspector)
         {
-            var columnName = GetKeyName(null, inspector.EntityType);
+            var keyColumn = GetKeyName(null, inspector.EntityType);
+            var childColumn = GetKeyName(null, inspector.ChildType);
 
-            if (inspector.ParentKeyColumns.IsEmpty())
-                alteration.ParentKeyColumn(columnName);
+            if (inspector.Key.Columns.IsEmpty())
+                alteration.Key.ColumnName(keyColumn);
 
-            if (inspector.ChildKeyColumns.IsEmpty())
-                alteration.ChildKeyColumn(columnName);
+            if (inspector.ManyToMany.Columns.IsEmpty())
+                alteration.ManyToMany.ColumnName(childColumn);
         }
     }
 }

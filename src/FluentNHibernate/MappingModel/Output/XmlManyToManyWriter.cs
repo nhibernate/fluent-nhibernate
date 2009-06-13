@@ -28,25 +28,25 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("many-to-many");
 
-            if (mapping.Attributes.IsSpecified(x => x.Class))
+            if (mapping.Attributes.HasValue(x => x.Class))
                 element.WithAtt("class", mapping.Class);
 
-            if (mapping.Attributes.IsSpecified(x => x.Fetch))
+            if (mapping.Attributes.HasValue(x => x.Fetch))
                 element.WithAtt("fetch", mapping.Fetch);
 
-            if (mapping.Attributes.IsSpecified(x => x.ForeignKey))
+            if (mapping.Attributes.HasValue(x => x.ForeignKey))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
-            if (mapping.Attributes.IsSpecified(x => x.Lazy))
+            if (mapping.Attributes.HasValue(x => x.Lazy))
                 element.WithAtt("lazy", mapping.Lazy);
 
-            if (mapping.Attributes.IsSpecified(x => x.NotFound))
+            if (mapping.Attributes.HasValue(x => x.NotFound))
                 element.WithAtt("not-found", mapping.NotFound);
 
-            if (mapping.Attributes.IsSpecified(x => x.OuterJoin))
+            if (mapping.Attributes.HasValue(x => x.OuterJoin))
                 element.WithAtt("outer-join", mapping.OuterJoin);
 
-            if (mapping.Attributes.IsSpecified(x => x.Where))
+            if (mapping.Attributes.HasValue(x => x.Where))
                 element.WithAtt("where", mapping.Where);
         }
 

@@ -39,7 +39,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteTypeAttribute()
         {
             var testHelper = new XmlWriterTestHelper<PropertyMapping>();
-            testHelper.Check(x => x.Type, "type").MapsToAttribute("type");
+            testHelper.Check(x => x.Type, new TypeReference("type")).MapsToAttribute("type");
 
             testHelper.VerifyAll(writer);
         }

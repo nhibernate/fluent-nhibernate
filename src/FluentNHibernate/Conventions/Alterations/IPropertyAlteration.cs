@@ -17,5 +17,6 @@ namespace FluentNHibernate.Conventions.Alterations
         void UniqueKey(string keyName);
 
         IPropertyAlteration Not { get; }
+        void ColumnName(string columnName);
     }
 }

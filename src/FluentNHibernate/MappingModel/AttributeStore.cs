@@ -37,10 +37,18 @@ namespace FluentNHibernate.MappingModel
             return attributes.ContainsKey(key);
         }
 
+        public bool HasValue(string key)
+        {
+            return attributes.ContainsKey(key) || defaults.ContainsKey(key);
+        }
+
         public void CopyTo(AttributeStore store)
         {
-            foreach (KeyValuePair<string, object> pair in attributes)
+            foreach (var pair in attributes)
                 store.attributes[pair.Key] = pair.Value;
+
+            foreach (var pair in defaults)
+                store.defaults[pair.Key] = pair.Value;
         }
 
         public void SetDefault(string key, object value)
@@ -79,9 +87,23 @@ namespace FluentNHibernate.MappingModel
             store.SetDefault(GetKey(exp), value);
         }
 
+        /// <summary>
+        /// Returns whether the user has set a value for a property.
+        /// </summary>
         public bool IsSpecified<TResult>(Expression<Func<T, TResult>> exp)
         {
             return store.IsSpecified(GetKey(exp));
+        }
+
+        /// <summary>
+        /// Returns whether a property has any value, default or user specified.
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="exp"></param>
+        /// <returns></returns>
+        public bool HasValue<TResult>(Expression<Func<T, TResult>> exp)
+        {
+            return store.HasValue(GetKey(exp));
         }
 
         public void CopyTo(AttributeStore<T> target)

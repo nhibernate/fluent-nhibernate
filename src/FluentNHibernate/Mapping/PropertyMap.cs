@@ -35,14 +35,11 @@ namespace FluentNHibernate.Mapping
         public PropertyMapping GetPropertyMapping()
         {
             if (columnNames.List().Count == 0)
-                columnNames.Add(Property.Name);
+                mapping.AddDefaultColumn(CreateColumn(Property.Name));
 
             foreach (var column in columnNames.List())
             {
-                var columnMapping = new ColumnMapping(columnAttributes.Clone())
-                {
-                    Name = column
-                };
+                var columnMapping = CreateColumn(column);
 
                 mapping.AddColumn(columnMapping);
             }
@@ -54,6 +51,14 @@ namespace FluentNHibernate.Mapping
                 mapping.Attributes.SetDefault(x => x.Type, new TypeReference(Property.PropertyType));
 
             return mapping;
+        }
+
+        private ColumnMapping CreateColumn(string column)
+        {
+            return new ColumnMapping(columnAttributes.Clone())
+            {
+                Name = column
+            };
         }
 
         public PropertyInfo Property { get; private set; }

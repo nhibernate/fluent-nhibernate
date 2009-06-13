@@ -1,10 +1,10 @@
 using System.Collections.Generic;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
     public interface IManyToManyInspector : IInspector
     {
-        IEnumerable<IColumnInspector> ParentKeyColumns { get; }
-        IEnumerable<IColumnInspector> ChildKeyColumns { get; }
+        IEnumerable<IColumnInspector> Columns { get; }
     }
 }

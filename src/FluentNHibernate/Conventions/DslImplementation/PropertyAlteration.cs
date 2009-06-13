@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using FluentNHibernate.Conventions.Alterations;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
@@ -93,6 +94,14 @@ namespace FluentNHibernate.Conventions.DslImplementation
                 nextBool = !nextBool;
                 return this;
             }
+        }
+
+        public void ColumnName(string columnName)
+        {
+            var columnAttributes = mapping.Columns.First().Attributes.Clone();
+
+            mapping.ClearColumns();
+            mapping.AddColumn(new ColumnMapping(columnAttributes) { Name = columnName });
         }
     }
 }

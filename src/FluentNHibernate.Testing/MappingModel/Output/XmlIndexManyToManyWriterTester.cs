@@ -23,7 +23,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var testHelper = new XmlWriterTestHelper<IndexManyToManyMapping>();
 
-            testHelper.Check(x => x.Class, "cls").MapsToAttribute("class");
+            testHelper.Check(x => x.Class, new TypeReference("cls")).MapsToAttribute("class");
             testHelper.VerifyAll(writer);
         }
 

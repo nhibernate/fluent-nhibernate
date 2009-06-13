@@ -28,6 +28,16 @@ namespace FluentNHibernate.Conventions.Inspections
             return (value != null ? value.GetHashCode() : 0);
         }
 
+        public static bool operator ==(Access x, Access y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(Access x, Access y)
+        {
+            return !(x == y);
+        }
+
         public static Access FromString(string value)
         {
             return new Access(value);

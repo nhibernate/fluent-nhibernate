@@ -6,7 +6,7 @@ namespace FluentNHibernate.MappingModel
     public class AnyMapping : MappingBase
     {
         private readonly AttributeStore<AnyMapping> attributes = new AttributeStore<AnyMapping>();
-        private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
+        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
         private readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -62,7 +62,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Cascade, value); }
         }
 
-        public IEnumerable<ColumnMapping> Columns
+        public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
         }
@@ -75,6 +75,11 @@ namespace FluentNHibernate.MappingModel
         public IEnumerable<MetaValueMapping> MetaValues
         {
             get { return metaValues; }
+        }
+
+        public void AddDefaultColumn(ColumnMapping column)
+        {
+            columns.AddDefault(column);
         }
 
         public void AddColumn(ColumnMapping column)

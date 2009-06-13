@@ -24,7 +24,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x => x.Access == Access.AsField());
 
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = "field" }))
+                .Matches(new PropertyInspector(new PropertyMapping { Access = "field" }))
                 .ShouldBeTrue();
         }
 

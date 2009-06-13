@@ -35,7 +35,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             writer = new XmlOneToOneWriter();
             var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
-            testHelper.Check(x => x.Class, "class").MapsToAttribute("class");
+            testHelper.Check(x => x.Class, new TypeReference("type")).MapsToAttribute("class");
 
             testHelper.VerifyAll(writer);
         }

@@ -17,7 +17,7 @@ namespace FluentNHibernate.MappingModel
         public TypeReference(Type type)
         {
             innerType = type;
-            innerName = type.AssemblyQualifiedName;
+            innerName = type.Name;
         }
 
         public string Name
@@ -91,7 +91,7 @@ namespace FluentNHibernate.MappingModel
 
         public override string ToString()
         {
-            return innerName;
+            return innerType == null ? innerName : innerType.AssemblyQualifiedName;
         }
 
         public bool Equals(TypeReference other)
