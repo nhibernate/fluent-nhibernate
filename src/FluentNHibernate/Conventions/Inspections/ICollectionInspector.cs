@@ -1,5 +1,5 @@
 using System;
-using FluentNHibernate.MappingModel;
+using System.Reflection;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
@@ -7,6 +7,8 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         new IKeyInspector Key { get; }
         new string TableName { get; }
+        new bool IsMethodAccess { get; }
+        new MemberInfo Member { get; }
     }
 
     public interface IOneToManyCollectionInspector : IInspector
@@ -14,6 +16,8 @@ namespace FluentNHibernate.Conventions.Inspections
         IKeyInspector Key { get; }
         IOneToManyInspector OneToMany { get; }
         string TableName { get; }
+        bool IsMethodAccess { get; }
+        MemberInfo Member { get; }
     }
 
     public interface IManyToManyCollectionInspector : IInspector
@@ -22,5 +26,7 @@ namespace FluentNHibernate.Conventions.Inspections
         IManyToManyInspector ManyToMany { get; }
         Type ChildType { get; }
         string TableName { get; }
+        bool IsMethodAccess { get; }
+        MemberInfo Member { get; }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Alterations
@@ -19,6 +20,11 @@ namespace FluentNHibernate.Conventions.Alterations
         public void TableName(string tableName)
         {
             mapping.TableName = tableName;
+        }
+
+        public void Name(string name)
+        {
+            mapping.Name = name;
         }
 
         public IManyToManyAlteration ManyToMany

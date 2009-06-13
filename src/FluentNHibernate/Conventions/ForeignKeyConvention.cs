@@ -27,7 +27,7 @@ namespace FluentNHibernate.Conventions
             acceptance.Expect(x => x.Key.Columns.IsEmpty());
         }
 
-        public void Apply(ICollectionAlteration alteration, IOneToManyCollectionInspector inspector)
+        public void Apply(IOneToManyCollectionAlteration alteration, IOneToManyCollectionInspector inspector)
         {
             var columnName = GetKeyName(null, inspector.EntityType);
             
@@ -39,7 +39,7 @@ namespace FluentNHibernate.Conventions
             acceptance.Expect(x => x.Key.Columns.IsEmpty() || x.ManyToMany.Columns.IsEmpty());
         }
 
-        public void Apply(ICollectionAlteration alteration, IManyToManyCollectionInspector inspector)
+        public void Apply(IManyToManyCollectionAlteration alteration, IManyToManyCollectionInspector inspector)
         {
             var keyColumn = GetKeyName(null, inspector.EntityType);
             var childColumn = GetKeyName(null, inspector.ChildType);

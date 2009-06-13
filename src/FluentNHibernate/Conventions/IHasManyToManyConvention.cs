@@ -3,6 +3,6 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions
 {
-    public interface IHasManyToManyConvention : IConvention<IManyToManyCollectionInspector, ICollectionAlteration>
+    public interface IHasManyToManyConvention : IConvention<IManyToManyCollectionInspector, IManyToManyCollectionAlteration>
     { }
 }

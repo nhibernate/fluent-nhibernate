@@ -42,6 +42,16 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.TableName; }
         }
 
+        public bool IsMethodAccess
+        {
+            get { return mapping.MemberInfo is MethodInfo; }
+        }
+
+        public MemberInfo Member
+        {
+            get { return mapping.MemberInfo; }
+        }
+
         public IManyToManyInspector ManyToMany
         {
             get

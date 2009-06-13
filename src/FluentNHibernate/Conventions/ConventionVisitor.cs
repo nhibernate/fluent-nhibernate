@@ -51,11 +51,17 @@ namespace FluentNHibernate.Conventions
 
         protected override void ProcessCollection(ICollectionMapping mapping)
         {
+            var generalConventions = finder.Find<ICollectionConvention>();
+
+            Apply<ICollectionInspector, ICollectionAlteration>(generalConventions,
+                new CollectionInspector(mapping),
+                new CollectionAlteration(mapping));
+
             if (mapping.Relationship is ManyToManyMapping)
             {
                 var conventions = finder.Find<IHasManyToManyConvention>();
 
-                Apply<IManyToManyCollectionInspector, ICollectionAlteration>(conventions,
+                Apply<IManyToManyCollectionInspector, IManyToManyCollectionAlteration>(conventions,
                     new CollectionInspector(mapping),
                     new CollectionAlteration(mapping));
             }
@@ -63,10 +69,19 @@ namespace FluentNHibernate.Conventions
             {
                 var conventions = finder.Find<IHasManyConvention>();
 
-                Apply<IOneToManyCollectionInspector, ICollectionAlteration>(conventions,
+                Apply<IOneToManyCollectionInspector, IOneToManyCollectionAlteration>(conventions,
                     new CollectionInspector(mapping),
                     new CollectionAlteration(mapping));
             }
+        }
+
+        public override void ProcessManyToOne(ManyToOneMapping mapping)
+        {
+            var conventions = finder.Find<IReferenceConvention>();
+
+            Apply<IManyToOneInspector, IManyToOneAlteration>(conventions,
+                new ManyToOneInspector(mapping),
+                new ManyToOneAlteration(mapping));
         }
 
         private void Apply<TInspector, TAlteration>(IEnumerable conventions, TInspector inspection, TAlteration alteration)

@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class ManyToOneMapping : MappingBase
+    public class ManyToOneMapping : MappingBase, IHasColumnMappings
     {
         private readonly AttributeStore<ManyToOneMapping> attributes = new AttributeStore<ManyToOneMapping>();
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
@@ -109,6 +109,11 @@ namespace FluentNHibernate.MappingModel
         public void AddDefaultColumn(ColumnMapping column)
         {
             columns.AddDefault(column);
+        }
+
+        public void ClearColumns()
+        {
+            columns.Clear();
         }
     }
 }

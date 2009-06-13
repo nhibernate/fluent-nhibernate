@@ -64,6 +64,8 @@ namespace FluentNHibernate.Mapping
 
         ManyToOneMapping IManyToOnePart.GetManyToOneMapping()
         {
+            mapping.PropertyInfo = Property;
+
             if (!mapping.Attributes.IsSpecified(x => x.Name))
                 mapping.Name = Property.Name;
 
@@ -88,6 +90,7 @@ namespace FluentNHibernate.Mapping
             var columnMapping = new ColumnMapping { Name = column };
 
             columnAttributes.CopyTo(columnMapping.Attributes);
+
             return columnMapping;
         }
 
@@ -154,7 +157,7 @@ namespace FluentNHibernate.Mapping
 
         public ManyToOnePart<TOther> LazyLoad()
         {
-            mapping.Lazy = nextBool;
+            mapping.Lazy = nextBool ? Laziness.Proxy : Laziness.False;
             nextBool = true;
             return this;
         }

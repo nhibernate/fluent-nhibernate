@@ -12,7 +12,7 @@ namespace FluentNHibernate.MappingModel.Collections
         public Type ContainedEntityType { get; set; }
         public Type ChildType { get; set; }
         public ICollectionRelationshipMapping Relationship { get; set; }
-        public PropertyInfo PropertyInfo { get; set; }
+        public MemberInfo MemberInfo { get; set; }
 
         protected CollectionMappingBase(AttributeStore underlyingStore)
         {

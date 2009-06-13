@@ -83,6 +83,7 @@
     <Compile Include="Conventions\Alterations\IOneToManyAlteration.cs" />
     <Compile Include="Conventions\Alterations\CollectionAlteration.cs" />
     <Compile Include="Conventions\Alterations\ClassAlteration.cs" />
+    <Compile Include="Conventions\IHasManyConvention.cs" />
     <Compile Include="Conventions\Inspections\ColumnInspector.cs" />
     <Compile Include="Conventions\Alterations\KeyAlteration.cs" />
     <Compile Include="Conventions\Inspections\KeyInspector.cs" />
@@ -292,10 +293,8 @@
     <Compile Include="Mapping\CachePart.cs" />
     <Compile Include="Conventions\UserTypeConvention.cs" />
     <Compile Include="Conventions\AttributePropertyConvention.cs" />
-    <Compile Include="Conventions\Defaults\BaseMethodAccessorBackingFieldNamingConvention.cs" />
-    <Compile Include="Conventions\Defaults\HasManyMethodAccessorBackingFieldNamingConvention.cs" />
+    <Compile Include="Conventions\Defaults\CollectionMethodAccessorBackingFieldNamingConvention.cs" />
     <Compile Include="Conventions\Defaults\HasManyToManyJoinTableNameConvention.cs" />
-    <Compile Include="Conventions\Defaults\HasManyToManyMethodAccessorBackingFieldNamingConvention.cs" />
     <Compile Include="Conventions\Defaults\PrimaryKeyConvention.cs" />
     <Compile Include="Conventions\Defaults\VersionColumnNameConvention.cs" />
     <Compile Include="Conventions\IEntireMappingsConvention.cs" />

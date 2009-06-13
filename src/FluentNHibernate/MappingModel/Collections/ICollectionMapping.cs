@@ -7,7 +7,7 @@ namespace FluentNHibernate.MappingModel.Collections
     {
         CacheMapping Cache { get; set; }
         bool Inverse { get; }
-        bool Lazy { get; }
+        Laziness Lazy { get; }
         string Access { get; }
         string TableName { get; set; }
         string Schema { get; }
@@ -16,7 +16,7 @@ namespace FluentNHibernate.MappingModel.Collections
         string Cascade { get; }
         string Where { get; }
         string Persister { get; }
-        string Name { get; }
+        string Name { get; set; }
         int BatchSize { get; }
         string Check { get; }
         TypeReference CollectionType { get; }
@@ -25,10 +25,10 @@ namespace FluentNHibernate.MappingModel.Collections
         KeyMapping Key { get; set; }
         ICollectionRelationshipMapping Relationship { get; set; }
         AttributeStore<ICollectionMapping> Attributes { get; }
-        PropertyInfo PropertyInfo { get; set;  }
+        MemberInfo MemberInfo { get; set;  }
         ElementMapping Element { get; set; }
         CompositeElementMapping CompositeElement { get; set; }
-        Type ContainedEntityType { get; }
-        Type ChildType { get; }
+        Type ContainedEntityType { get; set; }
+        Type ChildType { get; set; }
     }
 }

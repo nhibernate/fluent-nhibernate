@@ -26,7 +26,7 @@ namespace FluentNHibernate.Conventions.Defaults
             acceptance.Expect(x => x.TableName, Is.Not.Set);
         }
 
-        public void Apply(ICollectionAlteration alteration, IManyToManyCollectionInspector inspector)
+        public void Apply(IManyToManyCollectionAlteration alteration, IManyToManyCollectionInspector inspector)
         {
             alteration.TableName(inspector.ChildType.Name + "To" + inspector.EntityType.Name);
         }

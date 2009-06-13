@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Alterations
@@ -13,7 +14,11 @@ namespace FluentNHibernate.Conventions.Alterations
 
         public void ColumnName(string columnName)
         {
-            mapping.AddColumn(new ColumnMapping { Name = columnName });
+            var column = mapping.Columns.FirstOrDefault();
+            var columnAttributes = column == null ? new AttributeStore<ColumnMapping>() : column.Attributes.Clone();
+
+            mapping.ClearColumns();
+            mapping.AddColumn(new ColumnMapping(columnAttributes) { Name = columnName });
         }
     }
 }
