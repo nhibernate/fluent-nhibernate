@@ -52,11 +52,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void KeyDefaultsToClassNameID()
+        public void KeyDefaultsToClassNameId()
         {
             new MappingTester<JoinTarget>()
                 .ForMapping(m => m.WithTable("myTable", t => t.Map(x => x.Name)))
-                .Element("class/join/key").HasAttribute("column", "JoinTargetID");
+                .Element("class/join/key/column").HasAttribute("name", "JoinTargetID");
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<JoinTarget>()
                 .ForMapping(m => m.WithTable("myTable", t => t.WithKeyColumn("ID")))
-                .Element("class/join/key").HasAttribute("column", "ID");
+                .Element("class/join/key/column").HasAttribute("name", "ID");
         }
 
         [Test]

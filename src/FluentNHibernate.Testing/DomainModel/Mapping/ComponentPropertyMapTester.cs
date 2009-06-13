@@ -140,7 +140,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Component(x => x.Component, c => c.Map(x => x.Name).UniqueKey("uniquekey")))
-                .Element("//property")
+                .Element("//property/column")
                 .HasAttribute("unique-key", "uniquekey");
         }
 

@@ -84,7 +84,10 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             Assert.IsNotNull(currentElement, "Couldn't find element matching '" + currentPath + "'");
 
-            currentElement.AttributeShouldEqual(name, value);
+            var actual = currentElement.GetAttribute(name);
+
+            Assert.AreEqual(value, actual,
+                "Attribute '" + name + "' of '" + currentPath + "' didn't match.");
 
             return this;
         }

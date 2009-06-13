@@ -102,15 +102,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .HasMany(x => x.MapOfChildren)
                         .AsMap("Name")
                         .KeyColumnNames.Add("ParentId"))
-                .Element("class/map/key")
-                    .Exists()
-                    .HasAttribute("column", "ParentId")
-                .Element("class/map/index")
-                    .Exists()
-                    .HasAttribute("column", "Name")
-                .Element("class/map/one-to-many")
-                    .Exists()
-                    .HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName);
+                .Element("class/map/key/column").HasAttribute("name", "ParentId")
+                .Element("class/map/index/column").HasAttribute("name", "Name")
+                .Element("class/map/one-to-many").HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName);
         }
 
         [Test]
@@ -121,15 +115,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                                        .AsMap<MapIndex>(
                                        index => index.WithColumn("IndexColumn").WithType<MapIndex>(),
                                        element => element.WithColumn("ElementColumn").WithType<MapContents>()))
-                .Element("class/map/index")
-                .HasAttribute("column", "IndexColumn")
-                .HasAttribute("type", typeof (MapIndex).AssemblyQualifiedName)
-                .Element("class/map/element")
-                .HasAttribute("column", "ElementColumn")
-                .HasAttribute("type", typeof (MapContents).AssemblyQualifiedName);                                
+                .Element("class/map/index").HasAttribute("type", typeof(MapIndex).AssemblyQualifiedName)
+                .Element("class/map/index/column").HasAttribute("name", "IndexColumn")
+                .Element("class/map/element").HasAttribute("type", typeof(MapContents).AssemblyQualifiedName)
+                .Element("class/map/element/column").HasAttribute("name", "ElementColumn");
         }
-
-
 
         [Test]
         public void CanSpecifyCollectionTypeAsArray()

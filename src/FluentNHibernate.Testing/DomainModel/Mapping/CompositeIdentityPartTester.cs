@@ -17,11 +17,10 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		[Test]
 		public void KeyPropertyExplicitColumnName()
 		{
-
 			new MappingTester<CompIdTarget>()
 				.ForMapping(c => c.CompositeId().WithKeyProperty(x => x.LongId, "SomeColumn"))
-				.Element("class/composite-id/key-property")
-					.HasAttribute("column", "SomeColumn");
+				.Element("class/composite-id/key-property/column")
+					.HasAttribute("name", "SomeColumn");
 		}
 
 		[Test]
