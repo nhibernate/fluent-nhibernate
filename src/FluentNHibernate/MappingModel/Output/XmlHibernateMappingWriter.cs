@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Output.Sorting;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
@@ -66,83 +67,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             var newClassNode = document.ImportNode(hbmClass.DocumentElement, true);
 
-            SortChildren(newClassNode);
+            XmlNodeSorter.SortClassChildren(newClassNode);
 
             document.DocumentElement.AppendChild(newClassNode);
-        }
-
-        private class SortValue
-        {
-            public int Position { get; set; }
-            public int Level { get; set; }
-        }
-
-        private const int First = 0;
-        private const int Anywhere = 1;
-        private const int Last = 2;
-
-        private static readonly IDictionary<string, SortValue> sorting = new Dictionary<string, SortValue>
-            {
-                { "cache", new SortValue { Position = First, Level = 1 } },
-                { "key", new SortValue { Position = First, Level = 1 } },
-                { "id", new SortValue { Position = First, Level = 2 } },
-                { "composite-id", new SortValue { Position = First, Level = 2 } },
-                { "discriminator", new SortValue { Position = First, Level = 3 } },
-                { "version", new SortValue { Position = First, Level = 4 } },
-                { "component", new SortValue { Position = Anywhere, Level = 1 } },
-                { "dynamic-component", new SortValue { Position = Anywhere, Level = 1 } },
-                { "one-to-one", new SortValue { Position = Anywhere, Level = 1 } },
-                { "property", new SortValue { Position = Anywhere, Level = 2 } },
-                { "many-to-one", new SortValue { Position = Anywhere, Level = 3 } },
-                { "array", new SortValue { Position = Anywhere, Level = 3 } },
-                { "bag", new SortValue { Position = Anywhere, Level = 3 } },
-                { "set", new SortValue { Position = Anywhere, Level = 3 } },
-                { "map", new SortValue { Position = Anywhere, Level = 3 } },
-                { "list", new SortValue { Position = Anywhere, Level = 3 } },
-                { "joined-subclass", new SortValue { Position = Anywhere, Level = 4 } },
-                { "subclass", new SortValue { Position = Last, Level = 3 } },
-                { "join", new SortValue { Position = Last, Level = 3 } },
-            };
-
-        private static void SortChildren(XmlNode node)
-        {
-            var children = new List<XmlNode>();
-            foreach (XmlNode childNode in node.ChildNodes)
-            {
-                children.Add(childNode);
-
-                if (childNode.Name == "subclass" || childNode.Name == "joined-subclass")
-                    SortChildren(childNode);
-            }
-
-            //Creates a copy of the sort order the elments were added in on the node
-            var originalSortOrder = children.ToArray();
-            children.Sort((x, y) =>
-            {
-                if (!sorting.ContainsKey(x.Name) || !sorting.ContainsKey(y.Name)) return 0;
-
-                var xSort = sorting[x.Name];
-                var ySort = sorting[y.Name];
-
-                //General Position
-                if (xSort.Position != ySort.Position) return xSort.Position.CompareTo(ySort.Position);
-                //Sub-Position if positions are the same
-                if (xSort.Level != ySort.Level) return xSort.Level.CompareTo(ySort.Level);
-
-                //Relative Index based on the order the part was added
-                return Array.IndexOf(originalSortOrder, x).CompareTo(Array.IndexOf(originalSortOrder, y));
-            });
-
-            for (var i = 0; i < node.ChildNodes.Count; i++)
-            {
-                node.RemoveChild(node.ChildNodes[i]);
-            }
-
-            foreach (var child in children)
-            {
-                Console.WriteLine(child.Name);
-                node.AppendChild(child);
-            }
         }
     }
 }
