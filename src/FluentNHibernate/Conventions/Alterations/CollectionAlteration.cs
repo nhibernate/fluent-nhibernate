@@ -1,8 +1,6 @@
-using System;
-using FluentNHibernate.Conventions.Alterations;
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.Conventions.DslImplementation
+namespace FluentNHibernate.Conventions.Alterations
 {
     public class CollectionAlteration : ICollectionAlteration
     {

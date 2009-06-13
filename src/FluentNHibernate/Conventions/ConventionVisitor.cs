@@ -2,7 +2,6 @@
 using System.Collections;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Alterations;
-using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -23,12 +22,13 @@ namespace FluentNHibernate.Conventions
 
         public override void ProcessClass(ClassMapping classMapping)
         {
-            var dsl = new ClassDsl(classMapping);
             var conventions = finder.Find<IClassConvention>();
 
             currentType = classMapping.Type;
 
-            Apply<IClassInspector, IClassAlteration>(conventions, dsl, dsl);
+            Apply<IClassInspector, IClassAlteration>(conventions,
+                new ClassInspector(classMapping),
+                new ClassAlteration(classMapping));
         }
 
         public override void ProcessProperty(PropertyMapping propertyMapping)

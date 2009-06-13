@@ -1,8 +1,7 @@
 using System.Linq;
-using FluentNHibernate.Conventions.Alterations;
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.DslImplementation
+namespace FluentNHibernate.Conventions.Alterations
 {
     public class KeyAlteration : IKeyAlteration
     {

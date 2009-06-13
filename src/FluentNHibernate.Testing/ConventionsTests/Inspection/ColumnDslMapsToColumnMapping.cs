@@ -1,7 +1,6 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel;

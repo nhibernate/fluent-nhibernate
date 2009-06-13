@@ -1,10 +1,8 @@
-using System;
 using System.Linq;
-using FluentNHibernate.Conventions.Alterations;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.Conventions.DslImplementation
+namespace FluentNHibernate.Conventions.Alterations
 {
     public class ManyToManyAlteration : IManyToManyAlteration
     {

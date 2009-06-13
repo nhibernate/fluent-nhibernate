@@ -1,7 +1,7 @@
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.DslImplementation
+namespace FluentNHibernate.Conventions.Alterations
 {
     internal class AccessMappingAlteration : AccessStrategyBuilder
     {

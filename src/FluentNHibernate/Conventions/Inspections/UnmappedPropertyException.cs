@@ -1,6 +1,6 @@
 using System;
 
-namespace FluentNHibernate.Conventions.DslImplementation
+namespace FluentNHibernate.Conventions.Inspections
 {
     public class UnmappedPropertyException : Exception
     {

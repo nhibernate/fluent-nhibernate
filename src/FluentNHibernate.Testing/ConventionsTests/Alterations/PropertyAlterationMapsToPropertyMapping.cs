@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using FluentNHibernate.Conventions.Alterations;
-using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 

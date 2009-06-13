@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.Conventions.DslImplementation
+namespace FluentNHibernate.Conventions.Inspections
 {
     public class ManyToManyInspector : IManyToManyInspector
     {

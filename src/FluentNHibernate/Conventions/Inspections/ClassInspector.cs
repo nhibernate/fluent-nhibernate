@@ -1,17 +1,16 @@
 using System;
 using System.Reflection;
-using FluentNHibernate.Conventions.Alterations;
-using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.MappingModel.ClassBased;
 
-namespace FluentNHibernate.Conventions.DslImplementation
+namespace FluentNHibernate.Conventions.Inspections
 {
-    public class ClassDsl : IClassInspector, IClassAlteration
+    public class ClassInspector : IClassInspector
     {
         private readonly ClassMapping mapping;
         private readonly InspectorModelMapper<IClassInspector, ClassMapping> propertyMappings = new InspectorModelMapper<IClassInspector, ClassMapping>();
 
-        public ClassDsl(ClassMapping mapping)
+        public ClassInspector(ClassMapping mapping)
         {
             this.mapping = mapping;
 
@@ -19,81 +18,68 @@ namespace FluentNHibernate.Conventions.DslImplementation
             propertyMappings.Map(x => x.TableName, x => x.TableName);
         }
 
-        #region Inspection
-
-        Type IInspector.EntityType
+        public Type EntityType
         {
             get { return mapping.Type; }
         }
-        
-        string IInspector.StringIdentifierForModel
+
+        public string StringIdentifierForModel
         {
             get { return mapping.Name; }
         }
 
-        bool ILazyLoadInspector.LazyLoad
+        public bool LazyLoad
         {
             get { throw new NotImplementedException(); }
         }
 
-        bool IReadOnlyInspector.ReadOnly
+        public bool ReadOnly
         {
             get { throw new NotImplementedException(); }
         }
 
-        string IClassInspector.TableName
-        {
-            get { throw new NotImplementedException(); }
-        }
-        
-        Cache IClassInspector.Cache
-        {
-            get { throw new NotImplementedException(); }
-        }
-        
-        OptimisticLock IClassInspector.OptimisticLock
-        {
-            get { throw new NotImplementedException(); }
-        }
-        string IClassInspector.Schema
-        {
-            get { throw new NotImplementedException(); }
-        }
-        
-        bool IClassInspector.AutoImport
-        {
-            get { throw new NotImplementedException(); }
-        }
-        
-        bool IClassInspector.DynamicUpdate
-        {
-            get { throw new NotImplementedException(); }
-        }
-        
-        bool IClassInspector.DynamicInsert
+        public string TableName
         {
             get { throw new NotImplementedException(); }
         }
 
-        int IClassInspector.BatchSize
+        public Cache Cache
         {
             get { throw new NotImplementedException(); }
         }
 
-        bool IInspector.IsSet(PropertyInfo property)
+        public OptimisticLock OptimisticLock
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public string Schema
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public bool AutoImport
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public bool DynamicUpdate
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public bool DynamicInsert
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public int BatchSize
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public bool IsSet(PropertyInfo property)
         {
             return mapping.Attributes.IsSpecified(propertyMappings.Get(property));
         }
-
-        #endregion
-
-        #region Alteration
-
-        void IClassAlteration.WithTable(string tableName)
-        {
-            mapping.TableName = tableName;
-        }
-
-        #endregion
     }
 }

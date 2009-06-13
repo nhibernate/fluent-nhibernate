@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.DslImplementation
+namespace FluentNHibernate.Conventions.Inspections
 {
     public class PropertyInspector : IPropertyInspector
     {

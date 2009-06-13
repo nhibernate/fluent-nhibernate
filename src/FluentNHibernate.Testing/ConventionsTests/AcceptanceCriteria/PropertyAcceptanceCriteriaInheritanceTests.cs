@@ -2,7 +2,6 @@ using System.Linq;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Alterations;
-using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
