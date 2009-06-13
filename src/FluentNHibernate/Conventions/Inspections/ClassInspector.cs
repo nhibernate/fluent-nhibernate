@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using FluentNHibernate.Conventions.DslImplementation;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Inspections
@@ -28,7 +29,7 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Name; }
         }
 
-        public bool LazyLoad
+        public Laziness LazyLoad
         {
             get { throw new NotImplementedException(); }
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
@@ -70,7 +71,7 @@ namespace FluentNHibernate.Mapping
         /// <returns></returns>
         public SubClassPart<TSubclass> LazyLoad()
         {
-            mapping.Lazy = nextBool;
+            mapping.Lazy = nextBool ? Laziness.True : Laziness.False;
             nextBool = true;
             return this;
         }

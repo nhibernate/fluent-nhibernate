@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
@@ -14,7 +15,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ClassMap<PropertyTarget>()
                 .Mapping(x => x.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldBeTrue());
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.True));
         }
 
         [Test]
@@ -22,7 +23,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ClassMap<PropertyTarget>()
                 .Mapping(x => x.Not.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldBeFalse());
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.False));
         }
 
         [Test]

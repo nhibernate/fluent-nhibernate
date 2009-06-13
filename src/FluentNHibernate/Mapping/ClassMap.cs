@@ -213,7 +213,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void LazyLoad()
         {
-            mapping.Lazy = nextBool;
+            mapping.Lazy = nextBool ? Laziness.True : Laziness.False;
             nextBool = true;
         }
 

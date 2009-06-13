@@ -1,3 +1,4 @@
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 
@@ -59,7 +60,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             JoinedSubClass<ChildRecord>()
                 .Mapping(m => m.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldBeTrue());
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.True));
         }
 
         [Test]
@@ -67,7 +68,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             JoinedSubClass<ChildRecord>()
                 .Mapping(m => m.Not.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldBeFalse());
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.False));
         }
 
         [Test]

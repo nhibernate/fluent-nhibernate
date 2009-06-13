@@ -114,6 +114,7 @@
     <Compile Include="MappingModel\IDefaultableEnumerable.cs" />
     <Compile Include="MappingModel\IDefaultableList.cs" />
     <Compile Include="MappingModel\IHasColumnMappings.cs" />
+    <Compile Include="MappingModel\Laziness.cs" />
     <Compile Include="MappingModel\TypeReference.cs" />
     <Compile Include="Utils\Reflection\ExpressionBuilder.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />
