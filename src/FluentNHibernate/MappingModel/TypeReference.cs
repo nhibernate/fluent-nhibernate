@@ -97,24 +97,29 @@ namespace FluentNHibernate.MappingModel
         public bool Equals(TypeReference other)
         {
             if (other.innerType == null && innerType == null)
-                return Equals(other.innerName, innerName);
+                return other.innerName.Equals(innerName);
             
-            return Equals(other.innerType, innerType);
+            return other.innerType.Equals(innerType);
         }
 
         public bool Equals(Type other)
         {
-            return Equals(other, innerType);
+            return other.Equals(innerType);
+        }
+
+        public bool Equals(string other)
+        {
+            return other.Equals(innerName);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() == typeof(TypeReference))
                 return Equals((TypeReference)obj);
             if (obj.GetType() == typeof(Type))
                 return Equals((Type)obj);
+            if (obj.GetType() == typeof(string))
+                return Equals((string)obj);
 
             return false;
         }

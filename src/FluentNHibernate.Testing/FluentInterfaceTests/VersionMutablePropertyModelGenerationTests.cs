@@ -1,3 +1,4 @@
+using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
@@ -42,7 +43,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             Version()
                 .Mapping(m => { })
-                .ModelShouldMatch(x => x.Type.ShouldEqual(typeof(int).AssemblyQualifiedName));
+                .ModelShouldMatch(x => x.Type.ShouldEqual(new TypeReference(typeof(int))));
         }
 
         [Test]

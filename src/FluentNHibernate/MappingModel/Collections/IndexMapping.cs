@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace FluentNHibernate.MappingModel.Collections
+﻿namespace FluentNHibernate.MappingModel.Collections
 {
-    public class IndexMapping : MappingBase, IIndexMapping
+    public class IndexMapping : MappingBase, IIndexMapping, IHasColumnMappings
     {
         private readonly AttributeStore<IndexMapping> attributes;
-        private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
+        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
 
         public IndexMapping()
         {
@@ -32,7 +29,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Type, value); }
         }
 
-        public IEnumerable<ColumnMapping> Columns
+        public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
         }
@@ -40,6 +37,16 @@ namespace FluentNHibernate.MappingModel.Collections
         public void AddColumn(ColumnMapping mapping)
         {
             columns.Add(mapping);
+        }
+
+        public void AddDefaultColumn(ColumnMapping mapping)
+        {
+            columns.AddDefault(mapping);
+        }
+
+        public void ClearColumns()
+        {
+            columns.Clear();
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils;
@@ -25,7 +26,7 @@ namespace FluentNHibernate.Mapping
 		{
 	        var property = ReflectionHelper.GetProperty(expression);
 
-			return WithKeyProperty(property.Name, property.Name);
+			return WithKeyProperty(property, property.Name);
 		}
 
 		/// <summary>
@@ -38,12 +39,12 @@ namespace FluentNHibernate.Mapping
 		{
             var property = ReflectionHelper.GetProperty(expression);
 
-		    return WithKeyProperty(property.Name, columnName);
+		    return WithKeyProperty(property, columnName);
 		}
 
-        private CompositeIdentityPart<T> WithKeyProperty(string propertyName, string columnName)
+        private CompositeIdentityPart<T> WithKeyProperty(PropertyInfo property, string columnName)
         {
-            var key = new KeyPropertyMapping { Name = propertyName };
+            var key = new KeyPropertyMapping { Name = property.Name, Type = new TypeReference(property.PropertyType) };
             key.AddColumn(new ColumnMapping { Name = columnName });
 
             mapping.AddKeyProperty(key);
@@ -60,7 +61,7 @@ namespace FluentNHibernate.Mapping
 		{
 		    var property = ReflectionHelper.GetProperty(expression);
 
-		    return WithKeyReference(property.Name, property.Name);
+		    return WithKeyReference(property, property.Name);
 		}
 
 		/// <summary>
@@ -73,12 +74,12 @@ namespace FluentNHibernate.Mapping
 		{
             var property = ReflectionHelper.GetProperty(expression);
 
-            return WithKeyReference(property.Name, columnName);
+            return WithKeyReference(property, columnName);
 		}
 
-        private CompositeIdentityPart<T> WithKeyReference(string propertyName, string columnName)
+        private CompositeIdentityPart<T> WithKeyReference(PropertyInfo property, string columnName)
         {
-            var key = new KeyManyToOneMapping { Name = propertyName };
+            var key = new KeyManyToOneMapping { Name = property.Name, Class = new TypeReference(property.PropertyType)};
             key.AddColumn(new ColumnMapping { Name = columnName });
 
             mapping.AddKeyManyToOne(key);

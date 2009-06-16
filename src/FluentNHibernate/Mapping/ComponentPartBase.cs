@@ -39,6 +39,18 @@ namespace FluentNHibernate.Mapping
             foreach (var component in components)
                 mapping.AddComponent(component.GetComponentMapping());
 
+            foreach (var oneToOne in oneToOnes)
+                mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
+
+            foreach (var collection in collections)
+                mapping.AddCollection(collection.GetCollectionMapping());
+
+            foreach (var reference in references)
+                mapping.AddReference(reference.GetManyToOneMapping());
+
+            foreach (var any in anys)
+                mapping.AddAny(any.GetAnyMapping());
+
             return mapping;
         }
 

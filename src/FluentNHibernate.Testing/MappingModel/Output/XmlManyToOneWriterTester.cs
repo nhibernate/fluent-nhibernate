@@ -76,7 +76,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteLazyAttribute()
         {
             var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
-            testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
+            testHelper.Check(x => x.Lazy, Laziness.True).MapsToAttribute("lazy");
 
             testHelper.VerifyAll(writer);
         }

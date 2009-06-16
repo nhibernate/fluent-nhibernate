@@ -1,8 +1,8 @@
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public class ArrayMapping : CollectionMappingBase
+    public class ArrayMapping : CollectionMappingBase, IIndexedCollectionMapping
     {
-        public IndexMapping Index { get; set; }
+        public IIndexMapping Index { get; set; }
 
         public ArrayMapping()
             : this(new AttributeStore())

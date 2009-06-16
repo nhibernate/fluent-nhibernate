@@ -1,3 +1,4 @@
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
@@ -11,7 +12,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             CompositeElement<PropertyTarget>()
                 .Mapping(m => { })
-                .ModelShouldMatch(x => x.Class.ShouldEqual(typeof(PropertyTarget).AssemblyQualifiedName));
+                .ModelShouldMatch(x => x.Class.ShouldEqual(new TypeReference(typeof(PropertyTarget))));
         }
     }
 }

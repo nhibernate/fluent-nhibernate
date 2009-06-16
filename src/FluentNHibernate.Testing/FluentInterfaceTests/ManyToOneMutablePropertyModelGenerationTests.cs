@@ -29,7 +29,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ManyToOne()
                 .Mapping(m => {})
-                .ModelShouldMatch(x => x.Class.ShouldEqual(typeof(PropertyReferenceTarget).AssemblyQualifiedName));
+                .ModelShouldMatch(x => x.Class.ShouldEqual(new TypeReference(typeof(PropertyReferenceTarget))));
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ManyToOne()
                 .Mapping(m => m.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.True));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.Proxy));
         }
 
         [Test]

@@ -81,6 +81,7 @@
     <Compile Include="AutoMap\ManyToManyAutomapperTester.cs" />
     <Compile Include="AutoMap\PrivateAutoMappingTester.cs" />
     <Compile Include="AutoMap\TestFixtures.cs" />
+    <Compile Include="AutoMap\XXAppenderPropertyConvention.cs" />
     <Compile Include="Cfg\Db\OracleClientConfigurationTester.cs" />
     <Compile Include="Cfg\Db\JetDriverConfigurationTester.cs" />
     <Compile Include="Cfg\Db\OracleDataClientConfigurationTester.cs" />
@@ -234,7 +235,6 @@
     <Compile Include="MappingModel\Output\XmlVersionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
     <Compile Include="PersistenceModelTests\Conventions\Configure.cs" />
-    <Compile Include="PersistenceModelTests\OnConstruction.cs" />
     <Compile Include="PersistenceModelTests\Conventions\WriteMappingsTo.cs" />
     <Compile Include="Testing\PersistenceSpecificationTester.cs" />
     <Compile Include="Testing\SessionSourceConfigurationTester.cs" />

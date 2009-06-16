@@ -50,7 +50,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.CollectionType("type"))
-                .ModelShouldMatch(x => x.CollectionType.ShouldEqual("type"));
+                .ModelShouldMatch(x => x.CollectionType.ShouldEqual(new TypeReference("type")));
         }
 
         [Test]

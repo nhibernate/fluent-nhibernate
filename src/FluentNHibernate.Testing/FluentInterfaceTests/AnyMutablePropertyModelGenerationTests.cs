@@ -1,4 +1,5 @@
 using System.Linq;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
@@ -158,7 +159,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     .IdentityType<int>()
                     .EntityIdentifierColumn("col")
                     .EntityTypeColumn("col2"))
-                .ModelShouldMatch(x => x.MetaType.ShouldEqual(typeof(SecondMappedObject).AssemblyQualifiedName));
+                .ModelShouldMatch(x => x.MetaType.ShouldEqual(new TypeReference(typeof(SecondMappedObject))));
         }
 
         [Test]
@@ -170,7 +171,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     .EntityIdentifierColumn("col")
                     .EntityTypeColumn("col2")
                     .AddMetaValue<Record>("Rec"))
-                .ModelShouldMatch(x => x.MetaType.ShouldEqual(typeof(string).AssemblyQualifiedName));
+                .ModelShouldMatch(x => x.MetaType.ShouldEqual(new TypeReference(typeof(string))));
         }
 
         [Test]

@@ -1,9 +1,9 @@
 ﻿namespace FluentNHibernate.MappingModel.Collections
 {
-    public class ListMapping : CollectionMappingBase
+    public class ListMapping : CollectionMappingBase, IIndexedCollectionMapping
     {
         private readonly AttributeStore<ListMapping> attributes;
-        public IndexMapping Index { get; set; }
+        public IIndexMapping Index { get; set; }
 
         public ListMapping()
             : this(new AttributeStore())

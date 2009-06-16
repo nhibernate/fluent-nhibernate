@@ -26,7 +26,8 @@ namespace FluentNHibernate.Mapping
 
         public SubclassMapping GetSubclassMapping()
         {
-            mapping.Type = typeof(TSubclass);
+            mapping.Attributes.SetDefault(x => x.Type, typeof(TSubclass));
+            mapping.Attributes.SetDefault(x => x.Name, typeof(TSubclass).AssemblyQualifiedName);
             
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());

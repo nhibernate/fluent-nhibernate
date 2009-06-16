@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
@@ -19,7 +20,6 @@ namespace FluentNHibernate.Mapping
         private readonly FetchTypeExpression<T> fetch;
         private readonly OptimisticLockBuilder<T> optimisticLock;
         private readonly CollectionCascadeExpression<T> cascade;
-        protected IndexPart indexPart;
         protected ElementPart elementPart;
         protected ICompositeElementMappingProvider componentMapping;
         public string TableName { get; private set; }
@@ -30,6 +30,7 @@ namespace FluentNHibernate.Mapping
         protected readonly AttributeStore<KeyMapping> keyAttributes = new AttributeStore<KeyMapping>();
         protected readonly AttributeStore<TRelationshipAttributes> relationshipAttributes = new AttributeStore<TRelationshipAttributes>();
         private Func<ICollectionMapping> collectionBuilder;
+        private IndexMapping indexMapping;
 
         protected ToManyBase(Type entity, MemberInfo member, Type type)
         {
@@ -83,14 +84,14 @@ namespace FluentNHibernate.Mapping
                 mapping.Cache = Cache.GetCacheMapping();
 
             if (componentMapping != null)
+            {
                 mapping.CompositeElement = componentMapping.GetCompositeElementMapping();
+                mapping.Relationship = null; // HACK: bad design
+            }
 
             // HACK: Index only on list and map - shouldn't have to do this!
-            if (indexPart != null && mapping is ListMapping)
-                ((ListMapping)mapping).Index = indexPart.GetIndexMapping();
-
-            if (indexPart != null && mapping is MapMapping)
-                ((MapMapping)mapping).Index = indexPart.GetIndexMapping();
+            if (indexMapping != null && mapping is IIndexedCollectionMapping)
+                ((IIndexedCollectionMapping)mapping).Index = indexMapping;
 
             if (elementPart != null)
                 mapping.Element = elementPart.GetElementMapping();
@@ -138,16 +139,15 @@ namespace FluentNHibernate.Mapping
 
         public T AsList()
         {
-            indexPart = new IndexPart();
             collectionBuilder = () => new ListMapping();
+            CreateIndexMapping(null);
             return (T)this;
         }
 
         public T AsList(Action<IndexPart> customIndexMapping)
         {
             AsList();
-            indexPart = new IndexPart();
-            customIndexMapping(indexPart);
+            CreateIndexMapping(customIndexMapping);
             return (T)this;
         }
 
@@ -180,7 +180,7 @@ namespace FluentNHibernate.Mapping
         // so a hack is better than nothing.
         public T AsMap<TIndex>(Action<IndexPart> customIndexMapping, Action<ElementPart> customElementMapping)
         {
-            collectionBuilder = () => new MapMapping { ContainedEntityType = EntityType, ChildType = typeof(TChild) };
+            collectionBuilder = () => new MapMapping();
             AsIndexedCollection<TIndex>(string.Empty, customIndexMapping);
             AsElement(string.Empty);
             customElementMapping(elementPart);
@@ -206,21 +206,35 @@ namespace FluentNHibernate.Mapping
 
         public T AsIndexedCollection<TIndex>(string indexColumn, Action<IndexPart> customIndexMapping)
         {
-            indexPart = new IndexPart();
-            indexPart.WithType<TIndex>();
-            indexPart.WithColumn(indexColumn);
+            CreateIndexMapping(customIndexMapping);
 
-            if (customIndexMapping != null)
-                customIndexMapping(indexPart);
+            if (!indexMapping.Attributes.IsSpecified(x => x.Type))
+                indexMapping.Attributes.SetDefault(x => x.Type, new TypeReference(typeof(TIndex)));
+
+            if (indexMapping.Columns.IsEmpty())
+                indexMapping.AddDefaultColumn(new ColumnMapping { Name = indexColumn });
 
             return (T)this;
+        }
+
+        private void CreateIndexMapping(Action<IndexPart> customIndex)
+        {
+            var indexPart = new IndexPart();
+
+            if (customIndex != null)
+                customIndex(indexPart);
+
+            indexMapping = indexPart.GetIndexMapping();
         }
 
         public T AsElement(string columnName)
         {
             elementPart = new ElementPart();
-            elementPart.WithColumn(columnName);
-            elementPart.WithType<TChild>();            
+            elementPart.WithType<TChild>();
+
+            if (!string.IsNullOrEmpty(columnName))
+                elementPart.WithColumn(columnName);
+
             return (T)this;
         }
 

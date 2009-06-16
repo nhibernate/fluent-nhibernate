@@ -20,7 +20,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             OneToOne()
                 .Mapping(m => {})
-                .ModelShouldMatch(x => x.Class.ShouldEqual(typeof(PropertyReferenceTarget).AssemblyQualifiedName));
+                .ModelShouldMatch(x => x.Class.ShouldEqual(new TypeReference(typeof(PropertyReferenceTarget))));
         }
 
         [Test]

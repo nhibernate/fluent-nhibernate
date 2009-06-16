@@ -29,16 +29,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void CreateTheSubClassMappings()
+        public void ShouldSetTheName()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
                     map.DiscriminateSubClassesOnColumn<string>("Type")
                         .SubClass<SecondMappedObject>("red", sc => { }))
-                .Element("//subclass")
-                    .Exists()
-                    .HasAttribute("name", typeof(SecondMappedObject).AssemblyQualifiedName)
-                    .HasAttribute("discriminator-value", "red");
+                .Element("//subclass").HasAttribute("name", typeof(SecondMappedObject).AssemblyQualifiedName);
         }
 
         [Test]

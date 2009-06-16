@@ -5,7 +5,7 @@ namespace FluentNHibernate.MappingModel.Collections
     public class IndexManyToManyMapping : MappingBase, IIndexMapping
     {
         private readonly AttributeStore<IndexManyToManyMapping> attributes;
-        private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
+        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
 
         public IndexManyToManyMapping()
         {
@@ -31,7 +31,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Class, value); }
         }
 
-        public IEnumerable<ColumnMapping> Columns
+        public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
         }

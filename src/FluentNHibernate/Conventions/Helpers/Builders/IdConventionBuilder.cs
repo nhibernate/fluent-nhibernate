@@ -1,19 +1,32 @@
 using System;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Alterations;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders
 {
-    internal class IdConventionBuilder : IConventionBuilder<IIdConvention, IIdentityPart>
+    internal class IdConventionBuilder : IConventionBuilder<IIdConvention, IIdentityInspector, IIdentityAlteration>
     {
-        public IIdConvention Always(Action<IIdentityPart> convention)
+        public IIdConvention Always(Action<IIdentityAlteration> convention)
         {
-            return new BuiltIdConvention(x => true, convention);
+            return new BuiltIdConvention(accept => { }, (a, i) => convention(a));
         }
 
-        public IIdConvention When(Func<IIdentityPart, bool> isTrue, Action<IIdentityPart> convention)
+        public IIdConvention Always(Action<IIdentityAlteration, IIdentityInspector> convention)
         {
-            return new BuiltIdConvention(isTrue, convention);
+            return new BuiltIdConvention(accept => { }, convention);
+        }
+
+        public IIdConvention When(Action<IAcceptanceCriteria<IIdentityInspector>> expectations, Action<IIdentityAlteration> convention)
+        {
+            return new BuiltIdConvention(expectations, (a, i) => convention(a));
+        }
+
+        public IIdConvention When(Action<IAcceptanceCriteria<IIdentityInspector>> expectations, Action<IIdentityAlteration, IIdentityInspector> convention)
+        {
+            return new BuiltIdConvention(expectations, convention);
         }
     }
 }

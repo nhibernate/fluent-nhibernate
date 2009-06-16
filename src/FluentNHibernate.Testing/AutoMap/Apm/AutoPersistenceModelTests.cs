@@ -4,8 +4,10 @@ using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions;
-//using FluentNHibernate.Conventions.Helpers;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Helpers;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 using SuperTypes = FluentNHibernate.AutoMap.TestFixtures.SuperTypes;
@@ -29,19 +31,17 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             cfg.ClassMappings.ShouldContain(c => c.ClassName == typeof(Record).AssemblyQualifiedName);
         }
 
-        //[Test]
-        //public void MapsPropertyWithPropertyConvention()
-        //{
-        //    var autoMapper = AutoPersistenceModel
-        //        .MapEntitiesFromAssemblyOf<ExampleCustomColumn>()
-        //        .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-        //        .ConventionDiscovery.Add<XXAppenderPropertyConvention>();
+        [Test]
+        public void MapsPropertyWithPropertyConvention()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleCustomColumn>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ConventionDiscovery.Add<XXAppenderPropertyConvention>();
 
-        //    new AutoMappingTester<ExampleClass>(autoMapper)
-        //        .Element("class/property[@name='LineOne']/column").HasAttribute("name", "LineOneXX");
-
-        //    CallContext.SetData("XXAppender", null);
-        //}
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/property[@name='LineOne']/column").HasAttribute("name", "LineOneXX");
+        }
 
         [Test]
         public void TestAutoMapsIds()
@@ -114,58 +114,55 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .HasAttribute("column", "Column");
         }
 
-        //[Test]
-        //public void TestAutoMapPropertySetPrimaryKeyConvention()
-        //{
-        //    var autoMapper = AutoPersistenceModel
-        //        .MapEntitiesFromAssemblyOf<ExampleClass>()
-        //        .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-        //        .ConventionDiscovery.Add(PrimaryKey.Name.Is(id => id.Property.Name + "Id"));
+        [Test]
+        public void TestAutoMapPropertySetPrimaryKeyConvention()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ConventionDiscovery.Add(PrimaryKey.Name.Is(id => id.Property.Name + "Id"));
 
-        //    new AutoMappingTester<ExampleClass>(autoMapper)
-        //        .Element("class/id")
-        //        .HasAttribute("name", "Id")
-        //        .HasAttribute("column", "IdId");
-        //}
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/id")
+                .HasAttribute("name", "Id")
+                .HasAttribute("column", "IdId");
+        }
 
-        //[Test]
-        //public void TestAutoMapIdUsesConvention()
-        //{
-        //    var autoMapper = AutoPersistenceModel
-        //        .MapEntitiesFromAssemblyOf<PrivateIdSetterClass>()
-        //        .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-        //        .ConventionDiscovery.Add(new TestIdConvention());
+        [Test]
+        public void TestAutoMapIdUsesConvention()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<PrivateIdSetterClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ConventionDiscovery.Add(new TestIdConvention());
 
-        //    new AutoMappingTester<PrivateIdSetterClass>(autoMapper)
-        //        .Element("class/id")
-        //        .HasAttribute("test", "true");
-        //}
+            new AutoMappingTester<PrivateIdSetterClass>(autoMapper)
+                .Element("class/id/column").HasAttribute("name", "true");
+        }
 
-        //[Test]
-        //public void AppliesConventionsToManyToOne()
-        //{
-        //    var autoMapper = AutoPersistenceModel
-        //        .MapEntitiesFromAssemblyOf<ExampleClass>()
-        //        .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-        //        .ConventionDiscovery.Add(new TestM2OConvention());
+        [Test]
+        public void AppliesConventionsToManyToOne()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ConventionDiscovery.Add(new TestM2OConvention());
 
-        //    new AutoMappingTester<ExampleClass>(autoMapper)
-        //        .Element("//many-to-one")
-        //        .HasAttribute("test", "true");
-        //}
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("//many-to-one/column").HasAttribute("name", "test");
+        }
 
-        //[Test]
-        //public void AppliesConventionsToOneToMany()
-        //{
-        //    var autoMapper = AutoPersistenceModel
-        //        .MapEntitiesFromAssemblyOf<ExampleClass>()
-        //        .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-        //        .ConventionDiscovery.Add(new TestO2MConvention());
+        [Test]
+        public void AppliesConventionsToOneToMany()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ConventionDiscovery.Add(new TestO2MConvention());
 
-        //    new AutoMappingTester<ExampleParentClass>(autoMapper)
-        //        .Element("//bag")
-        //        .HasAttribute("test", "true");
-        //}
+            new AutoMappingTester<ExampleParentClass>(autoMapper)
+                .Element("//bag").HasAttribute("name", "test");
+        }
 
         [Test]
         public void TestAutoMapPropertySetFindPrimaryKeyConvention()
@@ -173,7 +170,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t == typeof(ExampleClass))
-                .WithSetup(c => c.FindIdentity = p => p.Name == p.DeclaringType.Name + "Id" );
+                .WithSetup(c => c.FindIdentity = p => p.Name == p.DeclaringType.Name + "Id");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/id")
@@ -223,7 +220,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
                 .WithSetup(c =>
                            c.IsConcreteBaseType = b =>
-                                                  b == typeof (ExampleClass));
+                                                  b == typeof(ExampleClass));
 
             autoMapper.Configure(cfg);
 
@@ -268,29 +265,29 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         {
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
-                .ForTypesThatDeriveFrom<ExampleClass>(t => t.JoinedSubClass<ExampleInheritedClass>("OverridenKey", p =>p.Map(c => c.ExampleProperty, "columnName")))
+                .ForTypesThatDeriveFrom<ExampleClass>(t => t.JoinedSubClass<ExampleInheritedClass>("OverridenKey", p => p.Map(c => c.ExampleProperty, "columnName")))
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             autoMapper.Configure(cfg);
 
             new AutoMappingTester<ExampleClass>(autoMapper).ToString();
-            
+
             var tester = new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/joined-subclass")
                 .ChildrenDontContainAttribute("name", "LineOne");
         }
 
-        //[Test]
-        //public void TestAutoMapClassAppliesConventions()
-        //{
-        //    var autoMapper = AutoPersistenceModel
-        //        .MapEntitiesFromAssemblyOf<ExampleClass>()
-        //        .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-        //        .ConventionDiscovery.Add(new TestClassConvention());
+        [Test]
+        public void TestAutoMapClassAppliesConventions()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ConventionDiscovery.Add(new TestClassConvention());
 
-        //    new AutoMappingTester<ExampleClass>(autoMapper)
-        //        .Element("class").HasAttribute("test", "true");
-        //}
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class").HasAttribute("table", "test");
+        }
 
         [Test]
         public void CanSearchForOpenGenericTypes()
@@ -436,57 +433,49 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .HasAttribute("name", "Id");
         }
 
-        //private class TestIdConvention : IIdConvention
-        //{
-        //    public bool Accept(IIdentityPart target)
-        //    {
-        //        return true;
-        //    }
+        private class TestIdConvention : IIdConvention
+        {
+            public void Accept(IAcceptanceCriteria<IIdentityInspector> acceptance)
+            {}
 
-        //    public void Apply(IIdentityPart target)
-        //    {
-        //        target.SetAttribute("test", "true");
-        //    }
-        //}
+            public void Apply(IIdentityAlteration alteration, IIdentityInspector inspector)
+            {
+                alteration.ColumnName("test");
+            }
+        }
 
-        //private class TestClassConvention : IClassConvention
-        //{
-        //    public bool Accept(IClassMap target)
-        //    {
-        //        return true;
-        //    }
+        private class TestClassConvention : IClassConvention
+        {
+            public void Accept(IAcceptanceCriteria<IClassInspector> acceptance)
+            {}
 
-        //    public void Apply(IClassMap target)
-        //    {
-        //        target.SetAttribute("test", "true");
-        //    }
-        //}
+            public void Apply(IClassAlteration alteration, IClassInspector inspector)
+            {
+                alteration.WithTable("test");
+            }
+        }
 
-        //private class TestM2OConvention : IReferenceConvention
-        //{
-        //    public bool Accept(IManyToOnePart target)
-        //    {
-        //        return true;
-        //    }
+        private class TestM2OConvention : IReferenceConvention
+        {
+            public void Accept(IAcceptanceCriteria<IManyToOneInspector> acceptance)
+            {}
 
-        //    public void Apply(IManyToOnePart target)
-        //    {
-        //        target.SetAttribute("test", "true");
-        //    }
-        //}
+            public void Apply(IManyToOneAlteration alteration, IManyToOneInspector inspector)
+            {
+                alteration.ColumnName("test");
+            }
+        }
 
-        //private class TestO2MConvention : IHasManyConvention
-        //{
-        //    public bool Accept(IOneToManyPart target)
-        //    {
-        //        return true;
-        //    }
+        private class TestO2MConvention : IHasManyConvention
+        {
+            public void Accept(IAcceptanceCriteria<IOneToManyCollectionInspector> acceptance)
+            {}
 
-        //    public void Apply(IOneToManyPart target)
-        //    {
-        //        target.SetAttribute("test", "true");
-        //    }
-        //}
+            public void Apply(IOneToManyCollectionAlteration alteration, IOneToManyCollectionInspector inspector)
+            {
+                alteration.Name("test");
+            }
+        }
     }
 
     public class SomeOpenGenericType<T>

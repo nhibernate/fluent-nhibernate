@@ -1,4 +1,5 @@
 using System.Linq;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
@@ -124,7 +125,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             Property()
                 .Mapping(m => {})
-                .ModelShouldMatch(x => x.Type.ShouldEqual(typeof(string).AssemblyQualifiedName));
+                .ModelShouldMatch(x => x.Type.ShouldEqual(new TypeReference(typeof(string))));
         }
 
         [Test]
@@ -132,7 +133,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             Property()
                 .Mapping(m => m.CustomTypeIs<PropertyTarget>())
-                .ModelShouldMatch(x => x.Type.ShouldEqual(typeof(PropertyTarget).AssemblyQualifiedName));
+                .ModelShouldMatch(x => x.Type.ShouldEqual(new TypeReference(typeof(PropertyTarget))));
         }
 
         [Test]

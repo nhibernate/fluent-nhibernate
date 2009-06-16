@@ -14,7 +14,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     public class PropertyMapTester
     {
         [Test]
-        public void Map_WithoutColumnName_UsesPropertyNameFor_PropertyColumnAttribute()
+        public void MapWithoutColumnNameUsesPropertyNameForPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name))
@@ -23,7 +23,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Map_WithoutColumnName_UsesPropertyNameFor_ColumnNameAttribute()
+        public void MapWithoutColumnNameUsesPropertyNameForColumnNameAttribute()
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name))
@@ -31,7 +31,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Map_WithColumnName_UsesColumnNameFor_PropertyColumnAttribute()
+        public void MapWithColumnNameUsesColumnNameForPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name, "column_name"))
@@ -40,7 +40,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Map_WithColumnName_UsesColumnNameFor_ColumnNameAttribute()
+        public void MapWithColumnNameUsesColumnNameForColumnNameAttribute()
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name, "column_name"))
@@ -48,7 +48,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
         
         [Test]
-        public void Map_WithFluentColumnName_UsesColumnNameFor_ColumnNameAttribute()
+        public void MapWithFluentColumnNameUsesColumnNameForColumnNameAttribute()
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name).ColumnName("column_name"))
@@ -79,7 +79,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void ColumnName_IsPropertyName_WhenNoColumnNameGiven()
+        public void ColumnNameIsPropertyNameWhenNoColumnNameGiven()
         {
             Model<PropertyTarget>(m => m.Map(x => x.Name))
                 .Element("class/property[@name='Name']/column")
@@ -87,7 +87,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void ColumnName_IsColumnName_WhenColumnNameGiven()
+        public void ColumnNameIsColumnNameWhenColumnNameGiven()
         {
             Model<PropertyTarget>(m => m.Map(x => x.Name, "column_name"))
                 .Element("class/property[@name='Name']/column")
@@ -95,7 +95,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void ColumnName_IsColumnName_WhenColumnNameFluentGiven()
+        public void ColumnNameIsColumnNameWhenColumnNameFluentGiven()
         {
             Model<PropertyTarget>(m => m.Map(x => x.Name).ColumnNames.Add("column_name"))
                 .Element("class/property[@name='Name']/column")
@@ -103,7 +103,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Map_WithFluentLength_OnString_UsesWithLengthOf_PropertyColumnAttribute()
+        public void MapWithFluentLengthOnStringUsesWithLengthOfPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name).WithLengthOf(20))
@@ -111,7 +111,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
 		[Test]
-		public void Map_WithFluentLength_OnDecimal_UsesWithLengthOf_PropertyColumnAttribute()
+		public void MapWithFluentLengthOnDecimalUsesWithLengthOfPropertyColumnAttribute()
 		{
 		    new MappingTester<PropertyTarget>()
 		        .ForMapping(m => m.Map(x => x.DecimalProperty).WithLengthOf(1))
@@ -119,7 +119,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		}
 
         [Test]
-        public void Map_WithFluentLength_AllowOnAnything_PropertyColumnAttribute()
+        public void MapWithFluentLengthAllowOnAnythingPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Id).WithLengthOf(20))
@@ -127,7 +127,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Map_UsesCanNotBeNull_PropertyColumnAttribute()
+        public void MapUsesCanNotBeNullPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name).Not.Nullable())
@@ -136,7 +136,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Map_UsesAsReadOnly_PropertyColumnAttribute()
+        public void MapUsesAsReadOnlyPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name).ReadOnly())
@@ -146,16 +146,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Map_UsesUniqueKey_PropertyColumnAttribute()
+        public void MapUsesUniqueKeyPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name).UniqueKey("uniquekey"))
-                .Element("class/property")
+                .Element("class/property/column")
                     .HasAttribute("unique-key", "uniquekey");
         }
 
         [Test]
-        public void Map_UsesNotReadOnly_PropertyColumnAttribute()
+        public void MapUsesNotReadOnlyPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name).Not.ReadOnly())
@@ -165,7 +165,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Map_WithFluentFormula_UsesFormula() 
+        public void MapWithFluentFormulaUsesFormula() 
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name).FormulaIs("foo(bar)"))

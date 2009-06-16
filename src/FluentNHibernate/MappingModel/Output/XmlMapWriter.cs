@@ -29,10 +29,10 @@ namespace FluentNHibernate.MappingModel.Output
 
             WriteBaseCollectionAttributes(element, mapping);
 
-            if (mapping.Attributes.IsSpecified(x => x.OrderBy))
+            if (mapping.Attributes.HasValue(x => x.OrderBy))
                 element.WithAtt("order-by", mapping.OrderBy);
 
-            if (mapping.Attributes.IsSpecified(x => x.Sort))
+            if (mapping.Attributes.HasValue(x => x.Sort))
                 element.WithAtt("sort", mapping.Sort);
         }
 

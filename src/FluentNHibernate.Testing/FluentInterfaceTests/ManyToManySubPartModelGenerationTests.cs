@@ -1,4 +1,5 @@
 using System.Linq;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using NUnit.Framework;
 
@@ -17,7 +18,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     var index = (IndexManyToManyMapping)((MapMapping)x).Index;
 
                     index.Columns.Count().ShouldEqual(1);
-                    index.Class.ShouldEqual(typeof(int).AssemblyQualifiedName);
+                    index.Class.ShouldEqual(new TypeReference(typeof(int)));
                 });
 
         }

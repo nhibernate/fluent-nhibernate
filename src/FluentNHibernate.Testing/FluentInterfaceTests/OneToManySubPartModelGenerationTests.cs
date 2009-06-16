@@ -1,4 +1,5 @@
 using System.Linq;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
@@ -31,7 +32,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
                     list.Index.ShouldNotBeNull();
                     list.Index.Columns.Count().ShouldEqual(1);
-                    list.Index.Type.ShouldEqual(typeof(int).AssemblyQualifiedName);
+                    ((IndexMapping)list.Index).Type.ShouldEqual(new TypeReference(typeof(int)));
                 });
         }
 
@@ -46,7 +47,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
                     index.ShouldNotBeNull();
                     index.Columns.Count().ShouldEqual(1);
-                    index.Type.ShouldEqual(typeof(int).AssemblyQualifiedName);
+                    index.Type.ShouldEqual(new TypeReference(typeof(int)));
                 });
         }
 
@@ -59,7 +60,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 {
                     x.Element.ShouldNotBeNull();
                     x.Element.Columns.Count().ShouldEqual(1);
-                    x.Element.Type.ShouldEqual(typeof(ChildObject).AssemblyQualifiedName);
+                    x.Element.Type.ShouldEqual(new TypeReference(typeof(ChildObject)));
                 });
         }
     }

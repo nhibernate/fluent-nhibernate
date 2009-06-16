@@ -29,31 +29,31 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("subclass");
 
-            if (mapping.Attributes.IsSpecified(x => x.Name))
+            if (mapping.Attributes.HasValue(x => x.Name))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.Attributes.IsSpecified(x => x.DiscriminatorValue))
+            if (mapping.Attributes.HasValue(x => x.DiscriminatorValue))
                 element.WithAtt("discriminator-value", mapping.DiscriminatorValue.ToString());
 
-            if (mapping.Attributes.IsSpecified(x => x.Extends))
+            if (mapping.Attributes.HasValue(x => x.Extends))
                 element.WithAtt("extends", mapping.Extends);
 
-            if (mapping.Attributes.IsSpecified(x => x.Proxy))
+            if (mapping.Attributes.HasValue(x => x.Proxy))
                 element.WithAtt("proxy", mapping.Proxy);
 
-            if (mapping.Attributes.IsSpecified(x => x.Lazy))
+            if (mapping.Attributes.HasValue(x => x.Lazy))
                 element.WithAtt("lazy", mapping.Lazy);
 
-            if (mapping.Attributes.IsSpecified(x => x.DynamicUpdate))
+            if (mapping.Attributes.HasValue(x => x.DynamicUpdate))
                 element.WithAtt("dynamic-update", mapping.DynamicUpdate);
 
-            if (mapping.Attributes.IsSpecified(x => x.DynamicInsert))
+            if (mapping.Attributes.HasValue(x => x.DynamicInsert))
                 element.WithAtt("dynamic-insert", mapping.DynamicInsert);
 
-            if (mapping.Attributes.IsSpecified(x => x.SelectBeforeUpdate))
+            if (mapping.Attributes.HasValue(x => x.SelectBeforeUpdate))
                 element.WithAtt("select-before-update", mapping.SelectBeforeUpdate);
 
-            if (mapping.Attributes.IsSpecified(x => x.Abstract))
+            if (mapping.Attributes.HasValue(x => x.Abstract))
                 element.WithAtt("abstract", mapping.Abstract);
         }
 
