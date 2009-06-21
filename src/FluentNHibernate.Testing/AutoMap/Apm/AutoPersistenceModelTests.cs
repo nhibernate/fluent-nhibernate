@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
@@ -270,9 +271,13 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
 
             autoMapper.Configure(cfg);
 
+<<<<<<< HEAD:src/FluentNHibernate.Testing/AutoMap/Apm/AutoPersistenceModelTests.cs
             new AutoMappingTester<ExampleClass>(autoMapper).ToString();
 
             var tester = new AutoMappingTester<ExampleClass>(autoMapper)
+=======
+            new AutoMappingTester<ExampleClass>(autoMapper)
+>>>>>>> master:src/FluentNHibernate.Testing/AutoMap/Apm/AutoPersistenceModelTests.cs
                 .Element("class/joined-subclass")
                 .ChildrenDontContainAttribute("name", "LineOne");
         }
@@ -405,6 +410,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         }
 
         [Test]
+<<<<<<< HEAD:src/FluentNHibernate.Testing/AutoMap/Apm/AutoPersistenceModelTests.cs
         public void ForTypesThatDeriveFromTThrowsExceptionIfCalledMoreThanOnceForSameType()
         {
             var ex = Assert.Throws<AutoMappingException>(() => AutoPersistenceModel
@@ -417,6 +423,8 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         }
 
         [Test]
+=======
+>>>>>>> master:src/FluentNHibernate.Testing/AutoMap/Apm/AutoPersistenceModelTests.cs
         public void IdIsMappedFromGenericBaseClass()
         {
             var autoMapper = AutoPersistenceModel
@@ -431,6 +439,40 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             new AutoMappingTester<ClassUsingGenericBase>(autoMapper)
                 .Element("class/id")
                 .HasAttribute("name", "Id");
+        }
+
+        [Test]
+        public void OverriddenSubclassIsMerged()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleInheritedClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.HasMany(x => x.Children).Inverse());
+
+            autoMapper.CompileMappings();
+            var mappings = autoMapper.BuildMappings();
+            var classes = mappings.Select(x => x.Classes.First());
+
+            // no separate mapping for ExampleInheritedClass
+            classes.FirstOrDefault(c => c.Type == typeof(ExampleInheritedClass))
+                .ShouldBeNull();
+
+            var example = classes.FirstOrDefault(c => c.Type == typeof(ExampleClass));
+
+            example.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void OverriddenSubclassIsAppliedToXml()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleInheritedClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.HasMany(x => x.Children).Inverse());
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/joined-subclass/bag")
+                .HasAttribute("inverse", "true");
         }
 
         private class TestIdConvention : IIdConvention

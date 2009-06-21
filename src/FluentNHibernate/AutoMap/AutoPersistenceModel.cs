@@ -139,9 +139,9 @@ namespace FluentNHibernate.AutoMap
         private void AddMapping(Type type)
         {
             Type typeToMap = GetTypeToMap(type);
-            var mapping = InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
-                autoMapper, a => a.Map<object>(mappingTypes), new object[] {mappingTypes}, typeToMap);
-            Add((IMappingProvider)mapping);
+            var mapping = (IClassMap)InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
+                autoMapper, a => a.Map<object>(null, null), new object[] {mappingTypes, inlineOverrides}, typeToMap);
+            Add(mapping);
         }
 
         private Type GetTypeToMap(Type type)
@@ -155,7 +155,7 @@ namespace FluentNHibernate.AutoMap
         {
             Type typeToMap = GetTypeToMap(type);
             InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
-                autoMapper, a => a.MergeMap<object>(null), new[] { mapping }, typeToMap);
+                autoMapper, a => a.MergeMap<object>(null, null), new[] { mapping, inlineOverrides }, typeToMap);
         }
 
         #endregion
@@ -185,7 +185,7 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel AutoMap<T>()
         {
-            Add(autoMapper.Map<T>(mappingTypes));
+            Add(autoMapper.Map<T>(mappingTypes, inlineOverrides));
             return this;
         }
 
@@ -238,14 +238,16 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel ForTypesThatDeriveFrom<T>(Action<AutoMap<T>> populateMap)
         {
-            if (mappings.Count(m => m.GetType() == typeof(AutoMap<T>)) > 0)
-                throw new AutoMappingException("ForTypesThatDeriveFrom<T> called more than once for '" + typeof(T).Name + "'. Merge your calls into one.");
+            inlineOverrides.Add(typeof(T), x =>
+            {
+                if (x is AutoMap<T>)
+                    populateMap((AutoMap<T>)x);
+            });
 
-            var map = (AutoMap<T>)Activator.CreateInstance(typeof(AutoMap<T>));
-            populateMap.Invoke(map);
-            mappings.Add(map);
             return this;
         }
+
+        private IDictionary<Type, Action<object>> inlineOverrides = new Dictionary<Type, Action<object>>();
     }
 
     public class AutoMapType

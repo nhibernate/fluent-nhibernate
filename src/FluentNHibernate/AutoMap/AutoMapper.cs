@@ -28,21 +28,28 @@ namespace FluentNHibernate.AutoMap
             };
         }
 
-        public AutoMap<T> MergeMap<T>(AutoMap<T> map)
+        public AutoMap<T> MergeMap<T>(AutoMap<T> map, IDictionary<Type, Action<object>> inlineOverrides)
         {
             if (mappingTypes != null)
             {
                 foreach (var inheritedClass in mappingTypes.Where(q =>
                     q.Type.BaseType == typeof(T) &&
-                    !expressions.IsConcreteBaseType.Invoke(q.Type.BaseType)))
+                    !expressions.IsConcreteBaseType(q.Type.BaseType)))
                 {
-                    object joinedClass = map.JoinedSubClass(inheritedClass.Type, typeof (T).Name + "Id");
+                    var joinedClass = map.JoinedSubClass(inheritedClass.Type, typeof (T).Name + "Id");
+
+                    if (inlineOverrides.ContainsKey(joinedClass.EntityType))
+                        inlineOverrides[joinedClass.EntityType](joinedClass);
+
                     var method = GetType().GetMethod("MapEverythingInClass");
                     var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
                     genericMethod.Invoke(this, new[] {joinedClass});
                     inheritedClass.IsMapped = true;
                 }
             }
+
+            if (inlineOverrides.ContainsKey(typeof(T)))
+                inlineOverrides[typeof(T)](map);
 
             MapEverythingInClass(map);
             
@@ -75,11 +82,11 @@ namespace FluentNHibernate.AutoMap
             }
         }
 
-        public AutoMap<T> Map<T>(List<AutoMapType> types)
+        public AutoMap<T> Map<T>(List<AutoMapType> types, IDictionary<Type, Action<object>> overrides)
         {
             var classMap = (AutoMap<T>)Activator.CreateInstance(typeof(AutoMap<T>));
             mappingTypes = types;
-            return MergeMap(classMap);
+            return MergeMap(classMap, overrides);
         }
     }
 }

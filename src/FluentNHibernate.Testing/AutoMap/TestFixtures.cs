@@ -43,6 +43,7 @@ namespace FluentNHibernate.AutoMap.TestFixtures
     {
         public string ExampleProperty { get; set; }
         public int SomeNumber{ get; set; }
+        public IList<ExampleClass> Children { get; private set; }
     }
 
 
