@@ -130,7 +130,6 @@ namespace FluentNHibernate.MappingModel.Output
 
             foreach (var child in children)
             {
-                Console.WriteLine(child.Name);
                 node.AppendChild(child);
             }
         }
