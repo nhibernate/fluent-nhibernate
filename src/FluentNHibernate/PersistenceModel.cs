@@ -160,11 +160,12 @@ namespace FluentNHibernate
             foreach (var provider in mappings.Where(x => x is IClassMap))
                 classes.Add((IClassMap)provider);
 
-            foreach (var convention in conventions)
-            {
-                if (convention.Accept(classes))
-                    convention.Apply(classes);
-            }
+            // Todo: Bring this back in when it's ready
+//            foreach (var convention in conventions)
+//            {
+//                if (convention.Accept(classes))
+//                    convention.Apply(classes);
+//            }
 
             conventionsApplied = true;
         }
