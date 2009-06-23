@@ -23,7 +23,7 @@ namespace FluentNHibernate.Mapping
         private readonly IList<ImportPart> imports = new List<ImportPart>();
         private bool nextBool = true;
 
-        private readonly ClassMapping mapping;
+        protected readonly ClassMapping mapping;
         private IDiscriminatorPart discriminator;
         private IVersion version;
         private ICompositeIdMappingProvider compositeId;

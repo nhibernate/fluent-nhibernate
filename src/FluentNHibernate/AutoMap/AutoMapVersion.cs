@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.AutoMap
 {
@@ -20,6 +21,11 @@ namespace FluentNHibernate.AutoMap
                 return;
 
             classMap.Version(ExpressionBuilder.Create<T>(property));
+        }
+
+        public void Map(ClassMapping classMap, PropertyInfo property)
+        {
+            
         }
     }
 }

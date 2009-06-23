@@ -1,4 +1,5 @@
 using System.Reflection;
+using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.AutoMap
 {
@@ -22,6 +23,11 @@ namespace FluentNHibernate.AutoMap
                 return;
 
             classMap.Id(ExpressionBuilder.Create<T>(property));
+        }
+
+        public void Map(ClassMapping classMap, PropertyInfo property)
+        {
+            
         }
     }
 }

@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.AutoMap
 {
@@ -41,10 +43,17 @@ namespace FluentNHibernate.AutoMap
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
-            if (!classMap.CanMapProperty(property))
+        }
+
+        public void Map(ClassMapping classMap, PropertyInfo property)
+        {
+            if (property.DeclaringType != classMap.Type)
                 return;
 
-            classMap.Map(ExpressionBuilder.Create<T>(property));
+            var propertyMap = new PropertyMapping();
+            propertyMap.AddColumn(new ColumnMapping() { Name = property.Name });
+            propertyMap.Name = property.Name;
+            classMap.AddProperty(propertyMap);
         }
     }
 }

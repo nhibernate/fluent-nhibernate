@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.AutoMap
@@ -26,6 +27,11 @@ namespace FluentNHibernate.AutoMap
             var componentPart = CreateComponentPart(property, componentType, classMap);
 
             MapComponentProperties(property, componentType, componentPart);
+        }
+
+        public void Map(ClassMapping classMap, PropertyInfo property)
+        {
+            
         }
 
         private void MapComponentProperties(PropertyInfo componentProperty, Type componentType, object componentPart)
