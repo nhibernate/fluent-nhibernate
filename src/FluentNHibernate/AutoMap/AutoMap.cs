@@ -10,7 +10,7 @@ namespace FluentNHibernate.AutoMap
     public class AutoMap<T> : ClassMap<T>
     {
         private IList<PropertyInfo> propertiesMapped = new List<PropertyInfo>();
-        private readonly Dictionary<Type, object> joinedSubClasses = new Dictionary<Type, object>();
+        private readonly Dictionary<Type, IJoinedSubclass> joinedSubClasses = new Dictionary<Type, IJoinedSubclass>();
 
         public IList<PropertyInfo> PropertiesMapped
         {
@@ -81,26 +81,27 @@ namespace FluentNHibernate.AutoMap
             return base.Version(property);
         }
 
-        public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
+        public void JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
         {
+            if (joinedSubClasses.ContainsKey(typeof(TSubclass)))
+                return;
+
             var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(typeof(TSubclass));
             var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn);
             action(joinedclass);
             AddPart(joinedclass);
-            joinedSubClasses.Add(typeof(TSubclass), joinedclass);
-            return joinedclass;
+            joinedSubClasses[typeof(TSubclass)] = joinedclass;
         }
 
-        public object JoinedSubClass(Type type, string keyColumn)
+        public IJoinedSubclass JoinedSubClass(Type type, string keyColumn)
         {
             if (joinedSubClasses.ContainsKey(type))
                 return joinedSubClasses[type];
 
-
             var genericType = typeof (AutoJoinedSubClassPart<>).MakeGenericType(type);
-            var joinedclass = (IMappingPart)Activator.CreateInstance(genericType, keyColumn);                      
+            var joinedclass = (IJoinedSubclass)Activator.CreateInstance(genericType, keyColumn);                      
             AddPart(joinedclass);
-            joinedSubClasses.Add(type, joinedclass);
+            joinedSubClasses[type] = joinedclass;
             return joinedclass;
         }
 
