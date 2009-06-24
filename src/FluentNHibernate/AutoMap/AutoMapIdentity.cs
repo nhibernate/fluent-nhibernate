@@ -22,10 +22,6 @@ namespace FluentNHibernate.AutoMap
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
-//            if (classMap is AutoJoinedSubClassPart<T>)
-//                return;
-//
-//            classMap.Id(ExpressionBuilder.Create<T>(property));
         }
 
         public void Map(ClassMapping classMap, PropertyInfo property)

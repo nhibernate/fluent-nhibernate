@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.AutoMap
@@ -17,15 +18,16 @@ namespace FluentNHibernate.AutoMap
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
-            if (classMap is AutoJoinedSubClassPart<T>)
-                return;
-
-            classMap.Version(ExpressionBuilder.Create<T>(property));
         }
 
         public void Map(ClassMapping classMap, PropertyInfo property)
         {
-            
+            if (property.DeclaringType != classMap.Type)
+                return;
+
+            classMap.Version = new VersionMapping();
+            classMap.Version.Name = property.Name;
+            classMap.Version.Column = property.Name;
         }
     }
 }
