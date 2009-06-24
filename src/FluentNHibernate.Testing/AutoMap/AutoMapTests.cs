@@ -17,9 +17,10 @@ namespace FluentNHibernate.Testing.AutoMap
                 model.Where(type => type == typeof(ExampleClass)));
 
             Test<ExampleClass>(mapping =>
-                mapping.Element("//id")
-                    .HasAttribute("column", "Id")
-                    .HasAttribute("name", "Id"));
+                                   {
+                                       mapping.Element("//id").HasAttribute("name", "Id");
+                                       mapping.Element("//id//column").HasAttribute("name", "Id");
+                                   });
         }
 
         [Test]

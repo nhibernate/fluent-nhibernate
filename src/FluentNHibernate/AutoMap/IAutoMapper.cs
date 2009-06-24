@@ -1,4 +1,5 @@
 using System.Reflection;
+using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.AutoMap
 {
@@ -6,5 +7,6 @@ namespace FluentNHibernate.AutoMap
     {
         bool MapsProperty(PropertyInfo property);
         void Map<T>(AutoMap<T> classMap, PropertyInfo property);
+        void Map(ClassMapping classMap, PropertyInfo property);
     }
 }

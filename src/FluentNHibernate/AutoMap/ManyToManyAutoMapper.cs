@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Utils.Reflection;
 
@@ -50,6 +51,11 @@ namespace FluentNHibernate.AutoMap
 
             if (parentSide != property.DeclaringType)
                 ApplyInverse(property, parentSide, manyToManyPart);
+        }
+
+        public void Map(ClassMapping classMap, PropertyInfo property)
+        {
+            
         }
 
         public void ApplyInverse(PropertyInfo property, Type parentSide, IManyToManyPart manyToManyPart)

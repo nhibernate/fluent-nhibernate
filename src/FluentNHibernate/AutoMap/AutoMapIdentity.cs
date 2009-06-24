@@ -1,5 +1,7 @@
 using System.Reflection;
-using FluentNHibernate.Utils.Reflection;
+using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.AutoMap
 {
@@ -19,10 +21,19 @@ namespace FluentNHibernate.AutoMap
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
-            if (classMap is AutoJoinedSubClassPart<T>)
+        }
+
+        public void Map(ClassMapping classMap, PropertyInfo property)
+        {
+            if (property.DeclaringType != classMap.Type)
                 return;
 
-            classMap.Id(ExpressionBuilder.Create<T>(property));
+            var idMapping = new IdMapping();
+            idMapping.AddColumn(new ColumnMapping() { Name = property.Name });
+            idMapping.Name = property.Name;
+            idMapping.Type = new TypeReference(property.PropertyType);
+            idMapping.Generator= new GeneratorMapping { Class = "identity" };
+            classMap.Id = idMapping;        
         }
     }
 }

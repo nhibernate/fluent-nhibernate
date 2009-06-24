@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.AutoMap
@@ -30,6 +31,11 @@ namespace FluentNHibernate.AutoMap
             var listType = property.PropertyType.GetGenericArguments()[0];
             var genericHasManyMethod = hasManyMethod.MakeGenericMethod(listType);
             genericHasManyMethod.Invoke(classMap, new object[] { ExpressionBuilder.Create<T>(property) });
+        }
+
+        public void Map(ClassMapping classMap, PropertyInfo property)
+        {
+            
         }
     }
 }

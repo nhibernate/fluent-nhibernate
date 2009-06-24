@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.AutoMap
@@ -16,6 +17,11 @@ namespace FluentNHibernate.AutoMap
         {
             get { return propertiesMapped; }
             set { propertiesMapped = value; }
+        }
+
+        public ClassMapping ClassMapping
+        {
+            get { return mapping; }
         }
 
         protected override OneToManyPart<TChild> HasMany<TChild>(PropertyInfo property)

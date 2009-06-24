@@ -26,11 +26,11 @@ namespace FluentNHibernate.MappingModel.Identity
         {
             visitor.ProcessId(this);
 
-            if (Generator != null)
-                visitor.Visit(Generator);
-
             foreach (var column in Columns)
                 visitor.Visit(column);
+
+            if (Generator != null)
+                visitor.Visit(Generator);
         }
 
         public string Name

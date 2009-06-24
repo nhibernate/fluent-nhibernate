@@ -75,6 +75,7 @@ namespace FluentNHibernate.AutoMap
                         if (map.PropertiesMapped.Count(p => p.Name == property.Name) == 0)
                         {
                             rule.Map(map, property);
+                            rule.Map(map.ClassMapping, property);
                             break;
                         }
                     }

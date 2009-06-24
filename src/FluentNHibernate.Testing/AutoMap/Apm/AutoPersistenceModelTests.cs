@@ -209,7 +209,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
-            var tester = new AutoMappingTester<ExampleClass>(autoMapper)
+            new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/joined-subclass/property[@name='ExampleProperty']").Exists();
         }
 
@@ -271,13 +271,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
 
             autoMapper.Configure(cfg);
 
-<<<<<<< HEAD:src/FluentNHibernate.Testing/AutoMap/Apm/AutoPersistenceModelTests.cs
-            new AutoMappingTester<ExampleClass>(autoMapper).ToString();
-
-            var tester = new AutoMappingTester<ExampleClass>(autoMapper)
-=======
             new AutoMappingTester<ExampleClass>(autoMapper)
->>>>>>> master:src/FluentNHibernate.Testing/AutoMap/Apm/AutoPersistenceModelTests.cs
                 .Element("class/joined-subclass")
                 .ChildrenDontContainAttribute("name", "LineOne");
         }
@@ -410,21 +404,6 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         }
 
         [Test]
-<<<<<<< HEAD:src/FluentNHibernate.Testing/AutoMap/Apm/AutoPersistenceModelTests.cs
-        public void ForTypesThatDeriveFromTThrowsExceptionIfCalledMoreThanOnceForSameType()
-        {
-            var ex = Assert.Throws<AutoMappingException>(() => AutoPersistenceModel
-                .MapEntitiesFromAssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .ForTypesThatDeriveFrom<ExampleClass>(map => { })
-                .ForTypesThatDeriveFrom<ExampleClass>(map => { }));
-
-            ex.Message.ShouldEqual("ForTypesThatDeriveFrom<T> called more than once for 'ExampleClass'. Merge your calls into one.");
-        }
-
-        [Test]
-=======
->>>>>>> master:src/FluentNHibernate.Testing/AutoMap/Apm/AutoPersistenceModelTests.cs
         public void IdIsMappedFromGenericBaseClass()
         {
             var autoMapper = AutoPersistenceModel
