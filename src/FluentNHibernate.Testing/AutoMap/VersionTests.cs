@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing.AutoMap
         {
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<TEntity>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t == typeof(TEntity));
 
             autoMapper.Configure(cfg);
 
