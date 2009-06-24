@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.AutoMap
@@ -22,15 +23,15 @@ namespace FluentNHibernate.AutoMap
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
-            if (!classMap.CanMapProperty(property))
-                return;
-
-            classMap.References(ExpressionBuilder.Create<T>(property));
         }
 
         public void Map(ClassMapping classMap, PropertyInfo property)
         {
-            
+            if (property.DeclaringType != classMap.Type)
+                return;
+
+            var manyToOne = new ManyToOneMapping {Name = property.Name, PropertyInfo = property};
+            classMap.AddReference(manyToOne);
         }
     }
 }
