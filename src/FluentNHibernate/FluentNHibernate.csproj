@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{529145D5-6CC3-4016-89B5-826563024AF1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -75,12 +75,14 @@
     <Compile Include="AutoMap\AutoMappingException.cs" />
     <Compile Include="AutoMap\AutoMapVersion.cs" />
     <Compile Include="AutoMap\AutoPersistenceModel.cs" />
+    <Compile Include="AutoMap\AutoSubClassPart.cs" />
     <Compile Include="AutoMap\ExpressionBuilder.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />
     <Compile Include="AutoMap\IAutoMappingAlteration.cs" />
     <Compile Include="AutoMap\ManyToManyAutoMapper.cs" />
     <Compile Include="AutoMap\PrivateAutoMapper.cs" />
     <Compile Include="AutoMap\PrivateAutoPersistenceModel.cs" />
+    <Compile Include="AutoMap\SubclassStrategy.cs" />
     <Compile Include="Cache.cs" />
     <Compile Include="Cfg\AutoMappingsContainer.cs" />
     <Compile Include="Cfg\Db\CacheSettingsBuilder.cs" />

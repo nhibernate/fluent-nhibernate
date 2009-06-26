@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.AutoMap;
 
 namespace FluentNHibernate
 {
@@ -12,5 +13,12 @@ namespace FluentNHibernate
         public Func<Type, bool> IsConcreteBaseType = b => false;
         public Func<Type, bool> IsComponentType = type => false;
         public Func<PropertyInfo, string> GetComponentColumnPrefix = property => property.Name;
+        public Func<Type, string> DiscriminatorColumn = t => "discriminator";
+        public SubclassStrategy SubclassStrategy { get; set; }
+
+        public AutoMappingExpressions()
+        {
+            SubclassStrategy = SubclassStrategy.JoinedSubclass;
+        }
     }
 }

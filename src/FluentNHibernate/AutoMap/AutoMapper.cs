@@ -32,19 +32,43 @@ namespace FluentNHibernate.AutoMap
         {
             if (mappingTypes != null)
             {
+                var discriminatorSet = false;
+
                 foreach (var inheritedClass in mappingTypes.Where(q =>
                     q.Type.BaseType == typeof(T) &&
                     !expressions.IsConcreteBaseType(q.Type.BaseType)))
                 {
-                    var joinedClass = map.JoinedSubClass(inheritedClass.Type, typeof (T).Name + "Id");
+                    if (!discriminatorSet)
+                    {
+                        var discriminatorColumn = expressions.DiscriminatorColumn(typeof(T));
+                        map.DiscriminateSubClassesOnColumn(discriminatorColumn);
+                        discriminatorSet = true;
+                    }
 
-                    if (inlineOverrides.ContainsKey(joinedClass.EntityType))
-                        inlineOverrides[joinedClass.EntityType](joinedClass);
+                    if (expressions.SubclassStrategy == SubclassStrategy.JoinedSubclass)
+                    {
+                        var subclass = map.JoinedSubClass(inheritedClass.Type, typeof(T).Name);
 
-                    var method = GetType().GetMethod("MapEverythingInClass");
-                    var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
-                    genericMethod.Invoke(this, new[] {joinedClass});
-                    inheritedClass.IsMapped = true;
+                        if (inlineOverrides.ContainsKey(subclass.EntityType))
+                            inlineOverrides[subclass.EntityType](subclass);
+
+                        var method = GetType().GetMethod("MapEverythingInClass");
+                        var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
+                        genericMethod.Invoke(this, new[] { subclass });
+                        inheritedClass.IsMapped = true;
+                    }
+                    else
+                    {
+                        var subclass = map.SubClass(inheritedClass.Type, inheritedClass.Type.Name);
+
+                        if (inlineOverrides.ContainsKey(subclass.EntityType))
+                            inlineOverrides[subclass.EntityType](subclass);
+
+                        var method = GetType().GetMethod("MapEverythingInClass");
+                        var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
+                        genericMethod.Invoke(this, new[] {subclass});
+                        inheritedClass.IsMapped = true;
+                    }
                 }
             }
 

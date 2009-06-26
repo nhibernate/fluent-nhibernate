@@ -104,7 +104,7 @@ namespace FluentNHibernate.Mapping
         protected override PropertyMap Map(PropertyInfo property, string columnName)
         {
             // horrible hack because AutoJoinedSubClassPart inherits from AutoMap instead of JoinedSubClassPart?!
-            if (this is AutoJoinedSubClassPart<T>)
+            if (this is AutoJoinedSubClassPart<T> || this is AutoSubClassPart<T>)
                 return base.Map(property, columnName);
 
             var propertyMapping = new PropertyMapping

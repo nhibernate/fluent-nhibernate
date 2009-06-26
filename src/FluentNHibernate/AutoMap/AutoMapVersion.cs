@@ -16,7 +16,7 @@ namespace FluentNHibernate.AutoMap
 
         public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
         {
-            if (classMap is AutoJoinedSubClassPart<T>)
+            if (classMap is AutoJoinedSubClassPart<T> || classMap is AutoSubClassPart<T>)
                 return;
 
             classMap.Version(ExpressionBuilder.Create<T>(property));
