@@ -12,6 +12,7 @@ namespace FluentNHibernate.AutoMap
     {
         private IList<PropertyInfo> propertiesMapped = new List<PropertyInfo>();
         private readonly Dictionary<Type, IJoinedSubclass> joinedSubClasses = new Dictionary<Type, IJoinedSubclass>();
+        private readonly Dictionary<Type, ISubclass> automappedSubclasses = new Dictionary<Type, ISubclass>();
 
         public IList<PropertyInfo> PropertiesMapped
         {
@@ -111,10 +112,36 @@ namespace FluentNHibernate.AutoMap
             return joinedclass;
         }
 
+        public void SubClass<TSubclass>(string discriminatorValue, Action<AutoSubClassPart<TSubclass>> action)
+        {
+            if (automappedSubclasses.ContainsKey(typeof(TSubclass)))
+                return;
+
+            var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
+            var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, discriminatorValue);
+            action(subclass);
+            AddPart(subclass);
+            automappedSubclasses[typeof(TSubclass)] = subclass;
+        }
+
+        public ISubclass SubClass(Type type, string discriminatorValue)
+        {
+            if (automappedSubclasses.ContainsKey(type))
+                return automappedSubclasses[type];
+
+            var genericType = typeof(AutoSubClassPart<>).MakeGenericType(type);
+            var subclass = (ISubclass)Activator.CreateInstance(genericType, discriminatorValue);
+
+            AddPart(subclass);
+            automappedSubclasses[type] = subclass;
+
+            return subclass;
+        }
+
 
         public bool CanMapProperty(PropertyInfo property)
         {
-            if (this is AutoJoinedSubClassPart<T>)
+            if (this is AutoJoinedSubClassPart<T> || this is AutoSubClassPart<T>)
             {
                 if (property.DeclaringType != typeof(T))
                     return false;
