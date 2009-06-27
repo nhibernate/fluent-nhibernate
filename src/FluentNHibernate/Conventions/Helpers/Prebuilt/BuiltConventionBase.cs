@@ -5,13 +5,13 @@ using FluentNHibernate.Conventions.Inspections;
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt
 {
     [Multiple]
-    internal abstract class BuiltConventionBase<TInspector, TAlteration>
+    internal abstract class BuiltConventionBase<TInspector, TInstance>
         where TInspector : IInspector
     {
         private readonly Action<IAcceptanceCriteria<TInspector>> accept;
-        private readonly Action<TAlteration, TInspector> convention;
+        private readonly Action<TInstance> convention;
 
-        public BuiltConventionBase(Action<IAcceptanceCriteria<TInspector>> accept, Action<TAlteration, TInspector> convention)
+        public BuiltConventionBase(Action<IAcceptanceCriteria<TInspector>> accept, Action<TInstance> convention)
         {
             this.accept = accept;
             this.convention = convention;
@@ -22,9 +22,9 @@ namespace FluentNHibernate.Conventions.Helpers.Prebuilt
             accept(acceptance);
         }
 
-        public void Apply(TAlteration alteration, TInspector inspector)
+        public void Apply(TInstance instance)
         {
-            convention(alteration, inspector);
+            convention(instance);
         }
     }
 }

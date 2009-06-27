@@ -20,11 +20,11 @@ namespace FluentNHibernate.Conventions.Helpers
 
         public IIdConvention Is(Func<IIdentityInspector, string> nameFunc)
         {
-            return new BuiltIdConvention(accept => { }, (alteration, inspector) =>
+            return new BuiltIdConvention(accept => { }, instance =>
             {
-                var columnName = nameFunc(inspector);
+                var columnName = nameFunc(instance);
 
-                alteration.ColumnName(columnName);
+                instance.ColumnName(columnName);
             });
         }
     }

@@ -1,5 +1,5 @@
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Alterations.Instances;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Defaults
@@ -14,9 +14,9 @@ namespace FluentNHibernate.Conventions.Defaults
             acceptance.Expect(x => x.IsMethodAccess);
         }
 
-        public void Apply(ICollectionAlteration alteration, ICollectionInspector inspector)
+        public void Apply(ICollectionInstance instance)
         {
-            alteration.Name(inspector.Member.Name.Replace("Get", ""));
+            instance.Name(instance.Member.Name.Replace("Get", ""));
         }
     }
 }

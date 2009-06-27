@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Alterations.Instances;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions
@@ -15,11 +16,11 @@ namespace FluentNHibernate.Conventions
             acceptance.Expect(x => x.Columns.IsEmpty());
         }
 
-        public void Apply(IManyToOneAlteration alteration, IManyToOneInspector inspector)
+        public void Apply(IManyToOneInstance instance)
         {
-            var columnName = GetKeyName(inspector.Property, inspector.Class);
+            var columnName = GetKeyName(instance.Property, instance.Class);
 
-            alteration.ColumnName(columnName);
+            instance.ColumnName(columnName);
         }
 
         public void Accept(IAcceptanceCriteria<IOneToManyCollectionInspector> acceptance)
@@ -27,11 +28,11 @@ namespace FluentNHibernate.Conventions
             acceptance.Expect(x => x.Key.Columns.IsEmpty());
         }
 
-        public void Apply(IOneToManyCollectionAlteration alteration, IOneToManyCollectionInspector inspector)
+        public void Apply(IOneToManyCollectionInstance instance)
         {
-            var columnName = GetKeyName(null, inspector.EntityType);
-            
-            alteration.Key.ColumnName(columnName);
+            var columnName = GetKeyName(null, instance.EntityType);
+
+            instance.Key.ColumnName(columnName);
         }
 
         public void Accept(IAcceptanceCriteria<IManyToManyCollectionInspector> acceptance)
@@ -39,16 +40,16 @@ namespace FluentNHibernate.Conventions
             acceptance.Expect(x => x.Key.Columns.IsEmpty() || x.ManyToMany.Columns.IsEmpty());
         }
 
-        public void Apply(IManyToManyCollectionAlteration alteration, IManyToManyCollectionInspector inspector)
+        public void Apply(IManyToManyCollectionInstance instance)
         {
-            var keyColumn = GetKeyName(null, inspector.EntityType);
-            var childColumn = GetKeyName(null, inspector.ChildType);
+            var keyColumn = GetKeyName(null, instance.EntityType);
+            var childColumn = GetKeyName(null, instance.ChildType);
 
-            if (inspector.Key.Columns.IsEmpty())
-                alteration.Key.ColumnName(keyColumn);
+            if (instance.Key.Columns.IsEmpty())
+                instance.Key.ColumnName(keyColumn);
 
-            if (inspector.ManyToMany.Columns.IsEmpty())
-                alteration.ManyToMany.ColumnName(childColumn);
+            if (instance.ManyToMany.Columns.IsEmpty())
+                instance.ManyToMany.ColumnName(childColumn);
         }
     }
 }

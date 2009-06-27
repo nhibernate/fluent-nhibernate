@@ -1,14 +1,16 @@
 using System.Linq;
+using FluentNHibernate.Conventions.Alterations.Instances;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Alterations
 {
-    public class ManyToManyAlteration : IManyToManyAlteration
+    public class KeyInstance : KeyInspector, IKeyInstance
     {
-        private readonly ManyToManyMapping mapping;
+        private readonly KeyMapping mapping;
 
-        public ManyToManyAlteration(ManyToManyMapping mapping)
+        public KeyInstance(KeyMapping mapping)
+            : base(mapping)
         {
             this.mapping = mapping;
         }

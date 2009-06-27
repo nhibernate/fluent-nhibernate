@@ -1,6 +1,7 @@
 using System;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Alterations.Instances;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 
@@ -16,23 +17,23 @@ namespace FluentNHibernate.Conventions.Defaults
             acceptance.Expect(x => x.TableName, Is.Not.Set);
         }
 
-        public void Apply(IClassAlteration alteration, IClassInspector inspector)
+        public void Apply(IClassInstance instance)
         {
-            var tableName = inspector.EntityType.Name;
+            var tableName = instance.EntityType.Name;
 
-            if (inspector.EntityType.IsGenericType)
+            if (instance.EntityType.IsGenericType)
             {
                 // special case for generics: GenericType_GenericParameterType
-                tableName = inspector.EntityType.Name.Substring(0, inspector.EntityType.Name.IndexOf('`'));
+                tableName = instance.EntityType.Name.Substring(0, instance.EntityType.Name.IndexOf('`'));
 
-                foreach (var argument in inspector.EntityType.GetGenericArguments())
+                foreach (var argument in instance.EntityType.GetGenericArguments())
                 {
                     tableName += "_";
                     tableName += argument.Name;
                 }
             }
 
-            alteration.WithTable("`" + tableName + "`");
+            instance.WithTable("`" + tableName + "`");
         }
     }
 }

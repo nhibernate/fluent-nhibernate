@@ -1,12 +1,15 @@
+using FluentNHibernate.Conventions.Alterations.Instances;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Alterations
 {
-    public class ClassAlteration : IClassAlteration
+    public class ClassInstance : ClassInspector, IClassInstance
     {
         private readonly ClassMapping mapping;
 
-        public ClassAlteration(ClassMapping mapping)
+        public ClassInstance(ClassMapping mapping)
+            : base(mapping)
         {
             this.mapping = mapping;
         }

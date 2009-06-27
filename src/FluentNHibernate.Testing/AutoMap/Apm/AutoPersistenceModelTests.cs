@@ -5,6 +5,7 @@ using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions.Alterations.Instances;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Alterations;
@@ -563,9 +564,9 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             public void Accept(IAcceptanceCriteria<IIdentityInspector> acceptance)
             {}
 
-            public void Apply(IIdentityAlteration alteration, IIdentityInspector inspector)
+            public void Apply(IIdentityInstance instance)
             {
-                alteration.ColumnName("test");
+                instance.ColumnName("test");
             }
         }
 
@@ -574,9 +575,9 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             public void Accept(IAcceptanceCriteria<IClassInspector> acceptance)
             {}
 
-            public void Apply(IClassAlteration alteration, IClassInspector inspector)
+            public void Apply(IClassInstance instance)
             {
-                alteration.WithTable("test");
+                instance.WithTable("test");
             }
         }
 
@@ -585,9 +586,9 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             public void Accept(IAcceptanceCriteria<IManyToOneInspector> acceptance)
             {}
 
-            public void Apply(IManyToOneAlteration alteration, IManyToOneInspector inspector)
+            public void Apply(IManyToOneInstance instance)
             {
-                alteration.ColumnName("test");
+                instance.ColumnName("test");
             }
         }
 
@@ -596,9 +597,9 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             public void Accept(IAcceptanceCriteria<IOneToManyCollectionInspector> acceptance)
             {}
 
-            public void Apply(IOneToManyCollectionAlteration alteration, IOneToManyCollectionInspector inspector)
+            public void Apply(IOneToManyCollectionInstance instance)
             {
-                alteration.Name("test");
+                instance.Name("test");
             }
         }
     }

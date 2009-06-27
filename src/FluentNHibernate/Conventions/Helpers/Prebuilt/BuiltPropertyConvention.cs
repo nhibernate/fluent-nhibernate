@@ -1,13 +1,13 @@
 using System;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Alterations.Instances;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt
 {
-    internal class BuiltPropertyConvention : BuiltConventionBase<IPropertyInspector, IPropertyAlteration>, IPropertyConvention
+    internal class BuiltPropertyConvention : BuiltConventionBase<IPropertyInspector, IPropertyInstance>, IPropertyConvention
     {
-        public BuiltPropertyConvention(Action<IAcceptanceCriteria<IPropertyInspector>> accept, Action<IPropertyAlteration, IPropertyInspector> convention)
+        public BuiltPropertyConvention(Action<IAcceptanceCriteria<IPropertyInspector>> accept, Action<IPropertyInstance> convention)
             : base(accept, convention)
         { }
     }

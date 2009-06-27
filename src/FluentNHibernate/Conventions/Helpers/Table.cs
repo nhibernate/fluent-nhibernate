@@ -10,10 +10,10 @@ namespace FluentNHibernate.Conventions.Helpers
         {
             return new BuiltClassConvention(
                 acceptance => { },
-                (alteration, inspector) =>
+                instance =>
                 {
-                    var table = tableName(inspector);
-                    alteration.WithTable(table);
+                    var table = tableName(instance);
+                    instance.WithTable(table);
                 });
         }
     }

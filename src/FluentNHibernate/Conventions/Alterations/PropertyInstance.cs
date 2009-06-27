@@ -1,39 +1,42 @@
 using System;
 using System.Linq;
+using FluentNHibernate.Conventions.Alterations.Instances;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Alterations
 {
-    public class PropertyAlteration : IPropertyAlteration
+    public class PropertyInstance : PropertyInspector, IPropertyInstance
     {
         private readonly PropertyMapping mapping;
         private bool nextBool = true;
 
-        public PropertyAlteration(PropertyMapping mapping)
+        public PropertyInstance(PropertyMapping mapping)
+            : base(mapping)
         {
             this.mapping = mapping;
         }
 
-        public void Insert()
+        public new void Insert()
         {
             mapping.Insert = nextBool;
             nextBool = true;
         }
 
-        public void Update()
+        public new void Update()
         {
             mapping.Update = nextBool;
             nextBool = true;
         }
 
-        public void ReadOnly()
+        public new void ReadOnly()
         {
             mapping.Insert = mapping.Update = nextBool;
             nextBool = true;
         }
 
-        public void Nullable()
+        public new void Nullable()
         {
             foreach (var column in mapping.Columns)
                 column.NotNull = !nextBool;
@@ -41,7 +44,7 @@ namespace FluentNHibernate.Conventions.Alterations
             nextBool = true;
         }
 
-        public IAccessStrategyBuilder Access
+        public new IAccessStrategyBuilder Access
         {
             get { return new AccessMappingAlteration(mapping); }
         }
@@ -72,7 +75,7 @@ namespace FluentNHibernate.Conventions.Alterations
                 column.SqlType = sqlType;
         }
 
-        public void Unique()
+        public new void Unique()
         {
             foreach (var column in mapping.Columns)
                 column.Unique = nextBool;
@@ -80,7 +83,7 @@ namespace FluentNHibernate.Conventions.Alterations
             nextBool = true;
         }
 
-        public void UniqueKey(string keyName)
+        public new void UniqueKey(string keyName)
         {
             foreach (var column in mapping.Columns)
                 column.UniqueKey = keyName;

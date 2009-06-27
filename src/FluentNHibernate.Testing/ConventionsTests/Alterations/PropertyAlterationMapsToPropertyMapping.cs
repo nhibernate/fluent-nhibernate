@@ -15,7 +15,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Alterations
         public void CreateDsl()
         {
             mapping = new PropertyMapping();
-            alteration = new PropertyAlteration(mapping);
+            alteration = new PropertyInstance(mapping);
         }
 
         [Test]

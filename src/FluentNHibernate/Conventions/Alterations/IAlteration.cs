@@ -1,5 +1,5 @@
 namespace FluentNHibernate.Conventions.Alterations
 {
-    public interface IColumnAlteration : IAlteration
+    public interface IAlteration
     {}
 }

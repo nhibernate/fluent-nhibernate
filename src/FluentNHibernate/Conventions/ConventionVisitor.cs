@@ -2,6 +2,7 @@
 using System.Collections;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Alterations.Instances;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -26,52 +27,46 @@ namespace FluentNHibernate.Conventions
 
             currentType = classMapping.Type;
 
-            Apply<IClassInspector, IClassAlteration>(conventions,
-                new ClassInspector(classMapping),
-                new ClassAlteration(classMapping));
+            Apply<IClassInspector, IClassAlteration, IClassInstance>(conventions,
+                new ClassInstance(classMapping));
         }
 
         public override void ProcessProperty(PropertyMapping propertyMapping)
         {
             var conventions = finder.Find<IPropertyConvention>();
 
-            Apply<IPropertyInspector, IPropertyAlteration>(conventions,
-                new PropertyInspector(propertyMapping),
-                new PropertyAlteration(propertyMapping));
+            Apply<IPropertyInspector, IPropertyAlteration, IPropertyInstance>(conventions,
+                new PropertyInstance(propertyMapping));
         }
 
         public override void ProcessColumn(ColumnMapping columnMapping)
         {
             var conventions = finder.Find<IColumnConvention>();
 
-            Apply<IColumnInspector, IColumnAlteration>(conventions,
-                new ColumnInspector(currentType, columnMapping),
-                new ColumnAlteration(columnMapping));
+            Apply<IColumnInspector, IColumnAlteration, IColumnInstance>(conventions,
+                new ColumnInstance(currentType, columnMapping));
         }
 
         protected override void ProcessCollection(ICollectionMapping mapping)
         {
             var generalConventions = finder.Find<ICollectionConvention>();
 
-            Apply<ICollectionInspector, ICollectionAlteration>(generalConventions,
-                new CollectionInspector(mapping),
-                new CollectionAlteration(mapping));
+            Apply<ICollectionInspector, ICollectionAlteration, ICollectionInstance>(generalConventions,
+                new CollectionInstance(mapping));
 
             if (mapping.Relationship is ManyToManyMapping)
             {
                 var conventions = finder.Find<IHasManyToManyConvention>();
 
-                Apply<IManyToManyCollectionInspector, IManyToManyCollectionAlteration>(conventions,
-                    new CollectionInspector(mapping),
-                    new CollectionAlteration(mapping));
+                Apply<IManyToManyCollectionInspector, IManyToManyCollectionAlteration, IManyToManyCollectionInstance>(conventions,
+                    new CollectionInstance(mapping));
             }
             else
             {
                 var conventions = finder.Find<IHasManyConvention>();
 
-                Apply<IOneToManyCollectionInspector, IOneToManyCollectionAlteration>(conventions,
-                    new CollectionInspector(mapping),
-                    new CollectionAlteration(mapping));
+                Apply<IOneToManyCollectionInspector, IOneToManyCollectionAlteration, IOneToManyCollectionInstance>(conventions,
+                    new CollectionInstance(mapping));
             }
         }
 
@@ -79,22 +74,23 @@ namespace FluentNHibernate.Conventions
         {
             var conventions = finder.Find<IReferenceConvention>();
 
-            Apply<IManyToOneInspector, IManyToOneAlteration>(conventions,
-                new ManyToOneInspector(mapping),
-                new ManyToOneAlteration(mapping));
+            Apply<IManyToOneInspector, IManyToOneAlteration, IManyToOneInstance>(conventions,
+                new ManyToOneInstance(mapping));
         }
 
-        private void Apply<TInspector, TAlteration>(IEnumerable conventions, TInspector inspection, TAlteration alteration)
+        private void Apply<TInspector, TAlteration, TInstance>(IEnumerable conventions, TInstance instance)
             where TInspector : IInspector
+            where TAlteration : IAlteration
+            where TInstance : TInspector, TAlteration
         {
-            foreach (IConvention<TInspector, TAlteration> convention in conventions)
+            foreach (IConvention<TInspector, TAlteration, TInstance> convention in conventions)
             {
                 var criteria = new ConcreteAcceptanceCriteria<TInspector>();
 
                 convention.Accept(criteria);
 
-                if (criteria.Matches(inspection))
-                    convention.Apply(alteration, inspection);
+                if (criteria.Matches(instance))
+                    convention.Apply(instance);
             }
         }
     }

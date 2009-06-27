@@ -6,7 +6,7 @@ namespace FluentNHibernate.Conventions.Alterations
     public interface IPropertyAlteration
         : IInsertAlteration, IUpdateAlteration,
           IReadOnlyAlteration, INullableAlteration,
-          IAccessAlteration
+          IAccessAlteration, IAlteration
     {
         void CustomTypeIs<T>();
         void CustomTypeIs(TypeReference type);

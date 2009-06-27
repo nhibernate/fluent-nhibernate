@@ -1,6 +1,7 @@
 using System;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Alterations.Instances;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 
@@ -19,11 +20,11 @@ namespace FluentNHibernate.Conventions.Defaults
                 .Expect(x => x.Type.IsEnum);
         }
 
-        public void Apply(IPropertyAlteration alteration, IPropertyInspector inspector)
+        public void Apply(IPropertyInstance instance)
         {
-            var mapperType = typeof(GenericEnumMapper<>).MakeGenericType(inspector.Type);
+            var mapperType = typeof(GenericEnumMapper<>).MakeGenericType(instance.Type);
 
-            alteration.CustomTypeIs(mapperType);
+            instance.CustomTypeIs(mapperType);
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Linq;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Alterations.Instances;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
@@ -76,7 +77,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
                     .Expect(x => x.Update == false);
             }
 
-            public void Apply(IPropertyAlteration alteration, IPropertyInspector inspector)
+            public void Apply(IPropertyInstance instance)
             { }
         }
     }

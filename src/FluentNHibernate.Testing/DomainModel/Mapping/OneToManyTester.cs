@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Alterations.Instances;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 using Iesi.Collections.Generic;
@@ -632,9 +633,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 
             }
 
-            public void Apply(IOneToManyCollectionAlteration alteration, IOneToManyCollectionInspector inspector)
+            public void Apply(IOneToManyCollectionInstance instance)
             {
-                alteration.Name("test");
+                instance.Name("test");
             }
         }
     }
