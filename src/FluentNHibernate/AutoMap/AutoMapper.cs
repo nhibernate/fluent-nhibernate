@@ -45,7 +45,9 @@ namespace FluentNHibernate.AutoMap
                         discriminatorSet = true;
                     }
 
-                    if (expressions.SubclassStrategy == SubclassStrategy.JoinedSubclass)
+                    var subclassStrategy = expressions.SubclassStrategy(typeof(T));
+
+                    if (subclassStrategy == SubclassStrategy.JoinedSubclass)
                     {
                         var subclass = map.JoinedSubClass(inheritedClass.Type, typeof(T).Name);
 
