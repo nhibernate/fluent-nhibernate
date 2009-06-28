@@ -2,15 +2,44 @@ using System;
 
 namespace FluentNHibernate.Mapping
 {
-    public class OptimisticLockBuilder<TParent> : IOptimisticLockBuilder
+    public class OptimisticLockBuilder : IOptimisticLockBuilder
     {
-        private readonly TParent parent;
         private readonly Action<string> setter;
 
+        public OptimisticLockBuilder(Action<string> setter)
+        {
+            this.setter = setter;
+        }
+
+        void IOptimisticLockBuilder.None()
+        {
+            setter("none");
+        }
+
+        void IOptimisticLockBuilder.Version()
+        {
+            setter("version");
+        }
+
+        void IOptimisticLockBuilder.Dirty()
+        {
+            setter("dirty");
+        }
+
+        void IOptimisticLockBuilder.All()
+        {
+            setter("all");
+        }
+    }
+
+    public class OptimisticLockBuilder<TParent> : OptimisticLockBuilder
+    {
+        private readonly TParent parent;
+
         public OptimisticLockBuilder(TParent parent, Action<string> setter)
+            : base(setter)
         {
             this.parent = parent;
-            this.setter = setter;
         }
 
         /// <summary>
@@ -18,7 +47,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public TParent None()
         {
-            setter("none");
+            ((IOptimisticLockBuilder)this).None();
             return parent;
         }
 
@@ -27,7 +56,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public TParent Version()
         {
-            setter("version");
+            ((IOptimisticLockBuilder)this).Version();
             return parent;
         }
 
@@ -36,7 +65,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public TParent Dirty()
         {
-            setter("dirty");
+            ((IOptimisticLockBuilder)this).Dirty();
             return parent;
         }
 
@@ -45,28 +74,8 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public TParent All()
         {
-            setter("all");
+            ((IOptimisticLockBuilder)this).All();
             return parent;
-        }
-
-        void IOptimisticLockBuilder.None()
-        {
-            None();
-        }
-
-        void IOptimisticLockBuilder.Version()
-        {
-            Version();
-        }
-
-        void IOptimisticLockBuilder.Dirty()
-        {
-            Dirty();
-        }
-
-        void IOptimisticLockBuilder.All()
-        {
-            All();
         }
     }
 }

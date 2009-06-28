@@ -19,6 +19,7 @@ namespace FluentNHibernate.Conventions.Inspections
             propertyMappings.Map(x => x.TableName, x => x.TableName);
             propertyMappings.Map(x => x.DynamicInsert, x => x.DynamicInsert);
             propertyMappings.Map(x => x.DynamicUpdate, x => x.DynamicUpdate);
+            propertyMappings.Map(x => x.OptimisticLock, x => x.OptimisticLock);
         }
 
         public Type EntityType

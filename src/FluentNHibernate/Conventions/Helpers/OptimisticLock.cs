@@ -1,4 +1,5 @@
 using System;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
 using FluentNHibernate.Mapping;
 
@@ -8,7 +9,9 @@ namespace FluentNHibernate.Conventions.Helpers
     {
         public static IClassConvention Is(Action<IOptimisticLockBuilder> locking)
         {
-            throw new NotImplementedException("Awaiting conventions DSL");
+            return new BuiltClassConvention(
+                criteria => criteria.Expect(x => x.OptimisticLock, AcceptanceCriteria.Is.Not.Set), // eww
+                x => locking(x.OptimisticLock));
         }
     }
 }

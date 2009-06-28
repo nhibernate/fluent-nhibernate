@@ -1,6 +1,7 @@
 using System;
 using FluentNHibernate.Conventions.Alterations.Instances;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Alterations
@@ -40,6 +41,11 @@ namespace FluentNHibernate.Conventions.Alterations
                 nextBool = !nextBool;
                 return this;
             }
+        }
+
+        public new IOptimisticLockBuilder OptimisticLock
+        {
+            get { return new OptimisticLockBuilder(value => mapping.OptimisticLock = value); }
         }
     }
 }

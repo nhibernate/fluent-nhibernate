@@ -1,3 +1,5 @@
+using FluentNHibernate.Mapping;
+
 namespace FluentNHibernate.Conventions.Alterations
 {
     public interface IClassAlteration : IAlteration
@@ -6,5 +8,6 @@ namespace FluentNHibernate.Conventions.Alterations
         void DynamicInsert();
         void DynamicUpdate();
         IClassAlteration Not { get; }
+        IOptimisticLockBuilder OptimisticLock { get; }
     }
 }
