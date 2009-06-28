@@ -148,7 +148,6 @@
     <Compile Include="DomainModel\Mapping\MappingPartOutputOrderTests.cs" />
     <Compile Include="DomainModel\Mapping\FetchTypeExpressionTester.cs" />
     <Compile Include="DomainModel\Mapping\DefaultAccessStrategyClassMapTester.cs" />
-    <Compile Include="DomainModel\Mapping\DiscriminatorPartTester.cs" />
     <Compile Include="DomainModel\Mapping\IdentityPartTester.cs" />
     <Compile Include="DomainModel\Mapping\JoinedSubClassTester.cs" />
     <Compile Include="DomainModel\Mapping\JoinPartTester.cs" />
@@ -234,17 +233,11 @@
     <Compile Include="MappingModel\Output\XmlSetWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlVersionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
-    <Compile Include="PersistenceModelTests\Conventions\Configure.cs" />
-    <Compile Include="PersistenceModelTests\Conventions\WriteMappingsTo.cs" />
     <Compile Include="Testing\PersistenceSpecificationTester.cs" />
     <Compile Include="Testing\SessionSourceConfigurationTester.cs" />
     <Compile Include="Specification.cs" />
     <Compile Include="SpecificationExtensions.cs" />
     <Compile Include="Debugging.cs" />
-    <Compile Include="AutoMap\AutoPersistenceModelTests.cs" />
-    <Compile Include="AutoMap\IdAutoMapperTests.cs" />
-    <Compile Include="AutoMap\IntegrationsTests.cs" />
-    <Compile Include="AutoMap\PropertyAutoMapperTests.cs" />
     <Compile Include="DomainModel\Employees.cs" />
     <Compile Include="DomainModel\Music.cs" />
     <Compile Include="MappingModel\AttributeStoreTester.cs" />

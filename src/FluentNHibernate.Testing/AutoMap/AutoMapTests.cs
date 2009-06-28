@@ -121,16 +121,17 @@ namespace FluentNHibernate.Testing.AutoMap
                 mapping.Element("//cache").DoesntExist());
         }
 
-        //[Test]
-        //public void AutoMapSetsCacheOnClassUsingConvention()
-        //{
-        //    Model<ExampleClass>(model => model
-        //        .ConventionDiscovery.Add(Cache.Is(cache => cache.AsReadOnly()))
-        //        .Where(type => type == typeof(ExampleClass)));
+        [Test]
+        public void AutoMapSetsCacheOnClassUsingConvention()
+        {
+            Assert.Fail();
+            //Model<ExampleClass>(model => model
+            //    .ConventionDiscovery.Add(Cache.Is(cache => cache.AsReadOnly()))
+            //    .Where(type => type == typeof(ExampleClass)));
 
-        //    Test<ExampleClass>(mapping =>
-        //        mapping.Element("//cache").Exists());
-        //}
+            //Test<ExampleClass>(mapping =>
+            //    mapping.Element("//cache").Exists());
+        }
 
         [Test]
         public void ShouldAutoMapBitmapPropertyAsColumn()
