@@ -1,6 +1,9 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
@@ -28,12 +31,33 @@ namespace FluentNHibernate.AutoMap
 
         private bool HasExplicitTypeConvention(PropertyInfo property)
         {
-            //var conventions = conventionFinder
-            //    .Find<IUserTypeConvention>()
-            //    .Where(c => c.Accept(property.PropertyType));
+            // todo: clean this up!
+            //        What it's doing is finding if there are any IUserType conventions
+            //        that would be applied to this property, if there are then we should
+            //        definitely automap it. The nasty part is that right now we don't have
+            //        a model, so we're having to create a fake one so the convention will
+            //        apply to it.
+            var conventions = conventionFinder
+                .Find<IPropertyConvention>()
+                .Where(c =>
+                {
+                    if (!c.GetType().IsGenericType)
+                        return false;
+                    if (c.GetType().GetGenericTypeDefinition() != typeof(UserTypeConvention<>))
+                        return false;
 
-            //return conventions.FirstOrDefault() != null;
-            throw new NotImplementedException();
+                    var criteria = new ConcreteAcceptanceCriteria<IPropertyInspector>();
+
+                    c.Accept(criteria);
+
+                    return criteria.Matches(new PropertyInspector(new PropertyMapping
+                    {
+                        Type = new TypeReference(property.DeclaringType),
+                        PropertyInfo = property
+                    }));
+                });
+
+            return conventions.FirstOrDefault() != null;
         }
 
         private static bool IsMappableToColumnType(PropertyInfo property)
@@ -51,10 +75,26 @@ namespace FluentNHibernate.AutoMap
             if (property.DeclaringType != classMap.Type)
                 return;
 
-            var propertyMap = new PropertyMapping();
-            propertyMap.AddColumn(new ColumnMapping() { Name = property.Name });
-            propertyMap.Name = property.Name;
-            classMap.AddProperty(propertyMap);
+            classMap.AddProperty(GetPropertyMapping(classMap.Type, property));
+        }
+
+        private PropertyMapping GetPropertyMapping(Type type, PropertyInfo property)
+        {
+            var mapping = new PropertyMapping
+            {
+                ContainingEntityType = type,
+                PropertyInfo = property
+            };
+
+            mapping.AddDefaultColumn(new ColumnMapping { Name = mapping.PropertyInfo.Name });
+
+            if (!mapping.Attributes.IsSpecified(x => x.Name))
+                mapping.Name = mapping.PropertyInfo.Name;
+
+            if (!mapping.Attributes.IsSpecified(x => x.Type))
+                mapping.Attributes.SetDefault(x => x.Type, new TypeReference(mapping.PropertyInfo.PropertyType));
+
+            return mapping;
         }
     }
 }
