@@ -38,7 +38,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
                 .Conventions(conventions => conventions.Add(DynamicUpdate.AlwaysTrue()))
-                .ForMapping(c => c.DynamicUpdate())
+                .ForMapping(c => c.Not.DynamicUpdate())
                 .Element("class").HasAttribute("dynamic-update", "false");
         }
 
@@ -73,7 +73,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
                 .Conventions(conventions => conventions.Add(DynamicInsert.AlwaysTrue()))
-                .ForMapping(c => c.DynamicInsert())
+                .ForMapping(c => c.Not.DynamicInsert())
                 .Element("class").HasAttribute("dynamic-insert", "false");
         }
 

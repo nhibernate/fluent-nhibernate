@@ -1,4 +1,5 @@
 using System;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
 
 namespace FluentNHibernate.Conventions.Helpers
@@ -7,12 +8,16 @@ namespace FluentNHibernate.Conventions.Helpers
     {
         public static IClassConvention AlwaysTrue()
         {
-            throw new NotImplementedException("Awaiting conventions DSL");
+            return new BuiltClassConvention(
+                criteria => criteria.Expect(x => x.DynamicUpdate, Is.Not.Set),
+                x => x.DynamicUpdate());
         }
 
         public static IClassConvention AlwaysFalse()
         {
-            throw new NotImplementedException("Awaiting conventions DSL");
+            return new BuiltClassConvention(
+                criteria => criteria.Expect(x => x.DynamicUpdate, Is.Not.Set),
+                x => x.Not.DynamicUpdate());
         }
     }
 }
