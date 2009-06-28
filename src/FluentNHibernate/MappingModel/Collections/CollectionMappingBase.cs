@@ -9,7 +9,7 @@ namespace FluentNHibernate.MappingModel.Collections
         public KeyMapping Key { get; set; }
         public ElementMapping Element { get; set; }
         public CompositeElementMapping CompositeElement { get; set; }
-        public Type ContainedEntityType { get; set; }
+        public Type ContainingEntityType { get; set; }
         public Type ChildType { get; set; }
         public ICollectionRelationshipMapping Relationship { get; set; }
         public MemberInfo MemberInfo { get; set; }

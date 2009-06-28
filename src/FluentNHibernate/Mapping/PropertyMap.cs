@@ -23,8 +23,11 @@ namespace FluentNHibernate.Mapping
             generated = new PropertyGeneratedBuilder(this, value => mapping.Generated = value);
 
             this.parentType = parentType;
-            Property = property;
-            mapping = new PropertyMapping { ContainingEntityType = parentType };
+            mapping = new PropertyMapping
+            {
+                ContainingEntityType = parentType,
+                PropertyInfo = property
+            };
         }
 
         public PropertyGeneratedBuilder Generated
@@ -35,7 +38,7 @@ namespace FluentNHibernate.Mapping
         public PropertyMapping GetPropertyMapping()
         {
             if (columnNames.List().Count == 0)
-                mapping.AddDefaultColumn(CreateColumn(Property.Name));
+                mapping.AddDefaultColumn(CreateColumn(mapping.PropertyInfo.Name));
 
             foreach (var column in columnNames.List())
             {
@@ -45,10 +48,10 @@ namespace FluentNHibernate.Mapping
             }
 
             if (!mapping.Attributes.IsSpecified(x => x.Name))
-                mapping.Name = Property.Name;
+                mapping.Name = mapping.PropertyInfo.Name;
 
             if (!mapping.Attributes.IsSpecified(x => x.Type))
-                mapping.Attributes.SetDefault(x => x.Type, new TypeReference(Property.PropertyType));
+                mapping.Attributes.SetDefault(x => x.Type, new TypeReference(mapping.PropertyInfo.PropertyType));
 
             return mapping;
         }
@@ -60,8 +63,6 @@ namespace FluentNHibernate.Mapping
                 Name = column
             };
         }
-
-        public PropertyInfo Property { get; private set; }
 
         public Type PropertyType
         {

@@ -7,6 +7,7 @@ using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions
 {
@@ -19,6 +20,14 @@ namespace FluentNHibernate.Conventions
         public ConventionVisitor(IConventionFinder finder)
         {
             this.finder = finder;
+        }
+
+        public override void ProcessId(IdMapping idMapping)
+        {
+            var conventions = finder.Find<IIdConvention>();
+
+            Apply<IIdentityInspector, IIdentityAlteration, IIdentityInstance>(conventions,
+                new IdentityInstance(idMapping));
         }
 
         public override void ProcessClass(ClassMapping classMapping)

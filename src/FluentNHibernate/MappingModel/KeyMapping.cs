@@ -7,7 +7,7 @@ namespace FluentNHibernate.MappingModel
     {
         private readonly AttributeStore<KeyMapping> attributes;
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
-        public Type ContainedEntityType { get; set; }
+        public Type ContainingEntityType { get; set; }
 
         public KeyMapping()
         {

@@ -80,6 +80,7 @@
     <Compile Include="Conventions\AcceptanceCriteria\InverterAcceptanceCriteria.cs" />
     <Compile Include="Conventions\Alterations\IAlteration.cs" />
     <Compile Include="Conventions\Alterations\ICollectionAlteration.cs" />
+    <Compile Include="Conventions\Alterations\IdentityInstance.cs" />
     <Compile Include="Conventions\Alterations\IKeyAlteration.cs" />
     <Compile Include="Conventions\Alterations\Instances\IManyToManyInstance.cs" />
     <Compile Include="Conventions\Alterations\Instances\IKeyInstance.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Conventions\IHasManyConvention.cs" />
     <Compile Include="Conventions\Inspections\ColumnInspector.cs" />
     <Compile Include="Conventions\Alterations\KeyInstance.cs" />
+    <Compile Include="Conventions\Inspections\IdentityInspector.cs" />
     <Compile Include="Conventions\Inspections\KeyInspector.cs" />
     <Compile Include="Conventions\Alterations\ManyToManyInstance.cs" />
     <Compile Include="Conventions\Inspections\ManyToManyInspector.cs" />

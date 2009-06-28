@@ -19,7 +19,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public Type EntityType
         {
-            get { return mapping.ContainedEntityType; }
+            get { return mapping.ContainingEntityType; }
         }
 
         public string StringIdentifierForModel

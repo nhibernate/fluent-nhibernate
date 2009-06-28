@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+
 namespace FluentNHibernate.Conventions.Inspections
 {
     public interface IIdentityInspector : IExposedThroughPropertyInspector
     {
-        string ColumnName { get; }
+        IEnumerable<IColumnInspector> Columns { get; }
         Generator Generator { get; }
         object UnsavedValue { get; }
     }

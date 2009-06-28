@@ -111,7 +111,7 @@ namespace FluentNHibernate.Mapping
 
         public JoinedSubclassMapping GetJoinedSubclassMapping()
         {
-            mapping.Key = new KeyMapping { ContainedEntityType = typeof(TSubclass) };
+            mapping.Key = new KeyMapping { ContainingEntityType = typeof(TSubclass) };
             mapping.Name = typeof(TSubclass).AssemblyQualifiedName;
 
             foreach (var column in columns)

@@ -16,7 +16,7 @@ namespace FluentNHibernate.MappingModel
                 visitor.Visit(column);
         }
 
-        public Type ContainedEntityType { get; set; }
+        public Type ContainingEntityType { get; set; }
         public PropertyInfo PropertyInfo { get; set; }
 
         public string Name

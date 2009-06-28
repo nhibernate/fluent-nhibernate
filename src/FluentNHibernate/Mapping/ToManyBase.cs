@@ -69,13 +69,13 @@ namespace FluentNHibernate.Mapping
         {
             var mapping = collectionBuilder();
 
-            mapping.ContainedEntityType = EntityType;
+            mapping.ContainingEntityType = EntityType;
             mapping.ChildType = typeof(TChild);
             mapping.MemberInfo = Member;
 
             collectionAttributes.CopyTo(mapping.Attributes);
 
-            mapping.Key = new KeyMapping { ContainedEntityType = EntityType };
+            mapping.Key = new KeyMapping { ContainingEntityType = EntityType };
             keyAttributes.CopyTo(mapping.Key.Attributes);
 
             mapping.Relationship = GetRelationship();

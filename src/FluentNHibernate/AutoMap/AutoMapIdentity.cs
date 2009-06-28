@@ -28,7 +28,7 @@ namespace FluentNHibernate.AutoMap
             if (property.DeclaringType != classMap.Type)
                 return;
 
-            var idMapping = new IdMapping();
+            var idMapping = new IdMapping { ContainingEntityType = classMap.Type };
             idMapping.AddColumn(new ColumnMapping() { Name = property.Name });
             idMapping.Name = property.Name;
             idMapping.Type = new TypeReference(property.PropertyType);

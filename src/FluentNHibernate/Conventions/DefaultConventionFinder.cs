@@ -100,6 +100,8 @@ namespace FluentNHibernate.Conventions
         {
             if (missingConstructor == MissingConstructor.Throw && !HasValidConstructor(type))
                 throw new MissingConstructorException(type);
+            if (missingConstructor == MissingConstructor.Ignore && !HasValidConstructor(type))
+                return;
 
             if (conventions.Contains(type) && !AllowMultiplesOf(type)) return;
 

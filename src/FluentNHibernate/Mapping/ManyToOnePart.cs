@@ -54,7 +54,7 @@ namespace FluentNHibernate.Mapping
 
             Property = property;
 
-            mapping = new ManyToOneMapping { ContainedEntityType = entity };
+            mapping = new ManyToOneMapping { ContainingEntityType = entity };
         }
 
         public OuterJoinBuilder<IManyToOnePart> OuterJoin

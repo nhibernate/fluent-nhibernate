@@ -1,12 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
-    public class IdMapping : MappingBase, IIdentityMapping
+    public class IdMapping : MappingBase, IIdentityMapping, IHasColumnMappings
     {
         private readonly AttributeStore<IdMapping> attributes = new AttributeStore<IdMapping>();
-        private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
+        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
 
         public GeneratorMapping Generator { get; set; }
 
@@ -15,7 +16,17 @@ namespace FluentNHibernate.MappingModel.Identity
             columns.Add(column);
         }
 
-        public IEnumerable<ColumnMapping> Columns
+        public void AddDefaultColumn(ColumnMapping column)
+        {
+            columns.AddDefault(column);
+        }
+
+        public void ClearColumns()
+        {
+            columns.Clear();
+        }
+
+        public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
         }
@@ -61,5 +72,7 @@ namespace FluentNHibernate.MappingModel.Identity
         {
             get { return attributes; }
         }
+
+        public Type ContainingEntityType { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace FluentNHibernate.Conventions.Defaults
     {
         public void Accept(IAcceptanceCriteria<IIdentityInspector> acceptance)
         {
-            acceptance.Expect(x => x.ColumnName, Is.Not.Set);
+            acceptance.Expect(x => x.Columns.IsEmpty());
         }
 
         public void Apply(IIdentityInstance instance)

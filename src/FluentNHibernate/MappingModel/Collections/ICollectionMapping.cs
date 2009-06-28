@@ -28,7 +28,7 @@ namespace FluentNHibernate.MappingModel.Collections
         MemberInfo MemberInfo { get; set;  }
         ElementMapping Element { get; set; }
         CompositeElementMapping CompositeElement { get; set; }
-        Type ContainedEntityType { get; set; }
+        Type ContainingEntityType { get; set; }
         Type ChildType { get; set; }
     }
 }

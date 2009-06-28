@@ -23,7 +23,7 @@ namespace FluentNHibernate.Mapping
         {
             fetch = new FetchTypeExpression<JoinPart<T>>(this, value => mapping.Fetch = value);
             mapping.TableName = tableName;
-            mapping.Key = new KeyMapping { ContainedEntityType = typeof(T) };
+            mapping.Key = new KeyMapping { ContainingEntityType = typeof(T) };
 
             columns.Add(GetType().GetGenericArguments()[0].Name + "ID");
         }

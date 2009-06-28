@@ -14,13 +14,14 @@ namespace FluentNHibernate.Mapping
 		private readonly PropertyInfo property;
         private readonly AccessStrategyBuilder<IIdentityPart> access;
 
-        private readonly IdMapping mapping = new IdMapping();
+        private readonly IdMapping mapping;
 
         public IdentityPart(Type entity, PropertyInfo property, string columnName)
 		{
             this.property = property;
             EntityType = entity;
 
+            mapping = new IdMapping { ContainingEntityType = EntityType };
             access = new AccessStrategyBuilder<IIdentityPart>(this, value => mapping.Access = value);
             GeneratedBy = new IdentityGenerationStrategyBuilder<IIdentityPart>(this, IdentityType);
 

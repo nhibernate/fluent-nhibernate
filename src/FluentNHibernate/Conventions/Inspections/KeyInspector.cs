@@ -34,7 +34,7 @@ namespace FluentNHibernate.Conventions.Inspections
             get
             {
                 foreach (var column in mapping.Columns.UserDefined)
-                    yield return new ColumnInspector(mapping.ContainedEntityType, column);
+                    yield return new ColumnInspector(mapping.ContainingEntityType, column);
             }
         }
     }
