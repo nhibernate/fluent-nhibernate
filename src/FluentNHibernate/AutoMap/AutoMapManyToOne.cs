@@ -21,16 +21,30 @@ namespace FluentNHibernate.AutoMap
             return false;
         }
 
-        public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
-        {
-        }
-
         public void Map(ClassMapping classMap, PropertyInfo property)
         {
             if (property.DeclaringType != classMap.Type)
                 return;
 
             var manyToOne = new ManyToOneMapping {Name = property.Name, PropertyInfo = property};
+            classMap.AddReference(manyToOne);
+        }
+
+        public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
+        {
+            if (property.DeclaringType != classMap.Type)
+                return;
+
+            var manyToOne = new ManyToOneMapping { Name = property.Name, PropertyInfo = property };
+            classMap.AddReference(manyToOne);
+        }
+
+        public void Map(SubclassMapping classMap, PropertyInfo property)
+        {
+            if (property.DeclaringType != classMap.Type)
+                return;
+
+            var manyToOne = new ManyToOneMapping { Name = property.Name, PropertyInfo = property };
             classMap.AddReference(manyToOne);
         }
     }

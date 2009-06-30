@@ -3,7 +3,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IJoinedSubclass : IClasslike, IMappingPart
+    public interface IJoinedSubclass : IClasslike
     {
         void WithTableName(string tableName);
         void SchemaIs(string schema);

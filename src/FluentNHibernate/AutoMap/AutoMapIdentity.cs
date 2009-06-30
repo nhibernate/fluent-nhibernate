@@ -19,10 +19,6 @@ namespace FluentNHibernate.AutoMap
             return expressions.FindIdentity(property);
         }
 
-        public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
-        {
-        }
-
         public void Map(ClassMapping classMap, PropertyInfo property)
         {
             if (property.DeclaringType != classMap.Type)
@@ -34,6 +30,14 @@ namespace FluentNHibernate.AutoMap
             idMapping.Type = new TypeReference(property.PropertyType);
             idMapping.Generator= new GeneratorMapping { Class = "identity" };
             classMap.Id = idMapping;        
+        }
+
+        public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
+        {
+        }
+
+        public void Map(SubclassMapping classMap, PropertyInfo property)
+        {
         }
     }
 }

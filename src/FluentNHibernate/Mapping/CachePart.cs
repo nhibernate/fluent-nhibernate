@@ -2,7 +2,7 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface ICache : IMappingPart
+    public interface ICache
     {
         ICache AsReadWrite();
         ICache AsNonStrictReadWrite();

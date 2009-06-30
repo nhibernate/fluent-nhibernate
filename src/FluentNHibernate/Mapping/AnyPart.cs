@@ -7,7 +7,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IAnyPart<T> : IMappingPart, IAccessStrategy<IAnyPart<T>>
+    public interface IAnyPart<T> : IAccessStrategy<IAnyPart<T>>
     {
         /// <summary>
         /// (REQUIRED) The identity type of the any mapping

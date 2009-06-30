@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.AutoMap
 {
@@ -28,7 +29,7 @@ namespace FluentNHibernate.AutoMap
             };
         }
 
-        public AutoMap<T> MergeMap<T>(AutoMap<T> map, IDictionary<Type, Action<object>> inlineOverrides)
+        public IAutoClasslike MergeMap<T>(IAutoClasslike map, IDictionary<Type, Action<object>> inlineOverrides)
         {
             if (mappingTypes != null)
             {
@@ -51,24 +52,20 @@ namespace FluentNHibernate.AutoMap
                     {
                         var subclass = map.JoinedSubClass(inheritedClass.Type, typeof(T).Name);
 
-                        if (inlineOverrides.ContainsKey(subclass.EntityType))
-                            inlineOverrides[subclass.EntityType](subclass);
+                        if (inlineOverrides.ContainsKey(inheritedClass.Type))
+                            inlineOverrides[inheritedClass.Type](subclass);
 
-                        var method = GetType().GetMethod("MapEverythingInClass");
-                        var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
-                        genericMethod.Invoke(this, new[] { subclass });
+                        MapEverythingInClass(subclass, inheritedClass.Type);
                         inheritedClass.IsMapped = true;
                     }
                     else
                     {
                         var subclass = map.SubClass(inheritedClass.Type, inheritedClass.Type.Name);
 
-                        if (inlineOverrides.ContainsKey(subclass.EntityType))
-                            inlineOverrides[subclass.EntityType](subclass);
+                        if (inlineOverrides.ContainsKey(inheritedClass.Type))
+                            inlineOverrides[inheritedClass.Type](subclass);
 
-                        var method = GetType().GetMethod("MapEverythingInClass");
-                        var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
-                        genericMethod.Invoke(this, new[] {subclass});
+                        MapEverythingInClass(subclass, inheritedClass.Type);
                         inheritedClass.IsMapped = true;
                     }
                 }
@@ -77,20 +74,20 @@ namespace FluentNHibernate.AutoMap
             if (inlineOverrides.ContainsKey(typeof(T)))
                 inlineOverrides[typeof(T)](map);
 
-            MapEverythingInClass(map);
+            MapEverythingInClass(map, typeof(T));
             
             return map;
         }
 
-        public virtual void MapEverythingInClass<T>(AutoMap<T> map)
+        public virtual void MapEverythingInClass(IAutoClasslike map, Type entityType)
         {
-            foreach (var property in typeof(T).GetProperties())
+            foreach (var property in entityType.GetProperties())
             {
                 TryToMapProperty(map, property);
             }
         }
 
-        protected void TryToMapProperty<T>(AutoMap<T> map, PropertyInfo property)
+        protected void TryToMapProperty(IAutoClasslike map, PropertyInfo property)
         {
             if (property.GetIndexParameters().Length == 0)
             {
@@ -100,8 +97,14 @@ namespace FluentNHibernate.AutoMap
                     {
                         if (map.PropertiesMapped.Count(p => p.Name == property.Name) == 0)
                         {
-                            rule.Map(map, property);
-                            rule.Map(map.ClassMapping, property);
+                            var mapping = map.GetMapping();
+
+                            if (mapping is ClassMapping)
+                                rule.Map((ClassMapping)mapping, property);
+                            else if (mapping is SubclassMapping)
+                                rule.Map((SubclassMapping)mapping, property);
+                            else if (mapping is JoinedSubclassMapping)
+                                rule.Map((JoinedSubclassMapping)mapping, property);
                             break;
                         }
                     }
@@ -109,11 +112,11 @@ namespace FluentNHibernate.AutoMap
             }
         }
 
-        public AutoMap<T> Map<T>(List<AutoMapType> types, IDictionary<Type, Action<object>> overrides)
+        public IAutoClasslike Map<T>(List<AutoMapType> types, IDictionary<Type, Action<object>> overrides)
         {
             var classMap = (AutoMap<T>)Activator.CreateInstance(typeof(AutoMap<T>));
             mappingTypes = types;
-            return MergeMap(classMap, overrides);
+            return MergeMap<T>(classMap, overrides);
         }
     }
 }

@@ -75,6 +75,7 @@
     <Compile Include="AutoMap\AutoMappingException.cs" />
     <Compile Include="AutoMap\AutoMapVersion.cs" />
     <Compile Include="AutoMap\AutoPersistenceModel.cs" />
+    <Compile Include="AutoMap\IAutoClasslike.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\CollectionExpectation.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\InvertedExpectation.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\InverterAcceptanceCriteria.cs" />
@@ -377,7 +378,6 @@
     <Compile Include="Mapping\IDynamicComponent.cs" />
     <Compile Include="Mapping\IHibernateMappingProvider.cs" />
     <Compile Include="Mapping\IJoinedSubclass.cs" />
-    <Compile Include="Mapping\IMappingPart.cs" />
     <Compile Include="Mapping\IndexManyToManyPart.cs" />
     <Compile Include="Mapping\IndexPart.cs" />
     <Compile Include="Mapping\INotFoundExpression.cs" />

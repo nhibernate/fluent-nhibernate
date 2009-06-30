@@ -4,7 +4,7 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IVersion : IMappingPart
+    public interface IVersion
     {
         AccessStrategyBuilder<VersionPart> Access { get; }
         string GetColumnName();

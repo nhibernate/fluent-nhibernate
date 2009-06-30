@@ -5,6 +5,8 @@ namespace FluentNHibernate.MappingModel
 {
     public class TypeReference
     {
+        public static readonly TypeReference Empty = new TypeReference("nop");
+
         private readonly Type innerType;
         private readonly string innerName;
 
@@ -139,7 +141,9 @@ namespace FluentNHibernate.MappingModel
 
         public static bool operator ==(TypeReference original, Type type)
         {
-            if (original.innerType == null)
+            if (type == null)
+                return false;
+            if (original == null || original.innerType == null)
                 return false;
 
             return original.innerType == type;

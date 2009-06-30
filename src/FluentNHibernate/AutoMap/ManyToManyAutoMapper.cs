@@ -40,22 +40,29 @@ namespace FluentNHibernate.AutoMap
                 .FirstOrDefault();
         }
 
-        public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
-        {
-            if (!classMap.CanMapProperty(property))
-                return;
+        //public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
+        //{
+        //    PropertyInfo inverseProperty = GetInverseProperty(property);
+        //    Type parentSide = conventions.GetParentSideForManyToMany(property.DeclaringType, inverseProperty.DeclaringType);
+        //    IManyToManyPart manyToManyPart = GetManyToManyPart(classMap, property);
 
-            PropertyInfo inverseProperty = GetInverseProperty(property);
-            Type parentSide = conventions.GetParentSideForManyToMany(property.DeclaringType, inverseProperty.DeclaringType);
-            IManyToManyPart manyToManyPart = GetManyToManyPart(classMap, property);
-
-            if (parentSide != property.DeclaringType)
-                ApplyInverse(property, parentSide, manyToManyPart);
-        }
+        //    if (parentSide != property.DeclaringType)
+        //        ApplyInverse(property, parentSide, manyToManyPart);
+        //}
 
         public void Map(ClassMapping classMap, PropertyInfo property)
         {
             
+        }
+
+        public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
+        {
+
+        }
+
+        public void Map(SubclassMapping classMap, PropertyInfo property)
+        {
+
         }
 
         public void ApplyInverse(PropertyInfo property, Type parentSide, IManyToManyPart manyToManyPart)

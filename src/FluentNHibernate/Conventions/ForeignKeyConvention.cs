@@ -4,6 +4,7 @@ using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Alterations;
 using FluentNHibernate.Conventions.Alterations.Instances;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions
 {
@@ -18,7 +19,7 @@ namespace FluentNHibernate.Conventions
 
         public void Apply(IManyToOneInstance instance)
         {
-            var columnName = GetKeyName(instance.Property, instance.Class);
+            var columnName = GetKeyName(instance.Property, instance.Class ?? TypeReference.Empty);
 
             instance.ColumnName(columnName);
         }

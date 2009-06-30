@@ -8,21 +8,23 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.AutoMap
 {
-    public class AutoMap<T> : ClassMap<T>
+    public class AutoMap<T> : ClassMap<T>, IAutoClasslike
     {
-        private IList<PropertyInfo> propertiesMapped = new List<PropertyInfo>();
-        private readonly Dictionary<Type, IJoinedSubclass> joinedSubClasses = new Dictionary<Type, IJoinedSubclass>();
-        private readonly Dictionary<Type, ISubclass> automappedSubclasses = new Dictionary<Type, ISubclass>();
+        private readonly IList<PropertyInfo> propertiesMapped = new List<PropertyInfo>();
 
-        public IList<PropertyInfo> PropertiesMapped
+        public IEnumerable<PropertyInfo> PropertiesMapped
         {
             get { return propertiesMapped; }
-            set { propertiesMapped = value; }
         }
 
-        public ClassMapping ClassMapping
+        public object GetMapping()
         {
-            get { return mapping; }
+            return GetClassMapping();
+        }
+
+        void IAutoClasslike.DiscriminateSubClassesOnColumn(string column)
+        {
+            DiscriminateSubClassesOnColumn(column);
         }
 
         protected override OneToManyPart<TChild> HasMany<TChild>(PropertyInfo property)
@@ -90,64 +92,42 @@ namespace FluentNHibernate.AutoMap
 
         public void JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
         {
-            if (joinedSubClasses.ContainsKey(typeof(TSubclass)))
-                return;
-
             var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(typeof(TSubclass));
             var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn);
+
             action(joinedclass);
-            AddPart(joinedclass);
-            joinedSubClasses[typeof(TSubclass)] = joinedclass;
+
+            joinedSubclasses.Add(joinedclass);
         }
 
-        public IJoinedSubclass JoinedSubClass(Type type, string keyColumn)
+        public IAutoClasslike JoinedSubClass(Type type, string keyColumn)
         {
-            if (joinedSubClasses.ContainsKey(type))
-                return joinedSubClasses[type];
-
             var genericType = typeof (AutoJoinedSubClassPart<>).MakeGenericType(type);
-            var joinedclass = (IJoinedSubclass)Activator.CreateInstance(genericType, keyColumn);                      
-            AddPart(joinedclass);
-            joinedSubClasses[type] = joinedclass;
-            return joinedclass;
+            var joinedclass = (IJoinedSubclass)Activator.CreateInstance(genericType, keyColumn);
+
+            joinedSubclasses.Add(joinedclass);
+
+            return (IAutoClasslike)joinedclass;
         }
 
         public void SubClass<TSubclass>(string discriminatorValue, Action<AutoSubClassPart<TSubclass>> action)
         {
-            if (automappedSubclasses.ContainsKey(typeof(TSubclass)))
-                return;
-
             var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
             var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, discriminatorValue);
+            
             action(subclass);
-            AddPart(subclass);
-            automappedSubclasses[typeof(TSubclass)] = subclass;
+            
+            subclasses.Add(subclass);
         }
 
-        public ISubclass SubClass(Type type, string discriminatorValue)
+        public IAutoClasslike SubClass(Type type, string discriminatorValue)
         {
-            if (automappedSubclasses.ContainsKey(type))
-                return automappedSubclasses[type];
-
             var genericType = typeof(AutoSubClassPart<>).MakeGenericType(type);
             var subclass = (ISubclass)Activator.CreateInstance(genericType, discriminatorValue);
 
-            AddPart(subclass);
-            automappedSubclasses[type] = subclass;
+            subclasses.Add(subclass);
 
-            return subclass;
-        }
-
-
-        public bool CanMapProperty(PropertyInfo property)
-        {
-            if (this is AutoJoinedSubClassPart<T> || this is AutoSubClassPart<T>)
-            {
-                if (property.DeclaringType != typeof(T))
-                    return false;
-            }
-
-            return true;
+            return (IAutoClasslike)subclass;
         }
     }
 }

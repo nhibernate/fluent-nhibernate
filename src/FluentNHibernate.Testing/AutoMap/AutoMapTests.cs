@@ -75,9 +75,8 @@ namespace FluentNHibernate.Testing.AutoMap
                 model.Where(type => type == typeof(ExampleClass)));
 
             Test<ExampleClass>(mapping =>
-                mapping.Element("//many-to-one")
-                    .HasAttribute("column", "Parent_id")
-                    .HasAttribute("name", "Parent"));
+                mapping.Element("//many-to-one").HasAttribute("name", "Parent")
+                       .Element("//many-to-one/column").HasAttribute("name", "Parent_id"));
         }
 
         [Test]
@@ -87,8 +86,7 @@ namespace FluentNHibernate.Testing.AutoMap
                 model.Where(type => type == typeof(ManyToMany1)));
 
             Test<ManyToMany1>(mapping =>
-                mapping.Element("//many-to-many")
-                    .HasAttribute("column", "ManyToMany2_id"));
+                mapping.Element("//many-to-many/column").HasAttribute("name", "ManyToMany2_id"));
         }
 
         [Test]

@@ -8,7 +8,6 @@ namespace FluentNHibernate.Mapping
     public interface IClasslike
     {
         Type EntityType { get; }
-        IEnumerable<IMappingPart> Parts { get; }
         IEnumerable<PropertyMap> Properties { get; }
         IEnumerable<IComponentBase> Components { get; }
         IEnumerable<ISubclass> Subclasses { get; }

@@ -4,7 +4,7 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
-    public class ImportPart : IMappingPart
+    public class ImportPart
     {
         private readonly ImportMapping mapping = new ImportMapping();
 

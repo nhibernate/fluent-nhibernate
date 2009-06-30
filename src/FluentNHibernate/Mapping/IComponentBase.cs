@@ -4,7 +4,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IComponentBase : IClasslike, IMappingPart
+    public interface IComponentBase : IClasslike
     {
         IComponentBase WithParentReference<TEntity>(Expression<Func<TEntity, object>> exp);
         ComponentMappingBase GetComponentMapping();

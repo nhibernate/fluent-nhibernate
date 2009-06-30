@@ -11,7 +11,7 @@ using NHibernate.Persister.Entity;
 namespace FluentNHibernate.Mapping
 {
     public abstract class ToManyBase<T, TChild, TRelationshipAttributes> : ICollectionRelationship
-        where T : ToManyBase<T, TChild, TRelationshipAttributes>, ICollectionRelationship, IMappingPart
+        where T : ToManyBase<T, TChild, TRelationshipAttributes>, ICollectionRelationship
         where TRelationshipAttributes : ICollectionRelationshipMapping
     {
         public MemberInfo Member { get; private set; }

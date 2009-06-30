@@ -4,7 +4,7 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IIdentityPart : IMappingPart, IAccessStrategy<IIdentityPart>
+    public interface IIdentityPart : IAccessStrategy<IIdentityPart>
     {
         IdentityGenerationStrategyBuilder<IIdentityPart> GeneratedBy { get; }
         Type IdentityType { get; }

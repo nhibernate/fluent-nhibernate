@@ -14,7 +14,7 @@ namespace FluentNHibernate.AutoMap
             localExpressions = expressions;
         }
 
-        public override void MapEverythingInClass<T>(AutoMap<T> map)
+        public override void MapEverythingInClass(IAutoClasslike map, Type entityType)
         {
             // This will ONLY map private properties. Do not call base.
 
@@ -22,7 +22,7 @@ namespace FluentNHibernate.AutoMap
             if (rule == null)
                 throw new InvalidOperationException("The FindMappablePrivateProperties convention must be supplied to use the PrivateAutoMapper. ");
 
-            foreach (var property in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.NonPublic))
+            foreach (var property in entityType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic))
             {
                 if (rule(property))
                     TryToMapProperty(map, property);

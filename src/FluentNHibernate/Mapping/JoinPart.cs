@@ -3,7 +3,7 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IJoin : IClasslike, IMappingPart
+    public interface IJoin : IClasslike
     {
         void WithKeyColumn(string column);
         JoinMapping GetJoinMapping();

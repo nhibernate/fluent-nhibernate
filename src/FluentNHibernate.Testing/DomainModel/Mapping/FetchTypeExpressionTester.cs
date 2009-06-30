@@ -8,17 +8,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 	public class FetchTypeExpressionTester
 	{
 		#region Test Setup
-		public FetchTypeExpression<IMappingPart> _fetchType;
+		public FetchTypeExpression<object> _fetchType;
 	    private string fetchValue;
 		
 		[SetUp]
 		public virtual void SetUp()
 		{
 		    fetchValue = "";
-			_fetchType = new FetchTypeExpression<IMappingPart>(null, value => fetchValue = value);
+			_fetchType = new FetchTypeExpression<object>(null, value => fetchValue = value);
 		}
 
-		protected FetchTypeExpressionTester A_call_to(Func<IMappingPart> fetchAction)
+		protected FetchTypeExpressionTester A_call_to(Func<object> fetchAction)
 		{
 			fetchAction();
 			return this;

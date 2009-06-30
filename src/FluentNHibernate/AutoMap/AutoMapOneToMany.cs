@@ -24,15 +24,6 @@ namespace FluentNHibernate.AutoMap
             return false;
         }
 
-        public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
-        {
-//            var classMapType = typeof(ClassMap<T>);
-//            var hasManyMethod = classMapType.GetMethod("HasMany", new[] { typeof(Expression<Func<T, object>>) });
-//            var listType = property.PropertyType.GetGenericArguments()[0];
-//            var genericHasManyMethod = hasManyMethod.MakeGenericMethod(listType);
-//            genericHasManyMethod.Invoke(classMap, new object[] { ExpressionBuilder.Create<T>(property) });
-        }
-
         public void Map(ClassMapping classMap, PropertyInfo property)
         {
             if (property.DeclaringType != classMap.Type)
@@ -43,6 +34,30 @@ namespace FluentNHibernate.AutoMap
             setMapping.Key = new KeyMapping();
             setMapping.Key.AddColumn(new ColumnMapping() { Name = property.DeclaringType.Name + "_Id"});
             classMap.AddCollection(setMapping);        
-}
+        }
+
+        public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
+        {
+            if (property.DeclaringType != classMap.Type)
+                return;
+
+            var setMapping = new BagMapping() { Name = property.Name };
+            setMapping.Relationship = new OneToManyMapping() { Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]) };
+            setMapping.Key = new KeyMapping();
+            setMapping.Key.AddColumn(new ColumnMapping() { Name = property.DeclaringType.Name + "_Id" });
+            classMap.AddCollection(setMapping);
+        }
+
+        public void Map(SubclassMapping classMap, PropertyInfo property)
+        {
+            if (property.DeclaringType != classMap.Type)
+                return;
+
+            var setMapping = new BagMapping() { Name = property.Name };
+            setMapping.Relationship = new OneToManyMapping() { Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]) };
+            setMapping.Key = new KeyMapping();
+            setMapping.Key.AddColumn(new ColumnMapping() { Name = property.DeclaringType.Name + "_Id" });
+            classMap.AddCollection(setMapping);
+        }
     }
 }

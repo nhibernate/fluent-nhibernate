@@ -7,7 +7,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public class CompositeIdentityPart<T> : IMappingPart, IAccessStrategy<CompositeIdentityPart<T>>, ICompositeIdMappingProvider
+    public class CompositeIdentityPart<T> : IAccessStrategy<CompositeIdentityPart<T>>, ICompositeIdMappingProvider
 	{
 		private readonly AccessStrategyBuilder<CompositeIdentityPart<T>> access;
         private readonly CompositeIdMapping mapping = new CompositeIdMapping();

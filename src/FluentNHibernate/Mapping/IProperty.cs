@@ -4,7 +4,7 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IProperty : IMappingPart
+    public interface IProperty
     {
         Type EntityType { get; }
         Type PropertyType { get; }

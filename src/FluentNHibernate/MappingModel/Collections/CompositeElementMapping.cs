@@ -7,8 +7,6 @@ namespace FluentNHibernate.MappingModel.Collections
     {
         private readonly MappedMembers mappedMembers;
         protected readonly AttributeStore<CompositeElementMapping> attributes;
-        protected readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
-        protected readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
         public CompositeElementMapping()
             : this(new AttributeStore())

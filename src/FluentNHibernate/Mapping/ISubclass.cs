@@ -3,7 +3,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface ISubclass : IClasslike, IMappingPart
+    public interface ISubclass : IClasslike
     {
         void Proxy(Type type);
         void Proxy<T>();

@@ -35,6 +35,16 @@ namespace FluentNHibernate.AutoMap
             
         }
 
+        public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
+        {
+
+        }
+
+        public void Map(SubclassMapping classMap, PropertyInfo property)
+        {
+
+        }
+
         private void MapComponentProperties(PropertyInfo componentProperty, Type componentType, object componentPart)
         {
             var mapMethod = GetMapMethod(componentType, componentPart);

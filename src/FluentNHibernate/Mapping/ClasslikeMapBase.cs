@@ -10,11 +10,6 @@ namespace FluentNHibernate.Mapping
 {
     public abstract class ClasslikeMapBase<T> : IClasslike
     {
-        protected readonly List<IMappingPart> m_Parts = new List<IMappingPart>();
-        public IEnumerable<IMappingPart> Parts
-        {
-            get { return m_Parts; }
-        }
         protected readonly IList<PropertyMap> properties = new List<PropertyMap>();
         protected readonly IList<IComponentBase> components = new List<IComponentBase>();
         protected readonly IList<ISubclass> subclasses = new List<ISubclass>();
@@ -23,11 +18,6 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<ICollectionRelationship> collections = new List<ICollectionRelationship>();
         protected readonly IList<IManyToOnePart> references = new List<IManyToOnePart>();
         protected readonly IList<IAnyMappingProvider> anys = new List<IAnyMappingProvider>();
-
-        protected internal void AddPart(IMappingPart part)
-        {
-            m_Parts.Add(part);
-        }
 
         public PropertyMap Map(Expression<Func<T, object>> expression)
         {
