@@ -60,7 +60,12 @@ namespace FluentNHibernate.Mapping
             get { return mapping.TableName; }
         }
 
-        public ClassMapping GetClassMapping()
+		public IDiscriminatorPart Discriminator
+		{
+			get { return discriminator; }
+		}
+
+		public ClassMapping GetClassMapping()
         {
             mapping.Name = typeof(T).FullName;
 
@@ -154,6 +159,8 @@ namespace FluentNHibernate.Mapping
         {
             var part = new DiscriminatorPart(this, mapping, columnName);
 
+			part.GetDiscriminatorMapping().Type = typeof(TDiscriminator);
+
             discriminator = part;
 
             mapping.DiscriminatorBaseValue = baseClassDiscriminator;
@@ -164,6 +171,8 @@ namespace FluentNHibernate.Mapping
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
         {
             var part = new DiscriminatorPart(this, mapping, columnName);
+
+			part.GetDiscriminatorMapping().Type = typeof(TDiscriminator);
 
             discriminator = part;
 

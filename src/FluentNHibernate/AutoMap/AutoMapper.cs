@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.AutoMap
 {
@@ -32,19 +33,33 @@ namespace FluentNHibernate.AutoMap
         {
             if (mappingTypes != null)
             {
-                var discriminatorSet = false;
+				var discriminatorSet = false;
+				var isDiscriminated = expressions.IsDiscriminated(typeof(T));
 
                 foreach (var inheritedClass in mappingTypes.Where(q =>
                     q.Type.BaseType == typeof(T) &&
                     !expressions.IsConcreteBaseType(q.Type.BaseType)))
                 {
-                    if (!discriminatorSet)
+                    if (isDiscriminated && !discriminatorSet)
                     {
+						var discriminator = map.Discriminator;
                         var discriminatorColumn = expressions.DiscriminatorColumn(typeof(T));
-                        map.DiscriminateSubClassesOnColumn(discriminatorColumn);
+						if (discriminator == null)
+						{
+							discriminator = map.DiscriminateSubClassesOnColumn(discriminatorColumn);
+						}
+						else
+						{
+							var discriminatorMapping = discriminator.GetDiscriminatorMapping();
+							if (string.IsNullOrEmpty(discriminatorMapping.ColumnName))
+							{
+								discriminatorMapping.ColumnName = discriminatorColumn;
+							}
+						}
                         discriminatorSet = true;
                     }
 
+					object subclassMapping;
                     var subclassStrategy = expressions.SubclassStrategy(typeof(T));
 
                     if (subclassStrategy == SubclassStrategy.JoinedSubclass)
@@ -58,6 +73,7 @@ namespace FluentNHibernate.AutoMap
                         var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
                         genericMethod.Invoke(this, new[] { subclass });
                         inheritedClass.IsMapped = true;
+						subclassMapping = subclass;
                     }
                     else
                     {
@@ -70,7 +86,12 @@ namespace FluentNHibernate.AutoMap
                         var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
                         genericMethod.Invoke(this, new[] {subclass});
                         inheritedClass.IsMapped = true;
+						subclassMapping = subclass;
                     }
+
+					InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
+						this, a => a.MergeMap<object>(null, null), new[] { subclassMapping, inlineOverrides },
+						inheritedClass.Type);
                 }
             }
 
