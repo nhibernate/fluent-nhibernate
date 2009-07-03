@@ -8,10 +8,10 @@ namespace FluentNHibernate.AutoMap
 {
     public class AutoSubClassPart<T> : AutoMap<T>, ISubclass
     {
-        private readonly string discriminatorValue;
+        private readonly object discriminatorValue;
         private readonly Cache<string, string> attributes = new Cache<string, string>();
 
-        public AutoSubClassPart(string discriminatorValue)
+        public AutoSubClassPart(object discriminatorValue)
         {
             this.discriminatorValue = discriminatorValue;
         }
@@ -33,7 +33,7 @@ namespace FluentNHibernate.AutoMap
         {
             var subclassElement = classElement.AddElement("subclass")
                 .WithAtt("name", typeof(T).AssemblyQualifiedName)
-                .WithAtt("discriminator-value", discriminatorValue);
+                .WithAtt("discriminator-value", discriminatorValue == null ? null : discriminatorValue.ToString());
             subclassElement.WithProperties(attributes);
 
             WriteTheParts(subclassElement, visitor);
