@@ -272,28 +272,53 @@ namespace FluentNHibernate.Mapping
 
         IEnumerable<PropertyMap> IClasslike.Properties
         {
-            get { return properties; }
+			get { return Properties; }
         }
+
+		protected virtual IEnumerable<PropertyMap> Properties
+		{
+			get { return properties; }
+		}
 
         IEnumerable<IComponentBase> IClasslike.Components
         {
-            get { return components; }
+            get { return Components; }
         }
+
+		protected virtual IEnumerable<IComponentBase> Components
+		{
+			get { return components; }
+		}
 
         IEnumerable<ISubclass> IClasslike.Subclasses
         {
-            get { return subclasses; }
+            get { return Subclasses; }
         }
+
+		protected virtual IEnumerable<ISubclass> Subclasses
+		{
+			get { return subclasses; }
+		}
 
         IEnumerable<IJoinedSubclass> IClasslike.JoinedSubclasses
         {
-            get { return joinedSubclasses; }
+            get { return JoinedSubclasses; }
         }
+
+		protected virtual IEnumerable<IJoinedSubclass> JoinedSubclasses
+		{
+			get { return joinedSubclasses; }
+		}
 
         void IClasslike.AddSubclass(ISubclass subclass)
         {
-            subclasses.Add(subclass);
+			AddSubclass(subclass);
         }
+
+		protected virtual void AddSubclass(ISubclass subclass)
+		{
+			subclasses.Add(subclass);
+		}
 
         public Type EntityType
         {

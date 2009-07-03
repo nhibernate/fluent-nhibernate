@@ -88,17 +88,25 @@ namespace FluentNHibernate.AutoMap
             return base.Version(property);
         }
 
-        public void JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
+		public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
+			where TSubclass : T
         {
-            if (joinedSubClasses.ContainsKey(typeof(TSubclass)))
-                return;
+			IJoinedSubclass joinedSubclass;
+			if (joinedSubClasses.TryGetValue(typeof(TSubclass), out joinedSubclass))
+				return (AutoJoinedSubClassPart<TSubclass>)joinedSubclass;
 
-            var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(typeof(TSubclass));
-            var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn);
-            action(joinedclass);
-            AddPart(joinedclass);
-            joinedSubClasses[typeof(TSubclass)] = joinedclass;
+			var autoJoinedclass = new AutoJoinedSubClassPart<TSubclass>(keyColumn);
+            if (action != null) action(autoJoinedclass);
+            AddPart(autoJoinedclass);
+            joinedSubClasses[typeof(TSubclass)] = autoJoinedclass;
+			return autoJoinedclass;
         }
+
+		public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn)
+			where TSubclass : T
+		{
+			return JoinedSubClass<TSubclass>(keyColumn, null);
+		}
 
         public IJoinedSubclass JoinedSubClass(Type type, string keyColumn)
         {
@@ -112,19 +120,27 @@ namespace FluentNHibernate.AutoMap
             return joinedclass;
         }
 
-        public void SubClass<TSubclass>(string discriminatorValue, Action<AutoSubClassPart<TSubclass>> action)
+		public AutoSubClassPart<TSubclass> SubClass<TSubclass>(object discriminatorValue, Action<AutoSubClassPart<TSubclass>> action)
+			where TSubclass : T
         {
-            if (automappedSubclasses.ContainsKey(typeof(TSubclass)))
-                return;
+			ISubclass subclass;
+			if (automappedSubclasses.TryGetValue(typeof(TSubclass), out subclass))
+				return (AutoSubClassPart<TSubclass>)subclass;
 
-            var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
-            var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, discriminatorValue);
-            action(subclass);
-            AddPart(subclass);
-            automappedSubclasses[typeof(TSubclass)] = subclass;
+			var autoSubclass = new AutoSubClassPart<TSubclass>(discriminatorValue);
+			if (action != null) action(autoSubclass);
+            AddPart(autoSubclass);
+            automappedSubclasses[typeof(TSubclass)] = autoSubclass;
+			return autoSubclass;
         }
 
-        public ISubclass SubClass(Type type, string discriminatorValue)
+		public AutoSubClassPart<TSubclass> SubClass<TSubclass>(object discriminatorValue)
+			where TSubclass : T
+		{
+			return SubClass<TSubclass>(discriminatorValue, null);
+		}
+
+        public ISubclass SubClass(Type type, object discriminatorValue)
         {
             if (automappedSubclasses.ContainsKey(type))
                 return automappedSubclasses[type];
@@ -138,7 +154,6 @@ namespace FluentNHibernate.AutoMap
             return subclass;
         }
 
-
         public bool CanMapProperty(PropertyInfo property)
         {
             if (this is AutoJoinedSubClassPart<T> || this is AutoSubClassPart<T>)
@@ -149,5 +164,15 @@ namespace FluentNHibernate.AutoMap
 
             return true;
         }
+
+		protected override IEnumerable<ISubclass> Subclasses
+		{
+			get { return automappedSubclasses.Values; }
+		}
+
+		protected override IEnumerable<IJoinedSubclass> JoinedSubclasses
+		{
+			get { return joinedSubClasses.Values; }
+		}
     }
 }
