@@ -261,6 +261,7 @@
     <Compile Include="PersistenceModelTests\OnConstruction.cs" />
     <Compile Include="PersistenceModelTests\Conventions\WriteMappingsTo.cs" />
     <Compile Include="Testing\PersistenceSpecificationTester.cs" />
+    <Compile Include="Testing\PersistenceSpecificationTransactionTest.cs" />
     <Compile Include="Testing\SessionSourceConfigurationTester.cs" />
     <Compile Include="Specification.cs" />
     <Compile Include="SpecificationExtensions.cs" />

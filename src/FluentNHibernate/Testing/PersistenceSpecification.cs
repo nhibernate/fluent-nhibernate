@@ -16,24 +16,27 @@ namespace FluentNHibernate.Testing
         private readonly List<PropertyValue> allProperties = new List<PropertyValue>();
         private readonly ISession currentSession;
         private readonly IEqualityComparer entityEqualityComparer;
+        private readonly bool hasExistingSession;
 
         public PersistenceSpecification(ISessionSource source)
             : this(source.CreateSession())
         {
         }
 
-        public PersistenceSpecification(ISessionSource source, IEqualityComparer entityEqualityComparer) 
+        public PersistenceSpecification(ISessionSource source, IEqualityComparer entityEqualityComparer)
             : this(source.CreateSession(), entityEqualityComparer)
         {
         }
 
-        public PersistenceSpecification(ISession session) : this(session, null)
+        public PersistenceSpecification(ISession session)
+            : this(session, null)
         {
         }
 
         public PersistenceSpecification(ISession session, IEqualityComparer entityEqualityComparer)
         {
             currentSession = session;
+            hasExistingSession = currentSession.Transaction != null && currentSession.Transaction.IsActive;
             this.entityEqualityComparer = entityEqualityComparer;
         }
 
@@ -120,10 +123,17 @@ namespace FluentNHibernate.Testing
 
         private void TransactionalSave(object propertyValue)
         {
-            using (var tx = currentSession.BeginTransaction())
+            if (hasExistingSession)
             {
                 currentSession.Save(propertyValue);
-                tx.Commit();
+            }
+            else
+            {
+                using (var tx = currentSession.BeginTransaction())
+                {
+                    currentSession.Save(propertyValue);
+                    tx.Commit();
+                }
             }
         }
 
@@ -155,7 +165,7 @@ namespace FluentNHibernate.Testing
                         collection = new HashedSet((ICollection)expected);
                     else if (property.PropertyType.IsArray)
                     {
-                        collection = Array.CreateInstance(typeof (TListelement), expected.Count);
+                        collection = Array.CreateInstance(typeof(TListelement), expected.Count);
                         Array.Copy((Array)expected, (Array)collection, expected.Count);
                     }
                     else
