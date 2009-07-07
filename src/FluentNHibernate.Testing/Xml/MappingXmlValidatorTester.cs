@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 using System.Xml;
 using System.Xml.Schema;
 using FluentNHibernate.MappingModel;
@@ -15,19 +17,29 @@ namespace FluentNHibernate.Testing.Xml
         [Test]
         public void CanValidateXmlAgainstSchema()
         {
-            // Invalid, cannot use a default meta. Schema validation should fail.
-            var hbmMapping = new HbmMapping();
-            hbmMapping.meta = new HbmMeta[] { new HbmMeta() };
+			var prevCulture = Thread.CurrentThread.CurrentUICulture;
 
-            var serializer = new MappingXmlSerializer();
-            XmlDocument document = serializer.Serialize(hbmMapping);
+			try
+			{
+				Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-            MappingXmlValidator validator = new MappingXmlValidator();
-            var result = validator.Validate(document);
+				// Invalid, cannot use a default meta. Schema validation should fail.
+				var hbmMapping = new HbmMapping();
+				hbmMapping.meta = new HbmMeta[] {new HbmMeta()};
 
-            result.Success.ShouldBeFalse();
-            result.Messages.ShouldContain("Element 'meta': The required attribute 'attribute' is missing.");
-                        
+				var serializer = new MappingXmlSerializer();
+				XmlDocument document = serializer.Serialize(hbmMapping);
+
+				MappingXmlValidator validator = new MappingXmlValidator();
+				var result = validator.Validate(document);
+
+				result.Success.ShouldBeFalse();
+				result.Messages.ShouldContain("Element 'meta': The required attribute 'attribute' is missing.");
+			}
+			finally
+			{
+				Thread.CurrentThread.CurrentUICulture = prevCulture;
+			}
         }
     }
 }

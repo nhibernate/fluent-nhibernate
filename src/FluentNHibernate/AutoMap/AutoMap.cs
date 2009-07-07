@@ -90,7 +90,8 @@ namespace FluentNHibernate.AutoMap
             return base.Version(property);
         }
 
-        public void JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
+		public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
+			where TSubclass : T
         {
             var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(typeof(TSubclass));
             var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn);
@@ -98,6 +99,8 @@ namespace FluentNHibernate.AutoMap
             action(joinedclass);
 
             joinedSubclasses.Add(joinedclass);
+
+		    return joinedclass;
         }
 
         public IAutoClasslike JoinedSubClass(Type type, string keyColumn)
@@ -110,7 +113,14 @@ namespace FluentNHibernate.AutoMap
             return (IAutoClasslike)joinedclass;
         }
 
-        public void SubClass<TSubclass>(string discriminatorValue, Action<AutoSubClassPart<TSubclass>> action)
+        public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn)
+			where TSubclass : T
+		{
+			return JoinedSubClass<TSubclass>(keyColumn, null);
+		}
+
+		public AutoSubClassPart<TSubclass> SubClass<TSubclass>(object discriminatorValue, Action<AutoSubClassPart<TSubclass>> action)
+			where TSubclass : T
         {
             var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
             var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, discriminatorValue);
@@ -118,7 +128,15 @@ namespace FluentNHibernate.AutoMap
             action(subclass);
             
             subclasses.Add(subclass);
+
+		    return subclass;
         }
+
+        public AutoSubClassPart<TSubclass> SubClass<TSubclass>(object discriminatorValue)
+			where TSubclass : T
+		{
+			return SubClass<TSubclass>(discriminatorValue, null);
+		}
 
         public IAutoClasslike SubClass(Type type, string discriminatorValue)
         {

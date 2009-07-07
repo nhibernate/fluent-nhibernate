@@ -146,9 +146,14 @@ namespace FluentNHibernate.AutoMap
 
         private Type GetTypeToMap(Type type)
         {
-            return Expressions.IsBaseType(type.BaseType) || 
-                Expressions.IsConcreteBaseType(type.BaseType) ||
-                type.BaseType == typeof(object) ? type : type.BaseType;
+			while (!Expressions.IsBaseType(type.BaseType) &&
+                !Expressions.IsConcreteBaseType(type.BaseType) &&
+                type.BaseType != typeof(object))
+			{
+				type = type.BaseType;
+			}
+
+			return type;
         }
 
         private void MergeMap(Type type, object mapping)
@@ -220,8 +225,12 @@ namespace FluentNHibernate.AutoMap
             // if we haven't found a map yet then try to find a map of the
             // base type to merge if not a concrete base type
 
-            return mappings.FirstOrDefault(t => !Expressions.IsConcreteBaseType(type.BaseType) &&
-                finder(t.GetType(), type.BaseType));
+			if (type.BaseType != typeof(object) && !Expressions.IsConcreteBaseType(type.BaseType))
+			{
+				return FindMapping(type.BaseType);
+			}
+
+			return null;
         }
 
         public void OutputMappings()

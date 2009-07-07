@@ -234,6 +234,7 @@
     <Compile Include="MappingModel\Output\XmlVersionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
     <Compile Include="Testing\PersistenceSpecificationTester.cs" />
+    <Compile Include="Testing\PersistenceSpecificationTransactionTest.cs" />
     <Compile Include="Testing\SessionSourceConfigurationTester.cs" />
     <Compile Include="Specification.cs" />
     <Compile Include="SpecificationExtensions.cs" />
