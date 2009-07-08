@@ -3,8 +3,8 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public interface IManyToManyInspector : IInspector
+    public interface IManyToManyInspector : IRelationshipInspector
     {
-        IEnumerable<IColumnInspector> Columns { get; }
+        IDefaultableEnumerable<IColumnInspector> Columns { get; }
     }
 }

@@ -68,14 +68,14 @@ namespace FluentNHibernate.Conventions
                 var conventions = finder.Find<IHasManyToManyConvention>();
 
                 Apply<IManyToManyCollectionInspector, IManyToManyCollectionAlteration, IManyToManyCollectionInstance>(conventions,
-                    new CollectionInstance(mapping));
+                    new ManyToManyCollectionInstance(mapping));
             }
             else
             {
                 var conventions = finder.Find<IHasManyConvention>();
 
                 Apply<IOneToManyCollectionInspector, IOneToManyCollectionAlteration, IOneToManyCollectionInstance>(conventions,
-                    new CollectionInstance(mapping));
+                    new OneToManyCollectionInstance(mapping));
             }
         }
 

@@ -1,25 +1,21 @@
 using System;
 using System.Reflection;
-using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public class CollectionInspector : ICollectionInspector
+    public class OneToManyCollectionInspector : IOneToManyCollectionInspector
     {
-        private readonly InspectorModelMapper<ICollectionInspector, ICollectionMapping> propertyMappings = new InspectorModelMapper<ICollectionInspector, ICollectionMapping>();
         private readonly ICollectionMapping mapping;
 
-        public CollectionInspector(ICollectionMapping mapping)
+        public OneToManyCollectionInspector(ICollectionMapping mapping)
         {
             this.mapping = mapping;
-
-            propertyMappings.Map(x => x.TableName, x => x.TableName);
         }
 
         public Type EntityType
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.ContainingEntityType; }
         }
         public string StringIdentifierForModel
         {
@@ -32,7 +28,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public IKeyInspector Key
         {
-            get { throw new NotImplementedException(); }
+            get { return new KeyInspector(mapping.Key); }
         }
         public string TableName
         {
@@ -40,13 +36,17 @@ namespace FluentNHibernate.Conventions.Inspections
         }
         public bool IsMethodAccess
         {
-            get { return mapping.MemberInfo is MethodInfo; }
+            get { throw new NotImplementedException(); }
         }
         public MemberInfo Member
         {
-            get { return mapping.MemberInfo; }
+            get { throw new NotImplementedException(); }
         }
-        public IRelationshipInspector Relationship
+        IOneToManyInspector IOneToManyCollectionInspector.Relationship
+        {
+            get { throw new NotImplementedException(); }
+        }
+        IRelationshipInspector ICollectionInspector.Relationship
         {
             get { throw new NotImplementedException(); }
         }

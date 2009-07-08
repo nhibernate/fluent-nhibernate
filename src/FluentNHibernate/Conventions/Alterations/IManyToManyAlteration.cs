@@ -1,6 +1,6 @@
 namespace FluentNHibernate.Conventions.Alterations
 {
-    public interface IManyToManyAlteration : IAlteration
+    public interface IManyToManyAlteration : IRelationshipAlteration
     {
         void ColumnName(string columnName);
     }

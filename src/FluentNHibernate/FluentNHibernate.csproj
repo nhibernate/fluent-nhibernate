@@ -94,6 +94,7 @@
     <Compile Include="Conventions\Alterations\Instances\IIdentityInstance.cs" />
     <Compile Include="Conventions\Alterations\IManyToManyAlteration.cs" />
     <Compile Include="Conventions\Alterations\IManyToOneAlteration.cs" />
+    <Compile Include="Conventions\Alterations\Instances\IRelationshipInstance.cs" />
     <Compile Include="Conventions\Alterations\IOneToManyAlteration.cs" />
     <Compile Include="Conventions\Alterations\CollectionInstance.cs" />
     <Compile Include="Conventions\Alterations\ClassInstance.cs" />
@@ -101,6 +102,10 @@
     <Compile Include="Conventions\Alterations\Instances\IOneToManyCollectionInstance.cs" />
     <Compile Include="Conventions\Alterations\IOneToManyCollectionAlteration.cs" />
     <Compile Include="Conventions\Alterations\Instances\IOneToManyInstance.cs" />
+    <Compile Include="Conventions\Alterations\IRelationshipAlteration.cs" />
+    <Compile Include="Conventions\Alterations\ManyToManyCollectionInstance.cs" />
+    <Compile Include="Conventions\Alterations\OneToManyCollectionInstance.cs" />
+    <Compile Include="Conventions\Alterations\RelationshipInstance.cs" />
     <Compile Include="Conventions\Helpers\Builders\ClassConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\HasManyConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\HasManyToManyConventionBuilder.cs" />
@@ -127,11 +132,13 @@
     <Compile Include="Conventions\Inspections\IdentityInspector.cs" />
     <Compile Include="Conventions\Inspections\KeyInspector.cs" />
     <Compile Include="Conventions\Alterations\ManyToManyInstance.cs" />
+    <Compile Include="Conventions\Inspections\ManyToManyCollectionInspector.cs" />
     <Compile Include="Conventions\Inspections\ManyToManyInspector.cs" />
     <Compile Include="Conventions\Alterations\ManyToOneInstance.cs" />
     <Compile Include="Conventions\Inspections\ManyToOneInspector.cs" />
     <Compile Include="Conventions\Alterations\OneToManyInstance.cs" />
     <Compile Include="Conventions\Inspections\CollectionInspector.cs" />
+    <Compile Include="Conventions\Inspections\OneToManyCollectionInspector.cs" />
     <Compile Include="Conventions\Inspections\OneToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\PropertyInspector.cs" />
     <Compile Include="Conventions\EnumerableExtensionsForConventions.cs" />

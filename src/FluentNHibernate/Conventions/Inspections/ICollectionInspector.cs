@@ -3,30 +3,23 @@ using System.Reflection;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public interface ICollectionInspector : IOneToManyCollectionInspector, IManyToManyCollectionInspector
-    {
-        new IKeyInspector Key { get; }
-        new string TableName { get; }
-        new bool IsMethodAccess { get; }
-        new MemberInfo Member { get; }
-    }
-
-    public interface IOneToManyCollectionInspector : IInspector
+    public interface ICollectionInspector : IInspector
     {
         IKeyInspector Key { get; }
-        IOneToManyInspector OneToMany { get; }
         string TableName { get; }
         bool IsMethodAccess { get; }
         MemberInfo Member { get; }
+        IRelationshipInspector Relationship { get; }
     }
 
-    public interface IManyToManyCollectionInspector : IInspector
+    public interface IOneToManyCollectionInspector : ICollectionInspector
     {
-        IKeyInspector Key { get; }
-        IManyToManyInspector ManyToMany { get; }
+        new IOneToManyInspector Relationship { get; }
+    }
+
+    public interface IManyToManyCollectionInspector : ICollectionInspector
+    {
+        new IManyToManyInspector Relationship { get; }
         Type ChildType { get; }
-        string TableName { get; }
-        bool IsMethodAccess { get; }
-        MemberInfo Member { get; }
     }
 }

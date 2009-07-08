@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Inspections
@@ -27,12 +28,18 @@ namespace FluentNHibernate.Conventions.Inspections
             throw new NotImplementedException();
         }
 
-        public IEnumerable<IColumnInspector> Columns
+        public IDefaultableEnumerable<IColumnInspector> Columns
         {
             get
             {
+                var items = new DefaultableList<IColumnInspector>();
+
                 foreach (var column in mapping.Columns)
-                    yield return new ColumnInspector(mapping.ParentType, column);
+                {
+                    items.Add(new ColumnInspector(mapping.ParentType, column));
+                }
+
+                return items;
             }
         }
     }

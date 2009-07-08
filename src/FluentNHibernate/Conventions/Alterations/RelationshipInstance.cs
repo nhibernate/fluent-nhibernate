@@ -1,15 +1,17 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.Conventions.Alterations.Instances;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Alterations
 {
-    public class OneToManyInspector : IOneToManyInspector
+    public class RelationshipInstance : IRelationshipInstance
     {
-        private readonly OneToManyMapping mapping;
+        private readonly ICollectionRelationshipMapping mapping;
 
-        public OneToManyInspector(OneToManyMapping mapping)
+        public RelationshipInstance(ICollectionRelationshipMapping mapping)
         {
             this.mapping = mapping;
         }
@@ -27,7 +29,7 @@ namespace FluentNHibernate.Conventions.Inspections
             throw new NotImplementedException();
         }
 
-        public IDefaultableEnumerable<IColumnInspector> Columns
+        public IDefaultableEnumerable<IColumnInstance> Columns
         {
             get { throw new NotImplementedException(); }
         }

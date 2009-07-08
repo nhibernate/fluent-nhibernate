@@ -1,6 +1,6 @@
 namespace FluentNHibernate.Conventions.Alterations
 {
-    public interface IOneToManyAlteration : IAlteration
+    public interface IOneToManyAlteration : IRelationshipAlteration
     {
     }
 }

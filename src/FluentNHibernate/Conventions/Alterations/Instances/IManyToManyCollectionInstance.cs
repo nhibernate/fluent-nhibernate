@@ -5,6 +5,6 @@ namespace FluentNHibernate.Conventions.Alterations.Instances
     public interface IManyToManyCollectionInstance : IManyToManyCollectionInspector, IManyToManyCollectionAlteration
     {
         new IKeyInstance Key { get; }
-        new IManyToManyInstance ManyToMany { get; }
+        new IManyToManyInstance Relationship { get; }
     }
 }

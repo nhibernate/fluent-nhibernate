@@ -38,7 +38,7 @@ namespace FluentNHibernate.Conventions
 
         public void Accept(IAcceptanceCriteria<IManyToManyCollectionInspector> acceptance)
         {
-            acceptance.Expect(x => x.Key.Columns.IsEmpty() || x.ManyToMany.Columns.IsEmpty());
+            acceptance.Expect(x => x.Key.Columns.IsEmpty() || x.Relationship.Columns.IsEmpty());
         }
 
         public void Apply(IManyToManyCollectionInstance instance)
@@ -49,8 +49,8 @@ namespace FluentNHibernate.Conventions
             if (instance.Key.Columns.IsEmpty())
                 instance.Key.ColumnName(keyColumn);
 
-            if (instance.ManyToMany.Columns.IsEmpty())
-                instance.ManyToMany.ColumnName(childColumn);
+            if (instance.Relationship.Columns.IsEmpty())
+                instance.Relationship.ColumnName(childColumn);
         }
     }
 }

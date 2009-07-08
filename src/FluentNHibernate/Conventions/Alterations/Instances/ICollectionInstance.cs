@@ -3,11 +3,10 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Alterations.Instances
 {
-    public interface ICollectionInstance : IManyToManyCollectionInstance, IOneToManyCollectionInstance, ICollectionInspector, ICollectionAlteration
+    public interface ICollectionInstance : ICollectionInspector, ICollectionAlteration
     {
         new IKeyInstance Key { get; }
-        new IOneToManyInstance OneToMany { get; }
-        new IManyToManyInstance ManyToMany { get; }
+        new IRelationshipInstance Relationship { get; }
         new void Name(string name);
         new void SetTableName(string tableName);
         new bool IsMethodAccess { get; }

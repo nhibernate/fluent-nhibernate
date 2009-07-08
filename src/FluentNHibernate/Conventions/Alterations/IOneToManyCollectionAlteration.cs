@@ -1,10 +1,7 @@
 namespace FluentNHibernate.Conventions.Alterations
 {
-    public interface IOneToManyCollectionAlteration : IAlteration
+    public interface IOneToManyCollectionAlteration : ICollectionAlteration
     {
-        IKeyAlteration Key { get; }
-        IOneToManyAlteration OneToMany { get; }
-        void SetTableName(string tableName);
-        void Name(string name);
+        new IOneToManyAlteration Relationship { get; }
     }
 }
