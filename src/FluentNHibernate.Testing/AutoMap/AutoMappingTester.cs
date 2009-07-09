@@ -9,11 +9,10 @@ using NHibernate.Cfg;
 public class AutoMappingTester<T> : MappingTester<T>
 {
     public AutoMappingTester(AutoPersistenceModel mapper)
+        : base(mapper)
     {
         mapper.CompileMappings();
         
-        var mapping = mapper.FindMapping<T>();
-        
-        ForMapping((IClassMap)mapping);
+        ForMapping((IClassMap)null);
     }
 }

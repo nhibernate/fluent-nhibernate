@@ -28,6 +28,7 @@ namespace FluentNHibernate.AutoMap
             idMapping.AddColumn(new ColumnMapping() { Name = property.Name });
             idMapping.Name = property.Name;
             idMapping.Type = new TypeReference(property.PropertyType);
+            idMapping.PropertyInfo = property;
             idMapping.Generator= new GeneratorMapping { Class = "identity" };
             classMap.Id = idMapping;        
         }

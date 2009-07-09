@@ -19,6 +19,17 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldOnlyOutputOneClass()
+        {
+            var mapping = new HibernateMapping();
+
+            mapping.AddClass(new ClassMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("class[2]").DoesntExist();
+        }
+
+        [Test]
         public void ShouldWriteSchemaAttribute()
         {
             var testHelper = new XmlWriterTestHelper<HibernateMapping>();

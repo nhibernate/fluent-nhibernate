@@ -9,11 +9,11 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.AutoMap
 {
-    public class AutoMapColumn : IAutoMapper
+    public class AutoMapProperty : IAutoMapper
     {
         private readonly IConventionFinder conventionFinder;
 
-        public AutoMapColumn(IConventionFinder conventionFinder)
+        public AutoMapProperty(IConventionFinder conventionFinder)
         {
             this.conventionFinder = conventionFinder;
         }
@@ -98,7 +98,7 @@ namespace FluentNHibernate.AutoMap
                 PropertyInfo = property
             };
 
-            mapping.AddDefaultColumn(new ColumnMapping { Name = mapping.PropertyInfo.Name });
+            mapping.AddColumn(new ColumnMapping { Name = mapping.PropertyInfo.Name });
 
             if (!mapping.Attributes.IsSpecified(x => x.Name))
                 mapping.Name = mapping.PropertyInfo.Name;

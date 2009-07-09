@@ -29,7 +29,6 @@ namespace FluentNHibernate.Testing.AutoMap
 
         protected void Test<T>(Action<AutoMappingTester<T>> mappingTester)
         {
-            apm.Configure(cfg);
             mappingTester(new AutoMappingTester<T>(apm));
         }
     }

@@ -141,7 +141,7 @@ namespace FluentNHibernate.AutoMap
         public IAutoClasslike SubClass(Type type, string discriminatorValue)
         {
             var genericType = typeof(AutoSubClassPart<>).MakeGenericType(type);
-            var subclass = (ISubclass)Activator.CreateInstance(genericType, discriminatorValue);
+            var subclass = (ISubclass)Activator.CreateInstance(genericType, null, discriminatorValue);
 
             subclasses.Add(subclass);
 

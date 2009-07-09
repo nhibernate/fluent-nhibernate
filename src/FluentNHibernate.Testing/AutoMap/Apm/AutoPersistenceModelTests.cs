@@ -20,6 +20,17 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
     public class AutoPersistenceModelTests : BaseAutoPersistenceTests
     {
         [Test]
+        public void ShouldOnlyOutputOneClass()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleCustomColumn>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class[2]").DoesntExist();
+        }
+
+        [Test]
         public void CanMixMappingTypes()
         {
             var autoMapper = AutoPersistenceModel
@@ -138,7 +149,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .ConventionDiscovery.Add(new TestIdConvention());
 
             new AutoMappingTester<PrivateIdSetterClass>(autoMapper)
-                .Element("class/id/column").HasAttribute("name", "true");
+                .Element("class/id/column").HasAttribute("name", "test");
         }
 
         [Test]

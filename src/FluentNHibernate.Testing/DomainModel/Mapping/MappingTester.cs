@@ -17,15 +17,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         private readonly PersistenceModel model;
         private string currentPath;
 
-        public MappingTester(XmlDocument document)
-            :this()
-        {
-            this.document = document;
-        }
-
         public MappingTester()
+            : this(new PersistenceModel())
+        {}
+
+        public MappingTester(PersistenceModel model)
         {
-            model = new PersistenceModel();
+            this.model = model;
             _visitor = new MappingVisitor(new Configuration());
         }
 
@@ -54,12 +52,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public virtual MappingTester<T> ForMapping(IClassMap classMap)
         {
-            model.Add(classMap);
+            if (classMap  != null)
+                model.Add(classMap);
 
             var mappings = model.BuildMappings();
 
             document = new MappingXmlSerializer()
-                .Serialize(mappings.First());
+                .Serialize(mappings.Where(x => x.Classes.FirstOrDefault(c => c.Type == typeof(T)) != null).First());
             currentElement = document.DocumentElement;
 
             return this;

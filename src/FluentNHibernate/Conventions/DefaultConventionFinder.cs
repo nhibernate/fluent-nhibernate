@@ -11,6 +11,11 @@ namespace FluentNHibernate.Conventions
     {
         private readonly ConventionsCollection conventions = new ConventionsCollection();
 
+        public DefaultConventionFinder()
+        {
+            
+        }
+
         /// <summary>
         /// Find any conventions implementing T.
         /// </summary>
