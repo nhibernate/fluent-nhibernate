@@ -115,13 +115,13 @@ namespace FluentNHibernate.Mapping
 
         public IAnyPart<T> EntityTypeColumn(string columnName)
         {
-            mapping.AddColumn(new ColumnMapping { Name = columnName });
+            mapping.AddTypeColumn(new ColumnMapping { Name = columnName });
             return this;
         }
 
         public IAnyPart<T> EntityIdentifierColumn(string columnName)
         {
-            mapping.AddColumn(new ColumnMapping { Name = columnName });
+            mapping.AddIdentifierColumn(new ColumnMapping { Name = columnName });
             return this;
         }
 
@@ -164,8 +164,10 @@ namespace FluentNHibernate.Mapping
 
         AnyMapping IAnyMappingProvider.GetAnyMapping()
         {
-            if (mapping.Columns.Count() < 2)
-                throw new InvalidOperationException("<any> mapping is not valid without specifying an Entity Identifier and Entity Type Column");
+            if (mapping.TypeColumns.Count() == 0)
+                throw new InvalidOperationException("<any> mapping is not valid without specifying an Entity Type Column");
+            if (mapping.IdentifierColumns.Count() == 0)
+                throw new InvalidOperationException("<any> mapping is not valid without specifying an Entity Identifier Column");
             if (!mapping.Attributes.IsSpecified(x => x.IdType))
                 throw new InvalidOperationException("<any> mapping is not valid without specifying an IdType");
 

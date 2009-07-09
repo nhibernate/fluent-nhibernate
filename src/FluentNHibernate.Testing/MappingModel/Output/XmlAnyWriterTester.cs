@@ -81,14 +81,37 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldWriteColumns()
+        public void ShouldWriteTypeColumns()
         {
             var mapping = new AnyMapping();
 
-            mapping.AddColumn(new ColumnMapping { Name = "Column1" });
+            mapping.AddTypeColumn(new ColumnMapping { Name = "Column1" });
 
             writer.VerifyXml(mapping)
                 .Element("column").Exists();
+        }
+
+        [Test]
+        public void ShouldWriteIdentifierColumns()
+        {
+            var mapping = new AnyMapping();
+
+            mapping.AddIdentifierColumn(new ColumnMapping { Name = "Column1" });
+
+            writer.VerifyXml(mapping)
+                .Element("column").Exists();
+        }
+
+        [Test]
+        public void ShouldWriteTypeColumnsBeforeIdentifiers()
+        {
+            var mapping = new AnyMapping();
+
+            mapping.AddIdentifierColumn(new ColumnMapping { Name = "Column1" });
+            mapping.AddTypeColumn(new ColumnMapping { Name = "Column2" });
+
+            writer.VerifyXml(mapping)
+                .Element("column[1]").HasAttribute("name", "Column2");
         }
 
         [Test]

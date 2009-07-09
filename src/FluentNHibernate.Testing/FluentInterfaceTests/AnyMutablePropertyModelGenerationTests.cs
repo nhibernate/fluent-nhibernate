@@ -193,7 +193,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     .IdentityType<int>()
                     .EntityIdentifierColumn("col")
                     .EntityTypeColumn("col2"))
-                .ModelShouldMatch(x => x.Columns.Count().ShouldEqual(2));
+                .ModelShouldMatch(x => x.IdentifierColumns.Count().ShouldEqual(2));
         }
 
         [Test]
@@ -204,7 +204,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     .IdentityType<int>()
                     .EntityIdentifierColumn("col")
                     .EntityTypeColumn("col2"))
-                .ModelShouldMatch(x => x.Columns.Count().ShouldEqual(2));
+                .ModelShouldMatch(x => x.TypeColumns.Count().ShouldEqual(2));
         }
 
         [Test]

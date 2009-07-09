@@ -6,18 +6,22 @@ namespace FluentNHibernate.MappingModel
     public class AnyMapping : MappingBase
     {
         private readonly AttributeStore<AnyMapping> attributes = new AttributeStore<AnyMapping>();
-        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+        private readonly IDefaultableList<ColumnMapping> typeColumns = new DefaultableList<ColumnMapping>();
+        private readonly IDefaultableList<ColumnMapping> identifierColumns = new DefaultableList<ColumnMapping>();
         private readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessAny(this);
 
-            foreach (var column in columns)
-                visitor.Visit(column);
-
             foreach (var metaValue in metaValues)
                 visitor.Visit(metaValue);
+
+            foreach (var column in typeColumns)
+                visitor.Visit(column);
+
+            foreach (var column in identifierColumns)
+                visitor.Visit(column);
         }
 
         public string Name
@@ -62,9 +66,14 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Cascade, value); }
         }
 
-        public IDefaultableEnumerable<ColumnMapping> Columns
+        public IDefaultableEnumerable<ColumnMapping> TypeColumns
         {
-            get { return columns; }
+            get { return typeColumns; }
+        }
+
+        public IDefaultableEnumerable<ColumnMapping> IdentifierColumns
+        {
+            get { return identifierColumns; }
         }
 
         public AttributeStore<AnyMapping> Attributes
@@ -77,14 +86,24 @@ namespace FluentNHibernate.MappingModel
             get { return metaValues; }
         }
 
-        public void AddDefaultColumn(ColumnMapping column)
+        public void AddTypeDefaultColumn(ColumnMapping column)
         {
-            columns.AddDefault(column);
+            typeColumns.AddDefault(column);
         }
 
-        public void AddColumn(ColumnMapping column)
+        public void AddTypeColumn(ColumnMapping column)
         {
-            columns.Add(column);
+            typeColumns.Add(column);
+        }
+
+        public void AddIdentifierDefaultColumn(ColumnMapping column)
+        {
+            identifierColumns.AddDefault(column);
+        }
+
+        public void AddIdentifierColumn(ColumnMapping column)
+        {
+            identifierColumns.Add(column);
         }
 
         public void AddMetaValue(MetaValueMapping metaValue)
