@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.Alterations;
-using FluentNHibernate.Conventions.Alterations.Instances;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -26,7 +25,7 @@ namespace FluentNHibernate.Conventions
         {
             var conventions = finder.Find<IIdConvention>();
 
-            Apply<IIdentityInspector, IIdentityAlteration, IIdentityInstance>(conventions,
+            Apply<IIdentityInspector, IIdentityInstance>(conventions,
                 new IdentityInstance(idMapping));
         }
 
@@ -36,7 +35,7 @@ namespace FluentNHibernate.Conventions
 
             currentType = classMapping.Type;
 
-            Apply<IClassInspector, IClassAlteration, IClassInstance>(conventions,
+            Apply<IClassInspector, IClassInstance>(conventions,
                 new ClassInstance(classMapping));
         }
 
@@ -44,7 +43,7 @@ namespace FluentNHibernate.Conventions
         {
             var conventions = finder.Find<IPropertyConvention>();
 
-            Apply<IPropertyInspector, IPropertyAlteration, IPropertyInstance>(conventions,
+            Apply<IPropertyInspector, IPropertyInstance>(conventions,
                 new PropertyInstance(propertyMapping));
         }
 
@@ -52,7 +51,7 @@ namespace FluentNHibernate.Conventions
         {
             var conventions = finder.Find<IColumnConvention>();
 
-            Apply<IColumnInspector, IColumnAlteration, IColumnInstance>(conventions,
+            Apply<IColumnInspector, IColumnInstance>(conventions,
                 new ColumnInstance(currentType, columnMapping));
         }
 
@@ -60,21 +59,21 @@ namespace FluentNHibernate.Conventions
         {
             var generalConventions = finder.Find<ICollectionConvention>();
 
-            Apply<ICollectionInspector, ICollectionAlteration, ICollectionInstance>(generalConventions,
+            Apply<ICollectionInspector, ICollectionInstance>(generalConventions,
                 new CollectionInstance(mapping));
 
             if (mapping.Relationship is ManyToManyMapping)
             {
                 var conventions = finder.Find<IHasManyToManyConvention>();
 
-                Apply<IManyToManyCollectionInspector, IManyToManyCollectionAlteration, IManyToManyCollectionInstance>(conventions,
+                Apply<IManyToManyCollectionInspector, IManyToManyCollectionInstance>(conventions,
                     new ManyToManyCollectionInstance(mapping));
             }
             else
             {
                 var conventions = finder.Find<IHasManyConvention>();
 
-                Apply<IOneToManyCollectionInspector, IOneToManyCollectionAlteration, IOneToManyCollectionInstance>(conventions,
+                Apply<IOneToManyCollectionInspector, IOneToManyCollectionInstance>(conventions,
                     new OneToManyCollectionInstance(mapping));
             }
         }
@@ -83,16 +82,15 @@ namespace FluentNHibernate.Conventions
         {
             var conventions = finder.Find<IReferenceConvention>();
 
-            Apply<IManyToOneInspector, IManyToOneAlteration, IManyToOneInstance>(conventions,
+            Apply<IManyToOneInspector, IManyToOneInstance>(conventions,
                 new ManyToOneInstance(mapping));
         }
 
-        private void Apply<TInspector, TAlteration, TInstance>(IEnumerable conventions, TInstance instance)
+        private void Apply<TInspector, TInstance>(IEnumerable conventions, TInstance instance)
             where TInspector : IInspector
-            where TAlteration : IAlteration
-            where TInstance : TInspector, TAlteration
+            where TInstance : TInspector
         {
-            foreach (IConvention<TInspector, TAlteration, TInstance> convention in conventions)
+            foreach (IConvention<TInspector, TInstance> convention in conventions)
             {
                 var criteria = new ConcreteAcceptanceCriteria<TInspector>();
 

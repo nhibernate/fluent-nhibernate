@@ -1,5 +1,5 @@
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions
@@ -22,7 +22,7 @@ namespace FluentNHibernate.Conventions
     }
 
     public interface IConventionApplier<TInstance>
-        where TInstance : IInspector, IAlteration
+        where TInstance : IInspector
     {
         /// <summary>
         /// Apply changes to the target
@@ -34,14 +34,12 @@ namespace FluentNHibernate.Conventions
     /// Basic convention interface. Don't use directly.
     /// </summary>
     /// <typeparam name="TInspector">Inspector instance for use in retrieving values and setting expectations</typeparam>
-    /// <typeparam name="TAlteration">Alteration instance for altering the model</typeparam>
     /// <typeparam name="TInstance">Apply instance</typeparam>
-    public interface IConvention<TInspector, TAlteration, TInstance>
+    public interface IConvention<TInspector, TInstance>
         : IConvention,
           IConventionAcceptance<TInspector>,
           IConventionApplier<TInstance>
         where TInspector : IInspector
-        where TAlteration : IAlteration
-        where TInstance : TInspector, TAlteration
+        where TInstance : TInspector
     {}
 }

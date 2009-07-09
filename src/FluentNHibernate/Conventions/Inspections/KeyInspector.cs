@@ -5,6 +5,7 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
+    /*
     public class KeyInspector : IKeyInspector
     {
         private readonly KeyMapping mapping;
@@ -37,5 +38,5 @@ namespace FluentNHibernate.Conventions.Inspections
                     yield return new ColumnInspector(mapping.ContainingEntityType, column);
             }
         }
-    }
+    }*/
 }

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 
@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Alterations
     public class PropertyAlterationMapsToPropertyMapping
     {
         private PropertyMapping mapping;
-        private IPropertyAlteration alteration;
+        private IPropertyInstance alteration;
 
         [SetUp]
         public void CreateDsl()

@@ -1,15 +1,14 @@
 using System;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.Alterations;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers
 {
-    public interface IConventionBuilder<TConvention, TInspector, TAlteration, TInstance>
-        where TConvention : IConvention<TInspector, TAlteration, TInstance>
+    public interface IConventionBuilder<TConvention, TInspector, TInstance>
+        where TConvention : IConvention<TInspector, TInstance>
         where TInspector : IInspector
-        where TAlteration : IAlteration
-        where TInstance : TInspector, TAlteration
+        where TInstance : TInspector
     {
         TConvention Always(Action<TInstance> convention);
         TConvention When(Action<IAcceptanceCriteria<TInspector>> expectations, Action<TInstance> convention);

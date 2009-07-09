@@ -1,6 +1,6 @@
 using System;
 using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.Alterations.Instances;
+using FluentNHibernate.Conventions.Instances;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping

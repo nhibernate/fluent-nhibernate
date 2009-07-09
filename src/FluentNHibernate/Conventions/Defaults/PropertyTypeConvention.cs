@@ -1,7 +1,6 @@
 using System;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.Alterations;
-using FluentNHibernate.Conventions.Alterations.Instances;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Defaults

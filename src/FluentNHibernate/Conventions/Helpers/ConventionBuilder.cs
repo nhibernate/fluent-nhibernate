@@ -1,5 +1,4 @@
-using FluentNHibernate.Conventions.Alterations;
-using FluentNHibernate.Conventions.Alterations.Instances;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Inspections;
 
@@ -7,17 +6,17 @@ namespace FluentNHibernate.Conventions.Helpers
 {
     public static class ConventionBuilder
     {
-        public static IConventionBuilder<IClassConvention, IClassInspector, IClassAlteration, IClassInstance> Class
+        public static IConventionBuilder<IClassConvention, IClassInspector, IClassInstance> Class
         {
             get { return new ClassConventionBuilder(); }
         }
 
-        public static IConventionBuilder<IIdConvention, IIdentityInspector, IIdentityAlteration, IIdentityInstance> Id
+        public static IConventionBuilder<IIdConvention, IIdentityInspector, IIdentityInstance> Id
         {
             get { return new IdConventionBuilder(); }
         }
 
-        public static IConventionBuilder<IPropertyConvention, IPropertyInspector, IPropertyAlteration, IPropertyInstance> Property
+        public static IConventionBuilder<IPropertyConvention, IPropertyInspector, IPropertyInstance> Property
         {
             get { return new PropertyConventionBuilder(); }
         }
@@ -37,12 +36,12 @@ namespace FluentNHibernate.Conventions.Helpers
         //    get { return new DynamicComponentConventionBuilder(); }
         //}
 
-        public static IConventionBuilder<IHasManyConvention, IOneToManyCollectionInspector, IOneToManyCollectionAlteration, IOneToManyCollectionInstance> HasMany
+        public static IConventionBuilder<IHasManyConvention, IOneToManyCollectionInspector, IOneToManyCollectionInstance> HasMany
         {
             get { return new HasManyConventionBuilder(); }
         }
 
-        public static IConventionBuilder<IHasManyToManyConvention, IManyToManyCollectionInspector, IManyToManyCollectionAlteration, IManyToManyCollectionInstance> HasManyToMany
+        public static IConventionBuilder<IHasManyToManyConvention, IManyToManyCollectionInspector, IManyToManyCollectionInstance> HasManyToMany
         {
             get { return new HasManyToManyConventionBuilder(); }
         }
@@ -52,7 +51,7 @@ namespace FluentNHibernate.Conventions.Helpers
         //    get { return new HasOneConventionBuilder(); }
         //}
 
-        public static IConventionBuilder<IReferenceConvention, IManyToOneInspector, IManyToOneAlteration, IManyToOneInstance> Reference
+        public static IConventionBuilder<IReferenceConvention, IManyToOneInspector, IManyToOneInstance> Reference
         {
             get { return new ReferenceConventionBuilder(); }
         }
