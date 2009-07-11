@@ -392,6 +392,11 @@
     <Compile Include="MappingModel\ClassMappingTester.cs" />
     <Compile Include="MappingModel\HibernateMappingTester.cs" />
     <Compile Include="MappingModel\MappingTestingExtensions.cs" />
+    <Compile Include="Testing\Values\ListSpecs.cs" />
+    <Compile Include="Testing\Values\ReferenceListSpecs.cs" />
+    <Compile Include="Testing\Values\ReferencePropertySpecs.cs" />
+    <Compile Include="Testing\Values\PropertySpecs.cs" />
+    <Compile Include="Testing\Values\Entities.cs" />
     <Compile Include="Utils\ReflectionHelperTests.cs" />
     <Compile Include="Testing\XmlWriterTestHelper.cs" />
     <Compile Include="Utils\TypeReferenceEqualityTests.cs" />

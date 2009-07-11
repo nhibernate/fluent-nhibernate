@@ -605,6 +605,11 @@
     <Compile Include="Mapping\PropertyGeneratedBuilder.cs" />
     <Compile Include="Mapping\VersionGeneratedBuilder.cs" />
     <Compile Include="Utils\TypeExtensions.cs" />
+    <Compile Include="Testing\PersistenceSpecificationExtensions.cs" />
+    <Compile Include="Testing\Values\List.cs" />
+    <Compile Include="Testing\Values\ReferenceList.cs" />
+    <Compile Include="Testing\Values\Property.cs" />
+    <Compile Include="Testing\Values\ReferenceProperty.cs" />
     <Compile Include="Utils\XmlExtensions.cs" />
     <Compile Include="SessionSource.cs" />
     <Compile Include="Testing\PersistenceSpecification.cs" />
