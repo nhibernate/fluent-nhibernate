@@ -380,6 +380,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PersistenceModelTests\SubclassPersistenceModelTests.cs" />
+    <Compile Include="Testing\PersistenceSpecificationExtensionsSpecs.cs" />
     <Compile Include="Testing\PersistenceSpecificationTester.cs" />
     <Compile Include="Testing\PersistenceSpecificationTransactionTest.cs" />
     <Compile Include="Testing\SessionSourceConfigurationTester.cs" />

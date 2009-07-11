@@ -19,7 +19,7 @@ namespace FluentNHibernate.Testing
 
 		public static PersistenceSpecification<T> CheckProperty<T, TListElement>(this PersistenceSpecification<T> spec,
 		                                                                         Expression<Func<T, Array>> expression,
-		                                                                         IList<TListElement> propertyValue)
+		                                                                         IEnumerable<TListElement> propertyValue)
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty(expression);
 
@@ -45,12 +45,25 @@ namespace FluentNHibernate.Testing
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty(expression);
 
-			return spec.RegisterCheckedProperty(new Property<T, object>(property, propertyValue));
+			return spec.RegisterCheckedProperty(new ReferenceProperty<T, object>(property, propertyValue));
+		}
+
+		public static PersistenceSpecification<T> CheckReference<T, TProperty>(this PersistenceSpecification<T> spec,
+		                                                                       Expression<Func<T, TProperty>> expression,
+		                                                                       TProperty propertyValue,
+		                                                                       Action<T, TProperty> propertySetter)
+		{
+			PropertyInfo propertyInfoFromExpression = ReflectionHelper.GetProperty(expression);
+
+			var property = new ReferenceProperty<T, TProperty>(propertyInfoFromExpression, propertyValue);
+			property.ValueSetter = (target, propertyInfo, value) => propertySetter(target, value);
+
+			return spec.RegisterCheckedProperty(property);
 		}
 
 		public static PersistenceSpecification<T> CheckList<T, TListElement>(this PersistenceSpecification<T> spec,
-																			 Expression<Func<T, IEnumerable<TListElement>>> expression,
-																			 IEnumerable<TListElement> propertyValue)
+		                                                                     Expression<Func<T, IEnumerable<TListElement>>> expression,
+		                                                                     IEnumerable<TListElement> propertyValue)
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty(expression);
 
@@ -58,9 +71,9 @@ namespace FluentNHibernate.Testing
 		}
 
 		public static PersistenceSpecification<T> CheckList<T, TListElement>(this PersistenceSpecification<T> spec,
-																			 Expression<Func<T, IEnumerable<TListElement>>> expression,
+		                                                                     Expression<Func<T, IEnumerable<TListElement>>> expression,
 		                                                                     IEnumerable<TListElement> propertyValue,
-		                                                                     Action<T, TListElement> listSetter)
+		                                                                     Action<T, TListElement> listItemSetter)
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty(expression);
 
@@ -69,22 +82,23 @@ namespace FluentNHibernate.Testing
 			{
 				foreach (var item in value)
 				{
-					listSetter(target, item);
+					listItemSetter(target, item);
 				}
 			};
 
 			return spec.RegisterCheckedProperty(list);
 		}
-		
+
 		public static PersistenceSpecification<T> CheckList<T, TListElement>(this PersistenceSpecification<T> spec,
-																			 Expression<Func<T, IEnumerable<TListElement>>> expression,
-																			 IEnumerable<TListElement> propertyValue,
-																			 Action<T, IEnumerable<TListElement>> listItemSetter)
+		                                                                     Expression<Func<T, IEnumerable<TListElement>>> expression,
+		                                                                     IEnumerable<TListElement> propertyValue,
+		                                                                     Action<T, IEnumerable<TListElement>> listSetter)
+
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty(expression);
 
 			var list = new ReferenceList<T, TListElement>(property, propertyValue);
-			list.ValueSetter = (target, propertyInfo, value) => listItemSetter(target, value);
+			list.ValueSetter = (target, propertyInfo, value) => listSetter(target, value);
 
 			return spec.RegisterCheckedProperty(list);
 		}
@@ -92,16 +106,16 @@ namespace FluentNHibernate.Testing
 		/// <summary>
 		/// Checks a list of components for validity.
 		/// </summary>
-		/// <typeparam name="TList">Type of list element</typeparam>
+		/// <typeparam name="TListElement">Type of list element</typeparam>
 		/// <param name="expression">Property</param>
 		/// <param name="propertyValue">Value to save</param>
-		public static PersistenceSpecification<T> CheckComponentList<T, TList>(this PersistenceSpecification<T> spec,
-		                                                                       Expression<Func<T, object>> expression,
-		                                                                       IList<TList> propertyValue)
+		public static PersistenceSpecification<T> CheckComponentList<T, TListElement>(this PersistenceSpecification<T> spec,
+		                                                                              Expression<Func<T, object>> expression,
+		                                                                              IEnumerable<TListElement> propertyValue)
 		{
 			PropertyInfo property = ReflectionHelper.GetProperty(expression);
 
-			return spec.RegisterCheckedProperty(new List<T, TList>(property, propertyValue));
+			return spec.RegisterCheckedProperty(new List<T, TListElement>(property, propertyValue));
 		}
 
 	    [Obsolete("CheckEnumerable has been replaced with CheckList")]
