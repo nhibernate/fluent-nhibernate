@@ -38,20 +38,20 @@ namespace FluentNHibernate.Testing.Values
 					// infallible.
 					if (propertyInfo.PropertyType.IsAssignableFrom(typeof(ISet<TListElement>)))
 					{
-						collection = new HashedSet<TListElement>(_expected.ToList());
+						collection = new HashedSet<TListElement>(Expected.ToList());
 					}
 					else if (propertyInfo.PropertyType.IsAssignableFrom(typeof(ISet)))
 					{
-						collection = new HashedSet((ICollection)_expected);
+						collection = new HashedSet((ICollection)Expected);
 					}
 					else if (propertyInfo.PropertyType.IsArray)
 					{
-						collection = Array.CreateInstance(typeof(TListElement), _expected.Count());
-						Array.Copy((Array)_expected, (Array)collection, _expected.Count());
+						collection = Array.CreateInstance(typeof(TListElement), Expected.Count());
+						Array.Copy((Array)Expected, (Array)collection, Expected.Count());
 					}
 					else
 					{
-						collection = new List<TListElement>(_expected);
+						collection = new List<TListElement>(Expected);
 					}
 
 					propertyInfo.SetValue(target, collection, null);
@@ -67,16 +67,16 @@ namespace FluentNHibernate.Testing.Values
 
 		public override void CheckValue(object target)
 		{
-			var actual = (IEnumerable<TListElement>)PropertyInfo.GetValue(target, null);
-			AssertGenericListMatches(actual, _expected);
+			var actual = PropertyInfo.GetValue(target, null) as IEnumerable;
+			AssertGenericListMatches(actual, Expected);
 		}
 
-		private void AssertGenericListMatches<TItem>(IEnumerable<TItem> actualEnumerable, IEnumerable<TItem> expectedEnumerable)
+		private void AssertGenericListMatches(IEnumerable actualEnumerable, IEnumerable<TListElement> expectedEnumerable)
 		{
 			if (actualEnumerable == null)
 			{
 				throw new ArgumentNullException("actualEnumerable",
-				                                "Actual and expected are not equal (Actual was null).");
+				                                "Actual and expected are not equal (actual was null).");
 			}
 			if (expectedEnumerable == null)
 			{
@@ -84,7 +84,12 @@ namespace FluentNHibernate.Testing.Values
 				                                "Actual and expected are not equal (expected was null).");
 			}
 
-			var actualList = actualEnumerable.ToList();
+			List<object> actualList = new List<object>();
+			foreach (var item in actualEnumerable)
+			{
+				actualList.Add(item);
+			}
+
 			var expectedList = expectedEnumerable.ToList();
 
 			if (actualList.Count != expectedList.Count)

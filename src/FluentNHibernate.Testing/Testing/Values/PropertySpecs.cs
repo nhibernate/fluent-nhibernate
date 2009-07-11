@@ -87,7 +87,6 @@ namespace FluentNHibernate.Testing.Testing.Values
 		public void should_fail()
 		{
 			thrown_exception.ShouldBeOfType<ApplicationException>();
-			
 		}
 
 		[Test]
@@ -246,6 +245,35 @@ namespace FluentNHibernate.Testing.Testing.Values
 		public void should_perform_the_check_with_the_custom_equality_comparer()
 		{
 			sut.EntityEqualityComparer.AssertWasCalled(x => x.Equals("expected", "actual"));
+		}
+	}
+
+	public class When_a_property_is_checked_with_a_custom_equality_comparer_that_fails : With_initialized_property
+	{
+		private InvalidOperationException exception;
+
+		public override void establish_context()
+		{
+			base.establish_context();
+
+			exception = new InvalidOperationException();
+
+			sut.EntityEqualityComparer = MockRepository.GenerateStub<IEqualityComparer>();
+			sut.EntityEqualityComparer
+				.Stub(x => x.Equals(null, null))
+				.IgnoreArguments()
+				.Throw(exception);
+		}
+
+		public override void because()
+		{
+			sut.CheckValue(target);
+		}
+
+		[Test]
+		public void should_fail_with_the_exception_from_the_equality_comparer()
+		{
+			thrown_exception.ShouldBeTheSameAs(exception);
 		}
 	}
 }

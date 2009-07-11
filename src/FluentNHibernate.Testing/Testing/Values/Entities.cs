@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using Iesi.Collections;
 using Iesi.Collections.Generic;
 
@@ -12,6 +13,11 @@ namespace FluentNHibernate.Testing.Testing.Values
 			backingField = new List<string>();
 			GetterAndSetter = new List<string>();
 			GetterAndPrivateSetter = new List<string>();
+
+			TypedSet = new HashedSet<string>();
+			Set = new HashedSet();
+			Collection = new StringCollection();
+			List = new List<string>();
 		}
 
 		private IList<string> backingField;

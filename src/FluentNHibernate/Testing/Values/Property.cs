@@ -67,16 +67,16 @@ namespace FluentNHibernate.Testing.Values
 
 		public override void CheckValue(object target)
 		{
-			object actual = _propertyInfo.GetValue(target, null);
+			object actual = PropertyInfo.GetValue(target, null);
 
 			bool areEqual;
 			if (EntityEqualityComparer != null)
 			{
-				areEqual = EntityEqualityComparer.Equals(_value, actual);
+				areEqual = EntityEqualityComparer.Equals(Value, actual);
 			}
 			else
 			{
-				areEqual = _value.Equals(actual);
+				areEqual = Value.Equals(actual);
 			}
 
 			if (!areEqual)
@@ -84,8 +84,8 @@ namespace FluentNHibernate.Testing.Values
 				string message =
 					String.Format(
 						"Expected '{0}' but got '{1}' for Property '{2}'",
-						_value,
-						actual, _propertyInfo.Name);
+						Value,
+						actual, PropertyInfo.Name);
 
 				throw new ApplicationException(message);
 			}
