@@ -37,24 +37,27 @@ namespace FluentNHibernate.Testing.Values
 					// an interface). I've tried to create the common ones, but I'm sure this won't be
 					// infallible.
 					if (propertyInfo.PropertyType.IsAssignableFrom(typeof(ISet<TListElement>)))
+					{
 						collection = new HashedSet<TListElement>(_expected.ToList());
+					}
 					else if (propertyInfo.PropertyType.IsAssignableFrom(typeof(ISet)))
+					{
 						collection = new HashedSet((ICollection)_expected);
+					}
 					else if (propertyInfo.PropertyType.IsArray)
 					{
 						collection = Array.CreateInstance(typeof(TListElement), _expected.Count());
 						Array.Copy((Array)_expected, (Array)collection, _expected.Count());
 					}
 					else
+					{
 						collection = new List<TListElement>(_expected);
+					}
 
 					propertyInfo.SetValue(target, collection, null);
 				};
 			}
-			set
-			{
-				_valueSetter = value;
-			}
+			set { _valueSetter = value; }
 		}
 
 		protected IEnumerable<TListElement> Expected
@@ -71,17 +74,23 @@ namespace FluentNHibernate.Testing.Values
 		private void AssertGenericListMatches<TItem>(IEnumerable<TItem> actualEnumerable, IEnumerable<TItem> expectedEnumerable)
 		{
 			if (actualEnumerable == null)
+			{
 				throw new ArgumentNullException("actualEnumerable",
 				                                "Actual and expected are not equal (Actual was null).");
+			}
 			if (expectedEnumerable == null)
+			{
 				throw new ArgumentNullException("expectedEnumerable",
 				                                "Actual and expected are not equal (expected was null).");
+			}
 
 			var actualList = actualEnumerable.ToList();
 			var expectedList = expectedEnumerable.ToList();
 
 			if (actualList.Count != expectedList.Count)
+			{
 				throw new ApplicationException("Actual count does not equal expected count");
+			}
 
 			var equalsFunc = (EntityEqualityComparer != null)
 			                 	? new Func<object, object, bool>((a, b) => EntityEqualityComparer.Equals(a, b))
@@ -89,7 +98,10 @@ namespace FluentNHibernate.Testing.Values
 
 			for (var i = 0; i < actualList.Count; i++)
 			{
-				if (equalsFunc(actualList[i], expectedList[i])) continue;
+				if (equalsFunc(actualList[i], expectedList[i]))
+				{
+					continue;
+				}
 
 				var message = String.Format("Expected '{0}' but got '{1}' at position {2}",
 				                            expectedList[i],

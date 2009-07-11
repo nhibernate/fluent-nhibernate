@@ -1,4 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
+using Iesi.Collections;
+using Iesi.Collections.Generic;
 
 namespace FluentNHibernate.Testing.Testing.Values
 {
@@ -24,6 +27,12 @@ namespace FluentNHibernate.Testing.Testing.Values
 		{
 			backingField.Add(value);
 		}
+
+		public ISet<string> TypedSet { get; set; }
+		public ISet Set { get; set; }
+		public ICollection Collection { get; set; }
+		public string[] Array { get; set; }
+		public IList<string> List { get; set; }
 	}
 
 	public class ReferenceEntity
