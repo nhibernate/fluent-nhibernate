@@ -278,7 +278,7 @@ namespace FluentNHibernate.Testing.Testing
 
         public override void because()
         {
-            sut.CheckEnumerable(x => x.ReferenceList, listSetter, new[] { new OtherEntity(), new OtherEntity() });
+            sut.CheckEnumerable(x => x.ReferenceList, listSetter, new[] {new OtherEntity(), new OtherEntity()});
         }
 
         [Test]
@@ -361,17 +361,17 @@ namespace FluentNHibernate.Testing.Testing
 
     public class When_a_checked_list_with_a_custom_list_item_setter_is_added : With_persistence_specification<ReferenceEntity>
     {
-        protected Action<ReferenceEntity, OtherEntity> listSetter;
+        protected Action<ReferenceEntity, OtherEntity> listItemSetter;
 
         public override void establish_context()
         {
             base.establish_context();
-            listSetter = MockRepository.GenerateStub<Action<ReferenceEntity, OtherEntity>>();
+            listItemSetter = MockRepository.GenerateStub<Action<ReferenceEntity, OtherEntity>>();
         }
 
         public override void because()
         {
-            sut.CheckList(x => x.ReferenceList, new[] {new OtherEntity(), new OtherEntity()}, listSetter);
+            sut.CheckList(x => x.ReferenceList, new[] {new OtherEntity(), new OtherEntity()}, listItemSetter);
         }
 
         [Test]
@@ -414,8 +414,8 @@ namespace FluentNHibernate.Testing.Testing
         [Test]
         public void should_invoke_the_custom_setter_for_each_item()
         {
-            listSetter.AssertWasCalled(x => x.Invoke(entity, referenced[0]));
-            listSetter.AssertWasCalled(x => x.Invoke(entity, referenced[1]));
+            listItemSetter.AssertWasCalled(x => x.Invoke(entity, referenced[0]));
+            listItemSetter.AssertWasCalled(x => x.Invoke(entity, referenced[1]));
         }
     }
 
@@ -442,6 +442,125 @@ namespace FluentNHibernate.Testing.Testing
         public void should_set_the_custom_equality_comparer()
         {
             sut.AllProperties.First().EntityEqualityComparer.ShouldEqual(comparer);
+        }
+    }
+
+    public class When_a_checked_component_list_with_a_custom_list_setter_is_added : With_persistence_specification<ReferenceEntity>
+    {
+        protected Action<ReferenceEntity, IEnumerable<OtherEntity>> listSetter;
+
+        public override void establish_context()
+        {
+            base.establish_context();
+            listSetter = MockRepository.GenerateStub<Action<ReferenceEntity, IEnumerable<OtherEntity>>>();
+        }
+
+        public override void because()
+        {
+            sut.CheckComponentList(x => x.ReferenceList, new[] {new OtherEntity(), new OtherEntity()}, listSetter);
+        }
+
+        [Test]
+        public void should_add_a_reference_property_check()
+        {
+            sut.AllProperties.First().ShouldBeOfType(typeof(List<ReferenceEntity, OtherEntity>));
+        }
+
+        [Test]
+        public void should_add_one_check_to_the_specification()
+        {
+            sut.AllProperties.ShouldHaveCount(1);
+        }
+
+        [Test]
+        public void should_set_the_custom_equality_comparer()
+        {
+            sut.AllProperties.First().EntityEqualityComparer.ShouldEqual(comparer);
+        }
+    }
+
+    public class When_the_list_setter_of_a_checked_component_list_is_invoked : When_a_checked_component_list_with_a_custom_list_setter_is_added
+    {
+        private ReferenceEntity entity;
+        private OtherEntity[] referenced;
+
+        public override void establish_context()
+        {
+            base.establish_context();
+            entity = new ReferenceEntity();
+            referenced = new[] {new OtherEntity(), new OtherEntity()};
+        }
+
+        public override void because()
+        {
+            base.because();
+            ((List<ReferenceEntity, OtherEntity>)sut.AllProperties.First()).ValueSetter.Invoke(entity, null, referenced);
+        }
+
+        [Test]
+        public void should_invoke_the_custom_setter()
+        {
+            listSetter.AssertWasCalled(x => x.Invoke(entity, referenced));
+        }
+    }
+
+    public class When_a_checked_component_list_with_a_custom_list_item_setter_is_added : With_persistence_specification<ReferenceEntity>
+    {
+        protected Action<ReferenceEntity, OtherEntity> listItemSetter;
+
+        public override void establish_context()
+        {
+            base.establish_context();
+            listItemSetter = MockRepository.GenerateStub<Action<ReferenceEntity, OtherEntity>>();
+        }
+
+        public override void because()
+        {
+            sut.CheckComponentList(x => x.ReferenceList, new[] {new OtherEntity(), new OtherEntity()}, listItemSetter);
+        }
+
+        [Test]
+        public void should_add_a_reference_property_check()
+        {
+            sut.AllProperties.First().ShouldBeOfType(typeof(List<ReferenceEntity, OtherEntity>));
+        }
+
+        [Test]
+        public void should_add_one_check_to_the_specification()
+        {
+            sut.AllProperties.ShouldHaveCount(1);
+        }
+
+        [Test]
+        public void should_set_the_custom_equality_comparer()
+        {
+            sut.AllProperties.First().EntityEqualityComparer.ShouldEqual(comparer);
+        }
+    }
+
+    public class When_the_list_item_setter_of_a_checked_component_list_is_invoked : When_a_checked_component_list_with_a_custom_list_item_setter_is_added
+    {
+        private ReferenceEntity entity;
+        private OtherEntity[] referenced;
+
+        public override void establish_context()
+        {
+            base.establish_context();
+            entity = new ReferenceEntity();
+            referenced = new[] {new OtherEntity(), new OtherEntity()};
+        }
+
+        public override void because()
+        {
+            base.because();
+            ((List<ReferenceEntity, OtherEntity>)sut.AllProperties.First()).ValueSetter.Invoke(entity, null, referenced);
+        }
+
+        [Test]
+        public void should_invoke_the_custom_setter_for_each_item()
+        {
+            listItemSetter.AssertWasCalled(x => x.Invoke(entity, referenced[0]));
+            listItemSetter.AssertWasCalled(x => x.Invoke(entity, referenced[1]));
         }
     }
 }

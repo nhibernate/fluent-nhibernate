@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing
 {
     public class PersistenceSpecification<T>
     {
-    	protected readonly List<Property<T>> allProperties = new List<Property<T>>();
+        protected readonly List<Property<T>> allProperties = new List<Property<T>>();
         private readonly ISession currentSession;
         private readonly IEqualityComparer entityEqualityComparer;
         private readonly bool hasExistingSession;
@@ -35,7 +35,7 @@ namespace FluentNHibernate.Testing
             this.entityEqualityComparer = entityEqualityComparer;
         }
 
-    	public void VerifyTheMappings()
+        public void VerifyTheMappings()
         {
             // CreateProperties the initial copy
             var first = typeof(T).InstantiateUsingParameterlessConstructor<T>();
@@ -62,7 +62,7 @@ namespace FluentNHibernate.Testing
             allProperties.ForEach(p => p.CheckValue(second));
         }
 
-    	public void TransactionalSave(object propertyValue)
+        public void TransactionalSave(object propertyValue)
         {
             if (hasExistingSession)
             {

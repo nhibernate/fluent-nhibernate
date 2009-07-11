@@ -118,6 +118,38 @@ namespace FluentNHibernate.Testing
 			return spec.RegisterCheckedProperty(new List<T, TListElement>(property, propertyValue));
 		}
 
+		public static PersistenceSpecification<T> CheckComponentList<T, TListElement>(this PersistenceSpecification<T> spec,
+		                                                                              Expression<Func<T, IEnumerable<TListElement>>> expression,
+		                                                                              IEnumerable<TListElement> propertyValue,
+		                                                                              Action<T, TListElement> listItemSetter)
+		{
+			PropertyInfo property = ReflectionHelper.GetProperty(expression);
+
+			var list = new List<T, TListElement>(property, propertyValue);
+			list.ValueSetter = (target, propertyInfo, value) =>
+			{
+				foreach (var item in value)
+				{
+					listItemSetter(target, item);
+				}
+			};
+
+			return spec.RegisterCheckedProperty(list);
+		}
+
+		public static PersistenceSpecification<T> CheckComponentList<T, TListElement>(this PersistenceSpecification<T> spec,
+		                                                                              Expression<Func<T, IEnumerable<TListElement>>> expression,
+		                                                                              IEnumerable<TListElement> propertyValue,
+		                                                                              Action<T, IEnumerable<TListElement>> listSetter)
+		{
+			PropertyInfo property = ReflectionHelper.GetProperty(expression);
+
+			var list = new List<T, TListElement>(property, propertyValue);
+			list.ValueSetter = (target, propertyInfo, value) => listSetter(target, value);
+
+			return spec.RegisterCheckedProperty(list);
+		}
+
 	    [Obsolete("CheckEnumerable has been replaced with CheckList")]
 	    public static PersistenceSpecification<T> CheckEnumerable<T, TItem>(this PersistenceSpecification<T> spec,
                                                                             Expression<Func<T, IEnumerable<TItem>>> expression,
