@@ -77,9 +77,9 @@ namespace FluentNHibernate.MappingModel.Output
             document.ImportAndAppendChild(componentXml);
         }
 
-        public override void Visit(JoinedSubclassMapping subclassMapping)
+        public override void Visit(ISubclassMapping subclassMapping)
         {
-            var writer = serviceLocator.GetWriter<JoinedSubclassMapping>();
+            var writer = serviceLocator.GetWriter<ISubclassMapping>();
             var subclassXml = writer.Write(subclassMapping);
 
             document.ImportAndAppendChild(subclassXml);

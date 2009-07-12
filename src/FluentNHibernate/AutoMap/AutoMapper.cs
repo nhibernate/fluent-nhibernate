@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
@@ -30,73 +31,98 @@ namespace FluentNHibernate.AutoMap
             };
         }
 
-        public IAutoClasslike MergeMap<T>(IAutoClasslike map, IDictionary<Type, Action<object>> inlineOverrides)
+        private void ApplyOverrides(IDictionary<Type, Action<object>> inlineOverrides, Type classType, IList<string> mappedProperties, ClassMappingBase mapping)
         {
-            if (mappingTypes != null)
+            if (inlineOverrides.ContainsKey(classType))
             {
-				var discriminatorSet = false;
-				var isDiscriminated = expressions.IsDiscriminated(typeof(T));
+                var autoMapType = typeof(AutoMap<>).MakeGenericType(classType);
+                var autoMap = Activator.CreateInstance(autoMapType, mappedProperties);
+                inlineOverrides[classType](autoMap);
 
-                foreach (var inheritedClass in mappingTypes.Where(q =>
-                    q.Type.BaseType == typeof(T) &&
-                    !expressions.IsConcreteBaseType(q.Type.BaseType)))
-                {
-                    if (isDiscriminated && !discriminatorSet)
-                    {
-                        var discriminatorColumn = expressions.DiscriminatorColumn(typeof(T));
-						map.DiscriminateSubClassesOnColumn(discriminatorColumn);
-                        discriminatorSet = true;
-                    }
-
-					object subclassMapping;
-                    var subclassStrategy = expressions.SubclassStrategy(typeof(T));
-
-                    if (subclassStrategy == SubclassStrategy.JoinedSubclass)
-                    {
-                        var subclass = map.JoinedSubClass(inheritedClass.Type, typeof(T).Name);
-
-                        if (inlineOverrides.ContainsKey(inheritedClass.Type))
-                            inlineOverrides[inheritedClass.Type](subclass);
-
-                        MapEverythingInClass(subclass, inheritedClass.Type);
-                        inheritedClass.IsMapped = true;
-						subclassMapping = subclass;
-                    }
-                    else
-                    {
-                        var subclass = map.SubClass(inheritedClass.Type, inheritedClass.Type.Name);
-
-                        if (inlineOverrides.ContainsKey(inheritedClass.Type))
-                            inlineOverrides[inheritedClass.Type](subclass);
-
-                        MapEverythingInClass(subclass, inheritedClass.Type);
-                        inheritedClass.IsMapped = true;
-						subclassMapping = subclass;
-                    }
-
-					InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
-						this, a => a.MergeMap<object>(null, null), new[] { subclassMapping, inlineOverrides },
-						inheritedClass.Type);
-                }
+                ((IAutoClasslike)autoMap).AlterModel(mapping);
             }
-
-            if (inlineOverrides.ContainsKey(typeof(T)))
-                inlineOverrides[typeof(T)](map);
-
-            MapEverythingInClass(map, typeof(T));
-            
-            return map;
         }
 
-        public virtual void MapEverythingInClass(IAutoClasslike map, Type entityType)
+        public ClassMappingBase MergeMap(Type classType, ClassMappingBase mapping, IDictionary<Type, Action<object>> inlineOverrides, IList<string> mappedProperties)
+        {
+            // map class first, then subclasses - this way subclasses can inspect the class model
+            // to see which properties have already been mapped
+            ApplyOverrides(inlineOverrides, classType, mappedProperties, mapping);
+
+            MapEverythingInClass(mapping, classType, mappedProperties);
+
+            if (mappingTypes != null)
+                MapInheritanceTree(classType, inlineOverrides, mapping, mappedProperties);
+
+            return mapping;
+        }
+
+        private void MapInheritanceTree(Type classType, IDictionary<Type, Action<object>> inlineOverrides, ClassMappingBase mapping, IList<string> mappedProperties)
+        {
+            var discriminatorSet = false;
+            var isDiscriminated = expressions.IsDiscriminated(classType);
+
+            foreach (var inheritedClass in mappingTypes.Where(q =>
+                q.Type.BaseType == classType &&
+                    !expressions.IsConcreteBaseType(q.Type.BaseType)))
+            {
+                if (isDiscriminated && !discriminatorSet && mapping is ClassMapping)
+                {
+                    var discriminatorColumn = expressions.DiscriminatorColumn(classType);
+
+                    ((ClassMapping)mapping).Discriminator = new DiscriminatorMapping((ClassMapping)mapping)
+                    {
+                        ColumnName = discriminatorColumn
+                    };
+                    discriminatorSet = true;
+                }
+
+                ISubclassMapping subclassMapping;
+                var subclassStrategy = expressions.SubclassStrategy(classType);
+
+                if (subclassStrategy == SubclassStrategy.JoinedSubclass)
+                {
+                    // TODO: This id name should be removed. Ideally it needs to be set by a
+                    // default and be overridable by a convention (preferably the ForeignKey convention
+                    // that already exists)
+                    var subclass = new JoinedSubclassMapping
+                    {
+                        Type = inheritedClass.Type
+                    };
+
+                    subclass.Key = new KeyMapping();
+                    subclass.Key.AddColumn(new ColumnMapping { Name = mapping.Type.Name + "_id" });
+
+                    subclassMapping = subclass;
+                }
+                else
+                    subclassMapping = new SubclassMapping();
+
+                MapSubclass(classType, inlineOverrides, mappedProperties, subclassMapping, inheritedClass);
+
+                mapping.AddSubclass(subclassMapping);
+
+                MergeMap(inheritedClass.Type, (ClassMappingBase)subclassMapping, inlineOverrides, mappedProperties);
+            }
+        }
+
+        private void MapSubclass(Type classType, IDictionary<Type, Action<object>> inlineOverrides, IList<string> mappedProperties, ISubclassMapping subclass, AutoMapType inheritedClass)
+        {
+            subclass.Name = inheritedClass.Type.AssemblyQualifiedName;
+            ApplyOverrides(inlineOverrides, classType, mappedProperties, (ClassMappingBase)subclass);
+            MapEverythingInClass((ClassMappingBase)subclass, inheritedClass.Type, mappedProperties);
+            inheritedClass.IsMapped = true;
+        }
+
+        public virtual void MapEverythingInClass(ClassMappingBase mapping, Type entityType, IList<string> mappedProperties)
         {
             foreach (var property in entityType.GetProperties())
             {
-                TryToMapProperty(map, property);
+                TryToMapProperty(mapping, property, mappedProperties);
             }
         }
 
-        protected void TryToMapProperty(IAutoClasslike map, PropertyInfo property)
+        protected void TryToMapProperty(ClassMappingBase mapping, PropertyInfo property, IList<string> mappedProperties)
         {
             if (property.GetIndexParameters().Length == 0)
             {
@@ -104,16 +130,17 @@ namespace FluentNHibernate.AutoMap
                 {
                     if (rule.MapsProperty(property))
                     {
-                        if (map.PropertiesMapped.Count(p => p.Name == property.Name) == 0)
+                        if (mappedProperties.Count(p => p == property.Name) == 0)
                         {
-                            var mapping = map.GetMapping();
-
                             if (mapping is ClassMapping)
                                 rule.Map((ClassMapping)mapping, property);
                             else if (mapping is SubclassMapping)
                                 rule.Map((SubclassMapping)mapping, property);
                             else if (mapping is JoinedSubclassMapping)
                                 rule.Map((JoinedSubclassMapping)mapping, property);
+
+                            mappedProperties.Add(property.Name);
+
                             break;
                         }
                     }
@@ -121,11 +148,14 @@ namespace FluentNHibernate.AutoMap
             }
         }
 
-        public IAutoClasslike Map<T>(List<AutoMapType> types, IDictionary<Type, Action<object>> overrides)
+        public ClassMapping Map(Type classType, List<AutoMapType> types, IDictionary<Type, Action<object>> overrides)
         {
-            var classMap = (AutoMap<T>)Activator.CreateInstance(typeof(AutoMap<T>));
+            var classMap = new ClassMapping(classType)
+            {
+                Name = classType.AssemblyQualifiedName
+            };
             mappingTypes = types;
-            return MergeMap<T>(classMap, overrides);
+            return (ClassMapping)MergeMap(classType, classMap, overrides, new List<string>());
         }
     }
 }

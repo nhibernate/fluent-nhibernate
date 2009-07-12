@@ -1,10 +1,7 @@
 using System;
-using System.Linq.Expressions;
 using System.Reflection;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Utils;
-using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.AutoMap
 {
@@ -22,54 +19,57 @@ namespace FluentNHibernate.AutoMap
             return expressions.IsComponentType(property.PropertyType);
         }
 
-        public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
-        {
-            var componentType = property.PropertyType;
-            var componentPart = CreateComponentPart(property, componentType, classMap);
-
-            MapComponentProperties(property, componentType, componentPart);
-        }
-
         public void Map(ClassMapping classMap, PropertyInfo property)
         {
-            
+            MapComponent(classMap, property);
         }
 
         public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
         {
-
+            MapComponent(classMap, property);
         }
 
         public void Map(SubclassMapping classMap, PropertyInfo property)
         {
-
+            MapComponent(classMap, property);
         }
 
-        private void MapComponentProperties(PropertyInfo componentProperty, Type componentType, object componentPart)
+        private void MapComponent(ClassMappingBase classMapping, PropertyInfo property)
         {
-            var mapMethod = GetMapMethod(componentType, componentPart);
-            var columnNamePrefix = expressions.GetComponentColumnPrefix(componentProperty);
-
-            foreach (var property in componentType.GetProperties())
+            var mapping = new ComponentMapping
             {
-                if (property.PropertyType.IsEnum || property.GetIndexParameters().Length != 0) continue;
+                Name = property.Name
+            };
 
-                var propertyMap = (IProperty)mapMethod.Invoke(componentPart, new[] {ExpressionBuilder.Create(property, componentType)});
+            var columnNamePrefix = expressions.GetComponentColumnPrefix(property);
 
-                propertyMap.ColumnNames.Add(columnNamePrefix + property.Name);
+            foreach (var componentProperty in property.PropertyType.GetProperties())
+            {
+                if (componentProperty.PropertyType.IsEnum || componentProperty.GetIndexParameters().Length != 0) continue;
+
+                mapping.AddProperty(GetPropertyMapping(property.PropertyType, componentProperty, columnNamePrefix));
             }
+
+            classMapping.AddComponent(mapping);
         }
 
-        private static object CreateComponentPart<T>(PropertyInfo property, Type componentType, AutoMap<T> classMap)
+        private PropertyMapping GetPropertyMapping(Type type, PropertyInfo property, string columnNamePrefix)
         {
-            return InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(classMap, map => map.Component<object>(null, null), new object[] {ExpressionBuilder.Create<T>(property), null}, componentType);
-        }
+            var mapping = new PropertyMapping
+            {
+                ContainingEntityType = type,
+                PropertyInfo = property
+            };
 
-        private static MethodInfo GetMapMethod(Type componentType, object componentPart)
-        {
-            var funcType = typeof(Func<,>).MakeGenericType(componentType, typeof(object));
-            var mapType = typeof(Expression<>).MakeGenericType(funcType);
-            return componentPart.GetType().GetMethod("Map", new[] { mapType });
+            mapping.AddColumn(new ColumnMapping { Name = columnNamePrefix + mapping.PropertyInfo.Name });
+
+            if (!mapping.Attributes.IsSpecified(x => x.Name))
+                mapping.Name = mapping.PropertyInfo.Name;
+
+            if (!mapping.Attributes.IsSpecified(x => x.Type))
+                mapping.Attributes.SetDefault(x => x.Type, new TypeReference(mapping.PropertyInfo.PropertyType));
+
+            return mapping;
         }
     }
 }

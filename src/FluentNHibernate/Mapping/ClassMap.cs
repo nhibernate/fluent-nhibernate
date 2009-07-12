@@ -18,17 +18,16 @@ namespace FluentNHibernate.Mapping
         /// Specify caching for this entity.
         /// </summary>
         public ICache Cache { get; private set; }
-        private IIdentityPart id;
+        protected IIdentityPart id;
 
         private readonly IList<ImportPart> imports = new List<ImportPart>();
         private bool nextBool = true;
 
-        protected readonly ClassMapping mapping;
+        protected ClassMapping mapping;
         private IDiscriminatorPart discriminator;
         private IVersion version;
         private ICompositeIdMappingProvider compositeId;
         private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
-        private bool mappingAlreadyBuilt;
 
         public ClassMap()
             : this(new ClassMapping(typeof(T)))
@@ -53,13 +52,6 @@ namespace FluentNHibernate.Mapping
 
 		public ClassMapping GetClassMapping()
         {
-            // don't like this, but it's because the automapper calls GetClassMapping to
-            // use when iterating the rules collection. The EnsureMappingsBuilt call on the
-            // PersistenceModel should be the only thing to call this, but because the AM
-            // does too we end up with duplicate everything.
-            if (mappingAlreadyBuilt)
-                return mapping;
-
             mapping.Name = typeof(T).AssemblyQualifiedName;
 
             foreach (var property in properties)
@@ -100,8 +92,6 @@ namespace FluentNHibernate.Mapping
 
             if (compositeId != null)
                 mapping.Id = compositeId.GetCompositeIdMapping();
-
-		    mappingAlreadyBuilt = true;
 
             return mapping;
         }

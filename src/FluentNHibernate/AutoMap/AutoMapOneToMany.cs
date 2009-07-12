@@ -33,6 +33,7 @@ namespace FluentNHibernate.AutoMap
             setMapping.Relationship = new OneToManyMapping() { Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]) };
             setMapping.Key = new KeyMapping();
             setMapping.Key.AddColumn(new ColumnMapping() { Name = property.DeclaringType.Name + "_Id"});
+            setMapping.MemberInfo = property;
             classMap.AddCollection(setMapping);        
         }
 
@@ -45,6 +46,7 @@ namespace FluentNHibernate.AutoMap
             setMapping.Relationship = new OneToManyMapping() { Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]) };
             setMapping.Key = new KeyMapping();
             setMapping.Key.AddColumn(new ColumnMapping() { Name = property.DeclaringType.Name + "_Id" });
+            setMapping.MemberInfo = property;
             classMap.AddCollection(setMapping);
         }
 
@@ -57,6 +59,7 @@ namespace FluentNHibernate.AutoMap
             setMapping.Relationship = new OneToManyMapping() { Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]) };
             setMapping.Key = new KeyMapping();
             setMapping.Key.AddColumn(new ColumnMapping() { Name = property.DeclaringType.Name + "_Id" });
+            setMapping.MemberInfo = property;
             classMap.AddCollection(setMapping);
         }
     }

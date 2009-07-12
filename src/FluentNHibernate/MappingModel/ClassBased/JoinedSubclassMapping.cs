@@ -7,7 +7,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
     public class JoinedSubclassMapping : ClassMappingBase, ISubclassMapping
     {
         private readonly AttributeStore<JoinedSubclassMapping> attributes;
-        private readonly IList<JoinedSubclassMapping> subclasses;
         public KeyMapping Key { get; set; }
 
         public JoinedSubclassMapping() : this(new AttributeStore())
@@ -15,7 +14,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
         protected JoinedSubclassMapping(AttributeStore store) : base(store)
         {
-            subclasses = new List<JoinedSubclassMapping>();
             attributes = new AttributeStore<JoinedSubclassMapping>(store);
         }
 
@@ -31,20 +29,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             if(Key != null)
                 visitor.Visit(Key);
 
-            foreach (var subclass in subclasses)
-                visitor.Visit(subclass);
-
             base.AcceptVisitor(visitor);
-        }
-
-        public IEnumerable<JoinedSubclassMapping> Subclasses
-        {
-            get { return subclasses; }
-        }
-
-        public void AddSubclass(JoinedSubclassMapping joinedSubclassMapping)
-        {
-            subclasses.Add(joinedSubclassMapping);
         }
 
         public string TableName

@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 using NUnit.Framework;
 using System.Linq.Expressions;
@@ -43,7 +44,7 @@ namespace FluentNHibernate.Testing.AutoMap
             Model<ExampleClass>(p => p.Name.StartsWith("_"));
 
             Test<ExampleClass>(mapping =>
-                Assert.Contains(ReflectionHelper.GetProperty(ExampleClass.PrivateProperties.Property), (ICollection)mapping.PropertiesMapped));
+                mapping.Properties.ShouldContain(x => x.PropertyInfo == ReflectionHelper.GetProperty(ExampleClass.PrivateProperties.Property)));
         }
 
         [Test]
@@ -52,7 +53,7 @@ namespace FluentNHibernate.Testing.AutoMap
             Model<ExampleClass>(p => p.Name.StartsWith("asdf"));
 
             Test<ExampleClass>(mapping =>
-                mapping.PropertiesMapped.ShouldBeEmpty());
+                mapping.Properties.ShouldBeEmpty());
         }
 
         [Test]
@@ -61,7 +62,7 @@ namespace FluentNHibernate.Testing.AutoMap
             Model<ExampleParent>(p => p.Name.StartsWith("_"));
 
             Test<ExampleParent>(mapping =>
-                Assert.Contains(ReflectionHelper.GetProperty(ExampleParent.PrivateProperties.Children), (ICollection)mapping.PropertiesMapped));
+                mapping.Collections.ShouldContain(x => x.MemberInfo == ReflectionHelper.GetProperty(ExampleParent.PrivateProperties.Children)));
         }
 
         private void Model<T>(Func<PropertyInfo, bool> convention)
@@ -72,11 +73,11 @@ namespace FluentNHibernate.Testing.AutoMap
             model.AutoMap<T>();
         }
 
-        private void Test<T>(Action<AutoMap<T>> mapping)
+        private void Test<T>(Action<ClassMapping> mapping)
         {
             var map = model.FindMapping<T>();
 
-            mapping((AutoMap<T>)map);
+            mapping(map.GetClassMapping());
         }
     }
 }

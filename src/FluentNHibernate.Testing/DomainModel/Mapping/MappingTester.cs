@@ -99,6 +99,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public virtual MappingTester<T> HasAttribute(string name, Func<string, bool> predicate)
         {
+            Assert.IsNotNull(currentElement, "Couldn't find element matching '" + currentPath + "'");
+
             currentElement.HasAttribute(name).ShouldBeTrue();
 
             predicate(currentElement.Attributes[name].Value).ShouldBeTrue();
@@ -152,6 +154,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public MappingTester<T> ChildrenDontContainAttribute(string key, string value)
         {
+            Assert.IsNotNull(currentElement, "Couldn't find element matching '" + currentPath + "'");
+
             foreach (XmlElement node in currentElement.ChildNodes)
             {
                 if (node.HasAttribute(key))

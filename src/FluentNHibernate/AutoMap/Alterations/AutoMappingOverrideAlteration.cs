@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -41,7 +42,7 @@ namespace FluentNHibernate.AutoMap.Alterations
             foreach (var typeMatch in types)
             {
                 var mappingOverride = Activator.CreateInstance(typeMatch.OverrideType);
-                var mapping = (IMappingProvider)Activator.CreateInstance(typeof(AutoMap<>).MakeGenericType(typeMatch.EntityType));
+                var mapping = (IMappingProvider)Activator.CreateInstance(typeof(AutoMap<>).MakeGenericType(typeMatch.EntityType), new List<string>());
 
                 // HACK: call the Override method with the generic AutoMap<T>
                 typeMatch.OverrideType

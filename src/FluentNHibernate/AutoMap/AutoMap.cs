@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping;
@@ -10,16 +12,16 @@ namespace FluentNHibernate.AutoMap
 {
     public class AutoMap<T> : ClassMap<T>, IAutoClasslike
     {
-        private readonly IList<PropertyInfo> propertiesMapped = new List<PropertyInfo>();
+        private readonly IList<string> mappedProperties;
 
-        public IEnumerable<PropertyInfo> PropertiesMapped
+        public AutoMap(IList<string> mappedProperties)
         {
-            get { return propertiesMapped; }
+            this.mappedProperties = mappedProperties;
         }
 
-        public object GetMapping()
+        public IEnumerable<string> PropertiesMapped
         {
-            return GetClassMapping();
+            get { return mappedProperties; }
         }
 
         void IAutoClasslike.DiscriminateSubClassesOnColumn(string column)
@@ -27,44 +29,58 @@ namespace FluentNHibernate.AutoMap
             DiscriminateSubClassesOnColumn(column);
         }
 
+        void IAutoClasslike.AlterModel(ClassMappingBase classMapping)
+        {
+            foreach (var property in Properties)
+                classMapping.AddOrReplaceProperty(property.GetPropertyMapping());
+
+            if (id != null && classMapping is ClassMapping)
+                ((ClassMapping)classMapping).Id = id.GetIdMapping();
+
+            foreach (var collection in collections)
+                classMapping.AddOrReplaceCollection(collection.GetCollectionMapping());
+
+            // TODO: Add other mappings
+        }
+
         protected override OneToManyPart<TChild> HasMany<TChild>(PropertyInfo property)
         {
-            propertiesMapped.Add(property);
+            mappedProperties.Add(property.Name);
             return base.HasMany<TChild>(property);
         }
 
         public void IgnoreProperty(Expression<Func<T, object>> expression)
         {
-            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
+            mappedProperties.Add(ReflectionHelper.GetProperty(expression).Name);
         }
 
         public override IIdentityPart Id(Expression<Func<T, object>> expression)
         {
-            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
+            mappedProperties.Add(ReflectionHelper.GetProperty(expression).Name);
             return base.Id(expression);
         }
 
         protected override PropertyMap Map(PropertyInfo property, string columnName)
         {
-            propertiesMapped.Add(property);
+            mappedProperties.Add(property.Name);
             return base.Map(property, columnName);
         }
 
         protected override ManyToOnePart<TOther> References<TOther>(PropertyInfo property, string columnName)
         {
-            propertiesMapped.Add(property);
+            mappedProperties.Add(property.Name);
             return base.References<TOther>(property, columnName);
         }
 
         protected override ManyToManyPart<TChild> HasManyToMany<TChild>(PropertyInfo property)
         {
-            propertiesMapped.Add(property);
+            mappedProperties.Add(property.Name);
             return base.HasManyToMany<TChild>(property);
         }
 
         protected override ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
         {
-            propertiesMapped.Add(property);
+            mappedProperties.Add(property.Name);
 
             if (action == null)
                 action = c => { };
@@ -74,19 +90,19 @@ namespace FluentNHibernate.AutoMap
 
         public override IIdentityPart Id(Expression<Func<T, object>> expression, string column)
         {
-            propertiesMapped.Add(ReflectionHelper.GetProperty(expression));
+            mappedProperties.Add(ReflectionHelper.GetProperty(expression).Name);
             return base.Id(expression, column);
         }
 
         protected override OneToOnePart<TOther> HasOne<TOther>(PropertyInfo property)
         {
-            propertiesMapped.Add(property);
+            mappedProperties.Add(property.Name);
             return base.HasOne<TOther>(property);
         }
 
         protected override VersionPart Version(PropertyInfo property)
         {
-            propertiesMapped.Add(property);
+            mappedProperties.Add(property.Name);
             return base.Version(property);
         }
 
@@ -98,6 +114,8 @@ namespace FluentNHibernate.AutoMap
 
             action(joinedclass);
 
+            // remove any mappings for the same type, then re-add
+		    joinedSubclasses.RemoveAll(x => x.EntityType == typeof(TSubclass));
             joinedSubclasses.Add(joinedclass);
 
 		    return joinedclass;
@@ -108,6 +126,8 @@ namespace FluentNHibernate.AutoMap
             var genericType = typeof (AutoJoinedSubClassPart<>).MakeGenericType(type);
             var joinedclass = (IJoinedSubclass)Activator.CreateInstance(genericType, keyColumn);
 
+            // remove any mappings for the same type, then re-add
+            joinedSubclasses.RemoveAll(x => x.EntityType == type);
             joinedSubclasses.Add(joinedclass);
 
             return (IAutoClasslike)joinedclass;
@@ -123,10 +143,12 @@ namespace FluentNHibernate.AutoMap
 			where TSubclass : T
         {
             var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
-            var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, discriminatorValue);
+            var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, null, discriminatorValue);
             
             action(subclass);
-            
+
+            // remove any mappings for the same type, then re-add
+            subclasses.RemoveAll(x => x.EntityType == typeof(TSubclass));
             subclasses.Add(subclass);
 
 		    return subclass;
@@ -143,6 +165,8 @@ namespace FluentNHibernate.AutoMap
             var genericType = typeof(AutoSubClassPart<>).MakeGenericType(type);
             var subclass = (ISubclass)Activator.CreateInstance(genericType, null, discriminatorValue);
 
+            // remove any mappings for the same type, then re-add
+            subclasses.RemoveAll(x => x.EntityType == type);
             subclasses.Add(subclass);
 
             return (IAutoClasslike)subclass;

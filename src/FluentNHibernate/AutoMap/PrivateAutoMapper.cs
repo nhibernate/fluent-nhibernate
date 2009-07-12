@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.AutoMap
 {
@@ -14,7 +16,7 @@ namespace FluentNHibernate.AutoMap
             localExpressions = expressions;
         }
 
-        public override void MapEverythingInClass(IAutoClasslike map, Type entityType)
+        public override void MapEverythingInClass(ClassMappingBase mapping, Type entityType, IList<string> mappedProperties)
         {
             // This will ONLY map private properties. Do not call base.
 
@@ -25,7 +27,7 @@ namespace FluentNHibernate.AutoMap
             foreach (var property in entityType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic))
             {
                 if (rule(property))
-                    TryToMapProperty(map, property);
+                    TryToMapProperty(mapping, property, mappedProperties);
             }
         }
     }

@@ -1,5 +1,6 @@
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Testing.AutoMap.ManyToMany;
 using FluentNHibernate.Utils;
 using NUnit.Framework;
@@ -13,40 +14,13 @@ namespace FluentNHibernate.Testing.AutoMap
         [Test]
         public void CanMapManyToManyProperty()
         {
-            //var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
-            //var autoMap = new AutoMap<ManyToMany1>();
+            var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
+            var autoMap = new ClassMapping();
 
-            //var mapper = new AutoMapManyToMany(new AutoMappingExpressions());
-            //mapper.Map<ManyToMany1>(autoMap, propertyInfo);
+            var mapper = new AutoMapManyToMany(new AutoMappingExpressions());
+            mapper.Map(autoMap, propertyInfo);
 
-            //autoMap.PropertiesMapped.ShouldHaveCount(1);
-            Assert.Fail();
-        }
-
-        [Test]
-        public void CanGetTheManyToManyPart()
-        {
-            //var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
-            //var autoMap = new AutoMap<ManyToMany1>();
-
-            //var mapper = new AutoMapManyToMany(new AutoMappingExpressions());
-            //object manyToManyPart = mapper.GetManyToManyPart<ManyToMany1>(autoMap, propertyInfo);
-
-            //manyToManyPart.ShouldBeOfType(typeof(ManyToManyPart<ManyToMany2>));
-            Assert.Fail();
-        }
-
-        [Test]
-        public void CanApplyInverse()
-        {
-            //var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
-            //var mapper = new AutoMapManyToMany(new AutoMappingExpressions());
-            //var manyToManyPart = MockRepository.GenerateMock<IManyToManyPart>();
-
-            //mapper.ApplyInverse(propertyInfo, typeof(ManyToMany1), manyToManyPart);
-
-            //manyToManyPart.AssertWasCalled(x => x.Inverse());
-            Assert.Fail();
+            autoMap.Collections.ShouldHaveCount(1);
         }
 
         [Test]

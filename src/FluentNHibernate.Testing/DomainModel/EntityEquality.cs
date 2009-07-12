@@ -9,8 +9,8 @@ namespace FluentNHibernate.Testing.DomainModel
 		[Test]
 		public void Two_entities_with_the_same_Id_should_equal_each_other()
 		{
-			var first = new Entity{Id = 99};
-			var second = new Entity { Id = 99 };
+            var first = new ConcreteEntity { Id = 99 };
+            var second = new ConcreteEntity { Id = 99 };
 
 			first.Equals(second).ShouldBeTrue();
 			second.Equals(first).ShouldBeTrue();
@@ -31,8 +31,8 @@ namespace FluentNHibernate.Testing.DomainModel
 		[Test]
 		public void Two_entities_with_different_Ids_should_not_equal_each_other()
 		{
-			var first = new Entity { Id = 66 };
-			var second = new Entity { Id = 77 };
+            var first = new ConcreteEntity { Id = 66 };
+            var second = new ConcreteEntity { Id = 77 };
 
 			first.Equals(second).ShouldBeFalse();
 			second.Equals(first).ShouldBeFalse();
@@ -77,11 +77,14 @@ namespace FluentNHibernate.Testing.DomainModel
 			first.Equals(second).ShouldBeFalse();
 		}
 
-		public class TestSubEntity : Entity
+        public class ConcreteEntity : Entity
+        {}
+
+        public class TestSubEntity : ConcreteEntity
 		{
 		}
 
-		public class AnotherSubEntity : Entity
+        public class AnotherSubEntity : ConcreteEntity
 		{
 		}
 

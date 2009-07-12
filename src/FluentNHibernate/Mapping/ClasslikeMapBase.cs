@@ -13,7 +13,9 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<PropertyMap> properties = new List<PropertyMap>();
         protected readonly IList<IComponentBase> components = new List<IComponentBase>();
         protected readonly IList<IOneToOnePart> oneToOnes = new List<IOneToOnePart>();
-        protected readonly IList<ISubclass> subclasses = new List<ISubclass>();        protected readonly IList<IJoinedSubclass> joinedSubclasses = new List<IJoinedSubclass>();        protected readonly IList<ICollectionRelationship> collections = new List<ICollectionRelationship>();
+        protected readonly List<ISubclass> subclasses = new List<ISubclass>();
+        protected readonly List<IJoinedSubclass> joinedSubclasses = new List<IJoinedSubclass>();
+        protected readonly IList<ICollectionRelationship> collections = new List<ICollectionRelationship>();
         protected readonly IList<IManyToOnePart> references = new List<IManyToOnePart>();
         protected readonly IList<IAnyMappingProvider> anys = new List<IAnyMappingProvider>();
 

@@ -7,7 +7,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
     public class SubclassMapping : ClassMappingBase, ISubclassMapping
     {
         private readonly AttributeStore<SubclassMapping> attributes;
-        private readonly IList<SubclassMapping> subclasses;
 
         public SubclassMapping()
             : this(new AttributeStore())
@@ -17,7 +16,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
             : base(underlyingStore)
         {
             attributes = new AttributeStore<SubclassMapping>(underlyingStore);
-            subclasses = new List<SubclassMapping>();
         }
 
         public AttributeStore<SubclassMapping> Attributes
@@ -29,20 +27,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             visitor.ProcessSubclass(this);
 
-            foreach(var subclass in Subclasses)
-                visitor.Visit(subclass);
-
             base.AcceptVisitor(visitor);
-        }
-
-        public void AddSubclass(SubclassMapping subclassMapping)
-        {
-            subclasses.Add(subclassMapping);
-        }
-
-        public IEnumerable<SubclassMapping> Subclasses
-        {
-            get { return subclasses; }
         }
 
         public object DiscriminatorValue

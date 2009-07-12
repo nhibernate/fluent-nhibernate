@@ -41,9 +41,7 @@ namespace FluentNHibernate.AutoMap
                 .Find<IPropertyConvention>()
                 .Where(c =>
                 {
-                    if (!c.GetType().IsGenericType)
-                        return false;
-                    if (c.GetType().GetGenericTypeDefinition() != typeof(UserTypeConvention<>))
+                    if (!typeof(IUserTypeConvention).IsAssignableFrom(c.GetType()))
                         return false;
 
                     var criteria = new ConcreteAcceptanceCriteria<IPropertyInspector>();
@@ -52,7 +50,7 @@ namespace FluentNHibernate.AutoMap
 
                     return criteria.Matches(new PropertyInspector(new PropertyMapping
                     {
-                        Type = new TypeReference(property.DeclaringType),
+                        Type = new TypeReference(property.PropertyType),
                         PropertyInfo = property
                     }));
                 });

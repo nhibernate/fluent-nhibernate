@@ -32,6 +32,9 @@ namespace FluentNHibernate.AutoMap
             
         }
 
+        void IAutoClasslike.AlterModel(ClassMappingBase mapping)
+        {}
+
         protected override OneToManyPart<TChild> HasMany<TChild>(PropertyInfo property)
         {
             propertiesMapped.Add(property);

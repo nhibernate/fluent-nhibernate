@@ -5,6 +5,7 @@ using System.Reflection;
 using FluentNHibernate.AutoMap.Alterations;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.AutoMap
@@ -139,16 +140,17 @@ namespace FluentNHibernate.AutoMap
         private void AddMapping(Type type)
         {
             Type typeToMap = GetTypeToMap(type);
-            var mapping = (IClassMap)InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
-                autoMapper, a => a.Map<object>(null, null), new object[] {mappingTypes, inlineOverrides}, typeToMap);
-            Add(mapping);
+            var mapping = autoMapper.Map(typeToMap, mappingTypes, inlineOverrides);
+
+            Add(new PassThroughMappingProvider(mapping));
         }
 
         private Type GetTypeToMap(Type type)
         {
 			while (!Expressions.IsBaseType(type.BaseType) &&
                 !Expressions.IsConcreteBaseType(type.BaseType) &&
-                type.BaseType != typeof(object))
+                type.BaseType != typeof(object) &&
+                !type.BaseType.IsAbstract)
 			{
 				type = type.BaseType;
 			}
@@ -156,11 +158,10 @@ namespace FluentNHibernate.AutoMap
 			return type;
         }
 
-        private void MergeMap(Type type, object mapping)
+        private void MergeMap(Type type, IMappingProvider mapping)
         {
             Type typeToMap = GetTypeToMap(type);
-            InvocationHelper.InvokeGenericMethodWithDynamicTypeArguments(
-                autoMapper, a => a.MergeMap<object>(null, null), new[] { mapping, inlineOverrides }, typeToMap);
+            autoMapper.MergeMap(typeToMap, mapping.GetClassMapping(), inlineOverrides, new List<string>());
         }
 
         #endregion
@@ -190,7 +191,7 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel AutoMap<T>()
         {
-            Add(autoMapper.Map<T>(mappingTypes, inlineOverrides));
+            Add(new PassThroughMappingProvider(autoMapper.Map(typeof(T), mappingTypes, inlineOverrides)));
             return this;
         }
 
@@ -201,8 +202,9 @@ namespace FluentNHibernate.AutoMap
 
         public IMappingProvider FindMapping(Type type)
         {
-            Func<Type, Type, bool> finder = (mappingType, expectedType) =>
+            Func<IMappingProvider, Type, bool> finder = (provider, expectedType) =>
             {
+                var mappingType = provider.GetType();
                 if (mappingType.IsGenericType)
                 {
                     // instance of a generic type (probably AutoMap<T>)
@@ -214,11 +216,13 @@ namespace FluentNHibernate.AutoMap
                     // base type is a generic type of ClassMap<T>, so we've got a XXXMap instance
                     return mappingType.BaseType.GetGenericArguments()[0] == expectedType;
                 }
+                if (provider is PassThroughMappingProvider)
+                    return provider.GetClassMapping().Type == expectedType;
 
                 return false;
             };
 
-            var mapping = mappings.FirstOrDefault(t => finder(t.GetType(), type));
+            var mapping = mappings.FirstOrDefault(t => finder(t, type));
 
             if (mapping != null) return mapping;
 
@@ -231,12 +235,6 @@ namespace FluentNHibernate.AutoMap
 			}
 
 			return null;
-        }
-
-        public void OutputMappings()
-        {
-            //foreach(var map in mappings)
-            //    Console.WriteLine(map);
         }
 
         public AutoPersistenceModel AddEntityAssembly(Assembly assembly)

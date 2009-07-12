@@ -141,7 +141,7 @@ namespace FluentNHibernate
                 var serializer = new MappingXmlSerializer();
                 var document = serializer.Serialize(mapping);
 
-                using (var writer = new XmlTextWriter(Path.Combine(folder, mapping.Classes.First().Name + ".hbm.xml"), Encoding.Default))
+                using (var writer = new XmlTextWriter(Path.Combine(folder, mapping.Classes.First().Type.FullName + ".hbm.xml"), Encoding.Default))
                 {
                     writer.Formatting = Formatting.Indented;
                     document.WriteTo(writer);
@@ -185,5 +185,25 @@ namespace FluentNHibernate
         ClassMapping GetClassMapping();
         // HACK: In place just to keep compatibility until verdict is made
         HibernateMapping GetHibernateMapping();
+    }
+
+    public class PassThroughMappingProvider : IMappingProvider
+    {
+        private readonly ClassMapping mapping;
+
+        public PassThroughMappingProvider(ClassMapping mapping)
+        {
+            this.mapping = mapping;
+        }
+
+        public ClassMapping GetClassMapping()
+        {
+            return mapping;
+        }
+
+        public HibernateMapping GetHibernateMapping()
+        {
+            return new HibernateMapping();
+        }
     }
 }

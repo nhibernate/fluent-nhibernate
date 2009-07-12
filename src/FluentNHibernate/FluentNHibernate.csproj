@@ -145,6 +145,7 @@
     <Compile Include="Conventions\Inspections\IOuterJoinInspector.cs" />
     <Compile Include="Conventions\Inspections\IRelationshipInspector.cs" />
     <Compile Include="Conventions\Inspections\OuterJoin.cs" />
+    <Compile Include="Conventions\IUserTypeConvention.cs" />
     <Compile Include="MappingModel\Collections\IIndexedCollectionMapping.cs" />
     <Compile Include="MappingModel\DefaultableList.cs" />
     <Compile Include="MappingModel\IDefaultableEnumerable.cs" />

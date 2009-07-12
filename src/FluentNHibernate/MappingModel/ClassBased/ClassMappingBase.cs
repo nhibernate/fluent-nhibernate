@@ -8,12 +8,14 @@ namespace FluentNHibernate.MappingModel.ClassBased
     {
         private readonly AttributeStore<ClassMappingBase> attributes;
         private readonly MappedMembers mappedMembers;
+        private readonly IList<ISubclassMapping> subclasses;
         public Type Type { get; set; }
 
         protected ClassMappingBase(AttributeStore underlyingStore)
         {
             attributes = new AttributeStore<ClassMappingBase>(underlyingStore);
             mappedMembers = new MappedMembers();
+            subclasses = new List<ISubclassMapping>();
         }
 
         public string Name
@@ -25,6 +27,9 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             mappedMembers.AcceptVisitor(visitor);
+
+            foreach (var subclass in Subclasses)
+                visitor.Visit(subclass);
         }
 
         #region IHasMappedMembers
@@ -64,14 +69,29 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mappedMembers.Joins; }
         }
 
+        public IEnumerable<ISubclassMapping> Subclasses
+        {
+            get { return subclasses; }
+        }
+
         public void AddProperty(PropertyMapping property)
         {
             mappedMembers.AddProperty(property);
         }
 
+        public void AddOrReplaceProperty(PropertyMapping mapping)
+        {
+            mappedMembers.AddOrReplaceProperty(mapping);
+        }
+
         public void AddCollection(ICollectionMapping collection)
         {
             mappedMembers.AddCollection(collection);
+        }
+
+        public void AddOrReplaceCollection(ICollectionMapping mapping)
+        {
+            mappedMembers.AddOrReplaceCollection(mapping);
         }
 
         public void AddReference(ManyToOneMapping manyToOne)
@@ -99,12 +119,16 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers.AddJoin(mapping);
         }
 
+        public void AddSubclass(ISubclassMapping subclass)
+        {
+            subclasses.Add(subclass);
+        }
+
         #endregion
 
         public override string ToString()
         {
             return string.Format("ClassMapping({0})", Type.Name);
         }
-
     }
 }

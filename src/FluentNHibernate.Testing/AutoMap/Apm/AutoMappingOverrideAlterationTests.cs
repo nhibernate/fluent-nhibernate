@@ -28,7 +28,6 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .Where(t => t.Namespace == typeof(Baz).Namespace);
 
             alteration.Alter(model);
-            model.CompileMappings();
 
             new AutoMappingTester<Baz>(model)
                 .Element("class").HasAttribute("batch-size", "10");
@@ -41,7 +40,6 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .Where(t => t.Namespace == typeof(Baz).Namespace);
 
             alteration.Alter(model);
-            model.CompileMappings();
 
             new AutoMappingTester<Baz>(model)
                 .Element("class/property[@name='Name']").Exists();

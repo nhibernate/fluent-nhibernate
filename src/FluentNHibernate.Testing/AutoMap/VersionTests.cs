@@ -13,8 +13,6 @@ namespace FluentNHibernate.Testing.AutoMap
                 .MapEntitiesFromAssemblyOf<TEntity>()
                 .Where(t => t == typeof(TEntity));
 
-            autoMapper.Configure(cfg);
-
             return new AutoMappingTester<TEntity>(autoMapper);
         }
 
