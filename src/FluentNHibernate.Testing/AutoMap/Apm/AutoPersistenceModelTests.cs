@@ -188,7 +188,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         }
 
         [Test]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = "Could not find mapping for class 'SuperType'")]
         public void TestInheritanceMappingSkipsSuperTypes()
         {
             var autoMapper = AutoPersistenceModel
@@ -203,7 +203,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         }
 
         [Test]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = "Could not find mapping for class 'SuperType'")]
         public void TestInheritanceSubclassMappingSkipsSuperTypes()
         {
             var autoMapper = AutoPersistenceModel

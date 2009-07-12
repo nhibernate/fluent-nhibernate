@@ -56,9 +56,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 model.Add(classMap);
 
             var mappings = model.BuildMappings();
+            var foundMapping = mappings
+                .Where(x => x.Classes.FirstOrDefault(c => c.Type == typeof(T)) != null)
+                .FirstOrDefault();
+
+            if (foundMapping == null)
+                throw new InvalidOperationException("Could not find mapping for class '" + typeof(T).Name + "'");
 
             document = new MappingXmlSerializer()
-                .Serialize(mappings.Where(x => x.Classes.FirstOrDefault(c => c.Type == typeof(T)) != null).First());
+                .Serialize(foundMapping);
             currentElement = document.DocumentElement;
 
             return this;
