@@ -21,9 +21,6 @@ namespace FluentNHibernate.AutoMap
 
         public void Map(ClassMapping classMap, PropertyInfo property)
         {
-            if (property.DeclaringType != classMap.Type)
-                return;
-
             var idMapping = new IdMapping { ContainingEntityType = classMap.Type };
             idMapping.AddDefaultColumn(new ColumnMapping() { Name = property.Name });
             idMapping.Name = property.Name;

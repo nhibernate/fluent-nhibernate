@@ -12,10 +12,8 @@ namespace FluentNHibernate.Mapping
     {
         protected readonly IList<PropertyMap> properties = new List<PropertyMap>();
         protected readonly IList<IComponentBase> components = new List<IComponentBase>();
-        protected readonly IList<ISubclass> subclasses = new List<ISubclass>();
-        protected readonly IList<IJoinedSubclass> joinedSubclasses = new List<IJoinedSubclass>();
         protected readonly IList<IOneToOnePart> oneToOnes = new List<IOneToOnePart>();
-        protected readonly IList<ICollectionRelationship> collections = new List<ICollectionRelationship>();
+        protected readonly IList<ISubclass> subclasses = new List<ISubclass>();        protected readonly IList<IJoinedSubclass> joinedSubclasses = new List<IJoinedSubclass>();        protected readonly IList<ICollectionRelationship> collections = new List<ICollectionRelationship>();
         protected readonly IList<IManyToOnePart> references = new List<IManyToOnePart>();
         protected readonly IList<IAnyMappingProvider> anys = new List<IAnyMappingProvider>();
 
@@ -278,36 +276,6 @@ namespace FluentNHibernate.Mapping
 		protected virtual IEnumerable<IComponentBase> Components
 		{
 			get { return components; }
-		}
-
-        IEnumerable<ISubclass> IClasslike.Subclasses
-        {
-            get { return Subclasses; }
-        }
-
-		protected virtual IEnumerable<ISubclass> Subclasses
-		{
-			get { return subclasses; }
-		}
-
-        IEnumerable<IJoinedSubclass> IClasslike.JoinedSubclasses
-        {
-            get { return JoinedSubclasses; }
-        }
-
-		protected virtual IEnumerable<IJoinedSubclass> JoinedSubclasses
-		{
-			get { return joinedSubclasses; }
-		}
-
-        void IClasslike.AddSubclass(ISubclass subclass)
-        {
-			AddSubclass(subclass);
-        }
-
-		protected virtual void AddSubclass(ISubclass subclass)
-		{
-			subclasses.Add(subclass);
 		}
 
         public Type EntityType

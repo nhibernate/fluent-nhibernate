@@ -6,14 +6,14 @@ namespace FluentNHibernate.Mapping
 {
     public class DiscriminatorPart : IDiscriminatorPart
     {
-        private readonly IClassMap classMap;
+        private readonly Action<ISubclass> setter;
         private readonly DiscriminatorMapping mapping;
         private bool nextBool = true;
 
-        public DiscriminatorPart(IClassMap classMap, ClassMapping parentMapping, string columnName)
+        public DiscriminatorPart(ClassMapping parentMapping, string columnName, Action<ISubclass> setter)
             : this(new DiscriminatorMapping(parentMapping) { ColumnName = columnName })
         {
-            this.classMap = classMap;
+            this.setter = setter;
         }
 
         protected DiscriminatorPart(DiscriminatorMapping mapping)
@@ -31,9 +31,7 @@ namespace FluentNHibernate.Mapping
             var subclass = new SubClassPart<TSubClass>(this, discriminatorValue);
 
             action(subclass);
-
-            mapping.ParentClass.AddSubclass(subclass.GetSubclassMapping());
-            classMap.AddSubclass(subclass); // HACK for conventions
+            setter(subclass);
 
             return this;
         }

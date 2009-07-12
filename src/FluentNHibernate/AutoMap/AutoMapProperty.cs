@@ -68,25 +68,16 @@ namespace FluentNHibernate.AutoMap
 
         public void Map(ClassMapping classMap, PropertyInfo property)
         {
-            if (property.DeclaringType != classMap.Type)
-                return;
-
             classMap.AddProperty(GetPropertyMapping(classMap.Type, property));
         }
 
         public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
         {
-            if (property.DeclaringType != classMap.Type)
-                return;
-
             classMap.AddProperty(GetPropertyMapping(classMap.Type, property));
         }
 
         public void Map(SubclassMapping classMap, PropertyInfo property)
         {
-            if (property.DeclaringType != classMap.Type)
-                return;
-
             classMap.AddProperty(GetPropertyMapping(classMap.Type, property));
         }
 

@@ -28,6 +28,7 @@ namespace FluentNHibernate.Mapping
         private IVersion version;
         private ICompositeIdMappingProvider compositeId;
         private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
+        private bool mappingAlreadyBuilt;
 
         public ClassMap()
             : this(new ClassMapping(typeof(T)))
@@ -52,6 +53,13 @@ namespace FluentNHibernate.Mapping
 
 		public ClassMapping GetClassMapping()
         {
+            // don't like this, but it's because the automapper calls GetClassMapping to
+            // use when iterating the rules collection. The EnsureMappingsBuilt call on the
+            // PersistenceModel should be the only thing to call this, but because the AM
+            // does too we end up with duplicate everything.
+            if (mappingAlreadyBuilt)
+                return mapping;
+
             mapping.Name = typeof(T).AssemblyQualifiedName;
 
             foreach (var property in properties)
@@ -75,6 +83,12 @@ namespace FluentNHibernate.Mapping
             foreach (var any in anys)
                 mapping.AddAny(any.GetAnyMapping());
 
+		    foreach (var subclass in joinedSubclasses)
+		        mapping.AddSubclass(subclass.GetJoinedSubclassMapping());
+
+            foreach (var subclass in subclasses)
+                mapping.AddSubclass(subclass.GetSubclassMapping());
+
             if (discriminator != null)
                 mapping.Discriminator = discriminator.GetDiscriminatorMapping();
 
@@ -86,6 +100,8 @@ namespace FluentNHibernate.Mapping
 
             if (compositeId != null)
                 mapping.Id = compositeId.GetCompositeIdMapping();
+
+		    mappingAlreadyBuilt = true;
 
             return mapping;
         }
@@ -130,7 +146,7 @@ namespace FluentNHibernate.Mapping
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
         {
-            var part = new DiscriminatorPart(this, mapping, columnName);
+            var part = new DiscriminatorPart(mapping, columnName, subclasses.Add);
 
 			part.GetDiscriminatorMapping().Type = new TypeReference(typeof(TDiscriminator));
 
@@ -143,7 +159,7 @@ namespace FluentNHibernate.Mapping
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
         {
-            var part = new DiscriminatorPart(this, mapping, columnName);
+            var part = new DiscriminatorPart(mapping, columnName, subclasses.Add);
 
 			part.GetDiscriminatorMapping().Type = new TypeReference(typeof(TDiscriminator));
 
@@ -178,8 +194,6 @@ namespace FluentNHibernate.Mapping
             action(subclass);
 
             joinedSubclasses.Add(subclass);
-            
-            mapping.AddSubclass(subclass.GetJoinedSubclassMapping());
         }
 
         /// <summary>
