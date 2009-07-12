@@ -4,12 +4,16 @@ using System.Runtime.Remoting.Messaging;
 using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.DomainModel;
+using NHibernate.Cfg;
 using NUnit.Framework;
 using SuperTypes = FluentNHibernate.AutoMap.TestFixtures.SuperTypes;
 using FluentNHibernate.AutoMap.TestFixtures;
@@ -28,6 +32,19 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class[2]").DoesntExist();
+        }
+
+        [Test]
+        public void ShouldGenerateValidXml()
+        {
+            Fluently.Configure()
+                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Mappings(x => x.AutoMappings.Add(
+                    AutoPersistenceModel
+                        .MapEntitiesFromAssemblyOf<ExampleCustomColumn>()
+                        .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                    ))
+                .BuildConfiguration();
         }
 
         [Test]
@@ -87,6 +104,125 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
 
             new AutoMappingTester<ExampleCustomColumn>(autoMapper)
                 .Element("//property").DoesntExist();
+        }
+
+        [Test]
+        public void ForTypesThatDeriveFromShouldOverrideExistingProperty()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForTypesThatDeriveFrom<ExampleClass>(c => c.Map(x => x.LineOne).ColumnName("test"));
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("//property[@name='LineOne']")
+                    .Exists()
+                    .HasThisManyChildNodes(1)
+                .Element("//property[@name='LineOne']/column").HasAttribute("name", "test");
+        }
+
+        [Test]
+        public void ForTypesThatDeriveFromShouldOverrideExistingId()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForTypesThatDeriveFrom<ExampleClass>(c => c.Id(x => x.Id).ColumnName("test"));
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("//id/column").HasAttribute("name", "test");
+        }
+
+        [Test]
+        public void ForTypesThatDeriveFromShouldOverrideExistingComponent()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .WithSetup(x => x.IsComponentType = type => type == typeof(ExampleParentClass))
+                .ForTypesThatDeriveFrom<ExampleClass>(m => m.Component(x => x.Parent, c => c.Map(x => x.ExampleParentClassId).ColumnName("test")));
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("//component[@name='Parent']/property[@name='ExampleParentClassId']/column").HasAttribute("name", "test");
+        }
+
+        [Test]
+        public void ForTypesThatDeriveFromShouldOverrideExistingHasMany()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleParentClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForTypesThatDeriveFrom<ExampleParentClass>(m => m.HasMany(x => x.Examples).Inverse());
+
+            new AutoMappingTester<ExampleParentClass>(autoMapper)
+                .Element("//bag[@name='Examples']").HasAttribute("inverse", "true");
+        }
+
+        [Test]
+        public void ForTypesThatDeriveFromShouldOverrideExistingHasManyToMany()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleParentClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForTypesThatDeriveFrom<ExampleParentClass>(m => m.HasManyToMany(x => x.Examples).Inverse());
+
+            new AutoMappingTester<ExampleParentClass>(autoMapper)
+                .Element("//bag[@name='Examples']").HasAttribute("inverse", "true")
+                .Element("//bag[@name='Examples']/many-to-many").Exists();
+        }
+
+        [Test]
+        public void ForTypesThatDeriveFromShouldOverrideExistingHasOne()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForTypesThatDeriveFrom<ExampleClass>(m => m.HasOne(x => x.Parent));
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("//one-to-one[@name='Parent']").Exists()
+                .Element("//bag[@name='Parent']").DoesntExist();
+        }
+
+        [Test]
+        public void ForTypesThatDeriveFromShouldOverrideExistingReferences()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForTypesThatDeriveFrom<ExampleClass>(m => m.References(x => x.Parent).Access.AsField());
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("//many-to-one[@name='Parent']").HasAttribute("access", "field");
+        }
+
+        [Test]
+        public void ForTypesThatDeriveFromShouldOverrideExistingReferencesAny()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForTypesThatDeriveFrom<ExampleClass>(m =>
+                    m.ReferencesAny(x => x.Dictionary)
+                        .EntityIdentifierColumn("one")
+                        .EntityTypeColumn("two")
+                        .IdentityType<int>());
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("//any[@name='Dictionary']").Exists()
+                .Element("//map[@name='Dictionary']").DoesntExist();
+        }
+
+        [Test]
+        public void ForTypesThatDeriveFromShouldOverrideExistingVersion()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForTypesThatDeriveFrom<ExampleClass>(m => m.Version(x => x.Timestamp).Access.AsField());
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("//version[@name='Timestamp']").HasAttribute("access", "field");
         }
 
         [Test]

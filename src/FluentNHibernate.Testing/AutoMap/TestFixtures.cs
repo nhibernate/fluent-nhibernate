@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Data;
@@ -55,6 +56,7 @@ namespace FluentNHibernate.AutoMap.TestFixtures
         public TimeSpan Timestamp { get; set; }
         public ExampleEnum Enum { get; set; }
         public ExampleParentClass Parent { get; set; }
+        public IDictionary Dictionary { get; set; }
     }
 
     public class PrivateIdSetterClass

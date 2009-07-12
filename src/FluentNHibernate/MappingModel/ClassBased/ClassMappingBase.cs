@@ -99,9 +99,19 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers.AddReference(manyToOne);
         }
 
+        public void AddOrReplaceReference(ManyToOneMapping manyToOne)
+        {
+            mappedMembers.AddOrReplaceReference(manyToOne);
+        }
+
         public void AddComponent(ComponentMappingBase componentMapping)
         {
             mappedMembers.AddComponent(componentMapping);
+        }
+
+        public void AddOrReplaceComponent(ComponentMappingBase mapping)
+        {
+            mappedMembers.AddOrReplaceComponent(mapping);
         }
 
         public void AddOneToOne(OneToOneMapping mapping)
@@ -109,9 +119,19 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers.AddOneToOne(mapping);
         }
 
+        public void AddOrReplaceOneToOne(OneToOneMapping mapping)
+        {
+            mappedMembers.AddOrReplaceOneToOne(mapping);
+        }
+
         public void AddAny(AnyMapping mapping)
         {
             mappedMembers.AddAny(mapping);
+        }
+
+        public void AddOrReplaceAny(AnyMapping mapping)
+        {
+            mappedMembers.AddOrReplaceAny(mapping);
         }
 
         public void AddJoin(JoinMapping mapping)

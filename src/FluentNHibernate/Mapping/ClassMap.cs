@@ -25,7 +25,7 @@ namespace FluentNHibernate.Mapping
 
         protected ClassMapping mapping;
         private IDiscriminatorPart discriminator;
-        private IVersion version;
+        protected IVersion version;
         private ICompositeIdMappingProvider compositeId;
         private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
 

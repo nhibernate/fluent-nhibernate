@@ -97,11 +97,23 @@ namespace FluentNHibernate.MappingModel
             references.Add(manyToOne);
         }
 
+        public void AddOrReplaceReference(ManyToOneMapping manyToOne)
+        {
+            references.RemoveAll(x => x.Name == manyToOne.Name);
+            references.Add(manyToOne);
+        }
+
         public void AddComponent(ComponentMappingBase componentMapping)
         {
             if (components.Exists(x => x.Name == componentMapping.Name))
                 throw new InvalidOperationException("Tried to add component '" + componentMapping.Name + "' when already added.");
 
+            components.Add(componentMapping);
+        }
+
+        public void AddOrReplaceComponent(ComponentMappingBase componentMapping)
+        {
+            components.RemoveAll(x => x.Name == componentMapping.Name);
             components.Add(componentMapping);
         }
 
@@ -113,11 +125,23 @@ namespace FluentNHibernate.MappingModel
             oneToOnes.Add(mapping);
         }
 
+        public void AddOrReplaceOneToOne(OneToOneMapping mapping)
+        {
+            oneToOnes.RemoveAll(x => x.Name == mapping.Name);
+            oneToOnes.Add(mapping);
+        }
+
         public void AddAny(AnyMapping mapping)
         {
             if (anys.Exists(x => x.Name == mapping.Name))
                 throw new InvalidOperationException("Tried to add any '" + mapping.Name + "' when already added.");
 
+            anys.Add(mapping);
+        }
+
+        public void AddOrReplaceAny(AnyMapping mapping)
+        {
+            anys.RemoveAll(x => x.Name == mapping.Name);
             anys.Add(mapping);
         }
 

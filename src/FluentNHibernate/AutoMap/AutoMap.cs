@@ -31,14 +31,32 @@ namespace FluentNHibernate.AutoMap
 
         void IAutoClasslike.AlterModel(ClassMappingBase classMapping)
         {
+            if (classMapping is ClassMapping)
+            {
+                if (id != null)
+                    ((ClassMapping)classMapping).Id = id.GetIdMapping();
+
+                if (version != null)
+                    ((ClassMapping)classMapping).Version = version.GetVersionMapping();
+            }
+
             foreach (var property in Properties)
                 classMapping.AddOrReplaceProperty(property.GetPropertyMapping());
 
-            if (id != null && classMapping is ClassMapping)
-                ((ClassMapping)classMapping).Id = id.GetIdMapping();
-
             foreach (var collection in collections)
                 classMapping.AddOrReplaceCollection(collection.GetCollectionMapping());
+
+            foreach (var component in Components)
+                classMapping.AddOrReplaceComponent(component.GetComponentMapping());
+
+            foreach (var oneToOne in oneToOnes)
+                classMapping.AddOrReplaceOneToOne(oneToOne.GetOneToOneMapping());
+
+            foreach (var reference in references)
+                classMapping.AddOrReplaceReference(reference.GetManyToOneMapping());
+
+            foreach (var any in anys)
+                classMapping.AddOrReplaceAny(any.GetAnyMapping());
 
             // TODO: Add other mappings
         }
