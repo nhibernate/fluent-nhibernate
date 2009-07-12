@@ -109,16 +109,15 @@ namespace FluentNHibernate.Testing.Cfg
         [Test]
         public void CanAddMultipleConventions()
         {
-            Assert.Fail();
-            //mapping.FluentMappings
-            //    .AddFromAssemblyOf<Record>()
-            //    .ConventionDiscovery.Add(
-            //        ConventionBuilder.Class.Always(x => x.WithTable(x.EntityType.Name + "Table")),
-            //        ConventionBuilder.Class.Always(x => x.DynamicInsert())
-            //    );
-            //mapping.Apply(cfg);
+            mapping.FluentMappings
+                .AddFromAssemblyOf<Record>()
+                .ConventionDiscovery.Add(
+                    ConventionBuilder.Class.Always(x => x.WithTable(x.EntityType.Name + "Table")),
+                    ConventionBuilder.Class.Always(x => x.DynamicInsert())
+                );
+            mapping.Apply(cfg);
 
-            //cfg.ClassMappings.ShouldContain(c => c.Table.Name == "RecordTable" && c.DynamicInsert == true);
+            cfg.ClassMappings.ShouldContain(c => c.Table.Name == "RecordTable" && c.DynamicInsert == true);
         }
 
         [Test]
