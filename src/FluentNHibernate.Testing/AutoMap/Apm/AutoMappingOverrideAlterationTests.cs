@@ -31,7 +31,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             model.CompileMappings();
 
             new AutoMappingTester<Baz>(model)
-                .Element("class").HasAttribute("was-overridden", "true");
+                .Element("class").HasAttribute("batch-size", "10");
         }
 
         [Test]
