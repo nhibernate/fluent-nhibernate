@@ -1,6 +1,7 @@
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -16,23 +17,6 @@ namespace FluentNHibernate.Conventions.Instances
             this.mapping = mapping;
         }
 
-        public void WithTable(string tableName)
-        {
-            mapping.TableName = tableName;
-        }
-
-        public new void DynamicInsert()
-        {
-            mapping.DynamicInsert = nextBool;
-            nextBool = true;
-        }
-
-        public new void DynamicUpdate()
-        {
-            mapping.DynamicUpdate = nextBool;
-            nextBool = true;
-        }
-
         public IClassInstance Not
         {
             get
@@ -42,9 +26,70 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
+        public void WithTable(string tableName)
+        {
+            if (!mapping.IsSpecified(x => x.TableName))
+                mapping.TableName = tableName;
+        }
+
+        public new void DynamicInsert()
+        {
+            if (!mapping.IsSpecified(x => x.DynamicInsert))
+            {
+                mapping.DynamicInsert = nextBool;
+                nextBool = true;
+            }
+        }
+
+        public new void DynamicUpdate()
+        {
+            if (!mapping.IsSpecified(x => x.DynamicUpdate))
+            {
+                mapping.DynamicUpdate = nextBool;
+                nextBool = true;
+            }
+        }
+
         public new IOptimisticLockBuilder OptimisticLock
         {
-            get { return new OptimisticLockBuilder(value => mapping.OptimisticLock = value); }
+            get
+            {
+                return new OptimisticLockBuilder(value =>
+                {
+                    if (!mapping.IsSpecified(x => x.OptimisticLock))
+                        mapping.OptimisticLock = value;
+                });
+            }
+        }
+
+        public new void BatchSize(int size)
+        {
+            if (!mapping.IsSpecified(x => x.BatchSize))
+                mapping.BatchSize = size;
+        }
+
+        public new void LazyLoad()
+        {
+            if (!mapping.IsSpecified(x => x.Lazy))
+            {
+                mapping.Lazy = nextBool ? Laziness.True : Laziness.False;
+                nextBool = true;
+            }
+        }
+
+        public new void ReadOnly()
+        {
+            if (!mapping.IsSpecified(x => x.Mutable))
+            {
+                mapping.Mutable = !nextBool;
+                nextBool = true;
+            }
+        }
+
+        public new void Schema(string schema)
+        {
+            if (!mapping.IsSpecified(x => x.Schema))
+                mapping.Schema = schema;
         }
     }
 }

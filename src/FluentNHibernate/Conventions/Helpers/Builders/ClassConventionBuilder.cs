@@ -7,7 +7,7 @@ using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders
 {
-    internal class ClassConventionBuilder : IConventionBuilder<IClassConvention, IClassInspector, IClassInstance>
+    public class ClassConventionBuilder : IConventionBuilder<IClassConvention, IClassInspector, IClassInstance>
     {
         public IClassConvention Always(Action<IClassInstance> convention)
         {

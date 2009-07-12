@@ -24,27 +24,32 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void ReadWrite()
         {
-            mapping.Usage = "read-write";
+            if (!mapping.IsSpecified(x => x.Usage))
+                mapping.Usage = "read-write";
         }
 
         public void NonStrictReadWrite()
         {
-            mapping.Usage = "nonstrict-read-write";
+            if (!mapping.IsSpecified(x => x.Usage))
+                mapping.Usage = "nonstrict-read-write";
         }
 
         public void ReadOnly()
         {
-            mapping.Usage = "read-only";
+            if (!mapping.IsSpecified(x => x.Usage))
+                mapping.Usage = "read-only";
         }
 
         public void Custom(string custom)
         {
-            mapping.Usage = custom;
+            if (!mapping.IsSpecified(x => x.Usage))
+                mapping.Usage = custom;
         }
 
         public void Region(string name)
         {
-            mapping.Region = name;
+            if (!mapping.IsSpecified(x => x.Region))
+                mapping.Region = name;
         }
     }
 }

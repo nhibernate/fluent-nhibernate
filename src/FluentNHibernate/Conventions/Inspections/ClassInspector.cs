@@ -70,11 +70,6 @@ namespace FluentNHibernate.Conventions.Inspections
             get { throw new NotImplementedException(); }
         }
 
-        public bool AutoImport
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public bool DynamicUpdate
         {
             get { throw new NotImplementedException(); }

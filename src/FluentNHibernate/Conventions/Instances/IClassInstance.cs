@@ -10,5 +10,9 @@ namespace FluentNHibernate.Conventions.Instances
         void WithTable(string tableName);
         void DynamicInsert();
         void DynamicUpdate();
+        void BatchSize(int size);
+        void LazyLoad();
+        void ReadOnly();
+        void Schema(string schema);
     }
 }
