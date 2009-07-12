@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using FluentNHibernate.Conventions.DslImplementation;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
@@ -20,6 +21,7 @@ namespace FluentNHibernate.Conventions.Inspections
             propertyMappings.Map(x => x.DynamicInsert, x => x.DynamicInsert);
             propertyMappings.Map(x => x.DynamicUpdate, x => x.DynamicUpdate);
             propertyMappings.Map(x => x.OptimisticLock, x => x.OptimisticLock);
+            propertyMappings.Map(x => x.Cache, x => x.Cache);
         }
 
         public Type EntityType
@@ -47,9 +49,16 @@ namespace FluentNHibernate.Conventions.Inspections
             get { throw new NotImplementedException(); }
         }
 
-        public Cache Cache
+        public ICacheInstance Cache
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                if (mapping.Cache == null)
+                    // conventions are hitting it, user must want a cache
+                    mapping.Cache = new CacheMapping();
+
+                return new CacheInstance(mapping.Cache);
+            }
         }
 
         public OptimisticLock OptimisticLock

@@ -24,7 +24,7 @@ namespace FluentNHibernate.AutoMap
                 new AutoMapVersion(), 
                 new AutoMapComponent(expressions),
                 new AutoMapProperty(conventionFinder),
-                new ManyToManyAutoMapper(expressions),
+                new AutoMapManyToMany(expressions),
                 new AutoMapManyToOne(),
                 new AutoMapOneToMany(),
             };

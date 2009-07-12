@@ -16,7 +16,7 @@ namespace FluentNHibernate.Testing.AutoMap
             //var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
             //var autoMap = new AutoMap<ManyToMany1>();
 
-            //var mapper = new ManyToManyAutoMapper(new AutoMappingExpressions());
+            //var mapper = new AutoMapManyToMany(new AutoMappingExpressions());
             //mapper.Map<ManyToMany1>(autoMap, propertyInfo);
 
             //autoMap.PropertiesMapped.ShouldHaveCount(1);
@@ -26,25 +26,27 @@ namespace FluentNHibernate.Testing.AutoMap
         [Test]
         public void CanGetTheManyToManyPart()
         {
-            var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
-            var autoMap = new AutoMap<ManyToMany1>();
+            //var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
+            //var autoMap = new AutoMap<ManyToMany1>();
 
-            var mapper = new ManyToManyAutoMapper(new AutoMappingExpressions());
-            object manyToManyPart = mapper.GetManyToManyPart<ManyToMany1>(autoMap, propertyInfo);
+            //var mapper = new AutoMapManyToMany(new AutoMappingExpressions());
+            //object manyToManyPart = mapper.GetManyToManyPart<ManyToMany1>(autoMap, propertyInfo);
 
-            manyToManyPart.ShouldBeOfType(typeof(ManyToManyPart<ManyToMany2>));
+            //manyToManyPart.ShouldBeOfType(typeof(ManyToManyPart<ManyToMany2>));
+            Assert.Fail();
         }
 
         [Test]
         public void CanApplyInverse()
         {
-            var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
-            var mapper = new ManyToManyAutoMapper(new AutoMappingExpressions());
-            var manyToManyPart = MockRepository.GenerateMock<IManyToManyPart>();
+            //var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
+            //var mapper = new AutoMapManyToMany(new AutoMappingExpressions());
+            //var manyToManyPart = MockRepository.GenerateMock<IManyToManyPart>();
 
-            mapper.ApplyInverse(propertyInfo, typeof(ManyToMany1), manyToManyPart);
+            //mapper.ApplyInverse(propertyInfo, typeof(ManyToMany1), manyToManyPart);
 
-            manyToManyPart.AssertWasCalled(x => x.Inverse());
+            //manyToManyPart.AssertWasCalled(x => x.Inverse());
+            Assert.Fail();
         }
 
         [Test]

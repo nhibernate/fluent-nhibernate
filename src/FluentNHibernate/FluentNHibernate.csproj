@@ -79,6 +79,9 @@
     <Compile Include="Conventions\AcceptanceCriteria\CollectionExpectation.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\InvertedExpectation.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\InverterAcceptanceCriteria.cs" />
+    <Compile Include="Conventions\Helpers\Cache.cs" />
+    <Compile Include="Conventions\Inspections\ICacheInspector.cs" />
+    <Compile Include="Conventions\Instances\ICacheInstance.cs" />
     <Compile Include="Conventions\Instances\IdentityInstance.cs" />
     <Compile Include="Conventions\Instances\IManyToManyInstance.cs" />
     <Compile Include="Conventions\Instances\IKeyInstance.cs" />
@@ -159,7 +162,7 @@
     <Compile Include="AutoMap\AutoSubClassPart.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />
     <Compile Include="AutoMap\IAutoMappingAlteration.cs" />
-    <Compile Include="AutoMap\ManyToManyAutoMapper.cs" />
+    <Compile Include="AutoMap\AutoMapManyToMany.cs" />
     <Compile Include="AutoMap\PrivateAutoMapper.cs" />
     <Compile Include="AutoMap\PrivateAutoPersistenceModel.cs" />
     <Compile Include="AutoMap\SubclassStrategy.cs" />
@@ -209,7 +212,7 @@
     <Compile Include="Conventions\AcceptanceCriteria\IAcceptanceCriteria.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\IAcceptanceCriterion.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\IExpectation.cs" />
-    <Compile Include="Conventions\Inspections\Cache.cs" />
+    <Compile Include="Conventions\Instances\CacheInstance.cs" />
     <Compile Include="Conventions\Inspections\Generator.cs" />
     <Compile Include="Conventions\Inspections\IClassInspector.cs" />
     <Compile Include="Conventions\Inspections\IColumnInspector.cs" />

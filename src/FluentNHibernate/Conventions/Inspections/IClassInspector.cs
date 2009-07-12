@@ -1,9 +1,11 @@
+using FluentNHibernate.Conventions.Instances;
+
 namespace FluentNHibernate.Conventions.Inspections
 {
     public interface IClassInspector : ILazyLoadInspector, IReadOnlyInspector
     {
         string TableName { get; }
-        Cache Cache { get; }
+        ICacheInstance Cache { get; }
         OptimisticLock OptimisticLock { get; }
         string Schema { get; }
         bool AutoImport { get; }

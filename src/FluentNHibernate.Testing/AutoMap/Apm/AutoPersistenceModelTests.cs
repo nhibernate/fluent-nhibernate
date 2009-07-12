@@ -121,9 +121,8 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .ForTypesThatDeriveFrom<ExampleClass>(map => map.Id(c => c.Id, "Column"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("class/id")
-                .HasAttribute("name", "Id")
-                .HasAttribute("column", "Column");
+                .Element("class/id").HasAttribute("name", "Id")
+                .Element("class/id/column").HasAttribute("name", "Column");
         }
 
         [Test]
@@ -135,9 +134,8 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .ConventionDiscovery.Add(PrimaryKey.Name.Is(id => id.Property.Name + "Id"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("class/id")
-                .HasAttribute("name", "Id")
-                .HasAttribute("column", "IdId");
+                .Element("class/id").HasAttribute("name", "Id")
+                .Element("class/id/column").HasAttribute("name", "IdId");
         }
 
         [Test]
@@ -185,9 +183,8 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .WithSetup(c => c.FindIdentity = p => p.Name == p.DeclaringType.Name + "Id");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("class/id")
-                .HasAttribute("name", "ExampleClassId")
-                .HasAttribute("column", "ExampleClassId");
+                .Element("class/id").HasAttribute("name", "ExampleClassId")
+                .Element("class/id/column").HasAttribute("name", "ExampleClassId");
         }
 
         [Test]
