@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -56,9 +58,19 @@ namespace FluentNHibernate.MappingModel.Collections
             mappedMembers.AddReference(manyToOne);
         }
 
-        public AttributeStore<CompositeElementMapping> Attributes
+        public bool IsSpecified<TResult>(Expression<Func<CompositeElementMapping, TResult>> property)
         {
-            get { return attributes; }
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<CompositeElementMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<CompositeElementMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

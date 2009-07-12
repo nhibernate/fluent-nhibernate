@@ -16,12 +16,15 @@ namespace FluentNHibernate.Conventions.Instances
             this.mapping = mapping;
         }
 
-        public new void ColumnName(string columnName)
+        public void ColumnName(string columnName)
         {
-            var columnAttributes = mapping.Columns.First().Attributes.Clone();
+            var originalColumn = mapping.Columns.FirstOrDefault();
+            var column = originalColumn == null ? new ColumnMapping() : ColumnMapping.BaseOn(originalColumn);
+
+            column.Name = columnName;
 
             mapping.ClearColumns();
-            mapping.AddColumn(new ColumnMapping(columnAttributes) { Name = columnName });
+            mapping.AddColumn(column);
         }
     }
 }

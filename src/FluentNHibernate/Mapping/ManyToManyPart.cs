@@ -59,8 +59,6 @@ namespace FluentNHibernate.Mapping
         {
             var collection = base.GetCollectionMapping();
 
-            collectionAttributes.CopyTo(collection.Attributes);
-
             // key columns
             if (parentColumns.Count == 0)
                 collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "Id" });
@@ -218,11 +216,7 @@ namespace FluentNHibernate.Mapping
 
 	    protected override ICollectionRelationshipMapping GetRelationship()
 	    {
-            var relationship = new ManyToManyMapping();
-
-            relationshipAttributes.CopyTo(relationship.Attributes);
-
-            return relationship;
+            return new ManyToManyMapping(relationshipAttributes.CloneInner());
 	    }
 
 	    CollectionCascadeExpression<IManyToManyPart> IManyToManyPart.Cascade

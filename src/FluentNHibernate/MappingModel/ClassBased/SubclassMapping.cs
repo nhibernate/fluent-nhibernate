@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.MappingModel.ClassBased
@@ -16,11 +17,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
             : base(underlyingStore)
         {
             attributes = new AttributeStore<SubclassMapping>(underlyingStore);
-        }
-
-        public AttributeStore<SubclassMapping> Attributes
-        {
-            get { return attributes; }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -76,6 +72,21 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return attributes.Get(x => x.Abstract); }
             set { attributes.Set(x => x.Abstract, value); }
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<SubclassMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<SubclassMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<SubclassMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

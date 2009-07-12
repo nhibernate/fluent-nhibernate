@@ -54,7 +54,7 @@ namespace FluentNHibernate.Mapping
 
         public bool IsDirty
         {
-            get { return mapping.Attributes.IsSpecified(x => x.Region) || mapping.Attributes.IsSpecified(x => x.Usage); }
+            get { return mapping.IsSpecified(x => x.Region) || mapping.IsSpecified(x => x.Usage); }
         }
     }
 }

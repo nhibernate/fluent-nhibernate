@@ -26,13 +26,13 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("key");
 
-            if (mapping.Attributes.IsSpecified(x => x.ForeignKey))
+            if (mapping.IsSpecified(x => x.ForeignKey))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
-            if (mapping.Attributes.IsSpecified(x => x.OnDelete))
+            if (mapping.IsSpecified(x => x.OnDelete))
                 element.WithAtt("on-delete", mapping.OnDelete);
 
-            if (mapping.Attributes.IsSpecified(x => x.PropertyRef))
+            if (mapping.IsSpecified(x => x.PropertyRef))
                 element.WithAtt("property-ref", mapping.PropertyRef);
         }
 

@@ -27,7 +27,7 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("index-many-to-many");
 
-            if (mapping.Attributes.HasValue(x => x.Class))
+            if (mapping.HasValue(x => x.Class))
                 element.WithAtt("class", mapping.Class);
         }
 

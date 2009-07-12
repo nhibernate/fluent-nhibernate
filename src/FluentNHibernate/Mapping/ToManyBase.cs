@@ -29,7 +29,7 @@ namespace FluentNHibernate.Mapping
         protected readonly AttributeStore<ICollectionMapping> collectionAttributes = new AttributeStore<ICollectionMapping>();
         protected readonly AttributeStore<KeyMapping> keyAttributes = new AttributeStore<KeyMapping>();
         protected readonly AttributeStore<TRelationshipAttributes> relationshipAttributes = new AttributeStore<TRelationshipAttributes>();
-        private Func<ICollectionMapping> collectionBuilder;
+        private Func<AttributeStore, ICollectionMapping> collectionBuilder;
         private IndexMapping indexMapping;
 
         protected ToManyBase(Type entity, MemberInfo member, Type type)
@@ -67,17 +67,12 @@ namespace FluentNHibernate.Mapping
 
         public virtual ICollectionMapping GetCollectionMapping()
         {
-            var mapping = collectionBuilder();
+            var mapping = collectionBuilder(collectionAttributes.CloneInner());
 
             mapping.ContainingEntityType = EntityType;
             mapping.ChildType = typeof(TChild);
             mapping.MemberInfo = Member;
-
-            collectionAttributes.CopyTo(mapping.Attributes);
-
-            mapping.Key = new KeyMapping { ContainingEntityType = EntityType };
-            keyAttributes.CopyTo(mapping.Key.Attributes);
-
+            mapping.Key = new KeyMapping(keyAttributes.CloneInner()) { ContainingEntityType = EntityType };
             mapping.Relationship = GetRelationship();
 
             if (Cache.IsDirty)
@@ -127,19 +122,19 @@ namespace FluentNHibernate.Mapping
 
         public T AsSet()
         {
-            collectionBuilder = () => new SetMapping();
+            collectionBuilder = attrs => new SetMapping(attrs);
             return (T)this;
         }
 
         public T AsBag()
         {
-            collectionBuilder = () => new BagMapping();
+            collectionBuilder = attrs => new BagMapping(attrs);
             return (T)this;
         }
 
         public T AsList()
         {
-            collectionBuilder = () => new ListMapping();
+            collectionBuilder = attrs => new ListMapping(attrs);
             CreateIndexMapping(null);
             return (T)this;
         }
@@ -158,21 +153,21 @@ namespace FluentNHibernate.Mapping
 
         public T AsMap(string indexColumnName)
         {
-            collectionBuilder = () => new MapMapping();
+            collectionBuilder = attrs => new MapMapping(attrs);
             AsIndexedCollection<Int32>(indexColumnName, null);
             return (T)this;
         }
 
         public T AsMap<TIndex>(string indexColumnName)
         {
-            collectionBuilder = () => new MapMapping();
+            collectionBuilder = attrs => new MapMapping(attrs);
             AsIndexedCollection<TIndex>(indexColumnName, null);
             return (T)this;
         }
 
         public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
         {
-            collectionBuilder = () => new MapMapping();
+            collectionBuilder = attrs => new MapMapping(attrs);
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 
@@ -180,7 +175,7 @@ namespace FluentNHibernate.Mapping
         // so a hack is better than nothing.
         public T AsMap<TIndex>(Action<IndexPart> customIndexMapping, Action<ElementPart> customElementMapping)
         {
-            collectionBuilder = () => new MapMapping();
+            collectionBuilder = attrs => new MapMapping(attrs);
             AsIndexedCollection<TIndex>(string.Empty, customIndexMapping);
             AsElement(string.Empty);
             customElementMapping(elementPart);
@@ -194,7 +189,7 @@ namespace FluentNHibernate.Mapping
 
         public T AsArray<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
         {
-            collectionBuilder = () => new ArrayMapping();
+            collectionBuilder = attrs => new ArrayMapping(attrs);
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 
@@ -208,8 +203,8 @@ namespace FluentNHibernate.Mapping
         {
             CreateIndexMapping(customIndexMapping);
 
-            if (!indexMapping.Attributes.IsSpecified(x => x.Type))
-                indexMapping.Attributes.SetDefault(x => x.Type, new TypeReference(typeof(TIndex)));
+            if (!indexMapping.IsSpecified(x => x.Type))
+                indexMapping.SetDefaultValue(x => x.Type, new TypeReference(typeof(TIndex)));
 
             if (indexMapping.Columns.IsEmpty())
                 indexMapping.AddDefaultColumn(new ColumnMapping { Name = indexColumn });

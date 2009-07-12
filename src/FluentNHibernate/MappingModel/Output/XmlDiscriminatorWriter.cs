@@ -25,19 +25,19 @@ namespace FluentNHibernate.MappingModel.Output
                 .WithAtt("column", discriminatorMapping.ColumnName)
                 .WithAtt("type", typeString);
 
-            if (discriminatorMapping.Attributes.IsSpecified(x => x.Force))
+            if (discriminatorMapping.IsSpecified(x => x.Force))
                 discriminatorElement.WithAtt("force", discriminatorMapping.Force);
 
-            if (discriminatorMapping.Attributes.IsSpecified(x => x.Formula))
+            if (discriminatorMapping.IsSpecified(x => x.Formula))
                 discriminatorElement.WithAtt("formula", discriminatorMapping.Formula);
 
-            if (discriminatorMapping.Attributes.IsSpecified(x => x.Insert))
+            if (discriminatorMapping.IsSpecified(x => x.Insert))
                 discriminatorElement.WithAtt("insert", discriminatorMapping.Insert);
 
-            if (discriminatorMapping.Attributes.IsSpecified(x => x.Length))
+            if (discriminatorMapping.IsSpecified(x => x.Length))
                 discriminatorElement.WithAtt("length", discriminatorMapping.Length);
 
-            if (discriminatorMapping.Attributes.IsSpecified(x => x.NotNull))
+            if (discriminatorMapping.IsSpecified(x => x.NotNull))
                 discriminatorElement.WithAtt("not-null", discriminatorMapping.NotNull);
         }
     }

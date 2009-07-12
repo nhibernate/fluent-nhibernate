@@ -1,3 +1,6 @@
+using System;
+using System.Linq.Expressions;
+
 namespace FluentNHibernate.MappingModel
 {
     public class CacheMapping : MappingBase
@@ -21,9 +24,19 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Usage, value); }
         }
 
-        public AttributeStore<CacheMapping> Attributes
+        public bool IsSpecified<TResult>(Expression<Func<CacheMapping, TResult>> property)
         {
-            get { return attributes; }
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<CacheMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<CacheMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

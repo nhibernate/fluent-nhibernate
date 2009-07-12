@@ -66,10 +66,10 @@ namespace FluentNHibernate.Mapping
         {
             mapping.PropertyInfo = Property;
 
-            if (!mapping.Attributes.IsSpecified(x => x.Name))
+            if (!mapping.IsSpecified(x => x.Name))
                 mapping.Name = Property.Name;
 
-            if (!mapping.Attributes.IsSpecified(x => x.Class))
+            if (!mapping.IsSpecified(x => x.Class))
                 mapping.Class = new TypeReference(Property.PropertyType);
 
             if (columns.Count == 0)
@@ -87,11 +87,7 @@ namespace FluentNHibernate.Mapping
 
         private ColumnMapping CreateColumn(string column)
         {
-            var columnMapping = new ColumnMapping { Name = column };
-
-            columnAttributes.CopyTo(columnMapping.Attributes);
-
-            return columnMapping;
+            return new ColumnMapping(columnAttributes.CloneInner()) { Name = column };
         }
 
         public FetchTypeExpression<IManyToOnePart> Fetch

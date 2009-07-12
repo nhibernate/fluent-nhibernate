@@ -76,7 +76,7 @@ namespace FluentNHibernate.Mapping
 
         CompositeElementMapping ICompositeElementMappingProvider.GetCompositeElementMapping()
         {
-            if (!mapping.Attributes.IsSpecified(x => x.Class))
+            if (!mapping.IsSpecified(x => x.Class))
                 mapping.Class = new TypeReference(typeof(T));
 
             foreach (var property in properties)

@@ -36,6 +36,16 @@
         </Variables>
         <CustomProperties />
       </Template>
+      <Template uid="48d05922-610b-4777-a30c-88c5ed5ae319" shortcut="specdef" description="IsSpecified definition" text="public bool IsSpecified&lt;TResult&gt;(Expression&lt;Func&lt;$mapping$, TResult&gt;&gt; property)&#xD;&#xA;{&#xD;&#xA;    return attributes.IsSpecified(property);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;public bool HasValue&lt;TResult&gt;(Expression&lt;Func&lt;$mapping$&gt;, TResult&gt;&gt; property)&#xD;&#xA;{&#xD;&#xA;    return attributes.HasValue(property);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;public void SetDefaultValue&lt;TResult&gt;(Expression&lt;Func&lt;$mapping$, TResult&gt;&gt; property, TResult value)&#xD;&#xA;{&#xD;&#xA;    attributes.SetDefault(property, value);&#xD;&#xA;}" reformat="True" shortenQualifiedReferences="True">
+        <Context>
+          <CSharpContext context="Everywhere" minimumLanguageVersion="2.0" />
+        </Context>
+        <Categories />
+        <Variables>
+          <Variable name="mapping" expression="typeName()" initialRange="0" />
+        </Variables>
+        <CustomProperties />
+      </Template>
     </LiveTemplates>
     <FileTemplates>
       <Template uid="482e6087-caae-4484-b5cc-d7b56a938201" shortcut="" description="Test Fixture Class" text="using NUnit.Framework;&#xD;&#xA;&#xD;&#xA;namespace $Testing_Namespace$&#xD;&#xA;{&#xD;&#xA;	[TestFixture]&#xD;&#xA;	public class $Test_Fixture_Name$&#xD;&#xA;	{&#xD;&#xA;		[Test]&#xD;&#xA;		public void $Test_Name$()&#xD;&#xA;		{&#xD;&#xA;			$END$&#xD;&#xA;		}&#xD;&#xA;	}&#xD;&#xA;}" reformat="True" shortenQualifiedReferences="True">

@@ -27,7 +27,7 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("element");
 
-            if (mapping.Attributes.IsSpecified(x => x.Type))
+            if (mapping.IsSpecified(x => x.Type))
                 element.WithAtt("type", mapping.Type);
         }
 

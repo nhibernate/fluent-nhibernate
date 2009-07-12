@@ -18,11 +18,13 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void ColumnName(string columnName)
         {
-            var column = mapping.Columns.FirstOrDefault();
-            var columnAttributes = column == null ? new AttributeStore<ColumnMapping>() : column.Attributes.Clone();
+            var originalColumn = mapping.Columns.FirstOrDefault();
+            var column = originalColumn == null ? new ColumnMapping() : ColumnMapping.BaseOn(originalColumn);
+
+            column.Name = columnName;
 
             mapping.ClearColumns();
-            mapping.AddColumn(new ColumnMapping(columnAttributes) { Name = columnName });
+            mapping.AddColumn(column);
         }
 
         public Type EntityType

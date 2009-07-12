@@ -1,3 +1,6 @@
+using System;
+using System.Linq.Expressions;
+
 namespace FluentNHibernate.MappingModel
 {
     public class OneToOneMapping : MappingBase
@@ -68,9 +71,19 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Lazy, value); }
         }
 
-        public AttributeStore<OneToOneMapping> Attributes
+        public bool IsSpecified<TResult>(Expression<Func<OneToOneMapping, TResult>> property)
         {
-            get { return attributes; }
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<OneToOneMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<OneToOneMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

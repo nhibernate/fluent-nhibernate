@@ -1,8 +1,10 @@
+using System;
+using System.Linq.Expressions;
+
 namespace FluentNHibernate.MappingModel.ClassBased
 {
     public class DynamicComponentMapping : ComponentMappingBase
     {
-
         public DynamicComponentMapping()
             : this(new AttributeStore())
         { }

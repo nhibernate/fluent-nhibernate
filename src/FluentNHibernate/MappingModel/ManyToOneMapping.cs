@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
@@ -91,11 +92,6 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Lazy, value); }
         }
 
-        public AttributeStore<ManyToOneMapping> Attributes
-        {
-            get { return attributes; }
-        }
-
         public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
@@ -114,6 +110,21 @@ namespace FluentNHibernate.MappingModel
         public void ClearColumns()
         {
             columns.Clear();
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<ManyToOneMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<ManyToOneMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<ManyToOneMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

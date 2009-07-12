@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
@@ -20,11 +22,6 @@ namespace FluentNHibernate.MappingModel.Collections
                 visitor.Visit(column);
         }
 
-        public AttributeStore<IndexManyToManyMapping> Attributes
-        {
-            get { return attributes; }
-        }
-
         public TypeReference Class
         {
             get { return attributes.Get(x => x.Class); }
@@ -39,6 +36,21 @@ namespace FluentNHibernate.MappingModel.Collections
         public void AddColumn(ColumnMapping mapping)
         {
             columns.Add(mapping);
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<IndexManyToManyMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<IndexManyToManyMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<IndexManyToManyMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

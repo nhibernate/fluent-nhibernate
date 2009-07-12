@@ -27,19 +27,19 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("join");
 
-            if (mapping.Attributes.IsSpecified(x => x.TableName))
+            if (mapping.IsSpecified(x => x.TableName))
                 element.WithAtt("table", mapping.TableName);
 
-            if (mapping.Attributes.IsSpecified(x => x.Schema))
+            if (mapping.IsSpecified(x => x.Schema))
                 element.WithAtt("schema", mapping.Schema);
 
-            if (mapping.Attributes.IsSpecified(x => x.Fetch))
+            if (mapping.IsSpecified(x => x.Fetch))
                 element.WithAtt("fetch", mapping.Fetch);
 
-            if (mapping.Attributes.IsSpecified(x => x.Inverse))
+            if (mapping.IsSpecified(x => x.Inverse))
                 element.WithAtt("inverse", mapping.Inverse);
 
-            if (mapping.Attributes.IsSpecified(x => x.Optional))
+            if (mapping.IsSpecified(x => x.Optional))
                 element.WithAtt("optional", mapping.Optional);
         }
 

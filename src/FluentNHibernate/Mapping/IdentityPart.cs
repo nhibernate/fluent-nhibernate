@@ -47,7 +47,7 @@ namespace FluentNHibernate.Mapping
         IdMapping IIdentityPart.GetIdMapping()
         {
             foreach (var column in columns)
-                mapping.AddColumn(new ColumnMapping(columnAttributes.Clone()) { Name = column });
+                mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = column });
 
             mapping.Name = Property.Name;
             mapping.Type = new TypeReference(Property.PropertyType);

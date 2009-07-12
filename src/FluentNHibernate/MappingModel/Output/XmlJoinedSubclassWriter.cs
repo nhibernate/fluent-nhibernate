@@ -30,34 +30,34 @@ namespace FluentNHibernate.MappingModel.Output
             var element = document.AddElement("joined-subclass")
                 .WithAtt("name", mapping.Name);
 
-            if (mapping.Attributes.IsSpecified(x => x.TableName))
+            if (mapping.IsSpecified(x => x.TableName))
                 element.WithAtt("table", mapping.TableName);
 
-            if (mapping.Attributes.IsSpecified(x => x.Schema))
+            if (mapping.IsSpecified(x => x.Schema))
                 element.WithAtt("schema", mapping.Schema);
 
-            if (mapping.Attributes.IsSpecified(x => x.Extends))
+            if (mapping.IsSpecified(x => x.Extends))
                 element.WithAtt("extends", mapping.Extends);
 
-            if (mapping.Attributes.IsSpecified(x => x.Check))
+            if (mapping.IsSpecified(x => x.Check))
                 element.WithAtt("check", mapping.Check);
 
-            if (mapping.Attributes.IsSpecified(x => x.Proxy))
+            if (mapping.IsSpecified(x => x.Proxy))
                 element.WithAtt("proxy", mapping.Proxy);
 
-            if (mapping.Attributes.IsSpecified(x => x.Lazy))
+            if (mapping.IsSpecified(x => x.Lazy))
                 element.WithAtt("lazy", mapping.Lazy);
 
-            if (mapping.Attributes.IsSpecified(x => x.DynamicUpdate))
+            if (mapping.IsSpecified(x => x.DynamicUpdate))
                 element.WithAtt("dynamic-update", mapping.DynamicUpdate);
 
-            if (mapping.Attributes.IsSpecified(x => x.DynamicInsert))
+            if (mapping.IsSpecified(x => x.DynamicInsert))
                 element.WithAtt("dynamic-insert", mapping.DynamicInsert);
 
-            if (mapping.Attributes.IsSpecified(x => x.SelectBeforeUpdate))
+            if (mapping.IsSpecified(x => x.SelectBeforeUpdate))
                 element.WithAtt("select-before-update", mapping.SelectBeforeUpdate);
 
-            if (mapping.Attributes.IsSpecified(x => x.Abstract))
+            if (mapping.IsSpecified(x => x.Abstract))
                 element.WithAtt("abstract", mapping.Abstract);
         }
 

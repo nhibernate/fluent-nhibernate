@@ -58,7 +58,7 @@ namespace FluentNHibernate.Mapping
 
         private ColumnMapping CreateColumn(string column)
         {
-            return new ColumnMapping(columnAttributes.Clone())
+            return new ColumnMapping(columnAttributes.CloneInner())
             {
                 Name = column
             };

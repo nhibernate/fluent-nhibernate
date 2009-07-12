@@ -168,13 +168,13 @@ namespace FluentNHibernate.Mapping
                 throw new InvalidOperationException("<any> mapping is not valid without specifying an Entity Type Column");
             if (mapping.IdentifierColumns.Count() == 0)
                 throw new InvalidOperationException("<any> mapping is not valid without specifying an Entity Identifier Column");
-            if (!mapping.Attributes.IsSpecified(x => x.IdType))
+            if (!mapping.IsSpecified(x => x.IdType))
                 throw new InvalidOperationException("<any> mapping is not valid without specifying an IdType");
 
-            if (!mapping.Attributes.IsSpecified(x => x.Name))
+            if (!mapping.IsSpecified(x => x.Name))
                 mapping.Name = AnyProperty.Name;
 
-            if (!mapping.Attributes.IsSpecified(x => x.MetaType))
+            if (!mapping.IsSpecified(x => x.MetaType))
             {
                 if (mapping.MetaValues.Count() > 0)
                     mapping.MetaType = new TypeReference(typeof(string));

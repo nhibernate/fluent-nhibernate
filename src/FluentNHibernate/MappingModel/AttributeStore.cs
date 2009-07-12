@@ -125,6 +125,15 @@ namespace FluentNHibernate.MappingModel
 
             return clonedStore;
         }
+
+        public AttributeStore CloneInner()
+        {
+            var clonedStore = new AttributeStore();
+
+            store.CopyTo(clonedStore);
+
+            return clonedStore;
+        }
     }
 
 }

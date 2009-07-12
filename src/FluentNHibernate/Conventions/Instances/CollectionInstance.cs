@@ -40,7 +40,7 @@ namespace FluentNHibernate.Conventions.Instances
         }
         public bool IsSet(PropertyInfo property)
         {
-            return mapping.Attributes.IsSpecified(propertyMappings.Get(property));
+            return mapping.IsSpecified(propertyMappings.Get(property));
         }
 
         IKeyInspector ICollectionInspector.Key

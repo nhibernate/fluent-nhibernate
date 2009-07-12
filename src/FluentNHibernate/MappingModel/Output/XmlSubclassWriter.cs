@@ -29,31 +29,31 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("subclass");
 
-            if (mapping.Attributes.HasValue(x => x.Name))
+            if (mapping.HasValue(x => x.Name))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.Attributes.HasValue(x => x.DiscriminatorValue))
+            if (mapping.HasValue(x => x.DiscriminatorValue))
                 element.WithAtt("discriminator-value", mapping.DiscriminatorValue.ToString());
 
-            if (mapping.Attributes.HasValue(x => x.Extends))
+            if (mapping.HasValue(x => x.Extends))
                 element.WithAtt("extends", mapping.Extends);
 
-            if (mapping.Attributes.HasValue(x => x.Proxy))
+            if (mapping.HasValue(x => x.Proxy))
                 element.WithAtt("proxy", mapping.Proxy);
 
-            if (mapping.Attributes.HasValue(x => x.Lazy))
+            if (mapping.HasValue(x => x.Lazy))
                 element.WithAtt("lazy", mapping.Lazy);
 
-            if (mapping.Attributes.HasValue(x => x.DynamicUpdate))
+            if (mapping.HasValue(x => x.DynamicUpdate))
                 element.WithAtt("dynamic-update", mapping.DynamicUpdate);
 
-            if (mapping.Attributes.HasValue(x => x.DynamicInsert))
+            if (mapping.HasValue(x => x.DynamicInsert))
                 element.WithAtt("dynamic-insert", mapping.DynamicInsert);
 
-            if (mapping.Attributes.HasValue(x => x.SelectBeforeUpdate))
+            if (mapping.HasValue(x => x.SelectBeforeUpdate))
                 element.WithAtt("select-before-update", mapping.SelectBeforeUpdate);
 
-            if (mapping.Attributes.HasValue(x => x.Abstract))
+            if (mapping.HasValue(x => x.Abstract))
                 element.WithAtt("abstract", mapping.Abstract);
         }
 

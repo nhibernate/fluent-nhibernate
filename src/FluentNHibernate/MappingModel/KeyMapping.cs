@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -10,8 +10,12 @@ namespace FluentNHibernate.MappingModel
         public Type ContainingEntityType { get; set; }
 
         public KeyMapping()
+            : this(new AttributeStore())
+        {}
+
+        public KeyMapping(AttributeStore underlyingStore)
         {
-            attributes = new AttributeStore<KeyMapping>();
+            attributes = new AttributeStore<KeyMapping>(underlyingStore);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -20,11 +24,6 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var column in columns)
                 visitor.Visit(column);
-        }
-
-        public AttributeStore<KeyMapping> Attributes
-        {
-            get { return attributes; }
         }
 
         public string ForeignKey
@@ -63,6 +62,21 @@ namespace FluentNHibernate.MappingModel
         public void ClearColumns()
         {
             columns.Clear();
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<KeyMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<KeyMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<KeyMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

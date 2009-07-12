@@ -27,7 +27,7 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("composite-element");
 
-            if (mapping.Attributes.IsSpecified(x => x.Class))
+            if (mapping.IsSpecified(x => x.Class))
                 element.WithAtt("class", mapping.Class);
         }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -24,11 +25,14 @@ namespace FluentNHibernate.MappingModel.Collections
         bool Generic { get; }
         KeyMapping Key { get; set; }
         ICollectionRelationshipMapping Relationship { get; set; }
-        AttributeStore<ICollectionMapping> Attributes { get; }
         MemberInfo MemberInfo { get; set;  }
         ElementMapping Element { get; set; }
         CompositeElementMapping CompositeElement { get; set; }
         Type ContainingEntityType { get; set; }
         Type ChildType { get; set; }
+
+        bool IsSpecified<TResult>(Expression<Func<ICollectionMapping, TResult>> property);
+        bool HasValue<TResult>(Expression<Func<ICollectionMapping, TResult>> property);
+        void SetDefaultValue<TResult>(Expression<Func<ICollectionMapping, TResult>> property, TResult value);
     }
 }

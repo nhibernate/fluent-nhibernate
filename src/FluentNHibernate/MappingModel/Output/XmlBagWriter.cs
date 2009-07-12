@@ -25,7 +25,7 @@ namespace FluentNHibernate.MappingModel.Output
 
             WriteBaseCollectionAttributes(element, mapping);
 
-            if (mapping.Attributes.IsSpecified(x => x.OrderBy))
+            if (mapping.IsSpecified(x => x.OrderBy))
                 element.WithAtt("order-by", mapping.OrderBy);
         }
     }

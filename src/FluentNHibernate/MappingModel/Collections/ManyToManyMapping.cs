@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
     public class ManyToManyMapping : MappingBase, ICollectionRelationshipMapping, IHasColumnMappings
     {
-        private readonly AttributeStore<ManyToManyMapping> attributes = new AttributeStore<ManyToManyMapping>();
+        private readonly AttributeStore<ManyToManyMapping> attributes;
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
         
         public Type ParentType { get; set; }
         public Type ChildType { get; set; }
 
-        public AttributeStore<ManyToManyMapping> Attributes
+        public ManyToManyMapping()
+            : this(new AttributeStore())
+        {}
+
+        public ManyToManyMapping(AttributeStore underlyingStore)
         {
-            get { return attributes; }
+            attributes = new AttributeStore<ManyToManyMapping>(underlyingStore);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -84,6 +89,21 @@ namespace FluentNHibernate.MappingModel.Collections
         public void ClearColumns()
         {
             columns.Clear();
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<ManyToManyMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<ManyToManyMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<ManyToManyMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

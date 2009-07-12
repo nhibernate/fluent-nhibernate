@@ -20,34 +20,34 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("one-to-one");
 
-            if (mapping.Attributes.IsSpecified(x => x.Access))
+            if (mapping.IsSpecified(x => x.Access))
                 element.WithAtt("access", mapping.Access);
 
-            if (mapping.Attributes.IsSpecified(x => x.Cascade))
+            if (mapping.IsSpecified(x => x.Cascade))
                 element.WithAtt("cascade", mapping.Cascade);
 
-            if (mapping.Attributes.IsSpecified(x => x.Class))
+            if (mapping.IsSpecified(x => x.Class))
                 element.WithAtt("class", mapping.Class);
 
-            if (mapping.Attributes.IsSpecified(x => x.Constrained))
+            if (mapping.IsSpecified(x => x.Constrained))
                 element.WithAtt("constrained", mapping.Constrained);
 
-            if (mapping.Attributes.IsSpecified(x => x.Fetch))
+            if (mapping.IsSpecified(x => x.Fetch))
                 element.WithAtt("fetch", mapping.Fetch);
 
-            if (mapping.Attributes.IsSpecified(x => x.ForeignKey))
+            if (mapping.IsSpecified(x => x.ForeignKey))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
-            if (mapping.Attributes.IsSpecified(x => x.Lazy))
+            if (mapping.IsSpecified(x => x.Lazy))
                 element.WithAtt("lazy", mapping.Lazy);
 
-            if (mapping.Attributes.IsSpecified(x => x.Name))
+            if (mapping.IsSpecified(x => x.Name))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.Attributes.IsSpecified(x => x.OuterJoin))
+            if (mapping.IsSpecified(x => x.OuterJoin))
                 element.WithAtt("outer-join", mapping.OuterJoin);
 
-            if (mapping.Attributes.IsSpecified(x => x.PropertyRef))
+            if (mapping.IsSpecified(x => x.PropertyRef))
                 element.WithAtt("property-ref", mapping.PropertyRef);
         }
     }

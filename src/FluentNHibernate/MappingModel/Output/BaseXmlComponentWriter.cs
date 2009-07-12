@@ -22,16 +22,16 @@ namespace FluentNHibernate.MappingModel.Output
             var doc = new XmlDocument();
             var componentElement = doc.AddElement(element);
 
-            if (mapping.Attributes.IsSpecified(x => x.Name))
+            if (mapping.IsSpecified(x => x.Name))
                 componentElement.WithAtt("name", mapping.Name);
 
-            if (mapping.Attributes.IsSpecified(x => x.Insert))
+            if (mapping.IsSpecified(x => x.Insert))
                 componentElement.WithAtt("insert", mapping.Insert);
 
-            if (mapping.Attributes.IsSpecified(x => x.Update))
+            if (mapping.IsSpecified(x => x.Update))
                 componentElement.WithAtt("update", mapping.Update);
 
-            if (mapping.Attributes.IsSpecified(x => x.Access))
+            if (mapping.IsSpecified(x => x.Access))
                 componentElement.WithAtt("access", mapping.Access);
 
             return doc;

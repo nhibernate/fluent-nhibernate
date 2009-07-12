@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping;
 
@@ -48,9 +50,19 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Access, value); }
         }
 
-        public AttributeStore<ComponentMappingBase> Attributes
+        public bool IsSpecified<TResult>(Expression<Func<ComponentMappingBase, TResult>> property)
         {
-            get { return attributes; }
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<ComponentMappingBase, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<ComponentMappingBase, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace FluentNHibernate.MappingModel.Collections
+﻿using System;
+using System.Linq.Expressions;
+
+namespace FluentNHibernate.MappingModel.Collections
 {
     public class IndexMapping : MappingBase, IIndexMapping, IHasColumnMappings
     {
@@ -16,11 +19,6 @@
 
             foreach (var column in columns)
                 visitor.Visit(column);
-        }
-
-        public AttributeStore<IndexMapping> Attributes
-        {
-            get { return attributes; }
         }
 
         public TypeReference Type
@@ -47,6 +45,21 @@
         public void ClearColumns()
         {
             columns.Clear();
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<IndexMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<IndexMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<IndexMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

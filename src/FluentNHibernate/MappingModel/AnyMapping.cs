@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -76,11 +77,6 @@ namespace FluentNHibernate.MappingModel
             get { return identifierColumns; }
         }
 
-        public AttributeStore<AnyMapping> Attributes
-        {
-            get { return attributes; }
-        }
-
         public IEnumerable<MetaValueMapping> MetaValues
         {
             get { return metaValues; }
@@ -109,6 +105,21 @@ namespace FluentNHibernate.MappingModel
         public void AddMetaValue(MetaValueMapping metaValue)
         {
             metaValues.Add(metaValue);
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<AnyMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<AnyMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<AnyMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 
@@ -98,9 +99,19 @@ namespace FluentNHibernate.MappingModel
             mappedMembers.AcceptVisitor(visitor);
         }
 
-        public AttributeStore<JoinMapping> Attributes
+        public bool IsSpecified<TResult>(Expression<Func<JoinMapping, TResult>> property)
         {
-            get { return attributes; }
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<JoinMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<JoinMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

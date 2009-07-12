@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -38,11 +39,6 @@ namespace FluentNHibernate.MappingModel.Collections
         }
 
         public CacheMapping Cache { get; set; }
-
-        AttributeStore<ICollectionMapping> ICollectionMapping.Attributes
-        {
-            get { return attributes; }
-        }
 
         public bool Generic
         {
@@ -138,6 +134,21 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             get { return attributes.Get(x => x.OptimisticLock); }
             set { attributes.Set(x => x.OptimisticLock, value); }
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<ICollectionMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<ICollectionMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<ICollectionMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

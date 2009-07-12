@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
@@ -27,14 +28,24 @@ namespace FluentNHibernate.MappingModel.Collections
             columns.Add(mapping);
         }
 
-        public AttributeStore<ElementMapping> Attributes
-        {
-            get { return attributes; }
-        }
-
         public IEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<ElementMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<ElementMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<ElementMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

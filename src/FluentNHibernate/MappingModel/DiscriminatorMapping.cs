@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.MappingModel
@@ -18,11 +19,6 @@ namespace FluentNHibernate.MappingModel
             attributes.SetDefault(x => x.Insert, true);
             attributes.SetDefault(x => x.Type, new TypeReference(typeof(string)));
             
-        }
-
-        public AttributeStore<DiscriminatorMapping> Attributes
-        {
-            get { return attributes; }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -70,6 +66,21 @@ namespace FluentNHibernate.MappingModel
         {
             get { return attributes.Get(x => x.Type); }
             set { attributes.Set(x => x.Type, value); }
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<DiscriminatorMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<DiscriminatorMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<DiscriminatorMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

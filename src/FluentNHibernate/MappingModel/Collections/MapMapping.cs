@@ -1,23 +1,21 @@
+using System;
+using System.Linq.Expressions;
+
 namespace FluentNHibernate.MappingModel.Collections
 {
     public class MapMapping : CollectionMappingBase, IIndexedCollectionMapping
     {
-        private readonly AttributeStore<SetMapping> attributes;
+        private readonly AttributeStore<MapMapping> attributes;
         public IIndexMapping Index { get; set; }
 
         public MapMapping()
             : this(new AttributeStore())
         {}
 
-        protected MapMapping(AttributeStore underlyingStore)
+        public MapMapping(AttributeStore underlyingStore)
             : base(underlyingStore)
         {
-            attributes = new AttributeStore<SetMapping>(underlyingStore);
-        }
-
-        public AttributeStore<SetMapping> Attributes
-        {
-            get { return attributes; }
+            attributes = new AttributeStore<MapMapping>(underlyingStore);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -40,6 +38,21 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             get { return attributes.Get(x => x.Sort); }
             set { attributes.Set(x => x.Sort, value); }
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<MapMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<MapMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<MapMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

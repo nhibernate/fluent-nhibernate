@@ -40,7 +40,7 @@ namespace FluentNHibernate.Mapping
             mapping.Name = Property.Name;
             mapping.Type = Property.PropertyType == typeof(DateTime) ? new TypeReference("timestamp") : new TypeReference(Property.PropertyType);
 
-            if (!mapping.Attributes.IsSpecified(x => x.Column))
+            if (!mapping.IsSpecified(x => x.Column))
                 mapping.Column = Property.Name;
 
             return mapping;

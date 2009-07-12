@@ -20,10 +20,10 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("meta-value");
 
-            if (mapping.Attributes.IsSpecified(x => x.Value))
+            if (mapping.IsSpecified(x => x.Value))
                 element.WithAtt("value", mapping.Value);
 
-            if (mapping.Attributes.IsSpecified(x => x.Class))
+            if (mapping.IsSpecified(x => x.Class))
                 element.WithAtt("class", mapping.Class);
         }
     }
