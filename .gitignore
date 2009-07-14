@@ -1,4 +1,4 @@
-<<<<<<< HEAD:.gitignore
+
 **/*.suo
 **/*.user
 **/*.sln*
@@ -7,15 +7,18 @@ obj
 _ReSharper*
 dist
 output
-=======
-obj
-bin
-_ReSharper.*
+build
+
 *.csproj.user
+
 *.resharper.user
+
 *.resharper
+
 *.suo
+
 *.cache
+
 *~
+
 *.swp
->>>>>>> semantic-model:.gitignore
