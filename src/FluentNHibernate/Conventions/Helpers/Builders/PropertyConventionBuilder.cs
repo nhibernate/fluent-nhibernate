@@ -6,7 +6,7 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders
 {
-    internal class PropertyConventionBuilder : IConventionBuilder<IPropertyConvention, IPropertyInspector, IPropertyInstance>
+    public class PropertyConventionBuilder : IConventionBuilder<IPropertyConvention, IPropertyInspector, IPropertyInstance>
     {
         public IPropertyConvention Always(Action<IPropertyInstance> convention)
         {

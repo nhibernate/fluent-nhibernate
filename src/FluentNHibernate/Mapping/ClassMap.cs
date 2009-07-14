@@ -93,7 +93,29 @@ namespace FluentNHibernate.Mapping
             if (compositeId != null)
                 mapping.Id = compositeId.GetCompositeIdMapping();
 
+            if (!mapping.IsSpecified(x => x.TableName))
+                mapping.SetDefaultValue(x => x.TableName, GetDefaultTableName());
+
             return mapping;
+        }
+
+        private string GetDefaultTableName()
+        {
+            var tableName = EntityType.Name;
+
+            if (EntityType.IsGenericType)
+            {
+                // special case for generics: GenericType_GenericParameterType
+                tableName = EntityType.Name.Substring(0, EntityType.Name.IndexOf('`'));
+
+                foreach (var argument in EntityType.GetGenericArguments())
+                {
+                    tableName += "_";
+                    tableName += argument.Name;
+                }
+            }
+
+            return "`" + tableName + "`";
         }
 
         public HibernateMapping GetHibernateMapping()

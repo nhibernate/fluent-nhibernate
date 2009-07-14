@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
@@ -14,11 +15,6 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var column in columns)
                 visitor.Visit(column);
-        }
-
-        public AttributeStore<PropertyMapping> Attributes
-        {
-            get { return attributes; }
         }
 
         public Type ContainingEntityType { get; set; }
@@ -91,6 +87,21 @@ namespace FluentNHibernate.MappingModel
         public void ClearColumns()
         {
             columns.Clear();
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<PropertyMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<PropertyMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<PropertyMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

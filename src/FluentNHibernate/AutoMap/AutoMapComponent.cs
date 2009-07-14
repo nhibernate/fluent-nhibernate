@@ -63,11 +63,11 @@ namespace FluentNHibernate.AutoMap
 
             mapping.AddColumn(new ColumnMapping { Name = columnNamePrefix + mapping.PropertyInfo.Name });
 
-            if (!mapping.Attributes.IsSpecified(x => x.Name))
+            if (!mapping.IsSpecified(x => x.Name))
                 mapping.Name = mapping.PropertyInfo.Name;
 
-            if (!mapping.Attributes.IsSpecified(x => x.Type))
-                mapping.Attributes.SetDefault(x => x.Type, new TypeReference(mapping.PropertyInfo.PropertyType));
+            if (!mapping.IsSpecified(x => x.Type))
+                mapping.SetDefaultValue(x => x.Type, new TypeReference(mapping.PropertyInfo.PropertyType));
 
             return mapping;
         }

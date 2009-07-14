@@ -83,15 +83,19 @@
     <Compile Include="Conventions\Inspections\ICacheInspector.cs" />
     <Compile Include="Conventions\Inspections\IComponentInspector.cs" />
     <Compile Include="Conventions\Inspections\IDynamicComponentInspector.cs" />
+    <Compile Include="Conventions\Inspections\IGeneratorInspector.cs" />
     <Compile Include="Conventions\Inspections\IJoinedSubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\IJoinInspector.cs" />
     <Compile Include="Conventions\Inspections\IOneToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\ISubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\IVersionInspector.cs" />
+    <Compile Include="Conventions\Instances\GeneratedInstance.cs" />
     <Compile Include="Conventions\Instances\ICacheInstance.cs" />
     <Compile Include="Conventions\Instances\IComponentInstance.cs" />
     <Compile Include="Conventions\Instances\IdentityInstance.cs" />
     <Compile Include="Conventions\Instances\IDynamicComponentInstance.cs" />
+    <Compile Include="Conventions\Instances\IGeneratedInstance.cs" />
+    <Compile Include="Conventions\Instances\IGeneratorInstance.cs" />
     <Compile Include="Conventions\Instances\IJoinedSubclassInstance.cs" />
     <Compile Include="Conventions\Instances\IJoinInstance.cs" />
     <Compile Include="Conventions\Instances\IManyToManyInstance.cs" />
@@ -395,7 +399,6 @@
     <Compile Include="Mapping\VersionGeneratedBuilder.cs" />
     <Compile Include="Utils\XmlExtensions.cs" />
     <Compile Include="SessionSource.cs" />
-    <Compile Include="Conventions\Defaults\TableNameConvention.cs" />
     <Compile Include="Testing\PersistenceSpecification.cs" />
     <Compile Include="Testing\SingleConnectionSessionSourceForSQLiteInMemoryTesting.cs" />
     <Compile Include="Utils\ExpressionToSql.cs" />
@@ -416,7 +419,6 @@
     <Compile Include="Mapping\ComponentPart.cs" />
     <Compile Include="Mapping\CompositeElementPart.cs" />
     <Compile Include="Mapping\CompositeIdentityPart.cs" />
-    <Compile Include="Conventions\Defaults\PropertyTypeConvention.cs" />
     <Compile Include="Conventions\Defaults\EnumerationPropertyConvention.cs" />
     <Compile Include="Mapping\IdentityGenerationStrategyBuilder.cs" />
     <Compile Include="Mapping\IdentityPart.cs" />

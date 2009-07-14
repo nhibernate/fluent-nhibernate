@@ -26,28 +26,28 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.CreateElement("property");
 
-            if (propertyMapping.Attributes.HasValue(x => x.Access))
+            if (propertyMapping.HasValue(x => x.Access))
                 element.WithAtt("access", propertyMapping.Access);
 
-            if (propertyMapping.Attributes.HasValue(x => x.Generated))
+            if (propertyMapping.HasValue(x => x.Generated))
                 element.WithAtt("generated", propertyMapping.Generated);
 
-            if (propertyMapping.Attributes.HasValue(x => x.Name))
+            if (propertyMapping.HasValue(x => x.Name))
                 element.WithAtt("name", propertyMapping.Name);
 
-            if (propertyMapping.Attributes.HasValue(x => x.OptimisticLock))
+            if (propertyMapping.HasValue(x => x.OptimisticLock))
                 element.WithAtt("optimistic-lock", propertyMapping.OptimisticLock);
 
-            if (propertyMapping.Attributes.HasValue(x => x.Insert))
+            if (propertyMapping.HasValue(x => x.Insert))
                 element.WithAtt("insert", propertyMapping.Insert);
 
-            if (propertyMapping.Attributes.HasValue(x => x.Update))
+            if (propertyMapping.HasValue(x => x.Update))
                 element.WithAtt("update", propertyMapping.Update);
 
-            if (propertyMapping.Attributes.HasValue(x => x.Formula))
+            if (propertyMapping.HasValue(x => x.Formula))
                 element.WithAtt("formula", propertyMapping.Formula);
 
-            if (propertyMapping.Attributes.HasValue(x => x.Type))
+            if (propertyMapping.HasValue(x => x.Type))
                 element.WithAtt("type", propertyMapping.Type);
 
             document.AppendChild(element);

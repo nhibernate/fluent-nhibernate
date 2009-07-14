@@ -87,12 +87,16 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Generated; }
         }
 
-        public IEnumerable<IColumnInspector> Columns
+        public IDefaultableEnumerable<IColumnInspector> Columns
         {
             get
             {
+                var items = new DefaultableList<IColumnInspector>();
+
                 foreach (var column in mapping.Columns.UserDefined)
-                    yield return new ColumnInspector(mapping.ContainingEntityType, column);
+                    items.Add(new ColumnInspector(mapping.ContainingEntityType, column));
+
+                return items;
             }
         }
 
@@ -100,7 +104,7 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get
             {
-                if (mapping.Attributes.IsSpecified(x => x.Access))
+                if (mapping.IsSpecified(x => x.Access))
                     return Access.FromString(mapping.Access);
 
                 return Access.Unset;
@@ -129,7 +133,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public bool IsSet(PropertyInfo property)
         {
-            return mapping.Attributes.IsSpecified(propertyMappings.Get(property));
+            return mapping.IsSpecified(propertyMappings.Get(property));
         }
 
         /// <summary>

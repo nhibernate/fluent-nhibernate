@@ -43,7 +43,7 @@ namespace FluentNHibernate
         private void AddDefaultConventions()
         {
             foreach (var foundType in from type in typeof(PersistenceModel).Assembly.GetTypes()
-                                      where type.Namespace == typeof(TableNameConvention).Namespace && !type.IsAbstract
+                                      where type.Namespace == typeof(DefaultForeignKeyConvention).Namespace && !type.IsAbstract
                                       select type)
             {
                 ConventionFinder.Add(foundType);

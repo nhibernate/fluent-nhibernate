@@ -20,5 +20,9 @@ namespace FluentNHibernate.Conventions.Instances
         void Unique();
         void UniqueKey(string keyName);
         void ColumnName(string columnName);
+        void Formula(string formula);
+        new IGeneratedInstance Generated { get; }
+        void OptimisticLock();
+        void Length(int length);
     }
 }

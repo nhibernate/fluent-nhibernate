@@ -13,7 +13,7 @@ namespace FluentNHibernate.Testing.AutoMap
 
         public void Apply(IPropertyInstance instance)
         {
-            instance.ColumnName(instance.Columns.First().Name + "XX");
+            instance.ColumnName(instance.Name + "XX");
         }
     }
 }
