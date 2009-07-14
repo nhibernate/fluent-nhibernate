@@ -32,19 +32,19 @@ namespace FluentNHibernate.MappingModel.Output
 
             element.WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
 
-            if (mapping.IsSpecified(x => x.DefaultAccess))
+            if (mapping.HasValue(x => x.DefaultAccess))
                 element.WithAtt("default-access", mapping.DefaultAccess);
 
-            if (mapping.IsSpecified(x => x.AutoImport))
+            if (mapping.HasValue(x => x.AutoImport))
                 element.WithAtt("auto-import", mapping.AutoImport);
 
-            if (mapping.IsSpecified(x => x.Schema))
+            if (mapping.HasValue(x => x.Schema))
                 element.WithAtt("schema", mapping.Schema);
 
-            if (mapping.IsSpecified(x => x.DefaultCascade))
+            if (mapping.HasValue(x => x.DefaultCascade))
                 element.WithAtt("default-cascade", mapping.DefaultCascade);
 
-            if (mapping.IsSpecified(x => x.DefaultLazy))
+            if (mapping.HasValue(x => x.DefaultLazy))
                 element.WithAtt("default-lazy", mapping.DefaultLazy);
         }
 

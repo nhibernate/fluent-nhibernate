@@ -26,40 +26,40 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("many-to-one");
 
-            if (mapping.IsSpecified(x => x.Access))
+            if (mapping.HasValue(x => x.Access))
                 element.WithAtt("access", mapping.Access);
 
-            if (mapping.IsSpecified(x => x.Cascade))
+            if (mapping.HasValue(x => x.Cascade))
                 element.WithAtt("cascade", mapping.Cascade);
 
-            if (mapping.IsSpecified(x => x.Class))
+            if (mapping.HasValue(x => x.Class))
                 element.WithAtt("class", mapping.Class);
 
-            if (mapping.IsSpecified(x => x.Fetch))
+            if (mapping.HasValue(x => x.Fetch))
                 element.WithAtt("fetch", mapping.Fetch);
 
-            if (mapping.IsSpecified(x => x.ForeignKey))
+            if (mapping.HasValue(x => x.ForeignKey))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
-            if (mapping.IsSpecified(x => x.Insert))
+            if (mapping.HasValue(x => x.Insert))
                 element.WithAtt("insert", mapping.Insert);
 
-            if (mapping.IsSpecified(x => x.Lazy))
+            if (mapping.HasValue(x => x.Lazy))
                 element.WithAtt("lazy", mapping.Lazy);
 
-            if (mapping.IsSpecified(x => x.Name))
+            if (mapping.HasValue(x => x.Name))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.IsSpecified(x => x.NotFound))
+            if (mapping.HasValue(x => x.NotFound))
                 element.WithAtt("not-found", mapping.NotFound);
 
-            if (mapping.IsSpecified(x => x.OuterJoin))
+            if (mapping.HasValue(x => x.OuterJoin))
                 element.WithAtt("outer-join", mapping.OuterJoin);
 
-            if (mapping.IsSpecified(x => x.PropertyRef))
+            if (mapping.HasValue(x => x.PropertyRef))
                 element.WithAtt("property-ref", mapping.PropertyRef);
 
-            if (mapping.IsSpecified(x => x.Update))
+            if (mapping.HasValue(x => x.Update))
                 element.WithAtt("update", mapping.Update);
         }
 

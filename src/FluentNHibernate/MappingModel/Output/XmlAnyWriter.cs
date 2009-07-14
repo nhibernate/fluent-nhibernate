@@ -26,25 +26,25 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("any");
 
-            if (mapping.IsSpecified(x => x.Access))
+            if (mapping.HasValue(x => x.Access))
                 element.WithAtt("access", mapping.Access);
 
-            if (mapping.IsSpecified(x => x.Cascade))
+            if (mapping.HasValue(x => x.Cascade))
                 element.WithAtt("cascade", mapping.Cascade);
 
-            if (mapping.IsSpecified(x => x.IdType))
+            if (mapping.HasValue(x => x.IdType))
                 element.WithAtt("id-type", mapping.IdType);
 
-            if (mapping.IsSpecified(x => x.Insert))
+            if (mapping.HasValue(x => x.Insert))
                 element.WithAtt("insert", mapping.Insert);
 
-            if (mapping.IsSpecified(x => x.MetaType))
+            if (mapping.HasValue(x => x.MetaType))
                 element.WithAtt("meta-type", mapping.MetaType);
 
-            if (mapping.IsSpecified(x => x.Name))
+            if (mapping.HasValue(x => x.Name))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.IsSpecified(x => x.Update))
+            if (mapping.HasValue(x => x.Update))
                 element.WithAtt("update", mapping.Update);
         }
 

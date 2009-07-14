@@ -32,55 +32,55 @@ namespace FluentNHibernate.MappingModel.Output
             var classElement = document.AddElement("class")
                 .WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
 
-            if (classMapping.IsSpecified(x => x.BatchSize))
+            if (classMapping.HasValue(x => x.BatchSize))
                 classElement.WithAtt("batch-size", classMapping.BatchSize);
 
-            if (classMapping.IsSpecified(x => x.DiscriminatorValue))
+            if (classMapping.HasValue(x => x.DiscriminatorValue))
                 classElement.WithAtt("discriminator-value", classMapping.DiscriminatorValue.ToString());
 
-            if (classMapping.IsSpecified(x => x.DynamicInsert))
+            if (classMapping.HasValue(x => x.DynamicInsert))
                 classElement.WithAtt("dynamic-insert", classMapping.DynamicInsert);
 
-            if (classMapping.IsSpecified(x => x.DynamicUpdate))
+            if (classMapping.HasValue(x => x.DynamicUpdate))
                 classElement.WithAtt("dynamic-update", classMapping.DynamicUpdate);
 
-            if (classMapping.IsSpecified(x => x.Lazy))
+            if (classMapping.HasValue(x => x.Lazy))
                 classElement.WithAtt("lazy", classMapping.Lazy);
 
-            if (classMapping.IsSpecified(x => x.Schema))
+            if (classMapping.HasValue(x => x.Schema))
                 classElement.WithAtt("schema", classMapping.Schema);
 
-            if (classMapping.IsSpecified(x => x.Mutable))
+            if (classMapping.HasValue(x => x.Mutable))
                 classElement.WithAtt("mutable", classMapping.Mutable);
 
-            if (classMapping.IsSpecified(x => x.Polymorphism))
+            if (classMapping.HasValue(x => x.Polymorphism))
                 classElement.WithAtt("polymorphism", classMapping.Polymorphism);
 
-            if (classMapping.IsSpecified(x => x.Persister))
+            if (classMapping.HasValue(x => x.Persister))
                 classElement.WithAtt("persister", classMapping.Persister);
 
-            if (classMapping.IsSpecified(x => x.Where))
+            if (classMapping.HasValue(x => x.Where))
                 classElement.WithAtt("where", classMapping.Where);
 
-            if (classMapping.IsSpecified(x => x.OptimisticLock))
+            if (classMapping.HasValue(x => x.OptimisticLock))
                 classElement.WithAtt("optimistic-lock", classMapping.OptimisticLock);
 
-            if (classMapping.IsSpecified(x => x.Check))
+            if (classMapping.HasValue(x => x.Check))
                 classElement.WithAtt("check", classMapping.Check);
 
-            if (classMapping.IsSpecified(x => x.Name))
+            if (classMapping.HasValue(x => x.Name))
                 classElement.WithAtt("name", classMapping.Name);
 
-            if (classMapping.IsSpecified(x => x.TableName))
+            if (classMapping.HasValue(x => x.TableName))
                 classElement.WithAtt("table", classMapping.TableName);
 
-            if (classMapping.IsSpecified(x => x.Proxy))
+            if (classMapping.HasValue(x => x.Proxy))
                 classElement.WithAtt("proxy", classMapping.Proxy);
 
-            if (classMapping.IsSpecified(x => x.SelectBeforeUpdate))
+            if (classMapping.HasValue(x => x.SelectBeforeUpdate))
                 classElement.WithAtt("select-before-update", classMapping.SelectBeforeUpdate);
 
-            if (classMapping.IsSpecified(x => x.Abstract))
+            if (classMapping.HasValue(x => x.Abstract))
                 classElement.WithAtt("abstract", classMapping.Abstract);
         }
 

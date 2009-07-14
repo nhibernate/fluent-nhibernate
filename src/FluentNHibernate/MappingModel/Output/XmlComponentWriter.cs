@@ -21,7 +21,7 @@ namespace FluentNHibernate.MappingModel.Output
         {
             document = WriteComponent("component", componentMapping);
 
-            if (componentMapping.IsSpecified(x => x.Class))
+            if (componentMapping.HasValue(x => x.Class))
                 document.DocumentElement.WithAtt("class", componentMapping.Class);
         }
     }

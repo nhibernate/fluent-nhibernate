@@ -20,10 +20,10 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("cache");
 
-            if (mapping.IsSpecified(x => x.Region))
+            if (mapping.HasValue(x => x.Region))
                 element.WithAtt("region", mapping.Region);
 
-            if (mapping.IsSpecified(x => x.Usage))
+            if (mapping.HasValue(x => x.Usage))
                 element.WithAtt("usage", mapping.Usage);
         }
     }
