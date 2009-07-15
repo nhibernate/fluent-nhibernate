@@ -61,10 +61,11 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
-        public OptimisticLock OptimisticLock
+        public string OptimisticLock
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.OptimisticLock; }
         }
+
         public string Schema
         {
             get { throw new NotImplementedException(); }

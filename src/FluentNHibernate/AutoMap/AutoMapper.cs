@@ -150,10 +150,8 @@ namespace FluentNHibernate.AutoMap
 
         public ClassMapping Map(Type classType, List<AutoMapType> types, IDictionary<Type, Action<object>> overrides)
         {
-            var classMap = new ClassMapping(classType)
-            {
-                Name = classType.AssemblyQualifiedName
-            };
+            var classMap = new ClassMapping(classType);
+            classMap.SetDefaultValue(x => x.Name, classType.AssemblyQualifiedName);
             mappingTypes = types;
             return (ClassMapping)MergeMap(classType, classMap, overrides, new List<string>());
         }

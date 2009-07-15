@@ -36,7 +36,7 @@
         </Variables>
         <CustomProperties />
       </Template>
-      <Template uid="48d05922-610b-4777-a30c-88c5ed5ae319" shortcut="specdef" description="IsSpecified definition" text="public bool IsSpecified&lt;TResult&gt;(Expression&lt;Func&lt;$mapping$, TResult&gt;&gt; property)&#xD;&#xA;{&#xD;&#xA;    return attributes.IsSpecified(property);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;public bool HasValue&lt;TResult&gt;(Expression&lt;Func&lt;$mapping$&gt;, TResult&gt;&gt; property)&#xD;&#xA;{&#xD;&#xA;    return attributes.HasValue(property);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;public void SetDefaultValue&lt;TResult&gt;(Expression&lt;Func&lt;$mapping$, TResult&gt;&gt; property, TResult value)&#xD;&#xA;{&#xD;&#xA;    attributes.SetDefault(property, value);&#xD;&#xA;}" reformat="True" shortenQualifiedReferences="True">
+      <Template uid="48d05922-610b-4777-a30c-88c5ed5ae319" shortcut="specdef" description="IsSpecified definition" text="public bool IsSpecified&lt;TResult&gt;(Expression&lt;Func&lt;$mapping$, TResult&gt;&gt; property)&#xD;&#xA;{&#xD;&#xA;    return attributes.IsSpecified(property);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;public bool HasValue&lt;TResult&gt;(Expression&lt;Func&lt;$mapping$, TResult&gt;&gt; property)&#xD;&#xA;{&#xD;&#xA;    return attributes.HasValue(property);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;public void SetDefaultValue&lt;TResult&gt;(Expression&lt;Func&lt;$mapping$, TResult&gt;&gt; property, TResult value)&#xD;&#xA;{&#xD;&#xA;    attributes.SetDefault(property, value);&#xD;&#xA;}" reformat="True" shortenQualifiedReferences="True">
         <Context>
           <CSharpContext context="Everywhere" minimumLanguageVersion="2.0" />
         </Context>

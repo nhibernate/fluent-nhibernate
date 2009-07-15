@@ -18,6 +18,9 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void ColumnName(string columnName)
         {
+            if (mapping.Columns.UserDefined.Count() > 0)
+                return;
+
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : ColumnMapping.BaseOn(originalColumn);
 
@@ -25,6 +28,12 @@ namespace FluentNHibernate.Conventions.Instances
 
             mapping.ClearColumns();
             mapping.AddColumn(column);
+        }
+
+        public void ForeignKey(string constraint)
+        {
+            if (!mapping.IsSpecified(x => x.ForeignKey))
+                mapping.ForeignKey = constraint;
         }
 
         public Type EntityType

@@ -62,14 +62,14 @@ namespace FluentNHibernate.AutoMap
 
         private void ConfigureModel(PropertyInfo property, ICollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
         {
-            mapping.Name = property.Name;
+            mapping.SetDefaultValue(x => x.Name, property.Name);
             mapping.Relationship = new ManyToManyMapping
             {
                 Class = new TypeReference(property.PropertyType.GetGenericArguments()[0])
             };
             mapping.ContainingEntityType = classMap.Type;
             mapping.Key = new KeyMapping();
-            mapping.ChildType = new TypeReference(property.PropertyType.GetGenericArguments()[0]);
+            mapping.ChildType = property.PropertyType.GetGenericArguments()[0];
             mapping.MemberInfo = property;
 
             if (parentSide != property.DeclaringType)

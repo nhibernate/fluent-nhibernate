@@ -1,4 +1,3 @@
-using System;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances

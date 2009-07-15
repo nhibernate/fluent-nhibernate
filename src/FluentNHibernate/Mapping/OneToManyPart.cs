@@ -28,7 +28,7 @@ namespace FluentNHibernate.Mapping
             cascade = new CollectionCascadeExpression<IOneToManyPart>(this, value => collectionAttributes.Set(x => x.Cascade, value));
             notFound = new NotFoundExpression<OneToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
 
-            collectionAttributes.Set(x => x.Name, member.Name);
+            collectionAttributes.SetDefault(x => x.Name, member.Name);
         }
 
         public override ICollectionMapping GetCollectionMapping()

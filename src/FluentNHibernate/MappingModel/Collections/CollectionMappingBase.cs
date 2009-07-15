@@ -106,7 +106,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Where, value); }
         }
 
-        public string Persister
+        public TypeReference Persister
         {
             get { return attributes.Get(x => x.Persister); }
             set { attributes.Set(x => x.Persister, value); }

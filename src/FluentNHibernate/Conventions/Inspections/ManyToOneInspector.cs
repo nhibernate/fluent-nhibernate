@@ -18,14 +18,12 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get { throw new NotImplementedException(); }
         }
-        public Cascade Cascade
+
+        public string OuterJoin
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.OuterJoin; }
         }
-        public OuterJoin OuterJoin
-        {
-            get { throw new NotImplementedException(); }
-        }
+
         public Type EntityType
         {
             get { throw new NotImplementedException(); }
@@ -51,7 +49,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public TypeReference Class
         {
-            get { return mapping.Class; }
+            get { return mapping.Class ?? TypeReference.Empty; }
         }
 
         public IEnumerable<IColumnInspector> Columns
@@ -63,6 +61,11 @@ namespace FluentNHibernate.Conventions.Inspections
                     yield return new ColumnInspector(mapping.ContainingEntityType, column);
                 }
             }
+        }
+
+        public string Cascade
+        {
+            get { return mapping.Cascade; }
         }
     }
 }

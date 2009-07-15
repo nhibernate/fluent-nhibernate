@@ -21,7 +21,7 @@ namespace FluentNHibernate.Conventions.Defaults
 
         public void Apply(IPropertyInstance instance)
         {
-            var mapperType = typeof(GenericEnumMapper<>).MakeGenericType(instance.Type);
+            var mapperType = typeof(GenericEnumMapper<>).MakeGenericType(instance.Type.GetUnderlyingSystemType());
 
             instance.CustomTypeIs(mapperType);
         }

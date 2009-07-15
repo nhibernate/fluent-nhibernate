@@ -181,7 +181,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ManyToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Persister<CustomPersister>())
-                .ModelShouldMatch(x => x.Persister.ShouldEqual(typeof(CustomPersister).AssemblyQualifiedName));
+                .ModelShouldMatch(x => x.Persister.GetUnderlyingSystemType().ShouldEqual(typeof(CustomPersister)));
         }
 
         [Test]

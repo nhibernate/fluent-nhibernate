@@ -118,7 +118,7 @@ namespace FluentNHibernate.MappingModel
         {
             if (obj.GetType() == typeof(TypeReference))
                 return Equals((TypeReference)obj);
-            if (obj.GetType() == typeof(Type))
+            if (obj is Type)
                 return Equals((Type)obj);
             if (obj.GetType() == typeof(string))
                 return Equals((string)obj);
@@ -134,16 +134,16 @@ namespace FluentNHibernate.MappingModel
             }
         }
 
-        public static implicit operator Type(TypeReference type)
+        public Type GetUnderlyingSystemType()
         {
-            return type.innerType;
+            return innerType;
         }
 
         public static bool operator ==(TypeReference original, Type type)
         {
             if (type == null)
                 return false;
-            if (original == null || original.innerType == null)
+            if (original == (Type)null || original.innerType == null)
                 return false;
 
             return original.innerType == type;
@@ -152,6 +152,26 @@ namespace FluentNHibernate.MappingModel
         public static bool operator !=(TypeReference original, Type type)
         {
             return !(original == type);
+        }
+
+        public static bool operator ==(Type original, TypeReference type)
+        {
+            return type == original;
+        }
+
+        public static bool operator !=(Type original, TypeReference type)
+        {
+            return !(original == type);
+        }
+
+        public static bool operator ==(TypeReference original, TypeReference other)
+        {
+            return original.Equals(other);
+        }
+
+        public static bool operator !=(TypeReference original, TypeReference other)
+        {
+            return !(original == other);
         }
     }
 }

@@ -10,6 +10,12 @@ namespace FluentNHibernate.Conventions.Inspections
         bool IsMethodAccess { get; }
         MemberInfo Member { get; }
         IRelationshipInspector Relationship { get; }
+        string Cascade { get; }
+        string Fetch { get; }
+        string OptimisticLock { get; }
+        string OuterJoin { get; }
+        bool Generic { get; }
+        bool Inverse { get; }
     }
 
     public interface IOneToManyCollectionInspector : ICollectionInspector

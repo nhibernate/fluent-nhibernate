@@ -16,13 +16,13 @@ namespace FluentNHibernate.MappingModel.Collections
         string Fetch { get; set; }
         string Cascade { get; set; }
         string Where { get; set; }
-        string Persister { get; }
+        TypeReference Persister { get; set; }
         string Name { get; set; }
-        int BatchSize { get; }
-        string Check { get; }
-        TypeReference CollectionType { get; }
-        string OptimisticLock { get; }
-        bool Generic { get; }
+        int BatchSize { get; set; }
+        string Check { get; set; }
+        TypeReference CollectionType { get; set; }
+        string OptimisticLock { get; set; }
+        bool Generic { get; set; }
         KeyMapping Key { get; set; }
         ICollectionRelationshipMapping Relationship { get; set; }
         MemberInfo MemberInfo { get; set;  }

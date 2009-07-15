@@ -29,7 +29,8 @@ namespace FluentNHibernate.AutoMap
             if (property.DeclaringType != classMap.Type)
                 return;
 
-            var setMapping = new BagMapping() {Name = property.Name};
+            var setMapping = new BagMapping();
+            setMapping.SetDefaultValue(x => x.Name, property.Name);
             setMapping.Relationship = new OneToManyMapping() { Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]) };
             setMapping.Key = new KeyMapping();
             setMapping.Key.AddColumn(new ColumnMapping() { Name = property.DeclaringType.Name + "_Id"});
@@ -42,7 +43,8 @@ namespace FluentNHibernate.AutoMap
             if (property.DeclaringType != classMap.Type)
                 return;
 
-            var setMapping = new BagMapping() { Name = property.Name };
+            var setMapping = new BagMapping();
+            setMapping.SetDefaultValue(x => x.Name, property.Name);
             setMapping.Relationship = new OneToManyMapping() { Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]) };
             setMapping.Key = new KeyMapping();
             setMapping.Key.AddColumn(new ColumnMapping() { Name = property.DeclaringType.Name + "_Id" });
@@ -55,7 +57,8 @@ namespace FluentNHibernate.AutoMap
             if (property.DeclaringType != classMap.Type)
                 return;
 
-            var setMapping = new BagMapping() { Name = property.Name };
+            var setMapping = new BagMapping();
+            setMapping.SetDefaultValue(x => x.Name, property.Name);
             setMapping.Relationship = new OneToManyMapping() { Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]) };
             setMapping.Key = new KeyMapping();
             setMapping.Key.AddColumn(new ColumnMapping() { Name = property.DeclaringType.Name + "_Id" });

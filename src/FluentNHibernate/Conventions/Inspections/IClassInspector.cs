@@ -6,7 +6,7 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         string TableName { get; }
         ICacheInstance Cache { get; }
-        OptimisticLock OptimisticLock { get; }
+        string OptimisticLock { get; }
         string Schema { get; }
         bool DynamicUpdate { get; }
         bool DynamicInsert { get; }

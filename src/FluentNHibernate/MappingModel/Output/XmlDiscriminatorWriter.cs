@@ -19,7 +19,7 @@ namespace FluentNHibernate.MappingModel.Output
         {
             document = new XmlDocument();
 
-            var typeString = TypeMapping.GetTypeString(discriminatorMapping.Type);
+            var typeString = TypeMapping.GetTypeString(discriminatorMapping.Type.GetUnderlyingSystemType());
 
             var discriminatorElement = document.AddElement("discriminator")
                 .WithAtt("column", discriminatorMapping.ColumnName)

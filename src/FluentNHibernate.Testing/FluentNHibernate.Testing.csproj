@@ -92,6 +92,7 @@
     <Compile Include="ConventionsTests\Alterations\PropertyAlterationMapsToPropertyMapping.cs" />
     <Compile Include="ConventionsTests\ConventionsCollectionTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsClassTests.cs" />
+    <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsHasManyCollectionTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsPropertyTests.cs" />
     <Compile Include="ConventionsTests\Inspection\ColumnDslMapsToColumnMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\PropertyDslMapsToPropertyMapping.cs" />
@@ -249,6 +250,7 @@
     <Compile Include="MappingModel\MappingTestingExtensions.cs" />
     <Compile Include="Utils\ReflectionHelperTests.cs" />
     <Compile Include="Testing\XmlWriterTestHelper.cs" />
+    <Compile Include="Utils\TypeReferenceEqualityTests.cs" />
     <Compile Include="Xml\MappingXmlTestHelper.cs" />
     <Compile Include="Xml\MappingXmlValidatorTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

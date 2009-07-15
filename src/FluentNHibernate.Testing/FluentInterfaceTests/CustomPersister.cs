@@ -12,6 +12,9 @@ using NHibernate.Type;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
+    internal class SecondCustomerPersister : CustomPersister
+    {}
+
     internal class CustomPersister : IEntityPersister
     {
         public void PostInstantiate()

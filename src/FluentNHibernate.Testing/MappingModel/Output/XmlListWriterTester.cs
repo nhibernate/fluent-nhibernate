@@ -143,7 +143,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
 
             var testHelper = new XmlWriterTestHelper<ListMapping>();
-            testHelper.Check(x => x.Persister, "p").MapsToAttribute("persister");
+            testHelper.Check(x => x.Persister, new TypeReference(typeof(string))).MapsToAttribute("persister");
 
             testHelper.VerifyAll(writer);
         }

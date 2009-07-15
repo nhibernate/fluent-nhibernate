@@ -284,7 +284,7 @@ namespace FluentNHibernate.Mapping
 
         public T Persister<TPersister>() where TPersister : IEntityPersister
         {
-            collectionAttributes.Set(x => x.Persister, typeof(TPersister).AssemblyQualifiedName);
+            collectionAttributes.Set(x => x.Persister, new TypeReference(typeof(TPersister)));
             return (T)this;
         }
 
