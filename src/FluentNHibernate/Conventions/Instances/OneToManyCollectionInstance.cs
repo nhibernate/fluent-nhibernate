@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public class OneToManyCollectionInstance : CollectionInstance, IOneToManyCollectionInstance
     {
-        private bool nextBool;
+        private new bool nextBool;
 
         public OneToManyCollectionInstance(ICollectionMapping mapping)
             : base(mapping)
@@ -19,7 +19,8 @@ namespace FluentNHibernate.Conventions.Instances
         {
             get { return Relationship; }
         }
-        public IOneToManyCollectionInstance Not
+
+        public new IOneToManyCollectionInstance Not
         {
             get
             {
@@ -27,9 +28,10 @@ namespace FluentNHibernate.Conventions.Instances
                 return this;
             }
         }
-        public IOneToManyInstance Relationship
+
+        public new IOneToManyInstance Relationship
         {
-            get { throw new NotImplementedException(); }
+            get { return new OneToManyInstance((OneToManyMapping)mapping.Relationship); }
         }
     }
 }

@@ -21,10 +21,10 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("one-to-many");
 
-            if (mapping.Attributes.HasValue(x => x.Class))
+            if (mapping.HasValue(x => x.Class))
                 element.WithAtt("class", mapping.Class);
 
-            if (mapping.Attributes.HasValue(x => x.NotFound))
+            if (mapping.HasValue(x => x.NotFound))
                 element.WithAtt("not-found", mapping.NotFound);
         }
     }

@@ -9,7 +9,7 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public class RelationshipInstance : IRelationshipInstance
     {
-        protected readonly ICollectionRelationshipMapping mapping;
+        private readonly ICollectionRelationshipMapping mapping;
 
         public RelationshipInstance(ICollectionRelationshipMapping mapping)
         {

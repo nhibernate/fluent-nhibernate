@@ -93,6 +93,7 @@
     <Compile Include="ConventionsTests\ConventionsCollectionTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsClassTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsHasManyCollectionTests.cs" />
+    <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsHasManyTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsPropertyTests.cs" />
     <Compile Include="ConventionsTests\Inspection\ColumnDslMapsToColumnMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\PropertyDslMapsToPropertyMapping.cs" />

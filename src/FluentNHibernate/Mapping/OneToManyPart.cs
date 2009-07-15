@@ -46,11 +46,7 @@ namespace FluentNHibernate.Mapping
 
         protected override ICollectionRelationshipMapping GetRelationship()
         {
-            var relationship = new OneToManyMapping();
-
-            relationshipAttributes.CopyTo(relationship.Attributes);
-
-            return relationship;
+            return new OneToManyMapping(relationshipAttributes.CloneInner());
         }
 
         public IOneToManyPart KeyColumnName(string columnName)
