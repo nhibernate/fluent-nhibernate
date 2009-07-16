@@ -21,6 +21,11 @@ namespace FluentNHibernate.Cfg
             model = new PersistenceModel();
         }
 
+        public PersistenceModel PersistenceModel
+        {
+            get { return model; }
+        }
+
         /// <summary>
         /// Add all fluent mappings in the assembly that contains T.
         /// </summary>

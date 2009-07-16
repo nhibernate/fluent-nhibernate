@@ -254,6 +254,11 @@ namespace FluentNHibernate.AutoMap
             return this;
         }
 
+        protected override string GetMappingFileName()
+        {
+            return "AutoMappings.hbm.xml";
+        }
+
         private IDictionary<Type, Action<object>> inlineOverrides = new Dictionary<Type, Action<object>>();
     }
 

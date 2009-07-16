@@ -22,6 +22,7 @@ namespace FluentNHibernate
         protected readonly IList<IMappingProvider> mappings;
         private readonly IList<IMappingModelVisitor> visitors;
         public IConventionFinder ConventionFinder { get; private set; }
+        public bool MergeMappings { get; set; }
         private bool conventionsApplied;
         private IEnumerable<HibernateMapping> compiledMappings;
 
@@ -104,19 +105,40 @@ namespace FluentNHibernate
         {
             var hbms = new List<HibernateMapping>();
 
+            if (MergeMappings)
+                BuildSingleMapping(hbms.Add);
+            else
+                BuildSeparateMappings(hbms.Add);
+
+            foreach (var mapping in hbms)
+                ApplyVisitors(mapping);
+
+            return hbms;
+        }
+
+        private void BuildSeparateMappings(Action<HibernateMapping> add)
+        {
             foreach (var classMap in mappings)
             {
                 var hbm = classMap.GetHibernateMapping();
 
                 hbm.AddClass(classMap.GetClassMapping());
 
-                hbms.Add(hbm);
+                add(hbm);
+            }
+        }
+
+        private void BuildSingleMapping(Action<HibernateMapping> add)
+        {
+            var hbm = new HibernateMapping();
+
+            foreach (var classMap in mappings)
+            {
+                hbm.AddClass(classMap.GetClassMapping());
             }
 
-            foreach (var mapping in hbms)
-                ApplyVisitors(mapping);
-
-            return hbms;
+            if (hbm.Classes.Count() > 0)
+                add(hbm);
         }
 
         public void ApplyVisitors(HibernateMapping mapping)
@@ -132,6 +154,11 @@ namespace FluentNHibernate
             compiledMappings = BuildMappings();
         }
 
+        protected virtual string GetMappingFileName()
+        {
+            return "FluentMappings.hbm.xml";
+        }
+
         public void WriteMappingsTo(string folder)
         {
             EnsureMappingsBuilt();
@@ -140,8 +167,9 @@ namespace FluentNHibernate
             {
                 var serializer = new MappingXmlSerializer();
                 var document = serializer.Serialize(mapping);
+                var filename = MergeMappings ? GetMappingFileName() : mapping.Classes.First().Type.FullName + ".hbm.xml";
 
-                using (var writer = new XmlTextWriter(Path.Combine(folder, mapping.Classes.First().Type.FullName + ".hbm.xml"), Encoding.Default))
+                using (var writer = new XmlTextWriter(Path.Combine(folder, filename), Encoding.Default))
                 {
                     writer.Formatting = Formatting.Indented;
                     document.WriteTo(writer);

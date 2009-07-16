@@ -239,6 +239,22 @@ namespace FluentNHibernate.Testing.Cfg
         }
 
         [Test]
+        public void WritesFluentMappingsOutMergedWhenFlagSet()
+        {
+            Fluently.Configure()
+                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Mappings(m =>
+                    m.MergeMappings()
+                     .FluentMappings
+                         .AddFromAssemblyOf<Record>()
+                         .ExportTo(ExportPath))
+                .BuildConfiguration();
+
+            Directory.GetFiles(ExportPath)
+                .ShouldContain(x => Path.GetFileName(x) == "FluentMappings.hbm.xml");
+        }
+
+        [Test]
         public void WritesAutoMappingsOut()
         {
             Fluently.Configure()
@@ -251,6 +267,22 @@ namespace FluentNHibernate.Testing.Cfg
 
             Directory.GetFiles(ExportPath)
                 .ShouldContain(HbmFor<Person>);
+        }
+
+        [Test]
+        public void WritesAutoMappingsOutMergedWhenFlagSet()
+        {
+            Fluently.Configure()
+                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Mappings(m =>
+                    m.MergeMappings()
+                     .AutoMappings.Add(AutoPersistenceModel.MapEntitiesFromAssemblyOf<Person>()
+                            .Where(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
+                     .ExportTo(ExportPath))
+                .BuildSessionFactory();
+
+            Directory.GetFiles(ExportPath)
+                .ShouldContain(x => Path.GetFileName(x) == "AutoMappings.hbm.xml");
         }
 
         [Test]

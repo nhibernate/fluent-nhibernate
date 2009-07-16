@@ -1,12 +1,9 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
-using FluentNHibernate.Utils;
-using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.AutoMap
 {
