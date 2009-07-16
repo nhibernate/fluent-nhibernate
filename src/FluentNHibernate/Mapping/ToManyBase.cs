@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
@@ -126,6 +127,18 @@ namespace FluentNHibernate.Mapping
             return (T)this;
         }
 
+        public T AsSet(SortType sort)
+        {
+            collectionBuilder = attrs => new SetMapping(attrs) { Sort = sort.ToString().ToLowerInvariant() };
+            return (T)this;
+        }
+
+        public T AsSet<TComparer>() where TComparer : IComparer
+        {
+            collectionBuilder = attrs => new SetMapping(attrs) { Sort = typeof(TComparer).AssemblyQualifiedName };
+            return (T)this;
+        }
+
         public T AsBag()
         {
             collectionBuilder = attrs => new BagMapping(attrs);
@@ -158,9 +171,30 @@ namespace FluentNHibernate.Mapping
             return (T)this;
         }
 
+        public T AsMap(string indexColumnName, SortType sort)
+        {
+            collectionBuilder = attrs => new MapMapping(attrs) { Sort = sort.ToString().ToLowerInvariant() };
+            AsIndexedCollection<Int32>(indexColumnName, null);
+            return (T)this;
+        }
+
         public T AsMap<TIndex>(string indexColumnName)
         {
             collectionBuilder = attrs => new MapMapping(attrs);
+            AsIndexedCollection<TIndex>(indexColumnName, null);
+            return (T)this;
+        }
+
+        public T AsMap<TIndex>(string indexColumnName, SortType sort)
+        {
+            collectionBuilder = attrs => new MapMapping(attrs) { Sort = sort.ToString().ToLowerInvariant() };
+            AsIndexedCollection<TIndex>(indexColumnName, null);
+            return (T)this;
+        }
+
+        public T AsMap<TIndex, TComparer>(string indexColumnName) where TComparer : IComparer
+        {
+            collectionBuilder = attrs => new MapMapping(attrs) { Sort = typeof(TComparer).AssemblyQualifiedName };
             AsIndexedCollection<TIndex>(indexColumnName, null);
             return (T)this;
         }
@@ -417,6 +451,16 @@ namespace FluentNHibernate.Mapping
             return AsSet();
         }
 
+        ICollectionRelationship ICollectionRelationship.AsSet(SortType sort)
+        {
+            return AsSet(sort);
+        }
+
+        ICollectionRelationship ICollectionRelationship.AsSet<TComparer>()
+        {
+            return AsSet<TComparer>();
+        }
+
         ICollectionRelationship ICollectionRelationship.AsBag()
         {
             return AsBag();
@@ -432,9 +476,24 @@ namespace FluentNHibernate.Mapping
             return AsMap(indexColumnName);
         }
 
+        ICollectionRelationship ICollectionRelationship.AsMap(string indexColumnName, SortType sort)
+        {
+            return AsMap(indexColumnName, sort);
+        }
+
         ICollectionRelationship ICollectionRelationship.AsMap<TIndex>(string indexColumnName)
         {
             return AsMap(indexColumnName);
+        }
+
+        ICollectionRelationship ICollectionRelationship.AsMap<TIndex>(string indexColumnName, SortType sort)
+        {
+            return AsMap(indexColumnName, sort);
+        }
+
+        ICollectionRelationship ICollectionRelationship.AsMap<TIndex, TComparer>(string indexColumnName)
+        {
+            return AsMap<TIndex, TComparer>(indexColumnName);
         }
 
         ICollectionRelationship ICollectionRelationship.AsElement(string columnName)

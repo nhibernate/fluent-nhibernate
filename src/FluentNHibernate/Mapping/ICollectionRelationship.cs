@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Reflection;
 using FluentNHibernate.MappingModel.Collections;
 
@@ -22,10 +23,15 @@ namespace FluentNHibernate.Mapping
         ICollectionRelationship LazyLoad();
         ICollectionRelationship Inverse();
         ICollectionRelationship AsSet();
+        ICollectionRelationship AsSet(SortType sort);
+        ICollectionRelationship AsSet<TComparer>() where TComparer : IComparer;
         ICollectionRelationship AsBag();
         ICollectionRelationship AsList();
         ICollectionRelationship AsMap(string indexColumnName);
+        ICollectionRelationship AsMap(string indexColumnName, SortType sort);
         ICollectionRelationship AsMap<TIndex>(string indexColumnName);
+        ICollectionRelationship AsMap<TIndex>(string indexColumnName, SortType sort);
+        ICollectionRelationship AsMap<TIndex, TComparer>(string indexColumnName) where TComparer : IComparer;
         ICollectionRelationship AsElement(string columnName);
 
         /// <summary>

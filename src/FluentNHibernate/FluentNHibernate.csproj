@@ -178,6 +178,7 @@
     <Compile Include="Conventions\Inspections\IRelationshipInspector.cs" />
     <Compile Include="Conventions\IUserTypeConvention.cs" />
     <Compile Include="MappingModel\Collections\IIndexedCollectionMapping.cs" />
+    <Compile Include="MappingModel\Collections\SortType.cs" />
     <Compile Include="MappingModel\DefaultableList.cs" />
     <Compile Include="MappingModel\IDefaultableEnumerable.cs" />
     <Compile Include="MappingModel\IDefaultableList.cs" />

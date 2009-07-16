@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel.Collections;
 using Iesi.Collections.Generic;
 using NUnit.Framework;
 
@@ -53,6 +55,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     public class CustomCollection<T> : List<T>
     {}
 
+    public class SortComparer : IComparer
+    {
+        public int Compare(object x, object y)
+        {
+            return 0;
+        }
+    }
+
     [TestFixture]
     public class OneToManyTester
     {
@@ -90,6 +100,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void CanSpecifyCollectionTypeAsNaturallySortedSet()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany(x => x.SetOfChildren).AsSet(SortType.Natural))
+                .Element("class/set").Exists().HasAttribute("sort", "natural");
+        }
+
+        [Test]
+        public void CanSpecifyCollectionTypeAsComparerSortedSet()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany(x => x.SetOfChildren).AsSet<SortComparer>())
+                .Element("class/set").Exists().HasAttribute("sort", typeof(SortComparer).AssemblyQualifiedName);
+        }
+
+        [Test]
         public void CanSpecifyCollectionTypeAsMap()
         {
             new MappingTester<OneToManyTarget>()
@@ -122,6 +148,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/map/index/column").HasAttribute("name", "IndexColumn")
                 .Element("class/map/element").HasAttribute("type", typeof(MapContents).AssemblyQualifiedName)
                 .Element("class/map/element/column").HasAttribute("name", "ElementColumn");
+        }
+
+        [Test]
+        public void CanSpecifyCollectionTypeAsNaturallySortedMap()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany(x => x.MapOfChildren).AsMap("Name", SortType.Natural))
+                .Element("class/map").Exists().HasAttribute("sort", "natural");
+        }
+
+        [Test]
+        public void CanSpecifyCollectionTypeAsComparerSortedMap()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany(x => x.MapOfChildren).AsMap<MapIndex, SortComparer>("Name"))
+                .Element("class/map").Exists().HasAttribute("sort", typeof(SortComparer).AssemblyQualifiedName);
         }
 
         [Test]
