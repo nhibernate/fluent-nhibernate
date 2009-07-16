@@ -18,4 +18,17 @@ namespace FluentNHibernate.Conventions.Helpers.Builders
             return new BuiltOneToManyCollectionConvention(expectations, convention);
         }
     }
+
+    public class ManyToManyCollectionConventionBuilder : IConventionBuilder<IHasManyToManyConvention, IManyToManyCollectionInspector, IManyToManyCollectionInstance>
+    {
+        public IHasManyToManyConvention Always(Action<IManyToManyCollectionInstance> convention)
+        {
+            return new BuiltManyToManyCollectionConvention(criteria => { }, convention);
+        }
+
+        public IHasManyToManyConvention When(Action<IAcceptanceCriteria<IManyToManyCollectionInspector>> expectations, Action<IManyToManyCollectionInstance> convention)
+        {
+            return new BuiltManyToManyCollectionConvention(expectations, convention);
+        }
+    }
 }
