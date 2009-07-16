@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
@@ -25,9 +26,19 @@ namespace FluentNHibernate.MappingModel.Identity
 
         public IDictionary<string, string> Params { get; private set; }
 
-        public AttributeStore<GeneratorMapping> Attributes
+        public bool IsSpecified<TResult>(Expression<Func<GeneratorMapping, TResult>> property)
         {
-            get { return attributes; }
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<GeneratorMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<GeneratorMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

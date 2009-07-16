@@ -18,7 +18,7 @@ namespace FluentNHibernate.Mapping
         /// Specify caching for this entity.
         /// </summary>
         public ICache Cache { get; private set; }
-        protected IIdentityPart id;
+        protected IIdentityMappingProvider id;
 
         private readonly IList<ImportPart> imports = new List<ImportPart>();
         private bool nextBool = true;
@@ -88,7 +88,7 @@ namespace FluentNHibernate.Mapping
                 mapping.Cache = Cache.GetCacheMapping();
 
             if (id != null)
-                mapping.Id = id.GetIdMapping();
+                mapping.Id = id.GetIdentityMapping();
 
             if (compositeId != null)
                 mapping.Id = compositeId.GetCompositeIdMapping();
@@ -185,18 +185,19 @@ namespace FluentNHibernate.Mapping
             return DiscriminateSubClassesOnColumn<string>(columnName);
         }
 
-        public virtual IIdentityPart Id(Expression<Func<T, object>> expression)
+        public virtual IdentityPart Id(Expression<Func<T, object>> expression)
         {
             return Id(expression, null);
         }
 
-        public virtual IIdentityPart Id(Expression<Func<T, object>> expression, string column)
+        public virtual IdentityPart Id(Expression<Func<T, object>> expression, string column)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            var part = column == null ? new IdentityPart(EntityType, property) : new IdentityPart(EntityType, property, column);
+
+            id = part;
             
-            id = column == null ? new IdentityPart(EntityType, property) : new IdentityPart(EntityType, property, column);
-            
-            return id;
+            return part;
         }
 
         public virtual void JoinedSubClass<TSubclass>(string keyColumn, Action<JoinedSubClassPart<TSubclass>> action) where TSubclass : T

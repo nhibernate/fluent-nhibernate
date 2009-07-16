@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Identity
@@ -68,11 +69,21 @@ namespace FluentNHibernate.MappingModel.Identity
             set { attributes.Set(x => x.UnsavedValue, value); }
         }
 
-        public AttributeStore<IdMapping> Attributes
+        public Type ContainingEntityType { get; set; }
+
+        public bool IsSpecified<TResult>(Expression<Func<IdMapping, TResult>> property)
         {
-            get { return attributes; }
+            return attributes.IsSpecified(property);
         }
 
-        public Type ContainingEntityType { get; set; }
+        public bool HasValue<TResult>(Expression<Func<IdMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<IdMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
+        }
     }
 }

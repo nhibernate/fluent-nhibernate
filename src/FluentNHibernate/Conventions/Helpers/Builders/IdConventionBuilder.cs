@@ -6,7 +6,7 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders
 {
-    internal class IdConventionBuilder : IConventionBuilder<IIdConvention, IIdentityInspector, IIdentityInstance>
+    public class IdConventionBuilder : IConventionBuilder<IIdConvention, IIdentityInspector, IIdentityInstance>
     {
         public IIdConvention Always(Action<IIdentityInstance> convention)
         {

@@ -21,7 +21,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Alterations
         [Test]
         public void AccessMapped()
         {
-            alteration.Access.AsField();
+            alteration.Access.Field();
             mapping.Access.ShouldEqual("field");
         }
 

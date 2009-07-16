@@ -42,7 +42,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     {
         protected override void Apply(MyAttribute attribute, IPropertyInstance instance)
         {
-            instance.Access.AsField();
+            instance.Access.Field();
         }
     }
 }

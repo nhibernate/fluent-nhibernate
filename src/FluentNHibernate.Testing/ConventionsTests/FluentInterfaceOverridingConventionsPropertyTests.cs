@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping<ExampleClass>(x => x.LineOne, x => x.Access.AsField());
 
-            Convention(x => x.Access.AsProperty());
+            Convention(x => x.Access.Property());
 
             VerifyModel(x => x.Access.ShouldEqual("field"));
         }

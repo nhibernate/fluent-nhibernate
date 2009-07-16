@@ -56,11 +56,11 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public new IAccessStrategyBuilder Access
+        public new IAccessInstance Access
         {
             get
             {
-                return new AccessStrategyBuilder<PropertyInstance>(this, value =>
+                return new AccessInstance(value =>
                 {
                     if (!mapping.IsSpecified(x => x.Access))
                         mapping.Access = value;

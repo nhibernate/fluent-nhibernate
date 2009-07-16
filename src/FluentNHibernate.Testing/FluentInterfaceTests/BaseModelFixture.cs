@@ -61,9 +61,9 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             return new ModelTester<ICache, CacheMapping>(() => new CachePart(), x => x.GetCacheMapping());
         }
 
-        protected ModelTester<IIdentityPart, IdMapping> Id()
+        protected ModelTester<IdentityPart, IdMapping> Id()
         {
-            return new ModelTester<IIdentityPart, IdMapping>(() => new IdentityPart(typeof(IdentityTarget), ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId)), x => x.GetIdMapping());
+            return new ModelTester<IdentityPart, IdMapping>(() => new IdentityPart(typeof(IdentityTarget), ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId)), x => ((IIdentityMappingProvider)x).GetIdentityMapping());
         }
 
         protected ModelTester<CompositeIdentityPart<T>, CompositeIdMapping> CompositeId<T>()

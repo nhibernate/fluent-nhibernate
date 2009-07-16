@@ -5,7 +5,7 @@ using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public interface ICollectionInstance : ICollectionInspector, IAccessInstance
+    public interface ICollectionInstance : ICollectionInspector
     {
         new IKeyInstance Key { get; }
         new IRelationshipInstance Relationship { get; }
@@ -16,6 +16,7 @@ namespace FluentNHibernate.Conventions.Instances
         void BatchSize(int batchSize);
 
         ICollectionInstance Not { get; }
+        IAccessInstance Access { get; }
         ICacheInstance Cache { get; }
         new ICollectionCascadeInstance Cascade { get; }
         new IFetchInstance Fetch { get; }

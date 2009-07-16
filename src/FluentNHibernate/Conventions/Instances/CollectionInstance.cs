@@ -258,11 +258,11 @@ namespace FluentNHibernate.Conventions.Instances
             get { return Relationship; }
         }
 
-        public IAccessStrategyBuilder Access
+        public IAccessInstance Access
         {
             get
             {
-                return new AccessStrategyBuilder<CollectionInstance>(this, value =>
+                return new AccessInstance(value =>
                 {
                     if (!mapping.IsSpecified(x => x.Access))
                         mapping.Access = value;

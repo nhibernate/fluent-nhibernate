@@ -8,9 +8,9 @@ namespace FluentNHibernate.Conventions.Instances
     public interface IPropertyInstance 
         : IPropertyInspector, IInsertInstance, 
           IUpdateInstance, IReadOnlyInstance, 
-          INullableInstance, IAccessInstance
+          INullableInstance
     {
-        new IAccessStrategyBuilder Access { get; }
+        new IAccessInstance Access { get; }
         IPropertyInstance Not { get; }
         void CustomTypeIs<T>();
         void CustomTypeIs(TypeReference type);

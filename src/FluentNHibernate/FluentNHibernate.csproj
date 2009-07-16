@@ -94,10 +94,12 @@
     <Compile Include="Conventions\Inspections\IOneToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\ISubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\IVersionInspector.cs" />
+    <Compile Include="Conventions\Instances\AccessInstance.cs" />
     <Compile Include="Conventions\Instances\CascadeInstance.cs" />
     <Compile Include="Conventions\Instances\CollectionCascadeInstance.cs" />
     <Compile Include="Conventions\Instances\FetchInstance.cs" />
     <Compile Include="Conventions\Instances\GeneratedInstance.cs" />
+    <Compile Include="Conventions\Instances\GeneratorInstance.cs" />
     <Compile Include="Conventions\Instances\ICacheInstance.cs" />
     <Compile Include="Conventions\Instances\ICascadeInstance.cs" />
     <Compile Include="Conventions\Instances\ICollectionCascadeInstance.cs" />
@@ -191,6 +193,8 @@
     <Compile Include="MappingModel\Output\Sorting\XmlIdNodeSorter.cs" />
     <Compile Include="MappingModel\Output\Sorting\XmlNodeSorter.cs" />
     <Compile Include="MappingModel\TypeReference.cs" />
+    <Compile Include="Mapping\GeneratorBuilder.cs" />
+    <Compile Include="Mapping\IIdentityMappingProvider.cs" />
     <Compile Include="Utils\Reflection\ExpressionBuilder.cs" />
     <Compile Include="AutoMap\AutoSubClassPart.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />
@@ -415,7 +419,6 @@
     <Compile Include="Testing\PersistenceSpecification.cs" />
     <Compile Include="Testing\SingleConnectionSessionSourceForSQLiteInMemoryTesting.cs" />
     <Compile Include="Utils\ExpressionToSql.cs" />
-    <Compile Include="Mapping\IIdentityPart.cs" />
     <Compile Include="Mapping\ImportPart.cs" />
     <Compile Include="Mapping\IOneToManyPart.cs" />
     <Compile Include="Mapping\JoinPart.cs" />

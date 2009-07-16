@@ -34,7 +34,7 @@ namespace FluentNHibernate.AutoMap
             if (classMapping is ClassMapping)
             {
                 if (id != null)
-                    ((ClassMapping)classMapping).Id = id.GetIdMapping();
+                    ((ClassMapping)classMapping).Id = id.GetIdentityMapping();
 
                 if (version != null)
                     ((ClassMapping)classMapping).Version = version.GetVersionMapping();
@@ -72,7 +72,7 @@ namespace FluentNHibernate.AutoMap
             mappedProperties.Add(ReflectionHelper.GetProperty(expression).Name);
         }
 
-        public override IIdentityPart Id(Expression<Func<T, object>> expression)
+        public override IdentityPart Id(Expression<Func<T, object>> expression)
         {
             mappedProperties.Add(ReflectionHelper.GetProperty(expression).Name);
             return base.Id(expression);
@@ -106,7 +106,7 @@ namespace FluentNHibernate.AutoMap
             return base.Component(property, action);
         }
 
-        public override IIdentityPart Id(Expression<Func<T, object>> expression, string column)
+        public override IdentityPart Id(Expression<Func<T, object>> expression, string column)
         {
             mappedProperties.Add(ReflectionHelper.GetProperty(expression).Name);
             return base.Id(expression, column);

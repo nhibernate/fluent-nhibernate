@@ -1,24 +1,29 @@
 using System;
+using System.Collections.Generic;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Identity;
 
-namespace FluentNHibernate.Mapping
+namespace FluentNHibernate.Conventions.Instances
 {
-    public class IdentityGenerationStrategyBuilder<TParent>
-	{
-        private readonly TParent parent;
-        private readonly GeneratorMapping mapping = new GeneratorMapping();
+    public class GeneratorInstance : IGeneratorInstance
+    {
+        private readonly GeneratorMapping mapping;
         private readonly GeneratorBuilder builder;
 
-        public IdentityGenerationStrategyBuilder(TParent parent, Type identityType)
+        public GeneratorInstance(GeneratorMapping mapping, Type type)
         {
-            this.parent = parent;
-
-            builder = new GeneratorBuilder(mapping, identityType);
+            this.mapping = mapping;
+            builder = new GeneratorBuilder(mapping, type);
         }
 
-        public GeneratorMapping GetGeneratorMapping()
+        public string Class
         {
-            return mapping;
+            get { return mapping.Class; }
+        }
+
+        public IDictionary<string, string> Params
+        {
+            get { return mapping.Params; }
         }
 
 		/// <summary>
@@ -26,10 +31,10 @@ namespace FluentNHibernate.Mapping
 		/// process is inserting data into the same table. Do not use in a cluster.
 		/// </summary>
 		/// <returns></returns>
-        public TParent Increment()
+        public void Increment()
 		{
-			builder.Increment();
-			return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+			    builder.Increment();
 		}
 
         /// <summary>
@@ -37,10 +42,10 @@ namespace FluentNHibernate.Mapping
         /// process is inserting data into the same table. Do not use in a cluster.
         /// </summary>
         /// <param name="paramValues">Params configuration</param>
-        public TParent Increment(Action<ParamBuilder> paramValues)
+        public void Increment(Action<ParamBuilder> paramValues)
         {
-            builder.Increment(paramValues);
-            return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Increment(paramValues);
         }
 
 		/// <summary>
@@ -49,10 +54,10 @@ namespace FluentNHibernate.Mapping
 		/// Convert.ChangeType. Any integral property type is thus supported.
 		/// </summary>
 		/// <returns></returns>
-        public TParent Identity()
+        public void Identity()
 		{
-			builder.Identity();
-			return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Identity();
 		}
 
         /// <summary>
@@ -61,10 +66,10 @@ namespace FluentNHibernate.Mapping
         /// Convert.ChangeType. Any integral property type is thus supported.
         /// </summary>
         /// <param name="paramValues">Params configuration</param>
-        public TParent Identity(Action<ParamBuilder> paramValues)
+        public void Identity(Action<ParamBuilder> paramValues)
         {
-            builder.Identity(paramValues);
-            return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Identity(paramValues);
         }
 
 		/// <summary>
@@ -74,10 +79,10 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
 		/// <param name="sequenceName"></param>
 		/// <returns></returns>
-        public TParent Sequence(string sequenceName)
+        public void Sequence(string sequenceName)
 		{
-			builder.Sequence(sequenceName);
-			return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Sequence(sequenceName);
 		}
 
         /// <summary>
@@ -87,10 +92,10 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="sequenceName"></param>
         /// <param name="paramValues">Params configuration</param>
-        public TParent Sequence(string sequenceName, Action<ParamBuilder> paramValues)
+        public void Sequence(string sequenceName, Action<ParamBuilder> paramValues)
         {
-            builder.Sequence(sequenceName, paramValues);
-            return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Sequence(sequenceName, paramValues);
         }
 
 		/// <summary>
@@ -104,10 +109,10 @@ namespace FluentNHibernate.Mapping
 		/// <param name="column"></param>
 		/// <param name="maxLo"></param>
 		/// <returns></returns>
-        public TParent HiLo(string table, string column, string maxLo)
+        public void HiLo(string table, string column, string maxLo)
 		{
-			builder.HiLo(table, column, maxLo);
-		    return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.HiLo(table, column, maxLo);
 		}
 
         /// <summary>
@@ -121,10 +126,10 @@ namespace FluentNHibernate.Mapping
         /// <param name="column"></param>
         /// <param name="maxLo"></param>
         /// <param name="paramValues">Params configuration</param>
-        public TParent HiLo(string table, string column, string maxLo, Action<ParamBuilder> paramValues)
+        public void HiLo(string table, string column, string maxLo, Action<ParamBuilder> paramValues)
         {
-            builder.HiLo(table, column, maxLo, paramValues);
-            return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.HiLo(table, column, maxLo, paramValues);
         }
 
 		/// <summary>
@@ -136,10 +141,10 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
 		/// <param name="maxLo"></param>
 		/// <returns></returns>
-        public TParent HiLo(string maxLo)
+        public void HiLo(string maxLo)
 		{
-			builder.HiLo(maxLo);
-			return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.HiLo(maxLo);
 		}
 
         /// <summary>
@@ -151,10 +156,10 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="maxLo"></param>
         /// <param name="paramValues">Params configuration</param>
-        public TParent HiLo(string maxLo, Action<ParamBuilder> paramValues)
+        public void HiLo(string maxLo, Action<ParamBuilder> paramValues)
         {
-            builder.HiLo(maxLo, paramValues);
-            return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.HiLo(maxLo, paramValues);
         }
 
 		/// <summary>
@@ -163,10 +168,10 @@ namespace FluentNHibernate.Mapping
 		/// <param name="sequence"></param>
 		/// <param name="maxLo"></param>
 		/// <returns></returns>
-        public TParent SeqHiLo(string sequence, string maxLo)
+        public void SeqHiLo(string sequence, string maxLo)
 		{
-			builder.SeqHiLo(sequence, maxLo);
-			return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.SeqHiLo(sequence, maxLo);
 		}
 
         /// <summary>
@@ -175,10 +180,10 @@ namespace FluentNHibernate.Mapping
         /// <param name="sequence"></param>
         /// <param name="maxLo"></param>
         /// <param name="paramValues">Params configuration</param>
-        public TParent SeqHiLo(string sequence, string maxLo, Action<ParamBuilder> paramValues)
+        public void SeqHiLo(string sequence, string maxLo, Action<ParamBuilder> paramValues)
         {
-            builder.SeqHiLo(sequence, maxLo, paramValues);
-            return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.SeqHiLo(sequence, maxLo, paramValues);
         }
 
 		/// <summary>
@@ -187,10 +192,10 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
 		/// <param name="format">http://msdn.microsoft.com/en-us/library/97af8hh4.aspx</param>
 		/// <returns></returns>
-        public TParent UuidHex(string format)
+        public void UuidHex(string format)
 		{
-			builder.UuidHex(format);
-			return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.UuidHex(format);
 		}
 
         /// <summary>
@@ -199,50 +204,50 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="format">http://msdn.microsoft.com/en-us/library/97af8hh4.aspx</param>
         /// <param name="paramValues">Params configuration</param>
-        public TParent UuidHex(string format, Action<ParamBuilder> paramValues)
+        public void UuidHex(string format, Action<ParamBuilder> paramValues)
         {
-            builder.UuidHex(format, paramValues);
-            return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.UuidHex(format, paramValues);
         }
 
 		/// <summary>
 		/// uses a new System.Guid to create a byte[] that is converted to a string.  
 		/// </summary>
 		/// <returns></returns>
-        public TParent UuidString()
+        public void UuidString()
 		{
-			builder.UuidString();
-			return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.UuidString();
 		}
 
         /// <summary>
         /// uses a new System.Guid to create a byte[] that is converted to a string.  
         /// </summary>
         /// <param name="paramValues">Params configuration</param>
-        public TParent UuidString(Action<ParamBuilder> paramValues)
+        public void UuidString(Action<ParamBuilder> paramValues)
         {
-            builder.UuidString(paramValues);
-            return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.UuidString(paramValues);
         }
 
 		/// <summary>
 		/// uses a new System.Guid as the identifier. 
 		/// </summary>
 		/// <returns></returns>
-        public TParent Guid()
+        public void Guid()
 		{
-			builder.Guid();
-			return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Guid();
 		}
 
         /// <summary>
         /// uses a new System.Guid as the identifier. 
         /// </summary>
         /// <param name="paramValues">Params configuration</param>
-        public TParent Guid(Action<ParamBuilder> paramValues)
+        public void Guid(Action<ParamBuilder> paramValues)
         {
-            builder.Guid(paramValues);
-            return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Guid(paramValues);
         }
 
 		/// <summary>
@@ -251,10 +256,10 @@ namespace FluentNHibernate.Mapping
 		/// in the article http://www.informit.com/articles/article.asp?p=25862. 
 		/// </summary>
 		/// <returns></returns>
-        public TParent GuidComb()
+        public void GuidComb()
 		{
-			builder.GuidComb();
-			return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.GuidComb();
 		}
 
         /// <summary>
@@ -263,50 +268,50 @@ namespace FluentNHibernate.Mapping
         /// in the article http://www.informit.com/articles/article.asp?p=25862. 
         /// </summary>
         /// <param name="paramValues">Params configuration</param>
-        public TParent GuidComb(Action<ParamBuilder> paramValues)
+        public void GuidComb(Action<ParamBuilder> paramValues)
         {
-            builder.GuidComb(paramValues);
-            return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.GuidComb(paramValues);
         }
 
 		/// <summary>
 		/// lets the application to assign an identifier to the object before Save() is called. 
 		/// </summary>
 		/// <returns></returns>
-        public TParent Assigned()
+        public void Assigned()
 		{
-			builder.Assigned();
-			return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Assigned();
 		}
 
         /// <summary>
         /// lets the application to assign an identifier to the object before Save() is called. 
         /// </summary>
         /// <param name="paramValues">Params configuration</param>
-        public TParent Assigned(Action<ParamBuilder> paramValues)
+        public void Assigned(Action<ParamBuilder> paramValues)
         {
-            builder.Assigned(paramValues);
-            return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Assigned(paramValues);
         }
 
 		/// <summary>
 		/// picks identity, sequence or hilo depending upon the capabilities of the underlying database. 
 		/// </summary>
 		/// <returns></returns>
-        public TParent Native()
+        public void Native()
 		{
-			builder.Native();
-			return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Native();
 		}
 
         /// <summary>
         /// picks identity, sequence or hilo depending upon the capabilities of the underlying database. 
         /// </summary>
         /// <param name="paramValues">Params configuration</param>
-        public TParent Native(Action<ParamBuilder> paramValues)
+        public void Native(Action<ParamBuilder> paramValues)
         {
-            builder.Native(paramValues);
-            return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Native(paramValues);
         }
 
 		/// <summary>
@@ -314,10 +319,10 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
 		/// <param name="property"></param>
 		/// <returns></returns>
-        public TParent Foreign(string property)
+        public void Foreign(string property)
 		{
-			builder.Foreign(property);
-			return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Foreign(property);
 		}
 
         /// <summary>
@@ -325,10 +330,10 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="property"></param>
         /// <param name="paramValues">Params configuration</param>
-        public TParent Foreign(string property, Action<ParamBuilder> paramValues)
+        public void Foreign(string property, Action<ParamBuilder> paramValues)
         {
-            builder.Foreign(property, paramValues);
-            return parent;
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Foreign(property, paramValues);
         }
-	}
+    }
 }
