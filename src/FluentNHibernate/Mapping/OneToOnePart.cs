@@ -10,6 +10,8 @@ namespace FluentNHibernate.Mapping
     {
         CascadeExpression<IOneToOnePart> Cascade { get; }
         OneToOneMapping GetOneToOneMapping();
+        IOneToOnePart Class(Type type);
+        IOneToOnePart Class<T>();
     }
 
     public class OneToOnePart<TOther> : IOneToOnePart, IAccessStrategy<OneToOnePart<TOther>>
@@ -42,6 +44,17 @@ namespace FluentNHibernate.Mapping
                 mapping.Name = property.Name;
 
             return mapping;
+        }
+
+        public IOneToOnePart Class<T>()
+        {
+            return Class(typeof(T));
+        }
+
+        public IOneToOnePart Class(Type type)
+        {
+            mapping.Class = new TypeReference(type);
+            return this;
         }
 
         public FetchTypeExpression<OneToOnePart<TOther>> Fetch

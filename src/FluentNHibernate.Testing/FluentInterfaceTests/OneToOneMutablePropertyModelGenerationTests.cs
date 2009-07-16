@@ -24,6 +24,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
+        public void ClassShouldSetModelClassPropertyToValue()
+        {
+            OneToOne()
+                .Mapping(m => m.Class(typeof(int)))
+                .ModelShouldMatch(x => x.Class.ShouldEqual(new TypeReference(typeof(int))));
+        }
+
+        [Test]
         public void CascadeShouldSetModelCascadePropertyToTrue()
         {
             OneToOne()
