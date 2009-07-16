@@ -70,6 +70,9 @@ namespace FluentNHibernate.Mapping
         {
             var mapping = collectionBuilder(collectionAttributes.CloneInner());
 
+            if (!mapping.IsSpecified(x => x.Name))
+                mapping.SetDefaultValue(x => x.Name, Member.Name);
+
             mapping.ContainingEntityType = EntityType;
             mapping.ChildType = typeof(TChild);
             mapping.MemberInfo = Member;

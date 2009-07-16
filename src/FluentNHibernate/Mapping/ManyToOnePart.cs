@@ -75,7 +75,7 @@ namespace FluentNHibernate.Mapping
                 mapping.Class = new TypeReference(Property.PropertyType);
 
             if (columns.Count == 0)
-                mapping.AddDefaultColumn(CreateColumn(Property.Name));
+                mapping.AddDefaultColumn(CreateColumn(Property.Name + "_id"));
 
             foreach (var column in columns)
             {

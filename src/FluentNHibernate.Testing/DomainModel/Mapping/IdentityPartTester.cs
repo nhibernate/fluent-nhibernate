@@ -367,7 +367,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<IdentityTarget>()
                 .Conventions(conventions => conventions.Add(new TestIdConvention()))
                 .ForMapping(map => map.Id(x => x.LongId))
-                    .Element("class/id/column").HasAttribute("name", "test");
+                    .Element("class/id").HasAttribute("access", "field");
         }
 
         private class TestIdConvention : IIdConvention
@@ -377,7 +377,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             public void Apply(IIdentityInstance instance)
             {
-                instance.ColumnName("test");
+                instance.Access.Field();
             }
         }
 	}

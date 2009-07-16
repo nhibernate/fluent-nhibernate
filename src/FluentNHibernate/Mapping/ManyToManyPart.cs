@@ -61,14 +61,14 @@ namespace FluentNHibernate.Mapping
 
             // key columns
             if (parentColumns.Count == 0)
-                collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "Id" });
+                collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
 
             foreach (var column in parentColumns)
                 collection.Key.AddColumn(new ColumnMapping { Name = column });
 
             // child columns
             if (childColumns.Count == 0)
-                collection.Key.AddDefaultColumn(new ColumnMapping { Name = typeof(TChild).Name + "Id" });
+                ((ManyToManyMapping)collection.Relationship).AddDefaultColumn(new ColumnMapping { Name = typeof(TChild).Name + "_id" });
 
             foreach (var column in childColumns)
                 ((ManyToManyMapping)collection.Relationship).AddColumn(new ColumnMapping { Name = column });

@@ -18,7 +18,7 @@ namespace FluentNHibernate.Conventions
 
         public void Apply(IManyToOneInstance instance)
         {
-            var columnName = GetKeyName(instance.Property, instance.Class.GetUnderlyingSystemType());
+            var columnName = GetKeyName(instance.Property, instance.ClassValue.GetUnderlyingSystemType());
 
             instance.ColumnName(columnName);
         }

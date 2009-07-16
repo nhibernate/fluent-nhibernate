@@ -91,7 +91,7 @@ namespace FluentNHibernate.AutoMap
                     };
 
                     subclass.Key = new KeyMapping();
-                    subclass.Key.AddColumn(new ColumnMapping { Name = mapping.Type.Name + "_id" });
+                    subclass.Key.AddDefaultColumn(new ColumnMapping { Name = mapping.Type.Name + "_id" });
 
                     subclassMapping = subclass;
                 }

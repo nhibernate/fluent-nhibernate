@@ -42,16 +42,6 @@ namespace FluentNHibernate.AutoMap
                 .FirstOrDefault();
         }
 
-        //public void Map<T>(AutoMap<T> classMap, PropertyInfo property)
-        //{
-        //    PropertyInfo inverseProperty = GetInverseProperty(property);
-        //    Type parentSide = conventions.GetParentSideForManyToMany(property.DeclaringType, inverseProperty.DeclaringType);
-        //    IManyToManyPart manyToManyPart = GetManyToManyPart(classMap, property);
-
-        //    if (parentSide != property.DeclaringType)
-        //        ApplyInverse(property, parentSide, manyToManyPart);
-        //}
-
         private ICollectionMapping GetCollection(PropertyInfo property)
         {
             if (property.PropertyType.FullName.Contains("ISet"))
@@ -62,11 +52,9 @@ namespace FluentNHibernate.AutoMap
 
         private void ConfigureModel(PropertyInfo property, ICollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
         {
+            // TODO: Make the child type safer
             mapping.SetDefaultValue(x => x.Name, property.Name);
-            mapping.Relationship = new ManyToManyMapping
-            {
-                Class = new TypeReference(property.PropertyType.GetGenericArguments()[0])
-            };
+            mapping.Relationship = CreateManyToMany(property, property.PropertyType.GetGenericArguments()[0]);
             mapping.ContainingEntityType = classMap.Type;
             mapping.Key = new KeyMapping();
             mapping.ChildType = property.PropertyType.GetGenericArguments()[0];
@@ -74,6 +62,18 @@ namespace FluentNHibernate.AutoMap
 
             if (parentSide != property.DeclaringType)
                 mapping.Inverse = true;
+        }
+
+        private ICollectionRelationshipMapping CreateManyToMany(PropertyInfo property, Type child)
+        {
+            var mapping = new ManyToManyMapping
+            {
+                Class = new TypeReference(property.PropertyType.GetGenericArguments()[0])
+            };
+
+            mapping.AddDefaultColumn(new ColumnMapping { Name = child.Name + "_id" });
+
+            return mapping;
         }
 
         public void Map(ClassMapping classMap, PropertyInfo property)

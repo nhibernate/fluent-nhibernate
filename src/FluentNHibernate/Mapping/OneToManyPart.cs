@@ -9,6 +9,7 @@ namespace FluentNHibernate.Mapping
 {
     public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild, OneToManyMapping>, IOneToManyPart, IAccessStrategy<OneToManyPart<TChild>> 
     {
+        private readonly Type entity;
         private readonly ColumnNameCollection<OneToManyPart<TChild>> columnNames;
         private readonly CollectionCascadeExpression<IOneToManyPart> cascade;
         private readonly NotFoundExpression<OneToManyPart<TChild>> notFound;
@@ -24,6 +25,7 @@ namespace FluentNHibernate.Mapping
         protected OneToManyPart(Type entity, MemberInfo member, Type collectionType)
             : base(entity, member, collectionType)
         {
+            this.entity = entity;
             columnNames = new ColumnNameCollection<OneToManyPart<TChild>>(this);
             cascade = new CollectionCascadeExpression<IOneToManyPart>(this, value => collectionAttributes.Set(x => x.Cascade, value));
             notFound = new NotFoundExpression<OneToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
@@ -36,7 +38,7 @@ namespace FluentNHibernate.Mapping
             var collection = base.GetCollectionMapping();
 
             if (columnNames.List().Count == 0)
-                collection.Key.AddDefaultColumn(new ColumnMapping { Name = Member.Name });
+                collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
 
             foreach (var column in columnNames.List())
                 collection.Key.AddColumn(new ColumnMapping { Name = column });

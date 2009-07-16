@@ -23,20 +23,30 @@ namespace FluentNHibernate.AutoMap
 
         public void Map(ClassMapping classMap, PropertyInfo property)
         {
-            var manyToOne = new ManyToOneMapping {Name = property.Name, PropertyInfo = property};
+            var manyToOne = CreateMapping(property);
             classMap.AddReference(manyToOne);
         }
 
         public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
         {
-            var manyToOne = new ManyToOneMapping { Name = property.Name, PropertyInfo = property };
+            var manyToOne = CreateMapping(property);
             classMap.AddReference(manyToOne);
         }
 
         public void Map(SubclassMapping classMap, PropertyInfo property)
         {
-            var manyToOne = new ManyToOneMapping { Name = property.Name, PropertyInfo = property };
+            var manyToOne = CreateMapping(property);
             classMap.AddReference(manyToOne);
+        }
+
+        private ManyToOneMapping CreateMapping(PropertyInfo property)
+        {
+            var mapping = new ManyToOneMapping { PropertyInfo = property };
+
+            mapping.SetDefaultValue(x => x.Name, property.Name);
+            mapping.AddDefaultColumn(new ColumnMapping { Name = property.Name + "_id" });
+
+            return mapping;
         }
     }
 }

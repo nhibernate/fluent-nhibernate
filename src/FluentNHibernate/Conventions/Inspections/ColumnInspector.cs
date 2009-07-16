@@ -40,6 +40,7 @@ namespace FluentNHibernate.Conventions.Inspections
         public string Index
         {
             get { return mapping.Index; }
+            set { mapping.Index = value; }
         }
 
         public int Length
@@ -50,6 +51,7 @@ namespace FluentNHibernate.Conventions.Inspections
         public bool NotNull
         {
             get { return mapping.NotNull; }
+            set { mapping.NotNull = value; }
         }
 
         public string SqlType
@@ -60,11 +62,13 @@ namespace FluentNHibernate.Conventions.Inspections
         public bool Unique
         {
             get { return mapping.Unique; }
+            set { mapping.Unique = value; }
         }
 
         public string UniqueKey
         {
             get { return mapping.UniqueKey; }
+            set { mapping.UniqueKey = value; }
         }
 
         public string StringIdentifierForModel

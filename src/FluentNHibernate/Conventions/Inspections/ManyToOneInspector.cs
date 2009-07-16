@@ -47,7 +47,7 @@ namespace FluentNHibernate.Conventions.Inspections
             get { throw new NotImplementedException(); }
         }
 
-        public TypeReference Class
+        public TypeReference ClassValue
         {
             get { return mapping.Class ?? TypeReference.Empty; }
         }

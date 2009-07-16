@@ -19,6 +19,9 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void ColumnName(string columnName)
         {
+            if (mapping.Columns.UserDefined.Count() > 0)
+                return;
+
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : ColumnMapping.BaseOn(originalColumn);
 

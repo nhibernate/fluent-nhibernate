@@ -264,7 +264,6 @@
     <Compile Include="Conventions\Instances\PropertyInstance.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\SetCriterion.cs" />
     <Compile Include="Conventions\ConventionsCollection.cs" />
-    <Compile Include="Conventions\Defaults\DefaultForeignKeyConvention.cs" />
     <Compile Include="Conventions\DefaultConventionFinder.cs" />
     <Compile Include="Conventions\ForeignKeyConvention.cs" />
     <Compile Include="Conventions\IJoinedSubclassConvention.cs" />
