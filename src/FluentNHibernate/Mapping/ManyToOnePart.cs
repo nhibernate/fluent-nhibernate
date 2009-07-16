@@ -27,6 +27,7 @@ namespace FluentNHibernate.Mapping
         IManyToOnePart Unique();
         IManyToOnePart UniqueKey(string uniqueConstraintName);
         IManyToOnePart Index(string indexName);
+        IManyToOnePart Class(Type type);
     }
 
     public class ManyToOnePart<TOther> : IManyToOnePart, IAccessStrategy<ManyToOnePart<TOther>>
@@ -135,6 +136,12 @@ namespace FluentNHibernate.Mapping
         public IManyToOnePart Index(string indexName)
         {
             columnAttributes.Set(x => x.Index, indexName);
+            return this;
+        }
+
+        public IManyToOnePart Class(Type type)
+        {
+            mapping.Class = new TypeReference(type);
             return this;
         }
 
