@@ -171,5 +171,10 @@ namespace FluentNHibernate.MappingModel
         {
             versionMapping.AcceptVisitor(this);
         }
+
+        public override void Visit(OneToOneMapping mapping)
+        {
+            mapping.AcceptVisitor(this);
+        }
     }
 }

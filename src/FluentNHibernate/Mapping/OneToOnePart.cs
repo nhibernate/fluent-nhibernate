@@ -6,52 +6,51 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IOneToOnePart : IRelationship
+    public interface IOneToOneMappingProvider
     {
-        CascadeExpression<IOneToOnePart> Cascade { get; }
         OneToOneMapping GetOneToOneMapping();
-        IOneToOnePart Class(Type type);
-        IOneToOnePart Class<T>();
     }
 
-    public class OneToOnePart<TOther> : IOneToOnePart, IAccessStrategy<OneToOnePart<TOther>>
+    public class OneToOnePart<TOther> : IOneToOneMappingProvider, IAccessStrategy<OneToOnePart<TOther>>
     {
+        private readonly Type entity;
         private readonly PropertyInfo property;
         private readonly AccessStrategyBuilder<OneToOnePart<TOther>> access;
         private readonly OuterJoinBuilder<OneToOnePart<TOther>> outerJoin;
         private readonly FetchTypeExpression<OneToOnePart<TOther>> fetch;
-        private readonly CascadeExpression<IOneToOnePart> cascade;
+        private readonly CascadeExpression<OneToOnePart<TOther>> cascade;
         private readonly OneToOneMapping mapping = new OneToOneMapping();
         private bool nextBool = true;
-        public Type EntityType { get; private set; }
 
         public OneToOnePart(Type entity, PropertyInfo property)
         {
             outerJoin = new OuterJoinBuilder<OneToOnePart<TOther>>(this, value => mapping.OuterJoin = value);
             access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this, value => mapping.Access = value);
             fetch = new FetchTypeExpression<OneToOnePart<TOther>>(this, value => mapping.Fetch = value);
-            cascade = new CascadeExpression<IOneToOnePart>(this, value => mapping.Cascade = value);
-            EntityType = entity;
+            cascade = new CascadeExpression<OneToOnePart<TOther>>(this, value => mapping.Cascade = value);
+            this.entity = entity;
             this.property = property;
         }
 
-        public OneToOneMapping GetOneToOneMapping()
+        OneToOneMapping IOneToOneMappingProvider.GetOneToOneMapping()
         {
+            mapping.ContainingEntityType = entity;
+
             if (!mapping.IsSpecified(x => x.Class))
-                mapping.Class = new TypeReference(typeof(TOther));
+                mapping.SetDefaultValue(x => x.Class, new TypeReference(typeof(TOther)));
 
             if (!mapping.IsSpecified(x => x.Name))
-                mapping.Name = property.Name;
+                mapping.SetDefaultValue(x => x.Name, property.Name);
 
             return mapping;
         }
 
-        public IOneToOnePart Class<T>()
+        public OneToOnePart<TOther> Class<T>()
         {
             return Class(typeof(T));
         }
 
-        public IOneToOnePart Class(Type type)
+        public OneToOnePart<TOther> Class(Type type)
         {
             mapping.Class = new TypeReference(type);
             return this;
@@ -76,7 +75,13 @@ namespace FluentNHibernate.Mapping
         public OneToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> propRefExpression)
         {
             var prop = ReflectionHelper.GetProperty(propRefExpression);
-            mapping.PropertyRef = prop.Name;
+
+            return PropertyRef(prop.Name);
+        }
+
+        public OneToOnePart<TOther> PropertyRef(string propertyName)
+        {
+            mapping.PropertyRef = propertyName;
 
             return this;
         }
@@ -89,7 +94,7 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public CascadeExpression<IOneToOnePart> Cascade
+        public CascadeExpression<OneToOnePart<TOther>> Cascade
         {
             get { return cascade; }
         }
@@ -119,19 +124,5 @@ namespace FluentNHibernate.Mapping
         {
             get { return outerJoin; }
         }
-
-        #region Explicit IOneToOnePart Implementation
-
-        CascadeExpression<IOneToOnePart> IOneToOnePart.Cascade
-        {
-            get { return cascade; }
-        }
-
-        IAccessStrategyBuilder IRelationship.Access
-        {
-            get { return Access; }
-        }
-
-        #endregion
     }
 }

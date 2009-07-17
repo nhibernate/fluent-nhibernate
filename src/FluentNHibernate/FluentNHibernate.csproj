@@ -80,10 +80,12 @@
     <Compile Include="Conventions\AcceptanceCriteria\InvertedExpectation.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\InverterAcceptanceCriteria.cs" />
     <Compile Include="Conventions\Helpers\Builders\CollectionConventionBuilder.cs" />
+    <Compile Include="Conventions\Helpers\Builders\HasOneConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\OneToManyCollectionConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\VersionConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Cache.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltCollectionConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltHasOneConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltManyToManyCollectionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltOneToManyCollectionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltVersionConvention.cs" />
@@ -136,6 +138,7 @@
     <Compile Include="Conventions\Instances\ManyToManyCollectionInstance.cs" />
     <Compile Include="Conventions\Instances\NotFoundInstance.cs" />
     <Compile Include="Conventions\Instances\OneToManyCollectionInstance.cs" />
+    <Compile Include="Conventions\Instances\OneToOneInstance.cs" />
     <Compile Include="Conventions\Instances\OptimisticLockInstance.cs" />
     <Compile Include="Conventions\Instances\OuterJoinInstance.cs" />
     <Compile Include="Conventions\Instances\RelationshipInstance.cs" />

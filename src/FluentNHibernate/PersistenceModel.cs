@@ -192,22 +192,6 @@ namespace FluentNHibernate
         }
     }
 
-    public class DiagnosticMappingVisitor : MappingVisitor
-    {
-        private readonly string folder;
-
-        public DiagnosticMappingVisitor(string folder, Configuration configuration) : base(configuration)
-        {
-            this.folder = folder;            
-        }
-
-        public override void AddMappingDocument(XmlDocument document, Type type)
-        {
-            string filename = Path.Combine(folder, type.FullName + ".hbm.xml");
-            document.Save(filename);
-        }
-    }
-
     public interface IMappingProvider
     {
         ClassMapping GetClassMapping();

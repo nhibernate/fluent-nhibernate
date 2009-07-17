@@ -1,19 +1,22 @@
 using System;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
+using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders
 {
-    internal class HasOneConventionBuilder : IConventionBuilder<IHasOneConvention, IOneToOnePart>
+    public class HasOneConventionBuilder : IConventionBuilder<IHasOneConvention, IOneToOneInspector, IOneToOneInstance>
     {
-        public IHasOneConvention Always(Action<IOneToOnePart> convention)
+        public IHasOneConvention Always(Action<IOneToOneInstance> convention)
         {
-            return new BuiltHasOneConvention(x => true, convention);
+            return new BuiltHasOneConvention(x => { }, convention);
         }
 
-        public IHasOneConvention When(Func<IOneToOnePart, bool> isTrue, Action<IOneToOnePart> convention)
+        public IHasOneConvention When(Action<IAcceptanceCriteria<IOneToOneInspector>> expectations, Action<IOneToOneInstance> convention)
         {
-            return new BuiltHasOneConvention(isTrue, convention);
+            return new BuiltHasOneConvention(expectations, convention);
         }
     }
 }

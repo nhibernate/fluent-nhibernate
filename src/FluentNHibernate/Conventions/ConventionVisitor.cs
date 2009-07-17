@@ -94,6 +94,14 @@ namespace FluentNHibernate.Conventions
                 new VersionInstance(mapping));
         }
 
+        public override void ProcessOneToOne(OneToOneMapping mapping)
+        {
+            var conventions = finder.Find<IHasOneConvention>();
+
+            Apply<IOneToOneInspector, IOneToOneInstance>(conventions,
+                new OneToOneInstance(mapping));
+        }
+
         private void Apply<TInspector, TInstance>(IEnumerable conventions, TInstance instance)
             where TInspector : IInspector
             where TInstance : TInspector

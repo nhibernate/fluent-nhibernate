@@ -71,6 +71,8 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Lazy, value); }
         }
 
+        public Type ContainingEntityType { get; set; }
+
         public bool IsSpecified<TResult>(Expression<Func<OneToOneMapping, TResult>> property)
         {
             return attributes.IsSpecified(property);

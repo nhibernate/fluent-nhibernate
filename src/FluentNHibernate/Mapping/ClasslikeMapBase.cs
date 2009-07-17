@@ -12,7 +12,7 @@ namespace FluentNHibernate.Mapping
     {
         protected readonly IList<PropertyMap> properties = new List<PropertyMap>();
         protected readonly IList<IComponentBase> components = new List<IComponentBase>();
-        protected readonly IList<IOneToOnePart> oneToOnes = new List<IOneToOnePart>();
+        protected readonly IList<IOneToOneMappingProvider> oneToOnes = new List<IOneToOneMappingProvider>();
         protected readonly List<ISubclass> subclasses = new List<ISubclass>();
         protected readonly List<IJoinedSubclass> joinedSubclasses = new List<IJoinedSubclass>();
         protected readonly IList<ICollectionRelationship> collections = new List<ICollectionRelationship>();
@@ -312,7 +312,7 @@ namespace FluentNHibernate.Mapping
             return ReferencesAny<TOther>(ReflectionHelper.GetProperty(expression));
         }
 
-        IOneToOnePart IClasslike.HasOne<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression)
+        IOneToOneMappingProvider IClasslike.HasOne<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression)
         {
             return HasOne<TOther>(ReflectionHelper.GetProperty(expression));
         }
