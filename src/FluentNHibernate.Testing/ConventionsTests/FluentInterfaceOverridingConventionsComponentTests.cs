@@ -1,0 +1,88 @@
+using System;
+using System.Linq;
+using FluentNHibernate.Conventions.Helpers.Builders;
+using FluentNHibernate.Conventions.Instances;
+using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Testing.DomainModel.Mapping;
+using NUnit.Framework;
+
+namespace FluentNHibernate.Testing.ConventionsTests
+{
+    [TestFixture]
+    public class FluentInterfaceOverridingConventionsComponentTests
+    {
+        private PersistenceModel model;
+        private IMappingProvider mapping;
+        private Type mappingType;
+
+        [SetUp]
+        public void CreatePersistenceModel()
+        {
+            model = new PersistenceModel();
+        }
+
+        [Test]
+        public void AccessShouldntBeOverwritten()
+        {
+            Mapping(x => x.Access.AsField());
+
+            Convention(x => x.Access.ToString());
+
+            VerifyModel(x => x.Access.ShouldEqual("field"));
+        }
+
+        [Test]
+        public void InsertShouldntBeOverwritten()
+        {
+            Mapping(x => x.Insert());
+
+            Convention(x => x.Not.Insert());
+
+            VerifyModel(x => x.Insert.ShouldBeTrue());
+        }
+
+        [Test]
+        public void UpdateShouldntBeOverwritten()
+        {
+            Mapping(x => x.Update());
+
+            Convention(x => x.Not.Update());
+
+            VerifyModel(x => x.Update.ShouldBeTrue());
+        }
+
+        #region Helpers
+
+        private void Convention(Action<IComponentInstance> convention)
+        {
+            model.ConventionFinder.Add(new ComponentConventionBuilder().Always(convention));
+        }
+
+        private void Mapping(Action<ComponentPart<ComponentTarget>> mappingDefinition)
+        {
+            var classMap = new ClassMap<PropertyTarget>();
+            var map = classMap.Component(x => x.Component, mappingDefinition);
+
+            mappingDefinition(map);
+
+            mapping = classMap;
+            mappingType = typeof(PropertyTarget);
+        }
+
+        private void VerifyModel(Action<ComponentMapping> modelVerification)
+        {
+            model.Add(mapping);
+
+            var generatedModels = model.BuildMappings();
+            var modelInstance = (ComponentMapping)generatedModels
+                .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) != null)
+                .Classes.First()
+                .Components.Where(x => x is ComponentMapping).First();
+
+            modelVerification(modelInstance);
+        }
+
+        #endregion
+    }
+}

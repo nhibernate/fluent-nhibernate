@@ -16,10 +16,18 @@ namespace FluentNHibernate.Conventions.Instances
             this.mapping = mapping;
         }
 
-        public Access Access
+        public IAccessInstance Access
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                return new AccessInstance(value =>
+                {
+                    if (!mapping.IsSpecified(x => x.Access))
+                        mapping.Access = value;
+                });
+            }
         }
+
         public virtual Type EntityType
         {
             get { return mapping.Type; }
@@ -41,34 +49,64 @@ namespace FluentNHibernate.Conventions.Instances
         {
             get { return mapping.Parent.Name; }
         }
-        public bool Insert
+
+        public bool Insert()
         {
-            get { return mapping.Insert; }
+            return mapping.Insert;
         }
-        public bool Update
+
+        public bool Update()
         {
-            get { return mapping.Update; }
+            return mapping.Update;
+        }
+
+        Access IAccessInspector.Access
+        {
+            get { throw new NotImplementedException(); }
         }
     }
 
     public class ComponentInstance : ComponentBaseInstance, IComponentInstance
     {
         private ComponentMapping mapping;
+        private bool nextBool;
 
         public ComponentInstance(ComponentMapping mapping)
             : base(mapping)
         {
             this.mapping = mapping;
+            nextBool = true;
+        }
+
+        public IComponentInstance Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
         }
     }
 
     public class DynamicComponentInstance : ComponentBaseInstance, IDynamicComponentInstance
     {
         private DynamicComponentMapping mapping;
+        private bool nextBool;
+
         public DynamicComponentInstance(DynamicComponentMapping mapping)
             : base(mapping)
         {
             this.mapping = mapping;
+            nextBool = true;
+        }
+
+        public IDynamicComponentInstance Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
         }
     }
 }

@@ -3,8 +3,8 @@
     public interface IComponentBaseInspector : IAccessInspector, IExposedThroughPropertyInspector
     {
         string ParentName { get; }
-        bool Insert { get; }
-        bool Update { get; }
+        bool Insert();
+        bool Update();
     }
 
     public interface IComponentInspector : IComponentBaseInspector

@@ -6,7 +6,7 @@ using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders
 {
-    internal class DynamicComponentConventionBuilder : IConventionBuilder<IDynamicComponentConvention, IDynamicComponentInspector, IDynamicComponentInstance>
+    public class DynamicComponentConventionBuilder : IConventionBuilder<IDynamicComponentConvention, IDynamicComponentInspector, IDynamicComponentInstance>
     {
         public IDynamicComponentConvention Always(Action<IDynamicComponentInstance> convention)
         {
