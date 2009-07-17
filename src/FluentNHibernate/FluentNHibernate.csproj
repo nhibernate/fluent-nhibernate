@@ -81,10 +81,12 @@
     <Compile Include="Conventions\AcceptanceCriteria\InverterAcceptanceCriteria.cs" />
     <Compile Include="Conventions\Helpers\Builders\CollectionConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\OneToManyCollectionConventionBuilder.cs" />
+    <Compile Include="Conventions\Helpers\Builders\VersionConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Cache.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltCollectionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltManyToManyCollectionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltOneToManyCollectionConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltVersionConvention.cs" />
     <Compile Include="Conventions\Inspections\ICacheInspector.cs" />
     <Compile Include="Conventions\Inspections\IComponentInspector.cs" />
     <Compile Include="Conventions\Inspections\IDynamicComponentInspector.cs" />
@@ -178,6 +180,7 @@
     <Compile Include="Conventions\Inspections\IManyToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\IOneToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\IRelationshipInspector.cs" />
+    <Compile Include="Conventions\Instances\VersionInstance.cs" />
     <Compile Include="Conventions\IUserTypeConvention.cs" />
     <Compile Include="MappingModel\Collections\IIndexedCollectionMapping.cs" />
     <Compile Include="MappingModel\Collections\SortType.cs" />
@@ -195,6 +198,7 @@
     <Compile Include="MappingModel\TypeReference.cs" />
     <Compile Include="Mapping\GeneratorBuilder.cs" />
     <Compile Include="Mapping\IIdentityMappingProvider.cs" />
+    <Compile Include="Mapping\IVersionMappingProvider.cs" />
     <Compile Include="Utils\Reflection\ExpressionBuilder.cs" />
     <Compile Include="AutoMap\AutoSubClassPart.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />

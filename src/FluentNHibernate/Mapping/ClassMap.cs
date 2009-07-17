@@ -25,7 +25,7 @@ namespace FluentNHibernate.Mapping
 
         protected ClassMapping mapping;
         private IDiscriminatorPart discriminator;
-        protected IVersion version;
+        protected IVersionMappingProvider version;
         private ICompositeIdMappingProvider compositeId;
         private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
 
@@ -149,7 +149,7 @@ namespace FluentNHibernate.Mapping
 
         protected virtual VersionPart Version(PropertyInfo property)
         {
-            var versionPart = new VersionPart(EntityType, property);
+            var versionPart = new VersionPart(typeof(T), property);
 
             version = versionPart;
 

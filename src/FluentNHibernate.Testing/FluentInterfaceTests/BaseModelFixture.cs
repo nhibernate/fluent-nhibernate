@@ -51,9 +51,9 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             return new ModelTester<DynamicComponentPart<T>, DynamicComponentMapping>(() => new DynamicComponentPart<T>(new DynamicComponentMapping(), "prop"), x => (DynamicComponentMapping)((IDynamicComponent)x).GetComponentMapping());
         }
 
-        protected ModelTester<IVersion, VersionMapping> Version()
+        protected ModelTester<VersionPart, VersionMapping> Version()
         {
-            return new ModelTester<IVersion, VersionMapping>(() => new VersionPart(typeof(VersionTarget), ReflectionHelper.GetProperty<VersionTarget>(x => x.VersionNumber)), x => x.GetVersionMapping());
+            return new ModelTester<VersionPart, VersionMapping>(() => new VersionPart(typeof(VersionTarget), ReflectionHelper.GetProperty<VersionTarget>(x => x.VersionNumber)), x => ((IVersionMappingProvider)x).GetVersionMapping());
         }
 
         protected ModelTester<ICache, CacheMapping> Cache()

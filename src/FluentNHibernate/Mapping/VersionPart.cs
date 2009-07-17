@@ -4,49 +4,42 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IVersion
+    public class VersionPart : IVersionMappingProvider
     {
-        AccessStrategyBuilder<VersionPart> Access { get; }
-        string GetColumnName();
-        Type EntityType { get; }
-        PropertyInfo Property { get; }
-        VersionGeneratedBuilder<IVersion> Generated { get; }
-        IVersion ColumnName(string name);
-        IVersion UnsavedValue(string value);
-        VersionMapping GetVersionMapping();
-    }
-
-    public class VersionPart : IVersion
-    {
-        public PropertyInfo Property { get; private set; }
-        public Type EntityType { get; private set; }
+        private readonly Type entity;
+        private readonly PropertyInfo property;
         private readonly AccessStrategyBuilder<VersionPart> access;
         private readonly Cache<string, string> properties;
-        private readonly VersionGeneratedBuilder<IVersion> generated;
+        private readonly VersionGeneratedBuilder<IVersionMappingProvider> generated;
 
         private readonly VersionMapping mapping = new VersionMapping();
 
         public VersionPart(Type entity, PropertyInfo property)
         {
-            EntityType = entity;
+            this.entity = entity;
+            this.property = property;
             access = new AccessStrategyBuilder<VersionPart>(this, value => mapping.Access = value);
-            generated = new VersionGeneratedBuilder<IVersion>(this, value => mapping.Generated = value);
+            generated = new VersionGeneratedBuilder<IVersionMappingProvider>(this, value => mapping.Generated = value);
             properties = new Cache<string, string>();
-            Property = property;
         }
 
-        VersionMapping IVersion.GetVersionMapping()
+        VersionMapping IVersionMappingProvider.GetVersionMapping()
         {
-            mapping.Name = Property.Name;
-            mapping.Type = Property.PropertyType == typeof(DateTime) ? new TypeReference("timestamp") : new TypeReference(Property.PropertyType);
+            mapping.ContainingEntityType = entity;
+
+            if (!mapping.IsSpecified(x => x.Name))
+                mapping.SetDefaultValue(x => x.Name, property.Name);
+
+            if (!mapping.IsSpecified(x => x.Type))
+                mapping.SetDefaultValue(x => x.Type, property.PropertyType == typeof(DateTime) ? new TypeReference("timestamp") : new TypeReference(property.PropertyType));
 
             if (!mapping.IsSpecified(x => x.Column))
-                mapping.Column = Property.Name;
+                mapping.SetDefaultValue(x => x.Column, property.Name);
 
             return mapping;
         }
 
-        public VersionGeneratedBuilder<IVersion> Generated
+        public VersionGeneratedBuilder<IVersionMappingProvider> Generated
         {
             get { return generated; }
         }
@@ -56,18 +49,13 @@ namespace FluentNHibernate.Mapping
             get { return access; }
         }
 
-        public IVersion ColumnName(string name)
+        public IVersionMappingProvider ColumnName(string name)
         {
             mapping.Column = name;
             return this;
         }
 
-        public string GetColumnName()
-        {
-            return mapping.Column;
-        }
-
-        public IVersion UnsavedValue(string value)
+        public IVersionMappingProvider UnsavedValue(string value)
         {
             mapping.UnsavedValue = value;
             return this;

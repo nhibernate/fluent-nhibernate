@@ -86,6 +86,14 @@ namespace FluentNHibernate.Conventions
                 new ManyToOneInstance(mapping));
         }
 
+        public override void ProcessVersion(VersionMapping mapping)
+        {
+            var conventions = finder.Find<IVersionConvention>();
+
+            Apply<IVersionInspector, IVersionInstance>(conventions,
+                new VersionInstance(mapping));
+        }
+
         private void Apply<TInspector, TInstance>(IEnumerable conventions, TInstance instance)
             where TInspector : IInspector
             where TInstance : TInspector

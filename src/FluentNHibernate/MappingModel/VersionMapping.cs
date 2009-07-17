@@ -48,6 +48,8 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Generated, value); }
         }
 
+        public Type ContainingEntityType { get; set; }
+
         public bool IsSpecified<TResult>(Expression<Func<VersionMapping, TResult>> property)
         {
             return attributes.IsSpecified(property);

@@ -166,5 +166,10 @@ namespace FluentNHibernate.MappingModel
         {
             compositeElementMapping.AcceptVisitor(this);
         }
+
+        public override void Visit(VersionMapping versionMapping)
+        {
+            versionMapping.AcceptVisitor(this);
+        }
     }
 }
