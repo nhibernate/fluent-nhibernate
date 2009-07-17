@@ -8,6 +8,6 @@ namespace FluentNHibernate.Conventions
     /// Convention for a component mapping. Implement this interface to
     /// apply changes to components.
     /// </summary>
-    public interface IComponentConvention : IConvention<IComponentInspector, IComponentInstance>
+    public interface IComponentConvention : IConvention<IComponentBaseInspector, IComponentInstance>
     { }
 }
