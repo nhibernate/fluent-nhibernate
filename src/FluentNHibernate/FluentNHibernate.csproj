@@ -80,11 +80,15 @@
     <Compile Include="Conventions\AcceptanceCriteria\InvertedExpectation.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\InverterAcceptanceCriteria.cs" />
     <Compile Include="Conventions\Helpers\Builders\CollectionConventionBuilder.cs" />
+    <Compile Include="Conventions\Helpers\Builders\ComponentConventionBuilder.cs" />
+    <Compile Include="Conventions\Helpers\Builders\DynamicComponentConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\OneToManyCollectionConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Cache.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltCollectionConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltManyToManyCollectionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltOneToManyCollectionConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltDynamicComponentConvention.cs" />
     <Compile Include="Conventions\Inspections\ICacheInspector.cs" />
     <Compile Include="Conventions\Inspections\IComponentInspector.cs" />
     <Compile Include="Conventions\Inspections\IGeneratorInspector.cs" />

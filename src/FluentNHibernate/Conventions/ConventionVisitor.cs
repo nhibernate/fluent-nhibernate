@@ -86,6 +86,22 @@ namespace FluentNHibernate.Conventions
                 new ManyToOneInstance(mapping));
         }
 
+        public override void ProcessComponent(ComponentMapping componentMapping)
+        {
+            var conventions = finder.Find<IComponentConvention>();
+
+            Apply<IComponentInspector, IComponentInstance>(conventions,
+                new ComponentInstance(componentMapping));
+        }
+
+        public override void ProcessComponent(DynamicComponentMapping componentMapping)
+        {
+            var conventions = finder.Find<IDynamicComponentConvention>();
+
+            Apply<IDynamicComponentInspector, IDynamicComponentInstance>(conventions,
+                new DynamicComponentInstance(componentMapping));
+        }
+
         private void Apply<TInspector, TInstance>(IEnumerable conventions, TInstance instance)
             where TInspector : IInspector
             where TInstance : TInspector
