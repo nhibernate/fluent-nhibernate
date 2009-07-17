@@ -3,7 +3,6 @@ using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders
 {

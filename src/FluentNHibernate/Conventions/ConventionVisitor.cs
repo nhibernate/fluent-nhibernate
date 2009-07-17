@@ -102,6 +102,14 @@ namespace FluentNHibernate.Conventions
                 new OneToOneInstance(mapping));
         }
 
+        public override void ProcessSubclass(SubclassMapping subclassMapping)
+        {
+            var conventions = finder.Find<ISubclassConvention>();
+
+            Apply<ISubclassInspector, ISubclassInstance>(conventions,
+                new SubclassInstance(subclassMapping));
+        }
+
         private void Apply<TInspector, TInstance>(IEnumerable conventions, TInstance instance)
             where TInspector : IInspector
             where TInstance : TInspector
