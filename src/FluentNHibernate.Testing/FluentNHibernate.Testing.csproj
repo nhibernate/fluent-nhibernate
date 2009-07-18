@@ -91,6 +91,7 @@
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaInheritanceTests.cs" />
     <Compile Include="ConventionsTests\Alterations\PropertyAlterationMapsToPropertyMapping.cs" />
     <Compile Include="ConventionsTests\ConventionsCollectionTests.cs" />
+    <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsDynamicComponentTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsComponentTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsManyToOneTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsIdTests.cs" />
