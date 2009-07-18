@@ -27,18 +27,18 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             {
                 var classMapping = new ClassMapping();
                 var classMap = new ClassMap<T>(classMapping);
-                return new DiscriminatorPart(classMapping, "column", x => {});
+                return new DiscriminatorPart(classMapping, "column", (x, y) => {});
             }, x => x.GetDiscriminatorMapping());
         }
 
         protected ModelTester<SubClassPart<T>, SubclassMapping> SubClass<T>()
         {
-            return new ModelTester<SubClassPart<T>, SubclassMapping>(() => new SubClassPart<T>(new SubclassMapping()), x => x.GetSubclassMapping());
+            return new ModelTester<SubClassPart<T>, SubclassMapping>(() => new SubClassPart<T>(new SubclassMapping()), x => ((ISubclassMappingProvider)x).GetSubclassMapping());
         }
 
         protected ModelTester<JoinedSubClassPart<T>, JoinedSubclassMapping> JoinedSubClass<T>()
         {
-            return new ModelTester<JoinedSubClassPart<T>, JoinedSubclassMapping>(() => new JoinedSubClassPart<T>(new JoinedSubclassMapping()), x => x.GetJoinedSubclassMapping());
+            return new ModelTester<JoinedSubClassPart<T>, JoinedSubclassMapping>(() => new JoinedSubClassPart<T>(new JoinedSubclassMapping()), x => ((IJoinedSubclassMappingProvider)x).GetJoinedSubclassMapping());
         }
 
         protected ModelTester<ComponentPart<T>, ComponentMapping> Component<T>()

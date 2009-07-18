@@ -13,8 +13,8 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<PropertyMap> properties = new List<PropertyMap>();
         protected readonly IList<IComponentBase> components = new List<IComponentBase>();
         protected readonly IList<IOneToOneMappingProvider> oneToOnes = new List<IOneToOneMappingProvider>();
-        protected readonly List<ISubclass> subclasses = new List<ISubclass>();
-        protected readonly List<IJoinedSubclass> joinedSubclasses = new List<IJoinedSubclass>();
+        protected readonly Dictionary<Type, ISubclassMappingProvider> subclasses = new Dictionary<Type, ISubclassMappingProvider>();
+        protected readonly Dictionary<Type, IJoinedSubclassMappingProvider> joinedSubclasses = new Dictionary<Type, IJoinedSubclassMappingProvider>();
         protected readonly IList<ICollectionRelationship> collections = new List<ICollectionRelationship>();
         protected readonly IList<IManyToOnePart> references = new List<IManyToOnePart>();
         protected readonly IList<IAnyMappingProvider> anys = new List<IAnyMappingProvider>();

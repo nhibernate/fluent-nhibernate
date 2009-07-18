@@ -132,9 +132,7 @@ namespace FluentNHibernate.AutoMap
 
             action(joinedclass);
 
-            // remove any mappings for the same type, then re-add
-		    joinedSubclasses.RemoveAll(x => x.EntityType == typeof(TSubclass));
-            joinedSubclasses.Add(joinedclass);
+            joinedSubclasses[typeof(TSubclass)] = joinedclass;
 
 		    return joinedclass;
         }
@@ -142,11 +140,10 @@ namespace FluentNHibernate.AutoMap
         public IAutoClasslike JoinedSubClass(Type type, string keyColumn)
         {
             var genericType = typeof (AutoJoinedSubClassPart<>).MakeGenericType(type);
-            var joinedclass = (IJoinedSubclass)Activator.CreateInstance(genericType, keyColumn);
+            var joinedclass = (IJoinedSubclassMappingProvider)Activator.CreateInstance(genericType, keyColumn);
 
             // remove any mappings for the same type, then re-add
-            joinedSubclasses.RemoveAll(x => x.EntityType == type);
-            joinedSubclasses.Add(joinedclass);
+            joinedSubclasses[type] = joinedclass;
 
             return (IAutoClasslike)joinedclass;
         }
@@ -166,8 +163,7 @@ namespace FluentNHibernate.AutoMap
             action(subclass);
 
             // remove any mappings for the same type, then re-add
-            subclasses.RemoveAll(x => x.EntityType == typeof(TSubclass));
-            subclasses.Add(subclass);
+            subclasses[typeof(TSubclass)] = subclass;
 
 		    return subclass;
         }
@@ -181,11 +177,10 @@ namespace FluentNHibernate.AutoMap
         public IAutoClasslike SubClass(Type type, string discriminatorValue)
         {
             var genericType = typeof(AutoSubClassPart<>).MakeGenericType(type);
-            var subclass = (ISubclass)Activator.CreateInstance(genericType, null, discriminatorValue);
+            var subclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, null, discriminatorValue);
 
             // remove any mappings for the same type, then re-add
-            subclasses.RemoveAll(x => x.EntityType == type);
-            subclasses.Add(subclass);
+            subclasses[type] = subclass;
 
             return (IAutoClasslike)subclass;
         }

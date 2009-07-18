@@ -75,10 +75,10 @@ namespace FluentNHibernate.Mapping
             foreach (var any in anys)
                 mapping.AddAny(any.GetAnyMapping());
 
-		    foreach (var subclass in joinedSubclasses)
+		    foreach (var subclass in joinedSubclasses.Values)
 		        mapping.AddSubclass(subclass.GetJoinedSubclassMapping());
 
-            foreach (var subclass in subclasses)
+            foreach (var subclass in subclasses.Values)
                 mapping.AddSubclass(subclass.GetSubclassMapping());
 
             if (discriminator != null)
@@ -206,7 +206,7 @@ namespace FluentNHibernate.Mapping
 
             action(subclass);
 
-            joinedSubclasses.Add(subclass);
+            joinedSubclasses[typeof(TSubclass)] = subclass;
         }
 
         /// <summary>

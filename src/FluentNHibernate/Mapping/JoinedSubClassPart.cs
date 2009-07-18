@@ -5,7 +5,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {
-    public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, IJoinedSubclass
+    public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, IJoinedSubclassMappingProvider
     {
         private readonly JoinedSubclassMapping mapping;
         private readonly IList<string> columns = new List<string>();
@@ -28,9 +28,9 @@ namespace FluentNHibernate.Mapping
 
             action(subclass);
 
-            joinedSubclasses.Add(subclass);
+            joinedSubclasses[typeof(TNextSubclass)] = subclass;
 
-            mapping.AddSubclass(subclass.GetJoinedSubclassMapping());
+            mapping.AddSubclass(((IJoinedSubclassMappingProvider)subclass).GetJoinedSubclassMapping());
         }
 
         public JoinedSubClassPart<TSubclass> WithTableName(string tableName)
@@ -109,7 +109,7 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public JoinedSubclassMapping GetJoinedSubclassMapping()
+        JoinedSubclassMapping IJoinedSubclassMappingProvider.GetJoinedSubclassMapping()
         {
             mapping.Key = new KeyMapping { ContainingEntityType = typeof(TSubclass) };
             mapping.Name = typeof(TSubclass).AssemblyQualifiedName;
@@ -136,61 +136,6 @@ namespace FluentNHibernate.Mapping
                 mapping.AddAny(any.GetAnyMapping());
 
             return mapping;
-        }
-
-        void IJoinedSubclass.WithTableName(string tableName)
-        {
-            WithTableName(tableName);
-        }
-
-        void IJoinedSubclass.SchemaIs(string schema)
-        {
-            SchemaIs(schema);
-        }
-
-        void IJoinedSubclass.CheckConstraint(string checkConstraint)
-        {
-            CheckConstraint(checkConstraint);
-        }
-
-        void IJoinedSubclass.Proxy(Type type)
-        {
-            Proxy(type);
-        }
-
-        void IJoinedSubclass.Proxy<T>()
-        {
-            Proxy<T>();
-        }
-
-        void IJoinedSubclass.LazyLoad()
-        {
-            LazyLoad();
-        }
-
-        void IJoinedSubclass.DynamicUpdate()
-        {
-            DynamicUpdate();
-        }
-
-        void IJoinedSubclass.DynamicInsert()
-        {
-            DynamicInsert();
-        }
-
-        void IJoinedSubclass.SelectBeforeUpdate()
-        {
-            SelectBeforeUpdate();
-        }
-
-        void IJoinedSubclass.Abstract()
-        {
-            Abstract();
-        }
-
-        IJoinedSubclass IJoinedSubclass.Not
-        {
-            get { return Not; }
         }
     }
 }

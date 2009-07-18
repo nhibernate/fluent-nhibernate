@@ -4,7 +4,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {
-    public class SubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclass
+    public class SubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclassMappingProvider
     {
         private readonly DiscriminatorPart parent;
         private readonly SubclassMapping mapping;
@@ -24,7 +24,7 @@ namespace FluentNHibernate.Mapping
             this.mapping = mapping;
         }
 
-        public SubclassMapping GetSubclassMapping()
+        SubclassMapping ISubclassMappingProvider.GetSubclassMapping()
         {
             mapping.SetDefaultValue(x => x.Type, typeof(TSubclass));
             mapping.SetDefaultValue(x => x.Name, typeof(TSubclass).AssemblyQualifiedName);
@@ -56,7 +56,7 @@ namespace FluentNHibernate.Mapping
 
             action(subclass);
 
-            mapping.AddSubclass(subclass.GetSubclassMapping());
+            mapping.AddSubclass(((ISubclassMappingProvider)subclass).GetSubclassMapping());
 
             return parent;
         }
@@ -126,46 +126,6 @@ namespace FluentNHibernate.Mapping
                 nextBool = !nextBool;
                 return this;
             }
-        }
-
-        void ISubclass.Proxy(Type type)
-        {
-            Proxy(type);
-        }
-
-        void ISubclass.Proxy<T>()
-        {
-            Proxy<T>();
-        }
-
-        void ISubclass.LazyLoad()
-        {
-            LazyLoad();
-        }
-
-        void ISubclass.DynamicUpdate()
-        {
-            DynamicUpdate();
-        }
-
-        void ISubclass.DynamicInsert()
-        {
-            DynamicInsert();
-        }
-
-        void ISubclass.SelectBeforeUpdate()
-        {
-            SelectBeforeUpdate();
-        }
-
-        void ISubclass.Abstract()
-        {
-            Abstract();
-        }
-
-        ISubclass ISubclass.Not
-        {
-            get { return Not; }
         }
     }
 }
