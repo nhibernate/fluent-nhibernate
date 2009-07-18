@@ -8,9 +8,6 @@ namespace FluentNHibernate.Testing.AutoMap
 {
     public class XXAppenderPropertyConvention : IPropertyConvention
     {
-        public void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
-        {}
-
         public void Apply(IPropertyInstance instance)
         {
             instance.ColumnName(instance.Name + "XX");

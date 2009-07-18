@@ -10,7 +10,7 @@ namespace FluentNHibernate.Conventions.Defaults
     /// Nullable enum convention. Same behavior as <see cref="EnumerationPropertyConvention"/> but sets the
     /// property to nullable aswell.
     /// </summary>
-    public class NullableEnumerationPropertyConvention : IPropertyConvention
+    public class NullableEnumerationPropertyConvention : IPropertyConvention, IConventionAcceptance<IPropertyInspector>
     {
         public void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
         {

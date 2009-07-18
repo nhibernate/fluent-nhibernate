@@ -21,25 +21,19 @@ namespace FluentNHibernate.Conventions
         void Accept(IAcceptanceCriteria<TInspector> acceptance);
     }
 
-    public interface IConventionApplier<TInstance>
-        where TInstance : IInspector
-    {
-        /// <summary>
-        /// Apply changes to the target
-        /// </summary>
-        void Apply(TInstance instance);
-    }
-
     /// <summary>
     /// Basic convention interface. Don't use directly.
     /// </summary>
     /// <typeparam name="TInspector">Inspector instance for use in retrieving values and setting expectations</typeparam>
     /// <typeparam name="TInstance">Apply instance</typeparam>
     public interface IConvention<TInspector, TInstance>
-        : IConvention,
-          IConventionAcceptance<TInspector>,
-          IConventionApplier<TInstance>
+        : IConvention
         where TInspector : IInspector
         where TInstance : TInspector
-    {}
+    {
+        /// <summary>
+        /// Apply changes to the target
+        /// </summary>
+        void Apply(TInstance instance);
+    }
 }

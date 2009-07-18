@@ -67,7 +67,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
                 .ShouldBeTrue();
         }
 
-        private class AnotherConvention : IPropertyConvention
+        private class AnotherConvention : IPropertyConvention, IConventionAcceptance<IPropertyInspector>
         {
             public void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
             {

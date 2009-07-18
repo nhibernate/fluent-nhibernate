@@ -10,7 +10,7 @@ namespace FluentNHibernate.Conventions.Defaults
     /// Specifies a custom type (of <see cref="GenericEnumMapper{TEnum}"/>) for any properties
     /// that are an enum.
     /// </summary>
-    public class EnumerationPropertyConvention : IPropertyConvention
+    public class EnumerationPropertyConvention : IPropertyConvention, IConventionAcceptance<IPropertyInspector>
     {
         public void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
         {

@@ -372,9 +372,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         private class TestIdConvention : IIdConvention
         {
-            public void Accept(IAcceptanceCriteria<IIdentityInspector> acceptance)
-            {}
-
             public void Apply(IIdentityInstance instance)
             {
                 instance.Access.Field();

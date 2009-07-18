@@ -46,7 +46,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public string TableName
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.TableName; }
         }
 
         public ICacheInstance Cache

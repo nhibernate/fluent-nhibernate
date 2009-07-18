@@ -45,8 +45,10 @@ namespace FluentNHibernate.AutoMap
                         return false;
 
                     var criteria = new ConcreteAcceptanceCriteria<IPropertyInspector>();
-
-                    c.Accept(criteria);
+                    var acceptance = c as IConventionAcceptance<IPropertyInspector>;
+                    
+                    if (acceptance != null)
+                        acceptance.Accept(criteria);
 
                     return criteria.Matches(new PropertyInspector(new PropertyMapping
                     {

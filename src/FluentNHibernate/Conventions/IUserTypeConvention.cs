@@ -4,9 +4,7 @@ using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions
 {
-    public interface IUserTypeConvention
+    public interface IUserTypeConvention : IConventionAcceptance<IPropertyInspector>, IPropertyConvention
     {
-        void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance);
-        void Apply(IPropertyInstance instance);
     }
 }

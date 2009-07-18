@@ -67,7 +67,6 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         public ConventionWithParameterlessConstructor()
         { }
 
-        public void Accept(IAcceptanceCriteria<IClassInspector> acceptance) {}
         public void Apply(IClassInstance instance) {}
     }
 
@@ -76,7 +75,6 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         public ConventionWithIConventionFinderConstructor(IConventionFinder conventionFinder)
         { }
 
-        public void Accept(IAcceptanceCriteria<IClassInspector> acceptance) {}
         public void Apply(IClassInstance instance) {}
     }
 
@@ -85,7 +83,6 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         public ConventionWithoutValidConstructor(int someParameter)
         { }
 
-        public void Accept(IAcceptanceCriteria<IClassInspector> acceptance) {}
         public void Apply(IClassInstance instance) {}
     }
 }

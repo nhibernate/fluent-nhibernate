@@ -141,8 +141,10 @@ namespace FluentNHibernate.Conventions
             foreach (IConvention<TInspector, TInstance> convention in conventions)
             {
                 var criteria = new ConcreteAcceptanceCriteria<TInspector>();
+                var acceptance = convention as IConventionAcceptance<TInspector>;
 
-                convention.Accept(criteria);
+                if (acceptance != null)
+                    acceptance.Accept(criteria);
 
                 if (criteria.Matches(instance))
                     convention.Apply(instance);

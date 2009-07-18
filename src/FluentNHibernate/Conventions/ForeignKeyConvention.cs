@@ -3,11 +3,13 @@ using System.Reflection;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions
 {
-    public abstract class ForeignKeyConvention : IReferenceConvention, IHasManyConvention, IHasManyToManyConvention
+    public abstract class ForeignKeyConvention
+        : IReferenceConvention, IConventionAcceptance<IManyToOneInspector>,
+          IHasManyConvention, IConventionAcceptance<IOneToManyCollectionInspector>,
+          IHasManyToManyConvention, IConventionAcceptance<IManyToManyCollectionInspector>
     {
         protected abstract string GetKeyName(PropertyInfo property, Type type);
 

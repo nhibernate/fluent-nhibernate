@@ -107,10 +107,6 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
 
     public class OpenGenericClassConvention<T> : IClassConvention
     {
-        public void Accept(IAcceptanceCriteria<IClassInspector> acceptance)
-        {
-        }
-
         public void Apply(IClassInstance instance)
         {
         }
@@ -118,10 +114,6 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
 
     public class DummyClassConvention : IClassConvention
     {
-        public void Accept(IAcceptanceCriteria<IClassInspector> acceptance)
-        {
-        }
-
         public void Apply(IClassInstance instance)
         {
         }
@@ -130,10 +122,6 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
     [Multiple]
     public class DummyClassWithMultipleAttributeConvention : IClassConvention
     {
-        public void Accept(IAcceptanceCriteria<IClassInspector> acceptance)
-        {
-        }
-
         public void Apply(IClassInstance instance)
         {
         }
@@ -146,10 +134,6 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
 
         }
 
-        public void Accept(IAcceptanceCriteria<IClassInspector> acceptance)
-        {
-        }
-
         public void Apply(IClassInstance instance)
         {
         }
@@ -157,15 +141,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
 
     public class MultiPartConvention : IIdConvention, IPropertyConvention
     {
-        public void Accept(IAcceptanceCriteria<IIdentityInspector> acceptance)
-        {
-        }
-
         public void Apply(IIdentityInstance instance)
-        {
-        }
-
-        public void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
         {
         }
 

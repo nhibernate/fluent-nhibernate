@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{529145D5-6CC3-4016-89B5-826563024AF1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -386,7 +386,6 @@
     <Compile Include="Conventions\Defaults\CollectionMethodAccessorBackingFieldNamingConvention.cs" />
     <Compile Include="Conventions\Defaults\HasManyToManyJoinTableNameConvention.cs" />
     <Compile Include="Conventions\Defaults\PrimaryKeyConvention.cs" />
-    <Compile Include="Conventions\Defaults\VersionColumnNameConvention.cs" />
     <Compile Include="Conventions\IClassConvention.cs" />
     <Compile Include="Conventions\IComponentConvention.cs" />
     <Compile Include="Conventions\IConvention.cs" />

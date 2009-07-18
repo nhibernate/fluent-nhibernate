@@ -9,7 +9,7 @@ namespace FluentNHibernate.Conventions.Defaults
     /// <summary>
     /// Default HasManyToMany table name convention
     /// </summary>
-    public class HasManyToManyJoinTableNameConvention : IHasManyToManyConvention
+    public class HasManyToManyJoinTableNameConvention : IHasManyToManyConvention, IConventionAcceptance<IManyToManyCollectionInspector>
     {
         public void Accept(IAcceptanceCriteria<IManyToManyCollectionInspector> acceptance)
         {

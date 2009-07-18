@@ -12,7 +12,7 @@ namespace FluentNHibernate.Conventions
     /// Apply to alter the behavior.
     /// </summary>
     /// <typeparam name="TUserType">IUserType implementation</typeparam>
-    public abstract class UserTypeConvention<TUserType> : IPropertyConvention, IUserTypeConvention
+    public abstract class UserTypeConvention<TUserType> : IUserTypeConvention
         where TUserType : IUserType, new()
     {
         public virtual void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)

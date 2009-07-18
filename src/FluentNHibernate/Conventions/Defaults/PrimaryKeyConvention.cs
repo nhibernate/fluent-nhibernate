@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Defaults
     /// <summary>
     /// Default primary key name convention.
     /// </summary>
-    public class PrimaryKeyConvention : IIdConvention
+    public class PrimaryKeyConvention : IIdConvention, IConventionAcceptance<IIdentityInspector>
     {
         public void Accept(IAcceptanceCriteria<IIdentityInspector> acceptance)
         {

@@ -902,9 +902,6 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
 
         private class TestIdConvention : IIdConvention
         {
-            public void Accept(IAcceptanceCriteria<IIdentityInspector> acceptance)
-            {}
-
             public void Apply(IIdentityInstance instance)
             {
                 instance.ColumnName("test");
@@ -913,9 +910,6 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
 
         private class TestClassConvention : IClassConvention
         {
-            public void Accept(IAcceptanceCriteria<IClassInspector> acceptance)
-            {}
-
             public void Apply(IClassInstance instance)
             {
                 instance.WithTable("test");
@@ -924,9 +918,6 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
 
         private class TestM2OConvention : IReferenceConvention
         {
-            public void Accept(IAcceptanceCriteria<IManyToOneInspector> acceptance)
-            {}
-
             public void Apply(IManyToOneInstance instance)
             {
                 instance.ColumnName("test");
@@ -935,9 +926,6 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
 
         private class TestO2MConvention : IHasManyConvention
         {
-            public void Accept(IAcceptanceCriteria<IOneToManyCollectionInspector> acceptance)
-            {}
-
             public void Apply(IOneToManyCollectionInstance instance)
             {
                 instance.Name("test");
