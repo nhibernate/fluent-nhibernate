@@ -121,7 +121,7 @@ namespace FluentNHibernate.Testing.AutoMap
         public void AutoMapSetsCacheOnClassUsingConvention()
         {
             Model<ExampleClass>(model => model
-                .ConventionDiscovery.Add(Cache.Is(cache => cache.ReadOnly()))
+                .ConventionFinder.Add(Cache.Is(cache => cache.ReadOnly()))
                 .Where(type => type == typeof(ExampleClass)));
 
             Test<ExampleClass>(mapping =>

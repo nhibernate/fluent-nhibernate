@@ -66,7 +66,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleCustomColumn>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .ConventionDiscovery.Add<XXAppenderPropertyConvention>();
+                .ConventionFinder.Add<XXAppenderPropertyConvention>();
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/property[@name='LineOne']/column").HasAttribute("name", "LineOneXX");
@@ -267,7 +267,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .ConventionDiscovery.Add(PrimaryKey.Name.Is(id => id.Property.Name + "Id"));
+                .ConventionFinder.Add(PrimaryKey.Name.Is(id => id.Property.Name + "Id"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/id").HasAttribute("name", "Id")
@@ -280,7 +280,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<PrivateIdSetterClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .ConventionDiscovery.Add(new TestIdConvention());
+                .ConventionFinder.Add(new TestIdConvention());
 
             new AutoMappingTester<PrivateIdSetterClass>(autoMapper)
                 .Element("class/id/column").HasAttribute("name", "test");
@@ -292,7 +292,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .ConventionDiscovery.Add(new TestM2OConvention());
+                .ConventionFinder.Add(new TestM2OConvention());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//many-to-one/column").HasAttribute("name", "test");
@@ -304,7 +304,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .ConventionDiscovery.Add(new TestO2MConvention());
+                .ConventionFinder.Add(new TestO2MConvention());
 
             new AutoMappingTester<ExampleParentClass>(autoMapper)
                 .Element("//bag").HasAttribute("name", "test");
@@ -516,7 +516,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .ConventionDiscovery.Add(new TestClassConvention());
+                .ConventionFinder.Add(new TestClassConvention());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class").HasAttribute("table", "test");
@@ -538,7 +538,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         {
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ClassWithUserType>()
-                .ConventionDiscovery.Add<CustomTypeConvention>()
+                .ConventionFinder.Add<CustomTypeConvention>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             new AutoMappingTester<ClassWithUserType>(autoMapper)
@@ -555,7 +555,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                     convention.IsComponentType =
                         type => type == typeof(Address);
                 })
-                .ConventionDiscovery.Add<CustomTypeConvention>()
+                .ConventionFinder.Add<CustomTypeConvention>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             new AutoMappingTester<Customer>(autoMapper)
@@ -573,7 +573,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                     convention.IsComponentType =
                         type => type == typeof(Address);
                 })
-                .ConventionDiscovery.Add<CustomTypeConvention>()
+                .ConventionFinder.Add<CustomTypeConvention>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             new AutoMappingTester<Customer>(autoMapper)
@@ -591,7 +591,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                     convention.IsComponentType =
                         type => type == typeof(Address);
                 })
-                .ConventionDiscovery.Add<CustomTypeConvention>()
+                .ConventionFinder.Add<CustomTypeConvention>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             new AutoMappingTester<Customer>(autoMapper)
@@ -610,7 +610,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                     convention.GetComponentColumnPrefix =
                         property => property.Name + "_";
                 })
-                .ConventionDiscovery.Add<CustomTypeConvention>()
+                .ConventionFinder.Add<CustomTypeConvention>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             new AutoMappingTester<Customer>(autoMapper)
@@ -629,7 +629,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                     convention.GetComponentColumnPrefix =
                         property => property.Name + "_";
                 })
-                .ConventionDiscovery.Add<CustomTypeConvention>()
+                .ConventionFinder.Add<CustomTypeConvention>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
 
             new AutoMappingTester<Customer>(autoMapper)

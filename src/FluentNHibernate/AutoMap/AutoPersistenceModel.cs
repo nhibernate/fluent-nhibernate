@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using FluentNHibernate.AutoMap.Alterations;
 using FluentNHibernate.Cfg;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
@@ -45,9 +46,9 @@ namespace FluentNHibernate.AutoMap
         /// <summary>
         /// Alter convention discovery
         /// </summary>
-        public SetupConventionFinder<AutoPersistenceModel> ConventionDiscovery
+        public new SetupConventionFinder<AutoPersistenceModel> ConventionFinder
         {
-            get { return new SetupConventionFinder<AutoPersistenceModel>(this, ConventionFinder); }
+            get { return new SetupConventionFinder<AutoPersistenceModel>(this, base.ConventionFinder); }
         }
 
         /// <summary>
