@@ -1,12 +1,14 @@
 using System;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt
 {
-    internal class BuiltComponentConvention : BuiltConventionBase<IComponent>, IComponentConvention
+    public class BuiltComponentConvention : BuiltConventionBase<IComponentInspector, IComponentInstance>, IComponentConvention
     {
-        public BuiltComponentConvention(Func<IComponent, bool> accept, Action<IComponent> convention)
+        public BuiltComponentConvention(Action<IAcceptanceCriteria<IComponentInspector>> accept, Action<IComponentInstance> convention) 
             : base(accept, convention)
-        { }
+        {}
     }
 }

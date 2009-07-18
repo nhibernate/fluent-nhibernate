@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{529145D5-6CC3-4016-89B5-826563024AF1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -82,6 +82,8 @@
     <Compile Include="Conventions\Helpers\Builders\CollectionConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\HasOneConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\JoinedSubclassConventionBuilder.cs" />
+    <Compile Include="Conventions\Helpers\Builders\ComponentConventionBuilder.cs" />
+    <Compile Include="Conventions\Helpers\Builders\DynamicComponentConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\OneToManyCollectionConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\SubclassConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\VersionConventionBuilder.cs" />
@@ -93,9 +95,10 @@
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltManyToManyCollectionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltOneToManyCollectionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltVersionConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltDynamicComponentConvention.cs" />
     <Compile Include="Conventions\Inspections\ICacheInspector.cs" />
     <Compile Include="Conventions\Inspections\IComponentInspector.cs" />
-    <Compile Include="Conventions\Inspections\IDynamicComponentInspector.cs" />
     <Compile Include="Conventions\Inspections\IGeneratorInspector.cs" />
     <Compile Include="Conventions\Inspections\IJoinedSubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\IJoinInspector.cs" />
@@ -105,6 +108,7 @@
     <Compile Include="Conventions\Instances\AccessInstance.cs" />
     <Compile Include="Conventions\Instances\CascadeInstance.cs" />
     <Compile Include="Conventions\Instances\CollectionCascadeInstance.cs" />
+    <Compile Include="Conventions\Instances\ComponentInstance.cs" />
     <Compile Include="Conventions\Instances\FetchInstance.cs" />
     <Compile Include="Conventions\Instances\GeneratedInstance.cs" />
     <Compile Include="Conventions\Instances\GeneratorInstance.cs" />
@@ -113,7 +117,6 @@
     <Compile Include="Conventions\Instances\ICollectionCascadeInstance.cs" />
     <Compile Include="Conventions\Instances\IComponentInstance.cs" />
     <Compile Include="Conventions\Instances\IdentityInstance.cs" />
-    <Compile Include="Conventions\Instances\IDynamicComponentInstance.cs" />
     <Compile Include="Conventions\Instances\IFetchInstance.cs" />
     <Compile Include="Conventions\Instances\IGeneratedInstance.cs" />
     <Compile Include="Conventions\Instances\IGeneratorInstance.cs" />

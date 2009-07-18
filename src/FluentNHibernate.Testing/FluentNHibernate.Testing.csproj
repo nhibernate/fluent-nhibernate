@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -95,6 +95,8 @@
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsSubclassTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsHasOneTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsVersionTests.cs" />
+    <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsDynamicComponentTests.cs" />
+    <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsComponentTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsManyToOneTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsIdTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsHasManyToManyCollectionTests.cs" />
