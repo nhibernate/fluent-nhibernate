@@ -174,6 +174,12 @@ namespace FluentNHibernate.Cfg.Db
             return (TThisConfiguration)this;
         }
 
+        public TThisConfiguration ConnectionString(string value)
+        {
+            connectionString.Is(value);
+            return (TThisConfiguration)this;
+        }
+
         public TThisConfiguration Cache(Action<CacheSettingsBuilder> cacheExpression)
         {
             cacheExpression(cache);

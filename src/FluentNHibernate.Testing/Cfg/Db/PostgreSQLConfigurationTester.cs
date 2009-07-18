@@ -74,5 +74,13 @@ namespace FluentNHibernate.Testing.Cfg.Db
                     .FromConnectionStringWithKey("main"))
                 .ToProperties().ShouldContain("connection.connection_string", "connection string");
         }
+
+        [Test]
+        public void ShouldBeAbleToSpecifyConnectionStringDirectly()
+        {
+            PostgreSQLConfiguration.PostgreSQL82
+                .ConnectionString("conn")
+                .ToProperties().ShouldContain("connection.connection_string", "conn");
+        }
     }
 }
