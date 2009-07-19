@@ -23,6 +23,30 @@
         </Variables>
         <CustomProperties />
       </Template>
+      <Template uid="deea9862-d955-4efa-aa35-16bae002f1c4" shortcut="test_inspector" description="Creates tests for an inspector property" text="[Test]&#xD;&#xA;public void $property$Mapped()&#xD;&#xA;{&#xD;&#xA;    mapping.$property$ = $value$;&#xD;&#xA;    inspector.$inspector_property$.ShouldEqual($value$);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;[Test]&#xD;&#xA;public void $property$IsSet()&#xD;&#xA;{&#xD;&#xA;    mapping.$property$ = $value$;&#xD;&#xA;    inspector.IsSet(Prop(x =&gt; x.$inspector_property$))&#xD;&#xA;        .ShouldBeTrue();&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;[Test]&#xD;&#xA;public void $property$IsNotSet()&#xD;&#xA;{&#xD;&#xA;    inspector.IsSet(Prop(x =&gt; x.$inspector_property$))&#xD;&#xA;        .ShouldBeFalse();&#xD;&#xA;}" reformat="True" shortenQualifiedReferences="True">
+        <Context>
+          <CSharpContext context="Everywhere" minimumLanguageVersion="2.0" />
+        </Context>
+        <Categories />
+        <Variables>
+          <Variable name="property" expression="" initialRange="1" />
+          <Variable name="value" expression="" initialRange="0" />
+          <Variable name="inspector_property" expression="capitalize(property)" initialRange="0" />
+        </Variables>
+        <CustomProperties />
+      </Template>
+      <Template uid="db014878-7a5c-4594-848e-c8c34b19647f" shortcut="test_collection_inspect" description="" text="[Test]&#xD;&#xA;public void $collection$CollectionHasSameCountAsMapping()&#xD;&#xA;{&#xD;&#xA;    mapping.Add$collection_singular$(new $collection_mapping$Mapping());&#xD;&#xA;    inspector.$collection$.Count().ShouldEqual(1);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;[Test]&#xD;&#xA;public void $collection$CollectionOfInspectors()&#xD;&#xA;{&#xD;&#xA;    mapping.Add$collection_singular$(new $collection_mapping$Mapping());&#xD;&#xA;    inspector.$collection$.First().ShouldBeOfType&lt;I$collection_mapping$Inspector&gt;();&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;[Test]&#xD;&#xA;public void $collection$CollectionIsEmpty()&#xD;&#xA;{&#xD;&#xA;    inspector.$collection$.IsEmpty().ShouldBeTrue();&#xD;&#xA;}" reformat="True" shortenQualifiedReferences="True">
+        <Context>
+          <CSharpContext context="Everywhere" minimumLanguageVersion="2.0" />
+        </Context>
+        <Categories />
+        <Variables>
+          <Variable name="collection" expression="" initialRange="1" />
+          <Variable name="collection_singular" expression="" initialRange="0" />
+          <Variable name="collection_mapping" expression="capitalize(collection_singular)" initialRange="0" />
+        </Variables>
+        <CustomProperties />
+      </Template>
     </LiveTemplates>
     <FileTemplates>
       <Template uid="482e6087-caae-4484-b5cc-d7b56a938201" shortcut="" description="Test Fixture Class" text="using NUnit.Framework;&#xD;&#xA;&#xD;&#xA;namespace $Testing_Namespace$&#xD;&#xA;{&#xD;&#xA;	[TestFixture]&#xD;&#xA;	public class $Test_Fixture_Name$&#xD;&#xA;	{&#xD;&#xA;		[Test]&#xD;&#xA;		public void $Test_Name$()&#xD;&#xA;		{&#xD;&#xA;			$END$&#xD;&#xA;		}&#xD;&#xA;	}&#xD;&#xA;}" reformat="True" shortenQualifiedReferences="True">

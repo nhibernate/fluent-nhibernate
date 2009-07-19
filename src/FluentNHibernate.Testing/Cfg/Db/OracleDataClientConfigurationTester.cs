@@ -1,5 +1,7 @@
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
+using NHibernate.Dialect;
+using NHibernate.Driver;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Cfg.Db
@@ -10,11 +12,10 @@ namespace FluentNHibernate.Testing.Cfg.Db
         [Test]
         public void Oracle9_should_default_to_the_Oracle9_dialect()
         {
-            string nhibernateAssembly = typeof(ISession).Assembly.FullName;
             OracleDataClientConfiguration.Oracle9
                 .ToProperties()
-                .ShouldContain("connection.driver_class", "NHibernate.Driver.OracleDataClientDriver, " + nhibernateAssembly)
-                .ShouldContain("dialect", "NHibernate.Dialect.Oracle9Dialect, " + nhibernateAssembly);
+                .ShouldContain("connection.driver_class", typeof(OracleDataClientDriver).AssemblyQualifiedName)
+                .ShouldContain("dialect", typeof(Oracle9iDialect).AssemblyQualifiedName);
         }
 
         [Test]

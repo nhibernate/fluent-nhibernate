@@ -29,6 +29,7 @@ namespace FluentNHibernate.Cfg.Db
         protected const string DriverClassKey = "connection.driver_class";
         protected const string ConnectionStringKey = "connection.connection_string";
         protected const string ProxyFactoryFactoryClassKey = "proxyfactory.factory_class";
+        protected const string DefaultProxyFactoryFactoryClassName = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
         protected const string AdoNetBatchSizeKey = "adonet.batch_size";
 
         private readonly Dictionary<string, string> rawValues;
@@ -44,6 +45,7 @@ namespace FluentNHibernate.Cfg.Db
             rawValues = new Dictionary<string, string>();
             values = new Cache<string, string>(rawValues, s=>"");
             values.Store(ConnectionProviderKey, DefaultConnectionProviderClassName);
+            values.Store(ProxyFactoryFactoryClassKey, DefaultProxyFactoryFactoryClassName);
             connectionString = new TConnectionString();
         }
 

@@ -19,7 +19,7 @@ namespace FluentNHibernate.Cfg.Db
         /// </summary>
         public static OracleConfiguration Oracle9
         {
-            get { return new OracleConfiguration().Dialect<Oracle9Dialect>(); }
+            get { return new OracleConfiguration().Dialect<Oracle9iDialect>(); }
         }
     }
 }

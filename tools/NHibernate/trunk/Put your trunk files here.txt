@@ -1,0 +1,1 @@
+Put your trunk binaries in this directory for the rake use_nhib_trunk task to work
