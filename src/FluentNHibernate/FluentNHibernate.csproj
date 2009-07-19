@@ -103,6 +103,7 @@
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltDynamicComponentConvention.cs" />
     <Compile Include="Conventions\Inspections\AnyInspector.cs" />
     <Compile Include="Conventions\Inspections\CacheInspector.cs" />
+    <Compile Include="Conventions\Inspections\CamelCasePrefix.cs" />
     <Compile Include="Conventions\Inspections\CollectionInspector.cs" />
     <Compile Include="Conventions\Inspections\ComponentBaseInspector.cs" />
     <Compile Include="Conventions\Inspections\ComponentInspector.cs" />
@@ -139,11 +140,14 @@
     <Compile Include="Conventions\Inspections\JoinInspector.cs" />
     <Compile Include="Conventions\Inspections\KeyManyToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\KeyPropertyInspector.cs" />
+    <Compile Include="Conventions\Inspections\LowerCasePrefix.cs" />
     <Compile Include="Conventions\Inspections\ManyToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\MetaValueInspector.cs" />
     <Compile Include="Conventions\Inspections\OneToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\OneToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\ParentInspector.cs" />
+    <Compile Include="Conventions\Inspections\PascalCasePrefix.cs" />
+    <Compile Include="Conventions\Inspections\Prefix.cs" />
     <Compile Include="Conventions\Inspections\SubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\VersionInspector.cs" />
     <Compile Include="Conventions\Instances\AccessInstance.cs" />
