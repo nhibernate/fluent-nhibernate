@@ -400,7 +400,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void OptimisticLockMapped()
         {
             mapping.OptimisticLock = "all";
-            inspector.OptimisticLock.ShouldEqual("all");
+            inspector.OptimisticLock.ShouldEqual(OptimisticLock.All);
         }
 
         [Test]

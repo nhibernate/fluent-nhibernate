@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Inspections
     public interface IClassInspector : ILazyLoadInspector, IReadOnlyInspector
     {
         string TableName { get; }
-        string OptimisticLock { get; }
+        OptimisticLock OptimisticLock { get; }
         string Schema { get; }
         bool DynamicUpdate { get; }
         bool DynamicInsert { get; }

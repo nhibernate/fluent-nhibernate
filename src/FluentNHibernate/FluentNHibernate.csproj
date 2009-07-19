@@ -145,6 +145,7 @@
     <Compile Include="Conventions\Inspections\MetaValueInspector.cs" />
     <Compile Include="Conventions\Inspections\OneToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\OneToOneInspector.cs" />
+    <Compile Include="Conventions\Inspections\OptimisticLock.cs" />
     <Compile Include="Conventions\Inspections\ParentInspector.cs" />
     <Compile Include="Conventions\Inspections\PascalCasePrefix.cs" />
     <Compile Include="Conventions\Inspections\Prefix.cs" />

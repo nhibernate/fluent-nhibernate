@@ -365,14 +365,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void OptimisticLockMapped()
         {
-            mapping.OptimisticLock = "value";
-            inspector.OptimisticLock.ShouldEqual("value");
+            mapping.OptimisticLock = "all";
+            inspector.OptimisticLock.ShouldEqual(OptimisticLock.All);
         }
 
         [Test]
         public void OptimisticLockIsSet()
         {
-            mapping.OptimisticLock = "value";
+            mapping.OptimisticLock = "all";
             inspector.IsSet(Prop(x => x.OptimisticLock))
                 .ShouldBeTrue();
         }
