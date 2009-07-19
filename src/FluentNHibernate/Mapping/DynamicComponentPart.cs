@@ -6,11 +6,11 @@ namespace FluentNHibernate.Mapping
 {
     public class DynamicComponentPart<T> : ComponentPartBase<T>, IDynamicComponent
     {
-        public DynamicComponentPart(PropertyInfo property)
-            : this(new DynamicComponentMapping(), property.Name)
+        public DynamicComponentPart(Type entity, PropertyInfo property)
+            : this(new DynamicComponentMapping { ContainingEntityType = entity }, property.Name)
         {}
 
-        public DynamicComponentPart(DynamicComponentMapping mapping, string propertyName)
+        private DynamicComponentPart(DynamicComponentMapping mapping, string propertyName)
             : base(mapping, propertyName)
         {
             this.mapping = mapping;

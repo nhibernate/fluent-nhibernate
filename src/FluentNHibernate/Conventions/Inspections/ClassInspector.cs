@@ -137,8 +137,13 @@ namespace FluentNHibernate.Conventions.Inspections
             get
             {
                 return mapping.Components
-                    .Select(x => new ComponentInspector(x))
-                    .Cast<IComponentBaseInspector>()
+                    .Select(x =>
+                    {
+                        if (x is ComponentMapping)
+                            return (IComponentBaseInspector)new ComponentInspector((ComponentMapping)x);
+
+                        return (IComponentBaseInspector)new DynamicComponentInspector((DynamicComponentMapping)x);
+                    })
                     .ToDefaultableList();
             }
         }

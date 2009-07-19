@@ -19,7 +19,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         private void Map(PropertyInfo inspectorProperty, Expression<Func<TMapping, object>> mappingProperty)
         {
-            mappings.Add(inspectorProperty.Name, mappingProperty);
+            mappings[inspectorProperty.Name] =  mappingProperty;
         }
 
         public void AutoMap()

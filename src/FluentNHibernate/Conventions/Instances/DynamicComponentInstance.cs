@@ -1,23 +1,21 @@
-﻿using System;
-using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public class ComponentInstance : ComponentInspector, IComponentInstance
+    public class DynamicComponentInstance : DynamicComponentInspector, IDynamicComponentInstance
     {
-        private readonly ComponentMapping mapping;
+        private readonly DynamicComponentMapping mapping;
         private bool nextBool;
 
-        public ComponentInstance(ComponentMapping mapping)
+        public DynamicComponentInstance(DynamicComponentMapping mapping)
             : base(mapping)
         {
             this.mapping = mapping;
             nextBool = true;
         }
 
-        public IComponentInstance Not
+        public IDynamicComponentInstance Not
         {
             get
             {
@@ -25,6 +23,7 @@ namespace FluentNHibernate.Conventions.Instances
                 return this;
             }
         }
+
 
         public new IAccessInstance Access
         {

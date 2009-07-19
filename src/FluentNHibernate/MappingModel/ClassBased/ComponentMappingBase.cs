@@ -26,9 +26,14 @@ namespace FluentNHibernate.MappingModel.ClassBased
             base.AcceptVisitor(visitor);
         }
 
-        public ParentMapping Parent { get; set; }
-
+        public Type ContainingEntityType { get; set; }
         public PropertyInfo PropertyInfo { get; set; }
+
+        public ParentMapping Parent
+        {
+            get { return attributes.Get(x => x.Parent); }
+            set { attributes.Set(x => x.Parent, value); }
+        }
 
         public bool Insert
         {

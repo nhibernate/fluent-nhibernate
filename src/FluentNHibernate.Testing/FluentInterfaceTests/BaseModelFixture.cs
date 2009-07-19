@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using FluentNHibernate.AutoMap.TestFixtures;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -43,12 +44,12 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<ComponentPart<T>, ComponentMapping> Component<T>()
         {
-            return new ModelTester<ComponentPart<T>, ComponentMapping>(() => new ComponentPart<T>(new ComponentMapping(), "prop"), x => (ComponentMapping)((IComponent)x).GetComponentMapping());
+            return new ModelTester<ComponentPart<T>, ComponentMapping>(() => new ComponentPart<T>(typeof(ExampleClass), ReflectionHelper.GetProperty<VersionTarget>(x => x.VersionNumber)), x => (ComponentMapping)((IComponent)x).GetComponentMapping());
         }
 
         protected ModelTester<DynamicComponentPart<T>, DynamicComponentMapping> DynamicComponent<T>()
         {
-            return new ModelTester<DynamicComponentPart<T>, DynamicComponentMapping>(() => new DynamicComponentPart<T>(new DynamicComponentMapping(), "prop"), x => (DynamicComponentMapping)((IDynamicComponent)x).GetComponentMapping());
+            return new ModelTester<DynamicComponentPart<T>, DynamicComponentMapping>(() => new DynamicComponentPart<T>(typeof(ExampleClass), ReflectionHelper.GetProperty<VersionTarget>(x => x.VersionNumber)), x => (DynamicComponentMapping)((IDynamicComponent)x).GetComponentMapping());
         }
 
         protected ModelTester<VersionPart, VersionMapping> Version()

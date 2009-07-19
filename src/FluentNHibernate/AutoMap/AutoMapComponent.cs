@@ -38,7 +38,8 @@ namespace FluentNHibernate.AutoMap
         {
             var mapping = new ComponentMapping
             {
-                Name = property.Name
+                Name = property.Name,
+                ContainingEntityType = classMapping.Type
             };
 
             var columnNamePrefix = expressions.GetComponentColumnPrefix(property);

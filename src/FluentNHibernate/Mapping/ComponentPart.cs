@@ -1,15 +1,16 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {
     public class ComponentPart<T> : ComponentPartBase<T>, IComponent
     {
-        public ComponentPart(PropertyInfo property)
-            : this(new ComponentMapping(), property.Name)
+        public ComponentPart(Type entity, PropertyInfo property)
+            : this(new ComponentMapping { ContainingEntityType = entity }, property.Name)
          {}
 
-         public ComponentPart(ComponentMapping mapping, string propertyName)
+         private ComponentPart(ComponentMapping mapping, string propertyName)
              : base(mapping, propertyName)
          {
              Insert();
