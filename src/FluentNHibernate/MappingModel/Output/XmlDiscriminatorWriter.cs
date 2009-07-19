@@ -22,7 +22,7 @@ namespace FluentNHibernate.MappingModel.Output
             var typeString = TypeMapping.GetTypeString(discriminatorMapping.Type.GetUnderlyingSystemType());
 
             var discriminatorElement = document.AddElement("discriminator")
-                .WithAtt("column", discriminatorMapping.ColumnName)
+                .WithAtt("column", discriminatorMapping.Column)
                 .WithAtt("type", typeString);
 
             if (discriminatorMapping.HasValue(x => x.Force))

@@ -158,7 +158,7 @@ namespace FluentNHibernate.Mapping
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
         {
-            var part = new DiscriminatorPart(mapping, columnName, subclasses.Add);
+            var part = new DiscriminatorPart(mapping, columnName, typeof(T), subclasses.Add);
 
 			part.GetDiscriminatorMapping().Type = new TypeReference(typeof(TDiscriminator));
 
@@ -171,7 +171,7 @@ namespace FluentNHibernate.Mapping
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
         {
-            var part = new DiscriminatorPart(mapping, columnName, subclasses.Add);
+            var part = new DiscriminatorPart(mapping, columnName, typeof(T), subclasses.Add);
 
 			part.GetDiscriminatorMapping().Type = new TypeReference(typeof(TDiscriminator));
 

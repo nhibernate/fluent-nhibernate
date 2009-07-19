@@ -72,7 +72,8 @@ namespace FluentNHibernate.AutoMap
 
                     ((ClassMapping)mapping).Discriminator = new DiscriminatorMapping((ClassMapping)mapping)
                     {
-                        ColumnName = discriminatorColumn
+                        Column = discriminatorColumn,
+                        ContainingEntityType = classType
                     };
                     discriminatorSet = true;
                 }

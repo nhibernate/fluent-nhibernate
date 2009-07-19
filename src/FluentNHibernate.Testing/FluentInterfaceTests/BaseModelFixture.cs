@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             {
                 var classMapping = new ClassMapping();
                 var classMap = new ClassMap<T>(classMapping);
-                return new DiscriminatorPart(classMapping, "column", (x, y) => {});
+                return new DiscriminatorPart(classMapping, "column", typeof(T), (x, y) => {});
             }, x => x.GetDiscriminatorMapping());
         }
 

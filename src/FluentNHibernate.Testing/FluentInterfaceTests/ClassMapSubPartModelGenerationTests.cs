@@ -39,7 +39,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ClassMap<SuperRecord>()
                 .Mapping(m => m.DiscriminateSubClassesOnColumn("col"))
-                .ModelShouldMatch(x => x.Discriminator.ColumnName.ShouldEqual("col"));
+                .ModelShouldMatch(x => x.Discriminator.Column.ShouldEqual("col"));
         }
 
         [Test]

@@ -10,15 +10,14 @@ namespace FluentNHibernate.Mapping
         private readonly DiscriminatorMapping mapping;
         private bool nextBool = true;
 
-        public DiscriminatorPart(ClassMapping parentMapping, string columnName, Action<Type, ISubclassMappingProvider> setter)
-            : this(new DiscriminatorMapping(parentMapping) { ColumnName = columnName })
+        public DiscriminatorPart(ClassMapping parentMapping, string columnName, Type entity, Action<Type, ISubclassMappingProvider> setter)
         {
             this.setter = setter;
-        }
-
-        protected DiscriminatorPart(DiscriminatorMapping mapping)
-        {
-            this.mapping = mapping;
+            mapping = new DiscriminatorMapping(parentMapping)
+            {
+                Column = columnName,
+                ContainingEntityType = entity
+            };
         }
 
         public DiscriminatorMapping GetDiscriminatorMapping()

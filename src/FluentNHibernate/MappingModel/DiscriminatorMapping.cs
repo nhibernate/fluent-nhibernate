@@ -18,7 +18,6 @@ namespace FluentNHibernate.MappingModel
             attributes.SetDefault(x => x.NotNull, true);
             attributes.SetDefault(x => x.Insert, true);
             attributes.SetDefault(x => x.Type, new TypeReference(typeof(string)));
-            
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -26,10 +25,10 @@ namespace FluentNHibernate.MappingModel
             visitor.ProcessDiscriminator(this);
         }
 
-        public string ColumnName
+        public string Column
         {
-            get { return attributes.Get(x => x.ColumnName); }
-            set { attributes.Set(x => x.ColumnName, value); }
+            get { return attributes.Get(x => x.Column); }
+            set { attributes.Set(x => x.Column, value); }
         }
 
         public bool NotNull
@@ -67,6 +66,8 @@ namespace FluentNHibernate.MappingModel
             get { return attributes.Get(x => x.Type); }
             set { attributes.Set(x => x.Type, value); }
         }
+
+        public Type ContainingEntityType { get; set; }
 
         public bool IsSpecified<TResult>(Expression<Func<DiscriminatorMapping, TResult>> property)
         {
