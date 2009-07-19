@@ -67,7 +67,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
             public void Apply(IClassInstance instance)
             {
-                instance.WithTable("xxx");
+                instance.Table("xxx");
             }
         }
 
@@ -80,7 +80,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
             public void Apply(IClassInstance instance)
             {
-                instance.WithTable("xxx");
+                instance.Table("xxx");
             }
         }
 
@@ -88,7 +88,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             public void Apply(IClassInstance instance)
             {
-                instance.WithTable("xxx");
+                instance.Table("xxx");
             }
         }
     }

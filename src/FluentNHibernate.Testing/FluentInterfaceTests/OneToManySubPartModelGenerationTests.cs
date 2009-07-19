@@ -23,8 +23,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             OneToMany(x => x.ListOfChildren)
                 .Mapping(m => m.AsList(x =>
                 {
-                    x.WithColumn("index-column");
-                    x.WithType<int>();
+                    x.Column("index-column");
+                    x.Type<int>();
                 }))
                 .ModelShouldMatch(x =>
                 {

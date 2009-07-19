@@ -14,14 +14,14 @@ namespace FluentNHibernate.Mapping
 
         IProperty Insert();
         IProperty Update();
-        IProperty WithLengthOf(int length);
+        IProperty Length(int length);
         IProperty Nullable();
         IProperty ReadOnly();
-        IProperty FormulaIs(string forumla);
-        IProperty CustomTypeIs<T>();
-        IProperty CustomTypeIs(Type type);
-        IProperty CustomTypeIs(string type);
-        IProperty CustomSqlTypeIs(string sqlType);
+        IProperty Formula(string forumla);
+        IProperty CustomType<T>();
+        IProperty CustomType(Type type);
+        IProperty CustomType(string type);
+        IProperty CustomSqlType(string sqlType);
         IProperty Unique();
         IProperty OptimisticLock();
 

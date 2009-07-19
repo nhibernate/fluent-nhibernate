@@ -56,7 +56,7 @@ namespace FluentNHibernate.Mapping
             var part = new ManyToOnePart<TOther>(EntityType, property);
 
             if (columnName != null)
-                part.ColumnName(columnName);
+                part.Column(columnName);
 
             references.Add(part);
 

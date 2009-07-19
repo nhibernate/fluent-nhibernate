@@ -92,7 +92,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void FormulaIsShouldSetModelFormulaPropertyToValue()
         {
             Property()
-                .Mapping(m => m.FormulaIs("form"))
+                .Mapping(m => m.Formula("form"))
                 .ModelShouldMatch(x => x.Formula.ShouldEqual("form"));
         }
 
@@ -132,7 +132,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void CustomTypeIsShouldSetModelTypePropertyToType()
         {
             Property()
-                .Mapping(m => m.CustomTypeIs<PropertyTarget>())
+                .Mapping(m => m.CustomType<PropertyTarget>())
                 .ModelShouldMatch(x => x.Type.ShouldEqual(new TypeReference(typeof(PropertyTarget))));
         }
 
@@ -184,7 +184,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void CustomSqlTypeShouldSetColumn()
         {
             Property()
-                .Mapping(m => m.CustomSqlTypeIs("sql"))
+                .Mapping(m => m.CustomSqlType("sql"))
                 .ModelShouldMatch(x => x.Columns.First().SqlType.ShouldEqual("sql"));
         }
 
@@ -232,7 +232,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void WithLengthOfShouldSetColumnLengthPropertyToValue()
         {
             Property()
-                .Mapping(m => m.WithLengthOf(100))
+                .Mapping(m => m.Length(100))
                 .ModelShouldMatch(x => x.Columns.First().Length.ShouldEqual(100));
         }
     }

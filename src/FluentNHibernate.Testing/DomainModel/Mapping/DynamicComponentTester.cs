@@ -135,7 +135,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<PropertyTarget>()
                 .ForMapping(m =>
                     m.DynamicComponent(x => x.ExtensionData, c =>
-                        c.WithParentReference(x => x["Parent"])))
+                        c.ParentReference(x => x["Parent"])))
                 .Element("class/dynamic-component/parent").HasAttribute("name", "Parent");
         }
 

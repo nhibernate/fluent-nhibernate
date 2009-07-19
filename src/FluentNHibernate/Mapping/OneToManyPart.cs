@@ -66,7 +66,7 @@ namespace FluentNHibernate.Mapping
             get { return columnNames; }
         }
 
-        public IOneToManyPart WithForeignKeyConstraintName(string foreignKeyName)
+        public IOneToManyPart ForeignKeyConstraintName(string foreignKeyName)
         {
             keyAttributes.Set(x => x.ForeignKey, foreignKeyName);
             return this;
@@ -96,7 +96,7 @@ namespace FluentNHibernate.Mapping
 
         IOneToManyPart IOneToManyPart.SchemaIs(string schema)
         {
-            return SchemaIs(schema);
+            return Schema(schema);
         }
 
         IOneToManyPart IOneToManyPart.Persister<T>()

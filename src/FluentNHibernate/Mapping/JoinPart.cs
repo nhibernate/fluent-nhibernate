@@ -5,7 +5,7 @@ namespace FluentNHibernate.Mapping
 {
     public interface IJoin : IClasslike
     {
-        void WithKeyColumn(string column);
+        void KeyColumn(string column);
         JoinMapping GetJoinMapping();
     }
     /// <summary>
@@ -28,16 +28,16 @@ namespace FluentNHibernate.Mapping
             columns.Add(GetType().GetGenericArguments()[0].Name + "ID");
         }
 
-        public JoinPart<T> WithKeyColumn(string column)
+        public JoinPart<T> KeyColumn(string column)
         {
             columns.Clear(); // only one supported currently
             columns.Add(column);
             return this;
         }
 
-        void IJoin.WithKeyColumn(string column)
+        void IJoin.KeyColumn(string column)
         {
-            WithKeyColumn(column);
+            KeyColumn(column);
         }
 
         public JoinPart<T> SchemaIs(string schema)

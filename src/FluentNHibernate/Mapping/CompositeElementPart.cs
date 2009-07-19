@@ -61,7 +61,7 @@ namespace FluentNHibernate.Mapping
             var part = new ManyToOnePart<TOther>(typeof(T), property);
 
             if (columnName != null)
-                part.ColumnName(columnName);
+                part.Column(columnName);
 
             references.Add(part);
 
@@ -73,7 +73,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="exp">Parent reference property</param>
         /// <returns>Component being mapped</returns>
-        public CompositeElementPart<T> WithParentReference(Expression<Func<T, object>> exp)
+        public CompositeElementPart<T> ParentReference(Expression<Func<T, object>> exp)
         {
             var property = ReflectionHelper.GetProperty(exp);
             mapping.Parent = new ParentMapping

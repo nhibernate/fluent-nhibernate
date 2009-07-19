@@ -186,7 +186,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ClassMap<PropertyTarget>()
                 .Mapping(m => m.CompositeId()
-                    .WithKeyProperty(x => x.Id))
+                    .KeyProperty(x => x.Id))
                 .ModelShouldMatch(x => x.Id.ShouldBeOfType<CompositeIdMapping>());
         }
     }

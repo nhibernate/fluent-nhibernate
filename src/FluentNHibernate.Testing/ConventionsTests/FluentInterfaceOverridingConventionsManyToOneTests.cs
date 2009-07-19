@@ -57,7 +57,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ColumnShouldntBeOverwritten()
         {
-            Mapping(x => x.ColumnName("name"));
+            Mapping(x => x.Column("name"));
 
             Convention(x => x.ColumnName("xxx"));
 
@@ -191,7 +191,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ForeignKeyShouldntBeOverwritten()
         {
-            Mapping(x => x.WithForeignKey("key"));
+            Mapping(x => x.ForeignKey("key"));
 
             Convention(x => x.ForeignKey("xxx"));
 

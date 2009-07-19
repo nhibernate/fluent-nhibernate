@@ -24,7 +24,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public void WithTable(string tableName)
+        public void Table(string tableName)
         {
             if (!mapping.IsSpecified(x => x.TableName))
                 mapping.TableName = tableName;

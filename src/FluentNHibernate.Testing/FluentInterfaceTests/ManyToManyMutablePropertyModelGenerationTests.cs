@@ -88,7 +88,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void WithParentKeyColumnShouldAddColumnToModelKeyColumnsCollection()
         {
             ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.WithParentKeyColumn("col"))
+                .Mapping(m => m.ParentKeyColumn("col"))
                 .ModelShouldMatch(x => x.Key.Columns.Count().ShouldEqual(1));
         }
 
@@ -96,7 +96,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void WithForeignKeyConstraintNamesShouldAddForeignKeyToBothColumns()
         {
             ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.WithForeignKeyConstraintNames("p_fk", "c_fk"))
+                .Mapping(m => m.ForeignKeyConstraintNames("p_fk", "c_fk"))
                 .ModelShouldMatch(x =>
                 {
                     x.Key.ForeignKey.ShouldEqual("p_fk");
@@ -108,7 +108,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void WithChildKeyColumnShouldAddColumnToModelRelationshipColumnsCollection()
         {
             ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.WithChildKeyColumn("col"))
+                .Mapping(m => m.ChildKeyColumn("col"))
                 .ModelShouldMatch(x => ((ManyToManyMapping)x.Relationship).Columns.Count().ShouldEqual(1));
         }
 
@@ -148,7 +148,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void WithTableNameShouldSetModelTableNamePropertyToValue()
         {
             ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.WithTableName("t"))
+                .Mapping(m => m.Table("t"))
                 .ModelShouldMatch(x => x.TableName.ShouldEqual("t"));
         }
 
@@ -156,7 +156,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void SchemaIsShouldSetModelSchemaPropertyToValue()
         {
             ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.SchemaIs("dto"))
+                .Mapping(m => m.Schema("dto"))
                 .ModelShouldMatch(x => x.Schema.ShouldEqual("dto"));
         }
 

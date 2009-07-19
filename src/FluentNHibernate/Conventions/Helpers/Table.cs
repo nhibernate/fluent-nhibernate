@@ -13,7 +13,7 @@ namespace FluentNHibernate.Conventions.Helpers
                 instance =>
                 {
                     var table = tableName(instance);
-                    instance.WithTable(table);
+                    instance.Table(table);
                 });
         }
     }

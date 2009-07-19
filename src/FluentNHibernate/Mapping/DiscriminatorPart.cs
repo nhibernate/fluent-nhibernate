@@ -56,7 +56,7 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public DiscriminatorPart WithLengthOf(int length)
+        public DiscriminatorPart Length(int length)
         {
             mapping.Length = length;
             return this;

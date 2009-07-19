@@ -262,10 +262,10 @@ namespace FluentNHibernate.Mapping
         public T AsElement(string columnName)
         {
             elementPart = new ElementPart(typeof(T));
-            elementPart.WithType<TChild>();
+            elementPart.Type<TChild>();
 
             if (!string.IsNullOrEmpty(columnName))
-                elementPart.WithColumn(columnName);
+                elementPart.Column(columnName);
 
             return (T)this;
         }
@@ -289,7 +289,7 @@ namespace FluentNHibernate.Mapping
         /// Sets the table name for this one-to-many.
         /// </summary>
         /// <param name="name">Table name</param>
-        public T WithTableName(string name)
+        public T Table(string name)
         {
             collectionAttributes.Set(x => x.TableName, name);
             return (T)this;
@@ -414,7 +414,7 @@ namespace FluentNHibernate.Mapping
             get { return Member is MethodInfo; }
         }
 
-        public T SchemaIs(string schema)
+        public T Schema(string schema)
         {
             collectionAttributes.Set(x => x.Schema, schema);
             return (T)this;
@@ -508,9 +508,9 @@ namespace FluentNHibernate.Mapping
         /// Sets the table name for this one-to-many.
         /// </summary>
         /// <param name="name">Table name</param>
-        ICollectionRelationship ICollectionRelationship.WithTableName(string name)
+        ICollectionRelationship ICollectionRelationship.TableName(string name)
         {
-            return WithTableName(name);
+            return Table(name);
         }
 
         ICollectionRelationship ICollectionRelationship.ForeignKeyCascadeOnDelete()

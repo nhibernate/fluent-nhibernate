@@ -44,7 +44,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void ColumnNameShouldAddModelColumnsCollection()
         {
             ManyToOne()
-                .Mapping(m => m.ColumnName("col"))
+                .Mapping(m => m.Column("col"))
                 .ModelShouldMatch(x => x.Columns.Count().ShouldEqual(1));
         }
 
@@ -60,7 +60,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void WithForeignKeyShouldSetForeignKeyModelProperty()
         {
             ManyToOne()
-                .Mapping(m => m.WithForeignKey("fk"))
+                .Mapping(m => m.ForeignKey("fk"))
                 .ModelShouldMatch(x => x.ForeignKey.ShouldEqual("fk"));
         }
 

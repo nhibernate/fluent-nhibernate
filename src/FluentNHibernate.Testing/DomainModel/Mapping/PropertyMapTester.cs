@@ -106,7 +106,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithFluentLengthOnStringUsesWithLengthOfPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).WithLengthOf(20))
+                .ForMapping(m => m.Map(x => x.Name).Length(20))
                 .Element("class/property[@name='Name']/column").HasAttribute("length", "20");
         }
 
@@ -114,7 +114,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void MapWithFluentLengthOnDecimalUsesWithLengthOfPropertyColumnAttribute()
 		{
 		    new MappingTester<PropertyTarget>()
-		        .ForMapping(m => m.Map(x => x.DecimalProperty).WithLengthOf(1))
+		        .ForMapping(m => m.Map(x => x.DecimalProperty).Length(1))
 		        .Element("class/property[@name='DecimalProperty']/column").HasAttribute("length", "1");
 		}
 
@@ -122,7 +122,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithFluentLengthAllowOnAnythingPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Id).WithLengthOf(20))
+                .ForMapping(m => m.Map(x => x.Id).Length(20))
                 .Element("class/property[@name='Id']/column").HasAttribute("length", "20");
         }
 
@@ -168,7 +168,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithFluentFormulaUsesFormula() 
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).FormulaIs("foo(bar)"))
+                .ForMapping(m => m.Map(x => x.Name).Formula("foo(bar)"))
                 .Element("class/property").HasAttribute("formula", "foo(bar)");
         }
 
@@ -176,7 +176,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyCustomTypeAsDotNetTypeGenerically()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.Map(x => x.Data).CustomTypeIs<custom_type_for_testing>())
+                .ForMapping(c => c.Map(x => x.Data).CustomType<custom_type_for_testing>())
                 .Element("class/property").HasAttribute("type", typeof(custom_type_for_testing).AssemblyQualifiedName);
         }
 
@@ -184,7 +184,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyCustomTypeAsDotNetType()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c=>c.Map(x => x.Data).CustomTypeIs(typeof (custom_type_for_testing)))
+                .ForMapping(c=>c.Map(x => x.Data).CustomType(typeof (custom_type_for_testing)))
                 .Element("class/property").HasAttribute("type", typeof(custom_type_for_testing).AssemblyQualifiedName);
         }
 
@@ -192,7 +192,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyCustomTypeAsString()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.Map(x => x.Data).CustomTypeIs("name"))
+                .ForMapping(c => c.Map(x => x.Data).CustomType("name"))
                 .Element("class/property").HasAttribute("type", "name");
         }
 
@@ -201,7 +201,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             var classMap = new ClassMap<PropertyTarget>();
             var propertyMap = classMap.Map(x => x.Data)
-                .CustomSqlTypeIs("image");
+                .CustomSqlType("image");
 
             new MappingTester<PropertyTarget>()
                 .ForMapping(classMap)

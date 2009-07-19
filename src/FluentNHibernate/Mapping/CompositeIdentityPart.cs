@@ -22,11 +22,11 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
 		/// <param name="expression">A member access lambda expression for the property</param>
 		/// <returns>The composite identity part fluent interface</returns>
-		public CompositeIdentityPart<T> WithKeyProperty(Expression<Func<T, object>> expression)
+		public CompositeIdentityPart<T> KeyProperty(Expression<Func<T, object>> expression)
 		{
 	        var property = ReflectionHelper.GetProperty(expression);
 
-			return WithKeyProperty(property, property.Name);
+			return KeyProperty(property, property.Name);
 		}
 
 		/// <summary>
@@ -35,14 +35,14 @@ namespace FluentNHibernate.Mapping
 		/// <param name="expression">A member access lambda expression for the property</param>
 		/// <param name="columnName">The column name in the database to use for this key, or null to use the property name</param>
 		/// <returns>The composite identity part fluent interface</returns>
-		public CompositeIdentityPart<T> WithKeyProperty(Expression<Func<T, object>> expression, string columnName)
+		public CompositeIdentityPart<T> KeyProperty(Expression<Func<T, object>> expression, string columnName)
 		{
             var property = ReflectionHelper.GetProperty(expression);
 
-		    return WithKeyProperty(property, columnName);
+		    return KeyProperty(property, columnName);
 		}
 
-        private CompositeIdentityPart<T> WithKeyProperty(PropertyInfo property, string columnName)
+        private CompositeIdentityPart<T> KeyProperty(PropertyInfo property, string columnName)
         {
             var key = new KeyPropertyMapping
             {
@@ -62,11 +62,11 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
 		/// <param name="expression">A member access lambda expression for the property</param>
 		/// <returns>The composite identity part fluent interface</returns>
-		public CompositeIdentityPart<T> WithKeyReference(Expression<Func<T, object>> expression)
+		public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression)
 		{
 		    var property = ReflectionHelper.GetProperty(expression);
 
-		    return WithKeyReference(property, property.Name);
+		    return KeyReference(property, property.Name);
 		}
 
 		/// <summary>
@@ -75,14 +75,14 @@ namespace FluentNHibernate.Mapping
 		/// <param name="expression">A member access lambda expression for the property</param>
 		/// <param name="columnName">The column name in the database to use for this key, or null to use the property name</param>
 		/// <returns>The composite identity part fluent interface</returns>
-		public CompositeIdentityPart<T> WithKeyReference(Expression<Func<T, object>> expression, string columnName)
+		public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression, string columnName)
 		{
             var property = ReflectionHelper.GetProperty(expression);
 
-            return WithKeyReference(property, columnName);
+            return KeyReference(property, columnName);
 		}
 
-        private CompositeIdentityPart<T> WithKeyReference(PropertyInfo property, string columnName)
+        private CompositeIdentityPart<T> KeyReference(PropertyInfo property, string columnName)
         {
             var key = new KeyManyToOneMapping
             {

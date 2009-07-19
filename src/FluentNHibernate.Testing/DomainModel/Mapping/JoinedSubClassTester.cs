@@ -123,7 +123,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyJoinedSubClassTable()
         {
             new MappingTester<SuperClass>()
-               .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.WithTableName("TestTable")))
+               .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Table("TestTable")))
                .Element("class/joined-subclass")
                    .HasAttribute("table", "TestTable");
         }
@@ -149,7 +149,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
-                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.SchemaIs("test")))
+                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.Schema("test")))
                 .Element("//joined-subclass").HasAttribute("schema", "test");
         }
 

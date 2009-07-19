@@ -6,7 +6,7 @@ namespace FluentNHibernate.Mapping
 {
     public interface IComponentBase : IClasslike
     {
-        IComponentBase WithParentReference<TEntity>(Expression<Func<TEntity, object>> exp);
+        IComponentBase ParentReference<TEntity>(Expression<Func<TEntity, object>> exp);
         ComponentMappingBase GetComponentMapping();
 
         IComponentBase Not { get; }

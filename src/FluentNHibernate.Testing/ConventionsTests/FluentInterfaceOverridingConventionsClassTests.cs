@@ -106,9 +106,9 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void TableShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.WithTable("test"));
+            Mapping<ExampleClass>(x => x.Table("test"));
 
-            Convention(x => x.WithTable("different"));
+            Convention(x => x.Table("different"));
 
             VerifyModel(x => x.TableName.ShouldEqual("test"));
         }

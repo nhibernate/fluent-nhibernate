@@ -13,7 +13,7 @@ namespace Examples.FirstProject.Mappings
             HasManyToMany(x => x.StoresStockedIn)
                 .Cascade.All()
                 .Inverse()
-                .WithTableName("StoreProduct");
+                .Table("StoreProduct");
         }
     }
 }

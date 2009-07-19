@@ -24,7 +24,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var alteration = MockRepository.GenerateMock<IAutoMappingAlteration>();
 
             model
-                .WithAlterations(alterations => alterations.Add(alteration))
+                .Alterations(alterations => alterations.Add(alteration))
                 .CompileMappings();
 
             alteration.AssertWasCalled(x => x.Alter(model));
@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         public void UseOverridesAddsAlteration()
         {
             model.UseOverridesFromAssemblyOf<ExampleClass>()
-                .WithAlterations(alterations =>
+                .Alterations(alterations =>
                     alterations.ShouldContain(a => a is AutoMappingOverrideAlteration));
         }
     }

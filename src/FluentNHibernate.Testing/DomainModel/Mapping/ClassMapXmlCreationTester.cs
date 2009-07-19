@@ -54,7 +54,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void ManyToManyAsSetWithChildForeignKey()
 		{
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.HasManyToMany(x => x.Children).AsSet().WithChildKeyColumn("TheKids_ID"))
+                .ForMapping(m => m.HasManyToMany(x => x.Children).AsSet().ChildKeyColumn("TheKids_ID"))
                 .Element("class/set")
                     .HasAttribute("name", "Children")
                     .HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
@@ -67,7 +67,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void ManyToManyAsSetWithParentForeignKey()
 		{
 			new MappingTester<MappedObject>()
-				.ForMapping(m => m.HasManyToMany(x => x.Children).AsSet().WithParentKeyColumn("TheParentID"))
+				.ForMapping(m => m.HasManyToMany(x => x.Children).AsSet().ParentKeyColumn("TheParentID"))
 				.Element("class/set")
 					.HasAttribute("name", "Children")
 					.HasAttribute("table", typeof(ChildObject).Name + "To" + typeof(MappedObject).Name)
@@ -190,7 +190,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSetTableName()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.WithTable("myTableName"))
+                .ForMapping(m => m.Table("myTableName"))
                 .Element("class").HasAttribute("table", "myTableName");
         }
 
@@ -323,7 +323,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CreatingAManyToOneReferenceWithColumnSpecifiedThroughColumnNameMethod()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.References(x => x.Parent).ColumnName("MyParentId"))
+                .ForMapping(m => m.References(x => x.Parent).Column("MyParentId"))
                 .Element("class/many-to-one/column")
                     .HasAttribute("name", "MyParentId");
         }
@@ -332,7 +332,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void CreatingAManyToOneReferenceUsingSpecifiedForeignKey()
 		{
 		    new MappingTester<MappedObject>()
-		        .ForMapping(m => m.References(x => x.Parent).WithForeignKey("FK_MyForeignKey"))
+		        .ForMapping(m => m.References(x => x.Parent).ForeignKey("FK_MyForeignKey"))
 		        .Element("class/many-to-one").HasAttribute("foreign-key", "FK_MyForeignKey");
 		}
 
@@ -364,7 +364,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void SpanningClassAcrossTwoTables()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.WithTable("tableTwo", t => t.Map(x => x.Name)))
+                .ForMapping(m => m.Table("tableTwo", t => t.Map(x => x.Name)))
                 .Element("class/join").Exists();
         }
 
@@ -415,7 +415,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ShouldAddCacheElementBeforeCompositeId()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(x => { x.CompositeId().WithKeyProperty(y => y.Id).WithKeyProperty(y => y.Name); x.Cache.AsReadWrite(); })
+                .ForMapping(x => { x.CompositeId().KeyProperty(y => y.Id).KeyProperty(y => y.Name); x.Cache.AsReadWrite(); })
                 .Element("class/cache")
                     .ShouldBeInParentAtPosition(0)
                 .Element("class/composite-id")
@@ -426,7 +426,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ShouldAddCompositeIdBeforeDiscriminator()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(x => { x.DiscriminateSubClassesOnColumn("test"); x.CompositeId().WithKeyProperty(y => y.Id).WithKeyProperty(y => y.Name); })
+                .ForMapping(x => { x.DiscriminateSubClassesOnColumn("test"); x.CompositeId().KeyProperty(y => y.Id).KeyProperty(y => y.Name); })
                 .Element("class/composite-id")
                     .ShouldBeInParentAtPosition(0)
                 .Element("class/discriminator")

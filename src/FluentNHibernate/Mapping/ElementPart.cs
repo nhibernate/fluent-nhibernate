@@ -14,13 +14,13 @@ namespace FluentNHibernate.Mapping
             this.entity = entity;
         }
 
-        public ElementPart WithColumn(string elementColumnName)
+        public ElementPart Column(string elementColumnName)
         {
             mapping.AddColumn(new ColumnMapping { Name = elementColumnName });
             return this;
         }
 
-        public ElementPart WithType<TElement>()
+        public ElementPart Type<TElement>()
         {
             mapping.Type = new TypeReference(typeof(TElement));
             return this;

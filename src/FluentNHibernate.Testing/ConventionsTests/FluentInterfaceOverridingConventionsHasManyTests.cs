@@ -169,7 +169,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void SchemaShouldntBeOverwritten()
         {
-            Mapping(x => x.Children, x => x.SchemaIs("dbo"));
+            Mapping(x => x.Children, x => x.Schema("dbo"));
 
             Convention(x => x.SchemaIs("test"));
 
@@ -189,7 +189,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ForeignKeyShouldntBeOverwritten()
         {
-            Mapping(x => x.Children, x => x.WithForeignKeyConstraintName("key"));
+            Mapping(x => x.Children, x => x.ForeignKeyConstraintName("key"));
 
             Convention(x => x.Key.ForeignKey("xxx"));
 
@@ -199,7 +199,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void TableNameShouldntBeOverwritten()
         {
-            Mapping(x => x.Children, x => x.WithTableName("table"));
+            Mapping(x => x.Children, x => x.Table("table"));
 
             Convention(x => x.SetTableName("xxx"));
 

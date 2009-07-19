@@ -129,7 +129,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void WithForeignKeyConstraintNameShouldSetModelKeyForeignKeyPropertyToValue()
         {
             OneToMany(x => x.BagOfChildren)
-                .Mapping(m => m.WithForeignKeyConstraintName("fk"))
+                .Mapping(m => m.ForeignKeyConstraintName("fk"))
                 .ModelShouldMatch(x => x.Key.ForeignKey.ShouldEqual("fk"));
         }
 
@@ -137,7 +137,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void WithTableNameShouldSetModelTableNamePropertyToValue()
         {
             OneToMany(x => x.BagOfChildren)
-                .Mapping(m => m.WithTableName("t"))
+                .Mapping(m => m.Table("t"))
                 .ModelShouldMatch(x => x.TableName.ShouldEqual("t"));
         }
 
@@ -145,7 +145,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void SchemaIsShouldSetModelSchemaPropertyToValue()
         {
             OneToMany(x => x.BagOfChildren)
-                .Mapping(m => m.SchemaIs("dto"))
+                .Mapping(m => m.Schema("dto"))
                 .ModelShouldMatch(x => x.Schema.ShouldEqual("dto"));
         }
 

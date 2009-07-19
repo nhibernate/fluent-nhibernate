@@ -13,17 +13,17 @@ namespace FluentNHibernate.Mapping
     public interface IManyToManyPart : ICollectionRelationship
     {
         new IManyToManyPart Not { get; }
-        void WithTableName(string tableName);
+        void Table(string tableName);
         Type ChildType { get; }
-        void WithChildKeyColumn(string name);
-        void WithParentKeyColumn(string name);
-        void WithForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName);
+        void ChildKeyColumn(string name);
+        void ParentKeyColumn(string name);
+        void ForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName);
         INotFoundExpression NotFound { get; }
         new CollectionCascadeExpression<IManyToManyPart> Cascade { get; }
         OuterJoinBuilder<IManyToManyPart> OuterJoin { get; }
         FetchTypeExpression<IManyToManyPart> Fetch { get; }
         OptimisticLockBuilder<IManyToManyPart> OptimisticLock { get; }
-        IManyToManyPart SchemaIs(string schema);
+        IManyToManyPart Schema(string schema);
         IManyToManyPart Check(string checkSql);
         IManyToManyPart Generic();
         IManyToManyPart Persister<T>() where T : IEntityPersister;
@@ -80,21 +80,21 @@ namespace FluentNHibernate.Mapping
             return collection;
         }
 
-	    public ManyToManyPart<TChild> WithChildKeyColumn(string childKeyColumn)
+	    public ManyToManyPart<TChild> ChildKeyColumn(string childKeyColumn)
 		{
 	        childColumns.Clear(); // support only one currently
 	        childColumns.Add(childKeyColumn);
 			return this;
 		}
 		
-		public ManyToManyPart<TChild> WithParentKeyColumn(string parentKeyColumn)
+		public ManyToManyPart<TChild> ParentKeyColumn(string parentKeyColumn)
 		{
             parentColumns.Clear(); // support only one currently
             parentColumns.Add(parentKeyColumn);
 			return this;
 		}
 
-        public ManyToManyPart<TChild> WithForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName)
+        public ManyToManyPart<TChild> ForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName)
         {
             keyAttributes.Set(x => x.ForeignKey, parentForeignKeyName);
             relationshipAttributes.Set(x => x.ForeignKey, childForeignKeyName);
@@ -125,8 +125,8 @@ namespace FluentNHibernate.Mapping
         public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn, Action<IndexManyToManyPart> customIndexMapping)
         {
             manyToManyIndex = new IndexManyToManyPart();
-            manyToManyIndex.WithColumn(indexColumn);
-            manyToManyIndex.WithType<TIndex>();
+            manyToManyIndex.Column(indexColumn);
+            manyToManyIndex.Type<TIndex>();
 
             if (customIndexMapping != null)
                 customIndexMapping(manyToManyIndex);
@@ -134,29 +134,29 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-	    void IManyToManyPart.WithTableName(string tableName)
+	    void IManyToManyPart.Table(string tableName)
         {
-            WithTableName(tableName);
+            Table(tableName);
         }
 
-        void IManyToManyPart.WithChildKeyColumn(string name)
+        void IManyToManyPart.ChildKeyColumn(string name)
         {
-            WithChildKeyColumn(name);
+            ChildKeyColumn(name);
         }
 
-        void IManyToManyPart.WithParentKeyColumn(string name)
+        void IManyToManyPart.ParentKeyColumn(string name)
         {
-            WithParentKeyColumn(name);
+            ParentKeyColumn(name);
         }
 
-        void IManyToManyPart.WithForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName)
+        void IManyToManyPart.ForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName)
         {
-            WithForeignKeyConstraintNames(parentForeignKeyName, childForeignKeyName);
+            ForeignKeyConstraintNames(parentForeignKeyName, childForeignKeyName);
         }
 
-        IManyToManyPart IManyToManyPart.SchemaIs(string schema)
+        IManyToManyPart IManyToManyPart.Schema(string schema)
         {
-            return SchemaIs(schema);
+            return Schema(schema);
         }
 
         IManyToManyPart IManyToManyPart.Check(string checkSql)

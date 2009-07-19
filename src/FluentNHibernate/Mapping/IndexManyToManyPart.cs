@@ -7,13 +7,13 @@ namespace FluentNHibernate.Mapping
     {
         private readonly IndexManyToManyMapping mapping = new IndexManyToManyMapping();
 
-        public IndexManyToManyPart WithColumn(string indexColumnName)
+        public IndexManyToManyPart Column(string indexColumnName)
         {
             mapping.AddColumn(new ColumnMapping { Name = indexColumnName });
             return this;
         }
 
-        public IndexManyToManyPart WithType<TIndex>()
+        public IndexManyToManyPart Type<TIndex>()
         {
             mapping.Class = new TypeReference(typeof(TIndex));
             return this;

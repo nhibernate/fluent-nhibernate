@@ -107,7 +107,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void EnumsDontGetTypeOverriddenByConventionsIfExplicitlySet()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.Map(x => x.Color).CustomTypeIs(typeof(int)))
+                .ForMapping(m => m.Map(x => x.Color).CustomType(typeof(int)))
                 .Element("class/property[@name='Color']").HasAttribute("type", typeof(int).Name);
         }
     }

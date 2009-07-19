@@ -120,7 +120,7 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public IProperty WithLengthOf(int length)
+        public IProperty Length(int length)
         {
             columnAttributes.Set(x => x.Length, length);
             return this;
@@ -141,7 +141,7 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public IProperty FormulaIs(string formula) 
+        public IProperty Formula(string formula) 
         {
             mapping.Formula = formula;
             return this;
@@ -152,9 +152,9 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <typeparam name="TCustomtype">A type which implements <see cref="IUserType"/>.</typeparam>
         /// <returns>This property mapping to continue the method chain</returns>
-        public IProperty CustomTypeIs<TCustomtype>()
+        public IProperty CustomType<TCustomtype>()
         {
-            return CustomTypeIs(typeof(TCustomtype));
+            return CustomType(typeof(TCustomtype));
         }
 
         /// <summary>
@@ -162,12 +162,12 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="type">A type which implements <see cref="IUserType"/>.</param>
         /// <returns>This property mapping to continue the method chain</returns>
-        public IProperty CustomTypeIs(Type type)
+        public IProperty CustomType(Type type)
         {
             if (typeof(ICompositeUserType).IsAssignableFrom(type))
                 AddColumnsFromCompositeUserType(type);
 
-            return CustomTypeIs(TypeMapping.GetTypeString(type));
+            return CustomType(TypeMapping.GetTypeString(type));
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="type">A type which implements <see cref="IUserType"/>.</param>
         /// <returns>This property mapping to continue the method chain</returns>
-        public IProperty CustomTypeIs(string type)
+        public IProperty CustomType(string type)
         {
             mapping.Type = new TypeReference(type);
 
@@ -192,7 +192,7 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public IProperty CustomSqlTypeIs(string sqlType)
+        public IProperty CustomSqlType(string sqlType)
         {
             columnAttributes.Set(x => x.SqlType, sqlType);
             return this;

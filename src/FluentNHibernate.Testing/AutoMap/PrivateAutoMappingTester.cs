@@ -68,7 +68,7 @@ namespace FluentNHibernate.Testing.AutoMap
         private void Model<T>(Func<PropertyInfo, bool> convention)
         {
             model = new PrivateAutoPersistenceModel()
-                .WithSetup(conventions => conventions.FindMappablePrivateProperties = convention);
+                .Setup(conventions => conventions.FindMappablePrivateProperties = convention);
 
             model.AutoMap<T>();
         }

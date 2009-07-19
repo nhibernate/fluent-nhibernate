@@ -9,7 +9,6 @@ namespace FluentNHibernate.Mapping
     {
         bool IsMethodAccess { get; }
         MemberInfo Member { get; }
-        string TableName { get; }
         /// <summary>
         /// Specify caching for this entity.
         /// </summary>
@@ -38,7 +37,7 @@ namespace FluentNHibernate.Mapping
         /// Sets the table name for this one-to-many.
         /// </summary>
         /// <param name="name">Table name</param>
-        ICollectionRelationship WithTableName(string name);
+        ICollectionRelationship TableName(string name);
 
         ICollectionRelationship ForeignKeyCascadeOnDelete();
 

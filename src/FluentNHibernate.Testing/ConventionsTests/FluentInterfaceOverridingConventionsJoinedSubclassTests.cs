@@ -86,7 +86,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void SchemaShouldntBeOverwritten()
         {
-            Mapping(x => x.SchemaIs("dbo"));
+            Mapping(x => x.Schema("dbo"));
 
             Convention(x => x.Schema("xxx"));
 
@@ -106,7 +106,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void TableNameShouldntBeOverwritten()
         {
-            Mapping(x => x.WithTableName("table"));
+            Mapping(x => x.Table("table"));
 
             Convention(x => x.TableName("value"));
 

@@ -86,12 +86,12 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public IComponentBase WithParentReference(Expression<Func<T, object>> exp)
+        public IComponentBase ParentReference(Expression<Func<T, object>> exp)
         {
-            return WithParentReference(ReflectionHelper.GetProperty(exp));
+            return ParentReference(ReflectionHelper.GetProperty(exp));
         }
 
-        private IComponentBase WithParentReference(PropertyInfo property)
+        private IComponentBase ParentReference(PropertyInfo property)
         {
             mapping.Parent = new ParentMapping
             {
@@ -102,9 +102,9 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        IComponentBase IComponentBase.WithParentReference<TExplicit>(Expression<Func<TExplicit, object>> exp)
+        IComponentBase IComponentBase.ParentReference<TExplicit>(Expression<Func<TExplicit, object>> exp)
         {
-            return WithParentReference(ReflectionHelper.GetProperty(exp));
+            return ParentReference(ReflectionHelper.GetProperty(exp));
         }
     }
 }

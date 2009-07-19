@@ -47,7 +47,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ManyToManyMapping_with_foreign_key_name()
         {
             new MappingTester<ManyToManyTarget>()
-                .ForMapping(m => m.HasManyToMany(x => x.GetOtherChildren()).WithForeignKeyConstraintNames("FK_Parent", "FK_Child"))
+                .ForMapping(m => m.HasManyToMany(x => x.GetOtherChildren()).ForeignKeyConstraintNames("FK_Parent", "FK_Child"))
                 .Element("class/bag/key")
                 .HasAttribute("foreign-key", "FK_Parent")
                 .Element("class/bag/many-to-many")
@@ -179,8 +179,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                .ForMapping(map =>
                            map.HasManyToMany(x => x.SetOfChildren)
                            .AsMap("indexColumn")
-                           .WithParentKeyColumn("ParentID")
-                           .WithChildKeyColumn("ChildID")
+                           .ParentKeyColumn("ParentID")
+                           .ChildKeyColumn("ChildID")
                            .Cache.AsReadWrite())
                .Element("class/map/index").ShouldBeInParentAtPosition(2);
        }

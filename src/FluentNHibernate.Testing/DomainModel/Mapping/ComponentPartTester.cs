@@ -13,7 +13,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.Component(x => x.Component, c =>
                     {
                         c.Map(x => x.Name);
-                        c.WithParentReference(x => x.MyParent);
+                        c.ParentReference(x => x.MyParent);
                     }))
                 .Element("class/component/parent").Exists()
                 .HasAttribute("name", "MyParent");
@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.Component(x => x.Component, c =>
                     {
                         c.Map(x => x.Name);
-                        c.WithParentReference(x => x.MyParent);
+                        c.ParentReference(x => x.MyParent);
                     }))
                 .Element("class/component").DoesntHaveAttribute("unique");
         }

@@ -19,7 +19,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void WithKeyPropertyShouldAddToModelKeyPropertiesCollection()
         {
             CompositeId<IdentityTarget>()
-                .Mapping(m => m.WithKeyProperty(x => x.IntId))
+                .Mapping(m => m.KeyProperty(x => x.IntId))
                 .ModelShouldMatch(x => x.KeyProperties.Count().ShouldEqual(1));
         }
 
@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void WithKeyReferenceShouldAddToModelKeyManyToOnesCollection()
         {
             CompositeId<IdentityTarget>()
-                .Mapping(m => m.WithKeyReference(x => x.IntId))
+                .Mapping(m => m.KeyReference(x => x.IntId))
                 .ModelShouldMatch(x => x.KeyManyToOnes.Count().ShouldEqual(1));
         }
 

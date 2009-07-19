@@ -52,7 +52,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void SqlTypeShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.LineOne, x => x.CustomSqlTypeIs("sql-type"));
+            Mapping<ExampleClass>(x => x.LineOne, x => x.CustomSqlType("sql-type"));
 
             Convention(x => x.CustomSqlTypeIs("type"));
 
@@ -62,7 +62,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void TypeShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.LineOne, x => x.CustomTypeIs<CustomUserType>());
+            Mapping<ExampleClass>(x => x.LineOne, x => x.CustomType<CustomUserType>());
 
             Convention(x => x.CustomTypeIs<int>());
 
@@ -72,7 +72,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void FormulaShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.LineOne, x => x.FormulaIs("form"));
+            Mapping<ExampleClass>(x => x.LineOne, x => x.Formula("form"));
 
             Convention(x => x.Formula("xxx"));
 
@@ -186,7 +186,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void LengthShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.LineOne, x => x.WithLengthOf(100));
+            Mapping<ExampleClass>(x => x.LineOne, x => x.Length(100));
 
             Convention(x => x.Length(10));
 

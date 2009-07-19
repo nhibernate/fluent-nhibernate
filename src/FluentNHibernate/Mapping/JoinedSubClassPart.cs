@@ -33,13 +33,13 @@ namespace FluentNHibernate.Mapping
             mapping.AddSubclass(((IJoinedSubclassMappingProvider)subclass).GetJoinedSubclassMapping());
         }
 
-        public JoinedSubClassPart<TSubclass> WithTableName(string tableName)
+        public JoinedSubClassPart<TSubclass> Table(string tableName)
         {
             mapping.TableName = tableName;
             return this;
         }
 
-        public JoinedSubClassPart<TSubclass> SchemaIs(string schema)
+        public JoinedSubClassPart<TSubclass> Schema(string schema)
         {
             mapping.Schema = schema;
             return this;

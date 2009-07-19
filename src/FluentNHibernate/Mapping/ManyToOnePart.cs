@@ -11,13 +11,13 @@ namespace FluentNHibernate.Mapping
     {
         CascadeExpression<IManyToOnePart> Cascade { get; }
         PropertyInfo Property { get; }
-        IManyToOnePart ColumnName(string columnName);
+        IManyToOnePart Column(string columnName);
         INotFoundExpression NotFound { get; }
         FetchTypeExpression<IManyToOnePart> Fetch { get; }
         IManyToOnePart Not { get; }
         OuterJoinBuilder<IManyToOnePart> OuterJoin { get; }
         ManyToOneMapping GetManyToOneMapping();
-        IManyToOnePart WithForeignKey(string foreignKeyName);
+        IManyToOnePart ForeignKey(string foreignKeyName);
         IManyToOnePart Insert();
         IManyToOnePart Update();
         IManyToOnePart ReadOnly();
@@ -176,12 +176,12 @@ namespace FluentNHibernate.Mapping
             return LazyLoad();
         }
 		
-		public ManyToOnePart<TOther> WithForeignKey()
+		public ManyToOnePart<TOther> ForeignKey()
 		{
-			return WithForeignKey(string.Format("FK_{0}To{1}", Property.DeclaringType.Name, Property.Name));
+			return ForeignKey(string.Format("FK_{0}To{1}", Property.DeclaringType.Name, Property.Name));
 		}
 		
-		public ManyToOnePart<TOther> WithForeignKey(string foreignKeyName)
+		public ManyToOnePart<TOther> ForeignKey(string foreignKeyName)
 		{
 		    mapping.ForeignKey = foreignKeyName;
 			return this;
@@ -201,12 +201,12 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        IManyToOnePart IManyToOnePart.WithForeignKey(string foreignKeyName)
+        IManyToOnePart IManyToOnePart.ForeignKey(string foreignKeyName)
         {
-            return WithForeignKey(foreignKeyName);
+            return ForeignKey(foreignKeyName);
         }
 
-        public ManyToOnePart<TOther> WithColumns(params string[] columns)
+        public ManyToOnePart<TOther> Columns(params string[] columns)
         {
             foreach (var column in columns)
             {
@@ -216,13 +216,13 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public ManyToOnePart<TOther> WithColumns(params Expression<Func<TOther, object>>[] columns)
+        public ManyToOnePart<TOther> Columns(params Expression<Func<TOther, object>>[] columns)
         {
             foreach (var expression in columns)
             {
                 var property = ReflectionHelper.GetProperty(expression);
 
-                WithColumns(property.Name);
+                Columns(property.Name);
             }
 
             return this;
@@ -233,12 +233,12 @@ namespace FluentNHibernate.Mapping
 			get { return cascade; }
 		}
 
-        IManyToOnePart IManyToOnePart.ColumnName(string name)
+        IManyToOnePart IManyToOnePart.Column(string name)
         {
-            return ColumnName(name);
+            return Column(name);
         }
 
-        public ManyToOnePart<TOther> ColumnName(string name)
+        public ManyToOnePart<TOther> Column(string name)
         {
             columns.Clear();
             columns.Add(name);

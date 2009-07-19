@@ -13,7 +13,7 @@ namespace FluentNHibernate.Mapping
         /// Sets the table for the class.
         /// </summary>
         /// <param name="tableName">Table name</param>
-        void WithTable(string tableName);
+        void Table(string tableName);
 
         /// <summary>
         /// Sets the hibernate-mapping schema for this class.

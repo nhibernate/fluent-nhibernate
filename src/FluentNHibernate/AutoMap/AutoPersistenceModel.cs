@@ -26,7 +26,7 @@ namespace FluentNHibernate.AutoMap
         /// </summary>
         /// <param name="alterationDelegate">Lambda to declare alterations</param>
         /// <returns>AutoPersistenceModel</returns>
-        public AutoPersistenceModel WithAlterations(Action<AutoMappingAlterationCollection> alterationDelegate)
+        public AutoPersistenceModel Alterations(Action<AutoMappingAlterationCollection> alterationDelegate)
         {
             alterationDelegate(alterations);
             return this;
@@ -56,7 +56,7 @@ namespace FluentNHibernate.AutoMap
         /// </summary>
         /// <param name="expressionsAction"></param>
         /// <returns></returns>
-        public AutoPersistenceModel WithSetup(Action<AutoMappingExpressions> expressionsAction)
+        public AutoPersistenceModel Setup(Action<AutoMappingExpressions> expressionsAction)
         {
             expressionsAction(Expressions);
             return this;

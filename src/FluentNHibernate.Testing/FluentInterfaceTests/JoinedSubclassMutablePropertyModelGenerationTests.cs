@@ -107,7 +107,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void WithTableNameShouldSetModelTableNamePropertyToValue()
         {
             JoinedSubClass<ChildRecord>()
-                .Mapping(m => m.WithTableName("table"))
+                .Mapping(m => m.Table("table"))
                 .ModelShouldMatch(x => x.TableName.ShouldEqual("table"));
         }
 
@@ -115,7 +115,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void SchemaIsShouldSetModelSchemaPropertyToValue()
         {
             JoinedSubClass<ChildRecord>()
-                .Mapping(m => m.SchemaIs("schema"))
+                .Mapping(m => m.Schema("schema"))
                 .ModelShouldMatch(x => x.Schema.ShouldEqual("schema"));
         }
 

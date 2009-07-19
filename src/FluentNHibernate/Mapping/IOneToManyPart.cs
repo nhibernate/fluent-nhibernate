@@ -40,6 +40,6 @@ namespace FluentNHibernate.Mapping
         IOneToManyPart Persister<T>() where T : IEntityPersister;
         IOneToManyPart Check(string checkSql);
         IOneToManyPart Generic();
-        IOneToManyPart WithForeignKeyConstraintName(string foreignKeyName);
+        IOneToManyPart ForeignKeyConstraintName(string foreignKeyName);
     }
 }

@@ -66,7 +66,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void WithLengthOfShouldSetModelLengthPropertyToValue()
         {
             DiscriminatorMap<SuperRecord>()
-                .Mapping(m => m.WithLengthOf(10))
+                .Mapping(m => m.Length(10))
                 .ModelShouldMatch(x => x.Length.ShouldEqual(10));
         }
     }

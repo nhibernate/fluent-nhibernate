@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void Defaults()
 		{
 			new MappingTester<CompIdTarget>()
-				.ForMapping(c => c.CompositeId().WithKeyProperty(x => x.LongId))
+				.ForMapping(c => c.CompositeId().KeyProperty(x => x.LongId))
 				.Element("class/composite-id/key-property")
 					.HasAttribute("name", "LongId");
 		}
@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void KeyPropertyExplicitColumnName()
 		{
 			new MappingTester<CompIdTarget>()
-				.ForMapping(c => c.CompositeId().WithKeyProperty(x => x.LongId, "SomeColumn"))
+				.ForMapping(c => c.CompositeId().KeyProperty(x => x.LongId, "SomeColumn"))
 				.Element("class/composite-id/key-property/column")
 					.HasAttribute("name", "SomeColumn");
 		}
@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void KeyPropertyTypeIsSetToTypeName()
 		{
 			new MappingTester<CompIdTarget>()
-				.ForMapping(c => c.CompositeId().WithKeyProperty(x => x.LongId))
+				.ForMapping(c => c.CompositeId().KeyProperty(x => x.LongId))
 				.Element("class/composite-id/key-property")
 					.HasAttribute("type", typeof(long).AssemblyQualifiedName);
 		}
@@ -36,7 +36,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void KeyPropertyTypeIsSetToFullTypeNameIfTypeGeneric()
 		{
 			new MappingTester<CompIdTarget>()
-				.ForMapping(c => c.CompositeId().WithKeyProperty(x => x.NullableLongId))
+				.ForMapping(c => c.CompositeId().KeyProperty(x => x.NullableLongId))
 				.Element("class/composite-id/key-property")
 					.HasAttribute("type", typeof(long?).AssemblyQualifiedName);
 		}
@@ -45,7 +45,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void KeyManyToOneDefaults()
 		{
 			new MappingTester<CompIdTarget>()
-				.ForMapping(c => c.CompositeId().WithKeyReference(x => x.Child))
+				.ForMapping(c => c.CompositeId().KeyReference(x => x.Child))
 				.Element("class/composite-id/key-many-to-one")
 					.HasAttribute("name", "Child")
 					.HasAttribute("class", typeof(CompIdChild).AssemblyQualifiedName);
@@ -55,7 +55,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void KeyManyToOneExplicitColumnName()
 		{
 			new MappingTester<CompIdTarget>()
-				.ForMapping(c => c.CompositeId().WithKeyReference(x => x.Child, "SomeColumn"))
+				.ForMapping(c => c.CompositeId().KeyReference(x => x.Child, "SomeColumn"))
 				.Element("class/composite-id/key-many-to-one/column").HasAttribute("name", "SomeColumn");
 		}
 
@@ -64,8 +64,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 			new MappingTester<CompIdTarget>()
 				.ForMapping(c => c.CompositeId()
-					.WithKeyProperty(x=>x.LongId)
-					.WithKeyReference(x => x.Child))
+					.KeyProperty(x=>x.LongId)
+					.KeyReference(x => x.Child))
 				.Element("class/composite-id/key-property")
 					.HasAttribute("name", "LongId")
 				.RootElement.Element("class/composite-id/key-many-to-one")
@@ -80,8 +80,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 {
                     m.Map(x => x.DummyProp); // just a property in this case
                     m.CompositeId()
-                        .WithKeyProperty(x => x.LongId)
-                        .WithKeyReference(x => x.Child);
+                        .KeyProperty(x => x.LongId)
+                        .KeyReference(x => x.Child);
                 })
                 .Element("class/*[1]").HasName("composite-id");
         }

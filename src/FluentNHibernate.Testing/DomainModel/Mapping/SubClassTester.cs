@@ -364,7 +364,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
                     map.DiscriminateSubClassesOnColumn("Type")
-                        .WithLengthOf(1234))
+                        .Length(1234))
                 .Element("class/discriminator")
                     .HasAttribute("length", "1234");
         }

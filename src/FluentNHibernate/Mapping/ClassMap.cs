@@ -222,7 +222,7 @@ namespace FluentNHibernate.Mapping
         /// Sets the table for the class.
         /// </summary>
         /// <param name="tableName">Table name</param>
-        public void WithTable(string tableName)
+        public void Table(string tableName)
         {
             mapping.TableName = tableName;
         }
@@ -258,7 +258,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="tableName">Joined table name</param>
         /// <param name="action">Joined table mapping</param>
-        public void WithTable(string tableName, Action<JoinPart<T>> action)
+        public void Table(string tableName, Action<JoinPart<T>> action)
         {
             var join = new JoinPart<T>(tableName);
             action(join);
