@@ -33,6 +33,8 @@ namespace FluentNHibernate.MappingModel.Collections
             get { return columns; }
         }
 
+        public Type ContainingEntityType { get; set; }
+
         public bool IsSpecified<TResult>(Expression<Func<ElementMapping, TResult>> property)
         {
             return attributes.IsSpecified(property);

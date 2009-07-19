@@ -261,7 +261,7 @@ namespace FluentNHibernate.Mapping
 
         public T AsElement(string columnName)
         {
-            elementPart = new ElementPart();
+            elementPart = new ElementPart(typeof(T));
             elementPart.WithType<TChild>();
 
             if (!string.IsNullOrEmpty(columnName))
