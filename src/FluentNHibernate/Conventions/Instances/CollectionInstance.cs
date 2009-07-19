@@ -21,10 +21,16 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new IRelationshipInstance Relationship
         {
-            get { return new RelationshipInstance(mapping.Relationship); }
+            get
+            {
+                if (mapping.Relationship is ManyToManyMapping)
+                    return new ManyToManyInstance((ManyToManyMapping)mapping.Relationship);
+
+                return new OneToManyInstance((OneToManyMapping)mapping.Relationship);
+            }
         }
 
-        ICollectionCascadeInstance ICollectionInstance.Cascade
+        public new ICollectionCascadeInstance Cascade
         {
             get
             {
@@ -36,7 +42,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        IFetchInstance ICollectionInstance.Fetch
+        public new IFetchInstance Fetch
         {
             get
             {
@@ -48,7 +54,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        IOptimisticLockInstance ICollectionInstance.OptimisticLock
+        public new IOptimisticLockInstance OptimisticLock
         {
             get
             {
@@ -60,7 +66,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        IOuterJoinInstance ICollectionInstance.OuterJoin
+        public new IOuterJoinInstance OuterJoin
         {
             get
             {
@@ -70,31 +76,6 @@ namespace FluentNHibernate.Conventions.Instances
                         mapping.Fetch = value;
                 });
             }
-        }
-
-        string ICollectionInspector.OuterJoin
-        {
-            get { return mapping.OuterJoin; }
-        }
-
-        string ICollectionInspector.OptimisticLock
-        {
-            get { return mapping.OptimisticLock; }
-        }
-
-        bool ICollectionInspector.Generic
-        {
-            get { return mapping.Generic; }
-        }
-
-        bool ICollectionInspector.Inverse
-        {
-            get { return mapping.Inverse; }
-        }
-
-        string ICollectionInspector.Fetch
-        {
-            get { return mapping.Fetch; }
         }
 
         public void Check(string constraint)
@@ -121,7 +102,7 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.CollectionType = new TypeReference(type);
         }
 
-        void ICollectionInstance.Generic()
+        public new void Generic()
         {
             if (mapping.IsSpecified(x => x.Generic))
                 return;
@@ -130,7 +111,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        void ICollectionInstance.Inverse()
+        public new void Inverse()
         {
             if (mapping.IsSpecified(x => x.Inverse))
                 return;
@@ -149,11 +130,6 @@ namespace FluentNHibernate.Conventions.Instances
         {
             if (!mapping.IsSpecified(x => x.Where))
                 mapping.Where = whereClause;
-        }
-
-        string ICollectionInspector.Cascade
-        {
-            get { return mapping.Cascade; }
         }
 
         public void SetTableName(string tableName)
@@ -207,27 +183,6 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        IKeyInstance ICollectionInstance.Key
-        {
-            get { return Key; }
-        }
-        public string TableName
-        {
-            get { return mapping.TableName; }
-        }
-        public bool IsMethodAccess
-        {
-            get { return Member != null && Member.MemberType == MemberTypes.Method; }
-        }
-        public MemberInfo Member
-        {
-            get { return mapping.MemberInfo; }
-        }
-        IRelationshipInspector ICollectionInspector.Relationship
-        {
-            get { return Relationship; }
-        }
-
         public IAccessInstance Access
         {
             get
@@ -240,7 +195,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public IKeyInstance Key
+        public new IKeyInstance Key
         {
             get { return new KeyInstance(mapping.Key); }
         }

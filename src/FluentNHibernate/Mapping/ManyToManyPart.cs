@@ -216,7 +216,10 @@ namespace FluentNHibernate.Mapping
 
 	    protected override ICollectionRelationshipMapping GetRelationship()
 	    {
-            return new ManyToManyMapping(relationshipAttributes.CloneInner());
+	        return new ManyToManyMapping(relationshipAttributes.CloneInner())
+	        {
+	            ContainingEntityType = entity
+	        };
 	    }
 
 	    CollectionCascadeExpression<IManyToManyPart> IManyToManyPart.Cascade

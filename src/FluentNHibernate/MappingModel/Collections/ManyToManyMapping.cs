@@ -9,9 +9,6 @@ namespace FluentNHibernate.MappingModel.Collections
         private readonly AttributeStore<ManyToManyMapping> attributes;
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
         
-        public Type ParentType { get; set; }
-        public Type ChildType { get; set; }
-
         public ManyToManyMapping()
             : this(new AttributeStore())
         {}
@@ -27,6 +24,18 @@ namespace FluentNHibernate.MappingModel.Collections
 
             foreach (var column in columns)
                 visitor.Visit(column);
+        }
+
+        public Type ChildType
+        {
+            get { return attributes.Get(x => x.ChildType); }
+            set { attributes.Set(x => x.ChildType, value); }
+        }
+
+        public Type ParentType
+        {
+            get { return attributes.Get(x => x.ParentType); }
+            set { attributes.Set(x => x.ParentType, value); }
         }
 
         public TypeReference Class
@@ -75,6 +84,8 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             get { return columns; }
         }
+
+        public Type ContainingEntityType { get; set; }
 
         public void AddColumn(ColumnMapping column)
         {

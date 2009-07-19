@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using FluentNHibernate.Conventions.Instances;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Inspections
@@ -41,24 +42,39 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public IKeyInspector Key
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                if (mapping.Key == null)
+                    return new KeyInspector(new KeyMapping());
+
+                return new KeyInspector(mapping.Key);
+            }
         }
+
         public string TableName
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.TableName; }
         }
+
         public bool IsMethodAccess
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.MemberInfo is MethodInfo; }
         }
+
         public MemberInfo Member
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.MemberInfo; }
         }
 
         public IRelationshipInspector Relationship
         {
-            get { return new RelationshipInspector(mapping.Relationship); }
+            get
+            {
+                if (mapping.Relationship is ManyToManyMapping)
+                    return new ManyToManyInspector((ManyToManyMapping)mapping.Relationship);
+
+                return new OneToManyInspector((OneToManyMapping)mapping.Relationship);
+            }
         }
 
         public string Cascade

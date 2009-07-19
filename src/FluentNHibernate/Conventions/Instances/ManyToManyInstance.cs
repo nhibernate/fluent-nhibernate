@@ -7,9 +7,9 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public class ManyToManyInstance : RelationshipInstance, IManyToManyInstance
+    public class ManyToManyInstance : ManyToManyInspector, IManyToManyInstance
     {
-        private new readonly ManyToManyMapping mapping;
+        private readonly ManyToManyMapping mapping;
 
         public ManyToManyInstance(ManyToManyMapping mapping)
             : base(mapping)
@@ -31,33 +31,14 @@ namespace FluentNHibernate.Conventions.Instances
             mapping.AddColumn(column);
         }
 
-        public IDefaultableEnumerable<IColumnInstance> Columns
+        public new IDefaultableEnumerable<IColumnInstance> Columns
         {
             get
             {
-                var items = new DefaultableList<IColumnInstance>();
-
-                foreach (var column in mapping.Columns)
-                {
-                    items.Add(new ColumnInstance(mapping.ParentType, column));
-                }
-
-                return items;
-            }
-        }
-
-        IDefaultableEnumerable<IColumnInspector> IManyToManyInspector.Columns
-        {
-            get
-            {
-                var items = new DefaultableList<IColumnInspector>();
-
-                foreach (var column in mapping.Columns)
-                {
-                    items.Add(new ColumnInspector(mapping.ParentType, column));
-                }
-
-                return items;
+                return mapping.Columns.UserDefined
+                    .Select(x => new ColumnInstance(mapping.ContainingEntityType, x))
+                    .Cast<IColumnInstance>()
+                    .ToDefaultableList();
             }
         }
     }

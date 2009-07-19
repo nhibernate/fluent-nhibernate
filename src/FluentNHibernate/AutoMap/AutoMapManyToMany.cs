@@ -51,7 +51,7 @@ namespace FluentNHibernate.AutoMap
         {
             // TODO: Make the child type safer
             mapping.SetDefaultValue(x => x.Name, property.Name);
-            mapping.Relationship = CreateManyToMany(property, property.PropertyType.GetGenericArguments()[0]);
+            mapping.Relationship = CreateManyToMany(property, property.PropertyType.GetGenericArguments()[0], classMap.Type);
             mapping.ContainingEntityType = classMap.Type;
             mapping.Key = new KeyMapping();
             mapping.ChildType = property.PropertyType.GetGenericArguments()[0];
@@ -61,11 +61,12 @@ namespace FluentNHibernate.AutoMap
                 mapping.Inverse = true;
         }
 
-        private ICollectionRelationshipMapping CreateManyToMany(PropertyInfo property, Type child)
+        private ICollectionRelationshipMapping CreateManyToMany(PropertyInfo property, Type child, Type parent)
         {
             var mapping = new ManyToManyMapping
             {
-                Class = new TypeReference(property.PropertyType.GetGenericArguments()[0])
+                Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]),
+                ContainingEntityType = parent
             };
 
             mapping.AddDefaultColumn(new ColumnMapping { Name = child.Name + "_id" });
