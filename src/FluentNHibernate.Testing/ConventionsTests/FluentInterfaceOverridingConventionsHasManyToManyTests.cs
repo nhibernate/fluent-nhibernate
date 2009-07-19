@@ -121,7 +121,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping(x => x.Children, x => x.ParentKeyColumn("name"));
 
-            Convention(x => x.Key.ColumnName("xxx"));
+            Convention(x => x.Key.Column("xxx"));
 
             VerifyModel(x => x.Key.Columns.First().Name.ShouldEqual("name"));
         }
@@ -131,7 +131,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping(x => x.Children, x => x.ChildKeyColumn("name"));
 
-            Convention(x => x.Relationship.ColumnName("xxx"));
+            Convention(x => x.Relationship.Column("xxx"));
 
             VerifyModel(x => ((ManyToManyMapping)x.Relationship).Columns.First().Name.ShouldEqual("name"));
         }

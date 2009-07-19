@@ -16,7 +16,7 @@ namespace FluentNHibernate.Conventions.Instances
             this.mapping = mapping;
         }
 
-        public void ColumnName(string columnName)
+        public void Column(string columnName)
         {
             if (mapping.Columns.UserDefined.Count() > 0)
                 return;

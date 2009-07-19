@@ -26,7 +26,7 @@ namespace FluentNHibernate.Mapping
             access = new AccessStrategyBuilder<IdentityPart>(this, value => mapping.Access = value);
             GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, property.PropertyType, entity);
 
-            ColumnName(columnName);
+            Column(columnName);
 
             SetDefaultGenerator();
 		}
@@ -81,7 +81,7 @@ namespace FluentNHibernate.Mapping
         /// Sets the column name for the identity field.
         /// </summary>
         /// <param name="columnName">Column name</param>
-        public IdentityPart ColumnName(string columnName)
+        public IdentityPart Column(string columnName)
         {
             columns.Clear(); // only currently support one column for ids
             columns.Add(columnName);

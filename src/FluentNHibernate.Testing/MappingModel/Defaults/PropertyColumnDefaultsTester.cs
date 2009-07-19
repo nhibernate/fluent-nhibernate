@@ -28,7 +28,7 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
         public void ShouldHaveNoDefaultsIfUserSpecifiedColumn()
         {
             var mapping = new PropertyMap(Prop(x => x.Name), typeof(PropertyTarget))
-                .ColumnName("explicit")
+                .Column("explicit")
                 .GetPropertyMapping();
 
             mapping.Columns.Defaults.Count().ShouldEqual(0);

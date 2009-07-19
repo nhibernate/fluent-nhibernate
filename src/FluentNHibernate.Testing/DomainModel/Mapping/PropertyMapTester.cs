@@ -51,7 +51,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithFluentColumnNameUsesColumnNameForColumnNameAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).ColumnName("column_name"))
+                .ForMapping(m => m.Map(x => x.Name).Column("column_name"))
                 .Element("class/property/column").HasAttribute("name", "column_name");
         }
 
@@ -71,7 +71,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void ShouldAddAllColumns()
         {
-            Model<PropertyTarget>(m => m.Map(x => x.Name).ColumnNames.Add("one", "two", "three"))
+            Model<PropertyTarget>(m => m.Map(x => x.Name).Columns.Add("one", "two", "three"))
                 .Element("class/property[@name='Name']").HasThisManyChildNodes(3)
                 .Element("class/property[@name='Name']/column[@name='one']").Exists()
                 .Element("class/property[@name='Name']/column[@name='two']").Exists()
@@ -97,7 +97,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void ColumnNameIsColumnNameWhenColumnNameFluentGiven()
         {
-            Model<PropertyTarget>(m => m.Map(x => x.Name).ColumnNames.Add("column_name"))
+            Model<PropertyTarget>(m => m.Map(x => x.Name).Columns.Add("column_name"))
                 .Element("class/property[@name='Name']/column")
                 .HasAttribute("name", "column_name");
         }

@@ -10,7 +10,7 @@ namespace FluentNHibernate.Mapping
     public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild, OneToManyMapping>, IOneToManyPart, IAccessStrategy<OneToManyPart<TChild>> 
     {
         private readonly Type entity;
-        private readonly ColumnNameCollection<OneToManyPart<TChild>> columnNames;
+        private readonly ColumnNameCollection<OneToManyPart<TChild>> columns;
         private readonly CollectionCascadeExpression<IOneToManyPart> cascade;
         private readonly NotFoundExpression<OneToManyPart<TChild>> notFound;
 
@@ -26,7 +26,7 @@ namespace FluentNHibernate.Mapping
             : base(entity, member, collectionType)
         {
             this.entity = entity;
-            columnNames = new ColumnNameCollection<OneToManyPart<TChild>>(this);
+            columns = new ColumnNameCollection<OneToManyPart<TChild>>(this);
             cascade = new CollectionCascadeExpression<IOneToManyPart>(this, value => collectionAttributes.Set(x => x.Cascade, value));
             notFound = new NotFoundExpression<OneToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
 
@@ -37,10 +37,10 @@ namespace FluentNHibernate.Mapping
         {
             var collection = base.GetCollectionMapping();
 
-            if (columnNames.List().Count == 0)
+            if (columns.List().Count == 0)
                 collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
 
-            foreach (var column in columnNames.List())
+            foreach (var column in columns.List())
                 collection.Key.AddColumn(new ColumnMapping { Name = column });
 
             return collection;
@@ -56,14 +56,14 @@ namespace FluentNHibernate.Mapping
 
         public IOneToManyPart KeyColumnName(string columnName)
         {
-            KeyColumnNames.Clear();
-            KeyColumnNames.Add(columnName);
+            KeyColumns.Clear();
+            KeyColumns.Add(columnName);
             return this;
         }
 
-        public ColumnNameCollection<OneToManyPart<TChild>> KeyColumnNames
+        public ColumnNameCollection<OneToManyPart<TChild>> KeyColumns
         {
-            get { return columnNames; }
+            get { return columns; }
         }
 
         public IOneToManyPart ForeignKeyConstraintName(string foreignKeyName)
@@ -160,7 +160,7 @@ namespace FluentNHibernate.Mapping
 
         IColumnNameCollection IOneToManyPart.KeyColumnNames
         {
-            get { return KeyColumnNames; }
+            get { return KeyColumns; }
         }
 
         IAccessStrategyBuilder IRelationship.Access

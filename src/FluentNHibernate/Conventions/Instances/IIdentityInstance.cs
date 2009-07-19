@@ -4,9 +4,9 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public interface IIdentityInstance : IIdentityInspector
     {
-        void ColumnName(string column);
+        void Column(string column);
         void UnsavedValue(string unsavedValue);
-        IAccessInstance Access { get; }
+        new IAccessInstance Access { get; }
         IGeneratorInstance GeneratedBy { get; }
     }
 }

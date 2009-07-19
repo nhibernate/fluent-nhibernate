@@ -4,9 +4,9 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public interface IVersionInstance : IVersionInspector
     {
-        IAccessInstance Access { get; }
-        IGeneratedInstance Generated { get; }
-        void ColumnName(string columnName);
+        new IAccessInstance Access { get; }
+        new IGeneratedInstance Generated { get; }
+        void Column(string columnName);
         void UnsavedValue(string unsavedValue);
     }
 }

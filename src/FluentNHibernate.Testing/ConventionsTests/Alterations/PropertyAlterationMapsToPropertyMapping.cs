@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Alterations
         {
             mapping.AddDefaultColumn(new ColumnMapping { NotNull = true });
 
-            alteration.ColumnName("test");
+            alteration.Column("test");
 
             mapping.Columns.Count().ShouldEqual(1);
             mapping.Columns.First().Name.ShouldEqual("test");
@@ -42,7 +42,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Alterations
         {
             mapping.AddDefaultColumn(new ColumnMapping());
 
-            alteration.ColumnName("test");
+            alteration.Column("test");
             alteration.Not.Nullable();
 
             mapping.Columns.Count().ShouldEqual(1);
@@ -56,7 +56,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Alterations
             mapping.AddDefaultColumn(new ColumnMapping());
 
             alteration.Not.Nullable();
-            alteration.ColumnName("test");
+            alteration.Column("test");
 
             mapping.Columns.Count().ShouldEqual(1);
             mapping.Columns.First().Name.ShouldEqual("test");

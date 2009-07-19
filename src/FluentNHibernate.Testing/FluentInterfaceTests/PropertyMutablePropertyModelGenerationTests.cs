@@ -156,7 +156,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void ColumnNameShouldOverrideModelDefaultColumn()
         {
             Property()
-                .Mapping(m => m.ColumnName("col"))
+                .Mapping(m => m.Column("col"))
                 .ModelShouldMatch(x => x.Columns.First().Name.ShouldEqual("col"));
         }
 
@@ -164,7 +164,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void ColumnNamesShouldAddModelColumnsCollection()
         {
             Property()
-                .Mapping(m => m.ColumnNames.Add("one", "two"))
+                .Mapping(m => m.Columns.Add("one", "two"))
                 .ModelShouldMatch(x => x.Columns.Count().ShouldEqual(2));
         }
 
@@ -172,7 +172,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void ColumnNamesShouldAddModelColumnsCollectionWithCorrectName()
         {
             Property()
-                .Mapping(m => m.ColumnNames.Add("one", "two"))
+                .Mapping(m => m.Columns.Add("one", "two"))
                 .ModelShouldMatch(x =>
                 {
                     x.Columns.First().Name.ShouldEqual("one");

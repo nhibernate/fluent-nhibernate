@@ -66,31 +66,31 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public void CustomTypeIs<T>()
+        public void CustomType<T>()
         {
             if (!mapping.IsSpecified(x => x.Type))
                 mapping.Type = new TypeReference(typeof(T));
         }
 
-        public void CustomTypeIs(TypeReference type)
+        public void CustomType(TypeReference type)
         {
             if (!mapping.IsSpecified(x => x.Type))
                 mapping.Type = type;
         }
 
-        public void CustomTypeIs(Type type)
+        public void CustomType(Type type)
         {
             if (!mapping.IsSpecified(x => x.Type))
                 mapping.Type = new TypeReference(type);
         }
 
-        public void CustomTypeIs(string type)
+        public void CustomType(string type)
         {
             if (!mapping.IsSpecified(x => x.Type))
                 mapping.Type = new TypeReference(type);
         }
 
-        public void CustomSqlTypeIs(string sqlType)
+        public void CustomSqlType(string sqlType)
         {
             if (mapping.Columns.First().IsSpecified(x => x.SqlType))
                 return;
@@ -128,7 +128,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public void ColumnName(string columnName)
+        public void Column(string columnName)
         {
             if (mapping.Columns.UserDefined.Count() > 0)
                 return;

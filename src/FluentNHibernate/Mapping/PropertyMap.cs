@@ -10,7 +10,7 @@ namespace FluentNHibernate.Mapping
         private readonly Type parentType;
         private readonly AccessStrategyBuilder<PropertyMap> access;
         private readonly PropertyGeneratedBuilder generated;
-        private readonly ColumnNameCollection<IProperty> columnNames;
+        private readonly ColumnNameCollection<IProperty> columns;
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
         private bool nextBool = true;
 
@@ -18,7 +18,7 @@ namespace FluentNHibernate.Mapping
 
         public PropertyMap(PropertyInfo property, Type parentType)
         {
-            columnNames = new ColumnNameCollection<IProperty>(this);
+            columns = new ColumnNameCollection<IProperty>(this);
             access = new AccessStrategyBuilder<PropertyMap>(this, value => mapping.Access = value);
             generated = new PropertyGeneratedBuilder(this, value => mapping.Generated = value);
 
@@ -37,10 +37,10 @@ namespace FluentNHibernate.Mapping
 
         public PropertyMapping GetPropertyMapping()
         {
-            if (columnNames.List().Count == 0)
+            if (columns.List().Count == 0)
                 mapping.AddDefaultColumn(CreateColumn(mapping.PropertyInfo.Name));
 
-            foreach (var column in columnNames.List())
+            foreach (var column in columns.List())
             {
                 var columnMapping = CreateColumn(column);
 
@@ -74,21 +74,21 @@ namespace FluentNHibernate.Mapping
             get { return parentType; }
         }
 
-        public IProperty ColumnName(string columnName)
+        public IProperty Column(string columnName)
         {
-            ColumnNames.Clear();
-            ColumnNames.Add(columnName);
+            Columns.Clear();
+            Columns.Add(columnName);
             return this;
         }
 
-        public ColumnNameCollection<IProperty> ColumnNames
+        public ColumnNameCollection<IProperty> Columns
         {
-            get { return columnNames; }
+            get { return columns; }
         }
 
-        IColumnNameCollection IProperty.ColumnNames
+        IColumnNameCollection IProperty.Columns
         {
-            get { return ColumnNames; }
+            get { return Columns; }
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace FluentNHibernate.Mapping
 
             foreach (var name in inst.PropertyNames)
             {
-                ColumnNames.Add(name);
+                Columns.Add(name);
             }
         }
 

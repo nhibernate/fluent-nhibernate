@@ -22,7 +22,7 @@ namespace FluentNHibernate.Conventions
         {
             var columnName = GetKeyName(instance.Property, instance.Class.GetUnderlyingSystemType());
 
-            instance.ColumnName(columnName);
+            instance.Column(columnName);
         }
 
         public void Accept(IAcceptanceCriteria<IOneToManyCollectionInspector> acceptance)
@@ -34,7 +34,7 @@ namespace FluentNHibernate.Conventions
         {
             var columnName = GetKeyName(null, instance.EntityType);
 
-            instance.Key.ColumnName(columnName);
+            instance.Key.Column(columnName);
         }
 
         public void Accept(IAcceptanceCriteria<IManyToManyCollectionInspector> acceptance)
@@ -48,10 +48,10 @@ namespace FluentNHibernate.Conventions
             var childColumn = GetKeyName(null, instance.ChildType);
 
             if (instance.Key.Columns.IsEmpty())
-                instance.Key.ColumnName(keyColumn);
+                instance.Key.Column(keyColumn);
 
             if (instance.Relationship.Columns.IsEmpty())
-                instance.Relationship.ColumnName(childColumn);
+                instance.Relationship.Column(childColumn);
         }
     }
 }

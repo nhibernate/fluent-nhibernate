@@ -38,9 +38,9 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ColumnNameShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.LineOne, x => x.ColumnName("xxx"));
+            Mapping<ExampleClass>(x => x.LineOne, x => x.Column("xxx"));
 
-            Convention(x => x.ColumnName("yyy"));
+            Convention(x => x.Column("yyy"));
 
             VerifyModel(x =>
             {
@@ -54,7 +54,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping<ExampleClass>(x => x.LineOne, x => x.CustomSqlType("sql-type"));
 
-            Convention(x => x.CustomSqlTypeIs("type"));
+            Convention(x => x.CustomSqlType("type"));
 
             VerifyModel(x => x.Columns.First().SqlType.ShouldEqual("sql-type"));
         }
@@ -64,7 +64,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping<ExampleClass>(x => x.LineOne, x => x.CustomType<CustomUserType>());
 
-            Convention(x => x.CustomTypeIs<int>());
+            Convention(x => x.CustomType<int>());
 
             VerifyModel(x => x.Type.Name.ShouldEqual(typeof(CustomUserType).AssemblyQualifiedName));
         }

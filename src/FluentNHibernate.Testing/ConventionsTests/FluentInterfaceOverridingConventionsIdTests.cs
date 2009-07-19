@@ -38,9 +38,9 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ColumnShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.Id, x => x.ColumnName("name"));
+            Mapping<ExampleClass>(x => x.Id, x => x.Column("name"));
 
-            Convention(x => x.ColumnName("xxx"));
+            Convention(x => x.Column("xxx"));
 
             VerifyModel(x => x.Columns.First().Name.ShouldEqual("name"));
         }

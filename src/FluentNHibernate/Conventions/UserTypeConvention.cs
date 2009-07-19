@@ -24,7 +24,7 @@ namespace FluentNHibernate.Conventions
 
         public virtual void Apply(IPropertyInstance instance)
         {
-            instance.CustomTypeIs<TUserType>();
+            instance.CustomType<TUserType>();
         }
     }
 }

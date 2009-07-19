@@ -5,7 +5,7 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public interface IManyToManyInstance : IManyToManyInspector, IRelationshipInstance
     {
-        void ColumnName(string columnName);
+        void Column(string columnName);
         new IDefaultableEnumerable<IColumnInstance> Columns { get; }
     }
 }

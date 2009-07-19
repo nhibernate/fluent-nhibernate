@@ -23,7 +23,7 @@ namespace FluentNHibernate.Conventions.Defaults
         {
             var mapperType = typeof(GenericEnumMapper<>).MakeGenericType(instance.Type.GetUnderlyingSystemType());
 
-            instance.CustomTypeIs(mapperType);
+            instance.CustomType(mapperType);
         }
     }
 }

@@ -112,7 +112,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .ForTypesThatDeriveFrom<ExampleClass>(c => c.Map(x => x.LineOne).ColumnName("test"));
+                .ForTypesThatDeriveFrom<ExampleClass>(c => c.Map(x => x.LineOne).Column("test"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//property[@name='LineOne']")
@@ -127,7 +127,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .ForTypesThatDeriveFrom<ExampleClass>(c => c.Id(x => x.Id).ColumnName("test"));
+                .ForTypesThatDeriveFrom<ExampleClass>(c => c.Id(x => x.Id).Column("test"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//id/column").HasAttribute("name", "test");
@@ -140,7 +140,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
                 .Setup(x => x.IsComponentType = type => type == typeof(ExampleParentClass))
-                .ForTypesThatDeriveFrom<ExampleClass>(m => m.Component(x => x.Parent, c => c.Map(x => x.ExampleParentClassId).ColumnName("test")));
+                .ForTypesThatDeriveFrom<ExampleClass>(m => m.Component(x => x.Parent, c => c.Map(x => x.ExampleParentClassId).Column("test")));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//component[@name='Parent']/property[@name='ExampleParentClassId']/column").HasAttribute("name", "test");
@@ -706,7 +706,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .ForTypesThatDeriveFrom<ExampleInheritedClass>(c => c.Map(x => x.ExampleProperty).ColumnName("test"));
+                .ForTypesThatDeriveFrom<ExampleInheritedClass>(c => c.Map(x => x.ExampleProperty).Column("test"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//joined-subclass/property[@name='ExampleProperty']")
@@ -722,7 +722,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
                 .Setup(x => x.IsComponentType = type => type == typeof(ExampleParentClass))
-                .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.Component(x => x.Component, c => c.Map(x => x.ExampleParentClassId).ColumnName("test")));
+                .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.Component(x => x.Component, c => c.Map(x => x.ExampleParentClassId).Column("test")));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//joined-subclass/component[@name='Component']/property[@name='ExampleParentClassId']/column").HasAttribute("name", "test");
@@ -802,7 +802,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
                 .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
-                .ForTypesThatDeriveFrom<ExampleInheritedClass>(c => c.Map(x => x.ExampleProperty).ColumnName("test"));
+                .ForTypesThatDeriveFrom<ExampleInheritedClass>(c => c.Map(x => x.ExampleProperty).Column("test"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//subclass/property[@name='ExampleProperty']")
@@ -822,7 +822,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                     x.SubclassStrategy = type => SubclassStrategy.Subclass;
                     x.IsComponentType = type => type == typeof(ExampleParentClass);
                 })
-                .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.Component(x => x.Component, c => c.Map(x => x.ExampleParentClassId).ColumnName("test")));
+                .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.Component(x => x.Component, c => c.Map(x => x.ExampleParentClassId).Column("test")));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//subclass/component[@name='Component']/property[@name='ExampleParentClassId']/column").HasAttribute("name", "test");
@@ -904,7 +904,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         {
             public void Apply(IIdentityInstance instance)
             {
-                instance.ColumnName("test");
+                instance.Column("test");
             }
         }
 
@@ -920,7 +920,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         {
             public void Apply(IManyToOneInstance instance)
             {
-                instance.ColumnName("test");
+                instance.Column("test");
             }
         }
 

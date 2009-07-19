@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void ColumnNameShouldSetModelColumnPropertyToValue()
         {
             Version()
-                .Mapping(m => m.ColumnName("col"))
+                .Mapping(m => m.Column("col"))
                 .ModelShouldMatch(x => x.Column.ShouldEqual("col"));
         }
 

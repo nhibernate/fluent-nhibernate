@@ -25,7 +25,7 @@ namespace FluentNHibernate.Conventions.Defaults
             var enumerationType = instance.Type.GetGenericArguments()[0];
             var mapperType = typeof(GenericEnumMapper<>).MakeGenericType(enumerationType);
 
-            instance.CustomTypeIs(mapperType);
+            instance.CustomType(mapperType);
             instance.Nullable();
         }
     }

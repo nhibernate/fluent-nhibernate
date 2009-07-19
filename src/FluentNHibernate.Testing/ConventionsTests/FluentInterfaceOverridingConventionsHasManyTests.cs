@@ -121,7 +121,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping(x => x.Children, x => x.KeyColumnName("name"));
 
-            Convention(x => x.Key.ColumnName("xxx"));
+            Convention(x => x.Key.Column("xxx"));
 
             VerifyModel(x => x.Key.Columns.First().Name.ShouldEqual("name"));
         }

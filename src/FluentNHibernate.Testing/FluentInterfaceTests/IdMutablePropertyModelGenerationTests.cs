@@ -19,7 +19,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void ColumnNameShouldAddToModelColumnsCollection()
         {
             Id()
-                .Mapping(m => m.ColumnName("col"))
+                .Mapping(m => m.Column("col"))
                 .ModelShouldMatch(x => x.Columns.Count().ShouldEqual(1));
         }
 
@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void ColumnNameShouldSetModelColumnName()
         {
             Id()
-                .Mapping(m => m.ColumnName("col"))
+                .Mapping(m => m.Column("col"))
                 .ModelShouldMatch(x => x.Columns.First().Name.ShouldEqual("col"));
         }
 

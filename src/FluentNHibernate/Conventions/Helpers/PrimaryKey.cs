@@ -24,7 +24,7 @@ namespace FluentNHibernate.Conventions.Helpers
             {
                 var columnName = nameFunc(instance);
 
-                instance.ColumnName(columnName);
+                instance.Column(columnName);
             });
         }
     }

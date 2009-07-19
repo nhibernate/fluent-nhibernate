@@ -9,8 +9,8 @@ namespace FluentNHibernate.Mapping
         Type EntityType { get; }
         Type PropertyType { get; }
         IAccessStrategyBuilder Access { get; }
-        IProperty ColumnName(string columnName);
-        IColumnNameCollection ColumnNames { get; }
+        IProperty Column(string columnName);
+        IColumnNameCollection Columns { get; }
 
         IProperty Insert();
         IProperty Update();

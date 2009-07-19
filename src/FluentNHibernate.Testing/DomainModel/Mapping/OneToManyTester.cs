@@ -130,7 +130,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(map => map
                     .HasMany(x => x.MapOfChildren)
                         .AsMap("Name")
-                        .KeyColumnNames.Add("ParentId"))
+                        .KeyColumns.Add("ParentId"))
                 .Element("class/map/key/column").HasAttribute("name", "ParentId")
                 .Element("class/map/index/column").HasAttribute("name", "Name")
                 .Element("class/map/one-to-many").HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName);
@@ -178,7 +178,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyForeignKeyColumnAsString()
         {
             new MappingTester<OneToManyTarget>()
-                .ForMapping(map => map.HasMany(x => x.BagOfChildren).KeyColumnNames.Add("ParentID"))
+                .ForMapping(map => map.HasMany(x => x.BagOfChildren).KeyColumns.Add("ParentID"))
                 .Element("class/bag/key/column").HasAttribute("name", "ParentID");
         }
 
@@ -188,7 +188,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyTarget>()
                 .ForMapping(map =>
                     map.HasMany(x => x.BagOfChildren)
-                        .KeyColumnNames.Add("ID1", "ID2")
+                        .KeyColumns.Add("ID1", "ID2")
                 )
                 .Element("class/bag/key/column").Exists()
                 .Element("class/bag/key/column[@name='ID1']").Exists()
@@ -201,8 +201,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyTarget>()
                 .ForMapping(map =>
                     map.HasMany(x => x.BagOfChildren)
-                        .KeyColumnNames.Add("ID1")
-                        .KeyColumnNames.Add("ID2")
+                        .KeyColumns.Add("ID1")
+                        .KeyColumns.Add("ID2")
                 )
                 .Element("class/bag/key/column").Exists()
                 .Element("class/bag/key/column[@name='ID1']").Exists()

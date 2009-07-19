@@ -5,15 +5,15 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public interface IManyToOneInstance : IManyToOneInspector
     {
-        void ColumnName(string columnName);
+        void Column(string columnName);
         void CustomClass<T>();
         void CustomClass(Type type);
         new IAccessInstance Access { get; }
         new ICascadeInstance Cascade { get; }
         new IFetchInstance Fetch { get; }
         IManyToOneInstance Not { get; }
-        INotFoundInstance NotFound { get; }
-        IOuterJoinInstance OuterJoin { get; }
+        new INotFoundInstance NotFound { get; }
+        new IOuterJoinInstance OuterJoin { get; }
         void Index(string index);
         void Insert();
         void LazyLoad();

@@ -34,7 +34,7 @@ namespace FluentNHibernate.Mapping
             var propertyMap = new PropertyMap(property, typeof(T));
 
             if (!string.IsNullOrEmpty(columnName))
-                propertyMap.ColumnName(columnName);
+                propertyMap.Column(columnName);
 
             properties.Add(propertyMap);
 

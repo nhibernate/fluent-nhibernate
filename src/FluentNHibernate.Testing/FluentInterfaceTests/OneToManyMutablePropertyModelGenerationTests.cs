@@ -89,7 +89,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void KeyColumnNamesShouldAddColumnsToModelKeyColumnsCollection()
         {
             OneToMany(x => x.BagOfChildren)
-                .Mapping(m => m.KeyColumnNames.Add("col1", "col2"))
+                .Mapping(m => m.KeyColumns.Add("col1", "col2"))
                 .ModelShouldMatch(x => x.Key.Columns.Count().ShouldEqual(2));
         }
 

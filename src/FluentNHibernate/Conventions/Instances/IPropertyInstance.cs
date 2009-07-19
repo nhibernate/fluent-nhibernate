@@ -12,14 +12,14 @@ namespace FluentNHibernate.Conventions.Instances
     {
         new IAccessInstance Access { get; }
         IPropertyInstance Not { get; }
-        void CustomTypeIs<T>();
-        void CustomTypeIs(TypeReference type);
-        void CustomTypeIs(Type type);
-        void CustomTypeIs(string type);
-        void CustomSqlTypeIs(string sqlType);
+        void CustomType<T>();
+        void CustomType(TypeReference type);
+        void CustomType(Type type);
+        void CustomType(string type);
+        void CustomSqlType(string sqlType);
         void Unique();
         void UniqueKey(string keyName);
-        void ColumnName(string columnName);
+        void Column(string columnName);
         void Formula(string formula);
         new IGeneratedInstance Generated { get; }
         void OptimisticLock();

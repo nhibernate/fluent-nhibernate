@@ -59,7 +59,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping(x => x.Column("name"));
 
-            Convention(x => x.ColumnName("xxx"));
+            Convention(x => x.Column("xxx"));
 
             VerifyModel(x => x.Columns.First().Name.ShouldEqual("name"));
         }

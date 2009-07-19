@@ -39,13 +39,13 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public void ColumnName(string columnName)
+        public new void Column(string columnName)
         {
             if (!mapping.IsSpecified(x => x.Column))
                 mapping.Column = columnName;
         }
 
-        public void UnsavedValue(string unsavedValue)
+        public new void UnsavedValue(string unsavedValue)
         {
             if (!mapping.IsSpecified(x => x.UnsavedValue))
                 mapping.UnsavedValue = unsavedValue;
