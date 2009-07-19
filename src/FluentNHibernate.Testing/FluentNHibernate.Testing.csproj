@@ -110,6 +110,7 @@
     <Compile Include="ConventionsTests\Inspection\CacheInspectorMapsToCacheMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\AnyInspectorMapsToAnyMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ComponentInspectorMapsToComponentMapping.cs" />
+    <Compile Include="ConventionsTests\Inspection\DynamicComponentInspectorMapsToDynamicComponentMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\JoinInspectorMapsToJoinMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\MetaValueInspectorMapsToMetaValueMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ManyToOneInspectorMapsToManyToOneMapping.cs" />
