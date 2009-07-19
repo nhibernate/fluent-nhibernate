@@ -20,25 +20,25 @@ namespace FluentNHibernate.Mapping
             return mapping;
         }
 
-        public CachePart AsReadWrite()
+        public CachePart ReadWrite()
         {
            mapping.Usage = "read-write";
            return this;
         }
 
-        public CachePart AsNonStrictReadWrite()
+        public CachePart NonStrictReadWrite()
         {
             mapping.Usage = "nonstrict-read-write";
             return this;
         }
 
-        public CachePart AsReadOnly()
+        public CachePart ReadOnly()
         {
             mapping.Usage = "read-only";
             return this;
         }
 
-        public CachePart AsCustom(string custom)
+        public CachePart Custom(string custom)
         {
             mapping.Usage = custom;
             return this;

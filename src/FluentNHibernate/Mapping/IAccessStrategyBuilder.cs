@@ -8,68 +8,68 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to property.
         /// </summary>
-        void AsProperty();
+        void Property();
 
         /// <summary>
         /// Sets the access-strategy to field.
         /// </summary>
-        void AsField();
+        void Field();
 
         /// <summary>
         /// Sets the access-strategy to field and the naming-strategy to camelcase (field.camelcase).
         /// </summary>
-        void AsCamelCaseField();
+        void CamelCaseField();
 
         /// <summary>
         /// Sets the access-strategy to field and the naming-strategy to camelcase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        void AsCamelCaseField(Prefix prefix);
+        void CamelCaseField(Prefix prefix);
 
         /// <summary>
         /// Sets the access-strategy to field and the naming-strategy to lowercase.
         /// </summary>
-        void AsLowerCaseField();
+        void LowerCaseField();
 
         /// <summary>
         /// Sets the access-strategy to field and the naming-strategy to lowercase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        void AsLowerCaseField(Prefix prefix);
+        void LowerCaseField(Prefix prefix);
 
         /// <summary>
         /// Sets the access-strategy to field and the naming-strategy to pascalcase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        void AsPascalCaseField(Prefix prefix);
+        void PascalCaseField(Prefix prefix);
 
         /// <summary>
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to camelcase.
         /// </summary>
-        void AsReadOnlyPropertyThroughCamelCaseField();
+        void ReadOnlyPropertyThroughCamelCaseField();
 
         /// <summary>
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to camelcase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        void AsReadOnlyPropertyThroughCamelCaseField(Prefix prefix);
+        void ReadOnlyPropertyThroughCamelCaseField(Prefix prefix);
 
         /// <summary>
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to lowercase.
         /// </summary>
-        void AsReadOnlyPropertyThroughLowerCaseField();
+        void ReadOnlyPropertyThroughLowerCaseField();
 
         /// <summary>
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to lowercase.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        void AsReadOnlyPropertyThroughLowerCaseField(Prefix prefix);
+        void ReadOnlyPropertyThroughLowerCaseField(Prefix prefix);
 
         /// <summary>
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to pascalcase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        void AsReadOnlyPropertyThroughPascalCaseField(Prefix prefix);
+        void ReadOnlyPropertyThroughPascalCaseField(Prefix prefix);
 
         /// <summary>
         /// Sets the access-strategy to use the type referenced.

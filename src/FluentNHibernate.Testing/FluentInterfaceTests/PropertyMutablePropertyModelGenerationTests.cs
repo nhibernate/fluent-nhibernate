@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void AccessShouldSetModelAccessPropertyToValue()
         {
             Property()
-                .Mapping(m => m.Access.AsField())
+                .Mapping(m => m.Access.Field())
                 .ModelShouldMatch(x => x.Access.ShouldEqual("field"));
         }
 

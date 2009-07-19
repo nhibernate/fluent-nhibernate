@@ -404,7 +404,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ShouldAddCacheElementBeforeId()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(x => { x.Id(y => y.Id); x.Cache.AsReadWrite(); })
+                .ForMapping(x => { x.Id(y => y.Id); x.Cache.ReadWrite(); })
                 .Element("class/cache")
                     .ShouldBeInParentAtPosition(0)
                 .Element("class/id")
@@ -415,7 +415,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ShouldAddCacheElementBeforeCompositeId()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(x => { x.CompositeId().KeyProperty(y => y.Id).KeyProperty(y => y.Name); x.Cache.AsReadWrite(); })
+                .ForMapping(x => { x.CompositeId().KeyProperty(y => y.Id).KeyProperty(y => y.Name); x.Cache.ReadWrite(); })
                 .Element("class/cache")
                     .ShouldBeInParentAtPosition(0)
                 .Element("class/composite-id")

@@ -214,7 +214,7 @@ namespace FluentNHibernate.Mapping
         {
             collectionBuilder = attrs => new MapMapping(attrs);
             AsIndexedCollection<TIndex>(string.Empty, customIndexMapping);
-            AsElement(string.Empty);
+            Element(string.Empty);
             customElementMapping(elementPart);
             return (T)this;
         }
@@ -259,7 +259,7 @@ namespace FluentNHibernate.Mapping
             indexMapping = indexPart.GetIndexMapping();
         }
 
-        public T AsElement(string columnName)
+        public T Element(string columnName)
         {
             elementPart = new ElementPart(typeof(T));
             elementPart.Type<TChild>();
@@ -499,16 +499,16 @@ namespace FluentNHibernate.Mapping
             return AsMap<TIndex, TComparer>(indexColumnName);
         }
 
-        ICollectionRelationship ICollectionRelationship.AsElement(string columnName)
+        ICollectionRelationship ICollectionRelationship.Element(string columnName)
         {
-            return AsElement(columnName);
+            return Element(columnName);
         }
 
         /// <summary>
         /// Sets the table name for this one-to-many.
         /// </summary>
         /// <param name="name">Table name</param>
-        ICollectionRelationship ICollectionRelationship.TableName(string name)
+        ICollectionRelationship ICollectionRelationship.Table(string name)
         {
             return Table(name);
         }

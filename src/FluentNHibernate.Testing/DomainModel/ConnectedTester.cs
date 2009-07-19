@@ -133,7 +133,7 @@ namespace FluentNHibernate.Testing.DomainModel
 
         public CachedRecordMap()
         {
-            classMap.Cache.AsReadWrite();
+            classMap.Cache.ReadWrite();
             classMap.Id(x => x.Id, "id");
         }
     }

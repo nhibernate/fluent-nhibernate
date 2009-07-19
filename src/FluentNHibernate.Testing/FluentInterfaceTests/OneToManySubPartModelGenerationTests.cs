@@ -55,7 +55,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void ShouldSetElement()
         {
             OneToMany(x => x.ListOfChildren)
-                .Mapping(m => m.AsElement("element"))
+                .Mapping(m => m.Element("element"))
                 .ModelShouldMatch(x =>
                 {
                     x.Element.ShouldNotBeNull();

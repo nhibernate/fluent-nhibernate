@@ -102,7 +102,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void CacheShouldSetCacheModel()
         {
             ClassMap<PropertyTarget>()
-                .Mapping(m => m.Cache.AsReadOnly())
+                .Mapping(m => m.Cache.ReadOnly())
                 .ModelShouldMatch(x => x.Cache.ShouldNotBeNull());
         }
 

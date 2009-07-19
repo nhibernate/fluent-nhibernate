@@ -27,7 +27,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to property.
         /// </summary>
-        void IAccessStrategyBuilder.AsProperty()
+        void IAccessStrategyBuilder.Property()
         {
             setValue("property");
         }
@@ -35,7 +35,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to field.
         /// </summary>
-        void IAccessStrategyBuilder.AsField()
+        void IAccessStrategyBuilder.Field()
         {
             setValue("field");
         }
@@ -43,16 +43,16 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to field and the naming-strategy to camelcase (field.camelcase).
         /// </summary>
-        void IAccessStrategyBuilder.AsCamelCaseField()
+        void IAccessStrategyBuilder.CamelCaseField()
         {
-            ((IAccessStrategyBuilder)this).AsCamelCaseField(Prefix.None);
+            ((IAccessStrategyBuilder)this).CamelCaseField(Prefix.None);
         }
 
         /// <summary>
         /// Sets the access-strategy to field and the naming-strategy to camelcase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        void IAccessStrategyBuilder.AsCamelCaseField(Prefix prefix)
+        void IAccessStrategyBuilder.CamelCaseField(Prefix prefix)
         {
             if (prefix == Prefix.m) throw new InvalidPrefixException(InvalidPrefixCamelCaseFieldM);
             if (prefix == Prefix.mUnderscore) throw new InvalidPrefixException(InvalidPrefixCamelCaseFieldMUnderscore);
@@ -63,16 +63,16 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to field and the naming-strategy to lowercase.
         /// </summary>
-        void IAccessStrategyBuilder.AsLowerCaseField()
+        void IAccessStrategyBuilder.LowerCaseField()
         {
-            ((IAccessStrategyBuilder)this).AsLowerCaseField(Prefix.None);
+            ((IAccessStrategyBuilder)this).LowerCaseField(Prefix.None);
         }
 
         /// <summary>
         /// Sets the access-strategy to field and the naming-strategy to lowercase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        void IAccessStrategyBuilder.AsLowerCaseField(Prefix prefix)
+        void IAccessStrategyBuilder.LowerCaseField(Prefix prefix)
         {
             if (prefix == Prefix.m) throw new InvalidPrefixException(InvalidPrefixLowerCaseFieldM);
             if (prefix == Prefix.mUnderscore) throw new InvalidPrefixException(InvalidPrefixLowerCaseFieldMUnderscore);
@@ -84,7 +84,7 @@ namespace FluentNHibernate.Mapping
         /// Sets the access-strategy to field and the naming-strategy to pascalcase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        void IAccessStrategyBuilder.AsPascalCaseField(Prefix prefix)
+        void IAccessStrategyBuilder.PascalCaseField(Prefix prefix)
         {
             if (prefix == Prefix.None) throw new InvalidPrefixException(InvalidPrefixPascalCaseFieldNone);
 
@@ -94,16 +94,16 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to camelcase.
         /// </summary>
-        void IAccessStrategyBuilder.AsReadOnlyPropertyThroughCamelCaseField()
+        void IAccessStrategyBuilder.ReadOnlyPropertyThroughCamelCaseField()
         {
-            ((IAccessStrategyBuilder)this).AsReadOnlyPropertyThroughCamelCaseField(Prefix.None);
+            ((IAccessStrategyBuilder)this).ReadOnlyPropertyThroughCamelCaseField(Prefix.None);
         }
 
         /// <summary>
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to camelcase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        void IAccessStrategyBuilder.AsReadOnlyPropertyThroughCamelCaseField(Prefix prefix)
+        void IAccessStrategyBuilder.ReadOnlyPropertyThroughCamelCaseField(Prefix prefix)
         {
             if (prefix == Prefix.m) throw new InvalidPrefixException(InvalidPrefixCamelCaseFieldM);
             if (prefix == Prefix.mUnderscore) throw new InvalidPrefixException(InvalidPrefixCamelCaseFieldMUnderscore);
@@ -114,16 +114,16 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to lowercase.
         /// </summary>
-        void IAccessStrategyBuilder.AsReadOnlyPropertyThroughLowerCaseField()
+        void IAccessStrategyBuilder.ReadOnlyPropertyThroughLowerCaseField()
         {
-            ((IAccessStrategyBuilder)this).AsReadOnlyPropertyThroughLowerCaseField(Prefix.None);
+            ((IAccessStrategyBuilder)this).ReadOnlyPropertyThroughLowerCaseField(Prefix.None);
         }
 
         /// <summary>
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to lowercase.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        void IAccessStrategyBuilder.AsReadOnlyPropertyThroughLowerCaseField(Prefix prefix)
+        void IAccessStrategyBuilder.ReadOnlyPropertyThroughLowerCaseField(Prefix prefix)
         {
             if (prefix == Prefix.m) throw new InvalidPrefixException(InvalidPrefixLowerCaseFieldM);
             if (prefix == Prefix.mUnderscore) throw new InvalidPrefixException(InvalidPrefixLowerCaseFieldMUnderscore);
@@ -135,7 +135,7 @@ namespace FluentNHibernate.Mapping
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to pascalcase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        void IAccessStrategyBuilder.AsReadOnlyPropertyThroughPascalCaseField(Prefix prefix)
+        void IAccessStrategyBuilder.ReadOnlyPropertyThroughPascalCaseField(Prefix prefix)
         {
             if (prefix == Prefix.None) throw new InvalidPrefixException(InvalidPrefixPascalCaseFieldNone);
 

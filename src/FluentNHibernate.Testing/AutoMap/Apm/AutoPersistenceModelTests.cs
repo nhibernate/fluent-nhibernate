@@ -190,7 +190,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .ForTypesThatDeriveFrom<ExampleClass>(m => m.References(x => x.Parent).Access.AsField());
+                .ForTypesThatDeriveFrom<ExampleClass>(m => m.References(x => x.Parent).Access.Field());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//many-to-one[@name='Parent']").HasAttribute("access", "field");
@@ -219,7 +219,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .ForTypesThatDeriveFrom<ExampleClass>(m => m.Version(x => x.Timestamp).Access.AsField());
+                .ForTypesThatDeriveFrom<ExampleClass>(m => m.Version(x => x.Timestamp).Access.Field());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//version[@name='Timestamp']").HasAttribute("access", "field");
@@ -772,7 +772,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
-                .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.References(x => x.Parent).Access.AsField());
+                .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.References(x => x.Parent).Access.Field());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//joined-subclass/many-to-one[@name='Parent']").HasAttribute("access", "field");
@@ -876,7 +876,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .MapEntitiesFromAssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
                 .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
-                .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.References(x => x.Parent).Access.AsField());
+                .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.References(x => x.Parent).Access.Field());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//subclass/many-to-one[@name='Parent']").HasAttribute("access", "field");

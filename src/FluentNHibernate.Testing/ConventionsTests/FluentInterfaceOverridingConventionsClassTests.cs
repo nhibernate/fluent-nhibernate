@@ -36,7 +36,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void CacheShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.Cache.AsCustom("fish"));
+            Mapping<ExampleClass>(x => x.Cache.Custom("fish"));
 
             Convention(x => x.Cache.ReadOnly());
 

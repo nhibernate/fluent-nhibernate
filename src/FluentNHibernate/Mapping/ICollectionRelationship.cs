@@ -31,13 +31,13 @@ namespace FluentNHibernate.Mapping
         ICollectionRelationship AsMap<TIndex>(string indexColumnName);
         ICollectionRelationship AsMap<TIndex>(string indexColumnName, SortType sort);
         ICollectionRelationship AsMap<TIndex, TComparer>(string indexColumnName) where TComparer : IComparer;
-        ICollectionRelationship AsElement(string columnName);
+        ICollectionRelationship Element(string columnName);
 
         /// <summary>
         /// Sets the table name for this one-to-many.
         /// </summary>
         /// <param name="name">Table name</param>
-        ICollectionRelationship TableName(string name);
+        ICollectionRelationship Table(string name);
 
         ICollectionRelationship ForeignKeyCascadeOnDelete();
 

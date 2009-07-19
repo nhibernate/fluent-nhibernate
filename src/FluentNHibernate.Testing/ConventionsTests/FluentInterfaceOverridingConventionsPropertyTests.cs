@@ -28,7 +28,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void AccessShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.LineOne, x => x.Access.AsField());
+            Mapping<ExampleClass>(x => x.LineOne, x => x.Access.Field());
 
             Convention(x => x.Access.Property());
 

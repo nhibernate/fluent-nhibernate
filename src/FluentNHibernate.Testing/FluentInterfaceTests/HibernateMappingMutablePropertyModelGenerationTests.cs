@@ -25,7 +25,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void DefaultAccessShouldSetModelDefaultAccessPropertyToValue()
         {
             HibernateMapping()
-                .Mapping(m => m.DefaultAccess.AsField())
+                .Mapping(m => m.DefaultAccess.Field())
                 .ModelShouldMatch(x => x.DefaultAccess.ShouldEqual("field"));
         }
 

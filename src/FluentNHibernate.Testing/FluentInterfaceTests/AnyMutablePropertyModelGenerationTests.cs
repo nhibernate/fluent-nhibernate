@@ -17,7 +17,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     .IdentityType<int>()
                     .EntityIdentifierColumn("col")
                     .EntityTypeColumn("col2")
-                    .Access.AsField())
+                    .Access.Field())
                 .ModelShouldMatch(x => x.Access.ShouldEqual("field"));
         }
 

@@ -37,7 +37,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSepecifyAccessType()
         {
             new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.VersionNumber).Access.AsField())
+                .ForMapping(map => map.Version(x => x.VersionNumber).Access.Field())
                 .Element("//version").HasAttribute("access", "field");
         }
 

@@ -13,7 +13,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void AccessShouldSetModelAccessPropertyToValue()
         {
             OneToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Access.AsField())
+                .Mapping(m => m.Access.Field())
                 .ModelShouldMatch(x => x.Access.ShouldEqual("field"));
         }
 
@@ -29,7 +29,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void CacheShouldSetModelCachePropertyToValue()
         {
             OneToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Cache.AsReadOnly())
+                .Mapping(m => m.Cache.ReadOnly())
                 .ModelShouldMatch(x =>
                 {
                     x.Cache.ShouldNotBeNull();

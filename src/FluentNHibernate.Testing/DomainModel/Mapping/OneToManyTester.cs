@@ -349,7 +349,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSetAsElement() 
         { 
             new MappingTester<OneToManyTarget>() 
-                .ForMapping(m => m.HasMany(x => x.ListOfSimpleChildren).AsElement("columnName")) 
+                .ForMapping(m => m.HasMany(x => x.ListOfSimpleChildren).Element("columnName")) 
                 .Element("class/bag/element").Exists(); 
         } 
  
@@ -357,7 +357,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ElementHasCorrectType() 
         { 
             new MappingTester<OneToManyTarget>() 
-                .ForMapping(m => m.HasMany(x => x.ListOfSimpleChildren).AsElement("columnName")) 
+                .ForMapping(m => m.HasMany(x => x.ListOfSimpleChildren).Element("columnName")) 
                 .Element("class/bag/element").HasAttribute("type", typeof(string).AssemblyQualifiedName); 
         } 
  
@@ -365,7 +365,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ElementHasCorrectColumnName() 
         { 
             new MappingTester<OneToManyTarget>() 
-                .ForMapping(m => m.HasMany(x => x.ListOfSimpleChildren).AsElement("columnName")) 
+                .ForMapping(m => m.HasMany(x => x.ListOfSimpleChildren).Element("columnName")) 
                 .Element("class/bag/element/column").HasAttribute("name", "columnName"); 
         }
 
@@ -375,7 +375,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyTarget>()
                 .ForMapping(m =>
                     m.HasMany(x => x.GetOtherChildren())
-                        .Access.AsCamelCaseField())
+                        .Access.CamelCaseField())
                 .Element("class/bag")
                 .HasAttribute("name", "OtherChildren")
                 .HasAttribute("access", "field.camelcase");
@@ -584,7 +584,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<OneToManyTarget>()
                 .ForMapping(map => map.HasMany(x => x.ListToArrayChild)
-                                       .Access.AsCamelCaseField().AsList())
+                                       .Access.CamelCaseField().AsList())
                 .Element("class/list")
                 .DoesntHaveAttribute("collection-type");
         }
@@ -605,7 +605,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyTarget>()
                 .ForMapping(map =>
                             map.HasMany(x => x.SetOfChildren)
-                                .Cache.AsReadWrite())
+                                .Cache.ReadWrite())
                 .Element("class/set/cache").ShouldNotBeNull();
         }
 
@@ -624,7 +624,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyTarget>()
                 .ForMapping(map =>
                             map.HasMany(x => x.SetOfChildren)
-                                .Cache.AsReadWrite())
+                                .Cache.ReadWrite())
                 .Element("class/set/cache").ShouldBeInParentAtPosition(0);
         }
 

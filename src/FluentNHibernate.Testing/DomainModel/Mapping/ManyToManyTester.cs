@@ -37,7 +37,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<ManyToManyTarget>()
                 .ForMapping(m =>
                     m.HasManyToMany(x => x.GetOtherChildren())
-                        .Access.AsCamelCaseField())
+                        .Access.CamelCaseField())
                 .Element("class/bag")
                 .HasAttribute("name", "OtherChildren")
                 .HasAttribute("access", "field.camelcase");
@@ -112,7 +112,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<ManyToManyTarget>()
                 .ForMapping(map =>
                             map.HasManyToMany(x => x.SetOfChildren)
-                                .Cache.AsReadWrite())
+                                .Cache.ReadWrite())
                 .Element("class/set/cache").ShouldNotBeNull();
         }
 
@@ -131,7 +131,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<ManyToManyTarget>()
                 .ForMapping(map =>
                             map.HasManyToMany(x => x.SetOfChildren)
-                                .Cache.AsReadWrite())
+                                .Cache.ReadWrite())
                 .Element("class/set/cache").ShouldBeInParentAtPosition(0);
         }
 
@@ -181,7 +181,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                            .AsMap("indexColumn")
                            .ParentKeyColumn("ParentID")
                            .ChildKeyColumn("ChildID")
-                           .Cache.AsReadWrite())
+                           .Cache.ReadWrite())
                .Element("class/map/index").ShouldBeInParentAtPosition(2);
        }
     }

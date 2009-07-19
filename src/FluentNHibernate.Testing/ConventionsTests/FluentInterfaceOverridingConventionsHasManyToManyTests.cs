@@ -29,7 +29,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void AccessShouldntBeOverwritten()
         {
-            Mapping(x => x.Children, x => x.Access.AsField());
+            Mapping(x => x.Children, x => x.Access.Field());
 
             Convention(x => x.Access.Property());
 
@@ -49,7 +49,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void CacheShouldntBeOverwritten()
         {
-            Mapping(x => x.Children, x => x.Cache.AsReadOnly());
+            Mapping(x => x.Children, x => x.Cache.ReadOnly());
 
             Convention(x => x.Cache.ReadWrite());
 

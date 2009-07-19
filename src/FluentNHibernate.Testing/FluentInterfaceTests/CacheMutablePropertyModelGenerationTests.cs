@@ -17,7 +17,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void UsageShouldSetModelUsagePropertyToValue()
         {
             Cache()
-                .Mapping(m => m.AsReadOnly())
+                .Mapping(m => m.ReadOnly())
                 .ModelShouldMatch(x => x.Usage.ShouldEqual("read-only"));
         }
     }

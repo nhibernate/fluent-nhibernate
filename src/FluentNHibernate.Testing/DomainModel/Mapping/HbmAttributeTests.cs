@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void Can_specify_default_cascade()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.HibernateMapping.DefaultAccess.AsCamelCaseField())
+                .ForMapping(m => m.HibernateMapping.DefaultAccess.CamelCaseField())
                 .RootElement.HasAttribute("default-access", "field.camelcase");
         }
 
