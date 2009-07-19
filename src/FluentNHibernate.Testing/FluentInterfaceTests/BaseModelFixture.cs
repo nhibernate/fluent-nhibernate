@@ -124,7 +124,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<CompositeElementPart<T>, CompositeElementMapping> CompositeElement<T>()
         {
-            return new ModelTester<CompositeElementPart<T>, CompositeElementMapping>(() => new CompositeElementPart<T>(), x => ((ICompositeElementMappingProvider)x).GetCompositeElementMapping());
+            return new ModelTester<CompositeElementPart<T>, CompositeElementMapping>(() => new CompositeElementPart<T>(typeof(MappedObject)), x => ((ICompositeElementMappingProvider)x).GetCompositeElementMapping());
         }
     }
 }

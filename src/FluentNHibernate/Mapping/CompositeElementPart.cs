@@ -14,9 +14,15 @@ namespace FluentNHibernate.Mapping
     /// <typeparam name="T">Component type</typeparam>
     public class CompositeElementPart<T> : ICompositeElementMappingProvider
     {
+        private readonly Type entity;
         private readonly CompositeElementMapping mapping = new CompositeElementMapping();
         private readonly IList<PropertyMap> properties = new List<PropertyMap>();
         private readonly IList<IManyToOnePart> references = new List<IManyToOnePart>();
+
+        public CompositeElementPart(Type entity)
+        {
+            this.entity = entity;
+        }
 
         public PropertyMap Map(Expression<Func<T, object>> expression)
         {
@@ -73,13 +79,15 @@ namespace FluentNHibernate.Mapping
             mapping.Parent = new ParentMapping
             {
                 Name = property.Name,
-                ContainingEntityType = typeof(T)
+                ContainingEntityType = entity
             };
             return this;
         }
 
         CompositeElementMapping ICompositeElementMappingProvider.GetCompositeElementMapping()
         {
+            mapping.ContainingEntityType = entity;
+
             if (!mapping.IsSpecified(x => x.Class))
                 mapping.Class = new TypeReference(typeof(T));
 

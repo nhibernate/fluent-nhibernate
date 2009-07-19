@@ -276,7 +276,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="action">Component mapping</param>
         public T Component(Action<CompositeElementPart<TChild>> action)
         {
-            var part = new CompositeElementPart<TChild>();
+            var part = new CompositeElementPart<TChild>(typeof(T));
 
             action(part);
 

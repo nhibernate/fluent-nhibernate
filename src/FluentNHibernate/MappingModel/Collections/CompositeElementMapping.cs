@@ -14,7 +14,7 @@ namespace FluentNHibernate.MappingModel.Collections
             : this(new AttributeStore())
         { }
 
-        public CompositeElementMapping(AttributeStore store)
+        private CompositeElementMapping(AttributeStore store)
         {
             attributes = new AttributeStore<CompositeElementMapping>(store);
             mappedMembers = new MappedMembers();
@@ -36,7 +36,11 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Class, value); }
         }
 
-        public ParentMapping Parent { get; set; }
+        public ParentMapping Parent
+        {
+            get { return attributes.Get(x => x.Parent); }
+            set { attributes.Set(x => x.Parent, value); }
+        }
 
         public IEnumerable<PropertyMapping> Properties
         {
@@ -52,6 +56,8 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             get { return mappedMembers.References; }
         }
+
+        public Type ContainingEntityType { get; set; }
 
         public void AddReference(ManyToOneMapping manyToOne)
         {
