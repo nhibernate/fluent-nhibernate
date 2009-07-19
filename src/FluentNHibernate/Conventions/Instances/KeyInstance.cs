@@ -7,11 +7,12 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public class KeyInstance : IKeyInstance
+    public class KeyInstance : KeyInspector, IKeyInstance
     {
         private readonly KeyMapping mapping;
 
         public KeyInstance(KeyMapping mapping)
+            : base(mapping)
         {
             this.mapping = mapping;
         }
@@ -36,32 +37,13 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.ForeignKey = constraint;
         }
 
-        public Type EntityType
-        {
-            get { throw new NotImplementedException(); }
-        }
-        /// <summary>
-        /// Represents a string identifier for the model instance, used in conventions for a lazy
-        /// shortcut.
-        /// 
-        /// e.g. for a ColumnMapping the StringIdentifierForModel would be the Name attribute,
-        /// this allows the user to find any columns with the matching name.
-        /// </summary>
-        public string StringIdentifierForModel
-        {
-            get { throw new NotImplementedException(); }
-        }
-        public bool IsSet(PropertyInfo property)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<IColumnInspector> Columns
+        public new IEnumerable<IColumnInstance> Columns
         {
             get
             {
-                foreach (var column in mapping.Columns.UserDefined)
-                    yield return new ColumnInspector(mapping.ContainingEntityType, column);
+                return mapping.Columns.UserDefined
+                    .Select(x => new ColumnInstance(mapping.ContainingEntityType, x))
+                    .Cast<IColumnInstance>();
             }
         }
     }

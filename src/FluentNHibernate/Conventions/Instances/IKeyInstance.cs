@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -6,5 +7,6 @@ namespace FluentNHibernate.Conventions.Instances
     {
         void ColumnName(string columnName);
         void ForeignKey(string constraint);
+        new IEnumerable<IColumnInspector> Columns { get; }
     }
 }
