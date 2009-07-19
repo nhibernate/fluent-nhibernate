@@ -1,13 +1,14 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public class CompositeIdentityPart<T> : IAccessStrategy<CompositeIdentityPart<T>>, ICompositeIdMappingProvider
+    public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
 	{
         private readonly AccessStrategyBuilder<CompositeIdentityPart<T>> access;
         private readonly CompositeIdMapping mapping = new CompositeIdMapping();

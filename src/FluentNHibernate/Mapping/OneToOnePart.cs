@@ -1,17 +1,13 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IOneToOneMappingProvider
-    {
-        OneToOneMapping GetOneToOneMapping();
-    }
-
-    public class OneToOnePart<TOther> : IOneToOneMappingProvider, IAccessStrategy<OneToOnePart<TOther>>
+    public class OneToOnePart<TOther> : IOneToOneMappingProvider
     {
         private readonly Type entity;
         private readonly PropertyInfo property;

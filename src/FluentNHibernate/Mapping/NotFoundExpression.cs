@@ -2,7 +2,7 @@ using System;
 
 namespace FluentNHibernate.Mapping
 {
-    public class NotFoundExpression<TParent> : INotFoundExpression
+    public class NotFoundExpression<TParent>
     {
         private readonly TParent parent;
         private readonly Action<string> setter;
@@ -25,15 +25,6 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Used to set the Not-Found attribute to ignore.  This tells NHibernate to 
-        /// return a null object rather then throw an exception when the join fails
-        /// </summary>
-        void INotFoundExpression.Ignore()
-        {
-            Ignore();
-        }
-
-        /// <summary>
         /// Used to set the Not-Found attribute to exception (Nhibernate default).  This 
         /// tells NHibernate to throw an exception when the join fails
         /// </summary>
@@ -42,15 +33,6 @@ namespace FluentNHibernate.Mapping
         {
             setter("exception");
             return parent;
-        }
-
-        /// <summary>
-        /// Used to set the Not-Found attribute to exception (Nhibernate default).  This 
-        /// tells NHibernate to throw an exception when the join fails
-        /// </summary>
-        void INotFoundExpression.Exception()
-        {
-            Exception();
         }
     }
 }

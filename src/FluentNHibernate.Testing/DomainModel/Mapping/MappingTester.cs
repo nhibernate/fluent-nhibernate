@@ -50,7 +50,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             return ForMapping(classMap);
         }
 
-        public virtual MappingTester<T> ForMapping(IClassMap classMap)
+        public virtual MappingTester<T> ForMapping(ClassMap<T> classMap)
         {
             if (classMap  != null)
                 model.Add(classMap);

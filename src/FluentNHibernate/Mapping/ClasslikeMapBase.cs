@@ -3,20 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Xml;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public abstract class ClasslikeMapBase<T> : IClasslike
+    public abstract class ClasslikeMapBase<T>
     {
-        protected readonly IList<PropertyMap> properties = new List<PropertyMap>();
-        protected readonly IList<IComponentBase> components = new List<IComponentBase>();
+        protected readonly IList<IPropertyMappingProvider> properties = new List<IPropertyMappingProvider>();
+        protected readonly IList<IComponentMappingProvider> components = new List<IComponentMappingProvider>();
         protected readonly IList<IOneToOneMappingProvider> oneToOnes = new List<IOneToOneMappingProvider>();
         protected readonly Dictionary<Type, ISubclassMappingProvider> subclasses = new Dictionary<Type, ISubclassMappingProvider>();
         protected readonly Dictionary<Type, IJoinedSubclassMappingProvider> joinedSubclasses = new Dictionary<Type, IJoinedSubclassMappingProvider>();
-        protected readonly IList<ICollectionRelationship> collections = new List<ICollectionRelationship>();
-        protected readonly IList<IManyToOnePart> references = new List<IManyToOnePart>();
+        protected readonly IList<ICollectionMappingProvider> collections = new List<ICollectionMappingProvider>();
+        protected readonly IList<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
         protected readonly IList<IAnyMappingProvider> anys = new List<IAnyMappingProvider>();
 
         public PropertyMap Map(Expression<Func<T, object>> expression)
@@ -260,22 +260,12 @@ namespace FluentNHibernate.Mapping
             return MapHasManyToMany<TChild, object>(expression);
         }
 
-        IEnumerable<PropertyMap> IClasslike.Properties
-        {
-			get { return Properties; }
-        }
-
-		protected virtual IEnumerable<PropertyMap> Properties
+        protected virtual IEnumerable<IPropertyMappingProvider> Properties
 		{
 			get { return properties; }
 		}
 
-        IEnumerable<IComponentBase> IClasslike.Components
-        {
-            get { return Components; }
-        }
-
-		protected virtual IEnumerable<IComponentBase> Components
+        protected virtual IEnumerable<IComponentMappingProvider> Components
 		{
 			get { return components; }
 		}
@@ -284,49 +274,5 @@ namespace FluentNHibernate.Mapping
         {
             get { return typeof(T); }
         }
-
-        #region Explicit IClasslike implementation
-
-        IComponentBase IClasslike.DynamicComponent<TEntity>(Expression<Func<TEntity, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action)
-        {
-            return DynamicComponent(ReflectionHelper.GetProperty(expression), action);
-        }
-
-        IComponentBase IClasslike.Component<TEntity, TComponent>(Expression<Func<TEntity, TComponent>> expression, Action<ComponentPart<TComponent>> action)
-        {
-            return Component(ReflectionHelper.GetProperty(expression), action);
-        }
-
-        IProperty IClasslike.Map<TEntity>(Expression<Func<TEntity, object>> expression)
-        {
-            return Map(ReflectionHelper.GetProperty(expression), null);
-        }
-
-        IManyToOnePart IClasslike.References<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression)
-        {
-            return References<TOther>(ReflectionHelper.GetProperty(expression), null);
-        }
-
-        IOneToOneMappingProvider IClasslike.HasOne<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression)
-        {
-            return HasOne<TOther>(ReflectionHelper.GetProperty(expression));
-        }
-
-        IOneToManyPart IClasslike.HasMany<TEntity, TChild>(Expression<Func<TEntity, IEnumerable<TChild>>> expression)
-        {
-            return HasMany<TChild>(ReflectionHelper.GetProperty(expression));
-        }
-
-        IOneToManyPart IClasslike.HasMany<TEntity, TKey, TChild>(Expression<Func<TEntity, IDictionary<TKey, TChild>>> expression)
-        {
-            return HasMany<TChild>(ReflectionHelper.GetProperty(expression));
-        }
-
-        IManyToManyPart IClasslike.HasManyToMany<TEntity, TChild>(Expression<Func<TEntity, IEnumerable<TChild>>> expression)
-        {
-            return HasManyToMany<TChild>(ReflectionHelper.GetProperty(expression));
-        }
-
-        #endregion
     }
 }

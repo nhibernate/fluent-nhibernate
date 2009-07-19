@@ -1,7 +1,7 @@
 using System;
 using FluentNHibernate.MappingModel.ClassBased;
 
-namespace FluentNHibernate.Mapping
+namespace FluentNHibernate.Mapping.Providers
 {
     public interface IJoinedSubclassMappingProvider
     {

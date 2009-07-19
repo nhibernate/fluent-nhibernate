@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
@@ -16,8 +17,8 @@ namespace FluentNHibernate.Mapping
     {
         private readonly Type entity;
         private readonly CompositeElementMapping mapping = new CompositeElementMapping();
-        private readonly IList<PropertyMap> properties = new List<PropertyMap>();
-        private readonly IList<IManyToOnePart> references = new List<IManyToOnePart>();
+        private readonly IList<IPropertyMappingProvider> properties = new List<IPropertyMappingProvider>();
+        private readonly IList<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
 
         public CompositeElementPart(Type entity)
         {

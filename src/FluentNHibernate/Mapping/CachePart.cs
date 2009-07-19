@@ -1,4 +1,5 @@
 using System;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping

@@ -1,6 +1,6 @@
 using FluentNHibernate.MappingModel.Identity;
 
-namespace FluentNHibernate.Mapping
+namespace FluentNHibernate.Mapping.Providers
 {
     public interface ICompositeIdMappingProvider
     {

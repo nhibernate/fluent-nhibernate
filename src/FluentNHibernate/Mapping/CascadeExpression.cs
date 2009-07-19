@@ -2,7 +2,7 @@ using System;
 
 namespace FluentNHibernate.Mapping
 {
-    public class CascadeExpression<TParent> : ICascadeExpression
+    public class CascadeExpression<TParent>
 	{
         private readonly TParent parent;
         private readonly Action<string> setter;
@@ -19,21 +19,11 @@ namespace FluentNHibernate.Mapping
 			return parent;
 		}
 
-        void ICascadeExpression.All()
-        {
-            All();
-        }
-
 		public TParent None()
 		{
 			setter("none");
             return parent;
 		}
-
-        void ICascadeExpression.None()
-        {
-            None();
-        }
 
 		public TParent SaveUpdate()
 		{
@@ -41,20 +31,10 @@ namespace FluentNHibernate.Mapping
             return parent;
 		}
 
-        void ICascadeExpression.SaveUpdate()
-        {
-            SaveUpdate();
-        }
-
 		public TParent Delete()
 		{
 			setter("delete");
             return parent;
 		}
-
-        void ICascadeExpression.Delete()
-        {
-            Delete();
-        }
 	}
 }

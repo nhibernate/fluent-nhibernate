@@ -54,7 +54,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mappedMembers.Properties; }
         }
 
-        public IEnumerable<ComponentMappingBase> Components
+        public IEnumerable<IComponentMapping> Components
         {
             get { return mappedMembers.Components; }
         }
@@ -109,12 +109,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers.AddOrReplaceReference(manyToOne);
         }
 
-        public void AddComponent(ComponentMappingBase componentMapping)
+        public void AddComponent(IComponentMapping componentMapping)
         {
             mappedMembers.AddComponent(componentMapping);
         }
 
-        public void AddOrReplaceComponent(ComponentMappingBase mapping)
+        public void AddOrReplaceComponent(IComponentMapping mapping)
         {
             mappedMembers.AddOrReplaceComponent(mapping);
         }

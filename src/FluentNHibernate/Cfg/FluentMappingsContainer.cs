@@ -52,7 +52,7 @@ namespace FluentNHibernate.Cfg
         /// Adds a single <see cref="IClassMap" /> represented by the specified type.
         /// </summary>
         /// <returns>Fluent mappings configuration</returns>
-        public FluentMappingsContainer Add<T>() where T : IClassMap
+        public FluentMappingsContainer Add<T>()
         {
             return Add(typeof(T));
         }

@@ -6,13 +6,16 @@ using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NHibernate.Cfg;
 
-public class AutoMappingTester<T> : MappingTester<T>
+namespace FluentNHibernate.Testing.AutoMap
 {
-    public AutoMappingTester(AutoPersistenceModel mapper)
-        : base(mapper)
+    public class AutoMappingTester<T> : MappingTester<T>
     {
-        mapper.CompileMappings();
+        public AutoMappingTester(AutoPersistenceModel mapper)
+            : base(mapper)
+        {
+            mapper.CompileMappings();
         
-        ForMapping((IClassMap)null);
+            ForMapping((ClassMap<T>)null);
+        }
     }
 }

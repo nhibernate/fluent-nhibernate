@@ -1,16 +1,17 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public abstract class ComponentPartBase<T> : ClasslikeMapBase<T>, IComponentBase, IAccessStrategy<ComponentPartBase<T>> 
+    public abstract class ComponentPartBase<T> : ClasslikeMapBase<T>, IComponentMappingProvider
     {
-        protected string propertyName;
-        protected AccessStrategyBuilder<ComponentPartBase<T>> access;
+        private readonly string propertyName;
+        private readonly AccessStrategyBuilder<ComponentPartBase<T>> access;
         protected ComponentMappingBase mapping;
         private bool nextBool = true;
 
@@ -21,15 +22,7 @@ namespace FluentNHibernate.Mapping
             this.propertyName = propertyName;
         }
 
-        /// <summary>
-        /// Set the access and naming strategy for this component.
-        /// </summary>
-        public AccessStrategyBuilder<ComponentPartBase<T>> Access
-        {
-            get { return access; }
-        }
-
-        ComponentMappingBase IComponentBase.GetComponentMapping()
+        IComponentMapping IComponentMappingProvider.GetComponentMapping()
         {
             mapping.Name = propertyName;
 
@@ -54,44 +47,20 @@ namespace FluentNHibernate.Mapping
             return mapping;
         }
 
-        IComponentBase IComponentBase.Not
+        /// <summary>
+        /// Set the access and naming strategy for this component.
+        /// </summary>
+        public AccessStrategyBuilder<ComponentPartBase<T>> Access
         {
-            get
-            {
-                nextBool = !nextBool;
-                return this;
-            }
+            get { return access; }
         }
 
-        IComponentBase IComponentBase.ReadOnly()
-        {
-            mapping.Insert = !nextBool;
-            mapping.Update = !nextBool;
-            nextBool = true;
-
-            return this;
-        }
-
-        IComponentBase IComponentBase.Insert()
-        {
-            mapping.Insert = nextBool;
-            nextBool = true;
-            return this;
-        }
-
-        IComponentBase IComponentBase.Update()
-        {
-            mapping.Update = nextBool;
-            nextBool = true;
-            return this;
-        }
-
-        public IComponentBase ParentReference(Expression<Func<T, object>> exp)
+        public ComponentPartBase<T> ParentReference(Expression<Func<T, object>> exp)
         {
             return ParentReference(ReflectionHelper.GetProperty(exp));
         }
 
-        private IComponentBase ParentReference(PropertyInfo property)
+        private ComponentPartBase<T> ParentReference(PropertyInfo property)
         {
             mapping.Parent = new ParentMapping
             {
@@ -102,9 +71,37 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        IComponentBase IComponentBase.ParentReference<TExplicit>(Expression<Func<TExplicit, object>> exp)
+        public ComponentPartBase<T> Not
         {
-            return ParentReference(ReflectionHelper.GetProperty(exp));
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
         }
+
+        public ComponentPartBase<T> ReadOnly()
+        {
+            mapping.Insert = !nextBool;
+            mapping.Update = !nextBool;
+            nextBool = true;
+
+            return this;
+        }
+
+        public ComponentPartBase<T> Insert()
+        {
+            mapping.Insert = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public ComponentPartBase<T> Update()
+        {
+            mapping.Update = nextBool;
+            nextBool = true;
+            return this;
+         }
+
     }
 }

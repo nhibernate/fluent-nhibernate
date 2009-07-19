@@ -1,18 +1,14 @@
 using System.Collections.Generic;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IJoin : IClasslike
-    {
-        void KeyColumn(string column);
-        JoinMapping GetJoinMapping();
-    }
     /// <summary>
     /// Maps to the Join element in NH 2.0
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class JoinPart<T> : ClasslikeMapBase<T>, IJoin
+    public class JoinPart<T> : ClasslikeMapBase<T>, IJoinMappingProvider
     {
         private readonly IList<string> columns = new List<string>();
         private readonly JoinMapping mapping = new JoinMapping();
@@ -33,11 +29,6 @@ namespace FluentNHibernate.Mapping
             columns.Clear(); // only one supported currently
             columns.Add(column);
             return this;
-        }
-
-        void IJoin.KeyColumn(string column)
-        {
-            KeyColumn(column);
         }
 
         public JoinPart<T> Schema(string schema)
@@ -74,7 +65,7 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public JoinMapping GetJoinMapping()
+        JoinMapping IJoinMappingProvider.GetJoinMapping()
         {
             mapping.ContainingEntityType = typeof(T);
 

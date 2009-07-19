@@ -34,7 +34,7 @@ namespace FluentNHibernate.MappingModel
             get { return mappedMembers.References; }
         }
 
-        public IEnumerable<ComponentMappingBase> Components
+        public IEnumerable<IComponentMapping> Components
         {
             get { return mappedMembers.Components; }
         }
@@ -54,7 +54,7 @@ namespace FluentNHibernate.MappingModel
             mappedMembers.AddReference(manyToOne);
         }
 
-        public void AddComponent(ComponentMappingBase componentMapping)
+        public void AddComponent(IComponentMapping componentMapping)
         {
             mappedMembers.AddComponent(componentMapping);
         }

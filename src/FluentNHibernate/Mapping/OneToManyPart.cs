@@ -7,11 +7,11 @@ using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Mapping
 {
-    public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild, OneToManyMapping>, IOneToManyPart, IAccessStrategy<OneToManyPart<TChild>> 
+    public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild, OneToManyMapping>
     {
         private readonly Type entity;
         private readonly ColumnNameCollection<OneToManyPart<TChild>> columns;
-        private readonly CollectionCascadeExpression<IOneToManyPart> cascade;
+        private readonly CollectionCascadeExpression<OneToManyPart<TChild>> cascade;
         private readonly NotFoundExpression<OneToManyPart<TChild>> notFound;
 
         public OneToManyPart(Type entity, PropertyInfo property)
@@ -27,10 +27,20 @@ namespace FluentNHibernate.Mapping
         {
             this.entity = entity;
             columns = new ColumnNameCollection<OneToManyPart<TChild>>(this);
-            cascade = new CollectionCascadeExpression<IOneToManyPart>(this, value => collectionAttributes.Set(x => x.Cascade, value));
+            cascade = new CollectionCascadeExpression<OneToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Cascade, value));
             notFound = new NotFoundExpression<OneToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
 
             collectionAttributes.SetDefault(x => x.Name, member.Name);
+        }
+
+        public NotFoundExpression<OneToManyPart<TChild>> NotFound
+        {
+            get { return notFound; }
+        }
+
+        public new CollectionCascadeExpression<OneToManyPart<TChild>> Cascade
+        {
+            get { return cascade; }
         }
 
         public override ICollectionMapping GetCollectionMapping()
@@ -54,7 +64,7 @@ namespace FluentNHibernate.Mapping
             };
         }
 
-        public IOneToManyPart KeyColumn(string columnName)
+        public OneToManyPart<TChild> KeyColumn(string columnName)
         {
             KeyColumns.Clear();
             KeyColumns.Add(columnName);
@@ -66,118 +76,10 @@ namespace FluentNHibernate.Mapping
             get { return columns; }
         }
 
-        public IOneToManyPart ForeignKeyConstraintName(string foreignKeyName)
+        public OneToManyPart<TChild> ForeignKeyConstraintName(string foreignKeyName)
         {
             keyAttributes.Set(x => x.ForeignKey, foreignKeyName);
             return this;
         }
-
-        #region Explicit IOneToManyPart Implementation
-
-        CollectionCascadeExpression<IOneToManyPart> IOneToManyPart.Cascade
-        {
-            get { return cascade; }
-        }
-
-        IOneToManyPart IOneToManyPart.Inverse()
-        {
-            return Inverse();
-        }
-
-        OptimisticLockBuilder<IOneToManyPart> IOneToManyPart.OptimisticLock
-        {
-            get { return new OptimisticLockBuilder<IOneToManyPart>(this, value => collectionAttributes.Set(x => x.OptimisticLock, value)); }
-        }
-
-        FetchTypeExpression<IOneToManyPart> IOneToManyPart.Fetch
-        {
-            get { return new FetchTypeExpression<IOneToManyPart>(this, value => collectionAttributes.Set(x => x.Fetch, value)); }
-        }
-
-        IOneToManyPart IOneToManyPart.Schema(string schema)
-        {
-            return Schema(schema);
-        }
-
-        IOneToManyPart IOneToManyPart.Persister<T>()
-        {
-            return Persister<T>();
-        }
-
-        OuterJoinBuilder<IOneToManyPart> IOneToManyPart.OuterJoin
-        {
-            get { return new OuterJoinBuilder<IOneToManyPart>(this, value => collectionAttributes.Set(x => x.OuterJoin, value)); }
-        }
-
-        public new CollectionCascadeExpression<IOneToManyPart> Cascade
-        {
-            get { return cascade; }
-        }
-
-        IOneToManyPart IOneToManyPart.LazyLoad()
-        {
-            return LazyLoad();
-        }
-
-        IOneToManyPart IOneToManyPart.Not
-        {
-            get { return Not; }
-        }
-
-        IOneToManyPart IOneToManyPart.Check(string checkSql)
-        {
-            return Check(checkSql);
-        }
-
-        /// <summary>
-        /// Sets a custom collection type
-        /// </summary>
-        IOneToManyPart IOneToManyPart.CollectionType<TCollection>()
-        {
-            return CollectionType<TCollection>();
-        }
-
-        /// <summary>
-        /// Sets a custom collection type
-        /// </summary>
-        IOneToManyPart IOneToManyPart.CollectionType(Type type)
-        {
-            return CollectionType(type);
-        }
-
-        IOneToManyPart IOneToManyPart.Generic()
-        {
-            return Generic();
-        }
-
-        /// <summary>
-        /// Sets a custom collection type
-        /// </summary>
-        IOneToManyPart IOneToManyPart.CollectionType(string type)
-        {
-            return CollectionType(type);
-        }
-
-        IColumnNameCollection IOneToManyPart.KeyColumns
-        {
-            get { return KeyColumns; }
-        }
-
-        IAccessStrategyBuilder IRelationship.Access
-        {
-            get { return Access; }
-        }
-
-        public NotFoundExpression<OneToManyPart<TChild>> NotFound
-        {
-            get { return notFound; }
-        }
-
-        INotFoundExpression IOneToManyPart.NotFound
-        {
-            get { return NotFound; }
-        }
-
-        #endregion
     }
 }

@@ -19,7 +19,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         IEnumerable<ManyToOneMapping> References { get; }
         IEnumerable<ICollectionMapping> Collections { get; }
         IEnumerable<PropertyMapping> Properties { get; }
-        IEnumerable<ComponentMappingBase> Components { get; }
+        IEnumerable<IComponentMapping> Components { get; }
         IEnumerable<OneToOneMapping> OneToOnes { get; }
         IEnumerable<AnyMapping> Anys { get; }
     }

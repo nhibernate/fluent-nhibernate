@@ -10,26 +10,7 @@ using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IManyToManyPart : ICollectionRelationship
-    {
-        new IManyToManyPart Not { get; }
-        void Table(string tableName);
-        Type ChildType { get; }
-        void ChildKeyColumn(string name);
-        void ParentKeyColumn(string name);
-        void ForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName);
-        INotFoundExpression NotFound { get; }
-        new CollectionCascadeExpression<IManyToManyPart> Cascade { get; }
-        OuterJoinBuilder<IManyToManyPart> OuterJoin { get; }
-        FetchTypeExpression<IManyToManyPart> Fetch { get; }
-        OptimisticLockBuilder<IManyToManyPart> OptimisticLock { get; }
-        IManyToManyPart Schema(string schema);
-        IManyToManyPart Check(string checkSql);
-        IManyToManyPart Generic();
-        IManyToManyPart Persister<T>() where T : IEntityPersister;
-    }
-
-	public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild, ManyToManyMapping>, IManyToManyPart
+	public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild, ManyToManyMapping>
     {
 	    private readonly Type entity;
 	    private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
@@ -134,84 +115,14 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-	    void IManyToManyPart.Table(string tableName)
-        {
-            Table(tableName);
-        }
-
-        void IManyToManyPart.ChildKeyColumn(string name)
-        {
-            ChildKeyColumn(name);
-        }
-
-        void IManyToManyPart.ParentKeyColumn(string name)
-        {
-            ParentKeyColumn(name);
-        }
-
-        void IManyToManyPart.ForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName)
-        {
-            ForeignKeyConstraintNames(parentForeignKeyName, childForeignKeyName);
-        }
-
-        IManyToManyPart IManyToManyPart.Schema(string schema)
-        {
-            return Schema(schema);
-        }
-
-        IManyToManyPart IManyToManyPart.Check(string checkSql)
-        {
-            return Check(checkSql);
-        }
-
-        FetchTypeExpression<IManyToManyPart> IManyToManyPart.Fetch
-        {
-            get { return new FetchTypeExpression<IManyToManyPart>(this, value => collectionAttributes.Set(x => x.Fetch, value)); }
-        }
-
-        OuterJoinBuilder<IManyToManyPart> IManyToManyPart.OuterJoin
-        {
-            get { return new OuterJoinBuilder<IManyToManyPart>(this, value => collectionAttributes.Set(x => x.OuterJoin, value)); }
-        }
-
         public Type ChildType
         {
             get { return typeof(TChild); }
         }
 
-        IAccessStrategyBuilder IRelationship.Access
-        {
-            get { return Access; }
-        }
-
         public NotFoundExpression<ManyToManyPart<TChild>> NotFound
         {
             get { return notFound; }
-        }
-
-        INotFoundExpression IManyToManyPart.NotFound
-        {
-            get { return NotFound; }
-        }
-
-        IManyToManyPart IManyToManyPart.Not
-        {
-            get { return Not; }
-        }
-
-        IManyToManyPart IManyToManyPart.Generic()
-        {
-            return Generic();
-        }
-
-        IManyToManyPart IManyToManyPart.Persister<T>()
-        {
-            return Persister<T>();
-        }
-
-        OptimisticLockBuilder<IManyToManyPart> IManyToManyPart.OptimisticLock
-        {
-            get { return new OptimisticLockBuilder<IManyToManyPart>(this, value => collectionAttributes.Set(x => x.OptimisticLock, value)); }
         }
 
 	    protected override ICollectionRelationshipMapping GetRelationship()
@@ -221,10 +132,5 @@ namespace FluentNHibernate.Mapping
 	            ContainingEntityType = entity
 	        };
 	    }
-
-	    CollectionCascadeExpression<IManyToManyPart> IManyToManyPart.Cascade
-        {
-            get { return new CollectionCascadeExpression<IManyToManyPart>(this, value => collectionAttributes.Set(x => x.Cascade, value)); }
-        }
     }
 }

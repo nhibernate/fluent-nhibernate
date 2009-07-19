@@ -1,18 +1,21 @@
 using System;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {
-    public class DiscriminatorPart : IDiscriminatorPart
+    public class DiscriminatorPart : IDiscriminatorMappingProvider
     {
         private readonly Action<Type, ISubclassMappingProvider> setter;
+        private readonly TypeReference discriminatorValueType;
         private readonly DiscriminatorMapping mapping;
         private bool nextBool = true;
 
-        public DiscriminatorPart(ClassMapping parentMapping, string columnName, Type entity, Action<Type, ISubclassMappingProvider> setter)
+        public DiscriminatorPart(ClassMapping parentMapping, string columnName, Type entity, Action<Type, ISubclassMappingProvider> setter, TypeReference discriminatorValueType)
         {
             this.setter = setter;
+            this.discriminatorValueType = discriminatorValueType;
             mapping = new DiscriminatorMapping(parentMapping)
             {
                 Column = columnName,
@@ -20,8 +23,9 @@ namespace FluentNHibernate.Mapping
             };
         }
 
-        public DiscriminatorMapping GetDiscriminatorMapping()
+        DiscriminatorMapping IDiscriminatorMappingProvider.GetDiscriminatorMapping()
         {
+            mapping.Type = discriminatorValueType;
             return mapping;
         }
 

@@ -2,31 +2,31 @@ using System;
 
 namespace FluentNHibernate.Mapping
 {
-    public class OptimisticLockBuilder : IOptimisticLockBuilder
+    public class OptimisticLockBuilder
     {
         private readonly Action<string> setter;
 
-        public OptimisticLockBuilder(Action<string> setter)
+        protected OptimisticLockBuilder(Action<string> setter)
         {
             this.setter = setter;
         }
 
-        void IOptimisticLockBuilder.None()
+        public void None()
         {
             setter("none");
         }
 
-        void IOptimisticLockBuilder.Version()
+        public void Version()
         {
             setter("version");
         }
 
-        void IOptimisticLockBuilder.Dirty()
+        public void Dirty()
         {
             setter("dirty");
         }
 
-        void IOptimisticLockBuilder.All()
+        public void All()
         {
             setter("all");
         }
@@ -45,36 +45,36 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Use no locking strategy
         /// </summary>
-        public TParent None()
+        public new TParent None()
         {
-            ((IOptimisticLockBuilder)this).None();
+            base.None();
             return parent;
         }
 
         /// <summary>
         /// Use version locking
         /// </summary>
-        public TParent Version()
+        public new TParent Version()
         {
-            ((IOptimisticLockBuilder)this).Version();
+            base.Version();
             return parent;
         }
 
         /// <summary>
         /// Use dirty locking
         /// </summary>
-        public TParent Dirty()
+        public new TParent Dirty()
         {
-            ((IOptimisticLockBuilder)this).Dirty();
+            base.Dirty();
             return parent;
         }
 
         /// <summary>
         /// Use all locking
         /// </summary>
-        public TParent All()
+        public new TParent All()
         {
-            ((IOptimisticLockBuilder)this).All();
+            base.All();
             return parent;
         }
     }

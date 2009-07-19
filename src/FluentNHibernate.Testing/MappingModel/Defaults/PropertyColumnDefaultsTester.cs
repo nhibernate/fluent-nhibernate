@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using FluentNHibernate.Utils;
 using NUnit.Framework;
@@ -16,7 +16,7 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
         [Test]
         public void ShouldHaveDefaultColumnIfNoneSpecified()
         {
-            var mapping = new PropertyMap(Prop(x => x.Name), typeof(PropertyTarget))
+            var mapping = ((IPropertyMappingProvider)new PropertyMap(Prop(x => x.Name), typeof(PropertyTarget)))
                 .GetPropertyMapping();
 
             mapping.Columns.Defaults.Count().ShouldEqual(1);
@@ -27,8 +27,8 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
         [Test]
         public void ShouldHaveNoDefaultsIfUserSpecifiedColumn()
         {
-            var mapping = new PropertyMap(Prop(x => x.Name), typeof(PropertyTarget))
-                .Column("explicit")
+            var mapping = ((IPropertyMappingProvider)new PropertyMap(Prop(x => x.Name), typeof(PropertyTarget))
+                .Column("explicit"))
                 .GetPropertyMapping();
 
             mapping.Columns.Defaults.Count().ShouldEqual(0);
@@ -39,8 +39,8 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
         [Test]
         public void DefaultColumnShouldInheritColumnAttributes()
         {
-            var mapping = new PropertyMap(Prop(x => x.Name), typeof(PropertyTarget))
-                .Not.Nullable()
+            var mapping = ((IPropertyMappingProvider)new PropertyMap(Prop(x => x.Name), typeof(PropertyTarget))
+                .Not.Nullable())
                 .GetPropertyMapping();
 
             mapping.Columns.Defaults.First().NotNull.ShouldBeTrue();

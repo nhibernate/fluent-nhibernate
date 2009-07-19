@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Xml;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
@@ -11,8 +11,8 @@ using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Mapping
 {
-    public abstract class ToManyBase<T, TChild, TRelationshipAttributes> : ICollectionRelationship
-        where T : ToManyBase<T, TChild, TRelationshipAttributes>, ICollectionRelationship
+    public abstract class ToManyBase<T, TChild, TRelationshipAttributes> : ICollectionMappingProvider
+        where T : ToManyBase<T, TChild, TRelationshipAttributes>, ICollectionMappingProvider
         where TRelationshipAttributes : ICollectionRelationshipMapping
     {
         public MemberInfo Member { get; private set; }
@@ -424,142 +424,5 @@ namespace FluentNHibernate.Mapping
         {
             get { return outerJoin; }
         }
-
-        #region Implementation of ICollectionRelationship
-
-        ICollectionCascadeExpression ICollectionRelationship.Cascade
-        {
-            get { return Cascade; }
-        }
-
-        /// <summary>
-        /// Inverts the next boolean
-        /// </summary>
-        ICollectionRelationship ICollectionRelationship.Not
-        {
-            get { return Not; }
-        }
-        ICollectionRelationship ICollectionRelationship.LazyLoad()
-        {
-            return LazyLoad();
-        }
-
-        ICollectionRelationship ICollectionRelationship.Inverse()
-        {
-            return Inverse();
-        }
-
-        ICollectionRelationship ICollectionRelationship.AsSet()
-        {
-            return AsSet();
-        }
-
-        ICollectionRelationship ICollectionRelationship.AsSet(SortType sort)
-        {
-            return AsSet(sort);
-        }
-
-        ICollectionRelationship ICollectionRelationship.AsSet<TComparer>()
-        {
-            return AsSet<TComparer>();
-        }
-
-        ICollectionRelationship ICollectionRelationship.AsBag()
-        {
-            return AsBag();
-        }
-
-        ICollectionRelationship ICollectionRelationship.AsList()
-        {
-            return AsList();
-        }
-
-        ICollectionRelationship ICollectionRelationship.AsMap(string indexColumnName)
-        {
-            return AsMap(indexColumnName);
-        }
-
-        ICollectionRelationship ICollectionRelationship.AsMap(string indexColumnName, SortType sort)
-        {
-            return AsMap(indexColumnName, sort);
-        }
-
-        ICollectionRelationship ICollectionRelationship.AsMap<TIndex>(string indexColumnName)
-        {
-            return AsMap(indexColumnName);
-        }
-
-        ICollectionRelationship ICollectionRelationship.AsMap<TIndex>(string indexColumnName, SortType sort)
-        {
-            return AsMap(indexColumnName, sort);
-        }
-
-        ICollectionRelationship ICollectionRelationship.AsMap<TIndex, TComparer>(string indexColumnName)
-        {
-            return AsMap<TIndex, TComparer>(indexColumnName);
-        }
-
-        ICollectionRelationship ICollectionRelationship.Element(string columnName)
-        {
-            return Element(columnName);
-        }
-
-        /// <summary>
-        /// Sets the table name for this one-to-many.
-        /// </summary>
-        /// <param name="name">Table name</param>
-        ICollectionRelationship ICollectionRelationship.Table(string name)
-        {
-            return Table(name);
-        }
-
-        ICollectionRelationship ICollectionRelationship.ForeignKeyCascadeOnDelete()
-        {
-            return ForeignKeyCascadeOnDelete();
-        }
-
-        /// <summary>
-        /// Sets the where clause for this one-to-many relationship.
-        /// </summary>
-        ICollectionRelationship ICollectionRelationship.Where(string where)
-        {
-            return Where(where);
-        }
-
-        ICollectionRelationship ICollectionRelationship.BatchSize(int size)
-        {
-            return BatchSize(size);
-        }
-
-        /// <summary>
-        /// Sets a custom collection type
-        /// </summary>
-        ICollectionRelationship ICollectionRelationship.CollectionType<TCollection>()
-        {
-            return CollectionType<TCollection>();
-        }
-
-        /// <summary>
-        /// Sets a custom collection type
-        /// </summary>
-        ICollectionRelationship ICollectionRelationship.CollectionType(Type type)
-        {
-            return CollectionType(type);
-        }
-
-        /// <summary>
-        /// Sets a custom collection type
-        /// </summary>
-        ICollectionRelationship ICollectionRelationship.CollectionType(string type)
-        {
-            return CollectionType(type);
-        }
-
-        IAccessStrategyBuilder IRelationship.Access
-        {
-            get { return Access; }
-        }
-
-        #endregion
     }
 }

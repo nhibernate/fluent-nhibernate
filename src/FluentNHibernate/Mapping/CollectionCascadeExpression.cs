@@ -2,7 +2,7 @@ using System;
 
 namespace FluentNHibernate.Mapping
 {
-    public class CollectionCascadeExpression<TParent> : CascadeExpression<TParent>, ICollectionCascadeExpression
+    public class CollectionCascadeExpression<TParent> : CascadeExpression<TParent>
 	{
         private readonly TParent parent;
         private readonly Action<string> setter;
@@ -19,10 +19,5 @@ namespace FluentNHibernate.Mapping
 			setter("all-delete-orphan");
 			return parent;
 		}
-
-        void ICollectionCascadeExpression.AllDeleteOrphan()
-        {
-            AllDeleteOrphan();
-        }
 	}
 }

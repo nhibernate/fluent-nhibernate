@@ -61,7 +61,7 @@ namespace FluentNHibernate
         {
             foreach (Type type in assembly.GetExportedTypes())
             {
-                if (!type.IsGenericType && typeof(IClassMap).IsAssignableFrom(type))
+                if (!type.IsGenericType && typeof(IMappingProvider).IsAssignableFrom(type))
                     Add(type);
             }
         }

@@ -10,7 +10,7 @@ namespace FluentNHibernate.MappingModel
         private readonly List<PropertyMapping> properties;
         private readonly List<ICollectionMapping> collections;
         private readonly List<ManyToOneMapping> references;
-        private readonly List<ComponentMappingBase> components;
+        private readonly List<IComponentMapping> components;
         private readonly List<OneToOneMapping> oneToOnes;
         private readonly List<AnyMapping> anys;
         private readonly List<JoinMapping> joins;
@@ -19,8 +19,8 @@ namespace FluentNHibernate.MappingModel
         {
             properties = new List<PropertyMapping>();
             collections = new List<ICollectionMapping>();
-            references = new List<ManyToOneMapping>();    
-            components = new List<ComponentMappingBase>();
+            references = new List<ManyToOneMapping>();
+            components = new List<IComponentMapping>();
             oneToOnes = new List<OneToOneMapping>();
             anys = new List<AnyMapping>();
             joins = new List<JoinMapping>();
@@ -41,7 +41,7 @@ namespace FluentNHibernate.MappingModel
             get { return references; }
         }
 
-        public IEnumerable<ComponentMappingBase> Components
+        public IEnumerable<IComponentMapping> Components
         {
             get { return components; }
         }
@@ -103,7 +103,7 @@ namespace FluentNHibernate.MappingModel
             references.Add(manyToOne);
         }
 
-        public void AddComponent(ComponentMappingBase componentMapping)
+        public void AddComponent(IComponentMapping componentMapping)
         {
             if (components.Exists(x => x.Name == componentMapping.Name))
                 throw new InvalidOperationException("Tried to add component '" + componentMapping.Name + "' when already added.");
@@ -111,7 +111,7 @@ namespace FluentNHibernate.MappingModel
             components.Add(componentMapping);
         }
 
-        public void AddOrReplaceComponent(ComponentMappingBase componentMapping)
+        public void AddOrReplaceComponent(IComponentMapping componentMapping)
         {
             components.RemoveAll(x => x.Name == componentMapping.Name);
             components.Add(componentMapping);

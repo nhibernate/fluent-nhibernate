@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public class ClassMap<T> : ClasslikeMapBase<T>, IClassMap
+    public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     {
-        private readonly IOptimisticLockBuilder optimisticLock;
+        private readonly OptimisticLockBuilder<ClassMap<T>> optimisticLock;
 
         /// <summary>
         /// Specify caching for this entity.
@@ -24,7 +23,7 @@ namespace FluentNHibernate.Mapping
         private bool nextBool = true;
 
         protected ClassMapping mapping;
-        private IDiscriminatorPart discriminator;
+        private DiscriminatorPart discriminator;
         protected IVersionMappingProvider version;
         private ICompositeIdMappingProvider compositeId;
         private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
@@ -45,7 +44,7 @@ namespace FluentNHibernate.Mapping
             get { return mapping.TableName; }
         }
 
-		public IDiscriminatorPart Discriminator
+		public DiscriminatorPart Discriminator
 		{
 			get { return discriminator; }
 		}
@@ -82,7 +81,7 @@ namespace FluentNHibernate.Mapping
                 mapping.AddSubclass(subclass.GetSubclassMapping());
 
             if (discriminator != null)
-                mapping.Discriminator = discriminator.GetDiscriminatorMapping();
+                mapping.Discriminator = ((IDiscriminatorMappingProvider)discriminator).GetDiscriminatorMapping();
 
             if (Cache.IsDirty)
                 mapping.Cache = ((ICacheMappingProvider)Cache).GetCacheMapping();
@@ -158,9 +157,7 @@ namespace FluentNHibernate.Mapping
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
         {
-            var part = new DiscriminatorPart(mapping, columnName, typeof(T), subclasses.Add);
-
-			part.GetDiscriminatorMapping().Type = new TypeReference(typeof(TDiscriminator));
+            var part = new DiscriminatorPart(mapping, columnName, typeof(T), subclasses.Add, new TypeReference(typeof(TDiscriminator)));
 
             discriminator = part;
 
@@ -171,9 +168,7 @@ namespace FluentNHibernate.Mapping
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
         {
-            var part = new DiscriminatorPart(mapping, columnName, typeof(T), subclasses.Add);
-
-			part.GetDiscriminatorMapping().Type = new TypeReference(typeof(TDiscriminator));
+            var part = new DiscriminatorPart(mapping, columnName, typeof(T), subclasses.Add, new TypeReference(typeof(TDiscriminator)));
 
             discriminator = part;
 
@@ -239,11 +234,6 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        IClassMap IClassMap.Not
-        {
-            get { return Not; }
-        }
-
         /// <summary>
         /// Sets this entity to be lazy-loaded (overrides the default lazy load configuration).
         /// </summary>
@@ -262,7 +252,7 @@ namespace FluentNHibernate.Mapping
         {
             var join = new JoinPart<T>(tableName);
             action(join);
-            mapping.AddJoin(join.GetJoinMapping());
+            mapping.AddJoin(((IJoinMappingProvider)join).GetJoinMapping());
         }
 
         /// <summary>
@@ -305,7 +295,7 @@ namespace FluentNHibernate.Mapping
             nextBool = true;
         }
 
-        public IClassMap BatchSize(int size)
+        public ClassMap<T> BatchSize(int size)
         {
             mapping.BatchSize = size;
             return this;
@@ -314,7 +304,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the optimistic locking strategy
         /// </summary>
-        public IOptimisticLockBuilder OptimisticLock
+        public OptimisticLockBuilder<ClassMap<T>> OptimisticLock
         {
             get { return optimisticLock; }
         }
