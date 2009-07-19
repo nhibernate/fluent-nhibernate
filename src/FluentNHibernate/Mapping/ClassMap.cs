@@ -17,7 +17,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specify caching for this entity.
         /// </summary>
-        public ICache Cache { get; private set; }
+        public CachePart Cache { get; private set; }
         protected IIdentityMappingProvider id;
 
         private readonly IList<ImportPart> imports = new List<ImportPart>();
@@ -37,7 +37,7 @@ namespace FluentNHibernate.Mapping
         {
             this.mapping = mapping;
             optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => mapping.OptimisticLock = value);
-            Cache = new CachePart();
+            Cache = new CachePart(typeof(T));
         }
 
         public string TableName
@@ -85,7 +85,7 @@ namespace FluentNHibernate.Mapping
                 mapping.Discriminator = discriminator.GetDiscriminatorMapping();
 
             if (Cache.IsDirty)
-                mapping.Cache = Cache.GetCacheMapping();
+                mapping.Cache = ((ICacheMappingProvider)Cache).GetCacheMapping();
 
             if (id != null)
                 mapping.Id = id.GetIdentityMapping();

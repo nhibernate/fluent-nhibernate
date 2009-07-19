@@ -98,6 +98,7 @@
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltDynamicComponentConvention.cs" />
     <Compile Include="Conventions\Inspections\AnyInspector.cs" />
+    <Compile Include="Conventions\Inspections\CacheInspector.cs" />
     <Compile Include="Conventions\Inspections\CollectionInspector.cs" />
     <Compile Include="Conventions\Inspections\DiscriminatorInspector.cs" />
     <Compile Include="Conventions\Inspections\IAnyInspector.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="MappingModel\Output\Sorting\XmlNodeSorter.cs" />
     <Compile Include="MappingModel\TypeReference.cs" />
     <Compile Include="Mapping\GeneratorBuilder.cs" />
+    <Compile Include="Mapping\ICacheMappingProvider.cs" />
     <Compile Include="Mapping\IIdentityMappingProvider.cs" />
     <Compile Include="Mapping\IVersionMappingProvider.cs" />
     <Compile Include="Utils\Reflection\ExpressionBuilder.cs" />

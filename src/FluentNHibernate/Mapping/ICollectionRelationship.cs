@@ -13,7 +13,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specify caching for this entity.
         /// </summary>
-        ICache Cache { get; }
+        CachePart Cache { get; }
         ICollectionCascadeExpression Cascade { get; }
         
         /// <summary>

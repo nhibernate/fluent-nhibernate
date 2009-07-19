@@ -1,24 +1,16 @@
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public class CacheInstance : ICacheInstance
+    public class CacheInstance : CacheInspector, ICacheInstance
     {
         private readonly CacheMapping mapping;
 
         public CacheInstance(CacheMapping mapping)
+            : base(mapping)
         {
             this.mapping = mapping;
-        }
-
-        public string Value
-        {
-            get { return mapping.Usage; }
-        }
-
-        public string RegionValue
-        {
-            get { return mapping.Region; }
         }
 
         public void ReadWrite()
@@ -45,7 +37,7 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.Usage = custom;
         }
 
-        public void Region(string name)
+        public new void Region(string name)
         {
             if (!mapping.IsSpecified(x => x.Region))
                 mapping.Region = name;

@@ -3,7 +3,7 @@ namespace FluentNHibernate.Mapping
     public interface IClassMap : IClasslike, IMappingProvider
     {
         string TableName { get; }
-        ICache Cache { get; }
+        CachePart Cache { get; }
         /// <summary>
         /// Sets the optimistic locking strategy
         /// </summary>

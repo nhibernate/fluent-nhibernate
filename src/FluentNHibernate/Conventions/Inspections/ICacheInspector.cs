@@ -1,8 +1,8 @@
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public interface ICacheInspector
+    public interface ICacheInspector : IInspector
     {
-        string Value { get; }
-        string RegionValue { get; }
+        string Usage { get; }
+        string Region { get; }
     }
 }

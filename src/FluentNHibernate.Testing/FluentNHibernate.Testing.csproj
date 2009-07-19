@@ -107,6 +107,7 @@
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsPropertyTests.cs" />
     <Compile Include="ConventionsTests\Inspection\ColumnInspectorMapsToColumnMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ClassInspectorMapsToClassMapping.cs" />
+    <Compile Include="ConventionsTests\Inspection\CacheInspectorMapsToCacheMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\OneToOneInspectorMapsToOneToOneMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\VersionInspectorMapsToVersionMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\PropertyInspectorMapsToPropertyMapping.cs" />

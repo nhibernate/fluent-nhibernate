@@ -97,7 +97,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         {
             mapping.Cache = new CacheMapping();
             mapping.Cache.Usage = "test";
-            inspector.Cache.Value.ShouldEqual("test");
+            inspector.Cache.Usage.ShouldEqual("test");
         }
 
         [Test]

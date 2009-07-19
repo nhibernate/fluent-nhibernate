@@ -1,52 +1,50 @@
+using System;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface ICache
-    {
-        ICache AsReadWrite();
-        ICache AsNonStrictReadWrite();
-        ICache AsReadOnly();
-        ICache AsCustom(string custom);
-        ICache Region(string name);
-        bool IsDirty { get; }
-        CacheMapping GetCacheMapping();
-    }
-
-    public class CachePart : ICache
+    public class CachePart : ICacheMappingProvider
     {
         private readonly CacheMapping mapping = new CacheMapping();
+        private readonly Type entityType;
 
-        public CacheMapping GetCacheMapping()
+        public CachePart(Type entityType)
         {
+            this.entityType = entityType;
+        }
+
+        CacheMapping ICacheMappingProvider.GetCacheMapping()
+        {
+            mapping.ContainedEntityType = entityType;
+
             return mapping;
         }
 
-        public ICache AsReadWrite()
+        public CachePart AsReadWrite()
         {
            mapping.Usage = "read-write";
            return this;
         }
 
-        public ICache AsNonStrictReadWrite()
+        public CachePart AsNonStrictReadWrite()
         {
             mapping.Usage = "nonstrict-read-write";
             return this;
         }
 
-        public ICache AsReadOnly()
+        public CachePart AsReadOnly()
         {
             mapping.Usage = "read-only";
             return this;
         }
 
-        public ICache AsCustom(string custom)
+        public CachePart AsCustom(string custom)
         {
             mapping.Usage = custom;
             return this;
         }
 
-        public ICache Region(string name)
+        public CachePart Region(string name)
         {
             mapping.Region = name;
             return this;

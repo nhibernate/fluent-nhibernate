@@ -46,7 +46,7 @@ namespace FluentNHibernate.Mapping
 
             SetDefaultCollectionType(type);
             SetCustomCollectionType(type);
-            Cache = new CachePart();
+            Cache = new CachePart(entity);
 
             collectionAttributes.SetDefault(x => x.Name, member.Name);
             relationshipAttributes.SetDefault(x => x.Class, new TypeReference(typeof(TChild)));
@@ -80,7 +80,7 @@ namespace FluentNHibernate.Mapping
             mapping.Relationship = GetRelationship();
 
             if (Cache.IsDirty)
-                mapping.Cache = Cache.GetCacheMapping();
+                mapping.Cache = ((ICacheMappingProvider)Cache).GetCacheMapping();
 
             if (componentMapping != null)
             {
@@ -103,7 +103,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specify caching for this entity.
         /// </summary>
-        public ICache Cache { get; private set; }
+        public CachePart Cache { get; private set; }
 
         public T LazyLoad()
         {
