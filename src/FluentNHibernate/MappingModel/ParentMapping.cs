@@ -18,6 +18,8 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Name, value); }
         }
 
+        public Type ContainingEntityType { get; set; }
+
         public bool IsSpecified<TResult>(Expression<Func<ParentMapping, TResult>> property)
         {
             return attributes.IsSpecified(property);

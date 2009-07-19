@@ -95,7 +95,8 @@ namespace FluentNHibernate.Mapping
         {
             mapping.Parent = new ParentMapping
             {
-                Name = property.Name
+                Name = property.Name,
+                ContainingEntityType = typeof(T)
             };
 
             return this;

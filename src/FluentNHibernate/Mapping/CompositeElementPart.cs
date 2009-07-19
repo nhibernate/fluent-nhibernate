@@ -70,7 +70,11 @@ namespace FluentNHibernate.Mapping
         public CompositeElementPart<T> WithParentReference(Expression<Func<T, object>> exp)
         {
             var property = ReflectionHelper.GetProperty(exp);
-            mapping.Parent = new ParentMapping { Name = property.Name };
+            mapping.Parent = new ParentMapping
+            {
+                Name = property.Name,
+                ContainingEntityType = typeof(T)
+            };
             return this;
         }
 
