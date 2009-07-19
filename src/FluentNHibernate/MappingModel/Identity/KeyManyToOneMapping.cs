@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
@@ -52,14 +53,33 @@ namespace FluentNHibernate.MappingModel.Identity
             set { attributes.Set(x => x.NotFound, value); }
         }
 
-        public AttributeStore<KeyManyToOneMapping> Attributes
+        public IEnumerable<ColumnMapping> Columns
         {
-            get { return attributes; }
+            get {
+                return columns;
+            }
         }
+
+        public Type ContainingEntityType { get; set; }
 
         public void AddColumn(ColumnMapping mapping)
         {
             columns.Add(mapping);
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<KeyManyToOneMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<KeyManyToOneMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<KeyManyToOneMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

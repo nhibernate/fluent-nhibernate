@@ -79,7 +79,12 @@ namespace FluentNHibernate.Mapping
 
         private CompositeIdentityPart<T> WithKeyReference(PropertyInfo property, string columnName)
         {
-            var key = new KeyManyToOneMapping { Name = property.Name, Class = new TypeReference(property.PropertyType)};
+            var key = new KeyManyToOneMapping
+            {
+                Name = property.Name,
+                Class = new TypeReference(property.PropertyType),
+                ContainingEntityType = typeof(T)
+            };
             key.AddColumn(new ColumnMapping { Name = columnName });
 
             mapping.AddKeyManyToOne(key);

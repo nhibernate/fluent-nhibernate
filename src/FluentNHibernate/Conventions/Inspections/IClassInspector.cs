@@ -20,7 +20,7 @@ namespace FluentNHibernate.Conventions.Inspections
         string Polymorphism { get; }
         string Proxy { get; }
         bool SelectBeforeUpdate { get; }
-        IIdentityInspector Id { get; }
+        IIdentityInspectorBase Id { get; }
         ICacheInspector Cache { get; }
         IDiscriminatorInspector Discriminator { get; }
         IVersionInspector Version { get; }
