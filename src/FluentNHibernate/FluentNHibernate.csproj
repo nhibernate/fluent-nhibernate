@@ -104,6 +104,7 @@
     <Compile Include="Conventions\Inspections\AnyInspector.cs" />
     <Compile Include="Conventions\Inspections\CacheInspector.cs" />
     <Compile Include="Conventions\Inspections\CamelCasePrefix.cs" />
+    <Compile Include="Conventions\Inspections\Cascade.cs" />
     <Compile Include="Conventions\Inspections\CollectionInspector.cs" />
     <Compile Include="Conventions\Inspections\ComponentBaseInspector.cs" />
     <Compile Include="Conventions\Inspections\ComponentInspector.cs" />

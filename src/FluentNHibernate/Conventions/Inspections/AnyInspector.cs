@@ -37,9 +37,9 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return Access.FromString(mapping.Access); }
         }
 
-        public string Cascade
+        public Cascade Cascade
         {
-            get { return mapping.Cascade; }
+            get { return Cascade.FromString(mapping.Cascade); }
         }
 
         public IDefaultableEnumerable<IColumnInspector> IdentifierColumns

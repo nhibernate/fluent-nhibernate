@@ -11,7 +11,7 @@ namespace FluentNHibernate.Conventions.Inspections
         bool IsMethodAccess { get; }
         MemberInfo Member { get; }
         IRelationshipInspector Relationship { get; }
-        string Cascade { get; }
+        Cascade Cascade { get; }
         string Fetch { get; }
         OptimisticLock OptimisticLock { get; }
         string OuterJoin { get; }

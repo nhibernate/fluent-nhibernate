@@ -76,9 +76,9 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
-        public string Cascade
+        public Cascade Cascade
         {
-            get { return mapping.Cascade; }
+            get { return Cascade.FromString(mapping.Cascade); }
         }
 
         public string Fetch

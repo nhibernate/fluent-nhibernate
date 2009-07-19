@@ -6,7 +6,7 @@ namespace FluentNHibernate.Conventions.Inspections
     public interface IAnyInspector : IInspector
     {
         Access Access { get; }
-        string Cascade { get; }
+        Cascade Cascade { get; }
         IDefaultableEnumerable<IColumnInspector> IdentifierColumns { get; }
         string IdType { get; }
         bool Insert { get; }

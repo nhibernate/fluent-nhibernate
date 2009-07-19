@@ -96,7 +96,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void CascadeMapped()
         {
             mapping.Cascade = "all";
-            inspector.Cascade.ShouldEqual("all");
+            inspector.Cascade.ShouldEqual(Cascade.All);
         }
 
         [Test]
