@@ -10,13 +10,18 @@ namespace FluentNHibernate.MappingModel
     {
         private readonly AttributeStore<JoinMapping> attributes;
 
-        public KeyMapping Key { get; set; }
         private readonly MappedMembers mappedMembers;
 
         public JoinMapping()
         {
             attributes = new AttributeStore<JoinMapping>();
             mappedMembers = new MappedMembers();
+        }
+
+        public KeyMapping Key
+        {
+            get { return attributes.Get(x => x.Key); }
+            set { attributes.Set(x => x.Key, value); }
         }
 
         public IEnumerable<PropertyMapping> Properties
