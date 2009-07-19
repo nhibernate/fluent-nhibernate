@@ -246,13 +246,14 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.SelectBeforeUpdate; }
         }
 
-        public IIdentityInspector Id
+        public IIdentityInspectorBase Id
         {
             get
             {
-                // TODO: Support CompositeIds
-                if (mapping.Id == null || mapping.Id is CompositeIdMapping)
+                if (mapping.Id == null)
                     return new IdentityInspector(new IdMapping());
+                if (mapping.Id is CompositeIdMapping)
+                    return new CompositeIdentityInspector((CompositeIdMapping)mapping.Id);
 
                 return new IdentityInspector((IdMapping)mapping.Id);
             }

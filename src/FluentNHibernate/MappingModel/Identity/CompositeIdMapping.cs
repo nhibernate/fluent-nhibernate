@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
@@ -44,11 +46,6 @@ namespace FluentNHibernate.MappingModel.Identity
             set { attributes.Set(x => x.UnsavedValue, value); }
         }
 
-        public AttributeStore<CompositeIdMapping> Attributes
-        {
-            get { return attributes; }
-        }
-
         public IEnumerable<KeyPropertyMapping> KeyProperties
         {
             get { return keyProperties; }
@@ -59,6 +56,8 @@ namespace FluentNHibernate.MappingModel.Identity
             get { return keyManyToOnes; }
         }
 
+        public Type ContainingEntityType { get; set; }
+
         public void AddKeyProperty(KeyPropertyMapping mapping)
         {
             keyProperties.Add(mapping);
@@ -67,6 +66,21 @@ namespace FluentNHibernate.MappingModel.Identity
         public void AddKeyManyToOne(KeyManyToOneMapping mapping)
         {
             keyManyToOnes.Add(mapping);
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<CompositeIdMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<CompositeIdMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<CompositeIdMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

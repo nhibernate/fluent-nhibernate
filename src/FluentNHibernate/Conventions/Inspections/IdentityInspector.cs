@@ -59,7 +59,7 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
-        public object UnsavedValue
+        public string UnsavedValue
         {
             get { return mapping.UnsavedValue; }
         }

@@ -9,15 +9,15 @@ namespace FluentNHibernate.Mapping
 {
     public class CompositeIdentityPart<T> : IAccessStrategy<CompositeIdentityPart<T>>, ICompositeIdMappingProvider
 	{
-		private readonly AccessStrategyBuilder<CompositeIdentityPart<T>> access;
+        private readonly AccessStrategyBuilder<CompositeIdentityPart<T>> access;
         private readonly CompositeIdMapping mapping = new CompositeIdMapping();
 
         public CompositeIdentityPart()
-		{
+        {
             access = new AccessStrategyBuilder<CompositeIdentityPart<T>>(this, value => mapping.Access = value);
-		}
+        }
 
-	    /// <summary>
+        /// <summary>
 		/// Defines a property to be used as a key for this composite-id.
 		/// </summary>
 		/// <param name="expression">A member access lambda expression for the property</param>
@@ -97,6 +97,7 @@ namespace FluentNHibernate.Mapping
 
 	    CompositeIdMapping ICompositeIdMappingProvider.GetCompositeIdMapping()
 	    {
+	        mapping.ContainingEntityType = typeof(T);
 	        return mapping;
 	    }
 	}
