@@ -25,6 +25,7 @@ namespace FluentNHibernate.MappingModel.Identity
         }
 
         public IDictionary<string, string> Params { get; private set; }
+        public Type ContainingEntityType { get; set; }
 
         public bool IsSpecified<TResult>(Expression<Func<GeneratorMapping, TResult>> property)
         {

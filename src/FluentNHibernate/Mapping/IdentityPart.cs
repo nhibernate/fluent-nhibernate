@@ -24,7 +24,7 @@ namespace FluentNHibernate.Mapping
 
             mapping = new IdMapping { ContainingEntityType = entityType };
             access = new AccessStrategyBuilder<IdentityPart>(this, value => mapping.Access = value);
-            GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, property.PropertyType);
+            GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, property.PropertyType, entity);
 
             ColumnName(columnName);
 

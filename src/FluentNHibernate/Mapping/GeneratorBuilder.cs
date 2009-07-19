@@ -6,7 +6,7 @@ namespace FluentNHibernate.Mapping
     public class GeneratorBuilder
     {
         private readonly Type identityType;
-        private readonly GeneratorMapping mapping = new GeneratorMapping();
+        private readonly GeneratorMapping mapping;
 
         public GeneratorBuilder(GeneratorMapping mapping, Type identityType)
         {
@@ -44,12 +44,12 @@ namespace FluentNHibernate.Mapping
             // do we think we'll encounter more?
             return t == typeof(int) || t == typeof(int?)
                 || t == typeof(long) || t == typeof(long?)
-                    || t == typeof(uint) || t == typeof(uint?)
-                        || t == typeof(ulong) || t == typeof(ulong?)
-                            || t == typeof(byte) || t == typeof(byte?)
-                                || t == typeof(sbyte) || t == typeof(sbyte?)
-                                    || t == typeof(short) || t == typeof(short?)
-                                        || t == typeof(ushort) || t == typeof(ushort?);
+                || t == typeof(uint) || t == typeof(uint?)
+                || t == typeof(ulong) || t == typeof(ulong?)
+                || t == typeof(byte) || t == typeof(byte?)
+                || t == typeof(sbyte) || t == typeof(sbyte?)
+                || t == typeof(short) || t == typeof(short?)
+                || t == typeof(ushort) || t == typeof(ushort?);
         }
 
         public void Increment()

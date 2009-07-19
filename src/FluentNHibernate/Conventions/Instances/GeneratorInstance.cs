@@ -1,29 +1,21 @@
 using System;
 using System.Collections.Generic;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public class GeneratorInstance : IGeneratorInstance
+    public class GeneratorInstance : GeneratorInspector, IGeneratorInstance
     {
         private readonly GeneratorMapping mapping;
         private readonly GeneratorBuilder builder;
 
         public GeneratorInstance(GeneratorMapping mapping, Type type)
+            : base(mapping)
         {
             this.mapping = mapping;
             builder = new GeneratorBuilder(mapping, type);
-        }
-
-        public string Class
-        {
-            get { return mapping.Class; }
-        }
-
-        public IDictionary<string, string> Params
-        {
-            get { return mapping.Params; }
         }
 
 		/// <summary>

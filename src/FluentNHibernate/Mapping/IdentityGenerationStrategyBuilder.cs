@@ -6,18 +6,22 @@ namespace FluentNHibernate.Mapping
     public class IdentityGenerationStrategyBuilder<TParent>
 	{
         private readonly TParent parent;
+        private readonly Type entity;
         private readonly GeneratorMapping mapping = new GeneratorMapping();
         private readonly GeneratorBuilder builder;
 
-        public IdentityGenerationStrategyBuilder(TParent parent, Type identityType)
+        public IdentityGenerationStrategyBuilder(TParent parent, Type identityType, Type entity)
         {
             this.parent = parent;
+            this.entity = entity;
 
             builder = new GeneratorBuilder(mapping, identityType);
         }
 
         public GeneratorMapping GetGeneratorMapping()
         {
+            mapping.ContainingEntityType = entity;
+
             return mapping;
         }
 

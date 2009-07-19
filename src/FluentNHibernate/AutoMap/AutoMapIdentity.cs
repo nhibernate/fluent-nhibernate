@@ -26,7 +26,7 @@ namespace FluentNHibernate.AutoMap
             idMapping.Name = property.Name;
             idMapping.Type = new TypeReference(property.PropertyType);
             idMapping.PropertyInfo = property;
-            idMapping.Generator= new GeneratorMapping { Class = "identity" };
+            idMapping.Generator= new GeneratorMapping { Class = "identity", ContainingEntityType = classMap.Type };
             classMap.Id = idMapping;        
         }
 
