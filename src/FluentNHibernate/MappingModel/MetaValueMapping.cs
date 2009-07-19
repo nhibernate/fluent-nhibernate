@@ -24,6 +24,8 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Class, value); }
         }
 
+        public Type ContainingEntityType { get; set; }
+
         public bool IsSpecified<TResult>(Expression<Func<MetaValueMapping, TResult>> property)
         {
             return attributes.IsSpecified(property);

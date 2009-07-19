@@ -6,24 +6,38 @@ namespace FluentNHibernate.Conventions.Inspections
 {
     public class MetaValueInspector : IMetaValueInspector
     {
+        private readonly InspectorModelMapper<IMetaValueInspector, MetaValueMapping> propertyMappings = new InspectorModelMapper<IMetaValueInspector, MetaValueMapping>();
         private readonly MetaValueMapping mapping;
 
         public MetaValueInspector(MetaValueMapping mapping)
         {
             this.mapping = mapping;
+            propertyMappings.AutoMap();
         }
 
         public Type EntityType
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.ContainingEntityType; }
         }
+
         public string StringIdentifierForModel
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.Class.Name; }
         }
+
         public bool IsSet(PropertyInfo property)
         {
-            throw new NotImplementedException();
+            return mapping.IsSpecified(propertyMappings.Get(property));
+        }
+
+        public TypeReference Class
+        {
+            get { return mapping.Class; }
+        }
+
+        public string Value
+        {
+            get { return mapping.Value; }
         }
     }
 }

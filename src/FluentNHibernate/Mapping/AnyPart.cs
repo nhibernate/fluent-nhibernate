@@ -78,7 +78,12 @@ namespace FluentNHibernate.Mapping
 
         public AnyPart<T> AddMetaValue<TModel>(string valueMap)
         {
-            mapping.AddMetaValue(new MetaValueMapping { Class = new TypeReference(typeof(TModel)), Value = valueMap });
+            mapping.AddMetaValue(new MetaValueMapping
+            {
+                Class = new TypeReference(typeof(TModel)),
+                Value = valueMap,
+                ContainingEntityType = entity
+            });
             return this;
         }
 
