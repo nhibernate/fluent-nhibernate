@@ -44,7 +44,12 @@ namespace FluentNHibernate.Mapping
 
         private CompositeIdentityPart<T> WithKeyProperty(PropertyInfo property, string columnName)
         {
-            var key = new KeyPropertyMapping { Name = property.Name, Type = new TypeReference(property.PropertyType) };
+            var key = new KeyPropertyMapping
+            {
+                Name = property.Name,
+                Type = new TypeReference(property.PropertyType),
+                ContainingEntityType = typeof(T)
+            };
             key.AddColumn(new ColumnMapping { Name = columnName });
 
             mapping.AddKeyProperty(key);

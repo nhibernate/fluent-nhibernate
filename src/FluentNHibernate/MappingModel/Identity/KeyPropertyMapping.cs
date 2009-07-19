@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
@@ -34,14 +36,31 @@ namespace FluentNHibernate.MappingModel.Identity
             set { attributes.Set(x => x.Type, value); }
         }
 
-        public AttributeStore<KeyPropertyMapping> Attributes
+        public IEnumerable<ColumnMapping> Columns
         {
-            get { return attributes; }
+            get { return columns; }
         }
+
+        public Type ContainingEntityType { get; set; }
 
         public void AddColumn(ColumnMapping mapping)
         {
             columns.Add(mapping);
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<KeyPropertyMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<KeyPropertyMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<KeyPropertyMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

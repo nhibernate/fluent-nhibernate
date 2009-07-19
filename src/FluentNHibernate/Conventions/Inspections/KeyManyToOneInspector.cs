@@ -9,24 +9,29 @@ namespace FluentNHibernate.Conventions.Inspections
 {
     public class KeyManyToOneInspector : IKeyManyToOneInspector
     {
+        private readonly InspectorModelMapper<IKeyManyToOneInspector, KeyManyToOneMapping> mappedProperties = new InspectorModelMapper<IKeyManyToOneInspector, KeyManyToOneMapping>();
         private readonly KeyManyToOneMapping mapping;
 
         public KeyManyToOneInspector(KeyManyToOneMapping mapping)
         {
             this.mapping = mapping;
+            mappedProperties.AutoMap();
+            mappedProperties.Map(x => x.LazyLoad, x => x.Lazy);
         }
 
         public Type EntityType
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.ContainingEntityType; }
         }
+
         public string StringIdentifierForModel
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.Name; }
         }
+
         public bool IsSet(PropertyInfo property)
         {
-            throw new NotImplementedException();
+            return mapping.IsSpecified(mappedProperties.Get(property));
         }
 
         public Access Access
