@@ -7,12 +7,7 @@ namespace FluentNHibernate.MappingModel.Collections
     public abstract class CollectionMappingBase : MappingBase, ICollectionMapping
     {
         private readonly AttributeStore<ICollectionMapping> attributes;
-        public KeyMapping Key { get; set; }
-        public ElementMapping Element { get; set; }
-        public CompositeElementMapping CompositeElement { get; set; }
         public Type ContainingEntityType { get; set; }
-        public Type ChildType { get; set; }
-        public ICollectionRelationshipMapping Relationship { get; set; }
         public MemberInfo MemberInfo { get; set; }
 
         protected CollectionMappingBase(AttributeStore underlyingStore)
@@ -38,7 +33,41 @@ namespace FluentNHibernate.MappingModel.Collections
                 visitor.Visit(Cache);
         }
 
-        public CacheMapping Cache { get; set; }
+        public Type ChildType
+        {
+            get { return attributes.Get(x => x.ChildType); }
+            set { attributes.Set(x => x.ChildType, value); }
+        }
+
+        public KeyMapping Key
+        {
+            get { return attributes.Get(x => x.Key); }
+            set { attributes.Set(x => x.Key, value); }
+        }
+
+        public ElementMapping Element
+        {
+            get { return attributes.Get(x => x.Element); }
+            set { attributes.Set(x => x.Element, value); }
+        }
+
+        public CompositeElementMapping CompositeElement
+        {
+            get { return attributes.Get(x => x.CompositeElement); }
+            set { attributes.Set(x => x.CompositeElement, value); }
+        }
+
+        public CacheMapping Cache
+        {
+            get { return attributes.Get(x => x.Cache); }
+            set { attributes.Set(x => x.Cache, value); }
+        }
+
+        public ICollectionRelationshipMapping Relationship
+        {
+            get { return attributes.Get(x => x.Relationship); }
+            set { attributes.Set(x => x.Relationship, value); }
+        }
 
         public bool Generic
         {

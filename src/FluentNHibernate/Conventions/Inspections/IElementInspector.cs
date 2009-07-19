@@ -2,8 +2,8 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public interface IRelationshipInspector : IInspector
+    public interface IElementInspector : IInspector
     {
-        TypeReference Class { get; }
+        TypeReference Type { get; }
     }
 }

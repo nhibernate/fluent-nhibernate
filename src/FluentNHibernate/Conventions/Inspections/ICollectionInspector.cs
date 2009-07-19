@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
@@ -16,16 +17,18 @@ namespace FluentNHibernate.Conventions.Inspections
         string OuterJoin { get; }
         bool Generic { get; }
         bool Inverse { get; }
-    }
-
-    public interface IOneToManyCollectionInspector : ICollectionInspector
-    {
-        new IOneToManyInspector Relationship { get; }
-    }
-
-    public interface IManyToManyCollectionInspector : ICollectionInspector
-    {
-        new IManyToManyInspector Relationship { get; }
+        Access Access { get; }
+        int BatchSize { get; }
+        ICacheInspector Cache { get; }
+        string Check { get; }
         Type ChildType { get; }
+        TypeReference CollectionType { get; }
+        ICompositeElementInspector CompositeElement { get; }
+        IElementInspector Element { get; }
+        Laziness LazyLoad { get; }
+        string Name { get; }
+        TypeReference Persister { get; }
+        string Schema { get; }
+        string Where { get; }
     }
 }

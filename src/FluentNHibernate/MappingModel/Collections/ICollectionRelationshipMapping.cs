@@ -5,7 +5,8 @@ namespace FluentNHibernate.MappingModel.Collections
 {
     public interface ICollectionRelationshipMapping : IMappingBase
     {
-        TypeReference Class { get; }
+        Type ChildType { get; }
+        TypeReference Class { get; set; }
         string NotFound { get; set; }
     }
 }
