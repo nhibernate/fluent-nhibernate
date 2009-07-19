@@ -134,6 +134,7 @@
     <Compile Include="Conventions\Inspections\KeyManyToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\KeyPropertyInspector.cs" />
     <Compile Include="Conventions\Inspections\MetaValueInspector.cs" />
+    <Compile Include="Conventions\Inspections\OneToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\OneToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\ParentInspector.cs" />
     <Compile Include="Conventions\Inspections\RelationshipInspector.cs" />

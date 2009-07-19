@@ -1,10 +1,9 @@
-using System;
-using FluentNHibernate.Conventions.Instances;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public class OneToManyInstance : RelationshipInstance, IOneToManyInstance
+    public class OneToManyInstance : OneToManyInspector, IOneToManyInstance
     {
         private readonly OneToManyMapping mapping;
 
@@ -14,7 +13,7 @@ namespace FluentNHibernate.Conventions.Instances
             this.mapping = mapping;
         }
 
-        public INotFoundInstance NotFound
+        public new INotFoundInstance NotFound
         {
             get
             {

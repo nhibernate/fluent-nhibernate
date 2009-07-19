@@ -6,7 +6,6 @@ namespace FluentNHibernate.MappingModel.Collections
     public class OneToManyMapping : MappingBase, ICollectionRelationshipMapping
     {
         private readonly AttributeStore<OneToManyMapping> attributes;
-        public Type ChildType { get; set; }
 
         public OneToManyMapping()
             : this(new AttributeStore())
@@ -22,6 +21,12 @@ namespace FluentNHibernate.MappingModel.Collections
             visitor.ProcessOneToMany(this);
         }
 
+        public Type ChildType
+        {
+            get { return attributes.Get(x => x.ChildType); }
+            set { attributes.Set(x => x.ChildType, value); }
+        }
+
         public TypeReference Class
         {
             get { return attributes.Get(x => x.Class); }
@@ -33,6 +38,8 @@ namespace FluentNHibernate.MappingModel.Collections
             get { return attributes.Get(x => x.NotFound); }
             set { attributes.Set(x => x.NotFound, value); }
         }
+
+        public Type ContainingEntityType { get; set; }
 
         public bool IsSpecified<TResult>(Expression<Func<OneToManyMapping, TResult>> property)
         {

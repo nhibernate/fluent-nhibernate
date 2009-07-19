@@ -31,7 +31,11 @@ namespace FluentNHibernate.AutoMap
 
             var setMapping = new BagMapping();
             setMapping.SetDefaultValue(x => x.Name, property.Name);
-            setMapping.Relationship = new OneToManyMapping() { Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]) };
+            setMapping.Relationship = new OneToManyMapping
+            {
+                Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]),
+                ContainingEntityType = classMap.Type
+            };
             setMapping.Key = new KeyMapping();
             setMapping.Key.AddColumn(new ColumnMapping() { Name = property.DeclaringType.Name + "_Id"});
             setMapping.MemberInfo = property;
@@ -45,7 +49,11 @@ namespace FluentNHibernate.AutoMap
 
             var setMapping = new BagMapping();
             setMapping.SetDefaultValue(x => x.Name, property.Name);
-            setMapping.Relationship = new OneToManyMapping() { Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]) };
+            setMapping.Relationship = new OneToManyMapping
+            {
+                Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]),
+                ContainingEntityType = classMap.Type
+            };
             setMapping.Key = new KeyMapping();
             setMapping.Key.AddColumn(new ColumnMapping() { Name = property.DeclaringType.Name + "_Id" });
             setMapping.MemberInfo = property;
@@ -59,7 +67,11 @@ namespace FluentNHibernate.AutoMap
 
             var setMapping = new BagMapping();
             setMapping.SetDefaultValue(x => x.Name, property.Name);
-            setMapping.Relationship = new OneToManyMapping() { Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]) };
+            setMapping.Relationship = new OneToManyMapping
+            {
+                Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]),
+                ContainingEntityType = classMap.Type
+            };
             setMapping.Key = new KeyMapping();
             setMapping.Key.AddColumn(new ColumnMapping() { Name = property.DeclaringType.Name + "_Id" });
             setMapping.MemberInfo = property;
