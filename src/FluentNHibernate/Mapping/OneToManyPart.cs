@@ -54,7 +54,7 @@ namespace FluentNHibernate.Mapping
             };
         }
 
-        public IOneToManyPart KeyColumnName(string columnName)
+        public IOneToManyPart KeyColumn(string columnName)
         {
             KeyColumns.Clear();
             KeyColumns.Add(columnName);
@@ -94,7 +94,7 @@ namespace FluentNHibernate.Mapping
             get { return new FetchTypeExpression<IOneToManyPart>(this, value => collectionAttributes.Set(x => x.Fetch, value)); }
         }
 
-        IOneToManyPart IOneToManyPart.SchemaIs(string schema)
+        IOneToManyPart IOneToManyPart.Schema(string schema)
         {
             return Schema(schema);
         }
@@ -158,7 +158,7 @@ namespace FluentNHibernate.Mapping
             return CollectionType(type);
         }
 
-        IColumnNameCollection IOneToManyPart.KeyColumnNames
+        IColumnNameCollection IOneToManyPart.KeyColumns
         {
             get { return KeyColumns; }
         }

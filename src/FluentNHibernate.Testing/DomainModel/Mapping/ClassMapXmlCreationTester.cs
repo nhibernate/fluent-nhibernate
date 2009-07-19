@@ -356,7 +356,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSetSchema()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.SchemaIs("test"))
+                .ForMapping(m => m.Schema("test"))
                 .Element("class").HasAttribute("schema", "test");
         }
 

@@ -181,7 +181,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping(x => x.Children, x => x.Schema("dbo"));
 
-            Convention(x => x.SchemaIs("test"));
+            Convention(x => x.Schema("test"));
 
             VerifyModel(x => x.Schema.ShouldEqual("dbo"));
         }
@@ -201,7 +201,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping(x => x.Children, x => x.Table("table"));
 
-            Convention(x => x.SetTableName("xxx"));
+            Convention(x => x.Table("xxx"));
 
             VerifyModel(x => x.TableName.ShouldEqual("table"));
         }

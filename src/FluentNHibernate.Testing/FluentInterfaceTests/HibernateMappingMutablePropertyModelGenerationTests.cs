@@ -57,7 +57,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void SchemaIsLazyShouldSetModelSchemaPropertyToValue()
         {
             HibernateMapping()
-                .Mapping(m => m.SchemaIs("schema"))
+                .Mapping(m => m.Schema("schema"))
                 .ModelShouldMatch(x => x.Schema.ShouldEqual("schema"));
         }
     }

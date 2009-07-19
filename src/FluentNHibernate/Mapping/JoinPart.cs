@@ -40,7 +40,7 @@ namespace FluentNHibernate.Mapping
             KeyColumn(column);
         }
 
-        public JoinPart<T> SchemaIs(string schema)
+        public JoinPart<T> Schema(string schema)
         {
             mapping.Schema = schema;
             return this;

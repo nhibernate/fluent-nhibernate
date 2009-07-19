@@ -19,7 +19,7 @@ namespace FluentNHibernate.Mapping
         /// Sets the hibernate-mapping schema for this class.
         /// </summary>
         /// <param name="schema">Schema name</param>
-        void SchemaIs(string schema);
+        void Schema(string schema);
 
         /// <summary>
         /// Sets this entity to be lazy-loaded (overrides the default lazy load configuration).

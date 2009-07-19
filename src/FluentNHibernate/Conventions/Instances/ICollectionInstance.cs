@@ -9,15 +9,15 @@ namespace FluentNHibernate.Conventions.Instances
     {
         new IKeyInstance Key { get; }
         new IRelationshipInstance Relationship { get; }
-        void SetTableName(string tableName);
+        void Table(string tableName);
         void Name(string name);
-        void SchemaIs(string schema);
+        void Schema(string schema);
         void LazyLoad();
         void BatchSize(int batchSize);
 
         ICollectionInstance Not { get; }
-        IAccessInstance Access { get; }
-        ICacheInstance Cache { get; }
+        new IAccessInstance Access { get; }
+        new ICacheInstance Cache { get; }
         new ICollectionCascadeInstance Cascade { get; }
         new IFetchInstance Fetch { get; }
         new IOptimisticLockInstance OptimisticLock { get; }

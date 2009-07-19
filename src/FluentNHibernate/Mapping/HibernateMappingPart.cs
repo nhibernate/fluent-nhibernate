@@ -16,7 +16,7 @@ namespace FluentNHibernate.Mapping
             defaultAccess = new AccessStrategyBuilder<HibernateMappingPart>(this, value => mapping.DefaultAccess = value);
         }
 
-        public HibernateMappingPart SchemaIs(string schema)
+        public HibernateMappingPart Schema(string schema)
         {
             mapping.Schema = schema;
             return this;

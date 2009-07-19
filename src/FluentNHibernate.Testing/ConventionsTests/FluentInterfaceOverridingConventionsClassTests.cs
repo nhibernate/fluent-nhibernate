@@ -96,7 +96,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void SchemaShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.SchemaIs("test"));
+            Mapping<ExampleClass>(x => x.Schema("test"));
 
             Convention(x => x.Schema("dbo"));
 

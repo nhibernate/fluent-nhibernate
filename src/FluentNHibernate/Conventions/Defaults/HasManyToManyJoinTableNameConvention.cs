@@ -18,7 +18,7 @@ namespace FluentNHibernate.Conventions.Defaults
 
         public void Apply(IManyToManyCollectionInstance instance)
         {
-            instance.SetTableName(instance.ChildType.Name + "To" + instance.EntityType.Name);
+            instance.Table(instance.ChildType.Name + "To" + instance.EntityType.Name);
         }
     }
 }

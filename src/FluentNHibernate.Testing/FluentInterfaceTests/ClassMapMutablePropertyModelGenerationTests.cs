@@ -86,7 +86,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void SchemaIsShouldSetModelPropertyToValue()
         {
             ClassMap<PropertyTarget>()
-                .Mapping(x => x.SchemaIs("schema"))
+                .Mapping(x => x.Schema("schema"))
                 .ModelShouldMatch(x => x.Schema.ShouldEqual("schema"));
         }
     }

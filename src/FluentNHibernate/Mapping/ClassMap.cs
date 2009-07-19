@@ -213,7 +213,7 @@ namespace FluentNHibernate.Mapping
         /// Sets the hibernate-mapping schema for this class.
         /// </summary>
         /// <param name="schema">Schema name</param>
-        public void SchemaIs(string schema)
+        public void Schema(string schema)
         {
             mapping.Schema = schema;
         }
