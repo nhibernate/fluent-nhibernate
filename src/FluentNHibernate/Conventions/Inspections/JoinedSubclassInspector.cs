@@ -7,12 +7,12 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public class SubclassInspector : ISubclassInspector
+    public class JoinedSubclassInspector : IJoinedSubclassInspector
     {
-        private readonly InspectorModelMapper<ISubclassInspector, SubclassMapping> mappedProperties = new InspectorModelMapper<ISubclassInspector, SubclassMapping>();
-        private readonly SubclassMapping mapping;
+        private readonly InspectorModelMapper<IJoinedSubclassInspector, JoinedSubclassMapping> mappedProperties = new InspectorModelMapper<IJoinedSubclassInspector, JoinedSubclassMapping>();
+        private readonly JoinedSubclassMapping mapping;
 
-        public SubclassInspector(SubclassMapping mapping)
+        public JoinedSubclassInspector(JoinedSubclassMapping mapping)
         {
             this.mapping = mapping;
             mappedProperties.AutoMap();
@@ -49,6 +49,11 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
+        public string Check
+        {
+            get { return mapping.Check; }
+        }
+
         public IEnumerable<ICollectionInspector> Collections
         {
             get
@@ -57,11 +62,6 @@ namespace FluentNHibernate.Conventions.Inspections
                     .Select(x => new CollectionInspector(x))
                     .Cast<ICollectionInspector>();
             }
-        }
-
-        public object DiscriminatorValue
-        {
-            get { return mapping.DiscriminatorValue; }
         }
 
         public bool DynamicInsert
@@ -138,19 +138,24 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.SelectBeforeUpdate; }
         }
 
-        public IEnumerable<ISubclassInspector> Subclasses
+        public IEnumerable<IJoinedSubclassInspector> Subclasses
         {
             get
             {
                 return mapping.Subclasses
-                    .Select(x => new SubclassInspector((SubclassMapping)x))
-                    .Cast<ISubclassInspector>();
+                    .Select(x => new JoinedSubclassInspector((JoinedSubclassMapping)x))
+                    .Cast<IJoinedSubclassInspector>();
             }
         }
 
         IEnumerable<ISubclassInspectorBase> ISubclassInspectorBase.Subclasses
         {
             get { return Subclasses.Cast<ISubclassInspectorBase>(); }
+        }
+
+        public string TableName
+        {
+            get { return mapping.TableName; }
         }
 
         public Type Type

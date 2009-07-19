@@ -127,7 +127,9 @@
     <Compile Include="Conventions\Inspections\IOneToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\IParentInspector.cs" />
     <Compile Include="Conventions\Inspections\ISubclassInspector.cs" />
+    <Compile Include="Conventions\Inspections\ISubclassInspectorBase.cs" />
     <Compile Include="Conventions\Inspections\IVersionInspector.cs" />
+    <Compile Include="Conventions\Inspections\JoinedSubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\JoinInspector.cs" />
     <Compile Include="Conventions\Inspections\KeyManyToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\KeyPropertyInspector.cs" />

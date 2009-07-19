@@ -115,6 +115,7 @@
     <Compile Include="ConventionsTests\Inspection\AnyInspectorMapsToAnyMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ComponentInspectorMapsToComponentMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\CompositeIdInspectorMapsToCompositeIdMapping.cs" />
+    <Compile Include="ConventionsTests\Inspection\JoinedSubclassInspectorMapsToJoinedSubclassMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\SubclassInspectorMapsToSubclassMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\KeyPropertyInspectorMapsToKeyPropertyMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\KeyManyToOneInspectorMapsToKeyManyToOneMapping.cs" />

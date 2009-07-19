@@ -31,6 +31,6 @@ namespace FluentNHibernate.Conventions.Inspections
         IDefaultableEnumerable<IOneToOneInspector> OneToOnes { get; }
         IDefaultableEnumerable<IPropertyInspector> Properties { get; }
         IDefaultableEnumerable<IManyToOneInspector> References { get; }
-        IDefaultableEnumerable<ISubclassInspector> Subclasses { get; }
+        IDefaultableEnumerable<ISubclassInspectorBase> Subclasses { get; }
     }
 }

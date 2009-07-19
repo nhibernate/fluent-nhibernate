@@ -1,33 +1,20 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public class JoinedSubclassInstance : IJoinedSubclassInstance
+    public class JoinedSubclassInstance : JoinedSubclassInspector, IJoinedSubclassInstance
     {
         private readonly JoinedSubclassMapping mapping;
         private bool nextBool = true;
 
         public JoinedSubclassInstance(JoinedSubclassMapping mapping)
+            : base(mapping)
         {
             this.mapping = mapping;
-        }
-
-        public Type EntityType
-        {
-            get { return mapping.Type; }
-        }
-
-        public string StringIdentifierForModel
-        {
-            get { return mapping.Name; }
-        }
-
-        public bool IsSet(PropertyInfo property)
-        {
-            throw new NotImplementedException();
         }
 
         public IJoinedSubclassInstance Not
@@ -39,7 +26,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public void Abstract()
+        public new void Abstract()
         {
             if (mapping.IsSpecified(x => x.Abstract))
                 return;
@@ -54,7 +41,7 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.Check = constraint;
         }
 
-        public void DynamicInsert()
+        public new void DynamicInsert()
         {
             if (mapping.IsSpecified(x => x.DynamicInsert))
                 return;
@@ -63,7 +50,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public void DynamicUpdate()
+        public new void DynamicUpdate()
         {
             if (mapping.IsSpecified(x => x.DynamicUpdate))
                 return;
@@ -72,7 +59,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public void LazyLoad()
+        public new void LazyLoad()
         {
             if (mapping.IsSpecified(x => x.Lazy))
                 return;
@@ -81,13 +68,13 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public void Proxy(Type type)
+        public new void Proxy(Type type)
         {
             if (!mapping.IsSpecified(x => x.Proxy))
                 mapping.Proxy = type.AssemblyQualifiedName;
         }
 
-        public void Proxy<T>()
+        public new void Proxy<T>()
         {
             if (!mapping.IsSpecified(x => x.Proxy))
                 mapping.Proxy = typeof(T).AssemblyQualifiedName;
@@ -99,7 +86,7 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.Schema = schema;
         }
 
-        public void SelectBeforeUpdate()
+        public new void SelectBeforeUpdate()
         {
             if (mapping.IsSpecified(x => x.SelectBeforeUpdate))
                 return;
@@ -108,7 +95,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public void TableName(string tableName)
+        public new void TableName(string tableName)
         {
             if (!mapping.IsSpecified(x => x.TableName))
                 mapping.TableName = tableName;

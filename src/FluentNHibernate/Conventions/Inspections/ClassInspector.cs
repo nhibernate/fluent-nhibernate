@@ -47,6 +47,7 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get { return mapping.TableName; }
         }
+
         ICacheInspector IClassInspector.Cache
         {
             get { return Cache; }
@@ -191,15 +192,20 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
-        public IDefaultableEnumerable<ISubclassInspector> Subclasses
+        public IDefaultableEnumerable<ISubclassInspectorBase> Subclasses
         {
             get
             {
-                // TODO: Support joined-subclasses
                 return mapping.Subclasses
                     .Where(x => x is SubclassMapping)
-                    .Select(x => new SubclassInspector((SubclassMapping)x))
-                    .Cast<ISubclassInspector>()
+                    .Select(x =>
+                    {
+                        if (x is SubclassMapping)
+                            return (ISubclassInspectorBase)new SubclassInspector((SubclassMapping)x);
+
+                        return (ISubclassInspectorBase)new JoinedSubclassInspector((JoinedSubclassMapping)x);
+                    })
+                    .Cast<ISubclassInspectorBase>()
                     .ToDefaultableList();
             }
         }
