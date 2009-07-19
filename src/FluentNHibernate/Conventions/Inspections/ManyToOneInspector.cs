@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using FluentNHibernate.MappingModel;
 
@@ -7,16 +8,24 @@ namespace FluentNHibernate.Conventions.Inspections
 {
     public class ManyToOneInspector : IManyToOneInspector
     {
+        private readonly InspectorModelMapper<IManyToOneInspector, ManyToOneMapping> propertyMappings = new InspectorModelMapper<IManyToOneInspector, ManyToOneMapping>();
         private readonly ManyToOneMapping mapping;
 
         public ManyToOneInspector(ManyToOneMapping mapping)
         {
             this.mapping = mapping;
+            propertyMappings.AutoMap();
+            propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
         }
 
         public Access Access
         {
-            get { throw new NotImplementedException(); }
+            get { return Access.FromString(mapping.Access); }
+        }
+
+        public string NotFound
+        {
+            get { return mapping.NotFound; }
         }
 
         public string OuterJoin
@@ -24,17 +33,29 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.OuterJoin; }
         }
 
+        public string PropertyRef
+        {
+            get { return mapping.PropertyRef; }
+        }
+
+        public bool Update
+        {
+            get { return mapping.Update; }
+        }
+
         public Type EntityType
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.ContainingEntityType; }
         }
+
         public string StringIdentifierForModel
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.Name; }
         }
+
         public bool IsSet(PropertyInfo property)
         {
-            throw new NotImplementedException();
+            return mapping.IsSpecified(propertyMappings.Get(property));
         }
 
         public PropertyInfo Property
@@ -44,28 +65,47 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public string Name
         {
-            get { throw new NotImplementedException(); }
-        }
-
-        public TypeReference ClassValue
-        {
-            get { return mapping.Class ?? TypeReference.Empty; }
+            get { return mapping.Name; }
         }
 
         public IEnumerable<IColumnInspector> Columns
         {
             get
             {
-                foreach (var column in mapping.Columns.UserDefined)
-                {
-                    yield return new ColumnInspector(mapping.ContainingEntityType, column);
-                }
+                return mapping.Columns.UserDefined
+                    .Select(x => new ColumnInspector(mapping.ContainingEntityType, x))
+                    .Cast<IColumnInspector>();
             }
         }
 
         public string Cascade
         {
             get { return mapping.Cascade; }
+        }
+
+        public TypeReference Class
+        {
+            get { return mapping.Class; }
+        }
+
+        public string Fetch
+        {
+            get { return mapping.Fetch; }
+        }
+
+        public string ForeignKey
+        {
+            get { return mapping.ForeignKey; }
+        }
+
+        public bool Insert
+        {
+            get { return mapping.Insert; }
+        }
+
+        public Laziness LazyLoad
+        {
+            get { return mapping.Lazy; }
         }
     }
 }

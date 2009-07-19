@@ -30,13 +30,13 @@ namespace FluentNHibernate.Conventions.Instances
             mapping.AddColumn(column);
         }
 
-        public void Class<T>()
+        public void CustomClass<T>()
         {
             if (!mapping.IsSpecified(x => x.Class))
                 mapping.Class = new TypeReference(typeof(T));
         }
 
-        public void Class(Type type)
+        public void CustomClass(Type type)
         {
             if (!mapping.IsSpecified(x => x.Class))
                 mapping.Class = new TypeReference(type);

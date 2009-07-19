@@ -49,7 +49,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping(x => x.Class(typeof(string)));
 
-            Convention(x => x.Class(typeof(int)));
+            Convention(x => x.CustomClass(typeof(int)));
 
             VerifyModel(x => x.Class.GetUnderlyingSystemType().ShouldEqual(typeof(string)));
         }

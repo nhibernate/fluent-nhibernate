@@ -108,6 +108,7 @@
     <Compile Include="ConventionsTests\Inspection\ColumnInspectorMapsToColumnMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ClassInspectorMapsToClassMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\CacheInspectorMapsToCacheMapping.cs" />
+    <Compile Include="ConventionsTests\Inspection\ManyToOneInspectorMapsToManyToOneMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\DiscriminatorInspectorMapsToDiscriminatorMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\GeneratorInspectorMapsToGeneratorMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\KeyInspectorMapsToKeyMapping.cs" />

@@ -24,8 +24,8 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public void AutoMap()
         {
-            var inspectorProperties = typeof(TInspector).GetProperties();
-            var mappingProperties = typeof(TMapping).GetProperties();
+            var inspectorProperties = GetProperties(typeof(TInspector));
+            var mappingProperties = GetProperties(typeof(TMapping));
 
             foreach (var property in inspectorProperties)
             {
@@ -39,6 +39,22 @@ namespace FluentNHibernate.Conventions.Inspections
                     Map(property, expression);
                 }
             }
+        }
+
+        private IEnumerable<PropertyInfo> GetProperties(Type type)
+        {
+            var properties = new List<PropertyInfo>();
+
+            if (type.IsInterface)
+            {
+                foreach (var @interface in type.GetInterfaces())
+                    properties.AddRange(GetProperties(@interface));
+            }
+
+            foreach (var property in type.GetProperties())
+                properties.Add(property);
+
+            return properties;
         }
 
         public Expression<Func<TMapping, object>> Get(PropertyInfo property)

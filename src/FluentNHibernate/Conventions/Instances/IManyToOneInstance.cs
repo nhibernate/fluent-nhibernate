@@ -6,8 +6,8 @@ namespace FluentNHibernate.Conventions.Instances
     public interface IManyToOneInstance : IManyToOneInspector
     {
         void ColumnName(string columnName);
-        void Class<T>();
-        void Class(Type type);
+        void CustomClass<T>();
+        void CustomClass(Type type);
         new IAccessInstance Access { get; }
         new ICascadeInstance Cascade { get; }
         new IFetchInstance Fetch { get; }

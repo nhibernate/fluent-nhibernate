@@ -6,8 +6,16 @@ namespace FluentNHibernate.Conventions.Inspections
     public interface IManyToOneInspector : IAccessInspector, IExposedThroughPropertyInspector
     {
         string Name { get; }
-        TypeReference ClassValue { get; }
         IEnumerable<IColumnInspector> Columns { get; }
         string Cascade { get; }
+        TypeReference Class { get; }
+        string Fetch { get; }
+        string ForeignKey { get; }
+        bool Insert { get; }
+        Laziness LazyLoad { get; }
+        string NotFound { get; }
+        string OuterJoin { get; }
+        string PropertyRef { get; }
+        bool Update { get; }
     }
 }
