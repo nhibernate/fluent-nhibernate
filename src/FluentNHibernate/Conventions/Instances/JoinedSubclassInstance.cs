@@ -95,7 +95,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public new void TableName(string tableName)
+        public void Table(string tableName)
         {
             if (!mapping.IsSpecified(x => x.TableName))
                 mapping.TableName = tableName;

@@ -108,7 +108,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping(x => x.Table("table"));
 
-            Convention(x => x.TableName("value"));
+            Convention(x => x.Table("value"));
 
             VerifyModel(x => x.TableName.ShouldEqual("table"));
         }

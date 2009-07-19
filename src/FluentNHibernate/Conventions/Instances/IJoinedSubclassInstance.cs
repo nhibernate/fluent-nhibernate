@@ -15,6 +15,6 @@ namespace FluentNHibernate.Conventions.Instances
         void Proxy<T>();
         void Schema(string schema);
         void SelectBeforeUpdate();
-        void TableName(string tableName);
+        void Table(string tableName);
     }
  }
