@@ -76,6 +76,8 @@ namespace FluentNHibernate.Mapping
 
         public JoinMapping GetJoinMapping()
         {
+            mapping.ContainingEntityType = typeof(T);
+
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());
 

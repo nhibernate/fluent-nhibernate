@@ -105,8 +105,9 @@
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsHasManyCollectionTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsHasManyTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsPropertyTests.cs" />
-    <Compile Include="ConventionsTests\Inspection\ColumnDslMapsToColumnMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\PropertyDslMapsToPropertyMapping.cs" />
+    <Compile Include="ConventionsTests\Inspection\ColumnInspectorMapsToColumnMapping.cs" />
+    <Compile Include="ConventionsTests\Inspection\ClassInspectorMapsToClassMapping.cs" />
+    <Compile Include="ConventionsTests\Inspection\PropertyInspectorMapsToPropertyMapping.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaEqualSimpleTypeEvalTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaEqualComplexTypeTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaEqualSimpleTypeTests.cs" />

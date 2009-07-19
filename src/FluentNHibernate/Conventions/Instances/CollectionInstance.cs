@@ -9,47 +9,18 @@ using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public class CollectionInstance : ICollectionInstance
+    public class CollectionInstance : CollectionInspector, ICollectionInstance
     {
-        protected readonly InspectorModelMapper<ICollectionInspector, ICollectionMapping> propertyMappings = new InspectorModelMapper<ICollectionInspector, ICollectionMapping>();
         protected readonly ICollectionMapping mapping;
-        protected bool nextBool;
+        protected bool nextBool = true;
 
         public CollectionInstance(ICollectionMapping mapping)
+            : base(mapping)
         {
             this.mapping = mapping;
-            
-            propertyMappings.Map(x => x.TableName, x => x.TableName);
-
-            nextBool = true;
         }
 
-        public Type EntityType
-        {
-            get { return mapping.ContainingEntityType; }
-        }
-        /// <summary>
-        /// Represents a string identifier for the model instance, used in conventions for a lazy
-        /// shortcut.
-        /// 
-        /// e.g. for a ColumnMapping the StringIdentifierForModel would be the Name attribute,
-        /// this allows the user to find any columns with the matching name.
-        /// </summary>
-        public string StringIdentifierForModel
-        {
-            get { return mapping.Name; }
-        }
-        public bool IsSet(PropertyInfo property)
-        {
-            return mapping.IsSpecified(propertyMappings.Get(property));
-        }
-
-        IKeyInspector ICollectionInspector.Key
-        {
-            get { return Key; }
-        }
-
-        public IRelationshipInstance Relationship
+        public new IRelationshipInstance Relationship
         {
             get { return new RelationshipInstance(mapping.Relationship); }
         }

@@ -54,5 +54,10 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get { throw new NotImplementedException(); }
         }
+
+        public string Name
+        {
+            get { return mapping.Name; }
+        }
     }
 }

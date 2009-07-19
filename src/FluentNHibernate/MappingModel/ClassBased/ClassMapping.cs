@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.MappingModel.ClassBased
@@ -9,8 +7,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
     public class ClassMapping : ClassMappingBase
     {
         private readonly AttributeStore<ClassMapping> attributes;
-        private DiscriminatorMapping discriminator;
-        public IIdentityMapping Id { get; set; }
 
         public ClassMapping()
             : this(new AttributeStore())
@@ -28,23 +24,28 @@ namespace FluentNHibernate.MappingModel.ClassBased
             attributes = new AttributeStore<ClassMapping>(store);
         }
 
-        public CacheMapping Cache { get; set; }
+        public IIdentityMapping Id
+        {
+            get { return attributes.Get(x => x.Id); }
+            set { attributes.Set(x => x.Id, value); }
+        }
 
-        public VersionMapping Version { get; set; }
+        public CacheMapping Cache
+        {
+            get { return attributes.Get(x => x.Cache); }
+            set { attributes.Set(x => x.Cache, value); }
+        }
+
+        public VersionMapping Version
+        {
+            get { return attributes.Get(x => x.Version); }
+            set { attributes.Set(x => x.Version, value); }
+        }
 
         public DiscriminatorMapping Discriminator
         {
-            get { return discriminator; }
-            set
-            {
-                if (discriminator != null)
-                    discriminator.ParentClass = null;
-
-                discriminator = value;
-
-                if (discriminator != null)
-                    discriminator.ParentClass = this;
-            }
+            get { return attributes.Get(x => x.Discriminator); }
+            set { attributes.Set(x => x.Discriminator, value); }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)

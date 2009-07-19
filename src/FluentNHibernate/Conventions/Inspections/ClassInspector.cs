@@ -1,9 +1,11 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
@@ -16,12 +18,10 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             this.mapping = mapping;
 
+            propertyMappings.AutoMap();
+            propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
+            propertyMappings.Map(x => x.ReadOnly, x => x.Mutable);
             propertyMappings.Map(x => x.EntityType, x => x.Type);
-            propertyMappings.Map(x => x.TableName, x => x.TableName);
-            propertyMappings.Map(x => x.DynamicInsert, x => x.DynamicInsert);
-            propertyMappings.Map(x => x.DynamicUpdate, x => x.DynamicUpdate);
-            propertyMappings.Map(x => x.OptimisticLock, x => x.OptimisticLock);
-            propertyMappings.Map(x => x.Cache, x => x.Cache);
         }
 
         public Type EntityType
@@ -36,17 +36,21 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public Laziness LazyLoad
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.Lazy; }
         }
 
         public bool ReadOnly
         {
-            get { throw new NotImplementedException(); }
+            get { return !mapping.Mutable; }
         }
 
         public string TableName
         {
             get { return mapping.TableName; }
+        }
+        ICacheInspector IClassInspector.Cache
+        {
+            get { return Cache; }
         }
 
         public ICacheInstance Cache
@@ -68,22 +72,186 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public string Schema
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.Schema; }
         }
 
         public bool DynamicUpdate
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.DynamicUpdate; }
         }
 
         public bool DynamicInsert
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.DynamicInsert; }
         }
 
         public int BatchSize
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.BatchSize; }
+        }
+
+        public bool Abstract
+        {
+            get { return mapping.Abstract; }
+        }
+
+        public IVersionInspector Version
+        {
+            get
+            {
+                if (mapping.Version == null)
+                    return new VersionInspector(new VersionMapping());
+
+                return new VersionInspector(mapping.Version);
+            }
+        }
+
+        public IDefaultableEnumerable<IAnyInspector> Anys
+        {
+            get
+            {
+                return mapping.Anys
+                    .Select(x => new AnyInspector(x))
+                    .Cast<IAnyInspector>()
+                    .ToDefaultableList();
+            }
+        }
+
+        public string Check
+        {
+            get { return mapping.Check; }
+        }
+
+        public IDefaultableEnumerable<ICollectionInspector> Collections
+        {
+            get
+            {
+                return mapping.Collections
+                    .Select(x => new CollectionInspector(x))
+                    .Cast<ICollectionInspector>()
+                    .ToDefaultableList();
+            }
+        }
+
+        public IDefaultableEnumerable<IComponentBaseInspector> Components
+        {
+            get
+            {
+                return mapping.Components
+                    .Select(x => new ComponentInspector(x))
+                    .Cast<IComponentBaseInspector>()
+                    .ToDefaultableList();
+            }
+        }
+
+        public IDefaultableEnumerable<IJoinInspector> Joins
+        {
+            get
+            {
+                return mapping.Joins
+                    .Select(x => new JoinInspector(x))
+                    .Cast<IJoinInspector>()
+                    .ToDefaultableList();
+            }
+        }
+
+        public IDefaultableEnumerable<IOneToOneInspector> OneToOnes
+        {
+            get
+            {
+                return mapping.OneToOnes
+                    .Select(x => new OneToOneInspector(x))
+                    .Cast<IOneToOneInspector>()
+                    .ToDefaultableList();
+            }
+        }
+
+        public IDefaultableEnumerable<IPropertyInspector> Properties
+        {
+            get
+            {
+                return mapping.Properties
+                    .Select(x => new PropertyInspector(x))
+                    .Cast<IPropertyInspector>()
+                    .ToDefaultableList();
+            }
+        }
+        public IDefaultableEnumerable<IManyToOneInspector> References
+        {
+            get
+            {
+                return mapping.References
+                    .Select(x => new ManyToOneInspector(x))
+                    .Cast<IManyToOneInspector>()
+                    .ToDefaultableList();
+            }
+        }
+
+        public IDefaultableEnumerable<ISubclassInspector> Subclasses
+        {
+            get
+            {
+                // TODO: Support joined-subclasses
+                return mapping.Subclasses
+                    .Where(x => x is SubclassMapping)
+                    .Select(x => new SubclassInspector((SubclassMapping)x))
+                    .Cast<ISubclassInspector>()
+                    .ToDefaultableList();
+            }
+        }
+
+        public IDiscriminatorInspector Discriminator
+        {
+            get
+            {
+                if (mapping.Discriminator == null)
+                    // deliberately empty so nothing evaluates to true
+                    return new DiscriminatorInspector(new DiscriminatorMapping(new ClassMapping()));
+
+                return new DiscriminatorInspector(mapping.Discriminator);
+            }
+        }
+
+        public object DiscriminatorValue
+        {
+            get { return mapping.DiscriminatorValue; }
+        }
+
+        public string Name
+        {
+            get { return mapping.Name; }
+        }
+
+        public string Persister
+        {
+            get { return mapping.Persister; }
+        }
+
+        public string Polymorphism
+        {
+            get { return mapping.Polymorphism; }
+        }
+
+        public string Proxy
+        {
+            get { return mapping.Proxy; }
+        }
+
+        public bool SelectBeforeUpdate
+        {
+            get { return mapping.SelectBeforeUpdate; }
+        }
+
+        public IIdentityInspector Id
+        {
+            get
+            {
+                // TODO: Support CompositeIds
+                if (mapping.Id == null || mapping.Id is CompositeIdMapping)
+                    return new IdentityInspector(new IdMapping());
+
+                return new IdentityInspector((IdMapping)mapping.Id);
+            }
         }
 
         public bool IsSet(PropertyInfo property)

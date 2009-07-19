@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,6 +8,14 @@ namespace FluentNHibernate.MappingModel
     {
         private readonly IList<T> userDefined = new List<T>();
         private readonly IList<T> defaults = new List<T>();
+
+        public DefaultableList()
+        {}
+
+        public DefaultableList(IEnumerable<T> enumerable)
+        {
+            userDefined = new List<T>(enumerable);
+        }
 
         #region List
 

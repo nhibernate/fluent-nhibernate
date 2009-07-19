@@ -1,32 +1,19 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public class OneToOneInstance : IOneToOneInstance
+    public class OneToOneInstance : OneToOneInspector, IOneToOneInstance
     {
         private readonly OneToOneMapping mapping;
         private bool nextBool = true;
 
         public OneToOneInstance(OneToOneMapping mapping)
+            : base(mapping)
         {
             this.mapping = mapping;
-        }
-
-        public Type EntityType
-        {
-            get { return mapping.ContainingEntityType; }
-        }
-
-        public string StringIdentifierForModel
-        {
-            get { return mapping.Name; }
-        }
-
-        public bool IsSet(PropertyInfo property)
-        {
-            throw new NotImplementedException();
         }
 
         public IAccessInstance Access

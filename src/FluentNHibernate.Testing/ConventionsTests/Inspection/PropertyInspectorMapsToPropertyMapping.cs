@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
@@ -10,7 +11,7 @@ using NUnit.Framework;
 namespace FluentNHibernate.Testing.ConventionsTests.Inspection
 {
     [TestFixture, Category("Inspection DSL")]
-    public class PropertyDslMapsToPropertyMapping
+    public class PropertyInspectorMapsToPropertyMapping
     {
         private PropertyMapping mapping;
         private IPropertyInspector inspector;
@@ -216,6 +217,19 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         {
             mapping.AddColumn(new ColumnMapping());
             inspector.Columns.Count().ShouldEqual(1);
+        }
+
+        [Test]
+        public void ColumnsCollectionOfInspectors()
+        {
+            mapping.AddColumn(new ColumnMapping());
+            inspector.Columns.First().ShouldBeOfType<IColumnInspector>();
+        }
+
+        [Test]
+        public void ColumnsCollectionIsEmpty()
+        {
+            inspector.Columns.IsEmpty().ShouldBeTrue();
         }
 
         private PropertyInfo Prop(Expression<Func<IPropertyInspector, object>> propertyExpression)

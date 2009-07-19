@@ -89,6 +89,8 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Optional, value); }
         }
 
+        public Type ContainingEntityType { get; set; }
+
         public void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessJoin(this);

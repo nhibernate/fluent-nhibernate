@@ -7,5 +7,6 @@ namespace FluentNHibernate.Conventions.Inspections
         IEnumerable<IColumnInspector> Columns { get; }
         Generator Generator { get; }
         object UnsavedValue { get; }
+        string Name { get; }
     }
 }

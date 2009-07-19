@@ -7,31 +7,14 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public class RelationshipInstance : IRelationshipInstance
+    public class RelationshipInstance : RelationshipInspector, IRelationshipInstance
     {
         private readonly ICollectionRelationshipMapping mapping;
 
         public RelationshipInstance(ICollectionRelationshipMapping mapping)
+            : base(mapping)
         {
             this.mapping = mapping;
         }
-
-        public Type EntityType
-        {
-            get { throw new NotImplementedException(); }
-        }
-        public string StringIdentifierForModel
-        {
-            get { throw new NotImplementedException(); }
-        }
-        public bool IsSet(PropertyInfo property)
-        {
-            throw new NotImplementedException();
-        }
-
-        /*public IDefaultableEnumerable<IColumnInstance> Columns
-        {
-            get { throw new NotImplementedException(); }
-        }*/
     }
 }

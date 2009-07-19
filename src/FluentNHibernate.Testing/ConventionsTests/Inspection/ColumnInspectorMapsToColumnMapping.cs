@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace FluentNHibernate.Testing.ConventionsTests.Inspection
 {
     [TestFixture, Category("Inspection DSL")]
-    public class ColumnDslMapsToColumnMapping
+    public class ColumnInspectorMapsToColumnMapping
     {
         private ColumnMapping mapping;
         private IColumnInspector inspector;
