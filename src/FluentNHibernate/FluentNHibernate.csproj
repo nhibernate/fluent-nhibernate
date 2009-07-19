@@ -294,7 +294,6 @@
     <Compile Include="Conventions\AcceptanceCriteria\IAcceptanceCriterion.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\IExpectation.cs" />
     <Compile Include="Conventions\Instances\CacheInstance.cs" />
-    <Compile Include="Conventions\Inspections\Generator.cs" />
     <Compile Include="Conventions\Inspections\IClassInspector.cs" />
     <Compile Include="Conventions\Inspections\IColumnInspector.cs" />
     <Compile Include="Conventions\Inspections\IExposedThroughPropertyInspector.cs" />
@@ -413,7 +412,6 @@
     <Compile Include="Conventions\AttributePropertyConvention.cs" />
     <Compile Include="Conventions\Defaults\CollectionMethodAccessorBackingFieldNamingConvention.cs" />
     <Compile Include="Conventions\Defaults\HasManyToManyJoinTableNameConvention.cs" />
-    <Compile Include="Conventions\Defaults\PrimaryKeyConvention.cs" />
     <Compile Include="Conventions\IClassConvention.cs" />
     <Compile Include="Conventions\IComponentConvention.cs" />
     <Compile Include="Conventions\IConvention.cs" />

@@ -37,7 +37,7 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.UnsavedValue = unsavedValue;
         }
 
-        public IAccessInstance Access
+        public new IAccessInstance Access
         {
             get
             {

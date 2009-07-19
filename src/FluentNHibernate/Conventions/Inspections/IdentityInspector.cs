@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Inspections
@@ -14,6 +15,7 @@ namespace FluentNHibernate.Conventions.Inspections
         public IdentityInspector(IdMapping mapping)
         {
             this.mapping = mapping;
+            propertyMappings.AutoMap();
         }
 
         public Type EntityType
@@ -40,23 +42,41 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get
             {
-                foreach (var column in mapping.Columns)
-                    yield return new ColumnInspector(EntityType, column);
+                return mapping.Columns.UserDefined
+                    .Select(x => new ColumnInspector(EntityType, x))
+                    .Cast<IColumnInspector>();
             }
         }
 
-        public Generator Generator
+        public IGeneratorInspector Generator
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                if (mapping.Generator == null)
+                    return new GeneratorInspector(new GeneratorMapping());
+
+                return new GeneratorInspector(mapping.Generator);
+            }
         }
+
         public object UnsavedValue
         {
-            get { throw new NotImplementedException(); }
+            get { return mapping.UnsavedValue; }
         }
 
         public string Name
         {
             get { return mapping.Name; }
+        }
+
+        public Access Access
+        {
+            get { return Access.FromString(mapping.Access); }
+        }
+
+        public TypeReference Type
+        {
+            get { return mapping.Type; }
         }
     }
 }

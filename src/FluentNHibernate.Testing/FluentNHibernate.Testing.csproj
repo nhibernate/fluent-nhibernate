@@ -114,6 +114,7 @@
     <Compile Include="ConventionsTests\Inspection\CacheInspectorMapsToCacheMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\AnyInspectorMapsToAnyMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ComponentInspectorMapsToComponentMapping.cs" />
+    <Compile Include="ConventionsTests\Inspection\IdInspectorMapsToIdMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ParentInspectorMapsToParentMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\DynamicComponentInspectorMapsToDynamicComponentMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\JoinInspectorMapsToJoinMapping.cs" />

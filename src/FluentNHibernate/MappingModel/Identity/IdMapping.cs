@@ -10,8 +10,6 @@ namespace FluentNHibernate.MappingModel.Identity
         private readonly AttributeStore<IdMapping> attributes = new AttributeStore<IdMapping>();
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
 
-        public GeneratorMapping Generator { get; set; }
-
         public void AddColumn(ColumnMapping column)
         {
             columns.Add(column);
@@ -33,6 +31,12 @@ namespace FluentNHibernate.MappingModel.Identity
         }
 
         public PropertyInfo PropertyInfo { get; set; }
+
+        public GeneratorMapping Generator
+        {
+            get { return attributes.Get(x => x.Generator); }
+            set { attributes.Set(x => x.Generator, value); }
+        }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
