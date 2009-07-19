@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Utils.Reflection;
 
-namespace FluentNHibernate.Conventions.DslImplementation
+namespace FluentNHibernate.Conventions.Inspections
 {
     public class InspectorModelMapper<TInspector, TMapping>
     {
@@ -32,10 +31,13 @@ namespace FluentNHibernate.Conventions.DslImplementation
             {
                 var propertyName = property.Name;
                 var mappingProperty = mappingProperties.FirstOrDefault(x => x.Name == propertyName);
-                var expression = ExpressionBuilder.Create<TMapping>(mappingProperty);
 
                 if (mappingProperty != null)
+                {
+                    var expression = ExpressionBuilder.Create<TMapping>(mappingProperty);
+
                     Map(property, expression);
+                }
             }
         }
 

@@ -20,7 +20,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         [Test]
         public void ExpectEqualShouldValidateToTrueIfGivenMatchingModel()
         {
-            acceptance.Expect(x => x.Access == Access.AsField());
+            acceptance.Expect(x => x.Access == Access.Field);
 
             acceptance
                 .Matches(new PropertyInspector(new PropertyMapping { Access = "field" }))
@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         [Test]
         public void ExpectEqualShouldValidateToFalseIfNotGivenMatchingModel()
         {
-            acceptance.Expect(x => x.Access == Access.AsField());
+            acceptance.Expect(x => x.Access == Access.Field);
 
             acceptance
                 .Matches(new PropertyInspector(new PropertyMapping() { Access = "property" }))
@@ -40,7 +40,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         [Test]
         public void ExpectEqualShouldValidateToFalseIfUnset()
         {
-            acceptance.Expect(x => x.Access == Access.AsField());
+            acceptance.Expect(x => x.Access == Access.Field);
 
             acceptance
                 .Matches(new PropertyInspector(new PropertyMapping()))
@@ -50,7 +50,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         [Test]
         public void ExpectNotEqualShouldValidateToTrueIfGivenMatchingModel()
         {
-            acceptance.Expect(x => x.Access != Access.AsField());
+            acceptance.Expect(x => x.Access != Access.Field);
 
             acceptance
                 .Matches(new PropertyInspector(new PropertyMapping() { Access = "property" }))
@@ -60,7 +60,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         [Test]
         public void ExpectNotEqualShouldValidateToFalseIfNotGivenMatchingModel()
         {
-            acceptance.Expect(x => x.Access != Access.AsField());
+            acceptance.Expect(x => x.Access != Access.Field);
 
             acceptance
                 .Matches(new PropertyInspector(new PropertyMapping() { Access = "field" }))
@@ -70,7 +70,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         [Test]
         public void ExpectNotEqualShouldValidateToTrueIfUnset()
         {
-            acceptance.Expect(x => x.Access != Access.AsField());
+            acceptance.Expect(x => x.Access != Access.Field);
 
             acceptance
                 .Matches(new PropertyInspector(new PropertyMapping()))

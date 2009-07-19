@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using FluentNHibernate.Conventions.DslImplementation;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;

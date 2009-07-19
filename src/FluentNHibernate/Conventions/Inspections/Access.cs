@@ -3,6 +3,7 @@ namespace FluentNHibernate.Conventions.Inspections
     public class Access
     {
         public static readonly Access Unset = new Access("");
+        public static readonly Access Field = new Access("field");
 
         private readonly string value;
 
@@ -41,11 +42,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public static Access FromString(string value)
         {
             return new Access(value);
-        }
-
-        public static Access AsField()
-        {
-            return FromString("field");
         }
     }
 }

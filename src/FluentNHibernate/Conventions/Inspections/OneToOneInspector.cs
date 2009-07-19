@@ -6,11 +6,15 @@ namespace FluentNHibernate.Conventions.Inspections
 {
     public class OneToOneInspector : IOneToOneInspector
     {
+        private readonly InspectorModelMapper<IOneToOneInspector, OneToOneMapping> propertyMappings = new InspectorModelMapper<IOneToOneInspector, OneToOneMapping>();
         private readonly OneToOneMapping mapping;
 
         public OneToOneInspector(OneToOneMapping mapping)
         {
             this.mapping = mapping;
+
+            propertyMappings.AutoMap();
+            propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
         }
 
         public Type EntityType
@@ -25,7 +29,52 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public bool IsSet(PropertyInfo property)
         {
-            throw new NotImplementedException();
+            return mapping.IsSpecified(propertyMappings.Get(property));
+        }
+
+        public Access Access
+        {
+            get { return Access.FromString(mapping.Access); }
+        }
+
+        public string Cascade
+        {
+            get { return mapping.Cascade; }
+        }
+
+        public bool Constrained
+        {
+            get { return mapping.Constrained; }
+        }
+
+        public string Fetch
+        {
+            get { return mapping.Fetch; }
+        }
+
+        public string ForeignKey
+        {
+            get { return mapping.ForeignKey; }
+        }
+
+        public Laziness LazyLoad
+        {
+            get { return mapping.Lazy; }
+        }
+
+        public string Name
+        {
+            get { return mapping.Name; }
+        }
+
+        public string OuterJoin
+        {
+            get { return mapping.OuterJoin; }
+        }
+
+        public string PropertyRef
+        {
+            get { return mapping.PropertyRef; }
         }
     }
 }

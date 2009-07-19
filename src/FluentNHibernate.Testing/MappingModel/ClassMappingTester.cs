@@ -129,18 +129,6 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
-        public void Should_clear_the_parent_class_for_the_discriminator()
-        {
-            var classMap = new ClassMapping {Name = "class1" };
-            var discriminator = new DiscriminatorMapping(classMap);
-
-            classMap.Discriminator = discriminator;
-            classMap.Discriminator = null;
-
-            discriminator.ParentClass.ShouldBeNull();
-        }
-
-        [Test]
         public void Should_pass_the_discriminator_to_the_visitor()
         {
             var classMap = new ClassMapping {Name = "class1" };
