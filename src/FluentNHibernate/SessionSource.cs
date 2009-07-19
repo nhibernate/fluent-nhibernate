@@ -79,7 +79,7 @@ namespace FluentNHibernate
         public void BuildSchema(ISession session, bool script)
         {
             new SchemaExport(configuration)
-                .Execute(script, true, false, true, session.Connection, null);
+                .Execute(script, true, false, session.Connection, null);
         }
     }
 }
