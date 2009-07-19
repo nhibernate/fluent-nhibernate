@@ -63,14 +63,14 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public IAnyPart<TOther> ReferencesAny<TOther>(Expression<Func<T, TOther>> expression)
+        public AnyPart<TOther> ReferencesAny<TOther>(Expression<Func<T, TOther>> expression)
         {
             return ReferencesAny<TOther>(ReflectionHelper.GetProperty(expression));
         }
 
-        protected virtual IAnyPart<TOther> ReferencesAny<TOther>(PropertyInfo property)
+        protected virtual AnyPart<TOther> ReferencesAny<TOther>(PropertyInfo property)
         {
-            var part = new AnyPart<TOther>(property);
+            var part = new AnyPart<TOther>(typeof(T), property);
 
             anys.Add(part);
 
@@ -305,11 +305,6 @@ namespace FluentNHibernate.Mapping
         IManyToOnePart IClasslike.References<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression)
         {
             return References<TOther>(ReflectionHelper.GetProperty(expression), null);
-        }
-
-        IAnyPart<TOther> IClasslike.ReferencesAny<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression)
-        {
-            return ReferencesAny<TOther>(ReflectionHelper.GetProperty(expression));
         }
 
         IOneToOneMappingProvider IClasslike.HasOne<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression)

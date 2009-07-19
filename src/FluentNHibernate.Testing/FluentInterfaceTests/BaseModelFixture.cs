@@ -108,7 +108,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<AnyPart<T>, AnyMapping> Any<T>()
         {
-            return new ModelTester<AnyPart<T>, AnyMapping>(() => new AnyPart<T>(ReflectionHelper.GetProperty<MappedObject>(x => x.Parent)), x => ((IAnyMappingProvider)x).GetAnyMapping());
+            return new ModelTester<AnyPart<T>, AnyMapping>(() => new AnyPart<T>(typeof(MappedObject), ReflectionHelper.GetProperty<MappedObject>(x => x.Parent)), x => ((IAnyMappingProvider)x).GetAnyMapping());
         }
 
         protected ModelTester<JoinPart<T>, JoinMapping> Join<T>(string table)

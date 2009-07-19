@@ -97,7 +97,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         }
 
         [Test]
-        public void AnysCollectionOfInspectors()
+        public void ColumnsCollectionOfInspectors()
         {
             mapping.AddColumn(new ColumnMapping());
             inspector.Columns.First().ShouldBeOfType<IColumnInspector>();

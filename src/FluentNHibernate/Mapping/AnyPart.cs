@@ -7,71 +7,22 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IAnyPart<T> : IAccessStrategy<IAnyPart<T>>
-    {
-        /// <summary>
-        /// (REQUIRED) The identity type of the any mapping
-        /// </summary>
-        /// <returns></returns>
-        IAnyPart<T> IdentityType(Expression<Func<T, object>> expression);
-
-        /// <summary>
-        /// (REQUIRED) The identity type of the any mapping
-        /// </summary>
-        IAnyPart<T> IdentityType<TIdentity>();
-
-        /// <summary>
-        /// (REQUIRED) The identity type of the any mapping
-        /// </summary>
-        IAnyPart<T> IdentityType(Type type);
-
-        /// <summary>
-        /// (REQUIRED) Specifies the column name that will contain the type of the associated entity
-        /// </summary>
-        IAnyPart<T> EntityTypeColumn(string columnName);
-
-        /// <summary>
-        /// (REQUIRED) Specifies the column name that will hold the identifier
-        /// </summary>
-        IAnyPart<T> EntityIdentifierColumn(string columnName);
-
-        /// <summary>
-        /// This is used to map specific class types to value types stored in the EntityTypeColumn
-        /// This method should only be called if the MetaType specified for this ANY mapping is a basic data type (such as string)
-        /// </summary>
-        /// <typeparam name="TModel">The class type to map</typeparam>
-        /// <param name="valueMap">The string or character representing the value stored in the EntityTypeColumn in the table</param>
-        IAnyPart<T> AddMetaValue<TModel>(string valueMap);
-
-        /// <summary>
-        /// Sets the cascade of this part. Valid options are "none", "all", and "save-update"
-        /// </summary>
-        CascadeExpression<IAnyPart<T>> Cascade { get; }
-        IAnyPart<T> Not { get; }
-        IAnyPart<T> Insert();
-        IAnyPart<T> Update();
-        IAnyPart<T> ReadOnly();
-    }
-
-    public interface IAnyMappingProvider
-    {
-        AnyMapping GetAnyMapping();
-    }
-
     /// <summary>
     /// Represents the "Any" mapping in NHibernate. It is impossible to specify a foreign key constraint for this kind of association. For more information
     /// please reference chapter 5.2.4 in the NHibernate online documentation
     /// </summary>
-    public class AnyPart<T> : IAnyPart<T>, IAnyMappingProvider
+    public class AnyPart<T> : IAnyMappingProvider
     {
-        private readonly AccessStrategyBuilder<IAnyPart<T>> access;
-        private readonly CascadeExpression<IAnyPart<T>> cascade;
+        private readonly Type entity;
+        private readonly AccessStrategyBuilder<AnyPart<T>> access;
+        private readonly CascadeExpression<AnyPart<T>> cascade;
         private readonly AnyMapping mapping = new AnyMapping();
 
-        public AnyPart(PropertyInfo property)
+        public AnyPart(Type entity, PropertyInfo property)
         {
-            access = new AccessStrategyBuilder<IAnyPart<T>>(this, value => mapping.Access = value);
-            cascade = new CascadeExpression<IAnyPart<T>>(this, value => mapping.Cascade = value);
+            this.entity = entity;
+            access = new AccessStrategyBuilder<AnyPart<T>>(this, value => mapping.Access = value);
+            cascade = new CascadeExpression<AnyPart<T>>(this, value => mapping.Cascade = value);
             AnyProperty = property;
         }
 
@@ -84,7 +35,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Defines how NHibernate will access the object for persisting/hydrating (Defaults to Property)
         /// </summary>
-        public AccessStrategyBuilder<IAnyPart<T>> Access
+        public AccessStrategyBuilder<AnyPart<T>> Access
         {
             get { return access; }
         }
@@ -92,60 +43,60 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Cascade style (Defaults to none)
         /// </summary>
-        public CascadeExpression<IAnyPart<T>> Cascade
+        public CascadeExpression<AnyPart<T>> Cascade
         {
             get { return cascade; }
         }
 
-        public IAnyPart<T> IdentityType(Expression<Func<T, object>> expression)
+        public AnyPart<T> IdentityType(Expression<Func<T, object>> expression)
         {
             return IdentityType(ReflectionHelper.GetProperty(expression).PropertyType);
         }
 
-        public IAnyPart<T> IdentityType<TIdentity>()
+        public AnyPart<T> IdentityType<TIdentity>()
         {
             return IdentityType(typeof(TIdentity));
         }
 
-        public IAnyPart<T> IdentityType(Type type)
+        public AnyPart<T> IdentityType(Type type)
         {
             mapping.IdType = type.AssemblyQualifiedName;
             return this;
         }
 
-        public IAnyPart<T> EntityTypeColumn(string columnName)
+        public AnyPart<T> EntityTypeColumn(string columnName)
         {
             mapping.AddTypeColumn(new ColumnMapping { Name = columnName });
             return this;
         }
 
-        public IAnyPart<T> EntityIdentifierColumn(string columnName)
+        public AnyPart<T> EntityIdentifierColumn(string columnName)
         {
             mapping.AddIdentifierColumn(new ColumnMapping { Name = columnName });
             return this;
         }
 
-        public IAnyPart<T> AddMetaValue<TModel>(string valueMap)
+        public AnyPart<T> AddMetaValue<TModel>(string valueMap)
         {
             mapping.AddMetaValue(new MetaValueMapping { Class = new TypeReference(typeof(TModel)), Value = valueMap });
             return this;
         }
 
-        public IAnyPart<T> Insert()
+        public AnyPart<T> Insert()
         {
             mapping.Insert = nextBool;
             nextBool = true;
             return this;
         }
 
-        public IAnyPart<T> Update()
+        public AnyPart<T> Update()
         {
             mapping.Update = nextBool;
             nextBool = true;
             return this;
         }
 
-        public IAnyPart<T> ReadOnly()
+        public AnyPart<T> ReadOnly()
         {
             mapping.Insert = !nextBool;
             mapping.Update = !nextBool;
@@ -153,7 +104,7 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public IAnyPart<T> Not
+        public AnyPart<T> Not
         {
             get
             {
@@ -170,6 +121,8 @@ namespace FluentNHibernate.Mapping
                 throw new InvalidOperationException("<any> mapping is not valid without specifying an Entity Identifier Column");
             if (!mapping.IsSpecified(x => x.IdType))
                 throw new InvalidOperationException("<any> mapping is not valid without specifying an IdType");
+
+            mapping.ContainingEntityType = entity;
 
             if (!mapping.IsSpecified(x => x.Name))
                 mapping.Name = AnyProperty.Name;

@@ -15,7 +15,6 @@ namespace FluentNHibernate.Mapping
         IManyToOnePart References<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression);
         IOneToOneMappingProvider HasOne<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression);
         IComponentBase DynamicComponent<TEntity>(Expression<Func<TEntity, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action);
-        IAnyPart<TOther> ReferencesAny<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression);
 
         /// <summary>
         /// Maps a component

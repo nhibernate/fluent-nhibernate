@@ -82,6 +82,8 @@ namespace FluentNHibernate.MappingModel
             get { return metaValues; }
         }
 
+        public Type ContainingEntityType { get; set; }
+
         public void AddTypeDefaultColumn(ColumnMapping column)
         {
             typeColumns.AddDefault(column);

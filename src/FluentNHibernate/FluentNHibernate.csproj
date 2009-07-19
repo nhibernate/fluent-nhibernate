@@ -108,11 +108,13 @@
     <Compile Include="Conventions\Inspections\IGeneratorInspector.cs" />
     <Compile Include="Conventions\Inspections\IJoinedSubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\IJoinInspector.cs" />
+    <Compile Include="Conventions\Inspections\IMetaValueInspector.cs" />
     <Compile Include="Conventions\Inspections\InternalExtensions.cs" />
     <Compile Include="Conventions\Inspections\IOneToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\ISubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\IVersionInspector.cs" />
     <Compile Include="Conventions\Inspections\JoinInspector.cs" />
+    <Compile Include="Conventions\Inspections\MetaValueInspector.cs" />
     <Compile Include="Conventions\Inspections\OneToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\RelationshipInspector.cs" />
     <Compile Include="Conventions\Inspections\SubclassInspector.cs" />
@@ -221,6 +223,7 @@
     <Compile Include="MappingModel\Output\Sorting\XmlNodeSorter.cs" />
     <Compile Include="MappingModel\TypeReference.cs" />
     <Compile Include="Mapping\GeneratorBuilder.cs" />
+    <Compile Include="Mapping\IAnyMappingProvider.cs" />
     <Compile Include="Mapping\ICacheMappingProvider.cs" />
     <Compile Include="Mapping\IIdentityMappingProvider.cs" />
     <Compile Include="Mapping\IVersionMappingProvider.cs" />
