@@ -7,6 +7,6 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         Type ChildType { get; }
         TypeReference Class { get; }
-        string NotFound { get; }
+        NotFound NotFound { get; }
     }
 }

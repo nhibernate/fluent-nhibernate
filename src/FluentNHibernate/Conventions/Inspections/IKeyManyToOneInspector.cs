@@ -10,7 +10,7 @@ namespace FluentNHibernate.Conventions.Inspections
         string ForeignKey { get; }
         bool LazyLoad { get; }
         string Name { get; }
-        string NotFound { get; }
+        NotFound NotFound { get; }
         IEnumerable<IColumnInspector> Columns { get; }
     }
 }

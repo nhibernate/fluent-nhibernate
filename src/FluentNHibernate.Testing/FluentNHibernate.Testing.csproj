@@ -137,6 +137,7 @@
     <Compile Include="ConventionsTests\Inspection\ValueTypes\AccessTests.cs" />
     <Compile Include="ConventionsTests\Inspection\ValueTypes\CascadeTests.cs" />
     <Compile Include="ConventionsTests\Inspection\ValueTypes\FetchTests.cs" />
+    <Compile Include="ConventionsTests\Inspection\ValueTypes\NotFoundTests.cs" />
     <Compile Include="ConventionsTests\Inspection\ValueTypes\OptimisticLockTests.cs" />
     <Compile Include="ConventionsTests\Inspection\VersionInspectorMapsToVersionMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\PropertyInspectorMapsToPropertyMapping.cs" />

@@ -223,7 +223,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void NotFoundMapped()
         {
             mapping.NotFound = "exception";
-            inspector.NotFound.ShouldEqual("exception");
+            inspector.NotFound.ShouldEqual(NotFound.Exception);
         }
 
         [Test]

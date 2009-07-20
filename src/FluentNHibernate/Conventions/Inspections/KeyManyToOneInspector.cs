@@ -59,9 +59,9 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Name; }
         }
 
-        public string NotFound
+        public NotFound NotFound
         {
-            get { return mapping.NotFound; }
+            get { return NotFound.FromString(mapping.NotFound); }
         }
 
         public IEnumerable<IColumnInspector> Columns
