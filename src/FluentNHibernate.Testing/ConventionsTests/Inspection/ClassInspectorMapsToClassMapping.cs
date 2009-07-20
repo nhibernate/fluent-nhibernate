@@ -443,14 +443,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void PolymorphismMapped()
         {
-            mapping.Polymorphism = "all";
-            inspector.Polymorphism.ShouldEqual("all");
+            mapping.Polymorphism = "implicit";
+            inspector.Polymorphism.ShouldEqual(Polymorphism.Implicit);
         }
 
         [Test]
         public void PolymorphismIsSet()
         {
-            mapping.Polymorphism = "all";
+            mapping.Polymorphism = "implicit";
             inspector.IsSet(Prop(x => x.Polymorphism))
                 .ShouldBeTrue();
         }

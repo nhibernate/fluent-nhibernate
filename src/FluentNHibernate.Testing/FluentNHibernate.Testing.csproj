@@ -139,6 +139,7 @@
     <Compile Include="ConventionsTests\Inspection\ValueTypes\FetchTests.cs" />
     <Compile Include="ConventionsTests\Inspection\ValueTypes\NotFoundTests.cs" />
     <Compile Include="ConventionsTests\Inspection\ValueTypes\OptimisticLockTests.cs" />
+    <Compile Include="ConventionsTests\Inspection\ValueTypes\PolymorphismTests.cs" />
     <Compile Include="ConventionsTests\Inspection\VersionInspectorMapsToVersionMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\PropertyInspectorMapsToPropertyMapping.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaEqualSimpleTypeEvalTests.cs" />

@@ -151,6 +151,7 @@
     <Compile Include="Conventions\Inspections\OptimisticLock.cs" />
     <Compile Include="Conventions\Inspections\ParentInspector.cs" />
     <Compile Include="Conventions\Inspections\PascalCasePrefix.cs" />
+    <Compile Include="Conventions\Inspections\Polymorphism.cs" />
     <Compile Include="Conventions\Inspections\Prefix.cs" />
     <Compile Include="Conventions\Inspections\SubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\VersionInspector.cs" />

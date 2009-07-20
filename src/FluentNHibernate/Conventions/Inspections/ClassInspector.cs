@@ -237,9 +237,9 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Persister; }
         }
 
-        public string Polymorphism
+        public Polymorphism Polymorphism
         {
-            get { return mapping.Polymorphism; }
+            get { return Polymorphism.FromString(mapping.Polymorphism); }
         }
 
         public string Proxy

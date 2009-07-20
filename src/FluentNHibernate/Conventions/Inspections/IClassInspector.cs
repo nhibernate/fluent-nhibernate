@@ -17,7 +17,7 @@ namespace FluentNHibernate.Conventions.Inspections
         object DiscriminatorValue { get; }
         string Name { get; }
         string Persister { get; }
-        string Polymorphism { get; }
+        Polymorphism Polymorphism { get; }
         string Proxy { get; }
         bool SelectBeforeUpdate { get; }
         IIdentityInspectorBase Id { get; }
