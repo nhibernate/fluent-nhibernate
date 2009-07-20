@@ -12,7 +12,7 @@ namespace FluentNHibernate.Conventions.Inspections
         MemberInfo Member { get; }
         IRelationshipInspector Relationship { get; }
         Cascade Cascade { get; }
-        string Fetch { get; }
+        Fetch Fetch { get; }
         OptimisticLock OptimisticLock { get; }
         string OuterJoin { get; }
         bool Generic { get; }

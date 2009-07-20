@@ -42,9 +42,9 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
-        public string Fetch
+        public Fetch Fetch
         {
-            get { return mapping.Fetch; }
+            get { return Fetch.FromString(mapping.Fetch); }
         }
 
         public bool Inverse

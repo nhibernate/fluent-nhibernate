@@ -113,7 +113,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void FetchMapped()
         {
             mapping.Fetch = "join";
-            inspector.Fetch.ShouldEqual("join");
+            inspector.Fetch.ShouldEqual(Fetch.Join);
         }
 
         [Test]

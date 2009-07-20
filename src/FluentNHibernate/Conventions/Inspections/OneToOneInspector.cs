@@ -47,9 +47,9 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Constrained; }
         }
 
-        public string Fetch
+        public Fetch Fetch
         {
-            get { return mapping.Fetch; }
+            get { return Fetch.FromString(mapping.Fetch); }
         }
 
         public string ForeignKey

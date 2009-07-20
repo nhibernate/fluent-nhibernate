@@ -9,7 +9,7 @@ namespace FluentNHibernate.Conventions.Inspections
         IEnumerable<IColumnInspector> Columns { get; }
         Cascade Cascade { get; }
         TypeReference Class { get; }
-        string Fetch { get; }
+        Fetch Fetch { get; }
         string ForeignKey { get; }
         bool Insert { get; }
         Laziness LazyLoad { get; }

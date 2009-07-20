@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Inspections
         Access Access { get; }
         Cascade Cascade { get; }
         bool Constrained { get; }
-        string Fetch { get; }
+        Fetch Fetch { get; }
         string ForeignKey { get; }
         Laziness LazyLoad { get; }
         string Name { get; }

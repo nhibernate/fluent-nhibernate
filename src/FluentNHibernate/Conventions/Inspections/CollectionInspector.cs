@@ -81,9 +81,9 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return Cascade.FromString(mapping.Cascade); }
         }
 
-        public string Fetch
+        public Fetch Fetch
         {
-            get { return mapping.Fetch; }
+            get { return Fetch.FromString(mapping.Fetch); }
         }
 
         public OptimisticLock OptimisticLock

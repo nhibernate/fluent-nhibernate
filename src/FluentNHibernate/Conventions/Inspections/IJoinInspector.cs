@@ -5,7 +5,7 @@ namespace FluentNHibernate.Conventions.Inspections
     public interface IJoinInspector : IInspector
     {
         IEnumerable<IAnyInspector> Anys { get; }
-        string Fetch { get; }
+        Fetch Fetch { get; }
         bool Inverse { get; }
         IKeyInspector Key { get; }
         bool Optional { get; }
