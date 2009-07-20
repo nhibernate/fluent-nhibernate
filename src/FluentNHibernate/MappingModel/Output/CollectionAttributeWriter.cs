@@ -89,9 +89,6 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.HasValue(x => x.OptimisticLock))
                 element.WithAtt("optimistic-lock", mapping.OptimisticLock);
 
-            if (mapping.HasValue(x => x.OuterJoin))
-                element.WithAtt("outer-join", mapping.OuterJoin);
-
             if (mapping.HasValue(x => x.Persister))
                 element.WithAtt("persister", mapping.Persister);
 

@@ -61,18 +61,6 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public IOuterJoinInstance OuterJoin
-        {
-            get
-            {
-                return new OuterJoinInstance(value =>
-                {
-                    if (!mapping.IsSpecified(x => x.OuterJoin))
-                        mapping.OuterJoin = value;
-                });
-            }
-        }
-
         public void Class<T>()
         {
             if (!mapping.IsSpecified(x => x.Class))

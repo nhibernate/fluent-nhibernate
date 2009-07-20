@@ -129,16 +129,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldWriteOuterJoinAttribute()
-        {
-
-            var testHelper = new XmlWriterTestHelper<ListMapping>();
-            testHelper.Check(x => x.OuterJoin, "oj").MapsToAttribute("outer-join");
-
-            testHelper.VerifyAll(writer);
-        }
-
-        [Test]
         public void ShouldWritePersisterAttribute()
         {
 

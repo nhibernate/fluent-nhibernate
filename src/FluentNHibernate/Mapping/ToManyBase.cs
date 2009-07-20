@@ -17,7 +17,6 @@ namespace FluentNHibernate.Mapping
     {
         public MemberInfo Member { get; private set; }
         private readonly AccessStrategyBuilder<T> access;
-        private readonly OuterJoinBuilder<T> outerJoin;
         private readonly FetchTypeExpression<T> fetch;
         private readonly OptimisticLockBuilder<T> optimisticLock;
         private readonly CollectionCascadeExpression<T> cascade;
@@ -39,7 +38,6 @@ namespace FluentNHibernate.Mapping
             Member = member;
             AsBag();
             access = new AccessStrategyBuilder<T>((T)this, value => collectionAttributes.Set(x => x.Access, value));
-            outerJoin = new OuterJoinBuilder<T>((T)this, value => collectionAttributes.Set(x => x.OuterJoin, value));
             fetch = new FetchTypeExpression<T>((T)this, value => collectionAttributes.Set(x => x.Fetch, value));
             optimisticLock = new OptimisticLockBuilder<T>((T)this, value => collectionAttributes.Set(x => x.OptimisticLock, value));
             cascade = new CollectionCascadeExpression<T>((T)this, value => collectionAttributes.Set(x => x.Cascade, value));
@@ -418,11 +416,6 @@ namespace FluentNHibernate.Mapping
         {
             collectionAttributes.Set(x => x.Schema, schema);
             return (T)this;
-        }
-
-        public OuterJoinBuilder<T> OuterJoin
-        {
-            get { return outerJoin; }
         }
     }
 }

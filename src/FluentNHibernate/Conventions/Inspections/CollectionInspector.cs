@@ -91,11 +91,6 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return OptimisticLock.FromString(mapping.OptimisticLock); }
         }
 
-        public string OuterJoin
-        {
-            get { return mapping.OuterJoin; }
-        }
-
         public bool Generic
         {
             get { return mapping.Generic; }

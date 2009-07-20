@@ -186,7 +186,6 @@
     <Compile Include="Conventions\Instances\INotFoundInstance.cs" />
     <Compile Include="Conventions\Instances\IOneToOneInstance.cs" />
     <Compile Include="Conventions\Instances\IOptimisticLockInstance.cs" />
-    <Compile Include="Conventions\Instances\IOuterJoinInstance.cs" />
     <Compile Include="Conventions\Instances\IRelationshipInstance.cs" />
     <Compile Include="Conventions\Instances\CollectionInstance.cs" />
     <Compile Include="Conventions\Instances\ClassInstance.cs" />
@@ -201,7 +200,6 @@
     <Compile Include="Conventions\Instances\OneToManyCollectionInstance.cs" />
     <Compile Include="Conventions\Instances\OneToOneInstance.cs" />
     <Compile Include="Conventions\Instances\OptimisticLockInstance.cs" />
-    <Compile Include="Conventions\Instances\OuterJoinInstance.cs" />
     <Compile Include="Conventions\Helpers\Builders\ClassConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\HasManyConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\HasManyToManyConventionBuilder.cs" />
@@ -466,7 +464,6 @@
     <Compile Include="Mapping\IndexPart.cs" />
     <Compile Include="Mapping\InvalidPrefixException.cs" />
     <Compile Include="Mapping\Providers\ISubclassMappingProviders.cs" />
-    <Compile Include="Mapping\OuterJoinBuilder.cs" />
     <Compile Include="Mapping\ParamBuilder.cs" />
     <Compile Include="Mapping\Prefix.cs" />
     <Compile Include="Mapping\PropertyGeneratedBuilder.cs" />

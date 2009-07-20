@@ -96,16 +96,6 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         [Test]
-        public void OuterJoinShouldntBeOverwritten()
-        {
-            Mapping(x => x.OuterJoin.Auto());
-
-            Convention(x => x.OuterJoin.Yes());
-
-            VerifyModel(x => x.OuterJoin.ShouldEqual("auto"));
-        }
-
-        [Test]
         public void PropertyRefShouldntBeOverwritten()
         {
             Mapping(x => x.PropertyRef("ref"));

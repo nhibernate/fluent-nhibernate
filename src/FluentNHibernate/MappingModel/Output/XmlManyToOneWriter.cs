@@ -53,9 +53,6 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.HasValue(x => x.NotFound))
                 element.WithAtt("not-found", mapping.NotFound);
 
-            if (mapping.HasValue(x => x.OuterJoin))
-                element.WithAtt("outer-join", mapping.OuterJoin);
-
             if (mapping.HasValue(x => x.PropertyRef))
                 element.WithAtt("property-ref", mapping.PropertyRef);
 

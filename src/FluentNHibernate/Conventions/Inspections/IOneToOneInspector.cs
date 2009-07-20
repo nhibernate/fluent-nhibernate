@@ -11,7 +11,6 @@ namespace FluentNHibernate.Conventions.Inspections
         string ForeignKey { get; }
         bool LazyLoad { get; }
         string Name { get; }
-        string OuterJoin { get; }
         string PropertyRef { get; }
     }
 }

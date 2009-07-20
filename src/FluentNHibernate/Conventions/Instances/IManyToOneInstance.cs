@@ -13,7 +13,6 @@ namespace FluentNHibernate.Conventions.Instances
         new IFetchInstance Fetch { get; }
         IManyToOneInstance Not { get; }
         new INotFoundInstance NotFound { get; }
-        new IOuterJoinInstance OuterJoin { get; }
         void Index(string index);
         void Insert();
         void LazyLoad();

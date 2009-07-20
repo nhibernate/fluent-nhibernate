@@ -12,7 +12,6 @@ namespace FluentNHibernate.Mapping
         private readonly Type entity;
         private readonly PropertyInfo property;
         private readonly AccessStrategyBuilder<OneToOnePart<TOther>> access;
-        private readonly OuterJoinBuilder<OneToOnePart<TOther>> outerJoin;
         private readonly FetchTypeExpression<OneToOnePart<TOther>> fetch;
         private readonly CascadeExpression<OneToOnePart<TOther>> cascade;
         private readonly OneToOneMapping mapping = new OneToOneMapping();
@@ -20,7 +19,6 @@ namespace FluentNHibernate.Mapping
 
         public OneToOnePart(Type entity, PropertyInfo property)
         {
-            outerJoin = new OuterJoinBuilder<OneToOnePart<TOther>>(this, value => mapping.OuterJoin = value);
             access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this, value => mapping.Access = value);
             fetch = new FetchTypeExpression<OneToOnePart<TOther>>(this, value => mapping.Fetch = value);
             cascade = new CascadeExpression<OneToOnePart<TOther>>(this, value => mapping.Cascade = value);
@@ -114,11 +112,6 @@ namespace FluentNHibernate.Mapping
                 nextBool = !nextBool;
                 return this;
             }
-        }
-
-        public OuterJoinBuilder<OneToOnePart<TOther>> OuterJoin
-        {
-            get { return outerJoin; }
         }
     }
 }

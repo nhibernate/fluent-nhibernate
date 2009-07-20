@@ -88,14 +88,6 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
-        public void OuterJoinShouldSetModelOuterJoinPropertyToValue()
-        {
-            OneToOne()
-                .Mapping(m => m.OuterJoin.Auto())
-                .ModelShouldMatch(x => x.OuterJoin.ShouldEqual("auto"));
-        }
-
-        [Test]
         public void PropertyRefShouldSetModelPropertyRefPropertyToValue()
         {
             OneToOne()

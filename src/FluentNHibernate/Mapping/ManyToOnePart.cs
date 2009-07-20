@@ -19,7 +19,6 @@ namespace FluentNHibernate.Mapping
         private readonly IList<string> columns = new List<string>();
         private bool nextBool = true;
         private readonly ManyToOneMapping mapping;
-        private readonly OuterJoinBuilder<ManyToOnePart<TOther>> outerJoin;
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
 
         public ManyToOnePart(Type entity, PropertyInfo property) 
@@ -29,16 +28,10 @@ namespace FluentNHibernate.Mapping
             fetch = new FetchTypeExpression<ManyToOnePart<TOther>>(this, value => mapping.Fetch = value);
             cascade = new CascadeExpression<ManyToOnePart<TOther>>(this, value => mapping.Cascade = value);
             notFound = new NotFoundExpression<ManyToOnePart<TOther>>(this, value => mapping.NotFound = value);
-            outerJoin = new OuterJoinBuilder<ManyToOnePart<TOther>>(this, value => mapping.OuterJoin = value);
 
             Property = property;
 
             mapping = new ManyToOneMapping { ContainingEntityType = entity };
-        }
-
-        public OuterJoinBuilder<ManyToOnePart<TOther>> OuterJoin
-        {
-            get { return outerJoin; }
         }
 
         ManyToOneMapping IManyToOneMappingProvider.GetManyToOneMapping()

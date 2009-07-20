@@ -9,7 +9,6 @@ namespace FluentNHibernate.Conventions.Instances
         ICascadeInstance Cascade { get; }
         IOneToOneInstance Not { get; }
         IFetchInstance Fetch { get; }
-        IOuterJoinInstance OuterJoin { get; }
         void Class<T>();
         void Class(Type type);
         void Constrained();

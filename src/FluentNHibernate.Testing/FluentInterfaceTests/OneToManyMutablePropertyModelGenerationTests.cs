@@ -150,14 +150,6 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
-        public void OuterJoinShouldSetModelOuterJoinPropertyToValue()
-        {
-            OneToMany(x => x.BagOfChildren)
-                .Mapping(m => m.OuterJoin.Auto())
-                .ModelShouldMatch(x => x.OuterJoin.ShouldEqual("auto"));
-        }
-
-        [Test]
         public void FetchShouldSetModelFetchPropertyToValue()
         {
             OneToMany(x => x.BagOfChildren)

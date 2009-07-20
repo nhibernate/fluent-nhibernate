@@ -67,11 +67,6 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Name; }
         }
 
-        public string OuterJoin
-        {
-            get { return mapping.OuterJoin; }
-        }
-
         public string PropertyRef
         {
             get { return mapping.PropertyRef; }

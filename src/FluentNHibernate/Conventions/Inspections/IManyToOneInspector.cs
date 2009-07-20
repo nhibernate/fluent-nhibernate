@@ -14,7 +14,6 @@ namespace FluentNHibernate.Conventions.Inspections
         bool Insert { get; }
         bool LazyLoad { get; }
         NotFound NotFound { get; }
-        string OuterJoin { get; }
         string PropertyRef { get; }
         bool Update { get; }
     }

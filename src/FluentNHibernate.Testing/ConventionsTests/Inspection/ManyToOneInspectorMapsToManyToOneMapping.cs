@@ -242,28 +242,6 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         }
 
         [Test]
-        public void OuterJoinMapped()
-        {
-            mapping.OuterJoin = "join";
-            inspector.OuterJoin.ShouldEqual("join");
-        }
-
-        [Test]
-        public void OuterJoinIsSet()
-        {
-            mapping.OuterJoin = "join";
-            inspector.IsSet(Prop(x => x.OuterJoin))
-                .ShouldBeTrue();
-        }
-
-        [Test]
-        public void OuterJoinIsNotSet()
-        {
-            inspector.IsSet(Prop(x => x.OuterJoin))
-                .ShouldBeFalse();
-        }
-
-        [Test]
         public void PropertyRefMapped()
         {
             mapping.PropertyRef = "ref";

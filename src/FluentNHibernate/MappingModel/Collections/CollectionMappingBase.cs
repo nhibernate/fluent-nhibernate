@@ -111,12 +111,6 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Schema, value); }
         }
 
-        public string OuterJoin
-        {
-            get { return attributes.Get(x => x.OuterJoin); }
-            set { attributes.Set(x => x.OuterJoin, value); }
-        }
-
         public string Fetch
         {
             get { return attributes.Get(x => x.Fetch); }

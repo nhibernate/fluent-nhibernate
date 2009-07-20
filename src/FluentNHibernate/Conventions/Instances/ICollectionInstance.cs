@@ -21,7 +21,6 @@ namespace FluentNHibernate.Conventions.Instances
         new ICollectionCascadeInstance Cascade { get; }
         new IFetchInstance Fetch { get; }
         new IOptimisticLockInstance OptimisticLock { get; }
-        new IOuterJoinInstance OuterJoin { get; }
         void Check(string constraint);
         void CollectionType<T>();
         void CollectionType(string type);

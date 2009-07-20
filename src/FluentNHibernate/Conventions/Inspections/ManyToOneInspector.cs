@@ -28,11 +28,6 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return NotFound.FromString(mapping.NotFound); }
         }
 
-        public string OuterJoin
-        {
-            get { return mapping.OuterJoin; }
-        }
-
         public string PropertyRef
         {
             get { return mapping.PropertyRef; }
