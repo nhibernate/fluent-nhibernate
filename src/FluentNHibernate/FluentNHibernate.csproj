@@ -147,6 +147,7 @@
     <Compile Include="Conventions\Inspections\ManyToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\MetaValueInspector.cs" />
     <Compile Include="Conventions\Inspections\NotFound.cs" />
+    <Compile Include="Conventions\Inspections\OnDelete.cs" />
     <Compile Include="Conventions\Inspections\OneToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\OneToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\OptimisticLock.cs" />

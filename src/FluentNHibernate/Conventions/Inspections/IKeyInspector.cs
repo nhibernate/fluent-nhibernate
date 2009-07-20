@@ -6,7 +6,7 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         IEnumerable<IColumnInspector> Columns { get; }
         string ForeignKey { get; }
-        string OnDelete { get; }
+        OnDelete OnDelete { get; }
         string PropertyRef { get; }
     }
 }

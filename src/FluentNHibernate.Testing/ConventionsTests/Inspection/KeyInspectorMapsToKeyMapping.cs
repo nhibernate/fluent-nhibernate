@@ -68,14 +68,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void OnDeleteMapped()
         {
-            mapping.OnDelete = "val";
-            inspector.OnDelete.ShouldEqual("val");
+            mapping.OnDelete = "cascade";
+            inspector.OnDelete.ShouldEqual(OnDelete.Cascade);
         }
 
         [Test]
         public void OnDeleteIsSet()
         {
-            mapping.OnDelete = "val";
+            mapping.OnDelete = "cascade";
             inspector.IsSet(Prop(x => x.OnDelete))
                 .ShouldBeTrue();
         }

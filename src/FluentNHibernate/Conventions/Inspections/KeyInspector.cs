@@ -47,9 +47,9 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.ForeignKey; }
         }
 
-        public string OnDelete
+        public OnDelete OnDelete
         {
-            get { return mapping.OnDelete; }
+            get { return OnDelete.FromString(mapping.OnDelete); }
         }
 
         public string PropertyRef
