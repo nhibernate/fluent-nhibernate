@@ -123,7 +123,7 @@ namespace FluentNHibernate.Mapping
 
         public ManyToOnePart<TOther> LazyLoad()
         {
-            mapping.Lazy = nextBool ? Laziness.Proxy : Laziness.False;
+            mapping.Lazy = nextBool;
             nextBool = true;
             return this;
         }

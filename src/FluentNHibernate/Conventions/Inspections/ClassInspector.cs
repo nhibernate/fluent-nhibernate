@@ -33,7 +33,7 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Name; }
         }
 
-        public Laziness LazyLoad
+        public bool LazyLoad
         {
             get { return mapping.Lazy; }
         }

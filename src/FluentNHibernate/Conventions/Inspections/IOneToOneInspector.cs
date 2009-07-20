@@ -9,7 +9,7 @@ namespace FluentNHibernate.Conventions.Inspections
         bool Constrained { get; }
         Fetch Fetch { get; }
         string ForeignKey { get; }
-        Laziness LazyLoad { get; }
+        bool LazyLoad { get; }
         string Name { get; }
         string OuterJoin { get; }
         string PropertyRef { get; }

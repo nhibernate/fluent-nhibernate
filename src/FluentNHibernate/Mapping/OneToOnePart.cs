@@ -102,7 +102,7 @@ namespace FluentNHibernate.Mapping
 
         public OneToOnePart<TOther> LazyLoad()
         {
-            mapping.Lazy = nextBool ? Laziness.True : Laziness.False;
+            mapping.Lazy = nextBool;
             nextBool = true;
             return this;
         }

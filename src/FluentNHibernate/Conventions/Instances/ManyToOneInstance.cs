@@ -134,7 +134,7 @@ namespace FluentNHibernate.Conventions.Instances
             if (mapping.IsSpecified(x => x.Lazy))
                 return;
 
-            mapping.Lazy = nextBool ? Laziness.Proxy : Laziness.False;
+            mapping.Lazy = nextBool;
             nextBool = true;
         }
 

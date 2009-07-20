@@ -178,14 +178,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void LazyLoadMapped()
         {
-            mapping.Lazy = Laziness.True;
-            inspector.LazyLoad.ShouldEqual(Laziness.True);
+            mapping.Lazy = true;
+            inspector.LazyLoad.ShouldEqual(true);
         }
 
         [Test]
         public void LazyLoadIsSet()
         {
-            mapping.Lazy = Laziness.True;
+            mapping.Lazy = true;
             inspector.IsSet(Prop(x => x.LazyLoad))
                 .ShouldBeTrue();
         }

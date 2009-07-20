@@ -73,12 +73,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldWriteLazyAttribute()
+        public void ShouldWriteProxyLazyAttribute()
         {
-            var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
-            testHelper.Check(x => x.Lazy, Laziness.True).MapsToAttribute("lazy");
+            var mapping = new ManyToOneMapping();
 
-            testHelper.VerifyAll(writer);
+            mapping.Lazy = true;
+
+            writer.VerifyXml(mapping)
+                .HasAttribute("lazy", "proxy");
         }
 
         [Test]

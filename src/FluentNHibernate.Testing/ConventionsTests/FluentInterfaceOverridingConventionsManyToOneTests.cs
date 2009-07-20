@@ -101,7 +101,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
             Convention(x => x.Not.LazyLoad());
 
-            VerifyModel(x => x.Lazy.ShouldEqual(Laziness.Proxy));
+            VerifyModel(x => x.Lazy.ShouldEqual(true));
         }
 
         [Test]

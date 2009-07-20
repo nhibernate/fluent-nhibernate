@@ -17,7 +17,7 @@ namespace FluentNHibernate.Conventions.Inspections
         bool DynamicInsert { get; }
         bool DynamicUpdate { get; }
         string Extends { get; }
-        Laziness LazyLoad { get; }
+        bool LazyLoad { get; }
         string Name { get; }
         string Proxy { get; }
         bool SelectBeforeUpdate { get; }

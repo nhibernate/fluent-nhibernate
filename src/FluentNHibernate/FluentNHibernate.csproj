@@ -248,7 +248,6 @@
     <Compile Include="MappingModel\IDefaultableEnumerable.cs" />
     <Compile Include="MappingModel\IDefaultableList.cs" />
     <Compile Include="MappingModel\IHasColumnMappings.cs" />
-    <Compile Include="MappingModel\Laziness.cs" />
     <Compile Include="MappingModel\Output\Sorting\BaseXmlNodeSorter.cs" />
     <Compile Include="MappingModel\Output\Sorting\SortValue.cs" />
     <Compile Include="MappingModel\Output\Sorting\XmlClasslikeNodeSorter.cs" />

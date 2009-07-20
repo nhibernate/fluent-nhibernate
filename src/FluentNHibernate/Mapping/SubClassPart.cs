@@ -73,7 +73,7 @@ namespace FluentNHibernate.Mapping
         /// <returns></returns>
         public SubClassPart<TSubclass> LazyLoad()
         {
-            mapping.Lazy = nextBool ? Laziness.True : Laziness.False;
+            mapping.Lazy = nextBool;
             nextBool = true;
             return this;
         }

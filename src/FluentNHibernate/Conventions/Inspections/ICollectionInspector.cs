@@ -25,7 +25,7 @@ namespace FluentNHibernate.Conventions.Inspections
         TypeReference CollectionType { get; }
         ICompositeElementInspector CompositeElement { get; }
         IElementInspector Element { get; }
-        Laziness LazyLoad { get; }
+        bool LazyLoad { get; }
         string Name { get; }
         TypeReference Persister { get; }
         string Schema { get; }

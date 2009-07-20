@@ -94,7 +94,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Schema, value); }
         }
 
-        public Laziness Lazy
+        public bool Lazy
         {
             get { return attributes.Get(x => x.Lazy); }
             set { attributes.Set(x => x.Lazy, value); }

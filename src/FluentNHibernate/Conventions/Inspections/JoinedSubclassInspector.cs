@@ -100,7 +100,7 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
-        public Laziness LazyLoad
+        public bool LazyLoad
         {
             get { return mapping.Lazy; }
         }

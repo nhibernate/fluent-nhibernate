@@ -15,7 +15,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ClassMap<PropertyTarget>()
                 .Mapping(x => x.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.True));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(true));
         }
 
         [Test]
@@ -23,7 +23,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ClassMap<PropertyTarget>()
                 .Mapping(x => x.Not.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.False));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(false));
         }
 
         [Test]

@@ -12,7 +12,7 @@ namespace FluentNHibernate.Conventions.Inspections
         Fetch Fetch { get; }
         string ForeignKey { get; }
         bool Insert { get; }
-        Laziness LazyLoad { get; }
+        bool LazyLoad { get; }
         string NotFound { get; }
         string OuterJoin { get; }
         string PropertyRef { get; }

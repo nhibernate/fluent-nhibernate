@@ -11,7 +11,7 @@ namespace FluentNHibernate.Conventions.Inspections
         TypeReference Class { get; }
         Fetch Fetch { get; }
         string ForeignKey { get; }
-        Laziness LazyLoad { get; }
+        bool LazyLoad { get; }
         string NotFound { get; }
         string OuterJoin { get; }
         Type ParentType { get; }

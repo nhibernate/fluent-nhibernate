@@ -738,7 +738,7 @@
 			<xs:attribute name="entity-name" type="xs:string" />
 			<xs:attribute name="column" type="xs:string" />
 			<xs:attribute name="foreign-key" type="xs:string" />
-			<xs:attribute name="lazy" type="restrictedLaziness">
+			<xs:attribute name="lazy" type="restrictedbool">
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
@@ -846,7 +846,7 @@
 			</xs:attribute>
 			<xs:attribute name="fetch" type="fetchMode">
 			</xs:attribute>
-			<xs:attribute name="lazy" type="restrictedLaziness">
+			<xs:attribute name="lazy" type="restrictedbool">
 			</xs:attribute>
 			<xs:attribute name="foreign-key" type="xs:string" />
 			<xs:attribute name="unique" default="false" type="xs:boolean">
@@ -890,7 +890,7 @@
 			<xs:attribute name="foreign-key" type="xs:string" />
 			<xs:attribute name="property-ref" type="xs:string" />
 			<xs:attribute name="formula" type="xs:string" />
-			<xs:attribute name="lazy" type="laziness">
+			<xs:attribute name="lazy" type="bool">
 			</xs:attribute>
 			<xs:attribute name="not-found" default="exception" type="notFoundMode">
 			</xs:attribute>
@@ -1040,7 +1040,7 @@
 			</xs:attribute>
 			<xs:attribute name="foreign-key" type="xs:string" />
 			<xs:attribute name="property-ref" type="xs:string" />
-			<xs:attribute name="lazy" type="laziness">
+			<xs:attribute name="lazy" type="bool">
 			</xs:attribute>
 			<xs:attribute name="node" type="xs:string" />
 			<xs:attribute name="embed-xml" default="true" type="xs:boolean">
@@ -1613,7 +1613,7 @@
 			<xs:enumeration value="noaction" />
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="restrictedLaziness">
+	<xs:simpleType name="restrictedbool">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="false" />
 			<xs:enumeration value="proxy" />
@@ -1640,7 +1640,7 @@
 			<xs:enumeration value="join" />
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="laziness">
+	<xs:simpleType name="bool">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="false" />
 			<xs:enumeration value="proxy" />

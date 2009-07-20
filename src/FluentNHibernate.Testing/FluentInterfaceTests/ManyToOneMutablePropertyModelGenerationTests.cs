@@ -133,7 +133,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ManyToOne()
                 .Mapping(m => m.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.Proxy));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(true));
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ManyToOne()
                 .Mapping(m => m.Not.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.False));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(false));
         }
 
         [Test]

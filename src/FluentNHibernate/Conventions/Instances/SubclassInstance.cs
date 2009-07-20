@@ -58,7 +58,7 @@ namespace FluentNHibernate.Conventions.Instances
             if (mapping.IsSpecified(x => x.Lazy))
                 return;
 
-            mapping.Lazy = nextBool ? Laziness.True : Laziness.False;
+            mapping.Lazy = nextBool;
             nextBool = true;
         }
 

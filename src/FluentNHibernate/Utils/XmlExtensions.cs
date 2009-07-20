@@ -38,11 +38,6 @@ namespace FluentNHibernate.Utils
             return WithAtt(element, key, value.ToString());
         }
 
-        public static XmlElement WithAtt(this XmlElement element, string key, Laziness value)
-        {
-            return WithAtt(element, key, value.ToString());
-        }
-
         public static XmlElement WithAtt(this XmlElement element, string key, string attValue)
         {
             element.SetAttribute(key, attValue);

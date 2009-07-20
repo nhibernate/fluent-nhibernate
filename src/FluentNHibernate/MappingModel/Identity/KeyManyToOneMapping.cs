@@ -41,7 +41,7 @@ namespace FluentNHibernate.MappingModel.Identity
             set { attributes.Set(x => x.ForeignKey, value); }
         }
 
-        public Laziness Lazy
+        public bool Lazy
         {
             get { return attributes.Get(x => x.Lazy); }
             set { attributes.Set(x => x.Lazy, value); }

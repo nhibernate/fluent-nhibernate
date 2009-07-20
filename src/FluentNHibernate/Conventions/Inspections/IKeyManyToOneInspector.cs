@@ -8,7 +8,7 @@ namespace FluentNHibernate.Conventions.Inspections
         Access Access { get; }
         TypeReference Class { get; }
         string ForeignKey { get; }
-        Laziness LazyLoad { get; }
+        bool LazyLoad { get; }
         string Name { get; }
         string NotFound { get; }
         IEnumerable<IColumnInspector> Columns { get; }

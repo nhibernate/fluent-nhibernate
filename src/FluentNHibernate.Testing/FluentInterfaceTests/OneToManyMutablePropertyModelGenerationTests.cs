@@ -98,7 +98,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.True));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(true));
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Not.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.False));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(false));
         }
 
         [Test]

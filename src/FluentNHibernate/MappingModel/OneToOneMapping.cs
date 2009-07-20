@@ -65,7 +65,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.PropertyRef, value); }
         }
 
-        public Laziness Lazy
+        public bool Lazy
         {
             get { return attributes.Get(x => x.Lazy); }
             set { attributes.Set(x => x.Lazy, value); }
