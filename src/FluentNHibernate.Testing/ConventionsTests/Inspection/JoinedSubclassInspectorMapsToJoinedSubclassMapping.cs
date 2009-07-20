@@ -197,6 +197,30 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         }
 
         [Test]
+        public void KeyMapped()
+        {
+            mapping.Key = new KeyMapping();
+            mapping.Key.ForeignKey = "test";
+            inspector.Key.ForeignKey.ShouldEqual("test");
+        }
+
+        [Test]
+        public void KeyIsSet()
+        {
+            mapping.Key = new KeyMapping();
+            mapping.Key.ForeignKey = "test";
+            inspector.IsSet(Prop(x => x.Key))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void KeyIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Key))
+                .ShouldBeFalse();
+        }
+
+        [Test]
         public void LazyMapped()
         {
             mapping.Lazy = Laziness.True;

@@ -5,6 +5,7 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public interface IJoinedSubclassInstance : IJoinedSubclassInspector
     {
+        new IKeyInstance Key { get; }
         IJoinedSubclassInstance Not { get; }
         void Abstract();
         void CheckConstraint(string constraint);

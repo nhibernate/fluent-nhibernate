@@ -17,6 +17,17 @@ namespace FluentNHibernate.Conventions.Instances
             this.mapping = mapping;
         }
 
+        public new IKeyInstance Key
+        {
+            get
+            {
+                if (mapping.Key == null)
+                    mapping.Key = new KeyMapping();
+
+                return new KeyInstance(mapping.Key);
+            }
+        }
+
         public IJoinedSubclassInstance Not
         {
             get

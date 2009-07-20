@@ -900,6 +900,41 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .Element("//subclass/map[@name='DictionaryChild']").DoesntExist();
         }
 
+        [Test]
+        public void ShouldBeAbleToOverrideKeyColumnNameOfJoinedSubclassInConvention()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleInheritedClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ConventionFinder.Add<JoinedSubclassConvention>();
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/joined-subclass/key/column")
+                .HasAttribute("name", "test");
+        }
+
+        [Test]
+        public void ShouldBeAbleToOverrideTableNameOfJoinedSubclassInConvention()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleInheritedClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ConventionFinder.Add<JoinedSubclassConvention>();
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/joined-subclass")
+                .HasAttribute("table", "test-table");
+        }
+
+        private class JoinedSubclassConvention : IJoinedSubclassConvention
+        {
+            public void Apply(IJoinedSubclassInstance instance)
+            {
+                instance.Table("test-table");
+                instance.Key.Column("test");
+            }
+        }
+
         private class TestIdConvention : IIdConvention
         {
             public void Apply(IIdentityInstance instance)

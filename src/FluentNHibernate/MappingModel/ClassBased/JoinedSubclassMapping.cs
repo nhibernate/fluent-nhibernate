@@ -8,7 +8,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
     public class JoinedSubclassMapping : ClassMappingBase, ISubclassMapping
     {
         private readonly AttributeStore<JoinedSubclassMapping> attributes;
-        public KeyMapping Key { get; set; }
 
         public JoinedSubclassMapping() : this(new AttributeStore())
         {}
@@ -26,6 +25,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
                 visitor.Visit(Key);
 
             base.AcceptVisitor(visitor);
+        }
+
+        public KeyMapping Key
+        {
+            get { return attributes.Get(x => x.Key); }
+            set { attributes.Set(x => x.Key, value); }
         }
 
         public string TableName

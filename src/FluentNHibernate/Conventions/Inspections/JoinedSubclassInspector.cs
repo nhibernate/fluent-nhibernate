@@ -49,6 +49,17 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
+        public IKeyInspector Key
+        {
+            get
+            {
+                if (mapping.Key == null)
+                    return new KeyInspector(new KeyMapping());
+
+                return new KeyInspector(mapping.Key);
+            }
+        }
+
         public string Check
         {
             get { return mapping.Check; }
