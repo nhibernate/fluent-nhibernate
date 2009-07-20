@@ -5,6 +5,7 @@ namespace FluentNHibernate.Mapping
 {
     public interface IJoinedSubclass : IClasslike, IMappingPart
     {
+        void KeyColumnName(string columnName);
         void WithTableName(string tableName);
         void SchemaIs(string schema);
         void CheckConstraint(string constraintName);

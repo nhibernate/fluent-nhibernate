@@ -64,7 +64,7 @@ namespace FluentNHibernate.AutoMap
 
                     if (subclassStrategy == SubclassStrategy.JoinedSubclass)
                     {
-                        var subclass = map.JoinedSubClass(inheritedClass.Type, typeof(T).Name);
+                        var subclass = map.JoinedSubClass(inheritedClass.Type, typeof(T).Name + "_id");
 
                         if (inlineOverrides.ContainsKey(subclass.EntityType))
                             inlineOverrides[subclass.EntityType](subclass);

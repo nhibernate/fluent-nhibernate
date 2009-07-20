@@ -9,7 +9,7 @@ namespace FluentNHibernate.Mapping
 {
     public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, IJoinedSubclass
     {
-        private readonly string keyColumn;
+        private string keyColumn;
         private readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
         private readonly JoinedSubclassMapping mapping;
         private bool nextBool = true;
@@ -23,6 +23,12 @@ namespace FluentNHibernate.Mapping
         public JoinedSubClassPart(JoinedSubclassMapping mapping)
         {
             this.mapping = mapping;
+        }
+
+        public JoinedSubClassPart<TSubclass> KeyColumnName(string columnName)
+        {
+            keyColumn = columnName;
+            return this;
         }
 
         protected override PropertyMap Map(PropertyInfo property, string columnName)
@@ -182,6 +188,11 @@ namespace FluentNHibernate.Mapping
             unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
 
             return mapping;
+        }
+
+        void IJoinedSubclass.KeyColumnName(string columnName)
+        {
+            KeyColumnName(columnName);
         }
 
         void IJoinedSubclass.WithTableName(string tableName)

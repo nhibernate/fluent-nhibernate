@@ -8,7 +8,7 @@ namespace FluentNHibernate.AutoMap
 {
     public class AutoJoinedSubClassPart<T> : AutoMap<T>, IJoinedSubclass
     {
-        private readonly string keyColumn;
+        private string keyColumn;
         private readonly Cache<string, string> attributes = new Cache<string, string>();
 
         public AutoJoinedSubClassPart(string keyColumn)
@@ -50,6 +50,12 @@ namespace FluentNHibernate.AutoMap
             get { return PartPosition.Anywhere; }
         }
 
+        public AutoJoinedSubClassPart<T> KeyColumnName(string columnName)
+        {
+            keyColumn = columnName;
+            return this;
+        }
+
         public AutoJoinedSubClassPart<T> WithTableName(string tableName)
         {             
             attributes.Store("table", tableName);
@@ -85,6 +91,7 @@ namespace FluentNHibernate.AutoMap
         {
             get { throw new NotImplementedException(); }
         }
+
         JoinedSubclassMapping IJoinedSubclass.GetJoinedSubclassMapping()
         {
             throw new NotImplementedException();
@@ -94,7 +101,12 @@ namespace FluentNHibernate.AutoMap
 
         void IJoinedSubclass.WithTableName(string tableName)
         {
-            throw new NotImplementedException();
+            WithTableName(tableName);
+        }
+
+        void IJoinedSubclass.KeyColumnName(string columnName)
+        {
+            KeyColumnName(columnName);
         }
 
         #endregion

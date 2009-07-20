@@ -561,6 +561,46 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .HasAttribute("inverse", "true");
         }
 
+        [Test]
+        public void ShouldBeAbleToOverrideKeyColumnNameOfJoinedSubclassInConvention()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleInheritedClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ConventionDiscovery.Add<JoinedSubclassConvention>();
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/joined-subclass/key")
+                .HasAttribute("column", "test");
+        }
+
+        [Test]
+        public void ShouldBeAbleToOverrideTableNameOfJoinedSubclassInConvention()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleInheritedClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ConventionDiscovery.Add<JoinedSubclassConvention>();
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/joined-subclass")
+                .HasAttribute("table", "test-table");
+        }
+
+        private class JoinedSubclassConvention : IJoinedSubclassConvention
+        {
+            public bool Accept(IJoinedSubclass target)
+            {
+                return true;
+            }
+
+            public void Apply(IJoinedSubclass target)
+            {
+                target.WithTableName("test-table");
+                target.KeyColumnName("test");
+            }
+        }
+
         private class TestIdConvention : IIdConvention
         {
             public bool Accept(IIdentityPart target)
