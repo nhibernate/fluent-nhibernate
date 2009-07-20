@@ -82,9 +82,9 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.OptimisticLock; }
         }
 
-        public string Generated
+        public Generated Generated
         {
-            get { return mapping.Generated; }
+            get { return Generated.FromString(mapping.Generated); }
         }
 
         public IDefaultableEnumerable<IColumnInspector> Columns

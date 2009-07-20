@@ -187,7 +187,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void GeneratedMapped()
         {
             mapping.Generated = "never";
-            inspector.Generated.ShouldEqual(mapping.Generated);
+            inspector.Generated.ShouldEqual(Generated.Never);
         }
 
         [Test]

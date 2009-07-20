@@ -46,9 +46,9 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Column; }
         }
 
-        public string Generated
+        public Generated Generated
         {
-            get { return mapping.Generated; }
+            get { return Generated.FromString(mapping.Generated); }
         }
 
         public string UnsavedValue

@@ -114,6 +114,7 @@
     <Compile Include="Conventions\Inspections\DynamicComponentInspector.cs" />
     <Compile Include="Conventions\Inspections\ElementInspector.cs" />
     <Compile Include="Conventions\Inspections\Fetch.cs" />
+    <Compile Include="Conventions\Inspections\Generated.cs" />
     <Compile Include="Conventions\Inspections\IAnyInspector.cs" />
     <Compile Include="Conventions\Inspections\ICacheInspector.cs" />
     <Compile Include="Conventions\Inspections\IComponentBaseInspector.cs" />

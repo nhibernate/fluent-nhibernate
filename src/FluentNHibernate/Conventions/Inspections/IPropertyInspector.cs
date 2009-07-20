@@ -17,7 +17,7 @@ namespace FluentNHibernate.Conventions.Inspections
         string UniqueKey { get; }
         string Name { get; }
         bool OptimisticLock { get; }
-        string Generated { get; }
+        Generated Generated { get; }
         IDefaultableEnumerable<IColumnInspector> Columns { get; }
     }
 }

@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Inspections
         string Name { get; }
         Access Access { get; }
         string Column { get; }
-        string Generated { get; }
+        Generated Generated { get; }
         string UnsavedValue { get; }
         TypeReference Type { get; }
     }

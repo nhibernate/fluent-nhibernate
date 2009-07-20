@@ -68,14 +68,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void GeneratedMapped()
         {
-            mapping.Generated = "gen";
-            inspector.Generated.ShouldEqual("gen");
+            mapping.Generated = "insert";
+            inspector.Generated.ShouldEqual(Generated.Insert);
         }
 
         [Test]
         public void GeneratedIsSet()
         {
-            mapping.Generated = "gen";
+            mapping.Generated = "insert";
             inspector.IsSet(Prop(x => x.Generated))
                 .ShouldBeTrue();
         }
