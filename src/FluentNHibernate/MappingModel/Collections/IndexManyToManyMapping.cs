@@ -38,6 +38,12 @@ namespace FluentNHibernate.MappingModel.Collections
             columns.Add(mapping);
         }
 
+        public string ForeignKey
+        {
+            get { return attributes.Get(x => x.ForeignKey); }
+            set { attributes.Set(x => x.ForeignKey, value); }
+        }
+
         public bool IsSpecified<TResult>(Expression<Func<IndexManyToManyMapping, TResult>> property)
         {
             return attributes.IsSpecified(property);
