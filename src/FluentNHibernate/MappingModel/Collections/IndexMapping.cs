@@ -27,6 +27,8 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Type, value); }
         }
 
+        public Type ContainingEntityType { get; set; }
+
         public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }

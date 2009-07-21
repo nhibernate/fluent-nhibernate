@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{529145D5-6CC3-4016-89B5-826563024AF1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -126,12 +126,14 @@
     <Compile Include="Conventions\Inspections\IElementInspector.cs" />
     <Compile Include="Conventions\Inspections\IGeneratorInspector.cs" />
     <Compile Include="Conventions\Inspections\IIdentityInspectorBase.cs" />
+    <Compile Include="Conventions\Inspections\IIndexInspector.cs" />
     <Compile Include="Conventions\Inspections\IJoinedSubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\IJoinInspector.cs" />
     <Compile Include="Conventions\Inspections\IKeyManyToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\IKeyPropertyInspector.cs" />
     <Compile Include="Conventions\Inspections\IManyToManyCollectionInspector.cs" />
     <Compile Include="Conventions\Inspections\IMetaValueInspector.cs" />
+    <Compile Include="Conventions\Inspections\IndexInspector.cs" />
     <Compile Include="Conventions\Inspections\InternalExtensions.cs" />
     <Compile Include="Conventions\Inspections\IOneToManyCollectionInspector.cs" />
     <Compile Include="Conventions\Inspections\IOneToOneInspector.cs" />
@@ -173,6 +175,7 @@
     <Compile Include="Conventions\Instances\IFetchInstance.cs" />
     <Compile Include="Conventions\Instances\IGeneratedInstance.cs" />
     <Compile Include="Conventions\Instances\IGeneratorInstance.cs" />
+    <Compile Include="Conventions\Instances\IIndexInstance.cs" />
     <Compile Include="Conventions\Instances\IJoinedSubclassInstance.cs" />
     <Compile Include="Conventions\Instances\IJoinInstance.cs" />
     <Compile Include="Conventions\Instances\IManyToManyInstance.cs" />
@@ -183,6 +186,7 @@
     <Compile Include="Conventions\Instances\IClassInstance.cs" />
     <Compile Include="Conventions\Instances\IManyToOneInstance.cs" />
     <Compile Include="Conventions\Instances\IIdentityInstance.cs" />
+    <Compile Include="Conventions\Instances\IndexInstance.cs" />
     <Compile Include="Conventions\Instances\INotFoundInstance.cs" />
     <Compile Include="Conventions\Instances\IOneToOneInstance.cs" />
     <Compile Include="Conventions\Instances\IOptimisticLockInstance.cs" />
