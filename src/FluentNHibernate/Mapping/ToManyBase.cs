@@ -249,7 +249,7 @@ namespace FluentNHibernate.Mapping
 
         private void CreateIndexMapping(Action<IndexPart> customIndex)
         {
-            var indexPart = new IndexPart();
+            var indexPart = new IndexPart(typeof(T));
 
             if (customIndex != null)
                 customIndex(indexPart);
