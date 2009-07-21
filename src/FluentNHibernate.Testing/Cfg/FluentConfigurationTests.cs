@@ -125,6 +125,26 @@ namespace FluentNHibernate.Testing.Cfg
 
 			configuration.ShouldNotBeNull();
 		}
+
+    	[Test]
+    	public void ShouldSetCurrentSessionContext()
+    	{
+			var configuration = Fluently.Configure()
+				.Database(SQLiteConfiguration.Standard.CurrentSessionContext("thread_static").InMemory)
+				.BuildConfiguration();
+
+			configuration.Properties["current_session_context_class"].ShouldEqual("thread_static");
+    	}
+
+    	[Test]
+    	public void ShouldSetCurrentSessionContextUsingGeneric()
+    	{
+			var configuration = Fluently.Configure()
+				.Database(SQLiteConfiguration.Standard.CurrentSessionContext<NHibernate.Context.ThreadStaticSessionContext>())
+				.BuildConfiguration();
+
+			configuration.Properties["current_session_context_class"].ShouldEqual(typeof(NHibernate.Context.ThreadStaticSessionContext).AssemblyQualifiedName);
+    	}
     }
 
     [TestFixture]

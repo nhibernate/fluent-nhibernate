@@ -31,6 +31,7 @@ namespace FluentNHibernate.Cfg.Db
         protected const string ProxyFactoryFactoryClassKey = "proxyfactory.factory_class";
         protected const string DefaultProxyFactoryFactoryClassName = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
         protected const string AdoNetBatchSizeKey = "adonet.batch_size";
+		protected const string CurrentSessionContextClassKey = "current_session_context_class";
 
         private readonly Dictionary<string, string> rawValues;
 
@@ -216,5 +217,26 @@ namespace FluentNHibernate.Cfg.Db
             values.Store(AdoNetBatchSizeKey, size.ToString());
             return (TThisConfiguration)this;
         }
+
+		/// <summary>
+		/// Sets the current_session_context_class property.
+		/// </summary>
+		/// <param name="currentSessionContextClass">current session context class</param>
+		/// <returns>Configuration</returns>
+		public TThisConfiguration CurrentSessionContext(string currentSessionContextClass)
+		{
+			values.Store(CurrentSessionContextClassKey, currentSessionContextClass);
+			return (TThisConfiguration)this;
+		}
+
+		/// <summary>
+		/// Sets the current_session_context_class property.
+		/// </summary>
+		/// <typeparam name="TSessionContext">Implementation of ICurrentSessionContext to use</typeparam>
+		/// <returns>Configuration</returns>
+		public TThisConfiguration CurrentSessionContext<TSessionContext>() where TSessionContext : NHibernate.Context.ICurrentSessionContext
+		{
+			return CurrentSessionContext(typeof(TSessionContext).AssemblyQualifiedName);
+		}
     }
 }
