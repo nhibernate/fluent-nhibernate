@@ -28,6 +28,17 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteForeignKey()
+        {
+            var mapping = new IndexManyToManyMapping();
+
+            mapping.ForeignKey = "FKTest";
+
+            writer.VerifyXml(mapping)
+                .HasAttribute("foreign-key","FKTest");
+        }
+
+        [Test]
         public void ShouldWriteColumns()
         {
             var mapping = new IndexManyToManyMapping();
