@@ -33,14 +33,24 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             }, x => ((IDiscriminatorMappingProvider)x).GetDiscriminatorMapping());
         }
 
-        protected ModelTester<SubClassPart<T>, SubclassMapping> SubClass<T>()
+        protected ModelTester<SubClassPart<T>, SubclassMapping> Subclass<T>()
         {
-            return new ModelTester<SubClassPart<T>, SubclassMapping>(() => new SubClassPart<T>(new SubclassMapping()), x => ((ISubclassMappingProvider)x).GetSubclassMapping());
+            return new ModelTester<SubClassPart<T>, SubclassMapping>(() => new SubClassPart<T>(new SubclassMapping()), x => (SubclassMapping)((ISubclassMappingProvider)x).GetSubclassMapping());
         }
 
-        protected ModelTester<JoinedSubClassPart<T>, JoinedSubclassMapping> JoinedSubClass<T>()
+        protected ModelTester<SubclassMap<T>, SubclassMapping> SubclassMapForSubclass<T>()
         {
-            return new ModelTester<JoinedSubClassPart<T>, JoinedSubclassMapping>(() => new JoinedSubClassPart<T>(new JoinedSubclassMapping()), x => ((IJoinedSubclassMappingProvider)x).GetJoinedSubclassMapping());
+            return new ModelTester<SubclassMap<T>, SubclassMapping>(() => new SubclassMap<T>(), x => (SubclassMapping)x.GetSubclassMapping(new SubclassMapping()));
+        }
+
+        protected ModelTester<JoinedSubClassPart<T>, JoinedSubclassMapping> JoinedSubclass<T>()
+        {
+            return new ModelTester<JoinedSubClassPart<T>, JoinedSubclassMapping>(() => new JoinedSubClassPart<T>(new JoinedSubclassMapping()), x => (JoinedSubclassMapping)((ISubclassMappingProvider)x).GetSubclassMapping());
+        }
+
+        protected ModelTester<SubclassMap<T>, JoinedSubclassMapping> SubclassMapForJoinedSubclass<T>()
+        {
+            return new ModelTester<SubclassMap<T>, JoinedSubclassMapping>(() => new SubclassMap<T>(), x => (JoinedSubclassMapping)x.GetSubclassMapping(new JoinedSubclassMapping()));
         }
 
         protected ModelTester<ComponentPart<T>, ComponentMapping> Component<T>()

@@ -7,14 +7,13 @@ namespace FluentNHibernate.MappingModel.ClassBased
 {
     public class SubclassMapping : ClassMappingBase, ISubclassMapping
     {
-        private readonly AttributeStore<SubclassMapping> attributes;
+        private AttributeStore<SubclassMapping> attributes;
 
         public SubclassMapping()
             : this(new AttributeStore())
         { }
 
-        protected SubclassMapping(AttributeStore underlyingStore)
-            : base(underlyingStore)
+        private SubclassMapping(AttributeStore underlyingStore)
         {
             attributes = new AttributeStore<SubclassMapping>(underlyingStore);
         }
@@ -24,6 +23,18 @@ namespace FluentNHibernate.MappingModel.ClassBased
             visitor.ProcessSubclass(this);
 
             base.AcceptVisitor(visitor);
+        }
+
+        public override string Name
+        {
+            get { return attributes.Get(x => x.Name); }
+            set { attributes.Set(x => x.Name, value); }
+        }
+
+        public override Type Type
+        {
+            get { return attributes.Get(x => x.Type); }
+            set { attributes.Set(x => x.Type, value); }
         }
 
         public object DiscriminatorValue
@@ -87,6 +98,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public void SetDefaultValue<TResult>(Expression<Func<SubclassMapping, TResult>> property, TResult value)
         {
             attributes.SetDefault(property, value);
+        }
+
+        public void OverrideAttributes(AttributeStore store)
+        {
+            attributes = new AttributeStore<SubclassMapping>(store);
         }
     }
 }

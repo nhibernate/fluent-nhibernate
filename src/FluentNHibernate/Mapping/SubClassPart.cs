@@ -1,6 +1,5 @@
 ﻿using System;
 using FluentNHibernate.Mapping.Providers;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
@@ -25,7 +24,7 @@ namespace FluentNHibernate.Mapping
             this.mapping = mapping;
         }
 
-        SubclassMapping ISubclassMappingProvider.GetSubclassMapping()
+        ISubclassMapping ISubclassMappingProvider.GetSubclassMapping()
         {
             mapping.SetDefaultValue(x => x.Type, typeof(TSubclass));
             mapping.SetDefaultValue(x => x.Name, typeof(TSubclass).AssemblyQualifiedName);

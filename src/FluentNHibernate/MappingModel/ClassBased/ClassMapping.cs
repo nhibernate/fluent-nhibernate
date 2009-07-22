@@ -18,8 +18,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             Type = type;
         }
 
-        protected ClassMapping(AttributeStore store)
-            : base(store)
+        private ClassMapping(AttributeStore store)
         {
             attributes = new AttributeStore<ClassMapping>(store);
         }
@@ -28,6 +27,18 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return attributes.Get(x => x.Id); }
             set { attributes.Set(x => x.Id, value); }
+        }
+
+        public override string Name
+        {
+            get { return attributes.Get(x => x.Name); }
+            set { attributes.Set(x => x.Name, value); }
+        }
+
+        public override Type Type
+        {
+            get { return attributes.Get(x => x.Type); }
+            set { attributes.Set(x => x.Type, value); }
         }
 
         public CacheMapping Cache

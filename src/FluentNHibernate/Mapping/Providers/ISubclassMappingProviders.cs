@@ -4,6 +4,6 @@ namespace FluentNHibernate.Mapping.Providers
 {
     public interface ISubclassMappingProvider
     {
-        SubclassMapping GetSubclassMapping();
+        ISubclassMapping GetSubclassMapping();
     }
 }

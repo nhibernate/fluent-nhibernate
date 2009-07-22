@@ -131,7 +131,7 @@ namespace FluentNHibernate.AutoMap
 
             action(joinedclass);
 
-            joinedSubclasses[typeof(TSubclass)] = joinedclass;
+            subclasses[typeof(TSubclass)] = joinedclass;
 
 		    return joinedclass;
         }
@@ -139,10 +139,10 @@ namespace FluentNHibernate.AutoMap
         public IAutoClasslike JoinedSubClass(Type type, string keyColumn)
         {
             var genericType = typeof (AutoJoinedSubClassPart<>).MakeGenericType(type);
-            var joinedclass = (IJoinedSubclassMappingProvider)Activator.CreateInstance(genericType, keyColumn);
+            var joinedclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, keyColumn);
 
             // remove any mappings for the same type, then re-add
-            joinedSubclasses[type] = joinedclass;
+            subclasses[type] = joinedclass;
 
             return (IAutoClasslike)joinedclass;
         }

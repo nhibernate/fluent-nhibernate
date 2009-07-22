@@ -24,6 +24,18 @@ namespace FluentNHibernate.MappingModel.ClassBased
             base.AcceptVisitor(visitor);
         }
 
+        public override string Name
+        {
+            get { return attributes.Get(x => x.Name); }
+            set { attributes.Set(x => x.Name, value); }
+        }
+
+        public override Type Type
+        {
+            get { return attributes.Get(x => x.Type); }
+            set { attributes.Set(x => x.Type, value); }
+        }
+
         public TypeReference Class
         {
             get { return attributes.Get(x => x.Class); }

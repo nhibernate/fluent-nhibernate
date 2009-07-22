@@ -223,6 +223,10 @@
     <Compile Include="FluentInterfaceTests\CompositeElementMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\CompositeElementSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\CompositeIdMutablePropertyModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\SubclassMapForJoinedSubclassMutablePropertyModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\SubclassMapForJoinedSubclassSubPartModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\SubclassMapForSubclassMutablePropertyModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\SubclassMapForSubclassSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\HibernateMappingMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\JoinMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\JoinSubPartModelGenerationTests.cs" />
@@ -285,6 +289,7 @@
     <Compile Include="MappingModel\Output\XmlSetWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlVersionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
+    <Compile Include="PersistenceModelTests\SubclassPersistenceModelTests.cs" />
     <Compile Include="Testing\PersistenceSpecificationTester.cs" />
     <Compile Include="Testing\PersistenceSpecificationTransactionTest.cs" />
     <Compile Include="Testing\SessionSourceConfigurationTester.cs" />

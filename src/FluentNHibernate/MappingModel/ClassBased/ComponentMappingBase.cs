@@ -13,7 +13,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {}
 
         protected ComponentMappingBase(AttributeStore store)
-            : base(store)
         {
             attributes = new AttributeStore<ComponentMappingBase>(store);
         }

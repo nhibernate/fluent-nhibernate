@@ -10,7 +10,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void AbstractShouldSetModelAbstractPropertyToTrue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Abstract())
                 .ModelShouldMatch(x => x.Abstract.ShouldBeTrue());
         }
@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotAbstractShouldSetModelAbstractPropertyToFalse()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Not.Abstract())
                 .ModelShouldMatch(x => x.Abstract.ShouldBeFalse());
         }
@@ -26,7 +26,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void DynamicInsertShouldSetModelDynamicInsertPropertyToTrue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.DynamicInsert())
                 .ModelShouldMatch(x => x.DynamicInsert.ShouldBeTrue());
         }
@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotDynamicInsertShouldSetModelDynamicInsertPropertyToFalse()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Not.DynamicInsert())
                 .ModelShouldMatch(x => x.DynamicInsert.ShouldBeFalse());
         }
@@ -42,7 +42,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void DynamicUpdateShouldSetModelDynamicUpdatePropertyToTrue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.DynamicUpdate())
                 .ModelShouldMatch(x => x.DynamicUpdate.ShouldBeTrue());
         }
@@ -50,7 +50,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotDynamicUpdateShouldSetModelDynamicUpdatePropertyToFalse()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Not.DynamicUpdate())
                 .ModelShouldMatch(x => x.DynamicUpdate.ShouldBeFalse());
         }
@@ -58,7 +58,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void LazyLoadShouldSetModelLazyPropertyToTrue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.LazyLoad())
                 .ModelShouldMatch(x => x.Lazy.ShouldEqual(true));
         }
@@ -66,7 +66,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotLazyLoadShouldSetModelLazyPropertyToFalse()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Not.LazyLoad())
                 .ModelShouldMatch(x => x.Lazy.ShouldEqual(false));
         }
@@ -74,7 +74,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ProxyGenericShouldSetModelProxyPropertyToType()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Proxy<FakeProxyType>())
                 .ModelShouldMatch(x => x.Proxy.ShouldEqual(typeof(FakeProxyType).AssemblyQualifiedName));
         }
@@ -82,7 +82,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ProxyShouldSetModelProxyPropertyToType()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Proxy(typeof(FakeProxyType)))
                 .ModelShouldMatch(x => x.Proxy.ShouldEqual(typeof(FakeProxyType).AssemblyQualifiedName));
         }
@@ -90,7 +90,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void SelectBeforeUpdateShouldSetModelSelectBeforeUpdatePropertyToTrue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.SelectBeforeUpdate())
                 .ModelShouldMatch(x => x.SelectBeforeUpdate.ShouldBeTrue());
         }
@@ -98,7 +98,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotSelectBeforeUpdateShouldSetModelSelectBeforeUpdatePropertyToFalse()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Not.SelectBeforeUpdate())
                 .ModelShouldMatch(x => x.SelectBeforeUpdate.ShouldBeFalse());
         }
@@ -106,7 +106,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void WithTableNameShouldSetModelTableNamePropertyToValue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Table("table"))
                 .ModelShouldMatch(x => x.TableName.ShouldEqual("table"));
         }
@@ -114,7 +114,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void SchemaIsShouldSetModelSchemaPropertyToValue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Schema("schema"))
                 .ModelShouldMatch(x => x.Schema.ShouldEqual("schema"));
         }
@@ -122,7 +122,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void CheckConstraintShouldSetModelCheckPropertyToValue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.CheckConstraint("constraint"))
                 .ModelShouldMatch(x => x.Check.ShouldEqual("constraint"));
         }

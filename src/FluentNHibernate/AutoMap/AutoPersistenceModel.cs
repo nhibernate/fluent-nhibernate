@@ -223,7 +223,7 @@ namespace FluentNHibernate.AutoMap
                 return false;
             };
 
-            var mapping = mappings.FirstOrDefault(t => finder(t, type));
+            var mapping = classProviders.FirstOrDefault(t => finder(t, type));
 
             if (mapping != null) return mapping;
 

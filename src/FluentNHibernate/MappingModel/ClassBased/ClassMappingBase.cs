@@ -6,28 +6,17 @@ namespace FluentNHibernate.MappingModel.ClassBased
 {
     public abstract class ClassMappingBase : MappingBase, IHasMappedMembers
     {
-        private readonly AttributeStore<ClassMappingBase> attributes;
         private readonly MappedMembers mappedMembers;
         private readonly IList<ISubclassMapping> subclasses;
 
-        protected ClassMappingBase(AttributeStore underlyingStore)
+        protected ClassMappingBase()
         {
-            attributes = new AttributeStore<ClassMappingBase>(underlyingStore);
             mappedMembers = new MappedMembers();
             subclasses = new List<ISubclassMapping>();
         }
 
-        public string Name
-        {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
-        }
-
-        public Type Type
-        {
-            get { return attributes.Get(x => x.Type); }
-            set { attributes.Set(x => x.Type, value); }
-        }
+        public abstract string Name { get; set; }
+        public abstract Type Type { get; set;}
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {

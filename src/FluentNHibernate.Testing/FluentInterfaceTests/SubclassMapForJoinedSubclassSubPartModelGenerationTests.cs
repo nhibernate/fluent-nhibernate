@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
     [TestFixture]
-    public class JoinedSubclassSubPartModelGenerationTests : BaseModelFixture
+    public class SubclassMapForJoinedSubclassSubPartModelGenerationTests : BaseModelFixture
     {
         [Test]
         public void ComponentShouldAddToModelComponentsCollection()

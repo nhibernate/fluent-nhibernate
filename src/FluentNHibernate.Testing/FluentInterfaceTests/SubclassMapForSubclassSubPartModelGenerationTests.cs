@@ -6,12 +6,12 @@ using NUnit.Framework;
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
     [TestFixture]
-    public class JoinedSubclassSubPartModelGenerationTests : BaseModelFixture
+    public class SubclassMapForSubclassSubPartModelGenerationTests : BaseModelFixture
     {
         [Test]
         public void ComponentShouldAddToModelComponentsCollection()
         {
-            JoinedSubclass<PropertyTarget>()
+            SubclassMapForSubclass<PropertyTarget>()
                 .Mapping(m => m.Component(x => x.Component, c => { }))
                 .ModelShouldMatch(x => x.Components.Count().ShouldEqual(1));
         }
@@ -19,7 +19,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void DynamicComponentShouldAddToModelComponentsCollection()
         {
-            JoinedSubclass<PropertyTarget>()
+            SubclassMapForSubclass<PropertyTarget>()
                 .Mapping(m => m.DynamicComponent(x => x.ExtensionData, c => { }))
                 .ModelShouldMatch(x => x.Components.Count().ShouldEqual(1));
         }
@@ -27,15 +27,23 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void MapShouldAddToModelPropertiesCollection()
         {
-            JoinedSubclass<PropertyTarget>()
+            SubclassMapForSubclass<PropertyTarget>()
                 .Mapping(m => m.Map(x => x.Name))
                 .ModelShouldMatch(x => x.Properties.Count().ShouldEqual(1));
         }
 
         [Test]
+        public void SubClassShouldAddToModelSubclassesCollection()
+        {
+            SubclassMapForSubclass<SuperRecord>()
+                .Mapping(m => m.Subclass<ChildRecord>(x => { }))
+                .ModelShouldMatch(x => x.Subclasses.Count().ShouldEqual(1));
+        }
+
+        [Test]
         public void HasOneShouldAddToOneToOneCollectionOnModel()
         {
-            JoinedSubclass<PropertyTarget>()
+            SubclassMapForSubclass<PropertyTarget>()
                 .Mapping(m => m.HasOne(x => x.Reference))
                 .ModelShouldMatch(x => x.OneToOnes.Count().ShouldEqual(1));
         }
@@ -43,7 +51,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void HasOneShouldCorrectOneToOneToCollectionOnModel()
         {
-            JoinedSubclass<PropertyTarget>()
+            SubclassMapForSubclass<PropertyTarget>()
                 .Mapping(m => m.HasOne(x => x.Reference))
                 .ModelShouldMatch(x => x.OneToOnes.First().Name.ShouldEqual("Reference"));
         }
@@ -51,7 +59,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void PropertyAddsToPropertiesCollectionOnModel()
         {
-            JoinedSubclass<PropertyTarget>()
+            SubclassMapForSubclass<PropertyTarget>()
                 .Mapping(m => m.Map(x => x.Name))
                 .ModelShouldMatch(x => x.Properties.Count().ShouldEqual(1));
         }
@@ -59,7 +67,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void PropertyAddsToPropertiesCollectionOnModelWithName()
         {
-            JoinedSubclass<PropertyTarget>()
+            SubclassMapForSubclass<PropertyTarget>()
                 .Mapping(m => m.Map(x => x.Name))
                 .ModelShouldMatch(x => x.Properties.First().Name.ShouldEqual("Name"));
         }
@@ -67,7 +75,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void HasManyShouldAddToCollectionsCollectionOnModel()
         {
-            JoinedSubclass<OneToManyTarget>()
+            SubclassMapForSubclass<OneToManyTarget>()
                 .Mapping(m => m.HasMany(x => x.BagOfChildren))
                 .ModelShouldMatch(x => x.Collections.Count().ShouldEqual(1));
         }
@@ -75,7 +83,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void HasManyToManyShouldAddToCollectionsCollectionOnModel()
         {
-            JoinedSubclass<OneToManyTarget>()
+            SubclassMapForSubclass<OneToManyTarget>()
                 .Mapping(m => m.HasManyToMany(x => x.BagOfChildren))
                 .ModelShouldMatch(x => x.Collections.Count().ShouldEqual(1));
         }
@@ -83,7 +91,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ReferencesShouldAddToReferencesCollectionOnModel()
         {
-            JoinedSubclass<PropertyTarget>()
+            SubclassMapForSubclass<PropertyTarget>()
                 .Mapping(m => m.References(x => x.Reference))
                 .ModelShouldMatch(x => x.References.Count().ShouldEqual(1));
         }
@@ -91,7 +99,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ReferencesAnyShouldAddToAnyCollectionOnModel()
         {
-            JoinedSubclass<PropertyTarget>()
+            SubclassMapForSubclass<PropertyTarget>()
                 .Mapping(m => m.ReferencesAny(x => x.Reference)
                     .IdentityType<int>()
                     .EntityIdentifierColumn("col1")

@@ -7,12 +7,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
 {
     public class JoinedSubclassMapping : ClassMappingBase, ISubclassMapping
     {
-        private readonly AttributeStore<JoinedSubclassMapping> attributes;
+        private AttributeStore<JoinedSubclassMapping> attributes;
 
         public JoinedSubclassMapping() : this(new AttributeStore())
         {}
 
-        protected JoinedSubclassMapping(AttributeStore store) : base(store)
+        private JoinedSubclassMapping(AttributeStore store)
         {
             attributes = new AttributeStore<JoinedSubclassMapping>(store);
         }
@@ -20,11 +20,23 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessJoinedSubclass(this);
-
-            if(Key != null)
+            
+            if (Key != null)
                 visitor.Visit(Key);
 
             base.AcceptVisitor(visitor);
+        }
+
+        public override string Name
+        {
+            get { return attributes.Get(x => x.Name); }
+            set { attributes.Set(x => x.Name, value); }
+        }
+
+        public override Type Type
+        {
+            get { return attributes.Get(x => x.Type); }
+            set { attributes.Set(x => x.Type, value); }
         }
 
         public KeyMapping Key
@@ -106,6 +118,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public void SetDefaultValue<TResult>(Expression<Func<JoinedSubclassMapping, TResult>> property, TResult value)
         {
             attributes.SetDefault(property, value);
+        }
+
+        public void OverrideAttributes(AttributeStore store)
+        {
+            attributes = new AttributeStore<JoinedSubclassMapping>(store);
         }
     }
 }

@@ -8,8 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.Defaults;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Xml;
@@ -19,19 +18,18 @@ namespace FluentNHibernate
 {
     public class PersistenceModel
     {
-        protected readonly IList<IMappingProvider> mappings;
-        private readonly IList<IMappingModelVisitor> visitors;
+        protected readonly IList<IMappingProvider> classProviders = new List<IMappingProvider>();
+        protected readonly IList<IIndeterminateSubclassMappingProvider> subclassProviders = new List<IIndeterminateSubclassMappingProvider>();
+        private readonly IList<IMappingModelVisitor> visitors = new List<IMappingModelVisitor>();
         public IConventionFinder ConventionFinder { get; private set; }
         public bool MergeMappings { get; set; }
-        private bool conventionsApplied;
         private IEnumerable<HibernateMapping> compiledMappings;
 
         public PersistenceModel(IConventionFinder conventionFinder)
         {
-            mappings = new List<IMappingProvider>();
-            visitors = new List<IMappingModelVisitor>();
             ConventionFinder = conventionFinder;
 
+            visitors.Add(new SeparateSubclassVisitor(subclassProviders));
             visitors.Add(new ConventionVisitor(ConventionFinder));
 
             AddDefaultConventions();
@@ -59,11 +57,8 @@ namespace FluentNHibernate
 
         public void AddMappingsFromAssembly(Assembly assembly)
         {
-            foreach (Type type in assembly.GetExportedTypes())
-            {
-                if (!type.IsGenericType && typeof(IMappingProvider).IsAssignableFrom(type))
-                    Add(type);
-            }
+            foreach (var type in assembly.GetExportedTypes().Where(x => IsClassMap(x) || IsSubclassMap(x)))
+                Add(type);
         }
 
         private static Assembly FindTheCallingAssembly()
@@ -87,18 +82,34 @@ namespace FluentNHibernate
 
         public void Add(IMappingProvider provider)
         {
-            mappings.Add(provider);
+            classProviders.Add(provider);
+        }
+
+        public void Add(IIndeterminateSubclassMappingProvider provider)
+        {
+            subclassProviders.Add(provider);
         }
 
         public void Add(Type type)
         {
-            var mapping = (IMappingProvider)type.InstantiateUsingParameterlessConstructor();
-            Add(mapping);
+            var mapping = type.InstantiateUsingParameterlessConstructor();
+
+            if (IsClassMap(type))
+                Add((IMappingProvider)mapping);
+            else if (IsSubclassMap(type))
+                Add((IIndeterminateSubclassMappingProvider)mapping);
+            else
+                throw new InvalidOperationException("Unsupported mapping type '" + type.FullName + "'");
         }
 
-        public IEnumerable<IMappingProvider> Mappings
+        private bool IsClassMap(Type type)
         {
-            get { return mappings; }
+            return !type.IsGenericType && typeof(IMappingProvider).IsAssignableFrom(type);
+        }
+
+        private bool IsSubclassMap(Type type)
+        {
+            return !type.IsGenericType && typeof(IIndeterminateSubclassMappingProvider).IsAssignableFrom(type);
         }
 
         public IEnumerable<HibernateMapping> BuildMappings()
@@ -118,7 +129,7 @@ namespace FluentNHibernate
 
         private void BuildSeparateMappings(Action<HibernateMapping> add)
         {
-            foreach (var classMap in mappings)
+            foreach (var classMap in classProviders)
             {
                 var hbm = classMap.GetHibernateMapping();
 
@@ -132,7 +143,7 @@ namespace FluentNHibernate
         {
             var hbm = new HibernateMapping();
 
-            foreach (var classMap in mappings)
+            foreach (var classMap in classProviders)
             {
                 hbm.AddClass(classMap.GetClassMapping());
             }

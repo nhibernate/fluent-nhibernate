@@ -17,6 +17,18 @@ namespace FluentNHibernate.MappingModel.ClassBased
             attributes = new AttributeStore<DynamicComponentMapping>(store);
         }
 
+        public override string Name
+        {
+            get { return attributes.Get(x => x.Name); }
+            set { attributes.Set(x => x.Name, value); }
+        }
+
+        public override Type Type
+        {
+            get { return attributes.Get(x => x.Type); }
+            set { attributes.Set(x => x.Type, value); }
+        }
+
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessComponent(this);

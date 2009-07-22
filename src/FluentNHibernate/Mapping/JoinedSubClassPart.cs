@@ -6,7 +6,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {
-    public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, IJoinedSubclassMappingProvider
+    public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclassMappingProvider
     {
         private readonly JoinedSubclassMapping mapping;
         private readonly IList<string> columns = new List<string>();
@@ -29,9 +29,9 @@ namespace FluentNHibernate.Mapping
 
             action(subclass);
 
-            joinedSubclasses[typeof(TNextSubclass)] = subclass;
+            subclasses[typeof(TNextSubclass)] = subclass;
 
-            mapping.AddSubclass(((IJoinedSubclassMappingProvider)subclass).GetJoinedSubclassMapping());
+            mapping.AddSubclass(((ISubclassMappingProvider)subclass).GetSubclassMapping());
         }
 
         public JoinedSubClassPart<TSubclass> Table(string tableName)
@@ -110,7 +110,7 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        JoinedSubclassMapping IJoinedSubclassMappingProvider.GetJoinedSubclassMapping()
+        ISubclassMapping ISubclassMappingProvider.GetSubclassMapping()
         {
             mapping.Key = new KeyMapping { ContainingEntityType = typeof(TSubclass) };
             mapping.Name = typeof(TSubclass).AssemblyQualifiedName;

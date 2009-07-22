@@ -23,7 +23,7 @@ namespace FluentNHibernate.AutoMap
 
         public object GetMapping()
         {
-            return ((IJoinedSubclassMappingProvider)this).GetJoinedSubclassMapping();
+            return ((ISubclassMappingProvider)this).GetSubclassMapping();
         }
 
         void IAutoClasslike.DiscriminateSubClassesOnColumn(string column)
@@ -81,15 +81,15 @@ namespace FluentNHibernate.AutoMap
 
             action(joinedclass);
 
-            joinedSubclasses[typeof(TSubclass)] = joinedclass;
+            subclasses[typeof(TSubclass)] = joinedclass;
         }
 
         public IAutoClasslike JoinedSubClass(Type type, string keyColumn)
         {
             var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(type);
-            var joinedclass = (IJoinedSubclassMappingProvider)Activator.CreateInstance(genericType, keyColumn);
+            var joinedclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, keyColumn);
 
-            joinedSubclasses[type] = joinedclass;
+            subclasses[type] = joinedclass;
 
             return (IAutoClasslike)joinedclass;
         }

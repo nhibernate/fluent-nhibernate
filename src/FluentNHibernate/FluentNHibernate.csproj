@@ -244,6 +244,7 @@
     <Compile Include="Conventions\Instances\SubclassInstance.cs" />
     <Compile Include="Conventions\Instances\VersionInstance.cs" />
     <Compile Include="Conventions\IUserTypeConvention.cs" />
+    <Compile Include="SeparateSubclassVisitor.cs" />
     <Compile Include="MappingModel\Collections\IIndexedCollectionMapping.cs" />
     <Compile Include="MappingModel\Collections\SortType.cs" />
     <Compile Include="MappingModel\DefaultableList.cs" />
@@ -266,7 +267,9 @@
     <Compile Include="Mapping\Providers\IManyToOneMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IOneToOneMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IPropertyMappingProvider.cs" />
+    <Compile Include="Mapping\Providers\IIndeterminateSubclassMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IVersionMappingProvider.cs" />
+    <Compile Include="Mapping\SubclassMap.cs" />
     <Compile Include="Utils\Reflection\ExpressionBuilder.cs" />
     <Compile Include="AutoMap\AutoSubClassPart.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />
@@ -459,7 +462,6 @@
     <Compile Include="Mapping\Providers\ICompositeIdMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IDiscriminatorMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IHibernateMappingProvider.cs" />
-    <Compile Include="Mapping\Providers\IJoinedSubclassMappingProvider.cs" />
     <Compile Include="Mapping\IndexManyToManyPart.cs" />
     <Compile Include="Mapping\IndexPart.cs" />
     <Compile Include="Mapping\InvalidPrefixException.cs" />
