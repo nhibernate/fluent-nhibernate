@@ -115,6 +115,7 @@ namespace FluentNHibernate.Mapping
         {
             extendedProperties.Store(name, value);
             unmigratedAttributes.Add(name, value);
+            mapping.UnmigratedAttributes.Add(name, value);
         }
 
         public void SetAttributes(Attributes atts)

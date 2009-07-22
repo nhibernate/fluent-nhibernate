@@ -37,6 +37,11 @@ namespace FluentNHibernate.Mapping
 
             foreach (var component in components)
                 mapping.AddComponent(component.GetComponentMapping());
+            
+            foreach(var subclass in Subclasses)
+            {
+                mapping.AddSubclass(subclass.GetSubclassMapping());
+            }
 
             foreach (var part in Parts)
                 mapping.AddUnmigratedPart(part);
@@ -106,7 +111,7 @@ namespace FluentNHibernate.Mapping
 
             action(subclass);
 
-            mapping.AddSubclass(subclass.GetSubclassMapping());
+            AddSubclass(subclass);
 
             return parent;
         }

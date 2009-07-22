@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 
 namespace FluentNHibernate.Conventions
 {
@@ -18,10 +19,8 @@ namespace FluentNHibernate.Conventions
         /// <returns>IEnumerable of T</returns>
         public IEnumerable<T> Find<T>() where T : IConvention
         {
-            foreach (var type in conventions)
+            foreach (var type in conventions.Where(x => typeof(T).IsAssignableFrom(x)))
             {
-                if (!typeof(T).IsAssignableFrom(type)) continue;
-
                 foreach (var instance in conventions[type])
                 {
                     yield return (T)instance;

@@ -1,3 +1,5 @@
+using System;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
 
@@ -391,6 +393,160 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         .SetAttribute("attr", "value"))
                 .Element("class/discriminator")
                     .HasAttribute("attr", "value");
+        }
+
+        [Test]
+        public void MapsSubclassProperty()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .SubClass<MappedObjectSubclass>(("foo"), sc => sc.Map(x => x.SubclassProperty)))
+                .Element("//subclass/property")
+                    .HasAttribute("name", "SubclassProperty");
+        }
+
+        [Test]
+        public void SubclassPropertyHasConventionApplied()
+        {
+            new MappingTester<MappedObject>()
+                .Conventions(cf => { cf.Add<TestPropertyConvention>(); })
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .SubClass<MappedObjectSubclass>(("foo"), sc => sc.Map(x => x.SubclassProperty)))
+
+                .Element("//subclass/property[@name='SubclassProperty']")
+                    .HasAttribute("generated", "never");
+
+        }
+
+        [Test]
+        public void SubSubclassPropertyHasConventionApplied()
+        {
+            new MappingTester<MappedObject>()
+                .Conventions(cf => { cf.Add<TestPropertyConvention>(); })
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .SubClass<MappedObjectSubclass>(("foo"), sc => sc.Map(x => x.SubclassProperty))
+                        .SubClass<MappedObjectSubSubClass>("bar", sc => sc.Map(x => x.SubSubclassProperty)))
+
+                .Element("//subclass/property[@name='SubSubclassProperty']")
+                    .HasAttribute("generated", "never");
+
+        }
+
+        [Test]
+        public void SubclassManyToOneReferenceHasConventionApplied()
+        {
+            new MappingTester<MappedObject>()
+                .Conventions(cf => { cf.Add<TestManyToOneConvention>(); })
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .SubClass<MappedObjectSubclass>(("foo"), sc => sc.References(x => x.Child)))
+
+                .Element("//subclass/many-to-one")
+                    .HasAttribute("column", "test_column");
+
+        }
+
+        [Test]
+        public void SubSubclassManyToOneReferenceHasConventionApplied()
+        {
+            new MappingTester<MappedObject>()
+                .Conventions(cf => { cf.Add<TestManyToOneConvention>(); })
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .SubClass<MappedObjectSubclass>(("foo"),
+                        sc => { 
+                            sc.References(x => x.Child);
+                            sc.SubClass<MappedObjectSubSubClass>("bar", 
+                                ssc => ssc.References(x => x.Child));
+                        }))
+                .Element("//subclass/subclass/many-to-one")
+                    .HasAttribute("column", "test_column");
+
+        }
+
+
+        [Test]
+        public void SubclassOneToManyReferenceHasConventionApplied()
+        {
+            new MappingTester<MappedObject>()
+                .Conventions(cf => { cf.Add<TestOneToManyConvention>(); })
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .SubClass<MappedObjectSubclass>(("foo"), sc => sc.HasMany(x => x.Children).AsBag()))
+
+                .Element("//subclass/bag/key")
+                    .HasAttribute("foreign-key", "test_fk");
+
+        }
+
+        [Test]
+        public void SubSubclassOneToManyReferenceHasConventionApplied()
+        {
+            new MappingTester<MappedObject>()
+                .Conventions(cf => { cf.Add<TestOneToManyConvention>(); })
+                .ForMapping(map =>
+                    map.DiscriminateSubClassesOnColumn("Type")
+                        .SubClass<MappedObjectSubclass>(("foo"),
+                        sc =>
+                        {
+                            sc.HasMany(x => x.Children).AsBag();
+                            sc.SubClass<MappedObjectSubSubClass>("bar", ssc => ssc.HasMany(x => x.Children).AsBag());
+                        }))
+                .Element("//subclass/subclass/bag/key")
+                    .HasAttribute("foreign-key", "test_fk");
+
+        }
+
+        public class TestPropertyConvention : IPropertyConvention
+        {
+            public bool Accept(IProperty target)
+            {
+                return true;
+            }
+
+            public void Apply(IProperty target)
+            {
+                target.SetAttribute("generated", "never");
+            }
+        }
+
+        public class TestManyToOneConvention: IReferenceConvention
+        {
+            /// <summary>
+            /// Whether this convention will be applied to the target.
+            /// </summary>
+            /// <param name="target">Instace that could be supplied</param>
+            /// <returns>Apply on this target?</returns>
+            public bool Accept(IManyToOnePart target)
+            {
+                return true;
+            }
+
+            /// <summary>
+            /// Apply changes to the target
+            /// </summary>
+            /// <param name="target">Instance to apply changes to</param>
+            public void Apply(IManyToOnePart target)
+            {
+                target.ColumnName("test_column");
+            }
+        }
+
+        public class TestOneToManyConvention: IHasManyConvention
+        {
+            public bool Accept(IOneToManyPart target)
+            {
+                return true;
+            }
+
+            public void Apply(IOneToManyPart target)
+            {
+                target.KeyColumnNames.Add("test_column");
+                target.WithForeignKeyConstraintName("test_fk");
+            }
         }
 
         private class ProxyClass
