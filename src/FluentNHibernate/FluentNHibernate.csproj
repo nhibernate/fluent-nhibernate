@@ -182,6 +182,8 @@
     <Compile Include="Conventions\Instances\FetchInstance.cs" />
     <Compile Include="Conventions\Instances\GeneratedInstance.cs" />
     <Compile Include="Conventions\Instances\GeneratorInstance.cs" />
+    <Compile Include="Conventions\Instances\IArrayInstance.cs" />
+    <Compile Include="Conventions\Instances\IBagInstance.cs" />
     <Compile Include="Conventions\Instances\ICacheInstance.cs" />
     <Compile Include="Conventions\Instances\ICascadeInstance.cs" />
     <Compile Include="Conventions\Instances\ICollectionCascadeInstance.cs" />
@@ -191,9 +193,11 @@
     <Compile Include="Conventions\Instances\IGeneratedInstance.cs" />
     <Compile Include="Conventions\Instances\IGeneratorInstance.cs" />
     <Compile Include="Conventions\Instances\IIndexInstance.cs" />
+    <Compile Include="Conventions\Instances\IIndexInstanceBase.cs" />
     <Compile Include="Conventions\Instances\IIndexManyToManyInstance.cs" />
     <Compile Include="Conventions\Instances\IJoinedSubclassInstance.cs" />
     <Compile Include="Conventions\Instances\IJoinInstance.cs" />
+    <Compile Include="Conventions\Instances\IListInstance.cs" />
     <Compile Include="Conventions\Instances\IManyToManyInstance.cs" />
     <Compile Include="Conventions\Instances\IKeyInstance.cs" />
     <Compile Include="Conventions\Instances\IManyToManyCollectionInstance.cs" />
@@ -202,6 +206,7 @@
     <Compile Include="Conventions\Instances\IClassInstance.cs" />
     <Compile Include="Conventions\Instances\IManyToOneInstance.cs" />
     <Compile Include="Conventions\Instances\IIdentityInstance.cs" />
+    <Compile Include="Conventions\Instances\IMapInstance.cs" />
     <Compile Include="Conventions\Instances\IndexInstance.cs" />
     <Compile Include="Conventions\Instances\IndexManyToManyInstance.cs" />
     <Compile Include="Conventions\Instances\INotFoundInstance.cs" />
@@ -213,6 +218,7 @@
     <Compile Include="Conventions\Instances\IPropertyInstance.cs" />
     <Compile Include="Conventions\Instances\IOneToManyCollectionInstance.cs" />
     <Compile Include="Conventions\Instances\IOneToManyInstance.cs" />
+    <Compile Include="Conventions\Instances\ISetInstance.cs" />
     <Compile Include="Conventions\Instances\ISubclassInstance.cs" />
     <Compile Include="Conventions\Instances\IVersionInstance.cs" />
     <Compile Include="Conventions\Instances\JoinedSubclassInstance.cs" />

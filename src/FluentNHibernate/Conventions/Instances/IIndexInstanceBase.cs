@@ -2,7 +2,8 @@
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public interface IIndexInstance : IIndexInstanceBase, IIndexInspector
+    public interface IIndexInstanceBase : IIndexInspectorBase
     {
+        void Column(string columnName);
     }
 }

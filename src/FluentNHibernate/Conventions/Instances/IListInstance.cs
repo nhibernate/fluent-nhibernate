@@ -2,7 +2,8 @@
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public interface IIndexInstance : IIndexInstanceBase, IIndexInspector
+    public interface IListInstance : IListInspector
     {
+        new IIndexInstanceBase Index { get; }
     }
 }

@@ -2,7 +2,8 @@
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public interface IIndexInstance : IIndexInstanceBase, IIndexInspector
+    public interface IBagInstance :IBagInspector
     {
+        void SetOrderBy(string orderBy);
     }
 }
