@@ -104,6 +104,8 @@
     <Compile Include="Conventions\IIndexConvention.cs" />
     <Compile Include="Conventions\IIndexManyToManyConvention.cs" />
     <Compile Include="Conventions\Inspections\AnyInspector.cs" />
+    <Compile Include="Conventions\Inspections\ArrayInspector.cs" />
+    <Compile Include="Conventions\Inspections\BagInspector.cs" />
     <Compile Include="Conventions\Inspections\CacheInspector.cs" />
     <Compile Include="Conventions\Inspections\CamelCasePrefix.cs" />
     <Compile Include="Conventions\Inspections\Cascade.cs" />
@@ -112,6 +114,10 @@
     <Compile Include="Conventions\Inspections\ComponentInspector.cs" />
     <Compile Include="Conventions\Inspections\CompositeElementInspector.cs" />
     <Compile Include="Conventions\Inspections\CompositeIdentityInspector.cs" />
+    <Compile Include="Conventions\Inspections\IArrayInspector.cs" />
+    <Compile Include="Conventions\Inspections\IBagInspector.cs" />
+    <Compile Include="Conventions\Inspections\IListInspector.cs" />
+    <Compile Include="Conventions\Inspections\IMapInspector.cs" />
     <Compile Include="Conventions\Inspections\IndexManyToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\DiscriminatorInspector.cs" />
     <Compile Include="Conventions\Inspections\DynamicComponentInspector.cs" />
@@ -143,6 +149,7 @@
     <Compile Include="Conventions\Inspections\IOneToManyCollectionInspector.cs" />
     <Compile Include="Conventions\Inspections\IOneToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\IParentInspector.cs" />
+    <Compile Include="Conventions\Inspections\ISetInspector.cs" />
     <Compile Include="Conventions\Inspections\ISubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\ISubclassInspectorBase.cs" />
     <Compile Include="Conventions\Inspections\IVersionInspector.cs" />
@@ -150,8 +157,10 @@
     <Compile Include="Conventions\Inspections\JoinInspector.cs" />
     <Compile Include="Conventions\Inspections\KeyManyToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\KeyPropertyInspector.cs" />
+    <Compile Include="Conventions\Inspections\ListInspector.cs" />
     <Compile Include="Conventions\Inspections\LowerCasePrefix.cs" />
     <Compile Include="Conventions\Inspections\ManyToManyInspector.cs" />
+    <Compile Include="Conventions\Inspections\MapInspector.cs" />
     <Compile Include="Conventions\Inspections\MetaValueInspector.cs" />
     <Compile Include="Conventions\Inspections\NotFound.cs" />
     <Compile Include="Conventions\Inspections\OnDelete.cs" />
@@ -162,6 +171,7 @@
     <Compile Include="Conventions\Inspections\PascalCasePrefix.cs" />
     <Compile Include="Conventions\Inspections\Polymorphism.cs" />
     <Compile Include="Conventions\Inspections\Prefix.cs" />
+    <Compile Include="Conventions\Inspections\SetInspector.cs" />
     <Compile Include="Conventions\Inspections\SubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\VersionInspector.cs" />
     <Compile Include="Conventions\Instances\AccessInstance.cs" />
