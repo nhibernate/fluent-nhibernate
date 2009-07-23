@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
@@ -6,6 +7,12 @@ namespace FluentNHibernate.Mapping
     public class IndexManyToManyPart
     {
         private readonly IndexManyToManyMapping mapping = new IndexManyToManyMapping();
+        private readonly Type entity;
+
+        public IndexManyToManyPart(Type entity)
+        {
+            this.entity = entity;
+        }
 
         public IndexManyToManyPart Column(string indexColumnName)
         {
@@ -21,6 +28,7 @@ namespace FluentNHibernate.Mapping
 
         public IndexManyToManyMapping GetIndexMapping()
         {
+            mapping.ContainingEntityType = entity;
             return mapping;
         }
     }

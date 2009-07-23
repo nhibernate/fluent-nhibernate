@@ -105,7 +105,7 @@ namespace FluentNHibernate.Mapping
 
         public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn, Action<IndexManyToManyPart> customIndexMapping)
         {
-            manyToManyIndex = new IndexManyToManyPart();
+            manyToManyIndex = new IndexManyToManyPart(typeof(ManyToManyPart<TChild>));
             manyToManyIndex.Column(indexColumn);
             manyToManyIndex.Type<TIndex>();
 

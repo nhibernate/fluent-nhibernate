@@ -134,6 +134,22 @@ namespace FluentNHibernate.Conventions
                 new DynamicComponentInstance(componentMapping));
         }
 
+        public override void ProcessIndex(IndexMapping indexMapping)
+        {
+            var conventions = finder.Find<IIndexConvention>();
+
+            Apply<IIndexInspector, IIndexInstance>(conventions,
+                new IndexInstance(indexMapping));
+        }
+
+        public override void ProcessIndex(IndexManyToManyMapping indexMapping)
+        {
+            var conventions = finder.Find<IIndexManyToManyConvention>();
+
+            Apply<IIndexManyToManyInspector, IIndexManyToManyInstance>(conventions,
+                new IndexManyToManyInstance(indexMapping));
+        }
+
         private void Apply<TInspector, TInstance>(IEnumerable conventions, TInstance instance)
             where TInspector : IInspector
             where TInstance : TInspector

@@ -101,6 +101,8 @@
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltVersionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltDynamicComponentConvention.cs" />
+    <Compile Include="Conventions\IIndexConvention.cs" />
+    <Compile Include="Conventions\IIndexManyToManyConvention.cs" />
     <Compile Include="Conventions\Inspections\AnyInspector.cs" />
     <Compile Include="Conventions\Inspections\CacheInspector.cs" />
     <Compile Include="Conventions\Inspections\CamelCasePrefix.cs" />
@@ -110,6 +112,7 @@
     <Compile Include="Conventions\Inspections\ComponentInspector.cs" />
     <Compile Include="Conventions\Inspections\CompositeElementInspector.cs" />
     <Compile Include="Conventions\Inspections\CompositeIdentityInspector.cs" />
+    <Compile Include="Conventions\Inspections\IndexManyToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\DiscriminatorInspector.cs" />
     <Compile Include="Conventions\Inspections\DynamicComponentInspector.cs" />
     <Compile Include="Conventions\Inspections\ElementInspector.cs" />
@@ -127,6 +130,8 @@
     <Compile Include="Conventions\Inspections\IGeneratorInspector.cs" />
     <Compile Include="Conventions\Inspections\IIdentityInspectorBase.cs" />
     <Compile Include="Conventions\Inspections\IIndexInspector.cs" />
+    <Compile Include="Conventions\Inspections\IIndexInspectorBase.cs" />
+    <Compile Include="Conventions\Inspections\IIndexManyToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\IJoinedSubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\IJoinInspector.cs" />
     <Compile Include="Conventions\Inspections\IKeyManyToOneInspector.cs" />
@@ -176,6 +181,7 @@
     <Compile Include="Conventions\Instances\IGeneratedInstance.cs" />
     <Compile Include="Conventions\Instances\IGeneratorInstance.cs" />
     <Compile Include="Conventions\Instances\IIndexInstance.cs" />
+    <Compile Include="Conventions\Instances\IIndexManyToManyInstance.cs" />
     <Compile Include="Conventions\Instances\IJoinedSubclassInstance.cs" />
     <Compile Include="Conventions\Instances\IJoinInstance.cs" />
     <Compile Include="Conventions\Instances\IManyToManyInstance.cs" />
@@ -187,6 +193,7 @@
     <Compile Include="Conventions\Instances\IManyToOneInstance.cs" />
     <Compile Include="Conventions\Instances\IIdentityInstance.cs" />
     <Compile Include="Conventions\Instances\IndexInstance.cs" />
+    <Compile Include="Conventions\Instances\IndexManyToManyInstance.cs" />
     <Compile Include="Conventions\Instances\INotFoundInstance.cs" />
     <Compile Include="Conventions\Instances\IOneToOneInstance.cs" />
     <Compile Include="Conventions\Instances\IOptimisticLockInstance.cs" />

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentNHibernate.MappingModel;
+﻿using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public interface IIndexInspector : IInspector
+    public interface IIndexInspector : IIndexInspectorBase
     {
         TypeReference Type { get; }
-        IEnumerable<IColumnInspector> Columns { get; }
     }
 }
