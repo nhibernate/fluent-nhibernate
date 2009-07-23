@@ -10,13 +10,24 @@ namespace FluentNHibernate.Cfg.Db
             Driver<OracleClientDriver>();
         }
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OracleClientConfiguration"/> class using the
-        /// MS Oracle Client (System.Data.OracleClient) library.
+        /// MS Oracle Client (System.Data.OracleClient) library specifying the Oracle 9i dialect.
         /// </summary>
         public static OracleClientConfiguration Oracle9
         {
             get { return new OracleClientConfiguration().Dialect<Oracle9iDialect>(); }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OracleClientConfiguration"/> class using the
+        /// MS Oracle Client (System.Data.OracleClient) library specifying the Oracle 10g dialect.
+        /// This allows for ANSI join syntax.
+        /// </summary>
+        public static OracleClientConfiguration Oracle10
+        {
+            get { return new OracleClientConfiguration().Dialect<Oracle10gDialect>(); }
         }
     }
 }
