@@ -150,6 +150,46 @@ namespace FluentNHibernate.Conventions
                 new IndexManyToManyInstance(indexMapping));
         }
 
+        public override void ProcessArray(ArrayMapping mapping)
+        {
+            var conventions = finder.Find<IArrayConvention>();
+
+            Apply<IArrayInspector, IArrayInstance>(conventions,
+                new ArrayInstance(mapping));
+        }
+
+        public override void ProcessBag(BagMapping bagMapping)
+        {
+            var conventions = finder.Find<IBagConvention>();
+
+            Apply<IBagInspector, IBagInstance>(conventions,
+                new BagInstance(bagMapping));
+        }
+
+        public override void ProcessList(ListMapping listMapping)
+        {
+            var conventions = finder.Find<IListConvention>();
+
+            Apply<IListInspector, IListInstance>(conventions,
+                new ListInstance(listMapping));
+        }
+
+        public override void ProcessMap(MapMapping mapping)
+        {
+            var conventions = finder.Find<IMapConvention>();
+
+            Apply<IMapInspector, IMapInstance>(conventions,
+                new MapInstance(mapping));
+        }
+
+        public override void ProcessSet(SetMapping setMapping)
+        {
+            var conventions = finder.Find<ISetConvention>();
+
+            Apply<ISetInspector, ISetInstance>(conventions,
+                new SetInstance(setMapping));
+        }
+
         private void Apply<TInspector, TInstance>(IEnumerable conventions, TInstance instance)
             where TInspector : IInspector
             where TInstance : TInspector

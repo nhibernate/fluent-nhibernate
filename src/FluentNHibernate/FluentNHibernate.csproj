@@ -101,8 +101,12 @@
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltVersionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltDynamicComponentConvention.cs" />
+    <Compile Include="Conventions\IArrayConvention.cs" />
+    <Compile Include="Conventions\IBagConvention.cs" />
     <Compile Include="Conventions\IIndexConvention.cs" />
     <Compile Include="Conventions\IIndexManyToManyConvention.cs" />
+    <Compile Include="Conventions\IListConvention.cs" />
+    <Compile Include="Conventions\IMapConvention.cs" />
     <Compile Include="Conventions\Inspections\AnyInspector.cs" />
     <Compile Include="Conventions\Inspections\ArrayInspector.cs" />
     <Compile Include="Conventions\Inspections\BagInspector.cs" />
@@ -275,6 +279,7 @@
     <Compile Include="Conventions\Instances\SetInstance.cs" />
     <Compile Include="Conventions\Instances\SubclassInstance.cs" />
     <Compile Include="Conventions\Instances\VersionInstance.cs" />
+    <Compile Include="Conventions\ISetConvention.cs" />
     <Compile Include="Conventions\IUserTypeConvention.cs" />
     <Compile Include="SeparateSubclassVisitor.cs" />
     <Compile Include="MappingModel\Collections\IIndexedCollectionMapping.cs" />
