@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace FluentNHibernate.Testing.ConventionsTests.Inspection
 {
     [TestFixture, Category("Inspection DSL")]
-    public class IndexManyToManyInspectorMapsToIndexMapping
+    public class IndexManyToManyInspectorMapsToIndexManyToManyMapping
     {
         private IndexManyToManyMapping mapping;
         private IIndexManyToManyInspector inspector;

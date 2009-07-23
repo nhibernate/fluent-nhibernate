@@ -46,6 +46,31 @@ namespace FluentNHibernate.Conventions.Helpers
             get { return new HasManyToManyConventionBuilder(); }
         }
 
+        //public static IConventionBuilder<IArrayConvention, IArrayInspector, IArrayInstance> AsArray
+        //{
+        //    get { return new ArrayConventionBuilder(); }
+        //}
+
+        //public static IConventionBuilder<IBagConvention, IBagInspector, IBagInstance> AsBag
+        //{
+        //    get { return new BagConventionBuilder(); }
+        //}
+
+        //public static IConventionBuilder<ISetConvention, ISetInspector, ISetInstance> AsSet
+        //{
+        //    get { return new SetConventionBuilder(); }
+        //}
+
+        //public static IConventionBuilder<IListConvention, IListInspector, IListInstance> AsList
+        //{
+        //    get { return new ListConventionBuilder(); }
+        //}
+
+        //public static IConventionBuilder<IMapConvention, IMapInspector, IMapInstance> AsMap
+        //{
+        //    get { return new MapConventionBuilder(); }
+        //}
+
         //public static IConventionBuilder<IHasOneConvention, IOneToOnePart> HasOne
         //{
         //    get { return new HasOneConventionBuilder(); }
