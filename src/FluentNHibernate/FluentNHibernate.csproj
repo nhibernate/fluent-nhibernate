@@ -127,7 +127,6 @@
     <Compile Include="Conventions\Inspections\IGeneratorInspector.cs" />
     <Compile Include="Conventions\Inspections\IIdentityInspectorBase.cs" />
     <Compile Include="Conventions\Inspections\IIndexInspector.cs" />
-    <Compile Include="Conventions\Inspections\IIndexManyToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\IJoinedSubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\IJoinInspector.cs" />
     <Compile Include="Conventions\Inspections\IKeyManyToOneInspector.cs" />
