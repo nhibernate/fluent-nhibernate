@@ -1,6 +1,4 @@
-using System;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -8,11 +6,13 @@ namespace FluentNHibernate.Conventions.Instances
     public class OneToManyCollectionInstance : CollectionInstance, IOneToManyCollectionInstance
     {
         private new bool nextBool;
+        private readonly ICollectionMapping mapping;
 
         public OneToManyCollectionInstance(ICollectionMapping mapping)
             : base(mapping)
         {
             nextBool = true;
+            this.mapping = mapping;
         }
 
         IOneToManyInspector IOneToManyCollectionInspector.Relationship

@@ -175,6 +175,8 @@
     <Compile Include="Conventions\Inspections\SubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\VersionInspector.cs" />
     <Compile Include="Conventions\Instances\AccessInstance.cs" />
+    <Compile Include="Conventions\Instances\ArrayInstance.cs" />
+    <Compile Include="Conventions\Instances\BagInstance.cs" />
     <Compile Include="Conventions\Instances\CascadeInstance.cs" />
     <Compile Include="Conventions\Instances\CollectionCascadeInstance.cs" />
     <Compile Include="Conventions\Instances\ComponentInstance.cs" />
@@ -222,7 +224,9 @@
     <Compile Include="Conventions\Instances\ISubclassInstance.cs" />
     <Compile Include="Conventions\Instances\IVersionInstance.cs" />
     <Compile Include="Conventions\Instances\JoinedSubclassInstance.cs" />
+    <Compile Include="Conventions\Instances\ListInstance.cs" />
     <Compile Include="Conventions\Instances\ManyToManyCollectionInstance.cs" />
+    <Compile Include="Conventions\Instances\MapInstance.cs" />
     <Compile Include="Conventions\Instances\NotFoundInstance.cs" />
     <Compile Include="Conventions\Instances\OneToManyCollectionInstance.cs" />
     <Compile Include="Conventions\Instances\OneToOneInstance.cs" />
@@ -268,6 +272,7 @@
     <Compile Include="Conventions\Inspections\IManyToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\IOneToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\IRelationshipInspector.cs" />
+    <Compile Include="Conventions\Instances\SetInstance.cs" />
     <Compile Include="Conventions\Instances\SubclassInstance.cs" />
     <Compile Include="Conventions\Instances\VersionInstance.cs" />
     <Compile Include="Conventions\IUserTypeConvention.cs" />
