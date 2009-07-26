@@ -69,6 +69,21 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
             return this;
         }
 
+        public IAcceptanceCriteria<TInspector> Any(params Action<IAcceptanceCriteria<TInspector>>[] criteriaBuilders)
+        {
+            var tempCriteria = new ConcreteAcceptanceCriteria<TInspector>();
+            foreach (var builder in criteriaBuilders)
+                builder(tempCriteria);
+
+            expectations.Add(new AnyExpectation<TInspector>(tempCriteria.Expectations));
+            return this;
+        }
+
+        public IAcceptanceCriteria<TInspector> Either(Action<IAcceptanceCriteria<TInspector>> criteriaBuilderA, Action<IAcceptanceCriteria<TInspector>> criteriaBuilderB)
+        {
+            return Any(criteriaBuilderA, criteriaBuilderB);
+        }
+
         public IEnumerable<IExpectation> Expectations
         {
             get { return expectations; }

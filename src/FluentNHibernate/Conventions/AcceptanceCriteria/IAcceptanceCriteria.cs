@@ -24,6 +24,9 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
         IAcceptanceCriteria<TInspector> Expect<TCollectionItem>(Expression<Func<TInspector, IEnumerable<TCollectionItem>>> property, ICollectionAcceptanceCriterion<TCollectionItem> value)
             where TCollectionItem : IInspector;
 
+        IAcceptanceCriteria<TInspector> Any(params Action<IAcceptanceCriteria<TInspector>>[] criteriaBuilders);
+        IAcceptanceCriteria<TInspector> Either(Action<IAcceptanceCriteria<TInspector>> criteriaBuilderA, Action<IAcceptanceCriteria<TInspector>> criteriaBuilderB);
+
         IEnumerable<IExpectation> Expectations { get; }
         bool Matches(IInspector inspector);
     }
