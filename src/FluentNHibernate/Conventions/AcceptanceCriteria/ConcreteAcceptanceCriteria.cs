@@ -69,19 +69,33 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
             return this;
         }
 
-        public IAcceptanceCriteria<TInspector> Any(params Action<IAcceptanceCriteria<TInspector>>[] criteriaBuilders)
+        public IAcceptanceCriteria<TInspector> Any(params Action<IAcceptanceCriteria<TInspector>>[] criteriaAlterations)
         {
-            var tempCriteria = new ConcreteAcceptanceCriteria<TInspector>();
-            foreach (var builder in criteriaBuilders)
-                builder(tempCriteria);
+            var subCriteria = new List<IAcceptanceCriteria<TInspector>>();
+            foreach (var alteration in criteriaAlterations)
+            {
+                var tempCriteria = new ConcreteAcceptanceCriteria<TInspector>();
+                alteration(tempCriteria);
+                subCriteria.Add(tempCriteria);
+            }
+            
+            return Any(subCriteria.ToArray());
+        }
 
-            expectations.Add(new AnyExpectation<TInspector>(tempCriteria.Expectations));
+        public IAcceptanceCriteria<TInspector> Any(params IAcceptanceCriteria<TInspector>[] subCriteria)
+        {
+            expectations.Add(new AnyExpectation<TInspector>(subCriteria));
             return this;
         }
 
-        public IAcceptanceCriteria<TInspector> Either(Action<IAcceptanceCriteria<TInspector>> criteriaBuilderA, Action<IAcceptanceCriteria<TInspector>> criteriaBuilderB)
+        public IAcceptanceCriteria<TInspector> Either(Action<IAcceptanceCriteria<TInspector>> criteriaAlterationA, Action<IAcceptanceCriteria<TInspector>> criteriaAlterationB)
         {
-            return Any(criteriaBuilderA, criteriaBuilderB);
+            return Any(criteriaAlterationA, criteriaAlterationB);
+        }
+
+        public IAcceptanceCriteria<TInspector> Either(IAcceptanceCriteria<TInspector> subCriteriaA, IAcceptanceCriteria<TInspector> subCriteriaB)
+        {
+            return Any(subCriteriaA, subCriteriaB);
         }
 
         public IEnumerable<IExpectation> Expectations

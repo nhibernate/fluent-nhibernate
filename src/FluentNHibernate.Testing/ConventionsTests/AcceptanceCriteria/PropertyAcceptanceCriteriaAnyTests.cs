@@ -61,6 +61,22 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         }
 
         [Test]
+        public void CanPassSubCriteriaToAny()
+        {
+            var subCriteria1 = new ConcreteAcceptanceCriteria<IPropertyInspector>();
+            subCriteria1.Expect(x => x.Name, Is.Set);
+
+            var subCriteria2 = new ConcreteAcceptanceCriteria<IPropertyInspector>();
+            subCriteria2.Expect(x => x.Type, Is.Set);
+
+            acceptance.Any(subCriteria1, subCriteria2);
+
+            acceptance
+                .Matches(new PropertyInspector(new PropertyMapping { Name = "Property1"}))
+                .ShouldBeTrue();
+        }
+
+        [Test]
         public void EitherIsAnyWithTwoParameters()
         {
             acceptance
@@ -72,5 +88,20 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
                .ShouldBeTrue();
         }
 
+        [Test]
+        public void CanPassSubCriteriaToEither()
+        {
+            var subCriteria1 = new ConcreteAcceptanceCriteria<IPropertyInspector>();
+            subCriteria1.Expect(x => x.Name, Is.Set);
+
+            var subCriteria2 = new ConcreteAcceptanceCriteria<IPropertyInspector>();
+            subCriteria2.Expect(x => x.Type, Is.Set);
+
+            acceptance.Either(subCriteria1, subCriteria2);
+
+            acceptance
+                .Matches(new PropertyInspector(new PropertyMapping { Name = "Property1" }))
+                .ShouldBeTrue();
+        }
     }
 }

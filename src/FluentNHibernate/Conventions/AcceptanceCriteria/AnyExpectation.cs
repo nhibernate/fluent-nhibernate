@@ -9,16 +9,16 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
     public class AnyExpectation<TInspector> : IExpectation
         where TInspector : IInspector
     {
-        private readonly IList<IExpectation> expectations;
+        private readonly IList<IAcceptanceCriteria<TInspector>> subCriteria;
 
-        public AnyExpectation(IEnumerable<IExpectation> expectations)
+        public AnyExpectation(IEnumerable<IAcceptanceCriteria<TInspector>> subCriteria)
         {
-            this.expectations = new List<IExpectation>(expectations);
+            this.subCriteria = new List<IAcceptanceCriteria<TInspector>>(subCriteria);
         }
 
         public bool Matches(IInspector inspector)
         {
-            return expectations.Any(e => e.Matches(inspector));
+            return subCriteria.Any(e => e.Matches(inspector));
         }
 
         bool IExpectation.Matches(IInspector inspector)
