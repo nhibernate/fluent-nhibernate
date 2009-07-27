@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using FluentNHibernate.Conventions;
 
 namespace FluentNHibernate.AutoMap
@@ -6,7 +8,7 @@ namespace FluentNHibernate.AutoMap
     {
         public PrivateAutoPersistenceModel()
         {
-            autoMapper = new PrivateAutoMapper(Expressions, new DefaultConventionFinder());
+            autoMapper = new PrivateAutoMapper(Expressions, new DefaultConventionFinder(), inlineOverrides);
         }
     }
 }

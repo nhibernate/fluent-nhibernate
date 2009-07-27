@@ -10,8 +10,8 @@ namespace FluentNHibernate.AutoMap
     {
         private readonly AutoMappingExpressions localExpressions;
 
-        internal PrivateAutoMapper(AutoMappingExpressions expressions, IConventionFinder conventionFinder)
-            : base(expressions, conventionFinder)
+        internal PrivateAutoMapper(AutoMappingExpressions expressions, IConventionFinder conventionFinder, IDictionary<Type, Action<object>> inlineOverrides)
+            : base(expressions, conventionFinder, inlineOverrides)
         {
             localExpressions = expressions;
         }

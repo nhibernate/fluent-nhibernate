@@ -11,27 +11,29 @@ namespace FluentNHibernate.AutoMap
 {
     public class AutoMapper
     {
-        protected readonly List<IAutoMapper> mappingRules;
-        protected List<AutoMapType> mappingTypes;
-        protected AutoMappingExpressions expressions;
+        private readonly List<IAutoMapper> mappingRules;
+        private List<AutoMapType> mappingTypes;
+        private readonly AutoMappingExpressions expressions;
+        private readonly IDictionary<Type, Action<object>> inlineOverrides;
 
-        public AutoMapper(AutoMappingExpressions expressions, IConventionFinder conventionFinder)
+        public AutoMapper(AutoMappingExpressions expressions, IConventionFinder conventionFinder, IDictionary<Type, Action<object>> inlineOverrides)
         {
             this.expressions = expressions;
+            this.inlineOverrides = inlineOverrides;
 
             mappingRules = new List<IAutoMapper>
             {
                 new AutoMapIdentity(expressions), 
                 new AutoMapVersion(), 
-                new AutoMapComponent(expressions),
-                new AutoMapProperty(conventionFinder),
+                new AutoMapComponent(expressions, this),
+                new AutoMapProperty(conventionFinder, expressions),
                 new AutoMapManyToMany(expressions),
                 new AutoMapManyToOne(),
-                new AutoMapOneToMany(),
+                new AutoMapOneToMany(expressions),
             };
         }
 
-        private void ApplyOverrides(IDictionary<Type, Action<object>> inlineOverrides, Type classType, IList<string> mappedProperties, ClassMappingBase mapping)
+        private void ApplyOverrides(Type classType, IList<string> mappedProperties, ClassMappingBase mapping)
         {
             if (inlineOverrides.ContainsKey(classType))
             {
@@ -43,11 +45,11 @@ namespace FluentNHibernate.AutoMap
             }
         }
 
-        public ClassMappingBase MergeMap(Type classType, ClassMappingBase mapping, IDictionary<Type, Action<object>> inlineOverrides, IList<string> mappedProperties)
+        public ClassMappingBase MergeMap(Type classType, ClassMappingBase mapping, IList<string> mappedProperties)
         {
             // map class first, then subclasses - this way subclasses can inspect the class model
             // to see which properties have already been mapped
-            ApplyOverrides(inlineOverrides, classType, mappedProperties, mapping);
+            ApplyOverrides(classType, mappedProperties, mapping);
 
             MapEverythingInClass(mapping, classType, mappedProperties);
 
@@ -103,14 +105,14 @@ namespace FluentNHibernate.AutoMap
 
                 mapping.AddSubclass(subclassMapping);
 
-                MergeMap(inheritedClass.Type, (ClassMappingBase)subclassMapping, inlineOverrides, mappedProperties);
+                MergeMap(inheritedClass.Type, (ClassMappingBase)subclassMapping, mappedProperties);
             }
         }
 
         private void MapSubclass(Type classType, IDictionary<Type, Action<object>> inlineOverrides, IList<string> mappedProperties, ISubclassMapping subclass, AutoMapType inheritedClass)
         {
             subclass.Name = inheritedClass.Type.AssemblyQualifiedName;
-            ApplyOverrides(inlineOverrides, classType, mappedProperties, (ClassMappingBase)subclass);
+            ApplyOverrides(classType, mappedProperties, (ClassMappingBase)subclass);
             MapEverythingInClass((ClassMappingBase)subclass, inheritedClass.Type, mappedProperties);
             inheritedClass.IsMapped = true;
         }
@@ -133,13 +135,7 @@ namespace FluentNHibernate.AutoMap
                     {
                         if (mappedProperties.Count(p => p == property.Name) == 0)
                         {
-                            if (mapping is ClassMapping)
-                                rule.Map((ClassMapping)mapping, property);
-                            else if (mapping is SubclassMapping)
-                                rule.Map((SubclassMapping)mapping, property);
-                            else if (mapping is JoinedSubclassMapping)
-                                rule.Map((JoinedSubclassMapping)mapping, property);
-
+                            rule.Map(mapping, property);
                             mappedProperties.Add(property.Name);
 
                             break;
@@ -154,7 +150,7 @@ namespace FluentNHibernate.AutoMap
             var classMap = new ClassMapping(classType);
             classMap.SetDefaultValue(x => x.Name, classType.AssemblyQualifiedName);
             mappingTypes = types;
-            return (ClassMapping)MergeMap(classType, classMap, overrides, new List<string>());
+            return (ClassMapping)MergeMap(classType, classMap, new List<string>());
         }
     }
 }

@@ -21,19 +21,7 @@ namespace FluentNHibernate.AutoMap
             return false;
         }
 
-        public void Map(ClassMapping classMap, PropertyInfo property)
-        {
-            var manyToOne = CreateMapping(property);
-            classMap.AddReference(manyToOne);
-        }
-
-        public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
-        {
-            var manyToOne = CreateMapping(property);
-            classMap.AddReference(manyToOne);
-        }
-
-        public void Map(SubclassMapping classMap, PropertyInfo property)
+        public void Map(ClassMappingBase classMap, PropertyInfo property)
         {
             var manyToOne = CreateMapping(property);
             classMap.AddReference(manyToOne);

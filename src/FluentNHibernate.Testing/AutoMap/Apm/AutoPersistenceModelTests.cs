@@ -926,6 +926,47 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .HasAttribute("table", "test-table");
         }
 
+        [Test]
+        public void ShouldBeAbleToIgnoreComponentProperties()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Setup(s => s.IsComponentType = type => type == typeof(ExampleParentClass))
+                .ForTypesThatDeriveFrom<ExampleParentClass>(t => t.IgnoreProperty(x => x.ExampleParentClassId));
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/component/property[@name='ExampleParentClassId']").DoesntExist();
+        }
+
+        [Test]
+        public void ShouldBeAbleToMapComponentHasMany()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Setup(s => s.IsComponentType = type => type == typeof(ExampleParentClass));
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/component/bag[@name='Examples']").Exists();
+        }
+
+        [Test]
+        public void ComponentHasManyShouldHavePrefixedKeyColumn()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Setup(s =>
+                {
+                    s.IsComponentType = type => type == typeof(ExampleParentClass);
+                    s.GetComponentColumnPrefix = prop => prop.Name + "_";
+                });
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/component/bag[@name='Examples']/key/column").HasAttribute("name", "Parent_ExampleParentClass_Id");
+        }
+
         private class JoinedSubclassConvention : IJoinedSubclassConvention
         {
             public void Apply(IJoinedSubclassInstance instance)

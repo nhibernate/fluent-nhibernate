@@ -74,29 +74,7 @@ namespace FluentNHibernate.AutoMap
             return mapping;
         }
 
-        public void Map(ClassMapping classMap, PropertyInfo property)
-        {
-            var inverseProperty = GetInverseProperty(property);
-            var parentSide = conventions.GetParentSideForManyToMany(property.DeclaringType, inverseProperty.DeclaringType);
-            var mapping = GetCollection(property);
-
-            ConfigureModel(property, mapping, classMap, parentSide);
-
-            classMap.AddCollection(mapping);
-        }
-
-        public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
-        {
-            var inverseProperty = GetInverseProperty(property);
-            var parentSide = conventions.GetParentSideForManyToMany(property.DeclaringType, inverseProperty.DeclaringType);
-            var mapping = GetCollection(property);
-
-            ConfigureModel(property, mapping, classMap, parentSide);
-
-            classMap.AddCollection(mapping);
-        }
-
-        public void Map(SubclassMapping classMap, PropertyInfo property)
+        public void Map(ClassMappingBase classMap, PropertyInfo property)
         {
             var inverseProperty = GetInverseProperty(property);
             var parentSide = conventions.GetParentSideForManyToMany(property.DeclaringType, inverseProperty.DeclaringType);

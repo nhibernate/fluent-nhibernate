@@ -16,22 +16,16 @@ namespace FluentNHibernate.AutoMap
             return findPropertyconvention.Invoke(property);
         }
 
-        public void Map(ClassMapping classMap, PropertyInfo property)
+        public void Map(ClassMappingBase classMap, PropertyInfo property)
         {
-            if (property.DeclaringType != classMap.Type)
+            if (property.DeclaringType != classMap.Type || !(classMap is ClassMapping))
                 return;
 
-            classMap.Version = new VersionMapping();
-            classMap.Version.Name = property.Name;
-            classMap.Version.Column = property.Name;
-        }
-
-        public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
-        {
-        }
-
-        public void Map(SubclassMapping classMap, PropertyInfo property)
-        {
+            ((ClassMapping)classMap).Version = new VersionMapping
+            {
+                Name = property.Name,
+                Column = property.Name
+            };
         }
     }
 }

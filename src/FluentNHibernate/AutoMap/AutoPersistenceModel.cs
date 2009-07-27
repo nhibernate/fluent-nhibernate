@@ -162,7 +162,7 @@ namespace FluentNHibernate.AutoMap
         private void MergeMap(Type type, IMappingProvider mapping)
         {
             Type typeToMap = GetTypeToMap(type);
-            autoMapper.MergeMap(typeToMap, mapping.GetClassMapping(), inlineOverrides, new List<string>());
+            autoMapper.MergeMap(typeToMap, mapping.GetClassMapping(), new List<string>());
         }
 
         #endregion
@@ -170,7 +170,7 @@ namespace FluentNHibernate.AutoMap
         public AutoPersistenceModel()
         {
             Expressions = new AutoMappingExpressions();
-            autoMapper = new AutoMapper(Expressions, ConventionFinder);
+            autoMapper = new AutoMapper(Expressions, ConventionFinder, inlineOverrides);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace FluentNHibernate.AutoMap
         {
             Expressions = new AutoMappingExpressions();
             AddMappingsFromAssembly(mapAssembly);
-            autoMapper = new AutoMapper(Expressions, ConventionFinder);
+            autoMapper = new AutoMapper(Expressions, ConventionFinder, inlineOverrides);
         }
 
         public AutoPersistenceModel(AutoMapper customAutomapper)
@@ -260,7 +260,7 @@ namespace FluentNHibernate.AutoMap
             return "AutoMappings.hbm.xml";
         }
 
-        private IDictionary<Type, Action<object>> inlineOverrides = new Dictionary<Type, Action<object>>();
+        protected IDictionary<Type, Action<object>> inlineOverrides = new Dictionary<Type, Action<object>>();
     }
 
     public class AutoMapType

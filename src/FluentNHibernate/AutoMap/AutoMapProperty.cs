@@ -12,10 +12,12 @@ namespace FluentNHibernate.AutoMap
     public class AutoMapProperty : IAutoMapper
     {
         private readonly IConventionFinder conventionFinder;
+        private readonly AutoMappingExpressions expressions;
 
-        public AutoMapProperty(IConventionFinder conventionFinder)
+        public AutoMapProperty(IConventionFinder conventionFinder, AutoMappingExpressions expressions)
         {
             this.conventionFinder = conventionFinder;
+            this.expressions = expressions;
         }
 
         public bool MapsProperty(PropertyInfo property)
@@ -66,22 +68,12 @@ namespace FluentNHibernate.AutoMap
                    || property.PropertyType.FullName == "System.Drawing.Bitmap";
         }
 
-        public void Map(ClassMapping classMap, PropertyInfo property)
+        public void Map(ClassMappingBase classMap, PropertyInfo property)
         {
-            classMap.AddProperty(GetPropertyMapping(classMap.Type, property));
+            classMap.AddProperty(GetPropertyMapping(classMap.Type, property, classMap as ComponentMapping));
         }
 
-        public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
-        {
-            classMap.AddProperty(GetPropertyMapping(classMap.Type, property));
-        }
-
-        public void Map(SubclassMapping classMap, PropertyInfo property)
-        {
-            classMap.AddProperty(GetPropertyMapping(classMap.Type, property));
-        }
-
-        private PropertyMapping GetPropertyMapping(Type type, PropertyInfo property)
+        private PropertyMapping GetPropertyMapping(Type type, PropertyInfo property, ComponentMapping component)
         {
             var mapping = new PropertyMapping
             {
@@ -89,7 +81,12 @@ namespace FluentNHibernate.AutoMap
                 PropertyInfo = property
             };
 
-            mapping.AddDefaultColumn(new ColumnMapping { Name = mapping.PropertyInfo.Name });
+            var columnName = property.Name;
+            
+            if (component != null)
+                columnName = expressions.GetComponentColumnPrefix(component.PropertyInfo) + columnName;
+
+            mapping.AddDefaultColumn(new ColumnMapping { Name = columnName });
 
             if (!mapping.IsSpecified(x => x.Name))
                 mapping.Name = mapping.PropertyInfo.Name;

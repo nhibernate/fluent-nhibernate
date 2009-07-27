@@ -19,23 +19,17 @@ namespace FluentNHibernate.AutoMap
             return expressions.FindIdentity(property);
         }
 
-        public void Map(ClassMapping classMap, PropertyInfo property)
+        public void Map(ClassMappingBase classMap, PropertyInfo property)
         {
+            if (!(classMap is ClassMapping)) return;
+
             var idMapping = new IdMapping { ContainingEntityType = classMap.Type };
             idMapping.AddDefaultColumn(new ColumnMapping() { Name = property.Name });
             idMapping.Name = property.Name;
             idMapping.Type = new TypeReference(property.PropertyType);
             idMapping.PropertyInfo = property;
             idMapping.Generator= new GeneratorMapping { Class = "identity", ContainingEntityType = classMap.Type };
-            classMap.Id = idMapping;        
-        }
-
-        public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
-        {
-        }
-
-        public void Map(SubclassMapping classMap, PropertyInfo property)
-        {
+            ((ClassMapping)classMap).Id = idMapping;        
         }
     }
 }

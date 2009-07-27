@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.AutoMap
@@ -8,10 +8,12 @@ namespace FluentNHibernate.AutoMap
     public class AutoMapComponent : IAutoMapper
     {
         private readonly AutoMappingExpressions expressions;
+        private readonly AutoMapper mapper;
 
-        public AutoMapComponent(AutoMappingExpressions expressions)
+        public AutoMapComponent(AutoMappingExpressions expressions, AutoMapper mapper)
         {
             this.expressions = expressions;
+            this.mapper = mapper;
         }
 
         public bool MapsProperty(PropertyInfo property)
@@ -19,58 +21,19 @@ namespace FluentNHibernate.AutoMap
             return expressions.IsComponentType(property.PropertyType);
         }
 
-        public void Map(ClassMapping classMap, PropertyInfo property)
-        {
-            MapComponent(classMap, property);
-        }
-
-        public void Map(JoinedSubclassMapping classMap, PropertyInfo property)
-        {
-            MapComponent(classMap, property);
-        }
-
-        public void Map(SubclassMapping classMap, PropertyInfo property)
-        {
-            MapComponent(classMap, property);
-        }
-
-        private void MapComponent(ClassMappingBase classMapping, PropertyInfo property)
+        public void Map(ClassMappingBase classMap, PropertyInfo property)
         {
             var mapping = new ComponentMapping
             {
                 Name = property.Name,
-                ContainingEntityType = classMapping.Type
+                PropertyInfo = property,
+                ContainingEntityType = classMap.Type,
+                Type = property.PropertyType
             };
 
-            var columnNamePrefix = expressions.GetComponentColumnPrefix(property);
+            mapper.MergeMap(property.PropertyType, mapping, new List<string>());
 
-            foreach (var componentProperty in property.PropertyType.GetProperties())
-            {
-                if (componentProperty.PropertyType.IsEnum || componentProperty.GetIndexParameters().Length != 0) continue;
-
-                mapping.AddProperty(GetPropertyMapping(property.PropertyType, componentProperty, columnNamePrefix));
-            }
-
-            classMapping.AddComponent(mapping);
-        }
-
-        private PropertyMapping GetPropertyMapping(Type type, PropertyInfo property, string columnNamePrefix)
-        {
-            var mapping = new PropertyMapping
-            {
-                ContainingEntityType = type,
-                PropertyInfo = property
-            };
-
-            mapping.AddColumn(new ColumnMapping { Name = columnNamePrefix + mapping.PropertyInfo.Name });
-
-            if (!mapping.IsSpecified(x => x.Name))
-                mapping.Name = mapping.PropertyInfo.Name;
-
-            if (!mapping.IsSpecified(x => x.Type))
-                mapping.SetDefaultValue(x => x.Type, new TypeReference(mapping.PropertyInfo.PropertyType));
-
-            return mapping;
+            classMap.AddComponent(mapping);
         }
     }
 }
