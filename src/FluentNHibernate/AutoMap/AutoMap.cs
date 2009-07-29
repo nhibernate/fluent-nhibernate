@@ -47,6 +47,15 @@ namespace FluentNHibernate.AutoMap
             return this;
         }
 
+        IPropertyIgnorer IPropertyIgnorer.IgnoreProperties(Func<PropertyInfo, bool> predicate)
+        {
+            typeof(T).GetProperties()
+                .Where(predicate)
+                .Each(x => propertiesMapped.Add(x.Name));
+
+            return this;
+        }
+
         public override IIdentityPart Id(Expression<Func<T, object>> expression)
         {
             propertiesMapped.Add(ReflectionHelper.GetProperty(expression).Name);

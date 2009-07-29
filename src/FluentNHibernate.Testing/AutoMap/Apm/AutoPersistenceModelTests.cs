@@ -603,12 +603,31 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         }
 
         [Test]
-        public void ShouldBeAbleToIgnoreMultiplePropertiesRegardlessOftype()
+        public void ShouldBeAbleToIgnoreMultiplePropertiesRegardlessOfType()
         {
             var autoMapper = AutoPersistenceModel
                 .MapEntitiesFromAssemblyOf<ExampleInheritedClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
                 .ForAllTypes(t => t.IgnoreProperties("Dummy", "Dummy1", "Dummy2"));
+
+            new AutoMappingTester<ClassWithDummyProperty>(autoMapper)
+                .Element("class/property[@name='Dummy']").DoesntExist()
+                .Element("class/property[@name='Dummy1']").DoesntExist()
+                .Element("class/property[@name='Dummy2']").DoesntExist();
+
+            new AutoMappingTester<AnotherClassWithDummyProperty>(autoMapper)
+                .Element("class/property[@name='Dummy']").DoesntExist()
+                .Element("class/property[@name='Dummy1']").DoesntExist()
+                .Element("class/property[@name='Dummy2']").DoesntExist();
+        }
+
+        [Test]
+        public void ShouldBeAbleToIgnoreMultiplePropertiesByDelegateRegardlessOfType()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleInheritedClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForAllTypes(t => t.IgnoreProperties(x => x.Name.Contains("Dummy")));
 
             new AutoMappingTester<ClassWithDummyProperty>(autoMapper)
                 .Element("class/property[@name='Dummy']").DoesntExist()
