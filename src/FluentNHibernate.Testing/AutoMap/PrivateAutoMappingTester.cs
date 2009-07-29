@@ -43,7 +43,7 @@ namespace FluentNHibernate.Testing.AutoMap
             Model<ExampleClass>(p => p.Name.StartsWith("_"));
 
             Test<ExampleClass>(mapping =>
-                Assert.Contains(ReflectionHelper.GetProperty(ExampleClass.PrivateProperties.Property), (ICollection)mapping.PropertiesMapped));
+                Assert.Contains(ReflectionHelper.GetProperty(ExampleClass.PrivateProperties.Property).Name, (ICollection)mapping.PropertiesMapped));
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace FluentNHibernate.Testing.AutoMap
             Model<ExampleParent>(p => p.Name.StartsWith("_"));
 
             Test<ExampleParent>(mapping =>
-                Assert.Contains(ReflectionHelper.GetProperty(ExampleParent.PrivateProperties.Children), (ICollection)mapping.PropertiesMapped));
+                Assert.Contains(ReflectionHelper.GetProperty(ExampleParent.PrivateProperties.Children).Name, (ICollection)mapping.PropertiesMapped));
         }
 
         private void Model<T>(Func<PropertyInfo, bool> convention)

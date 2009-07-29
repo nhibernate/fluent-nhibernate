@@ -29,7 +29,7 @@ namespace FluentNHibernate.AutoMap
             };
         }
 
-        public AutoMap<T> MergeMap<T>(AutoMap<T> map, IDictionary<Type, Action<object>> inlineOverrides)
+        public AutoMap<T> MergeMap<T>(AutoMap<T> map, IEnumerable<InlineOverride> inlineOverrides)
         {
             if (mappingTypes != null)
             {
@@ -66,8 +66,9 @@ namespace FluentNHibernate.AutoMap
                     {
                         var subclass = map.JoinedSubClass(inheritedClass.Type, typeof(T).Name + "_id");
 
-                        if (inlineOverrides.ContainsKey(subclass.EntityType))
-                            inlineOverrides[subclass.EntityType](subclass);
+                        inlineOverrides
+                            .Where(x => x.CanOverride(subclass.EntityType))
+                            .Each(x => x.Apply(subclass));
 
                         var method = GetType().GetMethod("MapEverythingInClass");
                         var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
@@ -79,8 +80,9 @@ namespace FluentNHibernate.AutoMap
                     {
                         var subclass = map.SubClass(inheritedClass.Type, inheritedClass.Type.Name);
 
-                        if (inlineOverrides.ContainsKey(subclass.EntityType))
-                            inlineOverrides[subclass.EntityType](subclass);
+                        inlineOverrides
+                            .Where(x => x.CanOverride(subclass.EntityType))
+                            .Each(x => x.Apply(subclass));
 
                         var method = GetType().GetMethod("MapEverythingInClass");
                         var genericMethod = method.MakeGenericMethod(inheritedClass.Type);
@@ -95,8 +97,9 @@ namespace FluentNHibernate.AutoMap
                 }
             }
 
-            if (inlineOverrides.ContainsKey(typeof(T)))
-                inlineOverrides[typeof(T)](map);
+            inlineOverrides
+                .Where(x => x.CanOverride(typeof(T)))
+                .Each(x => x.Apply(map));
 
             MapEverythingInClass(map);
             
@@ -119,7 +122,7 @@ namespace FluentNHibernate.AutoMap
                 {
                     if (rule.MapsProperty(property))
                     {
-                        if (map.PropertiesMapped.Count(p => p.Name == property.Name) == 0)
+                        if (map.PropertiesMapped.Count(name => name == property.Name) == 0)
                         {
                             rule.Map(map, property);
                             break;
@@ -129,7 +132,7 @@ namespace FluentNHibernate.AutoMap
             }
         }
 
-        public AutoMap<T> Map<T>(List<AutoMapType> types, IDictionary<Type, Action<object>> overrides)
+        public AutoMap<T> Map<T>(List<AutoMapType> types, IEnumerable<InlineOverride> overrides)
         {
             var classMap = (AutoMap<T>)Activator.CreateInstance(typeof(AutoMap<T>));
             mappingTypes = types;

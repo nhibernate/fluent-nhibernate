@@ -83,6 +83,8 @@
     <Compile Include="AutoMap\ExpressionBuilder.cs" />
     <Compile Include="AutoMap\IAutoMapper.cs" />
     <Compile Include="AutoMap\IAutoMappingAlteration.cs" />
+    <Compile Include="AutoMap\InlineOverride.cs" />
+    <Compile Include="AutoMap\IPropertyIgnorer.cs" />
     <Compile Include="AutoMap\ManyToManyAutoMapper.cs" />
     <Compile Include="AutoMap\PrivateAutoMapper.cs" />
     <Compile Include="AutoMap\PrivateAutoPersistenceModel.cs" />

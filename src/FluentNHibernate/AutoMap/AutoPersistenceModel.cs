@@ -18,6 +18,7 @@ namespace FluentNHibernate.AutoMap
         private readonly List<AutoMapType> mappingTypes = new List<AutoMapType>();
         private bool autoMappingsCreated;
         private readonly AutoMappingAlterationCollection alterations = new AutoMappingAlterationCollection();
+        private readonly List<InlineOverride> inlineOverrides = new List<InlineOverride>();
 
         /// <summary>
         /// Specify alterations to be used with this AutoPersisteceModel
@@ -235,12 +236,6 @@ namespace FluentNHibernate.AutoMap
 			return null;
         }
 
-        public void OutputMappings()
-        {
-            //foreach(var map in mappings)
-            //    Console.WriteLine(map);
-        }
-
         public AutoPersistenceModel AddEntityAssembly(Assembly assembly)
         {
             entityAssembly = assembly;
@@ -249,16 +244,25 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel ForTypesThatDeriveFrom<T>(Action<AutoMap<T>> populateMap)
         {
-            inlineOverrides.Add(typeof(T), x =>
+            inlineOverrides.Add(new InlineOverride(typeof(T), x =>
             {
                 if (x is AutoMap<T>)
                     populateMap((AutoMap<T>)x);
-            });
+            }));
 
             return this;
         }
 
-        private IDictionary<Type, Action<object>> inlineOverrides = new Dictionary<Type, Action<object>>();
+        public AutoPersistenceModel ForAllTypes(Action<IPropertyIgnorer> alteration)
+        {
+            inlineOverrides.Add(new InlineOverride(typeof(object), x =>
+            {
+                if (x is IPropertyIgnorer)
+                    alteration((IPropertyIgnorer)x);
+            }));
+
+            return this;
+        }
     }
 
     public class AutoMapType
