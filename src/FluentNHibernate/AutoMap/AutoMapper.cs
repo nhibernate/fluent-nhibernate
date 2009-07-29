@@ -14,9 +14,9 @@ namespace FluentNHibernate.AutoMap
         private readonly List<IAutoMapper> mappingRules;
         private List<AutoMapType> mappingTypes;
         private readonly AutoMappingExpressions expressions;
-        private readonly IDictionary<Type, Action<object>> inlineOverrides;
+        private readonly IEnumerable<InlineOverride> inlineOverrides;
 
-        public AutoMapper(AutoMappingExpressions expressions, IConventionFinder conventionFinder, IDictionary<Type, Action<object>> inlineOverrides)
+        public AutoMapper(AutoMappingExpressions expressions, IConventionFinder conventionFinder, IEnumerable<InlineOverride> inlineOverrides)
         {
             this.expressions = expressions;
             this.inlineOverrides = inlineOverrides;
@@ -35,14 +35,14 @@ namespace FluentNHibernate.AutoMap
 
         private void ApplyOverrides(Type classType, IList<string> mappedProperties, ClassMappingBase mapping)
         {
-            if (inlineOverrides.ContainsKey(classType))
-            {
-                var autoMapType = typeof(AutoMap<>).MakeGenericType(classType);
-                var autoMap = Activator.CreateInstance(autoMapType, mappedProperties);
-                inlineOverrides[classType](autoMap);
+            var autoMapType = typeof(AutoMap<>).MakeGenericType(classType);
+            var autoMap = Activator.CreateInstance(autoMapType, mappedProperties);
 
-                ((IAutoClasslike)autoMap).AlterModel(mapping);
-            }
+            inlineOverrides
+                .Where(x => x.CanOverride(classType))
+                .Each(x => x.Apply(autoMap));
+
+            ((IAutoClasslike)autoMap).AlterModel(mapping);
         }
 
         public ClassMappingBase MergeMap(Type classType, ClassMappingBase mapping, IList<string> mappedProperties)
@@ -54,12 +54,12 @@ namespace FluentNHibernate.AutoMap
             MapEverythingInClass(mapping, classType, mappedProperties);
 
             if (mappingTypes != null)
-                MapInheritanceTree(classType, inlineOverrides, mapping, mappedProperties);
+                MapInheritanceTree(classType, mapping, mappedProperties);
 
             return mapping;
         }
 
-        private void MapInheritanceTree(Type classType, IDictionary<Type, Action<object>> inlineOverrides, ClassMappingBase mapping, IList<string> mappedProperties)
+        private void MapInheritanceTree(Type classType, ClassMappingBase mapping, IList<string> mappedProperties)
         {
             var discriminatorSet = false;
             var isDiscriminated = expressions.IsDiscriminated(classType);
@@ -101,7 +101,7 @@ namespace FluentNHibernate.AutoMap
                 else
                     subclassMapping = new SubclassMapping();
 
-                MapSubclass(classType, inlineOverrides, mappedProperties, subclassMapping, inheritedClass);
+                MapSubclass(classType, mappedProperties, subclassMapping, inheritedClass);
 
                 mapping.AddSubclass(subclassMapping);
 
@@ -109,7 +109,7 @@ namespace FluentNHibernate.AutoMap
             }
         }
 
-        private void MapSubclass(Type classType, IDictionary<Type, Action<object>> inlineOverrides, IList<string> mappedProperties, ISubclassMapping subclass, AutoMapType inheritedClass)
+        private void MapSubclass(Type classType, IList<string> mappedProperties, ISubclassMapping subclass, AutoMapType inheritedClass)
         {
             subclass.Name = inheritedClass.Type.AssemblyQualifiedName;
             ApplyOverrides(classType, mappedProperties, (ClassMappingBase)subclass);
@@ -133,7 +133,7 @@ namespace FluentNHibernate.AutoMap
                 {
                     if (rule.MapsProperty(property))
                     {
-                        if (mappedProperties.Count(p => p == property.Name) == 0)
+                        if (mappedProperties.Count(name => name == property.Name) == 0)
                         {
                             rule.Map(mapping, property);
                             mappedProperties.Add(property.Name);
@@ -145,7 +145,7 @@ namespace FluentNHibernate.AutoMap
             }
         }
 
-        public ClassMapping Map(Type classType, List<AutoMapType> types, IDictionary<Type, Action<object>> overrides)
+        public ClassMapping Map(Type classType, List<AutoMapType> types)
         {
             var classMap = new ClassMapping(classType);
             classMap.SetDefaultValue(x => x.Name, classType.AssemblyQualifiedName);

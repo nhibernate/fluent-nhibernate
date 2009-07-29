@@ -49,6 +49,21 @@ namespace FluentNHibernate.AutoMap.TestFixtures
         public IDictionary DictionaryChild { get; set; }
     }
 
+    public class ClassWithDummyProperty
+    {
+        public virtual int Id { get; set; }
+        public virtual string Dummy { get; set; }
+        public virtual string Dummy1 { get; set; }
+        public virtual string Dummy2 { get; set; }
+    }
+
+    public class AnotherClassWithDummyProperty
+    {
+        public virtual int Id { get; set; }
+        public virtual string Dummy { get; set; }
+        public virtual string Dummy1 { get; set; }
+        public virtual string Dummy2 { get; set; }
+    }
 
     public class ExampleClass
     {

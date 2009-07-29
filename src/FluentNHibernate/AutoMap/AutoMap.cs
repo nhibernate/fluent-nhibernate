@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping;
@@ -9,7 +10,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.AutoMap
 {
-    public class AutoMap<T> : ClassMap<T>, IAutoClasslike
+    public class AutoMap<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
     {
         private readonly IList<string> mappedProperties;
 
@@ -69,6 +70,22 @@ namespace FluentNHibernate.AutoMap
         public void IgnoreProperty(Expression<Func<T, object>> expression)
         {
             mappedProperties.Add(ReflectionHelper.GetProperty(expression).Name);
+        }
+
+        IPropertyIgnorer IPropertyIgnorer.IgnoreProperty(string name)
+        {
+            mappedProperties.Add(name);
+
+            return this;
+        }
+
+        IPropertyIgnorer IPropertyIgnorer.IgnoreProperties(string first, string second, params string[] others)
+        {
+            (others ?? new string[0])
+                .Concat(new[] { first, second })
+                .Each(mappedProperties.Add);
+
+            return this;
         }
 
         public override IdentityPart Id(Expression<Func<T, object>> expression)

@@ -967,6 +967,40 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .Element("class/component/bag[@name='Examples']/key/column").HasAttribute("name", "Parent_ExampleParentClass_Id");
         }
 
+        [Test]
+        public void ShouldBeAbleToIgnorePropertiesRegardlessOfType()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleInheritedClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForAllTypes(t => t.IgnoreProperty("Dummy"));
+
+            new AutoMappingTester<ClassWithDummyProperty>(autoMapper)
+                .Element("class/property[@name='Dummy']").DoesntExist();
+
+            new AutoMappingTester<AnotherClassWithDummyProperty>(autoMapper)
+                .Element("class/property[@name='Dummy']").DoesntExist();
+        }
+
+        [Test]
+        public void ShouldBeAbleToIgnoreMultiplePropertiesRegardlessOftype()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleInheritedClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .ForAllTypes(t => t.IgnoreProperties("Dummy", "Dummy1", "Dummy2"));
+
+            new AutoMappingTester<ClassWithDummyProperty>(autoMapper)
+                .Element("class/property[@name='Dummy']").DoesntExist()
+                .Element("class/property[@name='Dummy1']").DoesntExist()
+                .Element("class/property[@name='Dummy2']").DoesntExist();
+
+            new AutoMappingTester<AnotherClassWithDummyProperty>(autoMapper)
+                .Element("class/property[@name='Dummy']").DoesntExist()
+                .Element("class/property[@name='Dummy1']").DoesntExist()
+                .Element("class/property[@name='Dummy2']").DoesntExist();
+        }
+
         private class JoinedSubclassConvention : IJoinedSubclassConvention
         {
             public void Apply(IJoinedSubclassInstance instance)

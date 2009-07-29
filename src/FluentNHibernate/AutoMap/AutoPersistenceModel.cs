@@ -20,6 +20,7 @@ namespace FluentNHibernate.AutoMap
         private readonly List<AutoMapType> mappingTypes = new List<AutoMapType>();
         private bool autoMappingsCreated;
         private readonly AutoMappingAlterationCollection alterations = new AutoMappingAlterationCollection();
+        protected readonly List<InlineOverride> inlineOverrides = new List<InlineOverride>();
 
         /// <summary>
         /// Specify alterations to be used with this AutoPersisteceModel
@@ -85,6 +86,9 @@ namespace FluentNHibernate.AutoMap
 
         public void CompileMappings()
         {
+            if (autoMappingsCreated)
+                return;
+
             if (assemblyContainingMaps != null)
                 AddMappingsFromAssembly(assemblyContainingMaps);
 
@@ -125,8 +129,7 @@ namespace FluentNHibernate.AutoMap
 
         public override void Configure(NHibernate.Cfg.Configuration configuration)
         {
-            if (!autoMappingsCreated)
-                CompileMappings();
+            CompileMappings();
 
             base.Configure(configuration);
         }
@@ -141,7 +144,7 @@ namespace FluentNHibernate.AutoMap
         private void AddMapping(Type type)
         {
             Type typeToMap = GetTypeToMap(type);
-            var mapping = autoMapper.Map(typeToMap, mappingTypes, inlineOverrides);
+            var mapping = autoMapper.Map(typeToMap, mappingTypes);
 
             Add(new PassThroughMappingProvider(mapping));
         }
@@ -192,7 +195,7 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel AutoMap<T>()
         {
-            Add(new PassThroughMappingProvider(autoMapper.Map(typeof(T), mappingTypes, inlineOverrides)));
+            Add(new PassThroughMappingProvider(autoMapper.Map(typeof(T), mappingTypes)));
             return this;
         }
 
@@ -246,11 +249,22 @@ namespace FluentNHibernate.AutoMap
 
         public AutoPersistenceModel ForTypesThatDeriveFrom<T>(Action<AutoMap<T>> populateMap)
         {
-            inlineOverrides.Add(typeof(T), x =>
+            inlineOverrides.Add(new InlineOverride(typeof(T), x =>
             {
                 if (x is AutoMap<T>)
                     populateMap((AutoMap<T>)x);
-            });
+            }));
+
+            return this;
+        }
+
+        public AutoPersistenceModel ForAllTypes(Action<IPropertyIgnorer> alteration)
+        {
+            inlineOverrides.Add(new InlineOverride(typeof(object), x =>
+            {
+                if (x is IPropertyIgnorer)
+                    alteration((IPropertyIgnorer)x);
+            }));
 
             return this;
         }
@@ -259,8 +273,6 @@ namespace FluentNHibernate.AutoMap
         {
             return "AutoMappings.hbm.xml";
         }
-
-        protected IDictionary<Type, Action<object>> inlineOverrides = new Dictionary<Type, Action<object>>();
     }
 
     public class AutoMapType
