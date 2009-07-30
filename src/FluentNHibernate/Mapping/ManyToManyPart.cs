@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -19,6 +20,7 @@ namespace FluentNHibernate.Mapping
 	    private readonly IList<string> childColumns = new List<string>();
 	    private readonly IList<string> parentColumns = new List<string>();
 	    private readonly Type childType;
+	    private Type valueType;
 	    private bool isTernary;
 
 	    public ManyToManyPart(Type entity, PropertyInfo property)
@@ -96,13 +98,19 @@ namespace FluentNHibernate.Mapping
 
         private void EnsureDictionary()
         {
+            if (!typeof(IDictionary).IsAssignableFrom(childType))
+                throw new ArgumentException(Member.Name + " must be of type IDictionary to be used in a non-generic ternary association. Type was: " + childType);
+        }
+
+        private void EnsureGenericDictionary()
+        {
             if (!(childType.IsGenericType && childType.GetGenericTypeDefinition() == typeof(IDictionary<,>)))
                 throw new ArgumentException(Member.Name + " must be of type IDictionary<> to be used in a ternary assocation. Type was: " + childType);
         }
 
         public ManyToManyPart<TChild> AsTernaryAssociation()
         {
-            EnsureDictionary();
+            EnsureGenericDictionary();
 
             var indexType = typeof(TChild).GetGenericArguments()[0];
             var valueType = typeof(TChild).GetGenericArguments()[1];
@@ -112,15 +120,38 @@ namespace FluentNHibernate.Mapping
 
         public ManyToManyPart<TChild> AsTernaryAssociation(string indexColumn, string valueColumn)
         {
-            EnsureDictionary();
+            EnsureGenericDictionary();
 
             var indexType = typeof(TChild).GetGenericArguments()[0];
+            var valueType = typeof(TChild).GetGenericArguments()[1];
 
             manyToManyIndex = new IndexManyToManyPart();
             manyToManyIndex.Column(indexColumn);
             manyToManyIndex.GetIndexMapping().Class = new TypeReference(indexType);
 
             ChildKeyColumn(valueColumn);
+            this.valueType = valueType;
+
+            isTernary = true;
+
+            return this;
+        }
+
+        public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, Type valueType)
+        {
+            return AsTernaryAssociation(indexType, indexType.Name + "_id", valueType, valueType.Name + "_id");
+        }
+
+        public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, string indexColumn, Type valueType, string valueColumn)
+        {
+            EnsureDictionary();
+
+            manyToManyIndex = new IndexManyToManyPart();
+            manyToManyIndex.Column(indexColumn);
+            manyToManyIndex.GetIndexMapping().Class = new TypeReference(indexType);
+
+            ChildKeyColumn(valueColumn);
+            this.valueType = valueType;
 
             isTernary = true;
 
@@ -145,8 +176,8 @@ namespace FluentNHibernate.Mapping
                 
 	        };
 
-            if (isTernary)
-                mapping.Class = new TypeReference(typeof(TChild).GetGenericArguments()[1]);
+            if (isTernary && valueType != null)
+                mapping.Class = new TypeReference(valueType);
 
 	        return mapping;
 	    }
