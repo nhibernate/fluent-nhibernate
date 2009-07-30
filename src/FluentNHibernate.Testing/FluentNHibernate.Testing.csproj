@@ -118,6 +118,10 @@
     <Compile Include="ConventionsTests\Inspection\CollectionInspectorMapsToBagMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\CompositeElementInspectorMapsToCompositeElementMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ArrayInspectorMapsToArrayMapping.cs" />
+    <Compile Include="ConventionsTests\Inspection\BagInspectorMapsToBagMapping.cs" />
+    <Compile Include="ConventionsTests\Inspection\SetInspectorMapsToSetMapping.cs" />
+    <Compile Include="ConventionsTests\Inspection\MapInspectorMapsToMapMapping.cs" />
+    <Compile Include="ConventionsTests\Inspection\ListInspectorMapsToListMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\IndexManyToManyInspectorMapsToIndexManyToManyMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\IndexInspectorMapsToIndexMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ElementInspectorMapsToElementMapping.cs" />

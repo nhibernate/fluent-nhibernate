@@ -11,18 +11,17 @@ using NUnit.Framework;
 namespace FluentNHibernate.Testing.ConventionsTests.Inspection
 {
     [TestFixture, Category("Inspection DSL")]
-    public class ArrayInspectorMapsToArrayMapping
+    public class MapInspectorMapsToMapMapping
     {
-        private ArrayMapping mapping;
-        private IArrayInspector inspector;
+        private MapMapping mapping;
+        private IMapInspector inspector;
 
         [SetUp]
         public void CreateDsl()
         {
-            mapping = new ArrayMapping();
-            inspector = new ArrayInspector(mapping);
+            mapping = new MapMapping();
+            inspector = new MapInspector(mapping);
         }
-
         [Test]
         public void MapsIndexToInspector()
         {
@@ -60,9 +59,39 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
                 .ShouldBeTrue();
         }
 
+        [Test]
+        public void OrderByIsSet()
+        {
+            mapping.OrderBy = "AField";
+            inspector.IsSet(Prop(x => x.OrderBy))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void OrderByIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.OrderBy))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void SortByIsSet()
+        {
+            mapping.Sort = "AField";
+            inspector.IsSet(Prop(x => x.Sort))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void SortByIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Sort))
+                .ShouldBeFalse();
+        }
+
         #region Helpers
 
-        private PropertyInfo Prop(Expression<Func<IArrayInspector, object>> propertyExpression)
+        private PropertyInfo Prop(Expression<Func<IMapInspector, object>> propertyExpression)
         {
             return ReflectionHelper.GetProperty(propertyExpression);
         }

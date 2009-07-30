@@ -1,4 +1,5 @@
-﻿using FluentNHibernate.MappingModel.Collections;
+﻿using System.Reflection;
+using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
@@ -11,6 +12,13 @@ namespace FluentNHibernate.Conventions.Inspections
             : base(mapping)
         {
             this.mapping = mapping;
+            mappedProperties.AutoMap();
+            mappedProperties.Map(x => x.LazyLoad, x => x.Lazy);
+        }
+
+        public new bool IsSet(PropertyInfo property)
+        {
+            return mapping.IsSpecified(mappedProperties.Get(property));
         }
 
         public string OrderBy

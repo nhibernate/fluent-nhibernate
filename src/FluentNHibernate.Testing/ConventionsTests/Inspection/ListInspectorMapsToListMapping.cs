@@ -11,16 +11,16 @@ using NUnit.Framework;
 namespace FluentNHibernate.Testing.ConventionsTests.Inspection
 {
     [TestFixture, Category("Inspection DSL")]
-    public class ArrayInspectorMapsToArrayMapping
+    public class ListInspectorMapsToListMapping
     {
-        private ArrayMapping mapping;
-        private IArrayInspector inspector;
+        private ListMapping mapping;
+        private IListInspector inspector;
 
         [SetUp]
         public void CreateDsl()
         {
-            mapping = new ArrayMapping();
-            inspector = new ArrayInspector(mapping);
+            mapping = new ListMapping();
+            inspector = new ListInspector(mapping);
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
 
         #region Helpers
 
-        private PropertyInfo Prop(Expression<Func<IArrayInspector, object>> propertyExpression)
+        private PropertyInfo Prop(Expression<Func<IListInspector, object>> propertyExpression)
         {
             return ReflectionHelper.GetProperty(propertyExpression);
         }
