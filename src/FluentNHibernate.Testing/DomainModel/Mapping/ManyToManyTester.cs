@@ -23,6 +23,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public virtual ChildObject[] ArrayOfChildren { get; set; }
         public virtual IList<string> ListOfSimpleChildren { get; set; }
         public virtual CustomCollection<ChildObject> CustomCollection { get; set; }
+        public virtual IDictionary<ChildObject, ChildObject> TernaryMapOfChildren { get; set; }
 
         private IList<ChildObject> otherChildren = new List<ChildObject>();
         public virtual IList<ChildObject> GetOtherChildren() { return otherChildren; }

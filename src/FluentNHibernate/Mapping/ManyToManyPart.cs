@@ -18,19 +18,26 @@ namespace FluentNHibernate.Mapping
 	    private IndexManyToManyPart manyToManyIndex;
 	    private readonly IList<string> childColumns = new List<string>();
 	    private readonly IList<string> parentColumns = new List<string>();
+	    private readonly Type childType;
+	    private bool isTernary;
 
 	    public ManyToManyPart(Type entity, PropertyInfo property)
             : this(entity, property, property.PropertyType)
-	    {}
+	    {
+	        childType = property.PropertyType;
+	    }
 
 	    public ManyToManyPart(Type entity, MethodInfo method)
 	        : this(entity, method, method.ReturnType)
-	    {}
+	    {
+	        childType = method.ReturnType;
+	    }
 
 	    protected ManyToManyPart(Type entity, MemberInfo member, Type collectionType)
             : base(entity, member, collectionType)
         {
 	        this.entity = entity;
+	        childType = collectionType;
 
 	        fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Fetch, value));
             notFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
@@ -87,30 +94,35 @@ namespace FluentNHibernate.Mapping
 			get { return fetch; }
 		}
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(Expression<Func<TChild, TIndex>> indexSelector)
+        private void EnsureDictionary()
         {
-            return AsTernaryAssociation(indexSelector, null);
+            if (!(childType.IsGenericType && childType.GetGenericTypeDefinition() == typeof(IDictionary<,>)))
+                throw new ArgumentException(Member.Name + " must be of type IDictionary<> to be used in a ternary assocation. Type was: " + childType);
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexManyToManyPart> customIndexMapping)
+        public ManyToManyPart<TChild> AsTernaryAssociation()
         {
-            var indexProperty = ReflectionHelper.GetProperty(indexSelector);
-            return AsTernaryAssociation<TIndex>(indexProperty.Name, customIndexMapping);
+            EnsureDictionary();
+
+            var indexType = typeof(TChild).GetGenericArguments()[0];
+            var valueType = typeof(TChild).GetGenericArguments()[1];
+
+            return AsTernaryAssociation(indexType.Name + "_id", valueType.Name + "_id");
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn)
+        public ManyToManyPart<TChild> AsTernaryAssociation(string indexColumn, string valueColumn)
         {
-            return AsTernaryAssociation<TIndex>(indexColumn, null);
-        }
+            EnsureDictionary();
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn, Action<IndexManyToManyPart> customIndexMapping)
-        {
+            var indexType = typeof(TChild).GetGenericArguments()[0];
+
             manyToManyIndex = new IndexManyToManyPart();
             manyToManyIndex.Column(indexColumn);
-            manyToManyIndex.Type<TIndex>();
+            manyToManyIndex.GetIndexMapping().Class = new TypeReference(indexType);
 
-            if (customIndexMapping != null)
-                customIndexMapping(manyToManyIndex);
+            ChildKeyColumn(valueColumn);
+
+            isTernary = true;
 
             return this;
         }
@@ -127,10 +139,16 @@ namespace FluentNHibernate.Mapping
 
 	    protected override ICollectionRelationshipMapping GetRelationship()
 	    {
-	        return new ManyToManyMapping(relationshipAttributes.CloneInner())
+	        var mapping = new ManyToManyMapping(relationshipAttributes.CloneInner())
 	        {
-	            ContainingEntityType = entity
+	            ContainingEntityType = entity,
+                
 	        };
+
+            if (isTernary)
+                mapping.Class = new TypeReference(typeof(TChild).GetGenericArguments()[1]);
+
+	        return mapping;
 	    }
     }
 }

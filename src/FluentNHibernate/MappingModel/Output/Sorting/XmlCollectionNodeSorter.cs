@@ -15,6 +15,7 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
                 { "key", new SortValue { Position = First, Level = 3 } },
                 { "index", new SortValue { Position = First, Level = 4 } },
                 { "list-index", new SortValue { Position = First, Level = 4 } },
+                { "index-many-to-many", new SortValue { Position = First, Level = 4} },
                 { "element", new SortValue { Position = Anywhere, Level = 1 } },
                 { "one-to-many", new SortValue { Position = Anywhere, Level = 1 } },
                 { "many-to-many", new SortValue { Position = Anywhere, Level = 1 } },
