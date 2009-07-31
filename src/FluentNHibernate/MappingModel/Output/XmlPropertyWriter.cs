@@ -50,6 +50,12 @@ namespace FluentNHibernate.MappingModel.Output
             if (propertyMapping.HasValue(x => x.Type))
                 element.WithAtt("type", propertyMapping.Type);
 
+            if (propertyMapping.HasValue(x => x.Lazy))
+                element.WithAtt("lazy", propertyMapping.Lazy);
+
+            if (propertyMapping.HasValue(x => x.Index))
+                element.WithAtt("index", propertyMapping.Index);
+
             document.AppendChild(element);
         }
 

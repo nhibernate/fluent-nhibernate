@@ -49,6 +49,12 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Formula, value); }
         }
 
+        public bool Lazy
+        {
+            get { return attributes.Get(x => x.Lazy); }
+            set { attributes.Set(x => x.Lazy, value); }
+        }
+
         public bool OptimisticLock
         {
             get { return attributes.Get(x => x.OptimisticLock); }
@@ -65,6 +71,12 @@ namespace FluentNHibernate.MappingModel
         {
             get { return attributes.Get(x => x.Type); }
             set { attributes.Set(x => x.Type, value); }
+        }
+
+        public string Index
+        {
+            get { return attributes.Get(x => x.Index); }
+            set { attributes.Set(x => x.Index, value); }
         }
 
         public PropertyInfo PropertyInfo { get; set; }

@@ -235,5 +235,29 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.Length(100))
                 .ModelShouldMatch(x => x.Columns.First().Length.ShouldEqual(100));
         }
+
+        [Test]
+        public void LazyLoadShouldSetModelLazyPropertyToTrue()
+        {
+            Property()
+                .Mapping(m => m.LazyLoad())
+                .ModelShouldMatch(x => x.Lazy.ShouldBeTrue());
+        }
+
+        [Test]
+        public void NotLazyLoadShouldSetModelLazyPropertyToFalse()
+        {
+            Property()
+                .Mapping(m => m.Not.LazyLoad())
+                .ModelShouldMatch(x => x.Lazy.ShouldBeFalse());
+        }
+
+        [Test]
+        public void IndexShouldSetModelIndexPropertyToValue()
+        {
+            Property()
+                .Mapping(m => m.Index("index"))
+                .ModelShouldMatch(x => x.Index.ShouldEqual("index"));
+        }
     }
 }

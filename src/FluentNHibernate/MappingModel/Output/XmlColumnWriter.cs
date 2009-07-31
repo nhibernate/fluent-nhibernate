@@ -44,6 +44,12 @@ namespace FluentNHibernate.MappingModel.Output
             if (columnMapping.HasValue(x => x.UniqueKey))
                 element.WithAtt("unique-key", columnMapping.UniqueKey);
 
+            if (columnMapping.HasValue(x => x.Precision))
+                element.WithAtt("precision", columnMapping.Precision);
+
+            if (columnMapping.HasValue(x => x.Scale))
+                element.WithAtt("scale", columnMapping.Scale);
+
             document.AppendChild(element);
         }
     }

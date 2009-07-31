@@ -13,7 +13,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     //    - Any time you have to ADD a test for many-to-many, add it HERE not THERE
     //    - Any time you have to MODIFY a test for many-to-many THERE, move it HERE, FIRST.
     // Thanks!  10-NOV-2008 Chad Myers
-    
+
     public class ManyToManyTarget
     {
         public virtual int Id { get; set; }
@@ -168,24 +168,92 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void ShouldWriteIndexWhenAssigned()
         {
-           new MappingTester<OneToManyTarget>()
-               .ForMapping(map =>
-                           map.HasManyToMany(x => x.SetOfChildren)
-                           .AsMap("indexColumn"))
-               .Element("class/map/index").ShouldNotBeNull();
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map =>
+                            map.HasManyToMany(x => x.SetOfChildren)
+                            .AsMap("indexColumn"))
+                .Element("class/map/index").ShouldNotBeNull();
         }
 
-       [Test]
-       public void ShouldWriteIndexAtCorrectPosition()
-       {
-           new MappingTester<OneToManyTarget>()
-               .ForMapping(map =>
-                           map.HasManyToMany(x => x.SetOfChildren)
-                           .AsMap("indexColumn")
-                           .ParentKeyColumn("ParentID")
-                           .ChildKeyColumn("ChildID")
-                           .Cache.ReadWrite())
-               .Element("class/map/index").ShouldBeInParentAtPosition(2);
-       }
+        [Test]
+        public void ShouldWriteIndexAtCorrectPosition()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map =>
+                            map.HasManyToMany(x => x.SetOfChildren)
+                            .AsMap("indexColumn")
+                            .ParentKeyColumn("ParentID")
+                            .ChildKeyColumn("ChildID")
+                            .Cache.ReadWrite())
+                .Element("class/map/index").ShouldBeInParentAtPosition(2);
+        }
+
+        [Test]
+        public void TernaryAssociationShouldWriteIndexManyToManyForGeneric()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map =>
+                            map.HasManyToMany(x => x.GenericTernaryMapOfChildren)
+                            .AsMap("keyColumn")
+                            .AsTernaryAssociation())
+                .Element("class/map/index-many-to-many").ShouldBeInParentAtPosition(0 + 1);
+        }
+
+        [Test]
+        public void TernaryAssociationShouldWriteManyToManyElementForGeneric()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map =>
+                            map.HasManyToMany(x => x.GenericTernaryMapOfChildren)
+                            .AsMap("keyColumn")
+                            .AsTernaryAssociation())
+                .Element("class/map/many-to-many").ShouldBeInParentAtPosition(0 + 2);
+        }
+
+        [Test]
+        public void TernaryAssociationShouldWriteColumnNamesWhenSpecifiedForGeneric()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map =>
+                    map.HasManyToMany(x => x.GenericTernaryMapOfChildren)
+                        .AsMap("keyColumn")
+                        .AsTernaryAssociation("index1", "index2"))
+                .Element("class/map/index-many-to-many/column").HasAttribute("name", "index1")
+                .Element("class/map/many-to-many/column").HasAttribute("name", "index2");
+        }
+
+        [Test]
+        public void TernaryAssociationShouldWriteIndexManyToManyForNonGeneric()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map =>
+                            map.HasManyToMany<IDictionary>(x => x.NonGenericTernaryMapOfChildren)
+                            .AsMap("keyColumn")
+                            .AsTernaryAssociation(typeof(ChildObject), typeof(ChildObject)))
+                .Element("class/map/index-many-to-many").ShouldBeInParentAtPosition(0 + 1);
+        }
+
+        [Test]
+        public void TernaryAssociationShouldWriteManyToManyElementForNonGeneric()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map =>
+                            map.HasManyToMany<IDictionary>(x => x.NonGenericTernaryMapOfChildren)
+                            .AsMap("keyColumn")
+                            .AsTernaryAssociation(typeof(ChildObject), typeof(ChildObject)))
+                .Element("class/map/many-to-many").ShouldBeInParentAtPosition(0 + 2);
+        }
+
+        [Test]
+        public void TernaryAssociationShouldWriteColumnNamesWhenSpecifiedForNonGeneric()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map =>
+                    map.HasManyToMany<IDictionary>(x => x.NonGenericTernaryMapOfChildren)
+                        .AsMap("keyColumn")
+                        .AsTernaryAssociation(typeof(ChildObject), "index1", typeof(ChildObject), "index2"))
+                .Element("class/map/index-many-to-many/column").HasAttribute("name", "index1")
+                .Element("class/map/many-to-many/column").HasAttribute("name", "index2");
+        }
     }
 }

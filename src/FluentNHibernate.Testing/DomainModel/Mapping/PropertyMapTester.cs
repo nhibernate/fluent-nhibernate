@@ -165,11 +165,43 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void MapUsesPrecisionPropertyColumnAttribute()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Name).Precision(2))
+                .Element("class/property/column").HasAttribute("precision", "2");
+        }
+
+        [Test]
+        public void MapUsesScalePropertyColumnAttribute()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Name).Scale(3))
+                .Element("class/property/column").HasAttribute("scale", "3");
+        }
+
+        [Test]
         public void MapWithFluentFormulaUsesFormula() 
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name).Formula("foo(bar)"))
                 .Element("class/property").HasAttribute("formula", "foo(bar)");
+        }
+
+        [Test]
+        public void MapWithLazyLoadUsesLazyAttribute()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Name).LazyLoad())
+                .Element("class/property").HasAttribute("lazy", "true");
+        }
+
+        [Test]
+        public void MapWithIndexUsesIndexAttribute()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m => m.Map(x => x.Name).Index("name_index"))
+                .Element("class/property").HasAttribute("index", "name_index");
         }
 
         [Test]

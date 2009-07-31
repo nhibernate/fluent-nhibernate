@@ -138,6 +138,19 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public PropertyMap LazyLoad()
+        {
+            mapping.Lazy = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public PropertyMap Index(string index)
+        {
+            mapping.Index = index;
+            return this;
+        }
+
         /// <summary>
         /// Specifies that a custom type (an implementation of <see cref="IUserType"/>) should be used for this property for mapping it to/from one or more database columns whose format or type doesn't match this .NET property.
         /// </summary>
@@ -193,6 +206,24 @@ namespace FluentNHibernate.Mapping
         {
             columnAttributes.Set(x => x.Unique, nextBool);
             nextBool = true;
+            return this;
+        }
+
+        public PropertyMap Precision(int precision)
+        {
+            columnAttributes.Set(x => x.Precision, precision);
+            return this;
+        }
+
+        public PropertyMap Scale(int scale)
+        {
+            columnAttributes.Set(x => x.Scale, scale);
+            return this;
+        }
+
+        public PropertyMap Default(string value)
+        {
+            columnAttributes.Set(x => x.Default, value);
             return this;
         }
 

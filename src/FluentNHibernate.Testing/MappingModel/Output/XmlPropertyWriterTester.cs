@@ -90,6 +90,24 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteLazyAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<PropertyMapping>();
+            testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteIndexAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<PropertyMapping>();
+            testHelper.Check(x => x.Index, "index").MapsToAttribute("index");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
         public void ShouldWriteColumns()
         {
             var mapping = new PropertyMapping();
