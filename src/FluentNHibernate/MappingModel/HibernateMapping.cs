@@ -16,6 +16,11 @@ namespace FluentNHibernate.MappingModel
             attributes = new AttributeStore<HibernateMapping>();
             classes = new List<ClassMapping>();
             imports = new List<ImportMapping>();
+
+            attributes.SetDefault(x => x.DefaultCascade, "none");
+            attributes.SetDefault(x => x.DefaultAccess, "property");
+            attributes.SetDefault(x => x.DefaultLazy, true);
+            attributes.SetDefault(x => x.AutoImport, true);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -49,6 +54,12 @@ namespace FluentNHibernate.MappingModel
             imports.Add(importMapping);
         }
 
+        public string Catalog
+        {
+            get { return attributes.Get(x => x.Catalog); }
+            set { attributes.Set(x => x.Catalog, value); }
+        }
+
         public string DefaultAccess
         {
             get { return attributes.Get(x => x.DefaultAccess); }
@@ -77,6 +88,18 @@ namespace FluentNHibernate.MappingModel
         {
             get { return attributes.Get(x => x.DefaultLazy); }
             set { attributes.Set(x => x.DefaultLazy, value); }
+        }
+
+        public string Namespace
+        {
+            get { return attributes.Get(x => x.Namespace); }
+            set { attributes.Set(x => x.Namespace, value); }
+        }
+
+        public string Assembly
+        {
+            get { return attributes.Get(x => x.Assembly); }
+            set { attributes.Set(x => x.Assembly, value); }
         }
 
         public bool IsSpecified<TResult>(Expression<Func<HibernateMapping, TResult>> property)

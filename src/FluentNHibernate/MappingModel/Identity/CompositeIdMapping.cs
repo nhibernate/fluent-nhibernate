@@ -11,6 +11,12 @@ namespace FluentNHibernate.MappingModel.Identity
         private readonly IList<KeyPropertyMapping> keyProperties = new List<KeyPropertyMapping>();
         private readonly IList<KeyManyToOneMapping> keyManyToOnes = new List<KeyManyToOneMapping>();
 
+        public CompositeIdMapping()
+        {
+            attributes.SetDefault(x => x.Mapped, false);
+            attributes.SetDefault(x => x.UnsavedValue, "undefined");
+        }
+
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessCompositeId(this);
@@ -32,6 +38,12 @@ namespace FluentNHibernate.MappingModel.Identity
         {
             get { return attributes.Get(x => x.Access); }
             set { attributes.Set(x => x.Access, value); }
+        }
+
+        public bool Mapped
+        {
+            get { return attributes.Get(x => x.Mapped); }
+            set { attributes.Set(x => x.Mapped, value); }
         }
 
         public TypeReference Class

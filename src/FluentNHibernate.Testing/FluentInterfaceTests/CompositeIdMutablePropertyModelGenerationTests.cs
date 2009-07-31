@@ -31,6 +31,30 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ModelShouldMatch(x => x.KeyManyToOnes.Count().ShouldEqual(1));
         }
 
+        [Test]
+        public void MappedShouldSetModelMappedToTrue()
+        {
+            CompositeId<IdentityTarget>()
+                .Mapping(m => m.Mapped())
+                .ModelShouldMatch(x => x.Mapped.ShouldBeTrue());
+        }
+
+        [Test]
+        public void NotMappedShouldSetModelMappedToFalse()
+        {
+            CompositeId<IdentityTarget>()
+                .Mapping(m => m.Not.Mapped())
+                .ModelShouldMatch(x => x.Mapped.ShouldBeFalse());
+        }
+
+        [Test]
+        public void UnsavedValueShouldSetModelUnsavedValueToValue()
+        {
+            CompositeId<IdentityTarget>()
+                .Mapping(m => m.UnsavedValue("unsaved"))
+                .ModelShouldMatch(x => x.UnsavedValue.ShouldEqual("unsaved"));
+        }
+
         [Test, Ignore]
         public void ShouldAllowSeparateClassRepresentingCompositeId()
         {

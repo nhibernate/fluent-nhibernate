@@ -13,7 +13,7 @@ namespace FluentNHibernate.Mapping
         private readonly string propertyName;
         private readonly AccessStrategyBuilder<ComponentPartBase<T>> access;
         protected ComponentMappingBase mapping;
-        private bool nextBool = true;
+        protected bool nextBool = true;
 
         protected ComponentPartBase(ComponentMappingBase mapping, string propertyName)
         {
@@ -101,7 +101,20 @@ namespace FluentNHibernate.Mapping
             mapping.Update = nextBool;
             nextBool = true;
             return this;
-         }
+        }
 
+        public ComponentPartBase<T> Unique()
+        {
+            mapping.Unique = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public ComponentPartBase<T> OptimisticLock()
+        {
+            mapping.OptimisticLock = nextBool;
+            nextBool = true;
+            return this;
+        }
     }
 }

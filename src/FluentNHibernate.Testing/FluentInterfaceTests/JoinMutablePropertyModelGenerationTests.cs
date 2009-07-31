@@ -61,5 +61,21 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.Not.Optional())
                 .ModelShouldMatch(x => x.Optional.ShouldBeFalse());
         }
+
+        [Test]
+        public void CatalogShouldSetModelCatalogPropertyToValue()
+        {
+            Join<PropertyTarget>("table")
+                .Mapping(m => m.Catalog("catalog"))
+                .ModelShouldMatch(x => x.Catalog.ShouldEqual("catalog"));
+        }
+
+        [Test]
+        public void SubselectShouldSetModelSubselectPropertyToValue()
+        {
+            Join<PropertyTarget>("table")
+                .Mapping(m => m.Subselect("subselect"))
+                .ModelShouldMatch(x => x.Subselect.ShouldEqual("subselect"));
+        }
     }
 }

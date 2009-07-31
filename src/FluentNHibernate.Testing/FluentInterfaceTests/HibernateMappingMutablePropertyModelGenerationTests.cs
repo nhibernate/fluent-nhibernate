@@ -60,5 +60,29 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.Schema("schema"))
                 .ModelShouldMatch(x => x.Schema.ShouldEqual("schema"));
         }
+
+        [Test]
+        public void CatalogShouldSetModelCatalogPropertyToValue()
+        {
+            HibernateMapping()
+                .Mapping(m => m.Catalog("catalog"))
+                .ModelShouldMatch(x => x.Catalog.ShouldEqual("catalog"));
+        }
+
+        [Test]
+        public void NamespaceShouldSetModelNamespacePropertyToValue()
+        {
+            HibernateMapping()
+                .Mapping(m => m.Namespace("namespace"))
+                .ModelShouldMatch(x => x.Namespace.ShouldEqual("namespace"));
+        }
+
+        [Test]
+        public void AssemblyShouldSetModelAssemblyPropertyToValue()
+        {
+            HibernateMapping()
+                .Mapping(m => m.Assembly("assembly"))
+                .ModelShouldMatch(x => x.Assembly.ShouldEndWith("assembly"));
+        }
     }
 }

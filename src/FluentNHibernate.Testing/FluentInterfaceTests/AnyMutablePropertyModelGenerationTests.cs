@@ -152,6 +152,54 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
+        public void LazyLoadSetsModelLazyPropertyToTrue()
+        {
+            Any<SecondMappedObject>()
+                .Mapping(m => m
+                    .IdentityType<int>()
+                    .EntityIdentifierColumn("col")
+                    .EntityTypeColumn("col2")
+                    .LazyLoad())
+                .ModelShouldMatch(x => x.Lazy.ShouldBeTrue());
+        }
+
+        [Test]
+        public void NotLazyLoadSetsModelLazyPropertyToFalse()
+        {
+            Any<SecondMappedObject>()
+                .Mapping(m => m
+                    .IdentityType<int>()
+                    .EntityIdentifierColumn("col")
+                    .EntityTypeColumn("col2")
+                    .Not.LazyLoad())
+                .ModelShouldMatch(x => x.Lazy.ShouldBeFalse());
+        }
+
+        [Test]
+        public void OptimisticLockSetsModelOptimisticLockPropertyToTrue()
+        {
+            Any<SecondMappedObject>()
+                .Mapping(m => m
+                    .IdentityType<int>()
+                    .EntityIdentifierColumn("col")
+                    .EntityTypeColumn("col2")
+                    .OptimisticLock())
+                .ModelShouldMatch(x => x.OptimisticLock.ShouldBeTrue());
+        }
+
+        [Test]
+        public void NotOptimisticLockSetsModelOptimisticLockPropertyToFalse()
+        {
+            Any<SecondMappedObject>()
+                .Mapping(m => m
+                    .IdentityType<int>()
+                    .EntityIdentifierColumn("col")
+                    .EntityTypeColumn("col2")
+                    .Not.OptimisticLock())
+                .ModelShouldMatch(x => x.OptimisticLock.ShouldBeFalse());
+        }
+
+        [Test]
         public void MetaTypePropertyShouldBeSetToPropertyTypeIfNoMetaValuesSet()
         {
             Any<SecondMappedObject>()

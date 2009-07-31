@@ -24,6 +24,12 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Usage, value); }
         }
 
+        public string Include
+        {
+            get { return attributes.Get(x => x.Include); }
+            set { attributes.Set(x => x.Include, value); }
+        }
+
         public Type ContainedEntityType { get; set; }
 
         public bool IsSpecified<TResult>(Expression<Func<CacheMapping, TResult>> property)

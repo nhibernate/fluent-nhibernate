@@ -73,6 +73,12 @@ namespace FluentNHibernate.MappingModel.Identity
             set { attributes.Set(x => x.UnsavedValue, value); }
         }
 
+        public int Length
+        {
+            get { return attributes.Get(x => x.Length); }
+            set { attributes.Set(x => x.Length, value); }
+        }
+
         public Type ContainingEntityType { get; set; }
 
         public bool IsSpecified<TResult>(Expression<Func<IdMapping, TResult>> property)

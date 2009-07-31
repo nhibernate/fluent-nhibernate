@@ -87,5 +87,11 @@ namespace FluentNHibernate.Mapping
             columns.Add(columnName);
             return this;
         }
+
+        public IdentityPart Length(int length)
+        {
+            mapping.Length = length;
+            return this;
+        }
     }
 }

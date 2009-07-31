@@ -37,6 +37,9 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.HasValue(x => x.Class))
                 element.WithAtt("class", mapping.Class);
 
+            if (mapping.HasValue(x => x.Mapped))
+                element.WithAtt("mapped", mapping.Mapped);
+
             if (mapping.HasValue(x => x.UnsavedValue))
                 element.WithAtt("unsaved-value", mapping.UnsavedValue);
         }

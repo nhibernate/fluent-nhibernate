@@ -66,6 +66,24 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteCatalogAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<JoinMapping>();
+            testHelper.Check(x => x.Catalog, "catalog").MapsToAttribute("catalog");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteSubselectAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<JoinMapping>();
+            testHelper.Check(x => x.Subselect, "subselect").MapsToAttribute("subselect");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
         public void ShouldWriteKey()
         {
             var mapping = new JoinMapping();

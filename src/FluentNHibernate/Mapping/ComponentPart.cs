@@ -11,56 +11,69 @@ namespace FluentNHibernate.Mapping
 
         public ComponentPart(Type entity, PropertyInfo property)
             : this(new ComponentMapping { ContainingEntityType = entity }, property.Name)
-         {}
+        { }
 
-         private ComponentPart(ComponentMapping mapping, string propertyName)
-             : base(mapping, propertyName)
-         {
-             access = new AccessStrategyBuilder<ComponentPart<T>>(this, value => mapping.Access = value);
+        private ComponentPart(ComponentMapping mapping, string propertyName)
+            : base(mapping, propertyName)
+        {
+            access = new AccessStrategyBuilder<ComponentPart<T>>(this, value => mapping.Access = value);
 
-             Insert();
-             Update();
-         }
+            Insert();
+            Update();
+        }
 
-         /// <summary>
-         /// Set the access and naming strategy for this component.
-         /// </summary>
-         public new AccessStrategyBuilder<ComponentPart<T>> Access
-         {
-             get { return access; }
-         }
+        /// <summary>
+        /// Set the access and naming strategy for this component.
+        /// </summary>
+        public new AccessStrategyBuilder<ComponentPart<T>> Access
+        {
+            get { return access; }
+        }
 
-         public new ComponentPart<T> ParentReference(Expression<Func<T, object>> exp)
-         {
-             base.ParentReference(exp);
-             return this;
-         }
+        public new ComponentPart<T> ParentReference(Expression<Func<T, object>> exp)
+        {
+            base.ParentReference(exp);
+            return this;
+        }
 
-         public new ComponentPart<T> Not
-         {
-             get
-             {
-                 var forceExecution = base.Not;
-                 return this;
-             }
-         }
+        public new ComponentPart<T> Not
+        {
+            get
+            {
+                var forceExecution = base.Not;
+                return this;
+            }
+        }
 
-         public new ComponentPart<T> ReadOnly()
-         {
-             base.ReadOnly();
-             return this;
-         }
+        public new ComponentPart<T> ReadOnly()
+        {
+            base.ReadOnly();
+            return this;
+        }
 
-         public new ComponentPart<T> Insert()
-         {
-             base.Insert();
-             return this;
-         }
+        public new ComponentPart<T> Insert()
+        {
+            base.Insert();
+            return this;
+        }
 
-         public new ComponentPart<T> Update()
-         {
-             base.Update();
-             return this;
-         }
+        public new ComponentPart<T> Update()
+        {
+            base.Update();
+            return this;
+        }
+
+        public ComponentPart<T> LazyLoad()
+        {
+            mapping.Lazy = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public new ComponentPart<T> OptimisticLock()
+        {
+            base.OptimisticLock();
+            return this;
+        }
     }
 }

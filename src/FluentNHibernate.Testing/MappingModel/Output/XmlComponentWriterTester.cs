@@ -66,6 +66,24 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteLazyAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<ComponentMapping>();
+
+            testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteOptimisticLockAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<ComponentMapping>();
+
+            testHelper.Check(x => x.OptimisticLock, true).MapsToAttribute("optimistic-lock");
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
         public void ShouldWriteComponents()
         {
             var mapping = new ComponentMapping();

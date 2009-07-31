@@ -36,6 +36,12 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.HasValue(x => x.Fetch))
                 element.WithAtt("fetch", mapping.Fetch);
 
+            if (mapping.HasValue(x => x.Catalog))
+                element.WithAtt("catalog", mapping.Catalog);
+
+            if (mapping.HasValue(x => x.Subselect))
+                element.WithAtt("subselect", mapping.Subselect);
+
             if (mapping.HasValue(x => x.Inverse))
                 element.WithAtt("inverse", mapping.Inverse);
 

@@ -7,6 +7,22 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
     public class ComponentMutablePropertyModelGenerationTests : BaseModelFixture
     {
         [Test]
+        public void UniqueShouldSetModelPropertyToTrue()
+        {
+            Component<PropertyTarget>()
+                .Mapping(x => x.Unique())
+                .ModelShouldMatch(x => x.Unique.ShouldBeTrue());
+        }
+
+        [Test]
+        public void NotUniqueShouldSetModelPropertyToFalse()
+        {
+            Component<PropertyTarget>()
+                .Mapping(x => x.Not.Unique())
+                .ModelShouldMatch(x => x.Unique.ShouldBeFalse());
+        }
+
+        [Test]
         public void InsertShouldSetModelPropertyToTrue()
         {
             Component<PropertyTarget>()
@@ -68,6 +84,38 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             Component<PropertyTarget>()
                 .Mapping(x => x.Not.ReadOnly())
                 .ModelShouldMatch(x => x.Update.ShouldBeTrue());
+        }
+
+        [Test]
+        public void LazyLoadShouldSetModelLazyPropertyToTrue()
+        {
+            Component<PropertyTarget>()
+                .Mapping(x => x.LazyLoad())
+                .ModelShouldMatch(x => x.Lazy.ShouldBeTrue());
+        }
+
+        [Test]
+        public void NotLazyLoadShouldSetModelLazyPropertyToFalse()
+        {
+            Component<PropertyTarget>()
+                .Mapping(x => x.Not.LazyLoad())
+                .ModelShouldMatch(x => x.Lazy.ShouldBeFalse());
+        }
+
+        [Test]
+        public void OptimisticLockShouldSetModelPropertyToTrue()
+        {
+            Component<PropertyTarget>()
+                .Mapping(x => x.OptimisticLock())
+                .ModelShouldMatch(x => x.OptimisticLock.ShouldBeTrue());
+        }
+
+        [Test]
+        public void NotOptimisticLockShouldSetModelPropertyToFalse()
+        {
+            Component<PropertyTarget>()
+                .Mapping(x => x.Not.OptimisticLock())
+                .ModelShouldMatch(x => x.OptimisticLock.ShouldBeFalse());
         }
     }
 }

@@ -54,7 +54,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ShouldAllowAnythingForAsCustom()
         {
             new MappingTester<CacheTarget>()
-                .ForMapping(mapping => mapping.Cache.Custom("something-else"))
+                .ForMapping(mapping => mapping.Cache.CustomUsage("something-else"))
                 .Element("class/cache").HasAttribute("usage", "something-else");
         }
 

@@ -46,6 +46,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteMappedAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<CompositeIdMapping>();
+            testHelper.Check(x => x.Mapped, true).MapsToAttribute("mapped");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
         public void ShouldWriteUnsavedValueAttribute()
         {
             var testHelper = new XmlWriterTestHelper<CompositeIdMapping>();

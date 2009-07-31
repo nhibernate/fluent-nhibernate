@@ -44,6 +44,12 @@ namespace FluentNHibernate.Mapping
             }
         }
 
+        public new DynamicComponentPart<T> Unique()
+        {
+            base.Unique();
+            return this;
+        }
+
         public new DynamicComponentPart<T> ReadOnly()
         {
             base.ReadOnly();
@@ -59,6 +65,12 @@ namespace FluentNHibernate.Mapping
         public new DynamicComponentPart<T> Update()
         {
             base.Update();
+            return this;
+        }
+
+        public new DynamicComponentPart<T> OptimisticLock()
+        {
+            base.OptimisticLock();
             return this;
         }
     }

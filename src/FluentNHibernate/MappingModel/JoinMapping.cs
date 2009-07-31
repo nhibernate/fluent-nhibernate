@@ -76,6 +76,18 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Schema, value); }
         }
 
+        public string Catalog
+        {
+            get { return attributes.Get(x => x.Catalog); }
+            set { attributes.Set(x => x.Catalog, value); }
+        }
+
+        public string Subselect
+        {
+            get { return attributes.Get(x => x.Subselect); }
+            set { attributes.Set(x => x.Subselect, value); }
+        }
+
         public string Fetch
         {
             get { return attributes.Get(x => x.Fetch); }

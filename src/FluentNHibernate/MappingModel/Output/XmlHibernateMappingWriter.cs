@@ -46,6 +46,15 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.DefaultLazy))
                 element.WithAtt("default-lazy", mapping.DefaultLazy);
+
+            if (mapping.HasValue(x => x.Catalog))
+                element.WithAtt("catalog", mapping.Catalog);
+
+            if (mapping.HasValue(x => x.Namespace))
+                element.WithAtt("namespace", mapping.Namespace);
+
+            if (mapping.HasValue(x => x.Assembly))
+                element.WithAtt("assembly", mapping.Assembly);
         }
 
         public override void Visit(ImportMapping importMapping)

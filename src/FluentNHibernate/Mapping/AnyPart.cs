@@ -110,6 +110,20 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public AnyPart<T> LazyLoad()
+        {
+            mapping.Lazy = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public AnyPart<T> OptimisticLock()
+        {
+            mapping.OptimisticLock = nextBool;
+            nextBool = true;
+            return this;
+        }
+
         public AnyPart<T> Not
         {
             get

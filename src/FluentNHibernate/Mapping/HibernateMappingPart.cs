@@ -55,6 +55,24 @@ namespace FluentNHibernate.Mapping
             }
         }
 
+        public HibernateMappingPart Catalog(string catalog)
+        {
+            mapping.Catalog = catalog;
+            return this;
+        }
+
+        public HibernateMappingPart Namespace(string ns)
+        {
+            mapping.Namespace = ns;
+            return this;
+        }
+
+        public HibernateMappingPart Assembly(string assembly)
+        {
+            mapping.Assembly = assembly;
+            return this;
+        }
+
         HibernateMapping IHibernateMappingProvider.GetHibernateMapping()
         {
             return mapping;

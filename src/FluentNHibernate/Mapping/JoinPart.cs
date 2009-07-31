@@ -56,6 +56,18 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public JoinPart<T> Catalog(string catalog)
+        {
+            mapping.Catalog = catalog;
+            return this;
+        }
+
+        public JoinPart<T> Subselect(string subselect)
+        {
+            mapping.Subselect = subselect;
+            return this;
+        }
+
         public JoinPart<T> Not
         {
             get

@@ -46,6 +46,12 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.Update))
                 element.WithAtt("update", mapping.Update);
+
+            if (mapping.HasValue(x => x.Lazy))
+                element.WithAtt("lazy", mapping.Lazy);
+
+            if (mapping.HasValue(x => x.OptimisticLock))
+                element.WithAtt("optimistic-lock", mapping.OptimisticLock);
         }
 
         public override void Visit(ColumnMapping columnMapping)

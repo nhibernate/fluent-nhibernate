@@ -39,7 +39,13 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public CachePart Custom(string custom)
+        public CachePart Transactional()
+        {
+            mapping.Usage = "transactional";
+            return this;
+        }
+
+        public CachePart CustomUsage(string custom)
         {
             mapping.Usage = custom;
             return this;
@@ -51,9 +57,27 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public CachePart IncludeAll()
+        {
+            mapping.Include = "all";
+            return this;
+        }
+
+        public CachePart IncludeNonLazy()
+        {
+            mapping.Include = "non-lazy";
+            return this;
+        }
+
+        public CachePart CustomInclude(string custom)
+        {
+            mapping.Include = custom;
+            return this;
+        }
+
         public bool IsDirty
         {
-            get { return mapping.IsSpecified(x => x.Region) || mapping.IsSpecified(x => x.Usage); }
+            get { return mapping.IsSpecified(x => x.Region) || mapping.IsSpecified(x => x.Usage) || mapping.IsSpecified(x => x.Include); }
         }
     }
 }

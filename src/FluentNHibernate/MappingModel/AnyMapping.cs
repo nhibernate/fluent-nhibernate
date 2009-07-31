@@ -11,6 +11,14 @@ namespace FluentNHibernate.MappingModel
         private readonly IDefaultableList<ColumnMapping> identifierColumns = new DefaultableList<ColumnMapping>();
         private readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
 
+        public AnyMapping()
+        {
+            attributes.SetDefault(x => x.Insert, true);
+            attributes.SetDefault(x => x.Update, true);
+            attributes.SetDefault(x => x.OptimisticLock, true);
+            attributes.SetDefault(x => x.Lazy, false);
+        }
+
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessAny(this);
@@ -65,6 +73,18 @@ namespace FluentNHibernate.MappingModel
         {
             get { return attributes.Get(x => x.Cascade); }
             set { attributes.Set(x => x.Cascade, value); }
+        }
+
+        public bool Lazy
+        {
+            get { return attributes.Get(x => x.Lazy); }
+            set { attributes.Set(x => x.Lazy, value); }
+        }
+
+        public bool OptimisticLock
+        {
+            get { return attributes.Get(x => x.OptimisticLock); }
+            set { attributes.Set(x => x.OptimisticLock, value); }
         }
 
         public IDefaultableEnumerable<ColumnMapping> TypeColumns

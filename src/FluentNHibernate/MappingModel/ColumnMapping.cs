@@ -72,6 +72,24 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Check, value); }
         }
 
+        public int Precision
+        {
+            get { return attributes.Get(x => x.Precision); }
+            set { attributes.Set(x => x.Precision, value); }
+        }
+
+        public int Scale
+        {
+            get { return attributes.Get(x => x.Scale); }
+            set { attributes.Set(x => x.Scale, value); }
+        }
+
+        public string Default
+        {
+            get { return attributes.Get(x => x.Default); }
+            set { attributes.Set(x => x.Default, value); }
+        }
+
         public bool IsSpecified<TResult>(Expression<Func<ColumnMapping, TResult>> property)
         {
             return attributes.IsSpecified(property);

@@ -102,5 +102,12 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     second.Value.ShouldEqual("another-value");
                 });
         }
+
+        public void LengthShouldSetModelLengthPropertyToValue()
+        {
+            Id()
+                .Mapping(m => m.Length(8))
+                .ModelShouldMatch(x => x.Length.ShouldEqual(8));
+        }
     }
 }

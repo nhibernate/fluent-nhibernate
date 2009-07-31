@@ -12,6 +12,7 @@ namespace FluentNHibernate.Mapping
 	{
         private readonly AccessStrategyBuilder<CompositeIdentityPart<T>> access;
         private readonly CompositeIdMapping mapping = new CompositeIdMapping();
+        private bool nextBool = true;
 
         public CompositeIdentityPart()
         {
@@ -105,6 +106,28 @@ namespace FluentNHibernate.Mapping
 		{
 			get { return access; }
 		}
+
+        public CompositeIdentityPart<T> Not
+        {
+            get
+            {
+                nextBool = false;
+                return this;
+            }
+        }
+
+        public CompositeIdentityPart<T> Mapped()
+        {
+            mapping.Mapped = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public CompositeIdentityPart<T> UnsavedValue(string value)
+        {
+            mapping.UnsavedValue = value;
+            return this;
+        }
 
 	    CompositeIdMapping ICompositeIdMappingProvider.GetCompositeIdMapping()
 	    {

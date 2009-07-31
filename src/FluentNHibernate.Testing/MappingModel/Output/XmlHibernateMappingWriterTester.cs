@@ -75,6 +75,33 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteCatalogAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<HibernateMapping>();
+
+            testHelper.Check(x => x.Catalog, "catalog").MapsToAttribute("catalog");
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteNamespaceAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<HibernateMapping>();
+
+            testHelper.Check(x => x.Namespace, "namespace").MapsToAttribute("namespace");
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteAssemblyAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<HibernateMapping>();
+
+            testHelper.Check(x => x.Assembly, "assembly").MapsToAttribute("assembly");
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
         public void ShouldWriteImports()
         {
             var mapping = new HibernateMapping();
