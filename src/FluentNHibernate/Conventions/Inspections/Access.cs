@@ -11,6 +11,11 @@ namespace FluentNHibernate.Conventions.Inspections
             return new Access("field");
         }
 
+        public static Access BackField()
+        {
+            return new Access("backfield");
+        }
+
         public static Access CamelCaseField()
         {
             return CamelCaseField(CamelCasePrefix.None);

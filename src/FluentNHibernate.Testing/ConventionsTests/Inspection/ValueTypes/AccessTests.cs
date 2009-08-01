@@ -29,6 +29,12 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection.ValueTypes
         }
 
         [Test]
+        public void BackFieldShouldHaveCorrectValue()
+        {
+            Access.BackField().ToString().ShouldEqual("backfield");
+        }
+
+        [Test]
         public void PropertyShouldHaveCorrectValue()
         {
             Access.Property().ToString().ShouldEqual("property");
