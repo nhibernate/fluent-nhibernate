@@ -156,6 +156,8 @@ namespace FluentNHibernate.Conventions
 
             Apply<IArrayInspector, IArrayInstance>(conventions,
                 new ArrayInstance(mapping));
+
+            ApplyCollectionConventions(mapping);
         }
 
         public override void ProcessBag(BagMapping bagMapping)
@@ -164,6 +166,8 @@ namespace FluentNHibernate.Conventions
 
             Apply<IBagInspector, IBagInstance>(conventions,
                 new BagInstance(bagMapping));
+
+            ApplyCollectionConventions(bagMapping);
         }
 
         public override void ProcessList(ListMapping listMapping)
@@ -172,6 +176,8 @@ namespace FluentNHibernate.Conventions
 
             Apply<IListInspector, IListInstance>(conventions,
                 new ListInstance(listMapping));
+
+            ApplyCollectionConventions(listMapping);
         }
 
         public override void ProcessMap(MapMapping mapping)
@@ -180,6 +186,8 @@ namespace FluentNHibernate.Conventions
 
             Apply<IMapInspector, IMapInstance>(conventions,
                 new MapInstance(mapping));
+
+            ApplyCollectionConventions(mapping);
         }
 
         public override void ProcessSet(SetMapping setMapping)
@@ -188,6 +196,8 @@ namespace FluentNHibernate.Conventions
 
             Apply<ISetInspector, ISetInstance>(conventions,
                 new SetInstance(setMapping));
+
+            ApplyCollectionConventions(setMapping);
         }
 
         private void Apply<TInspector, TInstance>(IEnumerable conventions, TInstance instance)
@@ -205,6 +215,20 @@ namespace FluentNHibernate.Conventions
                 if (criteria.Matches(instance))
                     convention.Apply(instance);
             }
+        }
+
+        private void ApplyCollectionConventions(ICollectionMapping mapping)
+        {
+            if (mapping.Relationship is ManyToManyMapping)
+                Apply<IManyToManyCollectionInspector, IManyToManyCollectionInstance>(finder.Find<IHasManyToManyConvention>(),
+                new ManyToManyCollectionInstance(mapping));
+
+            if (mapping.Relationship is OneToManyMapping)
+                Apply<IOneToManyCollectionInspector, IOneToManyCollectionInstance>(finder.Find<IHasManyConvention>(),
+                new OneToManyCollectionInstance(mapping));
+
+            Apply<ICollectionInspector, ICollectionInstance>(finder.Find<ICollectionConvention>(),
+            new CollectionInstance(mapping));
         }
     }
 }
