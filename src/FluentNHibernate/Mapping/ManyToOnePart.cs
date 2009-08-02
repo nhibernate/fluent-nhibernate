@@ -42,7 +42,7 @@ namespace FluentNHibernate.Mapping
                 mapping.Name = Property.Name;
 
             if (!mapping.IsSpecified(x => x.Class))
-                mapping.Class = new TypeReference(Property.PropertyType);
+                mapping.Class = new TypeReference(typeof(TOther));
 
             if (columns.Count == 0)
                 mapping.AddDefaultColumn(CreateColumn(Property.Name + "_id"));

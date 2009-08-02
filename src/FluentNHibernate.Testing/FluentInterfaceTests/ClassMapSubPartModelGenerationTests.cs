@@ -163,6 +163,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
+        public void ReferencesWithExplicitTypeShouldUseSpecifiedType()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(m => m.References<PropertyReferenceTargetProxy>(x => x.Reference))
+                .ModelShouldMatch(x => x.References.First().Class.GetUnderlyingSystemType().ShouldEqual(typeof(PropertyReferenceTargetProxy)));
+        }
+
+        [Test]
         public void ReferencesAnyShouldAddToAnyCollectionOnModel()
         {
             ClassMap<PropertyTarget>()

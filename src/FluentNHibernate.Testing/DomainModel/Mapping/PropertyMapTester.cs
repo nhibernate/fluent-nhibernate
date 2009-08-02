@@ -368,6 +368,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     {
         public string Name { get; set; }
     }
+
+    public class PropertyReferenceTargetProxy
+    {
+        
+    }
     
     public class ComponentTarget
     {

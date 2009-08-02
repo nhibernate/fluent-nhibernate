@@ -50,6 +50,16 @@ namespace FluentNHibernate.Mapping
             return References<TOther>(ReflectionHelper.GetProperty(expression), columnName);
         }
 
+        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, object>> expression)
+        {
+            return References<TOther>(expression, null);
+        }
+
+        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, object>> expression, string columnName)
+        {
+            return References<TOther>(ReflectionHelper.GetProperty(expression), columnName);
+        }
+
         protected virtual ManyToOnePart<TOther> References<TOther>(PropertyInfo property, string columnName)
         {
             var part = new ManyToOnePart<TOther>(EntityType, property);
