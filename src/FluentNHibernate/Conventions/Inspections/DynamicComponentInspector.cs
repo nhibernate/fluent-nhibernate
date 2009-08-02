@@ -13,6 +13,7 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             this.mapping = mapping;
             mappedProperties.AutoMap();
+            mappedProperties.Map(x => x.LazyLoad, x => x.Lazy);
         }
 
         public override bool IsSet(PropertyInfo property)

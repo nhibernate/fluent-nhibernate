@@ -91,6 +91,28 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         }
 
         [Test]
+        public void LengthMapped()
+        {
+            mapping.Length = 100;
+            inspector.Length.ShouldEqual(100);
+        }
+
+        [Test]
+        public void LengthIsSet()
+        {
+            mapping.Length = 100;
+            inspector.IsSet(Prop(x => x.Length))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void LengthIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Length))
+                .ShouldBeFalse();
+        }
+
+        [Test]
         public void NameMapped()
         {
             mapping.Name = "name";

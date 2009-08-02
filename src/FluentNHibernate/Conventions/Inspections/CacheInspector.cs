@@ -26,6 +26,11 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Region; }
         }
 
+        public Include Include
+        {
+            get { return Include.FromString(mapping.Include); }
+        }
+
         public Type EntityType
         {
             get { return mapping.ContainedEntityType; }

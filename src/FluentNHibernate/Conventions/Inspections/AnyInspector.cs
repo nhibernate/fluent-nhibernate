@@ -15,6 +15,7 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             this.mapping = mapping;
             propertyMappings.AutoMap();
+            propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
         }
 
         public Type EntityType
@@ -97,6 +98,16 @@ namespace FluentNHibernate.Conventions.Inspections
         public bool Update
         {
             get { return mapping.Update; }
+        }
+
+        public bool LazyLoad
+        {
+            get { return mapping.Lazy; }
+        }
+
+        public bool OptimisticLock
+        {
+            get { return mapping.OptimisticLock; }
         }
     }
 }

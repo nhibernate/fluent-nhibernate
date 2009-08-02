@@ -63,6 +63,11 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
+        public bool Mapped
+        {
+            get { return mapping.Mapped; }
+        }
+
         public string Name
         {
             get { return mapping.Name; }

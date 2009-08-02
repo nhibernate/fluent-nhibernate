@@ -45,6 +45,28 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         }
 
         [Test]
+        public void DefaultMapped()
+        {
+            mapping.Default = "value";
+            inspector.Default.ShouldEqual("value");
+        }
+
+        [Test]
+        public void DefaultIsSet()
+        {
+            mapping.Default = "value";
+            inspector.IsSet(Prop(x => x.Default))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void DefaultIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Default))
+                .ShouldBeFalse();
+        }
+
+        [Test]
         public void IndexMapped()
         {
             mapping.Index = "ix";
@@ -129,6 +151,50 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void NotNullIsNotSet()
         {
             inspector.IsSet(Prop(x => x.NotNull))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void PrecisionMapped()
+        {
+            mapping.Precision = 10;
+            inspector.Precision.ShouldEqual(10);
+        }
+
+        [Test]
+        public void PrecisionIsSet()
+        {
+            mapping.Precision = 10;
+            inspector.IsSet(Prop(x => x.Precision))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void PrecisionIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Precision))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void ScaleMapped()
+        {
+            mapping.Scale = 10;
+            inspector.Scale.ShouldEqual(10);
+        }
+
+        [Test]
+        public void ScaleIsSet()
+        {
+            mapping.Scale = 10;
+            inspector.IsSet(Prop(x => x.Scale))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void ScaleIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Scale))
                 .ShouldBeFalse();
         }
 

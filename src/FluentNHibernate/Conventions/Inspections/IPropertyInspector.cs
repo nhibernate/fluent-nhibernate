@@ -19,5 +19,7 @@ namespace FluentNHibernate.Conventions.Inspections
         bool OptimisticLock { get; }
         Generated Generated { get; }
         IDefaultableEnumerable<IColumnInspector> Columns { get; }
+        string Index { get; }
+        bool LazyLoad { get; }
     }
 }

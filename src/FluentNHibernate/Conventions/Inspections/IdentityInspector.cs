@@ -78,5 +78,10 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get { return mapping.Type; }
         }
+
+        public int Length
+        {
+            get { return mapping.Length; }
+        }
     }
 }

@@ -4,5 +4,6 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         string Usage { get; }
         string Region { get; }
+        Include Include { get; }
     }
 }

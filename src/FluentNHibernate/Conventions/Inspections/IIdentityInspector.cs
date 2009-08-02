@@ -8,5 +8,6 @@ namespace FluentNHibernate.Conventions.Inspections
         IEnumerable<IColumnInspector> Columns { get; }
         IGeneratorInspector Generator { get; }
         TypeReference Type { get; }
+        int Length { get; }
     }
 }

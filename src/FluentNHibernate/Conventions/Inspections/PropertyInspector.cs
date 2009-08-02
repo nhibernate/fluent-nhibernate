@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
@@ -16,15 +14,8 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             this.mapping = mapping;
 
-            propertyMappings.Map(x => x.Insert, x => x.Insert);
-            propertyMappings.Map(x => x.Update, x => x.Update);
-            propertyMappings.Map(x => x.Type, x => x.Type);
-            propertyMappings.Map(x => x.Access, x => x.Access);
-            propertyMappings.Map(x => x.EntityType, x => x.ContainingEntityType);
-            propertyMappings.Map(x => x.Formula, x => x.Formula);
-            propertyMappings.Map(x => x.Name, x => x.Name);
-            propertyMappings.Map(x => x.OptimisticLock, x => x.OptimisticLock);
-            propertyMappings.Map(x => x.Generated, x => x.Generated);
+            propertyMappings.AutoMap();
+            propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
         }
 
         public bool Insert
@@ -98,6 +89,16 @@ namespace FluentNHibernate.Conventions.Inspections
 
                 return items;
             }
+        }
+
+        public string Index
+        {
+            get { return mapping.Index; }
+        }
+
+        public bool LazyLoad
+        {
+            get { return mapping.Lazy; }
         }
 
         public Access Access

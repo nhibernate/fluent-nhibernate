@@ -15,5 +15,7 @@ namespace FluentNHibernate.Conventions.Inspections
         string Name { get; }
         IDefaultableEnumerable<IColumnInspector> TypeColumns { get; }
         bool Update { get; }
+        bool LazyLoad { get; }
+        bool OptimisticLock { get; }
     }
 }

@@ -47,5 +47,10 @@ namespace FluentNHibernate.Conventions.Inspections
                     .Cast<IColumnInspector>();
             }
         }
+
+        public string Formula
+        {
+            get { return mapping.Formula; }
+        }
     }
 }

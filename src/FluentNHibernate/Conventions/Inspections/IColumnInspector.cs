@@ -10,5 +10,8 @@ namespace FluentNHibernate.Conventions.Inspections
         string SqlType { get; }
         bool Unique { get; set; }
         string UniqueKey { get; set; }
+        int Precision { get; }
+        int Scale { get; }
+        string Default { get; }
     }
 }

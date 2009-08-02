@@ -131,6 +131,50 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         }
 
         [Test]
+        public void LazyMapped()
+        {
+            mapping.Lazy = true;
+            inspector.LazyLoad.ShouldEqual(true);
+        }
+
+        [Test]
+        public void LazyIsSet()
+        {
+            mapping.Lazy = true;
+            inspector.IsSet(Prop(x => x.LazyLoad))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void LazyIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.LazyLoad))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void OptimisticLockMapped()
+        {
+            mapping.OptimisticLock = true;
+            inspector.OptimisticLock.ShouldEqual(true);
+        }
+
+        [Test]
+        public void OptimisticLockIsSet()
+        {
+            mapping.OptimisticLock = true;
+            inspector.IsSet(Prop(x => x.OptimisticLock))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void OptimisticLockIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.OptimisticLock))
+                .ShouldBeFalse();
+        }
+
+        [Test]
         public void NameMapped()
         {
             mapping.Name = "name";
@@ -193,6 +237,28 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void ParentIsNotSet()
         {
             inspector.IsSet(Prop(x => x.Parent))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void UniqueMapped()
+        {
+            mapping.Unique = true;
+            inspector.Unique.ShouldEqual(true);
+        }
+
+        [Test]
+        public void UniqueIsSet()
+        {
+            mapping.Unique = true;
+            inspector.IsSet(Prop(x => x.Unique))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void UniqueIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Unique))
                 .ShouldBeFalse();
         }
 

@@ -232,6 +232,50 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
             inspector.Columns.IsEmpty().ShouldBeTrue();
         }
 
+        [Test]
+        public void IndexMapped()
+        {
+            mapping.Index = "index";
+            inspector.Index.ShouldEqual("index");
+        }
+
+        [Test]
+        public void IndexIsSet()
+        {
+            mapping.Index = "index";
+            inspector.IsSet(Prop(x => x.Index))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void IndexIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Index))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void LazyMapped()
+        {
+            mapping.Lazy = true;
+            inspector.LazyLoad.ShouldEqual(true);
+        }
+
+        [Test]
+        public void LazyIsSet()
+        {
+            mapping.Lazy = true;
+            inspector.IsSet(Prop(x => x.LazyLoad))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void LazyIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.LazyLoad))
+                .ShouldBeFalse();
+        }
+
         private PropertyInfo Prop(Expression<Func<IPropertyInspector, object>> propertyExpression)
         {
             return ReflectionHelper.GetProperty(propertyExpression);

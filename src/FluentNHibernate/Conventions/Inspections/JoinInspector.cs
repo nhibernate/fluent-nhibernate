@@ -97,5 +97,15 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get { return mapping.TableName; }
         }
+        
+        public string Catalog
+        {
+            get { return mapping.Catalog; }
+        }
+
+        public string Subselect
+        {
+            get { return mapping.Subselect; }
+        }
     }
 }

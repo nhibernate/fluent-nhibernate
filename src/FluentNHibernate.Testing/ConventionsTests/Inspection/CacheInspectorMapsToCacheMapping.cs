@@ -22,6 +22,28 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         }
 
         [Test]
+        public void IncludeMapped()
+        {
+            mapping.Include = "all";
+            inspector.Include.ShouldEqual(Include.All);
+        }
+
+        [Test]
+        public void IncludeIsSet()
+        {
+            mapping.Include = "all";
+            inspector.IsSet(Prop(x => x.Include))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void IncludeIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Include))
+                .ShouldBeFalse();
+        }
+
+        [Test]
         public void RegionMapped()
         {
             mapping.Region = "region";

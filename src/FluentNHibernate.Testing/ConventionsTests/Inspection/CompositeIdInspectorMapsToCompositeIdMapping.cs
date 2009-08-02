@@ -132,6 +132,28 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         }
 
         [Test]
+        public void MappedMapped()
+        {
+            mapping.Mapped = true;
+            inspector.Mapped.ShouldEqual(true);
+        }
+
+        [Test]
+        public void MappedIsSet()
+        {
+            mapping.Mapped = true;
+            inspector.IsSet(Prop(x => x.Mapped))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void MappedIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Mapped))
+                .ShouldBeFalse();
+        }
+
+        [Test]
         public void UnsavedValueMapped()
         {
             mapping.UnsavedValue = "value";

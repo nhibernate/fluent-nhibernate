@@ -132,6 +132,28 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         }
 
         [Test]
+        public void LazyMapped()
+        {
+            mapping.Lazy = true;
+            inspector.LazyLoad.ShouldEqual(true);
+        }
+
+        [Test]
+        public void LazyIsSet()
+        {
+            mapping.Lazy = true;
+            inspector.IsSet(Prop(x => x.LazyLoad))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void LazyIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.LazyLoad))
+                .ShouldBeFalse();
+        }
+
+        [Test]
         public void MetaTypeMapped()
         {
             mapping.MetaType = new TypeReference(typeof(string));
@@ -192,6 +214,28 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void NameIsNotSet()
         {
             inspector.IsSet(Prop(x => x.Name))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void OptimisticLockMapped()
+        {
+            mapping.OptimisticLock = true;
+            inspector.OptimisticLock.ShouldEqual(true);
+        }
+
+        [Test]
+        public void OptimisticLockIsSet()
+        {
+            mapping.OptimisticLock = true;
+            inspector.IsSet(Prop(x => x.OptimisticLock))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void OptimisticLockIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.OptimisticLock))
                 .ShouldBeFalse();
         }
 

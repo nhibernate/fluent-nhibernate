@@ -13,6 +13,9 @@ namespace FluentNHibernate.Conventions.Inspections
         IEnumerable<ICollectionInspector> Collections { get; }
         IEnumerable<IComponentBaseInspector> Components { get; }
         string Name { get; }
+        bool LazyLoad { get; }
+        bool OptimisticLock { get; }
+        bool Unique { get; }
         Type Type { get; }
         TypeReference Class { get; }
         IEnumerable<IOneToOneInspector> OneToOnes { get; }

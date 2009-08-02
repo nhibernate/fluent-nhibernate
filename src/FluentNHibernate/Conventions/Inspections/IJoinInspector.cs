@@ -13,5 +13,7 @@ namespace FluentNHibernate.Conventions.Inspections
         IEnumerable<IManyToOneInspector> References { get; }
         string Schema { get; }
         string TableName { get; }
+        string Catalog { get; }
+        string Subselect { get; }
     }
 }

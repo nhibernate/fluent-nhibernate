@@ -44,6 +44,28 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         }
 
         [Test]
+        public void CatalogMapped()
+        {
+            mapping.Catalog = "value";
+            inspector.Catalog.ShouldEqual("value");
+        }
+
+        [Test]
+        public void CatalogIsSet()
+        {
+            mapping.Catalog = "value";
+            inspector.IsSet(Prop(x => x.Catalog))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void CatalogIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Catalog))
+                .ShouldBeFalse();
+        }
+
+        [Test]
         public void FetchMapped()
         {
             mapping.Fetch = "join";
@@ -192,6 +214,28 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void SchemaIsNotSet()
         {
             inspector.IsSet(Prop(x => x.Schema))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void SubselectMapped()
+        {
+            mapping.Subselect = "value";
+            inspector.Subselect.ShouldEqual("value");
+        }
+
+        [Test]
+        public void SubselectIsSet()
+        {
+            mapping.Subselect = "value";
+            inspector.IsSet(Prop(x => x.Subselect))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void SubselectIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Subselect))
                 .ShouldBeFalse();
         }
 

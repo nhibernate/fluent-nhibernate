@@ -14,14 +14,7 @@ namespace FluentNHibernate.Conventions.Inspections
             EntityType = containingEntityType;
             this.mapping = mapping;
 
-            propertyMappings.Map(x => x.Check, x => x.Check);
-            propertyMappings.Map(x => x.Index, x => x.Index);
-            propertyMappings.Map(x => x.Length, x => x.Length);
-            propertyMappings.Map(x => x.Name, x => x.Name);
-            propertyMappings.Map(x => x.NotNull, x => x.NotNull);
-            propertyMappings.Map(x => x.SqlType, x => x.SqlType);
-            propertyMappings.Map(x => x.Unique, x => x.Unique);
-            propertyMappings.Map(x => x.UniqueKey, x => x.UniqueKey);
+            propertyMappings.AutoMap();
         }
 
         public Type EntityType { get; private set; }
@@ -68,6 +61,21 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get { return mapping.UniqueKey; }
             set { mapping.UniqueKey = value; }
+        }
+
+        public int Precision
+        {
+            get { return mapping.Precision; }
+        }
+
+        public int Scale
+        {
+            get { return mapping.Scale; }
+        }
+
+        public string Default
+        {
+            get { return mapping.Default; }
         }
 
         public string StringIdentifierForModel

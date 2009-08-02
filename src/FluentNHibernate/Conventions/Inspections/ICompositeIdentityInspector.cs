@@ -8,5 +8,6 @@ namespace FluentNHibernate.Conventions.Inspections
         TypeReference Class { get; }
         IEnumerable<IKeyManyToOneInspector> KeyManyToOnes { get; }
         IEnumerable<IKeyPropertyInspector> KeyProperties { get; }
+        bool Mapped { get; }
     }
 }
