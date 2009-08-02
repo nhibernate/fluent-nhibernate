@@ -11,6 +11,62 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
     public class ClassMapMutablePropertyModelGenerationTests : BaseModelFixture
     {
         [Test]
+        public void BatchSizeSetsPropertyToValue()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(x => x.BatchSize(10))
+                .ModelShouldMatch(x => x.BatchSize.ShouldEqual(10));
+        }
+
+        [Test]
+        public void CheckSetsPropertyToValue()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(x => x.CheckConstraint("constraint"))
+                .ModelShouldMatch(x => x.Check.ShouldEqual("constraint"));
+        }
+
+        [Test]
+        public void OptimisticLockSetsPropertyToValue()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(x => x.OptimisticLock.All())
+                .ModelShouldMatch(x => x.OptimisticLock.ShouldEqual("all"));
+        }
+
+        [Test]
+        public void PersisterSetsPropertyToValue()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(x => x.Persister<CustomPersister>())
+                .ModelShouldMatch(x => x.Persister.ShouldEqual(typeof(CustomPersister).AssemblyQualifiedName));
+        }
+
+        [Test]
+        public void PolymorphismSetsPropertyToValue()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(x => x.Polymorphism.Implicit())
+                .ModelShouldMatch(x => x.Polymorphism.ShouldEqual("implicit"));
+        }
+
+        [Test]
+        public void ProxySetsPropertyToValue()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(x => x.Proxy<FakeProxy>())
+                .ModelShouldMatch(x => x.Proxy.ShouldEqual(typeof(FakeProxy).AssemblyQualifiedName));
+        }
+
+        [Test]
+        public void SelectBeforeUpdateSetsPropertyToValue()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(x => x.SelectBeforeUpdate())
+                .ModelShouldMatch(x => x.SelectBeforeUpdate.ShouldBeTrue());
+        }
+
+        [Test]
         public void LazyLoadSetsModelPropertyToTrue()
         {
             ClassMap<PropertyTarget>()
@@ -89,5 +145,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(x => x.Schema("schema"))
                 .ModelShouldMatch(x => x.Schema.ShouldEqual("schema"));
         }
+
+        public class FakeProxy
+        { }
     }
 }

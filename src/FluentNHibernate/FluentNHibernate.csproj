@@ -298,6 +298,7 @@
     <Compile Include="Conventions\ISetConvention.cs" />
     <Compile Include="Conventions\IUserTypeConvention.cs" />
     <Compile Include="Conventions\ObjectExtensionsForConventions.cs" />
+    <Compile Include="Mapping\PolymorphismBuilder.cs" />
     <Compile Include="SeparateSubclassVisitor.cs" />
     <Compile Include="MappingModel\Collections\IIndexedCollectionMapping.cs" />
     <Compile Include="MappingModel\Collections\SortType.cs" />
