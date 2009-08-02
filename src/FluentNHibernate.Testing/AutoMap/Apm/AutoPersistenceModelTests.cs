@@ -95,6 +95,17 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         }
 
         [Test]
+        public void AutoMapsEnumProperties()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("//property[@name='Enum']").Exists();
+        }
+
+        [Test]
         public void TestAutoMapIgnoresProperties()
         {
             var autoMapper = AutoPersistenceModel
