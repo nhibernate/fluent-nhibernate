@@ -99,6 +99,33 @@ namespace FluentNHibernate.Conventions.Instances
                 column.SqlType = sqlType;
         }
 
+        public void Precision(int precision)
+        {
+            if (mapping.Columns.First().IsSpecified(x => x.Precision))
+                return;
+
+            foreach (var column in mapping.Columns)
+                column.Precision = precision;
+        }
+
+        public void Scale(int scale)
+        {
+            if (mapping.Columns.First().IsSpecified(x => x.Scale))
+                return;
+
+            foreach (var column in mapping.Columns)
+                column.Scale = scale;
+        }
+
+        public void Default(string value)
+        {
+            if (mapping.Columns.First().IsSpecified(x => x.Default))
+                return;
+
+            foreach (var column in mapping.Columns)
+                column.Default = value;
+        }
+
         public new void Unique()
         {
             if (mapping.Columns.First().IsSpecified(x => x.Unique))
@@ -176,6 +203,21 @@ namespace FluentNHibernate.Conventions.Instances
 
             foreach (var column in mapping.Columns)
                 column.Length = length;
+        }
+
+        public new void LazyLoad()
+        {
+            if (!mapping.IsSpecified(x => x.Lazy))
+            {
+                mapping.Lazy = nextBool;
+                nextBool = true;
+            }
+        }
+
+        public new void Index(string value)
+        {
+            if (!mapping.IsSpecified(x => x.Index))
+                mapping.Index = value;
         }
     }
 }

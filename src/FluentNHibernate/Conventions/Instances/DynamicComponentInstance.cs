@@ -54,5 +54,23 @@ namespace FluentNHibernate.Conventions.Instances
             mapping.Insert = nextBool;
             nextBool = true;
         }
+
+        public new void Unique()
+        {
+            if (mapping.IsSpecified(x => x.Unique))
+                return;
+
+            mapping.Unique = nextBool;
+            nextBool = true;
+        }
+
+        public new void OptimisticLock()
+        {
+            if (mapping.IsSpecified(x => x.OptimisticLock))
+                return;
+
+            mapping.OptimisticLock = nextBool;
+            nextBool = true;
+        }
     }
 }

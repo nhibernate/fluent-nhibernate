@@ -52,6 +52,26 @@ namespace FluentNHibernate.Testing.ConventionsTests
             VerifyModel(x => x.Update.ShouldBeTrue());
         }
 
+        [Test]
+        public void UniqueShouldntBeOverwritten()
+        {
+            Mapping(x => x.Unique());
+
+            Convention(x => x.Not.Unique());
+
+            VerifyModel(x => x.Unique.ShouldBeTrue());
+        }
+
+        [Test]
+        public void OptimisticLockShouldntBeOverwritten()
+        {
+            Mapping(x => x.OptimisticLock());
+
+            Convention(x => x.Not.OptimisticLock());
+
+            VerifyModel(x => x.OptimisticLock.ShouldBeTrue());
+        }
+
         #region Helpers
 
         private void Convention(Action<IComponentInstance> convention)

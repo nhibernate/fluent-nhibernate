@@ -6,6 +6,7 @@ namespace FluentNHibernate.Conventions.Instances
     {
         void Column(string column);
         void UnsavedValue(string unsavedValue);
+        void Length(int length);
         new IAccessInstance Access { get; }
         IGeneratorInstance GeneratedBy { get; }
     }

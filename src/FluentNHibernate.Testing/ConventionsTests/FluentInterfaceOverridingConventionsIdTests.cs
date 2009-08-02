@@ -65,6 +65,16 @@ namespace FluentNHibernate.Testing.ConventionsTests
             VerifyModel(x => x.UnsavedValue.ShouldEqual("one"));
         }
 
+        [Test]
+        public void LengthValueShouldntBeOverwritten()
+        {
+            Mapping<ExampleClass>(x => x.Id, x => x.Length(100));
+
+            Convention(x => x.Length(200));
+
+            VerifyModel(x => x.Length.ShouldEqual(100));
+        }
+
         #region Helpers
 
         private void Convention(Action<IIdentityInstance> convention)

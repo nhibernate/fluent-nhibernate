@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 
@@ -31,7 +32,31 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.Usage = "read-only";
         }
 
-        public void Custom(string custom)
+        public void Transactional()
+        {
+            if (!mapping.IsSpecified(x => x.Usage))
+                mapping.Usage = "transactional";
+        }
+
+        public void IncludeAll()
+        {
+            if (!mapping.IsSpecified(x => x.Include))
+                mapping.Include = "all";
+        }
+
+        public void IncludeNonLazy()
+        {
+            if (!mapping.IsSpecified(x => x.Include))
+                mapping.Include = "non-lazy";
+        }
+
+        public void CustomInclude(string include)
+        {
+            if (!mapping.IsSpecified(x => x.Include))
+                mapping.Include = include;
+        }
+
+        public void CustomUsage(string custom)
         {
             if (!mapping.IsSpecified(x => x.Usage))
                 mapping.Usage = custom;

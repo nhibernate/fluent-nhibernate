@@ -37,6 +37,12 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.UnsavedValue = unsavedValue;
         }
 
+        public new void Length(int length)
+        {
+            if (!mapping.IsSpecified(x => x.Length))
+                mapping.Length = length;
+        }
+
         public new IAccessInstance Access
         {
             get

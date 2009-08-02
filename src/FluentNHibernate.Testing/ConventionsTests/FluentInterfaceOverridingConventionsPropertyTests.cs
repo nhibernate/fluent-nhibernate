@@ -193,6 +193,56 @@ namespace FluentNHibernate.Testing.ConventionsTests
             VerifyModel(x => x.Columns.First().Length.ShouldEqual(100));
         }
 
+        [Test]
+        public void LazyShouldntBeOverwritten()
+        {
+            Mapping<ExampleClass>(x => x.LineOne, x => x.LazyLoad());
+
+            Convention(x => x.Not.LazyLoad());
+
+            VerifyModel(x => x.Lazy.ShouldBeTrue());
+        }
+
+        [Test]
+        public void IndexShouldntBeOverwritten()
+        {
+            Mapping<ExampleClass>(x => x.LineOne, x => x.Index("value"));
+
+            Convention(x => x.Index("xxx"));
+
+            VerifyModel(x => x.Index.ShouldEqual("value"));
+        }
+
+        [Test]
+        public void PrecisionShouldntBeOverwritten()
+        {
+            Mapping<ExampleClass>(x => x.LineOne, x => x.Precision(100));
+
+            Convention(x => x.Precision(200));
+
+            VerifyModel(x => x.Columns.First().Precision.ShouldEqual(100));
+        }
+
+        [Test]
+        public void ScaleShouldntBeOverwritten()
+        {
+            Mapping<ExampleClass>(x => x.LineOne, x => x.Scale(100));
+
+            Convention(x => x.Scale(200));
+
+            VerifyModel(x => x.Columns.First().Scale.ShouldEqual(100));
+        }
+
+        [Test]
+        public void DefaultShouldntBeOverwritten()
+        {
+            Mapping<ExampleClass>(x => x.LineOne, x => x.Default("value"));
+
+            Convention(x => x.Default("xxx"));
+
+            VerifyModel(x => x.Columns.First().Default.ShouldEqual("value"));
+        }
+
         #region Helpers
 
         private void Convention(Action<IPropertyInstance> convention)

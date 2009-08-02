@@ -7,6 +7,8 @@ namespace FluentNHibernate.Conventions.Instances
         new IAccessInstance Access { get; }
         void Update();
         void Insert();
+        void Unique();
+        void OptimisticLock();
     }
 
     public interface IComponentInstance : IComponentBaseInstance, IComponentInspector
