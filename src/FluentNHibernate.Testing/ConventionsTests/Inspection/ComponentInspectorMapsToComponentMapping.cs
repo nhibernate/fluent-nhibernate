@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void AccessMapped()
         {
             mapping.Access = "field";
-            inspector.Access.ShouldEqual(Access.Field());
+            inspector.Access.ShouldEqual(Access.Field);
         }
 
         [Test]

@@ -176,5 +176,15 @@ namespace FluentNHibernate.Mapping
         {
             ((AccessStrategyBuilder)this).Using(typeof(TPropertyAccessorClass));
         }
+
+        public void NoOp()
+        {
+            setValue("noop");
+        }
+
+        public void None()
+        {
+            setValue("none");
+        }
     }
 }

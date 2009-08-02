@@ -24,21 +24,21 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         [Test]
         public void IsAnyMatchesAnyOfTheSuppliedValues()
         {
-            acceptance.Expect(x => x.Access.IsAny(Access.Property(), Access.Field()));
+            acceptance.Expect(x => x.Access.IsAny(Access.Property, Access.Field));
                 
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.Field().ToString()}))
+                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.Field.ToString()}))
                 .ShouldBeTrue();
 
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.Property().ToString() }))
+                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.Property.ToString() }))
                 .ShouldBeTrue();
         }
 
         [Test]
         public void IsAnyFailsIfNoValuesMatch()
         {
-            acceptance.Expect(x => x.Access.IsAny(Access.Property(), Access.Field()));
+            acceptance.Expect(x => x.Access.IsAny(Access.Property, Access.Field));
 
             acceptance
                 .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.CamelCaseField().ToString() }))
@@ -48,21 +48,21 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         [Test]
         public void IsNotAnyFailsIfAnyOfTheSuppliedValuesMatch()
         {
-            acceptance.Expect(x => x.Access.IsNotAny(Access.Property(), Access.Field()));
+            acceptance.Expect(x => x.Access.IsNotAny(Access.Property, Access.Field));
 
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.Field().ToString() }))
+                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.Field.ToString() }))
                 .ShouldBeFalse();
 
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.Property().ToString() }))
+                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.Property.ToString() }))
                 .ShouldBeFalse();
         }
 
         [Test]
         public void IsNotAnySucceedsIfNoValuesMatch()
         {
-            acceptance.Expect(x => x.Access.IsNotAny(Access.Property(), Access.Field()));
+            acceptance.Expect(x => x.Access.IsNotAny(Access.Property, Access.Field));
 
             acceptance
                 .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.CamelCaseField().ToString() }))

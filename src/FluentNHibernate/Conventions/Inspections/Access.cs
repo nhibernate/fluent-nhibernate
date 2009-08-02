@@ -5,16 +5,12 @@ namespace FluentNHibernate.Conventions.Inspections
     public class Access
     {
         public static readonly Access Unset = new Access("");
-
-        public static Access Field()
-        {
-            return new Access("field");
-        }
-
-        public static Access BackField()
-        {
-            return new Access("backfield");
-        }
+        public static readonly Access Field = new Access("field");
+        public static readonly Access BackField = new Access("backfield");
+        public static readonly Access Property = new Access("property");
+        public static readonly Access ReadOnlyProperty = new Access("no-setter");
+        public static readonly Access NoOp = new Access("noop");
+        public static readonly Access None = new Access("none");
 
         public static Access CamelCaseField()
         {
@@ -39,16 +35,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public static Access PascalCaseField(PascalCasePrefix prefix)
         {
             return new Access("field.pascalcase" + prefix);
-        }
-
-        public static Access Property()
-        {
-            return new Access("property");
-        }
-
-        public static Access ReadOnlyProperty()
-        {
-            return new Access("no-setter");
         }
 
         public static Access ReadOnlyPropertyThroughCamelCaseField()

@@ -190,5 +190,19 @@ namespace FluentNHibernate.Mapping
 
             return parent;
         }
+
+        public new T NoOp()
+        {
+            setValue("noop");
+
+            return parent;
+        }
+
+        public new T None()
+        {
+            setValue("none");
+
+            return parent;
+        }
     }
 }
