@@ -157,7 +157,13 @@ namespace FluentNHibernate.Mapping
 
         public void KeyColumn(string column)
         {
-            var key = new KeyMapping();
+            KeyMapping key;
+
+            if (joinedSubclassAttributes.IsSpecified(x => x.Key))
+                key = joinedSubclassAttributes.Get(x => x.Key);
+            else
+                key = new KeyMapping();
+
             key.AddColumn(new ColumnMapping { Name = column });
 
             joinedSubclassAttributes.Set(x => x.Key, key);

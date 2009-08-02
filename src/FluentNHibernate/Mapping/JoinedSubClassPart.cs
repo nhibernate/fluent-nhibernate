@@ -9,7 +9,7 @@ namespace FluentNHibernate.Mapping
     public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclassMappingProvider
     {
         private readonly JoinedSubclassMapping mapping;
-        private readonly IList<string> columns = new List<string>();
+        private readonly ColumnNameCollection<JoinedSubClassPart<TSubclass>> columns;
         private bool nextBool = true;
 
         public JoinedSubClassPart(string keyColumn)
@@ -20,6 +20,7 @@ namespace FluentNHibernate.Mapping
 
         public JoinedSubClassPart(JoinedSubclassMapping mapping)
         {
+            columns = new ColumnNameCollection<JoinedSubClassPart<TSubclass>>(this);
             this.mapping = mapping;
         }
 
@@ -32,6 +33,11 @@ namespace FluentNHibernate.Mapping
             subclasses[typeof(TNextSubclass)] = subclass;
 
             mapping.AddSubclass(((ISubclassMappingProvider)subclass).GetSubclassMapping());
+        }
+
+        public ColumnNameCollection<JoinedSubClassPart<TSubclass>> KeyColumns
+        {
+            get { return columns; }
         }
 
         public JoinedSubClassPart<TSubclass> Table(string tableName)
@@ -115,7 +121,7 @@ namespace FluentNHibernate.Mapping
             mapping.Key = new KeyMapping { ContainingEntityType = typeof(TSubclass) };
             mapping.Name = typeof(TSubclass).AssemblyQualifiedName;
 
-            foreach (var column in columns)
+            foreach (var column in columns.List())
                 mapping.Key.AddColumn(new ColumnMapping { Name = column });
 
             foreach (var property in properties)
