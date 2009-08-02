@@ -125,7 +125,7 @@ namespace FluentNHibernate.Mapping
             var indexType = typeof(TChild).GetGenericArguments()[0];
             var valueType = typeof(TChild).GetGenericArguments()[1];
 
-            manyToManyIndex = new IndexManyToManyPart();
+            manyToManyIndex = new IndexManyToManyPart(typeof(ManyToManyPart<TChild>));
             manyToManyIndex.Column(indexColumn);
             manyToManyIndex.GetIndexMapping().Class = new TypeReference(indexType);
 
@@ -146,7 +146,7 @@ namespace FluentNHibernate.Mapping
         {
             EnsureDictionary();
 
-            manyToManyIndex = new IndexManyToManyPart();
+            manyToManyIndex = new IndexManyToManyPart(typeof(ManyToManyPart<TChild>));
             manyToManyIndex.Column(indexColumn);
             manyToManyIndex.GetIndexMapping().Class = new TypeReference(indexType);
 

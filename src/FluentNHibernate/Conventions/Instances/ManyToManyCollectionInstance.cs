@@ -6,11 +6,13 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public class ManyToManyCollectionInstance : CollectionInstance, IManyToManyCollectionInstance
     {
+        private readonly ICollectionMapping mapping;
+
         public ManyToManyCollectionInstance(ICollectionMapping mapping)
             : base(mapping)
         {
             nextBool = true;
-            
+            this.mapping = mapping;
         }
 
         IManyToManyInspector IManyToManyCollectionInspector.Relationship

@@ -328,15 +328,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void AppliesConventions()
-        {
-            new MappingTester<OneToManyComponentTarget>()
-                .Conventions(conventions => conventions.Add(new TestO2MConvention()))
-                .ForMapping(m => m.HasMany(x => x.SetOfComponents).Component(c => c.Map(x => x.Name)))
-                .Element("class/set").HasAttribute("name", "test");
-        }
-
-        [Test]
         public void SetsCascadeOffAsDefault()
         {
             new MappingTester<OneToManyComponentTarget>()

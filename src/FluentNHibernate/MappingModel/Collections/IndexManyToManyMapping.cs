@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public class IndexManyToManyMapping : MappingBase, IIndexMapping
+    public class IndexManyToManyMapping : MappingBase, IIndexMapping, IHasColumnMappings
     {
         private readonly AttributeStore<IndexManyToManyMapping> attributes;
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
@@ -22,6 +21,8 @@ namespace FluentNHibernate.MappingModel.Collections
                 visitor.Visit(column);
         }
 
+        public Type ContainingEntityType { get; set; }
+
         public TypeReference Class
         {
             get { return attributes.Get(x => x.Class); }
@@ -36,6 +37,22 @@ namespace FluentNHibernate.MappingModel.Collections
         public void AddColumn(ColumnMapping mapping)
         {
             columns.Add(mapping);
+        }
+
+        public void AddDefaultColumn(ColumnMapping mapping)
+        {
+            columns.AddDefault(mapping);
+        }
+
+        public void ClearColumns()
+        {
+            columns.Clear();
+        }
+
+        public string ForeignKey
+        {
+            get { return attributes.Get(x => x.ForeignKey); }
+            set { attributes.Set(x => x.ForeignKey, value); }
         }
 
         public bool IsSpecified<TResult>(Expression<Func<IndexManyToManyMapping, TResult>> property)
