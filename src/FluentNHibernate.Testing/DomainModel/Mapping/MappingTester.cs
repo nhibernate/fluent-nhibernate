@@ -38,7 +38,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public virtual MappingTester<T> Conventions(Action<IConventionFinder> conventionFinderAction)
         {
-            conventionFinderAction(model.ConventionFinder);
+            conventionFinderAction(model.Conventions);
             return this;
         }
 

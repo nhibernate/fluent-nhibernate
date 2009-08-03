@@ -210,7 +210,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         private void Convention(Action<IOneToManyCollectionInstance> convention)
         {
-            model.ConventionFinder.Add(new OneToManyCollectionConventionBuilder().Always(convention));
+            model.Conventions.Add(new OneToManyCollectionConventionBuilder().Always(convention));
         }
 
         private void Mapping<TChild>(Expression<Func<ExampleInheritedClass, IEnumerable<TChild>>> property, Action<OneToManyPart<TChild>> mappingDefinition)

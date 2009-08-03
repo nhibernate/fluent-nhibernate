@@ -192,7 +192,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         private void Convention(Action<IManyToOneInstance> convention)
         {
-            model.ConventionFinder.Add(new ReferenceConventionBuilder().Always(convention));
+            model.Conventions.Add(new ReferenceConventionBuilder().Always(convention));
         }
 
         private void Mapping(Action<ManyToOnePart<ExampleParentClass>> mappingDefinition)

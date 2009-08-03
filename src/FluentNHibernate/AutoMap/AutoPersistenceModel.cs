@@ -49,7 +49,7 @@ namespace FluentNHibernate.AutoMap
         /// </summary>
         public new SetupConventionFinder<AutoPersistenceModel> ConventionFinder
         {
-            get { return new SetupConventionFinder<AutoPersistenceModel>(this, base.ConventionFinder); }
+            get { return new SetupConventionFinder<AutoPersistenceModel>(this, base.Conventions); }
         }
 
         /// <summary>

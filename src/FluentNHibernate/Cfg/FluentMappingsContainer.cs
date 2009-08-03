@@ -88,7 +88,7 @@ namespace FluentNHibernate.Cfg
         /// </summary>
         public SetupConventionFinder<FluentMappingsContainer> ConventionDiscovery
         {
-            get { return new SetupConventionFinder<FluentMappingsContainer>(this, model.ConventionFinder); }
+            get { return new SetupConventionFinder<FluentMappingsContainer>(this, model.Conventions); }
         }
 
         /// <summary>

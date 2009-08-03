@@ -21,16 +21,16 @@ namespace FluentNHibernate
         protected readonly IList<IMappingProvider> classProviders = new List<IMappingProvider>();
         protected readonly IList<IIndeterminateSubclassMappingProvider> subclassProviders = new List<IIndeterminateSubclassMappingProvider>();
         private readonly IList<IMappingModelVisitor> visitors = new List<IMappingModelVisitor>();
-        public IConventionFinder ConventionFinder { get; private set; }
+        public IConventionFinder Conventions { get; private set; }
         public bool MergeMappings { get; set; }
         private IEnumerable<HibernateMapping> compiledMappings;
 
         public PersistenceModel(IConventionFinder conventionFinder)
         {
-            ConventionFinder = conventionFinder;
+            Conventions = conventionFinder;
 
             visitors.Add(new SeparateSubclassVisitor(subclassProviders));
-            visitors.Add(new ConventionVisitor(ConventionFinder));
+            visitors.Add(new ConventionVisitor(Conventions));
 
             AddDefaultConventions();
         }
@@ -45,7 +45,7 @@ namespace FluentNHibernate
                                       where type.Namespace == "FluentNHibernate.Conventions.Defaults" && !type.IsAbstract
                                       select type)
             {
-                ConventionFinder.Add(foundType);
+                Conventions.Add(foundType);
             }
         }
 

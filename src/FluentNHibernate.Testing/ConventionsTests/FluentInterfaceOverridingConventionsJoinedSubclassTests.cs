@@ -117,7 +117,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         private void Convention(Action<IJoinedSubclassInstance> convention)
         {
-            model.ConventionFinder.Add(new JoinedSubclassConventionBuilder().Always(convention));
+            model.Conventions.Add(new JoinedSubclassConventionBuilder().Always(convention));
         }
 
         private void Mapping(Action<JoinedSubClassPart<ExampleInheritedClass>> mappingDefinition)

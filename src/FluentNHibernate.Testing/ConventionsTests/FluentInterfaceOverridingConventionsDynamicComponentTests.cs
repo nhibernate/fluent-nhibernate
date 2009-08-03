@@ -77,7 +77,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         private void Convention(Action<IDynamicComponentInstance> convention)
         {
-            model.ConventionFinder.Add(new DynamicComponentConventionBuilder().Always(convention));
+            model.Conventions.Add(new DynamicComponentConventionBuilder().Always(convention));
         }
 
         private void Mapping(Action<DynamicComponentPart<IDictionary>> mappingDefinition)

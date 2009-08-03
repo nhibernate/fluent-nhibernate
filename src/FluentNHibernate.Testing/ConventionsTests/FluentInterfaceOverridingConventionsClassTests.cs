@@ -117,7 +117,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         private void Convention(Action<IClassInstance> convention)
         {
-            model.ConventionFinder.Add(new ClassConventionBuilder().Always(convention));
+            model.Conventions.Add(new ClassConventionBuilder().Always(convention));
         }
 
         private void Mapping<T>(Action<ClassMap<T>> mappingDefinition)

@@ -79,7 +79,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         private void Convention(Action<IIdentityInstance> convention)
         {
-            model.ConventionFinder.Add(new IdConventionBuilder().Always(convention));
+            model.Conventions.Add(new IdConventionBuilder().Always(convention));
         }
 
         private void Mapping<T>(Expression<Func<T, object>> property, Action<IdentityPart> mappingDefinition)
