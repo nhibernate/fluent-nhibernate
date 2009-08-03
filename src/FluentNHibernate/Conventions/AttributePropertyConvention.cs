@@ -11,7 +11,7 @@ namespace FluentNHibernate.Conventions
     /// attribute based conventions.
     /// </summary>
     /// <typeparam name="T">Attribute identifier</typeparam>
-    public abstract class AttributePropertyConvention<T> : IPropertyConvention, IConventionAcceptance<IPropertyInspector>
+    public abstract class AttributePropertyConvention<T> : IPropertyConvention, IPropertyConventionAcceptance
         where T : Attribute
     {
         public void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
