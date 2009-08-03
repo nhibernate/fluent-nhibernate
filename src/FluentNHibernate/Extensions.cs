@@ -13,7 +13,7 @@ namespace FluentNHibernate
         public static Configuration AddMappingsFromAssembly(this Configuration configuration, Assembly assembly)
         {
             var models = new PersistenceModel();
-            //models.AddMappingsFromAssembly(assembly);
+            models.AddMappingsFromAssembly(assembly);
             models.Configure(configuration);
 
             return configuration;
