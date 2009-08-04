@@ -1,24 +1,35 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {
     public class DynamicComponentPart<T> : ComponentPartBase<T>
     {
+        private readonly Type entity;
         private readonly AccessStrategyBuilder<DynamicComponentPart<T>> access;
+        private readonly AttributeStore<DynamicComponentMapping> attributes;
 
         public DynamicComponentPart(Type entity, PropertyInfo property)
-            : this(new DynamicComponentMapping { ContainingEntityType = entity }, property.Name)
+            : this(entity, property.Name, new AttributeStore())
         {}
 
-        private DynamicComponentPart(DynamicComponentMapping mapping, string propertyName)
-            : base(mapping, propertyName)
+        private DynamicComponentPart(Type entity, string propertyName, AttributeStore underlyingStore)
+            : base(underlyingStore, propertyName)
         {
-            access = new AccessStrategyBuilder<DynamicComponentPart<T>>(this, value => mapping.Access = value);
+            this.entity = entity;
+            attributes = new AttributeStore<DynamicComponentMapping>(underlyingStore);
+            access = new AccessStrategyBuilder<DynamicComponentPart<T>>(this, value => attributes.Set(x => x.Access, value));
+        }
 
-            this.mapping = mapping;
+        protected override IComponentMapping CreateComponentMappingRoot(AttributeStore store)
+        {
+            return new DynamicComponentMapping(store)
+            {
+                ContainingEntityType = entity
+            };
         }
 
         /// <summary>

@@ -1,25 +1,38 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {
     public class ComponentPart<T> : ComponentPartBase<T>
     {
+        private readonly Type entity;
         private readonly AccessStrategyBuilder<ComponentPart<T>> access;
+        private readonly AttributeStore<ComponentMapping> attributes;
 
         public ComponentPart(Type entity, PropertyInfo property)
-            : this(new ComponentMapping { ContainingEntityType = entity }, property.Name)
-        { }
+            : this(entity, property.Name, new AttributeStore())
+        {}
 
-        private ComponentPart(ComponentMapping mapping, string propertyName)
-            : base(mapping, propertyName)
+        private ComponentPart(Type entity, string propertyName, AttributeStore underlyingStore)
+            : base(underlyingStore, propertyName)
         {
-            access = new AccessStrategyBuilder<ComponentPart<T>>(this, value => mapping.Access = value);
+            attributes = new AttributeStore<ComponentMapping>(underlyingStore);
+            access = new AccessStrategyBuilder<ComponentPart<T>>(this, value => attributes.Set(x => x.Access, value));
+            this.entity = entity;
 
             Insert();
             Update();
+        }
+
+        protected override IComponentMapping CreateComponentMappingRoot(AttributeStore store)
+        {
+            return new ComponentMapping(store)
+            {
+                ContainingEntityType = entity
+            };
         }
 
         /// <summary>
@@ -65,7 +78,7 @@ namespace FluentNHibernate.Mapping
 
         public ComponentPart<T> LazyLoad()
         {
-            mapping.Lazy = nextBool;
+            attributes.Set(x => x.Lazy, nextBool);
             nextBool = true;
             return this;
         }

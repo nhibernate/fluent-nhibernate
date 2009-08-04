@@ -12,18 +12,22 @@ namespace FluentNHibernate.Mapping
     {
         private readonly string propertyName;
         private readonly AccessStrategyBuilder<ComponentPartBase<T>> access;
-        protected ComponentMappingBase mapping;
         protected bool nextBool = true;
+        private readonly AttributeStore<ComponentMappingBase> attributes;
 
-        protected ComponentPartBase(ComponentMappingBase mapping, string propertyName)
+        protected ComponentPartBase(AttributeStore underlyingStore, string propertyName)
         {
-            this.mapping = mapping;
-            access = new AccessStrategyBuilder<ComponentPartBase<T>>(this, value => mapping.Access = value);
+            attributes = new AttributeStore<ComponentMappingBase>(underlyingStore);
+            access = new AccessStrategyBuilder<ComponentPartBase<T>>(this, value => attributes.Set(x => x.Access, value));
             this.propertyName = propertyName;
         }
 
+        protected abstract IComponentMapping CreateComponentMappingRoot(AttributeStore store);
+
         IComponentMapping IComponentMappingProvider.GetComponentMapping()
         {
+            var mapping = CreateComponentMappingRoot(attributes.CloneInner());
+
             mapping.Name = propertyName;
 
             foreach (var property in properties)
@@ -62,11 +66,11 @@ namespace FluentNHibernate.Mapping
 
         private ComponentPartBase<T> ParentReference(PropertyInfo property)
         {
-            mapping.Parent = new ParentMapping
+            attributes.Set(x => x.Parent, new ParentMapping
             {
                 Name = property.Name,
                 ContainingEntityType = typeof(T)
-            };
+            });
 
             return this;
         }
@@ -82,8 +86,8 @@ namespace FluentNHibernate.Mapping
 
         public ComponentPartBase<T> ReadOnly()
         {
-            mapping.Insert = !nextBool;
-            mapping.Update = !nextBool;
+            attributes.Set(x => x.Insert, !nextBool);
+            attributes.Set(x => x.Update, !nextBool);
             nextBool = true;
 
             return this;
@@ -91,28 +95,28 @@ namespace FluentNHibernate.Mapping
 
         public ComponentPartBase<T> Insert()
         {
-            mapping.Insert = nextBool;
+            attributes.Set(x => x.Insert, nextBool);
             nextBool = true;
             return this;
         }
 
         public ComponentPartBase<T> Update()
         {
-            mapping.Update = nextBool;
+            attributes.Set(x => x.Update, nextBool);
             nextBool = true;
             return this;
         }
 
         public ComponentPartBase<T> Unique()
         {
-            mapping.Unique = nextBool;
+            attributes.Set(x => x.Unique, nextBool);
             nextBool = true;
             return this;
         }
 
         public ComponentPartBase<T> OptimisticLock()
         {
-            mapping.OptimisticLock = nextBool;
+            attributes.Set(x => x.OptimisticLock, nextBool);
             nextBool = true;
             return this;
         }

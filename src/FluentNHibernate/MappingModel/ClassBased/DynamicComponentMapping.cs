@@ -11,7 +11,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             : this(new AttributeStore())
         { }
 
-        private DynamicComponentMapping(AttributeStore store)
+        public DynamicComponentMapping(AttributeStore store)
             : base(store)
         {
             attributes = new AttributeStore<DynamicComponentMapping>(store);

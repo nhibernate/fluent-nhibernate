@@ -25,7 +25,7 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public ISubclassMapping GetSubclassMapping(ISubclassMapping mapping)
+        ISubclassMapping IIndeterminateSubclassMappingProvider.GetSubclassMapping(ISubclassMapping mapping)
         {
             GenerateNestedSubclasses(mapping);
 

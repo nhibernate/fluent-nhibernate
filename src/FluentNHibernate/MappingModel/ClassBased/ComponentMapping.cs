@@ -11,7 +11,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             : this(new AttributeStore())
         {}
 
-        private ComponentMapping(AttributeStore store)
+        public ComponentMapping(AttributeStore store)
             : base(store)
         {
             attributes = new AttributeStore<ComponentMapping>(store);

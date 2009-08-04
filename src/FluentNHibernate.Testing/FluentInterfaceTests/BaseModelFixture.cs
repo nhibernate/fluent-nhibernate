@@ -40,7 +40,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<SubclassMap<T>, SubclassMapping> SubclassMapForSubclass<T>()
         {
-            return new ModelTester<SubclassMap<T>, SubclassMapping>(() => new SubclassMap<T>(), x => (SubclassMapping)x.GetSubclassMapping(new SubclassMapping()));
+            return new ModelTester<SubclassMap<T>, SubclassMapping>(() => new SubclassMap<T>(), x => (SubclassMapping)((IIndeterminateSubclassMappingProvider)x).GetSubclassMapping(new SubclassMapping()));
         }
 
         protected ModelTester<JoinedSubClassPart<T>, JoinedSubclassMapping> JoinedSubclass<T>()
@@ -50,7 +50,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<SubclassMap<T>, JoinedSubclassMapping> SubclassMapForJoinedSubclass<T>()
         {
-            return new ModelTester<SubclassMap<T>, JoinedSubclassMapping>(() => new SubclassMap<T>(), x => (JoinedSubclassMapping)x.GetSubclassMapping(new JoinedSubclassMapping()));
+            return new ModelTester<SubclassMap<T>, JoinedSubclassMapping>(() => new SubclassMap<T>(), x => (JoinedSubclassMapping)((IIndeterminateSubclassMappingProvider)x).GetSubclassMapping(new JoinedSubclassMapping()));
         }
 
         protected ModelTester<ComponentPart<T>, ComponentMapping> Component<T>()

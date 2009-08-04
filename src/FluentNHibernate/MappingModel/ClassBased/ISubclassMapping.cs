@@ -9,6 +9,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         string Name { get; set; }
         Type Type { get; }
         IEnumerable<ISubclassMapping> Subclasses { get; }
+        IEnumerable<IComponentMapping> Components { get; }
         void OverrideAttributes(AttributeStore store);
         void AddProperty(PropertyMapping mapping);
         void AddComponent(IComponentMapping mapping);

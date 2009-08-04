@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
@@ -14,6 +16,44 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             SubclassMapForSubclass<PropertyTarget>()
                 .Mapping(m => m.Component(x => x.Component, c => { }))
                 .ModelShouldMatch(x => x.Components.Count().ShouldEqual(1));
+        }
+
+        [Test]
+        public void ComponentWithPropertiesShouldAddToModelComponentsCollection()
+        {
+            var classMap = new ClassMap<Parent>();
+
+            classMap.Id(x => x.Id);
+
+            var subclassMap = new SubclassMap<Child>();
+
+            subclassMap.Component(x => x.Component, c => c.Map(x => x.Name));
+
+            var model = new PersistenceModel();
+
+            model.Add(classMap);
+            model.Add(subclassMap);
+
+            model.BuildMappings()
+                .First()
+                .Classes.First()
+                .Subclasses.First()
+                .Components.Count().ShouldEqual(1);
+        }
+
+        private class Parent
+        {
+            public int Id { get; set; }
+        }
+
+        private class Child : Parent
+        {
+            public Component Component { get; set; }
+        }
+
+        private class Component
+        {
+            public string Name { get; set; }
         }
 
         [Test]
