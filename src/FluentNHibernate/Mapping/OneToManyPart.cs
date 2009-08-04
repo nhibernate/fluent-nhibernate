@@ -81,5 +81,14 @@ namespace FluentNHibernate.Mapping
             keyAttributes.Set(x => x.ForeignKey, foreignKeyName);
             return this;
         }
+
+		/// <summary>
+		/// Sets the order-by clause for this one-to-many relationship.
+		/// </summary>
+    	public OneToManyPart<TChild> OrderBy(string orderBy)
+    	{
+			collectionAttributes.Set(x => x.OrderBy, orderBy);
+			return this;
+    	}
     }
 }

@@ -658,6 +658,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/map/index").HasAttribute("type", typeof(Int32).AssemblyQualifiedName);
         }
 
+    	[Test]
+    	public void CanSpecifyOrderByClause()
+    	{
+			new MappingTester<OneToManyTarget>()
+				.ForMapping(m => m.HasMany(x => x.BagOfChildren).OrderBy("foo"))
+				.Element("class/bag").HasAttribute("order-by", "foo");
+    	}
+
+    	[Test]
+    	public void OrderByClauseIgnoredForUnorderableCollections()
+    	{
+			new MappingTester<OneToManyTarget>()
+				.ForMapping(m => m.HasMany(x => x.MapOfChildren).AsMap("indexCol"))
+				.Element("class/map").DoesntHaveAttribute("order-by");
+    	}
+
         private class TestO2MConvention : IHasManyConvention
         {
             public void Accept(IAcceptanceCriteria<IOneToManyCollectionInspector> acceptance)
