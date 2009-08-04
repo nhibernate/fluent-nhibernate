@@ -47,7 +47,7 @@ namespace FluentNHibernate.AutoMap
         /// <summary>
         /// Alter convention discovery
         /// </summary>
-        public new SetupConventionFinder<AutoPersistenceModel> ConventionFinder
+        public new SetupConventionFinder<AutoPersistenceModel> Conventions
         {
             get { return new SetupConventionFinder<AutoPersistenceModel>(this, base.Conventions); }
         }
@@ -173,7 +173,7 @@ namespace FluentNHibernate.AutoMap
         public AutoPersistenceModel()
         {
             Expressions = new AutoMappingExpressions();
-            autoMapper = new AutoMapper(Expressions, ConventionFinder, inlineOverrides);
+            autoMapper = new AutoMapper(Expressions, Conventions, inlineOverrides);
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace FluentNHibernate.AutoMap
         {
             Expressions = new AutoMappingExpressions();
             AddMappingsFromAssembly(mapAssembly);
-            autoMapper = new AutoMapper(Expressions, ConventionFinder, inlineOverrides);
+            autoMapper = new AutoMapper(Expressions, Conventions, inlineOverrides);
         }
 
         public AutoPersistenceModel(AutoMapper customAutomapper)
