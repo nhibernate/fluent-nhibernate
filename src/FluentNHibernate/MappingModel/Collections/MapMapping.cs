@@ -32,7 +32,7 @@ namespace FluentNHibernate.MappingModel.Collections
             base.AcceptVisitor(visitor);
         }
 
-        public string OrderBy
+        public override string OrderBy
         {
             get { return attributes.Get(x => x.OrderBy); }
             set { attributes.Set(x => x.OrderBy, value); }

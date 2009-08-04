@@ -129,7 +129,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Where, value); }
         }
 
-        public TypeReference Persister
+    	public TypeReference Persister
         {
             get { return attributes.Get(x => x.Persister); }
             set { attributes.Set(x => x.Persister, value); }
@@ -173,5 +173,7 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             attributes.SetDefault(property, value);
         }
+
+		public abstract string OrderBy { get; set; }
     }
 }

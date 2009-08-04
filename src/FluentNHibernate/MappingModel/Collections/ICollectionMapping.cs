@@ -15,6 +15,7 @@ namespace FluentNHibernate.MappingModel.Collections
         string Fetch { get; set; }
         string Cascade { get; set; }
         string Where { get; set; }
+		string OrderBy { get; set; }
         TypeReference Persister { get; set; }
         string Name { get; set; }
         int BatchSize { get; set; }

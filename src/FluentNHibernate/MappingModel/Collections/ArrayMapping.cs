@@ -33,7 +33,13 @@ namespace FluentNHibernate.MappingModel.Collections
             base.AcceptVisitor(visitor);
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<ArrayMapping, TResult>> property)
+    	public override string OrderBy
+    	{
+			get { return null; }
+    		set { /* no-op */  }
+    	}
+
+    	public bool IsSpecified<TResult>(Expression<Func<ArrayMapping, TResult>> property)
         {
             return attributes.IsSpecified(property);
         }
