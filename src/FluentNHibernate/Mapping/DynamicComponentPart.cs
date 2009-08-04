@@ -73,5 +73,20 @@ namespace FluentNHibernate.Mapping
             base.OptimisticLock();
             return this;
         }
+
+        public PropertyMap Map(string key)
+        {
+            return Map<string>(key);
+        }
+
+        public PropertyMap Map<TProperty>(string key)
+        {
+            var property = new DummyPropertyInfo(key, typeof(TProperty));
+            var propertyMap = new PropertyMap(property, typeof(T));
+
+            properties.Add(propertyMap);
+
+            return propertyMap;
+        }
     }
 }
