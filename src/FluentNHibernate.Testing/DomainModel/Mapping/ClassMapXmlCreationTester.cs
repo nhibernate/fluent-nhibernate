@@ -364,7 +364,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void SpanningClassAcrossTwoTables()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.Table("tableTwo", t => t.Map(x => x.Name)))
+                .ForMapping(m => m.Join("tableTwo", t => t.Map(x => x.Name)))
                 .Element("class/join").Exists();
         }
 

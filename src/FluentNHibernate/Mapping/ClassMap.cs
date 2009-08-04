@@ -249,7 +249,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="tableName">Joined table name</param>
         /// <param name="action">Joined table mapping</param>
-        public void Table(string tableName, Action<JoinPart<T>> action)
+        public void Join(string tableName, Action<JoinPart<T>> action)
         {
             var join = new JoinPart<T>(tableName);
             action(join);

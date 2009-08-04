@@ -10,7 +10,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CreatesJoinElement()
         {
             new MappingTester<JoinTarget>()
-                .ForMapping(m => m.Table("myTable", t => t.Map(x => x.Name)))
+                .ForMapping(m => m.Join("myTable", t => t.Map(x => x.Name)))
                 .Element("class/join").Exists();
         }
 
@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void JoinElementHasTableName()
         {
             new MappingTester<JoinTarget>()
-                .ForMapping(m => m.Table("myTable", t => t.Map(x => x.Name)))
+                .ForMapping(m => m.Join("myTable", t => t.Map(x => x.Name)))
                 .Element("class/join").HasAttribute("table", "myTable");
         }
 
@@ -26,7 +26,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void PropertiesInJoinAreOutputInTheJoinElement()
         {
             new MappingTester<JoinTarget>()
-                .ForMapping(m => m.Table("myTable", t => t.Map(x => x.Name)))
+                .ForMapping(m => m.Join("myTable", t => t.Map(x => x.Name)))
                 .Element("class/join/property").HasAttribute("name", "Name");
         }
 
@@ -37,7 +37,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m =>
                 {
                     m.Map(x => x.Name);
-                    m.Table("myTable", t => t.Map(x => x.CustomerName));
+                    m.Join("myTable", t => t.Map(x => x.CustomerName));
                 })
                 .Element("class/property").HasAttribute("name", "Name")
                 .Element("class/join/property").HasAttribute("name", "CustomerName");
@@ -47,7 +47,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void JoinElementAlwaysHasAKey()
         {
             new MappingTester<JoinTarget>()
-                .ForMapping(m => m.Table("myTable", t => t.Map(x => x.Name)))
+                .ForMapping(m => m.Join("myTable", t => t.Map(x => x.Name)))
                 .Element("class/join/key").Exists();
         }
 
@@ -55,7 +55,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void KeyDefaultsToClassNameId()
         {
             new MappingTester<JoinTarget>()
-                .ForMapping(m => m.Table("myTable", t => t.Map(x => x.Name)))
+                .ForMapping(m => m.Join("myTable", t => t.Map(x => x.Name)))
                 .Element("class/join/key/column").HasAttribute("name", "JoinTargetID");
         }
 
@@ -63,7 +63,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanOverrideKey()
         {
             new MappingTester<JoinTarget>()
-                .ForMapping(m => m.Table("myTable", t => t.KeyColumn("ID")))
+                .ForMapping(m => m.Join("myTable", t => t.KeyColumn("ID")))
                 .Element("class/join/key/column").HasAttribute("name", "ID");
         }
 
@@ -76,7 +76,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 {
                     m.Map(x => x.Name);
                     m.HasMany(x => x.Children);
-                    m.Table("myTable", t => t.KeyColumn("ID"));
+                    m.Join("myTable", t => t.KeyColumn("ID"));
                 })
                 .Element("class/*[last()]").HasName("join");
         }
