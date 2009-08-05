@@ -275,5 +275,21 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/map/index-many-to-many/column").HasAttribute("name", "index1")
                 .Element("class/map/many-to-many/column").HasAttribute("name", "index2");
         }
+
+        [Test]
+        public void CanSpecifyOrderByClause()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(m => m.HasMany(x => x.BagOfChildren).OrderBy("foo"))
+                .Element("class/bag").HasAttribute("order-by", "foo");
+        }
+      
+        [Test]
+        public void OrderByClauseIgnoredForUnorderableCollections()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(m => m.HasMany(x => x.MapOfChildren).AsMap("indexCol"))
+                .Element("class/map").DoesntHaveAttribute("order-by");
+        }
     }
 }
