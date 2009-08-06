@@ -7,16 +7,9 @@ using FluentNHibernate.Conventions.Inspections;
 namespace FluentNHibernate.Conventions
 {
     public abstract class ForeignKeyConvention
-        : IReferenceConvention, IConventionAcceptance<IManyToOneInspector>,
-          IHasManyConvention, IConventionAcceptance<IOneToManyCollectionInspector>,
-          IHasManyToManyConvention, IConventionAcceptance<IManyToManyCollectionInspector>
+        : IReferenceConvention, IHasManyConvention, IHasManyToManyConvention, IJoinedSubclassConvention
     {
         protected abstract string GetKeyName(PropertyInfo property, Type type);
-
-        public void Accept(IAcceptanceCriteria<IManyToOneInspector> acceptance)
-        {
-            acceptance.Expect(x => x.Columns.IsEmpty());
-        }
 
         public void Apply(IManyToOneInstance instance)
         {
@@ -25,21 +18,11 @@ namespace FluentNHibernate.Conventions
             instance.Column(columnName);
         }
 
-        public void Accept(IAcceptanceCriteria<IOneToManyCollectionInspector> acceptance)
-        {
-            acceptance.Expect(x => x.Key.Columns.IsEmpty());
-        }
-
         public void Apply(IOneToManyCollectionInstance instance)
         {
             var columnName = GetKeyName(null, instance.EntityType);
 
             instance.Key.Column(columnName);
-        }
-
-        public void Accept(IAcceptanceCriteria<IManyToManyCollectionInspector> acceptance)
-        {
-            acceptance.Expect(x => x.Key.Columns.IsEmpty() || x.Relationship.Columns.IsEmpty());
         }
 
         public void Apply(IManyToManyCollectionInstance instance)
@@ -52,6 +35,13 @@ namespace FluentNHibernate.Conventions
 
             if (instance.Relationship.Columns.IsEmpty())
                 instance.Relationship.Column(childColumn);
+        }
+
+        public void Apply(IJoinedSubclassInstance instance)
+        {
+            var columnName = GetKeyName(null, instance.Type);
+            
+            instance.Key.Column(columnName);
         }
     }
 }
