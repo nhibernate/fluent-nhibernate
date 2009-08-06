@@ -30,6 +30,8 @@ namespace FluentNHibernate
             Conventions = conventionFinder;
 
             visitors.Add(new SeparateSubclassVisitor(subclassProviders));
+            visitors.Add(new BiDirectionalManyToManyPairingVisitor());
+            visitors.Add(new ManyToManyTableNameVisitor());
             visitors.Add(new ConventionVisitor(Conventions));
 
             AddDefaultConventions();
@@ -121,8 +123,7 @@ namespace FluentNHibernate
             else
                 BuildSeparateMappings(hbms.Add);
 
-            foreach (var mapping in hbms)
-                ApplyVisitors(mapping);
+            ApplyVisitors(hbms);
 
             return hbms;
         }
@@ -152,10 +153,11 @@ namespace FluentNHibernate
                 add(hbm);
         }
 
-        public void ApplyVisitors(HibernateMapping mapping)
+        private void ApplyVisitors(IEnumerable<HibernateMapping> mappings)
         {
             foreach (var visitor in visitors)
-                mapping.AcceptVisitor(visitor);
+                foreach (var mapping in mappings)
+                    mapping.AcceptVisitor(visitor);
         }
 
         private void EnsureMappingsBuilt()

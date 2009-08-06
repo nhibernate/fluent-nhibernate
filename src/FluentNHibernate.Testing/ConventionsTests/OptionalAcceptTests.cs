@@ -60,9 +60,9 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         private class ConventionWithFailingAccept : IClassConvention, IConventionAcceptance<IClassInspector>
         {
-            public void Accept(IAcceptanceCriteria<IClassInspector> acceptance)
+            public void Accept(IAcceptanceCriteria<IClassInspector> criteria)
             {
-                acceptance.Expect(x => x.TableName == "test"); // never true
+                criteria.Expect(x => x.TableName == "test"); // never true
             }
 
             public void Apply(IClassInstance instance)
@@ -73,9 +73,9 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         private class ConventionWithSuccessfulAccept : IClassConvention, IConventionAcceptance<IClassInspector>
         {
-            public void Accept(IAcceptanceCriteria<IClassInspector> acceptance)
+            public void Accept(IAcceptanceCriteria<IClassInspector> criteria)
             {
-                acceptance.Expect(x => x.TableName, Is.Not.Set); // always true
+                criteria.Expect(x => x.TableName, Is.Not.Set); // always true
             }
 
             public void Apply(IClassInstance instance)

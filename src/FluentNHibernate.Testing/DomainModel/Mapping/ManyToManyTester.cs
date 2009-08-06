@@ -1,6 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel.Collections;
 using Iesi.Collections.Generic;
 using NUnit.Framework;
 
@@ -29,6 +34,21 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         private IList<ChildObject> otherChildren = new List<ChildObject>();
         public virtual IList<ChildObject> GetOtherChildren() { return otherChildren; }
+    }
+
+    public class Left
+    {
+        public virtual int Id { get; set; }
+        public virtual IList<Right> Rights { get; set; }
+        public virtual IList<Right> SecondRights { get; set; }
+    }
+
+    public class Right
+    {
+        public virtual int Id { get; set; }
+        public virtual IList<Left> Lefts { get; set; }
+        public virtual IList<Left> SecondLefts { get; set; }
+        public virtual IList<Left> ThirdLefts { get; set; }
     }
 
     [TestFixture]

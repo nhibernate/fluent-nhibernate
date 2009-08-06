@@ -27,6 +27,18 @@ namespace FluentNHibernate.Conventions.Instances
                 return this;
             }
         }
+        
+        public IManyToManyCollectionInstance OtherSide
+        {
+            get
+            {
+                if (mapping.OtherSide == null)
+                    return null;
+
+                return new ManyToManyCollectionInstance(mapping.OtherSide);
+            }
+        }
+
         public IManyToManyInstance Relationship
         {
             get { return new ManyToManyInstance((ManyToManyMapping)mapping.Relationship); }
@@ -34,6 +46,16 @@ namespace FluentNHibernate.Conventions.Instances
         public Type ChildType
         {
             get { return mapping.ChildType; }
+        }
+
+        public bool HasExplicitTable
+        {
+            get { return mapping.IsSpecified(x => x.TableName); }
+        }
+
+        IManyToManyCollectionInspector IManyToManyCollectionInspector.OtherSide
+        {
+            get { return OtherSide; }
         }
     }
 }

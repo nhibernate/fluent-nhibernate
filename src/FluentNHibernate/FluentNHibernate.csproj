@@ -319,7 +319,10 @@
     <Compile Include="Conventions\ISubclassConventionAcceptance.cs" />
     <Compile Include="Conventions\IUserTypeConvention.cs" />
     <Compile Include="Conventions\IVersionConventionAcceptance.cs" />
+    <Compile Include="Conventions\ManyToManyTableNameConvention.cs" />
     <Compile Include="Conventions\ObjectExtensionsForConventions.cs" />
+    <Compile Include="MappingModel\BiDirectionalManyToManyPairingVisitor.cs" />
+    <Compile Include="MappingModel\ManyToManyTableNameVisitor.cs" />
     <Compile Include="Mapping\PolymorphismBuilder.cs" />
     <Compile Include="SeparateSubclassVisitor.cs" />
     <Compile Include="MappingModel\Collections\IIndexedCollectionMapping.cs" />
@@ -518,7 +521,6 @@
     <Compile Include="Conventions\UserTypeConvention.cs" />
     <Compile Include="Conventions\AttributePropertyConvention.cs" />
     <Compile Include="Conventions\Defaults\CollectionMethodAccessorBackingFieldNamingConvention.cs" />
-    <Compile Include="Conventions\Defaults\HasManyToManyJoinTableNameConvention.cs" />
     <Compile Include="Conventions\IClassConvention.cs" />
     <Compile Include="Conventions\IComponentConvention.cs" />
     <Compile Include="Conventions\IConvention.cs" />

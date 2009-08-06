@@ -12,9 +12,9 @@ namespace FluentNHibernate.Conventions.Defaults
     /// </summary>
     public class NullableEnumerationPropertyConvention : IPropertyConvention, IConventionAcceptance<IPropertyInspector>
     {
-        public void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
+        public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
         {
-            acceptance
+            criteria
                 .Expect(x => x.Type.IsGenericType)
                 .Expect(x => x.Type.IsNullable)
                 .Expect(x => x.Type.GenericArguments.First().IsEnum);

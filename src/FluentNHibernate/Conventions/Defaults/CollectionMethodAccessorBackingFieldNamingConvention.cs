@@ -9,9 +9,9 @@ namespace FluentNHibernate.Conventions.Defaults
     /// </summary>
     public class CollectionMethodAccessorBackingFieldNamingConvention : ICollectionConvention, IConventionAcceptance<ICollectionInspector>
     {
-        public void Accept(IAcceptanceCriteria<ICollectionInspector> acceptance)
+        public void Accept(IAcceptanceCriteria<ICollectionInspector> criteria)
         {
-            acceptance.Expect(x => x.IsMethodAccess);
+            criteria.Expect(x => x.IsMethodAccess);
         }
 
         public void Apply(ICollectionInstance instance)

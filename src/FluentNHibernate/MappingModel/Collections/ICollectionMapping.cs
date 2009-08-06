@@ -30,6 +30,7 @@ namespace FluentNHibernate.MappingModel.Collections
         CompositeElementMapping CompositeElement { get; set; }
         Type ContainingEntityType { get; set; }
         Type ChildType { get; set; }
+        ICollectionMapping OtherSide { get; set; }
 
         bool IsSpecified<TResult>(Expression<Func<ICollectionMapping, TResult>> property);
         bool HasValue<TResult>(Expression<Func<ICollectionMapping, TResult>> property);

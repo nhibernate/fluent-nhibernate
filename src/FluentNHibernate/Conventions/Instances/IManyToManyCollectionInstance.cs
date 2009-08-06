@@ -7,5 +7,6 @@ namespace FluentNHibernate.Conventions.Instances
         new IManyToManyInstance Relationship { get; }
 
         new IManyToManyCollectionInstance Not { get; }
+        new IManyToManyCollectionInstance OtherSide { get; }
     }
 }

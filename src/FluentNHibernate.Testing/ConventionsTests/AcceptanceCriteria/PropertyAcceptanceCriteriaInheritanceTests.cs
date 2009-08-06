@@ -69,9 +69,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
 
         private class AnotherConvention : IPropertyConvention, IConventionAcceptance<IPropertyInspector>
         {
-            public void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
+            public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
             {
-                acceptance
+                criteria
                     .Expect(x => x.Insert == false)
                     .Expect(x => x.Update == false);
             }

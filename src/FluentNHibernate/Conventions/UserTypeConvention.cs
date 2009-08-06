@@ -15,11 +15,11 @@ namespace FluentNHibernate.Conventions
     public abstract class UserTypeConvention<TUserType> : IUserTypeConvention
         where TUserType : IUserType, new()
     {
-        public virtual void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
+        public virtual void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
         {
             var userType = Activator.CreateInstance<TUserType>();
 
-            acceptance.Expect(x => x.Type == userType.ReturnedType);
+            criteria.Expect(x => x.Type == userType.ReturnedType);
         }
 
         public virtual void Apply(IPropertyInstance instance)

@@ -12,9 +12,9 @@ namespace FluentNHibernate.Conventions.Defaults
     /// </summary>
     public class EnumerationPropertyConvention : IPropertyConvention, IConventionAcceptance<IPropertyInspector>
     {
-        public void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
+        public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
         {
-            acceptance
+            criteria
                 .Expect(x => x.Type, Is.Not.Set)
                 .Expect(x => x.Type.IsEnum);
         }

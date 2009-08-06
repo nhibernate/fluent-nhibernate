@@ -6,5 +6,8 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         new IManyToManyInspector Relationship { get; }
         Type ChildType { get; }
+
+        bool HasExplicitTable { get; }
+        IManyToManyCollectionInspector OtherSide { get; }
     }
 }

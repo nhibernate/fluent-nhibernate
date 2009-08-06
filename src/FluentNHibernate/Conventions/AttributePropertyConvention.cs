@@ -14,9 +14,9 @@ namespace FluentNHibernate.Conventions
     public abstract class AttributePropertyConvention<T> : IPropertyConvention, IPropertyConventionAcceptance
         where T : Attribute
     {
-        public void Accept(IAcceptanceCriteria<IPropertyInspector> acceptance)
+        public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
         {
-            acceptance.Expect(property => Attribute.GetCustomAttribute(property.Property, typeof(T)) as T != null);
+            criteria.Expect(property => Attribute.GetCustomAttribute(property.Property, typeof(T)) as T != null);
         }
 
         public void Apply(IPropertyInstance instance)
