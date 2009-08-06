@@ -17,7 +17,7 @@ namespace FluentNHibernate.Mapping
 
         private readonly IdMapping mapping;
 
-        public IdentityPart(Type entity, PropertyInfo property, string columnName)
+        public IdentityPart(Type entity, PropertyInfo property)
 		{
             this.property = property;
             entityType = entity;
@@ -26,14 +26,8 @@ namespace FluentNHibernate.Mapping
             access = new AccessStrategyBuilder<IdentityPart>(this, value => mapping.Access = value);
             GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, property.PropertyType, entity);
 
-            Column(columnName);
-
             SetDefaultGenerator();
 		}
-
-        public IdentityPart(Type entity, PropertyInfo property)
-            : this(entity, property, property.Name)
-		{}
 
         private void SetDefaultGenerator()
         {
@@ -47,8 +41,13 @@ namespace FluentNHibernate.Mapping
 
         IdMapping IIdentityMappingProvider.GetIdentityMapping()
         {
-            foreach (var column in columns)
-                mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = column });
+            if (columns.Count > 0)
+            {
+                foreach (var column in columns)
+                    mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) {Name = column});
+            }
+            else
+                mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = property.Name });
 
             mapping.Name = property.Name;
             mapping.Type = new TypeReference(property.PropertyType);

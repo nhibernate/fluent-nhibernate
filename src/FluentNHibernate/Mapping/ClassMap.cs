@@ -188,7 +188,10 @@ namespace FluentNHibernate.Mapping
         public virtual IdentityPart Id(Expression<Func<T, object>> expression, string column)
         {
             PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            var part = column == null ? new IdentityPart(EntityType, property) : new IdentityPart(EntityType, property, column);
+            var part = column == null ? new IdentityPart(EntityType, property) : new IdentityPart(EntityType, property);
+
+            if (column != null)
+                part.Column(column);
 
             id = part;
             
