@@ -1,5 +1,6 @@
 using System.Linq;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.DomainModel.Mapping;
@@ -197,12 +198,12 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         private class TestTableNameConvention : ManyToManyTableNameConvention
         {
-            protected override string GetBiDirectionalTableName(IManyToManyCollectionInstance collection, IManyToManyCollectionInstance otherSide)
+            protected override string GetBiDirectionalTableName(IManyToManyCollectionInspector collection, IManyToManyCollectionInspector otherSide)
             {
                 return otherSide.Member.Name + "_" + collection.Member.Name;
             }
 
-            protected override string GetUniDirectionalTableName(IManyToManyCollectionInstance collection)
+            protected override string GetUniDirectionalTableName(IManyToManyCollectionInspector collection)
             {
                 return collection.ChildType.Name + "Uni";
             }

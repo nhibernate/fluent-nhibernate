@@ -1,3 +1,4 @@
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions
@@ -52,7 +53,7 @@ namespace FluentNHibernate.Conventions
         /// <param name="collection">Main collection</param>
         /// <param name="otherSide">Inverse collection</param>
         /// <returns>Many-to-many table name</returns>
-        protected abstract string GetBiDirectionalTableName(IManyToManyCollectionInstance collection, IManyToManyCollectionInstance otherSide);
+        protected abstract string GetBiDirectionalTableName(IManyToManyCollectionInspector collection, IManyToManyCollectionInspector otherSide);
 
         /// <summary>
         /// Gets the name used for uni-directional many-to-many tables. Implement this member to control how
@@ -60,6 +61,6 @@ namespace FluentNHibernate.Conventions
         /// </summary>
         /// <param name="collection">Main collection</param>
         /// <returns>Many-to-many table name</returns>
-        protected abstract string GetUniDirectionalTableName(IManyToManyCollectionInstance collection);
+        protected abstract string GetUniDirectionalTableName(IManyToManyCollectionInspector collection);
     }
 }
