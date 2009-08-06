@@ -102,8 +102,11 @@
     <Compile Include="Conventions\Helpers\Builders\SubclassConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\VersionConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Cache.cs" />
+    <Compile Include="Conventions\Helpers\LazyLoad.cs" />
+    <Compile Include="Conventions\Helpers\ForeignKey.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltArrayConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltBagConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltFuncForeignKeyConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltJoinedSubclassConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltListConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltMapConvention.cs" />
@@ -113,6 +116,7 @@
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltHasOneConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltManyToManyCollectionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltOneToManyCollectionConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltSuffixForeignKeyConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltVersionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltDynamicComponentConvention.cs" />

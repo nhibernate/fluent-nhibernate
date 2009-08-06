@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt
 {
-    public class BuiltSuffixForeignKeyConvention : BuiltForeignKeyConvention
+    public class BuiltSuffixForeignKeyConvention : ForeignKeyConvention
     {
         private readonly string suffix;
 

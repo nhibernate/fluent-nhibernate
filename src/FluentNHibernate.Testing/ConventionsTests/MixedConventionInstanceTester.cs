@@ -1,5 +1,6 @@
 using FluentNHibernate.AutoMap.TestFixtures;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
@@ -19,30 +20,20 @@ namespace FluentNHibernate.Testing.ConventionsTests
                     m.Id(x => x.Id);
                     m.Map(x => x.LineOne);
                 })
-                .Element("class/id").HasAttribute("column", "id-col")
-                .Element("class/property[@name='LineOne']").HasAttribute("column", "prop-col");
+                .Element("class/id/column").HasAttribute("name", "id-col")
+                .Element("class/property[@name='LineOne']/column").HasAttribute("name", "prop-col");
         }
 
         private class CustomConvention : IIdConvention, IPropertyConvention
         {
-            public bool Accept(IIdentityPart target)
+            public void Apply(IIdentityInstance instance)
             {
-                return true;
+                instance.Column("id-col");
             }
 
-            public void Apply(IIdentityPart target)
+            public void Apply(IPropertyInstance instance)
             {
-                target.ColumnName("id-col");
-            }
-
-            public bool Accept(IProperty target)
-            {
-                return true;
-            }
-
-            public void Apply(IProperty target)
-            {
-                target.ColumnName("prop-col");
+                instance.Column("prop-col");
             }
         }
     }

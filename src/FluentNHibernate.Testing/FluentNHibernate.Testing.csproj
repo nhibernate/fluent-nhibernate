@@ -110,6 +110,7 @@
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsHasManyCollectionTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsHasManyTests.cs" />
     <Compile Include="ConventionsTests\FluentInterfaceOverridingConventionsPropertyTests.cs" />
+    <Compile Include="ConventionsTests\ForeignKeyHelperTests.cs" />
     <Compile Include="ConventionsTests\Inspection\ColumnInspectorMapsToColumnMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ClassInspectorMapsToClassMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\CacheInspectorMapsToCacheMapping.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaEqualSubPropertyTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaIsSetTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaTests.cs" />
+    <Compile Include="ConventionsTests\MixedConventionInstanceTester.cs" />
     <Compile Include="ConventionsTests\OptionalAcceptTests.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapConventionsTester.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapDynamicInsertTester.cs" />
