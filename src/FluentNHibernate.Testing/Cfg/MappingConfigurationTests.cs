@@ -124,7 +124,7 @@ namespace FluentNHibernate.Testing.Cfg
         {
             mapping.FluentMappings
                 .AddFromAssemblyOf<Record>()
-                .ConventionDiscovery.Add(
+                .Conventions.Add(
                     ConventionBuilder.Class.Always(x => x.Table(x.EntityType.Name + "Table"))
                 );
             mapping.Apply(cfg);
@@ -137,7 +137,7 @@ namespace FluentNHibernate.Testing.Cfg
         {
             mapping.FluentMappings
                 .AddFromAssemblyOf<Record>()
-                .ConventionDiscovery.Add(
+                .Conventions.Add(
                     ConventionBuilder.Class.Always(x => x.Table(x.EntityType.Name + "Table")),
                     ConventionBuilder.Class.Always(x => x.DynamicInsert())
                 );
