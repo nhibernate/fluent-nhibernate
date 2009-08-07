@@ -85,6 +85,13 @@ namespace FluentNHibernate.Conventions
             Add(type, MissingConstructor.Throw);
         }
 
+        public void Add(Type type, object instance)
+        {
+            if (conventions.Contains(type) && !AllowMultiplesOf(type)) return;
+
+            conventions.Add(type, instance);
+        }
+
         /// <summary>
         /// Add an instance of a convention.
         /// </summary>

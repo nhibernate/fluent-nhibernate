@@ -44,6 +44,8 @@ namespace FluentNHibernate.Conventions
         /// <param name="type">Type of convention</param>
         void Add(Type type);
 
+        void Add(Type type, object instance);
+
         /// <summary>
         /// Add an instance of a convention.
         /// </summary>
