@@ -358,5 +358,13 @@ namespace FluentNHibernate.Mapping
             mapping.SelectBeforeUpdate = nextBool;
             nextBool = true;
         }
+
+		/// <summary>
+		/// Defines a SQL 'where' clause used when retrieving objects of this type.
+		/// </summary>
+    	public void Where(string where)
+    	{
+    		mapping.Where = where;
+    	}
     }
 }
