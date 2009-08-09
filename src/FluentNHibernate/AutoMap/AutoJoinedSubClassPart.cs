@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
@@ -122,6 +123,11 @@ namespace FluentNHibernate.AutoMap
         public HibernateMapping GetHibernateMapping()
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<string> GetIgnoredProperties()
+        {
+            return propertiesMapped.Select(x => x.Name);
         }
     }
 }

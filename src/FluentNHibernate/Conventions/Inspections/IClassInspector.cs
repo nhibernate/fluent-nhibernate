@@ -19,6 +19,7 @@ namespace FluentNHibernate.Conventions.Inspections
         string Persister { get; }
         Polymorphism Polymorphism { get; }
         string Proxy { get; }
+        string Where { get; }
         bool SelectBeforeUpdate { get; }
         IIdentityInspectorBase Id { get; }
         ICacheInspector Cache { get; }

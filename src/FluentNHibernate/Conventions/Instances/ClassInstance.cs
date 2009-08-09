@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -88,6 +89,12 @@ namespace FluentNHibernate.Conventions.Instances
         {
             if (!mapping.IsSpecified(x => x.Schema))
                 mapping.Schema = schema;
+        }
+
+        public new void Where(string where)
+        {
+            if (!mapping.IsSpecified(x => x.Where))
+                mapping.Where = where;
         }
     }
 }

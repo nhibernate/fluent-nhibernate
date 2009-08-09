@@ -15,5 +15,6 @@ namespace FluentNHibernate.Conventions.Instances
         void LazyLoad();
         void ReadOnly();
         void Schema(string schema);
+        void Where(string where);
     }
 }

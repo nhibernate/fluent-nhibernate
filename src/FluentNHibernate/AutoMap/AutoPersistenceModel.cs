@@ -165,7 +165,7 @@ namespace FluentNHibernate.AutoMap
         private void MergeMap(Type type, IMappingProvider mapping)
         {
             Type typeToMap = GetTypeToMap(type);
-            autoMapper.MergeMap(typeToMap, mapping.GetClassMapping(), new List<string>());
+            autoMapper.MergeMap(typeToMap, mapping.GetClassMapping(), new List<string>(mapping.GetIgnoredProperties()));
         }
 
         #endregion

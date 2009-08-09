@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using FluentNHibernate.AutoMap;
+using FluentNHibernate.AutoMap.Alterations;
 using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
 using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Cfg;
@@ -1031,6 +1032,18 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .Element("class/property[@name='Dummy2']").DoesntExist();
         }
 
+        [Test]
+        public void ShouldAllowIgnoresInOverrides()
+        {
+            var autoMapper = AutoPersistenceModel
+                .MapEntitiesFromAssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .UseOverridesFromAssemblyOf<IgnorerOverride>();
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/property[@name='LineOne']").DoesntExist();
+        }
+
         private class JoinedSubclassConvention : IJoinedSubclassConvention
         {
             public void Apply(IJoinedSubclassInstance instance)
@@ -1070,6 +1083,14 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             {
                 instance.Name("test");
             }
+        }
+    }
+
+    public class IgnorerOverride : IAutoMappingOverride<ExampleClass>
+    {
+        public void Override(AutoMap<ExampleClass> mapping)
+        {
+            mapping.IgnoreProperty(x => x.LineOne);
         }
     }
 

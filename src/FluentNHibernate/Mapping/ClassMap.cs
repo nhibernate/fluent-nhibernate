@@ -127,6 +127,11 @@ namespace FluentNHibernate.Mapping
             return hibernateMapping;
         }
 
+        IEnumerable<string> IMappingProvider.GetIgnoredProperties()
+        {
+            return new string[0];
+        }
+
         public HibernateMappingPart HibernateMapping
         {
             get { return hibernateMappingPart; }
