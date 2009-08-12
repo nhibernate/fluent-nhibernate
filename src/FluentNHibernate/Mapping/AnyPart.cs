@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -14,24 +15,23 @@ namespace FluentNHibernate.Mapping
     /// </summary>
     public class AnyPart<T> : IAnyMappingProvider
     {
+        private readonly AttributeStore<AnyMapping> attributes = new AttributeStore<AnyMapping>();
         private readonly Type entity;
+        private readonly PropertyInfo property;
         private readonly AccessStrategyBuilder<AnyPart<T>> access;
         private readonly CascadeExpression<AnyPart<T>> cascade;
-        private readonly AnyMapping mapping = new AnyMapping();
+        private readonly IList<string> typeColumns = new List<string>();
+        private readonly IList<string> identifierColumns = new List<string>();
+        private readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
+        private bool nextBool = true;
 
         public AnyPart(Type entity, PropertyInfo property)
         {
             this.entity = entity;
-            access = new AccessStrategyBuilder<AnyPart<T>>(this, value => mapping.Access = value);
-            cascade = new CascadeExpression<AnyPart<T>>(this, value => mapping.Cascade = value);
-            AnyProperty = property;
+            this.property = property;
+            access = new AccessStrategyBuilder<AnyPart<T>>(this, value => attributes.Set(x => x.Access, value));
+            cascade = new CascadeExpression<AnyPart<T>>(this, value => attributes.Set(x => x.Cascade, value));
         }
-
-        /// <summary>
-        /// The property on your class that contains the mapped object
-        /// </summary>
-        public PropertyInfo AnyProperty { get; private set; }
-        private bool nextBool = true;
 
         /// <summary>
         /// Defines how NHibernate will access the object for persisting/hydrating (Defaults to Property)
@@ -61,25 +61,25 @@ namespace FluentNHibernate.Mapping
 
         public AnyPart<T> IdentityType(Type type)
         {
-            mapping.IdType = type.AssemblyQualifiedName;
+            attributes.Set(x => x.IdType, type.AssemblyQualifiedName);
             return this;
         }
 
         public AnyPart<T> EntityTypeColumn(string columnName)
         {
-            mapping.AddTypeColumn(new ColumnMapping { Name = columnName });
+            typeColumns.Add(columnName);
             return this;
         }
 
         public AnyPart<T> EntityIdentifierColumn(string columnName)
         {
-            mapping.AddIdentifierColumn(new ColumnMapping { Name = columnName });
+            identifierColumns.Add(columnName);
             return this;
         }
 
         public AnyPart<T> AddMetaValue<TModel>(string valueMap)
         {
-            mapping.AddMetaValue(new MetaValueMapping
+            metaValues.Add(new MetaValueMapping
             {
                 Class = new TypeReference(typeof(TModel)),
                 Value = valueMap,
@@ -90,36 +90,36 @@ namespace FluentNHibernate.Mapping
 
         public AnyPart<T> Insert()
         {
-            mapping.Insert = nextBool;
+            attributes.Set(x => x.Insert, nextBool);
             nextBool = true;
             return this;
         }
 
         public AnyPart<T> Update()
         {
-            mapping.Update = nextBool;
+            attributes.Set(x => x.Update, nextBool);
             nextBool = true;
             return this;
         }
 
         public AnyPart<T> ReadOnly()
         {
-            mapping.Insert = !nextBool;
-            mapping.Update = !nextBool;
+            attributes.Set(x => x.Insert, !nextBool);
+            attributes.Set(x => x.Update, !nextBool);
             nextBool = true;
             return this;
         }
 
         public AnyPart<T> LazyLoad()
         {
-            mapping.Lazy = nextBool;
+            attributes.Set(x => x.Lazy, nextBool);
             nextBool = true;
             return this;
         }
 
         public AnyPart<T> OptimisticLock()
         {
-            mapping.OptimisticLock = nextBool;
+            attributes.Set(x => x.OptimisticLock, nextBool);
             nextBool = true;
             return this;
         }
@@ -135,9 +135,11 @@ namespace FluentNHibernate.Mapping
 
         AnyMapping IAnyMappingProvider.GetAnyMapping()
         {
-            if (mapping.TypeColumns.Count() == 0)
+            var mapping = new AnyMapping(attributes.CloneInner());
+
+            if (typeColumns.Count() == 0)
                 throw new InvalidOperationException("<any> mapping is not valid without specifying an Entity Type Column");
-            if (mapping.IdentifierColumns.Count() == 0)
+            if (identifierColumns.Count() == 0)
                 throw new InvalidOperationException("<any> mapping is not valid without specifying an Entity Identifier Column");
             if (!mapping.IsSpecified(x => x.IdType))
                 throw new InvalidOperationException("<any> mapping is not valid without specifying an IdType");
@@ -145,16 +147,24 @@ namespace FluentNHibernate.Mapping
             mapping.ContainingEntityType = entity;
 
             if (!mapping.IsSpecified(x => x.Name))
-                mapping.Name = AnyProperty.Name;
+                mapping.Name = property.Name;
 
             if (!mapping.IsSpecified(x => x.MetaType))
             {
-                if (mapping.MetaValues.Count() > 0)
+                if (metaValues.Count() > 0)
+                {
+                    metaValues.Each(mapping.AddMetaValue);
                     mapping.MetaType = new TypeReference(typeof(string));
+                }
                 else
-                    mapping.MetaType = new TypeReference(AnyProperty.PropertyType);
+                    mapping.MetaType = new TypeReference(property.PropertyType);
             }
 
+            foreach (var column in typeColumns)
+                mapping.AddTypeColumn(new ColumnMapping { Name = column });
+
+            foreach (var column in identifierColumns)
+                mapping.AddIdentifierColumn(new ColumnMapping { Name = column });
 
             return mapping;
         }

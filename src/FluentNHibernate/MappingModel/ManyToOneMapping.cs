@@ -6,8 +6,17 @@ namespace FluentNHibernate.MappingModel
 {
     public class ManyToOneMapping : MappingBase, IHasColumnMappings
     {
-        private readonly AttributeStore<ManyToOneMapping> attributes = new AttributeStore<ManyToOneMapping>();
+        private readonly AttributeStore<ManyToOneMapping> attributes;
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+
+        public ManyToOneMapping()
+            : this(new AttributeStore())
+        {}
+
+        public ManyToOneMapping(AttributeStore underlyingStore)
+        {
+            attributes = new AttributeStore<ManyToOneMapping>(underlyingStore);
+        }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {

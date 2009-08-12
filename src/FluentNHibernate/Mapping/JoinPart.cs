@@ -11,17 +11,16 @@ namespace FluentNHibernate.Mapping
     public class JoinPart<T> : ClasslikeMapBase<T>, IJoinMappingProvider
     {
         private readonly IList<string> columns = new List<string>();
-        private readonly JoinMapping mapping = new JoinMapping();
         private readonly FetchTypeExpression<JoinPart<T>> fetch;
+        private readonly AttributeStore<JoinMapping> attributes = new AttributeStore<JoinMapping>();
         private bool nextBool = true;
 
         public JoinPart(string tableName)
         {
-            fetch = new FetchTypeExpression<JoinPart<T>>(this, value => mapping.Fetch = value);
-            mapping.TableName = tableName;
-            mapping.Key = new KeyMapping { ContainingEntityType = typeof(T) };
+            fetch = new FetchTypeExpression<JoinPart<T>>(this, value => attributes.Set(x => x.Fetch, value));
 
-            columns.Add(GetType().GetGenericArguments()[0].Name + "ID");
+            attributes.Set(x => x.TableName, tableName);
+            attributes.Set(x => x.Key, new KeyMapping { ContainingEntityType = typeof(T) });
         }
 
         public JoinPart<T> KeyColumn(string column)
@@ -33,7 +32,7 @@ namespace FluentNHibernate.Mapping
 
         public JoinPart<T> Schema(string schema)
         {
-            mapping.Schema = schema;
+            attributes.Set(x => x.Schema, schema);
             return this;
         }
 
@@ -44,27 +43,27 @@ namespace FluentNHibernate.Mapping
 
         public JoinPart<T> Inverse()
         {
-            mapping.Inverse = nextBool;
+            attributes.Set(x => x.Inverse, nextBool);
             nextBool = true;
             return this;
         }
 
         public JoinPart<T> Optional()
         {
-            mapping.Optional = nextBool;
+            attributes.Set(x => x.Optional, nextBool);
             nextBool = true;
             return this;
         }
 
         public JoinPart<T> Catalog(string catalog)
         {
-            mapping.Catalog = catalog;
+            attributes.Set(x => x.Catalog, catalog);
             return this;
         }
 
         public JoinPart<T> Subselect(string subselect)
         {
-            mapping.Subselect = subselect;
+            attributes.Set(x => x.Subselect, subselect);
             return this;
         }
 
@@ -79,7 +78,15 @@ namespace FluentNHibernate.Mapping
 
         JoinMapping IJoinMappingProvider.GetJoinMapping()
         {
+            var mapping = new JoinMapping(attributes.CloneInner());
+
             mapping.ContainingEntityType = typeof(T);
+
+            if (columns.Count == 0)
+                mapping.Key.AddDefaultColumn(new ColumnMapping { Name = typeof(T).Name + "_id" });
+            else
+                foreach (var column in columns)
+                    mapping.Key.AddColumn(new ColumnMapping { Name = column });
 
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());
@@ -92,9 +99,6 @@ namespace FluentNHibernate.Mapping
 
             foreach (var any in anys)
                 mapping.AddAny(any.GetAnyMapping());
-
-            foreach (var column in columns)
-                mapping.Key.AddColumn(new ColumnMapping { Name = column });
 
             return mapping;
         }

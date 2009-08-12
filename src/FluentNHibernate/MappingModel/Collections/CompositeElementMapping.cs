@@ -14,7 +14,7 @@ namespace FluentNHibernate.MappingModel.Collections
             : this(new AttributeStore())
         { }
 
-        private CompositeElementMapping(AttributeStore store)
+        public CompositeElementMapping(AttributeStore store)
         {
             attributes = new AttributeStore<CompositeElementMapping>(store);
             mappedMembers = new MappedMembers();

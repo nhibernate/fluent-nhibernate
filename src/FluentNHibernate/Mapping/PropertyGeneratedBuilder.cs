@@ -4,28 +4,28 @@ namespace FluentNHibernate.Mapping
 {
     public class PropertyGeneratedBuilder
     {
-        private readonly PropertyMap parent;
+        private readonly PropertyPart parent;
         private readonly Action<string> setter;
 
-        public PropertyGeneratedBuilder(PropertyMap parent, Action<string> setter)
+        public PropertyGeneratedBuilder(PropertyPart parent, Action<string> setter)
         {
             this.parent = parent;
             this.setter = setter;
         }
 
-        public PropertyMap Never()
+        public PropertyPart Never()
         {
             setter("never");
             return parent;
         }
 
-        public PropertyMap Insert()
+        public PropertyPart Insert()
         {
             setter("insert");
             return parent;
         }
 
-        public PropertyMap Always()
+        public PropertyPart Always()
         {
             setter("always");
             return parent;

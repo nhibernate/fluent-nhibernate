@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions.Instances;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
@@ -56,7 +59,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<JoinTarget>()
                 .ForMapping(m => m.Join("myTable", t => t.Map(x => x.Name)))
-                .Element("class/join/key/column").HasAttribute("name", "JoinTargetID");
+                .Element("class/join/key/column").HasAttribute("name", "JoinTarget_id");
         }
 
         [Test]
@@ -65,6 +68,23 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<JoinTarget>()
                 .ForMapping(m => m.Join("myTable", t => t.KeyColumn("ID")))
                 .Element("class/join/key/column").HasAttribute("name", "ID");
+        }
+
+        [Test]
+        public void CanOverrideKeyInConvention()
+        {
+            new MappingTester<JoinTarget>()
+                .Conventions(x => x.Add(new JoinConvention()))
+                .ForMapping(m => m.Join("myTable", t => t.Map(x => x.Name)))
+                .Element("class/join/key/column").HasAttribute("name", "JoinTargetID");
+        }
+
+        private class JoinConvention : IJoinConvention
+        {
+            public void Apply(IJoinInstance instance)
+            {
+                instance.Key.Column(instance.EntityType.Name + "ID");
+            }
         }
 
         [Test]

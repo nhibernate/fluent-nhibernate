@@ -12,8 +12,12 @@ namespace FluentNHibernate.MappingModel
         private readonly AttributeStore<HibernateMapping> attributes;
 
         public HibernateMapping()
+            : this(new AttributeStore())
+        {}
+
+        public HibernateMapping(AttributeStore underlyingStore)
         {
-            attributes = new AttributeStore<HibernateMapping>();
+            attributes = new AttributeStore<HibernateMapping>(underlyingStore);
             classes = new List<ClassMapping>();
             imports = new List<ImportMapping>();
 

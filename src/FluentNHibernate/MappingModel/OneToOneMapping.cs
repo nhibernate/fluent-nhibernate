@@ -5,8 +5,17 @@ namespace FluentNHibernate.MappingModel
 {
     public class OneToOneMapping : MappingBase
     {
-        private readonly AttributeStore<OneToOneMapping> attributes = new AttributeStore<OneToOneMapping>();
-        
+        private readonly AttributeStore<OneToOneMapping> attributes;
+
+        public OneToOneMapping()
+            : this(new AttributeStore())
+        {}
+
+        public OneToOneMapping(AttributeStore underlyingStore)
+        {
+            attributes = new AttributeStore<OneToOneMapping>(underlyingStore);
+        }
+
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessOneToOne(this);

@@ -12,6 +12,8 @@ namespace FluentNHibernate.Mapping
 {
     public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     {
+        protected readonly AttributeStore<ClassMapping> attributes;
+        private readonly IList<JoinMapping> joins = new List<JoinMapping>();
         private readonly OptimisticLockBuilder<ClassMap<T>> optimisticLock;
 
         /// <summary>
@@ -23,37 +25,29 @@ namespace FluentNHibernate.Mapping
         private readonly IList<ImportPart> imports = new List<ImportPart>();
         private bool nextBool = true;
 
-        protected ClassMapping mapping;
         private DiscriminatorPart discriminator;
         protected IVersionMappingProvider version;
         private ICompositeIdMappingProvider compositeId;
         private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
-        private PolymorphismBuilder<ClassMap<T>> polymorphism;
+        private readonly PolymorphismBuilder<ClassMap<T>> polymorphism;
 
         public ClassMap()
-            : this(new ClassMapping(typeof(T)))
+            : this(new AttributeStore())
         {}
 
-        public ClassMap(ClassMapping mapping)
+        public ClassMap(AttributeStore underlyingStore)
         {
-            this.mapping = mapping;
-            optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => mapping.OptimisticLock = value);
+            attributes = new AttributeStore<ClassMapping>(underlyingStore);
+            optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => attributes.Set(x => x.OptimisticLock, value));
+            polymorphism = new PolymorphismBuilder<ClassMap<T>>(this, value => attributes.Set(x => x.Polymorphism, value));
             Cache = new CachePart(typeof(T));
-            polymorphism = new PolymorphismBuilder<ClassMap<T>>(this, value => mapping.Polymorphism = value);
         }
 
-        public string TableName
+        ClassMapping IMappingProvider.GetClassMapping()
         {
-            get { return mapping.TableName; }
-        }
+		    var mapping = new ClassMapping(attributes.CloneInner());
 
-		public DiscriminatorPart Discriminator
-		{
-			get { return discriminator; }
-		}
-
-		public ClassMapping GetClassMapping()
-        {
+            mapping.Type = typeof(T);
             mapping.Name = typeof(T).AssemblyQualifiedName;
 
             foreach (var property in properties)
@@ -79,6 +73,9 @@ namespace FluentNHibernate.Mapping
 
             foreach (var subclass in subclasses.Values)
                 mapping.AddSubclass(subclass.GetSubclassMapping());
+
+		    foreach (var join in joins)
+		        mapping.AddJoin(join);
 
             if (discriminator != null)
                 mapping.Discriminator = ((IDiscriminatorMappingProvider)discriminator).GetDiscriminatorMapping();
@@ -162,18 +159,18 @@ namespace FluentNHibernate.Mapping
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
         {
-            var part = new DiscriminatorPart(mapping, columnName, typeof(T), subclasses.Add, new TypeReference(typeof(TDiscriminator)));
+            var part = new DiscriminatorPart(columnName, typeof(T), subclasses.Add, new TypeReference(typeof(TDiscriminator)));
 
             discriminator = part;
 
-            mapping.DiscriminatorValue = baseClassDiscriminator;
+            attributes.Set(x => x.DiscriminatorValue, baseClassDiscriminator);
 
             return part;
         }
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
         {
-            var part = new DiscriminatorPart(mapping, columnName, typeof(T), subclasses.Add, new TypeReference(typeof(TDiscriminator)));
+            var part = new DiscriminatorPart(columnName, typeof(T), subclasses.Add, new TypeReference(typeof(TDiscriminator)));
 
             discriminator = part;
 
@@ -219,7 +216,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="schema">Schema name</param>
         public void Schema(string schema)
         {
-            mapping.Schema = schema;
+            attributes.Set(x => x.Schema, schema);
         }
 
         /// <summary>
@@ -228,7 +225,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="tableName">Table name</param>
         public void Table(string tableName)
         {
-            mapping.TableName = tableName;
+            attributes.Set(x => x.TableName, tableName);
         }
 
         /// <summary>
@@ -248,7 +245,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void LazyLoad()
         {
-            mapping.Lazy = nextBool;
+            attributes.Set(x => x.Lazy, nextBool);
             nextBool = true;
         }
 
@@ -260,8 +257,10 @@ namespace FluentNHibernate.Mapping
         public void Join(string tableName, Action<JoinPart<T>> action)
         {
             var join = new JoinPart<T>(tableName);
+
             action(join);
-            mapping.AddJoin(((IJoinMappingProvider)join).GetJoinMapping());
+
+            joins.Add(((IJoinMappingProvider)join).GetJoinMapping());
         }
 
         /// <summary>
@@ -282,7 +281,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void ReadOnly()
         {
-            mapping.Mutable = !nextBool;
+            attributes.Set(x => x.Mutable, !nextBool);
             nextBool = true;
         }
 
@@ -291,7 +290,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void DynamicUpdate()
         {
-            mapping.DynamicUpdate = nextBool;
+            attributes.Set(x => x.DynamicUpdate, nextBool);
             nextBool = true;
         }
 
@@ -300,13 +299,13 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void DynamicInsert()
         {
-            mapping.DynamicInsert = nextBool;
+            attributes.Set(x => x.DynamicInsert, nextBool);
             nextBool = true;
         }
 
         public ClassMap<T> BatchSize(int size)
         {
-            mapping.BatchSize = size;
+            attributes.Set(x => x.BatchSize, size);
             return this;
         }
 
@@ -325,7 +324,7 @@ namespace FluentNHibernate.Mapping
 
         public void CheckConstraint(string constraint)
         {
-            mapping.Check = constraint;
+            attributes.Set(x => x.Check, constraint);
         }
 
         public void Persister<TPersister>() where TPersister : IEntityPersister
@@ -340,7 +339,7 @@ namespace FluentNHibernate.Mapping
 
         private void Persister(string type)
         {
-            mapping.Persister = type;
+            attributes.Set(x => x.Persister, type);
         }
 
         public void Proxy<TProxy>()
@@ -355,12 +354,12 @@ namespace FluentNHibernate.Mapping
 
         private void Proxy(string type)
         {
-            mapping.Proxy = type;
+            attributes.Set(x => x.Proxy, type);
         }
 
         public void SelectBeforeUpdate()
         {
-            mapping.SelectBeforeUpdate = nextBool;
+            attributes.Set(x => x.SelectBeforeUpdate, nextBool);
             nextBool = true;
         }
 
@@ -369,7 +368,7 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
     	public void Where(string where)
     	{
-    		mapping.Where = where;
+            attributes.Set(x => x.Where, where);
     	}
     }
 }

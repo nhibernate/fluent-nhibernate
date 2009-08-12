@@ -9,8 +9,12 @@ namespace FluentNHibernate.MappingModel.Collections
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
 
         public IndexManyToManyMapping()
+            : this(new AttributeStore())
+        {}
+
+        public IndexManyToManyMapping(AttributeStore underlyingStore)
         {
-            attributes = new AttributeStore<IndexManyToManyMapping>();
+            attributes = new AttributeStore<IndexManyToManyMapping>(underlyingStore);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)

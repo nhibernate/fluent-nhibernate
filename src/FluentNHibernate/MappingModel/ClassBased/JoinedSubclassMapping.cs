@@ -12,7 +12,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public JoinedSubclassMapping() : this(new AttributeStore())
         {}
 
-        private JoinedSubclassMapping(AttributeStore store)
+        public JoinedSubclassMapping(AttributeStore store)
         {
             attributes = new AttributeStore<JoinedSubclassMapping>(store);
         }
@@ -25,6 +25,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
                 visitor.Visit(Key);
 
             base.AcceptVisitor(visitor);
+        }
+
+        public override void MergeAttributes(AttributeStore store)
+        {
+            attributes.Merge(new AttributeStore<JoinedSubclassMapping>(store));
         }
 
         public override string Name

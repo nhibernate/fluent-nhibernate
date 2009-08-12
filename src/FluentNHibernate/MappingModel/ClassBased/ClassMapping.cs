@@ -6,19 +6,13 @@ namespace FluentNHibernate.MappingModel.ClassBased
 {
     public class ClassMapping : ClassMappingBase
     {
-        private readonly AttributeStore<ClassMapping> attributes;
+        private AttributeStore<ClassMapping> attributes;
 
         public ClassMapping()
             : this(new AttributeStore())
         {}
 
-        public ClassMapping(Type type)
-            : this(new AttributeStore())
-        {
-            Type = type;
-        }
-
-        private ClassMapping(AttributeStore store)
+        public ClassMapping(AttributeStore store)
         {
             attributes = new AttributeStore<ClassMapping>(store);
         }
@@ -79,6 +73,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
                 visitor.Visit(Version);
 
             base.AcceptVisitor(visitor);
+        }
+
+        public override void MergeAttributes(AttributeStore store)
+        {
+            attributes.Merge(new AttributeStore<ClassMapping>(store));
         }
 
         public string TableName

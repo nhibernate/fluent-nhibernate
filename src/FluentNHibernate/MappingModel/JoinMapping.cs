@@ -13,8 +13,12 @@ namespace FluentNHibernate.MappingModel
         private readonly MappedMembers mappedMembers;
 
         public JoinMapping()
+            : this(new AttributeStore())
+        {}
+
+        public JoinMapping(AttributeStore underlyingStore)
         {
-            attributes = new AttributeStore<JoinMapping>();
+            attributes = new AttributeStore<JoinMapping>(underlyingStore);
             mappedMembers = new MappedMembers();
         }
 

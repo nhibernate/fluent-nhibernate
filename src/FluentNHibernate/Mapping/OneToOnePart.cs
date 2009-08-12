@@ -14,20 +14,22 @@ namespace FluentNHibernate.Mapping
         private readonly AccessStrategyBuilder<OneToOnePart<TOther>> access;
         private readonly FetchTypeExpression<OneToOnePart<TOther>> fetch;
         private readonly CascadeExpression<OneToOnePart<TOther>> cascade;
-        private readonly OneToOneMapping mapping = new OneToOneMapping();
+        private readonly AttributeStore<OneToOneMapping> attributes = new AttributeStore<OneToOneMapping>();
         private bool nextBool = true;
 
         public OneToOnePart(Type entity, PropertyInfo property)
         {
-            access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this, value => mapping.Access = value);
-            fetch = new FetchTypeExpression<OneToOnePart<TOther>>(this, value => mapping.Fetch = value);
-            cascade = new CascadeExpression<OneToOnePart<TOther>>(this, value => mapping.Cascade = value);
+            access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this, value => attributes.Set(x => x.Access, value));
+            fetch = new FetchTypeExpression<OneToOnePart<TOther>>(this, value => attributes.Set(x => x.Fetch, value));
+            cascade = new CascadeExpression<OneToOnePart<TOther>>(this, value => attributes.Set(x => x.Cascade, value));
             this.entity = entity;
             this.property = property;
         }
 
         OneToOneMapping IOneToOneMappingProvider.GetOneToOneMapping()
         {
+            var mapping = new OneToOneMapping(attributes.CloneInner());
+
             mapping.ContainingEntityType = entity;
 
             if (!mapping.IsSpecified(x => x.Class))
@@ -46,7 +48,7 @@ namespace FluentNHibernate.Mapping
 
         public OneToOnePart<TOther> Class(Type type)
         {
-            mapping.Class = new TypeReference(type);
+            attributes.Set(x => x.Class, new TypeReference(type));
             return this;
         }
 
@@ -62,7 +64,7 @@ namespace FluentNHibernate.Mapping
 
         public OneToOnePart<TOther> ForeignKey(string foreignKeyName)
         {
-            mapping.ForeignKey = foreignKeyName;
+            attributes.Set(x => x.ForeignKey, foreignKeyName);
             return this;
         }
 
@@ -75,14 +77,14 @@ namespace FluentNHibernate.Mapping
 
         public OneToOnePart<TOther> PropertyRef(string propertyName)
         {
-            mapping.PropertyRef = propertyName;
+            attributes.Set(x => x.PropertyRef, propertyName);
 
             return this;
         }
 
         public OneToOnePart<TOther> Constrained()
         {
-            mapping.Constrained = nextBool;
+            attributes.Set(x => x.Constrained, nextBool);
             nextBool = true;
 
             return this;
@@ -100,7 +102,7 @@ namespace FluentNHibernate.Mapping
 
         public OneToOnePart<TOther> LazyLoad()
         {
-            mapping.Lazy = nextBool;
+            attributes.Set(x => x.Lazy, nextBool);
             nextBool = true;
             return this;
         }

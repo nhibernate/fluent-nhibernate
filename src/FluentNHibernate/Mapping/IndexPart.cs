@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
@@ -6,9 +7,10 @@ namespace FluentNHibernate.Mapping
 {
     public class IndexPart
     {
-        private readonly IndexMapping mapping = new IndexMapping();
         private readonly Type entity;
-        
+        private readonly List<string> columns = new List<string>();
+        private readonly AttributeStore<IndexMapping> attributes = new AttributeStore<IndexMapping>();
+
         public IndexPart(Type entity)
         {
             this.entity = entity;
@@ -16,19 +18,24 @@ namespace FluentNHibernate.Mapping
 
         public IndexPart Column(string indexColumnName)
         {
-            mapping.AddColumn(new ColumnMapping { Name = indexColumnName });
+            columns.Add(indexColumnName);
             return this;
         }
 
         public IndexPart Type<TIndex>()
         {
-            mapping.Type = new TypeReference(typeof(TIndex));
+            attributes.Set(x => x.Type, new TypeReference(typeof(TIndex)));
             return this;
         }
 
         public IndexMapping GetIndexMapping()
         {
+            var mapping = new IndexMapping(attributes.CloneInner());
+
             mapping.ContainingEntityType = entity;
+
+            columns.Each(x => mapping.AddColumn(new ColumnMapping { Name = x }));
+
             return mapping;
         }
     }

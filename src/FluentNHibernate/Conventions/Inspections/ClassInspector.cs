@@ -216,7 +216,7 @@ namespace FluentNHibernate.Conventions.Inspections
             {
                 if (mapping.Discriminator == null)
                     // deliberately empty so nothing evaluates to true
-                    return new DiscriminatorInspector(new DiscriminatorMapping(new ClassMapping()));
+                    return new DiscriminatorInspector(new DiscriminatorMapping());
 
                 return new DiscriminatorInspector(mapping.Discriminator);
             }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel
@@ -54,6 +55,15 @@ namespace FluentNHibernate.MappingModel
         public void SetDefault(string key, object value)
         {
             defaults[key] = value;
+        }
+
+        public void Merge(AttributeStore otherStore)
+        {
+            foreach (var key in otherStore.defaults.Keys)
+                defaults[key] = otherStore.defaults[key];
+
+            foreach (var key in otherStore.attributes.Keys)
+                attributes[key] = otherStore.attributes[key];
         }
     }
 
@@ -133,6 +143,11 @@ namespace FluentNHibernate.MappingModel
             store.CopyTo(clonedStore);
 
             return clonedStore;
+        }
+
+        public void Merge(AttributeStore<T> otherStore)
+        {
+            store.Merge(otherStore.store);
         }
     }
 

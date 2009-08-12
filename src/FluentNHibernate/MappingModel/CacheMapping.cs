@@ -5,7 +5,16 @@ namespace FluentNHibernate.MappingModel
 {
     public class CacheMapping : MappingBase
     {
-        private readonly AttributeStore<CacheMapping> attributes = new AttributeStore<CacheMapping>();
+        private readonly AttributeStore<CacheMapping> attributes;
+
+        public CacheMapping()
+            : this(new AttributeStore())
+        {}
+
+        public CacheMapping(AttributeStore underlyingStore)
+        {
+            attributes = new AttributeStore<CacheMapping>(underlyingStore);
+        }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {

@@ -7,7 +7,16 @@ namespace FluentNHibernate.MappingModel
     public class PropertyMapping : MappingBase, IHasColumnMappings
     {
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
-        private readonly AttributeStore<PropertyMapping> attributes = new AttributeStore<PropertyMapping>();
+        private readonly AttributeStore<PropertyMapping> attributes;
+
+        public PropertyMapping()
+            : this(new AttributeStore())
+        {}
+
+        public PropertyMapping(AttributeStore underlyingStore)
+        {
+            attributes = new AttributeStore<PropertyMapping>(underlyingStore);
+        }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {

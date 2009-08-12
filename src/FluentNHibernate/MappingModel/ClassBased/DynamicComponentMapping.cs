@@ -5,7 +5,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
 {
     public class DynamicComponentMapping : ComponentMappingBase
     {
-        private readonly AttributeStore<DynamicComponentMapping> attributes;
+        private AttributeStore<DynamicComponentMapping> attributes;
 
         public DynamicComponentMapping()
             : this(new AttributeStore())
@@ -34,6 +34,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
             visitor.ProcessComponent(this);
 
             base.AcceptVisitor(visitor);
+        }
+
+        public override void MergeAttributes(AttributeStore store)
+        {
+            attributes.Merge(new AttributeStore<DynamicComponentMapping>(store));
         }
 
         public bool IsSpecified<TResult>(Expression<Func<DynamicComponentMapping, TResult>> property)

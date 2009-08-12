@@ -5,7 +5,16 @@ namespace FluentNHibernate.MappingModel
 {
     public class VersionMapping : MappingBase
     {
-        private readonly AttributeStore<VersionMapping> attributes = new AttributeStore<VersionMapping>();
+        private readonly AttributeStore<VersionMapping> attributes;
+
+        public VersionMapping()
+            : this(new AttributeStore())
+        {}
+
+        public VersionMapping(AttributeStore underlyingStore)
+        {
+            attributes = new AttributeStore<VersionMapping>(underlyingStore);
+        }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {

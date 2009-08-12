@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.MappingModel
 {
     public class DiscriminatorMapping : MappingBase
     {
         private readonly AttributeStore<DiscriminatorMapping> attributes;
-        public ClassMapping ParentClass { get; internal set; }
 
-        public DiscriminatorMapping(ClassMapping parentClass)
+        public DiscriminatorMapping()
+            : this(new AttributeStore())
+        {}
+
+        public DiscriminatorMapping(AttributeStore underlyingStore)
         {
-            ParentClass = parentClass;
-
-            attributes = new AttributeStore<DiscriminatorMapping>();
+            attributes = new AttributeStore<DiscriminatorMapping>(underlyingStore);
             attributes.SetDefault(x => x.NotNull, true);
             attributes.SetDefault(x => x.Insert, true);
             attributes.SetDefault(x => x.Type, new TypeReference(typeof(string)));

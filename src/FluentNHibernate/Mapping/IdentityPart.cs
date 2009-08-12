@@ -14,16 +14,14 @@ namespace FluentNHibernate.Mapping
 		private readonly PropertyInfo property;
         private readonly Type entityType;
         private readonly AccessStrategyBuilder<IdentityPart> access;
-
-        private readonly IdMapping mapping;
+        private readonly AttributeStore<IdMapping> attributes = new AttributeStore<IdMapping>();
 
         public IdentityPart(Type entity, PropertyInfo property)
 		{
             this.property = property;
             entityType = entity;
 
-            mapping = new IdMapping { ContainingEntityType = entityType };
-            access = new AccessStrategyBuilder<IdentityPart>(this, value => mapping.Access = value);
+            access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set(x => x.Access, value));
             GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, property.PropertyType, entity);
 
             SetDefaultGenerator();
@@ -41,6 +39,11 @@ namespace FluentNHibernate.Mapping
 
         IdMapping IIdentityMappingProvider.GetIdentityMapping()
         {
+            var mapping = new IdMapping(attributes.CloneInner())
+            {
+                ContainingEntityType = entityType
+            };
+
             if (columns.Count > 0)
             {
                 foreach (var column in columns)
@@ -72,7 +75,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="unsavedValue">Value that represents an unsaved value.</param>
         public IdentityPart UnsavedValue(object unsavedValue)
         {
-            mapping.UnsavedValue = unsavedValue.ToString();
+            attributes.Set(x => x.UnsavedValue, unsavedValue.ToString());
             return this;
         }
 
@@ -89,7 +92,7 @@ namespace FluentNHibernate.Mapping
 
         public IdentityPart Length(int length)
         {
-            mapping.Length = length;
+            attributes.Set(x => x.Length, length);
             return this;
         }
     }

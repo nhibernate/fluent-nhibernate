@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
@@ -11,12 +12,14 @@ namespace FluentNHibernate.Mapping
     public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
 	{
         private readonly AccessStrategyBuilder<CompositeIdentityPart<T>> access;
-        private readonly CompositeIdMapping mapping = new CompositeIdMapping();
+        private readonly AttributeStore<CompositeIdMapping> attributes = new AttributeStore<CompositeIdMapping>();
+        private readonly IList<KeyPropertyMapping> keyProperties = new List<KeyPropertyMapping>();
+        private readonly IList<KeyManyToOneMapping> keyManyToOnes = new List<KeyManyToOneMapping>();
         private bool nextBool = true;
 
         public CompositeIdentityPart()
         {
-            access = new AccessStrategyBuilder<CompositeIdentityPart<T>>(this, value => mapping.Access = value);
+            access = new AccessStrategyBuilder<CompositeIdentityPart<T>>(this, value => attributes.Set(x => x.Access, value));
         }
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace FluentNHibernate.Mapping
             };
             key.AddColumn(new ColumnMapping { Name = columnName });
 
-            mapping.AddKeyProperty(key);
+            keyProperties.Add(key);
 
             return this;
         }
@@ -94,7 +97,7 @@ namespace FluentNHibernate.Mapping
             };
             key.AddColumn(new ColumnMapping { Name = columnName });
 
-            mapping.AddKeyManyToOne(key);
+            keyManyToOnes.Add(key);
 
             return this;
         }
@@ -118,20 +121,26 @@ namespace FluentNHibernate.Mapping
 
         public CompositeIdentityPart<T> Mapped()
         {
-            mapping.Mapped = nextBool;
+            attributes.Set(x => x.Mapped, nextBool);
             nextBool = true;
             return this;
         }
 
         public CompositeIdentityPart<T> UnsavedValue(string value)
         {
-            mapping.UnsavedValue = value;
+            attributes.Set(x => x.UnsavedValue, value);
             return this;
         }
 
 	    CompositeIdMapping ICompositeIdMappingProvider.GetCompositeIdMapping()
 	    {
+            var mapping = new CompositeIdMapping(attributes.CloneInner());
+
 	        mapping.ContainingEntityType = typeof(T);
+
+            keyProperties.Each(mapping.AddKeyProperty);
+            keyManyToOnes.Each(mapping.AddKeyManyToOne);
+
 	        return mapping;
 	    }
 	}

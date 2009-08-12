@@ -247,6 +247,11 @@ namespace FluentNHibernate.AutoMap
             return this;
         }
 
+        internal void AddOverride(Type type, Action<object> action)
+        {
+            inlineOverrides.Add(new InlineOverride(type, action));
+        }
+
         public AutoPersistenceModel ForTypesThatDeriveFrom<T>(Action<AutoMap<T>> populateMap)
         {
             inlineOverrides.Add(new InlineOverride(typeof(T), x =>

@@ -7,25 +7,29 @@ namespace FluentNHibernate.Mapping
 {
     public class DiscriminatorPart : IDiscriminatorMappingProvider
     {
+        private readonly Type entity;
         private readonly Action<Type, ISubclassMappingProvider> setter;
         private readonly TypeReference discriminatorValueType;
-        private readonly DiscriminatorMapping mapping;
+        private readonly AttributeStore<DiscriminatorMapping> attributes = new AttributeStore<DiscriminatorMapping>();
         private bool nextBool = true;
 
-        public DiscriminatorPart(ClassMapping parentMapping, string columnName, Type entity, Action<Type, ISubclassMappingProvider> setter, TypeReference discriminatorValueType)
+        public DiscriminatorPart(string columnName, Type entity, Action<Type, ISubclassMappingProvider> setter, TypeReference discriminatorValueType)
         {
+            this.entity = entity;
             this.setter = setter;
             this.discriminatorValueType = discriminatorValueType;
-            mapping = new DiscriminatorMapping(parentMapping)
-            {
-                Column = columnName,
-                ContainingEntityType = entity
-            };
+
+            attributes.SetDefault(x => x.Column, columnName);
         }
 
         DiscriminatorMapping IDiscriminatorMappingProvider.GetDiscriminatorMapping()
         {
-            mapping.Type = discriminatorValueType;
+            var mapping = new DiscriminatorMapping(attributes.CloneInner())
+            {
+                ContainingEntityType = entity,
+                Type = discriminatorValueType
+            };
+
             return mapping;
         }
 
@@ -57,14 +61,14 @@ namespace FluentNHibernate.Mapping
 
         public DiscriminatorPart Nullable()
         {
-            mapping.NotNull = !nextBool;
+            attributes.Set(x => x.NotNull, !nextBool);
             nextBool = true;
             return this;
         }
 
         public DiscriminatorPart Length(int length)
         {
-            mapping.Length = length;
+            attributes.Set(x => x.Length, length);
             return this;
         }
 
@@ -75,7 +79,7 @@ namespace FluentNHibernate.Mapping
         /// <remarks>Sets the "force" attribute.</remarks>
         public DiscriminatorPart AlwaysSelectWithValue()
         {
-            mapping.Force = nextBool;
+            attributes.Set(x => x.Force, nextBool);
             nextBool = true;
             return this;
         }
@@ -86,7 +90,7 @@ namespace FluentNHibernate.Mapping
         /// <returns>Sets the "insert" attribute.</returns>
         public DiscriminatorPart ReadOnly()
         {
-            mapping.Insert = !nextBool;
+            attributes.Set(x => x.Insert, !nextBool);
             nextBool = true;
             return this;
         }
@@ -97,7 +101,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="sql">SQL expression</param>
         public DiscriminatorPart Formula(string sql)
         {
-            mapping.Formula = sql;
+            attributes.Set(x => x.Formula, sql);
             return this;
         }
     }

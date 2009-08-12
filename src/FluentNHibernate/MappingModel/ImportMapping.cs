@@ -7,6 +7,15 @@ namespace FluentNHibernate.MappingModel
     {
         private readonly AttributeStore<ImportMapping> attributes = new AttributeStore<ImportMapping>();
 
+        public ImportMapping()
+            : this(new AttributeStore())
+        {}
+
+        public ImportMapping(AttributeStore underlyingStore)
+        {
+            attributes = new AttributeStore<ImportMapping>(underlyingStore);
+        }
+
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessImport(this);

@@ -36,6 +36,8 @@ namespace FluentNHibernate.AutoMap
 
         void IAutoClasslike.AlterModel(ClassMappingBase classMapping)
         {
+            classMapping.MergeAttributes(attributes.CloneInner());
+
             if (classMapping is ClassMapping)
             {
                 if (id != null)
@@ -108,7 +110,7 @@ namespace FluentNHibernate.AutoMap
             return base.Id(expression);
         }
 
-        protected override PropertyMap Map(PropertyInfo property, string columnName)
+        protected override PropertyPart Map(PropertyInfo property, string columnName)
         {
             mappedProperties.Add(property.Name);
             return base.Map(property, columnName);

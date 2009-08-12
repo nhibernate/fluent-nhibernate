@@ -16,28 +16,28 @@ namespace FluentNHibernate.Mapping
     public class CompositeElementPart<T> : ICompositeElementMappingProvider
     {
         private readonly Type entity;
-        private readonly CompositeElementMapping mapping = new CompositeElementMapping();
         private readonly IList<IPropertyMappingProvider> properties = new List<IPropertyMappingProvider>();
         private readonly IList<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
+        private readonly AttributeStore<CompositeElementMapping> attributes = new AttributeStore<CompositeElementMapping>();
 
         public CompositeElementPart(Type entity)
         {
             this.entity = entity;
         }
 
-        public PropertyMap Map(Expression<Func<T, object>> expression)
+        public PropertyPart Map(Expression<Func<T, object>> expression)
         {
             return Map(expression, null);
         }
 
-        public PropertyMap Map(Expression<Func<T, object>> expression, string columnName)
+        public PropertyPart Map(Expression<Func<T, object>> expression, string columnName)
         {
             return Map(ReflectionHelper.GetProperty(expression), columnName);
         }
 
-        protected virtual PropertyMap Map(PropertyInfo property, string columnName)
+        protected virtual PropertyPart Map(PropertyInfo property, string columnName)
         {
-            var propertyMap = new PropertyMap(property, typeof(T));
+            var propertyMap = new PropertyPart(property, typeof(T));
 
             if (!string.IsNullOrEmpty(columnName))
                 propertyMap.Column(columnName);
@@ -77,16 +77,18 @@ namespace FluentNHibernate.Mapping
         public CompositeElementPart<T> ParentReference(Expression<Func<T, object>> exp)
         {
             var property = ReflectionHelper.GetProperty(exp);
-            mapping.Parent = new ParentMapping
+            attributes.Set(x => x.Parent, new ParentMapping
             {
                 Name = property.Name,
                 ContainingEntityType = entity
-            };
+            });
             return this;
         }
 
         CompositeElementMapping ICompositeElementMappingProvider.GetCompositeElementMapping()
         {
+            var mapping = new CompositeElementMapping(attributes.CloneInner());
+
             mapping.ContainingEntityType = entity;
 
             if (!mapping.IsSpecified(x => x.Class))

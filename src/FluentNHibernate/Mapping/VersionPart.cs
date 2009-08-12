@@ -11,19 +11,20 @@ namespace FluentNHibernate.Mapping
         private readonly PropertyInfo property;
         private readonly AccessStrategyBuilder<VersionPart> access;
         private readonly VersionGeneratedBuilder<IVersionMappingProvider> generated;
-
-        private readonly VersionMapping mapping = new VersionMapping();
+        private readonly AttributeStore<VersionMapping> attributes = new AttributeStore<VersionMapping>();
 
         public VersionPart(Type entity, PropertyInfo property)
         {
             this.entity = entity;
             this.property = property;
-            access = new AccessStrategyBuilder<VersionPart>(this, value => mapping.Access = value);
-            generated = new VersionGeneratedBuilder<IVersionMappingProvider>(this, value => mapping.Generated = value);
+            access = new AccessStrategyBuilder<VersionPart>(this, value => attributes.Set(x => x.Access, value));
+            generated = new VersionGeneratedBuilder<IVersionMappingProvider>(this, value => attributes.Set(x => x.Generated, value));
         }
 
         VersionMapping IVersionMappingProvider.GetVersionMapping()
         {
+            var mapping = new VersionMapping(attributes.CloneInner());
+
             mapping.ContainingEntityType = entity;
 
             if (!mapping.IsSpecified(x => x.Name))
@@ -50,13 +51,13 @@ namespace FluentNHibernate.Mapping
 
         public VersionPart Column(string name)
         {
-            mapping.Column = name;
+            attributes.Set(x => x.Column, name);
             return this;
         }
 
         public VersionPart UnsavedValue(string value)
         {
-            mapping.UnsavedValue = value;
+            attributes.Set(x => x.UnsavedValue, value);
             return this;
         }
     }

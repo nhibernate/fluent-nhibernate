@@ -6,29 +6,25 @@ using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping
 {
-    public class PropertyMap : IPropertyMappingProvider
+    public class PropertyPart : IPropertyMappingProvider
     {
+        private readonly PropertyInfo property;
         private readonly Type parentType;
-        private readonly AccessStrategyBuilder<PropertyMap> access;
+        private readonly AccessStrategyBuilder<PropertyPart> access;
         private readonly PropertyGeneratedBuilder generated;
-        private readonly ColumnNameCollection<PropertyMap> columns;
+        private readonly ColumnNameCollection<PropertyPart> columns;
+        private readonly AttributeStore<PropertyMapping> attributes = new AttributeStore<PropertyMapping>();
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
         private bool nextBool = true;
 
-        private readonly PropertyMapping mapping;
-
-        public PropertyMap(PropertyInfo property, Type parentType)
+        public PropertyPart(PropertyInfo property, Type parentType)
         {
-            columns = new ColumnNameCollection<PropertyMap>(this);
-            access = new AccessStrategyBuilder<PropertyMap>(this, value => mapping.Access = value);
-            generated = new PropertyGeneratedBuilder(this, value => mapping.Generated = value);
+            columns = new ColumnNameCollection<PropertyPart>(this);
+            access = new AccessStrategyBuilder<PropertyPart>(this, value => attributes.Set(x => x.Access, value));
+            generated = new PropertyGeneratedBuilder(this, value => attributes.Set(x => x.Generated, value));
 
+            this.property = property;
             this.parentType = parentType;
-            mapping = new PropertyMapping
-            {
-                ContainingEntityType = parentType,
-                PropertyInfo = property
-            };
         }
 
         public PropertyGeneratedBuilder Generated
@@ -38,6 +34,12 @@ namespace FluentNHibernate.Mapping
 
         PropertyMapping IPropertyMappingProvider.GetPropertyMapping()
         {
+            var mapping = new PropertyMapping(attributes.CloneInner())
+            {
+                ContainingEntityType = parentType,
+                PropertyInfo = property
+            };
+
             if (columns.List().Count == 0)
                 mapping.AddDefaultColumn(CreateColumn(mapping.PropertyInfo.Name));
 
@@ -65,24 +67,14 @@ namespace FluentNHibernate.Mapping
             };
         }
 
-        public Type PropertyType
-        {
-            get { return mapping.PropertyInfo.PropertyType; }
-        }
-
-        public Type EntityType
-        {
-            get { return parentType; }
-        }
-
-        public PropertyMap Column(string columnName)
+        public PropertyPart Column(string columnName)
         {
             Columns.Clear();
             Columns.Add(columnName);
             return this;
         }
 
-        public ColumnNameCollection<PropertyMap> Columns
+        public ColumnNameCollection<PropertyPart> Columns
         {
             get { return columns; }
         }
@@ -90,64 +82,64 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Set the access and naming strategy for this property.
         /// </summary>
-        public AccessStrategyBuilder<PropertyMap> Access
+        public AccessStrategyBuilder<PropertyPart> Access
         {
             get { return access; }
         }
 
-        public PropertyMap Insert()
+        public PropertyPart Insert()
         {
-            mapping.Insert = nextBool;
+            attributes.Set(x => x.Insert, nextBool);
             nextBool = true;
 
             return this;
         }
 
-        public PropertyMap Update()
+        public PropertyPart Update()
         {
-            mapping.Update = nextBool;
+            attributes.Set(x => x.Update, nextBool);
             nextBool = true;
 
             return this;
         }
 
-        public PropertyMap Length(int length)
+        public PropertyPart Length(int length)
         {
             columnAttributes.Set(x => x.Length, length);
             return this;
         }
 
-        public PropertyMap Nullable()
+        public PropertyPart Nullable()
         {
             columnAttributes.Set(x => x.NotNull, !nextBool);
             nextBool = true;
             return this;
         }
 
-        public PropertyMap ReadOnly()
+        public PropertyPart ReadOnly()
         {
-            mapping.Insert = !nextBool;
-            mapping.Update = !nextBool;
+            attributes.Set(x => x.Insert, !nextBool);
+            attributes.Set(x => x.Update, !nextBool);
             nextBool = true;
             return this;
         }
 
-        public PropertyMap Formula(string formula) 
+        public PropertyPart Formula(string formula) 
         {
-            mapping.Formula = formula;
+            attributes.Set(x => x.Formula, formula);
             return this;
         }
 
-        public PropertyMap LazyLoad()
+        public PropertyPart LazyLoad()
         {
-            mapping.Lazy = nextBool;
+            attributes.Set(x => x.Lazy, nextBool);
             nextBool = true;
             return this;
         }
 
-        public PropertyMap Index(string index)
+        public PropertyPart Index(string index)
         {
-            mapping.Index = index;
+            attributes.Set(x => x.Index, index);
             return this;
         }
 
@@ -156,7 +148,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <typeparam name="TCustomtype">A type which implements <see cref="IUserType"/>.</typeparam>
         /// <returns>This property mapping to continue the method chain</returns>
-        public PropertyMap CustomType<TCustomtype>()
+        public PropertyPart CustomType<TCustomtype>()
         {
             return CustomType(typeof(TCustomtype));
         }
@@ -166,7 +158,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="type">A type which implements <see cref="IUserType"/>.</param>
         /// <returns>This property mapping to continue the method chain</returns>
-        public PropertyMap CustomType(Type type)
+        public PropertyPart CustomType(Type type)
         {
             if (typeof(ICompositeUserType).IsAssignableFrom(type))
                 AddColumnsFromCompositeUserType(type);
@@ -179,9 +171,9 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="type">A type which implements <see cref="IUserType"/>.</param>
         /// <returns>This property mapping to continue the method chain</returns>
-        public PropertyMap CustomType(string type)
+        public PropertyPart CustomType(string type)
         {
-            mapping.Type = new TypeReference(type);
+            attributes.Set(x => x.Type, new TypeReference(type));
 
             return this;
         }
@@ -196,32 +188,32 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        public PropertyMap CustomSqlType(string sqlType)
+        public PropertyPart CustomSqlType(string sqlType)
         {
             columnAttributes.Set(x => x.SqlType, sqlType);
             return this;
         }
 
-        public PropertyMap Unique()
+        public PropertyPart Unique()
         {
             columnAttributes.Set(x => x.Unique, nextBool);
             nextBool = true;
             return this;
         }
 
-        public PropertyMap Precision(int precision)
+        public PropertyPart Precision(int precision)
         {
             columnAttributes.Set(x => x.Precision, precision);
             return this;
         }
 
-        public PropertyMap Scale(int scale)
+        public PropertyPart Scale(int scale)
         {
             columnAttributes.Set(x => x.Scale, scale);
             return this;
         }
 
-        public PropertyMap Default(string value)
+        public PropertyPart Default(string value)
         {
             columnAttributes.Set(x => x.Default, value);
             return this;
@@ -231,15 +223,15 @@ namespace FluentNHibernate.Mapping
         /// Specifies the name of a multi-column unique constraint.
         /// </summary>
         /// <param name="keyName">Name of constraint</param>
-        public PropertyMap UniqueKey(string keyName)
+        public PropertyPart UniqueKey(string keyName)
         {
             columnAttributes.Set(x => x.UniqueKey, keyName);
             return this;
         }
 
-        public PropertyMap OptimisticLock()
+        public PropertyPart OptimisticLock()
         {
-            mapping.OptimisticLock = nextBool;
+            attributes.Set(x => x.OptimisticLock, nextBool);
             nextBool = true;
             return this;
         }
@@ -247,7 +239,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Inverts the next boolean
         /// </summary>
-        public PropertyMap Not
+        public PropertyPart Not
         {
             get
             {

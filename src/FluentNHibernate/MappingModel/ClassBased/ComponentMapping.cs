@@ -5,7 +5,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
 {
     public class ComponentMapping : ComponentMappingBase
     {
-        private readonly AttributeStore<ComponentMapping> attributes = new AttributeStore<ComponentMapping>();
+        private AttributeStore<ComponentMapping> attributes = new AttributeStore<ComponentMapping>();
 
         public ComponentMapping()
             : this(new AttributeStore())
@@ -22,6 +22,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
             visitor.ProcessComponent(this);
 
             base.AcceptVisitor(visitor);
+        }
+
+        public override void MergeAttributes(AttributeStore store)
+        {
+            attributes.Merge(new AttributeStore<ComponentMapping>(store));
         }
 
         public override string Name

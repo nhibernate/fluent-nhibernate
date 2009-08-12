@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -7,8 +6,17 @@ namespace FluentNHibernate.MappingModel.Identity
 {
     public class IdMapping : MappingBase, IIdentityMapping, IHasColumnMappings
     {
-        private readonly AttributeStore<IdMapping> attributes = new AttributeStore<IdMapping>();
+        private readonly AttributeStore<IdMapping> attributes;
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+
+        public IdMapping()
+            : this(new AttributeStore())
+        {}
+
+        public IdMapping(AttributeStore underlyingStore)
+        {
+            attributes = new AttributeStore<IdMapping>(underlyingStore);
+        }
 
         public void AddColumn(ColumnMapping column)
         {

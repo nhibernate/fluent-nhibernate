@@ -200,6 +200,14 @@ namespace FluentNHibernate.Conventions
             ApplyCollectionConventions(setMapping);
         }
 
+        public override void ProcessJoin(JoinMapping joinMapping)
+        {
+            var conventions = finder.Find<IJoinConvention>();
+
+            Apply<IJoinInspector, IJoinInstance>(conventions,
+                new JoinInstance(joinMapping));
+        }
+
         private void Apply<TInspector, TInstance>(IEnumerable conventions, TInstance instance)
             where TInspector : IInspector
             where TInstance : TInspector

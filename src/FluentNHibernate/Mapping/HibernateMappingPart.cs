@@ -7,18 +7,18 @@ namespace FluentNHibernate.Mapping
     {
         private readonly CascadeExpression<HibernateMappingPart> defaultCascade;
         private readonly AccessStrategyBuilder<HibernateMappingPart> defaultAccess;
-        private readonly HibernateMapping mapping = new HibernateMapping();
+        private readonly AttributeStore<HibernateMapping> attributes = new AttributeStore<HibernateMapping>();
         private bool nextBool = true;
 
         public HibernateMappingPart()
         {
-            defaultCascade = new CascadeExpression<HibernateMappingPart>(this, value => mapping.DefaultCascade = value);
-            defaultAccess = new AccessStrategyBuilder<HibernateMappingPart>(this, value => mapping.DefaultAccess = value);
+            defaultCascade = new CascadeExpression<HibernateMappingPart>(this, value => attributes.Set(x => x.DefaultCascade, value));
+            defaultAccess = new AccessStrategyBuilder<HibernateMappingPart>(this, value => attributes.Set(x => x.DefaultAccess, value));
         }
 
         public HibernateMappingPart Schema(string schema)
         {
-            mapping.Schema = schema;
+            attributes.Set(x => x.Schema, schema);
             return this;
         }
 
@@ -34,14 +34,14 @@ namespace FluentNHibernate.Mapping
 
         public HibernateMappingPart AutoImport()
         {
-            mapping.AutoImport = nextBool;
+            attributes.Set(x => x.AutoImport, nextBool);
             nextBool = true;
             return this;
         }
 
         public HibernateMappingPart DefaultLazy()
         {
-            mapping.DefaultLazy = nextBool;
+            attributes.Set(x => x.DefaultLazy, nextBool);
             nextBool = true;
             return this;
         }
@@ -57,25 +57,25 @@ namespace FluentNHibernate.Mapping
 
         public HibernateMappingPart Catalog(string catalog)
         {
-            mapping.Catalog = catalog;
+            attributes.Set(x => x.Catalog, catalog);
             return this;
         }
 
         public HibernateMappingPart Namespace(string ns)
         {
-            mapping.Namespace = ns;
+            attributes.Set(x => x.Namespace, ns);
             return this;
         }
 
         public HibernateMappingPart Assembly(string assembly)
         {
-            mapping.Assembly = assembly;
+            attributes.Set(x => x.Assembly, assembly);
             return this;
         }
 
         HibernateMapping IHibernateMappingProvider.GetHibernateMapping()
         {
-            return mapping;
+            return new HibernateMapping(attributes.CloneInner());
         }
     }
 }

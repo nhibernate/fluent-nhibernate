@@ -250,7 +250,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             model.Conventions.Add(new PropertyConventionBuilder().Always(convention));
         }
 
-        private void Mapping<T>(Expression<Func<T, object>> property, Action<PropertyMap> mappingDefinition)
+        private void Mapping<T>(Expression<Func<T, object>> property, Action<PropertyPart> mappingDefinition)
         {
             var classMap = new ClassMap<T>();
             var map = classMap.Map(property);

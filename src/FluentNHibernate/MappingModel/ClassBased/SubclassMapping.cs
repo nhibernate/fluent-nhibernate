@@ -11,9 +11,9 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
         public SubclassMapping()
             : this(new AttributeStore())
-        { }
+        {}
 
-        private SubclassMapping(AttributeStore underlyingStore)
+        public SubclassMapping(AttributeStore underlyingStore)
         {
             attributes = new AttributeStore<SubclassMapping>(underlyingStore);
         }
@@ -23,6 +23,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
             visitor.ProcessSubclass(this);
 
             base.AcceptVisitor(visitor);
+        }
+
+        public override void MergeAttributes(AttributeStore store)
+        {
+            attributes.Merge(new AttributeStore<SubclassMapping>(store));
         }
 
         public override string Name

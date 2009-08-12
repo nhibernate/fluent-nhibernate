@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
@@ -6,8 +7,9 @@ namespace FluentNHibernate.Mapping
 {
     public class ElementPart
     {
-        private readonly ElementMapping mapping = new ElementMapping();
         private readonly Type entity;
+        private readonly AttributeStore<ElementMapping> attributes = new AttributeStore<ElementMapping>();
+        private IList<string> columns = new List<string>();
 
         public ElementPart(Type entity)
         {
@@ -16,19 +18,24 @@ namespace FluentNHibernate.Mapping
 
         public ElementPart Column(string elementColumnName)
         {
-            mapping.AddColumn(new ColumnMapping { Name = elementColumnName });
+            columns.Add(elementColumnName);
             return this;
         }
 
         public ElementPart Type<TElement>()
         {
-            mapping.Type = new TypeReference(typeof(TElement));
+            attributes.Set(x => x.Type, new TypeReference(typeof(TElement)));
             return this;
         }
 
         public ElementMapping GetElementMapping()
         {
+            var mapping = new ElementMapping(attributes.CloneInner());
+
             mapping.ContainingEntityType = entity;
+
+            columns.Each(x => mapping.AddColumn(new ColumnMapping { Name = x }));
+
             return mapping;
         }
     }

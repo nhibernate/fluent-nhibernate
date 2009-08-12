@@ -13,7 +13,6 @@ using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using FluentNHibernate.Utils;
 using Iesi.Collections.Generic;
-using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
@@ -21,21 +20,20 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
     {
         protected ModelTester<ClassMap<T>, ClassMapping> ClassMap<T>()
         {
-            return new ModelTester<ClassMap<T>, ClassMapping>(() => new ClassMap<T>(), x => x.GetClassMapping());
+            return new ModelTester<ClassMap<T>, ClassMapping>(() => new ClassMap<T>(), x => ((IMappingProvider)x).GetClassMapping());
         }
 
         protected ModelTester<DiscriminatorPart, DiscriminatorMapping> DiscriminatorMap<T>()
         {
             return new ModelTester<DiscriminatorPart, DiscriminatorMapping>(() =>
             {
-                var classMapping = new ClassMapping();
-                return new DiscriminatorPart(classMapping, "column", typeof(T), (x, y) => {}, new TypeReference(typeof(object)));
+                return new DiscriminatorPart("column", typeof(T), (x, y) => {}, new TypeReference(typeof(object)));
             }, x => ((IDiscriminatorMappingProvider)x).GetDiscriminatorMapping());
         }
 
         protected ModelTester<SubClassPart<T>, SubclassMapping> Subclass<T>()
         {
-            return new ModelTester<SubClassPart<T>, SubclassMapping>(() => new SubClassPart<T>(new SubclassMapping()), x => (SubclassMapping)((ISubclassMappingProvider)x).GetSubclassMapping());
+            return new ModelTester<SubClassPart<T>, SubclassMapping>(() => new SubClassPart<T>(null, null), x => (SubclassMapping)((ISubclassMappingProvider)x).GetSubclassMapping());
         }
 
         protected ModelTester<SubclassMap<T>, SubclassMapping> SubclassMapForSubclass<T>()
@@ -45,7 +43,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<JoinedSubClassPart<T>, JoinedSubclassMapping> JoinedSubclass<T>()
         {
-            return new ModelTester<JoinedSubClassPart<T>, JoinedSubclassMapping>(() => new JoinedSubClassPart<T>(new JoinedSubclassMapping()), x => (JoinedSubclassMapping)((ISubclassMappingProvider)x).GetSubclassMapping());
+            return new ModelTester<JoinedSubClassPart<T>, JoinedSubclassMapping>(() => new JoinedSubClassPart<T>("column"), x => (JoinedSubclassMapping)((ISubclassMappingProvider)x).GetSubclassMapping());
         }
 
         protected ModelTester<SubclassMap<T>, JoinedSubclassMapping> SubclassMapForJoinedSubclass<T>()
@@ -88,9 +86,9 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             return new ModelTester<OneToOnePart<PropertyReferenceTarget>, OneToOneMapping>(() => new OneToOnePart<PropertyReferenceTarget>(typeof(PropertyTarget), ReflectionHelper.GetProperty<PropertyTarget>(x => x.Reference)), x => ((IOneToOneMappingProvider)x).GetOneToOneMapping());
         }
 
-        protected ModelTester<PropertyMap, PropertyMapping> Property()
+        protected ModelTester<PropertyPart, PropertyMapping> Property()
         {
-            return new ModelTester<PropertyMap, PropertyMapping>(() => new PropertyMap(ReflectionHelper.GetProperty<PropertyTarget>(x => x.Name), typeof(PropertyTarget)), x => ((IPropertyMappingProvider)x).GetPropertyMapping());
+            return new ModelTester<PropertyPart, PropertyMapping>(() => new PropertyPart(ReflectionHelper.GetProperty<PropertyTarget>(x => x.Name), typeof(PropertyTarget)), x => ((IPropertyMappingProvider)x).GetPropertyMapping());
         }
 
         protected ModelTester<OneToManyPart<T>, ICollectionMapping> OneToMany<T>(Expression<Func<OneToManyTarget, IList<T>>> property)

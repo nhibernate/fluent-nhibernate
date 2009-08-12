@@ -16,7 +16,7 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
         [Test]
         public void ShouldHaveDefaultColumnIfNoneSpecified()
         {
-            var mapping = ((IPropertyMappingProvider)new PropertyMap(Prop(x => x.Name), typeof(PropertyTarget)))
+            var mapping = ((IPropertyMappingProvider)new PropertyPart(Prop(x => x.Name), typeof(PropertyTarget)))
                 .GetPropertyMapping();
 
             mapping.Columns.Defaults.Count().ShouldEqual(1);
@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
         [Test]
         public void ShouldHaveNoDefaultsIfUserSpecifiedColumn()
         {
-            var mapping = ((IPropertyMappingProvider)new PropertyMap(Prop(x => x.Name), typeof(PropertyTarget))
+            var mapping = ((IPropertyMappingProvider)new PropertyPart(Prop(x => x.Name), typeof(PropertyTarget))
                 .Column("explicit"))
                 .GetPropertyMapping();
 
@@ -39,7 +39,7 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
         [Test]
         public void DefaultColumnShouldInheritColumnAttributes()
         {
-            var mapping = ((IPropertyMappingProvider)new PropertyMap(Prop(x => x.Name), typeof(PropertyTarget))
+            var mapping = ((IPropertyMappingProvider)new PropertyPart(Prop(x => x.Name), typeof(PropertyTarget))
                 .Not.Nullable())
                 .GetPropertyMapping();
 

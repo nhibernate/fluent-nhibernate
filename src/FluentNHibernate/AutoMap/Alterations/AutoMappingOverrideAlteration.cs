@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.AutoMap.Alterations
 {
@@ -42,15 +43,27 @@ namespace FluentNHibernate.AutoMap.Alterations
             foreach (var typeMatch in types)
             {
                 var mappingOverride = Activator.CreateInstance(typeMatch.OverrideType);
-                var mapping = (IMappingProvider)Activator.CreateInstance(typeof(AutoMap<>).MakeGenericType(typeMatch.EntityType), new List<string>());
+                var autoMapType = typeof(AutoMap<>).MakeGenericType(typeMatch.EntityType);
+                var mapping = (IMappingProvider)Activator.CreateInstance(autoMapType, new List<string>());
 
                 // HACK: call the Override method with the generic AutoMap<T>
-                typeMatch.OverrideType
-                    .GetMethod("Override")
-                    .Invoke(mappingOverride, new[] { mapping });
+                var overrideMethod = typeMatch.OverrideType
+                    .GetMethod("Override");
 
-                model.Add(mapping);
+                GetType()
+                    .GetMethod("AddOverride", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .MakeGenericMethod(typeMatch.EntityType)
+                    .Invoke(this, new[] { model, typeMatch.EntityType, mappingOverride });
             }
+        }
+
+        private void AddOverride<T>(AutoPersistenceModel model, Type entity, IAutoMappingOverride<T> mappingOverride)
+        {
+            model.AddOverride(entity, x =>
+            {
+                if (x is AutoMap<T>)
+                    mappingOverride.Override((AutoMap<T>)x);
+            });
         }
     }
 }

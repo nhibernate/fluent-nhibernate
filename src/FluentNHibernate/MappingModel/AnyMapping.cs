@@ -6,13 +6,19 @@ namespace FluentNHibernate.MappingModel
 {
     public class AnyMapping : MappingBase
     {
-        private readonly AttributeStore<AnyMapping> attributes = new AttributeStore<AnyMapping>();
+        private readonly AttributeStore<AnyMapping> attributes;
         private readonly IDefaultableList<ColumnMapping> typeColumns = new DefaultableList<ColumnMapping>();
         private readonly IDefaultableList<ColumnMapping> identifierColumns = new DefaultableList<ColumnMapping>();
         private readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
 
         public AnyMapping()
+            : this(new AttributeStore())
+        {}
+
+        public AnyMapping(AttributeStore underlyingStore)
         {
+            attributes = new AttributeStore<AnyMapping>(underlyingStore);
+
             attributes.SetDefault(x => x.Insert, true);
             attributes.SetDefault(x => x.Update, true);
             attributes.SetDefault(x => x.OptimisticLock, true);

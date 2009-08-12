@@ -18,19 +18,19 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
         protected readonly IList<IAnyMappingProvider> anys = new List<IAnyMappingProvider>();
 
-        public PropertyMap Map(Expression<Func<T, object>> expression)
+        public PropertyPart Map(Expression<Func<T, object>> expression)
         {
             return Map(expression, null);
         }
 
-        public PropertyMap Map(Expression<Func<T, object>> expression, string columnName)
+        public PropertyPart Map(Expression<Func<T, object>> expression, string columnName)
         {
             return Map(ReflectionHelper.GetProperty(expression), columnName);
         }
 
-        protected virtual PropertyMap Map(PropertyInfo property, string columnName)
+        protected virtual PropertyPart Map(PropertyInfo property, string columnName)
         {
-            var propertyMap = new PropertyMap(property, typeof(T));
+            var propertyMap = new PropertyPart(property, typeof(T));
 
             if (!string.IsNullOrEmpty(columnName))
                 propertyMap.Column(columnName);

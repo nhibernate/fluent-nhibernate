@@ -85,15 +85,15 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public PropertyMap Map(string key)
+        public PropertyPart Map(string key)
         {
             return Map<string>(key);
         }
 
-        public PropertyMap Map<TProperty>(string key)
+        public PropertyPart Map<TProperty>(string key)
         {
             var property = new DummyPropertyInfo(key, typeof(TProperty));
-            var propertyMap = new PropertyMap(property, typeof(T));
+            var propertyMap = new PropertyPart(property, typeof(T));
 
             properties.Add(propertyMap);
 

@@ -181,7 +181,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void DiscriminatorMapped()
         {
-            mapping.Discriminator = new DiscriminatorMapping(new ClassMapping());
+            mapping.Discriminator = new DiscriminatorMapping();
             mapping.Discriminator.Insert = true;
             inspector.Discriminator.Insert.ShouldBeTrue();
         }
@@ -189,7 +189,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void DiscriminatorIsSet()
         {
-            mapping.Discriminator = new DiscriminatorMapping(new ClassMapping());
+            mapping.Discriminator = new DiscriminatorMapping();
             mapping.Discriminator.Insert = true;
             inspector.IsSet(Prop(x => x.Discriminator))
                 .ShouldBeTrue();

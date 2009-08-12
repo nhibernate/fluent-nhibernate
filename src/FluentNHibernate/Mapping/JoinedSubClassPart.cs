@@ -8,20 +8,21 @@ namespace FluentNHibernate.Mapping
 {
     public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclassMappingProvider
     {
-        private readonly JoinedSubclassMapping mapping;
         private readonly ColumnNameCollection<JoinedSubClassPart<TSubclass>> columns;
+        private readonly List<ISubclassMapping> subclassMappings = new List<ISubclassMapping>();
+        private readonly AttributeStore<JoinedSubclassMapping> attributes;
         private bool nextBool = true;
 
         public JoinedSubClassPart(string keyColumn)
-            : this(new JoinedSubclassMapping())
+            : this(new AttributeStore())
         {
             columns.Add(keyColumn);
         }
 
-        public JoinedSubClassPart(JoinedSubclassMapping mapping)
+        public JoinedSubClassPart(AttributeStore underlyingStore)
         {
+            attributes = new AttributeStore<JoinedSubclassMapping>(underlyingStore);
             columns = new ColumnNameCollection<JoinedSubClassPart<TSubclass>>(this);
-            this.mapping = mapping;
         }
 
         public virtual void JoinedSubClass<TNextSubclass>(string keyColumn, Action<JoinedSubClassPart<TNextSubclass>> action)
@@ -32,7 +33,7 @@ namespace FluentNHibernate.Mapping
 
             subclasses[typeof(TNextSubclass)] = subclass;
 
-            mapping.AddSubclass(((ISubclassMappingProvider)subclass).GetSubclassMapping());
+            subclassMappings.Add(((ISubclassMappingProvider)subclass).GetSubclassMapping());
         }
 
         public ColumnNameCollection<JoinedSubClassPart<TSubclass>> KeyColumns
@@ -42,25 +43,25 @@ namespace FluentNHibernate.Mapping
 
         public JoinedSubClassPart<TSubclass> Table(string tableName)
         {
-            mapping.TableName = tableName;
+            attributes.Set(x => x.TableName, tableName);
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> Schema(string schema)
         {
-            mapping.Schema = schema;
+            attributes.Set(x => x.Schema, schema);
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> CheckConstraint(string constraintName)
         {
-            mapping.Check = constraintName;
+            attributes.Set(x => x.Check, constraintName);
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> Proxy(Type type)
         {
-            mapping.Proxy = type.AssemblyQualifiedName;
+            attributes.Set(x => x.Proxy, type.AssemblyQualifiedName);
             return this;
         }
 
@@ -71,35 +72,35 @@ namespace FluentNHibernate.Mapping
 
         public JoinedSubClassPart<TSubclass> LazyLoad()
         {
-            mapping.Lazy = nextBool;
+            attributes.Set(x => x.Lazy, nextBool);
             nextBool = true;
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> DynamicUpdate()
         {
-            mapping.DynamicUpdate = nextBool;
+            attributes.Set(x => x.DynamicUpdate, nextBool);
             nextBool = true;
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> DynamicInsert()
         {
-            mapping.DynamicInsert = nextBool;
+            attributes.Set(x => x.DynamicInsert, nextBool);
             nextBool = true;
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> SelectBeforeUpdate()
         {
-            mapping.SelectBeforeUpdate = nextBool;
+            attributes.Set(x => x.SelectBeforeUpdate, nextBool);
             nextBool = true;
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> Abstract()
         {
-            mapping.Abstract = nextBool;
+            attributes.Set(x => x.Abstract, nextBool);
             nextBool = true;
             return this;
         }
@@ -118,6 +119,8 @@ namespace FluentNHibernate.Mapping
 
         ISubclassMapping ISubclassMappingProvider.GetSubclassMapping()
         {
+            var mapping = new JoinedSubclassMapping(attributes.CloneInner());
+
             mapping.Key = new KeyMapping { ContainingEntityType = typeof(TSubclass) };
             mapping.Name = typeof(TSubclass).AssemblyQualifiedName;
 

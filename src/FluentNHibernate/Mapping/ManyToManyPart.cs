@@ -127,7 +127,7 @@ namespace FluentNHibernate.Mapping
 
             manyToManyIndex = new IndexManyToManyPart(typeof(ManyToManyPart<TChild>));
             manyToManyIndex.Column(indexColumn);
-            manyToManyIndex.GetIndexMapping().Class = new TypeReference(indexType);
+            manyToManyIndex.Type(indexType);
 
             ChildKeyColumn(valueColumn);
             this.valueType = valueType;
@@ -148,7 +148,7 @@ namespace FluentNHibernate.Mapping
 
             manyToManyIndex = new IndexManyToManyPart(typeof(ManyToManyPart<TChild>));
             manyToManyIndex.Column(indexColumn);
-            manyToManyIndex.GetIndexMapping().Class = new TypeReference(indexType);
+            manyToManyIndex.Type(indexType);
 
             ChildKeyColumn(valueColumn);
             this.valueType = valueType;

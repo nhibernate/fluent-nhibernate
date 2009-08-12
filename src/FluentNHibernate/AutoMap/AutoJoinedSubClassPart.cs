@@ -41,7 +41,7 @@ namespace FluentNHibernate.AutoMap
             return base.HasMany<TChild>(property);
         }
 
-        protected override PropertyMap Map(PropertyInfo property, string columnName)
+        protected override PropertyPart Map(PropertyInfo property, string columnName)
         {
             propertiesMapped.Add(property);
             return base.Map(property, columnName);

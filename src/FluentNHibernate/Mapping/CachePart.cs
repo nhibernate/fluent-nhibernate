@@ -6,8 +6,8 @@ namespace FluentNHibernate.Mapping
 {
     public class CachePart : ICacheMappingProvider
     {
-        private readonly CacheMapping mapping = new CacheMapping();
         private readonly Type entityType;
+        private readonly AttributeStore<CacheMapping> attributes = new AttributeStore<CacheMapping>();
 
         public CachePart(Type entityType)
         {
@@ -16,6 +16,7 @@ namespace FluentNHibernate.Mapping
 
         CacheMapping ICacheMappingProvider.GetCacheMapping()
         {
+            var mapping = new CacheMapping(attributes.CloneInner());
             mapping.ContainedEntityType = entityType;
 
             return mapping;
@@ -23,61 +24,61 @@ namespace FluentNHibernate.Mapping
 
         public CachePart ReadWrite()
         {
-           mapping.Usage = "read-write";
-           return this;
+            attributes.Set(x => x.Usage, "read-write");
+            return this;
         }
 
         public CachePart NonStrictReadWrite()
         {
-            mapping.Usage = "nonstrict-read-write";
+            attributes.Set(x => x.Usage, "nonstrict-read-write");
             return this;
         }
 
         public CachePart ReadOnly()
         {
-            mapping.Usage = "read-only";
+            attributes.Set(x => x.Usage, "read-only");
             return this;
         }
 
         public CachePart Transactional()
         {
-            mapping.Usage = "transactional";
+            attributes.Set(x => x.Usage, "transactional");
             return this;
         }
 
         public CachePart CustomUsage(string custom)
         {
-            mapping.Usage = custom;
+            attributes.Set(x => x.Usage, custom);
             return this;
         }
 
         public CachePart Region(string name)
         {
-            mapping.Region = name;
+            attributes.Set(x => x.Region, name);
             return this;
         }
 
         public CachePart IncludeAll()
         {
-            mapping.Include = "all";
+            attributes.Set(x => x.Include, "all");
             return this;
         }
 
         public CachePart IncludeNonLazy()
         {
-            mapping.Include = "non-lazy";
+            attributes.Set(x => x.Include, "non-lazy");
             return this;
         }
 
         public CachePart CustomInclude(string custom)
         {
-            mapping.Include = custom;
+            attributes.Set(x => x.Include, custom);
             return this;
         }
 
         public bool IsDirty
         {
-            get { return mapping.IsSpecified(x => x.Region) || mapping.IsSpecified(x => x.Usage) || mapping.IsSpecified(x => x.Include); }
+            get { return attributes.IsSpecified(x => x.Region) || attributes.IsSpecified(x => x.Usage) || attributes.IsSpecified(x => x.Include); }
         }
     }
 }

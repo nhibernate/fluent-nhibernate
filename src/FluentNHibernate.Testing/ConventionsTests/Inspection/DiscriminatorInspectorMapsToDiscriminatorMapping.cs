@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [SetUp]
         public void CreateDsl()
         {
-            mapping = new DiscriminatorMapping(new ClassMapping());
+            mapping = new DiscriminatorMapping();
             inspector = new DiscriminatorInspector(mapping);
         }
 

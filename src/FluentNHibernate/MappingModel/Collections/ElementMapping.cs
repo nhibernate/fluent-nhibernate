@@ -7,7 +7,16 @@ namespace FluentNHibernate.MappingModel.Collections
     public class ElementMapping : MappingBase
     {
         private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
-        private readonly AttributeStore<ElementMapping> attributes = new AttributeStore<ElementMapping>();
+        private readonly AttributeStore<ElementMapping> attributes;
+
+        public ElementMapping()
+            : this(new AttributeStore())
+        {}
+
+        public ElementMapping(AttributeStore underlyingStore)
+        {
+            attributes = new AttributeStore<ElementMapping>(underlyingStore);
+        }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {

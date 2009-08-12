@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentNHibernate.AutoMap;
+﻿using FluentNHibernate.AutoMap;
 using FluentNHibernate.AutoMap.Alterations;
 using FluentNHibernate.AutoMap.TestFixtures;
 using FluentNHibernate.Testing.Fixtures.AutoMappingAlterations.Model;
@@ -25,9 +21,8 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         public void OverridesApplied()
         {
             var model = AutoPersistenceModel.MapEntitiesFromAssemblyOf<Baz>()
-                .Where(t => t.Namespace == typeof(Baz).Namespace);
-
-            alteration.Alter(model);
+                .Where(t => t.Namespace == typeof(Baz).Namespace)
+                .Alterations(x => x.Add(alteration));
 
             new AutoMappingTester<Baz>(model)
                 .Element("class").HasAttribute("batch-size", "10");

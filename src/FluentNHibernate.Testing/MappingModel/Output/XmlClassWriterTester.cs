@@ -406,7 +406,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ClassMapping();
 
-            mapping.Discriminator = new DiscriminatorMapping(mapping);
+            mapping.Discriminator = new DiscriminatorMapping();
 
             writer.VerifyXml(mapping)
                 .Element("discriminator").Exists();
