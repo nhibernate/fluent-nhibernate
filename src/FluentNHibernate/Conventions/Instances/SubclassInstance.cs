@@ -26,7 +26,13 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public void Abstract()
+        public new void DiscriminatorValue(object value)
+        {
+            if (!mapping.IsSpecified(x => x.DiscriminatorValue))
+                mapping.DiscriminatorValue = value;
+        }
+
+        public new void Abstract()
         {
             if (mapping.IsSpecified(x => x.Abstract))
                 return;
@@ -35,7 +41,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public void DynamicInsert()
+        public new void DynamicInsert()
         {
             if (mapping.IsSpecified(x => x.DynamicInsert))
                 return;
@@ -44,7 +50,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public void DynamicUpdate()
+        public new void DynamicUpdate()
         {
             if (mapping.IsSpecified(x => x.DynamicUpdate))
                 return;
@@ -53,7 +59,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public void LazyLoad()
+        public new void LazyLoad()
         {
             if (mapping.IsSpecified(x => x.Lazy))
                 return;
@@ -62,19 +68,19 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public void Proxy(Type type)
+        public new void Proxy(Type type)
         {
             if (!mapping.IsSpecified(x => x.Proxy))
                 mapping.Proxy = type.AssemblyQualifiedName;
         }
 
-        public void Proxy<T>()
+        public new void Proxy<T>()
         {
             if (!mapping.IsSpecified(x => x.Proxy))
                 mapping.Proxy = typeof(T).AssemblyQualifiedName;
         }
 
-        public void SelectBeforeUpdate()
+        public new void SelectBeforeUpdate()
         {
             if (mapping.IsSpecified(x => x.SelectBeforeUpdate))
                 return;

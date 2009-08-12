@@ -13,7 +13,7 @@ namespace FluentNHibernate.Conventions.Instances
             this.mapping = mapping;
         }
 
-        public void SetOrderBy(string orderBy)
+        public new void OrderBy(string orderBy)
         {
             if (mapping.IsSpecified(x => x.OrderBy))
                 return;
@@ -21,12 +21,24 @@ namespace FluentNHibernate.Conventions.Instances
             mapping.OrderBy = orderBy;
         }
 
-        public void SetSort(string sort)
+        public new void Sort(string sort)
         {
             if (mapping.IsSpecified(x => x.Sort))
                 return;
 
             mapping.Sort = sort;
+        }
+
+        public new IAccessInstance Access
+        {
+            get
+            {
+                return new AccessInstance(value =>
+                {
+                    if (!mapping.IsSpecified(x => x.Access))
+                        mapping.Access = value;
+                });
+            }
         }
     }
 }

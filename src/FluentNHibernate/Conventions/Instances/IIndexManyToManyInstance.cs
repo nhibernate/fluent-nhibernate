@@ -4,6 +4,6 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public interface IIndexManyToManyInstance : IIndexInstanceBase, IIndexManyToManyInspector
     {
-        void SetForeignKey(string foreignKey);
+        void ForeignKey(string foreignKey);
     }
 }

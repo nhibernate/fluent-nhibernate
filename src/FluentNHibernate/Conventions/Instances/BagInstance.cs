@@ -1,4 +1,5 @@
-﻿using FluentNHibernate.Conventions.Inspections;
+﻿using System;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -18,6 +19,18 @@ namespace FluentNHibernate.Conventions.Instances
                 return;
 
             mapping.OrderBy = orderBy;
+        }
+
+        public new IAccessInstance Access
+        {
+            get
+            {
+                return new AccessInstance(value =>
+                {
+                    if (!mapping.IsSpecified(x => x.Access))
+                        mapping.Access = value;
+                });
+            }
         }
     }
 }

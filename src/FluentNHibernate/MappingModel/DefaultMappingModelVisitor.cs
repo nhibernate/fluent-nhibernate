@@ -28,6 +28,16 @@ namespace FluentNHibernate.MappingModel
             ProcessCollection(listMapping);
         }
 
+        public override void ProcessIndex(IndexManyToManyMapping indexMapping)
+        {
+            ProcessIndex((IIndexMapping)indexMapping);
+        }
+
+        public override void ProcessIndex(IndexMapping indexMapping)
+        {
+            ProcessIndex((IIndexMapping)indexMapping);
+        }
+
         #endregion
 
         #region Collection Relationship
@@ -175,6 +185,11 @@ namespace FluentNHibernate.MappingModel
         public override void Visit(OneToOneMapping mapping)
         {
             mapping.AcceptVisitor(this);
+        }
+
+        public override void Visit(IIndexMapping indexMapping)
+        {
+            indexMapping.AcceptVisitor(this);
         }
     }
 }

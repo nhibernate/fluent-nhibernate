@@ -25,5 +25,17 @@ namespace FluentNHibernate.Conventions.Instances
                 throw new InvalidOperationException("IIndexMapping is not a valid type for building an Index Instance ");
             }
         }
+
+        public new IAccessInstance Access
+        {
+            get
+            {
+                return new AccessInstance(value =>
+                {
+                    if (!mapping.IsSpecified(x => x.Access))
+                        mapping.Access = value;
+                });
+            }
+        }
     }
 }
