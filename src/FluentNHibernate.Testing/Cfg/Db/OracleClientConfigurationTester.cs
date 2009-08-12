@@ -50,11 +50,39 @@ namespace FluentNHibernate.Testing.Cfg.Db
                     .Instance("mydatabase")
                     .Username("test")
                     .Password("secret")
-                    .Pooling(true)
                     .StatementCacheSize(50))
                 .ToProperties().ShouldContain("connection.connection_string",
-                                              "User Id=test;Password=secret;Pooling=True;Statement Cache Size=50;Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=db-srv)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=mydatabase)))");
+                                              "User Id=test;Password=secret;Pooling=False;Statement Cache Size=50;Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=db-srv)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=mydatabase)))");
         }
+
+        [Test]
+        public void ConnectionString_leaving_out_the_StatementCacheSize_removes_from_string()
+        {
+            OracleClientConfiguration.Oracle9
+               .ConnectionString(c => c
+                   .Server("db-srv")
+                   .Instance("mydatabase")
+                   .Username("test")
+                   .Password("secret"))
+               .ToProperties().ShouldContain("connection.connection_string",
+                                             "User Id=test;Password=secret;Pooling=False;Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=db-srv)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=mydatabase)))");
+        }
+
+        [Test]
+        public void ConnectionString_pooling_defaults_to_false_when_not_set()
+        {
+            OracleClientConfiguration.Oracle9
+             .ConnectionString(c => c
+                 .Server("db-srv")
+                 .Instance("mydatabase")
+                 .Username("test")
+                 .Password("secret")
+                 .Pooling(true)
+                 .StatementCacheSize(50))
+             .ToProperties().ShouldContain("connection.connection_string",
+                                           "User Id=test;Password=secret;Pooling=True;Statement Cache Size=50;Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=db-srv)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=mydatabase)))");
+        }
+
         [Test]
         public void ConnectionString_other_options_are_enabled_and_parsed_when_set()
         {
@@ -69,7 +97,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
                 .ToProperties().ShouldContain("connection.connection_string",
                                               "User Id=test;Password=secret;Pooling=False;Statement Cache Size=50;Min Pool Size=10;Incr Pool Size=5;Decr Pool Size=2;Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=db-srv)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=mydatabase)))");
         }
-
+        
         [Test]
         public void ConnectionString_set_explicitly()
         {

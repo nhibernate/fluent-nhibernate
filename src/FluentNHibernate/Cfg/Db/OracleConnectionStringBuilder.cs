@@ -9,7 +9,7 @@ namespace FluentNHibernate.Cfg.Db
         private string server;
         private string username;
         private bool pooling;
-        private int statementCacheSize;
+        private string statementCacheSize;
 
         public OracleConnectionStringBuilder()
         {
@@ -98,7 +98,7 @@ namespace FluentNHibernate.Cfg.Db
         /// <returns></returns>
         public OracleConnectionStringBuilder StatementCacheSize(int cacheSize)
         {
-            statementCacheSize = cacheSize;
+            this.statementCacheSize = string.Format("Statement Cache Size={0};", cacheSize);
             IsDirty = true;
             return this;
         }
@@ -124,7 +124,7 @@ namespace FluentNHibernate.Cfg.Db
             }
 
             connectionString = string.Format(
-                     "User Id={0};Password={1};Pooling={2};Statement Cache Size={3};{4}Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={5})(PORT={6})))(CONNECT_DATA=(SERVICE_NAME={7})))",
+                     "User Id={0};Password={1};Pooling={2};{3}{4}Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={5})(PORT={6})))(CONNECT_DATA=(SERVICE_NAME={7})))",
                      username, password, pooling, statementCacheSize, otherOptions, server, port, instance);
             
             return connectionString;
