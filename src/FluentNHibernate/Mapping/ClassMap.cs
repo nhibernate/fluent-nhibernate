@@ -12,7 +12,7 @@ namespace FluentNHibernate.Mapping
 {
     public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     {
-        protected readonly AttributeStore<ClassMapping> attributes;
+        protected readonly AttributeStore<ClassMapping> attributes = new AttributeStore<ClassMapping>();
         private readonly IList<JoinMapping> joins = new List<JoinMapping>();
         private readonly OptimisticLockBuilder<ClassMap<T>> optimisticLock;
 
@@ -32,12 +32,7 @@ namespace FluentNHibernate.Mapping
         private readonly PolymorphismBuilder<ClassMap<T>> polymorphism;
 
         public ClassMap()
-            : this(new AttributeStore())
-        {}
-
-        public ClassMap(AttributeStore underlyingStore)
         {
-            attributes = new AttributeStore<ClassMapping>(underlyingStore);
             optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => attributes.Set(x => x.OptimisticLock, value));
             polymorphism = new PolymorphismBuilder<ClassMap<T>>(this, value => attributes.Set(x => x.Polymorphism, value));
             Cache = new CachePart(typeof(T));

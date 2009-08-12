@@ -57,7 +57,13 @@ namespace FluentNHibernate.Conventions.Instances
 
         public IGeneratorInstance GeneratedBy
         {
-            get { return new GeneratorInstance(mapping.Generator, mapping.Type.GetUnderlyingSystemType()); }
+            get
+            {
+                if (!mapping.IsSpecified(x => x.Generator))
+                    mapping.Generator = new GeneratorMapping();
+                
+                return new GeneratorInstance(mapping.Generator, mapping.Type.GetUnderlyingSystemType());
+            }
         }
     }
 }

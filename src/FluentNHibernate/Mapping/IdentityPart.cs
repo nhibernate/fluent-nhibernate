@@ -29,12 +29,17 @@ namespace FluentNHibernate.Mapping
 
         private void SetDefaultGenerator()
         {
+            var generatorMapping = new GeneratorMapping();
+            var defaultGenerator = new GeneratorBuilder(generatorMapping, property.PropertyType);
+
             if (property.PropertyType == typeof(Guid))
-                GeneratedBy.GuidComb();
+                defaultGenerator.GuidComb();
             else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(long))
-                GeneratedBy.Identity();
+                defaultGenerator.Identity();
             else
-                GeneratedBy.Assigned();
+                defaultGenerator.Assigned();
+
+            attributes.SetDefault(x => x.Generator, generatorMapping);
         }
 
         IdMapping IIdentityMappingProvider.GetIdentityMapping()
@@ -54,7 +59,9 @@ namespace FluentNHibernate.Mapping
 
             mapping.Name = property.Name;
             mapping.Type = new TypeReference(property.PropertyType);
-            mapping.Generator = GeneratedBy.GetGeneratorMapping();
+
+            if (GeneratedBy.IsDirty)
+                mapping.Generator = GeneratedBy.GetGeneratorMapping();
 
             return mapping;
         }

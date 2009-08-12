@@ -18,6 +18,8 @@ namespace FluentNHibernate.Mapping
             builder = new GeneratorBuilder(mapping, identityType);
         }
 
+        internal bool IsDirty { get; private set; }
+
         public GeneratorMapping GetGeneratorMapping()
         {
             mapping.ContainingEntityType = entity;
@@ -33,6 +35,7 @@ namespace FluentNHibernate.Mapping
         public TParent Increment()
 		{
 			builder.Increment();
+		    IsDirty = true;
 			return parent;
 		}
 
@@ -44,6 +47,7 @@ namespace FluentNHibernate.Mapping
         public TParent Increment(Action<ParamBuilder> paramValues)
         {
             builder.Increment(paramValues);
+            IsDirty = true;
             return parent;
         }
 
@@ -56,7 +60,8 @@ namespace FluentNHibernate.Mapping
         public TParent Identity()
 		{
 			builder.Identity();
-			return parent;
+            IsDirty = true;
+            return parent;
 		}
 
         /// <summary>
@@ -68,6 +73,7 @@ namespace FluentNHibernate.Mapping
         public TParent Identity(Action<ParamBuilder> paramValues)
         {
             builder.Identity(paramValues);
+            IsDirty = true;
             return parent;
         }
 
@@ -81,7 +87,8 @@ namespace FluentNHibernate.Mapping
         public TParent Sequence(string sequenceName)
 		{
 			builder.Sequence(sequenceName);
-			return parent;
+            IsDirty = true;
+            return parent;
 		}
 
         /// <summary>
@@ -94,6 +101,7 @@ namespace FluentNHibernate.Mapping
         public TParent Sequence(string sequenceName, Action<ParamBuilder> paramValues)
         {
             builder.Sequence(sequenceName, paramValues);
+            IsDirty = true;
             return parent;
         }
 
@@ -111,7 +119,8 @@ namespace FluentNHibernate.Mapping
         public TParent HiLo(string table, string column, string maxLo)
 		{
 			builder.HiLo(table, column, maxLo);
-		    return parent;
+            IsDirty = true;
+            return parent;
 		}
 
         /// <summary>
@@ -128,6 +137,7 @@ namespace FluentNHibernate.Mapping
         public TParent HiLo(string table, string column, string maxLo, Action<ParamBuilder> paramValues)
         {
             builder.HiLo(table, column, maxLo, paramValues);
+            IsDirty = true;
             return parent;
         }
 
@@ -143,7 +153,8 @@ namespace FluentNHibernate.Mapping
         public TParent HiLo(string maxLo)
 		{
 			builder.HiLo(maxLo);
-			return parent;
+            IsDirty = true;
+            return parent;
 		}
 
         /// <summary>
@@ -158,6 +169,7 @@ namespace FluentNHibernate.Mapping
         public TParent HiLo(string maxLo, Action<ParamBuilder> paramValues)
         {
             builder.HiLo(maxLo, paramValues);
+            IsDirty = true;
             return parent;
         }
 
@@ -170,7 +182,8 @@ namespace FluentNHibernate.Mapping
         public TParent SeqHiLo(string sequence, string maxLo)
 		{
 			builder.SeqHiLo(sequence, maxLo);
-			return parent;
+            IsDirty = true;
+            return parent;
 		}
 
         /// <summary>
@@ -182,6 +195,7 @@ namespace FluentNHibernate.Mapping
         public TParent SeqHiLo(string sequence, string maxLo, Action<ParamBuilder> paramValues)
         {
             builder.SeqHiLo(sequence, maxLo, paramValues);
+            IsDirty = true;
             return parent;
         }
 
@@ -194,7 +208,8 @@ namespace FluentNHibernate.Mapping
         public TParent UuidHex(string format)
 		{
 			builder.UuidHex(format);
-			return parent;
+            IsDirty = true;
+            return parent;
 		}
 
         /// <summary>
@@ -206,6 +221,7 @@ namespace FluentNHibernate.Mapping
         public TParent UuidHex(string format, Action<ParamBuilder> paramValues)
         {
             builder.UuidHex(format, paramValues);
+            IsDirty = true;
             return parent;
         }
 
@@ -216,7 +232,8 @@ namespace FluentNHibernate.Mapping
         public TParent UuidString()
 		{
 			builder.UuidString();
-			return parent;
+            IsDirty = true;
+            return parent;
 		}
 
         /// <summary>
@@ -226,6 +243,7 @@ namespace FluentNHibernate.Mapping
         public TParent UuidString(Action<ParamBuilder> paramValues)
         {
             builder.UuidString(paramValues);
+            IsDirty = true;
             return parent;
         }
 
@@ -236,7 +254,8 @@ namespace FluentNHibernate.Mapping
         public TParent Guid()
 		{
 			builder.Guid();
-			return parent;
+            IsDirty = true;
+            return parent;
 		}
 
         /// <summary>
@@ -246,6 +265,7 @@ namespace FluentNHibernate.Mapping
         public TParent Guid(Action<ParamBuilder> paramValues)
         {
             builder.Guid(paramValues);
+            IsDirty = true;
             return parent;
         }
 
@@ -258,7 +278,8 @@ namespace FluentNHibernate.Mapping
         public TParent GuidComb()
 		{
 			builder.GuidComb();
-			return parent;
+            IsDirty = true;
+            return parent;
 		}
 
         /// <summary>
@@ -270,6 +291,7 @@ namespace FluentNHibernate.Mapping
         public TParent GuidComb(Action<ParamBuilder> paramValues)
         {
             builder.GuidComb(paramValues);
+            IsDirty = true;
             return parent;
         }
 
@@ -280,7 +302,8 @@ namespace FluentNHibernate.Mapping
         public TParent Assigned()
 		{
 			builder.Assigned();
-			return parent;
+            IsDirty = true;
+            return parent;
 		}
 
         /// <summary>
@@ -290,6 +313,7 @@ namespace FluentNHibernate.Mapping
         public TParent Assigned(Action<ParamBuilder> paramValues)
         {
             builder.Assigned(paramValues);
+            IsDirty = true;
             return parent;
         }
 
@@ -300,7 +324,8 @@ namespace FluentNHibernate.Mapping
         public TParent Native()
 		{
 			builder.Native();
-			return parent;
+            IsDirty = true;
+            return parent;
 		}
 
         /// <summary>
@@ -310,6 +335,7 @@ namespace FluentNHibernate.Mapping
         public TParent Native(Action<ParamBuilder> paramValues)
         {
             builder.Native(paramValues);
+            IsDirty = true;
             return parent;
         }
 
@@ -321,7 +347,8 @@ namespace FluentNHibernate.Mapping
         public TParent Foreign(string property)
 		{
 			builder.Foreign(property);
-			return parent;
+            IsDirty = true;
+            return parent;
 		}
 
         /// <summary>
@@ -332,6 +359,7 @@ namespace FluentNHibernate.Mapping
         public TParent Foreign(string property, Action<ParamBuilder> paramValues)
         {
             builder.Foreign(property, paramValues);
+            IsDirty = true;
             return parent;
         }
 	}
