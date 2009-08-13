@@ -365,5 +365,14 @@ namespace FluentNHibernate.Mapping
     	{
             attributes.Set(x => x.Where, where);
     	}
+
+        /// <summary>
+        /// Sets the SQL statement used in subselect fetching.
+        /// </summary>
+        /// <param name="subselectSql">Subselect SQL Query</param>
+        public void Subselect(string subselectSql)
+        {
+            attributes.Set(x => x.Subselect, subselectSql);
+        }
     }
 }

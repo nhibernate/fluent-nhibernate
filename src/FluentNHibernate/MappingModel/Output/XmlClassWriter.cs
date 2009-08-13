@@ -82,6 +82,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (classMapping.HasValue(x => x.Abstract))
                 classElement.WithAtt("abstract", classMapping.Abstract);
+
+            if (classMapping.HasValue(x => x.Subselect))
+                classElement.WithAtt("subselect", classMapping.Subselect);
         }
 
         public override void Visit(DiscriminatorMapping discriminatorMapping)
