@@ -96,5 +96,11 @@ namespace FluentNHibernate.Conventions.Instances
             if (!mapping.IsSpecified(x => x.Where))
                 mapping.Where = where;
         }
+
+        public new void Subselect(string subselectSql)
+        {
+            if (!mapping.IsSpecified(x => x.Subselect))
+                mapping.Subselect = subselectSql;
+        }
     }
 }

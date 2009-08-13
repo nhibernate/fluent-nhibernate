@@ -505,6 +505,50 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         }
 
         [Test]
+        public void WhereMapped()
+        {
+            mapping.Where = "where";
+            inspector.Where.ShouldEqual("where");
+        }
+
+        [Test]
+        public void WhereIsSet()
+        {
+            mapping.Where = "where";
+            inspector.IsSet(Prop(x => x.Where))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void WhereIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Where))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void SubselectMapped()
+        {
+            mapping.Subselect = "sql";
+            inspector.Subselect.ShouldEqual("sql");
+        }
+
+        [Test]
+        public void SubselectIsSet()
+        {
+            mapping.Subselect = "sql";
+            inspector.IsSet(Prop(x => x.Subselect))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void SubselectIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Subselect))
+                .ShouldBeFalse();
+        }
+
+        [Test]
         public void ReferencesCollectionHasSameCountAsMapping()
         {
             mapping.AddReference(new ManyToOneMapping());

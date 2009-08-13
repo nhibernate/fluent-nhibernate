@@ -113,6 +113,26 @@ namespace FluentNHibernate.Testing.ConventionsTests
             VerifyModel(x => x.TableName.ShouldEqual("test"));
         }
 
+        [Test]
+        public void WhereShouldntBeOverwritten()
+        {
+            Mapping<ExampleClass>(x => x.Where("test"));
+
+            Convention(x => x.Where("xxx"));
+
+            VerifyModel(x => x.Where.ShouldEqual("test"));
+        }
+
+        [Test]
+        public void SubselectShouldntBeOverwritten()
+        {
+            Mapping<ExampleClass>(x => x.Subselect("test"));
+
+            Convention(x => x.Subselect("xxx"));
+
+            VerifyModel(x => x.Subselect.ShouldEqual("test"));
+        }
+
         #region Helpers
 
         private void Convention(Action<IClassInstance> convention)

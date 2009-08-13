@@ -252,6 +252,11 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Where; }
         }
 
+        public string Subselect
+        {
+            get { return mapping.Subselect; }
+        }
+
         public bool SelectBeforeUpdate
         {
             get { return mapping.SelectBeforeUpdate; }

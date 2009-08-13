@@ -16,5 +16,6 @@ namespace FluentNHibernate.Conventions.Instances
         void ReadOnly();
         void Schema(string schema);
         void Where(string where);
+        void Subselect(string subselectSql);
     }
 }
