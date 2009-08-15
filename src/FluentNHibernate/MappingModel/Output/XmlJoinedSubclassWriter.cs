@@ -59,6 +59,15 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.Abstract))
                 element.WithAtt("abstract", mapping.Abstract);
+
+            if (mapping.HasValue(x => x.Subselect))
+                element.WithAtt("subselect", mapping.Subselect);
+
+            if (mapping.HasValue(x => x.Persister))
+                element.WithAtt("persister", mapping.Persister);
+
+            if (mapping.HasValue(x => x.BatchSize))
+                element.WithAtt("batch-size", mapping.BatchSize);
         }
 
         public override void Visit(KeyMapping keyMapping)

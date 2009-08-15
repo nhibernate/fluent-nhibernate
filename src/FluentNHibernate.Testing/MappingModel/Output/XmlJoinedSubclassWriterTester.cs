@@ -126,6 +126,36 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteSubselectAttribute()
+        {
+
+            var testHelper = new XmlWriterTestHelper<JoinedSubclassMapping>();
+            testHelper.Check(x => x.Subselect, "subselect").MapsToAttribute("subselect");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWritePersisterAttribute()
+        {
+
+            var testHelper = new XmlWriterTestHelper<JoinedSubclassMapping>();
+            testHelper.Check(x => x.Persister, new TypeReference(typeof(string))).MapsToAttribute("persister");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteBatchSizeAttribute()
+        {
+
+            var testHelper = new XmlWriterTestHelper<JoinedSubclassMapping>();
+            testHelper.Check(x => x.BatchSize, 10).MapsToAttribute("batch-size");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
         public void ShouldWriteProperties()
         {
             var mapping = new JoinedSubclassMapping();

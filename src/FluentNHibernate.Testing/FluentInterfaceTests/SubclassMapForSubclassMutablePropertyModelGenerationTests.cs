@@ -139,7 +139,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void CheckConstraintShouldntBreakEvenThoughItIsntSupported()
         {
             SubclassMapForSubclass<ChildRecord>()
-                .Mapping(m => m.CheckConstraint("constraint"))
+                .Mapping(m => m.Check("constraint"))
                 .ModelShouldMatch(x => { });
         }
 

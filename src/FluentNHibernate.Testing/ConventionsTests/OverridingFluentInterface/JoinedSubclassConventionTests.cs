@@ -6,6 +6,7 @@ using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Testing.FluentInterfaceTests;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
@@ -36,9 +37,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void CheckConstraintShouldntBeOverwritten()
         {
-            Mapping(x => x.CheckConstraint("const"));
+            Mapping(x => x.Check("const"));
 
-            Convention(x => x.CheckConstraint("xxx"));
+            Convention(x => x.Check("xxx"));
 
             VerifyModel(x => x.Check.ShouldEqual("const"));
         }
@@ -111,6 +112,36 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             Convention(x => x.Table("value"));
 
             VerifyModel(x => x.TableName.ShouldEqual("table"));
+        }
+
+        [Test]
+        public void SubselectShouldntBeOverwritten()
+        {
+            Mapping(x => x.Subselect("select"));
+
+            Convention(x => x.Subselect("xxx"));
+
+            VerifyModel(x => x.Subselect.ShouldEqual("select"));
+        }
+
+        [Test]
+        public void PersisterShouldntBeOverwritten()
+        {
+            Mapping(x => x.Persister<CustomPersister>());
+
+            Convention(x => x.Persister<SecondCustomPersister>());
+
+            VerifyModel(x => x.Persister.GetUnderlyingSystemType().ShouldEqual(typeof(CustomPersister)));
+        }
+
+        [Test]
+        public void BatchSizeShouldntBeOverwritten()
+        {
+            Mapping(x => x.BatchSize(10));
+
+            Convention(x => x.BatchSize(100));
+
+            VerifyModel(x => x.BatchSize.ShouldEqual(10));
         }
 
         #region Helpers

@@ -6,6 +6,7 @@ using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Testing.FluentInterfaceTests;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
@@ -32,7 +33,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         [Test]
         public void ShouldSetCheckConstraintProperty()
         {
-            Convention(x => x.CheckConstraint("xxx"));
+            Convention(x => x.Check("xxx"));
 
             VerifyModel(x => x.Check.ShouldEqual("xxx"));
         }
@@ -91,6 +92,31 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             Convention(x => x.Table("value"));
 
             VerifyModel(x => x.TableName.ShouldEqual("value"));
+        }
+
+
+        [Test]
+        public void SubselectShouldntBeOverwritten()
+        {
+            Convention(x => x.Subselect("xxx"));
+
+            VerifyModel(x => x.Subselect.ShouldEqual("xxx"));
+        }
+
+        [Test]
+        public void PersisterShouldntBeOverwritten()
+        {
+            Convention(x => x.Persister<SecondCustomPersister>());
+
+            VerifyModel(x => x.Persister.GetUnderlyingSystemType().ShouldEqual(typeof(SecondCustomPersister)));
+        }
+
+        [Test]
+        public void BatchSizeShouldntBeOverwritten()
+        {
+            Convention(x => x.BatchSize(100));
+
+            VerifyModel(x => x.BatchSize.ShouldEqual(100));
         }
 
         #region Helpers

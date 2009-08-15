@@ -3,6 +3,7 @@ using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Conventions.Instances
 {
@@ -46,7 +47,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public void CheckConstraint(string constraint)
+        public void Check(string constraint)
         {
             if (!mapping.IsSpecified(x => x.Check))
                 mapping.Check = constraint;
@@ -110,6 +111,36 @@ namespace FluentNHibernate.Conventions.Instances
         {
             if (!mapping.IsSpecified(x => x.TableName))
                 mapping.TableName = tableName;
+        }
+
+        public void Subselect(string subselect)
+        {
+            if (!mapping.IsSpecified(x => x.Subselect))
+                mapping.Subselect = subselect;
+        }
+
+        public void Persister<T>() where T : IEntityPersister
+        {
+            if (!mapping.IsSpecified(x => x.Persister))
+                mapping.Persister = new TypeReference(typeof(T));
+        }
+
+        public void Persister(Type type)
+        {
+            if (!mapping.IsSpecified(x => x.Persister))
+                mapping.Persister = new TypeReference(type);
+        }
+
+        public void Persister(string type)
+        {
+            if (!mapping.IsSpecified(x => x.Persister))
+                mapping.Persister = new TypeReference(type);
+        }
+
+        public void BatchSize(int batchSize)
+        {
+            if (!mapping.IsSpecified(x => x.BatchSize))
+                mapping.BatchSize = batchSize;
         }
     }
 }

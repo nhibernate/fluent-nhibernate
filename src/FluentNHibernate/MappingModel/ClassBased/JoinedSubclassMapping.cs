@@ -110,6 +110,24 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Abstract, value); }
         }
 
+        public string Subselect
+        {
+            get { return attributes.Get(x => x.Subselect); }
+            set { attributes.Set(x => x.Subselect, value); }
+        }
+
+        public TypeReference Persister
+        {
+            get { return attributes.Get(x => x.Persister); }
+            set { attributes.Set(x => x.Persister, value); }
+        }
+
+        public int BatchSize
+        {
+            get { return attributes.Get(x => x.BatchSize); }
+            set { attributes.Set(x => x.BatchSize, value); }
+        }
+
         public bool IsSpecified<TResult>(Expression<Func<JoinedSubclassMapping, TResult>> property)
         {
             return attributes.IsSpecified(property);

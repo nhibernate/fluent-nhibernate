@@ -148,7 +148,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void CheckConstraintShouldSetModelCheckPropertyToValue()
         {
             SubclassMapForJoinedSubclass<ChildRecord>()
-                .Mapping(m => m.CheckConstraint("constraint"))
+                .Mapping(m => m.Check("constraint"))
                 .ModelShouldMatch(x => x.Check.ShouldEqual("constraint"));
         }
 

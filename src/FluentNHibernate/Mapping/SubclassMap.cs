@@ -150,7 +150,7 @@ namespace FluentNHibernate.Mapping
             joinedSubclassAttributes.Set(x => x.Schema, schema);
         }
 
-        public void CheckConstraint(string constraint)
+        public void Check(string constraint)
         {
             joinedSubclassAttributes.Set(x => x.Check, constraint);
         }
@@ -167,6 +167,31 @@ namespace FluentNHibernate.Mapping
             key.AddColumn(new ColumnMapping { Name = column });
 
             joinedSubclassAttributes.Set(x => x.Key, key);
+        }
+
+        public void Subselect(string subselect)
+        {
+            joinedSubclassAttributes.Set(x => x.Subselect, subselect);
+        }
+
+        public void Persister<TPersister>()
+        {
+            joinedSubclassAttributes.Set(x => x.Persister, new TypeReference(typeof(TPersister)));
+        }
+
+        public void Persister(Type type)
+        {
+            joinedSubclassAttributes.Set(x => x.Persister, new TypeReference(type));
+        }
+
+        public void Persister(string type)
+        {
+            joinedSubclassAttributes.Set(x => x.Persister, new TypeReference(type));
+        }
+
+        public void BatchSize(int batchSize)
+        {
+            joinedSubclassAttributes.Set(x => x.BatchSize, batchSize);
         }
     }
 }
