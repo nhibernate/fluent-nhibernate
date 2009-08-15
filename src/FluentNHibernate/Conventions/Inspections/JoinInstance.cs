@@ -24,10 +24,16 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
-        public new void Fetch(Fetch fetch)
+        public new IFetchInstance Fetch
         {
-            if (!mapping.IsSpecified(x => x.Fetch))
-                mapping.Fetch = fetch.ToString();
+            get
+            {
+                return new FetchInstance(value =>
+                {
+                    if (!mapping.IsSpecified(x => x.Fetch))
+                        mapping.Fetch = value;
+                });
+            }
         }
 
         public new void Inverse()
@@ -55,7 +61,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public new void Schema(string schema)
         {
-            if (!mapping.IsSpecified(x => x.Optional))
+            if (!mapping.IsSpecified(x => x.Schema))
                 mapping.Schema = schema;
         }
 

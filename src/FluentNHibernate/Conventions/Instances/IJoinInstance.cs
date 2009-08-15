@@ -6,7 +6,7 @@ namespace FluentNHibernate.Conventions.Instances
     public interface IJoinInstance : IJoinInspector
     {
         IJoinInstance Not { get; }
-        void Fetch(Fetch fetch);
+        new IFetchInstance Fetch { get; }
         void Inverse();
         new IKeyInstance Key { get; }
         void Optional();

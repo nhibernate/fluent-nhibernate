@@ -91,6 +91,7 @@
     <Compile Include="Conventions\Helpers\Builders\BagConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\CollectionConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\ArrayConventionBuilder.cs" />
+    <Compile Include="Conventions\Helpers\Builders\JoinConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\MapConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\SetConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\ListConventionBuilder.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltArrayConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltBagConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltFuncForeignKeyConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltJoinConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltJoinedSubclassConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltListConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltMapConvention.cs" />

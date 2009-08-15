@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
@@ -19,7 +20,7 @@ namespace FluentNHibernate.Mapping
         {
             fetch = new FetchTypeExpression<JoinPart<T>>(this, value => attributes.Set(x => x.Fetch, value));
 
-            attributes.Set(x => x.TableName, tableName);
+            attributes.SetDefault(x => x.TableName, tableName);
             attributes.Set(x => x.Key, new KeyMapping { ContainingEntityType = typeof(T) });
         }
 
@@ -101,6 +102,11 @@ namespace FluentNHibernate.Mapping
                 mapping.AddAny(any.GetAnyMapping());
 
             return mapping;
+        }
+
+        public void Table(string tableName)
+        {
+            attributes.Set(x => x.TableName, tableName);
         }
     }
 }
