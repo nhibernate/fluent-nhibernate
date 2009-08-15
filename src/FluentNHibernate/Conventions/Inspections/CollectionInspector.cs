@@ -183,5 +183,10 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get { return mapping.Where; }
         }
+
+        public string OrderBy
+        {
+            get { return mapping.OrderBy; }
+        }
     }
 }

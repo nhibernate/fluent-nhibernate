@@ -319,7 +319,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
                 .Conventions.Add(new TestO2MConvention());
 
             new AutoMappingTester<ExampleParentClass>(autoMapper)
-                .Element("//bag").HasAttribute("name", "test");
+                .Element("//bag").HasAttribute("table", "test");
         }
 
         [Test]
@@ -1081,7 +1081,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         {
             public void Apply(IOneToManyCollectionInstance instance)
             {
-                instance.Name("test");
+                instance.Table("test");
             }
         }
     }

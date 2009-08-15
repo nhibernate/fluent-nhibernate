@@ -99,13 +99,13 @@ namespace FluentNHibernate.Mapping
         private void EnsureDictionary()
         {
             if (!typeof(IDictionary).IsAssignableFrom(childType))
-                throw new ArgumentException(Member.Name + " must be of type IDictionary to be used in a non-generic ternary association. Type was: " + childType);
+                throw new ArgumentException(member.Name + " must be of type IDictionary to be used in a non-generic ternary association. Type was: " + childType);
         }
 
         private void EnsureGenericDictionary()
         {
             if (!(childType.IsGenericType && childType.GetGenericTypeDefinition() == typeof(IDictionary<,>)))
-                throw new ArgumentException(Member.Name + " must be of type IDictionary<> to be used in a ternary assocation. Type was: " + childType);
+                throw new ArgumentException(member.Name + " must be of type IDictionary<> to be used in a ternary assocation. Type was: " + childType);
         }
 
         public ManyToManyPart<TChild> AsTernaryAssociation()

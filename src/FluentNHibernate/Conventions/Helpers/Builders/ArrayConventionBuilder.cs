@@ -6,7 +6,7 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders
 {
-    internal class ArrayConventionBuilder : IConventionBuilder<IArrayConvention, IArrayInspector, IArrayInstance>
+    public class ArrayConventionBuilder : IConventionBuilder<IArrayConvention, IArrayInspector, IArrayInstance>
     {
         public IArrayConvention Always(Action<IArrayInstance> convention)
         {

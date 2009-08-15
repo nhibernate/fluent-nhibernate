@@ -2,10 +2,8 @@
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public interface IArrayInstance : IArrayInspector
+    public interface IArrayInstance : IArrayInspector, ICollectionInstance
     {
         new IIndexInstanceBase Index { get; }
-        new IAccessInstance Access { get; }
-        new ICacheInstance Cache { get; }
     }
 }

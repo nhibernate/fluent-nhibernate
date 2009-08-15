@@ -29,5 +29,6 @@ namespace FluentNHibernate.Conventions.Instances
         void Inverse();
         void Persister<T>() where T : IEntityPersister;
         void Where(string whereClause);
+        void OrderBy(string orderBy);
     }
 }

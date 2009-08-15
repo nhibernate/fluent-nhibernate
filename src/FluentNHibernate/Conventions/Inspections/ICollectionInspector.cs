@@ -29,5 +29,6 @@ namespace FluentNHibernate.Conventions.Inspections
         TypeReference Persister { get; }
         string Schema { get; }
         string Where { get; }
+        string OrderBy { get; }
     }
 }

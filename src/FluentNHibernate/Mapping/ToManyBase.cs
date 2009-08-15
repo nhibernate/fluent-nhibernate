@@ -15,15 +15,12 @@ namespace FluentNHibernate.Mapping
         where T : ToManyBase<T, TChild, TRelationshipAttributes>, ICollectionMappingProvider
         where TRelationshipAttributes : ICollectionRelationshipMapping
     {
-        public MemberInfo Member { get; private set; }
         private readonly AccessStrategyBuilder<T> access;
         private readonly FetchTypeExpression<T> fetch;
         private readonly OptimisticLockBuilder<T> optimisticLock;
         private readonly CollectionCascadeExpression<T> cascade;
         protected ElementPart elementPart;
         protected ICompositeElementMappingProvider componentMapping;
-        public string TableName { get; private set; }
-        public Type EntityType { get; private set; }
         protected bool nextBool = true;
 
         protected readonly AttributeStore<ICollectionMapping> collectionAttributes = new AttributeStore<ICollectionMapping>();
@@ -31,11 +28,13 @@ namespace FluentNHibernate.Mapping
         protected readonly AttributeStore<TRelationshipAttributes> relationshipAttributes = new AttributeStore<TRelationshipAttributes>();
         private Func<AttributeStore, ICollectionMapping> collectionBuilder;
         private IndexMapping indexMapping;
+        protected MemberInfo member;
+        private Type entity;
 
         protected ToManyBase(Type entity, MemberInfo member, Type type)
         {
-            EntityType = entity;
-            Member = member;
+            this.entity = entity;
+            this.member = member;
             AsBag();
             access = new AccessStrategyBuilder<T>((T)this, value => collectionAttributes.Set(x => x.Access, value));
             fetch = new FetchTypeExpression<T>((T)this, value => collectionAttributes.Set(x => x.Fetch, value));
@@ -69,12 +68,12 @@ namespace FluentNHibernate.Mapping
             var mapping = collectionBuilder(collectionAttributes.CloneInner());
 
             if (!mapping.IsSpecified(x => x.Name))
-                mapping.SetDefaultValue(x => x.Name, Member.Name);
+                mapping.SetDefaultValue(x => x.Name, member.Name);
 
-            mapping.ContainingEntityType = EntityType;
+            mapping.ContainingEntityType = entity;
             mapping.ChildType = typeof(TChild);
-            mapping.MemberInfo = Member;
-            mapping.Key = new KeyMapping(keyAttributes.CloneInner()) { ContainingEntityType = EntityType };
+            mapping.MemberInfo = member;
+            mapping.Key = new KeyMapping(keyAttributes.CloneInner()) { ContainingEntityType = entity };
             mapping.Relationship = GetRelationship();
 
             if (Cache.IsDirty)
@@ -405,11 +404,6 @@ namespace FluentNHibernate.Mapping
         {
             collectionAttributes.Set(x => x.CollectionType, type);
             return (T)this;
-        }
-
-        public bool IsMethodAccess
-        {
-            get { return Member is MethodInfo; }
         }
 
         public T Schema(string schema)

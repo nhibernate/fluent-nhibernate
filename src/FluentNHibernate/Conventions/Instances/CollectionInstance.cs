@@ -120,6 +120,12 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.Where = whereClause;
         }
 
+        public new void OrderBy(string orderBy)
+        {
+            if (!mapping.IsSpecified(x => x.OrderBy))
+                mapping.OrderBy = orderBy;
+        }
+
         public void Table(string tableName)
         {
             if (!mapping.IsSpecified(x => x.TableName))
