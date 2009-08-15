@@ -1,9 +1,9 @@
-using FluentNHibernate.AutoMap.TestFixtures;
+using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Helpers;
-using FluentNHibernate.Testing.AutoMap.ManyToMany;
+using FluentNHibernate.Testing.Automapping.ManyToMany;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     [TestFixture]
     public class AutoMapTests : BaseAutoMapFixture
@@ -60,7 +60,7 @@ namespace FluentNHibernate.Testing.AutoMap
             Model<ExampleClass>(model => model
                 .ForTypesThatDeriveFrom<ExampleClass>(mapping =>
                     mapping.Map(x => x.Enum))
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures"));
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures"));
 
             Test<ExampleClass>(mapping =>
                 mapping.Element("//property[@name='Enum']").Exists());

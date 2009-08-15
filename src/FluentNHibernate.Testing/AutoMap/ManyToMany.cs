@@ -1,6 +1,6 @@
 using Iesi.Collections.Generic;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     namespace ManyToMany
     {

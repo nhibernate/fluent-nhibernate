@@ -2,14 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using FluentNHibernate.AutoMap.Alterations;
+using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Cfg;
-using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.AutoMap
+namespace FluentNHibernate.Automapping
 {
     public class AutoPersistenceModel : PersistenceModel
     {
@@ -64,13 +61,6 @@ namespace FluentNHibernate.AutoMap
         }
 
         internal AutoMappingExpressions Expressions { get; private set; }
-
-        public static AutoPersistenceModel MapEntitiesFromAssemblyOf<T>()
-        {
-            var persistenceModel = new AutoPersistenceModel();
-            persistenceModel.AddEntityAssembly(Assembly.GetAssembly(typeof (T)));
-            return persistenceModel;
-        }
 
         public AutoPersistenceModel Where(Func<Type, bool> shouldIncludeType)
         {
@@ -211,7 +201,7 @@ namespace FluentNHibernate.AutoMap
                 var mappingType = provider.GetType();
                 if (mappingType.IsGenericType)
                 {
-                    // instance of a generic type (probably AutoMap<T>)
+                    // instance of a generic type (probably AutoMapping<T>)
                     return mappingType.GetGenericArguments()[0] == expectedType;
                 }
                 if (mappingType.BaseType.IsGenericType &&
@@ -252,12 +242,12 @@ namespace FluentNHibernate.AutoMap
             inlineOverrides.Add(new InlineOverride(type, action));
         }
 
-        public AutoPersistenceModel ForTypesThatDeriveFrom<T>(Action<AutoMap<T>> populateMap)
+        public AutoPersistenceModel ForTypesThatDeriveFrom<T>(Action<AutoMapping<T>> populateMap)
         {
             inlineOverrides.Add(new InlineOverride(typeof(T), x =>
             {
-                if (x is AutoMap<T>)
-                    populateMap((AutoMap<T>)x);
+                if (x is AutoMapping<T>)
+                    populateMap((AutoMapping<T>)x);
             }));
 
             return this;

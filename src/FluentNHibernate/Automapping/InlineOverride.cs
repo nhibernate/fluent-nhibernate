@@ -1,6 +1,6 @@
 using System;
 
-namespace FluentNHibernate.AutoMap
+namespace FluentNHibernate.Automapping
 {
     public class InlineOverride
     {

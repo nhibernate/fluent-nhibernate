@@ -1,9 +1,9 @@
 using System.Linq;
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Testing.Fixtures.AutoMappingAlterations;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.AutoMap.Apm
+namespace FluentNHibernate.Testing.Automapping.Apm
 {
     [TestFixture]
     public class AlterationCollectionTests

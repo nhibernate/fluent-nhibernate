@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using FluentNHibernate.AutoMap.TestFixtures;
+using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;

@@ -4,7 +4,7 @@ using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     public class XXAppenderPropertyConvention : IPropertyConvention
     {

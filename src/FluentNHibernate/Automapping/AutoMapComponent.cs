@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.MappingModel.ClassBased;
 
-namespace FluentNHibernate.AutoMap
+namespace FluentNHibernate.Automapping
 {
     public class AutoMapComponent : IAutoMapper
     {

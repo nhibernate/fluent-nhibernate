@@ -1,10 +1,10 @@
-﻿using FluentNHibernate.AutoMap;
-using FluentNHibernate.AutoMap.Alterations;
-using FluentNHibernate.AutoMap.TestFixtures;
+﻿using FluentNHibernate.Automapping;
+using FluentNHibernate.Automapping.Alterations;
+using FluentNHibernate.Automapping.TestFixtures;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace FluentNHibernate.Testing.AutoMap.Apm
+namespace FluentNHibernate.Testing.Automapping.Apm
 {
     [TestFixture]
     public class AlterationTests
@@ -14,7 +14,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         [SetUp]
         public void CreateAutoMapper()
         {
-            model = AutoPersistenceModel.MapEntitiesFromAssemblyOf<ExampleClass>()
+            model = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == typeof(ExampleClass).Namespace);
         }
 

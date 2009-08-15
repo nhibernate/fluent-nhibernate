@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using FluentNHibernate.AutoMap.Alterations;
+using FluentNHibernate.Automapping.Alterations;
 
-namespace FluentNHibernate.AutoMap
+namespace FluentNHibernate.Automapping
 {
     public class AutoMappingAlterationCollection : IEnumerable<IAutoMappingAlteration>
     {

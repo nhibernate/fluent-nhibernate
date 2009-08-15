@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Xml;
-using FluentNHibernate.AutoMap.TestFixtures.SuperTypes;
+using FluentNHibernate.Automapping.TestFixtures.SuperTypes;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;

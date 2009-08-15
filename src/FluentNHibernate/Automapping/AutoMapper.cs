@@ -7,7 +7,7 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.AutoMap
+namespace FluentNHibernate.Automapping
 {
     public class AutoMapper
     {
@@ -35,7 +35,7 @@ namespace FluentNHibernate.AutoMap
 
         private void ApplyOverrides(Type classType, IList<string> mappedProperties, ClassMappingBase mapping)
         {
-            var autoMapType = typeof(AutoMap<>).MakeGenericType(classType);
+            var autoMapType = typeof(AutoMapping<>).MakeGenericType(classType);
             var autoMap = Activator.CreateInstance(autoMapType, mappedProperties);
 
             inlineOverrides

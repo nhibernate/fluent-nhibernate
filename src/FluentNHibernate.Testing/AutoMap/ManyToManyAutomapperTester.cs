@@ -1,12 +1,12 @@
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Testing.AutoMap.ManyToMany;
+using FluentNHibernate.Testing.Automapping.ManyToMany;
 using FluentNHibernate.Utils;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     [TestFixture]
     public class ManyToManyAutomapperTester : BaseAutoMapFixture

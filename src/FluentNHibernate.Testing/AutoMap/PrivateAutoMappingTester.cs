@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 using NUnit.Framework;
 using System.Linq.Expressions;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     [TestFixture]
     public class PrivateAutoMappingTester

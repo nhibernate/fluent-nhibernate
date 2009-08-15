@@ -1,4 +1,4 @@
-namespace FluentNHibernate.AutoMap
+namespace FluentNHibernate.Automapping
 {
     public enum SubclassStrategy
     {

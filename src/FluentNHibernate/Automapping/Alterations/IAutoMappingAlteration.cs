@@ -1,4 +1,4 @@
-﻿namespace FluentNHibernate.AutoMap.Alterations
+﻿namespace FluentNHibernate.Automapping.Alterations
 {
     /// <summary>
     /// Provides a mechanism for altering an AutoPersistenceModel prior to

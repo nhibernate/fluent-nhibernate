@@ -1,9 +1,9 @@
 using System.Linq.Expressions;
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Utils;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     [TestFixture]
     public class AutoMapOneToManyTester

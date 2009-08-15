@@ -2,7 +2,7 @@ using FluentNHibernate.Testing.Cfg.Db;
 using NHibernate.Cfg;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     public abstract class BaseAutoPersistenceTests
     {

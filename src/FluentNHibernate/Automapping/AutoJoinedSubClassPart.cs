@@ -7,7 +7,7 @@ using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
-namespace FluentNHibernate.AutoMap
+namespace FluentNHibernate.Automapping
 {
     public class AutoJoinedSubClassPart<T> : JoinedSubClassPart<T>, IAutoClasslike
     {

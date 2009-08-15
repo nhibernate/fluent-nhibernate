@@ -4,7 +4,7 @@ using System.Reflection;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
-namespace FluentNHibernate.AutoMap
+namespace FluentNHibernate.Automapping
 {
     public class AutoMapVersion : IAutoMapper
     {

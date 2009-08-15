@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Automapping;
 using NHibernate.Cfg;
 using NHibernate.Util;
 

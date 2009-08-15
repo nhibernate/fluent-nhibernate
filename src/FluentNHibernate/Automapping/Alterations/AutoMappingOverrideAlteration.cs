@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.AutoMap.Alterations
+namespace FluentNHibernate.Automapping.Alterations
 {
     /// <summary>
     /// Built-in alteration for altering an AutoPersistenceModel with instance of IAutoMappingOverride&lt;T&gt;.
@@ -27,7 +27,7 @@ namespace FluentNHibernate.AutoMap.Alterations
         /// </summary>
         /// <remarks>
         /// Finds all types in the assembly (passed in the constructor) that implement IAutoMappingOverride&lt;T&gt;, then
-        /// creates an AutoMap&lt;T&gt; and applies the override to it.
+        /// creates an AutoMapping&lt;T&gt; and applies the override to it.
         /// </remarks>
         /// <param name="model">AutoPersistenceModel instance to alter</param>
         public void Alter(AutoPersistenceModel model)
@@ -43,10 +43,10 @@ namespace FluentNHibernate.AutoMap.Alterations
             foreach (var typeMatch in types)
             {
                 var mappingOverride = Activator.CreateInstance(typeMatch.OverrideType);
-                var autoMapType = typeof(AutoMap<>).MakeGenericType(typeMatch.EntityType);
+                var autoMapType = typeof(AutoMapping<>).MakeGenericType(typeMatch.EntityType);
                 var mapping = (IMappingProvider)Activator.CreateInstance(autoMapType, new List<string>());
 
-                // HACK: call the Override method with the generic AutoMap<T>
+                // HACK: call the Override method with the generic AutoMapping<T>
                 var overrideMethod = typeMatch.OverrideType
                     .GetMethod("Override");
 
@@ -61,8 +61,8 @@ namespace FluentNHibernate.AutoMap.Alterations
         {
             model.AddOverride(entity, x =>
             {
-                if (x is AutoMap<T>)
-                    mappingOverride.Override((AutoMap<T>)x);
+                if (x is AutoMapping<T>)
+                    mappingOverride.Override((AutoMapping<T>)x);
             });
         }
     }

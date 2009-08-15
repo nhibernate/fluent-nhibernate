@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace FluentNHibernate.AutoMap
+namespace FluentNHibernate.Automapping
 {
     public interface IPropertyIgnorer
     {

@@ -8,13 +8,13 @@ using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.AutoMap
+namespace FluentNHibernate.Automapping
 {
-    public class AutoMap<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
+    public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
     {
         private readonly IList<string> mappedProperties;
 
-        public AutoMap(IList<string> mappedProperties)
+        public AutoMapping(IList<string> mappedProperties)
         {
             this.mappedProperties = mappedProperties;
         }

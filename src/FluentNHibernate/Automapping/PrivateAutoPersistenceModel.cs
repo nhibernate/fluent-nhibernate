@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using FluentNHibernate.Conventions;
 
-namespace FluentNHibernate.AutoMap
+namespace FluentNHibernate.Automapping
 {
     public class PrivateAutoPersistenceModel : AutoPersistenceModel
     {

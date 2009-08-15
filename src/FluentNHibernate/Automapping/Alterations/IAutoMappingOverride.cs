@@ -1,4 +1,4 @@
-﻿namespace FluentNHibernate.AutoMap.Alterations
+﻿namespace FluentNHibernate.Automapping.Alterations
 {
     /// <summary>
     /// A mapping override for an auto mapped entity.
@@ -10,6 +10,6 @@
         /// Alter the automapping for this type
         /// </summary>
         /// <param name="mapping">Automapping</param>
-        void Override(AutoMap<T> mapping);
+        void Override(AutoMapping<T> mapping);
     }
 }

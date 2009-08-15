@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Automapping;
 using NHibernate.Cfg;
 
 namespace FluentNHibernate.Cfg

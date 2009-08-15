@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Testing.DomainModel;
@@ -93,9 +93,7 @@ namespace FluentNHibernate.Testing.Cfg
                 .Mappings(m =>
                 {
                     m.FluentMappings.AddFromAssemblyOf<Foo>();
-                    m.AutoMappings.Add(
-                        AutoPersistenceModel.MapEntitiesFromAssemblyOf<Bar>()
-                            .Where(t => t.Namespace == typeof(Bar).Namespace));
+                    m.AutoMappings.Add(AutoMap.AssemblyOf<Bar>(t => t.Namespace == typeof(Bar).Namespace));
                 })
                 .BuildSessionFactory();
 
@@ -280,8 +278,7 @@ namespace FluentNHibernate.Testing.Cfg
             Fluently.Configure()
                 .Database(SQLiteConfiguration.Standard.InMemory)
                 .Mappings(m =>
-                    m.AutoMappings.Add(AutoPersistenceModel.MapEntitiesFromAssemblyOf<Person>()
-                            .Where(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
+                    m.AutoMappings.Add(AutoMap.AssemblyOf<Person>(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
                         .ExportTo(ExportPath))
                 .BuildSessionFactory();
 
@@ -296,8 +293,7 @@ namespace FluentNHibernate.Testing.Cfg
                 .Database(SQLiteConfiguration.Standard.InMemory)
                 .Mappings(m =>
                     m.MergeMappings()
-                     .AutoMappings.Add(AutoPersistenceModel.MapEntitiesFromAssemblyOf<Person>()
-                            .Where(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
+                     .AutoMappings.Add(AutoMap.AssemblyOf<Person>(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
                      .ExportTo(ExportPath))
                 .BuildSessionFactory();
 
@@ -316,8 +312,7 @@ namespace FluentNHibernate.Testing.Cfg
                         .AddFromAssemblyOf<Record>()
                         .ExportTo(ExportPath);
 
-                    m.AutoMappings.Add(AutoPersistenceModel.MapEntitiesFromAssemblyOf<Person>()
-                        .Where(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
+                    m.AutoMappings.Add(AutoMap.AssemblyOf<Person>(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
                         .ExportTo(ExportPath);
                 })
                 .BuildSessionFactory();
