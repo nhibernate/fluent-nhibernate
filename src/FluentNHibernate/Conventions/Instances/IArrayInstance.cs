@@ -6,5 +6,6 @@ namespace FluentNHibernate.Conventions.Instances
     {
         new IIndexInstanceBase Index { get; }
         new IAccessInstance Access { get; }
+        new ICacheInstance Cache { get; }
     }
 }

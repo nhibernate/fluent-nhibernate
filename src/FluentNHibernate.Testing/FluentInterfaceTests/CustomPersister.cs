@@ -12,7 +12,7 @@ using NHibernate.Type;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
-    internal class SecondCustomerPersister : CustomPersister
+    internal class SecondCustomPersister : CustomPersister
     {}
 
     internal class CustomPersister : IEntityPersister

@@ -12,10 +12,10 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Testing.FluentInterfaceTests;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.ConventionsTests
+namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
 {
     [TestFixture]
-    public class FluentInterfaceOverridingConventionsHasManyToManyCollectionTests
+    public class HasManyCollectionConventionTests
     {
         private PersistenceModel model;
         private IMappingProvider mapping;
@@ -118,9 +118,9 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         [Test]
-        public void ParentKeyColumnNameShouldntBeOverwritten()
+        public void KeyColumnNameShouldntBeOverwritten()
         {
-            Mapping(x => x.Children, x => x.ParentKeyColumn("name"));
+            Mapping(x => x.Children, x => x.KeyColumn("name"));
 
             Convention(x => x.Key.Column("xxx"));
 
@@ -152,7 +152,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping(x => x.Children, x => x.Persister<CustomPersister>());
 
-            Convention(x => x.Persister<SecondCustomerPersister>());
+            Convention(x => x.Persister<SecondCustomPersister>());
 
             VerifyModel(x => x.Persister.GetUnderlyingSystemType().ShouldEqual(typeof(CustomPersister)));
         }
@@ -178,6 +178,16 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         [Test]
+        public void ForeignKeyShouldntBeOverwritten()
+        {
+            Mapping(x => x.Children, x => x.ForeignKeyConstraintName("key"));
+
+            Convention(x => x.Key.ForeignKey("xxx"));
+
+            VerifyModel(x => x.Key.ForeignKey.ShouldEqual("key"));
+        }
+
+        [Test]
         public void TableNameShouldntBeOverwritten()
         {
             Mapping(x => x.Children, x => x.Table("table"));
@@ -194,10 +204,10 @@ namespace FluentNHibernate.Testing.ConventionsTests
             model.Conventions.Add(new CollectionConventionBuilder().Always(convention));
         }
 
-        private void Mapping<TChild>(Expression<Func<ExampleInheritedClass, IEnumerable<TChild>>> property, Action<ManyToManyPart<TChild>> mappingDefinition)
+        private void Mapping<TChild>(Expression<Func<ExampleInheritedClass, IEnumerable<TChild>>> property, Action<OneToManyPart<TChild>> mappingDefinition)
         {
             var classMap = new ClassMap<ExampleInheritedClass>();
-            var map = classMap.HasManyToMany(property);
+            var map = classMap.HasMany(property);
 
             mappingDefinition(map);
 

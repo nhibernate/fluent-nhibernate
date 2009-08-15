@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using FluentNHibernate.AutoMap.TestFixtures;
-using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
@@ -12,10 +11,10 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Testing.FluentInterfaceTests;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.ConventionsTests
+namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
 {
     [TestFixture]
-    public class FluentInterfaceOverridingConventionsHasManyCollectionTests
+    public class HasManyToManyConventionTests
     {
         private PersistenceModel model;
         private IMappingProvider mapping;
@@ -118,13 +117,23 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         [Test]
-        public void KeyColumnNameShouldntBeOverwritten()
+        public void ParentKeyColumnNameShouldntBeOverwritten()
         {
-            Mapping(x => x.Children, x => x.KeyColumn("name"));
+            Mapping(x => x.Children, x => x.ParentKeyColumn("name"));
 
             Convention(x => x.Key.Column("xxx"));
 
             VerifyModel(x => x.Key.Columns.First().Name.ShouldEqual("name"));
+        }
+
+        [Test]
+        public void ChildKeyColumnNameShouldntBeOverwritten()
+        {
+            Mapping(x => x.Children, x => x.ChildKeyColumn("name"));
+
+            Convention(x => x.Relationship.Column("xxx"));
+
+            VerifyModel(x => ((ManyToManyMapping)x.Relationship).Columns.First().Name.ShouldEqual("name"));
         }
 
         [Test]
@@ -152,7 +161,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping(x => x.Children, x => x.Persister<CustomPersister>());
 
-            Convention(x => x.Persister<SecondCustomerPersister>());
+            Convention(x => x.Persister<SecondCustomPersister>());
 
             VerifyModel(x => x.Persister.GetUnderlyingSystemType().ShouldEqual(typeof(CustomPersister)));
         }
@@ -178,16 +187,6 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         [Test]
-        public void ForeignKeyShouldntBeOverwritten()
-        {
-            Mapping(x => x.Children, x => x.ForeignKeyConstraintName("key"));
-
-            Convention(x => x.Key.ForeignKey("xxx"));
-
-            VerifyModel(x => x.Key.ForeignKey.ShouldEqual("key"));
-        }
-
-        [Test]
         public void TableNameShouldntBeOverwritten()
         {
             Mapping(x => x.Children, x => x.Table("table"));
@@ -199,15 +198,15 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         #region Helpers
 
-        private void Convention(Action<ICollectionInstance> convention)
+        private void Convention(Action<IManyToManyCollectionInstance> convention)
         {
-            model.Conventions.Add(new CollectionConventionBuilder().Always(convention));
+            model.Conventions.Add(new ManyToManyCollectionConventionBuilder().Always(convention));
         }
 
-        private void Mapping<TChild>(Expression<Func<ExampleInheritedClass, IEnumerable<TChild>>> property, Action<OneToManyPart<TChild>> mappingDefinition)
+        private void Mapping<TChild>(Expression<Func<ExampleInheritedClass, IEnumerable<TChild>>> property, Action<ManyToManyPart<TChild>> mappingDefinition)
         {
             var classMap = new ClassMap<ExampleInheritedClass>();
-            var map = classMap.HasMany(property);
+            var map = classMap.HasManyToMany(property);
 
             mappingDefinition(map);
 

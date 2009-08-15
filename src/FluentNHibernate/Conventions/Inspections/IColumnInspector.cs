@@ -4,12 +4,12 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         string Name { get; }
         string Check { get; }
-        string Index { get; set; }
+        string Index { get; }
         int Length { get; }
-        bool NotNull { get; set; }
+        bool NotNull { get;  }
         string SqlType { get; }
-        bool Unique { get; set; }
-        string UniqueKey { get; set; }
+        bool Unique { get;  }
+        string UniqueKey { get; }
         int Precision { get; }
         int Scale { get; }
         string Default { get; }

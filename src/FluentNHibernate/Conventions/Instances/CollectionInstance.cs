@@ -60,8 +60,8 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 return new OptimisticLockInstance(value =>
                 {
-                    if (!mapping.IsSpecified(x => x.Fetch))
-                        mapping.Fetch = value;
+                    if (!mapping.IsSpecified(x => x.OptimisticLock))
+                        mapping.OptimisticLock = value;
                 });
             }
         }

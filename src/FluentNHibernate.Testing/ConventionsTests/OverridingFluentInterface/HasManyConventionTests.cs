@@ -11,10 +11,10 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Testing.FluentInterfaceTests;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.ConventionsTests
+namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
 {
     [TestFixture]
-    public class FluentInterfaceOverridingConventionsHasManyTests
+    public class HasManyConventionTests
     {
         private PersistenceModel model;
         private IMappingProvider mapping;
@@ -151,7 +151,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping(x => x.Children, x => x.Persister<CustomPersister>());
 
-            Convention(x => x.Persister<SecondCustomerPersister>());
+            Convention(x => x.Persister<SecondCustomPersister>());
 
             VerifyModel(x => x.Persister.GetUnderlyingSystemType().ShouldEqual(typeof(CustomPersister)));
         }

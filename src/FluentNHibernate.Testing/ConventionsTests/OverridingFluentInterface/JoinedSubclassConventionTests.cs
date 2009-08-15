@@ -8,10 +8,10 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.ConventionsTests
+namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
 {
     [TestFixture]
-    public class FluentInterfaceOverridingConventionsJoinedSubclassTests
+    public class JoinedSubclassConventionTests
     {
         private PersistenceModel model;
         private IMappingProvider mapping;
@@ -120,10 +120,14 @@ namespace FluentNHibernate.Testing.ConventionsTests
             model.Conventions.Add(new JoinedSubclassConventionBuilder().Always(convention));
         }
 
-        private void Mapping(Action<JoinedSubClassPart<ExampleInheritedClass>> mappingDefinition)
+        private void Mapping(Action<SubclassMap<ExampleInheritedClass>> mappingDefinition)
         {
             var classMap = new ClassMap<ExampleClass>();
-            classMap.JoinedSubClass("key", mappingDefinition);
+            var subclassMap = new SubclassMap<ExampleInheritedClass>();
+
+            mappingDefinition(subclassMap);
+
+            model.Add(subclassMap);
 
             mapping = classMap;
             mappingType = typeof(ExampleClass);

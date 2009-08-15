@@ -104,11 +104,11 @@ namespace FluentNHibernate.Conventions.Instances
             if (mapping.Columns.First().IsSpecified(x => x.Index))
                 return;
 
-            foreach (var column in Columns)
+            foreach (var column in mapping.Columns)
                 column.Index = index;
         }
 
-        public void Insert()
+        public new void Insert()
         {
             if (mapping.IsSpecified(x => x.Insert))
                 return;
@@ -117,7 +117,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public void LazyLoad()
+        public new void LazyLoad()
         {
             if (mapping.IsSpecified(x => x.Lazy))
                 return;
@@ -131,13 +131,13 @@ namespace FluentNHibernate.Conventions.Instances
             if (mapping.Columns.First().IsSpecified(x => x.NotNull))
                 return;
 
-            foreach (var column in Columns)
+            foreach (var column in mapping.Columns)
                 column.NotNull = !nextBool;
 
             nextBool = true;
         }
 
-        public void PropertyRef(string property)
+        public new void PropertyRef(string property)
         {
             if (!mapping.IsSpecified(x => x.PropertyRef))
                 mapping.PropertyRef = property;
@@ -148,8 +148,8 @@ namespace FluentNHibernate.Conventions.Instances
             if (mapping.IsSpecified(x => x.Insert) || mapping.IsSpecified(x => x.Update))
                 return;
 
-            mapping.Insert = nextBool;
-            mapping.Update = nextBool;
+            mapping.Insert = !nextBool;
+            mapping.Update = !nextBool;
             nextBool = true;
         }
 
@@ -158,7 +158,7 @@ namespace FluentNHibernate.Conventions.Instances
             if (mapping.Columns.First().IsSpecified(x => x.Unique))
                 return;
 
-            foreach (var column in Columns)
+            foreach (var column in mapping.Columns)
                 column.Unique = nextBool;
 
             nextBool = true;
@@ -169,11 +169,11 @@ namespace FluentNHibernate.Conventions.Instances
             if (mapping.Columns.First().IsSpecified(x => x.UniqueKey))
                 return;
 
-            foreach (var column in Columns)
+            foreach (var column in mapping.Columns)
                 column.UniqueKey = key;
         }
 
-        public void Update()
+        public new void Update()
         {
             if (mapping.IsSpecified(x => x.Update))
                 return;
@@ -182,7 +182,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public void ForeignKey(string key)
+        public new void ForeignKey(string key)
         {
             if (!mapping.IsSpecified(x => x.ForeignKey))
                 mapping.ForeignKey = key;

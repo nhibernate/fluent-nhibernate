@@ -10,10 +10,10 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.ConventionsTests
+namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
 {
     [TestFixture]
-    public class FluentInterfaceOverridingConventionsPropertyTests
+    public class PropertyConventionTests
     {
         private PersistenceModel model;
         private IMappingProvider mapping;

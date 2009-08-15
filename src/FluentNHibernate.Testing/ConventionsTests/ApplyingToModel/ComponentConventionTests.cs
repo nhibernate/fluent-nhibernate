@@ -7,14 +7,12 @@ using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.ConventionsTests
+namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
 {
     [TestFixture]
-    public class FluentInterfaceOverridingConventionsComponentTests
+    public class ComponentConventionTests
     {
         private PersistenceModel model;
-        private IMappingProvider mapping;
-        private Type mappingType;
 
         [SetUp]
         public void CreatePersistenceModel()
@@ -23,51 +21,41 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         [Test]
-        public void AccessShouldntBeOverwritten()
+        public void ShouldSetAccessProperty()
         {
-            Mapping(x => x.Access.Field());
+            Convention(x => x.Access.Property());
 
-            Convention(x => x.Access.ToString());
-
-            VerifyModel(x => x.Access.ShouldEqual("field"));
+            VerifyModel(x => x.Access.ShouldEqual("property"));
         }
 
         [Test]
-        public void InsertShouldntBeOverwritten()
+        public void ShouldSetInsertProperty()
         {
-            Mapping(x => x.Insert());
-
-            Convention(x => x.Not.Insert());
+            Convention(x => x.Insert());
 
             VerifyModel(x => x.Insert.ShouldBeTrue());
         }
 
         [Test]
-        public void UpdateShouldntBeOverwritten()
+        public void ShouldSetUpdateProperty()
         {
-            Mapping(x => x.Update());
-
-            Convention(x => x.Not.Update());
+            Convention(x => x.Update());
 
             VerifyModel(x => x.Update.ShouldBeTrue());
         }
 
         [Test]
-        public void UniqueShouldntBeOverwritten()
+        public void ShouldSetUniqueProperty()
         {
-            Mapping(x => x.Unique());
-
-            Convention(x => x.Not.Unique());
+            Convention(x => x.Unique());
 
             VerifyModel(x => x.Unique.ShouldBeTrue());
         }
 
         [Test]
-        public void OptimisticLockShouldntBeOverwritten()
+        public void ShouldSetOptimisticLockProperty()
         {
-            Mapping(x => x.OptimisticLock());
-
-            Convention(x => x.Not.OptimisticLock());
+            Convention(x => x.OptimisticLock());
 
             VerifyModel(x => x.OptimisticLock.ShouldBeTrue());
         }
@@ -79,24 +67,16 @@ namespace FluentNHibernate.Testing.ConventionsTests
             model.Conventions.Add(new ComponentConventionBuilder().Always(convention));
         }
 
-        private void Mapping(Action<ComponentPart<ComponentTarget>> mappingDefinition)
-        {
-            var classMap = new ClassMap<PropertyTarget>();
-            var map = classMap.Component(x => x.Component, mappingDefinition);
-
-            mappingDefinition(map);
-
-            mapping = classMap;
-            mappingType = typeof(PropertyTarget);
-        }
-
         private void VerifyModel(Action<ComponentMapping> modelVerification)
         {
-            model.Add(mapping);
+            var classMap = new ClassMap<PropertyTarget>();
+            var map = classMap.Component(x => x.Component, m => {});
+
+            model.Add(classMap);
 
             var generatedModels = model.BuildMappings();
             var modelInstance = (ComponentMapping)generatedModels
-                .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) != null)
+                .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(PropertyTarget)) != null)
                 .Classes.First()
                 .Components.Where(x => x is ComponentMapping).First();
 

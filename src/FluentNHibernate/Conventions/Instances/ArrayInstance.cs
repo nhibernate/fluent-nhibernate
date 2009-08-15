@@ -37,5 +37,10 @@ namespace FluentNHibernate.Conventions.Instances
                 });
             }
         }
+
+        public new ICacheInstance Cache
+        {
+            get { return new CacheInstance(mapping.Cache); }
+        }
     }
 }

@@ -9,10 +9,10 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.ConventionsTests
+namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
 {
     [TestFixture]
-    public class FluentInterfaceOverridingConventionsManyToOneTests
+    public class ManyToOneConventionTests
     {
         private PersistenceModel model;
         private IMappingProvider mapping;

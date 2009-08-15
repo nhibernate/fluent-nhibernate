@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using FluentNHibernate.AutoMap.TestFixtures;
+using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
@@ -11,10 +12,10 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Testing.FluentInterfaceTests;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.ConventionsTests
+namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
 {
     [TestFixture]
-    public class FluentInterfaceOverridingConventionsHasManyToManyTests
+    public class HasManyToManyCollectionConventionTests
     {
         private PersistenceModel model;
         private IMappingProvider mapping;
@@ -127,16 +128,6 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         [Test]
-        public void ChildKeyColumnNameShouldntBeOverwritten()
-        {
-            Mapping(x => x.Children, x => x.ChildKeyColumn("name"));
-
-            Convention(x => x.Relationship.Column("xxx"));
-
-            VerifyModel(x => ((ManyToManyMapping)x.Relationship).Columns.First().Name.ShouldEqual("name"));
-        }
-
-        [Test]
         public void LazyShouldntBeOverwritten()
         {
             Mapping(x => x.Children, x => x.LazyLoad());
@@ -161,7 +152,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             Mapping(x => x.Children, x => x.Persister<CustomPersister>());
 
-            Convention(x => x.Persister<SecondCustomerPersister>());
+            Convention(x => x.Persister<SecondCustomPersister>());
 
             VerifyModel(x => x.Persister.GetUnderlyingSystemType().ShouldEqual(typeof(CustomPersister)));
         }
@@ -198,9 +189,9 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         #region Helpers
 
-        private void Convention(Action<IManyToManyCollectionInstance> convention)
+        private void Convention(Action<ICollectionInstance> convention)
         {
-            model.Conventions.Add(new ManyToManyCollectionConventionBuilder().Always(convention));
+            model.Conventions.Add(new CollectionConventionBuilder().Always(convention));
         }
 
         private void Mapping<TChild>(Expression<Func<ExampleInheritedClass, IEnumerable<TChild>>> property, Action<ManyToManyPart<TChild>> mappingDefinition)
