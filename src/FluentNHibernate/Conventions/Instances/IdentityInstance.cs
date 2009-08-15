@@ -43,6 +43,17 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.Length = length;
         }
 
+        public new void Type(Type type)
+        {
+            if (!mapping.IsSpecified(x => x.Type))
+                mapping.Type = new TypeReference(type);
+        }
+
+        public new void Type<T>()
+        {
+            Type(typeof(T));
+        }
+
         public new IAccessInstance Access
         {
             get

@@ -63,6 +63,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.Length.ShouldEqual(200));
         }
 
+        [Test]
+        public void ShouldSetTypeValueProperty()
+        {
+            Convention(x => x.Type<string>());
+
+            VerifyModel(x => x.Type.GetUnderlyingSystemType().ShouldEqual(typeof(string)));
+        }
+
         #region Helpers
 
         private void Convention(Action<IIdentityInstance> convention)

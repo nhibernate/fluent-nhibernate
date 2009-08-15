@@ -58,7 +58,7 @@ namespace FluentNHibernate.Mapping
                 mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = property.Name });
 
             mapping.Name = property.Name;
-            mapping.Type = new TypeReference(property.PropertyType);
+            mapping.SetDefaultValue(x => x.Type, new TypeReference(property.PropertyType));
 
             if (GeneratedBy.IsDirty)
                 mapping.Generator = GeneratedBy.GetGeneratorMapping();

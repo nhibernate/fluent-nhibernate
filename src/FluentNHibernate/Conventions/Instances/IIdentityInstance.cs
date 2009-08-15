@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -7,6 +8,8 @@ namespace FluentNHibernate.Conventions.Instances
         void Column(string column);
         void UnsavedValue(string unsavedValue);
         void Length(int length);
+        void Type(Type type); 
+        void Type<T>(); 
         new IAccessInstance Access { get; }
         IGeneratorInstance GeneratedBy { get; }
     }

@@ -100,6 +100,12 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.Where))
                 element.WithAtt("where", mapping.Where);
+
+            if (mapping.HasValue(x => x.Subselect))
+                element.WithAtt("subselect", mapping.Subselect);
+
+            if (mapping.HasValue(x => x.Mutable))
+                element.WithAtt("mutable", mapping.Mutable);
         }
     }
 }

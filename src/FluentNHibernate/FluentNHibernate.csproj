@@ -154,6 +154,7 @@
     <Compile Include="Conventions\Inspections\ComponentInspector.cs" />
     <Compile Include="Conventions\Inspections\CompositeElementInspector.cs" />
     <Compile Include="Conventions\Inspections\CompositeIdentityInspector.cs" />
+    <Compile Include="Conventions\Inspections\IAnyInstance.cs" />
     <Compile Include="Conventions\Inspections\IArrayInspector.cs" />
     <Compile Include="Conventions\Inspections\IBagInspector.cs" />
     <Compile Include="Conventions\Inspections\IListInspector.cs" />
