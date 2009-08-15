@@ -126,6 +126,12 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.OrderBy = orderBy;
         }
 
+        public void Subselect(string subselect)
+        {
+            if (!mapping.IsSpecified(x => x.Subselect))
+                mapping.Subselect = subselect;
+        }
+
         public void Table(string tableName)
         {
             if (!mapping.IsSpecified(x => x.TableName))
@@ -154,6 +160,15 @@ namespace FluentNHibernate.Conventions.Instances
         {
             if (!mapping.IsSpecified(x => x.BatchSize))
                 mapping.BatchSize = batchSize;
+        }
+
+        public void ReadOnly()
+        {
+            if (mapping.IsSpecified(x => x.Mutable))
+                return;
+
+            mapping.Mutable = !nextBool;
+            nextBool = true;
         }
 
         public ICollectionInstance Not

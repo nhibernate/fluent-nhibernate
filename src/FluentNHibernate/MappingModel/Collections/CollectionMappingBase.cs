@@ -131,6 +131,18 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Where, value); }
         }
 
+        public bool Mutable
+        {
+            get { return attributes.Get(x => x.Mutable); }
+            set { attributes.Set(x => x.Mutable, value); }
+        }
+
+        public string Subselect
+        {
+            get { return attributes.Get(x => x.Subselect); }
+            set { attributes.Set(x => x.Subselect, value); }
+        }
+
     	public TypeReference Persister
         {
             get { return attributes.Get(x => x.Persister); }

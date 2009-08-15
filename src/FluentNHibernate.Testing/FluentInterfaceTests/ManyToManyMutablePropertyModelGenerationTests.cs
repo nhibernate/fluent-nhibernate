@@ -207,5 +207,29 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.Not.Generic())
                 .ModelShouldMatch(x => x.Generic.ShouldBeFalse());
         }
+
+        [Test]
+        public void ReadOnlyShouldSetModelMutableToFalse()
+        {
+            ManyToMany(x => x.BagOfChildren)
+                .Mapping(m => m.ReadOnly())
+                .ModelShouldMatch(x => x.Mutable.ShouldBeFalse());
+        }
+
+        [Test]
+        public void NotReadOnlyShouldSetModelMutableToTrue()
+        {
+            ManyToMany(x => x.BagOfChildren)
+                .Mapping(m => m.Not.ReadOnly())
+                .ModelShouldMatch(x => x.Mutable.ShouldBeTrue());
+        }
+
+        [Test]
+        public void SubselectShouldSetModelSubselectToValue()
+        {
+            ManyToMany(x => x.BagOfChildren)
+                .Mapping(m => m.Subselect("whee"))
+                .ModelShouldMatch(x => x.Subselect.ShouldEqual("whee"));
+        }
     }
 }

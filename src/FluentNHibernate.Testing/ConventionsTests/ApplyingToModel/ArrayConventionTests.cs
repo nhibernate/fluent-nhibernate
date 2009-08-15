@@ -102,6 +102,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         }
 
         [Test]
+        public void ShouldSetMutableProperty()
+        {
+            Convention(x => x.ReadOnly());
+
+            VerifyModel(x => x.Mutable.ShouldEqual(false));
+        }
+
+        [Test]
         public void ShouldSetNameProperty()
         {
             Convention(x => x.Name("xxx"));
@@ -131,6 +139,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             Convention(x => x.Schema("xxx"));
 
             VerifyModel(x => x.Schema.ShouldEqual("xxx"));
+        }
+
+        [Test]
+        public void ShouldSetSubselectProperty()
+        {
+            Convention(x => x.Subselect("woo"));
+
+            VerifyModel(x => x.Subselect.ShouldEqual("woo"));
         }
 
         [Test]

@@ -154,6 +154,24 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteSubselectAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<ArrayMapping>();
+            testHelper.Check(x => x.Subselect, "x = 1").MapsToAttribute("subselect");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteMutableAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<ArrayMapping>();
+            testHelper.Check(x => x.Mutable, true).MapsToAttribute("mutable");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
         public void ShouldWriteKey()
         {
             var mapping = new ArrayMapping

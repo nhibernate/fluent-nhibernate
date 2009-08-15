@@ -124,6 +124,16 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         }
 
         [Test]
+        public void MutableShouldntBeOverwritten()
+        {
+            Mapping(x => x.ReadOnly());
+
+            Convention(x => x.Not.ReadOnly());
+
+            VerifyModel(x => x.Mutable.ShouldEqual(false));
+        }
+
+        [Test]
         public void OptimisticLockShouldntBeOverwritten()
         {
             Mapping(x => x.OptimisticLock.All());
@@ -151,6 +161,16 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             Convention(x => x.Schema("xxx"));
 
             VerifyModel(x => x.Schema.ShouldEqual("dbo"));
+        }
+
+        [Test]
+        public void SubselectShouldntBeOverwritten()
+        {
+            Mapping(x => x.Subselect("whee"));
+
+            Convention(x => x.Subselect("woo"));
+
+            VerifyModel(x => x.Subselect.ShouldEqual("whee"));
         }
 
         [Test]

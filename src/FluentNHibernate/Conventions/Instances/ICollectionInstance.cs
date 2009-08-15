@@ -14,6 +14,7 @@ namespace FluentNHibernate.Conventions.Instances
         void Schema(string schema);
         void LazyLoad();
         void BatchSize(int batchSize);
+        void ReadOnly();
 
         ICollectionInstance Not { get; }
         new IAccessInstance Access { get; }
@@ -30,5 +31,6 @@ namespace FluentNHibernate.Conventions.Instances
         void Persister<T>() where T : IEntityPersister;
         void Where(string whereClause);
         void OrderBy(string orderBy);
+        void Subselect(string subselect);
     }
 }

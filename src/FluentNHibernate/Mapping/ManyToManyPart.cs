@@ -190,5 +190,18 @@ namespace FluentNHibernate.Mapping
             collectionAttributes.Set(x => x.OrderBy, orderBy);
             return this;
         }
+
+        public ManyToManyPart<TChild> ReadOnly()
+	    {
+            collectionAttributes.Set(x => x.Mutable, !nextBool);
+            nextBool = true;
+            return this;
+	    }
+
+	    public ManyToManyPart<TChild> Subselect(string subselect)
+	    {
+	        collectionAttributes.Set(x => x.Subselect, subselect);
+	        return this;
+	    }
     }
 }
