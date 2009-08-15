@@ -112,6 +112,7 @@
     <Compile Include="ConventionsTests\ApplyingToModel\PropertyConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\SubclassConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\VersionConventionTests.cs" />
+    <Compile Include="ConventionsTests\ForeignKeyConventionTests.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\ArrayConventionTests.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\JoinConventionTests.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\JoinedSubclassConventionTests.cs" />
