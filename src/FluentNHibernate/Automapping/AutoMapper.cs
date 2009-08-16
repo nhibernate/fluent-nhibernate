@@ -152,5 +152,15 @@ namespace FluentNHibernate.Automapping
             mappingTypes = types;
             return (ClassMapping)MergeMap(classType, classMap, new List<string>());
         }
+
+        /// <summary>
+        /// Flags a type as already mapped, stop it from being auto-mapped.
+        /// </summary>
+        public void FlagAsMapped(Type type)
+        {
+            mappingTypes
+                .Where(x => x.Type == type)
+                .Each(x => x.IsMapped = true);
+        }
     }
 }

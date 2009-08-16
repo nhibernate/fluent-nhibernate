@@ -970,6 +970,29 @@ namespace FluentNHibernate.Testing.Automapping.Apm
                 .Element("class/property[@name='LineOne']").DoesntExist();
         }
 
+        [Test]
+        public void ShouldntAutoMapComponentsThatArentExcludedByWhereClause()
+        {
+            var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
+                .Setup(x => x.IsComponentType = type => type == typeof(ExampleParentClass))
+                .Where(x => x.Namespace == "FluentNHibernate.Automapping.TestFixtures");
+
+            autoMapper.CompileMappings();
+            var mappings = autoMapper.BuildMappings();
+
+            var exampleClassMapping = mappings
+                .SelectMany(x => x.Classes)
+                .First(x => x.Type == typeof(ExampleClass));
+
+            exampleClassMapping.Components.Count().ShouldEqual(1); // has a component
+
+            var exampleParentClassMapping = mappings
+                .SelectMany(x => x.Classes)
+                .FirstOrDefault(x => x.Type == typeof(ExampleParentClass));
+
+            exampleParentClassMapping.ShouldBeNull();
+        }
+
         private class JoinedSubclassConvention : IJoinedSubclassConvention
         {
             public void Apply(IJoinedSubclassInstance instance)

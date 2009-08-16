@@ -31,6 +31,7 @@ namespace FluentNHibernate.Automapping
                 Type = property.PropertyType
             };
 
+            mapper.FlagAsMapped(property.PropertyType);
             mapper.MergeMap(property.PropertyType, mapping, new List<string>());
 
             classMap.AddComponent(mapping);
