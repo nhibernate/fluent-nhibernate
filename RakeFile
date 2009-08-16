@@ -7,7 +7,7 @@ include FileTest
 RESULTS_DIR = "results"
 DIST_DIR = 'dist'
 PRODUCT = "FluentNHibernate"
-COPYRIGHT = 'Copyright 2008-2009 James Gregory and contributors (Paul Batum, Andrew Stewart, Chad Myers et al). All rights reserved.';
+COPYRIGHT = 'Copyright 2008-2009 James Gregory and contributors (Paul Batum, Andrew Stewart, Hudson Akridge, Stuart Childs et al). All rights reserved.';
 COMMON_ASSEMBLY_INFO = 'src/CommonAssemblyInfo.cs';
 CLR_VERSION = "v3.5"
 
@@ -50,7 +50,7 @@ end
 
 def get_version
 	return ENV['BUILD_NUMBER'].to_s unless ENV['BUILD_NUMBER'].nil?
-	return "0.1.0.0"
+	return "1.0.0.0"
 end
 
 desc "Displays a list of tasks"
