@@ -15,6 +15,7 @@ namespace FluentNHibernate.Mapping
         // what the parent subclass type is...
         private readonly IDictionary<Type, IIndeterminateSubclassMappingProvider> indetermineateSubclasses = new Dictionary<Type, IIndeterminateSubclassMappingProvider>();
         private bool nextBool = true;
+        private IList<JoinMapping> joins = new List<JoinMapping>();
 
         public SubclassMap<T> Not
         {
@@ -46,7 +47,12 @@ namespace FluentNHibernate.Mapping
             if (mapping is JoinedSubclassMapping)
                 mapping.OverrideAttributes(joinedSubclassAttributes.CloneInner());
             else
+            {
                 mapping.OverrideAttributes(subclassAttributes.CloneInner());
+
+                foreach (var join in joins)
+                    ((SubclassMapping)mapping).AddJoin(join);
+            }
 
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());
@@ -192,6 +198,21 @@ namespace FluentNHibernate.Mapping
         public void BatchSize(int batchSize)
         {
             joinedSubclassAttributes.Set(x => x.BatchSize, batchSize);
+        }
+
+        /// <summary>
+        /// Sets additional tables for the class via the NH 2.0 Join element, this only works if
+        /// the hierarchy you're mapping has a discriminator.
+        /// </summary>
+        /// <param name="tableName">Joined table name</param>
+        /// <param name="action">Joined table mapping</param>
+        public void Join(string tableName, Action<JoinPart<T>> action)
+        {
+            var join = new JoinPart<T>(tableName);
+
+            action(join);
+
+            joins.Add(((IJoinMappingProvider)join).GetJoinMapping());
         }
     }
 }
