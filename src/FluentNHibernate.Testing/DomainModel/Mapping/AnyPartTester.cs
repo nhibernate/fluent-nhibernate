@@ -156,5 +156,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                  .HasAttribute("value", "SMO")
                  .HasAttribute("class", typeof(SecondMappedObject).AssemblyQualifiedName);
         }
+
+        [Test]
+        public void AnyIsAfterIdElement()
+        {
+            var mapTest = new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                                {
+                                    map.Id(x => x.Id);
+                                    map.ReferencesAny(x => x.Parent)
+                                        .EntityIdentifierColumn("AnyId")
+                                        .EntityTypeColumn("AnyType")
+                                        .IdentityType(x => x.Id)
+                                        .AddMetaValue<SecondMappedObject>("SMO");
+                                });
+
+            mapTest.Element("class/id").ShouldBeInParentAtPosition(0);
+        }
     }
 }

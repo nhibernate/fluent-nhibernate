@@ -29,6 +29,7 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
                 { "joined-subclass", new SortValue { Position = Anywhere, Level = 4 } },
                 { "subclass", new SortValue { Position = Last, Level = 3 } },
                 { "join", new SortValue { Position = Last, Level = 3 } },
+                { "any", new SortValue { Position = Anywhere, Level = 2}}
             };
         }
 
