@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NHibernate.Bytecode;
 using NHibernate.Connection;
 using NHibernate.Dialect;
 using NHibernate.Driver;
@@ -205,6 +206,17 @@ namespace FluentNHibernate.Cfg.Db
         {
             values.Store(ProxyFactoryFactoryClassKey, proxyFactoryFactoryClass);
             return (TThisConfiguration)this;
+        }
+
+        public TThisConfiguration ProxyFactoryFactory(Type proxyFactoryFactory)
+        {
+            values.Store(ProxyFactoryFactoryClassKey, proxyFactoryFactory.AssemblyQualifiedName);
+            return (TThisConfiguration)this;
+        }
+
+        public TThisConfiguration ProxyFactoryFactory<TProxyFactoryFactory>() where TProxyFactoryFactory : IProxyFactoryFactory
+        {
+            return ProxyFactoryFactory(typeof(TProxyFactoryFactory));
         }
 
         /// <summary>
