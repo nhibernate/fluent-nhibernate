@@ -1,27 +1,54 @@
 using System;
-using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Xml;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public abstract class ComponentPartBase<T> : ClasslikeMapBase<T>, IComponentBase, IAccessStrategy<ComponentPartBase<T>> 
+    public abstract class ComponentPartBase<T> : ClasslikeMapBase<T>, IComponentMappingProvider
     {
-        protected string propertyName;
-        protected AccessStrategyBuilder<ComponentPartBase<T>> access;
-        protected readonly Cache<string, string> unmigratedAttributes = new Cache<string, string>();
-        protected ComponentMappingBase mapping;
-        private bool nextBool = true;
+        private readonly string propertyName;
+        private readonly AccessStrategyBuilder<ComponentPartBase<T>> access;
+        protected bool nextBool = true;
+        private readonly AttributeStore<ComponentMappingBase> attributes;
 
-        public ComponentPartBase(ComponentMappingBase mapping, string propertyName)
+        protected ComponentPartBase(AttributeStore underlyingStore, string propertyName)
         {
-            this.mapping = mapping;
-            access = new AccessStrategyBuilder<ComponentPartBase<T>>(this);
+            attributes = new AttributeStore<ComponentMappingBase>(underlyingStore);
+            access = new AccessStrategyBuilder<ComponentPartBase<T>>(this, value => attributes.Set(x => x.Access, value));
             this.propertyName = propertyName;
+        }
+
+        protected abstract IComponentMapping CreateComponentMappingRoot(AttributeStore store);
+
+        IComponentMapping IComponentMappingProvider.GetComponentMapping()
+        {
+            var mapping = CreateComponentMappingRoot(attributes.CloneInner());
+
+            mapping.Name = propertyName;
+
+            foreach (var property in properties)
+                mapping.AddProperty(property.GetPropertyMapping());
+
+            foreach (var component in components)
+                mapping.AddComponent(component.GetComponentMapping());
+
+            foreach (var oneToOne in oneToOnes)
+                mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
+
+            foreach (var collection in collections)
+                mapping.AddCollection(collection.GetCollectionMapping());
+
+            foreach (var reference in references)
+                mapping.AddReference(reference.GetManyToOneMapping());
+
+            foreach (var any in anys)
+                mapping.AddAny(any.GetAnyMapping());
+
+            return mapping;
         }
 
         /// <summary>
@@ -32,25 +59,23 @@ namespace FluentNHibernate.Mapping
             get { return access; }
         }
 
-        ComponentMappingBase IComponentBase.GetComponentMapping()
+        public ComponentPartBase<T> ParentReference(Expression<Func<T, object>> exp)
         {
-            mapping.Name = propertyName;
-
-            foreach (var property in properties)
-                mapping.AddProperty(property.GetPropertyMapping());
-
-            foreach (var component in components)
-                mapping.AddComponent(component.GetComponentMapping());
-
-            foreach (var part in Parts)
-                mapping.AddUnmigratedPart(part);
-
-            unmigratedAttributes.ForEachPair(mapping.AddUnmigratedAttribute);
-
-            return mapping;
+            return ParentReference(ReflectionHelper.GetProperty(exp));
         }
 
-        IComponentBase IComponentBase.Not
+        private ComponentPartBase<T> ParentReference(PropertyInfo property)
+        {
+            attributes.Set(x => x.Parent, new ParentMapping
+            {
+                Name = property.Name,
+                ContainingEntityType = typeof(T)
+            });
+
+            return this;
+        }
+
+        public ComponentPartBase<T> Not
         {
             get
             {
@@ -59,116 +84,41 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        IComponentBase IComponentBase.ReadOnly()
+        public ComponentPartBase<T> ReadOnly()
         {
-            mapping.Insert = !nextBool;
-            mapping.Update = !nextBool;
+            attributes.Set(x => x.Insert, !nextBool);
+            attributes.Set(x => x.Update, !nextBool);
             nextBool = true;
 
             return this;
         }
 
-        IComponentBase IComponentBase.Insert()
+        public ComponentPartBase<T> Insert()
         {
-            mapping.Insert = nextBool;
+            attributes.Set(x => x.Insert, nextBool);
             nextBool = true;
             return this;
         }
 
-        IComponentBase IComponentBase.Update()
+        public ComponentPartBase<T> Update()
         {
-            mapping.Update = nextBool;
+            attributes.Set(x => x.Update, nextBool);
             nextBool = true;
             return this;
         }
 
-        /// <summary>
-        /// Set an attribute on the xml element produced by this component mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        public void SetAttribute(string name, string value)
+        public ComponentPartBase<T> Unique()
         {
-            unmigratedAttributes.Store(name, value);
-        }
-
-        public void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
-        protected override PropertyMap Map(PropertyInfo property, string columnName)
-        {
-            var propertyMapping = new PropertyMapping
-            {
-                Name = property.Name,
-                PropertyInfo = property
-            };
-
-            var propertyMap = new PropertyMap(propertyMapping);
-
-            if (!string.IsNullOrEmpty(columnName))
-                propertyMap.ColumnName(columnName);
-
-            properties.Add(propertyMap); // new
-
-            return propertyMap;
-        }
-
-        public override DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
-        {
-            var part = new DynamicComponentPart<IDictionary>(property);
-            action(part);
-            components.Add(part);
-
-            return part;
-        }
-
-        protected override ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
-        {
-            var part = new ComponentPart<TComponent>(property);
-            action(part);
-            components.Add(part);
-
-            return part;
-        }
-
-        public IComponentBase WithParentReference(Expression<Func<T, object>> exp)
-        {
-            return WithParentReference(ReflectionHelper.GetProperty(exp));
-        }
-
-        private IComponentBase WithParentReference(PropertyInfo property)
-        {
-            mapping.Parent = new ParentMapping
-            {
-                Name = property.Name
-            };
-
+            attributes.Set(x => x.Unique, nextBool);
+            nextBool = true;
             return this;
         }
 
-        IComponentBase IComponentBase.WithParentReference<TExplicit>(Expression<Func<TExplicit, object>> exp)
+        public ComponentPartBase<T> OptimisticLock()
         {
-            return WithParentReference(ReflectionHelper.GetProperty(exp));
-        }
-
-        public int LevelWithinPosition
-        {
-            get { throw new NotSupportedException("Obsolete"); }
-        }
-
-        void IMappingPart.Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            throw new NotSupportedException("Obsolete");
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { throw new NotSupportedException("Obsolete"); }
+            attributes.Set(x => x.OptimisticLock, nextBool);
+            nextBool = true;
+            return this;
         }
     }
 }

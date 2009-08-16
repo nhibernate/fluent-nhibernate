@@ -1,19 +1,21 @@
 using System;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders
 {
-    internal class JoinConventionBuilder : IConventionBuilder<IJoinConvention, IJoin>
+    public class JoinConventionBuilder : IConventionBuilder<IJoinConvention, IJoinInspector, IJoinInstance>
     {
-        public IJoinConvention Always(Action<IJoin> convention)
+        public IJoinConvention Always(Action<IJoinInstance> convention)
         {
-            return new BuiltJoinConvention(x => true, convention);
+            return new BuiltJoinConvention(accept => { }, convention);
         }
 
-        public IJoinConvention When(Func<IJoin, bool> isTrue, Action<IJoin> convention)
+        public IJoinConvention When(Action<IAcceptanceCriteria<IJoinInspector>> expectations, Action<IJoinInstance> convention)
         {
-            return new BuiltJoinConvention(isTrue, convention);
+            return new BuiltJoinConvention(expectations, convention);
         }
     }
 }

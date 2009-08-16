@@ -7,13 +7,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 	[TestFixture]
 	public class CollectionCascadeExpressionTester : CascadeExpressionTester
 	{
-		private CollectionCascadeExpression<IMappingPart> _collectionCascade;
+		private CollectionCascadeExpression<object> _collectionCascade;
+
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
 
-			_cascade = _collectionCascade = new CollectionCascadeExpression<IMappingPart>(_mockPart);
+			_cascade = _collectionCascade = new CollectionCascadeExpression<object>(null, value => cascadeValue = value);
 		}
 	
 		[Test]

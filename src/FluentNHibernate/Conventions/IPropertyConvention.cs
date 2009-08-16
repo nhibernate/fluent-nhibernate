@@ -1,4 +1,5 @@
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Instances;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions
 {
@@ -6,6 +7,6 @@ namespace FluentNHibernate.Conventions
     /// Property convention, implement this interface to apply changes to
     /// property mappings.
     /// </summary>
-    public interface IPropertyConvention : IConvention<IProperty>
+    public interface IPropertyConvention : IConvention<IPropertyInspector, IPropertyInstance>
     {}
 }

@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq.Expressions;
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.MappingModel.Collections
 {
-    public class CompositeElementMapping : MappingBase, INameable
+    public class CompositeElementMapping : MappingBase
     {
         private readonly MappedMembers mappedMembers;
         protected readonly AttributeStore<CompositeElementMapping> attributes;
-        protected readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
-        protected readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
         public CompositeElementMapping()
             : this(new AttributeStore())
@@ -22,69 +20,63 @@ namespace FluentNHibernate.MappingModel
             mappedMembers = new MappedMembers();
         }
 
-        public Type Type { get; set; }
-
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessCompositeElement(this);
 
             mappedMembers.AcceptVisitor(visitor);
+
+            if (Parent != null)
+                visitor.Visit(Parent);
         }
-        
-        public string Name
+
+        public TypeReference Class
         {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            get { return attributes.Get(x => x.Class); }
+            set { attributes.Set(x => x.Class, value); }
         }
 
-        public bool IsNameSpecified
+        public ParentMapping Parent
         {
-            get { return attributes.IsSpecified(x => x.Name); }
+            get { return attributes.Get(x => x.Parent); }
+            set { attributes.Set(x => x.Parent, value); }
         }
 
-        public PropertyInfo PropertyInfo { get; set; }
-
-        public string PropertyName
+        public IEnumerable<PropertyMapping> Properties
         {
-            get { return attributes.Get(x => x.PropertyName); }
-            set { attributes.Set(x => x.PropertyName, value); }
+            get { return mappedMembers.Properties; }
         }
 
-        public IEnumerable<PropertyMapping> Properties { get { return mappedMembers.Properties; } }
         public void AddProperty(PropertyMapping property)
         {
             mappedMembers.AddProperty(property);
         }
 
-        public IEnumerable<ManyToOneMapping> References { get { return mappedMembers.References; } }
+        public IEnumerable<ManyToOneMapping> References
+        {
+            get { return mappedMembers.References; }
+        }
+
+        public Type ContainingEntityType { get; set; }
+
         public void AddReference(ManyToOneMapping manyToOne)
         {
             mappedMembers.AddReference(manyToOne);
         }
 
-        public AttributeStore<CompositeElementMapping> Attributes
+        public bool IsSpecified<TResult>(Expression<Func<CompositeElementMapping, TResult>> property)
         {
-            get { return attributes; }
+            return attributes.IsSpecified(property);
         }
 
-        public IEnumerable<IMappingPart> UnmigratedParts
+        public bool HasValue<TResult>(Expression<Func<CompositeElementMapping, TResult>> property)
         {
-            get { return unmigratedParts; }
+            return attributes.HasValue(property);
         }
 
-        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
+        public void SetDefaultValue<TResult>(Expression<Func<CompositeElementMapping, TResult>> property, TResult value)
         {
-            get { return unmigratedAttributes; }
-        }
-
-        public void AddUnmigratedPart(IMappingPart part)
-        {
-            unmigratedParts.Add(part);
-        }
-
-        public void AddUnmigratedAttribute(string attribute, string value)
-        {
-            unmigratedAttributes.Add(attribute, value);
+            attributes.SetDefault(property, value);
         }
     }
 }

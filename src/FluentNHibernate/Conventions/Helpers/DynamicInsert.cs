@@ -1,4 +1,6 @@
-﻿using FluentNHibernate.Conventions.Helpers.Prebuilt;
+﻿using System;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Helpers.Prebuilt;
 
 namespace FluentNHibernate.Conventions.Helpers
 {
@@ -7,15 +9,15 @@ namespace FluentNHibernate.Conventions.Helpers
         public static IClassConvention AlwaysTrue()
         {
             return new BuiltClassConvention(
-                map => !map.Attributes.Has("dynamic-insert"),
-                map => map.DynamicInsert());
+                criteria => criteria.Expect(x => x.DynamicInsert, Is.Not.Set),
+                x => x.DynamicInsert());
         }
 
         public static IClassConvention AlwaysFalse()
         {
             return new BuiltClassConvention(
-                map => !map.Attributes.Has("dynamic-insert"),
-                map => map.Not.DynamicInsert());
+                criteria => criteria.Expect(x => x.DynamicInsert, Is.Not.Set),
+                x => x.Not.DynamicInsert());
         }
     }
 }

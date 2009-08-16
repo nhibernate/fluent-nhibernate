@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -6,14 +7,18 @@ namespace FluentNHibernate.MappingModel
     {
         private readonly AttributeStore<ImportMapping> attributes = new AttributeStore<ImportMapping>();
 
+        public ImportMapping()
+            : this(new AttributeStore())
+        {}
+
+        public ImportMapping(AttributeStore underlyingStore)
+        {
+            attributes = new AttributeStore<ImportMapping>(underlyingStore);
+        }
+
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessImport(this);
-        }
-
-        public AttributeStore<ImportMapping> Attributes
-        {
-            get { return attributes; }
         }
 
         public string Rename
@@ -22,10 +27,25 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Rename, value); }
         }
 
-        public Type Type
+        public TypeReference Class
         {
-            get { return attributes.Get(x => x.Type); }
-            set { attributes.Set(x => x.Type, value); }
+            get { return attributes.Get(x => x.Class); }
+            set { attributes.Set(x => x.Class, value); }
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<ImportMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<ImportMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<ImportMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

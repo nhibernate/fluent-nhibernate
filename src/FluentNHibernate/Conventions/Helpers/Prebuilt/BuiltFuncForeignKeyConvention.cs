@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt
 {
-    public class BuiltFuncForeignKeyConvention : BuiltForeignKeyConvention
+    public class BuiltFuncForeignKeyConvention : ForeignKeyConvention
     {
         private readonly Func<PropertyInfo, Type, string> format;
 

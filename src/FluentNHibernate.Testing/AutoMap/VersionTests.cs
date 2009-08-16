@@ -1,19 +1,15 @@
-using FluentNHibernate.AutoMap;
-using FluentNHibernate.AutoMap.TestFixtures;
+using FluentNHibernate.Automapping;
+using FluentNHibernate.Automapping.TestFixtures;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     [TestFixture]
     public class VersionTests : BaseAutoPersistenceTests
     {
         private AutoMappingTester<TEntity> VerifyAutoMap<TEntity>()
         {
-            var autoMapper = AutoPersistenceModel
-                .MapEntitiesFromAssemblyOf<TEntity>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
-
-            autoMapper.Configure(cfg);
+            var autoMapper = AutoMap.AssemblyOf<TEntity>(t => t == typeof(TEntity));
 
             return new AutoMappingTester<TEntity>(autoMapper);
         }

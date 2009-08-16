@@ -8,18 +8,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlJoinedSubclassWriter : XmlClassWriterBase, IXmlWriter<JoinedSubclassMapping>
     {
-        private readonly IXmlWriter<PropertyMapping> propertyWriter;
-        private readonly IXmlWriter<KeyMapping> keyWriter;
-        private readonly IXmlWriter<ComponentMapping> componentWriter;
-        private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
 
-        public XmlJoinedSubclassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<KeyMapping> keyWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter)
-            : base(propertyWriter)
+        public XmlJoinedSubclassWriter(IXmlWriterServiceLocator serviceLocator)
+            : base(serviceLocator)
         {
-            this.propertyWriter = propertyWriter;
-            this.keyWriter = keyWriter;
-            this.componentWriter = componentWriter;
-            this.dynamicComponentWriter = dynamicComponentWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(JoinedSubclassMapping mappingModel)
@@ -29,76 +23,73 @@ namespace FluentNHibernate.MappingModel.Output
             return document;
         }
 
-        public override void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
+        public override void ProcessJoinedSubclass(JoinedSubclassMapping mapping)
         {
             document = new XmlDocument();
 
-            var subclassElement = document.AddElement("joined-subclass")
-                .WithAtt("name", subclassMapping.Name);
+            var element = document.AddElement("joined-subclass")
+                .WithAtt("name", mapping.Name);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.TableName))
-                subclassElement.WithAtt("table", subclassMapping.TableName);
+            if (mapping.HasValue(x => x.TableName))
+                element.WithAtt("table", mapping.TableName);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.Schema))
-                subclassElement.WithAtt("schema", subclassMapping.Schema);
+            if (mapping.HasValue(x => x.Schema))
+                element.WithAtt("schema", mapping.Schema);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.Check))
-                subclassElement.WithAtt("check", subclassMapping.Check);
+            if (mapping.HasValue(x => x.Extends))
+                element.WithAtt("extends", mapping.Extends);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.Proxy))
-                subclassElement.WithAtt("proxy", subclassMapping.Proxy.AssemblyQualifiedName);
+            if (mapping.HasValue(x => x.Check))
+                element.WithAtt("check", mapping.Check);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.Lazy))
-                subclassElement.WithAtt("lazy", subclassMapping.Lazy);
+            if (mapping.HasValue(x => x.Proxy))
+                element.WithAtt("proxy", mapping.Proxy);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.DynamicUpdate))
-                subclassElement.WithAtt("dynamic-update", subclassMapping.DynamicUpdate);
+            if (mapping.HasValue(x => x.Lazy))
+                element.WithAtt("lazy", mapping.Lazy);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.DynamicInsert))
-                subclassElement.WithAtt("dynamic-insert", subclassMapping.DynamicInsert);
+            if (mapping.HasValue(x => x.DynamicUpdate))
+                element.WithAtt("dynamic-update", mapping.DynamicUpdate);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.SelectBeforeUpdate))
-                subclassElement.WithAtt("select-before-update", subclassMapping.SelectBeforeUpdate);
+            if (mapping.HasValue(x => x.DynamicInsert))
+                element.WithAtt("dynamic-insert", mapping.DynamicInsert);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.Abstract))
-                subclassElement.WithAtt("abstract", subclassMapping.Abstract);
+            if (mapping.HasValue(x => x.SelectBeforeUpdate))
+                element.WithAtt("select-before-update", mapping.SelectBeforeUpdate);
 
-            var sortedUnmigratedParts = new List<IMappingPart>(subclassMapping.UnmigratedParts);
+            if (mapping.HasValue(x => x.Abstract))
+                element.WithAtt("abstract", mapping.Abstract);
 
-            sortedUnmigratedParts.Sort(new MappingPartComparer(subclassMapping.UnmigratedParts));
+            if (mapping.HasValue(x => x.Subselect))
+                element.WithAtt("subselect", mapping.Subselect);
 
-            foreach (var part in sortedUnmigratedParts)
-            {
-                part.Write(subclassElement, null);
-            }
+            if (mapping.HasValue(x => x.Persister))
+                element.WithAtt("persister", mapping.Persister);
 
-            foreach (var attribute in subclassMapping.UnmigratedAttributes)
-            {
-                subclassElement.WithAtt(attribute.Key, attribute.Value);
-            }
+            if (mapping.HasValue(x => x.BatchSize))
+                element.WithAtt("batch-size", mapping.BatchSize);
         }
 
         public override void Visit(KeyMapping keyMapping)
         {
-            var keyXml = keyWriter.Write(keyMapping);
+            var writer = serviceLocator.GetWriter<KeyMapping>();
+            var keyXml = writer.Write(keyMapping);
 
             document.ImportAndAppendChild(keyXml);
         }
 
-        public override void Visit(ComponentMappingBase componentMapping)
+        public override void Visit(IComponentMapping componentMapping)
         {
-            var dynamicComponentMapping = componentMapping as DynamicComponentMapping;
-            XmlDocument componentXml = (dynamicComponentMapping != null)
-                                        ? dynamicComponentWriter.Write(dynamicComponentMapping)
-                                        : componentWriter.Write((ComponentMapping)componentMapping);
+            var writer = serviceLocator.GetWriter<IComponentMapping>();
+            var componentXml = writer.Write(componentMapping);
 
             document.ImportAndAppendChild(componentXml);
         }
 
-        public override void Visit(JoinedSubclassMapping subclassMapping)
+        public override void Visit(ISubclassMapping subclassMapping)
         {
-            var subWriter = new XmlJoinedSubclassWriter(propertyWriter, keyWriter, componentWriter, dynamicComponentWriter);
-            var subclassXml = subWriter.Write(subclassMapping);
+            var writer = serviceLocator.GetWriter<ISubclassMapping>();
+            var subclassXml = writer.Write(subclassMapping);
 
             document.ImportAndAppendChild(subclassXml);
         }

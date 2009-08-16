@@ -21,6 +21,11 @@ namespace FluentNHibernate.Cfg
             model = new PersistenceModel();
         }
 
+        public PersistenceModel PersistenceModel
+        {
+            get { return model; }
+        }
+
         /// <summary>
         /// Add all fluent mappings in the assembly that contains T.
         /// </summary>
@@ -47,7 +52,7 @@ namespace FluentNHibernate.Cfg
         /// Adds a single <see cref="IClassMap" /> represented by the specified type.
         /// </summary>
         /// <returns>Fluent mappings configuration</returns>
-        public FluentMappingsContainer Add<T>() where T : IClassMap
+        public FluentMappingsContainer Add<T>()
         {
             return Add(typeof(T));
         }
@@ -81,9 +86,9 @@ namespace FluentNHibernate.Cfg
         /// <summary>
         /// Alter convention discovery
         /// </summary>
-        public SetupConventionFinder<FluentMappingsContainer> ConventionDiscovery
+        public SetupConventionFinder<FluentMappingsContainer> Conventions
         {
-            get { return new SetupConventionFinder<FluentMappingsContainer>(this, model.ConventionFinder); }
+            get { return new SetupConventionFinder<FluentMappingsContainer>(this, model.Conventions); }
         }
 
         /// <summary>

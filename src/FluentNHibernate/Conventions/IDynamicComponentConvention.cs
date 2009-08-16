@@ -1,4 +1,5 @@
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions
 {
@@ -6,6 +7,6 @@ namespace FluentNHibernate.Conventions
     /// Convention for dynamic components. Implement this member to apply changes
     /// to dynamic components.
     /// </summary>
-    public interface IDynamicComponentConvention : IConvention<IDynamicComponent>
-    {}
+    public interface IDynamicComponentConvention : IConvention<IDynamicComponentInspector, IDynamicComponentInstance>
+    { }
 }

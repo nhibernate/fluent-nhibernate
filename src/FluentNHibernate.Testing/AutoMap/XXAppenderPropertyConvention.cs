@@ -1,19 +1,16 @@
-using System.Runtime.Remoting.Messaging;
-using FluentNHibernate.Mapping;
+using System.Linq;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Instances;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     public class XXAppenderPropertyConvention : IPropertyConvention
     {
-        public bool Accept(IProperty property)
+        public void Apply(IPropertyInstance instance)
         {
-            return true;
-        }
-
-        public void Apply(IProperty propertyMapping)
-        {
-            propertyMapping.ColumnNames.Add(propertyMapping.Property.Name + "XX");
+            instance.Column(instance.Name + "XX");
         }
     }
 }

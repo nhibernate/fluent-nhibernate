@@ -1,29 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using FluentNHibernate.MappingModel.ClassBased;
+using System.Linq.Expressions;
 
 namespace FluentNHibernate.MappingModel
 {
     public class DiscriminatorMapping : MappingBase
     {
         private readonly AttributeStore<DiscriminatorMapping> attributes;
-        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string,string>();
-        public ClassMapping ParentClass { get; internal set; }
 
-        public DiscriminatorMapping(ClassMapping parentClass)
+        public DiscriminatorMapping()
+            : this(new AttributeStore())
+        {}
+
+        public DiscriminatorMapping(AttributeStore underlyingStore)
         {
-            ParentClass = parentClass;
-
-            attributes = new AttributeStore<DiscriminatorMapping>();
+            attributes = new AttributeStore<DiscriminatorMapping>(underlyingStore);
             attributes.SetDefault(x => x.NotNull, true);
             attributes.SetDefault(x => x.Insert, true);
-            attributes.SetDefault(x => x.Type, typeof(string));
-            
-        }
-
-        public AttributeStore<DiscriminatorMapping> Attributes
-        {
-            get { return attributes; }
+            attributes.SetDefault(x => x.Type, new TypeReference(typeof(string)));
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -31,10 +24,10 @@ namespace FluentNHibernate.MappingModel
             visitor.ProcessDiscriminator(this);
         }
 
-        public string ColumnName
+        public string Column
         {
-            get { return attributes.Get(x => x.ColumnName); }
-            set { attributes.Set(x => x.ColumnName, value); }
+            get { return attributes.Get(x => x.Column); }
+            set { attributes.Set(x => x.Column, value); }
         }
 
         public bool NotNull
@@ -67,20 +60,27 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Formula, value); }
         }
 
-        public Type Type
+        public TypeReference Type
         {
             get { return attributes.Get(x => x.Type); }
             set { attributes.Set(x => x.Type, value); }
         }
 
-        public IDictionary<string, string> UnmigratedAttributes
+        public Type ContainingEntityType { get; set; }
+
+        public bool IsSpecified<TResult>(Expression<Func<DiscriminatorMapping, TResult>> property)
         {
-            get { return unmigratedAttributes; }
+            return attributes.IsSpecified(property);
         }
 
-        public void AddUnmigratedAttribute(string key, string value)
+        public bool HasValue<TResult>(Expression<Func<DiscriminatorMapping, TResult>> property)
         {
-            unmigratedAttributes.Add(key, value);
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<DiscriminatorMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

@@ -1,14 +1,22 @@
 using System;
-using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class PropertyMapping : MappingBase, INameable
+    public class PropertyMapping : MappingBase, IHasColumnMappings
     {
-        private readonly List<ColumnMapping> columns = new List<ColumnMapping>();
-        private readonly AttributeStore<PropertyMapping> attributes = new AttributeStore<PropertyMapping>();
-        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
+        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+        private readonly AttributeStore<PropertyMapping> attributes;
+
+        public PropertyMapping()
+            : this(new AttributeStore())
+        {}
+
+        public PropertyMapping(AttributeStore underlyingStore)
+        {
+            attributes = new AttributeStore<PropertyMapping>(underlyingStore);
+        }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
@@ -18,15 +26,7 @@ namespace FluentNHibernate.MappingModel
                 visitor.Visit(column);
         }
 
-        public AttributeStore<PropertyMapping> Attributes
-        {
-            get { return attributes; }
-        }
-
-        public IDictionary<string, string> UnmigratedAttributes
-        {
-            get { return unmigratedAttributes; }
-        }
+        public Type ContainingEntityType { get; set; }
 
         public string Name
         {
@@ -34,9 +34,10 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Name, value); }
         }
 
-        public bool IsNameSpecified
+        public string Access
         {
-            get { return attributes.IsSpecified(x => x.Name); }
+            get { return attributes.Get(x => x.Access); }
+            set { attributes.Set(x => x.Access, value); }
         }
 
         public bool Insert
@@ -57,28 +58,71 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Formula, value); }
         }
 
-        public string Type
+        public bool Lazy
+        {
+            get { return attributes.Get(x => x.Lazy); }
+            set { attributes.Set(x => x.Lazy, value); }
+        }
+
+        public bool OptimisticLock
+        {
+            get { return attributes.Get(x => x.OptimisticLock); }
+            set { attributes.Set(x => x.OptimisticLock, value); }
+        }
+
+        public string Generated
+        {
+            get { return attributes.Get(x => x.Generated); }
+            set { attributes.Set(x => x.Generated, value); }
+        }
+
+        public TypeReference Type
         {
             get { return attributes.Get(x => x.Type); }
             set { attributes.Set(x => x.Type, value); }
         }
 
-        public string UniqueKey
+        public string Index
         {
-            get { return attributes.Get(x => x.UniqueKey); }
-            set { attributes.Set(x => x.UniqueKey, value); }
+            get { return attributes.Get(x => x.Index); }
+            set { attributes.Set(x => x.Index, value); }
         }
 
         public PropertyInfo PropertyInfo { get; set; }
+        
+        public IDefaultableEnumerable<ColumnMapping> Columns
+        {
+            get { return columns; }
+        }
 
         public void AddColumn(ColumnMapping mapping)
         {
             columns.Add(mapping);
         }
 
-        public void AddUnmigratedAttribute(string name, string value)
+        public void AddDefaultColumn(ColumnMapping mapping)
         {
-            unmigratedAttributes[name] = value;
+            columns.AddDefault(mapping);
+        }
+
+        public void ClearColumns()
+        {
+            columns.Clear();
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<PropertyMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<PropertyMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<PropertyMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

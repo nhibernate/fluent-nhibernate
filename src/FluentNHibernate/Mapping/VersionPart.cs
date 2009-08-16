@@ -1,105 +1,63 @@
 using System;
 using System.Reflection;
-using System.Xml;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Mapping.Providers;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IVersion : IMappingPart
+    public class VersionPart : IVersionMappingProvider
     {
-        AccessStrategyBuilder<VersionPart> Access { get; }
-        string GetColumnName();
-        Type EntityType { get; }
-        PropertyInfo Property { get; }
-        IVersion ColumnName(string name);
-        IVersion NeverGenerated();
-        IVersion UnsavedValue(string value);
-    }
-
-    public class VersionPart : IVersion
-    {
-        public PropertyInfo Property { get; private set; }
-        public Type EntityType { get; private set; }
+        private readonly Type entity;
+        private readonly PropertyInfo property;
         private readonly AccessStrategyBuilder<VersionPart> access;
-        private readonly Cache<string, string> properties;
-        private bool neverGenerated;
+        private readonly VersionGeneratedBuilder<IVersionMappingProvider> generated;
+        private readonly AttributeStore<VersionMapping> attributes = new AttributeStore<VersionMapping>();
 
         public VersionPart(Type entity, PropertyInfo property)
         {
-            EntityType = entity;
-            access = new AccessStrategyBuilder<VersionPart>(this);
-            properties = new Cache<string, string>();
-            Property = property;
-            SetAttribute("name", Property.Name);
+            this.entity = entity;
+            this.property = property;
+            access = new AccessStrategyBuilder<VersionPart>(this, value => attributes.Set(x => x.Access, value));
+            generated = new VersionGeneratedBuilder<IVersionMappingProvider>(this, value => attributes.Set(x => x.Generated, value));
         }
 
-        public void SetAttribute(string name, string value)
+        VersionMapping IVersionMappingProvider.GetVersionMapping()
         {
-            properties.Store(name, value);
+            var mapping = new VersionMapping(attributes.CloneInner());
+
+            mapping.ContainingEntityType = entity;
+
+            if (!mapping.IsSpecified(x => x.Name))
+                mapping.SetDefaultValue(x => x.Name, property.Name);
+
+            if (!mapping.IsSpecified(x => x.Type))
+                mapping.SetDefaultValue(x => x.Type, property.PropertyType == typeof(DateTime) ? new TypeReference("timestamp") : new TypeReference(property.PropertyType));
+
+            if (!mapping.IsSpecified(x => x.Column))
+                mapping.SetDefaultValue(x => x.Column, property.Name);
+
+            return mapping;
         }
 
-        public void SetAttributes(Attributes atts)
+        public VersionGeneratedBuilder<IVersionMappingProvider> Generated
         {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            var versionElement = classElement
-                                    .AddElement("version")
-                                    .WithProperties(properties);
-
-            if (neverGenerated)
-            { versionElement.WithAtt("generated", "never"); }
-
-            if (Property.PropertyType == typeof(DateTime))
-            { versionElement.WithAtt("type", "timestamp"); }
+            get { return generated; }
         }
 
         public AccessStrategyBuilder<VersionPart> Access
         {
-            get
-            {
-                return access;
-            }
+            get { return access; }
         }
 
-        public int LevelWithinPosition
+        public VersionPart Column(string name)
         {
-            get { return 4; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.First; }
-        }
-
-        public IVersion ColumnName(string name)
-        {
-            SetAttribute("column", name);
+            attributes.Set(x => x.Column, name);
             return this;
         }
 
-        public string GetColumnName()
+        public VersionPart UnsavedValue(string value)
         {
-            if (properties.Has("column"))
-            { return properties.Get("column"); }
-
-            return null;
-        }
-
-        public IVersion NeverGenerated()
-        {
-            neverGenerated = true;
-            return this;
-        }
-
-        public IVersion UnsavedValue(string value)
-        {
-            SetAttribute("unsaved-value", value);
+            attributes.Set(x => x.UnsavedValue, value);
             return this;
         }
     }

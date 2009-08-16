@@ -40,7 +40,7 @@ namespace FluentNHibernate.Testing.MappingModel
         [Test]
         public void CanAddProperty()
         {
-            var property = new PropertyMapping { Name = "Property1" };
+            var property = new PropertyMapping() { Name = "Property1" };
             _classMapping.AddProperty(property);
 
             _classMapping.Properties.ShouldContain(property);
@@ -53,7 +53,7 @@ namespace FluentNHibernate.Testing.MappingModel
                           {
                               Name = "bag1",
                               Key = new KeyMapping(),
-                              Contents = new OneToManyMapping { ClassName = "class1" }
+                              Relationship = new OneToManyMapping { Class = new TypeReference("class1") }
                           };
             _classMapping.AddCollection(bag);
 
@@ -120,31 +120,10 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
-        public void Should_set_the_parent_class_for_the_discriminator()
-        {
-            var classMap = new ClassMapping {Name = "class1" };
-            classMap.Discriminator = new DiscriminatorMapping(classMap);
-
-            classMap.Discriminator.ParentClass.ShouldEqual(classMap);
-        }
-
-        [Test]
-        public void Should_clear_the_parent_class_for_the_discriminator()
-        {
-            var classMap = new ClassMapping {Name = "class1" };
-            var discriminator = new DiscriminatorMapping(classMap);
-
-            classMap.Discriminator = discriminator;
-            classMap.Discriminator = null;
-
-            discriminator.ParentClass.ShouldBeNull();
-        }
-
-        [Test]
         public void Should_pass_the_discriminator_to_the_visitor()
         {
             var classMap = new ClassMapping {Name = "class1" };
-            classMap.Discriminator = new DiscriminatorMapping(classMap);
+            classMap.Discriminator = new DiscriminatorMapping();
 
             var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
             visitor.Expect(x => x.Visit(classMap.Discriminator));

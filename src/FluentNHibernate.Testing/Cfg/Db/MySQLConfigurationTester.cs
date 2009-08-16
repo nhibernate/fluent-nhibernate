@@ -57,5 +57,13 @@ namespace FluentNHibernate.Testing.Cfg
                     .FromConnectionStringWithKey("main"))
                 .ToProperties().ShouldContain("connection.connection_string", "connection string");
         }
+
+        [Test]
+        public void ShouldBeAbleToSpecifyConnectionStringDirectly()
+        {
+            MySQLConfiguration.Standard
+                .ConnectionString("conn")
+                .ToProperties().ShouldContain("connection.connection_string", "conn");
+        }
     }
 }

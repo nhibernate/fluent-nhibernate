@@ -1,43 +1,48 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq.Expressions;
 using System.Reflection;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
-    public abstract class ComponentMappingBase : ClassMappingBase
+    public abstract class ComponentMappingBase : ClassMappingBase, IComponentMapping
     {
-        protected readonly AttributeStore<ComponentMappingBase> attributes;
-        protected readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
-        protected readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
+        private readonly AttributeStore<ComponentMappingBase> attributes;
 
         protected ComponentMappingBase()
             : this(new AttributeStore())
         {}
 
         protected ComponentMappingBase(AttributeStore store)
-            : base(store)
         {
             attributes = new AttributeStore<ComponentMappingBase>(store);
+            attributes.SetDefault(x => x.Unique, false);
+            attributes.SetDefault(x => x.Update, true);
+            attributes.SetDefault(x => x.Insert, true);
+            attributes.SetDefault(x => x.Lazy, false);
+            attributes.SetDefault(x => x.OptimisticLock, true);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
-            visitor.ProcessComponent(this);
-
             if (Parent != null)
                 visitor.Visit(Parent);
 
             base.AcceptVisitor(visitor);
         }
 
-        public ParentMapping Parent { get; set; }
-
+        public Type ContainingEntityType { get; set; }
         public PropertyInfo PropertyInfo { get; set; }
 
-        public string PropertyName
+        public ParentMapping Parent
         {
-            get { return attributes.Get(x => x.PropertyName); }
-            set { attributes.Set(x => x.PropertyName, value); }
+            get { return attributes.Get(x => x.Parent); }
+            set { attributes.Set(x => x.Parent, value); }
+        }
+
+        public bool Unique
+        {
+            get { return attributes.Get(x => x.Unique); }
+            set { attributes.Set(x => x.Unique, value); }
         }
 
         public bool Insert
@@ -52,29 +57,37 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Update, value); }
         }
 
-        public AttributeStore<ComponentMappingBase> Attributes
+        public string Access
         {
-            get { return attributes; }
+            get { return attributes.Get(x => x.Access); }
+            set { attributes.Set(x => x.Access, value); }
         }
 
-        public IEnumerable<IMappingPart> UnmigratedParts
+        public bool Lazy
         {
-            get { return unmigratedParts; }
+            get { return attributes.Get(x => x.Lazy); }
+            set { attributes.Set(x => x.Lazy, value); }
         }
 
-        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
+        public bool OptimisticLock
         {
-            get { return unmigratedAttributes; }
+            get { return attributes.Get(x => x.OptimisticLock); }
+            set { attributes.Set(x => x.OptimisticLock, value); }
         }
 
-        public void AddUnmigratedPart(IMappingPart part)
+        public bool IsSpecified<TResult>(Expression<Func<ComponentMappingBase, TResult>> property)
         {
-            unmigratedParts.Add(part);
+            return attributes.IsSpecified(property);
         }
 
-        public void AddUnmigratedAttribute(string attribute, string value)
+        public bool HasValue<TResult>(Expression<Func<ComponentMappingBase, TResult>> property)
         {
-            unmigratedAttributes.Add(attribute, value);
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<ComponentMappingBase, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

@@ -1,27 +1,30 @@
 using System;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt
 {
     [Multiple]
-    internal class BuiltConventionBase<TConventionTarget>
+    public abstract class BuiltConventionBase<TInspector, TInstance>
+        where TInspector : IInspector
     {
-        private readonly Func<TConventionTarget, bool> accept;
-        private readonly Action<TConventionTarget> convention;
+        private readonly Action<IAcceptanceCriteria<TInspector>> accept;
+        private readonly Action<TInstance> convention;
 
-        public BuiltConventionBase(Func<TConventionTarget, bool> accept, Action<TConventionTarget> convention)
+        public BuiltConventionBase(Action<IAcceptanceCriteria<TInspector>> accept, Action<TInstance> convention)
         {
             this.accept = accept;
             this.convention = convention;
         }
 
-        public bool Accept(TConventionTarget target)
+        public void Accept(IAcceptanceCriteria<TInspector> acceptance)
         {
-            return accept(target);
+            accept(acceptance);
         }
 
-        public void Apply(TConventionTarget target)
+        public void Apply(TInstance instance)
         {
-            convention(target);
+            convention(instance);
         }
     }
 }

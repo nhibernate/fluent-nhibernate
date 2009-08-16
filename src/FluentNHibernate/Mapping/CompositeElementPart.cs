@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Xml;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
-using NHibernate.Type;
 
 namespace FluentNHibernate.Mapping
 {
@@ -13,42 +13,36 @@ namespace FluentNHibernate.Mapping
     /// Component-element for component HasMany's.
     /// </summary>
     /// <typeparam name="T">Component type</typeparam>
-    public class CompositeElementPart<T> : IMappingPart
+    public class CompositeElementPart<T> : ICompositeElementMappingProvider
     {
-        protected readonly List<IMappingPart> m_Parts = new List<IMappingPart>();
-        public IEnumerable<IMappingPart> Parts
+        private readonly Type entity;
+        private readonly IList<IPropertyMappingProvider> properties = new List<IPropertyMappingProvider>();
+        private readonly IList<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
+        private readonly AttributeStore<CompositeElementMapping> attributes = new AttributeStore<CompositeElementMapping>();
+
+        public CompositeElementPart(Type entity)
         {
-            get { return m_Parts; }
-        }
-        protected internal void AddPart(IMappingPart part)
-        {
-            m_Parts.Add(part);
+            this.entity = entity;
         }
 
-        public PropertyMap Map(Expression<Func<T, object>> expression)
+        public PropertyPart Map(Expression<Func<T, object>> expression)
         {
             return Map(expression, null);
         }
 
-        public PropertyMap Map(Expression<Func<T, object>> expression, string columnName)
+        public PropertyPart Map(Expression<Func<T, object>> expression, string columnName)
         {
             return Map(ReflectionHelper.GetProperty(expression), columnName);
         }
 
-        protected virtual PropertyMap Map(PropertyInfo property, string columnName)
+        protected virtual PropertyPart Map(PropertyInfo property, string columnName)
         {
-            var propertyMapping = new PropertyMapping
-            {
-                Name = property.Name,
-                PropertyInfo = property
-            };
-
-            var propertyMap = new PropertyMap(propertyMapping);
+            var propertyMap = new PropertyPart(property, typeof(T));
 
             if (!string.IsNullOrEmpty(columnName))
-                propertyMap.ColumnName(columnName);
+                propertyMap.Column(columnName);
 
-            m_Parts.Add(propertyMap);
+            properties.Add(propertyMap);
 
             return propertyMap;
         }
@@ -68,32 +62,11 @@ namespace FluentNHibernate.Mapping
             var part = new ManyToOnePart<TOther>(typeof(T), property);
 
             if (columnName != null)
-                part.ColumnName(columnName);
+                part.Column(columnName);
 
-            AddPart(part);
+            references.Add(part);
 
             return part;
-        }
-
-
-        private readonly Cache<string, string> localProperties = new Cache<string, string>();
-        private PropertyInfo parentReference;
-
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            XmlElement element = classElement.AddElement("composite-element")
-                .WithAtt("class", typeof(T).AssemblyQualifiedName)
-                .WithProperties(localProperties);
-
-            if (parentReference != null)
-                element.AddElement("parent").WithAtt("name", parentReference.Name);
-
-            //Write the parts
-            m_Parts.Sort(new MappingPartComparer(m_Parts));
-            foreach (IMappingPart part in m_Parts)
-            {
-                part.Write(element, visitor);
-            }
         }
 
         /// <summary>
@@ -101,44 +74,33 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="exp">Parent reference property</param>
         /// <returns>Component being mapped</returns>
-        public CompositeElementPart<T> WithParentReference(Expression<Func<T, object>> exp)
+        public CompositeElementPart<T> ParentReference(Expression<Func<T, object>> exp)
         {
-            return WithParentReference(ReflectionHelper.GetProperty(exp));
-        }
-
-        private CompositeElementPart<T> WithParentReference(PropertyInfo property)
-        {
-            parentReference = property;
+            var property = ReflectionHelper.GetProperty(exp);
+            attributes.Set(x => x.Parent, new ParentMapping
+            {
+                Name = property.Name,
+                ContainingEntityType = entity
+            });
             return this;
         }
 
-        /// <summary>
-        /// Set an attribute on the xml element produced by this component mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        /// <include file='' path='[@name=""]'/>
-        public void SetAttribute(string name, string value)
+        CompositeElementMapping ICompositeElementMappingProvider.GetCompositeElementMapping()
         {
-            localProperties.Store(name, value);
-        }
+            var mapping = new CompositeElementMapping(attributes.CloneInner());
 
-        public void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
+            mapping.ContainingEntityType = entity;
 
-        public int LevelWithinPosition
-        {
-            get { return 1; }
-        }
+            if (!mapping.IsSpecified(x => x.Class))
+                mapping.Class = new TypeReference(typeof(T));
 
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.Anywhere; }
+            foreach (var property in properties)
+                mapping.AddProperty(property.GetPropertyMapping());
+
+            foreach (var reference in references)
+                mapping.AddReference(reference.GetManyToOneMapping());
+
+            return mapping;
         }
     }
 }

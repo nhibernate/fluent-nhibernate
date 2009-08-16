@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.MappingModel
@@ -9,43 +10,21 @@ namespace FluentNHibernate.MappingModel
         private readonly IList<ClassMapping> classes;
         private readonly IList<ImportMapping> imports;
         private readonly AttributeStore<HibernateMapping> attributes;
-        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
 
         public HibernateMapping()
+            : this(new AttributeStore())
+        {}
+
+        public HibernateMapping(AttributeStore underlyingStore)
         {
-            attributes = new AttributeStore<HibernateMapping>();
+            attributes = new AttributeStore<HibernateMapping>(underlyingStore);
             classes = new List<ClassMapping>();
             imports = new List<ImportMapping>();
-        }        
 
-        public IEnumerable<ClassMapping> Classes
-        {
-            get { return classes; }
-        }
-
-        public IEnumerable<ImportMapping> Imports
-        {
-            get { return imports; }
-        }
-
-        public AttributeStore<HibernateMapping> Attributes
-        {
-            get { return attributes; }
-        }
-
-        public IDictionary<string, string> UnmigratedAttributes
-        {
-            get { return unmigratedAttributes; }
-        }
-
-        public void AddClass(ClassMapping classMapping)
-        {
-            classes.Add(classMapping);            
-        }
-
-        public void AddImport(ImportMapping importMapping)
-        {
-            imports.Add(importMapping);
+            attributes.SetDefault(x => x.DefaultCascade, "none");
+            attributes.SetDefault(x => x.DefaultAccess, "property");
+            attributes.SetDefault(x => x.DefaultLazy, true);
+            attributes.SetDefault(x => x.AutoImport, true);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -59,10 +38,42 @@ namespace FluentNHibernate.MappingModel
                 visitor.Visit(classMapping);
         }
 
+        public IEnumerable<ClassMapping> Classes
+        {
+            get { return classes; }
+        }
+
+        public IEnumerable<ImportMapping> Imports
+        {
+            get { return imports; }
+        }
+
+        public void AddClass(ClassMapping classMapping)
+        {
+            classes.Add(classMapping);            
+        }
+
+        public void AddImport(ImportMapping importMapping)
+        {
+            imports.Add(importMapping);
+        }
+
+        public string Catalog
+        {
+            get { return attributes.Get(x => x.Catalog); }
+            set { attributes.Set(x => x.Catalog, value); }
+        }
+
         public string DefaultAccess
         {
             get { return attributes.Get(x => x.DefaultAccess); }
             set { attributes.Set(x => x.DefaultAccess, value); }
+        }
+
+        public string DefaultCascade
+        {
+            get { return attributes.Get(x => x.DefaultCascade); }
+            set { attributes.Set(x => x.DefaultCascade, value); }
         }
 
         public bool AutoImport
@@ -71,9 +82,43 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.AutoImport, value); }
         }
 
-        public void AddUnmigratedAttribute(string key, string value)
+        public string Schema
         {
-            unmigratedAttributes.Add(key, value);
+            get { return attributes.Get(x => x.Schema); }
+            set { attributes.Set(x => x.Schema, value); }
+        }
+
+        public bool DefaultLazy
+        {
+            get { return attributes.Get(x => x.DefaultLazy); }
+            set { attributes.Set(x => x.DefaultLazy, value); }
+        }
+
+        public string Namespace
+        {
+            get { return attributes.Get(x => x.Namespace); }
+            set { attributes.Set(x => x.Namespace, value); }
+        }
+
+        public string Assembly
+        {
+            get { return attributes.Get(x => x.Assembly); }
+            set { attributes.Set(x => x.Assembly, value); }
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<HibernateMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<HibernateMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<HibernateMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

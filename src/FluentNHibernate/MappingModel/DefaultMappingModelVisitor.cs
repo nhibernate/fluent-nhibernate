@@ -28,11 +28,21 @@ namespace FluentNHibernate.MappingModel
             ProcessCollection(listMapping);
         }
 
+        public override void ProcessIndex(IndexManyToManyMapping indexMapping)
+        {
+            ProcessIndex((IIndexMapping)indexMapping);
+        }
+
+        public override void ProcessIndex(IndexMapping indexMapping)
+        {
+            ProcessIndex((IIndexMapping)indexMapping);
+        }
+
         #endregion
 
-        #region Collection Contents
+        #region Collection Relationship
 
-        protected virtual void ProcessCollectionContents(ICollectionContentsMapping contentsMapping)
+        protected virtual void ProcessCollectionContents(ICollectionRelationshipMapping relationshipMapping)
         {
 
         }
@@ -117,12 +127,12 @@ namespace FluentNHibernate.MappingModel
             keyMapping.AcceptVisitor(this);
         }
 
-        public override void Visit(ICollectionContentsMapping contentsMapping)
+        public override void Visit(ICollectionRelationshipMapping relationshipMapping)
         {
-            contentsMapping.AcceptVisitor(this);
+            relationshipMapping.AcceptVisitor(this);
         }
 
-        public override void Visit(IdGeneratorMapping generatorMapping)
+        public override void Visit(GeneratorMapping generatorMapping)
         {
             generatorMapping.AcceptVisitor(this);
         }
@@ -152,7 +162,7 @@ namespace FluentNHibernate.MappingModel
             discriminatorMapping.AcceptVisitor(this);
         }
 
-        public override void Visit(ComponentMappingBase componentMapping)
+        public override void Visit(IComponentMapping componentMapping)
         {
             componentMapping.AcceptVisitor(this);
         }
@@ -165,6 +175,21 @@ namespace FluentNHibernate.MappingModel
         public override void Visit(CompositeElementMapping compositeElementMapping)
         {
             compositeElementMapping.AcceptVisitor(this);
+        }
+
+        public override void Visit(VersionMapping versionMapping)
+        {
+            versionMapping.AcceptVisitor(this);
+        }
+
+        public override void Visit(OneToOneMapping mapping)
+        {
+            mapping.AcceptVisitor(this);
+        }
+
+        public override void Visit(IIndexMapping indexMapping)
+        {
+            indexMapping.AcceptVisitor(this);
         }
     }
 }

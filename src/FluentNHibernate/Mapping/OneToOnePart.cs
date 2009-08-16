@@ -1,111 +1,119 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Xml;
+using FluentNHibernate.Mapping.Providers;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IOneToOnePart : IRelationship
+    public class OneToOnePart<TOther> : IOneToOneMappingProvider
     {
-        CascadeExpression<IOneToOnePart> Cascade { get; }
-    }
-
-    public class OneToOnePart<TOther> : IOneToOnePart, IAccessStrategy<OneToOnePart<TOther>>
-    {
-        private readonly Cache<string, string> properties = new Cache<string, string>();
+        private readonly Type entity;
         private readonly PropertyInfo property;
         private readonly AccessStrategyBuilder<OneToOnePart<TOther>> access;
-        public Type EntityType { get; private set; }
+        private readonly FetchTypeExpression<OneToOnePart<TOther>> fetch;
+        private readonly CascadeExpression<OneToOnePart<TOther>> cascade;
+        private readonly AttributeStore<OneToOneMapping> attributes = new AttributeStore<OneToOneMapping>();
+        private bool nextBool = true;
 
-        public OneToOnePart(Type entity, PropertyInfo property) {
-            EntityType = entity;
-            access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this);
+        public OneToOnePart(Type entity, PropertyInfo property)
+        {
+            access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this, value => attributes.Set(x => x.Access, value));
+            fetch = new FetchTypeExpression<OneToOnePart<TOther>>(this, value => attributes.Set(x => x.Fetch, value));
+            cascade = new CascadeExpression<OneToOnePart<TOther>>(this, value => attributes.Set(x => x.Cascade, value));
+            this.entity = entity;
             this.property = property;
         }
 
-        public FetchTypeExpression<OneToOnePart<TOther>> FetchType {
-            get {
-                return new FetchTypeExpression<OneToOnePart<TOther>>(this, properties);
-            }
-        }
-        
-        public OneToOnePart<TOther> WithForeignKey() {
-            return WithForeignKey(string.Format("FK_{0}To{1}", property.DeclaringType.Name, property.Name));
+        OneToOneMapping IOneToOneMappingProvider.GetOneToOneMapping()
+        {
+            var mapping = new OneToOneMapping(attributes.CloneInner());
+
+            mapping.ContainingEntityType = entity;
+
+            if (!mapping.IsSpecified(x => x.Class))
+                mapping.SetDefaultValue(x => x.Class, new TypeReference(typeof(TOther)));
+
+            if (!mapping.IsSpecified(x => x.Name))
+                mapping.SetDefaultValue(x => x.Name, property.Name);
+
+            return mapping;
         }
 
-        public OneToOnePart<TOther> WithForeignKey(string foreignKeyName) {
-            properties.Store("foreign-key", foreignKeyName);
+        public OneToOnePart<TOther> Class<T>()
+        {
+            return Class(typeof(T));
+        }
+
+        public OneToOnePart<TOther> Class(Type type)
+        {
+            attributes.Set(x => x.Class, new TypeReference(type));
+            return this;
+        }
+
+        public FetchTypeExpression<OneToOnePart<TOther>> Fetch
+        {
+            get { return fetch; }
+        }
+
+        public OneToOnePart<TOther> ForeignKey()
+        {
+            return ForeignKey(string.Format("FK_{0}To{1}", property.DeclaringType.Name, property.Name));
+        }
+
+        public OneToOnePart<TOther> ForeignKey(string foreignKeyName)
+        {
+            attributes.Set(x => x.ForeignKey, foreignKeyName);
             return this;
         }
 
         public OneToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> propRefExpression)
         {
             var prop = ReflectionHelper.GetProperty(propRefExpression);
-            properties.Store("property-ref", prop.Name);
+
+            return PropertyRef(prop.Name);
+        }
+
+        public OneToOnePart<TOther> PropertyRef(string propertyName)
+        {
+            attributes.Set(x => x.PropertyRef, propertyName);
 
             return this;
         }
 
         public OneToOnePart<TOther> Constrained()
         {
-            properties.Store("constrained", "true");
+            attributes.Set(x => x.Constrained, nextBool);
+            nextBool = true;
 
             return this;
         }
 
         public CascadeExpression<OneToOnePart<TOther>> Cascade
         {
-            get {
-                return new CascadeExpression<OneToOnePart<TOther>>(this);
-            }
+            get { return cascade; }
         }
 
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
+        public AccessStrategyBuilder<OneToOnePart<TOther>> Access
         {
-            properties.Store("name", property.Name);
-            properties.Store("class", typeof(TOther).AssemblyQualifiedName);
-
-            classElement.AddElement("one-to-one").WithProperties(properties);
-        }
-
-        public void SetAttribute(string name, string value)
-        {
-            properties.Store(name, value);
-        }
-
-        public void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
-        public int LevelWithinPosition {
-            get { return 1; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.Anywhere; }
-        }
-
-        public AccessStrategyBuilder<OneToOnePart<TOther>> Access {
             get { return access; }
         }
 
-        #region Explicit IOneToOnePart Implementation
-        CascadeExpression<IOneToOnePart> IOneToOnePart.Cascade
+        public OneToOnePart<TOther> LazyLoad()
         {
-            get { return new CascadeExpression<IOneToOnePart>(this); }
+            attributes.Set(x => x.Lazy, nextBool);
+            nextBool = true;
+            return this;
         }
 
-        IAccessStrategyBuilder IRelationship.Access
+        public OneToOnePart<TOther> Not
         {
-            get { return Access; }
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
         }
-
-        #endregion
     }
 }

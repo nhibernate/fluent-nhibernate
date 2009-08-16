@@ -4,46 +4,23 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
-    public class ImportPart : IMappingPart
+    public class ImportPart
     {
-        private readonly ImportMapping mapping = new ImportMapping();
+        private readonly AttributeStore<ImportMapping> attributes = new AttributeStore<ImportMapping>();
 
         public ImportPart(Type importType)
         {
-            mapping.Type = importType;
+            attributes.SetDefault(x => x.Class, new TypeReference(importType));
         }
-
-        public void SetAttribute(string name, string value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetAttributes(Attributes attrs)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
-        {}
 
         public void As(string alternativeName)
         {
-            mapping.Rename = alternativeName;
-        }
-
-        public int LevelWithinPosition
-        {
-            get { return -1; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.First; }
+            attributes.Set( x=> x.Rename, alternativeName);
         }
 
         public ImportMapping GetImportMapping()
         {
-            return mapping;
+            return new ImportMapping(attributes.CloneInner());
         }
     }
 }

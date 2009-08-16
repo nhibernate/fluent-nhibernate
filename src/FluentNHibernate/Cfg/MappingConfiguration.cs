@@ -1,3 +1,4 @@
+using System;
 using NHibernate.Cfg;
 
 namespace FluentNHibernate.Cfg
@@ -7,6 +8,8 @@ namespace FluentNHibernate.Cfg
     /// </summary>
     public class MappingConfiguration
     {
+        private bool mergeMappings;
+
         public MappingConfiguration()
         {
             FluentMappings = new FluentMappingsContainer();
@@ -48,9 +51,24 @@ namespace FluentNHibernate.Cfg
         /// <param name="cfg">NHibernate Configuration instance</param>
         public void Apply(Configuration cfg)
         {
+            if (mergeMappings)
+            {
+                foreach (var model in AutoMappings)
+                    model.MergeMappings = true;
+
+                FluentMappings.PersistenceModel.MergeMappings = true;
+            }
+
             HbmMappings.Apply(cfg);
             FluentMappings.Apply(cfg);
             AutoMappings.Apply(cfg);
+        }
+
+        public MappingConfiguration MergeMappings()
+        {
+            mergeMappings = true;
+
+            return this;
         }
     }
 }

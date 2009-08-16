@@ -1,3 +1,4 @@
+//using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Conventions.Helpers;
 using NUnit.Framework;
 
@@ -37,7 +38,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
                 .Conventions(conventions => conventions.Add(DynamicUpdate.AlwaysTrue()))
-                .ForMapping(c => c.SetAttribute("dynamic-update", "false"))
+                .ForMapping(c => c.Not.DynamicUpdate())
                 .Element("class").HasAttribute("dynamic-update", "false");
         }
 
@@ -72,7 +73,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
                 .Conventions(conventions => conventions.Add(DynamicInsert.AlwaysTrue()))
-                .ForMapping(c => c.SetAttribute("dynamic-insert", "false"))
+                .ForMapping(c => c.Not.DynamicInsert())
                 .Element("class").HasAttribute("dynamic-insert", "false");
         }
 
@@ -106,7 +107,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void EnumsDontGetTypeOverriddenByConventionsIfExplicitlySet()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.Map(x => x.Color).CustomTypeIs(typeof(int)))
+                .ForMapping(m => m.Map(x => x.Color).CustomType(typeof(int)))
                 .Element("class/property[@name='Color']").HasAttribute("type", typeof(int).Name);
         }
     }

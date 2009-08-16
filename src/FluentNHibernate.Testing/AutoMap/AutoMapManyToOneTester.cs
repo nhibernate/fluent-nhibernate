@@ -1,7 +1,7 @@
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Automapping;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     [TestFixture]
     public class AutoMapManyToOneTester : BaseAutoMapTester<AutoMapManyToOne>

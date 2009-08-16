@@ -1,10 +1,8 @@
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Instances;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions
 {
-    /// <summary>
-    /// HasManyToMany convention, used on many-to-many relationships.
-    /// </summary>
-    public interface IHasManyToManyConvention : IConvention<IManyToManyPart>
-    {}
+    public interface IHasManyToManyConvention : IConvention<IManyToManyCollectionInspector, IManyToManyCollectionInstance>
+    { }
 }

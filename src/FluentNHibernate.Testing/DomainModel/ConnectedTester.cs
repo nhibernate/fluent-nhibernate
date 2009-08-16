@@ -65,7 +65,7 @@ namespace FluentNHibernate.Testing.DomainModel
     {
         public RecordMap()
         {
-            UseIdentityForKey(x => x.Id, "id");
+            Id(x => x.Id, "id");
             Map(x => x.Name);
             Map(x => x.Age);
             Map(x => x.Location);
@@ -114,7 +114,7 @@ namespace FluentNHibernate.Testing.DomainModel
     {
         public BinaryRecordMap()
         {
-            UseIdentityForKey(x => x.Id, "id");
+            Id(x => x.Id, "id");
             Map(x => x.BinaryValue).Not.Nullable();
         }
     }
@@ -133,7 +133,7 @@ namespace FluentNHibernate.Testing.DomainModel
 
         public CachedRecordMap()
         {
-            classMap.Cache.AsReadWrite();
+            classMap.Cache.ReadWrite();
             classMap.Id(x => x.Id, "id");
         }
     }

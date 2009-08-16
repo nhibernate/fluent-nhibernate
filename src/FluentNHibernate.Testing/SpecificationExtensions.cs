@@ -77,6 +77,11 @@ namespace FluentNHibernate.Testing
             actual.ShouldNotBeOfType(typeof(T));
         }
 
+        public static void ShouldImplementType<T>(this object actual)
+        {
+            typeof(T).IsAssignableFrom(actual.GetType()).ShouldBeTrue();
+        }
+
         public static void ShouldContain(this IList actual, object expected)
         {
             Assert.Contains(expected, actual);

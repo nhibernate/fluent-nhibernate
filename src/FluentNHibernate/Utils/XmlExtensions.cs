@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Utils
 {
@@ -28,6 +29,11 @@ namespace FluentNHibernate.Utils
         }
 
         public static XmlElement WithAtt(this XmlElement element, string key, int value)
+        {
+            return WithAtt(element, key, value.ToString());
+        }
+
+        public static XmlElement WithAtt(this XmlElement element, string key, TypeReference value)
         {
             return WithAtt(element, key, value.ToString());
         }

@@ -1,11 +1,9 @@
-using System.Collections.Generic;
-using System.Xml;
-using FluentNHibernate.AutoMap.TestFixtures;
+using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Helpers;
-using FluentNHibernate.Testing.AutoMap.ManyToMany;
+using FluentNHibernate.Testing.Automapping.ManyToMany;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     [TestFixture]
     public class AutoMapTests : BaseAutoMapFixture
@@ -17,9 +15,10 @@ namespace FluentNHibernate.Testing.AutoMap
                 model.Where(type => type == typeof(ExampleClass)));
 
             Test<ExampleClass>(mapping =>
-                mapping.Element("//id")
-                    .HasAttribute("column", "Id")
-                    .HasAttribute("name", "Id"));
+                                   {
+                                       mapping.Element("//id").HasAttribute("name", "Id");
+                                       mapping.Element("//id//column").HasAttribute("name", "Id");
+                                   });
         }
 
         [Test]
@@ -60,8 +59,8 @@ namespace FluentNHibernate.Testing.AutoMap
         {
             Model<ExampleClass>(model => model
                 .ForTypesThatDeriveFrom<ExampleClass>(mapping =>
-                    mapping.Map(x => x.Enum).SetAttribute("type", "Int32"))
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures"));
+                    mapping.Map(x => x.Enum))
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures"));
 
             Test<ExampleClass>(mapping =>
                 mapping.Element("//property[@name='Enum']").Exists());
@@ -74,9 +73,8 @@ namespace FluentNHibernate.Testing.AutoMap
                 model.Where(type => type == typeof(ExampleClass)));
 
             Test<ExampleClass>(mapping =>
-                mapping.Element("//many-to-one")
-                    .HasAttribute("column", "Parent_id")
-                    .HasAttribute("name", "Parent"));
+                mapping.Element("//many-to-one").HasAttribute("name", "Parent")
+                       .Element("//many-to-one/column").HasAttribute("name", "Parent_id"));
         }
 
         [Test]
@@ -86,8 +84,7 @@ namespace FluentNHibernate.Testing.AutoMap
                 model.Where(type => type == typeof(ManyToMany1)));
 
             Test<ManyToMany1>(mapping =>
-                mapping.Element("//many-to-many")
-                    .HasAttribute("column", "ManyToMany2_id"));
+                mapping.Element("//many-to-many/column").HasAttribute("name", "ManyToMany2_id"));
         }
 
         [Test]
@@ -124,7 +121,7 @@ namespace FluentNHibernate.Testing.AutoMap
         public void AutoMapSetsCacheOnClassUsingConvention()
         {
             Model<ExampleClass>(model => model
-                .ConventionDiscovery.Add(Cache.Is(cache => cache.AsReadOnly()))
+                .Conventions.Add(Cache.Is(cache => cache.ReadOnly()))
                 .Where(type => type == typeof(ExampleClass)));
 
             Test<ExampleClass>(mapping =>

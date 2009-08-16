@@ -1,18 +1,20 @@
+using System;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class ColumnMapping : MappingBase, INameable
+    public class ColumnMapping : MappingBase
     {
         private readonly AttributeStore<ColumnMapping> attributes;
 
         public ColumnMapping()
-            : this(new AttributeStore<ColumnMapping>())
+            : this(new AttributeStore())
         {}
 
-        public ColumnMapping(AttributeStore<ColumnMapping> attributes)
+        public ColumnMapping(AttributeStore underlyingStore)
         {
-            this.attributes = attributes;
+            attributes = new AttributeStore<ColumnMapping>(underlyingStore);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -21,16 +23,6 @@ namespace FluentNHibernate.MappingModel
         }
 
         public PropertyInfo PropertyInfo { get; set; }
-
-        public AttributeStore<ColumnMapping> Attributes
-        {
-            get { return attributes; }
-        }
-
-        public bool IsNameSpecified
-        {
-            get { return Attributes.IsSpecified(x => x.Name); }
-        }
 
         public string Name
         {
@@ -80,6 +72,42 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Check, value); }
         }
 
-        
+        public int Precision
+        {
+            get { return attributes.Get(x => x.Precision); }
+            set { attributes.Set(x => x.Precision, value); }
+        }
+
+        public int Scale
+        {
+            get { return attributes.Get(x => x.Scale); }
+            set { attributes.Set(x => x.Scale, value); }
+        }
+
+        public string Default
+        {
+            get { return attributes.Get(x => x.Default); }
+            set { attributes.Set(x => x.Default, value); }
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<ColumnMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<ColumnMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<ColumnMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
+        }
+
+        public static ColumnMapping BaseOn(ColumnMapping originalMapping)
+        {
+            return new ColumnMapping(originalMapping.attributes.CloneInner());
+        }
     }
 }

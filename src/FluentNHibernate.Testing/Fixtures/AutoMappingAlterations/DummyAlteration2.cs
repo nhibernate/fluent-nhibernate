@@ -1,5 +1,5 @@
-using FluentNHibernate.AutoMap;
-using FluentNHibernate.AutoMap.Alterations;
+using FluentNHibernate.Automapping;
+using FluentNHibernate.Automapping.Alterations;
 
 namespace FluentNHibernate.Testing.Fixtures.AutoMappingAlterations
 {

@@ -3,7 +3,7 @@
 namespace FluentNHibernate.Data
 {
     [Serializable]
-    public class Entity : IEquatable<Entity>
+    public abstract class Entity : IEquatable<Entity>
     {
         public virtual long Id { get; set; }
 

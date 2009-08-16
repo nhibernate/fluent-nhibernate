@@ -1,10 +1,8 @@
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Instances;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions
 {
-    /// <summary>
-    /// HasMany convention, used for applying changes to one-to-many relationships.
-    /// </summary>
-    public interface IHasManyConvention : IConvention<IOneToManyPart>
+    public interface IHasManyConvention : IConvention<IOneToManyCollectionInspector, IOneToManyCollectionInstance>
     {}
 }

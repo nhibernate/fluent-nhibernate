@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 
@@ -44,7 +45,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     c.DynamicComponent(x => x.ExtensionData, m =>
                     {
                         m.Map(x => (int)x["Age"]);
-                    })).Element("//class/dynamic-component/property").HasAttribute("type","Int32");
+                    })).Element("//class/dynamic-component/property").HasAttribute("type", typeof(Int32).AssemblyQualifiedName);
 
         }
 
@@ -56,7 +57,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     c.DynamicComponent(x => x.ExtensionData, m =>
                     {
                         m.Map(x => (string)x["Name"]);
-                    })).Element("//class/dynamic-component/property").HasAttribute("type", "String");
+                    })).Element("//class/dynamic-component/property").HasAttribute("type", typeof(string).AssemblyQualifiedName);
         }
 
         [Test]
@@ -134,7 +135,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<PropertyTarget>()
                 .ForMapping(m =>
                     m.DynamicComponent(x => x.ExtensionData, c =>
-                        c.WithParentReference(x => x["Parent"])))
+                        c.ParentReference(x => x["Parent"])))
                 .Element("class/dynamic-component/parent").HasAttribute("name", "Parent");
         }
 

@@ -14,7 +14,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         .Component(c =>
                         {
                             c.Map(x => x.Name);
-                            c.WithParentReference(x => x.MyParent);
+                            c.ParentReference(x => x.MyParent);
                         }))
                 .Element("class/bag/composite-element/parent").Exists()
                 .HasAttribute("name", "MyParent");

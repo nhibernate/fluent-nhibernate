@@ -19,29 +19,26 @@ namespace FluentNHibernate.MappingModel.Output
         {
             document = new XmlDocument();
 
-            var typeString = TypeMapping.GetTypeString(discriminatorMapping.Type);
+            var typeString = TypeMapping.GetTypeString(discriminatorMapping.Type.GetUnderlyingSystemType());
 
             var discriminatorElement = document.AddElement("discriminator")
-                .WithAtt("column", discriminatorMapping.ColumnName)
+                .WithAtt("column", discriminatorMapping.Column)
                 .WithAtt("type", typeString);
 
-            if (discriminatorMapping.Attributes.IsSpecified(x => x.Force))
+            if (discriminatorMapping.HasValue(x => x.Force))
                 discriminatorElement.WithAtt("force", discriminatorMapping.Force);
 
-            if (discriminatorMapping.Attributes.IsSpecified(x => x.Formula))
+            if (discriminatorMapping.HasValue(x => x.Formula))
                 discriminatorElement.WithAtt("formula", discriminatorMapping.Formula);
 
-            if (discriminatorMapping.Attributes.IsSpecified(x => x.Insert))
+            if (discriminatorMapping.HasValue(x => x.Insert))
                 discriminatorElement.WithAtt("insert", discriminatorMapping.Insert);
 
-            if (discriminatorMapping.Attributes.IsSpecified(x => x.Length))
+            if (discriminatorMapping.HasValue(x => x.Length))
                 discriminatorElement.WithAtt("length", discriminatorMapping.Length);
 
-            if (discriminatorMapping.Attributes.IsSpecified(x => x.NotNull))
+            if (discriminatorMapping.HasValue(x => x.NotNull))
                 discriminatorElement.WithAtt("not-null", discriminatorMapping.NotNull);
-
-            foreach (var attribute in discriminatorMapping.UnmigratedAttributes)
-                discriminatorElement.WithAtt(attribute.Key, attribute.Value);
         }
     }
 }

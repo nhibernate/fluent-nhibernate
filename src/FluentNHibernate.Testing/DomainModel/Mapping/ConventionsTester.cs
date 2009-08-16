@@ -1,11 +1,7 @@
 using System;
-using System.Reflection;
 using FluentNHibernate.Conventions;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Conventions.Instances;
 using NUnit.Framework;
-using Rhino.Mocks;
-using FluentNHibernate;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
@@ -13,13 +9,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     public class ConventionsTester
     {
         [Test]
-        public void add_property_convention_for_type_of_attribute()
+        public void AddPropertyConventionForTypeOfAttribute()
         {
             new MappingTester<Site>()
                 .Conventions(conventions => conventions.Add<MyAttributeConvention>())
                 .ForMapping(m => m.Map(x => x.Name))
                 .Element("class/property[@name='Name']")
-                    .HasAttribute("My", "true");
+                    .HasAttribute("access", "field");
         }
     }
 
@@ -44,9 +40,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
     public class MyAttributeConvention : AttributePropertyConvention<MyAttribute>
     {
-        protected override void Apply(MyAttribute attribute, IProperty target)
+        protected override void Apply(MyAttribute attribute, IPropertyInstance instance)
         {
-            target.SetAttribute("My", "true");
+            instance.Access.Field();
         }
     }
 }

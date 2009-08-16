@@ -6,12 +6,12 @@ namespace FluentNHibernate.Conventions.Helpers
 {
     public static class ForeignKey
     {
-        public static IRelationshipConvention EndsWith(string suffix)
+        public static ForeignKeyConvention EndsWith(string suffix)
         {
             return new BuiltSuffixForeignKeyConvention(suffix);
         }
 
-        public static IRelationshipConvention Format(Func<PropertyInfo, Type, string> format)
+        public static ForeignKeyConvention Format(Func<PropertyInfo, Type, string> format)
         {
             return new BuiltFuncForeignKeyConvention(format);
         }

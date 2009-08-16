@@ -106,7 +106,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<SuperClass>()
                 .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Map(x => x.Name)))
-                .Element("class/joined-subclass/key").HasAttribute("column", "columnName");
+                .Element("class/joined-subclass/key/column").HasAttribute("name", "columnName");
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyJoinedSubClassTable()
         {
             new MappingTester<SuperClass>()
-               .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.WithTableName("TestTable")))
+               .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Table("TestTable")))
                .Element("class/joined-subclass")
                    .HasAttribute("table", "TestTable");
         }
@@ -149,7 +149,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
-                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.SchemaIs("test")))
+                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.Schema("test")))
                 .Element("//joined-subclass").HasAttribute("schema", "test");
         }
 
@@ -218,15 +218,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                             .EntityIdentifierColumn("col")
                             .EntityTypeColumn("col")))
                 .Element("//joined-subclass/any").Exists();
-        }
-
-        [Test]
-        public void MapsVersion()
-        {
-            new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.JoinedSubClass<MappedObjectSubclass>("id", sc => sc.Version(x => x.Version)))
-                .Element("//joined-subclass/version").Exists();
         }
 
         private class SuperClass

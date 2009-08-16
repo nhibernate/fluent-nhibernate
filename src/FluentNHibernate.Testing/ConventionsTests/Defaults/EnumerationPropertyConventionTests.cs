@@ -43,29 +43,31 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
         [Test]
         public void ShouldntAcceptEnumPropertiesThatHaveExplicitType()
         {
-            var property = MockRepository.GenerateStub<IProperty>();
+            Assert.Fail("Awaiting convention DSL");
+            //var property = MockRepository.GenerateStub<IProperty>();
 
-            property.Stub(x => x.PropertyType)
-                .Return(typeof(TestEnum));
-            property.Stub(x => x.HasAttribute("type"))
-                .Return(true);
+            //property.Stub(x => x.PropertyType)
+            //    .Return(typeof(TestEnum));
+            //property.Stub(x => x.HasAttribute("type"))
+            //    .Return(true);
 
-            convention.Accept(property)
-                .ShouldBeFalse();
+            //convention.Accept(property)
+            //    .ShouldBeFalse();
         }
 
         [Test]
         public void ShouldntAcceptNonEnumPropertiesThatHaveExplicitType()
         {
-            var property = MockRepository.GenerateStub<IProperty>();
+            Assert.Fail("Awaiting convention DSL");
+            //var property = MockRepository.GenerateStub<IProperty>();
 
-            property.Stub(x => x.PropertyType)
-                .Return(typeof(int));
-            property.Stub(x => x.HasAttribute("type"))
-                .Return(true);
+            //property.Stub(x => x.PropertyType)
+            //    .Return(typeof(int));
+            //property.Stub(x => x.HasAttribute("type"))
+            //    .Return(true);
 
-            convention.Accept(property)
-                .ShouldBeFalse();
+            //convention.Accept(property)
+            //    .ShouldBeFalse();
         }
 
         [Test]

@@ -11,7 +11,7 @@ namespace Examples.FirstProject.Mappings
             Map(x => x.Name);
             HasManyToMany(x => x.Products)
                 .Cascade.All()
-                .WithTableName("StoreProduct");
+                .Table("StoreProduct");
             HasMany(x => x.Staff)
                 .Cascade.All()
                 .Inverse();

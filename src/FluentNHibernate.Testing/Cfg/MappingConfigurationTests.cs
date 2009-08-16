@@ -1,9 +1,12 @@
-using FluentNHibernate.AutoMap;
+using System.Linq;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+//using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures;
+using FluentNHibernate.Testing.Fixtures.Basic;
 using NHibernate.Cfg;
 using NUnit.Framework;
 
@@ -48,11 +51,31 @@ namespace FluentNHibernate.Testing.Cfg
         }
 
         [Test]
+        public void AddFromAssemblyAddsAnyClassMapMappingsToCfgWhenMerged()
+        {
+            mapping.MergeMappings();
+            mapping.FluentMappings.AddFromAssembly(typeof(Record).Assembly);
+            mapping.Apply(cfg);
+
+            cfg.ClassMappings.Count.ShouldBeGreaterThan(0);
+            cfg.ClassMappings.ShouldContain(c => c.MappedClass == typeof(Record));
+        }
+
+        [Test]
         public void AddAutoMappingAddsAnyAutoMappedMappingsToCfg()
         {
-            mapping.AutoMappings.Add(
-                AutoPersistenceModel.MapEntitiesFromAssemblyOf<Record>()
-                    .Where(type => type == typeof(Record)));
+            mapping.AutoMappings.Add(AutoMap.AssemblyOf<Record>(type => type == typeof(Record)));
+            mapping.Apply(cfg);
+
+            cfg.ClassMappings.Count.ShouldBeGreaterThan(0);
+            cfg.ClassMappings.ShouldContain(c => c.MappedClass == typeof(Record));
+        }
+
+        [Test]
+        public void AddAutoMappingAddsAnyAutoMappedMappingsToCfgWhenMerged()
+        {
+            mapping.MergeMappings();
+            mapping.AutoMappings.Add(AutoMap.AssemblyOf<Record>(type => type == typeof(Record)));
             mapping.Apply(cfg);
 
             cfg.ClassMappings.Count.ShouldBeGreaterThan(0);
@@ -97,8 +120,8 @@ namespace FluentNHibernate.Testing.Cfg
         {
             mapping.FluentMappings
                 .AddFromAssemblyOf<Record>()
-                .ConventionDiscovery.Add(
-                    ConventionBuilder.Class.Always(x => x.WithTable(x.EntityType.Name + "Table"))
+                .Conventions.Add(
+                    ConventionBuilder.Class.Always(x => x.Table(x.EntityType.Name + "Table"))
                 );
             mapping.Apply(cfg);
 
@@ -110,8 +133,8 @@ namespace FluentNHibernate.Testing.Cfg
         {
             mapping.FluentMappings
                 .AddFromAssemblyOf<Record>()
-                .ConventionDiscovery.Add(
-                    ConventionBuilder.Class.Always(x => x.WithTable(x.EntityType.Name + "Table")),
+                .Conventions.Add(
+                    ConventionBuilder.Class.Always(x => x.Table(x.EntityType.Name + "Table")),
                     ConventionBuilder.Class.Always(x => x.DynamicInsert())
                 );
             mapping.Apply(cfg);
@@ -142,9 +165,7 @@ namespace FluentNHibernate.Testing.Cfg
         [Test]
         public void WasUsedIsTrueWhenAddAutoMappingsCalled()
         {
-            mapping.AutoMappings.Add(
-                AutoPersistenceModel.MapEntitiesFromAssemblyOf<Record>()
-                    .Where(type => type == typeof(Record)));
+            mapping.AutoMappings.Add(AutoMap.AssemblyOf<Record>(type => type == typeof(Record)));
             mapping.WasUsed.ShouldBeTrue();
         }
 
@@ -167,6 +188,23 @@ namespace FluentNHibernate.Testing.Cfg
         {
             mapping.HbmMappings.AddFromAssemblyOf<HbmOne>();
             mapping.WasUsed.ShouldBeTrue();
+        }
+
+        [Test]
+        public void MergeOutputShouldSetFlagOnAutoPersistenceModels()
+        {
+            mapping.AutoMappings.Add(AutoMap.AssemblyOf<Record>(type => false));
+            mapping.MergeMappings();
+            mapping.Apply(new Configuration());
+            mapping.AutoMappings.First().MergeMappings.ShouldBeTrue();
+        }
+
+        [Test]
+        public void MergeOutputShouldSetFlagOnFluentPersistenceModelsOnApply()
+        {
+            mapping.MergeMappings();
+            mapping.Apply(new Configuration());
+            mapping.FluentMappings.PersistenceModel.MergeMappings.ShouldBeTrue();
         }
     }
 }

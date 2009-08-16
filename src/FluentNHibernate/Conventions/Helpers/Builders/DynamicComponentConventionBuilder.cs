@@ -1,19 +1,21 @@
 using System;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders
 {
-    internal class DynamicComponentConventionBuilder : IConventionBuilder<IDynamicComponentConvention, IDynamicComponent>
+    public class DynamicComponentConventionBuilder : IConventionBuilder<IDynamicComponentConvention, IDynamicComponentInspector, IDynamicComponentInstance>
     {
-        public IDynamicComponentConvention Always(Action<IDynamicComponent> convention)
+        public IDynamicComponentConvention Always(Action<IDynamicComponentInstance> convention)
         {
-            return new BuiltDynamicComponentConvention(x => true, convention);
+            return new BuiltDynamicComponentConvention(accept => { }, convention);
         }
 
-        public IDynamicComponentConvention When(Func<IDynamicComponent, bool> isTrue, Action<IDynamicComponent> convention)
+        public IDynamicComponentConvention When(Action<IAcceptanceCriteria<IDynamicComponentInspector>> expectations, Action<IDynamicComponentInstance> convention)
         {
-            return new BuiltDynamicComponentConvention(isTrue, convention);
+            return new BuiltDynamicComponentConvention(expectations, convention);
         }
     }
 }

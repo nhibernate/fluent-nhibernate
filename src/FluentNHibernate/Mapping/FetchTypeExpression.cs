@@ -1,27 +1,28 @@
+using System;
+
 namespace FluentNHibernate.Mapping
 {
-	public class FetchTypeExpression<TParentpart> 
-		where TParentpart : IHasAttributes
+	public class FetchTypeExpression<TParent> 
 	{
-		private readonly Cache<string, string> properties;
-		protected TParentpart MappingPart { get; set; }
+	    private readonly TParent parent;
+	    private readonly Action<string> setter;
 
-		public FetchTypeExpression(TParentpart mappingPart, Cache<string, string> properties)
+		public FetchTypeExpression(TParent parent, Action<string> setter)
 		{
-			MappingPart = mappingPart;
-			this.properties = properties;
+		    this.parent = parent;
+		    this.setter = setter;
 		}
 
-		public TParentpart Join()
+	    public TParent Join()
 		{
-			properties.Store("fetch", "join");
-			return MappingPart;
+		    setter("join");
+            return parent;
 		}
 
-		public TParentpart Select()
+		public TParent Select()
 		{
-			properties.Store("fetch", "select");
-			return MappingPart;
+		    setter("select");
+            return parent;
 		}
 	}
 }

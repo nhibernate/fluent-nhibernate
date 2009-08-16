@@ -10,7 +10,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsProperty_SetsAccessStrategyToProperty()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsProperty())
+                .ForMapping(c => c.HasMany(x => x.References).Access.Property())
                 .Element("class/bag").HasAttribute("access", "property");
         }
 
@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsField_SetsAccessStrategyToField()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsField())
+                .ForMapping(c => c.HasMany(x => x.References).Access.Field())
                 .Element("class/bag").HasAttribute("access", "field");
         }
 
@@ -26,7 +26,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsCamelCaseField_SetsAccessStrategyToField_and_SetsNamingStrategyToCamelCase()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsCamelCaseField())
+                .ForMapping(c => c.HasMany(x => x.References).Access.CamelCaseField())
                 .Element("class/bag").HasAttribute("access", "field.camelcase");
         }
 
@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsCamelCaseFieldWithUnderscorePrefix_SetsAccessStrategyToField_and_SetsNamingStrategyToCamelCaseUnderscore()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsCamelCaseField(Prefix.Underscore))
+                .ForMapping(c => c.HasMany(x => x.References).Access.CamelCaseField(Prefix.Underscore))
                 .Element("class/bag").HasAttribute("access", "field.camelcase-underscore");
         }
 
@@ -42,7 +42,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsLowerCaseField_SetsAccessStrategyToField_and_SetsNamingStrategyToLowerCase()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsLowerCaseField())
+                .ForMapping(c => c.HasMany(x => x.References).Access.LowerCaseField())
                 .Element("class/bag").HasAttribute("access", "field.lowercase");
         }
 
@@ -50,7 +50,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsLowerCaseFieldWithUnderscorePrefix_SetsAccessStrategyToField_and_SetsNamingStrategyToLowerCaseUnderscore()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsLowerCaseField(Prefix.Underscore))
+                .ForMapping(c => c.HasMany(x => x.References).Access.LowerCaseField(Prefix.Underscore))
                 .Element("class/bag").HasAttribute("access", "field.lowercase-underscore");
         }
 
@@ -58,7 +58,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsPascalCaseFieldWithUnderscorePrefix_SetsAccessStrategyToField_and_SetsNamingStrategyToPascalCaseUnderscore()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsPascalCaseField(Prefix.Underscore))
+                .ForMapping(c => c.HasMany(x => x.References).Access.PascalCaseField(Prefix.Underscore))
                 .Element("class/bag").HasAttribute("access", "field.pascalcase-underscore");
         }
 
@@ -66,7 +66,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsPascalCaseFieldWithMPrefix_SetsAccessStrategyToField_and_SetsNamingStrategyToLowerCaseM()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsPascalCaseField(Prefix.m))
+                .ForMapping(c => c.HasMany(x => x.References).Access.PascalCaseField(Prefix.m))
                 .Element("class/bag").HasAttribute("access", "field.pascalcase-m");
         }
 
@@ -74,7 +74,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsPascalCaseFieldWithMUnderscorePrefix_SetsAccessStrategyToField_and_SetsNamingStrategyToLowerCaseMUnderscore()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsPascalCaseField(Prefix.mUnderscore))
+                .ForMapping(c => c.HasMany(x => x.References).Access.PascalCaseField(Prefix.mUnderscore))
                 .Element("class/bag").HasAttribute("access", "field.pascalcase-m-underscore");
         }
 
@@ -82,7 +82,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsReadOnlyPropertyThroughCamelCaseField_SetsAccessStrategyToNoSetter_and_SetsNamingStrategyToCamelCase()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsReadOnlyPropertyThroughCamelCaseField())
+                .ForMapping(c => c.HasMany(x => x.References).Access.ReadOnlyPropertyThroughCamelCaseField())
                 .Element("class/bag").HasAttribute("access", "nosetter.camelcase");
         }
 
@@ -90,7 +90,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsReadOnlyPropertyThroughCamelCaseFieldWithUnderscorePrefix_SetsAccessStrategyToNoSetter_and_SetsNamingStrategyToCamelCaseUnderscore()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsReadOnlyPropertyThroughCamelCaseField(Prefix.Underscore))
+                .ForMapping(c => c.HasMany(x => x.References).Access.ReadOnlyPropertyThroughCamelCaseField(Prefix.Underscore))
                 .Element("class/bag").HasAttribute("access", "nosetter.camelcase-underscore");
         }
 
@@ -98,7 +98,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsReadOnlyPropertyThroughLowerCaseField_SetsAccessStrategyToNoSetter_and_SetsNamingStrategyToLowerCase()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsReadOnlyPropertyThroughLowerCaseField())
+                .ForMapping(c => c.HasMany(x => x.References).Access.ReadOnlyPropertyThroughLowerCaseField())
                 .Element("class/bag").HasAttribute("access", "nosetter.lowercase");
         }
 
@@ -106,7 +106,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsReadOnlyPropertyThroughLowerCaseFieldWithUnderscorePrefix_SetsAccessStrategyToNoSetter_and_SetsNamingStrategyToLowerCaseUnderscore()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsReadOnlyPropertyThroughLowerCaseField(Prefix.Underscore))
+                .ForMapping(c => c.HasMany(x => x.References).Access.ReadOnlyPropertyThroughLowerCaseField(Prefix.Underscore))
                 .Element("class/bag").HasAttribute("access", "nosetter.lowercase-underscore");
         }
 
@@ -114,7 +114,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsReadOnlyPropertyThroughPascalCaseFieldWithUnderscorePrefix_SetsAccessStrategyToNoSetter_and_SetsNamingStrategyToPascalCaseUnderscore()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsReadOnlyPropertyThroughPascalCaseField(Prefix.Underscore))
+                .ForMapping(c => c.HasMany(x => x.References).Access.ReadOnlyPropertyThroughPascalCaseField(Prefix.Underscore))
                 .Element("class/bag").HasAttribute("access", "nosetter.pascalcase-underscore");
         }
 
@@ -122,7 +122,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsReadOnlyPropertyThroughPascalCaseFieldWithMPrefix_SetsAccessStrategyToNoSetter_and_SetsNamingStrategyToPascalCaseM()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsReadOnlyPropertyThroughPascalCaseField(Prefix.m))
+                .ForMapping(c => c.HasMany(x => x.References).Access.ReadOnlyPropertyThroughPascalCaseField(Prefix.m))
                 .Element("class/bag").HasAttribute("access", "nosetter.pascalcase-m");
         }
 
@@ -130,7 +130,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AccessAsReadOnlyPropertyThroughPascalCaseFieldWithMUnderscorePrefix_SetsAccessStrategyToNoSetter_and_SetsNamingStrategyToPascalCaseMUnderscore()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.HasMany(x => x.References).Access.AsReadOnlyPropertyThroughPascalCaseField(Prefix.mUnderscore))
+                .ForMapping(c => c.HasMany(x => x.References).Access.ReadOnlyPropertyThroughPascalCaseField(Prefix.mUnderscore))
                 .Element("class/bag").HasAttribute("access", "nosetter.pascalcase-m-underscore");
         }
 

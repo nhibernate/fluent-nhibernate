@@ -8,16 +8,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlSubclassWriter : XmlClassWriterBase, IXmlWriter<SubclassMapping>
     {
-        private readonly IXmlWriter<PropertyMapping> propertyWriter;
-        private readonly IXmlWriter<ComponentMapping> componentWriter;
-        private readonly IXmlWriter<DynamicComponentMapping> dynamicComponentWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
 
-        public XmlSubclassWriter(IXmlWriter<PropertyMapping> propertyWriter, IXmlWriter<ComponentMapping> componentWriter, IXmlWriter<DynamicComponentMapping> dynamicComponentWriter)
-            : base(propertyWriter)
+        public XmlSubclassWriter(IXmlWriterServiceLocator serviceLocator)
+            : base(serviceLocator)
         {
-            this.propertyWriter = propertyWriter;
-            this.componentWriter = componentWriter;
-            this.dynamicComponentWriter = dynamicComponentWriter;
+            this.serviceLocator = serviceLocator;
         }
 
         public XmlDocument Write(SubclassMapping mappingModel)
@@ -27,66 +23,62 @@ namespace FluentNHibernate.MappingModel.Output
             return document;
         }
 
-        public override void ProcessSubclass(SubclassMapping subclassMapping)
+        public override void ProcessSubclass(SubclassMapping mapping)
         {
             document = new XmlDocument();
 
-            var subclassElement = document
-                .AddElement("subclass")
-                .WithAtt("name", subclassMapping.Type.AssemblyQualifiedName);
+            var element = document.AddElement("subclass");
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.DiscriminatorValue))
-                subclassElement.WithAtt("discriminator-value", subclassMapping.DiscriminatorValue.ToString());
+            if (mapping.HasValue(x => x.Name))
+                element.WithAtt("name", mapping.Name);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.Proxy))
-                subclassElement.WithAtt("proxy", subclassMapping.Proxy.AssemblyQualifiedName);
+            if (mapping.HasValue(x => x.DiscriminatorValue))
+                element.WithAtt("discriminator-value", mapping.DiscriminatorValue.ToString());
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.Lazy))
-                subclassElement.WithAtt("lazy", subclassMapping.Lazy);
+            if (mapping.HasValue(x => x.Extends))
+                element.WithAtt("extends", mapping.Extends);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.DynamicUpdate))
-                subclassElement.WithAtt("dynamic-update", subclassMapping.DynamicUpdate);
+            if (mapping.HasValue(x => x.Proxy))
+                element.WithAtt("proxy", mapping.Proxy);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.DynamicInsert))
-                subclassElement.WithAtt("dynamic-insert", subclassMapping.DynamicInsert);
+            if (mapping.HasValue(x => x.Lazy))
+                element.WithAtt("lazy", mapping.Lazy);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.SelectBeforeUpdate))
-                subclassElement.WithAtt("select-before-update", subclassMapping.SelectBeforeUpdate);
+            if (mapping.HasValue(x => x.DynamicUpdate))
+                element.WithAtt("dynamic-update", mapping.DynamicUpdate);
 
-            if (subclassMapping.Attributes.IsSpecified(x => x.Abstract))
-                subclassElement.WithAtt("abstract", subclassMapping.Abstract);
+            if (mapping.HasValue(x => x.DynamicInsert))
+                element.WithAtt("dynamic-insert", mapping.DynamicInsert);
 
-            var sortedUnmigratedParts = new List<IMappingPart>(subclassMapping.UnmigratedParts);
+            if (mapping.HasValue(x => x.SelectBeforeUpdate))
+                element.WithAtt("select-before-update", mapping.SelectBeforeUpdate);
 
-            sortedUnmigratedParts.Sort(new MappingPartComparer(subclassMapping.UnmigratedParts));
-
-            foreach (var part in sortedUnmigratedParts)
-            {
-                part.Write(subclassElement, null);
-            }
-
-            foreach (var attribute in subclassMapping.UnmigratedAttributes)
-            {
-                subclassElement.WithAtt(attribute.Key, attribute.Value);
-            }
+            if (mapping.HasValue(x => x.Abstract))
+                element.WithAtt("abstract", mapping.Abstract);
         }
 
-        public override void Visit(SubclassMapping subclassMapping)
+        public override void Visit(ISubclassMapping subclassMapping)
         {
-            var subWriter = new XmlSubclassWriter(propertyWriter, componentWriter, dynamicComponentWriter);
-            var subclassXml = subWriter.Write(subclassMapping);
+            var writer = serviceLocator.GetWriter<ISubclassMapping>();
+            var subclassXml = writer.Write(subclassMapping);
 
             document.ImportAndAppendChild(subclassXml);
         }
 
-        public override void Visit(ComponentMappingBase componentMapping)
+        public override void Visit(IComponentMapping componentMapping)
         {
-            var dynamicComponentMapping = componentMapping as DynamicComponentMapping;
-            XmlDocument componentXml = (dynamicComponentMapping != null) 
-                                        ? dynamicComponentWriter.Write(dynamicComponentMapping) 
-                                        : componentWriter.Write((ComponentMapping)componentMapping);
+            var writer = serviceLocator.GetWriter<IComponentMapping>();
+            var componentXml = writer.Write(componentMapping);
 
             document.ImportAndAppendChild(componentXml);
+        }
+
+        public override void Visit(JoinMapping joinMapping)
+        {
+            var writer = serviceLocator.GetWriter<JoinMapping>();
+            var xml = writer.Write(joinMapping);
+
+            document.ImportAndAppendChild(xml);
         }
     }
 }

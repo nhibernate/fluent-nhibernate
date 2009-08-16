@@ -3,55 +3,39 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Xml;
-using FluentNHibernate.MappingModel;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public abstract class ClasslikeMapBase<T> : IClasslike
+    public abstract class ClasslikeMapBase<T>
     {
-        protected readonly List<IMappingPart> m_Parts = new List<IMappingPart>();
-        public IEnumerable<IMappingPart> Parts
-        {
-            get { return m_Parts; }
-        }
-        protected readonly IList<PropertyMap> properties = new List<PropertyMap>();
-        protected readonly IList<IComponentBase> components = new List<IComponentBase>();
-        protected readonly IList<ISubclass> subclasses = new List<ISubclass>();
-        protected readonly IList<IJoinedSubclass> joinedSubclasses = new List<IJoinedSubclass>();
+        protected readonly IList<IPropertyMappingProvider> properties = new List<IPropertyMappingProvider>();
+        protected readonly IList<IComponentMappingProvider> components = new List<IComponentMappingProvider>();
+        protected readonly IList<IOneToOneMappingProvider> oneToOnes = new List<IOneToOneMappingProvider>();
+        protected readonly Dictionary<Type, ISubclassMappingProvider> subclasses = new Dictionary<Type, ISubclassMappingProvider>();
+        protected readonly IList<ICollectionMappingProvider> collections = new List<ICollectionMappingProvider>();
+        protected readonly IList<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
+        protected readonly IList<IAnyMappingProvider> anys = new List<IAnyMappingProvider>();
 
-        private bool parentIsRequired = true;
-
-        protected internal void AddPart(IMappingPart part)
-        {
-            m_Parts.Add(part);
-        }
-
-        public PropertyMap Map(Expression<Func<T, object>> expression)
+        public PropertyPart Map(Expression<Func<T, object>> expression)
         {
             return Map(expression, null);
         }
 
-        public PropertyMap Map(Expression<Func<T, object>> expression, string columnName)
+        public PropertyPart Map(Expression<Func<T, object>> expression, string columnName)
         {
             return Map(ReflectionHelper.GetProperty(expression), columnName);
         }
 
-        protected virtual PropertyMap Map(PropertyInfo property, string columnName)
+        protected virtual PropertyPart Map(PropertyInfo property, string columnName)
         {
-            var propertyMapping = new PropertyMapping
-            {
-                Name = property.Name,
-                PropertyInfo = property
-            };
-
-            var propertyMap = new PropertyMap(propertyMapping);
+            var propertyMap = new PropertyPart(property, typeof(T));
 
             if (!string.IsNullOrEmpty(columnName))
-                propertyMap.ColumnName(columnName);
+                propertyMap.Column(columnName);
 
-            m_Parts.Add(propertyMap); // backwards compatibility
+            properties.Add(propertyMap);
 
             return propertyMap;
         }
@@ -66,27 +50,39 @@ namespace FluentNHibernate.Mapping
             return References<TOther>(ReflectionHelper.GetProperty(expression), columnName);
         }
 
+        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, object>> expression)
+        {
+            return References<TOther>(expression, null);
+        }
+
+        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, object>> expression, string columnName)
+        {
+            return References<TOther>(ReflectionHelper.GetProperty(expression), columnName);
+        }
+
         protected virtual ManyToOnePart<TOther> References<TOther>(PropertyInfo property, string columnName)
         {
             var part = new ManyToOnePart<TOther>(EntityType, property);
 
             if (columnName != null)
-                part.ColumnName(columnName);
+                part.Column(columnName);
 
-            AddPart(part);
+            references.Add(part);
 
             return part;
         }
 
-        public IAnyPart<TOther> ReferencesAny<TOther>(Expression<Func<T, TOther>> expression)
+        public AnyPart<TOther> ReferencesAny<TOther>(Expression<Func<T, TOther>> expression)
         {
             return ReferencesAny<TOther>(ReflectionHelper.GetProperty(expression));
         }
 
-        protected virtual IAnyPart<TOther> ReferencesAny<TOther>(PropertyInfo property)
+        protected virtual AnyPart<TOther> ReferencesAny<TOther>(PropertyInfo property)
         {
-            var part = new AnyPart<TOther>(property);
-            AddPart(part);
+            var part = new AnyPart<TOther>(typeof(T), property);
+
+            anys.Add(part);
+
             return part;
         }
 
@@ -98,7 +94,8 @@ namespace FluentNHibernate.Mapping
         protected virtual OneToOnePart<TOther> HasOne<TOther>(PropertyInfo property)
         {
             var part = new OneToOnePart<TOther>(EntityType, property);
-            AddPart(part);
+
+            oneToOnes.Add(part);
 
             return part;
         }
@@ -108,11 +105,13 @@ namespace FluentNHibernate.Mapping
             return DynamicComponent(ReflectionHelper.GetProperty(expression), action);
         }
 
-        public virtual DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
+        protected DynamicComponentPart<IDictionary> DynamicComponent(PropertyInfo property, Action<DynamicComponentPart<IDictionary>> action)
         {
-            var part = new DynamicComponentPart<IDictionary>(property);
-            AddPart(part); // old
+            var part = new DynamicComponentPart<IDictionary>(typeof(T), property);
+            
             action(part);
+
+            components.Add(part);
 
             return part;
         }
@@ -141,9 +140,11 @@ namespace FluentNHibernate.Mapping
         
         protected virtual ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
         {
-            var part = new ComponentPart<TComponent>(property);
-            AddPart(part); // old
+            var part = new ComponentPart<TComponent>(typeof(T), property);
+
             action(part);
+
+            components.Add(part);
 
             return part;
         }
@@ -166,7 +167,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new OneToManyPart<TChild>(EntityType, method);
 
-            AddPart(part);
+            collections.Add(part);
 
             return part;
         }
@@ -175,7 +176,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new OneToManyPart<TChild>(EntityType, property);
 
-            AddPart(part);
+            collections.Add(part);
 
             return part;
         }
@@ -232,7 +233,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new ManyToManyPart<TChild>(EntityType, method);
 
-            AddPart(part);
+            collections.Add(part);
 
             return part;
         }
@@ -241,7 +242,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new ManyToManyPart<TChild>(EntityType, property);
 
-            AddPart(part);
+            collections.Add(part);
 
             return part;
         }
@@ -268,134 +269,19 @@ namespace FluentNHibernate.Mapping
             return MapHasManyToMany<TChild, object>(expression);
         }
 
-        public VersionPart Version(Expression<Func<T, object>> expression)
-        {
-            return Version(ReflectionHelper.GetProperty(expression));
-        }
-
-        protected virtual VersionPart Version(PropertyInfo property)
-        {
-            var versionPart = new VersionPart(EntityType, property);
-            AddPart(versionPart);
-            return versionPart;
-        }
-
-        protected void WriteTheParts(XmlElement classElement, IMappingVisitor visitor)
-        {
-            m_Parts.Sort(new MappingPartComparer(m_Parts));
-            foreach (IMappingPart part in m_Parts)
-            {
-                part.Write(classElement, visitor);
-            }
-        }
-
-        IEnumerable<PropertyMap> IClasslike.Properties
-        {
-			get { return Properties; }
-        }
-
-		protected virtual IEnumerable<PropertyMap> Properties
+        protected virtual IEnumerable<IPropertyMappingProvider> Properties
 		{
 			get { return properties; }
 		}
 
-        IEnumerable<IComponentBase> IClasslike.Components
-        {
-            get { return Components; }
-        }
-
-		protected virtual IEnumerable<IComponentBase> Components
+        protected virtual IEnumerable<IComponentMappingProvider> Components
 		{
 			get { return components; }
-		}
-
-        IEnumerable<ISubclass> IClasslike.Subclasses
-        {
-            get { return Subclasses; }
-        }
-
-		protected virtual IEnumerable<ISubclass> Subclasses
-		{
-			get { return subclasses; }
-		}
-
-        IEnumerable<IJoinedSubclass> IClasslike.JoinedSubclasses
-        {
-            get { return JoinedSubclasses; }
-        }
-
-		protected virtual IEnumerable<IJoinedSubclass> JoinedSubclasses
-		{
-			get { return joinedSubclasses; }
-		}
-
-        void IClasslike.AddSubclass(ISubclass subclass)
-        {
-			AddSubclass(subclass);
-        }
-
-		protected virtual void AddSubclass(ISubclass subclass)
-		{
-			subclasses.Add(subclass);
 		}
 
         public Type EntityType
         {
             get { return typeof(T); }
         }
-
-        #region Explicit IClasslike implementation
-
-        IComponentBase IClasslike.DynamicComponent<TEntity>(Expression<Func<TEntity, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action)
-        {
-            return DynamicComponent(ReflectionHelper.GetProperty(expression), action);
-        }
-
-        IComponentBase IClasslike.Component<TEntity, TComponent>(Expression<Func<TEntity, TComponent>> expression, Action<ComponentPart<TComponent>> action)
-        {
-            return Component(ReflectionHelper.GetProperty(expression), action);
-        }
-
-        IVersion IClasslike.Version<TEntity>(Expression<Func<TEntity, object>> expression)
-        {
-            return Version(ReflectionHelper.GetProperty(expression));
-        }
-
-        IProperty IClasslike.Map<TEntity>(Expression<Func<TEntity, object>> expression)
-        {
-            return Map(ReflectionHelper.GetProperty(expression), null);
-        }
-
-        IManyToOnePart IClasslike.References<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression)
-        {
-            return References<TOther>(ReflectionHelper.GetProperty(expression), null);
-        }
-
-        IAnyPart<TOther> IClasslike.ReferencesAny<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression)
-        {
-            return ReferencesAny<TOther>(ReflectionHelper.GetProperty(expression));
-        }
-
-        IOneToOnePart IClasslike.HasOne<TEntity, TOther>(Expression<Func<TEntity, TOther>> expression)
-        {
-            return HasOne<TOther>(ReflectionHelper.GetProperty(expression));
-        }
-
-        IOneToManyPart IClasslike.HasMany<TEntity, TChild>(Expression<Func<TEntity, IEnumerable<TChild>>> expression)
-        {
-            return HasMany<TChild>(ReflectionHelper.GetProperty(expression));
-        }
-
-        IOneToManyPart IClasslike.HasMany<TEntity, TKey, TChild>(Expression<Func<TEntity, IDictionary<TKey, TChild>>> expression)
-        {
-            return HasMany<TChild>(ReflectionHelper.GetProperty(expression));
-        }
-
-        IManyToManyPart IClasslike.HasManyToMany<TEntity, TChild>(Expression<Func<TEntity, IEnumerable<TChild>>> expression)
-        {
-            return HasManyToMany<TChild>(ReflectionHelper.GetProperty(expression));
-        }
-
-        #endregion
     }
 }

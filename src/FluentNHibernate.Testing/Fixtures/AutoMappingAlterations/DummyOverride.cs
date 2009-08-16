@@ -1,14 +1,14 @@
-using FluentNHibernate.AutoMap;
-using FluentNHibernate.AutoMap.Alterations;
+using FluentNHibernate.Automapping;
+using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Testing.Fixtures.AutoMappingAlterations.Model;
 
 namespace FluentNHibernate.Testing.Fixtures.AutoMappingAlterations
 {
     public class DummyOverride : IAutoMappingOverride<Baz>
     {
-        public void Override(AutoMap<Baz> mapping)
+        public void Override(AutoMapping<Baz> mapping)
         {
-            mapping.SetAttribute("was-overridden", "true");
+            mapping.BatchSize(10);
         }
     }
 }

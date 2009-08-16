@@ -13,16 +13,17 @@ namespace FluentNHibernate.MappingModel.Output
             return document;
         }
 
-        public override void ProcessImport(ImportMapping importMapping)
+        public override void ProcessImport(ImportMapping mapping)
         {
             document = new XmlDocument();
 
             var element = document.CreateElement("import");
 
-            element.WithAtt("class", importMapping.Type.AssemblyQualifiedName);
+            if (mapping.HasValue(x => x.Class))
+                element.WithAtt("class", mapping.Class);
 
-            if (importMapping.Attributes.IsSpecified(x => x.Rename))
-                element.WithAtt("rename", importMapping.Rename);
+            if (mapping.HasValue(x => x.Rename))
+                element.WithAtt("rename", mapping.Rename);
 
             document.AppendChild(element);
         }

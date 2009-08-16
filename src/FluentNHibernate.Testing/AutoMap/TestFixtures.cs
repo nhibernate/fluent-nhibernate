@@ -1,10 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Data;
 using System.Drawing;
-using FluentNHibernate.AutoMap.TestFixtures.ComponentTypes;
-using FluentNHibernate.AutoMap.TestFixtures.CustomCompositeTypes;
-using FluentNHibernate.AutoMap.TestFixtures.CustomTypes;
+using FluentNHibernate.Automapping.TestFixtures.ComponentTypes;
+using FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes;
+using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Conventions;
 using Iesi.Collections.Generic;
@@ -14,7 +15,7 @@ using NHibernate.SqlTypes;
 using NHibernate.Type;
 using NHibernate.UserTypes;
 
-namespace FluentNHibernate.AutoMap.TestFixtures
+namespace FluentNHibernate.Automapping.TestFixtures
 {
     public abstract class EntityBase<TPK>
     {
@@ -44,6 +45,8 @@ namespace FluentNHibernate.AutoMap.TestFixtures
         public string ExampleProperty { get; set; }
         public int SomeNumber{ get; set; }
         public IList<ExampleClass> Children { get; private set; }
+        public ExampleParentClass Component { get; set; }
+        public IDictionary DictionaryChild { get; set; }
     }
 
     public class ClassWithDummyProperty
@@ -70,6 +73,7 @@ namespace FluentNHibernate.AutoMap.TestFixtures
         public TimeSpan Timestamp { get; set; }
         public ExampleEnum Enum { get; set; }
         public ExampleParentClass Parent { get; set; }
+        public IDictionary Dictionary { get; set; }
     }
 
     public class PrivateIdSetterClass
@@ -146,7 +150,7 @@ namespace FluentNHibernate.AutoMap.TestFixtures
     }
 }
 
-namespace FluentNHibernate.AutoMap.TestFixtures.ComponentTypes
+namespace FluentNHibernate.Automapping.TestFixtures.ComponentTypes
 {
     public class Address
     {
@@ -156,7 +160,7 @@ namespace FluentNHibernate.AutoMap.TestFixtures.ComponentTypes
     }
 }
 
-namespace FluentNHibernate.AutoMap.TestFixtures.CustomTypes
+namespace FluentNHibernate.Automapping.TestFixtures.CustomTypes
 {
     public class Custom
     {
@@ -225,7 +229,7 @@ namespace FluentNHibernate.AutoMap.TestFixtures.CustomTypes
     }
 }
 
-namespace FluentNHibernate.AutoMap.TestFixtures.CustomCompositeTypes
+namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
 {
     public class DoubleStringType : ICompositeUserType
     {
@@ -425,7 +429,7 @@ namespace FluentNHibernate.AutoMap.TestFixtures.CustomCompositeTypes
 
 }
 
-namespace FluentNHibernate.AutoMap.TestFixtures.SuperTypes
+namespace FluentNHibernate.Automapping.TestFixtures.SuperTypes
 {
     public class SuperType
     {

@@ -127,5 +127,13 @@ namespace FluentNHibernate.Testing.Cfg.Db
                     .FromConnectionStringWithKey("main"))
                 .ToProperties().ShouldContain("connection.connection_string", "connection string");
         }
+
+        [Test]
+        public void ShouldBeAbleToSpecifyConnectionStringDirectly()
+        {
+            OracleDataClientConfiguration.Oracle9
+                .ConnectionString("conn")
+                .ToProperties().ShouldContain("connection.connection_string", "conn");
+        }
     }
 }

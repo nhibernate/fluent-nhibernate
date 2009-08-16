@@ -2,70 +2,79 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Xml;
+using FluentNHibernate.Mapping.Providers;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IManyToOnePart : IRelationship
+    public class ManyToOnePart<TOther> : IManyToOneMappingProvider
     {
-        CascadeExpression<IManyToOnePart> Cascade { get; }
-        string GetColumnName();
-        PropertyInfo Property { get; }
-        IManyToOnePart ColumnName(string columnName);
-        INotFoundExpression NotFound { get; }
-    }
-
-    public class ManyToOnePart<TOther> : IManyToOnePart, IAccessStrategy<ManyToOnePart<TOther>>
-    {
-		private readonly Cache<string, string> properties = new Cache<string, string>();
-        public PropertyInfo Property { get; private set; }
-        public Type EntityType { get; private set; }
-        private string columnName;
         private readonly AccessStrategyBuilder<ManyToOnePart<TOther>> access;
+        private readonly FetchTypeExpression<ManyToOnePart<TOther>> fetch;
+        private readonly NotFoundExpression<ManyToOnePart<TOther>> notFound;
+        private readonly CascadeExpression<ManyToOnePart<TOther>> cascade;
         private readonly IList<string> columns = new List<string>();
         private bool nextBool = true;
+        private readonly AttributeStore<ManyToOneMapping> attributes = new AttributeStore<ManyToOneMapping>();
+        private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
+        private readonly Type entity;
+        private readonly PropertyInfo property;
 
         public ManyToOnePart(Type entity, PropertyInfo property) 
         {
-            EntityType = entity;
-            access = new AccessStrategyBuilder<ManyToOnePart<TOther>>(this);
-
-            Property = property;
+            this.entity = entity;
+            this.property = property;
+            access = new AccessStrategyBuilder<ManyToOnePart<TOther>>(this, value => attributes.Set(x => x.Access, value));
+            fetch = new FetchTypeExpression<ManyToOnePart<TOther>>(this, value => attributes.Set(x => x.Fetch, value));
+            cascade = new CascadeExpression<ManyToOnePart<TOther>>(this, value => attributes.Set(x => x.Cascade, value));
+            notFound = new NotFoundExpression<ManyToOnePart<TOther>>(this, value => attributes.Set(x => x.NotFound, value));
         }
 
-		public FetchTypeExpression<ManyToOnePart<TOther>> FetchType
+        ManyToOneMapping IManyToOneMappingProvider.GetManyToOneMapping()
+        {
+            var mapping = new ManyToOneMapping(attributes.CloneInner());
+
+            mapping.ContainingEntityType = entity;
+            mapping.PropertyInfo = property;
+
+            if (!mapping.IsSpecified(x => x.Name))
+                mapping.Name = property.Name;
+
+            if (!mapping.IsSpecified(x => x.Class))
+                mapping.SetDefaultValue(x => x.Class, new TypeReference(typeof(TOther)));
+
+            if (columns.Count == 0)
+                mapping.AddDefaultColumn(CreateColumn(property.Name + "_id"));
+
+            foreach (var column in columns)
+            {
+                var columnMapping = CreateColumn(column);
+
+                mapping.AddColumn(columnMapping);
+            }
+
+            return mapping;
+        }
+
+        private ColumnMapping CreateColumn(string column)
+        {
+            return new ColumnMapping(columnAttributes.CloneInner()) { Name = column };
+        }
+
+        public FetchTypeExpression<ManyToOnePart<TOther>> Fetch
 		{
-			get
-			{
-				return new FetchTypeExpression<ManyToOnePart<TOther>>(this, properties);
-			}
+			get { return fetch; }
 		}
 
         public NotFoundExpression<ManyToOnePart<TOther>> NotFound
         {
-            get
-            {
-                return new NotFoundExpression<ManyToOnePart<TOther>>( this, properties );
-            }
-        }
-
-        INotFoundExpression IManyToOnePart.NotFound
-        {
-            get { return NotFound; }
-        }
-
-        public ManyToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> propRefExpression)
-        {
-            var prop = ReflectionHelper.GetProperty(propRefExpression);
-            properties.Store("property-ref", prop.Name);
-
-            return this;
+            get { return notFound; }
         }
 
         public ManyToOnePart<TOther> Unique()
         {
-            properties.Store("unique", nextBool.ToString().ToLowerInvariant());
+            columnAttributes.Set(x => x.Unique, nextBool);
             nextBool = true;
             return this;
         }
@@ -76,29 +85,68 @@ namespace FluentNHibernate.Mapping
         /// <param name="keyName">Name of constraint</param>
         public ManyToOnePart<TOther> UniqueKey(string keyName)
         {
-            properties.Store("unique-key", keyName);
+            columnAttributes.Set(x => x.UniqueKey, keyName);
+            return this;
+        }
+
+        public ManyToOnePart<TOther> Index(string indexName)
+        {
+            columnAttributes.Set(x => x.Index, indexName);
+            return this;
+        }
+
+        public ManyToOnePart<TOther> Class<T>()
+        {
+	        return Class(typeof(T));
+        }
+
+        public ManyToOnePart<TOther> Class(Type type)
+        {
+            attributes.Set(x => x.Class, new TypeReference(type));
+            return this;
+        }
+
+        public ManyToOnePart<TOther> ReadOnly()
+        {
+            attributes.Set(x => x.Insert, !nextBool);
+            attributes.Set(x => x.Update, !nextBool);
+            nextBool = true;
             return this;
         }
 
         public ManyToOnePart<TOther> LazyLoad()
         {
-            properties.Store("lazy", nextBool ? "proxy" : "false");
+            attributes.Set(x => x.Lazy, nextBool);
             nextBool = true;
             return this;
         }
 		
-		public ManyToOnePart<TOther> WithForeignKey()
+		public ManyToOnePart<TOther> ForeignKey()
 		{
-			return WithForeignKey(string.Format("FK_{0}To{1}", Property.DeclaringType.Name, Property.Name));
+			return ForeignKey(string.Format("FK_{0}To{1}", property.DeclaringType.Name, property.Name));
 		}
 		
-		public ManyToOnePart<TOther> WithForeignKey(string foreignKeyName)
+		public ManyToOnePart<TOther> ForeignKey(string foreignKeyName)
 		{
-			properties.Store("foreign-key", foreignKeyName);
+		    attributes.Set(x => x.ForeignKey, foreignKeyName);
 			return this;
 		}
 
-        public ManyToOnePart<TOther> WithColumns(params string[] columns)
+        public ManyToOnePart<TOther> Insert()
+        {
+            attributes.Set(x => x.Insert, nextBool);
+            nextBool = true;
+            return this;
+        }
+
+        public ManyToOnePart<TOther> Update()
+        {
+            attributes.Set(x => x.Update, nextBool);
+            nextBool = true;
+            return this;
+        }
+
+        public ManyToOnePart<TOther> Columns(params string[] columns)
         {
             foreach (var column in columns)
             {
@@ -108,89 +156,47 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public ManyToOnePart<TOther> WithColumns(params Expression<Func<TOther, object>>[] columns)
+        public ManyToOnePart<TOther> Columns(params Expression<Func<TOther, object>>[] columns)
         {
             foreach (var expression in columns)
             {
                 var property = ReflectionHelper.GetProperty(expression);
 
-                WithColumns(property.Name);
+                Columns(property.Name);
             }
 
             return this;
         }
-		
-		public CascadeExpression<ManyToOnePart<TOther>> Cascade
+
+        public CascadeExpression<ManyToOnePart<TOther>> Cascade
 		{
-			get
-			{
-				return new CascadeExpression<ManyToOnePart<TOther>>(this);
-			}
+			get { return cascade; }
 		}
 
-        public void Write(XmlElement classElement, IMappingVisitor visitor)
+        public ManyToOnePart<TOther> Column(string name)
         {
-        	properties.Store("name", Property.Name);
-
-            if (columns.Count == 0)
-                properties.Store("column", columnName);
-
-            var manyToOneElement = classElement.AddElement("many-to-one").WithProperties(properties);
-
-            if (columns.Count > 0)
-            {
-                foreach (var column in columns)
-                {
-                    manyToOneElement.AddElement("column")
-                        .WithAtt("name", column);
-                }
-            }
-
-        }
-
-        public void SetAttribute(string name, string value)
-        {
-			properties.Store(name, value);
-        }
-
-        public void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
-        IManyToOnePart IManyToOnePart.ColumnName(string name)
-        {
-            return ColumnName(name);
-        }
-
-        public ManyToOnePart<TOther> ColumnName(string name)
-        {
-            columnName = name;
+            columns.Clear();
+            columns.Add(name);
 
             return this;
         }
 
-        public string GetColumnName()
+        public ManyToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> propertyRef)
         {
-            return columnName;
+            var property = ReflectionHelper.GetProperty(propertyRef);
+
+            return PropertyRef(property.Name);
         }
 
-        public int LevelWithinPosition
+        public ManyToOnePart<TOther> PropertyRef(string property)
         {
-            get { return 1; }
-        }
-
-        public PartPosition PositionOnDocument
-        {
-            get { return PartPosition.Anywhere; }
+            attributes.Set(x => x.PropertyRef, property);
+            return this;
         }
 
         public ManyToOnePart<TOther> Nullable()
         {
-            SetAttribute("not-null", (!nextBool).ToString().ToLowerInvariant());
+            columnAttributes.Set(x => x.NotNull, !nextBool);
             nextBool = true;
             return this;
         }
@@ -198,11 +204,6 @@ namespace FluentNHibernate.Mapping
         public AccessStrategyBuilder<ManyToOnePart<TOther>> Access
         {
             get { return access; }
-        }
-
-        public void PropertyRef(Func<object, object> func)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -216,18 +217,5 @@ namespace FluentNHibernate.Mapping
                 return this;
             }
         }
-
-        #region Explicit IManyToOnePart Implementation
-        CascadeExpression<IManyToOnePart> IManyToOnePart.Cascade
-        {
-            get { return new CascadeExpression<IManyToOnePart>(this); }
-        }
-
-        IAccessStrategyBuilder IRelationship.Access
-        {
-            get { return Access; }
-        }
-
-        #endregion
     }
 }

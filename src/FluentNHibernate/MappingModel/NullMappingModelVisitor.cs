@@ -12,6 +12,11 @@ namespace FluentNHibernate.MappingModel
 
         }
 
+        public virtual void ProcessCache(CacheMapping mapping)
+        {
+            
+        }
+
         public virtual void ProcessCompositeId(CompositeIdMapping idMapping)
         {
 
@@ -47,7 +52,7 @@ namespace FluentNHibernate.MappingModel
 
         }
 
-        public virtual void ProcessIdGenerator(IdGeneratorMapping generatorMapping)
+        public virtual void ProcessGenerator(GeneratorMapping generatorMapping)
         {
 
         }
@@ -77,6 +82,11 @@ namespace FluentNHibernate.MappingModel
 
         }
 
+        public virtual void ProcessMap(MapMapping mapping)
+        {
+            
+        }
+
         public virtual void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
         {
 
@@ -92,7 +102,17 @@ namespace FluentNHibernate.MappingModel
             
         }
 
-        public virtual void ProcessComponent(ComponentMappingBase componentMapping)
+        public virtual void ProcessComponent(IComponentMapping componentMapping)
+        {
+            
+        }
+
+        public virtual void ProcessComponent(ComponentMapping componentMapping)
+        {
+            
+        }
+
+        public virtual void ProcessComponent(DynamicComponentMapping componentMapping)
         {
             
         }
@@ -112,9 +132,59 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void ProcessVersion(VersionMapping mapping)
+        {
+            
+        }
+
+        public virtual void ProcessOneToOne(OneToOneMapping mapping)
+        {
+            
+        }
+
+        public virtual void ProcessAny(AnyMapping mapping)
+        {
+            
+        }
+
+        public virtual void ProcessMetaValue(MetaValueMapping mapping)
+        {
+            
+        }
+
+        public virtual void ProcessKeyProperty(KeyPropertyMapping mapping)
+        {
+            
+        }
+
+        public virtual void ProcessKeyManyToOne(KeyManyToOneMapping mapping)
+        {
+            
+        }
+
+        public virtual void ProcessElement(ElementMapping mapping)
+        {
+            
+        }
+
+        public virtual void ProcessArray(ArrayMapping mapping)
+        {
+            
+        }
+
+        public virtual void ProcessIndex(IIndexMapping indexMapping)
+        {
+
+        }
+
         public virtual void ProcessIndex(IndexMapping indexMapping)
         {
             
+        }
+
+        public virtual void ProcessIndex(IndexManyToManyMapping indexMapping)
+        {
+
         }
 
         public virtual void ProcessParent(ParentMapping parentMapping)
@@ -122,9 +192,19 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void Visit(IdMapping mapping)
+        {
+            
+        }
+
         public virtual void Visit(ClassMapping classMapping)
         {
 
+        }
+
+        public virtual void Visit(CacheMapping mapping)
+        {
+            
         }
 
         public virtual void Visit(ImportMapping importMapping)
@@ -157,12 +237,12 @@ namespace FluentNHibernate.MappingModel
 
         }
 
-        public virtual void Visit(ICollectionContentsMapping contentsMapping)
+        public virtual void Visit(ICollectionRelationshipMapping relationshipMapping)
         {
 
         }
 
-        public virtual void Visit(IdGeneratorMapping generatorMapping)
+        public virtual void Visit(GeneratorMapping generatorMapping)
         {
 
         }
@@ -192,12 +272,12 @@ namespace FluentNHibernate.MappingModel
             
         }
 
-        public virtual void Visit(ComponentMappingBase componentMapping)
+        public virtual void Visit(IComponentMapping componentMapping)
         {
             
         }
 
-        public virtual void Visit(IndexMapping indexMapping)
+        public virtual void Visit(IIndexMapping indexMapping)
         {
             
         }
@@ -212,6 +292,56 @@ namespace FluentNHibernate.MappingModel
         }
 
         public virtual void Visit(CompositeElementMapping compositeElementMapping)
+        {
+            
+        }
+
+        public virtual void Visit(VersionMapping versionMapping)
+        {
+
+        }
+
+        public virtual void Visit(OneToOneMapping mapping)
+        {
+
+        }
+
+        public virtual void Visit(OneToManyMapping mapping)
+        {
+            
+        }
+
+        public virtual void Visit(ManyToManyMapping mapping)
+        {
+
+        }
+
+        public virtual void Visit(AnyMapping mapping)
+        {
+
+        }
+
+        public virtual void Visit(MetaValueMapping mapping)
+        {
+            
+        }
+
+        public virtual void Visit(KeyPropertyMapping mapping)
+        {
+            
+        }
+
+        public virtual void Visit(KeyManyToOneMapping mapping)
+        {
+            
+        }
+
+        public virtual void Visit(ElementMapping mapping)
+        {
+            
+        }
+
+        public virtual void Visit(ArrayMapping mapping)
         {
             
         }

@@ -29,7 +29,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyVersionOverrideColumnName()
         {
             new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.VersionNumber).ColumnName("Version"))
+                .ForMapping(map => map.Version(x => x.VersionNumber).Column("Version"))
                 .Element("//version").HasAttribute("column", "Version");
         }
 
@@ -37,7 +37,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSepecifyAccessType()
         {
             new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.VersionNumber).Access.AsField())
+                .ForMapping(map => map.Version(x => x.VersionNumber).Access.Field())
                 .Element("//version").HasAttribute("access", "field");
         }
 
@@ -53,7 +53,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSepecifyAsNeverGenerated()
         {
             new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.VersionNumber).NeverGenerated())
+                .ForMapping(map => map.Version(x => x.VersionNumber).Generated.Never())
                 .Element("//version").HasAttribute("generated", "never");
         }
 

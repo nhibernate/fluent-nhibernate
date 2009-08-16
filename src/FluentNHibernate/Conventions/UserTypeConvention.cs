@@ -1,5 +1,7 @@
 using System;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Instances;
+using FluentNHibernate.Conventions.Inspections;
 using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Conventions
@@ -13,21 +15,16 @@ namespace FluentNHibernate.Conventions
     public abstract class UserTypeConvention<TUserType> : IUserTypeConvention
         where TUserType : IUserType, new()
     {
-        bool IConvention<IProperty>.Accept(IProperty target)
-        {
-            return Accept(target.PropertyType);
-        }
-
-        public virtual bool Accept(Type type)
+        public virtual void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
         {
             var userType = Activator.CreateInstance<TUserType>();
 
-            return type == userType.ReturnedType;
+            criteria.Expect(x => x.Type == userType.ReturnedType);
         }
 
-        public virtual void Apply(IProperty target)
+        public virtual void Apply(IPropertyInstance instance)
         {
-            target.CustomTypeIs<TUserType>();
+            instance.CustomType<TUserType>();
         }
     }
 }

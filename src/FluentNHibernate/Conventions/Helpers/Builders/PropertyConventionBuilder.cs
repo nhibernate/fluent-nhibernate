@@ -1,19 +1,21 @@
 using System;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders
 {
-    internal class PropertyConventionBuilder : IConventionBuilder<IPropertyConvention, IProperty>
+    public class PropertyConventionBuilder : IConventionBuilder<IPropertyConvention, IPropertyInspector, IPropertyInstance>
     {
-        public IPropertyConvention Always(Action<IProperty> convention)
+        public IPropertyConvention Always(Action<IPropertyInstance> convention)
         {
-            return new BuiltPropertyConvention(x => true, convention);
+            return new BuiltPropertyConvention(accept => { }, convention);
         }
 
-        public IPropertyConvention When(Func<IProperty, bool> isTrue, Action<IProperty> convention)
+        public IPropertyConvention When(Action<IAcceptanceCriteria<IPropertyInspector>> expectations, Action<IPropertyInstance> convention)
         {
-            return new BuiltPropertyConvention(isTrue, convention);
+            return new BuiltPropertyConvention(expectations, convention);
         }
     }
 }

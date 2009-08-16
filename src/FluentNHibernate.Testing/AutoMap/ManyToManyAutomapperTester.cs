@@ -1,11 +1,12 @@
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.Testing.AutoMap.ManyToMany;
+using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Testing.Automapping.ManyToMany;
 using FluentNHibernate.Utils;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     [TestFixture]
     public class ManyToManyAutomapperTester : BaseAutoMapFixture
@@ -14,36 +15,12 @@ namespace FluentNHibernate.Testing.AutoMap
         public void CanMapManyToManyProperty()
         {
             var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
-            var autoMap = new AutoMap<ManyToMany1>();
+            var autoMap = new ClassMapping();
 
-            var mapper = new ManyToManyAutoMapper(new AutoMappingExpressions());
-            mapper.Map<ManyToMany1>(autoMap, propertyInfo);
+            var mapper = new AutoMapManyToMany(new AutoMappingExpressions());
+            mapper.Map(autoMap, propertyInfo);
 
-            autoMap.PropertiesMapped.ShouldHaveCount(1);
-        }
-
-        [Test]
-        public void CanGetTheManyToManyPart()
-        {
-            var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
-            var autoMap = new AutoMap<ManyToMany1>();
-
-            var mapper = new ManyToManyAutoMapper(new AutoMappingExpressions());
-            object manyToManyPart = mapper.GetManyToManyPart<ManyToMany1>(autoMap, propertyInfo);
-
-            manyToManyPart.ShouldBeOfType(typeof(ManyToManyPart<ManyToMany2>));
-        }
-
-        [Test]
-        public void CanApplyInverse()
-        {
-            var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
-            var mapper = new ManyToManyAutoMapper(new AutoMappingExpressions());
-            var manyToManyPart = MockRepository.GenerateMock<IManyToManyPart>();
-
-            mapper.ApplyInverse(propertyInfo, typeof(ManyToMany1), manyToManyPart);
-
-            manyToManyPart.AssertWasCalled(x => x.Inverse());
+            autoMap.Collections.ShouldHaveCount(1);
         }
 
         [Test]

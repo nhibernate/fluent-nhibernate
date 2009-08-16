@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Reflection;
 using System.Xml;
-using FluentNHibernate.Utils;
+using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Collections;
+using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Mapping
 {
-    public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild>, IOneToManyPart, IAccessStrategy<OneToManyPart<TChild>> 
+    public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild, OneToManyMapping>
     {
-        private readonly ColumnNameCollection<OneToManyPart<TChild>> columnNames;
-        private readonly Cache<string, string> collectionProperties = new Cache<string, string>();
+        private readonly Type entity;
+        private readonly ColumnNameCollection<OneToManyPart<TChild>> columns;
+        private readonly CollectionCascadeExpression<OneToManyPart<TChild>> cascade;
+        private readonly NotFoundExpression<OneToManyPart<TChild>> notFound;
 
         public OneToManyPart(Type entity, PropertyInfo property)
             : this(entity, property, property.PropertyType)
@@ -21,191 +25,83 @@ namespace FluentNHibernate.Mapping
         protected OneToManyPart(Type entity, MemberInfo member, Type collectionType)
             : base(entity, member, collectionType)
         {
-            columnNames = new ColumnNameCollection<OneToManyPart<TChild>>(this);
-            properties.Store("name", member.Name);
-        }
+            this.entity = entity;
+            columns = new ColumnNameCollection<OneToManyPart<TChild>>(this);
+            cascade = new CollectionCascadeExpression<OneToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Cascade, value));
+            notFound = new NotFoundExpression<OneToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
 
-        public override void Write(XmlElement classElement, IMappingVisitor visitor)
-        {
-            XmlElement collectionElement = WriteCollectionElement(classElement);
-            Cache.Write(collectionElement, visitor);
-            WriteKeyElement(visitor, collectionElement);
-
-            if (indexMapping != null)
-                WriteIndexElement(collectionElement);
-
-            WriteMappingTypeElement(visitor, collectionElement);
-        }
-
-        private XmlElement WriteCollectionElement(XmlElement classElement)
-        {
-            if (collectionType == "array")
-                properties.Remove("collection-type");
-
-            XmlElement collectionElement = classElement.AddElement(collectionType)
-                .WithProperties(properties);
-
-            if (!string.IsNullOrEmpty(TableName))
-                collectionElement.SetAttribute("table", TableName);
-
-            if (batchSize > 0)
-                collectionElement.WithAtt("batch-size", batchSize.ToString());
-
-
-            return collectionElement;
-        }
-
-        private void WriteMappingTypeElement(IMappingVisitor visitor, XmlElement collectionElement)
-        {
-            if (elementMapping != null) 
-            {
-                var elementElement = collectionElement.AddElement("element");                
-                elementMapping.WriteAttributesToIndexElement(elementElement);                
-            } 
-            else if (componentMapping == null) 
-            {
-                // standard one-to-many element
-                collectionElement.AddElement("one-to-many")
-                    .WithProperties(collectionProperties)
-                    .SetAttribute("class", typeof(TChild).AssemblyQualifiedName);
-                    
-            }
-            else
-            {
-                // specified a component, so output that instead
-                componentMapping.Write(collectionElement, visitor);
-            }
-        }
-
-        private void WriteKeyElement(IMappingVisitor visitor, XmlElement collectionElement)
-        {
-            var columns = columnNames.List();
-
-            if (columns.Count == 1)
-                keyProperties.Store("column", columns[0]);
-
-            var key = collectionElement.AddElement("key")
-                .WithProperties(keyProperties);
-
-            if (columns.Count <= 1) return;
-
-            foreach (var columnName in columns)
-            {
-                key.AddElement("column")
-                    .WithAtt("name", columnName);
-            }
-        }
-
-        /// <summary>
-        /// Set an attribute on the xml element produced by this one-to-many mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        public override void SetAttribute(string name, string value)
-        {
-            properties.Store(name, value);
-        }
-
-        public override void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
-
-        public override int LevelWithinPosition
-        {
-            get { return 1; }
-        }
-
-        public override PartPosition PositionOnDocument
-        {
-            get { return PartPosition.Anywhere; }
-        }
-
-        public FetchTypeExpression<OneToManyPart<TChild>> FetchType
-        {
-            get
-            {
-                return new FetchTypeExpression<OneToManyPart<TChild>>(this, properties);
-            }
-        }
-
-        public ColumnNameCollection<OneToManyPart<TChild>> KeyColumnNames
-        {
-            get { return columnNames; }
-        }
-
-        #region Explicit IOneToManyPart Implementation
-
-        CollectionCascadeExpression<IOneToManyPart> IOneToManyPart.Cascade
-        {
-            get { return new CollectionCascadeExpression<IOneToManyPart>(this); }
-        }
-
-        IOneToManyPart IOneToManyPart.Inverse()
-        {
-            return Inverse();
-        }
-
-        IOneToManyPart IOneToManyPart.LazyLoad()
-        {
-            return LazyLoad();
-        }
-
-        IOneToManyPart IOneToManyPart.Not
-        {
-            get { return Not; }
-        }
-
-        /// <summary>
-        /// Sets a custom collection type
-        /// </summary>
-        IOneToManyPart IOneToManyPart.CollectionType<TCollection>()
-        {
-            return CollectionType<TCollection>();
-        }
-
-        /// <summary>
-        /// Sets a custom collection type
-        /// </summary>
-        IOneToManyPart IOneToManyPart.CollectionType(Type type)
-        {
-            return CollectionType(type);
-        }
-
-        /// <summary>
-        /// Sets a custom collection type
-        /// </summary>
-        IOneToManyPart IOneToManyPart.CollectionType(string type)
-        {
-            return CollectionType(type);
-        }
-
-        IColumnNameCollection IOneToManyPart.KeyColumnNames
-        {
-            get { return KeyColumnNames; }
-        }
-
-        IAccessStrategyBuilder IRelationship.Access
-        {
-            get { return Access; }
+            collectionAttributes.SetDefault(x => x.Name, member.Name);
         }
 
         public NotFoundExpression<OneToManyPart<TChild>> NotFound
         {
-            get
-            {
-                return new NotFoundExpression<OneToManyPart<TChild>>(this, collectionProperties);
-            }
+            get { return notFound; }
         }
 
-        INotFoundExpression IOneToManyPart.NotFound
+        public new CollectionCascadeExpression<OneToManyPart<TChild>> Cascade
         {
-            get { return NotFound; }
+            get { return cascade; }
         }
 
-        #endregion
+        public override ICollectionMapping GetCollectionMapping()
+        {
+            var collection = base.GetCollectionMapping();
+
+            if (columns.List().Count == 0)
+                collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
+
+            foreach (var column in columns.List())
+                collection.Key.AddColumn(new ColumnMapping { Name = column });
+
+            return collection;
+        }
+
+        protected override ICollectionRelationshipMapping GetRelationship()
+        {
+            return new OneToManyMapping(relationshipAttributes.CloneInner())
+            {
+                ContainingEntityType = entity
+            };
+        }
+
+        public OneToManyPart<TChild> KeyColumn(string columnName)
+        {
+            KeyColumns.Clear();
+            KeyColumns.Add(columnName);
+            return this;
+        }
+
+        public ColumnNameCollection<OneToManyPart<TChild>> KeyColumns
+        {
+            get { return columns; }
+        }
+
+        public OneToManyPart<TChild> ForeignKeyConstraintName(string foreignKeyName)
+        {
+            keyAttributes.Set(x => x.ForeignKey, foreignKeyName);
+            return this;
+        }
+
+		/// <summary>
+		/// Sets the order-by clause for this one-to-many relationship.
+		/// </summary>
+    	public OneToManyPart<TChild> OrderBy(string orderBy)
+    	{
+			collectionAttributes.Set(x => x.OrderBy, orderBy);
+			return this;
+    	}
+
+        public OneToManyPart<TChild> ReadOnly()
+        {
+            collectionAttributes.Set(x => x.Mutable, !nextBool);
+            nextBool = true;
+            return this;
+        }
+
+        public OneToManyPart<TChild> Subselect(string subselect)
+        {
+            collectionAttributes.Set(x => x.Subselect, subselect);
+            return this;
+        }
     }
 }

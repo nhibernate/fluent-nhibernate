@@ -1,52 +1,54 @@
 using System;
 using System.Reflection;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Instances;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions
 {
-    public abstract class ForeignKeyConvention : IReferenceConvention, IHasManyConvention, IHasManyToManyConvention
+    public abstract class ForeignKeyConvention
+        : IReferenceConvention, IHasManyConvention, IHasManyToManyConvention, IJoinedSubclassConvention, IJoinConvention
     {
-        private bool acceptParent = true;
-        private bool acceptChild = true;
-
         protected abstract string GetKeyName(PropertyInfo property, Type type);
 
-        public bool Accept(IManyToOnePart target)
+        public void Apply(IManyToOneInstance instance)
         {
-            return string.IsNullOrEmpty(target.GetColumnName());
+            var columnName = GetKeyName(instance.Property, instance.Class.GetUnderlyingSystemType());
+
+            instance.Column(columnName);
         }
 
-        public void Apply(IManyToOnePart target)
+        public void Apply(IOneToManyCollectionInstance instance)
         {
-            target.ColumnName(GetKeyName(target.Property, target.Property.PropertyType));
+            var columnName = GetKeyName(null, instance.EntityType);
+
+            instance.Key.Column(columnName);
         }
 
-        public bool Accept(IOneToManyPart target)
+        public void Apply(IManyToManyCollectionInstance instance)
         {
-            return target.KeyColumnNames.List().Count == 0;
+            var keyColumn = GetKeyName(null, instance.EntityType);
+            var childColumn = GetKeyName(null, instance.ChildType);
+
+            if (instance.Key.Columns.IsEmpty())
+                instance.Key.Column(keyColumn);
+
+            if (instance.Relationship.Columns.IsEmpty())
+                instance.Relationship.Column(childColumn);
         }
 
-        public void Apply(IOneToManyPart target)
+        public void Apply(IJoinedSubclassInstance instance)
         {
-            target.KeyColumnNames.Clear();
-            target.KeyColumnNames.Add(GetKeyName(null, target.EntityType));
+            var columnName = GetKeyName(null, instance.Type.BaseType);
+            
+            instance.Key.Column(columnName);
         }
 
-        public bool Accept(IManyToManyPart target)
+        public void Apply(IJoinInstance instance)
         {
-            acceptParent = string.IsNullOrEmpty(target.ParentKeyColumn);
-            acceptChild = string.IsNullOrEmpty(target.ChildKeyColumn);
+            var columnName = GetKeyName(null, instance.EntityType);
 
-            return acceptParent || acceptChild;
-        }
-
-        public void Apply(IManyToManyPart target)
-        {
-            if (acceptParent && target.EntityType != null)
-                target.WithParentKeyColumn(GetKeyName(null, target.EntityType));
-
-            if (acceptChild && target.ChildType != null)
-                target.WithChildKeyColumn(GetKeyName(null, target.ChildType));
+            instance.Key.Column(columnName);
         }
     }
 }

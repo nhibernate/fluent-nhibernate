@@ -1,38 +1,59 @@
 using System;
+using System.Linq.Expressions;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public class OneToManyMapping : MappingBase, ICollectionContentsMapping
+    public class OneToManyMapping : MappingBase, ICollectionRelationshipMapping
     {
         private readonly AttributeStore<OneToManyMapping> attributes;
-        public Type ChildType { get; set; }
 
         public OneToManyMapping()
-        {
-            attributes = new AttributeStore<OneToManyMapping>();
-            attributes.SetDefault(x => x.ExceptionOnNotFound, true);
-        }
+            : this(new AttributeStore())
+        {}
 
-        public AttributeStore<OneToManyMapping> Attributes
+        public OneToManyMapping(AttributeStore underlyingStore)
         {
-            get { return attributes; }
-        }
-
-        public string ClassName
-        {
-            get { return attributes.Get(x => x.ClassName); }
-            set { attributes.Set(x => x.ClassName, value); }
-        }
-
-        public bool ExceptionOnNotFound
-        {
-            get { return attributes.Get(x => x.ExceptionOnNotFound); }
-            set { attributes.Set(x => x.ExceptionOnNotFound, value); }
+            attributes = new AttributeStore<OneToManyMapping>(underlyingStore);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessOneToMany(this);
+        }
+
+        public Type ChildType
+        {
+            get { return attributes.Get(x => x.ChildType); }
+            set { attributes.Set(x => x.ChildType, value); }
+        }
+
+        public TypeReference Class
+        {
+            get { return attributes.Get(x => x.Class); }
+            set { attributes.Set(x => x.Class, value); }
+        }
+
+        public string NotFound
+        {
+            get { return attributes.Get(x => x.NotFound); }
+            set { attributes.Set(x => x.NotFound, value); }
+        }
+
+        public Type ContainingEntityType { get; set; }
+
+        public bool IsSpecified<TResult>(Expression<Func<OneToManyMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<OneToManyMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<OneToManyMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
         }
     }
 }

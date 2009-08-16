@@ -1,50 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
     public class SubclassMapping : ClassMappingBase, ISubclassMapping
     {
-        private readonly AttributeStore<SubclassMapping> attributes;
-        private readonly IList<SubclassMapping> subclasses;
-        private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
-        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
+        private AttributeStore<SubclassMapping> attributes;
 
         public SubclassMapping()
             : this(new AttributeStore())
-        { }
+        {}
 
-        protected SubclassMapping(AttributeStore underlyingStore)
-            : base(underlyingStore)
+        public SubclassMapping(AttributeStore underlyingStore)
         {
             attributes = new AttributeStore<SubclassMapping>(underlyingStore);
-            subclasses = new List<SubclassMapping>();
-        }
-
-        public AttributeStore<SubclassMapping> Attributes
-        {
-            get { return attributes; }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessSubclass(this);
 
-            foreach(var subclass in Subclasses)
-                visitor.Visit(subclass);
-
             base.AcceptVisitor(visitor);
         }
 
-        public void AddSubclass(SubclassMapping subclassMapping)
+        public override void MergeAttributes(AttributeStore store)
         {
-            subclasses.Add(subclassMapping);
+            attributes.Merge(new AttributeStore<SubclassMapping>(store));
         }
 
-        public IEnumerable<SubclassMapping> Subclasses
+        public override string Name
         {
-            get { return subclasses; }
+            get { return attributes.Get(x => x.Name); }
+            set { attributes.Set(x => x.Name, value); }
+        }
+
+        public override Type Type
+        {
+            get { return attributes.Get(x => x.Type); }
+            set { attributes.Set(x => x.Type, value); }
         }
 
         public object DiscriminatorValue
@@ -53,13 +48,19 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.DiscriminatorValue, value); }
         }
 
+        public string Extends
+        {
+            get { return attributes.Get(x => x.Extends); }
+            set { attributes.Set(x => x.Extends, value); }
+        }
+
         public bool Lazy
         {
             get { return attributes.Get(x => x.Lazy); }
             set { attributes.Set(x => x.Lazy, value); }
         }
 
-        public Type Proxy
+        public string Proxy
         {
             get { return attributes.Get(x => x.Proxy); }
             set { attributes.Set(x => x.Proxy, value); }
@@ -89,24 +90,24 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Abstract, value); }
         }
 
-        public IEnumerable<IMappingPart> UnmigratedParts
+        public bool IsSpecified<TResult>(Expression<Func<SubclassMapping, TResult>> property)
         {
-            get { return unmigratedParts; }
+            return attributes.IsSpecified(property);
         }
 
-        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
+        public bool HasValue<TResult>(Expression<Func<SubclassMapping, TResult>> property)
         {
-            get { return unmigratedAttributes; }
+            return attributes.HasValue(property);
         }
 
-        public void AddUnmigratedPart(IMappingPart part)
+        public void SetDefaultValue<TResult>(Expression<Func<SubclassMapping, TResult>> property, TResult value)
         {
-            unmigratedParts.Add(part);
+            attributes.SetDefault(property, value);
         }
 
-        public void AddUnmigratedAttribute(string attribute, string value)
+        public void OverrideAttributes(AttributeStore store)
         {
-            unmigratedAttributes.Add(attribute, value);
+            attributes = new AttributeStore<SubclassMapping>(store);
         }
     }
 }

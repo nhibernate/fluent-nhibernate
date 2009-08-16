@@ -1,181 +1,161 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
+using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
+using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Mapping
 {
-    public interface IManyToManyPart : ICollectionRelationship
+	public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild, ManyToManyMapping>
     {
-        void Inverse();
-        void WithTableName(string tableName);
-        string ChildKeyColumn { get; }
-        string ParentKeyColumn { get; }
-        Type ChildType { get; }
-        void WithChildKeyColumn(string name);
-        void WithParentKeyColumn(string name);
-        INotFoundExpression NotFound { get; }
-        CollectionCascadeExpression<IManyToManyPart> Cascade { get; }
-    }
-
-	public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>, IManyToManyPart
-    {
-        public string ChildKeyColumn { get; private set; }
-        public string ParentKeyColumn { get; private set; }
-        private readonly Cache<string, string> parentKeyProperties = new Cache<string, string>();
-        private readonly Cache<string, string> manyToManyProperties = new Cache<string, string>();
-        private readonly AccessStrategyBuilder<ManyToManyPart<TChild>> access;
-        private IndexMapping manyToManyIndex;
+	    private readonly Type entity;
+	    private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
+	    private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
+	    private IndexManyToManyPart manyToManyIndex;
+	    private readonly IList<string> childColumns = new List<string>();
+	    private readonly IList<string> parentColumns = new List<string>();
+	    private readonly Type childType;
+	    private Type valueType;
+	    private bool isTernary;
 
 	    public ManyToManyPart(Type entity, PropertyInfo property)
             : this(entity, property, property.PropertyType)
-	    {}
+	    {
+	        childType = property.PropertyType;
+	    }
 
 	    public ManyToManyPart(Type entity, MethodInfo method)
 	        : this(entity, method, method.ReturnType)
-        {}
+	    {
+	        childType = method.ReturnType;
+	    }
 
-        protected ManyToManyPart(Type entity, MemberInfo member, Type collectionType)
+	    protected ManyToManyPart(Type entity, MemberInfo member, Type collectionType)
             : base(entity, member, collectionType)
         {
-            access = new AccessStrategyBuilder<ManyToManyPart<TChild>>(this);
-            properties.Store("name", member.Name);
+	        this.entity = entity;
+	        childType = collectionType;
+
+	        fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Fetch, value));
+            notFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
         }
 
-	    public ManyToManyPart<TChild> WithChildKeyColumn(string childKeyColumn)
+        public override ICollectionMapping GetCollectionMapping()
+        {
+            var collection = base.GetCollectionMapping();
+
+            // key columns
+            if (parentColumns.Count == 0)
+                collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
+
+            foreach (var column in parentColumns)
+                collection.Key.AddColumn(new ColumnMapping { Name = column });
+
+            // child columns
+            if (childColumns.Count == 0)
+                ((ManyToManyMapping)collection.Relationship).AddDefaultColumn(new ColumnMapping { Name = typeof(TChild).Name + "_id" });
+
+            foreach (var column in childColumns)
+                ((ManyToManyMapping)collection.Relationship).AddColumn(new ColumnMapping { Name = column });
+
+            // HACK: shouldn't have to do this!
+            if (manyToManyIndex != null && collection is MapMapping)
+                ((MapMapping)collection).Index = manyToManyIndex.GetIndexMapping();
+
+            return collection;
+        }
+
+	    public ManyToManyPart<TChild> ChildKeyColumn(string childKeyColumn)
 		{
-			ChildKeyColumn = childKeyColumn;
+	        childColumns.Clear(); // support only one currently
+	        childColumns.Add(childKeyColumn);
 			return this;
 		}
 		
-		public ManyToManyPart<TChild> WithParentKeyColumn(string parentKeyColumn)
+		public ManyToManyPart<TChild> ParentKeyColumn(string parentKeyColumn)
 		{
-		    ParentKeyColumn = parentKeyColumn;
+            parentColumns.Clear(); // support only one currently
+            parentColumns.Add(parentKeyColumn);
 			return this;
 		}
 
-        public ManyToManyPart<TChild> WithForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName) {
-            parentKeyProperties.Store("foreign-key", parentForeignKeyName);
-            manyToManyProperties.Store("foreign-key", childForeignKeyName);
+        public ManyToManyPart<TChild> ForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName)
+        {
+            keyAttributes.Set(x => x.ForeignKey, parentForeignKeyName);
+            relationshipAttributes.Set(x => x.ForeignKey, childForeignKeyName);
             return this;
         }
 		
 		public FetchTypeExpression<ManyToManyPart<TChild>> FetchType
 		{
-			get
-			{
-				return new FetchTypeExpression<ManyToManyPart<TChild>>(this, manyToManyProperties);
-			}
+			get { return fetch; }
 		}
 
-		public override void Write(XmlElement classElement, IMappingVisitor visitor)
+        private void EnsureDictionary()
         {
-		    XmlElement collectionElement = classElement.AddElement(collectionType).WithProperties(properties);
-
-            if (!string.IsNullOrEmpty(TableName))
-                collectionElement.WithAtt("table", TableName);
-
-            if (batchSize > 0)
-                collectionElement.WithAtt("batch-size", batchSize.ToString());
-
-		    Cache.Write(collectionElement, visitor);
-
-            XmlElement key = collectionElement.AddElement("key");
-			key.WithAtt("column", ParentKeyColumn);
-		    key.WithProperties(parentKeyProperties);
-
-            if (indexMapping != null)
-                WriteIndexElement(collectionElement);
-            if (manyToManyIndex != null)
-                WriteIndexManyToManyElement(collectionElement);
-
-			XmlElement manyToManyElement = collectionElement.AddElement("many-to-many");
-			manyToManyElement.WithAtt("column", ChildKeyColumn);
-			manyToManyElement.WithAtt("class", typeof(TChild).AssemblyQualifiedName);
-			manyToManyElement.WithProperties(manyToManyProperties);
+            if (!typeof(IDictionary).IsAssignableFrom(childType))
+                throw new ArgumentException(member.Name + " must be of type IDictionary to be used in a non-generic ternary association. Type was: " + childType);
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(Expression<Func<TChild, TIndex>> indexSelector)
+        private void EnsureGenericDictionary()
         {
-            return AsTernaryAssociation(indexSelector, null);
+            if (!(childType.IsGenericType && childType.GetGenericTypeDefinition() == typeof(IDictionary<,>)))
+                throw new ArgumentException(member.Name + " must be of type IDictionary<> to be used in a ternary assocation. Type was: " + childType);
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<ToManyBase<ManyToManyPart<TChild>, TChild>.IndexMapping> customIndexMapping)
+        public ManyToManyPart<TChild> AsTernaryAssociation()
         {
-            var indexProperty = ReflectionHelper.GetProperty(indexSelector);
-            return AsTernaryAssociation<TIndex>(indexProperty.Name, customIndexMapping);
+            EnsureGenericDictionary();
+
+            var indexType = typeof(TChild).GetGenericArguments()[0];
+            var valueType = typeof(TChild).GetGenericArguments()[1];
+
+            return AsTernaryAssociation(indexType.Name + "_id", valueType.Name + "_id");
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn)
+        public ManyToManyPart<TChild> AsTernaryAssociation(string indexColumn, string valueColumn)
         {
-            return AsTernaryAssociation<TIndex>(indexColumn, null);
-        }
+            EnsureGenericDictionary();
 
-        public ManyToManyPart<TChild> AsTernaryAssociation<TIndex>(string indexColumn, Action<ToManyBase<ManyToManyPart<TChild>, TChild>.IndexMapping> customIndexMapping)
-        {
-            manyToManyIndex = new IndexMapping();
-            manyToManyIndex.WithColumn(indexColumn);
-            manyToManyIndex.WithType<TIndex>();
+            var indexType = typeof(TChild).GetGenericArguments()[0];
+            var valueType = typeof(TChild).GetGenericArguments()[1];
 
-            if (customIndexMapping != null)
-                customIndexMapping(manyToManyIndex);
+            manyToManyIndex = new IndexManyToManyPart(typeof(ManyToManyPart<TChild>));
+            manyToManyIndex.Column(indexColumn);
+            manyToManyIndex.Type(indexType);
+
+            ChildKeyColumn(valueColumn);
+            this.valueType = valueType;
+
+            isTernary = true;
 
             return this;
         }
 
-        protected void WriteIndexManyToManyElement(XmlElement collectionElement)
+        public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, Type valueType)
         {
-            var indexElement = collectionElement.AddElement("index-many-to-many");
-            manyToManyIndex.WriteAttributesToIndexElement(indexElement);
+            return AsTernaryAssociation(indexType, indexType.Name + "_id", valueType, valueType.Name + "_id");
         }
 
-    	/// <summary>
-        /// Set an attribute on the xml element produced by this many-to-many mapping.
-        /// </summary>
-        /// <param name="name">Attribute name</param>
-        /// <param name="value">Attribute value</param>
-        public override void SetAttribute(string name, string value)
+        public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, string indexColumn, Type valueType, string valueColumn)
         {
-            properties.Store(name, value);
-        }
+            EnsureDictionary();
 
-        public override void SetAttributes(Attributes atts)
-        {
-            foreach (var key in atts.Keys)
-            {
-                SetAttribute(key, atts[key]);
-            }
-        }
+            manyToManyIndex = new IndexManyToManyPart(typeof(ManyToManyPart<TChild>));
+            manyToManyIndex.Column(indexColumn);
+            manyToManyIndex.Type(indexType);
 
-        public override int LevelWithinPosition
-        {
-            get { return 1; }
-        }
+            ChildKeyColumn(valueColumn);
+            this.valueType = valueType;
 
-	    public override PartPosition PositionOnDocument
-	    {
-            get { return PartPosition.Anywhere; }
-	    }
+            isTernary = true;
 
-        void IManyToManyPart.Inverse()
-        {
-            Inverse();
-        }
-
-        void IManyToManyPart.WithTableName(string tableName)
-        {
-            WithTableName(tableName);
-        }
-
-        void IManyToManyPart.WithChildKeyColumn(string name)
-        {
-            WithChildKeyColumn(name);
-        }
-
-        void IManyToManyPart.WithParentKeyColumn(string name)
-        {
-            WithParentKeyColumn(name);
+            return this;
         }
 
         public Type ChildType
@@ -183,27 +163,45 @@ namespace FluentNHibernate.Mapping
             get { return typeof(TChild); }
         }
 
-        IAccessStrategyBuilder IRelationship.Access
-        {
-            get { return Access; }
-        }
-
         public NotFoundExpression<ManyToManyPart<TChild>> NotFound
         {
-            get
-            {
-                return new NotFoundExpression<ManyToManyPart<TChild>>(this, manyToManyProperties);
-            }
+            get { return notFound; }
         }
 
-        INotFoundExpression IManyToManyPart.NotFound
+	    protected override ICollectionRelationshipMapping GetRelationship()
+	    {
+	        var mapping = new ManyToManyMapping(relationshipAttributes.CloneInner())
+	        {
+	            ContainingEntityType = entity,
+                
+	        };
+
+            if (isTernary && valueType != null)
+                mapping.Class = new TypeReference(valueType);
+
+	        return mapping;
+	    }
+
+        /// <summary>
+        /// Sets the order-by clause for this one-to-many relationship.
+        /// </summary>
+        public ManyToManyPart<TChild> OrderBy(string orderBy)
         {
-            get { return NotFound; }
+            collectionAttributes.Set(x => x.OrderBy, orderBy);
+            return this;
         }
 
-        CollectionCascadeExpression<IManyToManyPart> IManyToManyPart.Cascade
-        {
-            get { return new CollectionCascadeExpression<IManyToManyPart>(this); }
-        }
+        public ManyToManyPart<TChild> ReadOnly()
+	    {
+            collectionAttributes.Set(x => x.Mutable, !nextBool);
+            nextBool = true;
+            return this;
+	    }
+
+	    public ManyToManyPart<TChild> Subselect(string subselect)
+	    {
+	        collectionAttributes.Set(x => x.Subselect, subselect);
+	        return this;
+	    }
     }
 }

@@ -1,6 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Automapping;
 using NHibernate.Cfg;
 
 namespace FluentNHibernate.Cfg
@@ -8,7 +9,7 @@ namespace FluentNHibernate.Cfg
     /// <summary>
     /// Container for automatic mappings
     /// </summary>
-    public class AutoMappingsContainer
+    public class AutoMappingsContainer : IEnumerable<AutoPersistenceModel>
     {
         private readonly IList<AutoPersistenceModel> mappings = new List<AutoPersistenceModel>();
         private string exportPath;
@@ -69,6 +70,16 @@ namespace FluentNHibernate.Cfg
 
                 mapping.Configure(cfg);
             }
+        }
+
+        public IEnumerator<AutoPersistenceModel> GetEnumerator()
+        {
+            return mappings.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

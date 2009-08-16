@@ -1,45 +1,81 @@
+using System;
+
 namespace FluentNHibernate.Mapping
 {
     public class OptimisticLockBuilder
     {
-        private const string AttributeKey = "optimistic-lock";
-        private readonly Cache<string, string> attributes;
+        private readonly Action<string> setter;
 
-        public OptimisticLockBuilder(Cache<string, string> attributes)
+        protected OptimisticLockBuilder(Action<string> setter)
         {
-            this.attributes = attributes;
+            this.setter = setter;
+        }
+
+        public void None()
+        {
+            setter("none");
+        }
+
+        public void Version()
+        {
+            setter("version");
+        }
+
+        public void Dirty()
+        {
+            setter("dirty");
+        }
+
+        public void All()
+        {
+            setter("all");
+        }
+    }
+
+    public class OptimisticLockBuilder<TParent> : OptimisticLockBuilder
+    {
+        private readonly TParent parent;
+
+        public OptimisticLockBuilder(TParent parent, Action<string> setter)
+            : base(setter)
+        {
+            this.parent = parent;
         }
 
         /// <summary>
         /// Use no locking strategy
         /// </summary>
-        public void None()
+        public new TParent None()
         {
-            attributes.Store(AttributeKey, "none");
+            base.None();
+            return parent;
         }
 
         /// <summary>
         /// Use version locking
         /// </summary>
-        public void Version()
+        public new TParent Version()
         {
-            attributes.Store(AttributeKey, "version");
+            base.Version();
+            return parent;
         }
 
         /// <summary>
         /// Use dirty locking
         /// </summary>
-        public void Dirty()
+        public new TParent Dirty()
         {
-            attributes.Store(AttributeKey, "dirty");
+            base.Dirty();
+            return parent;
         }
 
         /// <summary>
         /// Use all locking
         /// </summary>
-        public void All()
+        public new TParent All()
         {
-            attributes.Store(AttributeKey, "all");
+            base.All();
+            return parent;
         }
     }
 }

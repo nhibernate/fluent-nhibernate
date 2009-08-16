@@ -6,17 +6,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     public class ManyToOneTester
     {
         [Test]
-        public void Creating_a_many_to_one_reference()
+        public void CreatingAManyToOneReference()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map => map.References(x => x.Parent))
-                .Element("class/many-to-one")
-                    .HasAttribute("name", "Parent")
-                    .HasAttribute("column", "Parent_id");
+                .Element("class/many-to-one").HasAttribute("name", "Parent")
+                .Element("class/many-to-one/column").HasAttribute("name", "Parent_id");
         }
 
         [Test]
-        public void Many_to_one_reference_should_default_to_empty_cascade()
+        public void ManyToOneReferenceShouldDefaultToEmptyCascade()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map => map.References(x => x.Parent))
@@ -25,7 +24,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Many_to_one_reference_with_property_reference_should_set_the_property_ref_attribute()
+        public void ManyToOneReferenceWithPropertyReferenceShouldSetThePropertyRefAttribute()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map => map.References(x => x.Parent).PropertyRef(p => p.Name))
@@ -34,43 +33,43 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Creating_a_many_to_one_reference_sets_the_column_overrides()
+        public void CreatingAManyToOneReferenceSetsTheColumnOverrides()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map => map.References(x => x.Parent).WithForeignKey())
+                .ForMapping(map => map.References(x => x.Parent).ForeignKey())
                 .Element("class/many-to-one")
                     .HasAttribute("foreign-key", "FK_MappedObjectToParent");
         }
 
         [Test]
-        public void Many_to_one_uniqueKey_should_render_uniquekey_attribute()
+        public void ManyToOneUniqueKeyShouldRenderUniquekeyAttribute()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map => map.References(x => x.Parent).UniqueKey("uniqueKey"))
-                .Element("class/many-to-one")
+                .Element("class/many-to-one/column")
                     .HasAttribute("unique-key", "uniqueKey");
         }
 
         [Test]
-        public void Many_to_one_unique_should_render_unique_attribute()
+        public void ManyToOneUniqueShouldRenderUniqueAttribute()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map => map.References(x => x.Parent).Unique())
-                .Element("class/many-to-one")
+                .Element("class/many-to-one/column")
                     .HasAttribute("unique", "true");
         }
 
         [Test]
-        public void Many_to_one_unique_should_render_unique_attribute_false()
+        public void ManyToOneUniqueShouldRenderUniqueAttributeFalse()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map => map.References(x => x.Parent).Not.Unique())
-                .Element("class/many-to-one")
+                .Element("class/many-to-one/column")
                     .HasAttribute("unique", "false");
         }
 
         [Test]
-        public void Many_to_one_lazy_load_should_set_the_proxy_value_on_the_lazy_attribute()
+        public void ManyToOneLazyLoadShouldSetTheProxyValueOnTheLazyAttribute()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map => map.References(x => x.Parent).LazyLoad())
@@ -79,7 +78,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Many_to_one_lazy_load_should_set_the_proxy_value_on_the_lazy_attribute_false()
+        public void ManyToOneLazyLoadShouldSetTheProxyValueOnTheLazyAttributeFalse()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map => map.References(x => x.Parent).Not.LazyLoad())
@@ -88,55 +87,52 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Many_to_one_reference_can_be_set_as_not_nullable()
+        public void ManyToOneReferenceCanBeSetAsNotNullable()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
                     map.References(x => x.Parent)
-                      .Not.Nullable()
-                )
-                .Element("class/many-to-one")
-                    .HasAttribute("not-null", "true");
+                      .Not.Nullable())
+                .Element("class/many-to-one/column").HasAttribute("not-null", "true");
         }
 
         [Test]
-        public void Many_to_one_reference_can_be_set_as_nullable()
+        public void ManyToOneReferenceCanBeSetAsNullable()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
                     map.References(x => x.Parent)
                       .Nullable()
                 )
-                .Element("class/many-to-one")
-                    .HasAttribute("not-null", "false");
+                .Element("class/many-to-one/column").HasAttribute("not-null", "false");
         }
 
         [Test]
-        public void Many_to_one_can_have_multiple_columns_fluently()
+        public void ManyToOneCanHaveMultipleColumnsFluently()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
                     map.References(x => x.Parent)
-                      .WithColumns(x => x.IdPart1, x => x.IdPart2, x => x.IdPart3))
+                      .Columns(x => x.IdPart1, x => x.IdPart2, x => x.IdPart3))
                 .Element("class/many-to-one/column[@name='IdPart1']").Exists()
                 .Element("class/many-to-one/column[@name='IdPart2']").Exists()
                 .Element("class/many-to-one/column[@name='IdPart3']").Exists();
         }
 
         [Test]
-        public void Many_to_one_can_have_multiple_columns_with_strings()
+        public void ManyToOneCanHaveMultipleColumnsWithStrings()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
                     map.References(x => x.Parent)
-                      .WithColumns("IdPart1", "IdPart2", "IdPart3"))
+                      .Columns("IdPart1", "IdPart2", "IdPart3"))
                 .Element("class/many-to-one/column[@name='IdPart1']").Exists()
                 .Element("class/many-to-one/column[@name='IdPart2']").Exists()
                 .Element("class/many-to-one/column[@name='IdPart3']").Exists();
         }
 
         [Test]
-        public void NotFound_sets_attribute()
+        public void NotFoundSetsAttribute()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
@@ -146,7 +142,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Nullable_Resets_Not_Value()
+        public void NullableResetsNotValue()
         {
             //Regression test for issue 189
             new MappingTester<MappedObject>()
@@ -157,14 +153,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void LazyLoad_Resets_Not_Value()
+        public void LazyLoadResetsNotValue()
         {
             //Regression test for issue 189
             new MappingTester<MappedObject>()
                 .ForMapping(map =>
                     map.References(x => x.Parent)
                         .Not.LazyLoad().Not.Nullable())
-                .Element("class/many-to-one").HasAttribute("not-null", "true");
+                .Element("class/many-to-one/column").HasAttribute("not-null", "true");
         }
     }
 }

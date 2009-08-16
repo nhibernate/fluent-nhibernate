@@ -1,4 +1,7 @@
 using System;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Instances;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions
@@ -8,28 +11,26 @@ namespace FluentNHibernate.Conventions
     /// attribute based conventions.
     /// </summary>
     /// <typeparam name="T">Attribute identifier</typeparam>
-    public abstract class AttributePropertyConvention<T> : IPropertyConvention
+    public abstract class AttributePropertyConvention<T> : IPropertyConvention, IPropertyConventionAcceptance
         where T : Attribute
     {
-        public bool Accept(IProperty target)
+        public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
         {
-            var attribute = Attribute.GetCustomAttribute(target.Property, typeof(T)) as T;
-
-            return attribute != null;
+            criteria.Expect(property => Attribute.GetCustomAttribute(property.Property, typeof(T)) as T != null);
         }
 
-        public void Apply(IProperty target)
+        public void Apply(IPropertyInstance instance)
         {
-            var attribute = Attribute.GetCustomAttribute(target.Property, typeof(T)) as T;
-            
-            Apply(attribute, target);
+            var attribute = Attribute.GetCustomAttribute(instance.Property, typeof(T)) as T;
+
+            Apply(attribute, instance);
         }
 
         /// <summary>
         /// Apply changes to a property with an attribute matching T.
         /// </summary>
         /// <param name="attribute">Instance of attribute found on property.</param>
-        /// <param name="target">Property with attribute</param>
-        protected abstract void Apply(T attribute, IProperty target);
+        /// <param name="instance">Property with attribute</param>
+        protected abstract void Apply(T attribute, IPropertyInstance instance);
     }
 }

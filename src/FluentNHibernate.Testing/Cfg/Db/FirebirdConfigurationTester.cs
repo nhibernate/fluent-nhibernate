@@ -40,5 +40,13 @@ namespace FluentNHibernate.Testing.Cfg.Db
         {
             _props["use_outer_join"].ShouldEqual("true");
         }
+
+        [Test]
+        public void ShouldBeAbleToSpecifyConnectionStringDirectly()
+        {
+            _config.ConnectionString("conn");
+            _props = _config.ToProperties();
+            _props["connection.connection_string"].ShouldEqual("conn");
+        }
     }
 }

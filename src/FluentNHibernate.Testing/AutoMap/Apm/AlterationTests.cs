@@ -1,10 +1,10 @@
-﻿using FluentNHibernate.AutoMap;
-using FluentNHibernate.AutoMap.Alterations;
-using FluentNHibernate.AutoMap.TestFixtures;
+﻿using FluentNHibernate.Automapping;
+using FluentNHibernate.Automapping.Alterations;
+using FluentNHibernate.Automapping.TestFixtures;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace FluentNHibernate.Testing.AutoMap.Apm
+namespace FluentNHibernate.Testing.Automapping.Apm
 {
     [TestFixture]
     public class AlterationTests
@@ -14,7 +14,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         [SetUp]
         public void CreateAutoMapper()
         {
-            model = AutoPersistenceModel.MapEntitiesFromAssemblyOf<ExampleClass>()
+            model = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == typeof(ExampleClass).Namespace);
         }
 
@@ -24,7 +24,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
             var alteration = MockRepository.GenerateMock<IAutoMappingAlteration>();
 
             model
-                .WithAlterations(alterations => alterations.Add(alteration))
+                .Alterations(alterations => alterations.Add(alteration))
                 .CompileMappings();
 
             alteration.AssertWasCalled(x => x.Alter(model));
@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         public void UseOverridesAddsAlteration()
         {
             model.UseOverridesFromAssemblyOf<ExampleClass>()
-                .WithAlterations(alterations =>
+                .Alterations(alterations =>
                     alterations.ShouldContain(a => a is AutoMappingOverrideAlteration));
         }
     }

@@ -1,52 +1,60 @@
-using System.Collections.Generic;
+using System;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
-    public class IdMapping : MappingBase, IIdentityMapping, INameable
+    public class IdMapping : MappingBase, IIdentityMapping, IHasColumnMappings
     {
         private readonly AttributeStore<IdMapping> attributes;
-        private readonly IList<ColumnMapping> columns;
+        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
 
         public IdMapping()
+            : this(new AttributeStore())
+        {}
+
+        public IdMapping(AttributeStore underlyingStore)
         {
-            attributes = new AttributeStore<IdMapping>();
-            columns = new List<ColumnMapping>();
+            attributes = new AttributeStore<IdMapping>(underlyingStore);
         }
 
-        public IdMapping(ColumnMapping columnMapping) : this()
-        {
-            AddIdColumn(columnMapping);
-        }
-
-        public IdGeneratorMapping Generator { get; set; }
-
-        public void AddIdColumn(ColumnMapping column)
+        public void AddColumn(ColumnMapping column)
         {
             columns.Add(column);
         }
 
-        public IEnumerable<ColumnMapping> Columns
+        public void AddDefaultColumn(ColumnMapping column)
+        {
+            columns.AddDefault(column);
+        }
+
+        public void ClearColumns()
+        {
+            columns.Clear();
+        }
+
+        public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
         }
 
         public PropertyInfo PropertyInfo { get; set; }
 
+        public GeneratorMapping Generator
+        {
+            get { return attributes.Get(x => x.Generator); }
+            set { attributes.Set(x => x.Generator, value); }
+        }
+
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessId(this);
 
-            if (Generator != null)
-                visitor.Visit(Generator);
-
             foreach (var column in Columns)
                 visitor.Visit(column);
-        }
 
-        public bool IsNameSpecified
-        {
-            get { return Attributes.IsSpecified(x => x.Name); }
+            if (Generator != null)
+                visitor.Visit(Generator);
         }
 
         public string Name
@@ -55,10 +63,45 @@ namespace FluentNHibernate.MappingModel.Identity
             set { attributes.Set(x => x.Name, value); }
         }
 
-        public AttributeStore<IdMapping> Attributes
+        public string Access
         {
-            get { return attributes; }
+            get { return attributes.Get(x => x.Access); }
+            set { attributes.Set(x => x.Access, value); }
         }
-        
+
+        public TypeReference Type
+        {
+            get { return attributes.Get(x => x.Type); }
+            set { attributes.Set(x => x.Type, value); }
+        }
+
+        public string UnsavedValue
+        {
+            get { return attributes.Get(x => x.UnsavedValue); }
+            set { attributes.Set(x => x.UnsavedValue, value); }
+        }
+
+        public int Length
+        {
+            get { return attributes.Get(x => x.Length); }
+            set { attributes.Set(x => x.Length, value); }
+        }
+
+        public Type ContainingEntityType { get; set; }
+
+        public bool IsSpecified<TResult>(Expression<Func<IdMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<IdMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<IdMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
+        }
     }
 }

@@ -4,32 +4,26 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
-    public abstract class ClassMappingBase : MappingBase, INameable, IHasMappedMembers
+    public abstract class ClassMappingBase : MappingBase, IHasMappedMembers
     {
-        private readonly AttributeStore<ClassMappingBase> attributes;
         private readonly MappedMembers mappedMembers;
-        public Type Type { get; set; }
+        private readonly IList<ISubclassMapping> subclasses;
 
-        protected ClassMappingBase(AttributeStore underlyingStore)
+        protected ClassMappingBase()
         {
-            attributes = new AttributeStore<ClassMappingBase>(underlyingStore);
             mappedMembers = new MappedMembers();
+            subclasses = new List<ISubclassMapping>();
         }
 
-        public string Name
-        {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
-        }
-
-        public bool IsNameSpecified
-        {
-            get { return attributes.IsSpecified(x => x.Name); }
-        }
+        public abstract string Name { get; set; }
+        public abstract Type Type { get; set;}
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             mappedMembers.AcceptVisitor(visitor);
+
+            foreach (var subclass in Subclasses)
+                visitor.Visit(subclass);
         }
 
         #region IHasMappedMembers
@@ -49,9 +43,29 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mappedMembers.Properties; }
         }
 
-        public IEnumerable<ComponentMappingBase> Components
+        public IEnumerable<IComponentMapping> Components
         {
             get { return mappedMembers.Components; }
+        }
+
+        public IEnumerable<OneToOneMapping> OneToOnes
+        {
+            get { return mappedMembers.OneToOnes; }
+        }
+
+        public IEnumerable<AnyMapping> Anys
+        {
+            get { return mappedMembers.Anys; }
+        }
+
+        public IEnumerable<JoinMapping> Joins
+        {
+            get { return mappedMembers.Joins; }
+        }
+
+        public IEnumerable<ISubclassMapping> Subclasses
+        {
+            get { return subclasses; }
         }
 
         public void AddProperty(PropertyMapping property)
@@ -59,9 +73,19 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers.AddProperty(property);
         }
 
+        public void AddOrReplaceProperty(PropertyMapping mapping)
+        {
+            mappedMembers.AddOrReplaceProperty(mapping);
+        }
+
         public void AddCollection(ICollectionMapping collection)
         {
             mappedMembers.AddCollection(collection);
+        }
+
+        public void AddOrReplaceCollection(ICollectionMapping mapping)
+        {
+            mappedMembers.AddOrReplaceCollection(mapping);
         }
 
         public void AddReference(ManyToOneMapping manyToOne)
@@ -69,9 +93,49 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers.AddReference(manyToOne);
         }
 
-        public void AddComponent(ComponentMappingBase componentMapping)
+        public void AddOrReplaceReference(ManyToOneMapping manyToOne)
+        {
+            mappedMembers.AddOrReplaceReference(manyToOne);
+        }
+
+        public void AddComponent(IComponentMapping componentMapping)
         {
             mappedMembers.AddComponent(componentMapping);
+        }
+
+        public void AddOrReplaceComponent(IComponentMapping mapping)
+        {
+            mappedMembers.AddOrReplaceComponent(mapping);
+        }
+
+        public void AddOneToOne(OneToOneMapping mapping)
+        {
+            mappedMembers.AddOneToOne(mapping);
+        }
+
+        public void AddOrReplaceOneToOne(OneToOneMapping mapping)
+        {
+            mappedMembers.AddOrReplaceOneToOne(mapping);
+        }
+
+        public void AddAny(AnyMapping mapping)
+        {
+            mappedMembers.AddAny(mapping);
+        }
+
+        public void AddOrReplaceAny(AnyMapping mapping)
+        {
+            mappedMembers.AddOrReplaceAny(mapping);
+        }
+
+        public void AddJoin(JoinMapping mapping)
+        {
+            mappedMembers.AddJoin(mapping);
+        }
+
+        public void AddSubclass(ISubclassMapping subclass)
+        {
+            subclasses.Add(subclass);
         }
 
         #endregion
@@ -81,5 +145,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
             return string.Format("ClassMapping({0})", Type.Name);
         }
 
+        public abstract void MergeAttributes(AttributeStore store);
     }
 }

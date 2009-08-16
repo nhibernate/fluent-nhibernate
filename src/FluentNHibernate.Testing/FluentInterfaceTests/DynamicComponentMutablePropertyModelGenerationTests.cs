@@ -1,8 +1,59 @@
+using System.Collections;
+using System.Linq;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
+    [TestFixture]
+    public class DynamicComponentSubPartTests : BaseModelFixture
+    {
+        [Test]
+        public void ShouldGeneratePropertyMapUsingString()
+        {
+            DynamicComponent<IDictionary>()
+                .Mapping(x => x.Map("name"))
+                .ModelShouldMatch(x =>
+                {
+                    x.Properties.Count().ShouldEqual(1);
+                    x.Properties.First().Name.ShouldEqual("name");
+                });
+        }
+
+        [Test]
+        public void ShouldGeneratePropertyMapUsingStringWithDefaultTypeOfString()
+        {
+            DynamicComponent<IDictionary>()
+                .Mapping(x => x.Map("name"))
+                .ModelShouldMatch(x =>
+                {
+                    x.Properties.First().Type.GetUnderlyingSystemType().ShouldEqual(typeof(string));
+                });
+        }
+
+        [Test]
+        public void ShouldGeneratePropertyMapUsingStringWithExplicitType()
+        {
+            DynamicComponent<IDictionary>()
+                .Mapping(x => x.Map<int>("name"))
+                .ModelShouldMatch(x =>
+                {
+                    x.Properties.First().Type.GetUnderlyingSystemType().ShouldEqual(typeof(int));
+                });
+        }
+
+        [Test]
+        public void ShouldGeneratePropertyMap()
+        {
+            DynamicComponent<IDictionary>()
+                .Mapping(m => m.Map(x => x["name"]))
+                .ModelShouldMatch(x =>
+                {
+                    x.Properties.Count().ShouldEqual(1);
+                    x.Properties.First().Name.ShouldEqual("name");
+                });
+        }
+    }
     [TestFixture]
     public class DynamicComponentMutablePropertyModelGenerationTests : BaseModelFixture
     {

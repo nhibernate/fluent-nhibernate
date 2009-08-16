@@ -1,52 +1,53 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
     public class JoinedSubclassMapping : ClassMappingBase, ISubclassMapping
     {
-        private readonly AttributeStore<JoinedSubclassMapping> attributes;
-        private readonly IList<JoinedSubclassMapping> subclasses;
-        private readonly List<IMappingPart> unmigratedParts = new List<IMappingPart>();
-        private readonly IDictionary<string, string> unmigratedAttributes = new Dictionary<string, string>();
-        public KeyMapping Key { get; set; }
+        private AttributeStore<JoinedSubclassMapping> attributes;
 
         public JoinedSubclassMapping() : this(new AttributeStore())
         {}
 
-        protected JoinedSubclassMapping(AttributeStore store) : base(store)
+        public JoinedSubclassMapping(AttributeStore store)
         {
-            subclasses = new List<JoinedSubclassMapping>();
             attributes = new AttributeStore<JoinedSubclassMapping>(store);
-        }
-
-        public AttributeStore<JoinedSubclassMapping> Attributes
-        {
-            get { return attributes; }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessJoinedSubclass(this);
-
-            if(Key != null)
+            
+            if (Key != null)
                 visitor.Visit(Key);
-
-            foreach (var subclass in subclasses)
-                visitor.Visit(subclass);
 
             base.AcceptVisitor(visitor);
         }
 
-        public IEnumerable<JoinedSubclassMapping> Subclasses
+        public override void MergeAttributes(AttributeStore store)
         {
-            get { return subclasses; }
+            attributes.Merge(new AttributeStore<JoinedSubclassMapping>(store));
         }
 
-        public void AddSubclass(JoinedSubclassMapping joinedSubclassMapping)
+        public override string Name
         {
-            subclasses.Add(joinedSubclassMapping);
+            get { return attributes.Get(x => x.Name); }
+            set { attributes.Set(x => x.Name, value); }
+        }
+
+        public override Type Type
+        {
+            get { return attributes.Get(x => x.Type); }
+            set { attributes.Set(x => x.Type, value); }
+        }
+
+        public KeyMapping Key
+        {
+            get { return attributes.Get(x => x.Key); }
+            set { attributes.Set(x => x.Key, value); }
         }
 
         public string TableName
@@ -61,13 +62,19 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Schema, value); }
         }
 
+        public string Extends
+        {
+            get { return attributes.Get(x => x.Extends); }
+            set { attributes.Set(x => x.Extends, value); }
+        }
+
         public string Check
         {
             get { return attributes.Get(x => x.Check); }
             set { attributes.Set(x => x.Check, value); }
         }
 
-        public Type Proxy
+        public string Proxy
         {
             get { return attributes.Get(x => x.Proxy); }
             set { attributes.Set(x => x.Proxy, value); }
@@ -103,24 +110,42 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Abstract, value); }
         }
 
-        public IEnumerable<IMappingPart> UnmigratedParts
+        public string Subselect
         {
-            get { return unmigratedParts; }
+            get { return attributes.Get(x => x.Subselect); }
+            set { attributes.Set(x => x.Subselect, value); }
         }
 
-        public IEnumerable<KeyValuePair<string, string>> UnmigratedAttributes
+        public TypeReference Persister
         {
-            get { return unmigratedAttributes; }
+            get { return attributes.Get(x => x.Persister); }
+            set { attributes.Set(x => x.Persister, value); }
         }
 
-        public void AddUnmigratedPart(IMappingPart part)
+        public int BatchSize
         {
-            unmigratedParts.Add(part);
+            get { return attributes.Get(x => x.BatchSize); }
+            set { attributes.Set(x => x.BatchSize, value); }
         }
 
-        public void AddUnmigratedAttribute(string attribute, string value)
+        public bool IsSpecified<TResult>(Expression<Func<JoinedSubclassMapping, TResult>> property)
         {
-            unmigratedAttributes.Add(attribute, value);
+            return attributes.IsSpecified(property);
+        }
+
+        public bool HasValue<TResult>(Expression<Func<JoinedSubclassMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public void SetDefaultValue<TResult>(Expression<Func<JoinedSubclassMapping, TResult>> property, TResult value)
+        {
+            attributes.SetDefault(property, value);
+        }
+
+        public void OverrideAttributes(AttributeStore store)
+        {
+            attributes = new AttributeStore<JoinedSubclassMapping>(store);
         }
     }
 }

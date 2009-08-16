@@ -17,15 +17,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         private readonly PersistenceModel model;
         private string currentPath;
 
-        public MappingTester(XmlDocument document)
-            :this()
-        {
-            this.document = document;
-        }
-
         public MappingTester()
+            : this(new PersistenceModel())
+        {}
+
+        public MappingTester(PersistenceModel model)
         {
-            model = new PersistenceModel();
+            this.model = model;
             _visitor = new MappingVisitor(new Configuration());
         }
 
@@ -40,7 +38,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public virtual MappingTester<T> Conventions(Action<IConventionFinder> conventionFinderAction)
         {
-            conventionFinderAction(model.ConventionFinder);
+            conventionFinderAction(model.Conventions);
             return this;
         }
 
@@ -52,15 +50,21 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             return ForMapping(classMap);
         }
 
-        public virtual MappingTester<T> ForMapping(IClassMap classMap)
+        public virtual MappingTester<T> ForMapping(ClassMap<T> classMap)
         {
-            model.Add(classMap);
-            model.ApplyConventions();
+            if (classMap  != null)
+                model.Add(classMap);
 
             var mappings = model.BuildMappings();
+            var foundMapping = mappings
+                .Where(x => x.Classes.FirstOrDefault(c => c.Type == typeof(T)) != null)
+                .FirstOrDefault();
+
+            if (foundMapping == null)
+                throw new InvalidOperationException("Could not find mapping for class '" + typeof(T).Name + "'");
 
             document = new MappingXmlSerializer()
-                .Serialize(mappings.First());
+                .Serialize(foundMapping);
             currentElement = document.DocumentElement;
 
             return this;
@@ -83,13 +87,20 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public virtual MappingTester<T> HasAttribute(string name, string value)
         {
-            currentElement.AttributeShouldEqual(name, value);
+            Assert.IsNotNull(currentElement, "Couldn't find element matching '" + currentPath + "'");
+
+            var actual = currentElement.GetAttribute(name);
+
+            Assert.AreEqual(value, actual,
+                "Attribute '" + name + "' of '" + currentPath + "' didn't match.");
 
             return this;
         }
 
         public virtual MappingTester<T> HasAttribute(string name, Func<string, bool> predicate)
         {
+            Assert.IsNotNull(currentElement, "Couldn't find element matching '" + currentPath + "'");
+
             currentElement.HasAttribute(name).ShouldBeTrue();
 
             predicate(currentElement.Attributes[name].Value).ShouldBeTrue();
@@ -143,6 +154,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public MappingTester<T> ChildrenDontContainAttribute(string key, string value)
         {
+            Assert.IsNotNull(currentElement, "Couldn't find element matching '" + currentPath + "'");
+
             foreach (XmlElement node in currentElement.ChildNodes)
             {
                 if (node.HasAttribute(key))
@@ -153,7 +166,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public MappingTester<T> ValueEquals(string value)
         {
-            Assert.That(currentElement.InnerXml, Is.EqualTo(value));
+            currentElement.InnerXml.ShouldEqual(value);
 
             return this;
         }

@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 using NUnit.Framework;
 using System.Linq.Expressions;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     [TestFixture]
     public class PrivateAutoMappingTester
@@ -43,7 +44,7 @@ namespace FluentNHibernate.Testing.AutoMap
             Model<ExampleClass>(p => p.Name.StartsWith("_"));
 
             Test<ExampleClass>(mapping =>
-                Assert.Contains(ReflectionHelper.GetProperty(ExampleClass.PrivateProperties.Property).Name, (ICollection)mapping.PropertiesMapped));
+                mapping.Properties.ShouldContain(x => x.PropertyInfo == ReflectionHelper.GetProperty(ExampleClass.PrivateProperties.Property)));
         }
 
         [Test]
@@ -52,7 +53,7 @@ namespace FluentNHibernate.Testing.AutoMap
             Model<ExampleClass>(p => p.Name.StartsWith("asdf"));
 
             Test<ExampleClass>(mapping =>
-                mapping.PropertiesMapped.ShouldBeEmpty());
+                mapping.Properties.ShouldBeEmpty());
         }
 
         [Test]
@@ -61,22 +62,22 @@ namespace FluentNHibernate.Testing.AutoMap
             Model<ExampleParent>(p => p.Name.StartsWith("_"));
 
             Test<ExampleParent>(mapping =>
-                Assert.Contains(ReflectionHelper.GetProperty(ExampleParent.PrivateProperties.Children).Name, (ICollection)mapping.PropertiesMapped));
+                mapping.Collections.ShouldContain(x => x.MemberInfo == ReflectionHelper.GetProperty(ExampleParent.PrivateProperties.Children)));
         }
 
         private void Model<T>(Func<PropertyInfo, bool> convention)
         {
             model = new PrivateAutoPersistenceModel()
-                .WithSetup(conventions => conventions.FindMappablePrivateProperties = convention);
+                .Setup(conventions => conventions.FindMappablePrivateProperties = convention);
 
             model.AutoMap<T>();
         }
 
-        private void Test<T>(Action<AutoMap<T>> mapping)
+        private void Test<T>(Action<ClassMapping> mapping)
         {
             var map = model.FindMapping<T>();
 
-            mapping((AutoMap<T>)map);
+            mapping(map.GetClassMapping());
         }
     }
 }

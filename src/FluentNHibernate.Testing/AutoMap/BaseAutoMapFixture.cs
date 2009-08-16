@@ -1,10 +1,10 @@
 using System;
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg.Db;
 using NHibernate.Cfg;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.AutoMap
+namespace FluentNHibernate.Testing.Automapping
 {
     public abstract class BaseAutoMapFixture
     {
@@ -23,13 +23,12 @@ namespace FluentNHibernate.Testing.AutoMap
 
         protected void Model<T>(Action<AutoPersistenceModel> modelSetup)
         {
-            apm = AutoPersistenceModel.MapEntitiesFromAssemblyOf<T>();
+            apm = AutoMap.AssemblyOf<T>();
             modelSetup(apm);
         }
 
         protected void Test<T>(Action<AutoMappingTester<T>> mappingTester)
         {
-            apm.Configure(cfg);
             mappingTester(new AutoMappingTester<T>(apm));
         }
     }

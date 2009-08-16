@@ -1,11 +1,13 @@
 using System;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt
 {
-    internal class BuiltJoinConvention : BuiltConventionBase<IJoin>, IJoinConvention
+    internal class BuiltJoinConvention : BuiltConventionBase<IJoinInspector, IJoinInstance>, IJoinConvention
     {
-        public BuiltJoinConvention(Func<IJoin, bool> accept, Action<IJoin> convention)
+        public BuiltJoinConvention(Action<IAcceptanceCriteria<IJoinInspector>> accept, Action<IJoinInstance> convention)
             : base(accept, convention)
         { }
     }

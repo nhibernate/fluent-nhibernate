@@ -1,28 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Xml;
-using FluentNHibernate.Mapping;
+﻿using System.Xml;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlCompositeElementWriter : NullMappingModelVisitor, IXmlWriter<CompositeElementMapping>
     {
-        private readonly IXmlWriter<PropertyMapping> propertyWriter;
+        private readonly IXmlWriterServiceLocator serviceLocator;
         protected XmlDocument document;
 
-        public XmlCompositeElementWriter(IXmlWriter<PropertyMapping> propertyWriter)
+        public XmlCompositeElementWriter(IXmlWriterServiceLocator serviceLocator)
         {
-            this.propertyWriter = propertyWriter;
+            this.serviceLocator = serviceLocator;
         }
-
-        public override void Visit(PropertyMapping propertyMapping)
-        {
-            var propertyXml = propertyWriter.Write(propertyMapping);
-
-            document.ImportAndAppendChild(propertyXml);
-        }
-
-        //TODO: Implement Visit for ManyToOneMapping when writer is available
 
         public XmlDocument Write(CompositeElementMapping compositeElement)
         {
@@ -31,29 +21,38 @@ namespace FluentNHibernate.MappingModel.Output
             return document;
         }
 
-        public override void ProcessCompositeElement(CompositeElementMapping compositeElementMapping)
+        public override void ProcessCompositeElement(CompositeElementMapping mapping)
         {
             document = new XmlDocument();
-            var element = document.CreateElement("composite-element");
 
-            var typeName = compositeElementMapping.Type != null ? compositeElementMapping.Type.AssemblyQualifiedName : string.Empty;
-            element.WithAtt("class", typeName);
+            var element = document.AddElement("composite-element");
 
-            foreach (var attribute in compositeElementMapping.UnmigratedAttributes)
-                element.WithAtt(attribute.Key, attribute.Value);
+            if (mapping.HasValue(x => x.Class))
+                element.WithAtt("class", mapping.Class);
+        }
 
-            var sortedUnmigratedParts = new List<IMappingPart>(compositeElementMapping.UnmigratedParts);
-            sortedUnmigratedParts.Sort(new MappingPartComparer(compositeElementMapping.UnmigratedParts));
-            foreach (var part in sortedUnmigratedParts)
-            {
-                part.Write(element, null);
-            }
-            foreach (var attribute in compositeElementMapping.UnmigratedAttributes)
-            {
-                element.WithAtt(attribute.Key, attribute.Value);
-            }
+        public override void Visit(PropertyMapping propertyMapping)
+        {
+            var writer = serviceLocator.GetWriter<PropertyMapping>();
+            var xml = writer.Write(propertyMapping);
 
-            document.AppendChild(element);
+            document.ImportAndAppendChild(xml);
+        }
+
+        public override void Visit(ManyToOneMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<ManyToOneMapping>();
+            var xml = writer.Write(mapping);
+
+            document.ImportAndAppendChild(xml);
+        }
+
+        public override void Visit(ParentMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<ParentMapping>();
+            var xml = writer.Write(mapping);
+
+            document.ImportAndAppendChild(xml);
         }
     }
 }

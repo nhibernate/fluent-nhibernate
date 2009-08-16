@@ -1,3 +1,4 @@
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 
@@ -9,7 +10,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void AbstractShouldSetModelAbstractPropertyToTrue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Abstract())
                 .ModelShouldMatch(x => x.Abstract.ShouldBeTrue());
         }
@@ -17,7 +18,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotAbstractShouldSetModelAbstractPropertyToFalse()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Not.Abstract())
                 .ModelShouldMatch(x => x.Abstract.ShouldBeFalse());
         }
@@ -25,7 +26,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void DynamicInsertShouldSetModelDynamicInsertPropertyToTrue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.DynamicInsert())
                 .ModelShouldMatch(x => x.DynamicInsert.ShouldBeTrue());
         }
@@ -33,7 +34,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotDynamicInsertShouldSetModelDynamicInsertPropertyToFalse()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Not.DynamicInsert())
                 .ModelShouldMatch(x => x.DynamicInsert.ShouldBeFalse());
         }
@@ -41,7 +42,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void DynamicUpdateShouldSetModelDynamicUpdatePropertyToTrue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.DynamicUpdate())
                 .ModelShouldMatch(x => x.DynamicUpdate.ShouldBeTrue());
         }
@@ -49,7 +50,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotDynamicUpdateShouldSetModelDynamicUpdatePropertyToFalse()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Not.DynamicUpdate())
                 .ModelShouldMatch(x => x.DynamicUpdate.ShouldBeFalse());
         }
@@ -57,39 +58,39 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void LazyLoadShouldSetModelLazyPropertyToTrue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldBeTrue());
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(true));
         }
 
         [Test]
         public void NotLazyLoadShouldSetModelLazyPropertyToFalse()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Not.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldBeFalse());
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(false));
         }
 
         [Test]
         public void ProxyGenericShouldSetModelProxyPropertyToType()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Proxy<FakeProxyType>())
-                .ModelShouldMatch(x => x.Proxy.ShouldEqual(typeof(FakeProxyType)));
+                .ModelShouldMatch(x => x.Proxy.ShouldEqual(typeof(FakeProxyType).AssemblyQualifiedName));
         }
 
         [Test]
         public void ProxyShouldSetModelProxyPropertyToType()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Proxy(typeof(FakeProxyType)))
-                .ModelShouldMatch(x => x.Proxy.ShouldEqual(typeof(FakeProxyType)));
+                .ModelShouldMatch(x => x.Proxy.ShouldEqual(typeof(FakeProxyType).AssemblyQualifiedName));
         }
 
         [Test]
         public void SelectBeforeUpdateShouldSetModelSelectBeforeUpdatePropertyToTrue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.SelectBeforeUpdate())
                 .ModelShouldMatch(x => x.SelectBeforeUpdate.ShouldBeTrue());
         }
@@ -97,7 +98,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotSelectBeforeUpdateShouldSetModelSelectBeforeUpdatePropertyToFalse()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.Not.SelectBeforeUpdate())
                 .ModelShouldMatch(x => x.SelectBeforeUpdate.ShouldBeFalse());
         }
@@ -105,23 +106,23 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void WithTableNameShouldSetModelTableNamePropertyToValue()
         {
-            JoinedSubClass<ChildRecord>()
-                .Mapping(m => m.WithTableName("table"))
+            JoinedSubclass<ChildRecord>()
+                .Mapping(m => m.Table("table"))
                 .ModelShouldMatch(x => x.TableName.ShouldEqual("table"));
         }
 
         [Test]
         public void SchemaIsShouldSetModelSchemaPropertyToValue()
         {
-            JoinedSubClass<ChildRecord>()
-                .Mapping(m => m.SchemaIs("schema"))
+            JoinedSubclass<ChildRecord>()
+                .Mapping(m => m.Schema("schema"))
                 .ModelShouldMatch(x => x.Schema.ShouldEqual("schema"));
         }
 
         [Test]
         public void CheckConstraintShouldSetModelCheckPropertyToValue()
         {
-            JoinedSubClass<ChildRecord>()
+            JoinedSubclass<ChildRecord>()
                 .Mapping(m => m.CheckConstraint("constraint"))
                 .ModelShouldMatch(x => x.Check.ShouldEqual("constraint"));
         }

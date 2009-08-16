@@ -45,41 +45,44 @@ namespace FluentNHibernate.Testing.ConventionsTests.Defaults
         [Test]
         public void ShouldntAcceptIfTypeExplictlySet()
         {
-            var target = MockRepository.GenerateStub<IProperty>();
+            Assert.Fail("Awaiting convention DSL");
+            //var target = MockRepository.GenerateStub<IProperty>();
 
-            target.Stub(x => x.HasAttribute("type"))
-                .Return(true);
+            //target.Stub(x => x.HasAttribute("type"))
+            //    .Return(true);
 
-            convention.Accept(target)
-                .ShouldBeFalse();
+            //convention.Accept(target)
+            //    .ShouldBeFalse();
         }
 
         [Test]
         public void ShouldntAcceptEnumWithExplicitType()
         {
-            var target = MockRepository.GenerateStub<IProperty>();
+            Assert.Fail("Awaiting convention DSL");
+            //var target = MockRepository.GenerateStub<IProperty>();
 
-            target.Stub(x => x.PropertyType)
-                .Return(typeof(TestEnum));
-            target.Stub(x => x.HasAttribute("type"))
-                .Return(true);
+            //target.Stub(x => x.PropertyType)
+            //    .Return(typeof(TestEnum));
+            //target.Stub(x => x.HasAttribute("type"))
+            //    .Return(true);
 
-            convention.Accept(target)
-                .ShouldBeFalse();
+            //convention.Accept(target)
+            //    .ShouldBeFalse();
         }
 
         [Test]
         public void ShouldntAcceptPropertyWithExplicitType()
         {
-            var target = MockRepository.GenerateStub<IProperty>();
+            Assert.Fail("Awaiting convention DSL");
+            //var target = MockRepository.GenerateStub<IProperty>();
 
-            target.Stub(x => x.PropertyType)
-                .Return(typeof(int));
-            target.Stub(x => x.HasAttribute("type"))
-                .Return(true);
+            //target.Stub(x => x.PropertyType)
+            //    .Return(typeof(int));
+            //target.Stub(x => x.HasAttribute("type"))
+            //    .Return(true);
 
-            convention.Accept(target)
-                .ShouldBeFalse();
+            //convention.Accept(target)
+            //    .ShouldBeFalse();
         }
 
         [Test]

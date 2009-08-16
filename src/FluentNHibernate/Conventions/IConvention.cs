@@ -1,3 +1,7 @@
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Instances;
+using FluentNHibernate.Conventions.Inspections;
+
 namespace FluentNHibernate.Conventions
 {
     /// <summary>
@@ -6,23 +10,30 @@ namespace FluentNHibernate.Conventions
     public interface IConvention
     {}
 
-    /// <summary>
-    /// Basic convention interface. Don't use directly.
-    /// </summary>
-    /// <typeparam name="T">Mapping to apply conventions to</typeparam>
-    public interface IConvention<T> : IConvention
+    public interface IConventionAcceptance<TInspector>
+        where TInspector: IInspector
     {
         /// <summary>
         /// Whether this convention will be applied to the target.
         /// </summary>
-        /// <param name="target">Instace that could be supplied</param>
+        /// <param name="criteria">Instace that could be supplied</param>
         /// <returns>Apply on this target?</returns>
-        bool Accept(T target);
+        void Accept(IAcceptanceCriteria<TInspector> criteria);
+    }
 
+    /// <summary>
+    /// Basic convention interface. Don't use directly.
+    /// </summary>
+    /// <typeparam name="TInspector">Inspector instance for use in retrieving values and setting expectations</typeparam>
+    /// <typeparam name="TInstance">Apply instance</typeparam>
+    public interface IConvention<TInspector, TInstance>
+        : IConvention
+        where TInspector : IInspector
+        where TInstance : TInspector
+    {
         /// <summary>
         /// Apply changes to the target
         /// </summary>
-        /// <param name="target">Instance to apply changes to</param>
-        void Apply(T target);
+        void Apply(TInstance instance);
     }
 }

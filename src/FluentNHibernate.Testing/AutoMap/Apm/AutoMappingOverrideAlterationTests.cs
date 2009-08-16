@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentNHibernate.AutoMap;
-using FluentNHibernate.AutoMap.Alterations;
-using FluentNHibernate.AutoMap.TestFixtures;
+﻿using FluentNHibernate.Automapping;
+using FluentNHibernate.Automapping.Alterations;
+using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Testing.Fixtures.AutoMappingAlterations.Model;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.AutoMap.Apm
+namespace FluentNHibernate.Testing.Automapping.Apm
 {
     [TestFixture]
     public class AutoMappingOverrideAlterationTests
@@ -24,24 +20,21 @@ namespace FluentNHibernate.Testing.AutoMap.Apm
         [Test]
         public void OverridesApplied()
         {
-            var model = AutoPersistenceModel.MapEntitiesFromAssemblyOf<Baz>()
-                .Where(t => t.Namespace == typeof(Baz).Namespace);
-
-            alteration.Alter(model);
-            model.CompileMappings();
+            var model = AutoMap.AssemblyOf<Baz>()
+                .Where(t => t.Namespace == typeof(Baz).Namespace)
+                .Alterations(x => x.Add(alteration));
 
             new AutoMappingTester<Baz>(model)
-                .Element("class").HasAttribute("was-overridden", "true");
+                .Element("class").HasAttribute("batch-size", "10");
         }
 
         [Test]
         public void RegularAutoMappingsStillWorkWhenOverridesApplied()
         {
-            var model = AutoPersistenceModel.MapEntitiesFromAssemblyOf<Baz>()
+            var model = AutoMap.AssemblyOf<Baz>()
                 .Where(t => t.Namespace == typeof(Baz).Namespace);
 
             alteration.Alter(model);
-            model.CompileMappings();
 
             new AutoMappingTester<Baz>(model)
                 .Element("class/property[@name='Name']").Exists();

@@ -1,4 +1,8 @@
+using System;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Instances;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
 
@@ -63,8 +67,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         public ConventionWithParameterlessConstructor()
         { }
 
-        public bool Accept(IClassMap target) { return true; }
-        public void Apply(IClassMap target) { }
+        public void Apply(IClassInstance instance) {}
     }
 
     public class ConventionWithIConventionFinderConstructor : IClassConvention
@@ -72,8 +75,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         public ConventionWithIConventionFinderConstructor(IConventionFinder conventionFinder)
         { }
 
-        public bool Accept(IClassMap target) { return true; }
-        public void Apply(IClassMap target) { }
+        public void Apply(IClassInstance instance) {}
     }
 
     public class ConventionWithoutValidConstructor : IClassConvention
@@ -81,7 +83,6 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         public ConventionWithoutValidConstructor(int someParameter)
         { }
 
-        public bool Accept(IClassMap target) { return true; }
-        public void Apply(IClassMap target) { }
+        public void Apply(IClassInstance instance) {}
     }
 }

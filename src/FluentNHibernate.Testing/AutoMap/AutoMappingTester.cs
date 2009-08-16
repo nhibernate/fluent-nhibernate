@@ -1,19 +1,21 @@
 using System;
 using FluentNHibernate;
-using FluentNHibernate.AutoMap;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NHibernate.Cfg;
 
-public class AutoMappingTester<T> : MappingTester<T>
+namespace FluentNHibernate.Testing.Automapping
 {
-    public AutoMappingTester(AutoPersistenceModel mapper)
+    public class AutoMappingTester<T> : MappingTester<T>
     {
-        mapper.CompileMappings();
+        public AutoMappingTester(AutoPersistenceModel mapper)
+            : base(mapper)
+        {
+            mapper.CompileMappings();
         
-        var mapping = mapper.FindMapping<T>();
-        
-        ForMapping((IClassMap)mapping);
+            ForMapping((ClassMap<T>)null);
+        }
     }
 }

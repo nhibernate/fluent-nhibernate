@@ -7,22 +7,17 @@ namespace FluentNHibernate.Mapping
     /// Access strategy mapping builder.
     /// </summary>
     /// <typeparam name="T">Mapping part to be applied to</typeparam>
-    public class AccessStrategyBuilder<T> : IAccessStrategyBuilder
-        where T : IHasAttributes
+    public class AccessStrategyBuilder<T> : AccessStrategyBuilder
     {
-        private const string InvalidPrefixCamelCaseFieldM = "m is not a valid prefix for a CamelCase Field.";
-        private const string InvalidPrefixCamelCaseFieldMUnderscore = "m_ is not a valid prefix for a CamelCase Field.";
-        private const string InvalidPrefixLowerCaseFieldM = "m is not a valid prefix for a LowerCase Field.";
-        private const string InvalidPrefixLowerCaseFieldMUnderscore = "m_ is not a valid prefix for a LowerCase Field.";
-        private const string InvalidPrefixPascalCaseFieldNone = "None is not a valid prefix for a PascalCase Field.";
-
         private readonly T parent;
 
         /// <summary>
         /// Access strategy mapping builder.
         /// </summary>
         /// <param name="parent">Instance of the parent mapping part.</param>
-        public AccessStrategyBuilder(T parent)
+        /// <param name="setter">Setter for altering the model</param>
+        public AccessStrategyBuilder(T parent, Action<string> setter)
+            : base(setter)
         {
             this.parent = parent;
         }
@@ -30,9 +25,9 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to property.
         /// </summary>
-        public T AsProperty()
+        public new T Property()
         {
-            SetAccessAttribute("property");
+            base.Property();
 
             return parent;
         }
@@ -40,9 +35,9 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to field.
         /// </summary>
-        public T AsField()
+        public new T Field()
         {
-            SetAccessAttribute("field");
+            base.Field();
 
             return parent;
         }
@@ -50,10 +45,9 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to use the backing-field of an auto-property.
         /// </summary>
-        /// <returns></returns>
-        public T AsBackingField()
+        public new T BackingField()
         {
-            SetAccessAttribute("backfield");
+            base.BackingField();
 
             return parent;
         }
@@ -61,9 +55,9 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to field and the naming-strategy to camelcase (field.camelcase).
         /// </summary>
-        public T AsCamelCaseField()
+        public new T CamelCaseField()
         {
-            AsCamelCaseField(Prefix.None);
+            base.CamelCaseField();
 
             return parent;
         }
@@ -72,12 +66,9 @@ namespace FluentNHibernate.Mapping
         /// Sets the access-strategy to field and the naming-strategy to camelcase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        public T AsCamelCaseField(Prefix prefix)
+        public new T CamelCaseField(Prefix prefix)
         {
-            if (prefix == Prefix.m) throw new InvalidPrefixException(InvalidPrefixCamelCaseFieldM);
-            if (prefix == Prefix.mUnderscore) throw new InvalidPrefixException(InvalidPrefixCamelCaseFieldMUnderscore);
-
-            SetAccessAttribute("field.camelcase" + prefix.Value);
+            base.CamelCaseField(prefix);
 
             return parent;
         }
@@ -85,9 +76,9 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to field and the naming-strategy to lowercase.
         /// </summary>
-        public T AsLowerCaseField()
+        public new T LowerCaseField()
         {
-            AsLowerCaseField(Prefix.None);
+            base.LowerCaseField();
 
             return parent;
         }
@@ -96,12 +87,9 @@ namespace FluentNHibernate.Mapping
         /// Sets the access-strategy to field and the naming-strategy to lowercase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        public T AsLowerCaseField(Prefix prefix)
+        public new T LowerCaseField(Prefix prefix)
         {
-            if (prefix == Prefix.m) throw new InvalidPrefixException(InvalidPrefixLowerCaseFieldM);
-            if (prefix == Prefix.mUnderscore) throw new InvalidPrefixException(InvalidPrefixLowerCaseFieldMUnderscore);
-
-            SetAccessAttribute("field.lowercase" + prefix.Value);
+            base.LowerCaseField(prefix);
 
             return parent;
         }
@@ -110,11 +98,9 @@ namespace FluentNHibernate.Mapping
         /// Sets the access-strategy to field and the naming-strategy to pascalcase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        public T AsPascalCaseField(Prefix prefix)
+        public new T PascalCaseField(Prefix prefix)
         {
-            if (prefix == Prefix.None) throw new InvalidPrefixException(InvalidPrefixPascalCaseFieldNone);
-
-            SetAccessAttribute("field.pascalcase" + prefix.Value);
+            base.PascalCaseField(prefix);
             
             return parent;
         }
@@ -122,9 +108,9 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to camelcase.
         /// </summary>
-        public T AsReadOnlyPropertyThroughCamelCaseField()
+        public new T ReadOnlyPropertyThroughCamelCaseField()
         {
-            AsReadOnlyPropertyThroughCamelCaseField(Prefix.None);
+            base.ReadOnlyPropertyThroughCamelCaseField();
 
             return parent;
         }
@@ -133,12 +119,9 @@ namespace FluentNHibernate.Mapping
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to camelcase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        public T AsReadOnlyPropertyThroughCamelCaseField(Prefix prefix)
+        public new T ReadOnlyPropertyThroughCamelCaseField(Prefix prefix)
         {
-            if (prefix == Prefix.m) throw new InvalidPrefixException(InvalidPrefixCamelCaseFieldM);
-            if (prefix == Prefix.mUnderscore) throw new InvalidPrefixException(InvalidPrefixCamelCaseFieldMUnderscore);
-
-            SetAccessAttribute("nosetter.camelcase" + prefix.Value);
+            base.ReadOnlyPropertyThroughCamelCaseField(prefix);
 
             return parent;
         }
@@ -146,9 +129,9 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to lowercase.
         /// </summary>
-        public T AsReadOnlyPropertyThroughLowerCaseField()
+        public new T ReadOnlyPropertyThroughLowerCaseField()
         {
-            AsReadOnlyPropertyThroughLowerCaseField(Prefix.None);
+            base.ReadOnlyPropertyThroughLowerCaseField();
 
             return parent;
         }
@@ -157,12 +140,9 @@ namespace FluentNHibernate.Mapping
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to lowercase.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        public T AsReadOnlyPropertyThroughLowerCaseField(Prefix prefix)
+        public new T ReadOnlyPropertyThroughLowerCaseField(Prefix prefix)
         {
-            if (prefix == Prefix.m) throw new InvalidPrefixException(InvalidPrefixLowerCaseFieldM);
-            if (prefix == Prefix.mUnderscore) throw new InvalidPrefixException(InvalidPrefixLowerCaseFieldMUnderscore);
-
-            SetAccessAttribute("nosetter.lowercase" + prefix.Value);
+            base.ReadOnlyPropertyThroughLowerCaseField(prefix);
 
             return parent;
         }
@@ -171,11 +151,9 @@ namespace FluentNHibernate.Mapping
         /// Sets the access-strategy to read-only property (nosetter) and the naming-strategy to pascalcase, with the specified prefix.
         /// </summary>
         /// <param name="prefix">Naming-strategy prefix</param>
-        public T AsReadOnlyPropertyThroughPascalCaseField(Prefix prefix)
+        public new T ReadOnlyPropertyThroughPascalCaseField(Prefix prefix)
         {
-            if (prefix == Prefix.None) throw new InvalidPrefixException(InvalidPrefixPascalCaseFieldNone);
-
-            SetAccessAttribute("nosetter.pascalcase" + prefix.Value);
+            base.ReadOnlyPropertyThroughPascalCaseField(prefix);
 
             return parent;
         }
@@ -184,9 +162,9 @@ namespace FluentNHibernate.Mapping
         /// Sets the access-strategy to use the type referenced.
         /// </summary>
         /// <param name="propertyAccessorAssemblyQualifiedClassName">Assembly qualified name of the type to use as the access-strategy</param>
-        public T Using(string propertyAccessorAssemblyQualifiedClassName)
+        public new T Using(string propertyAccessorAssemblyQualifiedClassName)
         {
-            SetAccessAttribute(propertyAccessorAssemblyQualifiedClassName);
+            base.Using(propertyAccessorAssemblyQualifiedClassName);
 
             return parent;
         }
@@ -195,9 +173,9 @@ namespace FluentNHibernate.Mapping
         /// Sets the access-strategy to use the type referenced.
         /// </summary>
         /// <param name="propertyAccessorClassType">Type to use as the access-strategy</param>
-        public T Using(Type propertyAccessorClassType)
+        public new T Using(Type propertyAccessorClassType)
         {
-            Using(propertyAccessorClassType.AssemblyQualifiedName);
+            base.Using(propertyAccessorClassType);
 
             return parent;
         }
@@ -206,95 +184,25 @@ namespace FluentNHibernate.Mapping
         /// Sets the access-strategy to use the type referenced.
         /// </summary>
         /// <typeparam name="TPropertyAccessorClass">Type to use as the access-strategy</typeparam>
-        public T Using<TPropertyAccessorClass>() where TPropertyAccessorClass : IPropertyAccessor
+        public new T Using<TPropertyAccessorClass>() where TPropertyAccessorClass : IPropertyAccessor
         {
-            Using(typeof(TPropertyAccessorClass));
+            base.Using<TPropertyAccessorClass>();
 
             return parent;
         }
 
-        /// <summary>
-        /// Sets the access attribute on the parent element.
-        /// </summary>
-        /// <param name="value">Value for the access attribute</param>
-        protected virtual void SetAccessAttribute(string value)
+        public new T NoOp()
         {
-            parent.SetAttribute("access", value);
+            setValue("noop");
+
+            return parent;
         }
 
-        void IAccessStrategyBuilder.AsProperty()
+        public new T None()
         {
-            AsProperty();
-        }
+            setValue("none");
 
-        void IAccessStrategyBuilder.AsField()
-        {
-            AsField();
-        }
-
-        void IAccessStrategyBuilder.AsCamelCaseField()
-        {
-            AsCamelCaseField();
-        }
-
-        void IAccessStrategyBuilder.AsCamelCaseField(Prefix prefix)
-        {
-            AsCamelCaseField(prefix);
-        }
-
-        void IAccessStrategyBuilder.AsLowerCaseField()
-        {
-            AsLowerCaseField();
-        }
-
-        void IAccessStrategyBuilder.AsLowerCaseField(Prefix prefix)
-        {
-            AsLowerCaseField(prefix);
-        }
-
-        void IAccessStrategyBuilder.AsPascalCaseField(Prefix prefix)
-        {
-            AsPascalCaseField(prefix);
-        }
-
-        void IAccessStrategyBuilder.AsReadOnlyPropertyThroughCamelCaseField()
-        {
-            AsReadOnlyPropertyThroughCamelCaseField();
-        }
-
-        void IAccessStrategyBuilder.AsReadOnlyPropertyThroughCamelCaseField(Prefix prefix)
-        {
-            AsReadOnlyPropertyThroughCamelCaseField(prefix);
-        }
-
-        void IAccessStrategyBuilder.AsReadOnlyPropertyThroughLowerCaseField()
-        {
-            AsReadOnlyPropertyThroughLowerCaseField();
-        }
-
-        void IAccessStrategyBuilder.AsReadOnlyPropertyThroughLowerCaseField(Prefix prefix)
-        {
-            AsReadOnlyPropertyThroughLowerCaseField(prefix);
-        }
-
-        void IAccessStrategyBuilder.AsReadOnlyPropertyThroughPascalCaseField(Prefix prefix)
-        {
-            AsReadOnlyPropertyThroughPascalCaseField(prefix);
-        }
-
-        void IAccessStrategyBuilder.Using(string propertyAccessorAssemblyQualifiedClassName)
-        {
-            Using(propertyAccessorAssemblyQualifiedClassName);
-        }
-
-        void IAccessStrategyBuilder.Using(Type propertyAccessorClassType)
-        {
-            Using(propertyAccessorClassType);
-        }
-
-        void IAccessStrategyBuilder.Using<TPropertyAccessorClass>()
-        {
-            Using<TPropertyAccessorClass>();
+            return parent;
         }
     }
 }

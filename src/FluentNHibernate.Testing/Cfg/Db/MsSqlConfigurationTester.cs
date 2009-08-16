@@ -32,6 +32,14 @@ namespace FluentNHibernate.Testing.Cfg.Db
         }
 
         [Test]
+        public void MsSql2008_should_default_to_the_Sql2008_dialect()
+        {
+            MsSqlConfiguration.MsSql2008
+                .ToProperties()
+                .ShouldContain("dialect", "NHibernate.Dialect.MsSql2008Dialect, " + typeof(ISession).Assembly.FullName);
+        }
+
+        [Test]
         public void MsSql_driver_should_default_to_the_SqlClientDriver()
         {
             MsSqlConfiguration.MsSql2000
@@ -87,6 +95,14 @@ namespace FluentNHibernate.Testing.Cfg.Db
                 .ConnectionString(c => c
                     .FromConnectionStringWithKey("main"))
                 .ToProperties().ShouldContain("connection.connection_string", "connection string");
+        }
+
+        [Test]
+        public void ShouldBeAbleToSpecifyConnectionStringDirectly()
+        {
+            MsSqlConfiguration.MsSql2005
+                .ConnectionString("conn")
+                .ToProperties().ShouldContain("connection.connection_string", "conn");
         }
     }
 }

@@ -47,7 +47,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 mappedObject.Version(x => x.Version); //Level 4
                 mappedObject.DiscriminateSubClassesOnColumn<string>("Type").SubClass<SecondMappedObject>(sc => sc.Map(x => x.Name)); //Level 3
                 mappedObject.Id(x => x.Id); //Level 2
-                mappedObject.Cache.AsReadWrite(); //Level 1
+                mappedObject.Cache.ReadWrite(); //Level 1
             });
 
             mappingTester

@@ -13,5 +13,13 @@ namespace FluentNHibernate.Testing.Cfg.Db
             MsSqlCeConfiguration.Standard.ToProperties()["dialect"].ShouldEqual("NHibernate.Dialect.MsSqlCeDialect, " +
                 typeof (ISession).Assembly.FullName);
         }
+
+        [Test]
+        public void ShouldBeAbleToSpecifyConnectionStringDirectly()
+        {
+            MsSqlCeConfiguration.Standard
+                .ConnectionString("conn")
+                .ToProperties().ShouldContain("connection.connection_string", "conn");
+        }
     }
 }
