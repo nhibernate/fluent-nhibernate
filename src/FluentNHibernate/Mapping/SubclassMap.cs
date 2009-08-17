@@ -40,7 +40,7 @@ namespace FluentNHibernate.Mapping
 
             joinedSubclassAttributes.SetDefault(x => x.Type, typeof(T));
             joinedSubclassAttributes.SetDefault(x => x.Name, typeof(T).AssemblyQualifiedName);
-            joinedSubclassAttributes.SetDefault(x => x.TableName, "`" + typeof(T).Name + "`");
+            joinedSubclassAttributes.SetDefault(x => x.TableName, GetDefaultTableName());
             joinedSubclassAttributes.SetDefault(x => x.Key, key);
 
             // TODO: this is nasty, we should find a better way
@@ -84,6 +84,25 @@ namespace FluentNHibernate.Mapping
 
                 mapping.AddSubclass(subclassMapping);
             }
+        }
+
+        private string GetDefaultTableName()
+        {
+            var tableName = EntityType.Name;
+
+            if (EntityType.IsGenericType)
+            {
+                // special case for generics: GenericType_GenericParameterType
+                tableName = EntityType.Name.Substring(0, EntityType.Name.IndexOf('`'));
+
+                foreach (var argument in EntityType.GetGenericArguments())
+                {
+                    tableName += "_";
+                    tableName += argument.Name;
+                }
+            }
+
+            return "`" + tableName + "`";
         }
 
         public void Abstract()

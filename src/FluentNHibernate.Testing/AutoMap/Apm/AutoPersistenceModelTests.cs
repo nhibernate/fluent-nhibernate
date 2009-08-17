@@ -993,6 +993,16 @@ namespace FluentNHibernate.Testing.Automapping.Apm
             exampleParentClassMapping.ShouldBeNull();
         }
 
+        [Test]
+        public void ShouldEscapeTableNames()
+        {
+            var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class").HasAttribute("table", "`ExampleClass`");
+        }
+
         private class JoinedSubclassConvention : IJoinedSubclassConvention
         {
             public void Apply(IJoinedSubclassInstance instance)
