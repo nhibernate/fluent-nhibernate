@@ -18,51 +18,31 @@ namespace FluentNHibernate.Testing.Automapping
     {
         private AutoPersistenceModel model;
 
-        private class ExampleClass
-        {
-            private string _privateProperty { get; set; }
-
-            public class PrivateProperties
-            {
-                public static Expression<Func<ExampleClass, object>> Property = x => x._privateProperty;
-            }
-        }
-
-        private class ExampleParent
-        {
-            private IList<ExampleClass> _privateChildren { get; set; }
-
-            public class PrivateProperties
-            {
-                public static Expression<Func<ExampleParent, object>> Children = x => x._privateChildren;
-            }
-        }
-
         [Test]
         public void WillMapPrivatePropertyMatchingTheConvention()
         {
-            Model<ExampleClass>(p => p.Name.StartsWith("_"));
+            Model<PrivateExampleClass>(p => p.Name.StartsWith("_"));
 
-            Test<ExampleClass>(mapping =>
-                mapping.Properties.ShouldContain(x => x.PropertyInfo == ReflectionHelper.GetProperty(ExampleClass.PrivateProperties.Property)));
+            Test<PrivateExampleClass>(mapping =>
+                mapping.Properties.ShouldContain(x => x.PropertyInfo == ReflectionHelper.GetProperty(PrivateExampleClass.PrivateProperties.Property)));
         }
 
         [Test]
         public void DoNotMapPrivatePropertiesThatDoNotMatchConvention()
         {
-            Model<ExampleClass>(p => p.Name.StartsWith("asdf"));
+            Model<PrivateExampleClass>(p => p.Name.StartsWith("asdf"));
 
-            Test<ExampleClass>(mapping =>
+            Test<PrivateExampleClass>(mapping =>
                 mapping.Properties.ShouldBeEmpty());
         }
 
         [Test]
         public void CanMapPrivateCollection()
         {
-            Model<ExampleParent>(p => p.Name.StartsWith("_"));
+            Model<PrivateExampleParent>(p => p.Name.StartsWith("_"));
 
-            Test<ExampleParent>(mapping =>
-                mapping.Collections.ShouldContain(x => x.MemberInfo == ReflectionHelper.GetProperty(ExampleParent.PrivateProperties.Children)));
+            Test<PrivateExampleParent>(mapping =>
+                mapping.Collections.ShouldContain(x => x.MemberInfo == ReflectionHelper.GetProperty(PrivateExampleParent.PrivateProperties.Children)));
         }
 
         private void Model<T>(Func<PropertyInfo, bool> convention)
@@ -70,7 +50,9 @@ namespace FluentNHibernate.Testing.Automapping
             model = new PrivateAutoPersistenceModel()
                 .Setup(conventions => conventions.FindMappablePrivateProperties = convention);
 
-            model.AutoMap<T>();
+            model.AddTypeSource(new StubTypeSource(typeof(T)));
+            model.CompileMappings();
+            model.BuildMappings();
         }
 
         private void Test<T>(Action<ClassMapping> mapping)
@@ -78,6 +60,26 @@ namespace FluentNHibernate.Testing.Automapping
             var map = model.FindMapping<T>();
 
             mapping(map.GetClassMapping());
+        }
+    }
+
+    internal class PrivateExampleParent
+    {
+        private IList<PrivateExampleClass> _privateChildren { get; set; }
+
+        public class PrivateProperties
+        {
+            public static Expression<Func<PrivateExampleParent, object>> Children = x => x._privateChildren;
+        }
+    }
+
+    internal class PrivateExampleClass
+    {
+        private string _privateProperty { get; set; }
+
+        public class PrivateProperties
+        {
+            public static Expression<Func<PrivateExampleClass, object>> Property = x => x._privateProperty;
         }
     }
 }

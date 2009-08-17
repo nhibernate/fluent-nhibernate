@@ -11,13 +11,25 @@ namespace FluentNHibernate.Automapping
     public class AutoPersistenceModel : PersistenceModel
     {
         protected AutoMapper autoMapper;
-        private Assembly assemblyContainingMaps;
-        private Assembly entityAssembly;
+        private readonly List<ITypeSource> sources = new List<ITypeSource>();
         private Func<Type, bool> shouldIncludeType;
         private readonly List<AutoMapType> mappingTypes = new List<AutoMapType>();
         private bool autoMappingsCreated;
         private readonly AutoMappingAlterationCollection alterations = new AutoMappingAlterationCollection();
         protected readonly List<InlineOverride> inlineOverrides = new List<InlineOverride>();
+
+        public AutoPersistenceModel()
+        {
+            Expressions = new AutoMappingExpressions();
+            autoMapper = new AutoMapper(Expressions, Conventions, inlineOverrides);
+        }
+
+        public AutoPersistenceModel(AutoMapper customAutomapper)
+        {
+            Expressions = new AutoMappingExpressions();
+            autoMapper = customAutomapper;
+        }
+
 
         /// <summary>
         /// Specify alterations to be used with this AutoPersisteceModel
@@ -62,15 +74,9 @@ namespace FluentNHibernate.Automapping
 
         internal AutoMappingExpressions Expressions { get; private set; }
 
-        public AutoPersistenceModel Where(Func<Type, bool> shouldIncludeType)
+        public AutoPersistenceModel Where(Func<Type, bool> where)
         {
-            this.shouldIncludeType = shouldIncludeType;
-            return this;
-        }
-
-        public AutoPersistenceModel MergeWithAutoMapsFromAssemblyOf<T>()
-        {
-            assemblyContainingMaps = Assembly.GetAssembly(typeof (T));
+            this.shouldIncludeType = where;
             return this;
         }
 
@@ -79,12 +85,9 @@ namespace FluentNHibernate.Automapping
             if (autoMappingsCreated)
                 return;
 
-            if (assemblyContainingMaps != null)
-                AddMappingsFromAssembly(assemblyContainingMaps);
-
             alterations.Apply(this);
 
-            foreach (var type in entityAssembly.GetTypes())
+            foreach (var type in sources.SelectMany(x => x.GetTypes()))
             {
                 if (shouldIncludeType != null)
                 {
@@ -100,7 +103,7 @@ namespace FluentNHibernate.Automapping
 
             foreach (var type in mappingTypes)
             {
-                if (type.Type.IsClass && IsnotAnonymousMethodClass(type))
+                if (type.Type.IsClass && IsNotAnonymousMethodClass(type))
                 {
                     if (!type.IsMapped)
                     {
@@ -124,12 +127,10 @@ namespace FluentNHibernate.Automapping
             base.Configure(configuration);
         }
 
-        private static bool IsnotAnonymousMethodClass(AutoMapType type)
+        private static bool IsNotAnonymousMethodClass(AutoMapType type)
         {
             return type.Type.ReflectedType == null;
         }
-
-        #region Configuation Helpers
 
         private void AddMapping(Type type)
         {
@@ -158,36 +159,12 @@ namespace FluentNHibernate.Automapping
             autoMapper.MergeMap(typeToMap, mapping.GetClassMapping(), new List<string>(mapping.GetIgnoredProperties()));
         }
 
-        #endregion
 
-        public AutoPersistenceModel()
-        {
-            Expressions = new AutoMappingExpressions();
-            autoMapper = new AutoMapper(Expressions, Conventions, inlineOverrides);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="mapAssembly">Assembly Containing Maps</param>
-        public AutoPersistenceModel(Assembly mapAssembly)
-        {
-            Expressions = new AutoMappingExpressions();
-            AddMappingsFromAssembly(mapAssembly);
-            autoMapper = new AutoMapper(Expressions, Conventions, inlineOverrides);
-        }
-
-        public AutoPersistenceModel(AutoMapper customAutomapper)
-        {
-            Expressions = new AutoMappingExpressions();
-            autoMapper = customAutomapper;
-        }
-
-        public AutoPersistenceModel AutoMap<T>()
-        {
-            Add(new PassThroughMappingProvider(autoMapper.Map(typeof(T), mappingTypes)));
-            return this;
-        }
+        //public AutoPersistenceModel AutoMap<T>()
+        //{
+        //    Add(new PassThroughMappingProvider(autoMapper.Map(typeof(T), mappingTypes)));
+        //    return this;
+        //}
 
         public IMappingProvider FindMapping<T>()
         {
@@ -233,7 +210,12 @@ namespace FluentNHibernate.Automapping
 
         public AutoPersistenceModel AddEntityAssembly(Assembly assembly)
         {
-            entityAssembly = assembly;
+            return AddTypeSource(new AssemblyTypeSource(assembly));
+        }
+
+        public AutoPersistenceModel AddTypeSource(ITypeSource source)
+        {
+            sources.Add(source);
             return this;
         }
 
@@ -268,16 +250,5 @@ namespace FluentNHibernate.Automapping
         {
             return "AutoMappings.hbm.xml";
         }
-    }
-
-    public class AutoMapType
-    {
-        public AutoMapType(Type type)
-        {
-            Type = type;
-        }
-
-        public Type Type { get; set;}
-        public bool IsMapped { get; set; }
     }
 }

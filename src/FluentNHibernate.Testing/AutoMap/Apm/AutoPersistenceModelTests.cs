@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Remoting.Messaging;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
@@ -44,18 +46,6 @@ namespace FluentNHibernate.Testing.Automapping.Apm
                         .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                     ))
                 .BuildConfiguration();
-        }
-
-        [Test]
-        public void CanMixMappingTypes()
-        {
-            var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
-            autoMapper.AddMappingsFromAssembly(typeof(ExampleClass).Assembly);
-            autoMapper.Configure(cfg);
-
-            cfg.ClassMappings.ShouldContain(c => c.ClassName == typeof(ExampleClass).AssemblyQualifiedName);
-            cfg.ClassMappings.ShouldContain(c => c.ClassName == typeof(Record).AssemblyQualifiedName);
         }
 
         [Test]
@@ -1003,6 +993,52 @@ namespace FluentNHibernate.Testing.Automapping.Apm
                 .Element("class").HasAttribute("table", "`ExampleClass`");
         }
 
+        [Test]
+        public void ShouldUseGuidCombGeneratorForGuidIds()
+        {
+            var autoMapper = AutoMap.Source(new StubTypeSource(typeof(ClassWithGuidId)));
+
+            new AutoMappingTester<ClassWithGuidId>(autoMapper)
+                .Element("class/id/generator").HasAttribute("class", "guid.comb");
+        }
+
+        [Test]
+        public void ShouldUseIdentityGeneratorForIntIds()
+        {
+            var autoMapper = AutoMap.Source(new StubTypeSource(typeof(ClassWithIntId)));
+
+            new AutoMappingTester<ClassWithIntId>(autoMapper)
+                .Element("class/id/generator").HasAttribute("class", "identity");
+        }
+
+        [Test]
+        public void ShouldUseIdentityGeneratorForLongIds()
+        {
+            var autoMapper = AutoMap.Source(new StubTypeSource(typeof(ClassWithLongId)));
+
+            new AutoMappingTester<ClassWithLongId>(autoMapper)
+                .Element("class/id/generator").HasAttribute("class", "identity");
+        }
+
+        [Test]
+        public void ShouldUseAssignedGeneratorForStringIds()
+        {
+            var autoMapper = AutoMap.Source(new StubTypeSource(typeof(ClassWithStringId)));
+
+            new AutoMappingTester<ClassWithStringId>(autoMapper)
+                .Element("class/id/generator").HasAttribute("class", "assigned");
+        }
+
+        [Test]
+        public void ShouldOverrideGeneratorWithConventions()
+        {
+            var autoMapper = AutoMap.Source(new StubTypeSource(typeof(ClassWithLongId)))
+                .Conventions.Add<TestIdGeneratorConvention>(); ;
+
+            new AutoMappingTester<ClassWithLongId>(autoMapper)
+                .Element("class/id/generator").HasAttribute("class", "assigned");
+        }
+
         private class JoinedSubclassConvention : IJoinedSubclassConvention
         {
             public void Apply(IJoinedSubclassInstance instance)
@@ -1017,6 +1053,14 @@ namespace FluentNHibernate.Testing.Automapping.Apm
             public void Apply(IIdentityInstance instance)
             {
                 instance.Column("test");
+            }
+        }
+
+        private class TestIdGeneratorConvention : IIdConvention
+        {
+            public void Apply(IIdentityInstance instance)
+            {
+                instance.GeneratedBy.Assigned();
             }
         }
 
@@ -1044,6 +1088,23 @@ namespace FluentNHibernate.Testing.Automapping.Apm
             }
         }
     }
+
+    //public class StubAssembly : Assembly
+    //{
+    //    private readonly IEnumerable<Type> _types;
+
+    //    public static Assembly Containing<T>()
+    //    {
+    //        return new StubAssembly(new[] { typeof(T) });
+    //    }
+
+    //    public StubAssembly()
+    //    {
+    //        new Assembly();
+
+    //        _types = types;
+    //    }
+    //}
 
     public class IgnorerOverride : IAutoMappingOverride<ExampleClass>
     {

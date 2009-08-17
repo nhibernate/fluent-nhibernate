@@ -148,6 +148,26 @@ namespace FluentNHibernate.Automapping.TestFixtures
         public virtual int Id { get; set; }
         public virtual Bitmap Bitmap { get; set; }
     }
+
+    public class ClassWithGuidId
+    {
+        public virtual Guid Id { get; set; }
+    }
+
+    public class ClassWithIntId
+    {
+        public virtual int Id { get; set; }
+    }
+
+    public class ClassWithLongId
+    {
+        public virtual long Id { get; set; }
+    }
+
+    public class ClassWithStringId
+    {
+        public virtual string Id { get; set; }
+    }
 }
 
 namespace FluentNHibernate.Automapping.TestFixtures.ComponentTypes

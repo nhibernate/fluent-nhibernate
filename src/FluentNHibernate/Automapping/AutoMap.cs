@@ -22,9 +22,19 @@ namespace FluentNHibernate.Automapping
 
         public static AutoPersistenceModel Assembly(Assembly assembly, Func<Type, bool> where)
         {
+            return Source(new AssemblyTypeSource(assembly), where);
+        }
+
+        public static AutoPersistenceModel Source(ITypeSource source)
+        {
+            return Source(source, null);
+        }
+
+        public static AutoPersistenceModel Source(ITypeSource source, Func<Type, bool> where)
+        {
             var persistenceModel = new AutoPersistenceModel();
 
-            persistenceModel.AddEntityAssembly(assembly);
+            persistenceModel.AddTypeSource(source);
 
             if (where != null)
                 persistenceModel.Where(where);

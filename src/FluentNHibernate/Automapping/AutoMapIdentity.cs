@@ -1,4 +1,6 @@
+using System;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Identity;
@@ -28,8 +30,23 @@ namespace FluentNHibernate.Automapping
             idMapping.Name = property.Name;
             idMapping.Type = new TypeReference(property.PropertyType);
             idMapping.PropertyInfo = property;
-            idMapping.Generator= new GeneratorMapping { Class = "identity", ContainingEntityType = classMap.Type };
+            idMapping.SetDefaultValue(x => x.Generator, GetDefaultGenerator(property));
             ((ClassMapping)classMap).Id = idMapping;        
+        }
+
+        private GeneratorMapping GetDefaultGenerator(PropertyInfo property)
+        {
+            var generatorMapping = new GeneratorMapping();
+            var defaultGenerator = new GeneratorBuilder(generatorMapping, property.PropertyType);
+
+            if (property.PropertyType == typeof(Guid))
+                defaultGenerator.GuidComb();
+            else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(long))
+                defaultGenerator.Identity();
+            else
+                defaultGenerator.Assigned();
+
+            return generatorMapping;
         }
     }
 }
