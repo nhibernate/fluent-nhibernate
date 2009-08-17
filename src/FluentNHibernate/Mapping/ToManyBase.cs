@@ -90,7 +90,10 @@ namespace FluentNHibernate.Mapping
                 ((IIndexedCollectionMapping)mapping).Index = indexMapping;
 
             if (elementPart != null)
+            {
                 mapping.Element = elementPart.GetElementMapping();
+                mapping.Relationship = null;
+            }
 
             return mapping;
         }

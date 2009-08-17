@@ -63,5 +63,13 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     x.Element.Type.ShouldEqual(new TypeReference(typeof(ChildObject)));
                 });
         }
+
+        [Test]
+        public void ElementMappingShouldntHaveOneToMany()
+        {
+            OneToMany(x => x.ListOfChildren)
+                .Mapping(m => m.Element("element"))
+                .ModelShouldMatch(x => x.Relationship.ShouldBeNull());
+        }
     }
 }
