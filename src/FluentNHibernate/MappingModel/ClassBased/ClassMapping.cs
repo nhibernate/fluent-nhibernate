@@ -66,9 +66,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
             if (Cache != null)
                 visitor.Visit(Cache);
 
-            foreach (var join in Joins)
-                visitor.Visit(join);
-
             if (Version != null)
                 visitor.Visit(Version);
 
