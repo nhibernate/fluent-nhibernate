@@ -21,6 +21,14 @@ namespace FluentNHibernate.Conventions
             this.finder = finder;
         }
 
+        public override void ProcessHibernateMapping(HibernateMapping hibernateMapping)
+        {
+            var conventions = finder.Find<IHibernateMappingConvention>();
+
+            Apply<IHibernateMappingInspector, IHibernateMappingInstance>(conventions,
+                new HibernateMappingInstance(hibernateMapping));
+        }
+
         public override void ProcessId(IdMapping idMapping)
         {
             var conventions = finder.Find<IIdConvention>();

@@ -1,17 +1,11 @@
 using System;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Inspections;
 using NHibernate.Properties;
 
 namespace FluentNHibernate.Conventions.Instances
 {
     public class AccessInstance : IAccessInstance
     {
-        private const string InvalidPrefixCamelCaseFieldM = "m is not a valid prefix for a CamelCase Field.";
-        private const string InvalidPrefixCamelCaseFieldMUnderscore = "m_ is not a valid prefix for a CamelCase Field.";
-        private const string InvalidPrefixLowerCaseFieldM = "m is not a valid prefix for a LowerCase Field.";
-        private const string InvalidPrefixLowerCaseFieldMUnderscore = "m_ is not a valid prefix for a LowerCase Field.";
-        private const string InvalidPrefixPascalCaseFieldNone = "None is not a valid prefix for a PascalCase Field.";
-
         private readonly Action<string> setter;
 
         public AccessInstance(Action<string> setter)
@@ -29,70 +23,64 @@ namespace FluentNHibernate.Conventions.Instances
             setter("field");
         }
 
-        public void CamelCaseField()
+        public void BackField()
         {
-            CamelCaseField(Prefix.None);
+            setter("backfield");
         }
 
-        public void CamelCaseField(Prefix prefix)
+        public void CamelCaseField()
         {
-            if (prefix == Prefix.m) throw new InvalidPrefixException(InvalidPrefixCamelCaseFieldM);
-            if (prefix == Prefix.mUnderscore) throw new InvalidPrefixException(InvalidPrefixCamelCaseFieldMUnderscore);
+            CamelCaseField(CamelCasePrefix.None);
+        }
 
-            setter("field.camelcase" + prefix.Value);
+        public void CamelCaseField(CamelCasePrefix prefix)
+        {
+            setter("field.camelcase" + prefix);
         }
 
         public void LowerCaseField()
         {
-            LowerCaseField(Prefix.None);
+            LowerCaseField(LowerCasePrefix.None);
         }
 
-        public void LowerCaseField(Prefix prefix)
+        public void LowerCaseField(LowerCasePrefix prefix)
         {
-            if (prefix == Prefix.m) throw new InvalidPrefixException(InvalidPrefixLowerCaseFieldM);
-            if (prefix == Prefix.mUnderscore) throw new InvalidPrefixException(InvalidPrefixLowerCaseFieldMUnderscore);
-
-            setter("field.lowercase" + prefix.Value);
+            setter("field.lowercase" + prefix);
         }
 
-        public void PascalCaseField(Prefix prefix)
+        public void PascalCaseField(PascalCasePrefix prefix)
         {
-            if (prefix == Prefix.None) throw new InvalidPrefixException(InvalidPrefixPascalCaseFieldNone);
+            setter("field.pascalcase" + prefix);
+        }
 
-            setter("field.pascalcase" + prefix.Value);
+        public void ReadOnlyProperty()
+        {
+            setter("no-setter");
         }
 
         public void ReadOnlyPropertyThroughCamelCaseField()
         {
-            ReadOnlyPropertyThroughCamelCaseField(Prefix.None);
+            ReadOnlyPropertyThroughCamelCaseField(CamelCasePrefix.None);
         }
 
-        public void ReadOnlyPropertyThroughCamelCaseField(Prefix prefix)
+        public void ReadOnlyPropertyThroughCamelCaseField(CamelCasePrefix prefix)
         {
-            if (prefix == Prefix.m) throw new InvalidPrefixException(InvalidPrefixCamelCaseFieldM);
-            if (prefix == Prefix.mUnderscore) throw new InvalidPrefixException(InvalidPrefixCamelCaseFieldMUnderscore);
-
-            setter("nosetter.camelcase" + prefix.Value);
+            setter("nosetter.camelcase" + prefix);
         }
 
         public void ReadOnlyPropertyThroughLowerCaseField()
         {
-            ReadOnlyPropertyThroughLowerCaseField(Prefix.None);
+            ReadOnlyPropertyThroughLowerCaseField(LowerCasePrefix.None);
         }
 
-        public void ReadOnlyPropertyThroughLowerCaseField(Prefix prefix)
+        public void ReadOnlyPropertyThroughLowerCaseField(LowerCasePrefix prefix)
         {
-            if (prefix == Prefix.m) throw new InvalidPrefixException(InvalidPrefixLowerCaseFieldM);
-            if (prefix == Prefix.mUnderscore) throw new InvalidPrefixException(InvalidPrefixLowerCaseFieldMUnderscore);
-
-            setter("nosetter.lowercase" + prefix.Value);
+            setter("nosetter.lowercase" + prefix);
         }
 
-        public void ReadOnlyPropertyThroughPascalCaseField(Prefix prefix)
+        public void ReadOnlyPropertyThroughPascalCaseField(PascalCasePrefix prefix)
         {
-            if (prefix == Prefix.None) throw new InvalidPrefixException(InvalidPrefixPascalCaseFieldNone);
-
-            setter("nosetter.pascalcase" + prefix.Value);
+            setter("nosetter.pascalcase" + prefix);
         }
 
         public void Using(string propertyAccessorAssemblyQualifiedClassName)
@@ -108,6 +96,16 @@ namespace FluentNHibernate.Conventions.Instances
         public void Using<TPropertyAccessorClass>() where TPropertyAccessorClass : IPropertyAccessor
         {
             Using(typeof(TPropertyAccessorClass));
+        }
+
+        public void NoOp()
+        {
+            setter("noop");
+        }
+
+        public void None()
+        {
+            setter("none");
         }
     }
 }

@@ -96,6 +96,7 @@
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaInheritanceTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaIsAnyTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\ArrayConventionTests.cs" />
+    <Compile Include="ConventionsTests\ApplyingToModel\HibernateMappingConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\JoinConventionTests.cs" />
     <Compile Include="ConventionsTests\ConventionsCollectionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\ClassConventionTests.cs" />
@@ -112,8 +113,13 @@
     <Compile Include="ConventionsTests\ApplyingToModel\PropertyConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\SubclassConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\VersionConventionTests.cs" />
+    <Compile Include="ConventionsTests\DefaultAccessHelperTests.cs" />
+    <Compile Include="ConventionsTests\DefaultCascadeHelperTests.cs" />
+    <Compile Include="ConventionsTests\DefaultLazyHelperTests.cs" />
     <Compile Include="ConventionsTests\ForeignKeyConventionTests.cs" />
+    <Compile Include="ConventionsTests\MultipleHelperConventions.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\ArrayConventionTests.cs" />
+    <Compile Include="ConventionsTests\OverridingFluentInterface\HibernateMappingConventionTests.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\JoinConventionTests.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\JoinedSubclassConventionTests.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\SubclassConventionTests.cs" />

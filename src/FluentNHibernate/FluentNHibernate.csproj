@@ -101,6 +101,7 @@
     <Compile Include="Conventions\Helpers\Builders\BagConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\CollectionConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\ArrayConventionBuilder.cs" />
+    <Compile Include="Conventions\Helpers\Builders\HibernateMappingConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\JoinConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\MapConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\SetConventionBuilder.cs" />
@@ -113,8 +114,12 @@
     <Compile Include="Conventions\Helpers\Builders\SubclassConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\VersionConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Cache.cs" />
+    <Compile Include="Conventions\Helpers\DefaultAccess.cs" />
+    <Compile Include="Conventions\Helpers\DefaultCascade.cs" />
+    <Compile Include="Conventions\Helpers\DefaultLazy.cs" />
     <Compile Include="Conventions\Helpers\LazyLoad.cs" />
     <Compile Include="Conventions\Helpers\ForeignKey.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltHibernateMappingConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltArrayConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltBagConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltFuncForeignKeyConvention.cs" />
@@ -144,6 +149,7 @@
     <Compile Include="Conventions\IHasManyConventionAcceptance.cs" />
     <Compile Include="Conventions\IHasManyToManyConventionAcceptance.cs" />
     <Compile Include="Conventions\IHasOneConventionAcceptance.cs" />
+    <Compile Include="Conventions\IHibernateMappingConvention.cs" />
     <Compile Include="Conventions\IIdConventionAcceptance.cs" />
     <Compile Include="Conventions\IIndexConvention.cs" />
     <Compile Include="Conventions\IIndexConventionAcceptance.cs" />
@@ -166,9 +172,11 @@
     <Compile Include="Conventions\Inspections\ComponentInspector.cs" />
     <Compile Include="Conventions\Inspections\CompositeElementInspector.cs" />
     <Compile Include="Conventions\Inspections\CompositeIdentityInspector.cs" />
+    <Compile Include="Conventions\Inspections\HibernateMappingInspector.cs" />
     <Compile Include="Conventions\Inspections\IAnyInstance.cs" />
     <Compile Include="Conventions\Inspections\IArrayInspector.cs" />
     <Compile Include="Conventions\Inspections\IBagInspector.cs" />
+    <Compile Include="Conventions\Inspections\IHibernateMappingInspector.cs" />
     <Compile Include="Conventions\Inspections\IListInspector.cs" />
     <Compile Include="Conventions\Inspections\IMapInspector.cs" />
     <Compile Include="Conventions\Inspections\Include.cs" />
@@ -239,6 +247,7 @@
     <Compile Include="Conventions\Instances\FetchInstance.cs" />
     <Compile Include="Conventions\Instances\GeneratedInstance.cs" />
     <Compile Include="Conventions\Instances\GeneratorInstance.cs" />
+    <Compile Include="Conventions\Instances\HibernateMappingInstance.cs" />
     <Compile Include="Conventions\Instances\IArrayInstance.cs" />
     <Compile Include="Conventions\Instances\IBagInstance.cs" />
     <Compile Include="Conventions\Instances\ICacheInstance.cs" />
@@ -249,6 +258,7 @@
     <Compile Include="Conventions\Instances\IFetchInstance.cs" />
     <Compile Include="Conventions\Instances\IGeneratedInstance.cs" />
     <Compile Include="Conventions\Instances\IGeneratorInstance.cs" />
+    <Compile Include="Conventions\Instances\IHibernateMappingInstance.cs" />
     <Compile Include="Conventions\Instances\IIndexInstance.cs" />
     <Compile Include="Conventions\Instances\IIndexInstanceBase.cs" />
     <Compile Include="Conventions\Instances\IIndexManyToManyInstance.cs" />

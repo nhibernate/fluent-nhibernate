@@ -1,5 +1,5 @@
 using System;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions.Inspections;
 using NHibernate.Properties;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -8,18 +8,22 @@ namespace FluentNHibernate.Conventions.Instances
     {
         void Property();
         void Field();
+        void BackField();
         void CamelCaseField();
-        void CamelCaseField(Prefix prefix);
+        void CamelCaseField(CamelCasePrefix prefix);
         void LowerCaseField();
-        void LowerCaseField(Prefix prefix);
-        void PascalCaseField(Prefix prefix);
+        void LowerCaseField(LowerCasePrefix prefix);
+        void PascalCaseField(PascalCasePrefix prefix);
+        void ReadOnlyProperty();
         void ReadOnlyPropertyThroughCamelCaseField();
-        void ReadOnlyPropertyThroughCamelCaseField(Prefix prefix);
+        void ReadOnlyPropertyThroughCamelCaseField(CamelCasePrefix prefix);
         void ReadOnlyPropertyThroughLowerCaseField();
-        void ReadOnlyPropertyThroughLowerCaseField(Prefix prefix);
-        void ReadOnlyPropertyThroughPascalCaseField(Prefix prefix);
+        void ReadOnlyPropertyThroughLowerCaseField(LowerCasePrefix prefix);
+        void ReadOnlyPropertyThroughPascalCaseField(PascalCasePrefix prefix);
         void Using(string propertyAccessorAssemblyQualifiedClassName);
         void Using(Type propertyAccessorClassType);
         void Using<TPropertyAccessorClass>() where TPropertyAccessorClass : IPropertyAccessor;
+        void NoOp();
+        void None();
     }
 }

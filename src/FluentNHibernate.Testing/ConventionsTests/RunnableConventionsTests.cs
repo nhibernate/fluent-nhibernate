@@ -6,6 +6,7 @@ using System.Linq;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
@@ -388,6 +389,13 @@ namespace FluentNHibernate.Testing.ConventionsTests
                 .Access.ShouldEqual("field");
         }
 
+        [Test]
+        public void ShouldApplyIHibernateMappingConvention()
+        {
+            TestConvention(new HibernateMappingConvention(), () => new ClassMap<Target>())
+                .DefaultLazy.ShouldBeFalse();
+        }
+
 
         #region conventions
 
@@ -572,6 +580,14 @@ namespace FluentNHibernate.Testing.ConventionsTests
             }
         }
 
+        class HibernateMappingConvention : IHibernateMappingConvention
+        {
+            public void Apply(IHibernateMappingInstance instance)
+            {
+                instance.Not.DefaultLazy();
+            }
+        }
+
         private class OtherObjectUserType : IUserType
         {
             public bool Equals(object x, object y)
@@ -640,6 +656,17 @@ namespace FluentNHibernate.Testing.ConventionsTests
             return model.BuildMappings()
                 .First()
                 .Classes.First();
+        }
+
+        private HibernateMapping TestConvention(HibernateMappingConvention convention, Func<IMappingProvider> getMapping)
+        {
+            var model = new PersistenceModel();
+
+            model.Conventions.Add(convention);
+            model.Add(getMapping());
+
+            return model.BuildMappings()
+                .First();
         }
 
         private class Target

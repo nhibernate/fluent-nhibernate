@@ -77,4 +77,4 @@ namespace FluentNHibernate.Testing
             Console.WriteLine("Specification not implemented : " + specName);
         }
     }
-}
+}
