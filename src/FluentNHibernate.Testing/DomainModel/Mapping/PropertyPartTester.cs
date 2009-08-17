@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
     [TestFixture]
-    public class PropertyMapTester
+    public class PropertyPartTester
     {
         [Test]
         public void MapWithoutColumnNameUsesPropertyNameForPropertyColumnAttribute()
