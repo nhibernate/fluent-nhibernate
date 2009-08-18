@@ -74,6 +74,16 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             VerifyModel(x => x.DefaultLazy.ShouldEqual(false));
         }
 
+        [Test]
+        public void AutoImportShouldntBeOverridden()
+        {
+            Mapping(x => x.Not.AutoImport());
+
+            Convention(x => x.AutoImport());
+
+            VerifyModel(x => x.AutoImport.ShouldEqual(false));
+        }
+
         #region Helpers
 
         private void Convention(Action<IHibernateMappingInstance> convention)

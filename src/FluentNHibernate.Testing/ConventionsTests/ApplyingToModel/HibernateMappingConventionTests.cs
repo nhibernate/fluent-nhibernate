@@ -60,6 +60,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.DefaultLazy.ShouldEqual(true));
         }
 
+        [Test]
+        public void ShouldSetAutoImportProperty()
+        {
+            Convention(x => x.Not.AutoImport());
+
+            VerifyModel(x => x.AutoImport.ShouldEqual(false));
+        }
+
         #region Helpers
 
         private void Convention(Action<IHibernateMappingInstance> convention)

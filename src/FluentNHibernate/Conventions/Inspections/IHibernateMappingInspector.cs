@@ -6,6 +6,7 @@ namespace FluentNHibernate.Conventions.Inspections
         Access DefaultAccess { get; }
         Cascade DefaultCascade { get; }
         bool DefaultLazy { get; }
+        bool AutoImport { get; }
         string Schema { get; }
     }
 }

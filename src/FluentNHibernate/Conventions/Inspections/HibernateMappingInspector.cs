@@ -51,6 +51,11 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.DefaultLazy; }
         }
 
+        public bool AutoImport
+        {
+            get { return mapping.AutoImport; }
+        }
+
         public string Schema
         {
             get { return mapping.Schema; }

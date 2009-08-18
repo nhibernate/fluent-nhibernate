@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 
@@ -42,6 +43,15 @@ namespace FluentNHibernate.Conventions.Instances
                 return;
 
             mapping.DefaultLazy = nextBool;
+            nextBool = true;
+        }
+
+        public new void AutoImport()
+        {
+            if (mapping.IsSpecified(x => x.AutoImport))
+                return;
+
+            mapping.AutoImport = nextBool;
             nextBool = true;
         }
 
