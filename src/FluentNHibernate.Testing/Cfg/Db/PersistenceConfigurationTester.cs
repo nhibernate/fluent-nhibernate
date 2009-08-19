@@ -123,19 +123,26 @@ namespace FluentNHibernate.Testing.Cfg.Db
             _config.QuerySubstitutions("foo");
             ValueOf("query.substitutions").ShouldEqual("foo");
         }
-        [Test]
+        
+		[Test]
         public void Show_Sql_should_set_value_to_const_true()
         {
             _config.ShowSql();
             ValueOf("show_sql").ShouldEqual("true");
         }
 
+		[Test]
+		public void Format_Sql_should_set_value_to_const_true()
+		{
+			_config.FormatSql();
+			ValueOf("format_sql").ShouldEqual("true");
+		}
+
         [Test]
         public void DoNot_ShowSql_should_set_the_property_to_const_false()
         {
             _config.DoNot.ShowSql();
-            ValueOf("show_sql").ShouldEqual("false");
-            
+            ValueOf("show_sql").ShouldEqual("false");            
         }
 
         [Test]
