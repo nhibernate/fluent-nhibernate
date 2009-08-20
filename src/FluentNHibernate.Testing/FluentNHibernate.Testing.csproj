@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -69,24 +69,25 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AutoMap\Apm\AlterationCollectionTests.cs" />
-    <Compile Include="AutoMap\Apm\AlterationTests.cs" />
-    <Compile Include="AutoMap\Apm\AutoMappingOverrideAlterationTests.cs" />
-    <Compile Include="AutoMap\AutoMapManyToOneTester.cs" />
-    <Compile Include="AutoMap\AutoMapOneToManyTester.cs" />
-    <Compile Include="AutoMap\AutoMappingTester.cs" />
-    <Compile Include="AutoMap\AutoMapTests.cs" />
-    <Compile Include="AutoMap\Apm\AutoPersistenceModelTests.cs" />
-    <Compile Include="AutoMap\BaseAutoMapTester.cs" />
-    <Compile Include="AutoMap\BaseAutoMapFixture.cs" />
-    <Compile Include="AutoMap\BaseAutoPersistenceTests.cs" />
-    <Compile Include="AutoMap\JoinedSubclassConventionTests.cs" />
-    <Compile Include="AutoMap\ManyToMany.cs" />
-    <Compile Include="AutoMap\ManyToManyAutomapperTester.cs" />
-    <Compile Include="AutoMap\PrivateAutoMappingTester.cs" />
-    <Compile Include="AutoMap\StubTypeSource.cs" />
-    <Compile Include="AutoMap\TestFixtures.cs" />
-    <Compile Include="AutoMap\XXAppenderPropertyConvention.cs" />
+    <Compile Include="AutoMapping\Apm\AlterationCollectionTests.cs" />
+    <Compile Include="AutoMapping\Apm\AlterationTests.cs" />
+    <Compile Include="AutoMapping\Apm\AutoMappingOverrideAlterationTests.cs" />
+    <Compile Include="AutoMapping\Apm\Conventions\HasManyConventionTests.cs" />
+    <Compile Include="AutoMapping\AutoMapManyToOneTester.cs" />
+    <Compile Include="AutoMapping\AutoMapOneToManyTester.cs" />
+    <Compile Include="AutoMapping\AutoMappingTester.cs" />
+    <Compile Include="AutoMapping\AutoMapTests.cs" />
+    <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.cs" />
+    <Compile Include="AutoMapping\BaseAutoMapTester.cs" />
+    <Compile Include="AutoMapping\BaseAutoMapFixture.cs" />
+    <Compile Include="AutoMapping\BaseAutoPersistenceTests.cs" />
+    <Compile Include="AutoMapping\JoinedSubclassConventionTests.cs" />
+    <Compile Include="AutoMapping\ManyToMany.cs" />
+    <Compile Include="AutoMapping\ManyToManyAutomapperTester.cs" />
+    <Compile Include="AutoMapping\PrivateAutoMappingTester.cs" />
+    <Compile Include="AutoMapping\StubTypeSource.cs" />
+    <Compile Include="AutoMapping\TestFixtures.cs" />
+    <Compile Include="AutoMapping\XXAppenderPropertyConvention.cs" />
     <Compile Include="Cfg\Db\OracleClientConfigurationTester.cs" />
     <Compile Include="Cfg\Db\JetDriverConfigurationTester.cs" />
     <Compile Include="Cfg\Db\OracleDataClientConfigurationTester.cs" />
@@ -207,7 +208,7 @@
     <Compile Include="Fixtures\MixedMappingsInSameLocation\Bar.cs" />
     <Compile Include="Fixtures\MixedMappingsInSameLocation\Foo.cs" />
     <Compile Include="Fixtures\MixedMappingsInSameLocation\Mappings\FooMap.cs" />
-    <Compile Include="AutoMap\VersionTests.cs" />
+    <Compile Include="AutoMapping\VersionTests.cs" />
     <Compile Include="Cfg\Db\CacheSettingsBuilderTester.cs" />
     <Compile Include="Cfg\Db\ConnectionStringBuilderTester.cs" />
     <Compile Include="Cfg\Db\FirebirdConfigurationTester.cs" />
