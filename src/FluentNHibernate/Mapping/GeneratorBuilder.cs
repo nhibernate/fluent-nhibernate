@@ -1,5 +1,6 @@
 using System;
 using FluentNHibernate.MappingModel.Identity;
+using NHibernate.Id;
 
 namespace FluentNHibernate.Mapping
 {
@@ -313,6 +314,37 @@ namespace FluentNHibernate.Mapping
         {
             paramValues(new ParamBuilder(mapping.Params));
             Foreign(property);
+        }
+
+        public void Custom<T>() where T : IIdentifierGenerator
+        {
+            Custom(typeof(T));
+        }
+
+        public void Custom(Type generator)
+        {
+            Custom(generator.AssemblyQualifiedName);
+        }
+
+        public void Custom(string generator)
+        {
+            SetGenerator(generator);
+        }
+
+        public void Custom<T>(Action<ParamBuilder> paramValues) where T : IIdentifierGenerator
+        {
+            Custom(typeof(T), paramValues);
+        }
+
+        public void Custom(Type generator, Action<ParamBuilder> paramValues)
+        {
+            Custom(generator.AssemblyQualifiedName, paramValues);
+        }
+
+        public void Custom(string generator, Action<ParamBuilder> paramValues)
+        {
+            paramValues(new ParamBuilder(mapping.Params));
+            SetGenerator(generator);
         }
     }
 }

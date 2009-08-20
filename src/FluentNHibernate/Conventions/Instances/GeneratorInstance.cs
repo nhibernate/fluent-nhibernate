@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Identity;
+using NHibernate.Id;
 
 namespace FluentNHibernate.Conventions.Instances
 {
@@ -326,6 +327,38 @@ namespace FluentNHibernate.Conventions.Instances
         {
             if (!mapping.IsSpecified(x => x.Class))
                 builder.Foreign(property, paramValues);
+        }
+
+        public void Custom<T>() where T : IIdentifierGenerator
+        {
+            Custom(typeof(T));
+        }
+
+        public void Custom(Type generator)
+        {
+            Custom(generator.AssemblyQualifiedName);
+        }
+
+        public void Custom(string generator)
+        {
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Custom(generator);
+        }
+
+        public void Custom<T>(Action<ParamBuilder> paramValues) where T : IIdentifierGenerator
+        {
+            Custom(typeof(T), paramValues);
+        }
+
+        public void Custom(Type generator, Action<ParamBuilder> paramValues)
+        {
+            Custom(generator.AssemblyQualifiedName, paramValues);
+        }
+
+        public void Custom(string generator, Action<ParamBuilder> paramValues)
+        {
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Custom(generator, paramValues);
         }
     }
 }

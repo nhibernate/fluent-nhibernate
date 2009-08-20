@@ -264,6 +264,7 @@
     <Compile Include="FluentInterfaceTests\CompositeElementMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\CompositeElementSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\CompositeIdMutablePropertyModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\IdGeneratorTests.cs" />
     <Compile Include="FluentInterfaceTests\ManyToManyTableNameTests.cs" />
     <Compile Include="FluentInterfaceTests\SubclassMapForJoinedSubclassMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\SubclassMapForJoinedSubclassSubPartModelGenerationTests.cs" />
