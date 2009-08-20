@@ -1,10 +1,32 @@
-using System;using System.Collections.Generic;using System.Linq;using System.Reflection;using System.Runtime.Remoting.Messaging;using FluentNHibernate.Automapping;using FluentNHibernate.Automapping.Alterations;using FluentNHibernate.Automapping.TestFixtures.ComponentTypes;using FluentNHibernate.Automapping.TestFixtures.CustomTypes;using FluentNHibernate.Automapping.TestFixtures.SuperTypes;
-using FluentNHibernate.Cfg;using FluentNHibernate.Cfg.Db;using FluentNHibernate.Conventions;using FluentNHibernate.Conventions.Helpers;using FluentNHibernate.Conventions.AcceptanceCriteria;using FluentNHibernate.Conventions.Instances;using FluentNHibernate.Conventions.Inspections;using FluentNHibernate.Mapping;using FluentNHibernate.Testing.Automapping;
-using FluentNHibernate.Testing.DomainModel;using NHibernate.Cfg;using NUnit.Framework;using SuperTypes = FluentNHibernate.Automapping.TestFixtures.SuperTypes;using FluentNHibernate.Automapping.TestFixtures;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Remoting.Messaging;
+using FluentNHibernate.Automapping;
+using FluentNHibernate.Automapping.Alterations;
+using FluentNHibernate.Automapping.TestFixtures.ComponentTypes;
+using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
+using FluentNHibernate.Automapping.TestFixtures.SuperTypes;
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
+using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions.Helpers;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Instances;
+using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Mapping;
+using FluentNHibernate.Testing.Automapping;
+using FluentNHibernate.Testing.DomainModel;
+using NHibernate.Cfg;
+using NUnit.Framework;
+using SuperTypes = FluentNHibernate.Automapping.TestFixtures.SuperTypes;
+using FluentNHibernate.Automapping.TestFixtures;
 using ExampleClass=FluentNHibernate.Automapping.TestFixtures.ExampleClass;
 using ExampleCustomColumn=FluentNHibernate.Automapping.TestFixtures.ExampleCustomColumn;
 using ExampleInheritedClass=FluentNHibernate.Automapping.TestFixtures.ExampleInheritedClass;
-using ExampleParentClass=FluentNHibernate.Automapping.TestFixtures.ExampleParentClass;
+using ExampleParentClass=FluentNHibernate.Automapping.TestFixtures.ExampleParentClass;
+
 
 namespace FluentNHibernate.Testing.AutoMapping.Apm
 {
@@ -15,7 +37,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ShouldOnlyOutputOneClass()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleCustomColumn>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class[2]").DoesntExist();
@@ -28,7 +50,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Database(SQLiteConfiguration.Standard.InMemory)
                 .Mappings(x => x.AutoMappings.Add(
                     AutoMap.AssemblyOf<ExampleCustomColumn>()
-                        .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                        .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                     ))
                 .BuildConfiguration();
         }
@@ -37,7 +59,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void MapsPropertyWithPropertyConvention()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleCustomColumn>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Conventions.Add<XXAppenderPropertyConvention>();
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -48,7 +70,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestAutoMapsIds()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleCustomColumn>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/id").Exists();
@@ -58,7 +80,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestAutoMapsProperties()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//property[@name='ExampleClassId']").Exists();
@@ -68,7 +90,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void AutoMapsEnumProperties()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//property[@name='Enum']").Exists();
@@ -78,7 +100,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestAutoMapIgnoresProperties()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleCustomColumn>(c => c.IgnoreProperty(p => p.ExampleCustomColumnId));
 
             new AutoMappingTester<ExampleCustomColumn>(autoMapper)
@@ -89,7 +111,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ForTypesThatDeriveFromShouldOverrideExistingProperty()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleClass>(c => c.Map(x => x.LineOne).Column("test"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -103,7 +125,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ForTypesThatDeriveFromShouldOverrideExistingId()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleClass>(c => c.Id(x => x.Id).Column("test"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -114,7 +136,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ForTypesThatDeriveFromShouldOverrideExistingComponent()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(x => x.IsComponentType = type => type == typeof(ExampleParentClass))
                 .ForTypesThatDeriveFrom<ExampleClass>(m => m.Component(x => x.Parent, c => c.Map(x => x.ExampleParentClassId).Column("test")));
 
@@ -126,7 +148,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ForTypesThatDeriveFromShouldOverrideExistingHasMany()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleParentClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleParentClass>(m => m.HasMany(x => x.Examples).Inverse());
 
             new AutoMappingTester<ExampleParentClass>(autoMapper)
@@ -137,7 +159,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ForTypesThatDeriveFromShouldOverrideExistingHasManyToMany()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleParentClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleParentClass>(m => m.HasManyToMany(x => x.Examples).Inverse());
 
             new AutoMappingTester<ExampleParentClass>(autoMapper)
@@ -149,7 +171,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ForTypesThatDeriveFromShouldOverrideExistingHasOne()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleClass>(m => m.HasOne(x => x.Parent));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -161,7 +183,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ForTypesThatDeriveFromShouldOverrideExistingReferences()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleClass>(m => m.References(x => x.Parent).Access.Field());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -172,7 +194,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ForTypesThatDeriveFromShouldOverrideExistingReferencesAny()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleClass>(m =>
                     m.ReferencesAny(x => x.Dictionary)
                         .EntityIdentifierColumn("one")
@@ -188,7 +210,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ForTypesThatDeriveFromShouldOverrideExistingVersion()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleClass>(m => m.Version(x => x.Timestamp).Access.Field());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -199,7 +221,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestAutoMapManyToOne()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//many-to-one").HasAttribute("name", "Parent");
@@ -209,7 +231,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestAutoMapOneToMany()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleParentClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleParentClass>(autoMapper)
                 .Element("//bag")
@@ -220,7 +242,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestAutoMapPropertyMergeOverridesId()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleClass>(map => map.Id(c => c.Id, "Column"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -232,7 +254,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestAutoMapPropertySetPrimaryKeyConvention()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Conventions.Add(PrimaryKey.Name.Is(id => id.Property.Name + "Id"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -244,7 +266,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestAutoMapIdUsesConvention()
         {
             var autoMapper = AutoMap.AssemblyOf<PrivateIdSetterClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Conventions.Add(new TestIdConvention());
 
             new AutoMappingTester<PrivateIdSetterClass>(autoMapper)
@@ -255,7 +277,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void AppliesConventionsToManyToOne()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Conventions.Add(new TestM2OConvention());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -266,7 +288,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void AppliesConventionsToOneToMany()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Conventions.Add(new TestO2MConvention());
 
             new AutoMappingTester<ExampleParentClass>(autoMapper)
@@ -318,7 +340,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestInheritanceMapping()
         {
             AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
         }
 
         [Test]
@@ -326,14 +348,14 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         {
             AutoMap.AssemblyOf<ExampleClass>()
                 .Setup(x => x.SubclassStrategy = t => SubclassStrategy.Subclass)
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
         }
 
         [Test]
         public void TestInheritanceMappingProperties()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/joined-subclass/property[@name='ExampleProperty']").Exists();
@@ -344,7 +366,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Setup(x => x.SubclassStrategy = t => SubclassStrategy.Subclass)
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/subclass/property[@name='ExampleProperty']").Exists();
@@ -354,7 +376,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestDoNotAddJoinedSubclassesForConcreteBaseTypes()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(c =>
                            c.IsConcreteBaseType = b =>
                                                   b == typeof(ExampleClass));
@@ -367,7 +389,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestDoNotAddSubclassesForConcreteBaseTypes()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(c =>
                 {
                     c.IsConcreteBaseType = b => b == typeof(ExampleClass);
@@ -382,7 +404,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestClassIsMappedForConcreteSubClass()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(c =>
                            c.IsConcreteBaseType = b =>
                                                   b == typeof(ExampleClass));
@@ -397,7 +419,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestClassIsMappedForConcreteSubClassWithSubclass()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(c =>
                 {
                     c.IsConcreteBaseType = b => b == typeof(ExampleClass);
@@ -414,7 +436,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestInheritanceMappingDoesntIncludeBaseTypeProperties()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/joined-subclass")
@@ -426,7 +448,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Setup(x => x.SubclassStrategy = t => SubclassStrategy.Subclass)
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/subclass")
@@ -438,7 +460,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .ForTypesThatDeriveFrom<ExampleClass>(t => t.JoinedSubClass<ExampleInheritedClass>("OverridenKey", p => p.Map(c => c.ExampleProperty, "columnName")))
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/joined-subclass")
@@ -451,7 +473,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Setup(x => x.SubclassStrategy = t => SubclassStrategy.Subclass)
                 .ForTypesThatDeriveFrom<ExampleClass>(t => t.SubClass<ExampleInheritedClass>("discriminator", p => p.Map(c => c.ExampleProperty, "columnName")))
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/subclass")
@@ -462,7 +484,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestAutoMapClassAppliesConventions()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Conventions.Add(new TestClassConvention());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -473,7 +495,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void CanSearchForOpenGenericTypes()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             autoMapper.CompileMappings();
             autoMapper.FindMapping(typeof(SomeOpenGenericType<>));
@@ -484,7 +506,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         {
             var autoMapper = AutoMap.AssemblyOf<ClassWithUserType>()
                 .Conventions.Add<CustomTypeConvention>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ClassWithUserType>(autoMapper)
                 .Element("class/property").HasAttribute("name", "Custom");
@@ -500,7 +522,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                         type => type == typeof(Address);
                 })
                 .Conventions.Add<CustomTypeConvention>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<Customer>(autoMapper)
                 .Element("class/component[@name='HomeAddress']").Exists()
@@ -517,7 +539,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                         type => type == typeof(Address);
                 })
                 .Conventions.Add<CustomTypeConvention>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<Customer>(autoMapper)
                 .Element("class/component/property[@name='Number']").Exists()
@@ -534,7 +556,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                         type => type == typeof(Address);
                 })
                 .Conventions.Add<CustomTypeConvention>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<Customer>(autoMapper)
                 .Element("class/component/property[@name='Custom']").HasAttribute("type", typeof(CustomUserType).AssemblyQualifiedName);
@@ -552,7 +574,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                         property => property.Name + "_";
                 })
                 .Conventions.Add<CustomTypeConvention>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<Customer>(autoMapper)
                 .Element("class/component[@name='WorkAddress']/property[@name='Number']/column").HasAttribute("name", "WorkAddress_Number");
@@ -570,7 +592,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                         property => property.Name + "_";
                 })
                 .Conventions.Add<CustomTypeConvention>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<Customer>(autoMapper)
                 .Element("class/component[@name='WorkAddress']/property[@name='Number']/column")
@@ -581,7 +603,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void IdIsMappedFromGenericBaseClass()
         {
             var autoMapper = AutoMap.AssemblyOf<ClassUsingGenericBase>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(convention =>
                 {
                     convention.IsBaseType =
@@ -597,7 +619,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void OverriddenSubclassIsMerged()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleInheritedClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.HasMany(x => x.Children).Inverse());
 
             autoMapper.CompileMappings();
@@ -617,7 +639,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void SubclassShouldntRemapPropertiesMappedInParent()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleInheritedClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/property[@name='LineOne']").Exists()
@@ -628,7 +650,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void OverriddenSubclassIsAppliedToXml()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleInheritedClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.HasMany(x => x.Children).Inverse());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -640,7 +662,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void JoinedSubclassForTypesThatDeriveFromShouldOverrideExistingProperty()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(c => c.Map(x => x.ExampleProperty).Column("test"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -654,7 +676,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void JoinedSubclassForTypesThatDeriveFromShouldOverrideExistingComponent()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(x => x.IsComponentType = type => type == typeof(ExampleParentClass))
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.Component(x => x.Component, c => c.Map(x => x.ExampleParentClassId).Column("test")));
 
@@ -666,7 +688,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void JoinedSubclassForTypesThatDeriveFromShouldOverrideExistingHasMany()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.HasMany(x => x.Children).Inverse());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -677,7 +699,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void JoinedSubclassForTypesThatDeriveFromShouldOverrideExistingHasManyToMany()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.HasManyToMany(x => x.Children).Inverse());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -689,7 +711,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void JoinedSubclassForTypesThatDeriveFromShouldOverrideExistingHasOne()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.HasOne(x => x.Parent));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -701,7 +723,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void JoinedSubclassForTypesThatDeriveFromShouldOverrideExistingReferences()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.References(x => x.Parent).Access.Field());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -712,7 +734,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void JoinedSubclassForTypesThatDeriveFromShouldOverrideExistingReferencesAny()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(m =>
                     m.ReferencesAny(x => x.DictionaryChild)
                         .EntityIdentifierColumn("one")
@@ -728,7 +750,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void SubclassForTypesThatDeriveFromShouldOverrideExistingProperty()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(c => c.Map(x => x.ExampleProperty).Column("test"));
 
@@ -743,7 +765,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void SubclassForTypesThatDeriveFromShouldOverrideExistingComponent()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(x =>
                 {
                     x.SubclassStrategy = type => SubclassStrategy.Subclass;
@@ -759,7 +781,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void SubclassForTypesThatDeriveFromShouldOverrideExistingHasMany()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.HasMany(x => x.Children).Inverse());
 
@@ -771,7 +793,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void SubclassForTypesThatDeriveFromShouldOverrideExistingHasManyToMany()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.HasManyToMany(x => x.Children).Inverse());
 
@@ -784,7 +806,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void SubclassForTypesThatDeriveFromShouldOverrideExistingHasOne()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.HasOne(x => x.Parent));
 
@@ -797,7 +819,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void SubclassForTypesThatDeriveFromShouldOverrideExistingReferences()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(m => m.References(x => x.Parent).Access.Field());
 
@@ -809,7 +831,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void SubclassForTypesThatDeriveFromShouldOverrideExistingReferencesAny()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
                 .ForTypesThatDeriveFrom<ExampleInheritedClass>(m =>
                     m.ReferencesAny(x => x.DictionaryChild)
@@ -826,7 +848,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ShouldBeAbleToOverrideKeyColumnNameOfJoinedSubclassInConvention()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleInheritedClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Conventions.Add<JoinedSubclassConvention>();
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -838,7 +860,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ShouldBeAbleToOverrideTableNameOfJoinedSubclassInConvention()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleInheritedClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Conventions.Add<JoinedSubclassConvention>();
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -850,7 +872,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ShouldBeAbleToIgnoreComponentProperties()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(s => s.IsComponentType = type => type == typeof(ExampleParentClass))
                 .ForTypesThatDeriveFrom<ExampleParentClass>(t => t.IgnoreProperty(x => x.ExampleParentClassId));
 
@@ -862,7 +884,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ShouldBeAbleToMapComponentHasMany()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(s => s.IsComponentType = type => type == typeof(ExampleParentClass));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -873,7 +895,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ComponentHasManyShouldHavePrefixedKeyColumn()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Setup(s =>
                 {
                     s.IsComponentType = type => type == typeof(ExampleParentClass);
@@ -888,7 +910,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ShouldBeAbleToIgnorePropertiesRegardlessOfType()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleInheritedClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForAllTypes(t => t.IgnoreProperty("Dummy"));
 
             new AutoMappingTester<ClassWithDummyProperty>(autoMapper)
@@ -902,7 +924,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ShouldBeAbleToIgnoreMultiplePropertiesRegardlessOfType()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleInheritedClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForAllTypes(t => t.IgnoreProperties("Dummy", "Dummy1", "Dummy2"));
 
             new AutoMappingTester<ClassWithDummyProperty>(autoMapper)
@@ -920,7 +942,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ShouldBeAbleToIgnoreMultiplePropertiesByDelegateRegardlessOfType()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleInheritedClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .ForAllTypes(t => t.IgnoreProperties(x => x.Name.Contains("Dummy")));
 
             new AutoMappingTester<ClassWithDummyProperty>(autoMapper)
@@ -938,7 +960,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ShouldAllowIgnoresInOverrides()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures")
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .UseOverridesFromAssemblyOf<IgnorerOverride>();
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -950,7 +972,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Setup(x => x.IsComponentType = type => type == typeof(ExampleParentClass))
-                .Where(x => x.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(x => x.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             autoMapper.CompileMappings();
             var mappings = autoMapper.BuildMappings();
@@ -972,7 +994,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void ShouldEscapeTableNames()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures");
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class").HasAttribute("table", "`ExampleClass`");
