@@ -160,7 +160,7 @@ namespace FluentNHibernate.Mapping
             indetermineateSubclasses[typeof(TSubclass)] = subclass;
         }
 
-        public void DiscriminatorValue(string discriminatorValue)
+        public void DiscriminatorValue(object discriminatorValue)
         {
             subclassAttributes.Set(x => x.DiscriminatorValue, discriminatorValue);
         }
