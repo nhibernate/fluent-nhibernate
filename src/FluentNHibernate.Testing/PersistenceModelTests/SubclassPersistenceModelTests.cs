@@ -13,15 +13,15 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         {
             var model = new PersistenceModel();
 
-            model.Add(new ParentClassMap());
-            model.Add(new HierarchyOneChildMap());
+            model.Add(new TablePerSubclass.TPS_ParentMap());
+            model.Add(new TablePerSubclass.TPS_ChildMap());
 
             var classMapping = model.BuildMappings()
                 .First()
                 .Classes.First();
 
             classMapping.Subclasses.Count().ShouldEqual(1);
-            classMapping.Subclasses.First().Type.ShouldEqual(typeof(HierarchyOneChild));
+            classMapping.Subclasses.First().Type.ShouldEqual(typeof(TablePerSubclass.TPS_Child));
         }
 
         [Test]
@@ -29,9 +29,9 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         {
             var model = new PersistenceModel();
 
-            model.Add(new ParentClassMap());
-            model.Add(new HierarchyOneChildMap());
-            model.Add(new HierarchyOneChildChildMap());
+            model.Add(new TablePerSubclass.TPS_ParentMap());
+            model.Add(new TablePerSubclass.TPS_ChildMap());
+            model.Add(new TablePerSubclass.TPS_ChildChildMap());
 
             var classMapping = model.BuildMappings()
                 .First()
@@ -41,10 +41,10 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             classMapping.Subclasses.Count().ShouldEqual(1);
             var child = classMapping.Subclasses.First();
 
-            child.Type.ShouldEqual(typeof(HierarchyOneChild));
+            child.Type.ShouldEqual(typeof(TablePerSubclass.TPS_Child));
 
             child.Subclasses.Count().ShouldEqual(1);
-            child.Subclasses.First().Type.ShouldEqual(typeof(HierarchyOneChildChild));
+            child.Subclasses.First().Type.ShouldEqual(typeof(TablePerSubclass.TPS_ChildChild));
         }
 
         [Test]
@@ -52,9 +52,9 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         {
             var model = new PersistenceModel();
 
-            model.Add(new DiscriminatedParentClassMap());
-            model.Add(new HierarchyTwoChildMap());
-            model.Add(new HierarchyTwoChildChildMap());
+            model.Add(new TablePerClassHierarchy.TPCH_ParentMap());
+            model.Add(new TablePerClassHierarchy.TPCH_ChildMap());
+            model.Add(new TablePerClassHierarchy.TPCH_ChildChildMap());
 
             var classMapping = model.BuildMappings()
                 .First()
@@ -64,10 +64,10 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             classMapping.Subclasses.Count().ShouldEqual(1);
             var child = classMapping.Subclasses.First();
 
-            child.Type.ShouldEqual(typeof(HierarchyTwoChild));
+            child.Type.ShouldEqual(typeof(TablePerClassHierarchy.TPCH_Child));
 
             child.Subclasses.Count().ShouldEqual(1);
-            child.Subclasses.First().Type.ShouldEqual(typeof(HierarchyTwoChildChild));
+            child.Subclasses.First().Type.ShouldEqual(typeof(TablePerClassHierarchy.TPCH_ChildChild));
         }
 
         [Test]
@@ -75,8 +75,8 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         {
             var model = new PersistenceModel();
 
-            model.Add(new DiscriminatedParentClassMap());
-            model.Add(new HierarchyTwoChildMap());
+            model.Add(new TablePerClassHierarchy.TPCH_ParentMap());
+            model.Add(new TablePerClassHierarchy.TPCH_ChildMap());
 
             var classMapping = model.BuildMappings()
                 .First()
@@ -90,8 +90,8 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         {
             var model = new PersistenceModel();
 
-            model.Add(new ParentClassMap());
-            model.Add(new HierarchyOneChildMap());
+            model.Add(new TablePerSubclass.TPS_ParentMap());
+            model.Add(new TablePerSubclass.TPS_ChildMap());
 
             var classMapping = model.BuildMappings()
                 .First()
@@ -105,8 +105,8 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         {
             var model = new PersistenceModel();
 
-            model.Add(new ParentClassMap());
-            model.Add(typeof(HierarchyOneChildMap));
+            model.Add(new TablePerSubclass.TPS_ParentMap());
+            model.Add(typeof(TablePerSubclass.TPS_ChildMap));
 
             model.BuildMappings()
                 .First()
@@ -119,72 +119,202 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         {
             var model = new PersistenceModel();
 
-            model.AddMappingsFromAssembly(typeof(HierarchyOneParent).Assembly);
+            model.AddMappingsFromAssembly(typeof(TablePerSubclass.TPS_Parent).Assembly);
             
             var classMapping = model.BuildMappings()
-                .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(HierarchyOneParent)) != null)
+                .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(TablePerSubclass.TPS_Parent)) != null)
                 .Classes.First();
 
             classMapping.Subclasses.Count().ShouldBeGreaterThan(0);
         }
-    }
 
-    public class ParentClassMap : ClassMap<HierarchyOneParent>
-    {
-        public ParentClassMap()
+        [Test]
+        public void ShouldPickupSubclassMapsWithIntermediaryClasses()
         {
-            Id(x => x.Id);
+            var model = new PersistenceModel();
+
+            model.Add(new Intermediaries.I_TopMap());
+            model.Add(new Intermediaries.I_BottomMostMap());
+
+            model.BuildMappings()
+                .First()
+                .Classes.First()
+                .Subclasses.Count().ShouldEqual(1);
+        }
+
+        [Test]
+        public void ShouldHandleBranchingHierarchies()
+        {
+            var model = new PersistenceModel();
+
+            model.Add(new Branching.B_TopMap());
+            model.Add(new Branching.B_ChildMap());
+            model.Add(new Branching.B_Child2Map());
+            model.Add(new Branching.B_Child_ChildMap());
+            model.Add(new Branching.B_Child2_ChildMap());
+
+            var top = model.BuildMappings().First().Classes.First();
+
+            top.Subclasses.ShouldContain(x => x.Type == typeof(Branching.B_Child));
+            top.Subclasses.ShouldContain(x => x.Type == typeof(Branching.B_Child2));
+            top.Subclasses.Count().ShouldEqual(2);
+
+            var child = top.Subclasses.First(x => x.Type == typeof(Branching.B_Child));
+
+            child.Subclasses.ShouldContain(x => x.Type == typeof(Branching.B_Child_Child));
+            child.Subclasses.Count().ShouldEqual(1);
+
+            var child2 = top.Subclasses.First(x => x.Type == typeof(Branching.B_Child2));
+
+            child2.Subclasses.ShouldContain(x => x.Type == typeof(Branching.B_Child2_Child));
+            child2.Subclasses.Count().ShouldEqual(1);
         }
     }
 
-    public class DiscriminatedParentClassMap : ClassMap<HierarchyTwoParent>
+    namespace TablePerSubclass
     {
-        public DiscriminatedParentClassMap()
+        public class TPS_Parent
         {
-            Id(x => x.Id);
-            DiscriminateSubClassesOnColumn("discriminator");
+            public virtual int Id { get; set; }
         }
+
+        public class TPS_Child : TPS_Parent
+        {
+
+        }
+
+        public class TPS_ChildChild : TPS_Child
+        {
+
+        }
+
+        public class TPS_ParentMap : ClassMap<TPS_Parent>
+        {
+            public TPS_ParentMap()
+            {
+                Id(x => x.Id);
+            }
+        }
+
+        public class TPS_ChildMap : SubclassMap<TPS_Child>
+        { }
+
+        public class TPS_ChildChildMap : SubclassMap<TPS_ChildChild>
+        { }
     }
 
-    public class HierarchyOneChildMap : SubclassMap<HierarchyOneChild>
-    {}
-
-    public class HierarchyOneChildChildMap : SubclassMap<HierarchyOneChildChild>
-    {}
-
-    public class HierarchyOneParent
+    namespace TablePerClassHierarchy
     {
-        public virtual int Id { get; set; }
+        public class TPCH_Parent
+        {
+            public virtual int Id { get; set; }
+        }
+
+        public class TPCH_Child : TPCH_Parent
+        {
+
+        }
+
+        public class TPCH_ChildChild : TPCH_Child
+        {
+
+        }
+
+        public class TPCH_ParentMap : ClassMap<TPCH_Parent>
+        {
+            public TPCH_ParentMap()
+            {
+                Id(x => x.Id);
+                DiscriminateSubClassesOnColumn("discriminator");
+            }
+        }
+
+        public class TPCH_ChildMap : SubclassMap<TPCH_Child>
+        { }
+
+        public class TPCH_ChildChildMap : SubclassMap<TPCH_ChildChild>
+        { }
     }
 
-    public class HierarchyOneChild : HierarchyOneParent
+    namespace Intermediaries
     {
+        public class I_Top
+        {
+            public virtual int Id { get; set; }
+        }
 
+        public class I_Intermediary : I_Top
+        {
+
+        }
+
+        public class I_Intermediary2 : I_Intermediary
+        {
+
+        }
+
+        public class I_BottomMost : I_Intermediary2
+        {
+
+        }
+
+        public class I_TopMap : ClassMap<I_Top>
+        {
+            public I_TopMap()
+            {
+                Id(x => x.Id);
+            }
+        }
+
+        public class I_BottomMostMap : SubclassMap<I_BottomMost>
+        { }
     }
 
-    public class HierarchyOneChildChild : HierarchyOneChild
+    namespace Branching
     {
-        
-    }
+        public class B_Top
+        {
+            public virtual int Id { get; set; }
+        }
 
-    public class HierarchyTwoChildMap : SubclassMap<HierarchyTwoChild>
-    { }
+        public class B_Child : B_Top
+        {
+            
+        }
 
-    public class HierarchyTwoChildChildMap : SubclassMap<HierarchyTwoChildChild>
-    { }
+        public class B_Child2 : B_Top
+        {
+            
+        }
 
-    public class HierarchyTwoParent
-    {
-        public virtual int Id { get; set; }
-    }
+        public class B_Child_Child : B_Child
+        {
+            
+        }
 
-    public class HierarchyTwoChild : HierarchyTwoParent
-    {
+        public class B_Child2_Child : B_Child2
+        {
+            
+        }
 
-    }
+        public class B_TopMap : ClassMap<B_Top>
+        {
+            public B_TopMap()
+            {
+                Id(x => x.Id);
+            }
+        }
 
-    public class HierarchyTwoChildChild : HierarchyTwoChild
-    {
+        public class B_ChildMap : SubclassMap<B_Child>
+        {}
 
+        public class B_Child2Map : SubclassMap<B_Child2>
+        {}
+
+        public class B_Child_ChildMap : SubclassMap<B_Child_Child>
+        {}
+
+        public class B_Child2_ChildMap : SubclassMap<B_Child2_Child>
+        {}
     }
 }
