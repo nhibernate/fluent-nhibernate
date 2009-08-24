@@ -26,9 +26,9 @@ namespace FluentNHibernate.Mapping
         private readonly IList<ImportPart> imports = new List<ImportPart>();
         private bool nextBool = true;
 
-        private DiscriminatorPart discriminator;
+        protected DiscriminatorPart discriminator;
         protected IVersionMappingProvider version;
-        private ICompositeIdMappingProvider compositeId;
+        protected ICompositeIdMappingProvider compositeId;
         private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
         private readonly PolymorphismBuilder<ClassMap<T>> polymorphism;
 

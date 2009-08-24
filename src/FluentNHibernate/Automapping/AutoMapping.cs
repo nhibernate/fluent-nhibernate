@@ -34,38 +34,47 @@ namespace FluentNHibernate.Automapping
             return mappedProperties;
         }
 
-        void IAutoClasslike.AlterModel(ClassMappingBase classMapping)
+        void IAutoClasslike.AlterModel(ClassMappingBase mapping)
         {
-            classMapping.MergeAttributes(attributes.CloneInner());
+            mapping.MergeAttributes(attributes.CloneInner());
 
-            if (classMapping is ClassMapping)
+            if (mapping is ClassMapping)
             {
+                var classMapping = (ClassMapping)mapping;
+
                 if (id != null)
-                    ((ClassMapping)classMapping).Id = id.GetIdentityMapping();
+                    classMapping.Id = id.GetIdentityMapping();
+
+                if (compositeId != null)
+                    classMapping.Id = compositeId.GetCompositeIdMapping();
 
                 if (version != null)
-                    ((ClassMapping)classMapping).Version = version.GetVersionMapping();
+                    classMapping.Version = version.GetVersionMapping();
+
+                if (discriminator != null)
+                    classMapping.Discriminator = ((IDiscriminatorMappingProvider)discriminator).GetDiscriminatorMapping();
+
+                if (Cache.IsDirty)
+                    classMapping.Cache = ((ICacheMappingProvider)Cache).GetCacheMapping();
             }
 
             foreach (var property in Properties)
-                classMapping.AddOrReplaceProperty(property.GetPropertyMapping());
+                mapping.AddOrReplaceProperty(property.GetPropertyMapping());
 
             foreach (var collection in collections)
-                classMapping.AddOrReplaceCollection(collection.GetCollectionMapping());
+                mapping.AddOrReplaceCollection(collection.GetCollectionMapping());
 
             foreach (var component in Components)
-                classMapping.AddOrReplaceComponent(component.GetComponentMapping());
+                mapping.AddOrReplaceComponent(component.GetComponentMapping());
 
             foreach (var oneToOne in oneToOnes)
-                classMapping.AddOrReplaceOneToOne(oneToOne.GetOneToOneMapping());
+                mapping.AddOrReplaceOneToOne(oneToOne.GetOneToOneMapping());
 
             foreach (var reference in references)
-                classMapping.AddOrReplaceReference(reference.GetManyToOneMapping());
+                mapping.AddOrReplaceReference(reference.GetManyToOneMapping());
 
             foreach (var any in anys)
-                classMapping.AddOrReplaceAny(any.GetAnyMapping());
-
-            // TODO: Add other mappings
+                mapping.AddOrReplaceAny(any.GetAnyMapping());
         }
 
         protected override OneToManyPart<TChild> HasMany<TChild>(PropertyInfo property)
