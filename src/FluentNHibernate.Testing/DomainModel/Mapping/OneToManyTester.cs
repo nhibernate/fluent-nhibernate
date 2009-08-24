@@ -131,6 +131,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             model.Add(classMap);
             model.Configure(cfg);
+
+            AppDomain.CurrentDomain.GetAssemblies().Each(Console.WriteLine);
         }
 
         [Test]
