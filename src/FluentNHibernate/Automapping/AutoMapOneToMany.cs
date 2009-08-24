@@ -34,18 +34,26 @@ namespace FluentNHibernate.Automapping
             if (property.DeclaringType != classMap.Type)
                 return;
 
-            var mapping = new BagMapping();
+            var mapping = GetCollectionMapping(property.PropertyType);
 
             mapping.MemberInfo = property;
             mapping.SetDefaultValue(x => x.Name, property.Name);
 
             SetRelationship(property, classMap, mapping);
-            SetKey(mapping, classMap, property);
+            SetKey(property, classMap, mapping);
 
             classMap.AddCollection(mapping);        
         }
 
-        private void SetRelationship(PropertyInfo property, ClassMappingBase classMap, BagMapping mapping)
+        private ICollectionMapping GetCollectionMapping(Type type)
+        {
+            if (type.Namespace.StartsWith("Iesi.Collections"))
+                return new SetMapping();
+
+            return new BagMapping();
+        }
+
+        private void SetRelationship(PropertyInfo property, ClassMappingBase classMap, ICollectionMapping mapping)
         {
             var relationship = new OneToManyMapping
             {
@@ -56,7 +64,7 @@ namespace FluentNHibernate.Automapping
             mapping.SetDefaultValue(x => x.Relationship, relationship);
         }
 
-        private void SetKey(BagMapping mapping, ClassMappingBase classMap, PropertyInfo property)
+        private void SetKey(PropertyInfo property, ClassMappingBase classMap, ICollectionMapping mapping)
         {
             var columnName = property.DeclaringType.Name + "_Id";
 

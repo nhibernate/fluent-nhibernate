@@ -1,5 +1,8 @@
+using System.Linq;
 using System.Linq.Expressions;
 using FluentNHibernate.Automapping;
+using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 using NUnit.Framework;
 
@@ -40,6 +43,35 @@ namespace FluentNHibernate.Testing.Automapping
         public void ShouldntMapEntities()
         {
             ShouldntMap(x => x.Entity);
+        }
+
+        [Test]
+        public void ShouldMapListAsBag()
+        {
+            var classMapping = new ClassMapping()
+            {
+                Type = typeof(PropertyTarget)
+            };
+
+            mapper.Map(classMapping, typeof(PropertyTarget).GetProperty("List"));
+
+            classMapping.Collections
+                .First().ShouldBeOfType(typeof(BagMapping));
+        }
+
+        [Test]
+        public void ShouldMapSetAsSet()
+        {
+            var classMapping = new ClassMapping()
+            {
+                Type = typeof(PropertyTarget)
+            };
+
+            mapper.Map(classMapping, typeof(PropertyTarget).GetProperty("Set"));
+
+            classMapping.Collections
+                .First().ShouldBeOfType(typeof(SetMapping));
+
         }
 
         protected void ShouldMap(Expression<System.Func<PropertyTarget, object>> property)
