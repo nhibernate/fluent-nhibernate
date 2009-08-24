@@ -16,6 +16,11 @@ namespace FluentNHibernate.Testing
             Assert.IsFalse(condition);
         }
 
+        public static void ShouldBeFalse(this bool condition, string message)
+        {
+            Assert.IsFalse(condition, message);
+        }
+
         public static void ShouldBeTrue(this bool condition)
         {
             Assert.IsTrue(condition);
@@ -125,6 +130,14 @@ namespace FluentNHibernate.Testing
             foreach (var t in actual)
             {
                 expected(t).ShouldBeFalse();
+            }
+        }
+
+        public static void ShouldNotContain<T>(this IEnumerable<T> actual, Func<T, bool> expected, string message)
+        {
+            foreach (var t in actual)
+            {
+                expected(t).ShouldBeFalse(message);
             }
         }
 

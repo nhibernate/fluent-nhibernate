@@ -48,7 +48,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             Model<ExampleClass>(model => model
                 .Where(type => type == typeof(ExampleClass))
-                .ForTypesThatDeriveFrom<ExampleClass>(m => m.IgnoreProperty(x => x.LineOne)));
+                .Override<ExampleClass>(m => m.IgnoreProperty(x => x.LineOne)));
 
             Test<ExampleClass>(mapping =>
                 mapping.Element("//property[@name='LineOne']").DoesntExist());
@@ -58,7 +58,7 @@ namespace FluentNHibernate.Testing.Automapping
         public void ShouldAutoMapEnums()
         {
             Model<ExampleClass>(model => model
-                .ForTypesThatDeriveFrom<ExampleClass>(mapping =>
+                .Override<ExampleClass>(mapping =>
                     mapping.Map(x => x.Enum))
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures"));
 

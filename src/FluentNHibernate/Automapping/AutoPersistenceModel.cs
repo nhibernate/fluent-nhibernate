@@ -17,6 +17,7 @@ namespace FluentNHibernate.Automapping
         private bool autoMappingsCreated;
         private readonly AutoMappingAlterationCollection alterations = new AutoMappingAlterationCollection();
         protected readonly List<InlineOverride> inlineOverrides = new List<InlineOverride>();
+        private readonly List<Type> ignoredTypes = new List<Type>();
 
         public AutoPersistenceModel()
         {
@@ -29,7 +30,6 @@ namespace FluentNHibernate.Automapping
             Expressions = new AutoMappingExpressions();
             autoMapper = customAutomapper;
         }
-
 
         /// <summary>
         /// Specify alterations to be used with this AutoPersisteceModel
@@ -91,11 +91,11 @@ namespace FluentNHibernate.Automapping
             {
                 if (shouldIncludeType != null)
                 {
-                    if (!shouldIncludeType.Invoke(type))
+                    if (!shouldIncludeType(type))
                         continue;
                 }
 
-                if (Expressions.IsBaseType(type) || type == typeof(object) || type.IsAbstract)
+                if (Expressions.IsBaseType(type) || type == typeof(object) || type.IsAbstract || ignoredTypes.Contains(type))
                     continue;
 
                 mappingTypes.Add(new AutoMapType(type));
@@ -145,7 +145,8 @@ namespace FluentNHibernate.Automapping
 			while (!Expressions.IsBaseType(type.BaseType) &&
                 !Expressions.IsConcreteBaseType(type.BaseType) &&
                 type.BaseType != typeof(object) &&
-                !type.BaseType.IsAbstract)
+                !type.BaseType.IsAbstract &&
+                !ignoredTypes.Contains(type.BaseType))
 			{
 				type = type.BaseType;
 			}
@@ -158,13 +159,6 @@ namespace FluentNHibernate.Automapping
             Type typeToMap = GetTypeToMap(type);
             autoMapper.MergeMap(typeToMap, mapping.GetClassMapping(), new List<string>(mapping.GetIgnoredProperties()));
         }
-
-
-        //public AutoPersistenceModel AutoMap<T>()
-        //{
-        //    Add(new PassThroughMappingProvider(autoMapper.Map(typeof(T), mappingTypes)));
-        //    return this;
-        //}
 
         public IMappingProvider FindMapping<T>()
         {
@@ -208,11 +202,19 @@ namespace FluentNHibernate.Automapping
 			return null;
         }
 
+        /// <summary>
+        /// Adds all entities from a specific assembly.
+        /// </summary>
+        /// <param name="assembly">Assembly to load from</param>
         public AutoPersistenceModel AddEntityAssembly(Assembly assembly)
         {
             return AddTypeSource(new AssemblyTypeSource(assembly));
         }
 
+        /// <summary>
+        /// Adds all entities from the <see cref="ITypeSource"/>.
+        /// </summary>
+        /// <param name="source"><see cref="ITypeSource"/> to load from</param>
         public AutoPersistenceModel AddTypeSource(ITypeSource source)
         {
             sources.Add(source);
@@ -224,7 +226,13 @@ namespace FluentNHibernate.Automapping
             inlineOverrides.Add(new InlineOverride(type, action));
         }
 
-        public AutoPersistenceModel ForTypesThatDeriveFrom<T>(Action<AutoMapping<T>> populateMap)
+        /// <summary>
+        /// Override the mapping of a specific entity.
+        /// </summary>
+        /// <remarks>This may affect subclasses, depending on the alterations you do.</remarks>
+        /// <typeparam name="T">Entity who's mapping to override</typeparam>
+        /// <param name="populateMap">Lambda performing alterations</param>
+        public AutoPersistenceModel Override<T>(Action<AutoMapping<T>> populateMap)
         {
             inlineOverrides.Add(new InlineOverride(typeof(T), x =>
             {
@@ -235,7 +243,12 @@ namespace FluentNHibernate.Automapping
             return this;
         }
 
-        public AutoPersistenceModel ForAllTypes(Action<IPropertyIgnorer> alteration)
+        /// <summary>
+        /// Override all mappings.
+        /// </summary>
+        /// <remarks>Currently only supports ignoring properties on all entities.</remarks>
+        /// <param name="alteration">Lambda performing alterations</param>
+        public AutoPersistenceModel OverrideAll(Action<IPropertyIgnorer> alteration)
         {
             inlineOverrides.Add(new InlineOverride(typeof(object), x =>
             {
@@ -243,6 +256,12 @@ namespace FluentNHibernate.Automapping
                     alteration((IPropertyIgnorer)x);
             }));
 
+            return this;
+        }
+
+        public AutoPersistenceModel IgnoreBase<T>()
+        {
+            ignoredTypes.Add(typeof(T));
             return this;
         }
 
