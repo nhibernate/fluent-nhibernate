@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.Utils;
 using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping
@@ -55,17 +56,35 @@ namespace FluentNHibernate.Mapping
                 mapping.Name = mapping.PropertyInfo.Name;
 
             if (!mapping.IsSpecified(x => x.Type))
-                mapping.SetDefaultValue(x => x.Type, new TypeReference(mapping.PropertyInfo.PropertyType));
+                mapping.SetDefaultValue(x => x.Type, GetDefaultType());
 
             return mapping;
         }
 
+        private TypeReference GetDefaultType()
+        {
+            var type = new TypeReference(property.PropertyType);
+
+            if (property.PropertyType.IsEnum())
+                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(property.PropertyType));
+
+            if (property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
+                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(property.PropertyType.GetGenericArguments()[0]));
+
+            return type;
+        }
+
         private ColumnMapping CreateColumn(string column)
         {
-            return new ColumnMapping(columnAttributes.CloneInner())
+            var columnMapping = new ColumnMapping(columnAttributes.CloneInner())
             {
                 Name = column
             };
+
+            if (!columnMapping.IsSpecified(x => x.NotNull) && property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
+                columnMapping.SetDefaultValue(x => x.NotNull, false);
+
+            return columnMapping;
         }
 
         public PropertyPart Column(string columnName)

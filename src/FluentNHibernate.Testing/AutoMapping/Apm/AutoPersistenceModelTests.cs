@@ -15,7 +15,6 @@ using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.Automapping;
 using FluentNHibernate.Testing.DomainModel;
 using NHibernate.Cfg;

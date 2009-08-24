@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="AutoMapping\Apm\AlterationCollectionTests.cs" />
     <Compile Include="AutoMapping\Apm\AlterationTests.cs" />
+    <Compile Include="AutoMapping\Apm\AutoMappedPropertyEnumerablesTests.cs" />
     <Compile Include="AutoMapping\Apm\AutoMappingOverrideAlterationTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\HasManyConventionTests.cs" />
     <Compile Include="AutoMapping\Apm\IgnoreBaseAutoPersistenceModelTests.cs" />
@@ -267,6 +268,8 @@
     <Compile Include="FluentInterfaceTests\CompositeIdMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\IdGeneratorTests.cs" />
     <Compile Include="FluentInterfaceTests\ManyToManyTableNameTests.cs" />
+    <Compile Include="FluentInterfaceTests\OneToManyMethodAccessTests.cs" />
+    <Compile Include="FluentInterfaceTests\PropertyEnumerablesTests.cs" />
     <Compile Include="FluentInterfaceTests\SubclassMapForJoinedSubclassMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\SubclassMapForJoinedSubclassSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\SubclassMapForSubclassMutablePropertyModelGenerationTests.cs" />

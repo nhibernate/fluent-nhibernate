@@ -33,23 +33,11 @@ namespace FluentNHibernate
             visitors.Add(new BiDirectionalManyToManyPairingVisitor());
             visitors.Add(new ManyToManyTableNameVisitor());
             visitors.Add(new ConventionVisitor(Conventions));
-
-            AddDefaultConventions();
         }
 
         public PersistenceModel()
             : this(new DefaultConventionFinder())
         {}
-
-        private void AddDefaultConventions()
-        {
-            foreach (var foundType in from type in typeof(PersistenceModel).Assembly.GetTypes()
-                                      where type.Namespace == "FluentNHibernate.Conventions.Defaults" && !type.IsAbstract
-                                      select type)
-            {
-                Conventions.Add(foundType);
-            }
-        }
 
         protected void AddMappingsFromThisAssembly()
         {

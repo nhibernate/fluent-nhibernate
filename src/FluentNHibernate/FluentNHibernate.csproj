@@ -543,7 +543,6 @@
     <Compile Include="Mapping\CachePart.cs" />
     <Compile Include="Conventions\UserTypeConvention.cs" />
     <Compile Include="Conventions\AttributePropertyConvention.cs" />
-    <Compile Include="Conventions\Defaults\CollectionMethodAccessorBackingFieldNamingConvention.cs" />
     <Compile Include="Conventions\IClassConvention.cs" />
     <Compile Include="Conventions\IComponentConvention.cs" />
     <Compile Include="Conventions\IConvention.cs" />
@@ -574,6 +573,7 @@
     <Compile Include="Mapping\Prefix.cs" />
     <Compile Include="Mapping\PropertyGeneratedBuilder.cs" />
     <Compile Include="Mapping\VersionGeneratedBuilder.cs" />
+    <Compile Include="Utils\TypeExtensions.cs" />
     <Compile Include="Utils\XmlExtensions.cs" />
     <Compile Include="SessionSource.cs" />
     <Compile Include="Testing\PersistenceSpecification.cs" />
@@ -586,7 +586,6 @@
     <Compile Include="Mapping\OptimisticLockBuilder.cs" />
     <Compile Include="Mapping\ToManyBase.cs" />
     <Compile Include="MissingConstructorException.cs" />
-    <Compile Include="Conventions\Defaults\NullableEnumerationPropertyConvention.cs" />
     <Compile Include="IMappingVisitor.cs" />
     <Compile Include="MappingVisitor.cs" />
     <Compile Include="Mapping\AccessStrategyBuilder.cs" />
@@ -594,7 +593,6 @@
     <Compile Include="Mapping\ComponentPart.cs" />
     <Compile Include="Mapping\CompositeElementPart.cs" />
     <Compile Include="Mapping\CompositeIdentityPart.cs" />
-    <Compile Include="Conventions\Defaults\EnumerationPropertyConvention.cs" />
     <Compile Include="Mapping\IdentityGenerationStrategyBuilder.cs" />
     <Compile Include="Mapping\IdentityPart.cs" />
     <Compile Include="Mapping\JoinedSubClassPart.cs" />

@@ -4,8 +4,10 @@ using System.Reflection;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping
 {
@@ -93,9 +95,23 @@ namespace FluentNHibernate.Automapping
                 mapping.Name = mapping.PropertyInfo.Name;
 
             if (!mapping.IsSpecified(x => x.Type))
-                mapping.SetDefaultValue(x => x.Type, new TypeReference(mapping.PropertyInfo.PropertyType));
+                mapping.SetDefaultValue(x => x.Type, GetDefaultType(property));
 
             return mapping;
         }
+
+        private TypeReference GetDefaultType(PropertyInfo property)
+        {
+            var type = new TypeReference(property.PropertyType);
+
+            if (property.PropertyType.IsEnum())
+                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(property.PropertyType));
+
+            if (property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
+                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(property.PropertyType.GetGenericArguments()[0]));
+
+            return type;
+        }
+
     }
 }

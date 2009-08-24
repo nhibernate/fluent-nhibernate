@@ -62,7 +62,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.HasManyToMany(x => x.GetOtherChildren())
                         .Access.CamelCaseField())
                 .Element("class/bag")
-                .HasAttribute("name", "OtherChildren")
+                .HasAttribute("name", "otherChildren")
                 .HasAttribute("access", "field.camelcase");
         }
 

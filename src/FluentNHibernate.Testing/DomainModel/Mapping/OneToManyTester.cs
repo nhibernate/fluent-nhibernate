@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
@@ -8,6 +9,7 @@ using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Collections;
 using Iesi.Collections.Generic;
+using NHibernate.Cfg;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
@@ -113,6 +115,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<OneToManyTarget>()
                 .ForMapping(map => map.HasMany(x => x.SetOfChildren).AsSet<SortComparer>())
                 .Element("class/set").Exists().HasAttribute("sort", typeof(SortComparer).AssemblyQualifiedName);
+        }
+
+        [Test]
+        public void CanSpecifyCollectionTypeAsComparerSortedSet_CfgVerified()
+        {
+            var cfg = new Configuration();
+            var model = new PersistenceModel();
+            var classMap = new ClassMap<OneToManyTarget>();
+
+            SQLiteConfiguration.Standard.InMemory().ConfigureProperties(cfg);
+
+            classMap.Id(x => x.Id);
+            classMap.HasMany(x => x.SetOfChildren).AsSet<SortComparer>();
+
+            model.Add(classMap);
+            model.Configure(cfg);
         }
 
         [Test]
@@ -368,7 +386,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.HasMany(x => x.GetOtherChildren())
                         .Access.CamelCaseField())
                 .Element("class/bag")
-                .HasAttribute("name", "OtherChildren")
+                .HasAttribute("name", "otherChildren")
                 .HasAttribute("access", "field.camelcase");
         }
 

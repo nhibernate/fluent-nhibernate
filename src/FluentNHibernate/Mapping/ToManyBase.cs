@@ -69,7 +69,7 @@ namespace FluentNHibernate.Mapping
             var mapping = collectionBuilder(collectionAttributes.CloneInner());
 
             if (!mapping.IsSpecified(x => x.Name))
-                mapping.SetDefaultValue(x => x.Name, member.Name);
+                mapping.SetDefaultValue(x => x.Name, GetDefaultName());
 
             mapping.ContainingEntityType = entity;
             mapping.ChildType = typeof(TChild);
@@ -97,6 +97,25 @@ namespace FluentNHibernate.Mapping
             }
 
             return mapping;
+        }
+
+        private string GetDefaultName()
+        {
+            if (member is MethodInfo)
+            {
+                // try to guess the backing field name (GetSomething -> something)
+                if (member.Name.StartsWith("Get"))
+                {
+                    var name = member.Name.Substring(3);
+
+                    if (char.IsUpper(name[0]))
+                        name = char.ToLower(name[0]) + name.Substring(1);
+
+                    return name;
+                }
+            }
+
+            return member.Name;
         }
 
         protected abstract ICollectionRelationshipMapping GetRelationship();
