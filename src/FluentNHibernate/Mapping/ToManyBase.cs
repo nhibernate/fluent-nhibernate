@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -156,7 +157,7 @@ namespace FluentNHibernate.Mapping
             return (T)this;
         }
 
-        public T AsSet<TComparer>() where TComparer : IComparer
+        public T AsSet<TComparer>() where TComparer : IComparer<TChild>
         {
             collectionBuilder = attrs => new SetMapping(attrs) { Sort = typeof(TComparer).AssemblyQualifiedName };
             return (T)this;
@@ -215,7 +216,7 @@ namespace FluentNHibernate.Mapping
             return (T)this;
         }
 
-        public T AsMap<TIndex, TComparer>(string indexColumnName) where TComparer : IComparer
+        public T AsMap<TIndex, TComparer>(string indexColumnName) where TComparer : IComparer<TChild>
         {
             collectionBuilder = attrs => new MapMapping(attrs) { Sort = typeof(TComparer).AssemblyQualifiedName };
             AsIndexedCollection<TIndex>(indexColumnName, null);

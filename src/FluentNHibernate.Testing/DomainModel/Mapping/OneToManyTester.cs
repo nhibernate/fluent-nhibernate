@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
@@ -57,9 +58,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     public class CustomCollection<T> : List<T>
     {}
 
-    public class SortComparer : IComparer
+    public class SortComparer : IComparer<ChildObject>
     {
-        public int Compare(object x, object y)
+        public int Compare(ChildObject x, ChildObject y)
         {
             return 0;
         }
@@ -131,8 +132,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             model.Add(classMap);
             model.Configure(cfg);
-
-            AppDomain.CurrentDomain.GetAssemblies().Each(Console.WriteLine);
         }
 
         [Test]
