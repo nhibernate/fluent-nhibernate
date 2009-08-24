@@ -4,6 +4,7 @@ using System.Linq;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate
 {
@@ -84,16 +85,22 @@ namespace FluentNHibernate
                 var subclassType = provider.EntityType;
                 var level = 0;
 
-                while (subclassType.BaseType != parentType)
+                // while not reached parent yet, or have reached the top without finding the parent and parent is an interface and
+                // the current level implements that interface
+                while (subclassType.BaseType != parentType ||
+                    (subclassType.IsTopLevel() && parentType.IsInterface && subclassType.HasInterface(parentType)))
                 {
                     level++;
-                    subclassType = subclassType.BaseType;
 
-                    if (subclassType == null)
+                    // reached the top, stop
+                    if (subclassType.IsTopLevel())
                         break;
+
+                    subclassType = subclassType.BaseType;
                 }
 
-                if (subclassType == null)
+                // reached the top and the parent isn't an interface (or the current level doesn't implement it)
+                if (subclassType.IsTopLevel() && !(parentType.IsInterface && subclassType.HasInterface(parentType)))
                     continue;
 
                 if (!arranged.ContainsKey(level))

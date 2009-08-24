@@ -11,6 +11,7 @@ using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Xml;
 using NHibernate.Cfg;
 

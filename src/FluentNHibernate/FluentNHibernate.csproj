@@ -382,6 +382,7 @@
     <Compile Include="Mapping\Providers\IIndeterminateSubclassMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IVersionMappingProvider.cs" />
     <Compile Include="Mapping\SubclassMap.cs" />
+    <Compile Include="Utils\CollectionExtensions.cs" />
     <Compile Include="Utils\Reflection\ExpressionBuilder.cs" />
     <Compile Include="Cache.cs" />
     <Compile Include="Cfg\AutoMappingsContainer.cs" />

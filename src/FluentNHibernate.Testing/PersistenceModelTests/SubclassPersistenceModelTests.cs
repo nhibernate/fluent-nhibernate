@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
@@ -168,6 +169,50 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
 
             child2.Subclasses.ShouldContain(x => x.Type == typeof(Branching.B_Child2_Child));
             child2.Subclasses.Count().ShouldEqual(1);
+        }
+
+        [Test]
+        public void ShouldHandleInterfacesAsParents()
+        {
+            var model = new PersistenceModel();
+
+            model.Add(new Interfaces.ITopMap());
+            model.Add(new Interfaces.Int_OneMap());
+
+            var top = model.BuildMappings().First().Classes.First();
+
+            top.Type.ShouldEqual(typeof(Interfaces.ITop));
+            top.Subclasses.ShouldContain(x => x.Type == typeof(Interfaces.Int_One));
+            top.Subclasses.Count().ShouldEqual(1);
+        }
+    }
+
+    namespace Interfaces
+    {
+        public interface ITop
+        {
+            int Id { get; set; }
+        }
+
+        public class Int_One : ITop
+        {
+            public virtual int Id { get; set; }
+        }
+
+        public class ITopMap : ClassMap<ITop>
+        {
+            public ITopMap()
+            {
+                Id(x => x.Id);
+            }
+        }
+
+        public class Int_OneMap : SubclassMap<Int_One>
+        {
+            public Int_OneMap()
+            {
+                
+            }
         }
     }
 

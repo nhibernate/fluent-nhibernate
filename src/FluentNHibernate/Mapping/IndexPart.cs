@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
