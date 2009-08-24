@@ -25,7 +25,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
                 .Classes.First()
                 .Collections.First()
                 .Key.Columns.First().Name.ShouldEqual("xxx");
-            
         }
 
         private class HasManyConvention : IHasManyConvention
@@ -40,6 +39,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
     internal class Target
     {
         public IList<Child> Children { get; set; }
+        public Child Child { get; set; }
     }
 
     internal class Child
