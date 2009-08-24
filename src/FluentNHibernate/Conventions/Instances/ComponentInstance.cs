@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -17,6 +18,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public IComponentInstance Not
         {
             get

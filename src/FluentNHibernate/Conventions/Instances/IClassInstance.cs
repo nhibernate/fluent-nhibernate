@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 
@@ -5,6 +6,7 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public interface IClassInstance : IClassInspector
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IClassInstance Not { get; }
         new IOptimisticLockInstance OptimisticLock { get; }
         new ICacheInstance Cache { get; }

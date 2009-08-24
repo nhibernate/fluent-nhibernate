@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -7,6 +8,7 @@ namespace FluentNHibernate.Conventions.Instances
     {
         IAccessInstance Access { get; }
         ICascadeInstance Cascade { get; }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IOneToOneInstance Not { get; }
         IFetchInstance Fetch { get; }
         void Class<T>();

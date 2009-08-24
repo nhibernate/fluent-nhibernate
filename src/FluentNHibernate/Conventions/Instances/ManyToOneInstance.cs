@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
@@ -78,6 +79,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public IManyToOneInstance Not
         {
             get

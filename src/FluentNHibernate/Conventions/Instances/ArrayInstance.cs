@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
@@ -193,6 +194,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ICollectionInstance Not
         {
             get

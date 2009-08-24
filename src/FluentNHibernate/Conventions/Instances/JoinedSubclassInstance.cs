@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
@@ -29,6 +30,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public IJoinedSubclassInstance Not
         {
             get

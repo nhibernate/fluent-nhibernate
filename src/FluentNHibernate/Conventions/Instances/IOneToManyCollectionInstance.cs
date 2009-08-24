@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -6,6 +7,7 @@ namespace FluentNHibernate.Conventions.Instances
     {
         new IOneToManyInstance Relationship { get; }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         new IOneToManyCollectionInstance Not { get; }
     }
 }

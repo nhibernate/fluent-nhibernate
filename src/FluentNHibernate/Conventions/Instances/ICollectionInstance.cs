@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
 using NHibernate.Persister.Entity;
@@ -16,6 +17,7 @@ namespace FluentNHibernate.Conventions.Instances
         void BatchSize(int batchSize);
         void ReadOnly();
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         ICollectionInstance Not { get; }
         new IAccessInstance Access { get; }
         new ICacheInstance Cache { get; }

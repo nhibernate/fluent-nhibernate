@@ -1,4 +1,5 @@
-﻿using FluentNHibernate.Conventions.Inspections;
+﻿using System.Diagnostics;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Instances
 {
@@ -13,11 +14,13 @@ namespace FluentNHibernate.Conventions.Instances
 
     public interface IComponentInstance : IComponentBaseInstance, IComponentInspector
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IComponentInstance Not { get; }
     }
 
     public interface IDynamicComponentInstance : IComponentBaseInstance, IDynamicComponentInspector
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IDynamicComponentInstance Not { get; }
     }
 }

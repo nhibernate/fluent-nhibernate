@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.MappingModel;
@@ -49,6 +50,7 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public new ComponentPart<T> Not
         {
             get

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
@@ -107,6 +108,7 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public OneToOnePart<TOther> Not
         {
             get

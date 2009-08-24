@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -11,6 +12,7 @@ namespace FluentNHibernate.Conventions.Instances
         new IAccessInstance Access { get; }
         new ICascadeInstance Cascade { get; }
         new IFetchInstance Fetch { get; }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IManyToOneInstance Not { get; }
         new INotFoundInstance NotFound { get; }
         void Index(string index);

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
@@ -239,6 +240,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Inverts the next boolean
         /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public PropertyPart Not
         {
             get

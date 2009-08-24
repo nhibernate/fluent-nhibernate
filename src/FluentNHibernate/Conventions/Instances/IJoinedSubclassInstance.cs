@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 using NHibernate.Persister.Entity;
 
@@ -7,6 +8,7 @@ namespace FluentNHibernate.Conventions.Instances
     public interface IJoinedSubclassInstance : IJoinedSubclassInspector
     {
         new IKeyInstance Key { get; }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IJoinedSubclassInstance Not { get; }
         void Abstract();
         void Check(string constraint);

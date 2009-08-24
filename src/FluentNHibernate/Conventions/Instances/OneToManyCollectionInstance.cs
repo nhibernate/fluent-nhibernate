@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel.Collections;
 
@@ -20,6 +21,7 @@ namespace FluentNHibernate.Conventions.Instances
             get { return Relationship; }
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public new IOneToManyCollectionInstance Not
         {
             get

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using NHibernate.Cache;
 
 namespace FluentNHibernate.Cfg.Db
@@ -14,6 +15,7 @@ namespace FluentNHibernate.Cfg.Db
         private readonly IDictionary<string, string> settings = new Dictionary<string, string>();
         private bool nextBool = true;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public CacheSettingsBuilder Not
         {
             get

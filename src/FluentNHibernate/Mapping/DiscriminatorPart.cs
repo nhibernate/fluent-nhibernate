@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -50,6 +51,7 @@ namespace FluentNHibernate.Mapping
             return SubClass(null, action);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public DiscriminatorPart Not
         {
              get

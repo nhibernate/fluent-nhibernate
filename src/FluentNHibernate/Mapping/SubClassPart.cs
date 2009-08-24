@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -122,6 +123,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Inverts the next boolean
         /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public SubClassPart<TSubclass> Not
         {
             get

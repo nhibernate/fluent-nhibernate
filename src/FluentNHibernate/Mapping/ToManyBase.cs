@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Conventions;
@@ -367,6 +368,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Inverts the next boolean
         /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public T Not
         {
             get

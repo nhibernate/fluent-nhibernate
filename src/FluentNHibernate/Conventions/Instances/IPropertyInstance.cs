@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
@@ -11,6 +12,7 @@ namespace FluentNHibernate.Conventions.Instances
           INullableInstance
     {
         new IAccessInstance Access { get; }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IPropertyInstance Not { get; }
         void CustomType<T>();
         void CustomType(TypeReference type);

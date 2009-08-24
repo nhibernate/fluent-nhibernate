@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
@@ -146,6 +147,7 @@ namespace FluentNHibernate.Conventions.Instances
                 column.UniqueKey = keyName;
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public IPropertyInstance Not
         {
             get

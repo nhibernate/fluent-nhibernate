@@ -28,6 +28,7 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.Schema = schema;
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public IHibernateMappingInstance Not
         {
             get

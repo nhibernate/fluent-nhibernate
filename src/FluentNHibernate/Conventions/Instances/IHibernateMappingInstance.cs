@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -6,6 +7,7 @@ namespace FluentNHibernate.Conventions.Instances
     {
         void Catalog(string catalog);
         void Schema(string schema);
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IHibernateMappingInstance Not { get; }
         void DefaultLazy();
         void AutoImport();

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 
@@ -68,6 +69,7 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public JoinPart<T> Not
         {
             get

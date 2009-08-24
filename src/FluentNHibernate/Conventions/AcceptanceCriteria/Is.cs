@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 namespace FluentNHibernate.Conventions.AcceptanceCriteria
 {
@@ -9,6 +10,7 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
             get { return new SetCriterion(false); }
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public static InverseIs Not
         {
             get

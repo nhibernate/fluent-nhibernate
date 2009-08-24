@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -17,6 +18,7 @@ namespace FluentNHibernate.Mapping
         private bool nextBool = true;
         private IList<JoinMapping> joins = new List<JoinMapping>();
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public SubclassMap<T> Not
         {
             get
