@@ -78,7 +78,9 @@ namespace FluentNHibernate.Automapping.TestFixtures
 
     public class PrivateIdSetterClass
     {
+#pragma warning disable 649
         private int id;
+#pragma warning restore 649
 
         public virtual int Id
         {
@@ -192,7 +194,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomTypes
 
     public class CustomUserType : IUserType
     {
-        public bool Equals(object x, object y)
+        public new bool Equals(object x, object y)
         {
             return x == y;
         }

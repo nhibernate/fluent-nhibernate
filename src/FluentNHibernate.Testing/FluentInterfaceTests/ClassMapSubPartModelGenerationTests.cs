@@ -50,6 +50,9 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ModelShouldMatch(x => x.DiscriminatorValue.ShouldEqual("base-value"));
         }
 
+// ignored warning for obsolete SubClass
+#pragma warning disable 612,618
+
         [Test]
         public void DiscriminateSubClassShouldAddSubclassToModelSubclassesCollection()
         {
@@ -57,6 +60,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.DiscriminateSubClassesOnColumn("col").SubClass<ChildRecord>(sc => { }))
                 .ModelShouldMatch(x => x.Subclasses.Count().ShouldEqual(1));
         }
+
+#pragma warning restore 612,618
 
         [Test]
         public void ComponentShouldAddToModelComponentsCollection()
@@ -74,6 +79,9 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ModelShouldMatch(x => x.Components.Count().ShouldEqual(1));
         }
 
+// disabled warnings for obsolete for JoinedSubClass
+#pragma warning disable 612,618
+
         [Test]
         public void JoinedSubclassShouldAddToModelSubclassesCollection()
         {
@@ -89,6 +97,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.JoinedSubClass<ChildRecord>("key", c => { }))
                 .ModelShouldMatch(x => ((JoinedSubclassMapping)x.Subclasses.First()).Key.Columns.First().Name.ShouldEqual("key"));
         }
+
+#pragma warning restore 612,618
 
         [Test]
         public void VersionShouldSetModelVersion()

@@ -207,7 +207,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         #region Custom IUserType impl for testing
         public class custom_type_for_testing : IUserType
         {
-            public bool Equals(object x, object y)
+            public new bool Equals(object x, object y)
             {
                 throw new System.NotImplementedException();
             }

@@ -2,6 +2,8 @@ using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
+// ignoring warnings for obsolete SubClass
+#pragma warning disable 612,618
     [TestFixture]
     public class MappingPartOutputOrderTests
     {
@@ -85,4 +87,5 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 //Element 8 is subclass
         }
     }
+#pragma warning restore 612,618
 }

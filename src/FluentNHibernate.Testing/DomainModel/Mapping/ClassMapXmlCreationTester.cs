@@ -505,8 +505,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public int SubclassProperty { get; set; }
 
         public ChildObject Child { get; set; }
-
-        public IList<ChildObject> Children { get; set; }
     }
 
     public class MappedObjectSubSubClass : MappedObjectSubclass

@@ -312,10 +312,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures.SuperTypes")
-                .Setup(c =>
-                {
-                    c.IsBaseType = b => b == typeof(SuperType);
-                });
+                .IgnoreBase<SuperType>();
 
             new AutoMappingTester<SuperType>(autoMapper);
         }
@@ -326,9 +323,9 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.AutoMap.TestFixtures.SuperTypes")
+                .IgnoreBase<SuperType>()
                 .Setup(c =>
                 {
-                    c.IsBaseType = b => b == typeof(SuperType);
                     c.SubclassStrategy = t => SubclassStrategy.Subclass;
                 });
 
@@ -603,11 +600,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         {
             var autoMapper = AutoMap.AssemblyOf<ClassUsingGenericBase>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
-                .Setup(convention =>
-                {
-                    convention.IsBaseType =
-                        type => type == typeof(EntityBase<>);
-                });
+                .IgnoreBase(typeof(EntityBase<>));
 
             new AutoMappingTester<ClassUsingGenericBase>(autoMapper)
                 .Element("class/id")

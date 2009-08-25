@@ -246,6 +246,9 @@ namespace FluentNHibernate.Testing.ConventionsTests
                 .Schema.ShouldEqual("dto");
         }
 
+// ignoring warning for JoinedSubClass
+#pragma warning disable 612,618
+
         [Test]
         public void ShouldApplyIJoinedSubclassConvention()
         {
@@ -262,6 +265,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
             ((JoinedSubclassMapping)subclass)
                 .TableName.ShouldEqual("tbl");
         }
+
+#pragma warning restore 612,618
 
         [Test]
         public void ShouldApplyIListConvention()
@@ -341,6 +346,9 @@ namespace FluentNHibernate.Testing.ConventionsTests
                 .Access.ShouldEqual("field");
         }
 
+// ignoring warning for obsolete SubClass
+#pragma warning disable 612,618
+
         [Test]
         public void ShouldApplyISubclassConvention()
         {
@@ -358,6 +366,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
             ((SubclassMapping)subclass)
                 .DiscriminatorValue.ShouldEqual("xxx");
         }
+
+#pragma warning restore 612,618
 
         [Test]
         public void ShouldApplyIUserTypeConvention()
@@ -590,7 +600,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         private class OtherObjectUserType : IUserType
         {
-            public bool Equals(object x, object y)
+            public new bool Equals(object x, object y)
             {
                 throw new NotImplementedException();
             }

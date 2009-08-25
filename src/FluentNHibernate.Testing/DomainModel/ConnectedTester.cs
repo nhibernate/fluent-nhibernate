@@ -72,7 +72,10 @@ namespace FluentNHibernate.Testing.DomainModel
         }
     }
 
-    public class NestedSubClassMap : ClassMap<SuperRecord>
+// ignored warning for obsolete SubClass
+#pragma warning disable 612,618
+
+    public sealed class NestedSubClassMap : ClassMap<SuperRecord>
     {
         public NestedSubClassMap()
         {
@@ -87,6 +90,8 @@ namespace FluentNHibernate.Testing.DomainModel
                 });
         }
     }
+
+#pragma warning restore 612,618
 
     public class SuperRecord  : Entity
     {

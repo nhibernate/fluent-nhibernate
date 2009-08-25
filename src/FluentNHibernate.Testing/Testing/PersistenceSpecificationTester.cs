@@ -26,7 +26,7 @@ namespace FluentNHibernate.Testing.Testing
 
         public class TestComparer : IEqualityComparer
         {
-            public bool Equals(object x, object y)
+            public new bool Equals(object x, object y)
             {
                 if (x is Cat && y is Cat)
                     return ((Cat)x).Id == ((Cat)y).Id;
