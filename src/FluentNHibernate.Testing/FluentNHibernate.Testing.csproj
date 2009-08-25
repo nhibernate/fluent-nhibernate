@@ -71,6 +71,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AutoMapping\Apm\AbstractBaseClassTests.cs" />
     <Compile Include="AutoMapping\Apm\AlterationCollectionTests.cs" />
     <Compile Include="AutoMapping\Apm\AlterationTests.cs" />
     <Compile Include="AutoMapping\Apm\AutoMappedPropertyEnumerablesTests.cs" />

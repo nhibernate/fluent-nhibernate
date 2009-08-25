@@ -18,6 +18,7 @@ namespace FluentNHibernate.Automapping
         private readonly AutoMappingAlterationCollection alterations = new AutoMappingAlterationCollection();
         protected readonly List<InlineOverride> inlineOverrides = new List<InlineOverride>();
         private readonly List<Type> ignoredTypes = new List<Type>();
+        private readonly List<Type> includedTypes = new List<Type>();
 
         public AutoPersistenceModel()
         {
@@ -62,10 +63,8 @@ namespace FluentNHibernate.Automapping
         }
 
         /// <summary>
-        /// Setup the auto mapper
+        /// Alter some of the configuration options that control how the automapper works
         /// </summary>
-        /// <param name="expressionsAction"></param>
-        /// <returns></returns>
         public AutoPersistenceModel Setup(Action<AutoMappingExpressions> expressionsAction)
         {
             expressionsAction(Expressions);
@@ -157,11 +156,20 @@ namespace FluentNHibernate.Automapping
 
         private bool ShouldMap(Type type)
         {
-            return !Expressions.IsBaseType(type) &&
-                type != typeof(object) &&
-                !type.IsAbstract &&
-                !ignoredTypes.Contains(type) &&
-                !(type.IsGenericType && ignoredTypes.Contains(type.GetGenericTypeDefinition()));
+            if (includedTypes.Contains(type))
+                return true; // inclusions take precedence over everything
+            if (ignoredTypes.Contains(type))
+                return false; // excluded
+            if (type.IsGenericType && ignoredTypes.Contains(type.GetGenericTypeDefinition()))
+                return false; // generic definition is excluded
+            if (type.IsAbstract && Expressions.AbstractClassIsLayerSupertype(type))
+                return false; // is abstract and a layer supertype
+            if (Expressions.IsBaseType(type))
+                return false; // excluded
+            if (type == typeof(object))
+                return false; // object!
+
+            return true;
         }
 
         private void MergeMap(Type type, IMappingProvider mapping)
@@ -269,14 +277,55 @@ namespace FluentNHibernate.Automapping
             return this;
         }
 
+        /// <summary>
+        /// Ignore a base type. This removes it from any mapped inheritance hierarchies, good for non-abstract layer
+        /// supertypes.
+        /// </summary>
+        /// <typeparam name="T">Type to ignore</typeparam>
         public AutoPersistenceModel IgnoreBase<T>()
         {
             return IgnoreBase(typeof(T));
         }
 
+        /// <summary>
+        /// Ignore a base type. This removes it from any mapped inheritance hierarchies, good for non-abstract layer
+        /// supertypes.
+        /// </summary>
+        /// <param name="baseType">Type to ignore</param>
         public AutoPersistenceModel IgnoreBase(Type baseType)
         {
             ignoredTypes.Add(baseType);
+            return this;
+        }
+
+        /// <summary>
+        /// Explicitly includes a type to be used as part of a mapped inheritance hierarchy.
+        /// </summary>
+        /// <remarks>
+        /// Abstract classes are probably what you'll be using this method with. Fluent NHibernate considers abstract
+        /// classes to be layer supertypes, so doesn't automatically map them as part of an inheritance hierarchy. You
+        /// can use this method to override that behavior for a specific type; otherwise you should consider using the
+        /// <see cref="AutoMappingExpressions.AbstractClassIsLayerSupertype"/> setting.
+        /// </remarks>
+        /// <typeparam name="T">Type to include</typeparam>
+        public AutoPersistenceModel IncludeBase<T>()
+        {
+            return IncludeBase(typeof(T));
+        }
+
+        /// <summary>
+        /// Explicitly includes a type to be used as part of a mapped inheritance hierarchy.
+        /// </summary>
+        /// <remarks>
+        /// Abstract classes are probably what you'll be using this method with. Fluent NHibernate considers abstract
+        /// classes to be layer supertypes, so doesn't automatically map them as part of an inheritance hierarchy. You
+        /// can use this method to override that behavior for a specific type; otherwise you should consider using the
+        /// <see cref="AutoMappingExpressions.AbstractClassIsLayerSupertype"/> setting.
+        /// </remarks>
+        /// <param name="baseType">Type to include</param>
+        public AutoPersistenceModel IncludeBase(Type baseType)
+        {
+            includedTypes.Add(baseType);
             return this;
         }
 

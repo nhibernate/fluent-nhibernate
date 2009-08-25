@@ -20,7 +20,12 @@ namespace FluentNHibernate
         public Func<Type, string> DiscriminatorColumn = t => "discriminator";
         public Func<Type, SubclassStrategy> SubclassStrategy = t => Automapping.SubclassStrategy.JoinedSubclass;
 
-		public AutoMappingExpressions()
+        /// <summary>
+        /// Determines whether an abstract class is a layer supertype or part of a mapped inheritance hierarchy.
+        /// </summary>
+        public Func<Type, bool> AbstractClassIsLayerSupertype = t => true;
+
+        public AutoMappingExpressions()
 		{
 			IsDiscriminated = t => SubclassStrategy(t) == Automapping.SubclassStrategy.Subclass;
 		}
