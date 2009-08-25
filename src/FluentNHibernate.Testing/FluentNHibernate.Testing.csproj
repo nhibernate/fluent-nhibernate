@@ -274,6 +274,7 @@
     <Compile Include="FluentInterfaceTests\ManyToManyTableNameTests.cs" />
     <Compile Include="FluentInterfaceTests\OneToManyMethodAccessTests.cs" />
     <Compile Include="FluentInterfaceTests\PropertyEnumerablesTests.cs" />
+    <Compile Include="FluentInterfaceTests\SubclassMapForJoinedSubclassConventionTests.cs" />
     <Compile Include="FluentInterfaceTests\SubclassMapForJoinedSubclassMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\SubclassMapForJoinedSubclassSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\SubclassMapForSubclassMutablePropertyModelGenerationTests.cs" />
