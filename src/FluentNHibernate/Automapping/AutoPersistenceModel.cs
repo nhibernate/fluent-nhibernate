@@ -95,7 +95,7 @@ namespace FluentNHibernate.Automapping
                         continue;
                 }
 
-                if (Expressions.IsBaseType(type) || type == typeof(object) || type.IsAbstract || ignoredTypes.Contains(type))
+                if (!ShouldMap(type))
                     continue;
 
                 mappingTypes.Add(new AutoMapType(type));
@@ -142,16 +142,26 @@ namespace FluentNHibernate.Automapping
 
         private Type GetTypeToMap(Type type)
         {
-			while (!Expressions.IsBaseType(type.BaseType) &&
-                !Expressions.IsConcreteBaseType(type.BaseType) &&
-                type.BaseType != typeof(object) &&
-                !type.BaseType.IsAbstract &&
-                !ignoredTypes.Contains(type.BaseType))
+            while (ShouldMapParent(type))
 			{
 				type = type.BaseType;
 			}
 
 			return type;
+        }
+
+        private bool ShouldMapParent(Type type)
+        {
+            return ShouldMap(type.BaseType) && !Expressions.IsConcreteBaseType(type.BaseType);
+        }
+
+        private bool ShouldMap(Type type)
+        {
+            return !Expressions.IsBaseType(type) &&
+                type != typeof(object) &&
+                !type.IsAbstract &&
+                !ignoredTypes.Contains(type) &&
+                !(type.IsGenericType && ignoredTypes.Contains(type.GetGenericTypeDefinition()));
         }
 
         private void MergeMap(Type type, IMappingProvider mapping)
@@ -261,7 +271,12 @@ namespace FluentNHibernate.Automapping
 
         public AutoPersistenceModel IgnoreBase<T>()
         {
-            ignoredTypes.Add(typeof(T));
+            return IgnoreBase(typeof(T));
+        }
+
+        public AutoPersistenceModel IgnoreBase(Type baseType)
+        {
+            ignoredTypes.Add(baseType);
             return this;
         }
 

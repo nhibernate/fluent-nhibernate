@@ -77,6 +77,7 @@
     <Compile Include="AutoMapping\Apm\Conventions\HasManyConventionTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\HasManyToManyConventionTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\ReferencesConventionTests.cs" />
+    <Compile Include="AutoMapping\Apm\GenericBaseClassTests.cs" />
     <Compile Include="AutoMapping\Apm\IgnoreBaseAutoPersistenceModelTests.cs" />
     <Compile Include="AutoMapping\AutoMapManyToOneTester.cs" />
     <Compile Include="AutoMapping\AutoMapOneToManyTester.cs" />
