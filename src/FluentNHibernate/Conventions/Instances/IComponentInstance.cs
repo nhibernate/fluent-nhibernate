@@ -16,6 +16,7 @@ namespace FluentNHibernate.Conventions.Instances
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IComponentInstance Not { get; }
+        void LazyLoad();
     }
 
     public interface IDynamicComponentInstance : IComponentBaseInstance, IDynamicComponentInspector

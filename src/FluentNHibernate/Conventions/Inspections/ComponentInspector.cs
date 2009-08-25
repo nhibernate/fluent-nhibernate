@@ -21,5 +21,10 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             return mapping.IsSpecified(mappedProperties.Get(property));
         }
+
+        public bool LazyLoad
+        {
+            get { return mapping.Lazy; }
+        }
     }
 }

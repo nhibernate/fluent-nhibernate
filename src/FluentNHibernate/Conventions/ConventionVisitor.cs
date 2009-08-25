@@ -126,12 +126,12 @@ namespace FluentNHibernate.Conventions
                 new JoinedSubclassInstance(subclassMapping));
         }
 
-        public override void ProcessComponent(ComponentMapping componentMapping)
+        public override void ProcessComponent(ComponentMapping mapping)
         {
             var conventions = finder.Find<IComponentConvention>();
 
             Apply<IComponentInspector, IComponentInstance>(conventions,
-                new ComponentInstance(componentMapping));
+                new ComponentInstance(mapping));
         }
 
         public override void ProcessComponent(DynamicComponentMapping componentMapping)

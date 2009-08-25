@@ -131,28 +131,6 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         }
 
         [Test]
-        public void LazyMapped()
-        {
-            mapping.Lazy = true;
-            inspector.LazyLoad.ShouldEqual(true);
-        }
-
-        [Test]
-        public void LazyIsSet()
-        {
-            mapping.Lazy = true;
-            inspector.IsSet(Prop(x => x.LazyLoad))
-                .ShouldBeTrue();
-        }
-
-        [Test]
-        public void LazyIsNotSet()
-        {
-            inspector.IsSet(Prop(x => x.LazyLoad))
-                .ShouldBeFalse();
-        }
-
-        [Test]
         public void OptimisticLockMapped()
         {
             mapping.OptimisticLock = true;

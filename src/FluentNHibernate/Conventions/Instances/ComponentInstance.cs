@@ -28,6 +28,15 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
+        public new void LazyLoad()
+        {
+            if (mapping.IsSpecified(x => x.Lazy))
+                return;
+
+            mapping.Lazy = nextBool;
+            nextBool = true;
+        }
+
         public new IAccessInstance Access
         {
             get

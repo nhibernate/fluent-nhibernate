@@ -16,7 +16,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         string Name { get; set; }
         PropertyInfo PropertyInfo { get; }
         Type Type { get; }
-        bool Lazy { get; }
         bool OptimisticLock { get; }
         bool Unique { get; }
         IEnumerable<ManyToOneMapping> References { get; }

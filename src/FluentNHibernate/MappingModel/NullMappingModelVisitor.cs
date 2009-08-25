@@ -107,7 +107,7 @@ namespace FluentNHibernate.MappingModel
             
         }
 
-        public virtual void ProcessComponent(ComponentMapping componentMapping)
+        public virtual void ProcessComponent(ComponentMapping mapping)
         {
             
         }

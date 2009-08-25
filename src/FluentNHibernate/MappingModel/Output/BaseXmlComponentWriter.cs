@@ -34,9 +34,6 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.HasValue(x => x.Access))
                 componentElement.WithAtt("access", mapping.Access);
 
-            if (mapping.HasValue(x => x.Lazy))
-                componentElement.WithAtt("lazy", mapping.Lazy);
-
             if (mapping.HasValue(x => x.OptimisticLock))
                 componentElement.WithAtt("optimistic-lock", mapping.OptimisticLock);
 

@@ -47,6 +47,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Class, value); }
         }
 
+        public bool Lazy
+        {
+            get { return attributes.Get(x => x.Lazy); }
+            set { attributes.Set(x => x.Lazy, value); }
+        }
+
         public bool IsSpecified<TResult>(Expression<Func<ComponentMapping, TResult>> property)
         {
             return attributes.IsSpecified(property);

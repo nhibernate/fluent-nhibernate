@@ -21,11 +21,11 @@ namespace FluentNHibernate.MappingModel.Output
             return document;
         }
 
-        public override void ProcessComponent(ComponentMapping componentMapping)
+        public override void ProcessComponent(ComponentMapping mapping)
         {
             var writer = serviceLocator.GetWriter<ComponentMapping>();
 
-            document = writer.Write(componentMapping);
+            document = writer.Write(mapping);
         }
 
         public override void ProcessComponent(DynamicComponentMapping componentMapping)

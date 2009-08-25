@@ -26,7 +26,7 @@ namespace FluentNHibernate.MappingModel
         void ProcessSubclass(SubclassMapping subclassMapping);
         void ProcessDiscriminator(DiscriminatorMapping discriminatorMapping);
         void ProcessComponent(IComponentMapping componentMapping);
-        void ProcessComponent(ComponentMapping componentMapping);
+        void ProcessComponent(ComponentMapping mapping);
         void ProcessComponent(DynamicComponentMapping componentMapping);
         void ProcessList(ListMapping listMapping);
         void ProcessIndex(IIndexMapping indexMapping);

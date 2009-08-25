@@ -18,7 +18,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
             attributes.SetDefault(x => x.Unique, false);
             attributes.SetDefault(x => x.Update, true);
             attributes.SetDefault(x => x.Insert, true);
-            attributes.SetDefault(x => x.Lazy, false);
             attributes.SetDefault(x => x.OptimisticLock, true);
         }
 
@@ -61,12 +60,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return attributes.Get(x => x.Access); }
             set { attributes.Set(x => x.Access, value); }
-        }
-
-        public bool Lazy
-        {
-            get { return attributes.Get(x => x.Lazy); }
-            set { attributes.Set(x => x.Lazy, value); }
         }
 
         public bool OptimisticLock

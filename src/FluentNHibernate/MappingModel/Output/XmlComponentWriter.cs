@@ -17,12 +17,15 @@ namespace FluentNHibernate.MappingModel.Output
             return document;
         }
 
-        public override void ProcessComponent(ComponentMapping componentMapping)
+        public override void ProcessComponent(ComponentMapping mapping)
         {
-            document = WriteComponent("component", componentMapping);
+            document = WriteComponent("component", mapping);
 
-            if (componentMapping.HasValue(x => x.Class))
-                document.DocumentElement.WithAtt("class", componentMapping.Class);
+            if (mapping.HasValue(x => x.Class))
+                document.DocumentElement.WithAtt("class", mapping.Class);
+
+            if (mapping.HasValue(x => x.Lazy))
+                document.DocumentElement.WithAtt("lazy", mapping.Lazy);
         }
     }
 }

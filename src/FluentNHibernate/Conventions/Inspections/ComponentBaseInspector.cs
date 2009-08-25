@@ -98,11 +98,6 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get { return mapping.Name; }
         }
-        
-        public bool LazyLoad
-        {
-            get { return mapping.Lazy; }
-        }
 
         public bool OptimisticLock
         {
