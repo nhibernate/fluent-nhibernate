@@ -75,6 +75,7 @@
     <Compile Include="AutoMapping\Apm\AutoMappingOverrideAlterationTests.cs" />
     <Compile Include="AutoMapping\Apm\CacheOverrideTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\HasManyConventionTests.cs" />
+    <Compile Include="AutoMapping\Apm\Conventions\HasManyToManyConventionTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\ReferencesConventionTests.cs" />
     <Compile Include="AutoMapping\Apm\IgnoreBaseAutoPersistenceModelTests.cs" />
     <Compile Include="AutoMapping\AutoMapManyToOneTester.cs" />
