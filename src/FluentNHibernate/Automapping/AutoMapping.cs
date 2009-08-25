@@ -171,7 +171,8 @@ namespace FluentNHibernate.Automapping
             var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(typeof(TSubclass));
             var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn);
 
-            action(joinedclass);
+            if (action != null)
+                action(joinedclass);
 
             subclasses[typeof(TSubclass)] = joinedclass;
 
@@ -201,7 +202,8 @@ namespace FluentNHibernate.Automapping
             var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
             var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, null, discriminatorValue);
             
-            action(subclass);
+            if (action != null)
+                action(subclass);
 
             // remove any mappings for the same type, then re-add
             subclasses[typeof(TSubclass)] = subclass;
