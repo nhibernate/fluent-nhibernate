@@ -4,7 +4,7 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Utils
 {
-    public static class XmlExtensions
+    internal static class XmlExtensions
     {
         public static XmlElement AddElement(this XmlDocument document, string name)
         {
@@ -61,13 +61,6 @@ namespace FluentNHibernate.Utils
             {
                 element.SetAttribute(pair.Key, pair.Value);
             }
-
-            return element;
-        }
-
-        public static XmlElement WithProperties(this XmlElement element, Cache<string, string> properties)
-        {
-            properties.ForEachPair(element.SetAttribute);
 
             return element;
         }

@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace FluentNHibernate
 {
-    public sealed class DummyPropertyInfo : PropertyInfo
+    internal sealed class DummyPropertyInfo : PropertyInfo
     {
         private readonly string name;
         private readonly Type type;

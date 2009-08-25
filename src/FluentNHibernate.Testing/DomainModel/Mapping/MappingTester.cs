@@ -3,7 +3,7 @@ using System.Linq;
 using System.Xml;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.Xml;
+using FluentNHibernate.MappingModel.Output;
 using NHibernate.Cfg;
 using NUnit.Framework;
 
@@ -13,7 +13,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     {
         protected XmlElement currentElement;
         protected XmlDocument document;
-        protected IMappingVisitor _visitor;
         private readonly PersistenceModel model;
         private string currentPath;
 
@@ -24,7 +23,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public MappingTester(PersistenceModel model)
         {
             this.model = model;
-            _visitor = new MappingVisitor(new Configuration());
         }
 
         public virtual MappingTester<T> RootElement

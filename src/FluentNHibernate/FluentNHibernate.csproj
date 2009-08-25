@@ -384,7 +384,6 @@
     <Compile Include="Mapping\SubclassMap.cs" />
     <Compile Include="Utils\CollectionExtensions.cs" />
     <Compile Include="Utils\Reflection\ExpressionBuilder.cs" />
-    <Compile Include="Cache.cs" />
     <Compile Include="Cfg\AutoMappingsContainer.cs" />
     <Compile Include="Cfg\Db\CacheSettingsBuilder.cs" />
     <Compile Include="Cfg\Db\ConnectionStringBuilder.cs" />
@@ -587,8 +586,6 @@
     <Compile Include="Mapping\OptimisticLockBuilder.cs" />
     <Compile Include="Mapping\ToManyBase.cs" />
     <Compile Include="MissingConstructorException.cs" />
-    <Compile Include="IMappingVisitor.cs" />
-    <Compile Include="MappingVisitor.cs" />
     <Compile Include="Mapping\AccessStrategyBuilder.cs" />
     <Compile Include="Mapping\ClasslikeMapBase.cs" />
     <Compile Include="Mapping\ComponentPart.cs" />
@@ -639,8 +636,7 @@
     <Compile Include="Utils\Reflection\Accessor.cs" />
     <Compile Include="Utils\Reflection\PropertyChain.cs" />
     <Compile Include="Utils\Reflection\SingleProperty.cs" />
-    <Compile Include="Xml\MappingXmlSerializer.cs" />
-    <Compile Include="Xml\MappingXmlValidator.cs" />
+    <Compile Include="MappingModel\Output\MappingXmlSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\InvocationHelper.cs" />
     <Compile Include="Utils\Reflection\ReflectionHelper.cs" />
@@ -657,9 +653,6 @@
     <None Include="..\FluentKey.snk">
       <Link>FluentKey.snk</Link>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Reflection\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

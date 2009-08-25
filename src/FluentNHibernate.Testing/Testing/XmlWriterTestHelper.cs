@@ -7,7 +7,6 @@ using System.Xml;
 using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.MappingModel;
 using FluentNHibernate.Utils;
-using FluentNHibernate.Xml;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Testing
@@ -37,8 +36,7 @@ namespace FluentNHibernate.Testing.Testing
                 test.ApplyToSource(mapping);
 
                 var serializer = new MappingXmlSerializer();
-                object hbmFragment = writer.Write(mapping);
-                var xmlDoc = serializer.SerializeHbmFragment(hbmFragment);
+                var xmlDoc = writer.Write(mapping);
 
                 test.Check(xmlDoc);
             }

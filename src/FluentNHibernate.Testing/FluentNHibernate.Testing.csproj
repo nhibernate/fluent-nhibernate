@@ -12,6 +12,8 @@
     <AssemblyName>FluentNHibernate.Testing</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\FluentKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -361,10 +363,8 @@
     <Compile Include="Utils\ReflectionHelperTests.cs" />
     <Compile Include="Testing\XmlWriterTestHelper.cs" />
     <Compile Include="Utils\TypeReferenceEqualityTests.cs" />
-    <Compile Include="Xml\MappingXmlTestHelper.cs" />
-    <Compile Include="Xml\MappingXmlValidatorTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Xml\MappingXmlSerializerTester.cs" />
+    <Compile Include="Xml\MappingXmlTestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
@@ -374,11 +374,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cfg\hibernate.cfg.xml" />
-    <Content Include="DeclarativeTesting.htm" />
     <EmbeddedResource Include="Fixtures\HbmOne.hbm.xml" />
     <EmbeddedResource Include="Fixtures\HbmTwo.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\FluentKey.snk">
+      <Link>FluentKey.snk</Link>
+    </None>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
