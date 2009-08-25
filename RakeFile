@@ -145,8 +145,6 @@ task :create_zip_docs => :build_docs do
   version = get_version()
   
   create_zip("#{DIST_DIR}/fluentnhibernate-docs-#{version}.zip", 'output/')
-  
-  FileUtils.rm_r('output') if File.exists? 'output'
 end
 
 class NCover
