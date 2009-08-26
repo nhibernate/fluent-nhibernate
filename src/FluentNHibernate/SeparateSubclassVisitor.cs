@@ -90,7 +90,8 @@ namespace FluentNHibernate
                 while (subclassType.BaseType != parentType ||
                     (subclassType.IsTopLevel() && parentType.IsInterface && subclassType.HasInterface(parentType)))
                 {
-                    level++;
+                    if (IsMapped(subclassType.BaseType, providers))
+                        level++;
 
                     // reached the top, stop
                     if (subclassType.IsTopLevel())
@@ -110,6 +111,11 @@ namespace FluentNHibernate
             }
 
             return arranged;
+        }
+
+        private bool IsMapped(Type type, IEnumerable<IIndeterminateSubclassMappingProvider> providers)
+        {
+            return providers.Any(x => x.EntityType == type);
         }
     }
 }

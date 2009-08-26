@@ -185,6 +185,23 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             top.Subclasses.ShouldContain(x => x.Type == typeof(Interfaces.Int_One));
             top.Subclasses.Count().ShouldEqual(1);
         }
+
+        [Test]
+        public void ShouldHandleEverettsWeirdMapping()
+        {
+            var model = new PersistenceModel();
+
+            model.Add(new Sauces.SauceMap());
+            model.Add(new Sauces.BrownSauceMap());
+            model.Add(new Sauces.ReallyHotSauceMap());
+
+            var colorSource = model.BuildMappings().First().Classes.First();
+
+            colorSource.Type.ShouldEqual(typeof(Sauces.Sauce));
+            colorSource.Subclasses.ShouldContain(x => x.Type == typeof(Sauces.BrownSauce));
+            colorSource.Subclasses.ShouldContain(x => x.Type == typeof(Sauces.ReallyHotSauce));
+            colorSource.Subclasses.Count().ShouldEqual(2);
+        }
     }
 
     namespace Interfaces
@@ -360,6 +377,40 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         {}
 
         public class B_Child2_ChildMap : SubclassMap<B_Child2_Child>
+        {}
+    }
+
+    namespace Sauces
+    {
+        public abstract class Sauce
+        {
+            public virtual int Id { get; set; }
+        }
+
+        public class BrownSauce : Sauce
+        { }
+
+        public abstract class RedSauce : Sauce
+        { }
+
+        public abstract class HotSauce : RedSauce
+        { }
+
+        public class ReallyHotSauce : HotSauce
+        { }
+
+        public class SauceMap : ClassMap<Sauce>
+        {
+            public SauceMap()
+            {
+                Id(x => x.Id);
+            }
+        }
+
+        public class ReallyHotSauceMap : SubclassMap<ReallyHotSauce>
+        {}
+
+        public class BrownSauceMap : SubclassMap<BrownSauce>
         {}
     }
 }
