@@ -133,6 +133,16 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             VerifyModel(x => x.Subselect.ShouldEqual("test"));
         }
 
+        [Test]
+        public void SchemaActionShouldntBeOverwritten()
+        {
+            Mapping<ExampleClass>(x => x.SchemaAction.Drop());
+
+            Convention(x => x.SchemaAction.None());
+
+            VerifyModel(x => x.SchemaAction.ShouldEqual("drop"));
+        }
+
         #region Helpers
 
         private void Convention(Action<IClassInstance> convention)

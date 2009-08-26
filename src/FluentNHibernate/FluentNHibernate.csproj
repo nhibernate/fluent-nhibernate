@@ -238,6 +238,7 @@
     <Compile Include="Conventions\Inspections\PascalCasePrefix.cs" />
     <Compile Include="Conventions\Inspections\Polymorphism.cs" />
     <Compile Include="Conventions\Inspections\Prefix.cs" />
+    <Compile Include="Conventions\Inspections\SchemaAction.cs" />
     <Compile Include="Conventions\Inspections\SetInspector.cs" />
     <Compile Include="Conventions\Inspections\SubclassInspector.cs" />
     <Compile Include="Conventions\Inspections\VersionInspector.cs" />
@@ -289,6 +290,7 @@
     <Compile Include="Conventions\Instances\IPropertyInstance.cs" />
     <Compile Include="Conventions\Instances\IOneToManyCollectionInstance.cs" />
     <Compile Include="Conventions\Instances\IOneToManyInstance.cs" />
+    <Compile Include="Conventions\Instances\ISchemaActionInstance.cs" />
     <Compile Include="Conventions\Instances\ISetInstance.cs" />
     <Compile Include="Conventions\Instances\ISubclassInstance.cs" />
     <Compile Include="Conventions\Instances\IVersionInstance.cs" />
@@ -341,6 +343,7 @@
     <Compile Include="Conventions\Inspections\IManyToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\IOneToManyInspector.cs" />
     <Compile Include="Conventions\Inspections\IRelationshipInspector.cs" />
+    <Compile Include="Conventions\Instances\SchemaActionInstance.cs" />
     <Compile Include="Conventions\Instances\SetInstance.cs" />
     <Compile Include="Conventions\Instances\SubclassInstance.cs" />
     <Compile Include="Conventions\Instances\VersionInstance.cs" />
@@ -356,6 +359,7 @@
     <Compile Include="MappingModel\BiDirectionalManyToManyPairingVisitor.cs" />
     <Compile Include="MappingModel\ManyToManyTableNameVisitor.cs" />
     <Compile Include="Mapping\PolymorphismBuilder.cs" />
+    <Compile Include="Mapping\SchemaActionBuilder.cs" />
     <Compile Include="SeparateSubclassVisitor.cs" />
     <Compile Include="MappingModel\Collections\IIndexedCollectionMapping.cs" />
     <Compile Include="MappingModel\Collections\SortType.cs" />

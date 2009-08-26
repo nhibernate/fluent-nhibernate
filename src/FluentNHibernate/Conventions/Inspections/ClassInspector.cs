@@ -70,6 +70,11 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return OptimisticLock.FromString(mapping.OptimisticLock); }
         }
 
+        public SchemaAction SchemaAction
+        {
+            get { return SchemaAction.FromString(mapping.SchemaAction); }
+        }
+
         public string Schema
         {
             get { return mapping.Schema; }

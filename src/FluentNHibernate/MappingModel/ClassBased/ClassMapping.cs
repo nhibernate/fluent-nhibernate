@@ -179,6 +179,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Subselect, value); }
         }
 
+        public string SchemaAction
+        {
+            get { return attributes.Get(x => x.SchemaAction); }
+            set { attributes.Set(x => x.SchemaAction, value); }
+        }
+
         public bool IsSpecified<TResult>(Expression<Func<ClassMapping, TResult>> property)
         {
             return attributes.IsSpecified(property);

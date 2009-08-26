@@ -10,6 +10,7 @@ namespace FluentNHibernate.Conventions.Instances
         IClassInstance Not { get; }
         new IOptimisticLockInstance OptimisticLock { get; }
         new ICacheInstance Cache { get; }
+        new ISchemaActionInstance SchemaAction { get; }
         void Table(string tableName);
         void DynamicInsert();
         void DynamicUpdate();

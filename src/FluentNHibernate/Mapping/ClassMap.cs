@@ -31,11 +31,13 @@ namespace FluentNHibernate.Mapping
         protected ICompositeIdMappingProvider compositeId;
         private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
         private readonly PolymorphismBuilder<ClassMap<T>> polymorphism;
+        private SchemaActionBuilder<ClassMap<T>> schemaAction;
 
         public ClassMap()
         {
             optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => attributes.Set(x => x.OptimisticLock, value));
             polymorphism = new PolymorphismBuilder<ClassMap<T>>(this, value => attributes.Set(x => x.Polymorphism, value));
+            schemaAction = new SchemaActionBuilder<ClassMap<T>>(this, value => attributes.Set(x => x.SchemaAction, value));
             Cache = new CachePart(typeof(T));
         }
 
@@ -317,6 +319,11 @@ namespace FluentNHibernate.Mapping
         public PolymorphismBuilder<ClassMap<T>> Polymorphism
         {
             get { return polymorphism; }
+        }
+
+        public SchemaActionBuilder<ClassMap<T>> SchemaAction
+        {
+            get { return schemaAction; }
         }
 
         public void CheckConstraint(string constraint)

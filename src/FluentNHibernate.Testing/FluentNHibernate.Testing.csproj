@@ -79,6 +79,7 @@
     <Compile Include="AutoMapping\Apm\CacheOverrideTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\HasManyConventionTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\HasManyToManyConventionTests.cs" />
+    <Compile Include="AutoMapping\Apm\Conventions\IdentityConventionTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\ReferencesConventionTests.cs" />
     <Compile Include="AutoMapping\Apm\GenericBaseClassTests.cs" />
     <Compile Include="AutoMapping\Apm\IgnoreBaseAutoPersistenceModelTests.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="ConventionsTests\DefaultCascadeHelperTests.cs" />
     <Compile Include="ConventionsTests\DefaultLazyHelperTests.cs" />
     <Compile Include="ConventionsTests\ForeignKeyConventionTests.cs" />
+    <Compile Include="ConventionsTests\Inspection\ValueTypes\SchemaActionTests.cs" />
     <Compile Include="ConventionsTests\MultipleHelperConventions.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\ArrayConventionTests.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\HibernateMappingConventionTests.cs" />

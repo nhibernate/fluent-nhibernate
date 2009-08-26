@@ -108,6 +108,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.Subselect.ShouldEqual("xxx"));
         }
 
+        [Test]
+        public void ShouldSetSchemaActionProperty()
+        {
+            Convention(x => x.SchemaAction.None());
+
+            VerifyModel(x => x.SchemaAction.ShouldEqual("none"));
+        }
+
         #region Helpers
 
         private void Convention(Action<IClassInstance> convention)

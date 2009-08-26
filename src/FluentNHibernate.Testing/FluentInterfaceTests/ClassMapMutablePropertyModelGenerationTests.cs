@@ -154,6 +154,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ModelShouldMatch(x => x.Subselect.ShouldEqual("sql query"));
         }
 
+        [Test]
+        public void SchemaActionShouldSetModelPropertyToValue()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(x => x.SchemaAction.None())
+                .ModelShouldMatch(x => x.SchemaAction.ShouldEqual("none"));
+        }
+
         public class FakeProxy
         { }
     }

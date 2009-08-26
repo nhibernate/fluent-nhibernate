@@ -8,6 +8,7 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         string TableName { get; }
         OptimisticLock OptimisticLock { get; }
+        SchemaAction SchemaAction { get; }
         string Schema { get; }
         bool DynamicUpdate { get; }
         bool DynamicInsert { get; }

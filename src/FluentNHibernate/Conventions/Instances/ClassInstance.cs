@@ -27,6 +27,18 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
+        public new ISchemaActionInstance SchemaAction
+        {
+            get
+            {
+                return new SchemaActionInstance(value =>
+                {
+                    if (!mapping.IsSpecified(x => x.SchemaAction))
+                        mapping.SchemaAction = value;
+                });
+            }
+        }
+
         public void Table(string tableName)
         {
             if (!mapping.IsSpecified(x => x.TableName))

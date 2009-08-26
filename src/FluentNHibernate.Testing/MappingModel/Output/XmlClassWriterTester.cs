@@ -200,6 +200,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteSchemaActionAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<ClassMapping>();
+            testHelper.Check(x => x.SchemaAction, "none").MapsToAttribute("schema-action");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
         public void ShouldWriteCache()
         {
             var mapping = new ClassMapping();

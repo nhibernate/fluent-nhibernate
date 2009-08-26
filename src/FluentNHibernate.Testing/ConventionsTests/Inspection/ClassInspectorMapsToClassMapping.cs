@@ -700,6 +700,28 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
                 .ShouldBeFalse();
         }
 
+        [Test]
+        public void SchemaActionMapped()
+        {
+            mapping.SchemaAction = "none";
+            inspector.SchemaAction.ShouldEqual(SchemaAction.None);
+        }
+
+        [Test]
+        public void SchemaActionIsSet()
+        {
+            mapping.SchemaAction = "none";
+            inspector.IsSet(Prop(x => x.SchemaAction))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void SchemaActionIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.SchemaAction))
+                .ShouldBeFalse();
+        }
+
         #region Helpers
 
         private PropertyInfo Prop(Expression<Func<IClassInspector, object>> propertyExpression)
