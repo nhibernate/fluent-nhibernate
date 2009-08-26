@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
+using Iesi.Collections.Generic;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Automapping
@@ -71,7 +73,20 @@ namespace FluentNHibernate.Testing.Automapping
 
             classMapping.Collections
                 .First().ShouldBeOfType(typeof(SetMapping));
+        }
 
+        [Test]
+        public void ShouldMapHashSetAsSet()
+        {
+            var classMapping = new ClassMapping()
+            {
+                Type = typeof(PropertyTarget)
+            };
+
+            mapper.Map(classMapping, typeof(PropertyTarget).GetProperty("HashSet"));
+
+            classMapping.Collections
+                .First().ShouldBeOfType(typeof(SetMapping));
         }
 
         protected void ShouldMap(Expression<System.Func<PropertyTarget, object>> property)
@@ -86,8 +101,9 @@ namespace FluentNHibernate.Testing.Automapping
 
         protected class PropertyTarget
         {
-            public Iesi.Collections.Generic.ISet<PropertyTarget> Set { get; set; }
-            public System.Collections.Generic.IList<PropertyTarget> List { get; set; }
+            public ISet<PropertyTarget> Set { get; set; }
+            public HashSet<PropertyTarget> HashSet { get; set; }
+            public IList<PropertyTarget> List { get; set; }
             public int Int { get; set; }
             public string String { get; set; }
             public System.DateTime DateTime { get; set; }

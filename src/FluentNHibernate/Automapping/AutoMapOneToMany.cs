@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Conventions;
@@ -6,6 +7,7 @@ using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping
 {
@@ -47,7 +49,7 @@ namespace FluentNHibernate.Automapping
 
         private ICollectionMapping GetCollectionMapping(Type type)
         {
-            if (type.Namespace.StartsWith("Iesi.Collections"))
+            if (type.Namespace.StartsWith("Iesi.Collections") || type.Closes(typeof(HashSet<>)))
                 return new SetMapping();
 
             return new BagMapping();

@@ -6,6 +6,11 @@ namespace FluentNHibernate.Utils
 {
     public static class TypeExtensions
     {
+        public static bool Closes(this Type type, Type openGenericType)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == openGenericType;
+        }
+
         public static bool IsEnum(this Type type)
         {
             if (type.IsNullable())

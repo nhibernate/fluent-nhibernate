@@ -96,22 +96,12 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             return new ModelTester<PropertyPart, PropertyMapping>(() => new PropertyPart(ReflectionHelper.GetProperty(property), typeof(T)), x => ((IPropertyMappingProvider)x).GetPropertyMapping());
         }
 
-        protected ModelTester<OneToManyPart<T>, ICollectionMapping> OneToMany<T>(Expression<Func<OneToManyTarget, IList<T>>> property)
-        {
-            return new ModelTester<OneToManyPart<T>, ICollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
-        }
-
         protected ModelTester<OneToManyPart<T>, ICollectionMapping> OneToManyMethod<T>(Expression<Func<OneToManyTarget, IList<T>>> property)
         {
             return new ModelTester<OneToManyPart<T>, ICollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetMethod(property)), x => x.GetCollectionMapping());
         }
 
-        protected ModelTester<OneToManyPart<T>, ICollectionMapping> OneToMany<T>(Expression<Func<OneToManyTarget, ISet<T>>> property)
-        {
-            return new ModelTester<OneToManyPart<T>, ICollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
-        }
-
-        protected ModelTester<OneToManyPart<T>, ICollectionMapping> OneToMany<T>(Expression<Func<OneToManyTarget, IDictionary<string, T>>> property)
+        protected ModelTester<OneToManyPart<T>, ICollectionMapping> OneToMany<T>(Expression<Func<OneToManyTarget, object>> property)
         {
             return new ModelTester<OneToManyPart<T>, ICollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
         }

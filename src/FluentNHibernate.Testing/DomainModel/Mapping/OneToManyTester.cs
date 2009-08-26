@@ -21,6 +21,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     {
         public virtual int Id { get; set; }
         public virtual ISet<ChildObject> SetOfChildren { get; set; }
+        public virtual HashSet<ChildObject> HashSetOfChildren { get; set; }
         public virtual IList<ChildObject> BagOfChildren { get; set; }
         public virtual IList<ChildObject> ListOfChildren { get; set; }
         public virtual IDictionary<string, ChildObject> MapOfChildren { get; set; }

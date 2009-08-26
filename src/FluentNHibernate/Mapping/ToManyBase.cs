@@ -53,7 +53,7 @@ namespace FluentNHibernate.Mapping
 
         private void SetDefaultCollectionType(Type type)
         {
-            if (type.Namespace == "Iesi.Collections.Generic")
+            if (type.Namespace == "Iesi.Collections.Generic" || type.Closes(typeof(HashSet<>)))
                 AsSet();
         }
 
