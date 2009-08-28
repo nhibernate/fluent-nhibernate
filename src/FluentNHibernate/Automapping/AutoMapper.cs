@@ -103,7 +103,7 @@ namespace FluentNHibernate.Automapping
                 else
                     subclassMapping = new SubclassMapping();
 
-                MapSubclass(classType, mappedProperties, subclassMapping, inheritedClass);
+                MapSubclass(mappedProperties, subclassMapping, inheritedClass);
 
                 mapping.AddSubclass(subclassMapping);
 
@@ -111,10 +111,10 @@ namespace FluentNHibernate.Automapping
             }
         }
 
-        private void MapSubclass(Type classType, IList<string> mappedProperties, ISubclassMapping subclass, AutoMapType inheritedClass)
+        private void MapSubclass(IList<string> mappedProperties, ISubclassMapping subclass, AutoMapType inheritedClass)
         {
             subclass.Name = inheritedClass.Type.AssemblyQualifiedName;
-            ApplyOverrides(classType, mappedProperties, (ClassMappingBase)subclass);
+            ApplyOverrides(inheritedClass.Type, mappedProperties, (ClassMappingBase)subclass);
             MapEverythingInClass((ClassMappingBase)subclass, inheritedClass.Type, mappedProperties);
             inheritedClass.IsMapped = true;
         }

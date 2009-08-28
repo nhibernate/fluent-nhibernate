@@ -1,10 +1,11 @@
 ﻿using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Automapping.TestFixtures;
+using FluentNHibernate.Testing.Automapping;
 using FluentNHibernate.Testing.Fixtures.AutoMappingAlterations.Model;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.Automapping.Apm
+namespace FluentNHibernate.Testing.AutoMapping.Overrides
 {
     [TestFixture]
     public class AutoMappingOverrideAlterationTests

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel.Collections;
+using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
@@ -10,6 +11,8 @@ namespace FluentNHibernate.MappingModel.ClassBased
         Type Type { get; }
         IEnumerable<ISubclassMapping> Subclasses { get; }
         IEnumerable<IComponentMapping> Components { get; }
+        IEnumerable<PropertyMapping> Properties { get; }
+        IEnumerable<ICollectionMapping> Collections { get; }
         void OverrideAttributes(AttributeStore store);
         void AddProperty(PropertyMapping mapping);
         void AddComponent(IComponentMapping mapping);
