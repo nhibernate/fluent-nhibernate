@@ -116,6 +116,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.SchemaAction.ShouldEqual("none"));
         }
 
+        [Test]
+        public void ShouldSetProxyProperty()
+        {
+            Convention(x => x.Proxy<CustomProxy>());
+
+            VerifyModel(x => x.Proxy.ShouldEqual(typeof(CustomProxy).AssemblyQualifiedName));
+        }
+
         #region Helpers
 
         private void Convention(Action<IClassInstance> convention)
@@ -138,5 +146,8 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         }
 
         #endregion
+
+        private class CustomProxy
+        { }
     }
 }

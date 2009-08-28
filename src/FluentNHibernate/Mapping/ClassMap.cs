@@ -351,12 +351,12 @@ namespace FluentNHibernate.Mapping
             Proxy(typeof(TProxy));
         }
 
-        private void Proxy(Type type)
+        public void Proxy(Type type)
         {
             Proxy(type.AssemblyQualifiedName);
         }
 
-        private void Proxy(string type)
+        public void Proxy(string type)
         {
             attributes.Set(x => x.Proxy, type);
         }

@@ -116,5 +116,22 @@ namespace FluentNHibernate.Conventions.Instances
             if (!mapping.IsSpecified("Subselect"))
                 mapping.Subselect = subselectSql;
         }
+
+        public new void Proxy<T>()
+        {
+            Proxy(typeof(T));
+        }
+
+        public new void Proxy(Type type)
+        {
+            if (!mapping.IsSpecified("Proxy"))
+                mapping.Proxy = type.AssemblyQualifiedName;
+        }
+
+        public new void Proxy(string type)
+        {
+            if (!mapping.IsSpecified("Proxy"))
+                mapping.Proxy = type;
+        }
     }
 }

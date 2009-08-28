@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
@@ -20,5 +21,8 @@ namespace FluentNHibernate.Conventions.Instances
         void Schema(string schema);
         void Where(string where);
         void Subselect(string subselectSql);
+        void Proxy<T>();
+        void Proxy(Type type);
+        void Proxy(string type);
     }
 }
