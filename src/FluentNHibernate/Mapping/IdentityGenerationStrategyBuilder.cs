@@ -340,6 +340,26 @@ namespace FluentNHibernate.Mapping
             return parent;
         }
 
+        /// <summary>
+        /// picks identity, sequence or hilo depending upon the capabilities of the underlying database. 
+        /// </summary>
+        public TParent Native(string sequenceName)
+        {
+            builder.Native(sequenceName);
+            IsDirty = true;
+            return parent;
+        }
+
+        /// <summary>
+        /// picks identity, sequence or hilo depending upon the capabilities of the underlying database. 
+        /// </summary>
+        public TParent Native(string sequenceName, Action<ParamBuilder> paramValues)
+        {
+            builder.Native(sequenceName, paramValues);
+            IsDirty = true;
+            return parent;
+        }
+
 		/// <summary>
 		/// uses the identifier of another associated object. Usually used in conjunction with a one-to-one primary key association. 
 		/// </summary>

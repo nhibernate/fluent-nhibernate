@@ -304,6 +304,19 @@ namespace FluentNHibernate.Mapping
             Native();
         }
 
+        public void Native(string sequenceName)
+        {
+            EnsureIntegralIdenityType();
+            SetGenerator("native");
+            AddGeneratorParam("sequence", sequenceName);
+        }
+
+        public void Native(string sequenceName, Action<ParamBuilder> paramValues)
+        {
+            paramValues(new ParamBuilder(mapping.Params));
+            Native(sequenceName);
+        }
+
         public void Foreign(string property)
         {
             SetGenerator("foreign");

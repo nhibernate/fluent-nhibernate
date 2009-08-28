@@ -242,6 +242,19 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void GeneratorClass_CanSpecifyNativeWithSequence()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.IntId)
+                        .GeneratedBy.Native("seq"))
+                .Element("class/id/generator")
+                    .HasAttribute("class", "native")
+                .Element("class/id/generator/param[@name='sequence']")
+                    .ValueEquals("seq");
+        }
+
+        [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public void IdentityType_MustBeIntegral_ForIncrement()
         {

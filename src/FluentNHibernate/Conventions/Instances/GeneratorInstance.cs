@@ -307,6 +307,24 @@ namespace FluentNHibernate.Conventions.Instances
                 builder.Native(paramValues);
         }
 
+        /// <summary>
+        /// picks identity, sequence or hilo depending upon the capabilities of the underlying database. 
+        /// </summary>
+        public void Native(string sequenceName)
+        {
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Native(sequenceName);
+        }
+
+        /// <summary>
+        /// picks identity, sequence or hilo depending upon the capabilities of the underlying database. 
+        /// </summary>
+        public void Native(string sequenceName, Action<ParamBuilder> paramValues)
+        {
+            if (!mapping.IsSpecified(x => x.Class))
+                builder.Native(sequenceName, paramValues);
+        }
+
 		/// <summary>
 		/// uses the identifier of another associated object. Usually used in conjunction with a one-to-one primary key association. 
 		/// </summary>
