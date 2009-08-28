@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping
 {
     public class AutoMapVersion : IAutoMapper
     {
-        private static readonly IList<Type> versionTypes = new List<Type> { typeof(int), typeof(long), typeof(TimeSpan) };
-        private readonly Func<PropertyInfo, bool> findPropertyconvention = p => (p.Name.ToLower() == "version" || p.Name.ToLower() == "timestamp") && versionTypes.Contains(p.PropertyType);
+        private static readonly IList<string> ValidNames = new List<string> { "version", "timestamp" };
+        private static readonly IList<Type> ValidTypes = new List<Type> { typeof(int), typeof(long), typeof(TimeSpan), typeof(byte[]) };
 
         public bool MapsProperty(PropertyInfo property)
         {
-            return findPropertyconvention.Invoke(property);
+            return ValidNames.Contains(property.Name.ToLowerInvariant()) && ValidTypes.Contains(property.PropertyType);
         }
 
         public void Map(ClassMappingBase classMap, PropertyInfo property)
@@ -26,9 +27,33 @@ namespace FluentNHibernate.Automapping
                 Name = property.Name,
             };
 
+            version.SetDefaultValue("Type", GetDefaultType(property));
             version.AddDefaultColumn(new ColumnMapping { Name = property.Name });
 
+            if (IsSqlTimestamp(property))
+            {
+                version.Columns.Each(x =>
+                {
+                    x.SqlType = "timestamp";
+                    x.NotNull = true;
+                });
+                version.UnsavedValue = null;
+            }
+
             ((ClassMapping)classMap).Version = version;
+        }
+
+        private bool IsSqlTimestamp(PropertyInfo property)
+        {
+            return property.PropertyType == typeof(byte[]);
+        }
+
+        private TypeReference GetDefaultType(PropertyInfo property)
+        {
+            if (IsSqlTimestamp(property))
+                return new TypeReference("BinaryBlob");
+
+            return new TypeReference(property.PropertyType);
         }
     }
 }

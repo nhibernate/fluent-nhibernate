@@ -75,6 +75,7 @@
     <Compile Include="AutoMapping\Apm\AlterationCollectionTests.cs" />
     <Compile Include="AutoMapping\Apm\AlterationTests.cs" />
     <Compile Include="AutoMapping\Apm\AutoMappedPropertyEnumerablesTests.cs" />
+    <Compile Include="AutoMapping\AutoMapVersionTester.cs" />
     <Compile Include="AutoMapping\Overrides\AutoMappingOverrideAlterationTests.cs" />
     <Compile Include="AutoMapping\Apm\CacheOverrideTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\HasManyConventionTests.cs" />

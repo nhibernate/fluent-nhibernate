@@ -6,7 +6,11 @@ namespace FluentNHibernate
 {
     public class AutoMappingExpressions
     {
+        /// <summary>
+        /// Determines whether a property is the identity of an entity.
+        /// </summary>
         public Func<PropertyInfo, bool> FindIdentity = p => p.Name == "Id";
+
         public Func<Type, Type, Type> GetParentSideForManyToMany = (one, two) => one.FullName.CompareTo(two.FullName) < 0 ? one : two;
         public Func<PropertyInfo, bool> FindMappablePrivateProperties;
 
