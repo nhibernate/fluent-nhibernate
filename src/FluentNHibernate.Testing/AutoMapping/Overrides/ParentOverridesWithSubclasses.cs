@@ -71,6 +71,20 @@ namespace FluentNHibernate.Testing.AutoMapping.Overrides
             classMapping.Properties.Count().ShouldEqual(0);
             classMapping.Subclasses.First().Properties.ShouldContain(x => x.Name == "Name" && x.Access == "field");
         }
+
+        [Test]
+        public void ShouldIgnorePropertiesInChild()
+        {
+            var model = AutoMap.Source(new StubTypeSource(new[] {typeof(Parent), typeof(Child), typeof(Property)}))
+                .Override<Child>(o => o.IgnoreProperty(x => x.AnotherProperty));
+
+            model.CompileMappings();
+            var classMapping = model.BuildMappings()
+                .First()
+                .Classes.First();
+
+            classMapping.Subclasses.First().Properties.ShouldNotContain(x => x.Name == "AnotherProperty");
+        }
     }
 
     public class Parent
