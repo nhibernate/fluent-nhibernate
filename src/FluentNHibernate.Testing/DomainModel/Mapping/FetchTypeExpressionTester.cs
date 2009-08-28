@@ -43,5 +43,10 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 			A_call_to(_fetchType.Select).should_set_the_fetch_value_to("select");
 		}
 
+        [Test]
+        public void Subselect_should_add_the_correct_fetch_attribute_to_the_parent_part()
+        {
+            A_call_to(_fetchType.Subselect).should_set_the_fetch_value_to("subselect");
+        }
 	}
 }

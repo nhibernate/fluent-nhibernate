@@ -24,5 +24,11 @@ namespace FluentNHibernate.Mapping
 		    setter("select");
             return parent;
 		}
+
+        public TParent Subselect()
+        {
+            setter("subselect");
+            return parent;
+        }
 	}
 }

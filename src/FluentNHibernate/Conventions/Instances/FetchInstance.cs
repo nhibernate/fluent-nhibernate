@@ -20,5 +20,10 @@ namespace FluentNHibernate.Conventions.Instances
         {
             setter("select");
         }
+
+        public void Subselect()
+        {
+            setter("subselect");
+        }
     }
 }

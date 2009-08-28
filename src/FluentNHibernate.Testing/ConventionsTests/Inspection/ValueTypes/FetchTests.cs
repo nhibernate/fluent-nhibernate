@@ -29,5 +29,11 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection.ValueTypes
         {
             Fetch.Join.ToString().ShouldEqual("join");
         }
+
+        [Test]
+        public void SubselectShouldHaveCorrectValue()
+        {
+            Fetch.Subselect.ToString().ShouldEqual("subselect");
+        }
     }
 }

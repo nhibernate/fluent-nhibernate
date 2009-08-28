@@ -5,6 +5,7 @@ namespace FluentNHibernate.Conventions.Inspections
         public static readonly Fetch Unset = new Fetch("");
         public static readonly Fetch Select = new Fetch("select");
         public static readonly Fetch Join = new Fetch("join");
+        public static readonly Fetch Subselect = new Fetch("subselect");
         
         private readonly string value;
 

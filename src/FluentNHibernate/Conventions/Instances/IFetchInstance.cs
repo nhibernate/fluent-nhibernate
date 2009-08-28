@@ -4,5 +4,6 @@ namespace FluentNHibernate.Conventions.Instances
     {
         void Join();
         void Select();
+        void Subselect();
     }
 }
