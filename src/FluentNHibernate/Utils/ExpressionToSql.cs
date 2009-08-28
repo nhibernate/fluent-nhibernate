@@ -72,6 +72,11 @@ namespace FluentNHibernate.Utils
             if (member != null)
                 return Convert(expression, member);
 
+            var unaryExpression = body.Operand as UnaryExpression;
+
+            if (unaryExpression != null && unaryExpression.NodeType == ExpressionType.Convert)
+                return Convert(expression, unaryExpression);
+
             throw new NotImplementedException();
         }
 
