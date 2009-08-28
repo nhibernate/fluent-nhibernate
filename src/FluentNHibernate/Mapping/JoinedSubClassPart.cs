@@ -125,6 +125,7 @@ namespace FluentNHibernate.Mapping
 
             mapping.Key = new KeyMapping { ContainingEntityType = typeof(TSubclass) };
             mapping.Name = typeof(TSubclass).AssemblyQualifiedName;
+            mapping.Type = typeof(TSubclass);
 
             foreach (var column in columns.List())
                 mapping.Key.AddColumn(new ColumnMapping { Name = column });

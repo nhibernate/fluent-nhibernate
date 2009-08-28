@@ -121,7 +121,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             var model = new PersistenceModel();
 
             model.AddMappingsFromAssembly(typeof(TablePerSubclass.TPS_Parent).Assembly);
-            
+
             var classMapping = model.BuildMappings()
                 .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(TablePerSubclass.TPS_Parent)) != null)
                 .Classes.First();
@@ -194,6 +194,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             model.Add(new Sauces.SauceMap());
             model.Add(new Sauces.BrownSauceMap());
             model.Add(new Sauces.ReallyHotSauceMap());
+            model.Add(new Thoughts.ThoughtMap());
 
             var colorSource = model.BuildMappings().First().Classes.First();
 
@@ -201,6 +202,36 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             colorSource.Subclasses.ShouldContain(x => x.Type == typeof(Sauces.BrownSauce));
             colorSource.Subclasses.ShouldContain(x => x.Type == typeof(Sauces.ReallyHotSauce));
             colorSource.Subclasses.Count().ShouldEqual(2);
+        }
+    }
+
+    namespace Thoughts
+    {
+        public abstract class Thought
+        {
+            public virtual int Id { get; set; }
+        }
+
+        public class RandomThought : Thought
+        { }
+
+        public abstract class IntelligentThought : Thought
+        { }
+
+        public abstract class RevolutionaryThought : IntelligentThought
+        { }
+
+        public class Epiphany : RevolutionaryThought
+        { }
+
+        public class ThoughtMap : ClassMap<Thought>
+        {
+            public ThoughtMap()
+            {
+                Id(x => x.Id);
+                JoinedSubClass<Epiphany>("Id", x => { });
+                JoinedSubClass<RandomThought>("Id", x => { });
+            }
         }
     }
 
@@ -228,7 +259,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         {
             public Int_OneMap()
             {
-                
+
             }
         }
     }
@@ -341,22 +372,22 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
 
         public class B_Child : B_Top
         {
-            
+
         }
 
         public class B_Child2 : B_Top
         {
-            
+
         }
 
         public class B_Child_Child : B_Child
         {
-            
+
         }
 
         public class B_Child2_Child : B_Child2
         {
-            
+
         }
 
         public class B_TopMap : ClassMap<B_Top>
@@ -368,16 +399,16 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         }
 
         public class B_ChildMap : SubclassMap<B_Child>
-        {}
+        { }
 
         public class B_Child2Map : SubclassMap<B_Child2>
-        {}
+        { }
 
         public class B_Child_ChildMap : SubclassMap<B_Child_Child>
-        {}
+        { }
 
         public class B_Child2_ChildMap : SubclassMap<B_Child2_Child>
-        {}
+        { }
     }
 
     namespace Sauces
@@ -408,9 +439,9 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         }
 
         public class ReallyHotSauceMap : SubclassMap<ReallyHotSauce>
-        {}
+        { }
 
         public class BrownSauceMap : SubclassMap<BrownSauce>
-        {}
+        { }
     }
 }
