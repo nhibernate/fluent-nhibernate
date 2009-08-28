@@ -17,7 +17,6 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             this.mapping = mapping;
 
-            propertyMappings.AutoMap();
             propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
             propertyMappings.Map(x => x.ReadOnly, x => x.Mutable);
             propertyMappings.Map(x => x.EntityType, x => x.Type);

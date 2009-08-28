@@ -44,7 +44,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Sort, value); }
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<MapMapping, TResult>> property)
+        public bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

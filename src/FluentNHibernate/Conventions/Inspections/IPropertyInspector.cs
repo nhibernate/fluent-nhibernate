@@ -21,5 +21,9 @@ namespace FluentNHibernate.Conventions.Inspections
         IDefaultableEnumerable<IColumnInspector> Columns { get; }
         string Index { get; }
         bool LazyLoad { get; }
+        string Check { get; }
+        string Default { get; }
+        int Precision { get; }
+        int Scale { get; }
     }
 }

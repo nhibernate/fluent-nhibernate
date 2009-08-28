@@ -28,9 +28,9 @@ namespace FluentNHibernate.Testing.Automapping
                 model.Where(type => type == typeof(ExampleClass)));
 
             Test<ExampleClass>(mapping =>
-                mapping.Element("//version")
-                    .HasAttribute("column", "Timestamp")
-                    .HasAttribute("name", "Timestamp"));
+                mapping
+                    .Element("//version").HasAttribute("name", "Timestamp")
+                    .Element("//version/column").HasAttribute("name", "Timestamp"));
         }
 
         [Test]

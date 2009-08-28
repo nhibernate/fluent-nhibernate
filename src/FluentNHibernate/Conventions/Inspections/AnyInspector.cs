@@ -14,7 +14,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public AnyInspector(AnyMapping mapping)
         {
             this.mapping = mapping;
-            propertyMappings.AutoMap();
             propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
         }
 

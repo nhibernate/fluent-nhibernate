@@ -1,21 +1,21 @@
 using System;
-using System.Linq;
 using System.Reflection;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public class PropertyInspector : IPropertyInspector
+    public class PropertyInspector : ColumnBasedInspector, IPropertyInspector
     {
         private readonly InspectorModelMapper<IPropertyInspector, PropertyMapping> propertyMappings = new InspectorModelMapper<IPropertyInspector, PropertyMapping>();
         private readonly PropertyMapping mapping;
 
         public PropertyInspector(PropertyMapping mapping)
+            : base(mapping.Columns)
         {
             this.mapping = mapping;
 
-            propertyMappings.AutoMap();
             propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
+            propertyMappings.Map(x => x.Nullable, "NotNull");
         }
 
         public bool Insert
@@ -28,16 +28,6 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Update; }
         }
 
-        public int Length
-        {
-            get { return GetValueFromColumns<int>(x => x.Length); }
-        }
-
-        public bool Nullable
-        {
-            get { return !GetValueFromColumns<bool>(x => x.NotNull); }
-        }
-
         public string Formula
         {
             get { return mapping.Formula; }
@@ -46,21 +36,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public TypeReference Type
         {
             get { return mapping.Type; }
-        }
-
-        public string SqlType
-        {
-            get { return GetValueFromColumns<string>(x => x.SqlType); }
-        }
-
-        public bool Unique
-        {
-            get { return GetValueFromColumns<bool>(x => x.Unique); }
-        }
-
-        public string UniqueKey
-        {
-            get { return GetValueFromColumns<string>(x => x.UniqueKey); }
         }
 
         public string Name
@@ -91,11 +66,6 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
-        public string Index
-        {
-            get { return mapping.Index; }
-        }
-
         public bool LazyLoad
         {
             get { return mapping.Lazy; }
@@ -105,7 +75,7 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get
             {
-                if (mapping.IsSpecified(x => x.Access))
+                if (mapping.IsSpecified("Access"))
                     return Access.FromString(mapping.Access);
 
                 return Access.Unset;
@@ -135,21 +105,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public bool IsSet(PropertyInfo property)
         {
             return mapping.IsSpecified(propertyMappings.Get(property));
-        }
-
-        /// <summary>
-        /// Gets the requested value off the first column, as all columns are (currently) created equal
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        private T GetValueFromColumns<T>(Func<ColumnMapping, object> property)
-        {
-            var column = mapping.Columns.FirstOrDefault();
-
-            if (column != null)
-                return (T)property(column);
-
-            return default(T);
         }
     }
 }

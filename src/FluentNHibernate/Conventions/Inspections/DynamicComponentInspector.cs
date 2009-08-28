@@ -12,7 +12,6 @@ namespace FluentNHibernate.Conventions.Inspections
             : base(mapping)
         {
             this.mapping = mapping;
-            mappedProperties.AutoMap();
         }
 
         public override bool IsSet(PropertyInfo property)

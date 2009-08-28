@@ -15,7 +15,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public IndexInspector(IndexMapping mapping)
         {
             this.mapping = mapping;
-            mappedProperties.AutoMap();
         }
 
         public Type EntityType

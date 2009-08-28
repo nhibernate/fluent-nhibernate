@@ -13,7 +13,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public HibernateMappingInspector(HibernateMapping mapping)
         {
             this.mapping = mapping;
-            propertyMappings.AutoMap();
         }
 
         public Type EntityType

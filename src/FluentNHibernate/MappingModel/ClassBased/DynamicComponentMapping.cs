@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
@@ -41,7 +42,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             attributes.Merge(new AttributeStore<DynamicComponentMapping>(store));
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<DynamicComponentMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

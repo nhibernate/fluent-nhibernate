@@ -41,7 +41,7 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public Type ContainingEntityType { get; set; }
 
-        public bool IsSpecified<TResult>(Expression<Func<OneToManyMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

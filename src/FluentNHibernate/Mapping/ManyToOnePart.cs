@@ -39,10 +39,10 @@ namespace FluentNHibernate.Mapping
             mapping.ContainingEntityType = entity;
             mapping.PropertyInfo = property;
 
-            if (!mapping.IsSpecified(x => x.Name))
+            if (!mapping.IsSpecified("Name"))
                 mapping.Name = property.Name;
 
-            if (!mapping.IsSpecified(x => x.Class))
+            if (!mapping.IsSpecified("Class"))
                 mapping.SetDefaultValue(x => x.Class, new TypeReference(typeof(TOther)));
 
             if (columns.Count == 0)

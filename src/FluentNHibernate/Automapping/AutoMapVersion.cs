@@ -21,11 +21,14 @@ namespace FluentNHibernate.Automapping
             if (property.DeclaringType != classMap.Type || !(classMap is ClassMapping))
                 return;
 
-            ((ClassMapping)classMap).Version = new VersionMapping
+            var version = new VersionMapping
             {
                 Name = property.Name,
-                Column = property.Name
             };
+
+            version.AddDefaultColumn(new ColumnMapping { Name = property.Name });
+
+            ((ClassMapping)classMap).Version = version;
         }
     }
 }

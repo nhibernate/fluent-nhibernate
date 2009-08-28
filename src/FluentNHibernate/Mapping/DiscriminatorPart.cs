@@ -8,19 +8,20 @@ namespace FluentNHibernate.Mapping
 {
     public class DiscriminatorPart : IDiscriminatorMappingProvider
     {
+        private readonly string columnName;
         private readonly Type entity;
         private readonly Action<Type, ISubclassMappingProvider> setter;
         private readonly TypeReference discriminatorValueType;
         private readonly AttributeStore<DiscriminatorMapping> attributes = new AttributeStore<DiscriminatorMapping>();
+        private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
         private bool nextBool = true;
 
         public DiscriminatorPart(string columnName, Type entity, Action<Type, ISubclassMappingProvider> setter, TypeReference discriminatorValueType)
         {
+            this.columnName = columnName;
             this.entity = entity;
             this.setter = setter;
             this.discriminatorValueType = discriminatorValueType;
-
-            attributes.SetDefault(x => x.Column, columnName);
         }
 
         DiscriminatorMapping IDiscriminatorMappingProvider.GetDiscriminatorMapping()
@@ -28,8 +29,11 @@ namespace FluentNHibernate.Mapping
             var mapping = new DiscriminatorMapping(attributes.CloneInner())
             {
                 ContainingEntityType = entity,
-                Type = discriminatorValueType
             };
+
+            mapping.SetDefaultValue("Type", discriminatorValueType);
+
+            mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = columnName });
 
             return mapping;
         }
@@ -59,19 +63,6 @@ namespace FluentNHibernate.Mapping
                  nextBool = !nextBool;
                  return this;
              }
-        }
-
-        public DiscriminatorPart Nullable()
-        {
-            attributes.Set(x => x.NotNull, !nextBool);
-            nextBool = true;
-            return this;
-        }
-
-        public DiscriminatorPart Length(int length)
-        {
-            attributes.Set(x => x.Length, length);
-            return this;
         }
 
         /// <summary>
@@ -104,6 +95,80 @@ namespace FluentNHibernate.Mapping
         public DiscriminatorPart Formula(string sql)
         {
             attributes.Set(x => x.Formula, sql);
+            return this;
+        }
+
+        public DiscriminatorPart Precision(int precision)
+        {
+            columnAttributes.Set(x => x.Precision, precision);
+            return this;
+        }
+
+        public DiscriminatorPart Length(int length)
+        {
+            columnAttributes.Set(x => x.Length, length);
+            return this;
+        }
+
+        public DiscriminatorPart Scale(int scale)
+        {
+            columnAttributes.Set(x => x.Scale, scale);
+            return this;
+        }
+
+        public DiscriminatorPart Nullable()
+        {
+            columnAttributes.Set(x => x.NotNull, !nextBool);
+            nextBool = true;
+            return this;
+        }
+
+        public DiscriminatorPart Unique()
+        {
+            columnAttributes.Set(x => x.Unique, nextBool);
+            nextBool = true;
+            return this;
+        }
+
+        public DiscriminatorPart UniqueKey(string keyColumns)
+        {
+            columnAttributes.Set(x => x.UniqueKey, keyColumns);
+            return this;
+        }
+
+        public DiscriminatorPart Index(string index)
+        {
+            columnAttributes.Set(x => x.Index, index);
+            return this;
+        }
+
+        public DiscriminatorPart Check(string constraint)
+        {
+            columnAttributes.Set(x => x.Check, constraint);
+            return this;
+        }
+
+        public DiscriminatorPart Default(object value)
+        {
+            columnAttributes.Set(x => x.Default, value.ToString());
+            return this;
+        }
+
+        public DiscriminatorPart CustomType<T>()
+        {
+            attributes.Set(x => x.Type, new TypeReference(typeof(T)));
+            return this;
+        }
+
+        public DiscriminatorPart CustomType(Type type)
+        {
+            attributes.Set(x => x.Type, new TypeReference(type));
+            return this;
+        }
+
+        public DiscriminatorPart CustomType(string type)
+        {
+            attributes.Set(x => x.Type, new TypeReference(type));
             return this;
         }
     }

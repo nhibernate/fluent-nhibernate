@@ -96,7 +96,7 @@ namespace FluentNHibernate.MappingModel.Collections
             columns.Clear();
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<ManyToManyMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
@@ -15,6 +16,7 @@ namespace FluentNHibernate.Mapping
         private readonly Type entityType;
         private readonly AccessStrategyBuilder<IdentityPart> access;
         private readonly AttributeStore<IdMapping> attributes = new AttributeStore<IdMapping>();
+        private bool nextBool = true;
 
         public IdentityPart(Type entity, PropertyInfo property)
 		{
@@ -58,7 +60,7 @@ namespace FluentNHibernate.Mapping
                 mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = property.Name });
 
             mapping.Name = property.Name;
-            mapping.SetDefaultValue(x => x.Type, new TypeReference(property.PropertyType));
+            mapping.SetDefaultValue("Type", new TypeReference(property.PropertyType));
 
             if (GeneratedBy.IsDirty)
                 mapping.Generator = GeneratedBy.GetGeneratorMapping();
@@ -75,6 +77,16 @@ namespace FluentNHibernate.Mapping
 	    {
 	        get { return access; }
 	    }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public IdentityPart Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
+        }
 
         /// <summary>
         /// Sets the unsaved-value of the identity.
@@ -99,7 +111,81 @@ namespace FluentNHibernate.Mapping
 
         public IdentityPart Length(int length)
         {
-            attributes.Set(x => x.Length, length);
+            columnAttributes.Set(x => x.Length, length);
+            return this;
+        }
+
+        public IdentityPart Precision(int precision)
+        {
+            columnAttributes.Set(x => x.Precision, precision);
+            return this;
+        }
+
+        public IdentityPart Scale(int scale)
+        {
+            columnAttributes.Set(x => x.Scale, scale);
+            return this;
+        }
+
+        public IdentityPart Nullable()
+        {
+            columnAttributes.Set(x => x.NotNull, !nextBool);
+            nextBool = true;
+            return this;
+        }
+
+        public IdentityPart Unique()
+        {
+            columnAttributes.Set(x => x.Unique, nextBool);
+            nextBool = true;
+            return this;
+        }
+
+        public IdentityPart UniqueKey(string keyColumns)
+        {
+            columnAttributes.Set(x => x.UniqueKey, keyColumns);
+            return this;
+        }
+
+        public IdentityPart CustomSqlType(string sqlType)
+        {
+            columnAttributes.Set(x => x.SqlType, sqlType);
+            return this;
+        }
+
+        public IdentityPart Index(string key)
+        {
+            columnAttributes.Set(x => x.Index, key);
+            return this;
+        }
+
+        public IdentityPart Check(string constraint)
+        {
+            columnAttributes.Set(x => x.Check, constraint);
+            return this;
+        }
+
+        public IdentityPart Default(object value)
+        {
+            columnAttributes.Set(x => x.Default, value.ToString());
+            return this;
+        }
+
+        public IdentityPart CustomType<T>()
+        {
+            attributes.Set(x => x.Type, new TypeReference(typeof(T)));
+            return this;
+        }
+
+        public IdentityPart CustomType(Type type)
+        {
+            attributes.Set(x => x.Type, new TypeReference(type));
+            return this;
+        }
+
+        public IdentityPart CustomType(string type)
+        {
+            attributes.Set(x => x.Type, new TypeReference(type));
             return this;
         }
     }

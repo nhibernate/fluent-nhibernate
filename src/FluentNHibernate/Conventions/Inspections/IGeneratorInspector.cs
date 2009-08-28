@@ -19,8 +19,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public GeneratorInspector(GeneratorMapping mapping)
         {
             this.mapping = mapping;
-
-            propertyMappings.AutoMap();
         }
 
         public Type EntityType

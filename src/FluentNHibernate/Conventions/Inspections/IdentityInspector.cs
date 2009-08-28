@@ -7,15 +7,16 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public class IdentityInspector : IIdentityInspector
+    public class IdentityInspector : ColumnBasedInspector, IIdentityInspector
     {
         private readonly InspectorModelMapper<IIdentityInspector, IdMapping> propertyMappings = new InspectorModelMapper<IIdentityInspector, IdMapping>();
         private readonly IdMapping mapping;
 
         public IdentityInspector(IdMapping mapping)
+            : base(mapping.Columns)
         {
             this.mapping = mapping;
-            propertyMappings.AutoMap();
+            propertyMappings.Map(x => x.Nullable, "NotNull");
         }
 
         public Type EntityType
@@ -77,11 +78,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public TypeReference Type
         {
             get { return mapping.Type; }
-        }
-
-        public int Length
-        {
-            get { return mapping.Length; }
         }
     }
 }

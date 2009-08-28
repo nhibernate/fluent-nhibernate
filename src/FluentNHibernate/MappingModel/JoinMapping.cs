@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 
@@ -122,7 +123,7 @@ namespace FluentNHibernate.MappingModel
             mappedMembers.AcceptVisitor(visitor);
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<JoinMapping, TResult>> property)
+        public bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

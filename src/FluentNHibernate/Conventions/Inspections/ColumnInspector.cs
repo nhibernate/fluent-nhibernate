@@ -13,8 +13,6 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             EntityType = containingEntityType;
             this.mapping = mapping;
-
-            propertyMappings.AutoMap();
         }
 
         public Type EntityType { get; private set; }

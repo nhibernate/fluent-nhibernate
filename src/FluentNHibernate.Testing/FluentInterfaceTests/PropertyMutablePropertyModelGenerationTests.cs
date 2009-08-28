@@ -229,7 +229,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
-        public void WithLengthOfShouldSetColumnLengthPropertyToValue()
+        public void LengthOfShouldSetColumnLengthPropertyToValue()
         {
             Property()
                 .Mapping(m => m.Length(100))
@@ -257,7 +257,39 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             Property()
                 .Mapping(m => m.Index("index"))
-                .ModelShouldMatch(x => x.Index.ShouldEqual("index"));
+                .ModelShouldMatch(x => x.Columns.First().Index.ShouldEqual("index"));
+        }
+
+        [Test]
+        public void PrecisionShouldSetColumnModelPrecisionPropertyToValue()
+        {
+            Property()
+                .Mapping(m => m.Precision(10))
+                .ModelShouldMatch(x => x.Columns.First().Precision.ShouldEqual(10));
+        }
+
+        [Test]
+        public void ScaleShouldSetColumnModelScalePropertyToValue()
+        {
+            Property()
+                .Mapping(m => m.Scale(10))
+                .ModelShouldMatch(x => x.Columns.First().Scale.ShouldEqual(10));
+        }
+
+        [Test]
+        public void CheckShouldSetModelCheckPropertyToValue()
+        {
+            Property()
+                .Mapping(m => m.Check("constraint"))
+                .ModelShouldMatch(x => x.Columns.First().Check.ShouldEqual("constraint"));
+        }
+
+        [Test]
+        public void DefaultShouldSetModelDefaultPropertyToValue()
+        {
+            Property()
+                .Mapping(m => m.Default("value"))
+                .ModelShouldMatch(x => x.Columns.First().Default.ShouldEqual("value"));
         }
     }
 }

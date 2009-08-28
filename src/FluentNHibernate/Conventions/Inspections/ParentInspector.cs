@@ -12,7 +12,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public ParentInspector(ParentMapping mapping)
         {
             this.mapping = mapping;
-            mappedProperties.AutoMap();
         }
 
         public Type EntityType

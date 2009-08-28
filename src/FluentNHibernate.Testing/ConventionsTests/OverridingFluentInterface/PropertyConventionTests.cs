@@ -210,7 +210,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
 
             Convention(x => x.Index("xxx"));
 
-            VerifyModel(x => x.Index.ShouldEqual("value"));
+            VerifyModel(x => x.Columns.First().Index.ShouldEqual("value"));
         }
 
         [Test]

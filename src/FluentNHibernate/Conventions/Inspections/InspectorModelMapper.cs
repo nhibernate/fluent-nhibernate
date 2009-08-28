@@ -10,59 +10,29 @@ namespace FluentNHibernate.Conventions.Inspections
 {
     public class InspectorModelMapper<TInspector, TMapping>
     {
-        private readonly IDictionary<string, Expression<Func<TMapping, object>>> mappings = new Dictionary<string, Expression<Func<TMapping, object>>>();
+        private readonly IDictionary<string, string> mappings = new Dictionary<string, string>();
 
         public void Map(Expression<Func<TInspector, object>> inspectorProperty, Expression<Func<TMapping, object>> mappingProperty)
         {
             Map(ReflectionHelper.GetProperty(inspectorProperty), mappingProperty);
         }
 
+        public void Map(Expression<Func<TInspector, object>> inspectorProperty, string mappingProperty)
+        {
+            mappings[inspectorProperty.ToPropertyInfo().Name] = mappingProperty;
+        }
+
         private void Map(PropertyInfo inspectorProperty, Expression<Func<TMapping, object>> mappingProperty)
         {
-            mappings[inspectorProperty.Name] =  mappingProperty;
+            mappings[inspectorProperty.Name] =  mappingProperty.ToPropertyInfo().Name;
         }
 
-        public void AutoMap()
-        {
-            var inspectorProperties = GetProperties(typeof(TInspector));
-            var mappingProperties = GetProperties(typeof(TMapping));
-
-            foreach (var property in inspectorProperties)
-            {
-                var propertyName = property.Name;
-                var mappingProperty = mappingProperties.FirstOrDefault(x => x.Name == propertyName);
-
-                if (mappingProperty != null)
-                {
-                    var expression = ExpressionBuilder.Create<TMapping>(mappingProperty);
-
-                    Map(property, expression);
-                }
-            }
-        }
-
-        private IEnumerable<PropertyInfo> GetProperties(Type type)
-        {
-            var properties = new List<PropertyInfo>();
-
-            if (type.IsInterface)
-            {
-                foreach (var @interface in type.GetInterfaces())
-                    properties.AddRange(GetProperties(@interface));
-            }
-
-            foreach (var property in type.GetProperties())
-                properties.Add(property);
-
-            return properties;
-        }
-
-        public Expression<Func<TMapping, object>> Get(PropertyInfo property)
+        public string Get(PropertyInfo property)
         {
             if (mappings.ContainsKey(property.Name))
                 return mappings[property.Name];
 
-            throw new UnmappedPropertyException(typeof(TInspector), property.Name);
+            return property.Name;
         }
     }
 }

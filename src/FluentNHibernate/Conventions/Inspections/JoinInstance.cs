@@ -32,7 +32,7 @@ namespace FluentNHibernate.Conventions.Inspections
             {
                 return new FetchInstance(value =>
                 {
-                    if (!mapping.IsSpecified(x => x.Fetch))
+                    if (!mapping.IsSpecified("Fetch"))
                         mapping.Fetch = value;
                 });
             }
@@ -40,7 +40,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public new void Inverse()
         {
-            if (!mapping.IsSpecified(x => x.Inverse))
+            if (!mapping.IsSpecified("Inverse"))
             {
                 mapping.Inverse = nextBool;
                 nextBool = true;
@@ -54,7 +54,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public new void Optional()
         {
-            if (!mapping.IsSpecified(x => x.Optional))
+            if (!mapping.IsSpecified("Optional"))
             {
                 mapping.Optional = nextBool;
                 nextBool = true;
@@ -63,25 +63,25 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public new void Schema(string schema)
         {
-            if (!mapping.IsSpecified(x => x.Schema))
+            if (!mapping.IsSpecified("Schema"))
                 mapping.Schema = schema;
         }
 
         public void Table(string table)
         {
-            if (!mapping.IsSpecified(x => x.TableName))
+            if (!mapping.IsSpecified("TableName"))
                 mapping.TableName = table;
         }
 
         public new void Catalog(string catalog)
         {
-            if (!mapping.IsSpecified(x => x.Catalog))
+            if (!mapping.IsSpecified("Catalog"))
                 mapping.Catalog = catalog;
         }
 
         public new void Subselect(string subselect)
         {
-            if (!mapping.IsSpecified(x => x.Subselect))
+            if (!mapping.IsSpecified("Subselect"))
                 mapping.Subselect = subselect;
         }
     }

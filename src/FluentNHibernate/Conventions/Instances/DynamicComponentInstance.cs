@@ -33,7 +33,7 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 return new AccessInstance(value =>
                 {
-                    if (!mapping.IsSpecified(x => x.Access))
+                    if (!mapping.IsSpecified("Access"))
                         mapping.Access = value;
                 });
             }
@@ -41,7 +41,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Update()
         {
-            if (mapping.IsSpecified(x => x.Update))
+            if (mapping.IsSpecified("Update"))
                 return;
 
             mapping.Update = nextBool;
@@ -50,7 +50,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Insert()
         {
-            if (mapping.IsSpecified(x => x.Insert))
+            if (mapping.IsSpecified("Insert"))
                 return;
 
             mapping.Insert = nextBool;
@@ -59,7 +59,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Unique()
         {
-            if (mapping.IsSpecified(x => x.Unique))
+            if (mapping.IsSpecified("Unique"))
                 return;
 
             mapping.Unique = nextBool;
@@ -68,7 +68,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void OptimisticLock()
         {
-            if (mapping.IsSpecified(x => x.OptimisticLock))
+            if (mapping.IsSpecified("OptimisticLock"))
                 return;
 
             mapping.OptimisticLock = nextBool;

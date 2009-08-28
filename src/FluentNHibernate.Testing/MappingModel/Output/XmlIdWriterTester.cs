@@ -46,15 +46,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldWriteLengthAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<IdMapping>();
-            testHelper.Check(x => x.Length, 8).MapsToAttribute("length");
-
-            testHelper.VerifyAll(writer);
-        }
-
-        [Test]
         public void ShouldWriteUnsavedValueAttribute()
         {
             var testHelper = new XmlWriterTestHelper<IdMapping>();

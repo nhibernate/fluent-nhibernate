@@ -33,6 +33,21 @@ namespace FluentNHibernate.MappingModel
             set { attributes[key] = value; }
         }
 
+        public string Get(string property)
+        {
+            return Get<string>(property);
+        }
+
+        public TResult Get<TResult>(string property)
+        {
+            return (TResult)(this[property] ?? default(TResult));
+        }
+
+        public void Set<TResult>(string property, TResult value)
+        {
+            this[property] = value;
+        }
+
         public bool IsSpecified(string key)
         {
             return attributes.ContainsKey(key);
@@ -64,6 +79,15 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var key in otherStore.attributes.Keys)
                 attributes[key] = otherStore.attributes[key];
+        }
+
+        public AttributeStore Clone()
+        {
+            var clonedStore = new AttributeStore();
+
+            CopyTo(clonedStore);
+
+            return clonedStore;
         }
     }
 
@@ -103,6 +127,14 @@ namespace FluentNHibernate.MappingModel
         public bool IsSpecified<TResult>(Expression<Func<T, TResult>> exp)
         {
             return store.IsSpecified(GetKey(exp));
+        }
+
+        /// <summary>
+        /// Returns whether the user has set a value for a property.
+        /// </summary>
+        public bool IsSpecified(string property)
+        {
+            return store.IsSpecified(property);
         }
 
         /// <summary>

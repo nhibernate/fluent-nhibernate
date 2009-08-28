@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
@@ -27,7 +28,7 @@ namespace FluentNHibernate.MappingModel.Identity
         public IDictionary<string, string> Params { get; private set; }
         public Type ContainingEntityType { get; set; }
 
-        public bool IsSpecified<TResult>(Expression<Func<GeneratorMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

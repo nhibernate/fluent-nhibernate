@@ -67,7 +67,7 @@ namespace FluentNHibernate.MappingModel.Identity
             columns.Add(mapping);
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<KeyManyToOneMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

@@ -23,7 +23,7 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 return new AccessInstance(value =>
                 {
-                    if (!mapping.IsSpecified(x => x.Access))
+                    if (!mapping.IsSpecified("Access"))
                         mapping.Access = value;
                 });
             }
@@ -35,7 +35,7 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 return new CascadeInstance(value =>
                 {
-                    if (!mapping.IsSpecified(x => x.Cascade))
+                    if (!mapping.IsSpecified("Cascade"))
                         mapping.Cascade = value;
                 });
             }
@@ -57,7 +57,7 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 return new FetchInstance(value =>
                 {
-                    if (!mapping.IsSpecified(x => x.Fetch))
+                    if (!mapping.IsSpecified("Fetch"))
                         mapping.Fetch = value;
                 });
             }
@@ -65,19 +65,19 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void Class<T>()
         {
-            if (!mapping.IsSpecified(x => x.Class))
+            if (!mapping.IsSpecified("Class"))
                 mapping.Class = new TypeReference(typeof(T));
         }
 
         public void Class(Type type)
         {
-            if (!mapping.IsSpecified(x => x.Class))
+            if (!mapping.IsSpecified("Class"))
                 mapping.Class = new TypeReference(type);
         }
 
         public void Constrained()
         {
-            if (mapping.IsSpecified(x => x.Constrained))
+            if (mapping.IsSpecified("Constrained"))
                 return;
 
             mapping.Constrained = nextBool;
@@ -86,13 +86,13 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void ForeignKey(string key)
         {
-            if (!mapping.IsSpecified(x => x.ForeignKey))
+            if (!mapping.IsSpecified("ForeignKey"))
                 mapping.ForeignKey = key;
         }
 
         public void LazyLoad()
         {
-            if (mapping.IsSpecified(x => x.Lazy))
+            if (mapping.IsSpecified("Lazy"))
                 return;
 
             mapping.Lazy = nextBool;
@@ -101,7 +101,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void PropertyRef(string propertyName)
         {
-            if (!mapping.IsSpecified(x => x.PropertyRef))
+            if (!mapping.IsSpecified("PropertyRef"))
                 mapping.PropertyRef = propertyName;
         }
     }

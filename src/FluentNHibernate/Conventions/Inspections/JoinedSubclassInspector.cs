@@ -15,7 +15,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public JoinedSubclassInspector(JoinedSubclassMapping mapping)
         {
             this.mapping = mapping;
-            mappedProperties.AutoMap();
             mappedProperties.Map(x => x.LazyLoad, x => x.Lazy);
         }
 

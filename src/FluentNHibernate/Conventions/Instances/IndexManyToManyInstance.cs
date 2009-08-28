@@ -34,7 +34,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void ForeignKey(string foreignKey)
         {
-            if (mapping.IsSpecified(x => x.ForeignKey))
+            if (mapping.IsSpecified("ForeignKey"))
                 return;
 
             mapping.ForeignKey = foreignKey;

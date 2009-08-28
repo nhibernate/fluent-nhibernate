@@ -69,7 +69,7 @@ namespace FluentNHibernate.Mapping
         {
             var mapping = collectionBuilder(collectionAttributes.CloneInner());
 
-            if (!mapping.IsSpecified(x => x.Name))
+            if (!mapping.IsSpecified("Name"))
                 mapping.SetDefaultValue(x => x.Name, GetDefaultName());
 
             mapping.ContainingEntityType = entity;
@@ -261,7 +261,7 @@ namespace FluentNHibernate.Mapping
         {
             CreateIndexMapping(customIndexMapping);
 
-            if (!indexMapping.IsSpecified(x => x.Type))
+            if (!indexMapping.IsSpecified("Type"))
                 indexMapping.SetDefaultValue(x => x.Type, new TypeReference(typeof(TIndex)));
 
             if (indexMapping.Columns.IsEmpty())

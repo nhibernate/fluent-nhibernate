@@ -15,7 +15,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void OrderBy(string orderBy)
         {
-            if (mapping.IsSpecified(x => x.OrderBy))
+            if (mapping.IsSpecified("OrderBy"))
                 return;
 
             mapping.OrderBy = orderBy;
@@ -23,7 +23,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Sort(string sort)
         {
-            if (mapping.IsSpecified(x => x.Sort))
+            if (mapping.IsSpecified("Sort"))
                 return;
 
             mapping.Sort = sort;
@@ -35,7 +35,7 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 return new AccessInstance(value =>
                 {
-                    if (!mapping.IsSpecified(x => x.Access))
+                    if (!mapping.IsSpecified("Access"))
                         mapping.Access = value;
                 });
             }

@@ -90,7 +90,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Abstract, value); }
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<SubclassMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

@@ -34,7 +34,6 @@ namespace FluentNHibernate.MappingModel.Collections
         Type ChildType { get; set; }
         ICollectionMapping OtherSide { get; set; }
 
-        bool IsSpecified<TResult>(Expression<Func<ICollectionMapping, TResult>> property);
         bool HasValue<TResult>(Expression<Func<ICollectionMapping, TResult>> property);
         void SetDefaultValue<TResult>(Expression<Func<ICollectionMapping, TResult>> property, TResult value);
     }

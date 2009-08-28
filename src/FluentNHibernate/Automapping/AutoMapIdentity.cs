@@ -30,7 +30,7 @@ namespace FluentNHibernate.Automapping
             idMapping.Name = property.Name;
             idMapping.Type = new TypeReference(property.PropertyType);
             idMapping.PropertyInfo = property;
-            idMapping.SetDefaultValue(x => x.Generator, GetDefaultGenerator(property));
+            idMapping.SetDefaultValue("Generator", GetDefaultGenerator(property));
             ((ClassMapping)classMap).Id = idMapping;        
         }
 

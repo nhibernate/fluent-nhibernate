@@ -39,7 +39,7 @@ namespace FluentNHibernate.MappingModel.Collections
 			set { /* no-op */ }
     	}
 
-    	public bool IsSpecified<TResult>(Expression<Func<ListMapping, TResult>> property)
+    	public bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

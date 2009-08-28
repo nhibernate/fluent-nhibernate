@@ -35,7 +35,7 @@ namespace FluentNHibernate.MappingModel.Output
                 new XmlJoinWriter(c.Resolve<IXmlWriterServiceLocator>()));
 
             RegisterWriter<DiscriminatorMapping>(c =>
-                new XmlDiscriminatorWriter());
+                new XmlDiscriminatorWriter(c.Resolve<IXmlWriterServiceLocator>()));
 
             RegisterWriter<KeyMapping>(c =>
                 new XmlKeyWriter(c.Resolve<IXmlWriterServiceLocator>()));
@@ -47,7 +47,7 @@ namespace FluentNHibernate.MappingModel.Output
                 new XmlCompositeElementWriter(c.Resolve<IXmlWriterServiceLocator>()));
 
             RegisterWriter<VersionMapping>(c =>
-                new XmlVersionWriter());
+                new XmlVersionWriter(c.Resolve<IXmlWriterServiceLocator>()));
 
             RegisterWriter<CacheMapping>(c =>
                 new XmlCacheWriter());

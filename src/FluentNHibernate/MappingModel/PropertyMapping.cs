@@ -1,22 +1,19 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class PropertyMapping : MappingBase, IHasColumnMappings
+    public class PropertyMapping : ColumnBasedMappingBase
     {
-        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
-        private readonly AttributeStore<PropertyMapping> attributes;
-
         public PropertyMapping()
             : this(new AttributeStore())
         {}
 
         public PropertyMapping(AttributeStore underlyingStore)
-        {
-            attributes = new AttributeStore<PropertyMapping>(underlyingStore);
-        }
+            : base(underlyingStore)
+        {}
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
@@ -30,99 +27,58 @@ namespace FluentNHibernate.MappingModel
 
         public string Name
         {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            get { return attributes.Get("Name"); }
+            set { attributes.Set("Name", value); }
         }
 
         public string Access
         {
-            get { return attributes.Get(x => x.Access); }
-            set { attributes.Set(x => x.Access, value); }
+            get { return attributes.Get("Access"); }
+            set { attributes.Set("Access", value); }
         }
 
         public bool Insert
         {
-            get { return attributes.Get(x => x.Insert); }
-            set { attributes.Set(x => x.Insert, value); }
+            get { return attributes.Get<bool>("Insert"); }
+            set { attributes.Set("Insert", value); }
         }
 
         public bool Update
         {
-            get { return attributes.Get(x => x.Update); }
-            set { attributes.Set(x => x.Update, value); }
+            get { return attributes.Get<bool>("Update"); }
+            set { attributes.Set("Update", value); }
         }
 
         public string Formula
         {
-            get { return attributes.Get(x => x.Formula); }
-            set { attributes.Set(x => x.Formula, value); }
+            get { return attributes.Get("Formula"); }
+            set { attributes.Set("Formula", value); }
         }
 
         public bool Lazy
         {
-            get { return attributes.Get(x => x.Lazy); }
-            set { attributes.Set(x => x.Lazy, value); }
+            get { return attributes.Get<bool>("Lazy"); }
+            set { attributes.Set("Lazy", value); }
         }
 
         public bool OptimisticLock
         {
-            get { return attributes.Get(x => x.OptimisticLock); }
-            set { attributes.Set(x => x.OptimisticLock, value); }
+            get { return attributes.Get<bool>("OptimisticLock"); }
+            set { attributes.Set("OptimisticLock", value); }
         }
 
         public string Generated
         {
-            get { return attributes.Get(x => x.Generated); }
-            set { attributes.Set(x => x.Generated, value); }
+            get { return attributes.Get("Generated"); }
+            set { attributes.Set("Generated", value); }
         }
 
         public TypeReference Type
         {
-            get { return attributes.Get(x => x.Type); }
-            set { attributes.Set(x => x.Type, value); }
-        }
-
-        public string Index
-        {
-            get { return attributes.Get(x => x.Index); }
-            set { attributes.Set(x => x.Index, value); }
+            get { return attributes.Get<TypeReference>("Type"); }
+            set { attributes.Set("Type", value); }
         }
 
         public PropertyInfo PropertyInfo { get; set; }
-        
-        public IDefaultableEnumerable<ColumnMapping> Columns
-        {
-            get { return columns; }
-        }
-
-        public void AddColumn(ColumnMapping mapping)
-        {
-            columns.Add(mapping);
-        }
-
-        public void AddDefaultColumn(ColumnMapping mapping)
-        {
-            columns.AddDefault(mapping);
-        }
-
-        public void ClearColumns()
-        {
-            columns.Clear();
-        }
-
-        public bool IsSpecified<TResult>(Expression<Func<PropertyMapping, TResult>> property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<PropertyMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<PropertyMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
-        }
     }
 }

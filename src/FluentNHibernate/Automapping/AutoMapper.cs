@@ -71,12 +71,14 @@ namespace FluentNHibernate.Automapping
                 if (isDiscriminated && !discriminatorSet && mapping is ClassMapping)
                 {
                     var discriminatorColumn = expressions.DiscriminatorColumn(classType);
-
-                    ((ClassMapping)mapping).Discriminator = new DiscriminatorMapping
+                    var discriminator = new DiscriminatorMapping
                     {
-                        Column = discriminatorColumn,
-                        ContainingEntityType = classType
+                        ContainingEntityType = classType,
+                        Type = new TypeReference(typeof(string))
                     };
+                    discriminator.AddDefaultColumn(new ColumnMapping { Name = discriminatorColumn });
+
+                    ((ClassMapping)mapping).Discriminator = discriminator;
                     discriminatorSet = true;
                 }
 

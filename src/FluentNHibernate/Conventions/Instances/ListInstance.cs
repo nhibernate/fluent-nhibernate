@@ -32,7 +32,7 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 return new AccessInstance(value =>
                 {
-                    if (!mapping.IsSpecified(x => x.Access))
+                    if (!mapping.IsSpecified("Access"))
                         mapping.Access = value;
                 });
             }

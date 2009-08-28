@@ -173,7 +173,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.OptimisticLock, value); }
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<ICollectionMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

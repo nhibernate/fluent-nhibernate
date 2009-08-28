@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -41,7 +42,7 @@ namespace FluentNHibernate.MappingModel
 
         public Type ContainedEntityType { get; set; }
 
-        public bool IsSpecified<TResult>(Expression<Func<CacheMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

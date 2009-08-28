@@ -171,7 +171,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         {
             Convention(x => x.Index("xxx"));
 
-            VerifyModel(x => x.Index.ShouldEqual("xxx"));
+            VerifyModel(x => x.Columns.First().Index.ShouldEqual("xxx"));
         }
 
         [Test]

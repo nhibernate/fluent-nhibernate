@@ -13,7 +13,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public OneToManyInspector(OneToManyMapping mapping)
         {
             this.mapping = mapping;
-            mappedProperties.AutoMap();
         }
 
         public Type EntityType

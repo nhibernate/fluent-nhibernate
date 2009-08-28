@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -64,7 +65,7 @@ namespace FluentNHibernate.MappingModel
             columns.Clear();
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<KeyMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

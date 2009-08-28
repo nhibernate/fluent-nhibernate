@@ -6,7 +6,13 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlDiscriminatorWriter : NullMappingModelVisitor, IXmlWriter<DiscriminatorMapping>
     {
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
+
+        public XmlDiscriminatorWriter(IXmlWriterServiceLocator serviceLocator)
+        {
+            this.serviceLocator = serviceLocator;
+        }
 
         public XmlDocument Write(DiscriminatorMapping mappingModel)
         {
@@ -19,26 +25,27 @@ namespace FluentNHibernate.MappingModel.Output
         {
             document = new XmlDocument();
 
-            var typeString = TypeMapping.GetTypeString(discriminatorMapping.Type.GetUnderlyingSystemType());
+            var discriminatorElement = document.AddElement("discriminator");
 
-            var discriminatorElement = document.AddElement("discriminator")
-                .WithAtt("column", discriminatorMapping.Column)
-                .WithAtt("type", typeString);
+            if (discriminatorMapping.HasValue("Type"))
+                discriminatorElement.WithAtt("type", TypeMapping.GetTypeString(discriminatorMapping.Type.GetUnderlyingSystemType()));
 
-            if (discriminatorMapping.HasValue(x => x.Force))
+            if (discriminatorMapping.HasValue("Force"))
                 discriminatorElement.WithAtt("force", discriminatorMapping.Force);
 
-            if (discriminatorMapping.HasValue(x => x.Formula))
+            if (discriminatorMapping.HasValue("Formula"))
                 discriminatorElement.WithAtt("formula", discriminatorMapping.Formula);
 
-            if (discriminatorMapping.HasValue(x => x.Insert))
+            if (discriminatorMapping.HasValue("Insert"))
                 discriminatorElement.WithAtt("insert", discriminatorMapping.Insert);
+        }
 
-            if (discriminatorMapping.HasValue(x => x.Length))
-                discriminatorElement.WithAtt("length", discriminatorMapping.Length);
+        public override void Visit(ColumnMapping columnMapping)
+        {
+            var writer = serviceLocator.GetWriter<ColumnMapping>();
+            var columnXml = writer.Write(columnMapping);
 
-            if (discriminatorMapping.HasValue(x => x.NotNull))
-                discriminatorElement.WithAtt("not-null", discriminatorMapping.NotNull);
+            document.ImportAndAppendChild(columnXml);
         }
     }
 }

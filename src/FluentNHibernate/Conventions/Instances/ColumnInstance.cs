@@ -17,7 +17,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Length(int length)
         {
-            if (!mapping.IsSpecified(x => x.Length))
+            if (!mapping.IsSpecified("Length"))
                 mapping.Length = length;
         }
     }

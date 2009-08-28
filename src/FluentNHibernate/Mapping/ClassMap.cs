@@ -87,7 +87,7 @@ namespace FluentNHibernate.Mapping
             if (compositeId != null)
                 mapping.Id = compositeId.GetCompositeIdMapping();
 
-            if (!mapping.IsSpecified(x => x.TableName))
+            if (!mapping.IsSpecified("TableName"))
                 mapping.SetDefaultValue(x => x.TableName, GetDefaultTableName());
 
             return mapping;

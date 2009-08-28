@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.MappingModel
@@ -106,7 +107,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Assembly, value); }
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<HibernateMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

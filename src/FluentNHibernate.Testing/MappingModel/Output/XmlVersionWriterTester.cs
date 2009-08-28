@@ -8,12 +8,18 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlVersionWriterTester
     {
-        private XmlVersionWriter writer;
+        private IXmlWriter<VersionMapping> writer;
+
+        [SetUp]
+        public void GetWriterFromContainer()
+        {
+            var container = new XmlWriterContainer();
+            writer = container.Resolve<IXmlWriter<VersionMapping>>();
+        }
 
         [Test]
         public void ShouldWriteAccessAttribute()
         {
-            writer = new XmlVersionWriter();
             var testHelper = new XmlWriterTestHelper<VersionMapping>();
             testHelper.Check(x => x.Access, "access").MapsToAttribute("access");
 
@@ -21,19 +27,8 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldWriteColumnAttribute()
-        {
-            writer = new XmlVersionWriter();
-            var testHelper = new XmlWriterTestHelper<VersionMapping>();
-            testHelper.Check(x => x.Column, "col").MapsToAttribute("column");
-
-            testHelper.VerifyAll(writer);
-        }
-
-        [Test]
         public void ShouldWriteGeneratedAttribute()
         {
-            writer = new XmlVersionWriter();
             var testHelper = new XmlWriterTestHelper<VersionMapping>();
             testHelper.Check(x => x.Generated, "always").MapsToAttribute("generated");
 
@@ -43,7 +38,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteNameAttribute()
         {
-            writer = new XmlVersionWriter();
             var testHelper = new XmlWriterTestHelper<VersionMapping>();
             testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
 
@@ -53,7 +47,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteTypeAttribute()
         {
-            writer = new XmlVersionWriter();
             var testHelper = new XmlWriterTestHelper<VersionMapping>();
             testHelper.Check(x => x.Type, new TypeReference("type")).MapsToAttribute("type");
 
@@ -63,11 +56,21 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteUnsavedValueAttribute()
         {
-            writer = new XmlVersionWriter();
             var testHelper = new XmlWriterTestHelper<VersionMapping>();
             testHelper.Check(x => x.UnsavedValue, "u-value").MapsToAttribute("unsaved-value");
 
             testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteColumns()
+        {
+            var mapping = new VersionMapping();
+
+            mapping.AddColumn(new ColumnMapping { Name = "Column1" });
+
+            writer.VerifyXml(mapping)
+                .Element("column").Exists();
         }
     }
 }

@@ -15,7 +15,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public CompositeIdentityInspector(CompositeIdMapping mapping)
         {
             this.mapping = mapping;
-            mappedProperties.AutoMap();
         }
 
         public Type EntityType

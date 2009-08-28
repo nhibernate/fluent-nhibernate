@@ -4,16 +4,16 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public class VersionInspector : IVersionInspector
+    public class VersionInspector : ColumnBasedInspector, IVersionInspector
     {
         private readonly InspectorModelMapper<IVersionInspector, VersionMapping> propertyMappings = new InspectorModelMapper<IVersionInspector, VersionMapping>();
         private readonly VersionMapping mapping;
 
         public VersionInspector(VersionMapping mapping)
+            : base(mapping.Columns)
         {
             this.mapping = mapping;
-
-            propertyMappings.AutoMap();
+            propertyMappings.Map(x => x.Nullable, "NotNull");
         }
 
         public Type EntityType
@@ -41,9 +41,17 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return Access.FromString(mapping.Access); }
         }
 
-        public string Column
+        public IDefaultableEnumerable<IColumnInspector> Columns
         {
-            get { return mapping.Column; }
+            get
+            {
+                var items = new DefaultableList<IColumnInspector>();
+
+                foreach (var column in mapping.Columns.UserDefined)
+                    items.Add(new ColumnInspector(mapping.ContainingEntityType, column));
+
+                return items;
+            }
         }
 
         public Generated Generated

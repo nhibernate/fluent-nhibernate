@@ -91,7 +91,7 @@ namespace FluentNHibernate.Mapping
 
             mapping.ContainingEntityType = entity;
 
-            if (!mapping.IsSpecified(x => x.Class))
+            if (!mapping.IsSpecified("Class"))
                 mapping.Class = new TypeReference(typeof(T));
 
             foreach (var property in properties)

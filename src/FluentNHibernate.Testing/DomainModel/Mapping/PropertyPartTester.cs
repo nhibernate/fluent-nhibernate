@@ -201,7 +201,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name).Index("name_index"))
-                .Element("class/property").HasAttribute("index", "name_index");
+                .Element("class/property/column[@name='Name']").HasAttribute("index", "name_index");
         }
 
         [Test]

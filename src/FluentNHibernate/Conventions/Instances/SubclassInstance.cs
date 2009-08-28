@@ -30,13 +30,13 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void DiscriminatorValue(object value)
         {
-            if (!mapping.IsSpecified(x => x.DiscriminatorValue))
+            if (!mapping.IsSpecified("DiscriminatorValue"))
                 mapping.DiscriminatorValue = value;
         }
 
         public new void Abstract()
         {
-            if (mapping.IsSpecified(x => x.Abstract))
+            if (mapping.IsSpecified("Abstract"))
                 return;
 
             mapping.Abstract = nextBool;
@@ -45,7 +45,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void DynamicInsert()
         {
-            if (mapping.IsSpecified(x => x.DynamicInsert))
+            if (mapping.IsSpecified("DynamicInsert"))
                 return;
 
             mapping.DynamicInsert = nextBool;
@@ -54,7 +54,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void DynamicUpdate()
         {
-            if (mapping.IsSpecified(x => x.DynamicUpdate))
+            if (mapping.IsSpecified("DynamicUpdate"))
                 return;
 
             mapping.DynamicUpdate = nextBool;
@@ -63,7 +63,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void LazyLoad()
         {
-            if (mapping.IsSpecified(x => x.Lazy))
+            if (mapping.IsSpecified("Lazy"))
                 return;
 
             mapping.Lazy = nextBool;
@@ -72,19 +72,19 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Proxy(Type type)
         {
-            if (!mapping.IsSpecified(x => x.Proxy))
+            if (!mapping.IsSpecified("Proxy"))
                 mapping.Proxy = type.AssemblyQualifiedName;
         }
 
         public new void Proxy<T>()
         {
-            if (!mapping.IsSpecified(x => x.Proxy))
+            if (!mapping.IsSpecified("Proxy"))
                 mapping.Proxy = typeof(T).AssemblyQualifiedName;
         }
 
         public new void SelectBeforeUpdate()
         {
-            if (mapping.IsSpecified(x => x.SelectBeforeUpdate))
+            if (mapping.IsSpecified("SelectBeforeUpdate"))
                 return;
 
             mapping.SelectBeforeUpdate = nextBool;

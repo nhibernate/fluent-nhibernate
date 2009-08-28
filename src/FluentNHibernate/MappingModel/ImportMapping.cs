@@ -33,7 +33,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Class, value); }
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<ImportMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

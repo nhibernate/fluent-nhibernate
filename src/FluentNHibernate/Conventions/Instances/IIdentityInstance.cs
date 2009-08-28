@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -8,9 +9,21 @@ namespace FluentNHibernate.Conventions.Instances
         void Column(string column);
         void UnsavedValue(string unsavedValue);
         void Length(int length);
-        void Type(Type type); 
-        void Type<T>(); 
+        void CustomType(string type); 
+        void CustomType(Type type); 
+        void CustomType<T>(); 
         new IAccessInstance Access { get; }
         IGeneratorInstance GeneratedBy { get; }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        IIdentityInstance Not { get; }
+        void Precision(int precision);
+        void Scale(int scale);
+        void Nullable();
+        void Unique();
+        void UniqueKey(string columns);
+        void CustomSqlType(string sqlType);
+        void Index(string index);
+        void Check(string constraint);
+        void Default(object value);
     }
 }

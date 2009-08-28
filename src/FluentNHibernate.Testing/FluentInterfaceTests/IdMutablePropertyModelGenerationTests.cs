@@ -104,11 +104,100 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 });
         }
 
-        public void LengthShouldSetModelLengthPropertyToValue()
+        [Test]
+        public void LengthShouldSetColumnModelLengthPropertyToValue()
         {
             Id()
                 .Mapping(m => m.Length(8))
-                .ModelShouldMatch(x => x.Length.ShouldEqual(8));
+                .ModelShouldMatch(x => x.Columns.First().Length.ShouldEqual(8));
+        }
+
+        [Test]
+        public void PrecisionShouldSetColumnModelPrecisionPropertyToValue()
+        {
+            Id()
+                .Mapping(m => m.Precision(10))
+                .ModelShouldMatch(x => x.Columns.First().Precision.ShouldEqual(10));
+        }
+
+        [Test]
+        public void ScaleShouldSetColumnModelScalePropertyToValue()
+        {
+            Id()
+                .Mapping(m => m.Scale(10))
+                .ModelShouldMatch(x => x.Columns.First().Scale.ShouldEqual(10));
+        }
+
+        [Test]
+        public void NullableShouldSetColumnNotNullPropertyToFalse()
+        {
+            Id()
+                .Mapping(m => m.Nullable())
+                .ModelShouldMatch(x => x.Columns.First().NotNull.ShouldBeFalse());
+        }
+
+        [Test]
+        public void NotNullableShouldSetColumnNotNullPropertyToTrue()
+        {
+            Id()
+                .Mapping(m => m.Not.Nullable())
+                .ModelShouldMatch(x => x.Columns.First().NotNull.ShouldBeTrue());
+        }
+
+        [Test]
+        public void UniqueShouldSetColumnUniquePropertyToTrue()
+        {
+            Id()
+                .Mapping(m => m.Unique())
+                .ModelShouldMatch(x => x.Columns.First().Unique.ShouldBeTrue());
+        }
+
+        [Test]
+        public void NotUniqueShouldSetColumnUniquePropertyToFalse()
+        {
+            Id()
+                .Mapping(m => m.Not.Unique())
+                .ModelShouldMatch(x => x.Columns.First().Unique.ShouldBeFalse());
+        }
+
+        [Test]
+        public void UniqueKeyShouldSetColumnUniqueKeyPropertyToValue()
+        {
+            Id()
+                .Mapping(m => m.UniqueKey("key"))
+                .ModelShouldMatch(x => x.Columns.First().UniqueKey.ShouldEqual("key"));
+        }
+
+        [Test]
+        public void IndexShouldSetModelIndexPropertyToValue()
+        {
+            Id()
+                .Mapping(m => m.Index("index"))
+                .ModelShouldMatch(x => x.Columns.First().Index.ShouldEqual("index"));
+        }
+
+        [Test]
+        public void CheckShouldSetModelCheckPropertyToValue()
+        {
+            Id()
+                .Mapping(m => m.Check("constraint"))
+                .ModelShouldMatch(x => x.Columns.First().Check.ShouldEqual("constraint"));
+        }
+
+        [Test]
+        public void DefaultShouldSetModelDefaultPropertyToValue()
+        {
+            Id()
+                .Mapping(m => m.Default("value"))
+                .ModelShouldMatch(x => x.Columns.First().Default.ShouldEqual("value"));
+        }
+
+        [Test]
+        public void ShouldSetTypePropertyToSpecifiedType()
+        {
+            Id()
+                .Mapping(m => m.CustomType<int>())
+                .ModelShouldMatch(x => x.Type.ShouldEqual(new TypeReference(typeof(int))));
         }
     }
 }

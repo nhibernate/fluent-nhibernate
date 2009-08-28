@@ -13,7 +13,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public CollectionInspector(ICollectionMapping mapping)
         {
             this.mapping = mapping;
-            propertyMappings.AutoMap();
             propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
         }
 

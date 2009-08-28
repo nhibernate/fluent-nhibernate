@@ -5,7 +5,13 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlVersionWriter : NullMappingModelVisitor, IXmlWriter<VersionMapping>
     {
+        private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
+
+        public XmlVersionWriter(IXmlWriterServiceLocator serviceLocator)
+        {
+            this.serviceLocator = serviceLocator;
+        }
 
         public XmlDocument Write(VersionMapping mappingModel)
         {
@@ -20,23 +26,28 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("version");
 
-            if (mapping.HasValue(x => x.Access))
+            if (mapping.HasValue("Access"))
                 element.WithAtt("access", mapping.Access);
 
-            if (mapping.HasValue(x => x.Column))
-                element.WithAtt("column", mapping.Column);
-
-            if (mapping.HasValue(x => x.Generated))
+            if (mapping.HasValue("Generated"))
                 element.WithAtt("generated", mapping.Generated);
 
-            if (mapping.HasValue(x => x.Name))
+            if (mapping.HasValue("Name"))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.HasValue(x => x.Type))
+            if (mapping.HasValue("Type"))
                 element.WithAtt("type", mapping.Type);
 
-            if (mapping.HasValue(x => x.UnsavedValue))
+            if (mapping.HasValue("UnsavedValue"))
                 element.WithAtt("unsaved-value", mapping.UnsavedValue);
+        }
+
+        public override void Visit(ColumnMapping columnMapping)
+        {
+            var writer = serviceLocator.GetWriter<ColumnMapping>();
+            var columnXml = writer.Write(columnMapping);
+
+            document.ImportAndAppendChild(columnXml);
         }
     }
 }

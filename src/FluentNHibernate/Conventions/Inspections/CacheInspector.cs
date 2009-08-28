@@ -12,8 +12,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public CacheInspector(CacheMapping mapping)
         {
             this.mapping = mapping;
-
-            propertyMappings.AutoMap();
         }
 
         public string Usage

@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
@@ -39,7 +40,7 @@ namespace FluentNHibernate.MappingModel.Collections
     		set { /* no-op */  }
     	}
 
-    	public bool IsSpecified<TResult>(Expression<Func<ArrayMapping, TResult>> property)
+    	public bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

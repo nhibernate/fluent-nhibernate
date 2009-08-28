@@ -19,7 +19,7 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 return new NotFoundInstance(value =>
                 {
-                    if (!mapping.IsSpecified(x => x.NotFound))
+                    if (!mapping.IsSpecified("NotFound"))
                         mapping.NotFound = value;
                 });
             }

@@ -4,25 +4,21 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public class DiscriminatorInspector : IDiscriminatorInspector
+    public class DiscriminatorInspector : ColumnBasedInspector, IDiscriminatorInspector
     {
         private readonly InspectorModelMapper<IDiscriminatorInspector, DiscriminatorMapping> propertyMappings = new InspectorModelMapper<IDiscriminatorInspector, DiscriminatorMapping>();
         private readonly DiscriminatorMapping mapping;
 
         public DiscriminatorInspector(DiscriminatorMapping mapping)
+            : base(mapping.Columns)
         {
             this.mapping = mapping;
-            propertyMappings.AutoMap();
+            propertyMappings.Map(x => x.Nullable, "NotNull");
         }
 
         public bool Insert
         {
             get { return mapping.Insert; }
-        }
-
-        public string Column
-        {
-            get { return mapping.Column; }
         }
 
         public bool Force
@@ -33,16 +29,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public string Formula
         {
             get { return mapping.Formula; }
-        }
-
-        public int Length
-        {
-            get { return mapping.Length; }
-        }
-
-        public bool NotNull
-        {
-            get { return mapping.NotNull; }
         }
 
         public TypeReference Type
@@ -58,6 +44,19 @@ namespace FluentNHibernate.Conventions.Inspections
         public string StringIdentifierForModel
         {
             get { return mapping.Type.Name; }
+        }
+
+        public IDefaultableEnumerable<IColumnInspector> Columns
+        {
+            get
+            {
+                var items = new DefaultableList<IColumnInspector>();
+
+                foreach (var column in mapping.Columns.UserDefined)
+                    items.Add(new ColumnInspector(mapping.ContainingEntityType, column));
+
+                return items;
+            }
         }
 
         public bool IsSet(PropertyInfo property)

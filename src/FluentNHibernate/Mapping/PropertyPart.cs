@@ -52,11 +52,11 @@ namespace FluentNHibernate.Mapping
                 mapping.AddColumn(columnMapping);
             }
 
-            if (!mapping.IsSpecified(x => x.Name))
+            if (!mapping.IsSpecified("Name"))
                 mapping.Name = mapping.PropertyInfo.Name;
 
-            if (!mapping.IsSpecified(x => x.Type))
-                mapping.SetDefaultValue(x => x.Type, GetDefaultType());
+            if (!mapping.IsSpecified("Type"))
+                mapping.SetDefaultValue("Type", GetDefaultType());
 
             return mapping;
         }
@@ -81,7 +81,7 @@ namespace FluentNHibernate.Mapping
                 Name = column
             };
 
-            if (!columnMapping.IsSpecified(x => x.NotNull) && property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
+            if (!columnMapping.IsSpecified("NotNull") && property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
                 columnMapping.SetDefaultValue(x => x.NotNull, false);
 
             return columnMapping;
@@ -159,7 +159,7 @@ namespace FluentNHibernate.Mapping
 
         public PropertyPart Index(string index)
         {
-            attributes.Set(x => x.Index, index);
+            columnAttributes.Set(x => x.Index, index);
             return this;
         }
 
@@ -267,6 +267,12 @@ namespace FluentNHibernate.Mapping
                 nextBool = !nextBool;
                 return this;
             }
+        }
+
+        public PropertyPart Check(string constraint)
+        {
+            columnAttributes.Set(x => x.Check, constraint);
+            return this;
         }
     }
 }

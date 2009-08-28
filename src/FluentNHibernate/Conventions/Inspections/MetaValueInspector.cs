@@ -12,7 +12,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public MetaValueInspector(MetaValueMapping mapping)
         {
             this.mapping = mapping;
-            propertyMappings.AutoMap();
         }
 
         public Type EntityType

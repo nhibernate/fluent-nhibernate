@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.MappingModel.ClassBased
@@ -128,7 +129,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.BatchSize, value); }
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<JoinedSubclassMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

@@ -16,10 +16,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<SecondMappedObject>()
                 .ForMapping(map => map.DiscriminateSubClassesOnColumn<string>("Type"))
-                .Element("class/discriminator")
-                    .Exists()
-                    .HasAttribute("column", "Type")
-                    .HasAttribute("type", "String");
+                .Element("class/discriminator").HasAttribute("type", "String")
+                .Element("class/discriminator/column").HasAttribute("name", "Type");
         }
 
         [Test]
@@ -337,8 +335,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(map =>
                     map.DiscriminateSubClassesOnColumn("Type")
                         .Nullable())
-                .Element("class/discriminator")
-                    .HasAttribute("not-null", "false");
+                .Element("class/discriminator/column").HasAttribute("not-null", "false");
         }
 
         [Test]
@@ -348,8 +345,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(map =>
                     map.DiscriminateSubClassesOnColumn("Type")
                         .Not.Nullable())
-                .Element("class/discriminator")
-                    .HasAttribute("not-null", "true");
+                .Element("class/discriminator/column").HasAttribute("not-null", "true");
         }
 
         [Test]
@@ -370,7 +366,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(map =>
                     map.DiscriminateSubClassesOnColumn("Type")
                         .Length(1234))
-                .Element("class/discriminator")
+                .Element("class/discriminator/column")
                     .HasAttribute("length", "1234");
         }
 

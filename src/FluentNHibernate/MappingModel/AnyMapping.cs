@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -135,7 +136,7 @@ namespace FluentNHibernate.MappingModel
             metaValues.Add(metaValue);
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<AnyMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

@@ -53,7 +53,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public bool HasExplicitTable
         {
-            get { return mapping.IsSpecified(x => x.TableName); }
+            get { return mapping.IsSpecified("TableName"); }
         }
 
         IManyToManyCollectionInspector IManyToManyCollectionInspector.OtherSide

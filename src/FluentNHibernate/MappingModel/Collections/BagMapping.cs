@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
@@ -29,7 +30,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.OrderBy, value); }
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<BagMapping, TResult>> property)
+        public bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
@@ -53,7 +54,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Lazy, value); }
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<ComponentMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

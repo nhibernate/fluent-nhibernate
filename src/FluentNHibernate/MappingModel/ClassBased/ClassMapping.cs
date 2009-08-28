@@ -1,12 +1,13 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
     public class ClassMapping : ClassMappingBase
     {
-        private AttributeStore<ClassMapping> attributes;
+        private readonly AttributeStore<ClassMapping> attributes;
 
         public ClassMapping()
             : this(new AttributeStore())
@@ -185,7 +186,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.SchemaAction, value); }
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<ClassMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

@@ -90,7 +90,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Default, value); }
         }
 
-        public bool IsSpecified<TResult>(Expression<Func<ColumnMapping, TResult>> property)
+        public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

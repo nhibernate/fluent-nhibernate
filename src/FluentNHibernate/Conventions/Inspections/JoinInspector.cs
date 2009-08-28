@@ -14,7 +14,6 @@ namespace FluentNHibernate.Conventions.Inspections
         public JoinInspector(JoinMapping mapping)
         {
             this.mapping = mapping;
-            propertyMappings.AutoMap();
         }
 
         public Type EntityType

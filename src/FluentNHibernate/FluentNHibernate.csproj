@@ -172,6 +172,7 @@
     <Compile Include="Conventions\Inspections\CamelCasePrefix.cs" />
     <Compile Include="Conventions\Inspections\Cascade.cs" />
     <Compile Include="Conventions\Inspections\CollectionInspector.cs" />
+    <Compile Include="Conventions\Inspections\ColumnBasedInspector.cs" />
     <Compile Include="Conventions\Inspections\ComponentBaseInspector.cs" />
     <Compile Include="Conventions\Inspections\ComponentInspector.cs" />
     <Compile Include="Conventions\Inspections\CompositeElementInspector.cs" />
@@ -357,7 +358,9 @@
     <Compile Include="Conventions\ManyToManyTableNameConvention.cs" />
     <Compile Include="Conventions\ObjectExtensionsForConventions.cs" />
     <Compile Include="MappingModel\BiDirectionalManyToManyPairingVisitor.cs" />
+    <Compile Include="MappingModel\ColumnBasedMappingBase.cs" />
     <Compile Include="MappingModel\ManyToManyTableNameVisitor.cs" />
+    <Compile Include="Utils\ReflectionExtensions.cs" />
     <Compile Include="Mapping\PolymorphismBuilder.cs" />
     <Compile Include="Mapping\SchemaActionBuilder.cs" />
     <Compile Include="SeparateSubclassVisitor.cs" />

@@ -56,7 +56,7 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 return new CollectionCascadeInstance(value =>
                 {
-                    if (!mapping.IsSpecified(x => x.Cascade))
+                    if (!mapping.IsSpecified("Cascade"))
                         mapping.Cascade = value;
                 });
             }
@@ -68,7 +68,7 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 return new FetchInstance(value =>
                 {
-                    if (!mapping.IsSpecified(x => x.Fetch))
+                    if (!mapping.IsSpecified("Fetch"))
                         mapping.Fetch = value;
                 });
             }
@@ -80,7 +80,7 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 return new OptimisticLockInstance(value =>
                 {
-                    if (!mapping.IsSpecified(x => x.OptimisticLock))
+                    if (!mapping.IsSpecified("OptimisticLock"))
                         mapping.OptimisticLock = value;
                 });
             }
@@ -88,31 +88,31 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Check(string constraint)
         {
-            if (!mapping.IsSpecified(x => x.Check))
+            if (!mapping.IsSpecified("Check"))
                 mapping.Check = constraint;
         }
 
         public new void CollectionType<T>()
         {
-            if (!mapping.IsSpecified(x => x.CollectionType))
+            if (!mapping.IsSpecified("CollectionType"))
                 mapping.CollectionType = new TypeReference(typeof(T));
         }
 
         public new void CollectionType(string type)
         {
-            if (!mapping.IsSpecified(x => x.CollectionType))
+            if (!mapping.IsSpecified("CollectionType"))
                 mapping.CollectionType = new TypeReference(type);
         }
 
         public new void CollectionType(Type type)
         {
-            if (!mapping.IsSpecified(x => x.CollectionType))
+            if (!mapping.IsSpecified("CollectionType"))
                 mapping.CollectionType = new TypeReference(type);
         }
 
         public new void Generic()
         {
-            if (mapping.IsSpecified(x => x.Generic))
+            if (mapping.IsSpecified("Generic"))
                 return;
 
             mapping.Generic = nextBool;
@@ -121,7 +121,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Inverse()
         {
-            if (mapping.IsSpecified(x => x.Inverse))
+            if (mapping.IsSpecified("Inverse"))
                 return;
 
             mapping.Inverse = nextBool;
@@ -130,49 +130,49 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Persister<T>() where T : IEntityPersister
         {
-            if (!mapping.IsSpecified(x => x.Persister))
+            if (!mapping.IsSpecified("Persister"))
                 mapping.Persister = new TypeReference(typeof(T));
         }
 
         public new void Where(string whereClause)
         {
-            if (!mapping.IsSpecified(x => x.Where))
+            if (!mapping.IsSpecified("Where"))
                 mapping.Where = whereClause;
         }
 
         public new void OrderBy(string orderBy)
         {
-            if (!mapping.IsSpecified(x => x.OrderBy))
+            if (!mapping.IsSpecified("OrderBy"))
                 mapping.OrderBy = orderBy;
         }
 
         public void Subselect(string subselect)
         {
-            if (!mapping.IsSpecified(x => x.Subselect))
+            if (!mapping.IsSpecified("Subselect"))
                 mapping.Subselect = subselect;
         }
 
         public void Table(string tableName)
         {
-            if (!mapping.IsSpecified(x => x.TableName))
+            if (!mapping.IsSpecified("TableName"))
                 mapping.TableName = tableName;
         }
 
         public new void Name(string name)
         {
-            if (!mapping.IsSpecified(x => x.Name))
+            if (!mapping.IsSpecified("Name"))
                 mapping.Name = name;
         }
 
         public new void Schema(string schema)
         {
-            if (!mapping.IsSpecified(x => x.Schema))
+            if (!mapping.IsSpecified("Schema"))
                 mapping.Schema = schema;
         }
 
         public new void LazyLoad()
         {
-            if (mapping.IsSpecified(x => x.Lazy))
+            if (mapping.IsSpecified("Lazy"))
                 return;
 
             mapping.Lazy = nextBool;
@@ -181,13 +181,13 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void BatchSize(int batchSize)
         {
-            if (!mapping.IsSpecified(x => x.BatchSize))
+            if (!mapping.IsSpecified("BatchSize"))
                 mapping.BatchSize = batchSize;
         }
 
         public void ReadOnly()
         {
-            if (mapping.IsSpecified(x => x.Mutable))
+            if (mapping.IsSpecified("Mutable"))
                 return;
 
             mapping.Mutable = !nextBool;
@@ -210,7 +210,7 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 return new AccessInstance(value =>
                 {
-                    if (!mapping.IsSpecified(x => x.Access))
+                    if (!mapping.IsSpecified("Access"))
                         mapping.Access = value;
                 });
             }

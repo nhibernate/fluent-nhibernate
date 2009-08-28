@@ -176,5 +176,10 @@ namespace FluentNHibernate.MappingModel
             foreach (var join in joins)
                 visitor.Visit(join);
         }
+
+        public bool IsSpecified(string property)
+        {
+            return false;
+        }
     }
 }
