@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
@@ -25,6 +27,30 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
                 .Classes.First()
                 .Collections.First()
                 .Key.Columns.First().Name.ShouldEqual("xxx");
+        }
+
+        [Test]
+        public void ShouldBeAbleToSpecifyKeyColumnNameUsingForeignKeyConvention()
+        {
+            var model =
+                AutoMap.Source(new StubTypeSource(typeof(Target)))
+                    .Conventions.Add<FKConvention>();
+
+            model.CompileMappings();
+
+            model.BuildMappings()
+                .First()
+                .Classes.First()
+                .Collections.First()
+                .Key.Columns.First().Name.ShouldEqual("Targetxxx");
+        }
+
+        private class FKConvention : ForeignKeyConvention
+        {
+            protected override string GetKeyName(PropertyInfo property, Type type)
+            {
+                return type.Name + "xxx";
+            }
         }
 
         private class HasManyConvention : IHasManyConvention

@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Reflection;
-using FluentNHibernate.Conventions;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
@@ -38,6 +35,7 @@ namespace FluentNHibernate.Automapping
 
             var mapping = GetCollectionMapping(property.PropertyType);
 
+            mapping.ContainingEntityType = classMap.Type;
             mapping.MemberInfo = property;
             mapping.SetDefaultValue(x => x.Name, property.Name);
 
@@ -75,6 +73,7 @@ namespace FluentNHibernate.Automapping
 
             var key = new KeyMapping();
 
+            key.ContainingEntityType = classMap.Type;
             key.AddDefaultColumn(new ColumnMapping { Name = columnName});
 
             mapping.SetDefaultValue(x => x.Key, key);
