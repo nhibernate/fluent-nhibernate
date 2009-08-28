@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
+using System.Diagnostics;
 
 namespace FluentNHibernate.Mapping
 {
@@ -12,31 +12,48 @@ namespace FluentNHibernate.Mapping
     {
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
         private readonly IList<string> columns = new List<string>();
-		private readonly PropertyInfo property;
+        private readonly PropertyInfo property;
         private readonly Type entityType;
         private readonly AccessStrategyBuilder<IdentityPart> access;
         private readonly AttributeStore<IdMapping> attributes = new AttributeStore<IdMapping>();
+        private readonly Type identityType;
         private bool nextBool = true;
+        private readonly string columnName;
 
         public IdentityPart(Type entity, PropertyInfo property)
-		{
+        {
             this.property = property;
             entityType = entity;
+            this.identityType = property.PropertyType;
+            this.columnName = property.Name;
 
             access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set(x => x.Access, value));
             GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, property.PropertyType, entity);
 
             SetDefaultGenerator();
-		}
+        }
+
+        public IdentityPart(Type entity, Type identityType, string columnName)
+        {
+            this.property = null;
+            this.entityType = entity;
+            this.identityType = identityType;
+            this.columnName = columnName;
+
+            access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set(x => x.Access, value));
+            GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, this.identityType, entity);
+
+            SetDefaultGenerator();
+        }
 
         private void SetDefaultGenerator()
         {
             var generatorMapping = new GeneratorMapping();
-            var defaultGenerator = new GeneratorBuilder(generatorMapping, property.PropertyType);
+            var defaultGenerator = new GeneratorBuilder(generatorMapping, identityType);
 
-            if (property.PropertyType == typeof(Guid))
+            if (identityType == typeof(Guid))
                 defaultGenerator.GuidComb();
-            else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(long))
+            else if (identityType == typeof(int) || identityType == typeof(long))
                 defaultGenerator.Identity();
             else
                 defaultGenerator.Assigned();
@@ -54,13 +71,16 @@ namespace FluentNHibernate.Mapping
             if (columns.Count > 0)
             {
                 foreach (var column in columns)
-                    mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) {Name = column});
+                    mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = column });
             }
             else
-                mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = property.Name });
+                mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = columnName });
 
-            mapping.Name = property.Name;
-            mapping.SetDefaultValue("Type", new TypeReference(property.PropertyType));
+            if (property != null)
+            {
+                mapping.Name = columnName;
+            }
+            mapping.SetDefaultValue("Type", new TypeReference(identityType));
 
             if (GeneratedBy.IsDirty)
                 mapping.Generator = GeneratedBy.GetGeneratorMapping();
@@ -74,9 +94,9 @@ namespace FluentNHibernate.Mapping
         /// Set the access and naming strategy for this identity.
         /// </summary>
         public AccessStrategyBuilder<IdentityPart> Access
-	    {
-	        get { return access; }
-	    }
+        {
+            get { return access; }
+        }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public IdentityPart Not

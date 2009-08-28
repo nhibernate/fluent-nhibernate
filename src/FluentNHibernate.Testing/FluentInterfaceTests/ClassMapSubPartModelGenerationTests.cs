@@ -1,4 +1,5 @@
 using System.Linq;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Testing.DomainModel;
@@ -197,6 +198,21 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             ClassMap<PropertyTarget>()
                 .Mapping(m => m.Id(x => x.Id))
                 .ModelShouldMatch(x => x.Id.ShouldBeOfType<IdMapping>());
+        }
+
+        [Test]
+        public void IdWithoutPropertyShouldSetIdPropertyOnModel()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(m => m.Id<int>("id"))
+                .ModelShouldMatch(m =>
+                {
+                    var id = m.Id as IdMapping;
+
+                    id.ShouldNotBeNull();
+                    id.Type.ShouldEqual(new TypeReference(typeof(int)));
+                    id.Columns.ShouldContain(x => x.Name == "id");
+                });
         }
 
         [Test]

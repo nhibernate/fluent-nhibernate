@@ -198,6 +198,18 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+        public virtual IdentityPart Id<TColumn>(string column)
+        {
+            var part = new IdentityPart(typeof(T), typeof(TColumn), column);
+            
+            if (column != null)
+                part.Column(column);
+            
+            id = part;
+
+            return part;
+        } 
+
         [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
         public virtual void JoinedSubClass<TSubclass>(string keyColumn, Action<JoinedSubClassPart<TSubclass>> action) where TSubclass : T
         {
