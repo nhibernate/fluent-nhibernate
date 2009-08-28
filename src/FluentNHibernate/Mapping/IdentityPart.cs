@@ -94,7 +94,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="unsavedValue">Value that represents an unsaved value.</param>
         public IdentityPart UnsavedValue(object unsavedValue)
         {
-            attributes.Set(x => x.UnsavedValue, unsavedValue.ToString());
+            attributes.Set(x => x.UnsavedValue, (unsavedValue ?? "null").ToString());
             return this;
         }
 

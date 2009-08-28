@@ -49,13 +49,20 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
-        public void UnsavedValueShouldSetModelTypePropertyToPropertyType()
+        public void UnsavedValueShouldSetModelTypePropertyToValue()
         {
             Id()
                 .Mapping(m => m.UnsavedValue(10))
                 .ModelShouldMatch(x => x.UnsavedValue.ShouldEqual("10"));
         }
 
+        [Test]
+        public void NullUnsavedValueShouldSetModelTypePropertyToNull()
+        {
+            Id()
+                .Mapping(m => m.UnsavedValue(null))
+                .ModelShouldMatch(x => x.UnsavedValue.ShouldEqual("null"));
+        }
 
         [Test]
         public void GeneratedByShouldSetModelGeneratorProperty()
