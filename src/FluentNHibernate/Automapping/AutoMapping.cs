@@ -19,11 +19,6 @@ namespace FluentNHibernate.Automapping
             this.mappedProperties = mappedProperties;
         }
 
-        public IEnumerable<string> PropertiesMapped
-        {
-            get { return mappedProperties; }
-        }
-
         void IAutoClasslike.DiscriminateSubClassesOnColumn(string column)
         {
             DiscriminateSubClassesOnColumn(column);
@@ -117,6 +112,15 @@ namespace FluentNHibernate.Automapping
         {
             mappedProperties.Add(ReflectionHelper.GetProperty(expression).Name);
             return base.Id(expression);
+        }
+
+        public override CompositeIdentityPart<T> CompositeId()
+        {
+            var part = new AutoCompositeIdentityPart<T>(mappedProperties);
+
+            compositeId = part;
+
+            return part;
         }
 
         protected override PropertyPart Map(PropertyInfo property, string columnName)

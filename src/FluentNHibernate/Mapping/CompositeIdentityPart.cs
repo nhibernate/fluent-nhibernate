@@ -48,7 +48,7 @@ namespace FluentNHibernate.Mapping
 		    return KeyProperty(property, columnName);
 		}
 
-        private CompositeIdentityPart<T> KeyProperty(PropertyInfo property, string columnName)
+        protected virtual CompositeIdentityPart<T> KeyProperty(PropertyInfo property, string columnName)
         {
             var key = new KeyPropertyMapping
             {
@@ -88,7 +88,7 @@ namespace FluentNHibernate.Mapping
             return KeyReference(property, columnName);
 		}
 
-        private CompositeIdentityPart<T> KeyReference(PropertyInfo property, string columnName)
+        protected virtual CompositeIdentityPart<T> KeyReference(PropertyInfo property, string columnName)
         {
             var key = new KeyManyToOneMapping
             {
