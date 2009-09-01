@@ -90,6 +90,9 @@ namespace FluentNHibernate.Mapping
             if (!mapping.IsSpecified("TableName"))
                 mapping.SetDefaultValue(x => x.TableName, GetDefaultTableName());
 
+            foreach (var filter in filters)
+                mapping.AddFilter(filter.GetFilterMapping());
+
             return mapping;
         }
 
@@ -394,6 +397,36 @@ namespace FluentNHibernate.Mapping
         public void Subselect(string subselectSql)
         {
             attributes.Set(x => x.Subselect, subselectSql);
+        }
+
+        /// <overloads>
+        /// Applies a named filter to this one-to-many.
+        /// </overloads>
+        /// <summary>
+        /// Applies a named filter to this one-to-many.
+        /// </summary>
+        /// <param name="condition">The condition to apply</param>
+        /// <typeparam name="TFilter">
+        /// The type of a <see cref="FilterDefinition"/> implementation
+        /// defining the filter to apply.
+        /// </typeparam>
+        public ClassMap<T> ApplyFilter<TFilter>(string condition) where TFilter : FilterDefinition, new()
+        {
+            var part = new FilterPart(new TFilter().Name, condition);
+            filters.Add(part);
+            return this;
+        }
+
+        /// <summary>
+        /// Applies a named filter to this one-to-many.
+        /// </summary>
+        /// <typeparam name="TFilter">
+        /// The type of a <see cref="FilterDefinition"/> implementation
+        /// defining the filter to apply.
+        /// </typeparam>
+        public ClassMap<T> ApplyFilter<TFilter>() where TFilter : FilterDefinition, new()
+        {
+            return ApplyFilter<TFilter>(null);
         }
     }
 }

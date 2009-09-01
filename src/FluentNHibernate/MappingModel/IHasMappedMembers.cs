@@ -12,11 +12,13 @@ namespace FluentNHibernate.MappingModel
         IEnumerable<IComponentMapping> Components { get; }
         IEnumerable<OneToOneMapping> OneToOnes { get; }
         IEnumerable<AnyMapping> Anys { get; }
+        IEnumerable<FilterMapping> Filters { get; }
         void AddProperty(PropertyMapping property);
         void AddCollection(ICollectionMapping collection);
         void AddReference(ManyToOneMapping manyToOne);
         void AddComponent(IComponentMapping component);
         void AddOneToOne(OneToOneMapping mapping);
         void AddAny(AnyMapping mapping);
+        void AddFilter(FilterMapping mapping);
     }
 }

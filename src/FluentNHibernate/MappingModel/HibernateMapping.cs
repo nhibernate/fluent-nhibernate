@@ -9,6 +9,7 @@ namespace FluentNHibernate.MappingModel
     public class HibernateMapping : MappingBase
     {
         private readonly IList<ClassMapping> classes;
+        private readonly IList<FilterDefinitionMapping> filters;
         private readonly IList<ImportMapping> imports;
         private readonly AttributeStore<HibernateMapping> attributes;
 
@@ -20,6 +21,7 @@ namespace FluentNHibernate.MappingModel
         {
             attributes = new AttributeStore<HibernateMapping>(underlyingStore);
             classes = new List<ClassMapping>();
+            filters = new List<FilterDefinitionMapping>();
             imports = new List<ImportMapping>();
 
             attributes.SetDefault(x => x.DefaultCascade, "none");
@@ -37,11 +39,19 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var classMapping in Classes)
                 visitor.Visit(classMapping);
+
+            foreach (var filterMapping in Filters)
+                visitor.Visit(filterMapping);
         }
 
         public IEnumerable<ClassMapping> Classes
         {
             get { return classes; }
+        }
+
+        public IEnumerable<FilterDefinitionMapping> Filters
+        {
+            get { return filters; }
         }
 
         public IEnumerable<ImportMapping> Imports
@@ -52,6 +62,11 @@ namespace FluentNHibernate.MappingModel
         public void AddClass(ClassMapping classMapping)
         {
             classes.Add(classMapping);            
+        }
+
+        public void AddFilter(FilterDefinitionMapping filterMapping)
+        {
+            filters.Add(filterMapping);
         }
 
         public void AddImport(ImportMapping importMapping)

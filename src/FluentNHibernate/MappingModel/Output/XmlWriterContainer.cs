@@ -114,6 +114,12 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterWriter<JoinedSubclassMapping>(c =>
                 new XmlJoinedSubclassWriter(c.Resolve<IXmlWriterServiceLocator>()));
+
+            RegisterWriter<FilterMapping>(c =>
+                new XmlFilterWriter());
+
+            RegisterWriter<FilterDefinitionMapping>(c =>
+                new XmlFilterDefinitionWriter());
         }
 
         private void RegisterIdWriters()

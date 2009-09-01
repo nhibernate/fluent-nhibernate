@@ -172,6 +172,16 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void ProcessFilter(FilterMapping mapping)
+        {
+
+        }
+
+        public virtual void ProcessFilterDefinition(FilterDefinitionMapping mapping)
+        {
+
+        }
+
         public virtual void ProcessIndex(IIndexMapping indexMapping)
         {
 
@@ -344,6 +354,16 @@ namespace FluentNHibernate.MappingModel
         public virtual void Visit(ArrayMapping mapping)
         {
             
+        }
+
+        public virtual void Visit(FilterMapping mapping)
+        {
+
+        }
+
+        public virtual void Visit(FilterDefinitionMapping mapping)
+        {
+
         }
     }
 }

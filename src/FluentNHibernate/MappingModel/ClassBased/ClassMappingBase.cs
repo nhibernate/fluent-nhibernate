@@ -63,6 +63,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mappedMembers.Joins; }
         }
 
+        public IEnumerable<FilterMapping> Filters
+        {
+            get { return mappedMembers.Filters; }
+        }
+
         public IEnumerable<ISubclassMapping> Subclasses
         {
             get { return subclasses; }
@@ -131,6 +136,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public void AddJoin(JoinMapping mapping)
         {
             mappedMembers.AddJoin(mapping);
+        }
+
+        public void AddFilter(FilterMapping mapping)
+        {
+            mappedMembers.AddFilter(mapping);
         }
 
         public void AddSubclass(ISubclassMapping subclass)

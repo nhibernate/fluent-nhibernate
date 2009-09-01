@@ -80,5 +80,16 @@ namespace FluentNHibernate.MappingModel.Output
 
             document.DocumentElement.AppendChild(newClassNode);
         }
+
+        public override void Visit(FilterDefinitionMapping filterDefinitionMapping)
+        {
+            var writer = serviceLocator.GetWriter<FilterDefinitionMapping>();
+            var hbmClass = writer.Write(filterDefinitionMapping);
+
+            var newClassNode = document.ImportNode(hbmClass.DocumentElement, true);
+
+            XmlNodeSorter.SortClassChildren(newClassNode);
+            document.DocumentElement.AppendChild(newClassNode);
+        }
     }
 }

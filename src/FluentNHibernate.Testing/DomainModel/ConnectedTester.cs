@@ -2,6 +2,7 @@
 using FluentNHibernate.Data;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.Fixtures;
+using NHibernate;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel
@@ -69,6 +70,7 @@ namespace FluentNHibernate.Testing.DomainModel
             Map(x => x.Name);
             Map(x => x.Age);
             Map(x => x.Location);
+            ApplyFilter<RecordFilter>();
         }
     }
 
@@ -144,4 +146,12 @@ namespace FluentNHibernate.Testing.DomainModel
     }
     public class CachedRecord : Entity
     { }
+
+    public class RecordFilter : FilterDefinition
+    {
+        public RecordFilter()
+        {
+            WithName("ageHighEnough").WithCondition("Age > :age").AddParameter("age", NHibernateUtil.Int32);
+        }
+    }
 }

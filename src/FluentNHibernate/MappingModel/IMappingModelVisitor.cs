@@ -43,6 +43,8 @@ namespace FluentNHibernate.MappingModel
         void ProcessKeyManyToOne(KeyManyToOneMapping mapping);
         void ProcessElement(ElementMapping mapping);
         void ProcessArray(ArrayMapping mapping);
+        void ProcessFilter(FilterMapping mapping);
+        void ProcessFilterDefinition(FilterDefinitionMapping mapping);
 
         void Visit(IdMapping mapping);
         void Visit(ClassMapping classMapping);
@@ -75,5 +77,7 @@ namespace FluentNHibernate.MappingModel
         void Visit(KeyManyToOneMapping mapping);
         void Visit(ElementMapping mapping);
         void Visit(ArrayMapping mapping);
+        void Visit(FilterMapping mapping);
+        void Visit(FilterDefinitionMapping mapping);
     }
 }

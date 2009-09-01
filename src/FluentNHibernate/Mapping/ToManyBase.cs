@@ -28,6 +28,7 @@ namespace FluentNHibernate.Mapping
         protected readonly AttributeStore<ICollectionMapping> collectionAttributes = new AttributeStore<ICollectionMapping>();
         protected readonly AttributeStore<KeyMapping> keyAttributes = new AttributeStore<KeyMapping>();
         protected readonly AttributeStore<TRelationshipAttributes> relationshipAttributes = new AttributeStore<TRelationshipAttributes>();
+        private readonly IList<FilterPart> filters = new List<FilterPart>();
         private Func<AttributeStore, ICollectionMapping> collectionBuilder;
         private IndexMapping indexMapping;
         protected MemberInfo member;
@@ -96,6 +97,9 @@ namespace FluentNHibernate.Mapping
                 mapping.Element = elementPart.GetElementMapping();
                 mapping.Relationship = null;
             }
+
+            foreach (var filterPart in Filters)
+                mapping.Filters.Add(filterPart.GetFilterMapping());
 
             return mapping;
         }
@@ -435,6 +439,41 @@ namespace FluentNHibernate.Mapping
         {
             collectionAttributes.Set(x => x.Schema, schema);
             return (T)this;
+        }
+
+        /// <overloads>
+        /// Applies a named filter to this one-to-many.
+        /// </overloads>
+        /// <summary>
+        /// Applies a named filter to this one-to-many.
+        /// </summary>
+        /// <param name="condition">The condition to apply</param>
+        /// <typeparam name="TFilter">
+        /// The type of a <see cref="FilterDefinition"/> implementation
+        /// defining the filter to apply.
+        /// </typeparam>
+        public T ApplyFilter<TFilter>(string condition) where TFilter : FilterDefinition, new()
+        {
+            var part = new FilterPart(new TFilter().Name, condition);
+            Filters.Add(part);
+            return (T)this;
+        }
+
+        /// <summary>
+        /// Applies a named filter to this one-to-many.
+        /// </summary>
+        /// <typeparam name="TFilter">
+        /// The type of a <see cref="FilterDefinition"/> implementation
+        /// defining the filter to apply.
+        /// </typeparam>
+        public T ApplyFilter<TFilter>() where TFilter : FilterDefinition, new()
+        {
+            return ApplyFilter<TFilter>(null);
+        }
+
+        protected IList<FilterPart> Filters
+        {
+            get { return filters; }
         }
     }
 }

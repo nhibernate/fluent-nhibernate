@@ -17,6 +17,7 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<ICollectionMappingProvider> collections = new List<ICollectionMappingProvider>();
         protected readonly IList<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
         protected readonly IList<IAnyMappingProvider> anys = new List<IAnyMappingProvider>();
+        protected readonly IList<IFilterMappingProvider> filters = new List<IFilterMappingProvider>();
 
         public PropertyPart Map(Expression<Func<T, object>> expression)
         {

@@ -14,6 +14,7 @@ namespace FluentNHibernate.MappingModel
         private readonly List<OneToOneMapping> oneToOnes;
         private readonly List<AnyMapping> anys;
         private readonly List<JoinMapping> joins;
+        private readonly List<FilterMapping> filters;
 
         public MappedMembers()
         {
@@ -24,6 +25,7 @@ namespace FluentNHibernate.MappingModel
             oneToOnes = new List<OneToOneMapping>();
             anys = new List<AnyMapping>();
             joins = new List<JoinMapping>();
+            filters = new List<FilterMapping>();
         }
 
         public IEnumerable<PropertyMapping> Properties
@@ -59,6 +61,11 @@ namespace FluentNHibernate.MappingModel
         public IEnumerable<JoinMapping> Joins
         {
             get { return joins; }
+        }
+
+        public IEnumerable<FilterMapping> Filters
+        {
+            get { return filters; }
         }
 
         public void AddProperty(PropertyMapping property)
@@ -153,6 +160,14 @@ namespace FluentNHibernate.MappingModel
             joins.Add(mapping);
         }
 
+        public void AddFilter(FilterMapping mapping)
+        {
+            if (filters.Exists(x => x.Name == mapping.Name))
+                throw new InvalidOperationException("Tried to add filter with name '" + mapping.Name + "' when already added.");
+
+            filters.Add(mapping);
+        }
+
         public virtual void AcceptVisitor(IMappingModelVisitor visitor)
         {
             foreach (var collection in Collections)
@@ -175,6 +190,9 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var join in joins)
                 visitor.Visit(join);
+
+            foreach (var filter in filters)
+                visitor.Visit(filter);
         }
 
         public bool IsSpecified(string property)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -7,12 +8,18 @@ namespace FluentNHibernate.MappingModel.Collections
     public abstract class CollectionMappingBase : MappingBase, ICollectionMapping
     {
         private readonly AttributeStore<ICollectionMapping> attributes;
+        private readonly IList<FilterMapping> filters = new List<FilterMapping>();
         public Type ContainingEntityType { get; set; }
         public MemberInfo MemberInfo { get; set; }
 
         protected CollectionMappingBase(AttributeStore underlyingStore)
         {
             attributes = new AttributeStore<ICollectionMapping>(underlyingStore);
+        }
+
+        public IList<FilterMapping> Filters
+        {
+            get { return filters; }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -28,6 +35,9 @@ namespace FluentNHibernate.MappingModel.Collections
 
             if (Relationship != null)
                 visitor.Visit(Relationship);
+
+            foreach (var filter in Filters)
+                visitor.Visit(filter);
 
             if (Cache != null)
                 visitor.Visit(Cache);

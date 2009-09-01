@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -20,6 +21,7 @@ namespace FluentNHibernate
     public class PersistenceModel
     {
         protected readonly IList<IMappingProvider> classProviders = new List<IMappingProvider>();
+        protected readonly IList<IFilterDefinition> filterDefinitions = new List<IFilterDefinition>();
         protected readonly IList<IIndeterminateSubclassMappingProvider> subclassProviders = new List<IIndeterminateSubclassMappingProvider>();
         private readonly IList<IMappingModelVisitor> visitors = new List<IMappingModelVisitor>();
         public IConventionFinder Conventions { get; private set; }
@@ -48,7 +50,7 @@ namespace FluentNHibernate
 
         public void AddMappingsFromAssembly(Assembly assembly)
         {
-            foreach (var type in assembly.GetExportedTypes().Where(x => IsClassMap(x) || IsSubclassMap(x)))
+            foreach (var type in assembly.GetExportedTypes().Where(x => IsClassMap(x) || IsSubclassMap(x) || IsFilterDefinition(x)))
                 Add(type);
         }
 
@@ -81,6 +83,11 @@ namespace FluentNHibernate
             subclassProviders.Add(provider);
         }
 
+        public void Add(IFilterDefinition definition)
+        {
+            filterDefinitions.Add(definition);
+        }
+
         public void Add(Type type)
         {
             var mapping = type.InstantiateUsingParameterlessConstructor();
@@ -89,6 +96,8 @@ namespace FluentNHibernate
                 Add((IMappingProvider)mapping);
             else if (IsSubclassMap(type))
                 Add((IIndeterminateSubclassMappingProvider)mapping);
+            else if (IsFilterDefinition(type))
+                Add((IFilterDefinition)mapping);
             else
                 throw new InvalidOperationException("Unsupported mapping type '" + type.FullName + "'");
         }
@@ -101,6 +110,11 @@ namespace FluentNHibernate
         private bool IsSubclassMap(Type type)
         {
             return !type.IsGenericType && typeof(IIndeterminateSubclassMappingProvider).IsAssignableFrom(type);
+        }
+
+        private bool IsFilterDefinition(Type type)
+        {
+            return !type.IsGenericType && typeof(IFilterDefinition).IsAssignableFrom(type);
         }
 
         public IEnumerable<HibernateMapping> BuildMappings()
@@ -127,6 +141,12 @@ namespace FluentNHibernate
 
                 add(hbm);
             }
+            foreach (var filterDefinition in filterDefinitions)
+            {
+                var hbm = filterDefinition.GetHibernateMapping();
+                hbm.AddFilter(filterDefinition.GetFilterMapping());
+                add(hbm);
+            }
         }
 
         private void BuildSingleMapping(Action<HibernateMapping> add)
@@ -136,6 +156,10 @@ namespace FluentNHibernate
             foreach (var classMap in classProviders)
             {
                 hbm.AddClass(classMap.GetClassMapping());
+            }
+            foreach (var filterDefinition in filterDefinitions)
+            {
+                hbm.AddFilter(filterDefinition.GetFilterMapping());
             }
 
             if (hbm.Classes.Count() > 0)
@@ -169,7 +193,19 @@ namespace FluentNHibernate
             {
                 var serializer = new MappingXmlSerializer();
                 var document = serializer.Serialize(mapping);
-                var filename = MergeMappings ? GetMappingFileName() : mapping.Classes.First().Type.FullName + ".hbm.xml";
+                string filename;
+                if (MergeMappings)
+                {
+                    filename = GetMappingFileName();
+                }
+                else if (mapping.Classes.Count() > 0)
+                {
+                    filename = mapping.Classes.First().Type.FullName + ".hbm.xml";
+                }
+                else
+                {
+                    filename = "filter-def." + mapping.Filters.First().Name + ".hbm.xml";
+                }
 
                 using (var writer = new XmlTextWriter(Path.Combine(folder, filename), Encoding.Default))
                 {
@@ -183,7 +219,14 @@ namespace FluentNHibernate
         {
             EnsureMappingsBuilt();
 
-            foreach (var mapping in compiledMappings)
+            foreach (var mapping in compiledMappings.Where(m => m.Classes.Count() == 0))
+            {
+                var serializer = new MappingXmlSerializer();
+                XmlDocument document = serializer.Serialize(mapping);
+                cfg.AddDocument(document);
+            }
+
+            foreach (var mapping in compiledMappings.Where(m => m.Classes.Count() > 0))
             {
                 var serializer = new MappingXmlSerializer();
                 XmlDocument document = serializer.Serialize(mapping);
