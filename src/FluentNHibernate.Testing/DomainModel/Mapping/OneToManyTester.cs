@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
@@ -17,6 +15,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
     using System.Linq;
 
+    public class SomeEntity
+    {
+        public virtual int Id { get; set; }
+        public virtual string Name { get; set; }
+    }
+
     public class OneToManyTarget
     {
         public virtual int Id { get; set; }
@@ -29,6 +33,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public virtual IList<string> ListOfSimpleChildren { get; set; }
         public virtual CustomCollection<ChildObject> CustomCollection { get; set; }
         public virtual IDictionary<MapIndex, MapContents> MapOfEnums { get; set; }
+        public virtual IDictionary<SomeEntity, ChildObject> EntityMapOfChildren { get; set; }
+        public virtual IDictionary<SomeEntity, ValueObject> EntityMapOfComplexValues { get; set; }
+        public virtual IDictionary<SomeEntity, string> EntityMapOfValues { get; set; }
 
         private IList<ChildObject> otherChildren = new List<ChildObject>();
         public virtual IList<ChildObject> GetOtherChildren() { return otherChildren; }
@@ -36,6 +43,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         private IList<ChildObject> listToArrayChild = new List<ChildObject>();
         public virtual ChildObject[] ListToArrayChild { get { return listToArrayChild.ToArray(); } }
 
+    }
+
+    public class ValueObject
+    {
+        public virtual string Name { get; set; }
+        public virtual int Position { get; set; }
     }
 
     public enum MapIndex
@@ -678,21 +691,219 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/map/index").HasAttribute("type", typeof(Int32).AssemblyQualifiedName);
         }
 
-    	[Test]
-    	public void CanSpecifyOrderByClause()
-    	{
-			new MappingTester<OneToManyTarget>()
-				.ForMapping(m => m.HasMany(x => x.BagOfChildren).OrderBy("foo"))
-				.Element("class/bag").HasAttribute("order-by", "foo");
-    	}
+        [Test]
+        public void EntityMapOfEntitiesShouldWriteKeyElement()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map
+                    .HasMany(x => x.EntityMapOfChildren)
+                    .AsEntityMap())
+                .Element("class/map/key").ShouldBeInParentAtPosition(0);
+        }
 
-    	[Test]
-    	public void OrderByClauseIgnoredForUnorderableCollections()
-    	{
-			new MappingTester<OneToManyTarget>()
-				.ForMapping(m => m.HasMany(x => x.MapOfChildren).AsMap("indexCol"))
-				.Element("class/map").DoesntHaveAttribute("order-by");
-    	}
+        [Test]
+        public void EntityMapOfEntitiesShouldWriteIndexManyToManyElement()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map
+                    .HasMany(x => x.EntityMapOfChildren)
+                    .AsEntityMap())
+                .Element("class/map/index-many-to-many").ShouldBeInParentAtPosition(1);
+        }
+
+        [Test]
+        public void EntityMapOfEntitiesShouldWriteOneToManyElement()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map
+                    .HasMany(x => x.EntityMapOfChildren)
+                    .AsEntityMap())
+                .Element("class/map/one-to-many").ShouldBeInParentAtPosition(2);
+        }
+
+        [Test]
+        public void EntityMapOfEntitiesShouldWriteCorrectColumnNames()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map
+                    .HasMany(x => x.EntityMapOfChildren)
+                    .AsEntityMap())
+                .Element("class/map/key/column").HasAttribute("name", "OneToManyTarget_id")
+                .Element("class/map/index-many-to-many/column").HasAttribute("name", "SomeEntity_id");
+        }
+
+        [Test]
+        public void EntityMapOfComplexValuesShouldWriteKeyElement()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map
+                    .HasMany(x => x.EntityMapOfComplexValues)
+                    .Component(c =>
+                    {
+                        c.Map(x => x.Name);
+                        c.Map(x => x.Position);
+                    })
+                    .AsEntityMap())
+                .Element("class/map/key").ShouldBeInParentAtPosition(0);
+        }
+
+        [Test]
+        public void EntityMapOfComplexValuesShouldWriteIndexManyToManyElement()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map
+                    .HasMany(x => x.EntityMapOfComplexValues)
+                    .Component(c =>
+                    {
+                        c.Map(x => x.Name);
+                        c.Map(x => x.Position);
+                    })
+                    .AsEntityMap())
+                .Element("class/map/index-many-to-many").ShouldBeInParentAtPosition(1);
+        }
+
+        [Test]
+        public void EntityMapOfComplexValuesShouldWriteCompositeElementElement()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map
+                    .HasMany(x => x.EntityMapOfComplexValues)
+                    .Component(c =>
+                    {
+                        c.Map(x => x.Name);
+                        c.Map(x => x.Position);
+                    })
+                    .AsEntityMap())
+                .Element("class/map/composite-element").ShouldBeInParentAtPosition(2);
+        }
+
+        [Test]
+        public void EntityMapOfComplexValuesShouldWriteCorrectColumnNames()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map
+                    .HasMany(x => x.EntityMapOfComplexValues)
+                    .Component(c =>
+                    {
+                        c.Map(x => x.Name);
+                        c.Map(x => x.Position);
+                    })
+                    .AsEntityMap())
+                .Element("class/map/key/column").HasAttribute("name", "OneToManyTarget_id")
+                .Element("class/map/index-many-to-many/column").HasAttribute("name", "SomeEntity_id");
+        }
+
+        [Test]
+        public void EntityMapOfValuesShouldWriteKeyElement()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map
+                    .HasMany(x => x.EntityMapOfValues)
+                    .Element("StringValue")
+                    .AsEntityMap())
+                .Element("class/map/key").ShouldBeInParentAtPosition(0);
+        }
+
+        [Test]
+        public void EntityMapOfValuesShouldWriteIndexManyToManyElement()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map
+                    .HasMany(x => x.EntityMapOfValues)
+                    .Element("StringValue")
+                    .AsEntityMap())
+                .Element("class/map/index-many-to-many").ShouldBeInParentAtPosition(1);
+        }
+
+        [Test]
+        public void EntityMapOfValuesShouldWriteCompositeElementElement()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map
+                    .HasMany(x => x.EntityMapOfValues)
+                    .Element("StringValue")
+                    .AsEntityMap())
+                .Element("class/map/element").ShouldBeInParentAtPosition(2);
+        }
+
+        [Test]
+        public void EntityMapOfValuesShouldWriteCorrectColumnNames()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map
+                    .HasMany(x => x.EntityMapOfValues)
+                    .Element("StringValue")
+                    .AsEntityMap())
+                .Element("class/map/key/column").HasAttribute("name", "OneToManyTarget_id")
+                .Element("class/map/index-many-to-many/column").HasAttribute("name", "SomeEntity_id");
+        }
+
+        class Container
+        {
+            public virtual Containee Containee { get; set; }
+        }
+
+        class Containee
+        {
+            public virtual IDictionary<ChildObject, ValueObject> EntityMapOfValueObjects { get; set; }
+        }
+
+        //Note: Used to be my 'driver' for the bug that 'index-many-to-many' element was found before 'key' element in child elements of 'map' element.
+        [Test]
+        public void WhenEntityMapIsDefinedInValueObjectWeUsedToHaveBugBecauseXmlClasslikeNodeSorterDidntSortChildrenOfComponentButItsFixedNow()
+        {
+            new MappingTester<Container>()
+                .ForMapping(map => map
+                    .Component(x => x.Containee, containee => containee
+                        .HasMany(y => y.EntityMapOfValueObjects)
+                        .Component(child =>
+                        {
+                            child.Map(x => x.Name);
+                            child.Map(x => x.Position);
+                        })
+                        .AsEntityMap()
+                    )
+                )
+                .Element("class/component/map").ShouldBeInParentAtPosition(0)
+                .Element("class/component/map/key").ShouldBeInParentAtPosition(0)
+                .Element("class/component/map/index-many-to-many").ShouldBeInParentAtPosition(1)
+                .Element("class/component/map/composite-element").ShouldBeInParentAtPosition(2);
+        }
+
+        [Test] 
+        public void WhenEntityMapIsDefinedInEntityEverythingWorks()
+        {
+            new MappingTester<Containee>()
+                .ForMapping(map => map
+                    .HasMany(x => x.EntityMapOfValueObjects)
+                    .Component(child =>
+                    {
+                        child.Map(x => x.Name);
+                        child.Map(x => x.Position);
+                    })
+                    .AsEntityMap()
+                )
+                .Element("class/map").ShouldBeInParentAtPosition(0)
+                .Element("class/map/key").ShouldBeInParentAtPosition(0)
+                .Element("class/map/index-many-to-many").ShouldBeInParentAtPosition(1)
+                .Element("class/map/composite-element").ShouldBeInParentAtPosition(2);
+        }
+
+        [Test]
+        public void CanSpecifyOrderByClause()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m => m.HasMany(x => x.BagOfChildren).OrderBy("foo"))
+                .Element("class/bag").HasAttribute("order-by", "foo");
+        }
+
+        [Test]
+        public void OrderByClauseIgnoredForUnorderableCollections()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m => m.HasMany(x => x.MapOfChildren).AsMap("indexCol"))
+                .Element("class/map").DoesntHaveAttribute("order-by");
+        }
 
         private class TestO2MConvention : IHasManyConvention
         {
