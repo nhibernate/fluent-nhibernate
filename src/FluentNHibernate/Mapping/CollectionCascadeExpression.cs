@@ -19,5 +19,11 @@ namespace FluentNHibernate.Mapping
 			setter("all-delete-orphan");
 			return parent;
 		}
+
+        public TParent DeleteOrphan()
+        {
+            setter("delete-orphan");
+            return parent;
+        }
 	}
 }
