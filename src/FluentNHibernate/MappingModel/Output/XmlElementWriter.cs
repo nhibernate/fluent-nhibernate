@@ -32,6 +32,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.Length))
                 element.WithAtt("length", mapping.Length);
+
+            if (mapping.HasValue(x => x.Formula))
+                element.WithAtt("formula", mapping.Formula);
         }
 
         public override void Visit(ColumnMapping columnMapping)

@@ -45,5 +45,11 @@ namespace FluentNHibernate.Mapping
             attributes.Set(x => x.Length, length);
             return this;
         }
+
+        public ElementPart Formula(string formula)
+        {
+            attributes.Set(x => x.Formula, formula);
+            return this;
+        }
     }
 }

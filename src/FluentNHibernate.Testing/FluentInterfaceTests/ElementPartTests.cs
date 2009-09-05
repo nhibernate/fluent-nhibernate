@@ -21,5 +21,15 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             ElementMapping elementMapping = part.GetElementMapping();
             elementMapping.Length.ShouldEqual(50);
         }
+
+        [Test]
+        public void CanSetFormula()
+        {
+            var part = new ElementPart(typeof(MappedObject));
+            part.Formula("formula");
+
+            ElementMapping elementMapping = part.GetElementMapping();
+            elementMapping.Formula.ShouldEqual("formula");
+        }
     }
 }
