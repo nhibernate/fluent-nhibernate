@@ -51,5 +51,10 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get { return mapping.Formula; }
         }
+
+        public int Length
+        {
+            get { return mapping.Length;  }
+        }
     }
 }

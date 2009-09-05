@@ -8,5 +8,6 @@ namespace FluentNHibernate.Conventions.Inspections
         TypeReference Type { get; }
         IEnumerable<IColumnInspector> Columns { get; }
         string Formula { get; }
+        int Length { get; }
     }
 }

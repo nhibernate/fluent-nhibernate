@@ -39,6 +39,12 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Formula, value); }
         }
 
+        public int Length
+        {
+            get { return attributes.Get(x => x.Length); }
+            set { attributes.Set(x => x.Length, value); }
+        }
+
         public void AddColumn(ColumnMapping mapping)
         {
             columns.Add(mapping);

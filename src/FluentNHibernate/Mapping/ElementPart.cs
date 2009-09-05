@@ -39,5 +39,11 @@ namespace FluentNHibernate.Mapping
 
             return mapping;
         }
+
+        public ElementPart Length(int length)
+        {
+            attributes.Set(x => x.Length, length);
+            return this;
+        }
     }
 }
