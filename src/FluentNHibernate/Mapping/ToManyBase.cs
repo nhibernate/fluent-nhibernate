@@ -295,6 +295,13 @@ namespace FluentNHibernate.Mapping
             return (T)this;
         }
 
+        public T Element(string columnName, Action<ElementPart> customElement)
+        {
+            Element(columnName);
+            customElement(elementPart);
+            return (T)this;
+        }
+
         /// <summary>
         /// Maps this collection as a collection of components.
         /// </summary>
