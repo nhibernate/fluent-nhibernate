@@ -21,6 +21,16 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteDefaultAttribute()
+        {
+            writer = new XmlColumnWriter();
+            var testHelper = new XmlWriterTestHelper<ColumnMapping>();
+            testHelper.Check(x => x.Default, "df").MapsToAttribute("default");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
         public void ShouldWriteIndexAttribute()
         {
             writer = new XmlColumnWriter();

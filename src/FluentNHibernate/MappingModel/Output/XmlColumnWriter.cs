@@ -50,6 +50,9 @@ namespace FluentNHibernate.MappingModel.Output
             if (columnMapping.HasValue(x => x.Scale))
                 element.WithAtt("scale", columnMapping.Scale);
 
+            if (columnMapping.HasValue(x => x.Default))
+                element.WithAtt("default", columnMapping.Default);
+
             document.AppendChild(element);
         }
     }

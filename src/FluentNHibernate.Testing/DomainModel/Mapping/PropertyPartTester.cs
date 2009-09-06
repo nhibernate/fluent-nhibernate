@@ -258,6 +258,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/property/column").HasAttribute("unique", "false");
         }
 
+	    [Test]
+	    public void CanSpecifyDefault()
+	    {
+		    new MappingTester<MappedObject>()
+			    .ForMapping(m => m.Map(x => x.Name).Default("SomeName"))
+			    .Element("class/property").DoesntHaveAttribute("default")
+			    .Element("class/property/column").HasAttribute("default", "SomeName");
+	    }
+
         [Test]
         public void CanSpecifyInsert()
         {
