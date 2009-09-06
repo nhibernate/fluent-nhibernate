@@ -88,6 +88,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (classMapping.HasValue(x => x.SchemaAction))
                 classElement.WithAtt("schema-action", classMapping.SchemaAction);
+
+            if (classMapping.HasValue(x => x.EntityName))
+                classElement.WithAtt("entity-name", classMapping.EntityName);
         }
 
         public override void Visit(DiscriminatorMapping discriminatorMapping)

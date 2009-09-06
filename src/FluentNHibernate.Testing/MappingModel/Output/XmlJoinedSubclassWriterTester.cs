@@ -156,6 +156,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteEntityNameAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<JoinedSubclassMapping>();
+            testHelper.Check(x => x.EntityName, "entity1").MapsToAttribute("entity-name");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
         public void ShouldWriteProperties()
         {
             var mapping = new JoinedSubclassMapping();

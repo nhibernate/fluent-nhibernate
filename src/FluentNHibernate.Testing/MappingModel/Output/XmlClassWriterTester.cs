@@ -208,6 +208,16 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             testHelper.VerifyAll(writer);
         }
 
+
+        [Test]
+        public void ShouldWriteEntityNameAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<ClassMapping>();
+            testHelper.Check(x => x.EntityName, "entity1").MapsToAttribute("entity-name");
+
+            testHelper.VerifyAll(writer);
+        }
+
         [Test]
         public void ShouldWriteCache()
         {
@@ -429,5 +439,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer.VerifyXml(mapping)
                 .Element("discriminator").Exists();
         }
+
     }
 }

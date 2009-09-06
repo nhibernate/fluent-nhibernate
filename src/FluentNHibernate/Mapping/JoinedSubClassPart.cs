@@ -107,6 +107,16 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
+        /// Specifies an entity-name.
+        /// </summary>
+        /// <remarks>See http://nhforge.org/blogs/nhibernate/archive/2008/10/21/entity-name-in-action-a-strongly-typed-entity.aspx</remarks>
+        public JoinedSubClassPart<TSubclass> EntityName(string entityName)
+        {
+            attributes.Set(x => x.EntityName, entityName);
+            return this;
+        }
+
+        /// <summary>
         /// Inverts the next boolean
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

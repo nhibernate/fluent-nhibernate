@@ -399,6 +399,15 @@ namespace FluentNHibernate.Mapping
             attributes.Set(x => x.Subselect, subselectSql);
         }
 
+        /// <summary>
+        /// Specifies an entity-name.
+        /// </summary>
+        /// <remarks>See http://nhforge.org/blogs/nhibernate/archive/2008/10/21/entity-name-in-action-a-strongly-typed-entity.aspx</remarks>
+        public void EntityName(string entityName)
+        {
+            attributes.Set(x => x.EntityName, entityName);
+        }
+
         /// <overloads>
         /// Applies a named filter to this one-to-many.
         /// </overloads>

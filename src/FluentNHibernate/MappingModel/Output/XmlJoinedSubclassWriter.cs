@@ -68,6 +68,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.BatchSize))
                 element.WithAtt("batch-size", mapping.BatchSize);
+
+            if (mapping.HasValue(x => x.EntityName))
+                element.WithAtt("entity-name", mapping.EntityName);
         }
 
         public override void Visit(KeyMapping keyMapping)
