@@ -21,7 +21,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("one-to-many");
 
-            if (mapping.HasValue(x => x.Class))
+			if (mapping.HasValue(x => x.EntityName))
+				element.WithAtt("entity-name", mapping.EntityName);
+			else if (mapping.HasValue(x => x.Class))
                 element.WithAtt("class", mapping.Class);
 
             if (mapping.HasValue(x => x.NotFound))

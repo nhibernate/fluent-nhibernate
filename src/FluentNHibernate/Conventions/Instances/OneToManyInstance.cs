@@ -24,5 +24,17 @@ namespace FluentNHibernate.Conventions.Instances
                 });
             }
         }
-    }
+
+		public new IEntityNameInstance EntityName
+		{
+			get
+			{
+				return new EntityNameInstance(value =>
+				{
+					if (!mapping.IsSpecified("EntityName"))
+						mapping.EntityName = value;
+				});
+			}
+		}
+	}
 }

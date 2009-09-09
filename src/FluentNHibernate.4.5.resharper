@@ -131,6 +131,7 @@
         <INDENT_EMBRACED_INITIALIZER_BLOCK>False</INDENT_EMBRACED_INITIALIZER_BLOCK>
         <INDENT_SIZE>4</INDENT_SIZE>
         <INITIALIZER_BRACES>NEXT_LINE</INITIALIZER_BRACES>
+        <INSERT_TABS>False</INSERT_TABS>
         <KEEP_BLANK_LINES_IN_CODE>1</KEEP_BLANK_LINES_IN_CODE>
         <KEEP_BLANK_LINES_IN_DECLARATIONS>1</KEEP_BLANK_LINES_IN_DECLARATIONS>
         <MODIFIERS_ORDER IsNull="False">
@@ -163,6 +164,7 @@
     <VB>
       <FormatSettings>
         <INDENT_SIZE>4</INDENT_SIZE>
+        <INSERT_TABS>True</INSERT_TABS>
       </FormatSettings>
       <ImportsSettings />
       <Naming2 />
@@ -182,8 +184,10 @@
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="StaticReadonly" />
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="EnumMember" />
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Other" />
-      <PredefinedRule Inspect="True" Prefix="_" Suffix="" Style="aaBb" ElementKind="NotPublicStaticFields" />
-      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="NotPublicInstanceFields" />
+      <PredefinedRule Inspect="True" Prefix="_" Suffix="" Style="aaBb" ElementKind="PrivateInstanceFields" />
+      <PredefinedRule Inspect="True" Prefix="_" Suffix="" Style="aaBb" ElementKind="PrivateStaticFields" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateConstants" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateStaticReadonly" />
     </Naming2>
   </CodeStyleSettings>
 </Configuration>

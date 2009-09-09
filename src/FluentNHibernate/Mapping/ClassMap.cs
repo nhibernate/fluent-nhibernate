@@ -373,7 +373,12 @@ namespace FluentNHibernate.Mapping
             attributes.Set(x => x.Proxy, type);
         }
 
-        public void SelectBeforeUpdate()
+		public void EntityName(string name)
+		{
+			attributes.Set(x => x.EntityName, name);
+		}
+
+		public void SelectBeforeUpdate()
         {
             attributes.Set(x => x.SelectBeforeUpdate, nextBool);
             nextBool = true;

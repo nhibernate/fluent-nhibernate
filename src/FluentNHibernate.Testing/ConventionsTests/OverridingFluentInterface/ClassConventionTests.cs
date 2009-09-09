@@ -153,7 +153,17 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             VerifyModel(x => x.Proxy.ShouldEqual("type"));
         }
 
-        private class CustomProxy
+		[Test]
+		public void ShouldSetEntityNameProperty()
+		{
+			Mapping<ExampleClass>(x => x.EntityName("xxx"));
+
+			Convention(x => x.EntityName("xxx"));
+
+			VerifyModel(x => x.EntityName.ShouldEqual("xxx"));
+		}
+		
+		private class CustomProxy
         {}
 
         #region Helpers

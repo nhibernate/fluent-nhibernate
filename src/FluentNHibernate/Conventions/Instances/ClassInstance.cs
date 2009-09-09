@@ -133,5 +133,11 @@ namespace FluentNHibernate.Conventions.Instances
             if (!mapping.IsSpecified("Proxy"))
                 mapping.Proxy = type;
         }
-    }
+
+		public new void EntityName(string name)
+		{
+			if (!mapping.IsSpecified("EntityName"))
+				mapping.EntityName = name;
+		}
+	}
 }

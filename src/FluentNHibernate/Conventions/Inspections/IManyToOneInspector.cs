@@ -14,6 +14,7 @@ namespace FluentNHibernate.Conventions.Inspections
         bool Insert { get; }
         bool LazyLoad { get; }
         NotFound NotFound { get; }
+		EntityName EntityName { get; }
         string PropertyRef { get; }
         bool Update { get; }
     }

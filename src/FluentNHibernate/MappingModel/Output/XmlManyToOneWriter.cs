@@ -32,7 +32,9 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.HasValue(x => x.Cascade))
                 element.WithAtt("cascade", mapping.Cascade);
 
-            if (mapping.HasValue(x => x.Class))
+			if (mapping.HasValue(x => x.EntityName))
+				element.WithAtt("entity-name", mapping.EntityName);
+			else if (mapping.HasValue(x => x.Class))
                 element.WithAtt("class", mapping.Class);
 
             if (mapping.HasValue(x => x.Fetch))

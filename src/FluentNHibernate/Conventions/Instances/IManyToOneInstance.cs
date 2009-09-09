@@ -15,7 +15,8 @@ namespace FluentNHibernate.Conventions.Instances
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IManyToOneInstance Not { get; }
         new INotFoundInstance NotFound { get; }
-        void Index(string index);
+		new IEntityNameInstance EntityName { get; }
+		void Index(string index);
         void Insert();
         void LazyLoad();
         void Nullable();

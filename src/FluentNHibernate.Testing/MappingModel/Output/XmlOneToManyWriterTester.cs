@@ -30,5 +30,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             testHelper.VerifyAll(writer);
         }
-    }
+
+		[Test]
+		public void ShouldWriteEntityNameAttribute()
+		{
+			writer = new XmlOneToManyWriter();
+			var testHelper = new XmlWriterTestHelper<OneToManyMapping>();
+			testHelper.Check(x => x.EntityName, "en").MapsToAttribute("entity-name");
+
+			testHelper.VerifyAll(writer);
+		}
+	}
 }

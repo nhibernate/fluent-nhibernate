@@ -216,7 +216,18 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Element("//version[@name='Timestamp']").HasAttribute("access", "field");
         }
 
-        [Test]
+		[Test]
+		public void OverrideShouldOverrideEntityName()
+		{
+			var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
+				.Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
+				.Override<ExampleClass>(m => m.EntityName("Example"));
+
+			new AutoMappingTester<ExampleClass>(autoMapper)
+				.Element("class[@entity-name='Example']").Exists();
+		}
+		
+		[Test]
         public void TestAutoMapManyToOne()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()

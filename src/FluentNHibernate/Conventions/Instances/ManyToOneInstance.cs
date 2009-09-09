@@ -101,7 +101,19 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public void Index(string index)
+		public IEntityNameInstance EntityName
+		{
+			get
+			{
+				return new EntityNameInstance(value =>
+				{
+					if (!mapping.IsSpecified("EntityName"))
+						mapping.EntityName = value;
+				});
+			}
+		}
+		
+		public void Index(string index)
         {
             if (mapping.Columns.First().IsSpecified("Index"))
                 return;

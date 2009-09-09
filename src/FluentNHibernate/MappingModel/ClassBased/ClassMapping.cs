@@ -162,7 +162,13 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Proxy, value); }
         }
 
-        public bool SelectBeforeUpdate
+		public string EntityName
+		{
+			get { return attributes.Get(x => x.EntityName); }
+			set { attributes.Set(x => x.EntityName, value); }
+		}
+
+		public bool SelectBeforeUpdate
         {
             get { return attributes.Get(x => x.SelectBeforeUpdate); }
             set { attributes.Set(x => x.SelectBeforeUpdate, value); }

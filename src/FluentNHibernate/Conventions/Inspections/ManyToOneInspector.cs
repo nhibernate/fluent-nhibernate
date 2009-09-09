@@ -27,7 +27,12 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return NotFound.FromString(mapping.NotFound); }
         }
 
-        public string PropertyRef
+		public EntityName EntityName
+		{
+			get { return EntityName.FromString(mapping.EntityName); }
+		}
+
+		public string PropertyRef
         {
             get { return mapping.PropertyRef; }
         }

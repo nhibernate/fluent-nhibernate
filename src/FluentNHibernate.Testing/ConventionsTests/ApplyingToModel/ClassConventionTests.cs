@@ -124,7 +124,15 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.Proxy.ShouldEqual(typeof(CustomProxy).AssemblyQualifiedName));
         }
 
-        #region Helpers
+		[Test]
+		public void ShouldSetEntityNameProperty()
+		{
+			Convention(x => x.EntityName("xxx"));
+
+			VerifyModel(x => x.EntityName.ShouldEqual("xxx"));
+		}
+		
+		#region Helpers
 
         private void Convention(Action<IClassInstance> convention)
         {

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{529145D5-6CC3-4016-89B5-826563024AF1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -178,6 +178,7 @@
     <Compile Include="Conventions\Inspections\ComponentInspector.cs" />
     <Compile Include="Conventions\Inspections\CompositeElementInspector.cs" />
     <Compile Include="Conventions\Inspections\CompositeIdentityInspector.cs" />
+    <Compile Include="Conventions\Inspections\EntityName.cs" />
     <Compile Include="Conventions\Inspections\HibernateMappingInspector.cs" />
     <Compile Include="Conventions\Inspections\IAnyInstance.cs" />
     <Compile Include="Conventions\Inspections\IArrayInspector.cs" />
@@ -250,6 +251,8 @@
     <Compile Include="Conventions\Instances\CascadeInstance.cs" />
     <Compile Include="Conventions\Instances\CollectionCascadeInstance.cs" />
     <Compile Include="Conventions\Instances\ComponentInstance.cs" />
+    <Compile Include="Conventions\Instances\IEntityNameInstance.cs" />
+    <Compile Include="Conventions\Instances\EntityNameInstance.cs" />
     <Compile Include="Conventions\Instances\DynamicComponentInstance.cs" />
     <Compile Include="Conventions\Instances\FetchInstance.cs" />
     <Compile Include="Conventions\Instances\GeneratedInstance.cs" />

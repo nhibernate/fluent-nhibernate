@@ -101,6 +101,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             testHelper.VerifyAll(writer);
         }
 
+		[Test]
+		public void ShouldWriteEntityNameAttribute()
+		{
+			var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
+			testHelper.Check(x => x.EntityName, "en").MapsToAttribute("entity-name");
+
+			testHelper.VerifyAll(writer);
+		}
+
         [Test]
         public void ShouldWritePropertyRefAttribute()
         {

@@ -140,7 +140,17 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             testHelper.VerifyAll(writer);
         }
 
-        [Test]
+		[Test]
+		public void ShouldWriteEntityNameAttribute()
+		{
+
+			var testHelper = new XmlWriterTestHelper<ClassMapping>();
+			testHelper.Check(x => x.EntityName, "en").MapsToAttribute("entity-name");
+
+			testHelper.VerifyAll(writer);
+		}
+
+		[Test]
         public void ShouldWriteLazyAttribute()
         {
 

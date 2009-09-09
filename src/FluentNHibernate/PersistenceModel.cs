@@ -188,7 +188,8 @@ namespace FluentNHibernate
                 var serializer = new MappingXmlSerializer();
                 XmlDocument document = serializer.Serialize(mapping);
 
-                if (cfg.GetClassMapping(mapping.Classes.First().Type) == null)
+            	var name = mapping.Classes.First().EntityName ?? mapping.Classes.First().Type.FullName;
+				if (cfg.GetClassMapping(name) == null)
                     cfg.AddDocument(document);
             }
         }

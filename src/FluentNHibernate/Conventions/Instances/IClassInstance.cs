@@ -24,5 +24,6 @@ namespace FluentNHibernate.Conventions.Instances
         void Proxy<T>();
         void Proxy(Type type);
         void Proxy(string type);
-    }
+		void EntityName(string name);
+	}
 }
