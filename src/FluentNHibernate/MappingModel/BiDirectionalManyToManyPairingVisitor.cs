@@ -30,7 +30,7 @@ namespace FluentNHibernate.MappingModel
                     .Where(x => x.MemberInfo.Name == mapping.MemberInfo.Name.Replace(mapping.ChildType.Name, x.ChildType.Name));
 
                 if (reducedOtherSides.Count() != 1)
-                    throw new NotSupportedException("Can't figure out what the other side of a many-to-many should be.");
+                    throw new NotSupportedException(string.Format("Can't figure out what the other side of the many-to-many property '{0}' should be. ", mapping.MemberInfo.Name));
 
                 var otherSide = reducedOtherSides.First();
 
