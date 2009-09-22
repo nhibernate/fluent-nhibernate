@@ -80,6 +80,20 @@ namespace FluentNHibernate.Testing
             return this;
         }
 
+        public PersistenceSpecification<T> CheckEnumerable<TItem>(Expression<Func<T, object>> expression, Action<T, TItem> addAction, IEnumerable<TItem> itemsToAdd )
+        {
+            foreach (var item in itemsToAdd)
+            {
+                TransactionalSave(item);                
+            }
+
+            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+
+            allProperties.Add(new EnumerableValue<T,TItem>(property, addAction, itemsToAdd, entityEqualityComparer));
+
+            return this;
+        }
+
         /// <summary>
         /// Checks a list of components for validity.
         /// </summary>
@@ -136,6 +150,34 @@ namespace FluentNHibernate.Testing
                 }
             }
         }
+
+
+        #region Nested type: EnumerableValue
+
+        internal class EnumerableValue<TParent, TEnumerableElement> : ListValue<TEnumerableElement>
+        {
+            private readonly Action<TParent, TEnumerableElement> addAction;
+            private readonly IEnumerable<TEnumerableElement> itemsToAdd;
+
+            internal EnumerableValue(PropertyInfo property, Action<TParent, TEnumerableElement> addAction, IEnumerable<TEnumerableElement> itemsToAdd, IEqualityComparer entityEqualityComparer) 
+                : base(property, new List<TEnumerableElement>(itemsToAdd), entityEqualityComparer)
+            {
+                this.addAction = addAction;
+                this.itemsToAdd = itemsToAdd;
+            }
+
+            internal override void SetValue(object target)
+            {
+                var parent = (TParent)target;
+
+                foreach (var item in itemsToAdd)
+                    addAction(parent, item);
+            }
+
+        }
+
+        #endregion
+
 
         #region Nested type: ListValue
 

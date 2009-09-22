@@ -16,6 +16,17 @@ namespace FluentNHibernate.Testing.Testing
             public string Name { get; set; }
             public Kitten FirstKitten { get; set; }
             public IList<Kitten> AllKittens { get; set; }
+
+            public Cat()
+            {
+                AllKittens = new List<Kitten>();
+            }
+
+            public IEnumerable<Kitten> EnumerableOfKittens { get { return AllKittens; } }
+            public void AddKitten(Kitten kitten)
+            {
+                AllKittens.Add(kitten);
+            }
         }
 
         public class Kitten
@@ -38,9 +49,9 @@ namespace FluentNHibernate.Testing.Testing
             public int GetHashCode(object obj)
             {
                 if (obj is Cat)
-                    return (int) ((Cat) obj).Id;
+                    return (int)((Cat)obj).Id;
                 else if (obj is Kitten)
-                    return (int) ((Kitten)obj).Id;
+                    return (int)((Kitten)obj).Id;
                 throw new NotImplementedException();
             }
         }
@@ -111,8 +122,17 @@ namespace FluentNHibernate.Testing.Testing
         {
             _spec = new PersistenceSpecification<Cat>(_sessionSource);
 
-            typeof (ApplicationException).ShouldBeThrownBy(() => 
+            typeof(ApplicationException).ShouldBeThrownBy(() =>
                 _spec.CheckList(x => x.AllKittens, _cat.AllKittens).VerifyTheMappings());
+        }
+
+        [Test]
+        public void Can_test_enumerable()
+        {
+            var kittens = new[] {new Kitten {Id = 3, Name = "kitten3"}, new Kitten {Id = 4, Name = "kitten4"}};
+            _spec.CheckEnumerable(x => x.EnumerableOfKittens, (cat, kitten) => cat.AddKitten(kitten), kittens);
+
+            typeof(ApplicationException).ShouldBeThrownBy(_spec.VerifyTheMappings);
         }
     }
 
@@ -157,19 +177,19 @@ namespace FluentNHibernate.Testing.Testing
         public void Should_reject_classes_without_a_parameterless_constructor()
         {
             var _spec = new PersistenceSpecification<NoParameterlessConstructorClass>(sessionSource);
-            
+
             typeof(MissingConstructorException).ShouldBeThrownBy(() =>
                 _spec.VerifyTheMappings());
         }
 
-        public class PublicConstructorClass 
+        public class PublicConstructorClass
         {
-            public PublicConstructorClass() {}
+            public PublicConstructorClass() { }
         }
 
         public class ProtectedConstructorClass
         {
-            protected ProtectedConstructorClass() {}
+            protected ProtectedConstructorClass() { }
         }
 
         public class PrivateConstructorClass
@@ -179,7 +199,7 @@ namespace FluentNHibernate.Testing.Testing
 
         public class NoParameterlessConstructorClass
         {
-            public NoParameterlessConstructorClass(int someParameter) {}
+            public NoParameterlessConstructorClass(int someParameter) { }
         }
     }
 }
