@@ -306,10 +306,10 @@ namespace FluentNHibernate.Mapping
             return (T)this;
         }
 
-        public T Element(string columnName, Action<ElementPart> customElement)
+        public T Element(string columnName, Action<ElementPart> customElementMapping)
         {
             Element(columnName);
-            customElement(elementPart);
+            if (customElementMapping != null) customElementMapping(elementPart);
             return (T)this;
         }
 

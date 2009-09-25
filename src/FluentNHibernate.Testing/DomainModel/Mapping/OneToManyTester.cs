@@ -402,6 +402,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void ElementCallsCustomMappingHandler()
+        {
+            var called = false;
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m => m.HasMany(x => x.ListOfSimpleChildren).Element("columnName", elementPart => called = true));
+            called.ShouldBeTrue();
+        }
+
+        [Test]
         public void OneToManyMapping_with_private_backing_field()
         {
             new MappingTester<OneToManyTarget>()
