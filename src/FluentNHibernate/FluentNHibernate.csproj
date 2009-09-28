@@ -414,6 +414,12 @@
     <Compile Include="Cfg\Db\OracleConnectionStringBuilder.cs" />
     <Compile Include="Cfg\Db\OracleDataClientConfiguration.cs" />
     <Compile Include="Cfg\Db\PostgreSQLConnectionStringBuilder.cs" />
+    <Compile Include="Cfg\Db\OdbcConnectionStringBuilder.cs" />
+    <Compile Include="Cfg\Db\IfxOdbcConfiguration.cs" />
+    <Compile Include="Cfg\Db\IfxDRDAConfiguration.cs" />
+    <Compile Include="Cfg\Db\IfxDRDAConnectionStringBuilder.cs" />
+    <Compile Include="Cfg\Db\IfxSQLIConfiguration.cs" />
+    <Compile Include="Cfg\Db\IfxSQLIConnectionStringBuilder.cs" />
     <Compile Include="Cfg\FluentConfiguration.cs" />
     <Compile Include="Cfg\FluentConfigurationException.cs" />
     <Compile Include="Cfg\Fluently.cs" />
