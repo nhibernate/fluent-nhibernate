@@ -192,6 +192,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void CanSpecifyCollectionTypeAsNaturallySortedMapAlsoWhenUsingIndexSelector()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany(x => x.MapOfChildren).AsMap(x => x.Name, SortType.Natural))
+                .Element("class/map").Exists().HasAttribute("sort", "natural");
+        }
+
+        [Test]
         public void CanSpecifyCollectionTypeAsComparerSortedMap()
         {
             new MappingTester<OneToManyTarget>()

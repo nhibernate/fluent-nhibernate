@@ -192,6 +192,11 @@ namespace FluentNHibernate.Mapping
             return AsMap(indexSelector, null);
         }
 
+        public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, SortType sort)
+        {
+            return AsMap(indexSelector, null, sort);
+        }
+
         public T AsMap(string indexColumnName)
         {
             collectionBuilder = attrs => new MapMapping(attrs);
@@ -230,6 +235,12 @@ namespace FluentNHibernate.Mapping
         public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
         {
             collectionBuilder = attrs => new MapMapping(attrs);
+            return AsIndexedCollection(indexSelector, customIndexMapping);
+        }
+
+        public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping, SortType sort)
+        {
+            collectionBuilder = attrs => new MapMapping(attrs) { Sort = sort.ToString().ToLowerInvariant() };
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 
