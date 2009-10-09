@@ -77,17 +77,22 @@ namespace FluentNHibernate.Mapping
 
         public OneToManyPart<TChild> AsTernaryAssociation()
         {
+            var keyType = childType.GetGenericArguments()[0];
+            return AsTernaryAssociation(keyType.Name + "_id");
+        }
+
+        public OneToManyPart<TChild> AsTernaryAssociation(string indexColumnName)
+        {
             EnsureGenericDictionary();
 
             var keyType = childType.GetGenericArguments()[0];
             var valType = childType.GetGenericArguments()[1];
 
             manyToManyIndex = new IndexManyToManyPart(typeof(ManyToManyPart<TChild>));
-            manyToManyIndex.Column(keyType.Name + "_id");
+            manyToManyIndex.Column(indexColumnName);
             manyToManyIndex.Type(keyType);
 
             valueType = valType;
-
             isTernary = true;
 
             return this;
@@ -95,7 +100,14 @@ namespace FluentNHibernate.Mapping
 
         public OneToManyPart<TChild> AsEntityMap()
         {
-            return AsTernaryAssociation().AsMap(null);
+            // The argument to AsMap will be ignored as the ternary association will overwrite the index mapping for the map.
+            // Therefore just pass null.
+            return AsMap(null).AsTernaryAssociation();
+        }
+
+        public OneToManyPart<TChild> AsEntityMap(string indexColumnName)
+        {
+            return AsMap(null).AsTernaryAssociation(indexColumnName);
         }
 
         protected override ICollectionRelationshipMapping GetRelationship()

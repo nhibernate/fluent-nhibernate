@@ -71,5 +71,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.Element("element"))
                 .ModelShouldMatch(x => x.Relationship.ShouldBeNull());
         }
+
+              
     }
 }

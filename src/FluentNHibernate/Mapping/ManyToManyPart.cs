@@ -158,6 +158,18 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public ManyToManyPart<TChild> AsEntityMap()
+        {
+            // The argument to AsMap will be ignored as the ternary association will overwrite the index mapping for the map.
+            // Therefore just pass null.
+            return AsMap(null).AsTernaryAssociation();
+        }
+
+        public ManyToManyPart<TChild> AsEntityMap(string indexColumn, string valueColumn)
+        {
+            return AsMap(null).AsTernaryAssociation(indexColumn, valueColumn);
+        }
+
         public Type ChildType
         {
             get { return typeof(TChild); }
