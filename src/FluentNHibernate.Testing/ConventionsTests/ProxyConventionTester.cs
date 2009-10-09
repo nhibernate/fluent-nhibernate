@@ -35,22 +35,12 @@ namespace FluentNHibernate.Testing.ConventionsTests
             var convention = new ProxyConvention(PersistentTypeToProxy,
                                                  ProxyToPersistentType);
 
-            var mocks = new MockRepository();
+            var classInstance = MockRepository.GenerateMock<IClassInstance>();
+            classInstance.Expect(x => x.EntityType).Return(typeof(ProxiedObject));
+            
+            convention.Apply(classInstance);
 
-            var classInstance = mocks.DynamicMock<IClassInstance>();
-
-            using(mocks.Record())
-            {
-                classInstance.Expect(x => x.EntityType).Return(typeof(ProxiedObject));
-
-                classInstance.Proxy(typeof(IProxiedObject));
-                LastCall.Repeat.Once();
-            }
-
-            using(mocks.Playback())
-            {
-                convention.Apply(classInstance);
-            }
+            classInstance.AssertWasCalled(x => x.Proxy(typeof(IProxiedObject)));
         }
 
         [Test]
@@ -59,22 +49,12 @@ namespace FluentNHibernate.Testing.ConventionsTests
             var convention = new ProxyConvention(PersistentTypeToProxy,
                                                  ProxyToPersistentType);
 
-            var mocks = new MockRepository();
+            var classInstance = MockRepository.GenerateMock<ISubclassInstance>();
+            classInstance.Expect(x => x.EntityType).Return(typeof(ProxiedObject));
 
-            var subclassInstance = mocks.DynamicMock<ISubclassInstance>();
+            convention.Apply(classInstance);
 
-            using (mocks.Record())
-            {
-                subclassInstance.Expect(x => x.EntityType).Return(typeof(ProxiedObject));
-
-                subclassInstance.Proxy(typeof(IProxiedObject));
-                LastCall.Repeat.Once();
-            }
-
-            using (mocks.Playback())
-            {
-                convention.Apply(subclassInstance);
-            }
+            classInstance.AssertWasCalled(x => x.Proxy(typeof(IProxiedObject)));
         }
 
         [Test]
@@ -83,19 +63,12 @@ namespace FluentNHibernate.Testing.ConventionsTests
             var convention = new ProxyConvention(PersistentTypeToProxy,
                                                  ProxyToPersistentType);
 
-            var mocks = new MockRepository();
+            var classInstance = MockRepository.GenerateMock<IClassInstance>();
+            classInstance.Stub(x => x.EntityType).Return(typeof(NotProxied));
 
-            var classInstance = mocks.DynamicMock<IClassInstance>();
+            convention.Apply(classInstance);
 
-            using (mocks.Record())
-            {
-                classInstance.Expect(x => x.EntityType).Return(typeof(NotProxied));
-            }
-
-            using (mocks.Playback())
-            {
-                convention.Apply(classInstance);
-            }
+            classInstance.AssertWasNotCalled(x => x.Proxy(Arg<Type>.Is.Anything));
         }
 
         [Test]
@@ -104,19 +77,12 @@ namespace FluentNHibernate.Testing.ConventionsTests
             var convention = new ProxyConvention(PersistentTypeToProxy,
                                                  ProxyToPersistentType);
 
-            var mocks = new MockRepository();
+            var classInstance = MockRepository.GenerateMock<ISubclassInstance>();
+            classInstance.Stub(x => x.EntityType).Return(typeof(NotProxied));
 
-            var classInstance = mocks.DynamicMock<ISubclassInstance>();
+            convention.Apply(classInstance);
 
-            using (mocks.Record())
-            {
-                classInstance.Expect(x => x.EntityType).Return(typeof(NotProxiedSubclass));
-            }
-
-            using (mocks.Playback())
-            {
-                convention.Apply(classInstance);
-            }
+            classInstance.AssertWasNotCalled(x => x.Proxy(Arg<Type>.Is.Anything));
         }
 
         [Test]
@@ -125,29 +91,17 @@ namespace FluentNHibernate.Testing.ConventionsTests
             var convention = new ProxyConvention(PersistentTypeToProxy,
                                                  ProxyToPersistentType);
 
-            var mocks = new MockRepository();
-            
-            var collectionInstance = mocks.DynamicMock<ICollectionInstance>();
-            var relationship = mocks.DynamicMock<IRelationshipInstance>();
+            var collectionInstance = MockRepository.GenerateMock<ICollectionInstance>();
+            var relationship = MockRepository.GenerateMock<IRelationshipInstance>();
 
+            collectionInstance.Stub(x => x.Relationship)
+                .Return(relationship);
+            relationship.Stub(x => x.Class)
+                .Return(new TypeReference(typeof(IProxiedObject)));
 
-            using (mocks.Record())
-            {
-                relationship.Expect(x => x.Class)
-                    .Return(new TypeReference(typeof(IProxiedObject)))
-                    .Repeat.Any();
+            convention.Apply(collectionInstance);
 
-                relationship.CustomClass(typeof(ProxiedObject));
-
-                collectionInstance.Expect(x => x.Relationship)
-                    .Return(relationship)
-                    .Repeat.AtLeastOnce();
-            }
-
-            using (mocks.Playback())
-            {
-                convention.Apply(collectionInstance);
-            }
+            relationship.AssertWasCalled(x => x.CustomClass(typeof(ProxiedObject)));
         }
 
         [Test]
@@ -156,27 +110,17 @@ namespace FluentNHibernate.Testing.ConventionsTests
             var convention = new ProxyConvention(PersistentTypeToProxy,
                                                  ProxyToPersistentType);
 
-            var mocks = new MockRepository();
+            var collectionInstance = MockRepository.GenerateMock<ICollectionInstance>();
+            var relationship = MockRepository.GenerateMock<IRelationshipInstance>();
 
-            var collectionInstance = mocks.DynamicMock<ICollectionInstance>();
-            var relationship = mocks.DynamicMock<IRelationshipInstance>();
+            collectionInstance.Stub(x => x.Relationship)
+                .Return(relationship);
+            relationship.Stub(x => x.Class)
+                .Return(new TypeReference(typeof(NotProxied)));
 
+            convention.Apply(collectionInstance);
 
-            using (mocks.Record())
-            {
-                relationship.Expect(x => x.Class)
-                    .Return(new TypeReference(typeof(NotProxied)))
-                    .Repeat.Any();
-
-                collectionInstance.Expect(x => x.Relationship)
-                    .Return(relationship)
-                    .Repeat.Once();
-            }
-
-            using (mocks.Playback())
-            {
-                convention.Apply(collectionInstance);
-            }
+            relationship.AssertWasNotCalled(x => x.CustomClass(Arg<Type>.Is.Anything));
         }
 
         [Test]
@@ -185,24 +129,13 @@ namespace FluentNHibernate.Testing.ConventionsTests
             var convention = new ProxyConvention(PersistentTypeToProxy,
                                                  ProxyToPersistentType);
 
-            var mocks = new MockRepository();
+            var manyToOneInstance = MockRepository.GenerateMock<IManyToOneInstance>();
+            manyToOneInstance.Stub(x => x.Class)
+                .Return(new TypeReference(typeof(IProxiedObject)));
 
-            var manyToOne = mocks.DynamicMock<IManyToOneInstance>();
+            convention.Apply(manyToOneInstance);
 
-            using (mocks.Record())
-            {
-                manyToOne.Expect(x => x.Class)
-                    .Return(new TypeReference(typeof(IProxiedObject)))
-                    .Repeat.Any();
-
-                manyToOne.OverrideInferredClass(typeof(ProxiedObject));
-                LastCall.Repeat.Once();
-            }
-
-            using (mocks.Playback())
-            {
-                convention.Apply(manyToOne);
-            }
+            manyToOneInstance.AssertWasCalled(x => x.OverrideInferredClass(typeof(ProxiedObject)));
         }
 
         [Test]
