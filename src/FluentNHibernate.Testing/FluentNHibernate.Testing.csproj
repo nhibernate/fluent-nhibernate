@@ -232,6 +232,7 @@
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaTests.cs" />
     <Compile Include="ConventionsTests\MixedConventionInstanceTester.cs" />
     <Compile Include="ConventionsTests\OptionalAcceptTests.cs" />
+    <Compile Include="ConventionsTests\ProxyConventionTester.cs" />
     <Compile Include="ConventionsTests\RunnableConventionsTests.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapConventionsTester.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapDynamicInsertTester.cs" />

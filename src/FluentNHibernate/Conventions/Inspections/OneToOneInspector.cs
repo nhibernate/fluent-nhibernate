@@ -41,6 +41,14 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return Cascade.FromString(mapping.Cascade); }
         }
 
+        public TypeReference Class
+        {
+            get
+            {
+                return mapping.Class;
+            }
+        }
+
         public bool Constrained
         {
             get { return mapping.Constrained; }

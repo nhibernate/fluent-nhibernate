@@ -359,6 +359,7 @@
     <Compile Include="Conventions\IVersionConventionAcceptance.cs" />
     <Compile Include="Conventions\ManyToManyTableNameConvention.cs" />
     <Compile Include="Conventions\ObjectExtensionsForConventions.cs" />
+    <Compile Include="Conventions\ProxyConvention.cs" />
     <Compile Include="MappingModel\BiDirectionalManyToManyPairingVisitor.cs" />
     <Compile Include="MappingModel\ColumnBasedMappingBase.cs" />
     <Compile Include="MappingModel\FilterDefinitionMapping.cs" />

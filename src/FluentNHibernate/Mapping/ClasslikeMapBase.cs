@@ -88,6 +88,11 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+        public OneToOnePart<TOther> HasOne<TOther>(Expression<Func<T, Object>> expression)
+        {
+            return HasOne<TOther>(ReflectionHelper.GetProperty(expression));
+        }
+
         public OneToOnePart<TOther> HasOne<TOther>(Expression<Func<T, TOther>> expression)
         {
             return HasOne<TOther>(ReflectionHelper.GetProperty(expression).ToMember());
