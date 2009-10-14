@@ -1,14 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace FluentNHibernate.Cfg
 {
+    [Serializable]
     public class FluentConfigurationException : Exception
     {
         public FluentConfigurationException(string message, Exception innerException)
             : base(message, innerException)
         {
             PotentialReasons = new List<string>();
+        }
+
+        public FluentConfigurationException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+            this.PotentialReasons = info.GetValue("PotentialReasons", typeof(List<string>)) as List<string>;            
         }
 
         public IList<string> PotentialReasons { get; private set; }
@@ -44,6 +51,12 @@ namespace FluentNHibernate.Cfg
             }
 
             return output;
+        }
+
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            info.AddValue("PotentialReasons", PotentialReasons, typeof(List<string>));
         }
     }
 }

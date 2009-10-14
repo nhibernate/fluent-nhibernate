@@ -2,6 +2,7 @@ using System;
 
 namespace FluentNHibernate
 {
+    [Serializable]
     public class MissingConstructorException : Exception
     {
         public MissingConstructorException(Type type)

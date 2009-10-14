@@ -107,6 +107,7 @@
     <Compile Include="Cfg\Db\OracleClientConfigurationTester.cs" />
     <Compile Include="Cfg\Db\JetDriverConfigurationTester.cs" />
     <Compile Include="Cfg\Db\OracleDataClientConfigurationTester.cs" />
+    <Compile Include="Cfg\FluentConfigurationExceptionTests.cs" />
     <Compile Include="ConventionFinderTests\AddingTypeTests.cs" />
     <Compile Include="ConventionFinderTests\FindTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaCollectionTests.cs" />

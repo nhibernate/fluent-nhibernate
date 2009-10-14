@@ -2,6 +2,7 @@ using System;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
+    [Serializable]
     public class UnmappedPropertyException : Exception
     {
         public UnmappedPropertyException(Type type, string name)

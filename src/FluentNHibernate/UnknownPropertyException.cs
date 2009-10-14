@@ -2,6 +2,7 @@ using System;
 
 namespace FluentNHibernate
 {
+    [Serializable]
     public class UnknownPropertyException : Exception
     {
         public UnknownPropertyException(Type classType, string propertyName)
