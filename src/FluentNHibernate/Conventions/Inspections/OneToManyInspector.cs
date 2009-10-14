@@ -44,5 +44,15 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get { return NotFound.FromString(mapping.NotFound); }
         }
-    }
+
+		public void CustomClass<T>()
+		{
+			mapping.Class = new TypeReference(typeof(T));
+		}
+
+		public void CustomClass(Type type)
+		{
+			mapping.Class = new TypeReference(type);
+		}
+	}
 }
