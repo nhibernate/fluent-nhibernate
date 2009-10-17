@@ -7,8 +7,6 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         TypeReference Class { get; }
 
-		void CustomClass<T>();
 
-		void CustomClass(Type type);
 	}
 }
