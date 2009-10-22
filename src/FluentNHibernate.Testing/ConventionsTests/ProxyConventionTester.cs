@@ -15,25 +15,10 @@ namespace FluentNHibernate.Testing.ConventionsTests
     [TestFixture]
     public class ProxyConventionTester
     {
-        private static Type PersistentTypeToProxy(Type type)
-        {
-            return type == typeof(ProxiedObject)
-                           ? typeof(IProxiedObject)
-                           : null;
-        }
-
-        private static Type ProxyToPersistentType(Type type)
-        {
-            return type == typeof(IProxiedObject)
-                           ? typeof(ProxiedObject)
-                           : null;
-        }
-
         [Test]
         public void ConventionSetsProxyOnProxiedClass()
         {
-            var convention = new ProxyConvention(PersistentTypeToProxy,
-                                                 ProxyToPersistentType);
+            ProxyConvention convention = GetConvention();
 
             var classInstance = MockRepository.GenerateMock<IClassInstance>();
             classInstance.Expect(x => x.EntityType)
@@ -47,8 +32,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ConventionSetsProxyOnProxiedSubclass()
         {
-            var convention = new ProxyConvention(PersistentTypeToProxy,
-                                                 ProxyToPersistentType);
+            ProxyConvention convention = GetConvention();
 
             var classInstance = MockRepository.GenerateMock<ISubclassInstance>();
             classInstance.Expect(x => x.EntityType)
@@ -62,8 +46,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ConventionDoesNotSetProxyOnUnproxiedClass()
         {
-            var convention = new ProxyConvention(PersistentTypeToProxy,
-                                                 ProxyToPersistentType);
+            ProxyConvention convention = GetConvention();
 
             var classInstance = MockRepository.GenerateMock<IClassInstance>();
             classInstance.Stub(x => x.EntityType)
@@ -77,8 +60,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ConventionDoesNotSetProxyOnUnproxiedSubclass()
         {
-            var convention = new ProxyConvention(PersistentTypeToProxy,
-                                                 ProxyToPersistentType);
+            ProxyConvention convention = GetConvention();
 
             var classInstance = MockRepository.GenerateMock<ISubclassInstance>();
             classInstance.Stub(x => x.EntityType)
@@ -92,8 +74,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ConventionSetsProxiedCollectionChildTypeToConcreteType()
         {
-            var convention = new ProxyConvention(PersistentTypeToProxy,
-                                                 ProxyToPersistentType);
+            ProxyConvention convention = GetConvention();
 
             var collectionInstance = MockRepository.GenerateMock<ICollectionInstance>();
             var relationship = MockRepository.GenerateMock<IRelationshipInstance>();
@@ -111,8 +92,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ConventionDoesNotSetCollectionChildTypeIfUnrecognised()
         {
-            var convention = new ProxyConvention(PersistentTypeToProxy,
-                                                 ProxyToPersistentType);
+            ProxyConvention convention = GetConvention();
 
             var collectionInstance = MockRepository.GenerateMock<ICollectionInstance>();
             var relationship = MockRepository.GenerateMock<IRelationshipInstance>();
@@ -130,8 +110,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ConventionSetsProxiedManyToOneTypeToConcreteType()
         {
-            var convention = new ProxyConvention(PersistentTypeToProxy,
-                                                 ProxyToPersistentType);
+            ProxyConvention convention = GetConvention();
 
             var manyToOneInstance = MockRepository.GenerateMock<IManyToOneInstance>();
             manyToOneInstance.Stub(x => x.Class)
@@ -145,8 +124,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ConventionDoesNotSetManyToOneTypeIfUnrecognised()
         {
-            var convention = new ProxyConvention(PersistentTypeToProxy,
-                                                 ProxyToPersistentType);
+            ProxyConvention convention = GetConvention();
 
             var manyToOneInstance = MockRepository.GenerateMock<IManyToOneInstance>();
             manyToOneInstance.Stub(x => x.Class)
@@ -160,8 +138,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ConventionSetsProxiedOneToOneTypeToConcreteType()
         {
-            var convention = new ProxyConvention(PersistentTypeToProxy,
-                                                 ProxyToPersistentType);
+            ProxyConvention convention = GetConvention();
 
             var oneToOneInstance = MockRepository.GenerateMock<IOneToOneInstance>();
             oneToOneInstance.Stub(x => ((IOneToOneInspector)x).Class)
@@ -175,8 +152,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ConventionDoesNotSetOneToOneTypeIfUnrecognised()
         {
-            var convention = new ProxyConvention(PersistentTypeToProxy,
-                                                 ProxyToPersistentType);
+            ProxyConvention convention = GetConvention();
 
             var oneToOneInstance = MockRepository.GenerateMock<IOneToOneInstance>();
             oneToOneInstance.Stub(x => ((IOneToOneInspector)x).Class)
@@ -187,6 +163,25 @@ namespace FluentNHibernate.Testing.ConventionsTests
             oneToOneInstance.AssertWasNotCalled(x => x.OverrideInferredClass(typeof(ProxiedObject)));
         }
 
+        private static ProxyConvention GetConvention()
+        {
+            return new ProxyConvention(PersistentTypeToProxy,
+                ProxyToPersistentType);
+        }
+
+        private static Type PersistentTypeToProxy(Type type)
+        {
+            return type == typeof(ProxiedObject)
+                           ? typeof(IProxiedObject)
+                           : null;
+        }
+
+        private static Type ProxyToPersistentType(Type type)
+        {
+            return type == typeof(IProxiedObject)
+                           ? typeof(ProxiedObject)
+                           : null;
+        }
 
         public interface IProxiedObject
         {
