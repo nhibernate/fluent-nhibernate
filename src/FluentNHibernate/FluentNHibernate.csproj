@@ -102,6 +102,7 @@
     <Compile Include="Conventions\AcceptanceCriteria\CollectionExpectation.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\InvertedExpectation.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\InverterAcceptanceCriteria.cs" />
+    <Compile Include="Conventions\AttributeCollectionConvention.cs" />
     <Compile Include="Conventions\Helpers\AutoImport.cs" />
     <Compile Include="Conventions\Helpers\Builders\BagConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\CollectionConventionBuilder.cs" />
