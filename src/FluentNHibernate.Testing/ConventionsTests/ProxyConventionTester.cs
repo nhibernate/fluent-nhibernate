@@ -36,7 +36,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
                                                  ProxyToPersistentType);
 
             var classInstance = MockRepository.GenerateMock<IClassInstance>();
-            classInstance.Expect(x => x.EntityType).Return(typeof(ProxiedObject));
+            classInstance.Expect(x => x.EntityType)
+                .Return(typeof(ProxiedObject));
             
             convention.Apply(classInstance);
 
@@ -50,7 +51,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
                                                  ProxyToPersistentType);
 
             var classInstance = MockRepository.GenerateMock<ISubclassInstance>();
-            classInstance.Expect(x => x.EntityType).Return(typeof(ProxiedObject));
+            classInstance.Expect(x => x.EntityType)
+                .Return(typeof(ProxiedObject));
 
             convention.Apply(classInstance);
 
@@ -64,7 +66,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
                                                  ProxyToPersistentType);
 
             var classInstance = MockRepository.GenerateMock<IClassInstance>();
-            classInstance.Stub(x => x.EntityType).Return(typeof(NotProxied));
+            classInstance.Stub(x => x.EntityType)
+                .Return(typeof(NotProxied));
 
             convention.Apply(classInstance);
 
@@ -78,7 +81,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
                                                  ProxyToPersistentType);
 
             var classInstance = MockRepository.GenerateMock<ISubclassInstance>();
-            classInstance.Stub(x => x.EntityType).Return(typeof(NotProxied));
+            classInstance.Stub(x => x.EntityType)
+                .Return(typeof(NotProxied));
 
             convention.Apply(classInstance);
 
@@ -144,21 +148,13 @@ namespace FluentNHibernate.Testing.ConventionsTests
             var convention = new ProxyConvention(PersistentTypeToProxy,
                                                  ProxyToPersistentType);
 
-            var mocks = new MockRepository();
+            var manyToOneInstance = MockRepository.GenerateMock<IManyToOneInstance>();
+            manyToOneInstance.Stub(x => x.Class)
+                .Return(new TypeReference(typeof(NotProxied)));
 
-            var manyToOne = mocks.DynamicMock<IManyToOneInstance>();
+            convention.Apply(manyToOneInstance);
 
-            using (mocks.Record())
-            {
-                manyToOne.Expect(x => x.Class)
-                    .Return(new TypeReference(typeof(ProxiedObject)))
-                    .Repeat.Any();
-            }
-
-            using (mocks.Playback())
-            {
-                convention.Apply(manyToOne);
-            }
+            manyToOneInstance.AssertWasNotCalled(x => x.OverrideInferredClass(typeof(ProxiedObject)));
         }
 
         [Test]
@@ -167,23 +163,13 @@ namespace FluentNHibernate.Testing.ConventionsTests
             var convention = new ProxyConvention(PersistentTypeToProxy,
                                                  ProxyToPersistentType);
 
-            var mocks = new MockRepository();
+            var oneToOneInstance = MockRepository.GenerateMock<IOneToOneInstance>();
+            oneToOneInstance.Stub(x => ((IOneToOneInspector)x).Class)
+                .Return(new TypeReference(typeof(IProxiedObject)));
 
-            var oneToOne = mocks.DynamicMock<IOneToOneInstance>();
+            convention.Apply(oneToOneInstance);
 
-            using (mocks.Record())
-            {
-                oneToOne.Expect(x => ((IOneToOneInspector)x).Class)
-                    .Return(new TypeReference(typeof(IProxiedObject)))
-                    .Repeat.Any();
-
-                oneToOne.OverrideInferredClass(typeof(ProxiedObject));
-            }
-
-            using (mocks.Playback())
-            {
-                convention.Apply(oneToOne);
-            }
+            oneToOneInstance.AssertWasCalled(x => x.OverrideInferredClass(typeof(ProxiedObject)));
         }
 
         [Test]
@@ -192,21 +178,13 @@ namespace FluentNHibernate.Testing.ConventionsTests
             var convention = new ProxyConvention(PersistentTypeToProxy,
                                                  ProxyToPersistentType);
 
-            var mocks = new MockRepository();
+            var oneToOneInstance = MockRepository.GenerateMock<IOneToOneInstance>();
+            oneToOneInstance.Stub(x => ((IOneToOneInspector)x).Class)
+                .Return(new TypeReference(typeof(NotProxied)));
 
-            var manyToOne = mocks.DynamicMock<IOneToOneInstance>();
+            convention.Apply(oneToOneInstance);
 
-            using (mocks.Record())
-            {
-                manyToOne.Expect(x => ((IOneToOneInspector)x).Class)
-                    .Return(new TypeReference(typeof(ProxiedObject)))
-                    .Repeat.Any();
-            }
-
-            using (mocks.Playback())
-            {
-                convention.Apply(manyToOne);
-            }
+            oneToOneInstance.AssertWasNotCalled(x => x.OverrideInferredClass(typeof(ProxiedObject)));
         }
 
 
