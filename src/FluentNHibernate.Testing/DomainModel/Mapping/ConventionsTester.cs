@@ -24,7 +24,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<Site>()
                 .Conventions(conventions => conventions.Add<MyAttributeCollectionConvention>())
-                .ForMapping(m => m.Map(x => x.Prior))
+                .ForMapping(m => m.HasMany(x => x.Prior))
                 .Element("class/*[@name='Prior']")
                     .HasAttribute("cascade", "all-delete-orphan");
         }
