@@ -13,7 +13,7 @@ namespace FluentNHibernate.Cfg
             PotentialReasons = new List<string>();
         }
 
-        public FluentConfigurationException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected FluentConfigurationException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
             this.PotentialReasons = info.GetValue("PotentialReasons", typeof(List<string>)) as List<string>;            
         }
@@ -53,10 +53,12 @@ namespace FluentNHibernate.Cfg
             return output;
         }
 
-        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
             info.AddValue("PotentialReasons", PotentialReasons, typeof(List<string>));
         }
     }
+
+    
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
@@ -7,6 +8,9 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         public UnmappedPropertyException(Type type, string name)
             : base("Unmapped property '" + name + "' on type '" + type.Name + "'")
+        {}
+
+        protected UnmappedPropertyException(SerializationInfo info, StreamingContext context) : base(info, context)
         {}
     }
 }

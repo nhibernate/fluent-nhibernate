@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace FluentNHibernate.Mapping
 {
@@ -9,6 +10,9 @@ namespace FluentNHibernate.Mapping
     public class InvalidPrefixException : Exception
     {
         public InvalidPrefixException(string message) : base(message)
+        {}
+
+        protected InvalidPrefixException(SerializationInfo info, StreamingContext context) : base(info, context)
         {}
     }
 }

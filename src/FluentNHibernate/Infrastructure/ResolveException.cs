@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace FluentNHibernate.Infrastructure
 {
@@ -7,6 +8,9 @@ namespace FluentNHibernate.Infrastructure
     {
         public ResolveException(Type type)
             : base("Unable to resolve dependency: '" + type.FullName + "'")
+        {}
+
+        protected ResolveException(SerializationInfo info, StreamingContext context) : base(info, context)
         {}
     }
 }
