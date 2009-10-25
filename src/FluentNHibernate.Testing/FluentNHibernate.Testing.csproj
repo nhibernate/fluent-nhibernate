@@ -145,6 +145,7 @@
     <Compile Include="FluentInterfaceTests\ManyToManyPartAsTernaryTests.cs" />
     <Compile Include="FluentInterfaceTests\OneToManyPartAsTernaryTests.cs" />
     <Compile Include="FluentInterfaceTests\WhereTests.cs" />
+    <Compile Include="MappingModel\Defaults\MutableDefaultsTester.cs" />
     <Compile Include="MappingModel\Output\XmlDiscriminatorWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterDefinitionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterWriterTester.cs" />

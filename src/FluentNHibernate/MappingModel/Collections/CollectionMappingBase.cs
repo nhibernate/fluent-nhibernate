@@ -15,6 +15,7 @@ namespace FluentNHibernate.MappingModel.Collections
         protected CollectionMappingBase(AttributeStore underlyingStore)
         {
             attributes = new AttributeStore<ICollectionMapping>(underlyingStore);
+            attributes.SetDefault(x => x.Mutable, true);
         }
 
         public IList<FilterMapping> Filters

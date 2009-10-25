@@ -16,6 +16,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public ClassMapping(AttributeStore store)
         {
             attributes = new AttributeStore<ClassMapping>(store);
+            attributes.SetDefault(x => x.Mutable, true);
         }
 
         public IIdentityMapping Id
