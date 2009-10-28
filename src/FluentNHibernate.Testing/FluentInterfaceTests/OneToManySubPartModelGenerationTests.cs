@@ -72,6 +72,18 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ModelShouldMatch(x => x.Relationship.ShouldBeNull());
         }
 
-              
+        [Test]
+        public void ShouldPerformKeyColumnMapping()
+        {
+            OneToMany<ChildObject>(x => x.ListOfChildren)
+                .Mapping(m => m.KeyColumns.Add("col1", c => c.Length(50).Not.Nullable()))
+                .ModelShouldMatch(x =>
+                {
+                    var column = x.Key.Columns.Single();
+                    column.Name.ShouldEqual("col1");
+                    column.Length.ShouldEqual(50);
+                    column.NotNull.ShouldBeTrue();
+                });                
+        }
     }
 }

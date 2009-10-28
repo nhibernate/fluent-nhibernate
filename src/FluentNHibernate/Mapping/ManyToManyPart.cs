@@ -86,7 +86,7 @@ namespace FluentNHibernate.Mapping
 
         public ManyToManyPart<TChild> ForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName)
         {
-            keyAttributes.Set(x => x.ForeignKey, parentForeignKeyName);
+            keyMapping.ForeignKey = parentForeignKeyName;
             relationshipAttributes.Set(x => x.ForeignKey, childForeignKeyName);
             return this;
         }

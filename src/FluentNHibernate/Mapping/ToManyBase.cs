@@ -26,7 +26,7 @@ namespace FluentNHibernate.Mapping
         protected bool nextBool = true;
 
         protected readonly AttributeStore<ICollectionMapping> collectionAttributes = new AttributeStore<ICollectionMapping>();
-        protected readonly AttributeStore<KeyMapping> keyAttributes = new AttributeStore<KeyMapping>();
+        protected readonly KeyMapping keyMapping = new KeyMapping();
         protected readonly AttributeStore<TRelationshipAttributes> relationshipAttributes = new AttributeStore<TRelationshipAttributes>();
         private readonly IList<FilterPart> filters = new List<FilterPart>();
         private Func<AttributeStore, ICollectionMapping> collectionBuilder;
@@ -76,7 +76,8 @@ namespace FluentNHibernate.Mapping
             mapping.ContainingEntityType = entity;
             mapping.ChildType = typeof(TChild);
             mapping.MemberInfo = member;
-            mapping.Key = new KeyMapping(keyAttributes.CloneInner()) { ContainingEntityType = entity };
+            mapping.Key = keyMapping;
+            mapping.Key.ContainingEntityType = entity;
             mapping.Relationship = GetRelationship();
 
             if (Cache.IsDirty)
@@ -340,7 +341,7 @@ namespace FluentNHibernate.Mapping
 
         public T ForeignKeyCascadeOnDelete()
         {
-            keyAttributes.Set(x => x.OnDelete, "cascade");
+            keyMapping.OnDelete = "cascade";
             return (T)this;
         }
 
@@ -493,5 +494,7 @@ namespace FluentNHibernate.Mapping
         {
             get { return filters; }
         }
+
+
     }
 }

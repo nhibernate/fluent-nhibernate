@@ -139,6 +139,7 @@
     <Compile Include="ConventionsTests\ForeignKeyConventionTests.cs" />
     <Compile Include="ConventionsTests\Inspection\HibernateMappingInspectorMapsToHibernateMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ValueTypes\SchemaActionTests.cs" />
+    <Compile Include="FluentInterfaceTests\ColumnPartTests.cs" />
     <Compile Include="FluentInterfaceTests\ElementPartTests.cs" />
     <Compile Include="DomainModel\Mapping\FilterTester.cs" />
     <Compile Include="FluentInterfaceTests\ClassMapFilterPartModelGenerationTests.cs" />

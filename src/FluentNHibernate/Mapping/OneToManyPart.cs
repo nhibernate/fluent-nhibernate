@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
@@ -9,7 +10,7 @@ namespace FluentNHibernate.Mapping
     public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild, OneToManyMapping>
     {
         private readonly Type entity;
-        private readonly ColumnNameCollection<OneToManyPart<TChild>> columns;
+        private readonly ColumnMappingCollection<OneToManyPart<TChild>> keyColumns;
         private readonly CollectionCascadeExpression<OneToManyPart<TChild>> cascade;
         private readonly NotFoundExpression<OneToManyPart<TChild>> notFound;
         private IndexManyToManyPart manyToManyIndex;
@@ -33,7 +34,7 @@ namespace FluentNHibernate.Mapping
             this.entity = entity;
             childType = collectionType;
 
-            columns = new ColumnNameCollection<OneToManyPart<TChild>>(this);
+            keyColumns = new ColumnMappingCollection<OneToManyPart<TChild>>(this);
             cascade = new CollectionCascadeExpression<OneToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Cascade, value));
             notFound = new NotFoundExpression<OneToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
 
@@ -54,12 +55,12 @@ namespace FluentNHibernate.Mapping
         {
             var collection = base.GetCollectionMapping();
 
-            if (columns.List().Count == 0)
+            if (keyColumns.Count() == 0)
                 collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
 
-            foreach (var column in columns.List())
+            foreach (var column in keyColumns)
             {
-                collection.Key.AddColumn(new ColumnMapping { Name = column });
+                collection.Key.AddColumn(column);
             }
 
             // HACK: shouldn't have to do this!
@@ -130,14 +131,14 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public ColumnNameCollection<OneToManyPart<TChild>> KeyColumns
+        public ColumnMappingCollection<OneToManyPart<TChild>> KeyColumns
         {
-            get { return columns; }
+            get { return keyColumns; }
         }
 
         public OneToManyPart<TChild> ForeignKeyConstraintName(string foreignKeyName)
         {
-            keyAttributes.Set(x => x.ForeignKey, foreignKeyName);
+            keyMapping.ForeignKey = foreignKeyName;
             return this;
         }
 

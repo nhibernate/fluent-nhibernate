@@ -366,6 +366,7 @@
     <Compile Include="MappingModel\ManyToManyTableNameVisitor.cs" />
     <Compile Include="MappingModel\Output\XmlFilterDefinitionWriter.cs" />
     <Compile Include="MappingModel\Output\XmlFilterWriter.cs" />
+    <Compile Include="Mapping\ColumnPart.cs" />
     <Compile Include="Mapping\FilterDefinition.cs" />
     <Compile Include="Mapping\FilterPart.cs" />
     <Compile Include="Mapping\IFilterDefinition.cs" />
@@ -579,7 +580,7 @@
     <Compile Include="Conventions\IVersionConvention.cs" />
     <Compile Include="Mapping\CascadeExpression.cs" />
     <Compile Include="Mapping\CollectionCascadeExpression.cs" />
-    <Compile Include="Mapping\ColumnNameCollection.cs" />
+    <Compile Include="Mapping\ColumnMappingCollection.cs" />
     <Compile Include="Mapping\DynamicComponentPart.cs" />
     <Compile Include="Mapping\FetchTypeExpression.cs" />
     <Compile Include="Mapping\GenericEnumMapper.cs" />
