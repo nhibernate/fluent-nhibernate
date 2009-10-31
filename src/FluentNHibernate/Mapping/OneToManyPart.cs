@@ -143,6 +143,18 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
+        /// This method is used to set a different key column in this table to be used for joins.
+        /// The output is set as the property-ref attribute in the "key" subelement of the collection
+        /// </summary>
+        /// <param name="propertyRef">The name of the column in this table which is linked to the foreign key</param>
+        /// <returns>OneToManyPart</returns>
+        public OneToManyPart<TChild> PropertyRef(string propertyRef)
+        {
+            keyMapping.PropertyRef = propertyRef;
+            return this;
+        }
+
+        /// <summary>
         /// Sets the order-by clause for this one-to-many relationship.
         /// </summary>
         public OneToManyPart<TChild> OrderBy(string orderBy)

@@ -245,5 +245,13 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ModelShouldMatch(x => x.Key.NotNull.ShouldBeTrue());
         }
 
+        [Test]
+        public void PropertyRefShouldSetModelValue()
+        {
+            OneToMany<ChildObject>(x => x.BagOfChildren)
+                .Mapping(m => m.PropertyRef("prop1"))
+                .ModelShouldMatch(x => x.Key.PropertyRef.ShouldEqual("prop1"));
+        }
+
     }
 }
