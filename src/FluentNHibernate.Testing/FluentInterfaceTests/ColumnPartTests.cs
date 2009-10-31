@@ -49,8 +49,40 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             mapping.NotNull.ShouldBeTrue();
         }
 
+        [Test]
+        public void ShouldSetUnique()
+        {
+            columnPart.Unique();
+            mapping.Unique.ShouldBeTrue();
+        }
 
+        [Test]
+        public void ShouldSetNotUnique()
+        {
+            columnPart.Not.Unique();
+            mapping.Unique.ShouldBeFalse();
+        }
 
+        [Test]
+        public void ShouldSetUniqueKey()
+        {
+            columnPart.UniqueKey("key1");
+            mapping.UniqueKey.ShouldEqual("key1");
+        }
+
+        [Test]
+        public void ShouldSetSqlType()
+        {
+            columnPart.SqlType("ntext");
+            mapping.SqlType.ShouldEqual("ntext");
+        }
+
+        [Test]
+        public void ShouldSetIndex()
+        {
+            columnPart.Index("index1");
+            mapping.Index.ShouldEqual("index1");
+        }
         
     }
 }

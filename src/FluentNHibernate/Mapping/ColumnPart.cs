@@ -48,5 +48,30 @@ namespace FluentNHibernate.Mapping
             nextBool = true;
             return this;
         }
+
+        public ColumnPart Unique()
+        {
+            columnMapping.Unique = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public ColumnPart UniqueKey(string key1)
+        {
+            columnMapping.UniqueKey = key1;
+            return this;
+        }
+
+        public ColumnPart SqlType(string sqlType)
+        {
+            columnMapping.SqlType = sqlType;
+            return this;
+        }
+
+        public ColumnPart Index(string index)
+        {
+            columnMapping.Index = index;
+            return this;
+        }
     }
 }
