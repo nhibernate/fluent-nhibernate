@@ -76,7 +76,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void ShouldPerformKeyColumnMapping()
         {
             OneToMany<ChildObject>(x => x.ListOfChildren)
-                .Mapping(m => m.KeyColumns.Add("col1", c => c.Length(50).Not.Nullable()))
+                .Mapping(m => m.KeyColumns.Add("col1", c => c.Length(50).Not.Nullable()))                
                 .ModelShouldMatch(x =>
                 {
                     var column = x.Key.Columns.Single();

@@ -34,6 +34,16 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.PropertyRef))
                 element.WithAtt("property-ref", mapping.PropertyRef);
+
+            if (mapping.HasValue(x => x.NotNull))
+                element.WithAtt("not-null", mapping.NotNull);
+
+            if (mapping.HasValue(x => x.Update))
+                element.WithAtt("update", mapping.Update);
+
+            if (mapping.HasValue(x => x.Unique))
+                element.WithAtt("unique", mapping.Unique);
+
         }
 
         public override void Visit(ColumnMapping mapping)

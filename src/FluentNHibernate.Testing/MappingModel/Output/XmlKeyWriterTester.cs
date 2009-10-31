@@ -45,6 +45,34 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteNotNullAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<KeyMapping>();
+            testHelper.Check(x => x.NotNull, true).MapsToAttribute("not-null");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteUpdateAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<KeyMapping>();
+            testHelper.Check(x => x.Update, true).MapsToAttribute("update");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteUniqueAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<KeyMapping>();
+            testHelper.Check(x => x.Unique, true).MapsToAttribute("unique");
+
+            testHelper.VerifyAll(writer);
+        }
+
+
+        [Test]
         public void ShouldWriteColumns()
         {
             var mapping = new KeyMapping();

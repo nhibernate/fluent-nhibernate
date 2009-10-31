@@ -922,6 +922,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/map").DoesntHaveAttribute("order-by");
         }
 
+        [Test]
+        public void CanSpecifyUniqueKey()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m => m.HasMany(x => x.MapOfChildren).KeyColumns.Add("key_col", c => c.Unique()))
+                .Element("class/bag/key/column").HasAttribute("unique", "true");                
+        }
+
         private class TestO2MConvention : IHasManyConvention
         {
             public void Accept(IAcceptanceCriteria<IOneToManyCollectionInspector> acceptance)

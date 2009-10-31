@@ -163,5 +163,19 @@ namespace FluentNHibernate.Mapping
             collectionAttributes.Set(x => x.Subselect, subselect);
             return this;
         }
+
+        public OneToManyPart<TChild> KeyUpdate()
+        {
+            keyMapping.Update = nextBool;
+            nextBool = true;
+            return this;
+        }
+
+        public OneToManyPart<TChild> KeyNullable()
+        {
+            keyMapping.NotNull = !nextBool;
+            nextBool = true;
+            return this;
+        }
     }
 }

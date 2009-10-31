@@ -45,6 +45,24 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.OnDelete, value); }
         }
 
+        public bool NotNull
+        {
+            get { return attributes.Get(x => x.NotNull); }
+            set { attributes.Set(x => x.NotNull, value); }
+        }
+
+        public bool Update
+        {
+            get { return attributes.Get(x => x.Update); }
+            set { attributes.Set(x => x.Update, value); }
+        }
+
+        public bool Unique
+        {
+            get { return attributes.Get(x => x.Unique); }
+            set { attributes.Set(x => x.Unique, value); }
+        }
+
         public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
