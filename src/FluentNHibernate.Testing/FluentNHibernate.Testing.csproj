@@ -118,6 +118,7 @@
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaAnyTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaInheritanceTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaIsAnyTests.cs" />
+    <Compile Include="ConventionsTests\AccessConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\ArrayConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\HibernateMappingConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\JoinConventionTests.cs" />
@@ -148,6 +149,17 @@
     <Compile Include="DomainModel\Mapping\StoredProcedureTests.cs" />
     <Compile Include="FluentInterfaceTests\ColumnPartTests.cs" />
     <Compile Include="FluentInterfaceTests\ComponentMapSpecs.cs" />
+    <Compile Include="DomainModel\Access\ComponentModel.cs" />
+    <Compile Include="DomainModel\Access\CompositeIdModel.cs" />
+    <Compile Include="DomainModel\Access\ManyToManyModel.cs" />
+    <Compile Include="DomainModel\Access\ManyToOneModel.cs" />
+    <Compile Include="DomainModel\Access\Mappings\CompositeIdModelMapping.cs" />
+    <Compile Include="DomainModel\Access\Mappings\ManyToManyModelMapping.cs" />
+    <Compile Include="DomainModel\Access\Mappings\ManyToOneModelMapping.cs" />
+    <Compile Include="DomainModel\Access\Mappings\OneToOneModelMapping.cs" />
+    <Compile Include="DomainModel\Access\Mappings\ParentModelMapping.cs" />
+    <Compile Include="DomainModel\Access\OneToOneModel.cs" />
+    <Compile Include="DomainModel\Access\ParentModel.cs" />
     <Compile Include="FluentInterfaceTests\ElementPartTests.cs" />
     <Compile Include="DomainModel\Mapping\FilterTester.cs" />
     <Compile Include="FluentInterfaceTests\ClassMapFilterPartModelGenerationTests.cs" />
