@@ -32,6 +32,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         public void SetUp()
         {
             PersistenceModel model = new PersistenceModel();
+            model.Conventions.Add(new BackfieldAccessConvention());
 
             model.Add(new CompositeIdModelMapping());
             model.Add(new ManyToManyModelMapping());
@@ -120,6 +121,15 @@ namespace FluentNHibernate.Testing.ConventionsTests
         public void many_to_one_is_set()
         {
             Assert.AreEqual(expectedAccess, manyToOne.References.First(x => x.Name.Equals("Parent")).Access);
+        }
+
+
+        private class BackfieldAccessConvention : AccessConvention
+        {
+            protected override void Apply(Type owner, string name, FluentNHibernate.Conventions.Instances.IAccessInstance access)
+            {
+                access.BackField();
+            }
         }
     }
 }
