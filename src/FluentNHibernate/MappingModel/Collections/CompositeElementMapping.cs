@@ -25,10 +25,10 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             visitor.ProcessCompositeElement(this);
 
-            mappedMembers.AcceptVisitor(visitor);
-
             if (Parent != null)
                 visitor.Visit(Parent);
+
+            mappedMembers.AcceptVisitor(visitor);
         }
 
         public TypeReference Class
