@@ -10,17 +10,23 @@ namespace FluentNHibernate.Mapping
     {
         private readonly Type entity;
         private readonly AttributeStore<ElementMapping> attributes = new AttributeStore<ElementMapping>();
-        private IList<string> columns = new List<string>();
+        private readonly ColumnMappingCollection<ElementPart> columns;
 
         public ElementPart(Type entity)
         {
             this.entity = entity;
+            columns = new ColumnMappingCollection<ElementPart>(this);            
         }
 
         public ElementPart Column(string elementColumnName)
         {
             columns.Add(elementColumnName);
             return this;
+        }
+
+        public ColumnMappingCollection<ElementPart> Columns
+        {
+            get { return columns; }
         }
 
         public ElementPart Type<TElement>()
@@ -32,10 +38,10 @@ namespace FluentNHibernate.Mapping
         public ElementMapping GetElementMapping()
         {
             var mapping = new ElementMapping(attributes.CloneInner());
-
             mapping.ContainingEntityType = entity;
 
-            columns.Each(x => mapping.AddColumn(new ColumnMapping { Name = x }));
+            foreach (var column in Columns)
+                mapping.AddColumn(column);
 
             return mapping;
         }

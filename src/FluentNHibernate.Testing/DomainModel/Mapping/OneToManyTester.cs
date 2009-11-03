@@ -929,5 +929,28 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.HasMany(x => x.MapOfChildren).KeyColumns.Add("key_col", c => c.Unique()))
                 .Element("class/bag/key/column").HasAttribute("unique", "true");                
         }
+
+
+        [Test]
+        public void CanSpecifySqlTypeOnElementColumn()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany(x => x.MapOfEnums)
+                                       .AsMap<MapIndex>(
+                                           index => index.Column("IndexColumn"),
+                                           element => element.Columns.Add("elementColumn", c => c.SqlType("ntext"))))
+                .Element("class/map/element/column").HasAttribute("sql-type", "ntext");
+        }
+
+        [Test]
+        public void CanSpecifyAdditionalColumnWithSqlTypeOnElement()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m => m.HasMany(x => x.MapOfChildren)
+                    .Element("colName", e => e.Columns.Add("additionalColumn", c => c.SqlType("ntext"))))                
+                .Element("class/bag/element/column[@name='colName']").DoesntHaveAttribute("sql-type")
+                .Element("class/bag/element/column[@name='additionalColumn']").HasAttribute("sql-type", "ntext");                       
+        }
+
     }
 }
