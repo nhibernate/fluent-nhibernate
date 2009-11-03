@@ -929,18 +929,5 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.HasMany(x => x.MapOfChildren).KeyColumns.Add("key_col", c => c.Unique()))
                 .Element("class/bag/key/column").HasAttribute("unique", "true");                
         }
-
-        private class TestO2MConvention : IHasManyConvention
-        {
-            public void Accept(IAcceptanceCriteria<IOneToManyCollectionInspector> acceptance)
-            {
-                
-            }
-
-            public void Apply(IOneToManyCollectionInstance instance)
-            {
-                instance.Name("test");
-            }
-        }
     }
 }
