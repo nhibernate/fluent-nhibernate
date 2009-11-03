@@ -129,41 +129,41 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         }
 
 
-        public interface IFoo
+        private interface IFoo
         { }
 
-        public class Base : IFoo
+        private class Base : IFoo
         { }
 
-        public abstract class BaseImpl : Base
+        private abstract class BaseImpl : Base
         { }
 
-        public class Foo<T> : BaseImpl, IFoo
+        private class Foo<T> : BaseImpl, IFoo
         { }
 
-        public class FooMap : ClassMap<IFoo>
+        private class FooMap : ClassMap<IFoo>
         { }
 
-        public class BaseMap : ClassMap<Base>
+        private class BaseMap : ClassMap<Base>
         { }
 
-        public class BaseImplMap : SubclassMap<BaseImpl>
+        private class BaseImplMap : SubclassMap<BaseImpl>
         { }
 
-        public abstract class GenericFooMap<T> : SubclassMap<Foo<T>>
+        private abstract class GenericFooMap<T> : SubclassMap<Foo<T>>
         { }
 
-        public class StringFooMap : GenericFooMap<string>
+        private class StringFooMap : GenericFooMap<string>
         { }
 
 
-        public interface IStand
+        private interface IStand
         { }
 
-        public class StandAlone : IStand
+        private class StandAlone : IStand
         { }
 
-        public class StandAloneMap : SubclassMap<StandAlone>
+        private class StandAloneMap : SubclassMap<StandAlone>
         { }
     }
 }
