@@ -43,10 +43,5 @@ namespace FluentNHibernate.Utils
         {
             return type.GetInterfaces().Contains(interfaceType);
         }
-
-        public static bool IsTopLevel(this Type type)
-        {
-            return type.BaseType == typeof(object);
-        }
     }
 }

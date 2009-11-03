@@ -63,8 +63,13 @@ namespace FluentNHibernate
         {
             if (mapping.Discriminator == null)
                 return new JoinedSubclassMapping();
-            
+
             return new SubclassMapping();
+        }
+
+        private bool IsMapped(Type type, IEnumerable<IIndeterminateSubclassMappingProvider> providers)
+        {
+            return providers.Any(x => x.EntityType == type);
         }
 
         /// <summary>
@@ -72,50 +77,86 @@ namespace FluentNHibernate
         /// this can be a class or subclass; also takes a list of subclass providers. The providers are then iterated
         /// and added to a dictionary key'd by the types "distance" from the parentType; distance being the number of levels
         /// between parentType and the subclass-type.
+        /// 
+        /// By default if the Parent type is an interface the level will always be zero. At this time there is no check for
+        /// hierarchical interface inheritance.
         /// </summary>
         /// <param name="parentType">Starting point, parent type.</param>
-        /// <param name="providers">List of subclasses</param>
+        /// <param name="subProviders">List of subclasses</param>
         /// <returns>Dictionary key'd by the distance from the parentType.</returns>
-        private IDictionary<int, IList<IIndeterminateSubclassMappingProvider>> SortByDistanceFrom(Type parentType, IEnumerable<IIndeterminateSubclassMappingProvider> providers)
+        private IDictionary<int, IList<IIndeterminateSubclassMappingProvider>> SortByDistanceFrom(Type parentType, IEnumerable<IIndeterminateSubclassMappingProvider> subProviders)
         {
             var arranged = new Dictionary<int, IList<IIndeterminateSubclassMappingProvider>>();
 
-            foreach (var provider in providers)
+            foreach (var subclassProvider in subProviders)
             {
-                var subclassType = provider.EntityType;
+                var subclassType = subclassProvider.EntityType;
                 var level = 0;
 
-                // while not reached parent yet, or have reached the top without finding the parent and parent is an interface and
-                // the current level implements that interface
-                while (subclassType.BaseType != parentType ||
-                    (subclassType.IsTopLevel() && parentType.IsInterface && subclassType.HasInterface(parentType)))
-                {
-                    if (IsMapped(subclassType.BaseType, providers))
-                        level++;
+                bool implOfParent = parentType.IsInterface
+                           ? DistanceFromParentInterface(parentType, subclassType, ref level)
+                           : DistanceFromParentBase(parentType, subclassType.BaseType, ref level);
 
-                    // reached the top, stop
-                    if (subclassType.IsTopLevel())
-                        break;
-
-                    subclassType = subclassType.BaseType;
-                }
-
-                // reached the top and the parent isn't an interface (or the current level doesn't implement it)
-                if (subclassType.IsTopLevel() && !(parentType.IsInterface && subclassType.HasInterface(parentType)))
-                    continue;
+                if (!implOfParent) continue;
 
                 if (!arranged.ContainsKey(level))
                     arranged[level] = new List<IIndeterminateSubclassMappingProvider>();
 
-                arranged[level].Add(provider);
+                arranged[level].Add(subclassProvider);
             }
 
             return arranged;
         }
 
-        private bool IsMapped(Type type, IEnumerable<IIndeterminateSubclassMappingProvider> providers)
+        /// <summary>
+        /// The evalType starts out as the original subclass. The class hiearchy is only
+        /// walked if the subclass inherits from a class that is included in the subclassProviders.
+        /// </summary>
+        /// <param name="parentType"></param>
+        /// <param name="evalType"></param>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        private bool DistanceFromParentInterface(Type parentType, Type evalType, ref int level)
         {
-            return providers.Any(x => x.EntityType == type);
+            if (!evalType.HasInterface(parentType)) return false;
+
+            if (!(evalType == typeof(object)) &&
+                IsMapped(evalType.BaseType, subclassProviders))
+            {
+                //Walk the tree if the subclasses base class is also in the subclassProviders
+                level++;
+                DistanceFromParentInterface(parentType, evalType.BaseType, ref level);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// The evalType is always one class higher in the hiearchy starting from the original subclass. The class 
+        /// hiearchy is walked until the IsTopLevel (base class is Object) is met. The level is only incremented if 
+        /// the subclass inherits from a class that is also in the subclassProviders.
+        /// </summary>
+        /// <param name="parentType"></param>
+        /// <param name="evalType"></param>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        private bool DistanceFromParentBase(Type parentType, Type evalType, ref int level)
+        {
+            var evalImplementsParent = false;
+            if (evalType == parentType)
+                evalImplementsParent = true;
+
+            if (!evalImplementsParent && !(evalType == typeof(object)))
+            {
+                //If the eval class does not inherit the parent but it is included
+                //in the subclassprovides, then the original subclass can not inherit 
+                //directly from the parent.
+                if (IsMapped(evalType, subclassProviders))
+                    level++;
+                evalImplementsParent = DistanceFromParentBase(parentType, evalType.BaseType, ref level);
+            }
+
+            return evalImplementsParent;
         }
     }
 }
