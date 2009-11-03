@@ -143,6 +143,7 @@
     <Compile Include="FluentInterfaceTests\ElementPartTests.cs" />
     <Compile Include="DomainModel\Mapping\FilterTester.cs" />
     <Compile Include="FluentInterfaceTests\ClassMapFilterPartModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\KeyManyToOnePartTests.cs" />
     <Compile Include="FluentInterfaceTests\ManyToManyPartAsTernaryTests.cs" />
     <Compile Include="FluentInterfaceTests\OneToManyPartAsTernaryTests.cs" />
     <Compile Include="FluentInterfaceTests\WhereTests.cs" />

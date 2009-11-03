@@ -59,6 +59,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 				.Element("class/composite-id/key-many-to-one/column").HasAttribute("name", "SomeColumn");
 		}
 
+	    [Test]
+	    public void KeyManyToOneForeignKey()
+	    {
+            new MappingTester<CompIdTarget>()
+                .ForMapping(c => c.CompositeId().KeyReference(x => x.Child, "SomeColumn", p => p.ForeignKey("fk1")))
+                .Element("class/composite-id/key-many-to-one").HasAttribute("foreign-key", "fk1");
+	    }
+
+
 		[Test]
 		public void MixedKeyPropertyAndManyToOne()
 		{

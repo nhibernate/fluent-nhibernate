@@ -72,7 +72,7 @@ namespace FluentNHibernate.Mapping
 		{
 		    var property = ReflectionHelper.GetProperty(expression);
 
-		    return KeyReference(property, property.Name);
+		    return KeyReference(property, property.Name, null);
 		}
 
 		/// <summary>
@@ -85,10 +85,25 @@ namespace FluentNHibernate.Mapping
 		{
             var property = ReflectionHelper.GetProperty(expression);
 
-            return KeyReference(property, columnName);
+            return KeyReference(property, columnName, null);
 		}
 
-        protected virtual CompositeIdentityPart<T> KeyReference(PropertyInfo property, string columnName)
+
+        /// <summary>
+        /// Defines a reference to be used as a many-to-one key for this composite-id with an explicit column name.
+        /// </summary>
+        /// <param name="expression">A member access lambda expression for the property</param>
+        /// <param name="columnName">The column name in the database to use for this key, or null to use the property name</param>
+        /// <param name="customMapping">A lambda expression specifying additional settings for the key reference</param>
+        /// <returns>The composite identity part fluent interface</returns>
+        public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression, string columnName, Action<KeyManyToOnePart> customMapping)
+        {
+            var property = ReflectionHelper.GetProperty(expression);
+
+            return KeyReference(property, columnName, customMapping);
+        }
+
+        protected virtual CompositeIdentityPart<T> KeyReference(PropertyInfo property, string columnName, Action<KeyManyToOnePart> customMapping)
         {
             var key = new KeyManyToOneMapping
             {
@@ -98,7 +113,12 @@ namespace FluentNHibernate.Mapping
             };
             key.AddColumn(new ColumnMapping { Name = columnName });
 
-            keyManyToOnes.Add(key);
+            var keyPart = new KeyManyToOnePart(key);
+
+            if (customMapping != null)
+                customMapping(keyPart);
+
+            keyManyToOnes.Add(key);            
 
             return this;
         }

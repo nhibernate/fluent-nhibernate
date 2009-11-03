@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.Mapping;
@@ -20,11 +21,11 @@ namespace FluentNHibernate.Automapping
             return base.KeyProperty(property, columnName);
         }
 
-        protected override CompositeIdentityPart<T> KeyReference(PropertyInfo property, string columnName)
+        protected override CompositeIdentityPart<T> KeyReference(PropertyInfo property, string columnName, Action<KeyManyToOnePart> customMapping)
         {
             mappedProperties.Add(property.Name);
 
-            return base.KeyReference(property, columnName);
+            return base.KeyReference(property, columnName, customMapping);
         }
     }
 }

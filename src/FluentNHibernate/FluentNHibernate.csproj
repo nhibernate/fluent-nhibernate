@@ -370,6 +370,7 @@
     <Compile Include="Mapping\FilterDefinition.cs" />
     <Compile Include="Mapping\FilterPart.cs" />
     <Compile Include="Mapping\IFilterDefinition.cs" />
+    <Compile Include="Mapping\KeyManyToOnePart.cs" />
     <Compile Include="Mapping\Providers\IFilterMappingProvider.cs" />
     <Compile Include="Utils\ReflectionExtensions.cs" />
     <Compile Include="Mapping\PolymorphismBuilder.cs" />
