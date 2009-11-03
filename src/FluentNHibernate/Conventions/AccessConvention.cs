@@ -15,8 +15,7 @@ namespace FluentNHibernate.Conventions
           IComponentConvention,
           IReferenceConvention,
           IHasOneConvention,
-          IHasManyConvention,
-          IHasManyToManyConvention
+          ICollectionConvention
     {
         protected abstract void Apply(Type owner, string name, IAccessInstance access);
 
@@ -45,20 +44,14 @@ namespace FluentNHibernate.Conventions
             Apply(instance.EntityType, instance.Name, instance.Access);
         }
 
-        public virtual void Apply(IOneToManyCollectionInstance instance)
-        {
-            string name = ((IOneToManyCollectionInspector)instance).Name;
-            Apply(instance.EntityType, name, instance.Access);
-        }
-
         public virtual void Apply(IManyToOneInstance instance)
         {
             Apply(instance.EntityType, instance.Name, instance.Access);
         }
 
-        public virtual void Apply(IManyToManyCollectionInstance instance)
+        public virtual void Apply(ICollectionInstance instance)
         {
-            string name = ((IManyToManyCollectionInspector)instance).Name;
+            string name = ((ICollectionInspector)instance).Name;
             Apply(instance.EntityType, name, instance.Access);
         }
     }
