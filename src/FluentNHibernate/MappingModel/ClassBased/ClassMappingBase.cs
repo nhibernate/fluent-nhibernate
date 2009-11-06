@@ -73,6 +73,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return subclasses; }
         }
 
+        public IEnumerable<StoredProcedureMapping> StoredProcedures
+        {
+            get { return mappedMembers.StoredProcedures; }
+        }
+
         public void AddProperty(PropertyMapping property)
         {
             mappedMembers.AddProperty(property);
@@ -148,6 +153,10 @@ namespace FluentNHibernate.MappingModel.ClassBased
             subclasses.Add(subclass);
         }
 
+        public void AddStoredProcedure(StoredProcedureMapping mapping)
+        {
+            mappedMembers.AddStoredProcedure(mapping);
+        }
         #endregion
 
         public override string ToString()

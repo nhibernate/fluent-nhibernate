@@ -145,5 +145,10 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             return new ModelTester<CompositeElementPart<T>, CompositeElementMapping>(() => new CompositeElementPart<T>(typeof(MappedObject)), x => ((ICompositeElementMappingProvider)x).GetCompositeElementMapping());
         }
+
+        protected ModelTester<StoredProcedurePart<T>, StoredProcedureMapping> StoredProcedure<T>()
+        {
+            return new ModelTester<StoredProcedurePart<T>, StoredProcedureMapping>(() => new StoredProcedurePart<T>(null, null), x => x.GetStoredProcedureMapping());
+        }
     }
 }

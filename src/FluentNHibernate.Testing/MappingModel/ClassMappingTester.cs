@@ -120,6 +120,28 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
+        public void Can_add_stored_procedure()
+        {
+            var storedProcedure = new StoredProcedureMapping();
+            _classMapping.AddStoredProcedure(storedProcedure);
+            _classMapping.StoredProcedures.ShouldContain(storedProcedure);
+        }
+
+        [Test]
+        public void Should_pass_stored_procedure_to_the_visitor()
+        {
+            var classMap = new ClassMapping { Name = "class1" };
+            classMap.AddStoredProcedure(new StoredProcedureMapping());
+
+            var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
+            visitor.Expect(x => x.Visit(classMap.StoredProcedures.First()));
+
+            classMap.AcceptVisitor(visitor);
+
+            visitor.VerifyAllExpectations();
+        }
+
+        [Test]
         public void Should_pass_the_discriminator_to_the_visitor()
         {
             var classMap = new ClassMapping {Name = "class1" };
@@ -132,5 +154,7 @@ namespace FluentNHibernate.Testing.MappingModel
 
             visitor.VerifyAllExpectations();     
         }
+
+ 
     }
 }

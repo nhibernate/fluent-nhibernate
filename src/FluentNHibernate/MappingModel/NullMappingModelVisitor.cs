@@ -182,6 +182,11 @@ namespace FluentNHibernate.MappingModel
 
         }
 
+        public virtual void ProcessStoredProcedure(StoredProcedureMapping mapping)
+        {
+            
+        }
+
         public virtual void ProcessIndex(IIndexMapping indexMapping)
         {
 
@@ -364,6 +369,11 @@ namespace FluentNHibernate.MappingModel
         public virtual void Visit(FilterDefinitionMapping mapping)
         {
 
+        }
+
+        public virtual void Visit(StoredProcedureMapping mapping)
+        {
+            
         }
     }
 }

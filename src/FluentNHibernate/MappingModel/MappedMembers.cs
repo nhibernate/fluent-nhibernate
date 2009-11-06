@@ -15,6 +15,7 @@ namespace FluentNHibernate.MappingModel
         private readonly List<AnyMapping> anys;
         private readonly List<JoinMapping> joins;
         private readonly List<FilterMapping> filters;
+        private readonly List<StoredProcedureMapping> storedProcedures;
 
         public MappedMembers()
         {
@@ -26,6 +27,7 @@ namespace FluentNHibernate.MappingModel
             anys = new List<AnyMapping>();
             joins = new List<JoinMapping>();
             filters = new List<FilterMapping>();
+            storedProcedures = new List<StoredProcedureMapping>();
         }
 
         public IEnumerable<PropertyMapping> Properties
@@ -66,6 +68,11 @@ namespace FluentNHibernate.MappingModel
         public IEnumerable<FilterMapping> Filters
         {
             get { return filters; }
+        }
+
+        public IEnumerable<StoredProcedureMapping> StoredProcedures
+        {
+            get { return storedProcedures; }
         }
 
         public void AddProperty(PropertyMapping property)
@@ -193,11 +200,19 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var filter in filters)
                 visitor.Visit(filter);
+
+            foreach (var storedProcedure in storedProcedures)
+                visitor.Visit(storedProcedure);
         }
 
         public bool IsSpecified(string property)
         {
             return false;
+        }
+
+        public void AddStoredProcedure(StoredProcedureMapping mapping)
+        {
+            storedProcedures.Add(mapping);
         }
     }
 }

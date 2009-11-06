@@ -61,5 +61,13 @@ namespace FluentNHibernate.MappingModel.Output
 
             document.ImportAndAppendChild(xml);
         }
+
+        public override void Visit(StoredProcedureMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<StoredProcedureMapping>();
+            var xml = writer.Write(mapping);
+
+            document.ImportAndAppendChild(xml);
+        }
     }
 }

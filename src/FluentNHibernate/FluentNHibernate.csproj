@@ -366,12 +366,17 @@
     <Compile Include="MappingModel\ManyToManyTableNameVisitor.cs" />
     <Compile Include="MappingModel\Output\XmlFilterDefinitionWriter.cs" />
     <Compile Include="MappingModel\Output\XmlFilterWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlStoredProcedureWriter.cs" />
+    <Compile Include="MappingModel\StoredProcedureMapping.cs" />
+    <Compile Include="Mapping\CheckTypeExpression.cs" />
     <Compile Include="Mapping\ColumnPart.cs" />
     <Compile Include="Mapping\FilterDefinition.cs" />
     <Compile Include="Mapping\FilterPart.cs" />
     <Compile Include="Mapping\IFilterDefinition.cs" />
     <Compile Include="Mapping\KeyManyToOnePart.cs" />
     <Compile Include="Mapping\Providers\IFilterMappingProvider.cs" />
+    <Compile Include="Mapping\Providers\IStoredProcedureMappingProvider.cs" />
+    <Compile Include="Mapping\StoredProcedurePart.cs" />
     <Compile Include="Utils\ReflectionExtensions.cs" />
     <Compile Include="Mapping\PolymorphismBuilder.cs" />
     <Compile Include="Mapping\SchemaActionBuilder.cs" />

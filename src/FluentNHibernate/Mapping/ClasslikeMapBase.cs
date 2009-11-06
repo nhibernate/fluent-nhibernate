@@ -18,6 +18,7 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
         protected readonly IList<IAnyMappingProvider> anys = new List<IAnyMappingProvider>();
         protected readonly IList<IFilterMappingProvider> filters = new List<IFilterMappingProvider>();
+        protected readonly IList<IStoredProcedureMappingProvider> storedProcedures = new List<IStoredProcedureMappingProvider>();
 
         public PropertyPart Map(Expression<Func<T, object>> expression)
         {
@@ -268,6 +269,15 @@ namespace FluentNHibernate.Mapping
         public ManyToManyPart<TChild> HasManyToMany<TChild>(Expression<Func<T, object>> expression)
         {
             return MapHasManyToMany<TChild, object>(expression);
+        }
+
+        public StoredProcedurePart<T> StoredProcedurePart<T>(string element, string innerText)
+        {
+            var part = new StoredProcedurePart<T>(element, innerText);
+
+            storedProcedures.Add(part);
+
+            return part;
         }
 
         protected virtual IEnumerable<IPropertyMappingProvider> Properties

@@ -120,6 +120,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterWriter<FilterDefinitionMapping>(c =>
                 new XmlFilterDefinitionWriter());
+
+            RegisterWriter<StoredProcedureMapping>(c =>
+                new XmlStoredProcedureWriter(c.Resolve<IXmlWriterServiceLocator>()));
         }
 
         private void RegisterIdWriters()

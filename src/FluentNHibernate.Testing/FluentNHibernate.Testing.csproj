@@ -109,7 +109,6 @@
     <Compile Include="Cfg\Db\OracleDataClientConfigurationTester.cs" />
     <Compile Include="Cfg\ExceptionSerializationTests.cs" />
     <Compile Include="ConventionFinderTests\AddingTypeTests.cs" />
-    <Compile Include="ConventionFinderTests\FindTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaCollectionTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaAnyTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaInheritanceTests.cs" />
@@ -136,6 +135,7 @@
     <Compile Include="ConventionsTests\DefaultAccessHelperTests.cs" />
     <Compile Include="ConventionsTests\DefaultCascadeHelperTests.cs" />
     <Compile Include="ConventionsTests\DefaultLazyHelperTests.cs" />
+    <Compile Include="ConventionFinderTests\FindTests.cs" />
     <Compile Include="ConventionsTests\ForeignKeyConventionTests.cs" />
     <Compile Include="ConventionsTests\Inspection\HibernateMappingInspectorMapsToHibernateMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ValueTypes\SchemaActionTests.cs" />
@@ -146,11 +146,13 @@
     <Compile Include="FluentInterfaceTests\KeyManyToOnePartTests.cs" />
     <Compile Include="FluentInterfaceTests\ManyToManyPartAsTernaryTests.cs" />
     <Compile Include="FluentInterfaceTests\OneToManyPartAsTernaryTests.cs" />
+    <Compile Include="FluentInterfaceTests\StoredProcedurePartGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\WhereTests.cs" />
     <Compile Include="MappingModel\Defaults\MutableDefaultsTester.cs" />
     <Compile Include="MappingModel\Output\XmlDiscriminatorWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterDefinitionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlStoredProcedureWriterTester.cs" />
     <Compile Include="ModelTestExtensions.cs" />
     <Compile Include="ConventionsTests\MultipleHelperConventions.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\ArrayConventionTests.cs" />

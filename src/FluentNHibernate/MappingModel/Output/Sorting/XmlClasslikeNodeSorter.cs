@@ -30,7 +30,10 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
                 { "subclass", new SortValue { Position = Last, Level = 3 } },
                 { "join", new SortValue { Position = Last, Level = 3 } },
                 { "any", new SortValue { Position = Anywhere, Level = 2 } },
-                { "filter", new SortValue { Position = Last, Level = 5 } }
+                { "filter", new SortValue { Position = Last, Level = 5 } },
+                { "sql-insert", new SortValue { Position = Last, Level = 5 } },
+                { "sql-update", new SortValue { Position = Last, Level = 5 } },
+                { "sql-delete", new SortValue { Position = Last, Level = 5 } },
             };
         }
 
