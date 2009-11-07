@@ -271,12 +271,30 @@ namespace FluentNHibernate.Mapping
             return MapHasManyToMany<TChild, object>(expression);
         }
 
-        public StoredProcedurePart<T> StoredProcedurePart<T>(string element, string innerText)
+        public StoredProcedurePart SqlInsert(string innerText)
         {
-            var part = new StoredProcedurePart<T>(element, innerText);
+            return StoredProcedure("sql-insert", innerText);
+        }
 
+        public StoredProcedurePart SqlUpdate(string innerText)
+        {
+            return StoredProcedure("sql-update", innerText);
+        }     
+
+        public StoredProcedurePart SqlDelete(string innerText)
+        {
+            return StoredProcedure("sql-delete", innerText);
+        }
+
+        public StoredProcedurePart SqlDeleteAll(string innerText)
+        {
+            return StoredProcedure("sql-delete-all", innerText);
+        }
+
+        protected StoredProcedurePart StoredProcedure(string element, string innerText)
+        {
+            var part = new StoredProcedurePart(element, innerText);
             storedProcedures.Add(part);
-
             return part;
         }
 

@@ -3,9 +3,9 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping
 {
-    public class StoredProcedurePart<T> : IStoredProcedureMappingProvider
+    public class StoredProcedurePart : IStoredProcedureMappingProvider
     {
-        private readonly CheckTypeExpression<StoredProcedurePart<T>> check;
+        private readonly CheckTypeExpression<StoredProcedurePart> check;
         private readonly string _element;
         private readonly string _innerText;
         private readonly AttributeStore<StoredProcedureMapping> attributes = new AttributeStore<StoredProcedureMapping>();
@@ -16,11 +16,11 @@ namespace FluentNHibernate.Mapping
             _element = element;
             _innerText = innerText;
 
-            check = new CheckTypeExpression<StoredProcedurePart<T>>(this, value => attributes.Set(x => x.Check, value));
+            check = new CheckTypeExpression<StoredProcedurePart>(this, value => attributes.Set(x => x.Check, value));
         }
 
 
-        public CheckTypeExpression<StoredProcedurePart<T>> Check
+        public CheckTypeExpression<StoredProcedurePart> Check
         {
             get { return check; }
         }

@@ -10,7 +10,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void CheckTypeShouldBeAbleToSetToNone()
         {
-            StoredProcedure<ChildObject>()
+            StoredProcedure()
                 .Mapping(m => m.Check.None())
                 .ModelShouldMatch(x => x.Check.ShouldEqual("none"));
         }    
@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void CheckTypeShouldBeAbleToSetToRowCount()
         {
-            StoredProcedure<ChildObject>()
+            StoredProcedure()
                 .Mapping(m => m.Check.RowCount())
                 .ModelShouldMatch(x => x.Check.ShouldEqual("rowcount"));
         }
