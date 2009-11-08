@@ -32,7 +32,8 @@ namespace FluentNHibernate.Mapping
         {
             return new ComponentMapping(store)
             {
-                ContainingEntityType = entity
+                ContainingEntityType = entity,
+                Class = new TypeReference(typeof(T))
             };
         }
 
