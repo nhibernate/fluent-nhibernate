@@ -147,6 +147,15 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+        public virtual CompositeIdentityPart<TId> CompositeId<TId>(Expression<Func<T, TId>> expression)
+        {
+            var part = new CompositeIdentityPart<TId>(ReflectionHelper.GetProperty(expression).Name);
+
+            compositeId = part;
+
+            return part;
+        }
+
         public VersionPart Version(Expression<Func<T, object>> expression)
         {
             return Version(ReflectionHelper.GetProperty(expression));

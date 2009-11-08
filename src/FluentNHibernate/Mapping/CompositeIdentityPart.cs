@@ -23,6 +23,11 @@ namespace FluentNHibernate.Mapping
             access = new AccessStrategyBuilder<CompositeIdentityPart<T>>(this, value => attributes.Set(x => x.Access, value));
         }
 
+        public CompositeIdentityPart(string name) : this()
+        {
+            attributes.Set(x => x.Name, name);
+        }
+
         /// <summary>
 		/// Defines a property to be used as a key for this composite-id.
 		/// </summary>

@@ -95,7 +95,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/*[1]").HasName("composite-id");
         }
 
-
+        [Test]
+        public void ComponentNamesAreSet()
+        {
+            new MappingTester<CompIdTarget>()
+                .ForMapping(c => c.CompositeId(x => x.Child).KeyProperty(x => x.ChildId))
+                .Element("class/composite-id/key-property")
+                .HasAttribute("name", "ChildId")
+                .RootElement.Element("class/composite-id")
+                .HasAttribute("name", "Child");
+          
+        }
 
 		public class CompIdTarget
 		{
