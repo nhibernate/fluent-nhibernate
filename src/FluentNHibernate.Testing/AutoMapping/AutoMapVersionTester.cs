@@ -63,9 +63,22 @@ namespace FluentNHibernate.Testing.Automapping
             mapping.Version.UnsavedValue.ShouldEqual(null);
         }
 
+        [Test]
+        public void ShouldMapInheritedByteArray()
+        {
+            var mapping = new ClassMapping { Type = typeof(SubTarget) };
+
+            mapper.Map(mapping, typeof(SubTarget).GetProperty("Version"));
+
+            Assert.That(mapping.Version, Is.Not.Null);
+        }
+
         private class Target
         {
             public byte[] Version { get; set; }
         }
+
+        private class SubTarget : Target
+        {}
     }
 }
