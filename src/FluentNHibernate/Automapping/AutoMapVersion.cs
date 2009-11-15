@@ -19,8 +19,7 @@ namespace FluentNHibernate.Automapping
 
         public void Map(ClassMappingBase classMap, PropertyInfo property)
         {
-            if (property.DeclaringType != classMap.Type || !(classMap is ClassMapping))
-                return;
+            if (!(classMap is ClassMapping)) return;
 
             var version = new VersionMapping
             {
