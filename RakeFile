@@ -214,3 +214,10 @@ task :coverage_for_inspection_dsl do
 											'.*\.I.*Alteration\..*'] # Any IXAlteration explicit implementations
   ncover.run
 end
+
+desc "Open solution in VS"
+task :sln do
+  Thread.new do
+    system "devenv src/FluentNHibernate.sln"
+  end
+end
