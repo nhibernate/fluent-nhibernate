@@ -129,7 +129,7 @@ namespace FluentNHibernate.Automapping
 
         protected void TryToMapProperty(ClassMappingBase mapping, Member property, IList<string> mappedProperties)
         {
-            if (property.HasIndexParameters)
+            if (!property.HasIndexParameters)
             {
                 foreach (var rule in mappingRules)
                 {

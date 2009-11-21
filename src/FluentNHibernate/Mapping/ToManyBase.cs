@@ -107,7 +107,7 @@ namespace FluentNHibernate.Mapping
 
         private string GetDefaultName()
         {
-            if (member is MethodInfo)
+            if (member.IsMethod)
             {
                 // try to guess the backing field name (GetSomething -> something)
                 if (member.Name.StartsWith("Get"))

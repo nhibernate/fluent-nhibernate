@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FluentNHibernate
 {
-    public abstract class Member
+    public abstract class Member : IEquatable<Member>
     {
         public abstract string Name { get; }
         public abstract Type PropertyType { get; }
@@ -14,12 +14,61 @@ namespace FluentNHibernate
         public abstract MemberInfo MemberInfo { get; }
         public abstract Type DeclaringType { get; }
         public abstract bool HasIndexParameters { get; }
+        public abstract bool IsMethod { get; }
+        public abstract bool IsField { get; }
+        public abstract bool IsProperty { get; }
         //   GetIndexParameters().Length == 0
+
+        public bool Equals(Member other)
+        {
+            return !ReferenceEquals(null, other);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(Member)) return false;
+            return Equals((Member)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return 0;
+        }
+
+        public static bool operator ==(Member left, Member right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Member left, Member right)
+        {
+            return !Equals(left, right);
+        }
     }
 
     internal class FieldMember : Member
     {
         private readonly FieldInfo _fieldInfo;
+
+        public bool Equals(FieldMember other)
+        {
+            return !ReferenceEquals(null, other);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(FieldMember)) return false;
+            return Equals((FieldMember)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return 0;
+        }
 
         public FieldMember(FieldInfo fieldInfo)
         {
@@ -50,11 +99,41 @@ namespace FluentNHibernate
         {
             get { return false; }
         }
+        public override bool IsMethod
+        {
+            get { return false; }
+        }
+        public override bool IsField
+        {
+            get { return true; }
+        }
+        public override bool IsProperty
+        {
+            get { return false; }
+        }
     }
 
     internal class MethodMember : Member
     {
         private readonly MethodInfo _methodInfo;
+
+        public bool Equals(MethodMember other)
+        {
+            return !ReferenceEquals(null, other);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(MethodMember)) return false;
+            return Equals((MethodMember)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return 0;
+        }
 
         public MethodMember(MethodInfo propertyInfo)
         {
@@ -85,6 +164,18 @@ namespace FluentNHibernate
         {
             get { return false; }
         }
+        public override bool IsMethod
+        {
+            get { return true; }
+        }
+        public override bool IsField
+        {
+            get { return false; }
+        }
+        public override bool IsProperty
+        {
+            get { return false; }
+        }
     }
 
     internal class PropertyMember : Member
@@ -94,6 +185,24 @@ namespace FluentNHibernate
         public PropertyMember(PropertyInfo propertyInfo)
         {
             _propertyInfo = propertyInfo;
+        }
+
+        public bool Equals(PropertyMember other)
+        {
+            return !ReferenceEquals(null, other);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(PropertyMember)) return false;
+            return Equals((PropertyMember)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return 0;
         }
 
         public override string Name
@@ -119,6 +228,18 @@ namespace FluentNHibernate
         public override bool HasIndexParameters
         {
             get { return _propertyInfo.GetIndexParameters().Length > 0; }
+        }
+        public override bool IsMethod
+        {
+            get { return false; }
+        }
+        public override bool IsField
+        {
+            get { return false; }
+        }
+        public override bool IsProperty
+        {
+            get { return true; }
         }
     }
 

@@ -56,7 +56,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public bool IsMethodAccess
         {
-            get { return mapping.Member is MethodInfo; }
+            get { return mapping.Member.IsMethod; }
         }
 
         public MemberInfo Member
