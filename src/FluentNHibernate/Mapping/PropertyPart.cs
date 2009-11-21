@@ -11,7 +11,7 @@ namespace FluentNHibernate.Mapping
 {
     public class PropertyPart : IPropertyMappingProvider
     {
-        private readonly PropertyInfo property;
+        private readonly Member property;
         private readonly Type parentType;
         private readonly AccessStrategyBuilder<PropertyPart> access;
         private readonly PropertyGeneratedBuilder generated;
@@ -21,7 +21,7 @@ namespace FluentNHibernate.Mapping
         
         private bool nextBool = true;
 
-        public PropertyPart(PropertyInfo property, Type parentType)
+        public PropertyPart(Member property, Type parentType)
         {
             defaultColumn = new ColumnMapping {Name = property.Name};
             columns = new ColumnMappingCollection<PropertyPart>(this);            
@@ -42,7 +42,7 @@ namespace FluentNHibernate.Mapping
             var mapping = new PropertyMapping(attributes.CloneInner())
             {
                 ContainingEntityType = parentType,
-                PropertyInfo = property
+                Member = property
             };
 
             if (columns.Count() == 0)
@@ -58,7 +58,7 @@ namespace FluentNHibernate.Mapping
             }
 
             if (!mapping.IsSpecified("Name"))
-                mapping.Name = mapping.PropertyInfo.Name;
+                mapping.Name = mapping.Member.Name;
 
             if (!mapping.IsSpecified("Type"))
                 mapping.SetDefaultValue("Type", GetDefaultType());

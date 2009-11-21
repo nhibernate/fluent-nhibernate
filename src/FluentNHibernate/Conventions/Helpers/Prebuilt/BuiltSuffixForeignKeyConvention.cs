@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt
 {
@@ -12,7 +13,7 @@ namespace FluentNHibernate.Conventions.Helpers.Prebuilt
             this.suffix = suffix;
         }
 
-        protected override string GetKeyName(PropertyInfo property, Type type)
+        protected override string GetKeyName(Member property, Type type)
         {
             return (property != null ? property.Name : type.Name) + suffix;
         }

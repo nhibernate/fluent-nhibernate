@@ -13,7 +13,7 @@ namespace FluentNHibernate.Mapping
         private readonly AccessStrategyBuilder<DynamicComponentPart<T>> access;
         private readonly AttributeStore<DynamicComponentMapping> attributes;
 
-        public DynamicComponentPart(Type entity, PropertyInfo property)
+        public DynamicComponentPart(Type entity, Member property)
             : this(entity, property.Name, new AttributeStore())
         {}
 
@@ -95,7 +95,7 @@ namespace FluentNHibernate.Mapping
         public PropertyPart Map<TProperty>(string key)
         {
             var property = new DummyPropertyInfo(key, typeof(TProperty));
-            var propertyMap = new PropertyPart(property, typeof(T));
+            var propertyMap = new PropertyPart(property.ToMember(), typeof(T));
 
             properties.Add(propertyMap);
 

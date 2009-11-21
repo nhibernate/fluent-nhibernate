@@ -13,7 +13,7 @@ namespace FluentNHibernate.Mapping
         private readonly AccessStrategyBuilder<ComponentPart<T>> access;
         private readonly AttributeStore<ComponentMapping> attributes;
 
-        public ComponentPart(Type entity, PropertyInfo property)
+        public ComponentPart(Type entity, Member property)
             : this(entity, property.Name, new AttributeStore())
         {}
 

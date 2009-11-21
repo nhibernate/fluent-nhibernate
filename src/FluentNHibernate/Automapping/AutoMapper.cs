@@ -123,13 +123,13 @@ namespace FluentNHibernate.Automapping
         {
             foreach (var property in entityType.GetProperties())
             {
-                TryToMapProperty(mapping, property, mappedProperties);
+                TryToMapProperty(mapping, property.ToMember(), mappedProperties);
             }
         }
 
-        protected void TryToMapProperty(ClassMappingBase mapping, PropertyInfo property, IList<string> mappedProperties)
+        protected void TryToMapProperty(ClassMappingBase mapping, Member property, IList<string> mappedProperties)
         {
-            if (property.GetIndexParameters().Length == 0)
+            if (property.HasIndexParameters)
             {
                 foreach (var rule in mappingRules)
                 {

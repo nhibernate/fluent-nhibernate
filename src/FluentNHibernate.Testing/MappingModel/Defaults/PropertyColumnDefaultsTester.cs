@@ -47,9 +47,9 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
             mapping.Columns.First().NotNull.ShouldBeTrue();
         }
 
-        private PropertyInfo Prop(Expression<Func<PropertyTarget, object>> propertyAccessor)
+        private Member Prop(Expression<Func<PropertyTarget, object>> propertyAccessor)
         {
-            return ReflectionHelper.GetProperty(propertyAccessor);
+            return ReflectionHelper.GetProperty(propertyAccessor).ToMember();
         }
     }
 }

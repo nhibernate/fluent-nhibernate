@@ -14,11 +14,11 @@ namespace FluentNHibernate.Testing.Automapping
         [Test]
         public void CanMapManyToManyProperty()
         {
-            var propertyInfo = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1);
+            var Member = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1).ToMember();
             var autoMap = new ClassMapping();
 
             var mapper = new AutoMapManyToMany(new AutoMappingExpressions());
-            mapper.Map(autoMap, propertyInfo);
+            mapper.Map(autoMap, Member);
 
             autoMap.Collections.ShouldHaveCount(1);
         }

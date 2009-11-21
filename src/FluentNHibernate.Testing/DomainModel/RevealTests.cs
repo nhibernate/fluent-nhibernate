@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.DomainModel
             var expression = Reveal.Property<StringTarget>("PrivateProperty");
 
             Assert.That(expression, Is.Not.Null);
-            Assert.That(ReflectionHelper.GetProperty(expression).Name, Is.EqualTo("PrivateProperty"));
+            Assert.That(ReflectionHelper.GetProperty(expression).ToMember().Name, Is.EqualTo("PrivateProperty"));
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.DomainModel
             var expression = Reveal.Property<StringTarget>("ProtectedProperty");
 
             Assert.That(expression, Is.Not.Null);
-            Assert.That(ReflectionHelper.GetProperty(expression).Name, Is.EqualTo("ProtectedProperty"));
+            Assert.That(ReflectionHelper.GetProperty(expression).ToMember().Name, Is.EqualTo("ProtectedProperty"));
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace FluentNHibernate.Testing.DomainModel
             var expression = Reveal.Property<StringTarget>("PublicProperty");
 
             Assert.That(expression, Is.Not.Null);
-            Assert.That(ReflectionHelper.GetProperty(expression).Name, Is.EqualTo("PublicProperty"));
+            Assert.That(ReflectionHelper.GetProperty(expression).ToMember().Name, Is.EqualTo("PublicProperty"));
         }
 
         [Test]

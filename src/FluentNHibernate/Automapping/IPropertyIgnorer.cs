@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Automapping
 {
@@ -7,6 +8,6 @@ namespace FluentNHibernate.Automapping
     {
         IPropertyIgnorer IgnoreProperty(string name);
         IPropertyIgnorer IgnoreProperties(string first, string second, params string[] others);
-        IPropertyIgnorer IgnoreProperties(Func<PropertyInfo, bool> predicate);
+        IPropertyIgnorer IgnoreProperties(Func<Member, bool> predicate);
     }
 }

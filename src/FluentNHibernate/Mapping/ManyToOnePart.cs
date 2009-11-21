@@ -20,9 +20,9 @@ namespace FluentNHibernate.Mapping
         private readonly AttributeStore<ManyToOneMapping> attributes = new AttributeStore<ManyToOneMapping>();
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
         private readonly Type entity;
-        private readonly PropertyInfo property;
+        private readonly Member property;
 
-        public ManyToOnePart(Type entity, PropertyInfo property) 
+        public ManyToOnePart(Type entity, Member property) 
         {
             this.entity = entity;
             this.property = property;
@@ -37,7 +37,7 @@ namespace FluentNHibernate.Mapping
             var mapping = new ManyToOneMapping(attributes.CloneInner());
 
             mapping.ContainingEntityType = entity;
-            mapping.PropertyInfo = property;
+            mapping.Member = property;
 
             if (!mapping.IsSpecified("Name"))
                 mapping.Name = property.Name;
@@ -161,7 +161,7 @@ namespace FluentNHibernate.Mapping
         {
             foreach (var expression in columns)
             {
-                var property = ReflectionHelper.GetProperty(expression);
+                var property = ReflectionHelper.GetProperty(expression).ToMember();
 
                 Columns(property.Name);
             }

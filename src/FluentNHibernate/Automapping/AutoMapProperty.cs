@@ -22,7 +22,7 @@ namespace FluentNHibernate.Automapping
             this.expressions = expressions;
         }
 
-        public bool MapsProperty(PropertyInfo property)
+        public bool MapsProperty(Member property)
         {
             if (HasExplicitTypeConvention(property))
                 return true;
@@ -33,7 +33,7 @@ namespace FluentNHibernate.Automapping
             return false;
         }
 
-        private bool HasExplicitTypeConvention(PropertyInfo property)
+        private bool HasExplicitTypeConvention(Member property)
         {
             // todo: clean this up!
             //        What it's doing is finding if there are any IUserType conventions
@@ -57,42 +57,42 @@ namespace FluentNHibernate.Automapping
                     return criteria.Matches(new PropertyInspector(new PropertyMapping
                     {
                         Type = new TypeReference(property.PropertyType),
-                        PropertyInfo = property
+                        Member = property
                     }));
                 });
 
             return conventions.FirstOrDefault() != null;
         }
 
-        private static bool IsMappableToColumnType(PropertyInfo property)
+        private static bool IsMappableToColumnType(Member property)
         {
             return property.PropertyType.Namespace == "System"
                     || property.PropertyType.FullName == "System.Drawing.Bitmap"
                     || property.PropertyType.IsEnum;
         }
 
-        public void Map(ClassMappingBase classMap, PropertyInfo property)
+        public void Map(ClassMappingBase classMap, Member property)
         {
             classMap.AddProperty(GetPropertyMapping(classMap.Type, property, classMap as ComponentMapping));
         }
 
-        private PropertyMapping GetPropertyMapping(Type type, PropertyInfo property, ComponentMapping component)
+        private PropertyMapping GetPropertyMapping(Type type, Member property, ComponentMapping component)
         {
             var mapping = new PropertyMapping
             {
                 ContainingEntityType = type,
-                PropertyInfo = property
+                Member = property
             };
 
             var columnName = property.Name;
             
             if (component != null)
-                columnName = expressions.GetComponentColumnPrefix(component.PropertyInfo) + columnName;
+                columnName = expressions.GetComponentColumnPrefix(component.Member) + columnName;
 
             mapping.AddDefaultColumn(new ColumnMapping { Name = columnName });
 
             if (!mapping.IsSpecified("Name"))
-                mapping.Name = mapping.PropertyInfo.Name;
+                mapping.Name = mapping.Member.Name;
 
             if (!mapping.IsSpecified("Type"))
                 mapping.SetDefaultValue("Type", GetDefaultType(property));
@@ -100,7 +100,7 @@ namespace FluentNHibernate.Automapping
             return mapping;
         }
 
-        private TypeReference GetDefaultType(PropertyInfo property)
+        private TypeReference GetDefaultType(Member property)
         {
             var type = new TypeReference(property.PropertyType);
 

@@ -79,6 +79,6 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set("Type", value); }
         }
 
-        public PropertyInfo PropertyInfo { get; set; }
+        public Member Member { get; set; }
     }
 }

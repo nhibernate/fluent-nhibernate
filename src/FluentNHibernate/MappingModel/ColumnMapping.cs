@@ -22,7 +22,7 @@ namespace FluentNHibernate.MappingModel
             visitor.ProcessColumn(this);
         }
 
-        public PropertyInfo PropertyInfo { get; set; }
+        public Member Member { get; set; }
 
         public string Name
         {

@@ -31,10 +31,10 @@ namespace FluentNHibernate.Mapping
         private readonly IList<FilterPart> filters = new List<FilterPart>();
         private Func<AttributeStore, ICollectionMapping> collectionBuilder;
         private IndexMapping indexMapping;
-        protected MemberInfo member;
+        protected Member member;
         private Type entity;
 
-        protected ToManyBase(Type entity, MemberInfo member, Type type)
+        protected ToManyBase(Type entity, Member member, Type type)
         {
             this.entity = entity;
             this.member = member;
@@ -75,7 +75,7 @@ namespace FluentNHibernate.Mapping
 
             mapping.ContainingEntityType = entity;
             mapping.ChildType = typeof(TChild);
-            mapping.MemberInfo = member;
+            mapping.Member = member;
             mapping.Key = keyMapping;
             mapping.Key.ContainingEntityType = entity;
             mapping.Relationship = GetRelationship();

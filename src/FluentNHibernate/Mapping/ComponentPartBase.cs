@@ -62,10 +62,10 @@ namespace FluentNHibernate.Mapping
 
         public ComponentPartBase<T> ParentReference(Expression<Func<T, object>> exp)
         {
-            return ParentReference(ReflectionHelper.GetProperty(exp));
+            return ParentReference(ReflectionHelper.GetProperty(exp).ToMember());
         }
 
-        private ComponentPartBase<T> ParentReference(PropertyInfo property)
+        private ComponentPartBase<T> ParentReference(Member property)
         {
             attributes.Set(x => x.Parent, new ParentMapping
             {

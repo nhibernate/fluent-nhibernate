@@ -16,17 +16,17 @@ namespace FluentNHibernate.Automapping
             this.mapper = mapper;
         }
 
-        public bool MapsProperty(PropertyInfo property)
+        public bool MapsProperty(Member property)
         {
             return expressions.IsComponentType(property.PropertyType);
         }
 
-        public void Map(ClassMappingBase classMap, PropertyInfo property)
+        public void Map(ClassMappingBase classMap, Member property)
         {
             var mapping = new ComponentMapping
             {
                 Name = property.Name,
-                PropertyInfo = property,
+                Member = property,
                 ContainingEntityType = classMap.Type,
                 Type = property.PropertyType
             };

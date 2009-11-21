@@ -27,7 +27,7 @@ namespace FluentNHibernate.MappingModel
         }
 
         public Type ContainingEntityType { get; set; }
-        public PropertyInfo PropertyInfo { get; set; }
+        public Member Member { get; set; }
 
         public string Name
         {

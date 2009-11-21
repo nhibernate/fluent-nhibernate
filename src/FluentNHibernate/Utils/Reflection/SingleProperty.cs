@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Utils
 {
@@ -32,7 +33,7 @@ namespace FluentNHibernate.Utils
 
         public Accessor GetChildAccessor<T>(Expression<Func<T, object>> expression)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            var property = ReflectionHelper.GetProperty(expression);
             return new PropertyChain(new[] {_property, property});
         }
 

@@ -28,7 +28,7 @@ namespace FluentNHibernate.MappingModel.Collections
         bool Generic { get; set; }
         KeyMapping Key { get; set; }
         ICollectionRelationshipMapping Relationship { get; set; }
-        MemberInfo MemberInfo { get; set;  }
+        Member Member { get; set;  }
         ElementMapping Element { get; set; }
         CompositeElementMapping CompositeElement { get; set; }
         Type ContainingEntityType { get; set; }

@@ -155,7 +155,7 @@ namespace FluentNHibernate.MappingModel
 
         private static string GetKey<TResult>(Expression<Func<T, TResult>> exp)
         {
-            PropertyInfo info = ReflectionHelper.GetProperty(exp);
+            var info = ReflectionHelper.GetProperty(exp);
             return info.Name;
         }
 

@@ -75,7 +75,7 @@ namespace FluentNHibernate.Automapping
                 mapping.AddStoredProcedure(storedProcedure.GetStoredProcedureMapping());
         }
 
-        protected override OneToManyPart<TChild> HasMany<TChild>(PropertyInfo property)
+        protected override OneToManyPart<TChild> HasMany<TChild>(Member property)
         {
             mappedProperties.Add(property.Name);
             return base.HasMany<TChild>(property);
@@ -83,7 +83,7 @@ namespace FluentNHibernate.Automapping
 
         public void IgnoreProperty(Expression<Func<T, object>> expression)
         {
-            mappedProperties.Add(ReflectionHelper.GetProperty(expression).Name);
+            mappedProperties.Add(ReflectionHelper.GetProperty(expression).ToMember().Name);
         }
 
         IPropertyIgnorer IPropertyIgnorer.IgnoreProperty(string name)
@@ -102,9 +102,10 @@ namespace FluentNHibernate.Automapping
             return this;
         }
 
-        IPropertyIgnorer IPropertyIgnorer.IgnoreProperties(Func<PropertyInfo, bool> predicate)
+        IPropertyIgnorer IPropertyIgnorer.IgnoreProperties(Func<Member, bool> predicate)
         {
             typeof(T).GetProperties()
+                .Select(x => x.ToMember())
                 .Where(predicate)
                 .Each(x => mappedProperties.Add(x.Name));
 
@@ -113,7 +114,7 @@ namespace FluentNHibernate.Automapping
 
         public override IdentityPart Id(Expression<Func<T, object>> expression)
         {
-            mappedProperties.Add(ReflectionHelper.GetProperty(expression).Name);
+            mappedProperties.Add(ReflectionHelper.GetProperty(expression).ToMember().Name);
             return base.Id(expression);
         }
 
@@ -126,25 +127,25 @@ namespace FluentNHibernate.Automapping
             return part;
         }
 
-        protected override PropertyPart Map(PropertyInfo property, string columnName)
+        protected override PropertyPart Map(Member property, string columnName)
         {
             mappedProperties.Add(property.Name);
             return base.Map(property, columnName);
         }
 
-        protected override ManyToOnePart<TOther> References<TOther>(PropertyInfo property, string columnName)
+        protected override ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
         {
             mappedProperties.Add(property.Name);
             return base.References<TOther>(property, columnName);
         }
 
-        protected override ManyToManyPart<TChild> HasManyToMany<TChild>(PropertyInfo property)
+        protected override ManyToManyPart<TChild> HasManyToMany<TChild>(Member property)
         {
             mappedProperties.Add(property.Name);
             return base.HasManyToMany<TChild>(property);
         }
 
-        protected override ComponentPart<TComponent> Component<TComponent>(PropertyInfo property, Action<ComponentPart<TComponent>> action)
+        protected override ComponentPart<TComponent> Component<TComponent>(Member property, Action<ComponentPart<TComponent>> action)
         {
             mappedProperties.Add(property.Name);
 
@@ -156,17 +157,17 @@ namespace FluentNHibernate.Automapping
 
         public override IdentityPart Id(Expression<Func<T, object>> expression, string column)
         {
-            mappedProperties.Add(ReflectionHelper.GetProperty(expression).Name);
+            mappedProperties.Add(ReflectionHelper.GetProperty(expression).ToMember().Name);
             return base.Id(expression, column);
         }
 
-        protected override OneToOnePart<TOther> HasOne<TOther>(PropertyInfo property)
+        protected override OneToOnePart<TOther> HasOne<TOther>(Member property)
         {
             mappedProperties.Add(property.Name);
             return base.HasOne<TOther>(property);
         }
 
-        protected override VersionPart Version(PropertyInfo property)
+        protected override VersionPart Version(Member property)
         {
             mappedProperties.Add(property.Name);
             return base.Version(property);

@@ -16,7 +16,7 @@ namespace FluentNHibernate.Conventions.Inspections
             mappedProperties.Map(x => x.LazyLoad, x => x.Lazy);
         }
 
-        public new bool IsSet(PropertyInfo property)
+        public new bool IsSet(Member property)
         {
             return mapping.IsSpecified(mappedProperties.Get(property));
         }

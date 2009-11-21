@@ -375,6 +375,7 @@
     <Compile Include="Mapping\IFilterDefinition.cs" />
     <Compile Include="Mapping\KeyManyToOnePart.cs" />
     <Compile Include="Mapping\KeyPropertyPart.cs" />
+    <Compile Include="Mapping\Member.cs" />
     <Compile Include="Mapping\Providers\IFilterMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IStoredProcedureMappingProvider.cs" />
     <Compile Include="Mapping\StoredProcedurePart.cs" />

@@ -29,7 +29,7 @@ namespace FluentNHibernate.MappingModel
                     mapping.SetDefaultValue(x => x.TableName, mapping.OtherSide.TableName);
                 else
                 {
-                    var tableName = mapping.MemberInfo.Name + "To" + mapping.OtherSide.MemberInfo.Name;
+                    var tableName = mapping.Member.Name + "To" + mapping.OtherSide.Member.Name;
 
                     mapping.SetDefaultValue(x => x.TableName, tableName);
                     mapping.OtherSide.SetDefaultValue(x => x.TableName, tableName);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
@@ -11,7 +12,7 @@ namespace FluentNHibernate.Automapping
     public class AutoMapOneToMany : IAutoMapper
     {
         private readonly AutoMappingExpressions expressions;
-        private readonly Func<PropertyInfo, bool> findPropertyconvention = 
+        private readonly Func<Member, bool> findPropertyconvention = 
             p => (p.PropertyType.Namespace == "System.Collections.Generic" ||
                   p.PropertyType.Namespace == "Iesi.Collections.Generic");
 
@@ -20,7 +21,7 @@ namespace FluentNHibernate.Automapping
             this.expressions = expressions;
         }
 
-        public bool MapsProperty(PropertyInfo property)
+        public bool MapsProperty(Member property)
         {
             if (property.CanWrite)
                 return findPropertyconvention(property);
@@ -28,7 +29,7 @@ namespace FluentNHibernate.Automapping
             return false;
         }
 
-        public void Map(ClassMappingBase classMap, PropertyInfo property)
+        public void Map(ClassMappingBase classMap, Member property)
         {
             if (property.DeclaringType != classMap.Type)
                 return;
@@ -36,7 +37,7 @@ namespace FluentNHibernate.Automapping
             var mapping = GetCollectionMapping(property.PropertyType);
 
             mapping.ContainingEntityType = classMap.Type;
-            mapping.MemberInfo = property;
+            mapping.Member = property;
             mapping.SetDefaultValue(x => x.Name, property.Name);
 
             SetRelationship(property, classMap, mapping);
@@ -53,7 +54,7 @@ namespace FluentNHibernate.Automapping
             return new BagMapping();
         }
 
-        private void SetRelationship(PropertyInfo property, ClassMappingBase classMap, ICollectionMapping mapping)
+        private void SetRelationship(Member property, ClassMappingBase classMap, ICollectionMapping mapping)
         {
             var relationship = new OneToManyMapping
             {
@@ -64,12 +65,12 @@ namespace FluentNHibernate.Automapping
             mapping.SetDefaultValue(x => x.Relationship, relationship);
         }
 
-        private void SetKey(PropertyInfo property, ClassMappingBase classMap, ICollectionMapping mapping)
+        private void SetKey(Member property, ClassMappingBase classMap, ICollectionMapping mapping)
         {
             var columnName = property.DeclaringType.Name + "_Id";
 
             if (classMap is ComponentMapping)
-                columnName = expressions.GetComponentColumnPrefix(((ComponentMapping)classMap).PropertyInfo) + columnName;
+                columnName = expressions.GetComponentColumnPrefix(((ComponentMapping)classMap).Member) + columnName;
 
             var key = new KeyMapping();
 

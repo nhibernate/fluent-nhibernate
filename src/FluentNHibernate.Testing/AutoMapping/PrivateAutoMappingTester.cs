@@ -24,7 +24,7 @@ namespace FluentNHibernate.Testing.Automapping
             Model<PrivateExampleClass>(p => p.Name.StartsWith("_"));
 
             Test<PrivateExampleClass>(mapping =>
-                mapping.Properties.ShouldContain(x => x.PropertyInfo == ReflectionHelper.GetProperty(PrivateExampleClass.PrivateProperties.Property)));
+                mapping.Properties.ShouldContain(x => x.Member == ReflectionHelper.GetProperty(PrivateExampleClass.PrivateProperties.Property).ToMember()));
         }
 
         [Test]
@@ -42,10 +42,10 @@ namespace FluentNHibernate.Testing.Automapping
             Model<PrivateExampleParent>(p => p.Name.StartsWith("_"));
 
             Test<PrivateExampleParent>(mapping =>
-                mapping.Collections.ShouldContain(x => x.MemberInfo == ReflectionHelper.GetProperty(PrivateExampleParent.PrivateProperties.Children)));
+                mapping.Collections.ShouldContain(x => x.Member == ReflectionHelper.GetProperty(PrivateExampleParent.PrivateProperties.Children).ToMember()));
         }
 
-        private void Model<T>(Func<PropertyInfo, bool> convention)
+        private void Model<T>(Func<Member, bool> convention)
         {
             model = new PrivateAutoPersistenceModel()
                 .Setup(conventions => conventions.FindMappablePrivateProperties = convention);

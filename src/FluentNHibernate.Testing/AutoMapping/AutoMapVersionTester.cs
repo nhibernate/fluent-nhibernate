@@ -20,7 +20,7 @@ namespace FluentNHibernate.Testing.Automapping
         [Test]
         public void ShouldMapByteArray()
         {
-            mapper.MapsProperty(typeof(Target).GetProperty("Version")).ShouldBeTrue();
+            mapper.MapsProperty(typeof(Target).GetProperty("Version").ToMember()).ShouldBeTrue();
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             var mapping = new ClassMapping { Type = typeof(Target) };
 
-            mapper.Map(mapping, typeof(Target).GetProperty("Version"));
+            mapper.Map(mapping, typeof(Target).GetProperty("Version").ToMember());
 
             mapping.Version.Type.ShouldEqual(new TypeReference("BinaryBlob"));
         }
@@ -38,7 +38,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             var mapping = new ClassMapping { Type = typeof(Target) };
 
-            mapper.Map(mapping, typeof(Target).GetProperty("Version"));
+            mapper.Map(mapping, typeof(Target).GetProperty("Version").ToMember());
 
             mapping.Version.Columns.All(x => x.SqlType == "timestamp").ShouldBeTrue();
         }
@@ -48,7 +48,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             var mapping = new ClassMapping { Type = typeof(Target) };
 
-            mapper.Map(mapping, typeof(Target).GetProperty("Version"));
+            mapper.Map(mapping, typeof(Target).GetProperty("Version").ToMember());
 
             mapping.Version.Columns.All(x => x.NotNull == true).ShouldBeTrue();
         }
@@ -58,7 +58,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             var mapping = new ClassMapping { Type = typeof(Target) };
 
-            mapper.Map(mapping, typeof(Target).GetProperty("Version"));
+            mapper.Map(mapping, typeof(Target).GetProperty("Version").ToMember());
 
             mapping.Version.UnsavedValue.ShouldEqual(null);
         }

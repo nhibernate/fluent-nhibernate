@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
 
             acceptance.Matches(new PropertyInspector(new PropertyMapping
             {
-                PropertyInfo = ReflectionHelper.GetProperty<Record>(x => x.Age),
+                Member = ReflectionHelper.GetProperty<Record>(x => x.Age).ToMember(),
                 Type = new TypeReference(typeof(Record))
             }))
                 .ShouldBeTrue();

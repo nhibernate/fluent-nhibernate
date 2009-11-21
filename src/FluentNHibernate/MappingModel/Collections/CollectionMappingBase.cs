@@ -10,7 +10,7 @@ namespace FluentNHibernate.MappingModel.Collections
         private readonly AttributeStore<ICollectionMapping> attributes;
         private readonly IList<FilterMapping> filters = new List<FilterMapping>();
         public Type ContainingEntityType { get; set; }
-        public MemberInfo MemberInfo { get; set; }
+        public Member Member { get; set; }
 
         protected CollectionMappingBase(AttributeStore underlyingStore)
         {

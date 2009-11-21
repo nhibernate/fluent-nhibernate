@@ -97,12 +97,12 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Insert && mapping.Update; }
         }
 
-        public PropertyInfo Property
+        public Member Property
         {
-            get { return mapping.PropertyInfo; }
+            get { return mapping.Member; }
         }
 
-        public bool IsSet(PropertyInfo property)
+        public bool IsSet(Member property)
         {
             return mapping.IsSpecified(propertyMappings.Get(property));
         }

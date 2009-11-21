@@ -30,7 +30,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         }
 
         public Type ContainingEntityType { get; set; }
-        public PropertyInfo PropertyInfo { get; set; }
+        public Member Member { get; set; }
 
         public ParentMapping Parent
         {

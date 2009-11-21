@@ -29,7 +29,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
 
         private class FKConvention : ForeignKeyConvention
         {
-            protected override string GetKeyName(PropertyInfo property, Type type)
+            protected override string GetKeyName(Member property, Type type)
             {
                 return "xxx";
             }

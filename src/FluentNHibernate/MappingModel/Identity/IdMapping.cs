@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
@@ -13,7 +14,7 @@ namespace FluentNHibernate.MappingModel.Identity
             : base(underlyingStore)
         {}
 
-        public PropertyInfo PropertyInfo { get; set; }
+        public Member Member { get; set; }
 
         public GeneratorMapping Generator
         {

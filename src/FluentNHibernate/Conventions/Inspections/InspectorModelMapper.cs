@@ -14,20 +14,20 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public void Map(Expression<Func<TInspector, object>> inspectorProperty, Expression<Func<TMapping, object>> mappingProperty)
         {
-            Map(ReflectionHelper.GetProperty(inspectorProperty), mappingProperty);
+            Map(ReflectionHelper.GetProperty(inspectorProperty).ToMember(), mappingProperty);
         }
 
         public void Map(Expression<Func<TInspector, object>> inspectorProperty, string mappingProperty)
         {
-            mappings[inspectorProperty.ToPropertyInfo().Name] = mappingProperty;
+            mappings[inspectorProperty.ToMember().Name] = mappingProperty;
         }
 
-        private void Map(PropertyInfo inspectorProperty, Expression<Func<TMapping, object>> mappingProperty)
+        private void Map(Member inspectorProperty, Expression<Func<TMapping, object>> mappingProperty)
         {
-            mappings[inspectorProperty.Name] =  mappingProperty.ToPropertyInfo().Name;
+            mappings[inspectorProperty.Name] =  mappingProperty.ToMember().Name;
         }
 
-        public string Get(PropertyInfo property)
+        public string Get(Member property)
         {
             if (mappings.ContainsKey(property.Name))
                 return mappings[property.Name];

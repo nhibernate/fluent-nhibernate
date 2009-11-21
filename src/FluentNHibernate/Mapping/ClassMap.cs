@@ -158,10 +158,10 @@ namespace FluentNHibernate.Mapping
 
         public VersionPart Version(Expression<Func<T, object>> expression)
         {
-            return Version(ReflectionHelper.GetProperty(expression));
+            return Version(ReflectionHelper.GetProperty(expression).ToMember());
         }
 
-        protected virtual VersionPart Version(PropertyInfo property)
+        protected virtual VersionPart Version(Member property)
         {
             var versionPart = new VersionPart(typeof(T), property);
 
@@ -202,7 +202,7 @@ namespace FluentNHibernate.Mapping
 
         public virtual IdentityPart Id(Expression<Func<T, object>> expression, string column)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            Member property = ReflectionHelper.GetProperty(expression).ToMember();
             var part = column == null ? new IdentityPart(EntityType, property) : new IdentityPart(EntityType, property);
 
             if (column != null)

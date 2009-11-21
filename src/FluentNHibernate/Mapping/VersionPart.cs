@@ -10,7 +10,7 @@ namespace FluentNHibernate.Mapping
     public class VersionPart : IVersionMappingProvider
     {
         private readonly Type entity;
-        private readonly PropertyInfo property;
+        private readonly Member property;
         private readonly AccessStrategyBuilder<VersionPart> access;
         private readonly VersionGeneratedBuilder<IVersionMappingProvider> generated;
         private readonly AttributeStore<VersionMapping> attributes = new AttributeStore<VersionMapping>();
@@ -18,7 +18,7 @@ namespace FluentNHibernate.Mapping
         private readonly List<string> columns = new List<string>();
         private bool nextBool = true;
 
-        public VersionPart(Type entity, PropertyInfo property)
+        public VersionPart(Type entity, Member property)
         {
             this.entity = entity;
             this.property = property;

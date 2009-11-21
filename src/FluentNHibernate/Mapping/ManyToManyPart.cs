@@ -23,19 +23,19 @@ namespace FluentNHibernate.Mapping
 	    private Type valueType;
 	    private bool isTernary;
 
-	    public ManyToManyPart(Type entity, PropertyInfo property)
+	    public ManyToManyPart(Type entity, Member property)
             : this(entity, property, property.PropertyType)
 	    {
 	        childType = property.PropertyType;
 	    }
 
 	    public ManyToManyPart(Type entity, MethodInfo method)
-	        : this(entity, method, method.ReturnType)
+	        : this(entity, method.ToMember(), method.ReturnType)
 	    {
 	        childType = method.ReturnType;
 	    }
 
-	    protected ManyToManyPart(Type entity, MemberInfo member, Type collectionType)
+	    protected ManyToManyPart(Type entity, Member member, Type collectionType)
             : base(entity, member, collectionType)
         {
 	        this.entity = entity;
