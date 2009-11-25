@@ -14,11 +14,11 @@ namespace FluentNHibernate.Automapping
             this.mappedProperties = mappedProperties;
         }
 
-        protected override CompositeIdentityPart<T> KeyProperty(PropertyInfo property, string columnName)
+        protected override CompositeIdentityPart<T> KeyProperty(PropertyInfo property, string columnName, Action<KeyPropertyPart> customMapping)
         {
             mappedProperties.Add(property.Name);
 
-            return base.KeyProperty(property, columnName);
+            return base.KeyProperty(property, columnName, customMapping);
         }
 
         protected override CompositeIdentityPart<T> KeyReference(PropertyInfo property, string columnName, Action<KeyManyToOnePart> customMapping)

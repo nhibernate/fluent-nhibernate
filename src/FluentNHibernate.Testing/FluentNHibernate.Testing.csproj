@@ -146,6 +146,7 @@
     <Compile Include="DomainModel\Mapping\FilterTester.cs" />
     <Compile Include="FluentInterfaceTests\ClassMapFilterPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\KeyManyToOnePartTests.cs" />
+    <Compile Include="FluentInterfaceTests\KeyPropertyPartTests.cs" />
     <Compile Include="FluentInterfaceTests\ManyToManyPartAsTernaryTests.cs" />
     <Compile Include="FluentInterfaceTests\OneToManyPartAsTernaryTests.cs" />
     <Compile Include="FluentInterfaceTests\StoredProcedurePartGenerationTests.cs" />

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
@@ -37,7 +38,7 @@ namespace FluentNHibernate.Mapping
 		{
 	        var property = ReflectionHelper.GetProperty(expression);
 
-			return KeyProperty(property, property.Name);
+            return KeyProperty(property, property.Name, null);
 		}
 
 		/// <summary>
@@ -50,10 +51,22 @@ namespace FluentNHibernate.Mapping
 		{
             var property = ReflectionHelper.GetProperty(expression);
 
-		    return KeyProperty(property, columnName);
+		    return KeyProperty(property, columnName, null);
 		}
 
-        protected virtual CompositeIdentityPart<T> KeyProperty(PropertyInfo property, string columnName)
+        /// <summary>
+        /// Defines a property to be used as a key for this composite-id with an explicit column name.
+        /// </summary>
+        /// <param name="expression">A member access lambda expression for the property</param>        
+        /// <param name="keyPropertyAction">Additional settings for the key property</param>
+        /// <returns>The composite identity part fluent interface</returns>
+        public CompositeIdentityPart<T> KeyProperty(Expression<Func<T, object>> expression, Action<KeyPropertyPart> keyPropertyAction)
+        {
+            var property = ReflectionHelper.GetProperty(expression);
+            return KeyProperty(property, string.Empty, keyPropertyAction);
+        }
+
+        protected virtual CompositeIdentityPart<T> KeyProperty(PropertyInfo property, string columnName, Action<KeyPropertyPart> customMapping)
         {
             var key = new KeyPropertyMapping
             {
@@ -61,7 +74,15 @@ namespace FluentNHibernate.Mapping
                 Type = new TypeReference(property.PropertyType),
                 ContainingEntityType = typeof(T)
             };
-            key.AddColumn(new ColumnMapping { Name = columnName });
+
+            if (customMapping != null)
+            {
+                var part = new KeyPropertyPart(key);
+                customMapping(part);
+            }
+
+            if(!string.IsNullOrEmpty(columnName))
+                key.AddColumn(new ColumnMapping { Name = columnName });
 
             keyProperties.Add(key);
 

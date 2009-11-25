@@ -107,6 +107,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
           
         }
 
+	    [Test]
+	    public void KeyPropertyCustomType()
+	    {
+	        new MappingTester<CompIdTarget>()
+	            .ForMapping(c => c.CompositeId(x => x.Child).KeyProperty(x => x.ChildId, kp => kp.Type(typeof(int))))
+	            .Element("class/composite-id/key-property")
+	            .HasAttribute("type", typeof(int).AssemblyQualifiedName);
+	    }
+
 		public class CompIdTarget
 		{
 			public virtual long LongId { get; set; }
