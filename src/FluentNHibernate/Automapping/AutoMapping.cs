@@ -70,6 +70,9 @@ namespace FluentNHibernate.Automapping
 
             foreach (var any in anys)
                 mapping.AddOrReplaceAny(any.GetAnyMapping());
+
+            foreach (var storedProcedure in storedProcedures)
+                mapping.AddStoredProcedure(storedProcedure.GetStoredProcedureMapping());
         }
 
         protected override OneToManyPart<TChild> HasMany<TChild>(PropertyInfo property)

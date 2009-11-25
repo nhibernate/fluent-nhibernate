@@ -97,6 +97,7 @@
     <Compile Include="AutoMapping\JoinedSubclassConventionTests.cs" />
     <Compile Include="AutoMapping\ManyToMany.cs" />
     <Compile Include="AutoMapping\ManyToManyAutomapperTester.cs" />
+    <Compile Include="AutoMapping\Overrides\ClassMappingOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\CompositeIdOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\HibernateMappingOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\ParentOverridesWithSubclasses.cs" />
