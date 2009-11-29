@@ -13,6 +13,7 @@ namespace FluentNHibernate.Conventions
           IVersionConvention,
           IPropertyConvention,
           IComponentConvention,
+          IDynamicComponentConvention,
           IReferenceConvention,
           IHasOneConvention,
           ICollectionConvention
@@ -35,6 +36,11 @@ namespace FluentNHibernate.Conventions
         }
 
         public virtual void Apply(IComponentInstance instance)
+        {
+            Apply(instance.EntityType, instance.Name, instance.Access);
+        }
+
+        public virtual void Apply(IDynamicComponentInstance instance)
         {
             Apply(instance.EntityType, instance.Name, instance.Access);
         }
