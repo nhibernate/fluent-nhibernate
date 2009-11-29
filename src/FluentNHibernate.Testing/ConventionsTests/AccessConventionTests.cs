@@ -42,13 +42,13 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         [Test]
-        public void id_is_set()
+        public void IdIsSet()
         {
             Assert.AreEqual(expectedAccess, ((IdMapping)parent.Id).Access);
         }
 
         [Test]
-        public void composite_id_is_set()
+        public void CompositeIdIsSet()
         {
             CompositeIdMapping id;
 
@@ -63,43 +63,43 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         [Test]
-        public void version_is_set()
+        public void VersionIsSet()
         {
             Assert.AreEqual(expectedAccess, parent.Version.Access);
         }
 
         [Test]
-        public void property_is_set()
+        public void PropertyIsSet()
         {
             Assert.AreEqual(expectedAccess, parent.Properties.First(x => x.Name.Equals("Property")).Access);
         }
 
         [Test]
-        public void joined_property_is_set()
+        public void JoinedPropertyIsSet()
         {
             Assert.AreEqual(expectedAccess, parent.Joins.SelectMany(x => x.Properties).First(x => x.Name.Equals("JoinedProperty")).Access);
         }
 
         [Test]
-        public void component_is_set()
+        public void ComponentIsSet()
         {
             Assert.AreEqual(expectedAccess, parent.Components.First(x => x.Name.Equals("Component")).Access);
         }
 
         [Test]
-        public void dynamic_component_is_set()
+        public void DynamicComponentIsSet()
         {
             Assert.AreEqual(expectedAccess, parent.Components.First(x => x.Name.Equals("Dynamic")).Access);
         }
 
         [Test]
-        public void one_to_one_is_set()
+        public void OneToOneIsSet()
         {
             Assert.AreEqual(expectedAccess, parent.OneToOnes.First(x => x.Name.Equals("One")).Access);
         }
 
         [Test]
-        public void one_to_many_is_set()
+        public void OneToManyIsSet()
         {
             Assert.AreEqual(expectedAccess, parent.Collections.First(x => x.Name.Equals("MapOne")).Access);
             Assert.AreEqual(expectedAccess, parent.Collections.First(x => x.Name.Equals("SetOne")).Access);
@@ -108,7 +108,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         [Test]
-        public void many_to_many_is_set()
+        public void ManyToManyIsSet()
         {
             Assert.AreEqual(expectedAccess, parent.Collections.First(x => x.Name.Equals("MapMany")).Access);
             Assert.AreEqual(expectedAccess, parent.Collections.First(x => x.Name.Equals("SetMany")).Access);
@@ -117,13 +117,13 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         [Test]
-        public void many_to_one_is_set()
+        public void ManyToOneIsSet()
         {
             Assert.AreEqual(expectedAccess, manyToOne.References.First(x => x.Name.Equals("Parent")).Access);
         }
 
         [Test]
-        public void any_is_set()
+        public void AnyIsSet()
         {
             Assert.AreEqual(expectedAccess, parent.Anys.First(x => x.Name.Equals("Any")).Access);
         }
