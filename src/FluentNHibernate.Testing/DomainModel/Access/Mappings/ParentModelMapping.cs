@@ -27,6 +27,13 @@ namespace FluentNHibernate.Testing.DomainModel.Access.Mappings
 
             HasOne(x => x.One);
 
+            ReferencesAny(x => x.Any)
+                .EntityTypeColumn("anytype")
+                .EntityIdentifierColumn("anyid")
+                .IdentityType(typeof(int));
+
+            DynamicComponent(x => x.Dynamic, x => { });
+
             HasMany(x => x.MapOne).AsMap("type");
             HasMany(x => x.SetOne).AsSet();
             HasMany(x => x.ListOne).AsList();

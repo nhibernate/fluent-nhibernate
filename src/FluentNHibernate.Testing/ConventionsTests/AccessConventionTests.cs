@@ -12,13 +12,6 @@ namespace FluentNHibernate.Testing.ConventionsTests
     [TestFixture]
     public class AccessConventionTests
     {
-        //todo: need to look at timestamp
-        //todo: need to look at any mappings
-        //todo: need to look at index-many-to-many
-        //todo: need to look at entity map
-        //todo: need to look at ternary association
-        //todo: need to look at dynamic components
-
         private string expectedAccess = "backfield";
 
         private ClassMapping compositeId;
@@ -94,6 +87,12 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         [Test]
+        public void dynamic_component_is_set()
+        {
+            Assert.AreEqual(expectedAccess, parent.Components.First(x => x.Name.Equals("Dynamic")).Access);
+        }
+
+        [Test]
         public void one_to_one_is_set()
         {
             Assert.AreEqual(expectedAccess, parent.OneToOnes.First(x => x.Name.Equals("One")).Access);
@@ -123,6 +122,11 @@ namespace FluentNHibernate.Testing.ConventionsTests
             Assert.AreEqual(expectedAccess, manyToOne.References.First(x => x.Name.Equals("Parent")).Access);
         }
 
+        [Test]
+        public void any_is_set()
+        {
+            Assert.AreEqual(expectedAccess, parent.Anys.First(x => x.Name.Equals("Any")).Access);
+        }
 
         private class BackfieldAccessConvention : AccessConvention
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Iesi.Collections.Generic;
+using System.Collections;
 
 namespace FluentNHibernate.Testing.DomainModel.Access
 {
@@ -15,7 +16,9 @@ namespace FluentNHibernate.Testing.DomainModel.Access
         public virtual string Property { get; private set; }
         public virtual string JoinedProperty { get; private set; }
         public virtual ComponentModel Component { get; private set; }
-        public virtual IList<OneToOneModel> One { get; private set; }
+        public virtual OneToOneModel One { get; private set; }
+        public virtual object Any { get; private set; }
+        public virtual IDictionary Dynamic { get; private set; }
 
         public virtual IDictionary<char, ManyToOneModel> MapOne { get; private set; }
         public virtual ISet<ManyToOneModel> SetOne { get; private set; }
