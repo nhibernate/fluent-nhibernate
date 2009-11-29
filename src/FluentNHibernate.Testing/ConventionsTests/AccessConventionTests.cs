@@ -60,12 +60,12 @@ namespace FluentNHibernate.Testing.ConventionsTests
             CompositeIdMapping id;
 
             id = ((CompositeIdMapping)compositeId.Id);
-            Assert.AreEqual(id.Access, id.Access);
+            Assert.AreEqual(expectedAccess, id.Access);
             Assert.AreEqual(expectedAccess, id.KeyProperties.First(x => x.Name.Equals("IdA")).Access);
             Assert.AreEqual(expectedAccess, id.KeyProperties.First(x => x.Name.Equals("IdB")).Access);
 
             id = ((CompositeIdMapping)oneToOne.Id);
-            Assert.AreEqual(id.Access, id.Access);
+            Assert.AreEqual(expectedAccess, id.Access);
             Assert.AreEqual(expectedAccess, id.KeyManyToOnes.First(x => x.Name.Equals("Parent")).Access);
         }
 
