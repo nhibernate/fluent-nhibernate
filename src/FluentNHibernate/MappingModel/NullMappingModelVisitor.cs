@@ -207,6 +207,11 @@ namespace FluentNHibernate.MappingModel
             
         }
 
+        public virtual void ProcessTuplizer(TuplizerMapping tuplizerMapping)
+        {
+            
+        }
+
         public virtual void Visit(IdMapping mapping)
         {
             
@@ -372,6 +377,11 @@ namespace FluentNHibernate.MappingModel
         }
 
         public virtual void Visit(StoredProcedureMapping mapping)
+        {
+            
+        }
+
+        public virtual void Visit(TuplizerMapping mapping)
         {
             
         }

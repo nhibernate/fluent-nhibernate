@@ -5,6 +5,7 @@ using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
+using System;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
@@ -223,5 +224,20 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     .KeyProperty(x => x.Id))
                 .ModelShouldMatch(x => x.Id.ShouldBeOfType<CompositeIdMapping>());
         }
+
+        [Test]
+        public void TuplizerShouldSetTuplizerOnModel()
+        {
+            Type tuplizerType = typeof(NHibernate.Tuple.Entity.PocoEntityTuplizer);
+            ClassMap<PropertyTarget>()
+                .Mapping(m => m.Tuplizer(TuplizerMode.Poco, tuplizerType))
+                .ModelShouldMatch(x =>
+                {
+                    x.Tuplizer.ShouldNotBeNull();
+                    x.Tuplizer.Mode.ShouldEqual(TuplizerMode.Poco);
+                    x.Tuplizer.Type.ShouldEqual(new TypeReference(tuplizerType));
+                });
+        }
+
     }
 }

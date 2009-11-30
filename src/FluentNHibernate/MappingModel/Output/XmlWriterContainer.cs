@@ -123,6 +123,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterWriter<StoredProcedureMapping>(c =>
                 new XmlStoredProcedureWriter(c.Resolve<IXmlWriterServiceLocator>()));
+
+            RegisterWriter<TuplizerMapping>(c =>
+                new XmlTuplizerWriter());
         }
 
         private void RegisterIdWriters()

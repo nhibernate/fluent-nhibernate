@@ -46,6 +46,7 @@ namespace FluentNHibernate.MappingModel
         void ProcessFilter(FilterMapping mapping);
         void ProcessFilterDefinition(FilterDefinitionMapping mapping);
         void ProcessStoredProcedure(StoredProcedureMapping mapping);
+        void ProcessTuplizer(TuplizerMapping mapping);
 
         void Visit(IdMapping mapping);
         void Visit(ClassMapping classMapping);
@@ -81,5 +82,6 @@ namespace FluentNHibernate.MappingModel
         void Visit(FilterMapping mapping);
         void Visit(FilterDefinitionMapping mapping);
         void Visit(StoredProcedureMapping mapping);
+        void Visit(TuplizerMapping mapping);
     }
 }

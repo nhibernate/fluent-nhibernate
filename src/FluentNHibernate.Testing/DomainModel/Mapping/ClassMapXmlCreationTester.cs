@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 using FluentNHibernate.Mapping;
 
@@ -382,6 +383,18 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<MappedObject>()
                 .ForMapping(m => m.Not.ReadOnly())
                 .Element("class").HasAttribute("mutable", "true");
+        }
+
+        [Test]
+        public void CanSetTuplizer()
+        {
+            Type tuplizerType = typeof(NHibernate.Tuple.Entity.PocoEntityTuplizer);
+
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Tuplizer(TuplizerMode.Poco, tuplizerType))
+                .Element("class/tuplizer").Exists()
+                .HasAttribute("entity-mode", "poco")
+                .HasAttribute("class", tuplizerType.AssemblyQualifiedName);
         }
 
         [Test]

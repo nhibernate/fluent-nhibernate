@@ -32,6 +32,7 @@ namespace FluentNHibernate.Mapping
         private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
         private readonly PolymorphismBuilder<ClassMap<T>> polymorphism;
         private SchemaActionBuilder<ClassMap<T>> schemaAction;
+        private TuplizerMapping tuplizerMapping;
 
         public ClassMap()
         {
@@ -95,6 +96,8 @@ namespace FluentNHibernate.Mapping
 
             foreach (var storedProcedure in storedProcedures)
                 mapping.AddStoredProcedure(storedProcedure.GetStoredProcedureMapping());
+
+            mapping.Tuplizer = tuplizerMapping;
 
             return mapping;
         }
@@ -448,6 +451,15 @@ namespace FluentNHibernate.Mapping
         public ClassMap<T> ApplyFilter<TFilter>() where TFilter : FilterDefinition, new()
         {
             return ApplyFilter<TFilter>(null);
+        }
+
+        public ClassMap<T> Tuplizer(TuplizerMode mode, Type tuplizerType)
+        {
+            tuplizerMapping = new TuplizerMapping();
+            tuplizerMapping.Mode = mode;
+            tuplizerMapping.Type = new TypeReference(tuplizerType);
+
+            return this;
         }
     }
 }

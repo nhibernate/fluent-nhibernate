@@ -156,5 +156,13 @@ namespace FluentNHibernate.MappingModel.Output
 
             document.ImportAndAppendChild(filterXml);
         }
+
+        public override void Visit(TuplizerMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<TuplizerMapping>();
+            var filterXml = writer.Write(mapping);
+
+            document.ImportAndAppendChild(filterXml);
+        }
     }
 }

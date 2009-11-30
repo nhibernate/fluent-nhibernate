@@ -55,6 +55,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Discriminator, value); }
         }
 
+        public TuplizerMapping Tuplizer
+        {
+            get { return attributes.Get(x => x.Tuplizer); }
+            set { attributes.Set(x => x.Tuplizer, value); }
+        }
+
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessClass(this);            
@@ -70,6 +76,9 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
             if (Version != null)
                 visitor.Visit(Version);
+
+            if (Tuplizer != null)
+                visitor.Visit(Tuplizer);
 
             base.AcceptVisitor(visitor);
         }
@@ -191,7 +200,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return attributes.Get(x => x.EntityName); }
             set { attributes.Set(x => x.EntityName, value); }
-        }
+        }       
 
         public override bool IsSpecified(string property)
         {

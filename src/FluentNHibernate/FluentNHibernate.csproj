@@ -367,7 +367,9 @@
     <Compile Include="MappingModel\Output\XmlFilterDefinitionWriter.cs" />
     <Compile Include="MappingModel\Output\XmlFilterWriter.cs" />
     <Compile Include="MappingModel\Output\XmlStoredProcedureWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlTuplizerWriter.cs" />
     <Compile Include="MappingModel\StoredProcedureMapping.cs" />
+    <Compile Include="MappingModel\TuplizerMapping.cs" />
     <Compile Include="Mapping\CheckTypeExpression.cs" />
     <Compile Include="Mapping\ColumnPart.cs" />
     <Compile Include="Mapping\FilterDefinition.cs" />

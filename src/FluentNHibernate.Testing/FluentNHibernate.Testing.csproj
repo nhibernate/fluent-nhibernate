@@ -156,6 +156,7 @@
     <Compile Include="MappingModel\Output\XmlFilterDefinitionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlStoredProcedureWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlTuplizerWriterTester.cs" />
     <Compile Include="ModelTestExtensions.cs" />
     <Compile Include="ConventionsTests\MultipleHelperConventions.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\ArrayConventionTests.cs" />
