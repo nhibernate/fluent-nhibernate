@@ -9,8 +9,9 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
         protected override IDictionary<string, SortValue> GetSorting()
         {
             return new Dictionary<string, SortValue>
-            {
+            {                
                 { "cache", new SortValue { Position = First, Level = 1 } },
+                { "tuplizer", new SortValue { Position = First, Level = 1 } },
                 { "key", new SortValue { Position = First, Level = 1 } },
                 { "id", new SortValue { Position = First, Level = 2 } },
                 { "composite-id", new SortValue { Position = First, Level = 2 } },
