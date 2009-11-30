@@ -51,6 +51,8 @@ namespace FluentNHibernate.Automapping
 
                 if (Cache.IsDirty)
                     classMapping.Cache = ((ICacheMappingProvider)Cache).GetCacheMapping();
+
+                classMapping.Tuplizer = tuplizerMapping;
             }
 
             foreach (var property in Properties)

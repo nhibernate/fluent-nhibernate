@@ -32,7 +32,7 @@ namespace FluentNHibernate.Mapping
         private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
         private readonly PolymorphismBuilder<ClassMap<T>> polymorphism;
         private SchemaActionBuilder<ClassMap<T>> schemaAction;
-        private TuplizerMapping tuplizerMapping;
+        protected TuplizerMapping tuplizerMapping;
 
         public ClassMap()
         {
