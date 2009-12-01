@@ -40,6 +40,12 @@ namespace FluentNHibernate.Mapping
             return parent;
         }
 
+        public TParent Add(ColumnMapping column)
+        {
+            columns.Add(column);
+            return parent;
+        }
+
         public TParent Clear()
         {
             columns.Clear();

@@ -81,8 +81,9 @@ namespace FluentNHibernate.Mapping
 
         public PropertyPart Column(string columnName)
         {
+            defaultColumn.Name = columnName;
             Columns.Clear();
-            Columns.Add(columnName);
+            Columns.Add(defaultColumn);
             return this;
         }
 
