@@ -54,7 +54,6 @@ namespace FluentNHibernate.Mapping
 		    return KeyProperty(property, columnName, null);
 		}
 
-        protected virtual CompositeIdentityPart<T> KeyProperty(PropertyInfo property, string columnName)
         /// <summary>
         /// Defines a property to be used as a key for this composite-id with an explicit column name.
         /// </summary>
@@ -63,7 +62,7 @@ namespace FluentNHibernate.Mapping
         /// <returns>The composite identity part fluent interface</returns>
         public CompositeIdentityPart<T> KeyProperty(Expression<Func<T, object>> expression, Action<KeyPropertyPart> keyPropertyAction)
         {
-            var property = ReflectionHelper.GetProperty(expression);
+            var property = ReflectionHelper.GetProperty(expression).ToMember();
             return KeyProperty(property, string.Empty, keyPropertyAction);
         }
 

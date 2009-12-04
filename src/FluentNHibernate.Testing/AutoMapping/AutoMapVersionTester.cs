@@ -68,7 +68,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             var mapping = new ClassMapping { Type = typeof(SubTarget) };
 
-            mapper.Map(mapping, typeof(SubTarget).GetProperty("Version"));
+            mapper.Map(mapping, typeof(SubTarget).GetProperty("Version").ToMember());
 
             Assert.That(mapping.Version, Is.Not.Null);
         }
