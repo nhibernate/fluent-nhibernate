@@ -38,6 +38,14 @@ namespace FluentNHibernate.Visitors
                 new IdentityInstance(idMapping));
         }
 
+        public override void ProcessCompositeId(CompositeIdMapping idMapping)
+        {
+            var conventions = finder.Find<ICompositeIdentityConvention>();
+
+            Apply<ICompositeIdentityInspector, ICompositeIdentityInstance>(conventions,
+                new CompositeIdentityInstance(idMapping));
+        }
+
         public override void ProcessClass(ClassMapping classMapping)
         {
             var conventions = finder.Find<IClassConvention>();

@@ -108,6 +108,7 @@
     <Compile Include="Conventions\Helpers\Builders\BagConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\CollectionConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\ArrayConventionBuilder.cs" />
+    <Compile Include="Conventions\Helpers\Builders\CompositeIdConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\HibernateMappingConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\JoinConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\MapConventionBuilder.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltDynamicComponentConvention.cs" />
     <Compile Include="Conventions\Helpers\Proxy.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltCompositeIdConvention.cs" />
     <Compile Include="Conventions\IArrayConvention.cs" />
     <Compile Include="Conventions\IArrayConventionAcceptance.cs" />
     <Compile Include="Conventions\IBagConvention.cs" />
@@ -154,6 +156,8 @@
     <Compile Include="Conventions\ICollectionConventionAcceptance.cs" />
     <Compile Include="Conventions\IColumnConventionAcceptance.cs" />
     <Compile Include="Conventions\IComponentConventionAcceptance.cs" />
+    <Compile Include="Conventions\ICompositeIdentityConvention.cs" />
+    <Compile Include="Conventions\ICompositeIdentityConventionAcceptance.cs" />
     <Compile Include="Conventions\IDynamicComponentConventionAcceptance.cs" />
     <Compile Include="Conventions\IHasManyConventionAcceptance.cs" />
     <Compile Include="Conventions\IHasManyToManyConventionAcceptance.cs" />
@@ -254,6 +258,7 @@
     <Compile Include="Conventions\Instances\CascadeInstance.cs" />
     <Compile Include="Conventions\Instances\CollectionCascadeInstance.cs" />
     <Compile Include="Conventions\Instances\ComponentInstance.cs" />
+    <Compile Include="Conventions\Instances\CompositeIdentityInstance.cs" />
     <Compile Include="Conventions\Instances\DynamicComponentInstance.cs" />
     <Compile Include="Conventions\Instances\FetchInstance.cs" />
     <Compile Include="Conventions\Instances\GeneratedInstance.cs" />
@@ -265,6 +270,7 @@
     <Compile Include="Conventions\Instances\ICascadeInstance.cs" />
     <Compile Include="Conventions\Instances\ICollectionCascadeInstance.cs" />
     <Compile Include="Conventions\Instances\IComponentInstance.cs" />
+    <Compile Include="Conventions\Instances\ICompositeIdentityInstance.cs" />
     <Compile Include="Conventions\Instances\IdentityInstance.cs" />
     <Compile Include="Conventions\Instances\IFetchInstance.cs" />
     <Compile Include="Conventions\Instances\IGeneratedInstance.cs" />

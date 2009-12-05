@@ -120,6 +120,7 @@
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaIsAnyTests.cs" />
     <Compile Include="ConventionsTests\AccessConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\ArrayConventionTests.cs" />
+    <Compile Include="ConventionsTests\ApplyingToModel\CompositeIdConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\HibernateMappingConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\JoinConventionTests.cs" />
     <Compile Include="ConventionsTests\AutoImportHelperTests.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="DomainModel\Mapping\StoredProcedureTests.cs" />
     <Compile Include="FluentInterfaceTests\ColumnPartTests.cs" />
     <Compile Include="FluentInterfaceTests\ComponentMapSpecs.cs" />
+    <Compile Include="ConventionsTests\OverridingFluentInterface\CompositeIdConventionTests.cs" />
     <Compile Include="DomainModel\Access\ComponentModel.cs" />
     <Compile Include="DomainModel\Access\CompositeIdModel.cs" />
     <Compile Include="DomainModel\Access\ManyToManyModel.cs" />
