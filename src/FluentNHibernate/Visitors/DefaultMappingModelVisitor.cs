@@ -196,5 +196,15 @@ namespace FluentNHibernate.Visitors
         {
             indexMapping.AcceptVisitor(this);
         }
+
+        public override void Visit(KeyPropertyMapping mapping)
+        {
+            mapping.AcceptVisitor(this);
+        }
+
+        public override void Visit(KeyManyToOneMapping mapping)
+        {
+            mapping.AcceptVisitor(this);
+        }
     }
 }

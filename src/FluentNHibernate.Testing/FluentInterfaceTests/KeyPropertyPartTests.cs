@@ -36,5 +36,12 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             part.Type(typeof(string));
             mapping.Type.ShouldEqual(new TypeReference(typeof(string)));
         }
+
+        [Test]
+        public void ShouldSetAccessStrategy()
+        {
+            part.Access.Field();
+            mapping.Access.ShouldEqual("field");
+        }
     }
 }

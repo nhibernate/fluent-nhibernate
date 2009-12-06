@@ -225,6 +225,22 @@ namespace FluentNHibernate.Visitors
                 new JoinInstance(joinMapping));
         }
 
+        public override void ProcessKeyProperty(KeyPropertyMapping mapping)
+        {
+            var conventions = finder.Find<IKeyPropertyConvention>();
+
+            Apply<IKeyPropertyInspector, IKeyPropertyInstance>(conventions, 
+                new KeyPropertyInstance(mapping));
+        }
+
+        public override void ProcessKeyManyToOne(KeyManyToOneMapping mapping)
+        {
+            var conventions = finder.Find<IKeyManyToOneConvention>();
+
+            Apply<IKeyManyToOneInspector, IKeyManyToOneInstance>(conventions, 
+                new KeyManyToOneInstance(mapping));
+        }
+
         private void Apply<TInspector, TInstance>(IEnumerable conventions, TInstance instance)
             where TInspector : IInspector
             where TInstance : TInspector
