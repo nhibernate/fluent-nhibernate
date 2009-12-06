@@ -46,6 +46,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_list_property_with_a_public_setter_is_set : When_a_list_property_with_is_set_successfully
     {
         protected override Expression<Func<ListEntity, IEnumerable>> GetPropertyExpression()
@@ -63,6 +64,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_list_property_with_a_private_setter_is_set : When_a_list_property_with_is_set_successfully
     {
         protected override Expression<Func<ListEntity, IEnumerable>> GetPropertyExpression()
@@ -80,6 +82,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_list_property_is_set_with_a_custom_setter : When_a_list_property_with_is_set_successfully
     {
         protected override Expression<Func<ListEntity, IEnumerable>> GetPropertyExpression()
@@ -110,6 +113,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_set_property_with_a_public_setter_is_set : When_a_list_property_with_is_set_successfully
     {
         protected override Expression<Func<ListEntity, IEnumerable>> GetPropertyExpression()
@@ -127,6 +131,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_typed_set_property_with_a_public_setter_is_set : When_a_list_property_with_is_set_successfully
     {
         protected override Expression<Func<ListEntity, IEnumerable>> GetPropertyExpression()
@@ -144,6 +149,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_collection_property_with_a_public_setter_is_set : When_a_list_property_with_is_set_successfully
     {
         protected override Expression<Func<ListEntity, IEnumerable>> GetPropertyExpression()
@@ -164,6 +170,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_an_array_property_with_a_public_setter_is_set : When_a_list_property_with_is_set_successfully
     {
         protected override Expression<Func<ListEntity, IEnumerable>> GetPropertyExpression()
@@ -181,6 +188,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_an_list_property_with_a_public_setter_is_set : When_a_list_property_with_is_set_successfully
     {
         protected override Expression<Func<ListEntity, IEnumerable>> GetPropertyExpression()
@@ -198,6 +206,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_list_property_with_a_backing_field_is_set : With_list_entity
     {
         protected override Expression<Func<ListEntity, IEnumerable>> GetPropertyExpression()
@@ -224,6 +233,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_list_property_is_set_with_a_custom_setter_that_fails : With_list_entity
     {
         protected override Expression<Func<ListEntity, IEnumerable>> GetPropertyExpression()
@@ -272,6 +282,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_checked_list_is_equal_to_the_expected_list : With_initialized_list
     {
         public override void establish_context()
@@ -292,6 +303,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_checked_list_has_transposed_items_of_the_expected_list : With_initialized_list
     {
         public override void establish_context()
@@ -319,6 +331,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_checked_list_does_not_have_the_same_number_of_elements_as_the_expected_list : With_initialized_list
     {
         public override void establish_context()
@@ -346,6 +359,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_checked_list_is_null : With_initialized_list
     {
         public override void establish_context()
@@ -373,6 +387,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_expected_list_is_null : With_initialized_list
     {
         public override void establish_context()
@@ -452,6 +467,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_list_is_checked_with_a_custom_equality_comparer_that_fails : With_initialized_list
     {
         private InvalidOperationException exception;
@@ -482,6 +498,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_checked_typed_set_is_equal_to_the_expected_list : With_initialized_list
     {
         public override void establish_context()
@@ -506,6 +523,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_checked_set_is_equal_to_the_expected_list : With_initialized_list
     {
         public override void establish_context()
@@ -530,6 +548,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_collection_is_equal_to_the_expected_list : With_initialized_list
     {
         public override void establish_context()
@@ -554,6 +573,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_typed_list_is_equal_to_the_expected_list : With_initialized_list
     {
         public override void establish_context()
@@ -578,6 +598,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_checked_array_is_equal_to_the_expected_list : With_initialized_list
     {
         public override void establish_context()

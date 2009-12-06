@@ -43,6 +43,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_property_with_a_public_setter_is_set : When_a_property_is_set_successfully
     {
         protected override Expression<Func<PropertyEntity, string>> GetPropertyExpression()
@@ -57,6 +58,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_property_with_a_private_setter_is_set : When_a_property_is_set_successfully
     {
         protected override Expression<Func<PropertyEntity, string>> GetPropertyExpression()
@@ -71,6 +73,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_property_with_a_backing_field_is_set : With_property_entity
     {
         protected override Expression<Func<PropertyEntity, string>> GetPropertyExpression()
@@ -97,6 +100,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_property_is_set_with_a_custom_setter : When_a_property_is_set_successfully
     {
         protected override Expression<Func<PropertyEntity, string>> GetPropertyExpression()
@@ -118,6 +122,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_property_is_set_with_a_custom_setter_that_fails : With_property_entity
     {
         protected override Expression<Func<PropertyEntity, string>> GetPropertyExpression()
@@ -166,6 +171,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_checked_property_is_equal_to_the_expected_value : With_initialized_property
     {
         public override void establish_context()
@@ -186,6 +192,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_checked_property_is_equal_to_the_expected_value_with_a_custom_equality_comparer : When_the_checked_property_is_equal_to_the_expected_value
     {
         public override void establish_context()
@@ -204,6 +211,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_checked_property_is_not_equal_to_the_expected_value : With_initialized_property
     {
         public override void establish_context()
@@ -231,6 +239,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_the_checked_property_is_not_equal_to_the_expected_value_with_a_custom_equality_comparer : When_the_checked_property_is_not_equal_to_the_expected_value
     {
         public override void establish_context()
@@ -248,6 +257,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
     }
 
+    [TestFixture]
     public class When_a_property_is_checked_with_a_custom_equality_comparer_that_fails : With_initialized_property
     {
         private InvalidOperationException exception;

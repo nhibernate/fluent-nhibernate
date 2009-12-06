@@ -46,6 +46,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_a_checked_property_is_added : With_persistence_specification<PropertyEntity>
     {
         public override void because()
@@ -72,6 +73,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_a_checked_property_of_an_array_type_is_added : With_persistence_specification<ListEntity>
     {
         public override void because()
@@ -98,6 +100,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_a_checked_property_with_a_custom_setter_is_added : With_persistence_specification<PropertyEntity>
     {
         protected Action<PropertyEntity, string> propertySetter;
@@ -132,6 +135,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_the_value_setter_of_a_checked_property_is_invoked : When_a_checked_property_with_a_custom_setter_is_added
     {
         private PropertyEntity entity;
@@ -155,6 +159,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_a_checked_reference_is_added : With_persistence_specification<ReferenceEntity>
     {
         public override void because()
@@ -181,6 +186,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_a_checked_reference_with_a_custom_setter_is_added : With_persistence_specification<ReferenceEntity>
     {
         protected Action<ReferenceEntity, OtherEntity> propertySetter;
@@ -215,6 +221,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_the_value_setter_of_a_checked_reference_is_invoked : When_a_checked_reference_with_a_custom_setter_is_added
     {
         private ReferenceEntity entity;
@@ -240,6 +247,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_a_checked_list_is_added : With_persistence_specification<ReferenceEntity>
     {
         public override void because()
@@ -266,6 +274,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_a_checked_enumerable_with_a_custom_item_setter_is_added : With_persistence_specification<ReferenceEntity>
     {
         protected Action<ReferenceEntity, OtherEntity> listSetter;
@@ -300,6 +309,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_a_checked_list_with_a_custom_list_setter_is_added : With_persistence_specification<ReferenceEntity>
     {
         protected Action<ReferenceEntity, IEnumerable<OtherEntity>> listSetter;
@@ -334,6 +344,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_the_list_setter_of_a_checked_list_is_invoked : When_a_checked_list_with_a_custom_list_setter_is_added
     {
         private ReferenceEntity entity;
@@ -359,6 +370,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_a_checked_list_with_a_custom_list_item_setter_is_added : With_persistence_specification<ReferenceEntity>
     {
         protected Action<ReferenceEntity, OtherEntity> listItemSetter;
@@ -393,6 +405,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_the_list_item_setter_of_a_checked_list_is_invoked : When_a_checked_list_with_a_custom_list_item_setter_is_added
     {
         private ReferenceEntity entity;
@@ -419,6 +432,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_a_checked_component_list_is_added : With_persistence_specification<ReferenceEntity>
     {
         public override void because()
@@ -445,6 +459,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_a_checked_component_list_with_a_custom_list_setter_is_added : With_persistence_specification<ReferenceEntity>
     {
         protected Action<ReferenceEntity, IEnumerable<OtherEntity>> listSetter;
@@ -479,6 +494,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_the_list_setter_of_a_checked_component_list_is_invoked : When_a_checked_component_list_with_a_custom_list_setter_is_added
     {
         private ReferenceEntity entity;
@@ -504,6 +520,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_a_checked_component_list_with_a_custom_list_item_setter_is_added : With_persistence_specification<ReferenceEntity>
     {
         protected Action<ReferenceEntity, OtherEntity> listItemSetter;
@@ -538,6 +555,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class When_the_list_item_setter_of_a_checked_component_list_is_invoked : When_a_checked_component_list_with_a_custom_list_item_setter_is_added
     {
         private ReferenceEntity entity;

@@ -8,7 +8,6 @@ using Rhino.Mocks.Interfaces;
 
 namespace FluentNHibernate.Testing
 {
-    [TestFixture]
     public class Specification
     {
         public Exception thrown_exception { get; private set; }

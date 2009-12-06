@@ -8,6 +8,7 @@ using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.Testing.Values
 {
+    [TestFixture]
     public class When_a_reference_property_is_registered_on_the_persistence_specification : Specification
     {
         private ReferenceProperty<PropertyEntity, OtherEntity> sut;
