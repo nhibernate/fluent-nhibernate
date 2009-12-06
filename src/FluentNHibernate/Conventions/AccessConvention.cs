@@ -10,6 +10,9 @@ namespace FluentNHibernate.Conventions
 {
     public abstract class AccessConvention
         : IIdConvention,
+          ICompositeIdentityConvention,
+          IKeyPropertyConvention,
+          IKeyManyToOneConvention,
           IVersionConvention,
           IPropertyConvention,
           IComponentConvention,
@@ -21,6 +24,21 @@ namespace FluentNHibernate.Conventions
         protected abstract void Apply(Type owner, string name, IAccessInstance access);
 
         public virtual void Apply(IIdentityInstance instance)
+        {
+            Apply(instance.EntityType, instance.Name, instance.Access);
+        }
+
+        public virtual void Apply(ICompositeIdentityInstance instance)
+        {
+            Apply(instance.EntityType, instance.Name, instance.Access);
+        }
+
+        public virtual void Apply(IKeyPropertyInstance instance)
+        {
+            Apply(instance.EntityType, instance.Name, instance.Access);
+        }
+
+        public virtual void Apply(IKeyManyToOneInstance instance)
         {
             Apply(instance.EntityType, instance.Name, instance.Access);
         }
