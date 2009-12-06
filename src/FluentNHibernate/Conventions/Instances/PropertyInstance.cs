@@ -20,37 +20,29 @@ namespace FluentNHibernate.Conventions.Instances
         public new void Insert()
         {
             if (!mapping.IsSpecified("Insert"))
-            {
                 mapping.Insert = nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new void Update()
         {
             if (!mapping.IsSpecified("Update"))
-            {
                 mapping.Update = nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new void ReadOnly()
         {
             if (!mapping.IsSpecified("Insert") && !mapping.IsSpecified("Update"))
-            {
                 mapping.Insert = mapping.Update = !nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new void Nullable()
         {
-            if (mapping.Columns.First().IsSpecified("NotNull"))
-                return;
-
-            foreach (var column in mapping.Columns)
-                column.NotNull = !nextBool;
+            if (!mapping.Columns.First().IsSpecified("NotNull"))
+                foreach (var column in mapping.Columns)
+                    column.NotNull = !nextBool;
 
             nextBool = true;
         }
@@ -129,11 +121,9 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Unique()
         {
-            if (mapping.Columns.First().IsSpecified("Unique"))
-                return;
-
-            foreach (var column in mapping.Columns)
-                column.Unique = nextBool;
+            if (!mapping.Columns.First().IsSpecified("Unique"))
+                foreach (var column in mapping.Columns)
+                    column.Unique = nextBool;
 
             nextBool = true;
         }
@@ -192,10 +182,8 @@ namespace FluentNHibernate.Conventions.Instances
         public new void OptimisticLock()
         {
             if (!mapping.IsSpecified("OptimisticLock"))
-            {
                 mapping.OptimisticLock = nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new void Length(int length)
@@ -210,10 +198,8 @@ namespace FluentNHibernate.Conventions.Instances
         public new void LazyLoad()
         {
             if (!mapping.IsSpecified("Lazy"))
-            {
                 mapping.Lazy = nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new void Index(string value)

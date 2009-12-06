@@ -77,10 +77,8 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void Constrained()
         {
-            if (mapping.IsSpecified("Constrained"))
-                return;
-
-            mapping.Constrained = nextBool;
+            if (!mapping.IsSpecified("Constrained"))
+                mapping.Constrained = nextBool;
             nextBool = true;
         }
 
@@ -92,10 +90,8 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void LazyLoad()
         {
-            if (mapping.IsSpecified("Lazy"))
-                return;
-
-            mapping.Lazy = nextBool;
+            if (!mapping.IsSpecified("Lazy"))
+                mapping.Lazy = nextBool;
             nextBool = true;
         }
 
