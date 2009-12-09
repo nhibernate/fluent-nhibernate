@@ -11,13 +11,13 @@ namespace FluentNHibernate.Testing.Testing.Values
 {
     public abstract class With_property_entity : Specification
     {
-        private PropertyInfo property;
+        private Accessor property;
         protected PropertyEntity target;
         protected Property<PropertyEntity, string> sut;
 
         public override void establish_context()
         {
-            property = ReflectionHelper.GetProperty(GetPropertyExpression());
+            property = ReflectionHelper.GetAccessor(GetPropertyExpression());
             target = new PropertyEntity();
 
             sut = new Property<PropertyEntity, string>(property, "expected");
@@ -158,13 +158,13 @@ namespace FluentNHibernate.Testing.Testing.Values
 
     public abstract class With_initialized_property : Specification
     {
-        private PropertyInfo property;
+        private Accessor property;
         protected PropertyEntity target;
         protected Property<PropertyEntity, string> sut;
 
         public override void establish_context()
         {
-            property = ReflectionHelper.GetProperty((Expression<Func<PropertyEntity, string>>)(x => x.GetterAndSetter));
+            property = ReflectionHelper.GetAccessor ((Expression<Func<PropertyEntity, string>>)(x => x.GetterAndSetter));
             target = new PropertyEntity();
 
             sut = new Property<PropertyEntity, string>(property, "expected");

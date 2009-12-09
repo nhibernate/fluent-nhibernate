@@ -5,21 +5,22 @@ using System.Linq;
 using System.Reflection;
 using Iesi.Collections;
 using Iesi.Collections.Generic;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Testing.Values
 {
     public class List<T, TListElement> : Property<T, IEnumerable<TListElement>>
     {
         private readonly IEnumerable<TListElement> _expected;
-        private Action<T, PropertyInfo, IEnumerable<TListElement>> _valueSetter;
+        private Action<T, Accessor, IEnumerable<TListElement>> _valueSetter;
 
-        public List(PropertyInfo property, IEnumerable<TListElement> value)
+        public List(Accessor property, IEnumerable<TListElement> value)
             : base(property, value)
         {
             _expected = value;
         }
 
-        public override Action<T, PropertyInfo, IEnumerable<TListElement>> ValueSetter
+        public override Action<T, Accessor, IEnumerable<TListElement>> ValueSetter
         {
             get
             {
@@ -28,7 +29,7 @@ namespace FluentNHibernate.Testing.Values
                     return _valueSetter;
                 }
 
-                return (target, propertyInfo, value) =>
+                return (target, propertyAccessor, value) =>
                 {
                     object collection;
 
@@ -36,15 +37,15 @@ namespace FluentNHibernate.Testing.Values
                     // on the user to pass in the correct collection type (especially if they're using
                     // an interface). I've tried to create the common ones, but I'm sure this won't be
                     // infallible.
-                    if (propertyInfo.PropertyType.IsAssignableFrom(typeof(ISet<TListElement>)))
+                    if (propertyAccessor.PropertyType.IsAssignableFrom(typeof(ISet<TListElement>)))
                     {
                         collection = new HashedSet<TListElement>(Expected.ToList());
                     }
-                    else if (propertyInfo.PropertyType.IsAssignableFrom(typeof(ISet)))
+                    else if (propertyAccessor.PropertyType.IsAssignableFrom(typeof(ISet)))
                     {
                         collection = new HashedSet((ICollection)Expected);
                     }
-                    else if (propertyInfo.PropertyType.IsArray)
+                    else if (propertyAccessor.PropertyType.IsArray)
                     {
                         collection = Array.CreateInstance(typeof(TListElement), Expected.Count());
                         Array.Copy((Array)Expected, (Array)collection, Expected.Count());
@@ -54,7 +55,7 @@ namespace FluentNHibernate.Testing.Values
                         collection = new List<TListElement>(Expected);
                     }
 
-                    propertyInfo.SetValue(target, collection, null);
+                    propertyAccessor.SetValue(target, collection);
                 };
             }
             set { _valueSetter = value; }
@@ -67,7 +68,7 @@ namespace FluentNHibernate.Testing.Values
 
         public override void CheckValue(object target)
         {
-            var actual = PropertyInfo.GetValue(target, null) as IEnumerable;
+            var actual = PropertyAccessor.GetValue(target) as IEnumerable;
             AssertGenericListMatches(actual, Expected);
         }
 

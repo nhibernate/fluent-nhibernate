@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing
         public static PersistenceSpecification<T> CheckProperty<T>(this PersistenceSpecification<T> spec,
                                                                    Expression<Func<T, object>> expression, object propertyValue)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            Accessor property = ReflectionHelper.GetAccessor (expression);
 
             return spec.RegisterCheckedProperty(new Property<T, object>(property, propertyValue));
         }
@@ -21,7 +21,7 @@ namespace FluentNHibernate.Testing
                                                                                  Expression<Func<T, Array>> expression,
                                                                                  IEnumerable<TListElement> propertyValue)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            Accessor property = ReflectionHelper.GetAccessor (expression);
 
             return spec.RegisterCheckedProperty(new List<T, TListElement>(property, propertyValue));
         }
@@ -31,7 +31,7 @@ namespace FluentNHibernate.Testing
                                                                               TProperty propertyValue,
                                                                               Action<T, TProperty> propertySetter)
         {
-            PropertyInfo propertyInfoFromExpression = ReflectionHelper.GetProperty(expression);
+            Accessor propertyInfoFromExpression = ReflectionHelper.GetAccessor (expression);
 
             var property = new Property<T, TProperty>(propertyInfoFromExpression, propertyValue);
             property.ValueSetter = (target, propertyInfo, value) => propertySetter(target, value);
@@ -43,7 +43,7 @@ namespace FluentNHibernate.Testing
                                                                     Expression<Func<T, object>> expression,
                                                                     object propertyValue)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            Accessor property = ReflectionHelper.GetAccessor (expression);
 
             return spec.RegisterCheckedProperty(new ReferenceProperty<T, object>(property, propertyValue));
         }
@@ -53,7 +53,7 @@ namespace FluentNHibernate.Testing
                                                                                TProperty propertyValue,
                                                                                Action<T, TProperty> propertySetter)
         {
-            PropertyInfo propertyInfoFromExpression = ReflectionHelper.GetProperty(expression);
+            Accessor propertyInfoFromExpression = ReflectionHelper.GetAccessor (expression);
 
             var property = new ReferenceProperty<T, TProperty>(propertyInfoFromExpression, propertyValue);
             property.ValueSetter = (target, propertyInfo, value) => propertySetter(target, value);
@@ -65,7 +65,7 @@ namespace FluentNHibernate.Testing
                                                                              Expression<Func<T, IEnumerable<TListElement>>> expression,
                                                                              IEnumerable<TListElement> propertyValue)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            Accessor property = ReflectionHelper.GetAccessor (expression);
 
             return spec.RegisterCheckedProperty(new ReferenceList<T, TListElement>(property, propertyValue));
         }
@@ -75,7 +75,7 @@ namespace FluentNHibernate.Testing
                                                                              IEnumerable<TListElement> propertyValue,
                                                                              Action<T, TListElement> listItemSetter)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            Accessor property = ReflectionHelper.GetAccessor (expression);
 
             var list = new ReferenceList<T, TListElement>(property, propertyValue);
             list.ValueSetter = (target, propertyInfo, value) =>
@@ -95,7 +95,7 @@ namespace FluentNHibernate.Testing
                                                                              Action<T, IEnumerable<TListElement>> listSetter)
 
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            Accessor property = ReflectionHelper.GetAccessor (expression);
 
             var list = new ReferenceList<T, TListElement>(property, propertyValue);
             list.ValueSetter = (target, propertyInfo, value) => listSetter(target, value);
@@ -113,7 +113,7 @@ namespace FluentNHibernate.Testing
                                                                                       Expression<Func<T, object>> expression,
                                                                                       IEnumerable<TListElement> propertyValue)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            Accessor property = ReflectionHelper.GetAccessor (expression);
 
             return spec.RegisterCheckedProperty(new List<T, TListElement>(property, propertyValue));
         }
@@ -123,7 +123,7 @@ namespace FluentNHibernate.Testing
                                                                                       IEnumerable<TListElement> propertyValue,
                                                                                       Action<T, TListElement> listItemSetter)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            Accessor property = ReflectionHelper.GetAccessor (expression);
 
             var list = new List<T, TListElement>(property, propertyValue);
             list.ValueSetter = (target, propertyInfo, value) =>
@@ -142,7 +142,7 @@ namespace FluentNHibernate.Testing
                                                                                       IEnumerable<TListElement> propertyValue,
                                                                                       Action<T, IEnumerable<TListElement>> listSetter)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            Accessor property = ReflectionHelper.GetAccessor (expression);
 
             var list = new List<T, TListElement>(property, propertyValue);
             list.ValueSetter = (target, propertyInfo, value) => listSetter(target, value);

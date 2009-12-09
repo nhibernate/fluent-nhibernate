@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Testing.Values
 {
@@ -16,18 +17,18 @@ namespace FluentNHibernate.Testing.Values
 
     public class Property<T, TProperty> : Property<T>
     {
-        private static readonly Action<T, PropertyInfo, TProperty> DefaultValueSetter = (target, propertyInfo, value) => propertyInfo.SetValue(target, value, null);
-        private readonly PropertyInfo _propertyInfo;
+        private static readonly Action<T, Accessor, TProperty> DefaultValueSetter = (target, propertyAccessor, value) => propertyAccessor.SetValue (target, value);
+        private readonly Accessor _propertyAccessor;
         private readonly TProperty _value;
-        private Action<T, PropertyInfo, TProperty> _valueSetter;
+        private Action<T, Accessor, TProperty> _valueSetter;
 
-        public Property(PropertyInfo property, TProperty value)
+        public Property(Accessor property, TProperty value)
         {
-            _propertyInfo = property;
+            _propertyAccessor = property;
             _value = value;
         }
 
-        public virtual Action<T, PropertyInfo, TProperty> ValueSetter
+        public virtual Action<T, Accessor, TProperty> ValueSetter
         {
             get
             {
@@ -41,9 +42,9 @@ namespace FluentNHibernate.Testing.Values
             set { _valueSetter = value; }
         }
 
-        protected PropertyInfo PropertyInfo
+        protected Accessor PropertyAccessor
         {
-            get { return _propertyInfo; }
+            get { return _propertyAccessor; }
         }
 
         protected TProperty Value
@@ -55,18 +56,18 @@ namespace FluentNHibernate.Testing.Values
         {
             try
             {
-                ValueSetter(target, PropertyInfo, Value);
+                ValueSetter(target, PropertyAccessor, Value);
             }
             catch (Exception e)
             {
-                string message = "Error while trying to set property " + _propertyInfo.Name;
+                string message = "Error while trying to set property " + _propertyAccessor.Name;
                 throw new ApplicationException(message, e);
             }
         }
 
         public override void CheckValue(object target)
         {
-            object actual = PropertyInfo.GetValue(target, null);
+            object actual = PropertyAccessor.GetValue(target);
 
             bool areEqual;
             if (EntityEqualityComparer != null)
@@ -84,7 +85,7 @@ namespace FluentNHibernate.Testing.Values
                     String.Format(
                         "Expected '{0}' but got '{1}' for Property '{2}'",
                         Value,
-                        actual, PropertyInfo.Name);
+                        actual, PropertyAccessor.Name);
 
                 throw new ApplicationException(message);
             }

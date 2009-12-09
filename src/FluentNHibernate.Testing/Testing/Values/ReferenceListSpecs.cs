@@ -19,7 +19,7 @@ namespace FluentNHibernate.Testing.Testing.Values
 
         public override void establish_context()
         {
-            var property = ReflectionHelper.GetProperty((Expression<Func<ReferenceEntity, object>>)(x => x.ReferenceList));
+            var property = ReflectionHelper.GetAccessor((Expression<Func<ReferenceEntity, object>>)(x => x.ReferenceList));
 
             referencedEntities = new List<OtherEntity> {new OtherEntity(), new OtherEntity()};
 

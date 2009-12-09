@@ -44,11 +44,8 @@ namespace FluentNHibernate.Utils
 
         public void SetValue(object target, object propertyValue)
         {
-            if (_property.CanWrite)
-            {
                 _property.SetValue(target, propertyValue, null);
             }
-        }
 
         public object GetValue(object target)
         {

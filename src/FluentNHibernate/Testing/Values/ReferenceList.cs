@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Reflection;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Testing.Values
 {
     public class ReferenceList<T, TListElement> : List<T, TListElement>
     {
-        public ReferenceList(PropertyInfo property, IEnumerable<TListElement> value)
+        public ReferenceList(Accessor property, IEnumerable<TListElement> value)
             : base(property, value)
         {}
 
