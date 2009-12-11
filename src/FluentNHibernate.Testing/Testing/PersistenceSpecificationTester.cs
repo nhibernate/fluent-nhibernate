@@ -207,6 +207,13 @@ namespace FluentNHibernate.Testing.Testing
                 _spec.VerifyTheMappings());
         }
 
+        [Test]
+        public void Should_accept_instances_regardless_of_constructor()
+        {
+            var _spec = new PersistenceSpecification<NoParameterlessConstructorClass>(sessionSource);
+            _spec.VerifyTheMappings(new NoParameterlessConstructorClass(123));
+        }
+
         public class PublicConstructorClass
         {
             public PublicConstructorClass() { }

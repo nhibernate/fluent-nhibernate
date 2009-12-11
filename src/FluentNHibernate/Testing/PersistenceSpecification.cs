@@ -38,9 +38,11 @@ namespace FluentNHibernate.Testing
 
         public void VerifyTheMappings()
         {
-            // CreateProperties the initial copy
-            var first = typeof(T).InstantiateUsingParameterlessConstructor<T>();
+            VerifyTheMappings(typeof(T).InstantiateUsingParameterlessConstructor<T>());
+        }
 
+        public void VerifyTheMappings(T first)
+        {
             // Set the "suggested" properties, including references
             // to other entities and possibly collections
             allProperties.ForEach(p => p.SetValue(first));
