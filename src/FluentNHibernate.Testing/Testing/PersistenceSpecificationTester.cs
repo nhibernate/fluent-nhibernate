@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using NHibernate;
 using System.Collections;
+using System.Drawing;
 
 namespace FluentNHibernate.Testing.Testing
 {
@@ -16,6 +17,7 @@ namespace FluentNHibernate.Testing.Testing
             public string Name { get; set; }
             public Kitten FirstKitten { get; set; }
             public IList<Kitten> AllKittens { get; set; }
+            public Bitmap Picture { get; set; }
 
             public Cat()
             {
@@ -56,6 +58,21 @@ namespace FluentNHibernate.Testing.Testing
             }
         }
 
+        public class DummyBitmapComparer : IEqualityComparer
+        {
+            public new bool Equals(object x, object y)
+            {
+                if (x is Bitmap && y is Bitmap)
+                    return true;
+                throw new NotImplementedException();
+            }
+
+            public int GetHashCode(object obj)
+            {
+                return ((Bitmap)obj).GetHashCode();
+            }
+        }
+
         private PersistenceSpecification<Cat> _spec;
         private ISession _session;
         private ITransaction _transaction;
@@ -72,6 +89,7 @@ namespace FluentNHibernate.Testing.Testing
                 Id = 100,
                 Name = "Cat",
                 FirstKitten = firstKitten,
+                Picture = new Bitmap(5, 5),
                 AllKittens = new List<Kitten>
                 {
                     firstKitten,
@@ -85,6 +103,7 @@ namespace FluentNHibernate.Testing.Testing
                 Id = 100,
                 Name = "IdenticalCat",
                 FirstKitten = firstKitten,
+                Picture = new Bitmap(5, 5),
                 AllKittens = new List<Kitten>
                 {
                     firstKitten,
@@ -133,6 +152,12 @@ namespace FluentNHibernate.Testing.Testing
             _spec.CheckEnumerable(x => x.EnumerableOfKittens, (cat, kitten) => cat.AddKitten(kitten), kittens);
 
             typeof(ApplicationException).ShouldBeThrownBy(_spec.VerifyTheMappings);
+        }
+
+        [Test]
+        public void Comparing_two_properties_should_use_the_specified_property_IEqualityComparer()
+        {
+            _spec.CheckProperty(cat => cat.Picture, _cat.Picture, new DummyBitmapComparer()).VerifyTheMappings ();
         }
     }
 

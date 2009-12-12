@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentNHibernate.Testing.Values;
 using FluentNHibernate.Utils;
 using NHibernate;
+using System;
 
 namespace FluentNHibernate.Testing
 {
@@ -80,7 +81,12 @@ namespace FluentNHibernate.Testing
 
         public PersistenceSpecification<T> RegisterCheckedProperty(Property<T> property)
         {
-            property.EntityEqualityComparer = entityEqualityComparer;
+            return RegisterCheckedProperty(property, null);
+        }
+
+        public PersistenceSpecification<T> RegisterCheckedProperty(Property<T> property, IEqualityComparer equalityComparer)
+        {
+            property.EntityEqualityComparer = equalityComparer ?? entityEqualityComparer;
             allProperties.Add(property);
 
             property.HasRegistered(this);
