@@ -79,7 +79,7 @@ namespace FluentNHibernate.Utils
                 string returnValue = string.Empty;
                 foreach (var info in _chain)
                 {
-                    returnValue += info.Name;
+                    returnValue += info.Name + ".";
                 }
 
                 returnValue += _innerProperty.Name;

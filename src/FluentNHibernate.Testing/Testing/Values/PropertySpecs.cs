@@ -235,7 +235,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         public void should_tell_which_property_failed_the_check()
         {
             var exception = (ApplicationException)thrown_exception;
-            exception.Message.ShouldEqual("Expected 'expected' but got 'actual' for Property 'GetterAndSetter'");
+            exception.Message.ShouldEqual("For property 'GetterAndSetter' expected 'expected' of type 'System.String' but got 'actual' of type 'System.String'");
         }
     }
 
