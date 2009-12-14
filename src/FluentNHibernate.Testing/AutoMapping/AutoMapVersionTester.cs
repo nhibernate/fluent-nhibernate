@@ -2,6 +2,7 @@ using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Utils;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Automapping
@@ -96,7 +97,7 @@ namespace FluentNHibernate.Testing.Automapping
         [Test]
         public void ShouldMapByteArray()
         {
-            mapper.MapsProperty(typeof(BaseEntityClass).GetProperty("Version")).ShouldBeTrue();
+            mapper.MapsProperty(ReflectionHelper.GetProperty<BaseEntityClass>(x => x.Version).ToMember()).ShouldBeTrue();
         }
 
         [Test]
@@ -104,7 +105,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             var mapping = new ClassMapping { Type = typeof(Target) };
 
-            mapper.Map(mapping, typeof(BaseEntityClass).GetProperty("Version"));
+            mapper.Map(mapping, ReflectionHelper.GetProperty<BaseEntityClass>(x => x.Version).ToMember());
 
             mapping.Version.Type.ShouldEqual(new TypeReference("BinaryBlob"));
         }
@@ -114,7 +115,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             var mapping = new ClassMapping { Type = typeof(Target) };
 
-            mapper.Map(mapping, typeof(BaseEntityClass).GetProperty("Version"));
+            mapper.Map(mapping, ReflectionHelper.GetProperty<BaseEntityClass>(x => x.Version).ToMember());
 
             mapping.Version.Columns.All(x => x.SqlType == "timestamp").ShouldBeTrue();
         }
@@ -124,7 +125,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             var mapping = new ClassMapping { Type = typeof(Target) };
 
-            mapper.Map(mapping, typeof(BaseEntityClass).GetProperty("Version"));
+            mapper.Map(mapping, ReflectionHelper.GetProperty<BaseEntityClass>(x => x.Version).ToMember());
 
             mapping.Version.Columns.All(x => x.NotNull == true).ShouldBeTrue();
         }
@@ -134,7 +135,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             var mapping = new ClassMapping { Type = typeof(Target) };
 
-            mapper.Map(mapping, typeof(BaseEntityClass).GetProperty("Version"));
+            mapper.Map(mapping, ReflectionHelper.GetProperty<BaseEntityClass>(x => x.Version).ToMember());
 
             mapping.Version.UnsavedValue.ShouldEqual(null);
         }
