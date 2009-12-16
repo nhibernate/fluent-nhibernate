@@ -20,6 +20,7 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
                 { "component", new SortValue { Position = Anywhere, Level = 1 } },
                 { "dynamic-component", new SortValue { Position = Anywhere, Level = 1 } },
                 { "one-to-one", new SortValue { Position = Anywhere, Level = 1 } },
+                { "parent", new SortValue { Position = First, Level = 2 } },
                 { "property", new SortValue { Position = Anywhere, Level = 2 } },
                 { "many-to-one", new SortValue { Position = Anywhere, Level = 3 } },
                 { "array", new SortValue { Position = Anywhere, Level = 3 } },

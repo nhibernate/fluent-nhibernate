@@ -15,7 +15,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         c.Map(x => x.Name);
                         c.ParentReference(x => x.MyParent);
                     }))
-                .Element("class/component/parent").Exists()
+                .Element("class/component/parent").ShouldBeInParentAtPosition(0)
                 .HasAttribute("name", "MyParent");
         }
 
