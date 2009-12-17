@@ -354,7 +354,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         public void should_tell_that_the_list_element_count_does_not_match()
         {
             var exception = (ApplicationException)thrown_exception;
-            exception.Message.ShouldEqual("Actual count does not equal expected count");
+            exception.Message.ShouldEqual("Actual count (1) does not equal expected count (3)");
         }
     }
 

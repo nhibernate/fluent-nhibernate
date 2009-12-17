@@ -94,7 +94,7 @@ namespace FluentNHibernate.Testing.Values
 
             if (actualList.Count != expectedList.Count)
             {
-                throw new ApplicationException("Actual count does not equal expected count");
+                throw new ApplicationException(String.Format("Actual count ({0}) does not equal expected count ({1})", actualList.Count, expectedList.Count));
             }
 
             var equalsFunc = (EntityEqualityComparer != null)
