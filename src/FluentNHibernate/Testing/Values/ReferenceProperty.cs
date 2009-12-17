@@ -1,4 +1,3 @@
-using System.Reflection;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Testing.Values

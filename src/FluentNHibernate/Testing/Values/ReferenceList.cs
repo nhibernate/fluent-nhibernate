@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Reflection;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Testing.Values

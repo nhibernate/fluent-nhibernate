@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using FluentNHibernate.Testing.Values;
 using FluentNHibernate.Utils;
 using NHibernate;
-using System;
 
 namespace FluentNHibernate.Testing
 {
