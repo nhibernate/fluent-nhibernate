@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using System.Security;
 
 namespace FluentNHibernate
 {
@@ -21,6 +22,7 @@ namespace FluentNHibernate
             this.Property = info.GetString("Property");
         }
 
+        [SecurityCritical]
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
             base.GetObjectData(info, context);

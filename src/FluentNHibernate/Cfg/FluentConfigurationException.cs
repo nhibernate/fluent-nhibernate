@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Security;
 
 namespace FluentNHibernate.Cfg
 {
@@ -53,6 +54,7 @@ namespace FluentNHibernate.Cfg
             return output;
         }
 
+        [SecurityCritical]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
