@@ -1,7 +1,7 @@
 require 'rubygems'
 
 require 'erb'
-require 'activesupport'
+require 'active_support'
 require 'find'
 require 'zip/zip'
 require 'fileutils'
@@ -40,7 +40,7 @@ class MSBuildRunner
 	def self.compile(attributes)
 		version = attributes.fetch(:clrversion, 'v3.5')
 		compileTarget = attributes.fetch(:compilemode, 'debug')
-	    solutionFile = attributes[:solutionfile]
+		solutionFile = attributes[:solutionfile]
 		
 		frameworkDir = File.join(ENV['windir'].dup, 'Microsoft.NET', 'Framework', version)
 		msbuildFile = File.join(frameworkDir, 'msbuild.exe')
@@ -117,7 +117,7 @@ end
 def create_zip(filename, root, excludes=/^$/)
   File.delete(filename) if File.exists? filename
   Zip::ZipFile.open(filename, Zip::ZipFile::CREATE) do |zip|
-    Find.find(root) do |path|
+	Find.find(root) do |path|
 	  next if path =~ excludes
 	  
 	  zip_path = path.gsub(root, '')
