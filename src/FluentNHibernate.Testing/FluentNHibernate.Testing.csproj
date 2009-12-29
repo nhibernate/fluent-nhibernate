@@ -144,6 +144,7 @@
     <Compile Include="ConventionsTests\ForeignKeyConventionTests.cs" />
     <Compile Include="ConventionsTests\Inspection\HibernateMappingInspectorMapsToHibernateMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ValueTypes\SchemaActionTests.cs" />
+    <Compile Include="ConventionsTests\ProxyHelperTests.cs" />
     <Compile Include="DomainModel\Mapping\StoredProcedureTests.cs" />
     <Compile Include="FluentInterfaceTests\ColumnPartTests.cs" />
     <Compile Include="FluentInterfaceTests\ElementPartTests.cs" />

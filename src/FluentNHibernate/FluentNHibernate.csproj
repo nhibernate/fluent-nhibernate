@@ -144,6 +144,7 @@
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltVersionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltDynamicComponentConvention.cs" />
+    <Compile Include="Conventions\Helpers\Proxy.cs" />
     <Compile Include="Conventions\IArrayConvention.cs" />
     <Compile Include="Conventions\IArrayConventionAcceptance.cs" />
     <Compile Include="Conventions\IBagConvention.cs" />
