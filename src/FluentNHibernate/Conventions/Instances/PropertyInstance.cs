@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
+using NHibernate.Type;
+using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Conventions.Instances
 {
@@ -59,28 +61,30 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public void CustomType<T>()
-        {
-            if (!mapping.IsSpecified("Type"))
-                mapping.Type = new TypeReference(typeof(T));
-        }
-
         public void CustomType(TypeReference type)
         {
             if (!mapping.IsSpecified("Type"))
+            {
                 mapping.Type = type;
+
+                if (typeof(ICompositeUserType).IsAssignableFrom(mapping.Type.GetUnderlyingSystemType()))
+                    AddColumnsForCompositeUserType();
+            }
+        }
+
+        public void CustomType<T>()
+        {
+            CustomType(typeof(T));
         }
 
         public void CustomType(Type type)
         {
-            if (!mapping.IsSpecified("Type"))
-                mapping.Type = new TypeReference(type);
+            CustomType(new TypeReference(type));
         }
 
         public void CustomType(string type)
         {
-            if (!mapping.IsSpecified("Type"))
-                mapping.Type = new TypeReference(type);
+            CustomType(new TypeReference(type));
         }
 
         public void CustomSqlType(string sqlType)
@@ -209,6 +213,27 @@ namespace FluentNHibernate.Conventions.Instances
 
             foreach (var column in mapping.Columns)
                 column.Index = value;
+        }
+
+        private void AddColumnsForCompositeUserType()
+        {
+            var inst = (ICompositeUserType)Activator.CreateInstance(mapping.Type.GetUnderlyingSystemType());
+
+            if (inst.PropertyNames.Length > 1)
+            {
+                var existingColumn = mapping.Columns.Single();
+                mapping.ClearColumns();
+                var propertyPrefix = existingColumn.Name;
+                for (int i = 0; i < inst.PropertyNames.Length; i++)
+                {
+                    var propertyName = inst.PropertyNames[i];
+                    var propertyType = inst.PropertyTypes[i];
+
+                    var column = ColumnMapping.BaseOn(existingColumn);
+                    column.Name = propertyPrefix + "_" + propertyName;
+                    mapping.AddColumn(column);
+                }
+            }
         }
     }
 }
