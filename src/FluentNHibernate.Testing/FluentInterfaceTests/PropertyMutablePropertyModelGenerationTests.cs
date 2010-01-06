@@ -306,5 +306,17 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     x.Columns.First().NotNull.ShouldBeTrue();
                 });
         }
+
+        [Test]
+        public void ShouldBeAbleToOverrideColumnNameAndSpecifyNullabilityTogether()
+        {
+            Property()
+                .Mapping(m => m.Column("custom-column").Not.Nullable())
+                .ModelShouldMatch(x =>
+                {
+                    x.Columns.First().Name.ShouldEqual("custom-column");
+                    x.Columns.First().NotNull.ShouldBeTrue();
+                });
+        }
     }
 }

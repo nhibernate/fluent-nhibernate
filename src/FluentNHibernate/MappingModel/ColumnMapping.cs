@@ -1,6 +1,5 @@
 using System;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -108,6 +107,11 @@ namespace FluentNHibernate.MappingModel
         public static ColumnMapping BaseOn(ColumnMapping originalMapping)
         {
             return new ColumnMapping(originalMapping.attributes.CloneInner());
+        }
+
+        internal void MergeAttributes(AttributeStore<ColumnMapping> store)
+        {
+            attributes.Merge(store);
         }
     }
 }
