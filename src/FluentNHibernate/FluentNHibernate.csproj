@@ -133,6 +133,7 @@
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltJoinedSubclassConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltListConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltMapConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltProxyConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltSetConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltSubclassConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltCollectionConvention.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltVersionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltDynamicComponentConvention.cs" />
+    <Compile Include="Conventions\Helpers\Proxy.cs" />
     <Compile Include="Conventions\IArrayConvention.cs" />
     <Compile Include="Conventions\IArrayConventionAcceptance.cs" />
     <Compile Include="Conventions\IBagConvention.cs" />
@@ -359,6 +361,7 @@
     <Compile Include="Conventions\IVersionConventionAcceptance.cs" />
     <Compile Include="Conventions\ManyToManyTableNameConvention.cs" />
     <Compile Include="Conventions\ObjectExtensionsForConventions.cs" />
+    <Compile Include="Conventions\ProxyConvention.cs" />
     <Compile Include="MappingModel\BiDirectionalManyToManyPairingVisitor.cs" />
     <Compile Include="MappingModel\ColumnBasedMappingBase.cs" />
     <Compile Include="MappingModel\FilterDefinitionMapping.cs" />

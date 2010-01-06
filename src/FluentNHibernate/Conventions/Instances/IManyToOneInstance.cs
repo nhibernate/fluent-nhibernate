@@ -25,5 +25,7 @@ namespace FluentNHibernate.Conventions.Instances
         void UniqueKey(string key);
         void Update();
         void ForeignKey(string key);
+
+        void OverrideInferredClass(Type type);
     }
 }

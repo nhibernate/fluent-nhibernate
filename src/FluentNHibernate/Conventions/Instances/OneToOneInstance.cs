@@ -100,5 +100,10 @@ namespace FluentNHibernate.Conventions.Instances
             if (!mapping.IsSpecified("PropertyRef"))
                 mapping.PropertyRef = propertyName;
         }
+
+        public void OverrideInferredClass(Type type)
+        {
+            mapping.Class = new TypeReference(type);
+        }
     }
 }

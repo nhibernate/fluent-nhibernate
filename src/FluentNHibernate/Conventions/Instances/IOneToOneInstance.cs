@@ -17,5 +17,7 @@ namespace FluentNHibernate.Conventions.Instances
         void ForeignKey(string key);
         void LazyLoad();
         void PropertyRef(string propertyName);
+
+        void OverrideInferredClass(Type type);
     }
 }

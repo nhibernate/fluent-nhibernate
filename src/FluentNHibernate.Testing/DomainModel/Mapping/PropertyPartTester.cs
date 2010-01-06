@@ -185,7 +185,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Map(x => x.Name).Formula("foo(bar)"))
-                .Element("class/property").HasAttribute("formula", "foo(bar)");
+                .Element("class/property").HasAttribute("formula", "foo(bar)")
+                .Element("class/property/column").DoesntExist();
         }
 
         [Test]

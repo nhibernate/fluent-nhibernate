@@ -179,5 +179,10 @@ namespace FluentNHibernate.Conventions.Instances
             if (!mapping.IsSpecified("ForeignKey"))
                 mapping.ForeignKey = key;
         }
+
+        public void OverrideInferredClass(Type type)
+        {
+            mapping.Class = new TypeReference(type);
+        }
     }
 }

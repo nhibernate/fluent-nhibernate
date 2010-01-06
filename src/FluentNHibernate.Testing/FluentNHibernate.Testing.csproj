@@ -53,6 +53,7 @@
       <HintPath>..\..\tools\rhino\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -61,6 +62,9 @@
       <HintPath>..\..\tools\sqlite\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -140,6 +144,7 @@
     <Compile Include="ConventionsTests\ForeignKeyConventionTests.cs" />
     <Compile Include="ConventionsTests\Inspection\HibernateMappingInspectorMapsToHibernateMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ValueTypes\SchemaActionTests.cs" />
+    <Compile Include="ConventionsTests\ProxyHelperTests.cs" />
     <Compile Include="DomainModel\Mapping\StoredProcedureTests.cs" />
     <Compile Include="FluentInterfaceTests\ColumnPartTests.cs" />
     <Compile Include="FluentInterfaceTests\ElementPartTests.cs" />
@@ -228,6 +233,7 @@
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaTests.cs" />
     <Compile Include="ConventionsTests\MixedConventionInstanceTester.cs" />
     <Compile Include="ConventionsTests\OptionalAcceptTests.cs" />
+    <Compile Include="ConventionsTests\ProxyConventionTester.cs" />
     <Compile Include="ConventionsTests\RunnableConventionsTests.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapConventionsTester.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapDynamicInsertTester.cs" />
@@ -422,7 +428,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\tools\NHibernate\nhib2.1\NHibernate.ByteCode.Castle.dll">
+    <Content Include="..\..\tools\NHibernate\NHibernate.ByteCode.Castle.dll">
       <Link>NHibernate.ByteCode.Castle.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

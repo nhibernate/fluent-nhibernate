@@ -45,7 +45,7 @@ namespace FluentNHibernate.Mapping
                 Member = property
             };
 
-            if (columns.Count() == 0)
+            if (columns.Count() == 0 && !mapping.IsSpecified("Formula"))
                 mapping.AddDefaultColumn(defaultColumn);
 
             foreach (var column in columns)
@@ -81,8 +81,9 @@ namespace FluentNHibernate.Mapping
 
         public PropertyPart Column(string columnName)
         {
+            defaultColumn.Name = columnName;
             Columns.Clear();
-            Columns.Add(columnName);
+            Columns.Add(defaultColumn);
             return this;
         }
 

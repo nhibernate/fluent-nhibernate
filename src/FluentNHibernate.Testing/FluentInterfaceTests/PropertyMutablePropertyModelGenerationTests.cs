@@ -291,5 +291,20 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.Default("value"))
                 .ModelShouldMatch(x => x.Columns.First().Default.ShouldEqual("value"));
         }
+ 
+        [Test]
+        public void CanSetAttributesForNonDefaultColumn()
+        {
+            //For issue #354 - Can't seem to combine Column and Length
+            Property()
+                .Mapping(x => x.Column("foo").Length(42).Not.Nullable())
+                .ModelShouldMatch(x =>
+                {
+                    x.Columns.Count().ShouldEqual(1);
+                    x.Columns.First().Name.ShouldEqual("foo");
+                    x.Columns.First().Length.ShouldEqual(42);
+                    x.Columns.First().NotNull.ShouldBeTrue();
+                });
+        }
     }
 }

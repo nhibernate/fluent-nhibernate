@@ -84,6 +84,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
+
         public new void ReadOnly()
         {
             if (!mapping.IsSpecified("Mutable"))
