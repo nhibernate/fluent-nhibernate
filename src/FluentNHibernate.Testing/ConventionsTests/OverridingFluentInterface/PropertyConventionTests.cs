@@ -243,6 +243,16 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             VerifyModel(x => x.Columns.First().Default.ShouldEqual("value"));
         }
 
+        [Test]
+        public void CheckShouldntBeOverwritten()
+        {
+            Mapping<ExampleClass>(x => x.LineOne, x => x.Check("value"));
+
+            Convention(x => x.Check("xxx"));
+
+            VerifyModel(x => x.Columns.First().Check.ShouldEqual("value"));
+        }
+
         #region Helpers
 
         private void Convention(Action<IPropertyInstance> convention)

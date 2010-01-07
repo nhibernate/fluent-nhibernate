@@ -31,5 +31,6 @@ namespace FluentNHibernate.Conventions.Instances
         void Length(int length);
         void LazyLoad();
         void Index(string value);
+        void Check(string constraint);
     }
 }

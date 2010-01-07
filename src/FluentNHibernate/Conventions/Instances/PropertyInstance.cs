@@ -215,6 +215,15 @@ namespace FluentNHibernate.Conventions.Instances
                 column.Index = value;
         }
 
+        public new void Check(string constraint)
+        {
+            if (mapping.Columns.First().IsSpecified("Check"))
+                return;
+
+            foreach (var column in mapping.Columns)
+                column.Check = constraint;
+        }
+
         private void AddColumnsForCompositeUserType()
         {
             var inst = (ICompositeUserType)Activator.CreateInstance(mapping.Type.GetUnderlyingSystemType());

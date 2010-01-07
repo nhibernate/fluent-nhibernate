@@ -198,6 +198,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.Columns.First().Default.ShouldEqual("xxx"));
         }
 
+        [Test]
+        public void ShouldSetCheckProperty()
+        {
+            Convention(x => x.Check("check"));
+
+            VerifyModel(x => x.Columns.First().Check.ShouldEqual("check"));
+        }
+
         #region Helpers
 
         private void Convention(Action<IPropertyInstance> convention)
