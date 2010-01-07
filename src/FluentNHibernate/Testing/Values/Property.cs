@@ -70,14 +70,13 @@ namespace FluentNHibernate.Testing.Values
             object actual = PropertyAccessor.GetValue(target);
 
             bool areEqual;
+            
             if (EntityEqualityComparer != null)
-            {
                 areEqual = EntityEqualityComparer.Equals(Value, actual);
-            }
+            else if (Value == null)
+                areEqual = actual == null;
             else
-            {
                 areEqual = Value.Equals(actual);
-            }
 
             if (!areEqual)
             {

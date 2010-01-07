@@ -60,6 +60,16 @@ namespace FluentNHibernate.Testing.DomainModel
                 .CheckProperty(r => r.Third, "Yeah")
                 .VerifyTheMappings();
         }
+
+        [Test]
+        public void MappingTest2_NullableProperty()
+        {
+            new PersistenceSpecification<RecordWithNullableProperty>(_source)
+                .CheckProperty(x => x.Age, null)
+                .CheckProperty(x => x.Name, "somebody")
+                .CheckProperty(x => x.Location, "somewhere")
+                .VerifyTheMappings();
+        }
     }
 
     public class RecordMap : ClassMap<Record>
@@ -153,5 +163,23 @@ namespace FluentNHibernate.Testing.DomainModel
         {
             WithName("ageHighEnough").WithCondition("Age > :age").AddParameter("age", NHibernateUtil.Int32);
         }
+    }
+
+    public sealed class RecordWithNullablePropertyMap : ClassMap<RecordWithNullableProperty>
+    {
+        public RecordWithNullablePropertyMap()
+        {
+            Id(x => x.Id);
+            Map(x => x.Name);
+            Map(x => x.Age);
+            Map(x => x.Location);
+        }
+    }
+
+    public class RecordWithNullableProperty : Entity
+    {
+        public virtual string Name { get; set; }
+        public virtual int? Age { get; set; }
+        public virtual string Location { get; set; }
     }
 }
