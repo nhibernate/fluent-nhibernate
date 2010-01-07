@@ -238,8 +238,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     map.HasManyToMany(x => x.GenericTernaryMapOfChildren)
                         .AsMap("keyColumn")
                         .AsTernaryAssociation("index1", "index2"))
-                .Element("class/map/index-many-to-many/column").HasAttribute("name", "index1")
-                .Element("class/map/many-to-many/column").HasAttribute("name", "index2");
+                .Element("class/map/index-many-to-many/column").HasAttribute("name", "`index1`")
+                .Element("class/map/many-to-many/column").HasAttribute("name", "`index2`");
         }
 
         [Test]
@@ -272,8 +272,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     map.HasManyToMany<IDictionary>(x => x.NonGenericTernaryMapOfChildren)
                         .AsMap("keyColumn")
                         .AsTernaryAssociation(typeof(ChildObject), "index1", typeof(ChildObject), "index2"))
-                .Element("class/map/index-many-to-many/column").HasAttribute("name", "index1")
-                .Element("class/map/many-to-many/column").HasAttribute("name", "index2");
+                .Element("class/map/index-many-to-many/column").HasAttribute("name", "`index1`")
+                .Element("class/map/many-to-many/column").HasAttribute("name", "`index2`");
         }
 
         [Test]

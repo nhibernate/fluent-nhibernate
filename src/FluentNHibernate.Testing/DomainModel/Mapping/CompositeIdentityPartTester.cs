@@ -20,7 +20,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 			new MappingTester<CompIdTarget>()
 				.ForMapping(c => c.CompositeId().KeyProperty(x => x.LongId, "SomeColumn"))
 				.Element("class/composite-id/key-property/column")
-					.HasAttribute("name", "SomeColumn");
+					.HasAttribute("name", "`SomeColumn`");
 		}
 
 		[Test]
@@ -56,7 +56,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 			new MappingTester<CompIdTarget>()
 				.ForMapping(c => c.CompositeId().KeyReference(x => x.Child, "SomeColumn"))
-				.Element("class/composite-id/key-many-to-one/column").HasAttribute("name", "SomeColumn");
+				.Element("class/composite-id/key-many-to-one/column").HasAttribute("name", "`SomeColumn`");
 		}
 
 	    [Test]

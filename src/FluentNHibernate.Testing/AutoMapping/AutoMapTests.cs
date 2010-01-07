@@ -17,7 +17,7 @@ namespace FluentNHibernate.Testing.Automapping
             Test<ExampleClass>(mapping =>
                                    {
                                        mapping.Element("//id").HasAttribute("name", "Id");
-                                       mapping.Element("//id//column").HasAttribute("name", "Id");
+                                       mapping.Element("//id//column").HasAttribute("name", "`Id`");
                                    });
         }
 
@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing.Automapping
             Test<ExampleClass>(mapping =>
                 mapping
                     .Element("//version").HasAttribute("name", "Timestamp")
-                    .Element("//version/column").HasAttribute("name", "Timestamp"));
+                    .Element("//version/column").HasAttribute("name", "`Timestamp`"));
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace FluentNHibernate.Testing.Automapping
                 model.Where(type => type == typeof(ExampleClass)));
 
             Test<ExampleClass>(mapping =>
-                mapping.Element("//property[@name='LineOne']/column").HasAttribute("name", "LineOne"));
+                mapping.Element("//property[@name='LineOne']/column").HasAttribute("name", "`LineOne`"));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace FluentNHibernate.Testing.Automapping
                 .Override<ExampleClass>(m => m.IgnoreProperty(x => x.LineOne)));
 
             Test<ExampleClass>(mapping =>
-                mapping.Element("//property[@name='LineOne']").DoesntExist());
+                mapping.Element("//property[@name='`LineOne`']").DoesntExist());
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace FluentNHibernate.Testing.Automapping
 
             Test<ExampleClass>(mapping =>
                 mapping.Element("//many-to-one").HasAttribute("name", "Parent")
-                       .Element("//many-to-one/column").HasAttribute("name", "Parent_id"));
+                       .Element("//many-to-one/column").HasAttribute("name", "`Parent_id`"));
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace FluentNHibernate.Testing.Automapping
                 model.Where(type => type == typeof(ManyToMany1)));
 
             Test<ManyToMany1>(mapping =>
-                mapping.Element("//many-to-many/column").HasAttribute("name", "ManyToMany2_id"));
+                mapping.Element("//many-to-many/column").HasAttribute("name", "`ManyToMany2_id`"));
         }
 
         [Test]
@@ -136,7 +136,7 @@ namespace FluentNHibernate.Testing.Automapping
                 model.Where(type => type == typeof(ClassWithBitmap)));
 
             Test<ClassWithBitmap>(mapping =>
-                mapping.Element("//property[@name='Bitmap']/column").HasAttribute("name", "Bitmap"));
+                mapping.Element("//property[@name='Bitmap']/column").HasAttribute("name", "`Bitmap`"));
         }
     }
 }

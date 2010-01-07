@@ -62,7 +62,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Conventions.Add<XXAppenderPropertyConvention>();
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("class/property[@name='LineOne']/column").HasAttribute("name", "LineOneXX");
+                .Element("class/property[@name='LineOne']/column").HasAttribute("name", "`LineOneXX`");
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Element("//property[@name='LineOne']")
                     .Exists()
                     .HasThisManyChildNodes(1)
-                .Element("//property[@name='LineOne']/column").HasAttribute("name", "test");
+                .Element("//property[@name='LineOne']/column").HasAttribute("name", "`test`");
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Override<ExampleClass>(c => c.Id(x => x.Id).Column("test"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("//id/column").HasAttribute("name", "test");
+                .Element("//id/column").HasAttribute("name", "`test`");
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Override<ExampleClass>(m => m.Component(x => x.Parent, c => c.Map(x => x.ExampleParentClassId).Column("test")));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("//component[@name='Parent']/property[@name='ExampleParentClassId']/column").HasAttribute("name", "test");
+                .Element("//component[@name='Parent']/property[@name='ExampleParentClassId']/column").HasAttribute("name", "`test`");
         }
 
         [Test]
@@ -246,7 +246,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/id").HasAttribute("name", "Id")
-                .Element("class/id/column").HasAttribute("name", "Column");
+                .Element("class/id/column").HasAttribute("name", "`Column`");
         }
 
         [Test]
@@ -258,7 +258,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/id").HasAttribute("name", "Id")
-                .Element("class/id/column").HasAttribute("name", "IdId");
+                .Element("class/id/column").HasAttribute("name", "`IdId`");
         }
 
         [Test]
@@ -269,7 +269,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Conventions.Add(new TestIdConvention());
 
             new AutoMappingTester<PrivateIdSetterClass>(autoMapper)
-                .Element("class/id/column").HasAttribute("name", "test");
+                .Element("class/id/column").HasAttribute("name", "`test`");
         }
 
         [Test]
@@ -280,7 +280,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Conventions.Add(new TestM2OConvention());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("//many-to-one/column").HasAttribute("name", "test");
+                .Element("//many-to-one/column").HasAttribute("name", "`test`");
         }
 
         [Test]
@@ -303,7 +303,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/id").HasAttribute("name", "ExampleClassId")
-                .Element("class/id/column").HasAttribute("name", "ExampleClassId");
+                .Element("class/id/column").HasAttribute("name", "`ExampleClassId`");
         }
 
         [Test]
@@ -587,7 +587,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<Customer>(autoMapper)
-                .Element("class/component[@name='WorkAddress']/property[@name='Number']/column").HasAttribute("name", "WorkAddress_Number");
+                .Element("class/component[@name='WorkAddress']/property[@name='Number']/column").HasAttribute("name", "`WorkAddress_Number`");
         }
 
         [Test]
@@ -606,7 +606,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
 
             new AutoMappingTester<Customer>(autoMapper)
                 .Element("class/component[@name='WorkAddress']/property[@name='Number']/column")
-                .HasAttribute("name", value => value.StartsWith("WorkAddress_"));
+                .HasAttribute("name", value => value.StartsWith("`WorkAddress_"));
         }
 
         [Test]
@@ -675,7 +675,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Element("//joined-subclass/property[@name='ExampleProperty']")
                     .Exists()
                     .HasThisManyChildNodes(1)
-                .Element("//joined-subclass/property[@name='ExampleProperty']/column").HasAttribute("name", "test");
+                .Element("//joined-subclass/property[@name='ExampleProperty']/column").HasAttribute("name", "`test`");
         }
 
         [Test]
@@ -687,7 +687,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Override<ExampleInheritedClass>(m => m.Component(x => x.Component, c => c.Map(x => x.ExampleParentClassId).Column("test")));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("//joined-subclass/component[@name='Component']/property[@name='ExampleParentClassId']/column").HasAttribute("name", "test");
+                .Element("//joined-subclass/component[@name='Component']/property[@name='ExampleParentClassId']/column").HasAttribute("name", "`test`");
         }
 
         [Test]
@@ -764,7 +764,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Element("//subclass/property[@name='ExampleProperty']")
                     .Exists()
                     .HasThisManyChildNodes(1)
-                .Element("//subclass/property[@name='ExampleProperty']/column").HasAttribute("name", "test");
+                .Element("//subclass/property[@name='ExampleProperty']/column").HasAttribute("name", "`test`");
         }
 
         [Test]
@@ -780,7 +780,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Override<ExampleInheritedClass>(m => m.Component(x => x.Component, c => c.Map(x => x.ExampleParentClassId).Column("test")));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("//subclass/component[@name='Component']/property[@name='ExampleParentClassId']/column").HasAttribute("name", "test");
+                .Element("//subclass/component[@name='Component']/property[@name='ExampleParentClassId']/column").HasAttribute("name", "`test`");
         }
 
         [Test]
@@ -859,7 +859,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class/joined-subclass/key/column")
-                .HasAttribute("name", "test");
+                .HasAttribute("name", "`test`");
         }
 
         [Test]
@@ -909,7 +909,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 });
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("class/component/bag[@name='Examples']/key/column").HasAttribute("name", "Parent_ExampleParentClass_Id");
+                .Element("class/component/bag[@name='Examples']/key/column").HasAttribute("name", "`Parent_ExampleParentClass_Id`");
         }
 
         [Test]

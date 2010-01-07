@@ -20,8 +20,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
                     m.Id(x => x.Id);
                     m.Map(x => x.LineOne);
                 })
-                .Element("class/id/column").HasAttribute("name", "id-col")
-                .Element("class/property[@name='LineOne']/column").HasAttribute("name", "prop-col");
+                .Element("class/id/column").HasAttribute("name", "`id-col`")
+                .Element("class/property[@name='LineOne']/column").HasAttribute("name", "`prop-col`");
         }
 
         private class CustomConvention : IIdConvention, IPropertyConvention

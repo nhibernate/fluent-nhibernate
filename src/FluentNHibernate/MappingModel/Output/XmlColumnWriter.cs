@@ -21,7 +21,7 @@ namespace FluentNHibernate.MappingModel.Output
             var element = document.CreateElement("column");
 
             if (columnMapping.HasValue(x => x.Name))
-                element.WithAtt("name", columnMapping.Name);
+                element.WithAtt("name", "`" + columnMapping.Name + "`");
 
             if (columnMapping.HasValue(x => x.Check))
                 element.WithAtt("check", columnMapping.Check);

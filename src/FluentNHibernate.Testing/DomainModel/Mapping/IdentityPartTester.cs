@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .HasAttribute("class", "identity")
                 .Element("class/id/column")
                     .Exists()
-                    .HasAttribute("name", "IntId");
+                    .HasAttribute("name", "`IntId`");
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<IdentityTarget>()
                 .ForMapping(mapping => mapping.Id(x => x.IntId, "Id"))
-                .Element("class/id/column").HasAttribute("name", "Id");
+                .Element("class/id/column").HasAttribute("name", "`Id`");
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<IdentityTarget>()
                 .ForMapping(mapping => mapping.Id(x => x.IntId).Column("Id"))
-                .Element("class/id/column").HasAttribute("name", "Id");
+                .Element("class/id/column").HasAttribute("name", "`Id`");
         }
 
         [Test]

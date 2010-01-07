@@ -129,7 +129,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             mapping.AddTypeColumn(new ColumnMapping { Name = "Column2" });
 
             writer.VerifyXml(mapping)
-                .Element("column[1]").HasAttribute("name", "Column2");
+                .Element("column[1]").HasAttribute("name", "`Column2`");
         }
 
         [Test]

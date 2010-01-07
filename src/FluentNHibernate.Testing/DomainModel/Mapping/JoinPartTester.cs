@@ -59,7 +59,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<JoinTarget>()
                 .ForMapping(m => m.Join("myTable", t => t.Map(x => x.Name)))
-                .Element("class/join/key/column").HasAttribute("name", "JoinTarget_id");
+                .Element("class/join/key/column").HasAttribute("name", "`JoinTarget_id`");
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<JoinTarget>()
                 .ForMapping(m => m.Join("myTable", t => t.KeyColumn("ID")))
-                .Element("class/join/key/column").HasAttribute("name", "ID");
+                .Element("class/join/key/column").HasAttribute("name", "`ID`");
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<JoinTarget>()
                 .Conventions(x => x.Add(new JoinConvention()))
                 .ForMapping(m => m.Join("myTable", t => t.Map(x => x.Name)))
-                .Element("class/join/key/column").HasAttribute("name", "JoinTargetID");
+                .Element("class/join/key/column").HasAttribute("name", "`JoinTargetID`");
         }
 
         private class JoinConvention : IJoinConvention

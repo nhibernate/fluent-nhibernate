@@ -126,7 +126,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                                        .EntityTypeColumn("AnyType")
                                        .IdentityType(x => x.Id))
                 .Element("class/any/column")
-                .HasAttribute("name", "AnyType")
+                .HasAttribute("name", "`AnyType`")
                 .ShouldBeInParentAtPosition(0);
         }
 

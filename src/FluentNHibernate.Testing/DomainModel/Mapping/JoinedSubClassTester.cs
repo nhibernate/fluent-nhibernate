@@ -108,7 +108,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<SuperClass>()
                 .ForMapping(m => m.JoinedSubClass<SubClass>("columnName", sm => sm.Map(x => x.Name)))
-                .Element("class/joined-subclass/key/column").HasAttribute("name", "columnName");
+                .Element("class/joined-subclass/key/column").HasAttribute("name", "`columnName`");
         }
 
         [Test]

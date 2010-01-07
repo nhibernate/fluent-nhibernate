@@ -19,7 +19,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             VerifyAutoMap<ValidTimestampClass>()
                 .Element("//version").HasAttribute("name", "Timestamp")
-                .Element("//version/column").HasAttribute("name", "Timestamp");
+                .Element("//version/column").HasAttribute("name", "`Timestamp`");
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             VerifyAutoMap<ValidVersionClass>()
                 .Element("//version").HasAttribute("name", "Version")
-                .Element("//version/column").HasAttribute("name", "Version");
+                .Element("//version/column").HasAttribute("name", "`Version`");
         }
 
         [Test]

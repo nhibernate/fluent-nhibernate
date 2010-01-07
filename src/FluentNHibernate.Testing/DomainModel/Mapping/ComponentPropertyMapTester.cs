@@ -16,7 +16,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Component(x => x.Component, c => c.Map(x => x.Name)))
                 .Element("//property[@name='Name']/column")
-                .HasAttribute("name", "Name");
+                .HasAttribute("name", "`Name`");
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Component(x => x.Component, c => c.Map(x => x.Name)))
-                .Element("//property/column").HasAttribute("name", "Name");
+                .Element("//property/column").HasAttribute("name", "`Name`");
         }
 
 
@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Component(x => x.Component, c => c.Map(x => x.Name, "column_name")))
                 .Element("//property[@name='Name']/column")
-                .HasAttribute("name", "column_name");
+                .HasAttribute("name", "`column_name`");
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Component(x => x.Component, c => c.Map(x => x.Name, "column_name")))
-                .Element("//property/column").HasAttribute("name", "column_name");
+                .Element("//property/column").HasAttribute("name", "`column_name`");
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m => m.Component(x => x.Component, c => c.Map(x => x.Name).Column("column_name")))
-                .Element("//property/column").HasAttribute("name", "column_name");
+                .Element("//property/column").HasAttribute("name", "`column_name`");
         }
 
         private MappingTester<T> Model<T>(Action<ClassMap<T>> mapping)
@@ -71,9 +71,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             Model<PropertyTarget>(m => m.Component(x => x.Component, c => c.Map(x => x.Name).Columns.Add("one", "two", "three")))
                 .Element("//property[@name='Name']").HasThisManyChildNodes(3)
-                .Element("//property[@name='Name']/column[@name='one']").Exists()
-                .Element("//property[@name='Name']/column[@name='two']").Exists()
-                .Element("//property[@name='Name']/column[@name='three']").Exists();
+                .Element("//property[@name='Name']/column[@name='`one`']").Exists()
+                .Element("//property[@name='Name']/column[@name='`two`']").Exists()
+                .Element("//property[@name='Name']/column[@name='`three`']").Exists();
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             Model<PropertyTarget>(m => m.Component(x => x.Component, c => c.Map(x => x.Name)))
                 .Element("//property[@name='Name']/column")
-                .HasAttribute("name", "Name");
+                .HasAttribute("name", "`Name`");
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             Model<PropertyTarget>(m => m.Component(x => x.Component, c => c.Map(x => x.Name, "column_name")))
                 .Element("//property[@name='Name']/column")
-                .HasAttribute("name", "column_name");
+                .HasAttribute("name", "`column_name`");
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             Model<PropertyTarget>(m => m.Component(x => x.Component, c => c.Map(x => x.Name).Columns.Add("column_name")))
                 .Element("//property[@name='Name']/column")
-                .HasAttribute("name", "column_name");
+                .HasAttribute("name", "`column_name`");
         }
 
         [Test]

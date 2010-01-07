@@ -55,7 +55,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             writer = new XmlColumnWriter();
             var testHelper = new XmlWriterTestHelper<ColumnMapping>();
-            testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
+            testHelper.Check(x => x.Name, "name").MapsToAttribute("name", "`name`");
 
             testHelper.VerifyAll(writer);
         }
