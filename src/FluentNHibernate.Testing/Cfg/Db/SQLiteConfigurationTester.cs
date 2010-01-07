@@ -25,5 +25,12 @@ namespace FluentNHibernate.Testing.Cfg.Db
             new SQLiteConfiguration().UsingFile("foo")
                 .ToProperties()["connection.connection_string"].ShouldEqual("Data Source=foo;Version=3;New=True;");
         }
+
+        [Test]
+        public void using_file_with_password_shuold_set_up_expected_connection_string()
+        {
+            new SQLiteConfiguration().UsingFileWithPassword("foo", "bar")
+                .ToProperties()["connection.connection_string"].ShouldEqual("Data Source=foo;Version=3;New=True;Password=bar;");
+        }
     }
 }
