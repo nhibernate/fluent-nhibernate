@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -104,13 +105,16 @@ namespace FluentNHibernate.MappingModel
             attributes.SetDefault(property, value);
         }
 
-        public static ColumnMapping BaseOn(ColumnMapping originalMapping)
-        {
-            return new ColumnMapping(originalMapping.attributes.CloneInner());
-        }
-
         internal void MergeAttributes(AttributeStore<ColumnMapping> store)
         {
+            attributes.Merge(store);
+        }
+
+        public ColumnMapping Clone()
+        {
+            return new ColumnMapping(attributes.CloneInner());
+        }
+
         public bool Equals(ColumnMapping other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -132,7 +136,6 @@ namespace FluentNHibernate.MappingModel
             {
                 return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^ (Member != null ? Member.GetHashCode() : 0);
             }
-            attributes.Merge(store);
         }
     }
 }

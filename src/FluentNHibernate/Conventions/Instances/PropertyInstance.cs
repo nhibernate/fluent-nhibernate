@@ -157,7 +157,7 @@ namespace FluentNHibernate.Conventions.Instances
                 return;
 
             var originalColumn = mapping.Columns.FirstOrDefault();
-            var column = originalColumn == null ? new ColumnMapping() : ColumnMapping.BaseOn(originalColumn);
+            var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
             column.Name = columnName;
 
@@ -238,7 +238,7 @@ namespace FluentNHibernate.Conventions.Instances
                     var propertyName = inst.PropertyNames[i];
                     var propertyType = inst.PropertyTypes[i];
 
-                    var column = ColumnMapping.BaseOn(existingColumn);
+                    var column = existingColumn.Clone();
                     column.Name = propertyPrefix + "_" + propertyName;
                     mapping.AddColumn(column);
                 }
