@@ -47,5 +47,30 @@ namespace FluentNHibernate.MappingModel
         }
 
         public Type ContainingEntityType { get; set; }
+
+        public bool Equals(DiscriminatorMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.ContainingEntityType, ContainingEntityType) &&
+                other.columns.ContentEquals(columns) &&
+                Equals(other.attributes, attributes);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(DiscriminatorMapping)) return false;
+            return Equals((DiscriminatorMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0) * 397) ^ ((columns != null ? columns.GetHashCode() : 0) * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+            }
+        }
     }
 }

@@ -111,6 +111,27 @@ namespace FluentNHibernate.MappingModel
 
         internal void MergeAttributes(AttributeStore<ColumnMapping> store)
         {
+        public bool Equals(ColumnMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.attributes, attributes) && Equals(other.Member, Member);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(ColumnMapping)) return false;
+            return Equals((ColumnMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^ (Member != null ? Member.GetHashCode() : 0);
+            }
             attributes.Merge(store);
         }
     }

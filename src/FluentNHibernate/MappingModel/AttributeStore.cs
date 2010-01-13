@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
-using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel
@@ -88,6 +86,26 @@ namespace FluentNHibernate.MappingModel
             CopyTo(clonedStore);
 
             return clonedStore;
+        }
+
+        public bool Equals(AttributeStore other)
+        {
+            return other.attributes.ContentEquals(attributes) && other.defaults.ContentEquals(defaults);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != typeof(AttributeStore)) return false;
+            return Equals((AttributeStore)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^
+                    (defaults != null ? defaults.GetHashCode() : 0);
+            }
         }
     }
 
@@ -181,6 +199,21 @@ namespace FluentNHibernate.MappingModel
         {
             store.Merge(otherStore.store);
         }
-    }
 
+        public bool Equals(AttributeStore<T> other)
+        {
+            return Equals(other.store, store);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != typeof(AttributeStore<T>)) return false;
+            return Equals((AttributeStore<T>)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (store != null ? store.GetHashCode() : 0);
+        }
+    }
 }

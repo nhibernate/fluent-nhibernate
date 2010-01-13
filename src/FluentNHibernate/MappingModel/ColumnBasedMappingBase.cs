@@ -50,5 +50,29 @@ namespace FluentNHibernate.MappingModel
         {
             columns.Clear();
         }
+
+        public bool Equals(ColumnBasedMappingBase other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return other.columns.ContentEquals(columns) &&
+                Equals(other.attributes, attributes);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(ColumnBasedMappingBase)) return false;
+            return Equals((ColumnBasedMappingBase)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((columns != null ? columns.GetHashCode() : 0) * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+            }
+        }
     }
 }

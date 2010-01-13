@@ -5,7 +5,16 @@ namespace FluentNHibernate.MappingModel
 {
     public class MetaValueMapping : MappingBase
     {
-        private readonly AttributeStore<MetaValueMapping> attributes = new AttributeStore<MetaValueMapping>();
+        private readonly AttributeStore<MetaValueMapping> attributes;
+
+        public MetaValueMapping()
+            : this(new AttributeStore())
+        {}
+
+        protected MetaValueMapping(AttributeStore underlyingStore)
+        {
+            attributes = new AttributeStore<MetaValueMapping>(underlyingStore);
+        }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
@@ -39,6 +48,26 @@ namespace FluentNHibernate.MappingModel
         public void SetDefaultValue<TResult>(Expression<Func<MetaValueMapping, TResult>> property, TResult value)
         {
             attributes.SetDefault(property, value);
+        }
+
+        public bool Equals(MetaValueMapping other)
+        {
+            return Equals(other.attributes, attributes) && Equals(other.ContainingEntityType, ContainingEntityType);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != typeof(MetaValueMapping)) return false;
+            return Equals((MetaValueMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^
+                    (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class StoredProcedureMapping : ClassMappingBase
+    public class StoredProcedureMapping : MappingBase
     {
         private readonly AttributeStore<StoredProcedureMapping> attributes;
 
@@ -31,13 +31,13 @@ namespace FluentNHibernate.MappingModel
 
         }
 
-        public override string Name
+        public string Name
         {
             get { return attributes.Get(x => x.Name); }
             set { attributes.Set(x => x.Name, value); }
         }
 
-        public override Type Type
+        public Type Type
         {
             get { return attributes.Get(x => x.Type); }
             set { attributes.Set(x => x.Type, value); }
@@ -48,7 +48,7 @@ namespace FluentNHibernate.MappingModel
             visitor.ProcessStoredProcedure(this);
         }
 
-        public override void MergeAttributes(AttributeStore store)
+        public void MergeAttributes(AttributeStore store)
         {
             attributes.Merge(new AttributeStore<StoredProcedureMapping>(store));
         }
@@ -80,9 +80,29 @@ namespace FluentNHibernate.MappingModel
         {
             attributes.SetDefault(property, value);
         }
+
+        public bool Equals(StoredProcedureMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.attributes, attributes);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return Equals(obj as StoredProcedureMapping);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                {
+                    return (base.GetHashCode() * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+                }
+            }
+        }
     }
-
-
-
- 
 }

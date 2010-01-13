@@ -5,7 +5,16 @@ namespace FluentNHibernate.MappingModel
 {
     public class ParentMapping : MappingBase
     {
-        private readonly AttributeStore<ParentMapping> attributes = new AttributeStore<ParentMapping>();
+        private readonly AttributeStore<ParentMapping> attributes;
+
+        public ParentMapping()
+            : this(new AttributeStore())
+        {}
+
+        protected ParentMapping(AttributeStore underlyingStore)
+        {
+            attributes = new AttributeStore<ParentMapping>(underlyingStore);
+        }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
@@ -33,6 +42,27 @@ namespace FluentNHibernate.MappingModel
         public void SetDefaultValue<TResult>(Expression<Func<ParentMapping, TResult>> property, TResult value)
         {
             attributes.SetDefault(property, value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != typeof(ParentMapping)) return false;
+            
+            return Equals((ParentMapping)obj);
+        }
+
+        public bool Equals(ParentMapping other)
+        {
+            return Equals(other.attributes, attributes) && Equals(other.ContainingEntityType, ContainingEntityType);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^
+                    (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            }
         }
     }
 }

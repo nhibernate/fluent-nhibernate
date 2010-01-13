@@ -71,5 +71,33 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             attributes.SetDefault(property, value);
         }
+
+        public bool Equals(ElementMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return other.columns.ContentEquals(columns) &&
+                Equals(other.attributes, attributes) &&
+                Equals(other.ContainingEntityType, ContainingEntityType);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(ElementMapping)) return false;
+            return Equals((ElementMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = (columns != null ? columns.GetHashCode() : 0);
+                result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+                result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+                return result;
+            }
+        }
     }
 }

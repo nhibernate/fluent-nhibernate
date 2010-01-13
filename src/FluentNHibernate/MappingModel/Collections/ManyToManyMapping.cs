@@ -110,5 +110,33 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             attributes.SetDefault(property, value);
         }
+
+        public bool Equals(ManyToManyMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.attributes, attributes) &&
+                other.columns.ContentEquals(columns) &&
+                Equals(other.ContainingEntityType, ContainingEntityType);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(ManyToManyMapping)) return false;
+            return Equals((ManyToManyMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = (attributes != null ? attributes.GetHashCode() : 0);
+                result = (result * 397) ^ (columns != null ? columns.GetHashCode() : 0);
+                result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+                return result;
+            }
+        }
     }
 }

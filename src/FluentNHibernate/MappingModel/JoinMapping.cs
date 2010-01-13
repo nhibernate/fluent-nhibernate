@@ -137,5 +137,33 @@ namespace FluentNHibernate.MappingModel
         {
             attributes.SetDefault(property, value);
         }
+
+        public bool Equals(JoinMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.attributes, attributes) &&
+                Equals(other.mappedMembers, mappedMembers) &&
+                Equals(other.ContainingEntityType, ContainingEntityType);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(JoinMapping)) return false;
+            return Equals((JoinMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = (attributes != null ? attributes.GetHashCode() : 0);
+                result = (result * 397) ^ (mappedMembers != null ? mappedMembers.GetHashCode() : 0);
+                result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+                return result;
+            }
+        }
     }
 }

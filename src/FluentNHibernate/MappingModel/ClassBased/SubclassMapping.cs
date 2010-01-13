@@ -115,5 +115,29 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             attributes = new AttributeStore<SubclassMapping>(store);
         }
+
+        public bool Equals(SubclassMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(other.attributes, attributes);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return Equals(obj as SubclassMapping);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                {
+                    return (base.GetHashCode() * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+                }
+            }
+        }
     }
 }

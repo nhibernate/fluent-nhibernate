@@ -36,5 +36,25 @@ namespace FluentNHibernate.MappingModel
         {
             return attributes.IsSpecified(property);
         }
+
+        public bool Equals(FilterMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.attributes, attributes);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(FilterMapping)) return false;
+            return Equals((FilterMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (attributes != null ? attributes.GetHashCode() : 0);
+        }
     }
 }

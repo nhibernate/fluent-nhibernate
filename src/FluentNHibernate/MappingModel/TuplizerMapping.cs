@@ -43,7 +43,25 @@ namespace FluentNHibernate.MappingModel
             return attributes.HasValue(property);
         }
 
+        public bool Equals(TuplizerMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.attributes, attributes);
+        }
 
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(TuplizerMapping)) return false;
+            return Equals((TuplizerMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (attributes != null ? attributes.GetHashCode() : 0);
+        }
     }
 
     public enum TuplizerMode

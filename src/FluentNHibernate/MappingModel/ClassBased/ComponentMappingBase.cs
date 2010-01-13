@@ -82,5 +82,34 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             attributes.SetDefault(property, value);
         }
+
+        public bool Equals(ComponentMappingBase other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) &&
+                Equals(other.attributes, attributes) &&
+                Equals(other.ContainingEntityType, ContainingEntityType) &&
+                Equals(other.Member, Member);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return Equals(obj as ComponentMappingBase);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = base.GetHashCode();
+                result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+                result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+                result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
+                return result;
+            }
+        }
     }
 }

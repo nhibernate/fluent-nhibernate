@@ -161,6 +161,21 @@ namespace FluentNHibernate.Testing
             actual.Count().ShouldEqual(0);
         }
 
+        public static void ItemsShouldBeEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected)
+        {
+            actual.Count().ShouldEqual(expected.Count());
+
+            var index = 0;
+
+            foreach (var item in actual)
+            {
+                var expectedItem = expected.ElementAt(index);
+
+                item.ShouldEqual(expectedItem);
+                index++;
+            }
+        }
+
         public static IEnumerable<T> ShouldHaveCount<T>(this IEnumerable<T> actual, int expected)
         {
             actual.Count().ShouldEqual(expected);

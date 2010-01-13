@@ -156,7 +156,9 @@
     <Compile Include="FluentInterfaceTests\OneToManyPartAsTernaryTests.cs" />
     <Compile Include="FluentInterfaceTests\StoredProcedurePartGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\WhereTests.cs" />
+    <Compile Include="MappingModel\Equality\CollectionContentEqualitySpecs.cs" />
     <Compile Include="MappingModel\Defaults\MutableDefaultsTester.cs" />
+    <Compile Include="MappingModel\Equality\MappingEqualitySpecs.cs" />
     <Compile Include="MappingModel\Output\XmlDiscriminatorWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterDefinitionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterWriterTester.cs" />
@@ -404,8 +406,10 @@
     <Compile Include="Testing\Values\ReferencePropertySpecs.cs" />
     <Compile Include="Testing\Values\PropertySpecs.cs" />
     <Compile Include="Testing\Values\Entities.cs" />
+    <Compile Include="Utils\Mock.cs" />
     <Compile Include="Utils\ReflectionHelperTests.cs" />
     <Compile Include="Testing\XmlWriterTestHelper.cs" />
+    <Compile Include="Utils\Stub.cs" />
     <Compile Include="Utils\TypeReferenceEqualityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\MappingXmlTestHelper.cs" />

@@ -58,5 +58,30 @@ namespace FluentNHibernate.MappingModel.Identity
         }
 
         public Type ContainingEntityType { get; set; }
+
+        public bool Equals(IdMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(other.Member, Member) && Equals(other.ContainingEntityType, ContainingEntityType);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return Equals(obj as IdMapping);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = base.GetHashCode();
+                result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
+                result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+                return result;
+            }
+        }
     }
 }

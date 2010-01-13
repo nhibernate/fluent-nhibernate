@@ -214,5 +214,45 @@ namespace FluentNHibernate.MappingModel
         {
             storedProcedures.Add(mapping);
         }
+
+        public bool Equals(MappedMembers other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return other.properties.ContentEquals(properties) &&
+                other.collections.ContentEquals(collections) &&
+                other.references.ContentEquals(references) &&
+                other.components.ContentEquals(components) &&
+                other.oneToOnes.ContentEquals(oneToOnes) &&
+                other.anys.ContentEquals(anys) &&
+                other.joins.ContentEquals(joins) &&
+                other.filters.ContentEquals(filters) &&
+                other.storedProcedures.ContentEquals(storedProcedures);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(MappedMembers)) return false;
+            return Equals((MappedMembers)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = (properties != null ? properties.GetHashCode() : 0);
+                result = (result * 397) ^ (collections != null ? collections.GetHashCode() : 0);
+                result = (result * 397) ^ (references != null ? references.GetHashCode() : 0);
+                result = (result * 397) ^ (components != null ? components.GetHashCode() : 0);
+                result = (result * 397) ^ (oneToOnes != null ? oneToOnes.GetHashCode() : 0);
+                result = (result * 397) ^ (anys != null ? anys.GetHashCode() : 0);
+                result = (result * 397) ^ (joins != null ? joins.GetHashCode() : 0);
+                result = (result * 397) ^ (filters != null ? filters.GetHashCode() : 0);
+                result = (result * 397) ^ (storedProcedures != null ? storedProcedures.GetHashCode() : 0);
+                return result;
+            }
+        }
     }
 }
