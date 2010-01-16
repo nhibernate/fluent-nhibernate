@@ -35,12 +35,12 @@ namespace FluentNHibernate.Testing
             this.entityEqualityComparer = entityEqualityComparer;
         }
 
-        public void VerifyTheMappings()
+        public T VerifyTheMappings()
         {
-            VerifyTheMappings(typeof(T).InstantiateUsingParameterlessConstructor<T>());
+            return VerifyTheMappings(typeof(T).InstantiateUsingParameterlessConstructor<T>());
         }
 
-        public void VerifyTheMappings(T first)
+        public T VerifyTheMappings(T first)
         {
             // Set the "suggested" properties, including references
             // to other entities and possibly collections
@@ -62,6 +62,8 @@ namespace FluentNHibernate.Testing
             // made the round trip
             // It's a bit naive right now because it fails on the first failure
             allProperties.ForEach(p => p.CheckValue(second));
+
+			return second;
         }
 
         public void TransactionalSave(object propertyValue)

@@ -151,7 +151,7 @@ namespace FluentNHibernate.Testing.Testing
             var kittens = new[] {new Kitten {Id = 3, Name = "kitten3"}, new Kitten {Id = 4, Name = "kitten4"}};
             _spec.CheckEnumerable(x => x.EnumerableOfKittens, (cat, kitten) => cat.AddKitten(kitten), kittens);
 
-            typeof(ApplicationException).ShouldBeThrownBy(_spec.VerifyTheMappings);
+            typeof(ApplicationException).ShouldBeThrownBy(() => _spec.VerifyTheMappings());
         }
 
         [Test]
@@ -159,6 +159,13 @@ namespace FluentNHibernate.Testing.Testing
         {
             _spec.CheckProperty(cat => cat.Picture, _cat.Picture, new DummyBitmapComparer()).VerifyTheMappings ();
         }
+
+    	[Test]
+    	public void VerifyTheMappings_returns_instance()
+    	{
+			var cat = _spec.CheckProperty(x => x.FirstKitten, _cat.FirstKitten).VerifyTheMappings();
+			cat.ShouldNotBeNull();
+    	}
     }
 
     [TestFixture]
