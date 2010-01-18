@@ -1,4 +1,5 @@
 using System;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {

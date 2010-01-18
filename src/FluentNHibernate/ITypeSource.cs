@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace FluentNHibernate.Automapping
+namespace FluentNHibernate
 {
     /// <summary>
-    /// A source for Type instances, used for locating types that should be
-    /// automapped.
+    /// A source for Type instances, acts as a facade for an Assembly or as an alternative Type provider.
     /// </summary>
     public interface ITypeSource
     {

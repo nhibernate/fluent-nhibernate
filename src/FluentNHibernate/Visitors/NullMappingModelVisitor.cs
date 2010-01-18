@@ -1,9 +1,10 @@
 using System;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.Visitors
 {
     public abstract class NullMappingModelVisitor : IMappingModelVisitor
     {
@@ -113,6 +114,11 @@ namespace FluentNHibernate.MappingModel
         }
 
         public virtual void ProcessComponent(DynamicComponentMapping componentMapping)
+        {
+            
+        }
+
+        public virtual void ProcessComponent(ReferenceComponentMapping componentMapping)
         {
             
         }

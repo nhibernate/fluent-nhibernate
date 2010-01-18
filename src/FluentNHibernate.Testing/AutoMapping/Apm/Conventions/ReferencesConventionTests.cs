@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Conventions;
-using FluentNHibernate.Testing.Automapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions

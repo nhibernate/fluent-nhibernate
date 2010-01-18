@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{529145D5-6CC3-4016-89B5-826563024AF1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -71,7 +71,7 @@
     <Compile Include="Automapping\Alterations\AutoMappingOverrideAlteration.cs" />
     <Compile Include="Automapping\Alterations\IAutoMappingAlteration.cs" />
     <Compile Include="Automapping\Alterations\IAutoMappingOverride.cs" />
-    <Compile Include="Automapping\AssemblyTypeSource.cs" />
+    <Compile Include="AssemblyTypeSource.cs" />
     <Compile Include="Automapping\AutoCompositeIdentityPart.cs" />
     <Compile Include="Automapping\AutoJoinedSubClassPart.cs" />
     <Compile Include="Automapping\AutoMap.cs" />
@@ -94,7 +94,7 @@
     <Compile Include="Automapping\IAutoMappingAlteration.cs" />
     <Compile Include="Automapping\InlineOverride.cs" />
     <Compile Include="Automapping\IPropertyIgnorer.cs" />
-    <Compile Include="Automapping\ITypeSource.cs" />
+    <Compile Include="ITypeSource.cs" />
     <Compile Include="Automapping\PrivateAutoMapper.cs" />
     <Compile Include="Automapping\PrivateAutoPersistenceModel.cs" />
     <Compile Include="Automapping\SubclassStrategy.cs" />
@@ -362,11 +362,18 @@
     <Compile Include="Conventions\ManyToManyTableNameConvention.cs" />
     <Compile Include="Conventions\ObjectExtensionsForConventions.cs" />
     <Compile Include="Conventions\ProxyConvention.cs" />
-    <Compile Include="MappingModel\BiDirectionalManyToManyPairingVisitor.cs" />
+    <Compile Include="MappingModel\ClassBased\ExternalComponentMapping.cs" />
+    <Compile Include="MappingModel\EqualityExtensions.cs" />
+    <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />
+    <Compile Include="Mapping\Providers\IReferenceComponentMappingProvider.cs" />
+    <Compile Include="Visitors\AmbiguousComponentReferenceException.cs" />
+    <Compile Include="Visitors\BiDirectionalManyToManyPairingVisitor.cs" />
+    <Compile Include="MappingModel\ClassBased\ReferenceComponentMapping.cs" />
     <Compile Include="MappingModel\ColumnBasedMappingBase.cs" />
     <Compile Include="MappingModel\FilterDefinitionMapping.cs" />
     <Compile Include="MappingModel\FilterMapping.cs" />
-    <Compile Include="MappingModel\ManyToManyTableNameVisitor.cs" />
+    <Compile Include="Visitors\ComponentReferenceResolutionVisitor.cs" />
+    <Compile Include="Visitors\ManyToManyTableNameVisitor.cs" />
     <Compile Include="MappingModel\Output\XmlFilterDefinitionWriter.cs" />
     <Compile Include="MappingModel\Output\XmlFilterWriter.cs" />
     <Compile Include="MappingModel\Output\XmlStoredProcedureWriter.cs" />
@@ -375,6 +382,8 @@
     <Compile Include="MappingModel\TuplizerMapping.cs" />
     <Compile Include="Mapping\CheckTypeExpression.cs" />
     <Compile Include="Mapping\ColumnPart.cs" />
+    <Compile Include="Mapping\ComponentMap.cs" />
+    <Compile Include="Mapping\ReferenceComponentPart.cs" />
     <Compile Include="Mapping\FilterDefinition.cs" />
     <Compile Include="Mapping\FilterPart.cs" />
     <Compile Include="Mapping\IFilterDefinition.cs" />
@@ -387,7 +396,8 @@
     <Compile Include="Utils\ReflectionExtensions.cs" />
     <Compile Include="Mapping\PolymorphismBuilder.cs" />
     <Compile Include="Mapping\SchemaActionBuilder.cs" />
-    <Compile Include="SeparateSubclassVisitor.cs" />
+    <Compile Include="Visitors\MissingExternalComponentException.cs" />
+    <Compile Include="Visitors\SeparateSubclassVisitor.cs" />
     <Compile Include="MappingModel\Collections\IIndexedCollectionMapping.cs" />
     <Compile Include="MappingModel\Collections\SortType.cs" />
     <Compile Include="MappingModel\DefaultableList.cs" />
@@ -454,7 +464,7 @@
     <Compile Include="Conventions\Instances\INullableInstance.cs" />
     <Compile Include="Conventions\Instances\IReadOnlyInstance.cs" />
     <Compile Include="Conventions\Instances\IUpdateInstance.cs" />
-    <Compile Include="Conventions\ConventionVisitor.cs" />
+    <Compile Include="Visitors\ConventionVisitor.cs" />
     <Compile Include="Conventions\Inspections\ClassInspector.cs" />
     <Compile Include="Conventions\Instances\ColumnInstance.cs" />
     <Compile Include="Conventions\Inspections\InspectorModelMapper.cs" />
@@ -658,10 +668,10 @@
     <Compile Include="MappingModel\DiscriminatorMapping.cs" />
     <Compile Include="MappingModel\IHasMappedMembers.cs" />
     <Compile Include="MappingModel\MappedMembers.cs" />
-    <Compile Include="MappingModel\NullMappingModelVisitor.cs" />
+    <Compile Include="Visitors\NullMappingModelVisitor.cs" />
     <Compile Include="MappingModel\KeyMapping.cs" />
-    <Compile Include="MappingModel\IMappingModelVisitor.cs" />
-    <Compile Include="MappingModel\DefaultMappingModelVisitor.cs" />
+    <Compile Include="Visitors\IMappingModelVisitor.cs" />
+    <Compile Include="Visitors\DefaultMappingModelVisitor.cs" />
     <Compile Include="MappingModel\Output\XmlClassWriter.cs" />
     <Compile Include="MappingModel\Output\XmlWriterFactory.cs" />
     <Compile Include="MappingModel\Output\IXmlWriter.cs" />
@@ -684,6 +694,7 @@
     <Compile Include="Utils\Reflection\ReflectionHelper.cs" />
     <Compile Include="Reveal.cs" />
     <Compile Include="UnknownPropertyException.cs" />
+    <Compile Include="Visitors\UnresolvedComponentReferenceVisitedException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\tools\NHibernate\nhibernate-mapping.xsd">

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FluentNHibernate.Visitors;
 using NHibernate.Type;
 
 namespace FluentNHibernate.MappingModel

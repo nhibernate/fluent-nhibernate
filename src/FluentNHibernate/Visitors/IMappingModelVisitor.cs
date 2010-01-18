@@ -1,8 +1,9 @@
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.Visitors
 {
     public interface IMappingModelVisitor
     {
@@ -28,6 +29,7 @@ namespace FluentNHibernate.MappingModel
         void ProcessComponent(IComponentMapping componentMapping);
         void ProcessComponent(ComponentMapping mapping);
         void ProcessComponent(DynamicComponentMapping componentMapping);
+        void ProcessComponent(ReferenceComponentMapping componentMapping);
         void ProcessList(ListMapping listMapping);
         void ProcessIndex(IIndexMapping indexMapping);
         void ProcessIndex(IndexMapping indexMapping);

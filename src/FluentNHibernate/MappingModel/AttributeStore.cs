@@ -166,6 +166,11 @@ namespace FluentNHibernate.MappingModel
             return store.HasValue(GetKey(exp));
         }
 
+        public bool HasValue(string property)
+        {
+            return store.HasValue(property);
+        }
+
         public void CopyTo(AttributeStore<T> target)
         {
             store.CopyTo(target.store);

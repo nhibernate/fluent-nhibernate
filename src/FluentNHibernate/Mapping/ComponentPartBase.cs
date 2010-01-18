@@ -9,7 +9,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
-    public abstract class ComponentPartBase<T> : ClasslikeMapBase<T>, IComponentMappingProvider
+    public abstract class ComponentPartBase<T> : ClasslikeMapBase<T>
     {
         private readonly string propertyName;
         private readonly AccessStrategyBuilder<ComponentPartBase<T>> access;
@@ -24,8 +24,7 @@ namespace FluentNHibernate.Mapping
         }
 
         protected abstract IComponentMapping CreateComponentMappingRoot(AttributeStore store);
-
-        IComponentMapping IComponentMappingProvider.GetComponentMapping()
+        protected IComponentMapping CreateComponentMapping()
         {
             var mapping = CreateComponentMappingRoot(attributes.CloneInner());
 

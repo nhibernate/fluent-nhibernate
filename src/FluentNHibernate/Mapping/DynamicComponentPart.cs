@@ -2,12 +2,13 @@ using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {
-    public class DynamicComponentPart<T> : ComponentPartBase<T>
+    public class DynamicComponentPart<T> : ComponentPartBase<T>, IComponentMappingProvider
     {
         private readonly Type entity;
         private readonly AccessStrategyBuilder<DynamicComponentPart<T>> access;
@@ -100,6 +101,11 @@ namespace FluentNHibernate.Mapping
             properties.Add(propertyMap);
 
             return propertyMap;
+        }
+
+        IComponentMapping IComponentMappingProvider.GetComponentMapping()
+        {
+            return CreateComponentMapping();
         }
     }
 }

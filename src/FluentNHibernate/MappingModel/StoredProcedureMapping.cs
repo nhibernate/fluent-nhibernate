@@ -1,7 +1,6 @@
 using System;
 using System.Linq.Expressions;
-using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {

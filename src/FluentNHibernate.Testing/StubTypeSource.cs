@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using FluentNHibernate.Automapping;
 
-namespace FluentNHibernate.Testing.Automapping
+namespace FluentNHibernate.Testing
 {
     internal class StubTypeSource : ITypeSource
     {

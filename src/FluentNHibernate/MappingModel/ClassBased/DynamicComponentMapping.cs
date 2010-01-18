@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
@@ -52,6 +53,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
             return attributes.HasValue(property);
         }
 
+        public override bool HasValue(string property)
+        {
+            return attributes.HasValue(property);
+        }
+
         public void SetDefaultValue<TResult>(Expression<Func<DynamicComponentMapping, TResult>> property, TResult value)
         {
             attributes.SetDefault(property, value);
@@ -79,5 +85,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
                     return (base.GetHashCode() * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
                 }
             }
+        }
     }
 }

@@ -99,7 +99,7 @@ namespace FluentNHibernate.Testing
 
         public static void ShouldContain<T>(this IEnumerable<T> actual, Func<T, bool> expected)
         {
-            actual.Single(expected).ShouldNotEqual(default(T));
+            actual.FirstOrDefault(expected).ShouldNotEqual(default(T));
         }
 
         public static void ShouldContain(this IDictionary actual, string key, string value)

@@ -5,7 +5,6 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel.Identity;
-using FluentNHibernate.Testing.Automapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions

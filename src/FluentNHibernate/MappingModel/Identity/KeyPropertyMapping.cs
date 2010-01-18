@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Identity
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
@@ -72,6 +73,8 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             return attributes.IsSpecified(property);
         }
+
+        public abstract bool HasValue(string property);
 
         public bool HasValue<TResult>(Expression<Func<ComponentMappingBase, TResult>> property)
         {

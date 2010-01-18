@@ -3,7 +3,6 @@ using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Automapping.TestFixtures;
-using FluentNHibernate.Testing.Automapping;
 using FluentNHibernate.Testing.Fixtures.AutoMappingAlterations.Model;
 using NUnit.Framework;
 

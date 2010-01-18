@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Mapping.Providers;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate
+namespace FluentNHibernate.Visitors
 {
     public class SeparateSubclassVisitor : DefaultMappingModelVisitor
     {
@@ -94,8 +93,8 @@ namespace FluentNHibernate
                 var level = 0;
 
                 bool implOfParent = parentType.IsInterface
-                           ? DistanceFromParentInterface(parentType, subclassType, ref level)
-                           : DistanceFromParentBase(parentType, subclassType.BaseType, ref level);
+                    ? DistanceFromParentInterface(parentType, subclassType, ref level)
+                    : DistanceFromParentBase(parentType, subclassType.BaseType, ref level);
 
                 if (!implOfParent) continue;
 

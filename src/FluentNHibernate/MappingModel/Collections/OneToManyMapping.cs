@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
 {

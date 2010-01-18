@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
@@ -60,6 +61,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
         }
 
         public bool HasValue<TResult>(Expression<Func<ComponentMapping, TResult>> property)
+        {
+            return attributes.HasValue(property);
+        }
+
+        public override bool HasValue(string property)
         {
             return attributes.HasValue(property);
         }

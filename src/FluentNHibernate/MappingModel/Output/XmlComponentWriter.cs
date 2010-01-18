@@ -4,6 +4,22 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {
+    public class XmlReferenceComponentWriter : BaseXmlComponentWriter, IXmlWriter<ReferenceComponentMapping>
+    {
+        private IXmlWriter<ComponentMapping> innerWriter;
+
+        public XmlReferenceComponentWriter(IXmlWriterServiceLocator serviceLocator)
+            : base(serviceLocator)
+        {
+            innerWriter = serviceLocator.GetWriter<ComponentMapping>();
+        }
+
+        public XmlDocument Write(ReferenceComponentMapping mappingModel)
+        {
+            return innerWriter.Write(mappingModel.MergedModel);
+        }
+    }
+
     public class XmlComponentWriter : BaseXmlComponentWriter, IXmlWriter<ComponentMapping>
     {
         public XmlComponentWriter(IXmlWriterServiceLocator serviceLocator)

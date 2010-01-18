@@ -1,3 +1,6 @@
+using System;
+using FluentNHibernate.Visitors;
+
 namespace FluentNHibernate.MappingModel
 {
     public abstract class MappingBase : IMappingBase

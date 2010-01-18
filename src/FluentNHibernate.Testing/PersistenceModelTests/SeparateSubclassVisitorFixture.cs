@@ -3,6 +3,7 @@ using System.Linq;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Visitors;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.PersistenceModelTests

@@ -14,6 +14,8 @@ namespace Examples.FirstProject.Mappings
                 .Cascade.All()
                 .Inverse()
                 .Table("StoreProduct");
+
+            Component(x => x.Location);
         }
     }
 }

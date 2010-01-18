@@ -106,7 +106,7 @@
     <Compile Include="AutoMapping\Overrides\HibernateMappingOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\ParentOverridesWithSubclasses.cs" />
     <Compile Include="AutoMapping\PrivateAutoMappingTester.cs" />
-    <Compile Include="AutoMapping\StubTypeSource.cs" />
+    <Compile Include="StubTypeSource.cs" />
     <Compile Include="AutoMapping\TestFixtures.cs" />
     <Compile Include="AutoMapping\XXAppenderPropertyConvention.cs" />
     <Compile Include="Cfg\Db\OracleClientConfigurationTester.cs" />
@@ -147,6 +147,7 @@
     <Compile Include="ConventionsTests\ProxyHelperTests.cs" />
     <Compile Include="DomainModel\Mapping\StoredProcedureTests.cs" />
     <Compile Include="FluentInterfaceTests\ColumnPartTests.cs" />
+    <Compile Include="FluentInterfaceTests\ComponentMapSpecs.cs" />
     <Compile Include="FluentInterfaceTests\ElementPartTests.cs" />
     <Compile Include="DomainModel\Mapping\FilterTester.cs" />
     <Compile Include="FluentInterfaceTests\ClassMapFilterPartModelGenerationTests.cs" />
@@ -159,11 +160,14 @@
     <Compile Include="MappingModel\Equality\CollectionContentEqualitySpecs.cs" />
     <Compile Include="MappingModel\Defaults\MutableDefaultsTester.cs" />
     <Compile Include="MappingModel\Equality\MappingEqualitySpecs.cs" />
+    <Compile Include="MappingModel\Output\ExternalComponentOutputSpecs.cs" />
     <Compile Include="MappingModel\Output\XmlDiscriminatorWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterDefinitionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlReferenceComponentWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlStoredProcedureWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlTuplizerWriterTester.cs" />
+    <Compile Include="MappingModel\ReferenceComponentMappingSpecs.cs" />
     <Compile Include="ModelTestExtensions.cs" />
     <Compile Include="ConventionsTests\MultipleHelperConventions.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\ArrayConventionTests.cs" />
@@ -384,6 +388,7 @@
     <Compile Include="MappingModel\Output\XmlVersionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
     <Compile Include="PersistenceModelTests\JoinPersistenceModelTests.cs" />
+    <Compile Include="PersistenceModelTests\PersistenceModelSpecs.cs" />
     <Compile Include="PersistenceModelTests\SeparateSubclassVisitorFixture.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -412,6 +417,7 @@
     <Compile Include="Utils\Stub.cs" />
     <Compile Include="Utils\TypeReferenceEqualityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Visitors\ComponentReferenceResolutionVisitorSpecs.cs" />
     <Compile Include="Xml\MappingXmlTestHelper.cs" />
   </ItemGroup>
   <ItemGroup>

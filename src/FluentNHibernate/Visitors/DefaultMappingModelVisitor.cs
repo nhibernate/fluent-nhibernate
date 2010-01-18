@@ -1,8 +1,9 @@
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.Visitors
 {
     public abstract class DefaultMappingModelVisitor : NullMappingModelVisitor
     {

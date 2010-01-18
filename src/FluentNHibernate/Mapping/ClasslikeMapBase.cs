@@ -123,6 +123,15 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+        public ReferenceComponentPart<TComponent> Component<TComponent>(Expression<Func<T, TComponent>> member)
+        {
+            var part = new ReferenceComponentPart<TComponent>(member.ToMember(), typeof(T));
+
+            components.Add(part);
+
+            return part;
+        }
+
         /// <summary>
         /// Maps a component
         /// </summary>

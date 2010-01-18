@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.Utils;
+using FluentNHibernate.Visitors;
 using NHibernate.Type;
 
 namespace FluentNHibernate.MappingModel.Output

@@ -1,6 +1,6 @@
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.Visitors
 {
     public class ManyToManyTableNameVisitor : DefaultMappingModelVisitor
     {

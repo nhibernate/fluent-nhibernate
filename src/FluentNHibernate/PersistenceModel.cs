@@ -14,6 +14,7 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Utils;
+using FluentNHibernate.Visitors;
 using NHibernate.Cfg;
 
 namespace FluentNHibernate
@@ -23,6 +24,7 @@ namespace FluentNHibernate
         protected readonly IList<IMappingProvider> classProviders = new List<IMappingProvider>();
         protected readonly IList<IFilterDefinition> filterDefinitions = new List<IFilterDefinition>();
         protected readonly IList<IIndeterminateSubclassMappingProvider> subclassProviders = new List<IIndeterminateSubclassMappingProvider>();
+        protected readonly IList<IExternalComponentMappingProvider> componentProviders = new List<IExternalComponentMappingProvider>();
         private readonly IList<IMappingModelVisitor> visitors = new List<IMappingModelVisitor>();
         public IConventionFinder Conventions { get; private set; }
         public bool MergeMappings { get; set; }
@@ -32,6 +34,7 @@ namespace FluentNHibernate
         {
             Conventions = conventionFinder;
 
+            visitors.Add(new ComponentReferenceResolutionVisitor(componentProviders));
             visitors.Add(new SeparateSubclassVisitor(subclassProviders));
             visitors.Add(new BiDirectionalManyToManyPairingVisitor());
             visitors.Add(new ManyToManyTableNameVisitor());
@@ -44,14 +47,23 @@ namespace FluentNHibernate
 
         protected void AddMappingsFromThisAssembly()
         {
-            Assembly assembly = FindTheCallingAssembly();
+            var assembly = FindTheCallingAssembly();
             AddMappingsFromAssembly(assembly);
         }
 
         public void AddMappingsFromAssembly(Assembly assembly)
         {
-            foreach (var type in assembly.GetExportedTypes().Where(x => IsClassMap(x) || IsSubclassMap(x) || IsFilterDefinition(x)))
-                Add(type);
+            AddMappingsFromSource(new AssemblyTypeSource(assembly));
+        }
+
+        public void AddMappingsFromSource(ITypeSource source)
+        {
+            source.GetTypes()
+                .Where(x => IsMappingOf<IMappingProvider>(x) ||
+                            IsMappingOf<IIndeterminateSubclassMappingProvider>(x) ||
+                            IsMappingOf<IExternalComponentMappingProvider>(x) ||
+                            IsMappingOf<IFilterDefinition>(x))
+                .Each(Add);
         }
 
         private static Assembly FindTheCallingAssembly()
@@ -88,33 +100,30 @@ namespace FluentNHibernate
             filterDefinitions.Add(definition);
         }
 
+        public void Add(IExternalComponentMappingProvider provider)
+        {
+            componentProviders.Add(provider);
+        }
+
         public void Add(Type type)
         {
             var mapping = type.InstantiateUsingParameterlessConstructor();
 
-            if (IsClassMap(type))
+            if (mapping is IMappingProvider)
                 Add((IMappingProvider)mapping);
-            else if (IsSubclassMap(type))
+            else if (mapping is IIndeterminateSubclassMappingProvider)
                 Add((IIndeterminateSubclassMappingProvider)mapping);
-            else if (IsFilterDefinition(type))
+            else if (mapping is IFilterDefinition)
                 Add((IFilterDefinition)mapping);
+            else if (mapping is IExternalComponentMappingProvider)
+                Add((IExternalComponentMappingProvider)mapping);
             else
                 throw new InvalidOperationException("Unsupported mapping type '" + type.FullName + "'");
         }
 
-        private bool IsClassMap(Type type)
+        private bool IsMappingOf<T>(Type type)
         {
-            return !type.IsGenericType && typeof(IMappingProvider).IsAssignableFrom(type);
-        }
-
-        private bool IsSubclassMap(Type type)
-        {
-            return !type.IsGenericType && typeof(IIndeterminateSubclassMappingProvider).IsAssignableFrom(type);
-        }
-
-        private bool IsFilterDefinition(Type type)
-        {
-            return !type.IsGenericType && typeof(IFilterDefinition).IsAssignableFrom(type);
+            return !type.IsGenericType && typeof(T).IsAssignableFrom(type);
         }
 
         public IEnumerable<HibernateMapping> BuildMappings()
@@ -234,6 +243,14 @@ namespace FluentNHibernate
                 if (cfg.GetClassMapping(mapping.Classes.First().Type) == null)
                     cfg.AddDocument(document);
             }
+        }
+
+        public bool ContainsMapping(Type type)
+        {
+            return classProviders.Any(x => x.GetType() == type) ||
+                filterDefinitions.Any(x => x.GetType() == type) ||
+                subclassProviders.Any(x => x.GetType() == type) ||
+                componentProviders.Any(x => x.GetType() == type);
         }
     }
 

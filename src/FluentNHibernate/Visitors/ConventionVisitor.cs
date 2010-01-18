@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
@@ -8,7 +9,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 
-namespace FluentNHibernate.Conventions
+namespace FluentNHibernate.Visitors
 {
     public class ConventionVisitor : DefaultMappingModelVisitor
     {
@@ -237,14 +238,14 @@ namespace FluentNHibernate.Conventions
         {
             if (mapping.Relationship is ManyToManyMapping)
                 Apply<IManyToManyCollectionInspector, IManyToManyCollectionInstance>(finder.Find<IHasManyToManyConvention>(),
-                new ManyToManyCollectionInstance(mapping));
+                    new ManyToManyCollectionInstance(mapping));
 
             if (mapping.Relationship is OneToManyMapping)
                 Apply<IOneToManyCollectionInspector, IOneToManyCollectionInstance>(finder.Find<IHasManyConvention>(),
-                new OneToManyCollectionInstance(mapping));
+                    new OneToManyCollectionInstance(mapping));
 
             Apply<ICollectionInspector, ICollectionInstance>(finder.Find<ICollectionConvention>(),
-            new CollectionInstance(mapping));
+                new CollectionInstance(mapping));
         }
     }
 }

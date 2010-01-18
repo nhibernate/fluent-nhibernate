@@ -1,3 +1,5 @@
+using FluentNHibernate.Visitors;
+
 namespace FluentNHibernate.MappingModel.Collections
 {
     public interface IIndexMapping
