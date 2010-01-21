@@ -50,7 +50,25 @@ namespace FluentNHibernate.Automapping.TestFixtures
         public IList<ExampleClass> Children { get; private set; }
         public ExampleParentClass Component { get; set; }
         public IDictionary DictionaryChild { get; set; }
+		public int PropertyAlsoOnSiblingInheritedClass { get; set; }
     }
+
+	public class ExampleBaseClass
+	{
+		public virtual int Id { get; set; }
+	}
+
+	public class FirstInheritedClass : ExampleBaseClass
+	{
+		public string Property1 { get; set; }
+		public int PropertyAlsoOnSiblingInheritedClass { get; set; }
+	}
+
+	public class SecondInheritedClass : ExampleBaseClass
+	{
+		public string Property2 { get; set; }
+		public int PropertyAlsoOnSiblingInheritedClass { get; set; }
+	}
 
     public class ClassWithDummyProperty
     {

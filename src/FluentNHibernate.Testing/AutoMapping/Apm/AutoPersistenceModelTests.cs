@@ -357,6 +357,21 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Element("class/joined-subclass/property[@name='ExampleProperty']").Exists();
         }
 
+		[Test]
+		public void TestInheritanceMappingPropertiesWithSameSignatureOnDifferentSubClasses()
+		{
+			var autoMapper = AutoMap.AssemblyOf<ExampleBaseClass>()
+				.Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
+
+			const string propertyPathFormat = "class/joined-subclass[@name='{0}']/property[@name='PropertyAlsoOnSiblingInheritedClass']";
+			string firstSubClassPropertyPath = string.Format
+				(propertyPathFormat, typeof(FirstInheritedClass).AssemblyQualifiedName);
+			string secondSubClassPropertyPath = string.Format
+				(propertyPathFormat, typeof(SecondInheritedClass).AssemblyQualifiedName);
+			new AutoMappingTester<ExampleBaseClass>(autoMapper)
+				.Element(firstSubClassPropertyPath).Exists().RootElement.Element(secondSubClassPropertyPath).Exists();
+		}
+
         [Test]
         public void TestInheritanceSubclassMappingProperties()
         {
