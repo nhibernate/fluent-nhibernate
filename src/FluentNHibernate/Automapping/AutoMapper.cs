@@ -103,11 +103,13 @@ namespace FluentNHibernate.Automapping
                 else
                     subclassMapping = new SubclassMapping();
 
-                MapSubclass(mappedProperties, subclassMapping, inheritedClass);
+				// track separate set of properties for each sub-tree within inheritance hierarchy
+            	var subClassProperties = new List<string>(mappedProperties);
+				MapSubclass(subClassProperties, subclassMapping, inheritedClass);
 
                 mapping.AddSubclass(subclassMapping);
 
-                MergeMap(inheritedClass.Type, (ClassMappingBase)subclassMapping, mappedProperties);
+				MergeMap(inheritedClass.Type, (ClassMappingBase)subclassMapping, subClassProperties);
             }
         }
 
@@ -135,7 +137,7 @@ namespace FluentNHibernate.Automapping
                 {
                     if (rule.MapsProperty(property))
                     {
-                        if (mappedProperties.Count(name => name == property.Name) == 0)
+                        if (!mappedProperties.Any(name => name == property.Name))
                         {
                             rule.Map(mapping, property);
                             mappedProperties.Add(property.Name);
