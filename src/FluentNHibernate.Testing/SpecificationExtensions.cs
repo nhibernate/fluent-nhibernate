@@ -302,5 +302,9 @@ namespace FluentNHibernate.Testing
             return element;
         }
 
+        public static T As<T>(this object instance) where T : class
+        {
+            return instance as T;
+        }
     }
 }

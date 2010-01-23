@@ -178,13 +178,21 @@ namespace FluentNHibernate.Mapping
         {
             collectionBuilder = attrs => new ListMapping(attrs);
             CreateIndexMapping(null);
+
+            if (indexMapping.Columns.IsEmpty())
+                indexMapping.AddDefaultColumn(new ColumnMapping { Name = "Index" });
+
             return (T)this;
         }
 
         public T AsList(Action<IndexPart> customIndexMapping)
         {
-            AsList();
+            collectionBuilder = attrs => new ListMapping(attrs);
             CreateIndexMapping(customIndexMapping);
+
+            if (indexMapping.Columns.IsEmpty())
+                indexMapping.AddDefaultColumn(new ColumnMapping { Name = "Index" });
+
             return (T)this;
         }
 
