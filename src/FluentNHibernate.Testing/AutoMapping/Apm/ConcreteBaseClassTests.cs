@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
     [TestFixture]
     public class ConcreteBaseClassTests
     {
-        [Test, Ignore]
+        [Test]
         public void ShouldAllowPropertiesWithSameNameToExistInDerivedClasses()
         {
             var automapper =
