@@ -109,6 +109,7 @@
     <Compile Include="StubTypeSource.cs" />
     <Compile Include="AutoMapping\TestFixtures.cs" />
     <Compile Include="AutoMapping\XXAppenderPropertyConvention.cs" />
+    <Compile Include="Cfg\Db\DB2ConfigurationTester.cs" />
     <Compile Include="Cfg\Db\OracleClientConfigurationTester.cs" />
     <Compile Include="Cfg\Db\JetDriverConfigurationTester.cs" />
     <Compile Include="Cfg\Db\OracleDataClientConfigurationTester.cs" />

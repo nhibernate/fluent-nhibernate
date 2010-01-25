@@ -98,6 +98,8 @@
     <Compile Include="Automapping\PrivateAutoMapper.cs" />
     <Compile Include="Automapping\PrivateAutoPersistenceModel.cs" />
     <Compile Include="Automapping\SubclassStrategy.cs" />
+    <Compile Include="Cfg\Db\DB2Configuration.cs" />
+    <Compile Include="Cfg\Db\DB2ConnectionStringBuilder.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\AnyExpectation.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\CollectionExpectation.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\InvertedExpectation.cs" />
