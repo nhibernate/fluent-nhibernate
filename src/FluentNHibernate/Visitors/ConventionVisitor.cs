@@ -241,6 +241,14 @@ namespace FluentNHibernate.Visitors
                 new KeyManyToOneInstance(mapping));
         }
 
+        public override void ProcessAny(AnyMapping mapping)
+        {
+            var conventions = finder.Find<IAnyConvention>();
+
+            Apply<IAnyInspector, IAnyInstance>(conventions,
+                new AnyInstance(mapping));
+        }
+
         private void Apply<TInspector, TInstance>(IEnumerable conventions, TInstance instance)
             where TInspector : IInspector
             where TInstance : TInspector

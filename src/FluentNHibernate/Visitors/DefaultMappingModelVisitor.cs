@@ -206,5 +206,10 @@ namespace FluentNHibernate.Visitors
         {
             mapping.AcceptVisitor(this);
         }
+
+        public override void Visit(AnyMapping mapping)
+        {
+            mapping.AcceptVisitor(this);
+        }
     }
 }

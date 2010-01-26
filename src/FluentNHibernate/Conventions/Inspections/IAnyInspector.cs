@@ -3,9 +3,8 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public interface IAnyInspector : IInspector
-    {
-        Access Access { get; }
+    public interface IAnyInspector : IAccessInspector, IInspector
+    {        
         Cascade Cascade { get; }
         IDefaultableEnumerable<IColumnInspector> IdentifierColumns { get; }
         string IdType { get; }

@@ -110,6 +110,7 @@
     <Compile Include="Conventions\Helpers\Builders\KeyPropertyConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltKeyPropertyConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltKeyManyToOneConvention.cs" />
+    <Compile Include="Conventions\IAnyConvention.cs" />
     <Compile Include="Conventions\IKeyManyToOneConventionAcceptance.cs" />
     <Compile Include="Conventions\IKeyPropertyConventionAcceptance.cs" />
     <Compile Include="Conventions\Helpers\AutoImport.cs" />
@@ -197,7 +198,8 @@
     <Compile Include="Conventions\Inspections\CompositeElementInspector.cs" />
     <Compile Include="Conventions\Inspections\CompositeIdentityInspector.cs" />
     <Compile Include="Conventions\Inspections\HibernateMappingInspector.cs" />
-    <Compile Include="Conventions\Inspections\IAnyInstance.cs" />
+    <Compile Include="Conventions\Instances\AnyInstance.cs" />
+    <Compile Include="Conventions\Instances\IAnyInstance.cs" />
     <Compile Include="Conventions\Inspections\IArrayInspector.cs" />
     <Compile Include="Conventions\Inspections\IBagInspector.cs" />
     <Compile Include="Conventions\Inspections\IHibernateMappingInspector.cs" />

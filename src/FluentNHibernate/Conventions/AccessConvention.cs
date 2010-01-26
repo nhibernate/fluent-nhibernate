@@ -19,7 +19,8 @@ namespace FluentNHibernate.Conventions
           IDynamicComponentConvention,
           IReferenceConvention,
           IHasOneConvention,
-          ICollectionConvention
+          ICollectionConvention,
+          IAnyConvention
     {
         protected abstract void Apply(Type owner, string name, IAccessInstance access);
 
@@ -77,6 +78,11 @@ namespace FluentNHibernate.Conventions
         {
             string name = ((ICollectionInspector)instance).Name;
             Apply(instance.EntityType, name, instance.Access);
+        }
+
+        public virtual void Apply(IAnyInstance instance)
+        {            
+            Apply(instance.EntityType, instance.Name, instance.Access);
         }
     }
 }
