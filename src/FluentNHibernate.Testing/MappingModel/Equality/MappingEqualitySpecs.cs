@@ -1029,7 +1029,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
     {
         public override ReferenceComponentMapping create_mapping()
         {
-            var mapping = new ReferenceComponentMapping(new PropertyMember(new DummyPropertyInfo("name", typeof(Target))), typeof(Target), typeof(Target));
+            var mapping = new ReferenceComponentMapping(new PropertyMember(new DummyPropertyInfo("name", typeof(Target))), typeof(Target), typeof(Target), null);
             mapping.AssociateExternalMapping(new ExternalComponentMapping());
             mapping.Access = "access";
             mapping.ContainingEntityType = typeof(Target);

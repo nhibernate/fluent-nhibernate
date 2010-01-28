@@ -123,6 +123,14 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+        /// <summary>
+        /// Creates a component reference. This is a place-holder for a component that is defined externally with a
+        /// <see cref="ComponentMap{T}"/>; the mapping defined in said <see cref="ComponentMap{T}"/> will be merged
+        /// with any options you specify from this call.
+        /// </summary>
+        /// <typeparam name="TComponent">Component type</typeparam>
+        /// <param name="member">Property exposing the component</param>
+        /// <returns>Component reference builder</returns>
         public ReferenceComponentPart<TComponent> Component<TComponent>(Expression<Func<T, TComponent>> member)
         {
             var part = new ReferenceComponentPart<TComponent>(member.ToMember(), typeof(T));

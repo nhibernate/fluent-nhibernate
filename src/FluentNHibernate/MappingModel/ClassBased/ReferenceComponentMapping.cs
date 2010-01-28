@@ -17,17 +17,20 @@ namespace FluentNHibernate.MappingModel.ClassBased
         private readonly Type componentType;
         private ExternalComponentMapping mergedComponent;
         private Type containingEntityType;
+        private readonly string columnPrefix;
 
-        public ReferenceComponentMapping(Member property, Type componentType, Type containingEntityType)
+        public ReferenceComponentMapping(Member property, Type componentType, Type containingEntityType, string columnPrefix)
         {
             this.property = property;
             this.componentType = componentType;
             this.containingEntityType = containingEntityType;
+            this.columnPrefix = columnPrefix;
         }
 
         public void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessComponent(this);
+
             if (mergedComponent == null)
                 throw new UnresolvedComponentReferenceVisitedException(componentType, containingEntityType, property);
 
@@ -124,6 +127,16 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return mergedComponent.Unique; }
             set { mergedComponent.Unique = value; }
+        }
+
+        public bool HasColumnPrefix
+        {
+            get { return !string.IsNullOrEmpty(ColumnPrefix); }
+        }
+
+        public string ColumnPrefix
+        {
+            get { return columnPrefix; }
         }
 
         public bool Insert

@@ -235,6 +235,11 @@ namespace FluentNHibernate.Testing
             StringAssert.StartsWith(expected, actual);
         }
 
+        public static void ShouldNotStartWith(this string actual, string expected)
+        {
+            StringAssert.DoesNotStartWith(expected, actual);
+        }
+
         public static void ShouldContainErrorMessage(this Exception exception, string expected)
         {
             StringAssert.Contains(expected, exception.Message);

@@ -14,6 +14,7 @@ namespace FluentNHibernate.Mapping
     {
         private readonly Member property;
         private readonly Type containingEntityType;
+        private string columnPrefix;
 
         public ReferenceComponentPart(Member property, Type containingEntityType)
         {
@@ -21,12 +22,31 @@ namespace FluentNHibernate.Mapping
             this.containingEntityType = containingEntityType;
         }
 
-        public IComponentMapping GetComponentMapping()
+        /// <summary>
+        /// Sets the prefix for any columns defined within the component. To refer to the property
+        /// that exposes this component use {property}.
+        /// </summary>
+        /// <example>
+        /// // Entity using Address component
+        /// public class Person
+        /// {
+        ///   public Address PostalAddress { get; set; }
+        /// }
+        /// 
+        /// ColumnPrefix("{property}_") will result in any columns of Person.Address being prefixed with "PostalAddress_".
+        /// </example>
+        /// <param name="prefix">Prefix for column names</param>
+        public void ColumnPrefix(string prefix)
         {
-            return new ReferenceComponentMapping(property, typeof(T), containingEntityType);
+            columnPrefix = prefix;
         }
 
-        public Type Type
+        IComponentMapping IComponentMappingProvider.GetComponentMapping()
+        {
+            return new ReferenceComponentMapping(property, typeof(T), containingEntityType, columnPrefix);
+        }
+
+        Type IReferenceComponentMappingProvider.Type
         {
             get { return typeof(T); }
         }

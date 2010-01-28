@@ -39,7 +39,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         private ReferenceComponentMapping CreateInstance()
         {
             var property = new PropertyMember(new DummyPropertyInfo("ComponentProperty", typeof(ComponentTarget)));
-            var instance = new ReferenceComponentMapping(property, typeof(ComponentTarget), typeof(Target));
+            var instance = new ReferenceComponentMapping(property, typeof(ComponentTarget), typeof(Target), null);
 
             instance.AssociateExternalMapping(new ExternalComponentMapping());
 

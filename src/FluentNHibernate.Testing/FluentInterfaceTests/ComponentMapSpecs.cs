@@ -68,8 +68,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             mapping.References.ShouldContain(x => x.Name == "a_reference");
         }
-
-
+        
         private ComponentMap<Target> component;
         private IComponentMapping mapping;
 

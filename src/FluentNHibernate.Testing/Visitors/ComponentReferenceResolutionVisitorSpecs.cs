@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentNHibernate.Mapping;
-using FluentNHibernate.Mapping.Providers;
+﻿using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Testing.Utils;
 using FluentNHibernate.Visitors;
@@ -22,7 +17,7 @@ namespace FluentNHibernate.Testing.Visitors
                 cfg.Stub(x => x.GetComponentMapping()).Return(external_component_mapping));
 
             visitor = new ComponentReferenceResolutionVisitor(new[] { external_component });
-            reference_component_mapping = new ReferenceComponentMapping(null, null, null);
+            reference_component_mapping = new ReferenceComponentMapping(null, null, null, null);
         }
 
         public override void because()
@@ -51,7 +46,7 @@ namespace FluentNHibernate.Testing.Visitors
 
         public override void because()
         {
-            visitor.ProcessComponent(new ReferenceComponentMapping(member_property, typeof(ComponentType), typeof(Target)));
+            visitor.ProcessComponent(new ReferenceComponentMapping(member_property, typeof(ComponentType), typeof(Target), null));
         }
 
         [Test]
@@ -108,7 +103,7 @@ namespace FluentNHibernate.Testing.Visitors
 
         public override void because()
         {
-            visitor.ProcessComponent(new ReferenceComponentMapping(member_property, typeof(ComponentType), typeof(Target)));
+            visitor.ProcessComponent(new ReferenceComponentMapping(member_property, typeof(ComponentType), typeof(Target), null));
         }
 
         [Test]

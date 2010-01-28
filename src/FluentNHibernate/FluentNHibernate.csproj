@@ -372,6 +372,7 @@
     <Compile Include="MappingModel\ColumnBasedMappingBase.cs" />
     <Compile Include="MappingModel\FilterDefinitionMapping.cs" />
     <Compile Include="MappingModel\FilterMapping.cs" />
+    <Compile Include="Visitors\ComponentColumnPrefixVisitor.cs" />
     <Compile Include="Visitors\ComponentReferenceResolutionVisitor.cs" />
     <Compile Include="Visitors\ManyToManyTableNameVisitor.cs" />
     <Compile Include="MappingModel\Output\XmlFilterDefinitionWriter.cs" />

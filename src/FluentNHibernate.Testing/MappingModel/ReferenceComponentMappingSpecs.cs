@@ -13,7 +13,7 @@ namespace FluentNHibernate.Testing.MappingModel
         public override void establish_context()
         {
             member_property = new DummyPropertyInfo("Component", typeof(Target)).ToMember();
-            reference_component_mapping = new ReferenceComponentMapping(member_property, typeof(ComponentType), typeof(Target));
+            reference_component_mapping = new ReferenceComponentMapping(member_property, typeof(ComponentType), typeof(Target), null);
         }
 
         [Test]
@@ -45,6 +45,7 @@ namespace FluentNHibernate.Testing.MappingModel
         private class Target {}
         private class ComponentType {}
     }
+
     [TestFixture]
     public class when_a_reference_component_is_associated_to_a_external_component : Specification
     {
@@ -70,7 +71,7 @@ namespace FluentNHibernate.Testing.MappingModel
             external_component_mapping.AddReference(new ManyToOneMapping());
 
             member_property = new DummyPropertyInfo("Component", typeof(Target)).ToMember();
-            reference_component_mapping = new ReferenceComponentMapping(member_property, typeof(ComponentType), typeof(Target));
+            reference_component_mapping = new ReferenceComponentMapping(member_property, typeof(ComponentType), typeof(Target), "column-prefix");
         }
 
         public override void because()
@@ -91,6 +92,13 @@ namespace FluentNHibernate.Testing.MappingModel
         {
             reference_component_mapping.Member.ShouldEqual(member_property);
             reference_component_mapping.Name.ShouldEqual(member_property.Name);
+        }
+
+        [Test]
+        public void should_retail_column_prefix_information_from_before_the_association()
+        {
+            reference_component_mapping.ColumnPrefix.ShouldEqual("column-prefix");
+            reference_component_mapping.HasColumnPrefix.ShouldBeTrue();
         }
 
         [Test]
