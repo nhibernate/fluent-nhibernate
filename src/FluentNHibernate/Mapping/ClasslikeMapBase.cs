@@ -282,6 +282,18 @@ namespace FluentNHibernate.Mapping
             return MapHasManyToMany<TChild, IEnumerable<TChild>>(expression);
         }
 
+	/// <summary>
+        /// CreateProperties a many-to-many relationship with a IDictionary
+        /// </summary>
+        /// <typeparam name="TKey">Dictionary key type</typeparam>
+        /// <typeparam name="TChild">Child object type / Dictionary value type</typeparam>
+        /// <param name="expression">Expression to get property from</param>
+        /// <returns>one-to-many part</returns>
+/*	public ManyToManyPart<TChild> HasManyToMany<TKey, TChild>(Expression<Func<T, IDictionary<TKey, TChild>>> expression)
+	{
+		return MapHasManyToMany<TChild, IDictionary<TKey, TChild>>(expression);
+	}*/
+
         /// <summary>
         /// CreateProperties a many-to-many relationship
         /// </summary>

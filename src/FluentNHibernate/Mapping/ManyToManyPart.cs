@@ -17,6 +17,7 @@ namespace FluentNHibernate.Mapping
 	    private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
 	    private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
 	    private IndexManyToManyPart manyToManyIndex;
+	    private IndexMapping indexMapping;
 	    private readonly IList<string> childColumns = new List<string>();
 	    private readonly IList<string> parentColumns = new List<string>();
 	    private readonly Type childType;
@@ -62,6 +63,10 @@ namespace FluentNHibernate.Mapping
 
             foreach (var column in childColumns)
                 ((ManyToManyMapping)collection.Relationship).AddColumn(new ColumnMapping { Name = column });
+
+	    // HACK: Index only on list and map - shouldn't have to do this!
+            if (indexMapping != null && collection is IIndexedCollectionMapping)
+	    	((IIndexedCollectionMapping)collection).Index = indexMapping;
 
             // HACK: shouldn't have to do this!
             if (manyToManyIndex != null && collection is MapMapping)
@@ -157,6 +162,35 @@ namespace FluentNHibernate.Mapping
 
             return this;
         }
+
+	public ManyToManyPart<TChild> AsSimpleAssociation()
+	{
+	    EnsureGenericDictionary();
+
+	    var indexType = typeof(TChild).GetGenericArguments()[0];
+	    var valueType = typeof(TChild).GetGenericArguments()[1];
+
+	    return AsSimpleAssociation(indexType.Name + "_id", valueType.Name + "_id");
+	}
+
+	public ManyToManyPart<TChild> AsSimpleAssociation(string indexColumn, string valueColumn)
+	{
+	    EnsureGenericDictionary();
+
+            var indexType = typeof(TChild).GetGenericArguments()[0];
+	    var valueType = typeof(TChild).GetGenericArguments()[1];
+
+	    var indexPart = new IndexPart(indexType);
+	    indexPart.Column(indexColumn);
+	    indexMapping = indexPart.GetIndexMapping();
+		
+	    ChildKeyColumn(valueColumn);
+	    this.valueType = valueType;
+
+	    isTernary = true;
+
+	    return this;
+	}
 
         public ManyToManyPart<TChild> AsEntityMap()
         {
