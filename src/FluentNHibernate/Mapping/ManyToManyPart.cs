@@ -182,6 +182,7 @@ namespace FluentNHibernate.Mapping
 
 	    var indexPart = new IndexPart(indexType);
 	    indexPart.Column(indexColumn);
+	    indexPart.Type(indexType);
 	    indexMapping = indexPart.GetIndexMapping();
 		
 	    ChildKeyColumn(valueColumn);
