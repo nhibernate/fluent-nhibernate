@@ -1,6 +1,5 @@
 require 'fileutils'
 require 'albacore'
-require 'AlbacoreExtensions.rb'
 
 def get_version
   ENV['BUILD_NUMBER'] || '1.0.0.0'
@@ -28,7 +27,7 @@ end
 
 namespace :source do
   desc 'Update assembly info with latest version number'
-  assemblyinfotask :update_version do |asm|
+  assemblyinfo :update_version do |asm|
     asm.output_file = 'src/CommonAssemblyInfo.cs'
     
     asm.version = get_version
@@ -42,7 +41,7 @@ namespace :source do
   end
   
   desc 'Compile the source'
-  msbuildtask :compile do |msb|
+  msbuild :compile do |msb|
     msb.properties = { :configuration => :Release }
     msb.targets [:Clean, :Build]
     msb.solution = 'src/FluentNHibernate.sln'
@@ -51,7 +50,7 @@ end
 
 namespace :specs do
   desc 'Run NUnit tests'
-  nunittask :run do |nunit|
+  nunit :run do |nunit|
     nunit.path_to_command = 'tools/nunit/nunit-console-x86.exe'
     nunit.assemblies << 'src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll'
   end
@@ -84,7 +83,7 @@ namespace :package do
   end
   
   desc 'Create zip of source-tree'
-  ziptask :source => :prepare_dist_directory do |zip|
+  zip :source => :prepare_dist_directory do |zip|
     zip.directories_to_zip = ['./']
     zip.output_file = "fluentnhibernate-source-#{get_version}.zip"
     zip.output_path = 'dist'
@@ -92,14 +91,14 @@ namespace :package do
   end
   
   desc 'Create zip of binaries'
-  ziptask :binaries => :prepare_dist_directory do |zip|
+  zip :binaries => :prepare_dist_directory do |zip|
     zip.directories_to_zip = ['build']
     zip.output_file = "fluentnhibernate-binary-#{get_version}.zip"
     zip.output_path = 'dist'
   end
   
   desc 'Create zip of API docs'
-  ziptask :docs => :prepare_dist_directory do |zip|
+  zip :docs => :prepare_dist_directory do |zip|
     zip.directories_to_zip = ['output']
     zip.output_file = "fluentnhibernate-docs-#{get_version}.zip"
     zip.output_path = 'dist'
