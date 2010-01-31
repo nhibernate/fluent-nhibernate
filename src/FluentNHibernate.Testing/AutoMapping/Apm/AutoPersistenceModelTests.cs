@@ -924,7 +924,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 });
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("class/component/bag[@name='Examples']/key/column").HasAttribute("name", "`Parent_ExampleParentClass_Id`");
+                .Element("class/component/bag[@name='Examples']/key/column").HasAttribute("name", "`Parent_ExampleParentClass_id`");
         }
 
         [Test]

@@ -78,7 +78,7 @@ namespace FluentNHibernate.Automapping
 
         private void SetKey(Member property, ClassMappingBase classMap, ICollectionMapping mapping)
         {
-            var columnName = property.DeclaringType.Name + "_Id";
+            var columnName = property.DeclaringType.Name + "_id";
 
             if (classMap is ComponentMapping)
                 columnName = expressions.GetComponentColumnPrefix(((ComponentMapping)classMap).Member) + columnName;
