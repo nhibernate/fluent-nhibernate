@@ -49,8 +49,17 @@ namespace :source do
 end
 
 namespace :specs do
+  desc 'Run all tests and specs'
+  task :all => [:nunit, :mspec]
+  
+  desc 'Run MSpec specs'
+  mspec :mspec do |mspec|
+    mspec.path_to_command = 'tools/mspec/mspec.exe'
+    mspec.assemblies << 'src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll'
+  end
+
   desc 'Run NUnit tests'
-  nunit :run do |nunit|
+  nunit :nunit do |nunit|
     nunit.path_to_command = 'tools/nunit/nunit-console-x86.exe'
     nunit.assemblies << 'src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll'
   end
@@ -58,7 +67,7 @@ end
 
 namespace :build do
   desc 'Run full build including tests'
-  task :all => ['source:update_version', 'source:compile', 'specs:run'] do
+  task :all => ['source:update_version', 'source:compile', 'specs:all'] do
     puts 'Copying output to build directory'
       Dir.mkdir 'build' unless File.exist? 'build'
       Dir.glob 'src/FluentNHibernate/bin/Release/*.{dll,pdb,xml}' do |path|
