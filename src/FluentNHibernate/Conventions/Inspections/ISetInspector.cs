@@ -2,7 +2,7 @@
 {
     public interface ISetInspector : ICollectionInspector
     {
-        string OrderBy { get; }
+        new string OrderBy { get; }
         string Sort { get; }
     }
 }

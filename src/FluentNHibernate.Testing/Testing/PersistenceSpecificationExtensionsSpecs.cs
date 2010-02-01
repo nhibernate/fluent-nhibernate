@@ -287,7 +287,9 @@ namespace FluentNHibernate.Testing.Testing
 
         public override void because()
         {
+#pragma warning disable 618,612
             sut.CheckEnumerable(x => x.ReferenceList, listSetter, new[] {new OtherEntity(), new OtherEntity()});
+#pragma warning restore 618,612
         }
 
         [Test]

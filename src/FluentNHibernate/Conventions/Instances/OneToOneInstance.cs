@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 
@@ -17,7 +16,7 @@ namespace FluentNHibernate.Conventions.Instances
             this.mapping = mapping;
         }
 
-        public IAccessInstance Access
+        public new IAccessInstance Access
         {
             get
             {
@@ -29,7 +28,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public ICascadeInstance Cascade
+        public new ICascadeInstance Cascade
         {
             get
             {
@@ -51,7 +50,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public IFetchInstance Fetch
+        public new IFetchInstance Fetch
         {
             get
             {
@@ -63,39 +62,39 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public void Class<T>()
+        public new void Class<T>()
         {
             if (!mapping.IsSpecified("Class"))
                 mapping.Class = new TypeReference(typeof(T));
         }
 
-        public void Class(Type type)
+        public new void Class(Type type)
         {
             if (!mapping.IsSpecified("Class"))
                 mapping.Class = new TypeReference(type);
         }
 
-        public void Constrained()
+        public new void Constrained()
         {
             if (!mapping.IsSpecified("Constrained"))
                 mapping.Constrained = nextBool;
             nextBool = true;
         }
 
-        public void ForeignKey(string key)
+        public new void ForeignKey(string key)
         {
             if (!mapping.IsSpecified("ForeignKey"))
                 mapping.ForeignKey = key;
         }
 
-        public void LazyLoad()
+        public new void LazyLoad()
         {
             if (!mapping.IsSpecified("Lazy"))
                 mapping.Lazy = nextBool;
             nextBool = true;
         }
 
-        public void PropertyRef(string propertyName)
+        public new void PropertyRef(string propertyName)
         {
             if (!mapping.IsSpecified("PropertyRef"))
                 mapping.PropertyRef = propertyName;

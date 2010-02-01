@@ -11,17 +11,17 @@ namespace FluentNHibernate.Conventions.Instances
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IVersionInstance Not { get; }
         void Column(string columnName);
-        void UnsavedValue(string unsavedValue);
-        void Length(int length);
-        void Precision(int precision);
-        void Scale(int scale);
-        void Nullable();
-        void Unique();
-        void UniqueKey(string keyColumns);
+        new void UnsavedValue(string unsavedValue);
+        new void Length(int length);
+        new void Precision(int precision);
+        new void Scale(int scale);
+        new void Nullable();
+        new void Unique();
+        new void UniqueKey(string keyColumns);
         void CustomSqlType(string sqlType);
-        void Index(string index);
-        void Check(string constraint);
-        void Default(object value);
+        new void Index(string index);
+        new void Check(string constraint);
+        new void Default(object value);
         void CustomType<T>();
         void CustomType(Type type);
         void CustomType(string type);

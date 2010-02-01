@@ -37,7 +37,7 @@ namespace FluentNHibernate.Conventions.Inspections
                 throw new InvalidOperationException("This IIndexMapping is not a valid type for inspecting");
             }
         }
-        public string OrderBy
+        public new string OrderBy
         {
             get { return mapping.OrderBy; }
         }

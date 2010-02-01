@@ -9,12 +9,12 @@ namespace FluentNHibernate.Conventions.Instances
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IJoinInstance Not { get; }
         new IFetchInstance Fetch { get; }
-        void Inverse();
+        new void Inverse();
         new IKeyInstance Key { get; }
-        void Optional();
-        void Schema(string schema);
+        new void Optional();
+        new void Schema(string schema);
         void Table(string table);
-        void Catalog(string catalog);
-        void Subselect(string subselect);
+        new void Catalog(string catalog);
+        new void Subselect(string subselect);
     }
 }

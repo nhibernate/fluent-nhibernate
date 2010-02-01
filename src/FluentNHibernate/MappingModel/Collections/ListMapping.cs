@@ -41,7 +41,7 @@ namespace FluentNHibernate.MappingModel.Collections
 			set { /* no-op */ }
     	}
 
-        public bool IsSpecified(string property)
+        public new bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

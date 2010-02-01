@@ -22,7 +22,7 @@ namespace FluentNHibernate.Conventions.Instances
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public IManyToManyCollectionInstance Not
+        public new IManyToManyCollectionInstance Not
         {
             get
             {
@@ -42,11 +42,11 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public IManyToManyInstance Relationship
+        public new IManyToManyInstance Relationship
         {
             get { return new ManyToManyInstance((ManyToManyMapping)mapping.Relationship); }
         }
-        public Type ChildType
+        public new Type ChildType
         {
             get { return mapping.ChildType; }
         }

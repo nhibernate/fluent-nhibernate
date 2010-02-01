@@ -224,13 +224,15 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         public class Epiphany : RevolutionaryThought
         { }
 
-        public class ThoughtMap : ClassMap<Thought>
+        public sealed class ThoughtMap : ClassMap<Thought>
         {
             public ThoughtMap()
             {
                 Id(x => x.Id);
+#pragma warning disable 618,612
                 JoinedSubClass<Epiphany>("Id", x => { });
                 JoinedSubClass<RandomThought>("Id", x => { });
+#pragma warning restore 618,612
             }
         }
     }

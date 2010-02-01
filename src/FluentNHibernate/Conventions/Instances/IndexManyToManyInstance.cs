@@ -32,7 +32,7 @@ namespace FluentNHibernate.Conventions.Instances
             mapping.AddColumn(column);
         }
 
-        public void ForeignKey(string foreignKey)
+        public new void ForeignKey(string foreignKey)
         {
             if (mapping.IsSpecified("ForeignKey"))
                 return;

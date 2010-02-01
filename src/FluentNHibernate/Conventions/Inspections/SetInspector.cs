@@ -21,7 +21,7 @@ namespace FluentNHibernate.Conventions.Inspections
             return mapping.IsSpecified(mappedProperties.Get(property));
         }
 
-        public string OrderBy
+        public new string OrderBy
         {
             get { return mapping.OrderBy; }
         }

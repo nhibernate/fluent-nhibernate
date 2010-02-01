@@ -16,15 +16,15 @@ namespace FluentNHibernate.Conventions.Instances
         IManyToOneInstance Not { get; }
         new INotFoundInstance NotFound { get; }
         void Index(string index);
-        void Insert();
-        void LazyLoad();
+        new void Insert();
+        new void LazyLoad();
         void Nullable();
-        void PropertyRef(string property);
+        new void PropertyRef(string property);
         void ReadOnly();
         void Unique();
         void UniqueKey(string key);
-        void Update();
-        void ForeignKey(string key);
+        new void Update();
+        new void ForeignKey(string key);
 
         void OverrideInferredClass(Type type);
     }

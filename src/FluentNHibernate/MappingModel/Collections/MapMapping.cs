@@ -46,7 +46,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Sort, value); }
         }
 
-        public bool IsSpecified(string property)
+        public new bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
         }

@@ -149,7 +149,9 @@ namespace FluentNHibernate.Testing.Testing
         public void Can_test_enumerable()
         {
             var kittens = new[] {new Kitten {Id = 3, Name = "kitten3"}, new Kitten {Id = 4, Name = "kitten4"}};
+#pragma warning disable 618,612
             _spec.CheckEnumerable(x => x.EnumerableOfKittens, (cat, kitten) => cat.AddKitten(kitten), kittens);
+#pragma warning restore 618,612
 
             typeof(ApplicationException).ShouldBeThrownBy(() => _spec.VerifyTheMappings());
         }

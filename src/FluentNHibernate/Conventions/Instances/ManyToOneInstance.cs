@@ -67,7 +67,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public IFetchInstance Fetch
+        new public IFetchInstance Fetch
         {
             get
             {
@@ -89,7 +89,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public INotFoundInstance NotFound
+        public new INotFoundInstance NotFound
         {
             get
             {

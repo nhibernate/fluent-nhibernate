@@ -2,6 +2,6 @@
 {
     public interface IBagInspector : ICollectionInspector
     {
-        string OrderBy { get; }
+        new string OrderBy { get; }
     }
 }

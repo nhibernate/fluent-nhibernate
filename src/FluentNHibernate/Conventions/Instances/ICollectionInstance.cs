@@ -11,10 +11,10 @@ namespace FluentNHibernate.Conventions.Instances
         new IKeyInstance Key { get; }
         new IRelationshipInstance Relationship { get; }
         void Table(string tableName);
-        void Name(string name);
-        void Schema(string schema);
-        void LazyLoad();
-        void BatchSize(int batchSize);
+        new void Name(string name);
+        new void Schema(string schema);
+        new void LazyLoad();
+        new void BatchSize(int batchSize);
         void ReadOnly();
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -24,15 +24,15 @@ namespace FluentNHibernate.Conventions.Instances
         new ICollectionCascadeInstance Cascade { get; }
         new IFetchInstance Fetch { get; }
         new IOptimisticLockInstance OptimisticLock { get; }
-        void Check(string constraint);
-        void CollectionType<T>();
-        void CollectionType(string type);
-        void CollectionType(Type type);
-        void Generic();
-        void Inverse();
-        void Persister<T>() where T : IEntityPersister;
-        void Where(string whereClause);
-        void OrderBy(string orderBy);
+        new void Check(string constraint);
+        new void CollectionType<T>();
+        new void CollectionType(string type);
+        new void CollectionType(Type type);
+        new void Generic();
+        new void Inverse();
+        new void Persister<T>() where T : IEntityPersister;
+        new void Where(string whereClause);
+        new void OrderBy(string orderBy);
         void Subselect(string subselect);
     }
 }

@@ -6,17 +6,17 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public interface IOneToOneInstance : IOneToOneInspector
     {
-        IAccessInstance Access { get; }
-        ICascadeInstance Cascade { get; }
+        new IAccessInstance Access { get; }
+        new ICascadeInstance Cascade { get; }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IOneToOneInstance Not { get; }
-        IFetchInstance Fetch { get; }
-        void Class<T>();
-        void Class(Type type);
-        void Constrained();
-        void ForeignKey(string key);
-        void LazyLoad();
-        void PropertyRef(string propertyName);
+        new IFetchInstance Fetch { get; }
+        new void Class<T>();
+        new void Class(Type type);
+        new void Constrained();
+        new void ForeignKey(string key);
+        new void LazyLoad();
+        new void PropertyRef(string propertyName);
 
         void OverrideInferredClass(Type type);
     }

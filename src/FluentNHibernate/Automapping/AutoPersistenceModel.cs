@@ -172,7 +172,9 @@ namespace FluentNHibernate.Automapping
                 return false; // generic definition is excluded
             if (type.IsAbstract && Expressions.AbstractClassIsLayerSupertype(type))
                 return false; // is abstract and a layer supertype
+#pragma warning disable 618,612
             if (Expressions.IsBaseType(type))
+#pragma warning restore 618,612
                 return false; // excluded
             if (type == typeof(object))
                 return false; // object!

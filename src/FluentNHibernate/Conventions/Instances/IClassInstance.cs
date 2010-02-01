@@ -13,16 +13,16 @@ namespace FluentNHibernate.Conventions.Instances
         new ICacheInstance Cache { get; }
         new ISchemaActionInstance SchemaAction { get; }
         void Table(string tableName);
-        void DynamicInsert();
-        void DynamicUpdate();
-        void BatchSize(int size);
-        void LazyLoad();
-        void ReadOnly();
-        void Schema(string schema);
-        void Where(string where);
-        void Subselect(string subselectSql);
-        void Proxy<T>();
-        void Proxy(Type type);
-        void Proxy(string type);
+        new void DynamicInsert();
+        new void DynamicUpdate();
+        new void BatchSize(int size);
+        new void LazyLoad();
+        new void ReadOnly();
+        new void Schema(string schema);
+        new void Where(string where);
+        new void Subselect(string subselectSql);
+        new void Proxy<T>();
+        new void Proxy(Type type);
+        new void Proxy(string type);
     }
 }

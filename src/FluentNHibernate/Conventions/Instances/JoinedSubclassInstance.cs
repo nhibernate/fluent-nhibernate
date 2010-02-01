@@ -47,7 +47,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public void Check(string constraint)
+        public new void Check(string constraint)
         {
             if (!mapping.IsSpecified("Check"))
                 mapping.Check = constraint;
