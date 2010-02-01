@@ -26,6 +26,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             var classMap = new ClassMap<ExampleClass>();
 
+            classMap.Id(x => x.Id);
             classMap.References(x => x.Parent);
 
             model.Add(classMap);
@@ -42,6 +43,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             var classMap = new ClassMap<ExampleInheritedClass>();
 
+            classMap.Id(x => x.Id);
             classMap.HasMany(x => x.Children);
 
             model.Add(classMap);
@@ -58,6 +60,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             var classMap = new ClassMap<ExampleInheritedClass>();
 
+            classMap.Id(x => x.Id);
             classMap.HasManyToMany(x => x.Children);
 
             model.Add(classMap);
@@ -74,7 +77,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             var classMap = new ClassMap<ExampleInheritedClass>();
 
-            classMap.Join("two", m => {});
+            classMap.Id(x => x.Id);
+            classMap.Join("two", m => { });
 
             model.Add(classMap);
 
@@ -89,6 +93,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
         public void ShouldSetForeignKeyOnJoinedSubclasses()
         {
             var classMap = new ClassMap<ExampleClass>();
+            classMap.Id(x => x.Id);
+
             var subclassMap = new SubclassMap<ExampleInheritedClass>();
 
             model.Add(classMap);

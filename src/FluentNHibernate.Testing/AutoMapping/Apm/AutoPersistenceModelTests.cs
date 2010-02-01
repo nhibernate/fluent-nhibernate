@@ -508,7 +508,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
-            autoMapper.CompileMappings();
+            autoMapper.BuildMappings();
             autoMapper.FindMapping(typeof(SomeOpenGenericType<>));
         }
 
@@ -643,7 +643,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Override<ExampleInheritedClass>(m => m.HasMany(x => x.Children).Inverse());
 
-            autoMapper.CompileMappings();
+            autoMapper.BuildMappings();
             var mappings = autoMapper.BuildMappings();
             var classes = mappings.Select(x => x.Classes.First());
 
@@ -995,7 +995,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Setup(x => x.IsComponentType = type => type == typeof(ExampleParentClass))
                 .Where(x => x.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
-            autoMapper.CompileMappings();
             var mappings = autoMapper.BuildMappings();
 
             var exampleClassMapping = mappings

@@ -719,6 +719,8 @@
     <Compile Include="Reveal.cs" />
     <Compile Include="UnknownPropertyException.cs" />
     <Compile Include="Visitors\UnresolvedComponentReferenceVisitedException.cs" />
+    <Compile Include="Visitors\ValidationException.cs" />
+    <Compile Include="Visitors\ValidationVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\tools\NHibernate\nhibernate-mapping.xsd">

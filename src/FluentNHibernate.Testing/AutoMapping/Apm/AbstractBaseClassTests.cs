@@ -13,8 +13,7 @@ namespace FluentNHibernate.Testing.Automapping.Apm
         {
             var automapper =
                 AutoMap.Source(new StubTypeSource(new[] { typeof(AbstractBase), typeof(Child) }));
-
-            automapper.CompileMappings();
+            automapper.ValidationEnabled = false;
             var mappings = automapper.BuildMappings();
 
             mappings
@@ -29,7 +28,7 @@ namespace FluentNHibernate.Testing.Automapping.Apm
                 AutoMap.Source(new StubTypeSource(new[] { typeof(AbstractBase), typeof(Child) }))
                     .Setup(x => x.AbstractClassIsLayerSupertype = t => false);
 
-            automapper.CompileMappings();
+            automapper.ValidationEnabled = false;
             var mappings = automapper.BuildMappings();
 
             mappings
@@ -44,7 +43,7 @@ namespace FluentNHibernate.Testing.Automapping.Apm
                 AutoMap.Source(new StubTypeSource(new[] { typeof(AbstractBase), typeof(Child) }))
                     .IncludeBase<AbstractBase>();
 
-            automapper.CompileMappings();
+            automapper.ValidationEnabled = false;
             var mappings = automapper.BuildMappings();
 
             mappings

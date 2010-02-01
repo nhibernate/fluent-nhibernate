@@ -13,8 +13,6 @@ namespace FluentNHibernate.Testing.Automapping
         public AutoMappingTester(AutoPersistenceModel mapper)
             : base(mapper)
         {
-            mapper.CompileMappings();
-        
             ForMapping((ClassMap<T>)null);
         }
     }

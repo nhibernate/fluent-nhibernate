@@ -13,7 +13,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void Can_specify_sql_insert()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.SqlInsert("Insert ABC"))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.SqlInsert("Insert ABC");
+                })
                 .Element("class/sql-insert")
                 .ValueEquals("Insert ABC");
         }
@@ -22,7 +26,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void Can_specify_sql_update()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.SqlUpdate("Update ABC"))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.SqlUpdate("Update ABC");
+                })
                 .Element("class/sql-update")
                 .ValueEquals("Update ABC");
         }
@@ -31,7 +39,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void Can_specify_sql_delete()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.SqlDelete("Delete ABC"))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.SqlDelete("Delete ABC");
+                })
                 .Element("class/sql-delete")
                 .ValueEquals("Delete ABC");
         }
@@ -40,7 +52,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void Can_specify_sql_delete_all()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.SqlDeleteAll("Delete ABC"))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.SqlDeleteAll("Delete ABC");
+                })
                 .Element("class/sql-delete-all")
                 .ValueEquals("Delete ABC");
         }

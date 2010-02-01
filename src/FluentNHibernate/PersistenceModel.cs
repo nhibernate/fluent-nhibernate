@@ -29,6 +29,7 @@ namespace FluentNHibernate
         public IConventionFinder Conventions { get; private set; }
         public bool MergeMappings { get; set; }
         private IEnumerable<HibernateMapping> compiledMappings;
+        private ValidationVisitor validationVisitor;
 
         public PersistenceModel(IConventionFinder conventionFinder)
         {
@@ -40,6 +41,7 @@ namespace FluentNHibernate
             visitors.Add(new BiDirectionalManyToManyPairingVisitor());
             visitors.Add(new ManyToManyTableNameVisitor());
             visitors.Add(new ConventionVisitor(Conventions));
+            visitors.Add((validationVisitor = new ValidationVisitor()));
         }
 
         public PersistenceModel()
@@ -127,7 +129,7 @@ namespace FluentNHibernate
             return !type.IsGenericType && typeof(T).IsAssignableFrom(type);
         }
 
-        public IEnumerable<HibernateMapping> BuildMappings()
+        public virtual IEnumerable<HibernateMapping> BuildMappings()
         {
             var hbms = new List<HibernateMapping>();
 
@@ -252,6 +254,15 @@ namespace FluentNHibernate
                 filterDefinitions.Any(x => x.GetType() == type) ||
                 subclassProviders.Any(x => x.GetType() == type) ||
                 componentProviders.Any(x => x.GetType() == type);
+        }
+
+        /// <summary>
+        /// Gets or sets whether validation of mappings is performed. 
+        /// </summary>
+        public bool ValidationEnabled
+        {
+            get { return validationVisitor.Enabled; }
+            set { validationVisitor.Enabled = value; }
         }
     }
 

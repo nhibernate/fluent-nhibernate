@@ -1,61 +1,68 @@
 using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Mapping;
-using NUnit.Framework;
+using FluentNHibernate.MappingModel.ClassBased;
+using Machine.Specifications;
 
 namespace FluentNHibernate.Testing.AutoMapping.Apm
 {
-    [TestFixture]
-    public class AutoMappedPropertyEnumerablesTests
+    public class when_the_automapper_is_told_to_map_an_entity_with_a_enum_property : AutomapperEnumPropertySpec
     {
-        [Test]
-        public void ShouldSetNullableEnumsToNullable()
-        {
-            var automapper = AutoMap.Source(new StubTypeSource(typeof(Target)));
+        Establish context = () =>
+            mapper = AutoMap.Source(new StubTypeSource(typeof(Target)));
 
-            automapper.CompileMappings();
+        Because of = () =>
+            mapping = mapper.BuildMappings().SelectMany(x => x.Classes).First();
 
-            var mapping = automapper.BuildMappings().SelectMany(x => x.Classes).First();
-            var property = mapping.Properties.First(x => x.Name == "NullableEnum");
+        It should_create_a_property_mapping_for_the_property = () =>
+            mapping.Properties.ShouldContain(x => x.Name == "EnumProperty");
 
-            property.Columns.First().NotNull.ShouldBeFalse();
-        }
+        It should_use_the_generic_enum_mapper_for_the_property = () =>
+            mapping.Properties.First().Type.GetUnderlyingSystemType().ShouldEqual(typeof(GenericEnumMapper<Enum>));
 
-        [Test]
-        public void ShouldSetNullableEnumsToUseGenericEnumMapper()
-        {
-            var automapper = AutoMap.Source(new StubTypeSource(typeof(Target)));
-
-            automapper.CompileMappings();
-
-            var mapping = automapper.BuildMappings().SelectMany(x => x.Classes).First();
-            var property = mapping.Properties.First(x => x.Name == "NullableEnum");
-
-            property.Type.GetUnderlyingSystemType().ShouldEqual(typeof(GenericEnumMapper<Enum>));
-        }
-
-        [Test]
-        public void ShouldSetEnumsToUseGenericEnumMapper()
-        {
-            var automapper = AutoMap.Source(new StubTypeSource(typeof(Target)));
-
-            automapper.CompileMappings();
-
-            var mapping = automapper.BuildMappings().SelectMany(x => x.Classes).First();
-            var property = mapping.Properties.First(x => x.Name == "Enum");
-
-            property.Type.GetUnderlyingSystemType().ShouldEqual(typeof(GenericEnumMapper<Enum>));
-        }
+        It should_create_a_column_for_the_property_mapping_with_the_property_name = () =>
+            mapping.Properties.First().Columns.ShouldContain(x => x.Name == "EnumProperty");
     }
 
-    internal enum Enum
+    public class when_the_automapper_is_told_to_map_an_entity_with_a_nullable_enum_property : AutomapperEnumPropertySpec
     {
+        Establish context = () =>
+            mapper = AutoMap.Source(new StubTypeSource(typeof(NullableTarget)));
 
+        Because of = () =>
+            mapping = mapper.BuildMappings().SelectMany(x => x.Classes).First();
+
+        It should_create_a_property_mapping_for_the_property = () =>
+            mapping.Properties.ShouldContain(x => x.Name == "EnumProperty");
+
+        It should_use_the_generic_enum_mapper_for_the_property = () =>
+            mapping.Properties.First().Type.GetUnderlyingSystemType().ShouldEqual(typeof(GenericEnumMapper<Enum>));
+
+        It should_create_a_column_for_the_property_mapping_with_the_property_name = () =>
+            mapping.Properties.First().Columns.ShouldContain(x => x.Name == "EnumProperty");
     }
 
-    internal class Target
+    #region base spec
+
+    class Target
     {
-        public Enum? NullableEnum { get; set; }
-        public Enum Enum { get; set; }
+        public int Id { get; set; }
+        public Enum EnumProperty { get; set; }
     }
+
+    class NullableTarget
+    {
+        public int Id { get; set; }
+        public Enum? EnumProperty { get; set; }
+    }
+
+    enum Enum { }
+
+    public abstract class AutomapperEnumPropertySpec
+    {
+        protected static AutoPersistenceModel mapper;
+        protected static ClassMapping mapping;
+    }
+
+    #endregion
 }

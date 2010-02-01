@@ -53,7 +53,11 @@ namespace FluentNHibernate.Testing.DomainModel
         public void Can_map_using_string_name_on_private_property()
         {
             new MappingTester<StringTarget>()
-                .ForMapping(map => map.Map(Reveal.Property<StringTarget>("PrivateProperty")))
+                .ForMapping(map =>
+                {
+                    map.Id(x => x.Id);
+                    map.Map(Reveal.Property<StringTarget>("PrivateProperty"));
+                })
                 .Element("class/property").HasAttribute("name", "PrivateProperty");
         }
 
@@ -61,7 +65,11 @@ namespace FluentNHibernate.Testing.DomainModel
         public void Can_map_using_string_name_on_protected_property()
         {
             new MappingTester<StringTarget>()
-                .ForMapping(map => map.Map(Reveal.Property<StringTarget>("ProtectedProperty")))
+                .ForMapping(map =>
+                {
+                    map.Id(x => x.Id);
+                    map.Map(Reveal.Property<StringTarget>("ProtectedProperty"));
+                })
                 .Element("class/property").HasAttribute("name", "ProtectedProperty");
         }
 
@@ -69,7 +77,11 @@ namespace FluentNHibernate.Testing.DomainModel
         public void Can_use_hasmany_using_string_name_on_private_property()
         {
             new MappingTester<StringTarget>()
-                .ForMapping(map => map.HasMany<ExampleClass>(Reveal.Property<StringTarget>("PrivateCollection")))
+                .ForMapping(map =>
+                {
+                    map.Id(x => x.Id);
+                    map.HasMany<ExampleClass>(Reveal.Property<StringTarget>("PrivateCollection"));
+                })
                 .Element("class/bag").HasAttribute("name", "PrivateCollection");
         }
 
@@ -77,7 +89,11 @@ namespace FluentNHibernate.Testing.DomainModel
         public void Can_use_hasone_using_string_name_on_private_property()
         {
             new MappingTester<StringTarget>()
-                .ForMapping(map => map.HasOne(Reveal.Property<StringTarget, ExampleClass>("PrivateObject")))
+                .ForMapping(map =>
+                {
+                    map.Id(x => x.Id);
+                    map.HasOne(Reveal.Property<StringTarget, ExampleClass>("PrivateObject"));
+                })
                 .Element("class/one-to-one").HasAttribute("name", "PrivateObject");
         }
 
@@ -85,7 +101,11 @@ namespace FluentNHibernate.Testing.DomainModel
         public void Can_use_dynamiccomponent_using_string_name_on_private_property()
         {
             new MappingTester<StringTarget>()
-                .ForMapping(map => map.DynamicComponent(Reveal.Property<StringTarget, IDictionary>("PrivateDictionary"), x => { }))
+                .ForMapping(map =>
+                {
+                    map.Id(x => x.Id);
+                    map.DynamicComponent(Reveal.Property<StringTarget, IDictionary>("PrivateDictionary"), x => { });
+                })
                 .Element("class/dynamic-component").HasAttribute("name", "PrivateDictionary");
         }
 
@@ -93,7 +113,11 @@ namespace FluentNHibernate.Testing.DomainModel
         public void Can_use_manytomany_using_string_name_on_private_property()
         {
             new MappingTester<StringTarget>()
-                .ForMapping(map => map.HasManyToMany<ExampleClass>(Reveal.Property<StringTarget>("PrivateObject")))
+                .ForMapping(map =>
+                {
+                    map.Id(x => x.Id);
+                    map.HasManyToMany<ExampleClass>(Reveal.Property<StringTarget>("PrivateObject"));
+                })
                 .Element("class/bag").HasAttribute("name", "PrivateObject");
         }
 
@@ -101,7 +125,11 @@ namespace FluentNHibernate.Testing.DomainModel
         public void Can_use_id_using_string_name_on_private_property()
         {
             new MappingTester<StringTarget>()
-                .ForMapping(map => map.Id(Reveal.Property<StringTarget>("PrivateObject")))
+                .ForMapping(map =>
+                {
+                    map.Id(x => x.Id);
+                    map.Id(Reveal.Property<StringTarget>("PrivateObject"));
+                })
                 .Element("class/id").HasAttribute("name", "PrivateObject");
         }
 
@@ -109,7 +137,11 @@ namespace FluentNHibernate.Testing.DomainModel
         public void Can_use_references_using_string_name_on_private_property()
         {
             new MappingTester<StringTarget>()
-                .ForMapping(map => map.References(Reveal.Property<StringTarget>("PrivateObject")))
+                .ForMapping(map =>
+                {
+                    map.Id(x => x.Id);
+                    map.References(Reveal.Property<StringTarget>("PrivateObject"));
+                })
                 .Element("class/many-to-one").HasAttribute("name", "PrivateObject");
         }
 
@@ -117,7 +149,11 @@ namespace FluentNHibernate.Testing.DomainModel
         public void Can_use_version_using_string_name_on_private_property()
         {
             new MappingTester<StringTarget>()
-                .ForMapping(map => map.Version(Reveal.Property<StringTarget>("PrivateObject")))
+                .ForMapping(map =>
+                {
+                    map.Id(x => x.Id);
+                    map.Version(Reveal.Property<StringTarget>("PrivateObject"));
+                })
                 .Element("class/version").HasAttribute("name", "PrivateObject");
         }
 
@@ -136,6 +172,7 @@ namespace FluentNHibernate.Testing.DomainModel
 
     public class StringTarget
     {
+        public int Id { get; set; }
         private Double DoubleProperty { get; set; }
         private int IntProperty { get; set; }
         private string PrivateProperty { get; set; }

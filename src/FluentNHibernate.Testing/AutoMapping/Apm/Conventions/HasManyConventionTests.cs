@@ -19,8 +19,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
                 AutoMap.Source(new StubTypeSource(typeof(Target)))
                     .Conventions.Add<HasManyConvention>();
 
-            model.CompileMappings();
-
             model.BuildMappings()
                 .First()
                 .Classes.First()
@@ -34,8 +32,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
             var model =
                 AutoMap.Source(new StubTypeSource(typeof(Target)))
                     .Conventions.Add<FKConvention>();
-
-            model.CompileMappings();
 
             model.BuildMappings()
                 .First()
@@ -63,10 +59,13 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
 
     internal class Target
     {
+        public int Id { get; set; }
         public IList<Child> Children { get; set; }
         public Child Child { get; set; }
     }
 
     internal class Child
-    { }
+    {
+        public int Id { get; set; }
+    }
 }

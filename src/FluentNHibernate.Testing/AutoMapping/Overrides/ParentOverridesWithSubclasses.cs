@@ -17,7 +17,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Overrides
             var model = AutoMap.Source(new StubTypeSource(new[] {typeof(Parent), typeof(Child), typeof(Property)}))
                 .Override<Parent>(o => o.Map(x => x.Name));
 
-            model.CompileMappings();
             var classMapping = model.BuildMappings()
                 .First()
                 .Classes.First();
@@ -32,7 +31,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Overrides
             var model = AutoMap.Source(new StubTypeSource(new[] { typeof(Parent), typeof(Child), typeof(Property) }))
                 .Override<Parent>(o => o.HasMany(x => x.Properties));
 
-            model.CompileMappings();
             var classMapping = model.BuildMappings()
                 .First()
                 .Classes.First();
@@ -47,7 +45,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Overrides
             var model = AutoMap.Source(new StubTypeSource(new[] { typeof(Parent), typeof(Child), typeof(Property) }))
                 .Override<Child>(o => o.Map(x => x.AnotherProperty).Access.Field());
 
-            model.CompileMappings();
             var classMapping = model.BuildMappings()
                 .First()
                 .Classes.First();
@@ -62,7 +59,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Overrides
                 .Override<Parent>(o => o.IgnoreProperty(x => x.Name))
                 .Override<Child>(o => o.Map(x => x.Name).Access.Field());
 
-            model.CompileMappings();
             var classMapping = model.BuildMappings()
                 .First()
                 .Classes.First();
@@ -77,7 +73,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Overrides
             var model = AutoMap.Source(new StubTypeSource(new[] {typeof(Parent), typeof(Child), typeof(Property)}))
                 .Override<Child>(o => o.IgnoreProperty(x => x.AnotherProperty));
 
-            model.CompileMappings();
             var classMapping = model.BuildMappings()
                 .First()
                 .Classes.First();

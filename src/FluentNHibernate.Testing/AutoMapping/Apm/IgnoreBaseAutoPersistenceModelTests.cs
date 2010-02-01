@@ -14,7 +14,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 AutoMap.Source(new StubTypeSource(new[] {typeof(Entity), typeof(RealBase)}))
                     .IgnoreBase<Entity>();
 
-            automapper.CompileMappings();
             var mappings = automapper.BuildMappings();
 
             mappings.SelectMany(x => x.Classes)
@@ -29,7 +28,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                     .IgnoreBase<Entity>()
                     .IgnoreBase<RealBase>();
 
-            automapper.CompileMappings();
             var mappings = automapper.BuildMappings()
                 .SelectMany(x => x.Classes);
 
@@ -39,7 +37,9 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
     }
 
     internal class Entity
-    {}
+    {
+        public int Id { get; set; }
+    }
 
     internal class RealBase : Entity
     {}

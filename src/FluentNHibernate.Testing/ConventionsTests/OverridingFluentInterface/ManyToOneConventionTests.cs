@@ -198,6 +198,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         private void Mapping(Action<ManyToOnePart<ExampleParentClass>> mappingDefinition)
         {
             var classMap = new ClassMap<ExampleClass>();
+            classMap.Id(x => x.Id);
             var map = classMap.References(x => x.Parent);
 
             mappingDefinition(map);

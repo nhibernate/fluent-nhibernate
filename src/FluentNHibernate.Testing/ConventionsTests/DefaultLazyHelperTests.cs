@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -19,7 +20,9 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void AlwaysShouldSetDefaultLazyToTrue()
         {
-            model.Add(new ClassMap<Target>());
+            var classMap = new ClassMap<Target>();
+            classMap.Id(x => x.Id);
+            model.Add(classMap);
             model.Conventions.Add(DefaultLazy.Always());
             model.BuildMappings()
                 .First()
@@ -29,7 +32,9 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void NeverShouldSetDefaultLazyToFalse()
         {
-            model.Add(new ClassMap<Target>());
+            var classMap = new ClassMap<Target>();
+            classMap.Id(x => x.Id);
+            model.Add(classMap);
             model.Conventions.Add(DefaultLazy.Never());
             model.BuildMappings()
                 .First()
@@ -37,6 +42,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         private class Target
-        { }
+        {
+            public int Id { get; set; }
+        }
     }
 }

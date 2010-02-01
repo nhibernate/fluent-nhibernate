@@ -16,7 +16,11 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             new MappingTester<ExampleClass>()
                 .Conventions(x => x.Add(ForeignKey.EndsWith("Woo")))
-                .ForMapping(m => m.References(x => x.Parent))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.References(x => x.Parent);
+                })
                 .Element("class/many-to-one/column").HasAttribute("name", "`ParentWoo`");
         }
 
@@ -25,7 +29,11 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             new MappingTester<ExampleClass>()
                 .Conventions(x => x.Add(ForeignKey.Format((p,t) => p.Name + "Woo")))
-                .ForMapping(m => m.References(x => x.Parent))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.References(x => x.Parent);
+                })
                 .Element("class/many-to-one/column").HasAttribute("name", "`ParentWoo`");
         }
 
@@ -34,7 +42,11 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             new MappingTester<OneToManyTarget>()
                 .Conventions(x => x.Add(ForeignKey.EndsWith("Woo")))
-                .ForMapping(m => m.HasMany(x => x.BagOfChildren))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.HasMany(x => x.BagOfChildren);
+                })
                 .Element("class/bag/key/column").HasAttribute("name", "`OneToManyTargetWoo`");
         }
 
@@ -43,7 +55,11 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             new MappingTester<OneToManyTarget>()
                 .Conventions(x => x.Add(ForeignKey.Format((p, t) => t.Name + "Woo")))
-                .ForMapping(m => m.HasMany(x => x.BagOfChildren))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.HasMany(x => x.BagOfChildren);
+                })
                 .Element("class/bag/key/column").HasAttribute("name", "`OneToManyTargetWoo`");
         }
 
@@ -52,7 +68,11 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             new MappingTester<OneToManyTarget>()
                 .Conventions(x => x.Add(ForeignKey.EndsWith("Woo")))
-                .ForMapping(m => m.HasManyToMany(x => x.BagOfChildren))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.HasManyToMany(x => x.BagOfChildren);
+                })
                 .Element("class/bag/key/column").HasAttribute("name", "`OneToManyTargetWoo`")
                 .Element("class/bag/many-to-many/column").HasAttribute("name", "`ChildObjectWoo`");
         }
@@ -62,7 +82,11 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             new MappingTester<OneToManyTarget>()
                 .Conventions(x => x.Add(ForeignKey.Format((p, t) => t.Name + "Woo")))
-                .ForMapping(m => m.HasManyToMany(x => x.BagOfChildren))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.HasManyToMany(x => x.BagOfChildren);
+                })
                 .Element("class/bag/key/column").HasAttribute("name", "`OneToManyTargetWoo`")
                 .Element("class/bag/many-to-many/column").HasAttribute("name", "`ChildObjectWoo`");
         }

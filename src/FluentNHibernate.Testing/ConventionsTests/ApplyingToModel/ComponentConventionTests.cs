@@ -70,7 +70,8 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         private void VerifyModel(Action<ComponentMapping> modelVerification)
         {
             var classMap = new ClassMap<PropertyTarget>();
-            var map = classMap.Component(x => x.Component, m => {});
+            classMap.Id(x => x.Id);
+            var map = classMap.Component(x => x.Component, m => { });
 
             model.Add(classMap);
 

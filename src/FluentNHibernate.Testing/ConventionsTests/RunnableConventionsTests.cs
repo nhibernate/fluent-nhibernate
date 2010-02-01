@@ -26,6 +26,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.HasMany(x => x.Array)
                     .AsArray(x => x.Id);
 
@@ -42,6 +43,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.HasMany(x => x.Bag)
                     .AsBag();
 
@@ -54,7 +56,14 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ShouldApplyIClassConvention()
         {
-            TestConvention(new ClassConvention(), () => new ClassMap<Target>())
+            TestConvention(new ClassConvention(), () =>
+            {
+                var map = new ClassMap<Target>();
+
+                map.Id(x => x.Id);
+
+                return map;
+            })
                 .BatchSize.ShouldEqual(10);
         }
 
@@ -65,6 +74,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.HasMany(x => x.Bag);
 
                 return map;
@@ -80,6 +90,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.HasManyToMany(x => x.Bag);
 
                 return map;
@@ -95,6 +106,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.Map(x => x.Property);
 
                 return map;
@@ -111,7 +123,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
-                map.Component(x => x.Component, c => {});
+                map.Id(x => x.Id);
+                map.Component(x => x.Component, c => { });
 
                 return map;
             })
@@ -126,6 +139,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.DynamicComponent(x => x.DynamicComponent, c => { });
 
                 return map;
@@ -141,6 +155,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.HasMany(x => x.Bag);
 
                 return map;
@@ -156,6 +171,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.HasManyToMany(x => x.Bag);
 
                 return map;
@@ -171,6 +187,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.HasOne(x => x.Other);
 
                 return map;
@@ -202,6 +219,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.HasMany(x => x.Array)
                     .AsArray(x => x.Id);
 
@@ -220,6 +238,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.HasManyToMany(x => x.DictionaryBag)
                     .AsMap("index")
                     .AsTernaryAssociation("index", "value");
@@ -238,6 +257,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.Join("second", m => { });
 
                 return map;
@@ -256,7 +276,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
-                map.JoinedSubClass<TargetSubclass>("key", m => {});
+                map.Id(x => x.Id);
+                map.JoinedSubClass<TargetSubclass>("key", m => { });
 
                 return map;
             })
@@ -275,6 +296,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.HasMany(x => x.Array)
                     .AsList();
 
@@ -291,6 +313,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.HasMany(x => x.DictionaryBag)
                     .AsMap("index");
 
@@ -307,6 +330,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.Map(x => x.Property);
 
                 return map;
@@ -322,6 +346,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.References(x => x.Other);
 
                 return map;
@@ -337,6 +362,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.HasMany(x => x.Array)
                     .AsSet();
 
@@ -356,6 +382,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.DiscriminateSubClassesOnColumn("column")
                     .SubClass<TargetSubclass>(m => { });
 
@@ -376,6 +403,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.Map(x => x.Other);
 
                 return map;
@@ -391,6 +419,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             {
                 var map = new ClassMap<Target>();
 
+                map.Id(x => x.Id);
                 map.Version(x => x.Property);
 
                 return map;
@@ -402,10 +431,16 @@ namespace FluentNHibernate.Testing.ConventionsTests
         [Test]
         public void ShouldApplyIHibernateMappingConvention()
         {
-            TestConvention(new HibernateMappingConvention(), () => new ClassMap<Target>())
+            TestConvention(new HibernateMappingConvention(), () =>
+            {
+                var map = new ClassMap<Target>();
+
+                map.Id(x => x.Id);
+
+                return map;
+            })
                 .DefaultLazy.ShouldBeFalse();
         }
-
 
         #region conventions
 

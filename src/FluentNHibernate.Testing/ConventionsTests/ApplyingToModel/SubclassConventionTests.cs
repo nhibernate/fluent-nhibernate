@@ -80,6 +80,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         {
             var classMap = new ClassMap<ExampleClass>();
 
+            classMap.Id(x => x.Id);
             classMap.DiscriminateSubClassesOnColumn("col");
 
             var subclassMap = new SubclassMap<ExampleInheritedClass>();

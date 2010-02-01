@@ -17,7 +17,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithoutColumnNameUsesPropertyNameForPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name);
+                })
                 .Element("class/property[@name='Name']/column")
                     .HasAttribute("name", "`Name`");
         }
@@ -26,7 +30,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithoutColumnNameUsesPropertyNameForColumnNameAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name);
+                })
                 .Element("class/property/column").HasAttribute("name", "`Name`");
         }
 
@@ -34,7 +42,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithColumnNameUsesColumnNameForPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name, "column_name"))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name, "column_name");
+                })
                 .Element("class/property[@name='Name']/column")
                     .HasAttribute("name", "`column_name`");
         }
@@ -43,7 +55,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithColumnNameUsesColumnNameForColumnNameAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name, "column_name"))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name, "column_name");
+                })
                 .Element("class/property/column").HasAttribute("name", "`column_name`");
         }
         
@@ -51,7 +67,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithFluentColumnNameUsesColumnNameForColumnNameAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).Column("column_name"))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Column("column_name");
+                })
                 .Element("class/property/column").HasAttribute("name", "`column_name`");
         }
 
@@ -64,14 +84,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void ShouldAddOnlyOneColumnWhenNotSpecified()
         {
-            Model<PropertyTarget>(m => m.Map(x => x.Name))
+            Model<PropertyTarget>(m =>
+            {
+                m.Id(x => x.Id);
+                m.Map(x => x.Name);
+            })
                 .Element("class/property[@name='Name']").HasThisManyChildNodes(1);
         }
 
         [Test]
         public void ShouldAddAllColumns()
         {
-            Model<PropertyTarget>(m => m.Map(x => x.Name).Columns.Add("one", "two", "three"))
+            Model<PropertyTarget>(m =>
+            {
+                m.Id(x => x.Id);
+                m.Map(x => x.Name).Columns.Add("one", "two", "three");
+            })
                 .Element("class/property[@name='Name']").HasThisManyChildNodes(3)
                 .Element("class/property[@name='Name']/column[@name='`one`']").Exists()
                 .Element("class/property[@name='Name']/column[@name='`two`']").Exists()
@@ -81,7 +109,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void ColumnNameIsPropertyNameWhenNoColumnNameGiven()
         {
-            Model<PropertyTarget>(m => m.Map(x => x.Name))
+            Model<PropertyTarget>(m =>
+            {
+                m.Id(x => x.Id);
+                m.Map(x => x.Name);
+            })
                 .Element("class/property[@name='Name']/column")
                 .HasAttribute("name", "`Name`");
         }
@@ -89,7 +121,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void ColumnNameIsColumnNameWhenColumnNameGiven()
         {
-            Model<PropertyTarget>(m => m.Map(x => x.Name, "column_name"))
+            Model<PropertyTarget>(m =>
+            {
+                m.Id(x => x.Id);
+                m.Map(x => x.Name, "column_name");
+            })
                 .Element("class/property[@name='Name']/column")
                 .HasAttribute("name", "`column_name`");
         }
@@ -97,7 +133,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void ColumnNameIsColumnNameWhenColumnNameFluentGiven()
         {
-            Model<PropertyTarget>(m => m.Map(x => x.Name).Columns.Add("column_name"))
+            Model<PropertyTarget>(m =>
+            {
+                m.Id(x => x.Id);
+                m.Map(x => x.Name).Columns.Add("column_name");
+            })
                 .Element("class/property[@name='Name']/column")
                 .HasAttribute("name", "`column_name`");
         }
@@ -106,7 +146,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithFluentLengthOnStringUsesWithLengthOfPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).Length(20))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Length(20);
+                })
                 .Element("class/property[@name='Name']/column").HasAttribute("length", "20");
         }
 
@@ -114,7 +158,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void MapWithFluentLengthOnDecimalUsesWithLengthOfPropertyColumnAttribute()
 		{
 		    new MappingTester<PropertyTarget>()
-		        .ForMapping(m => m.Map(x => x.DecimalProperty).Length(1))
+		        .ForMapping(m =>
+		        {
+                    m.Id(x => x.Id);
+		            m.Map(x => x.DecimalProperty).Length(1);
+		        })
 		        .Element("class/property[@name='DecimalProperty']/column").HasAttribute("length", "1");
 		}
 
@@ -122,7 +170,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithFluentLengthAllowOnAnythingPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Id).Length(20))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Id).Length(20);
+                })
                 .Element("class/property[@name='Id']/column").HasAttribute("length", "20");
         }
 
@@ -130,7 +182,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapUsesCanNotBeNullPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).Not.Nullable())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Not.Nullable();
+                })
                 .Element("class/property[@name='Name']").DoesntHaveAttribute("not-null")
                 .Element("class/property[@name='Name']/column").HasAttribute("not-null", "true");
         }
@@ -139,7 +195,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapUsesAsReadOnlyPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).ReadOnly())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).ReadOnly();
+                })
                 .Element("class/property")
                     .HasAttribute("insert", "false")
                     .HasAttribute("update", "false");
@@ -149,7 +209,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapUsesUniqueKeyPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).UniqueKey("uniquekey"))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).UniqueKey("uniquekey");
+                })
                 .Element("class/property/column")
                     .HasAttribute("unique-key", "uniquekey");
         }
@@ -158,7 +222,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapUsesNotReadOnlyPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).Not.ReadOnly())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Not.ReadOnly();
+                })
                 .Element("class/property")
                     .HasAttribute("insert", "true")
                     .HasAttribute("update", "true");
@@ -168,7 +236,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapUsesPrecisionPropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).Precision(2))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Precision(2);
+                })
                 .Element("class/property/column").HasAttribute("precision", "2");
         }
 
@@ -176,7 +248,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapUsesScalePropertyColumnAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).Scale(3))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Scale(3);
+                })
                 .Element("class/property/column").HasAttribute("scale", "3");
         }
 
@@ -184,7 +260,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithFluentFormulaUsesFormula() 
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).Formula("foo(bar)"))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Formula("foo(bar)");
+                })
                 .Element("class/property").HasAttribute("formula", "foo(bar)")
                 .Element("class/property/column").DoesntExist();
         }
@@ -193,7 +273,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithLazyLoadUsesLazyAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).LazyLoad())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).LazyLoad();
+                })
                 .Element("class/property").HasAttribute("lazy", "true");
         }
 
@@ -201,7 +285,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapWithIndexUsesIndexAttribute()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(m => m.Map(x => x.Name).Index("name_index"))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Index("name_index");
+                })
                 .Element("class/property/column[@name='`Name`']").HasAttribute("index", "name_index");
         }
 
@@ -209,7 +297,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyCustomTypeAsDotNetTypeGenerically()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.Map(x => x.Data).CustomType<custom_type_for_testing>())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Data).CustomType<custom_type_for_testing>();
+                })
                 .Element("class/property").HasAttribute("type", typeof(custom_type_for_testing).AssemblyQualifiedName);
         }
 
@@ -217,7 +309,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyCustomTypeAsDotNetType()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c=>c.Map(x => x.Data).CustomType(typeof (custom_type_for_testing)))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Data).CustomType(typeof(custom_type_for_testing));
+                })
                 .Element("class/property").HasAttribute("type", typeof(custom_type_for_testing).AssemblyQualifiedName);
         }
 
@@ -225,7 +321,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyCustomTypeAsString()
         {
             new MappingTester<PropertyTarget>()
-                .ForMapping(c => c.Map(x => x.Data).CustomType("name"))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Data).CustomType("name");
+                })
                 .Element("class/property").HasAttribute("type", "name");
         }
 
@@ -233,6 +333,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyCustomSqlType()
         {
             var classMap = new ClassMap<PropertyTarget>();
+            classMap.Id(x => x.Id);
             var propertyMap = classMap.Map(x => x.Data)
                 .CustomSqlType("image");
 
@@ -245,7 +346,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSetAsUnique()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.Map(x => x.Name).Unique())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Unique();
+                })
                 .Element("class/property").DoesntHaveAttribute("unique")
                 .Element("class/property/column").HasAttribute("unique", "true");
         }
@@ -254,7 +359,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSetAsNotUnique()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.Map(x => x.Name).Not.Unique())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Not.Unique();
+                })
                 .Element("class/property").DoesntHaveAttribute("unique")
                 .Element("class/property/column").HasAttribute("unique", "false");
         }
@@ -263,7 +372,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 	    public void CanSpecifyDefault()
 	    {
 		    new MappingTester<MappedObject>()
-			    .ForMapping(m => m.Map(x => x.Name).Default("SomeName"))
+			    .ForMapping(m =>
+			    {
+                    m.Id(x => x.Id);
+			        m.Map(x => x.Name).Default("SomeName");
+			    })
 			    .Element("class/property").DoesntHaveAttribute("default")
 			    .Element("class/property/column").HasAttribute("default", "SomeName");
 	    }
@@ -272,7 +385,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyInsert()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.Map(x => x.Name).Insert())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Insert();
+                })
                 .Element("class/property").HasAttribute("insert", "true");
         }
 
@@ -280,7 +397,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyNotInsert()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.Map(x => x.Name).Not.Insert())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Not.Insert();
+                })
                 .Element("class/property").HasAttribute("insert", "false");
         }
 
@@ -288,7 +409,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyUpdate()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.Map(x => x.Name).Update())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Update();
+                })
                 .Element("class/property").HasAttribute("update", "true");
         }
 
@@ -296,7 +421,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyNotUpdate()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(m => m.Map(x => x.Name).Not.Update())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Name).Not.Update();
+                })
                 .Element("class/property").HasAttribute("update", "false");
         }
 
@@ -363,12 +492,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
     public class PropertyTarget
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public PropertyReferenceTarget Reference { get; set; }
         public IList<PropertyReferenceTarget> References { get; set; }
         public ComponentTarget Component { get; set; }
         public IList<ComponentTarget> Components { get; set; }
-        public int Id { get; set; }
         public byte[] Data { get; set; }
 		public decimal DecimalProperty { get; set; }
         public IDictionary ExtensionData { get; set; }

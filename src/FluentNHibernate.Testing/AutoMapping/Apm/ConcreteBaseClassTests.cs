@@ -18,7 +18,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 AutoMap.Source(new StubTypeSource(new[] { typeof(BaseDomain), typeof(Subclass1), typeof(Subclass2), typeof(Subclass3) }));
 
             automapper.MergeMappings = true;
-            automapper.CompileMappings();
             var mappings = automapper.BuildMappings();
 
             mappings

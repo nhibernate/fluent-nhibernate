@@ -63,7 +63,7 @@ namespace FluentNHibernate.Cfg
         {
             foreach (var mapping in mappings)
             {
-                mapping.CompileMappings();
+                mapping.BuildMappings();
 
                 if (!string.IsNullOrEmpty(exportPath))
                     mapping.WriteMappingsTo(exportPath);

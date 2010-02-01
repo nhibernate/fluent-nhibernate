@@ -71,6 +71,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         private void VerifyModel(Action<DynamicComponentMapping> modelVerification)
         {
             var classMap = new ClassMap<PropertyTarget>();
+            classMap.Id(x => x.Id);
             var map = classMap.DynamicComponent(x => x.ExtensionData, m =>
             {
                 m.Map(x => (string)x["Name"]);

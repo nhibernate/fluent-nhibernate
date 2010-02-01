@@ -15,7 +15,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CreateDiscriminator()
         {
             new MappingTester<SecondMappedObject>()
-                .ForMapping(map => map.DiscriminateSubClassesOnColumn<string>("Type"))
+                .ForMapping(m =>
+                {
+				    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type");
+                })
                 .Element("class/discriminator").HasAttribute("type", "String")
                 .Element("class/discriminator/column").HasAttribute("name", "`Type`");
         }
@@ -24,9 +28,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanUseDefaultDiscriminatorValue()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>(sc => sc.Map(x => x.Name)))
+                .ForMapping(m =>
+                {
+				    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>(sc => sc.Map(x => x.Name));
+                })
                 .Element("class/subclass")
                     .DoesntHaveAttribute("discriminator-value");
         }
@@ -35,9 +42,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void ShouldSetTheName()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>("red", sc => { }))
+                .ForMapping(m =>
+                {
+			        m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>("red", sc => { });
+                })
                 .Element("//subclass").HasAttribute("name", typeof(SecondMappedObject).AssemblyQualifiedName);
         }
 
@@ -45,9 +55,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapsProperty()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>(sc => sc.Map(x => x.Name)))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>(sc => sc.Map(x => x.Name));
+                })
                 .Element("//subclass/property").HasAttribute("name", "Name");
         }
 
@@ -55,9 +68,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void SubClassLazy()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>(sc => sc.LazyLoad()))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>(sc => sc.LazyLoad());
+                })
                 .Element("//subclass").HasAttribute("lazy", "true");
         }
 
@@ -65,9 +81,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void SubClassNotLazy()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>(sc => sc.Not.LazyLoad()))
+                .ForMapping(m =>
+                {
+			        m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>(sc => sc.Not.LazyLoad());
+                })
                 .Element("//subclass").HasAttribute("lazy", "false");
         }
         
@@ -76,8 +95,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
               .ForMapping(m =>
+              {
+                  m.Id(x => x.Id);
                   m.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>("columnName", sm => sm.Proxy(typeof(ProxyClass))))
+                      .SubClass<SecondMappedObject>("columnName", sm => sm.Proxy(typeof(ProxyClass)));
+              })
               .Element("class/subclass").HasAttribute("proxy", typeof(ProxyClass).AssemblyQualifiedName);
         }
 
@@ -86,8 +108,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
               .ForMapping(m =>
+              {
+                  m.Id(x => x.Id);
                   m.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>("columnName", sm => sm.Proxy<ProxyClass>()))
+                      .SubClass<SecondMappedObject>("columnName", sm => sm.Proxy<ProxyClass>());
+              })
               .Element("class/subclass").HasAttribute("proxy", typeof(ProxyClass).AssemblyQualifiedName);
         }
 
@@ -96,8 +121,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
               .ForMapping(m =>
+              {
+                  m.Id(x => x.Id);
                   m.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>("columnName", sm => sm.DynamicUpdate()))
+                      .SubClass<SecondMappedObject>("columnName", sm => sm.DynamicUpdate());
+              })
               .Element("class/subclass").HasAttribute("dynamic-update", "true");
         }
 
@@ -106,8 +134,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
               .ForMapping(m =>
+              {
+                  m.Id(x => x.Id);
                   m.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>("columnName", sm => sm.DynamicInsert()))
+                      .SubClass<SecondMappedObject>("columnName", sm => sm.DynamicInsert());
+              })
               .Element("class/subclass").HasAttribute("dynamic-insert", "true");
         }
 
@@ -116,8 +147,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
               .ForMapping(m =>
+              {
+                  m.Id(x => x.Id);
                   m.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>("columnName", sm => sm.SelectBeforeUpdate()))
+                      .SubClass<SecondMappedObject>("columnName", sm => sm.SelectBeforeUpdate());
+              })
               .Element("class/subclass").HasAttribute("select-before-update", "true");
         }
 
@@ -126,8 +160,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
               .ForMapping(m =>
+              {
+                  m.Id(x => x.Id);
                   m.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>("columnName", sm => sm.Abstract()))
+                      .SubClass<SecondMappedObject>("columnName", sm => sm.Abstract());
+              })
               .Element("class/subclass").HasAttribute("abstract", "true");
         }
 
@@ -136,8 +173,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
               .ForMapping(m =>
+              {
+                  m.Id(x => x.Id);
                   m.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>(DiscriminatorValue.Null, sm => { }))
+                      .SubClass<SecondMappedObject>(DiscriminatorValue.Null, sm => { });
+              })
               .Element("class/subclass").HasAttribute("discriminator-value", "null");
         }
 
@@ -146,8 +186,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<MappedObject>()
               .ForMapping(m =>
+              {
+                  m.Id(x => x.Id);
                   m.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>(DiscriminatorValue.NotNull, sm => { }))
+                      .SubClass<SecondMappedObject>(DiscriminatorValue.NotNull, sm => { });
+              })
               .Element("class/subclass").HasAttribute("discriminator-value", "not null");
         }
 
@@ -155,9 +198,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapsComponent()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<MappedObject>(sc => sc.Component(x => x.Component, c => { })))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.Component(x => x.Component, c => { }));
+                })
                 .Element("//subclass/component").Exists();
         }
 
@@ -165,9 +211,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapsDynamicComponent()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<MappedObject>(sc => sc.DynamicComponent(x => x.Dictionary, c => { })))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.DynamicComponent(x => x.Dictionary, c => { }));
+                })
                 .Element("//subclass/dynamic-component").Exists();
         }
 
@@ -175,9 +224,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapsHasMany()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<MappedObject>(sc => sc.HasMany(x => x.Children)))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.HasMany(x => x.Children));
+                })
                 .Element("//subclass/bag").Exists();
         }
 
@@ -185,9 +237,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapsHasManyToMany()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<MappedObject>(sc => sc.HasManyToMany(x => x.Children)))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.HasManyToMany(x => x.Children));
+                })
                 .Element("//subclass/bag").Exists();
         }
 
@@ -195,9 +250,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapsHasOne()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<MappedObject>(sc => sc.HasOne(x => x.Parent)))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.HasOne(x => x.Parent));
+                })
                 .Element("//subclass/one-to-one").Exists();
         }
 
@@ -205,9 +263,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapsReferences()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<MappedObject>(sc => sc.References(x => x.Parent)))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.References(x => x.Parent));
+                })
                 .Element("//subclass/many-to-one").Exists();
         }
 
@@ -215,13 +276,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapsReferencesAny()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
                         .SubClass<MappedObject>(sc =>
                             sc.ReferencesAny(x => x.Parent)
                                 .IdentityType(x => x.Id)
                                 .EntityIdentifierColumn("col")
-                                .EntityTypeColumn("col")))
+                                .EntityTypeColumn("col"));
+                })
                 .Element("//subclass/any").Exists();
         }
 
@@ -229,9 +293,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapsSubSubclass()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<MappedObject>(sc => sc.SubClass<SecondMappedObject>(sc2 => { })))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.SubClass<SecondMappedObject>(sc2 => { }));
+                })
                 .Element("//subclass/subclass").Exists();
         }
 
@@ -239,13 +306,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void SubSubclassIsLast()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
                         .SubClass<MappedObject>(sc =>
                         {
                             sc.SubClass<SecondMappedObject>(sc2 => { });
                             sc.Map(x => x.Name);
-                        }))
+                        });
+                })
                 .Element("//subclass/subclass").ShouldBeInParentAtPosition(1);
         }
 
@@ -253,14 +323,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void SubclassShouldNotHaveDiscriminator()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn<string>("Type")
-                        .SubClass<SecondMappedObject>("red", m =>
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<SecondMappedObject>("red", sc =>
                         {
-                            m.Map(x => x.Name);
-                            m.SubClass<SecondMappedObject>("blue", m2 =>
-                            {});
-                        }))
+                            sc.Map(x => x.Name);
+                            sc.SubClass<SecondMappedObject>("blue", sc2 => { });
+                        });
+                })
                  .Element("//subclass/discriminator").DoesntExist();
         }
 
@@ -268,9 +340,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CreateDiscriminatorValueAtClassLevel()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type", "Foo")
-                        .SubClass<SecondMappedObject>("Bar", m => m.Map(x => x.Name)))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type", "Foo")
+                        .SubClass<SecondMappedObject>("Bar", sc => sc.Map(x => x.Name));
+                })
                 .Element("class")
                     .HasAttribute("discriminator-value", "Foo");
         }
@@ -279,7 +354,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void DiscriminatorAssumesStringIfNoTypeSupplied()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map => map.DiscriminateSubClassesOnColumn("Type"))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type");
+                })
                 .Element("class/discriminator")
                     .HasAttribute("type", "String");
         }
@@ -288,9 +367,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyForceOnDiscriminator()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .AlwaysSelectWithValue())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .AlwaysSelectWithValue();
+                })
                 .Element("class/discriminator")
                     .HasAttribute("force", "true");
         }
@@ -299,9 +381,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyNotForcedOnDiscriminator()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .Not.AlwaysSelectWithValue())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .Not.AlwaysSelectWithValue();
+                })
                 .Element("class/discriminator")
                     .HasAttribute("force", "false");
         }
@@ -310,9 +395,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyReadOnlyOnDiscriminator()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .ReadOnly())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .ReadOnly();
+                })
                 .Element("class/discriminator")
                     .HasAttribute("insert", "false");
         }
@@ -321,9 +409,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyNotReadOnlyOnDiscriminator()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .Not.ReadOnly())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .Not.ReadOnly();
+                })
                 .Element("class/discriminator")
                     .HasAttribute("insert", "true");
         }
@@ -332,9 +423,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyNullableOnDiscriminator()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .Nullable())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .Nullable();
+                })
                 .Element("class/discriminator/column").HasAttribute("not-null", "false");
         }
 
@@ -342,9 +436,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyNotNullableOnDiscriminator()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .Not.Nullable())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .Not.Nullable();
+                })
                 .Element("class/discriminator/column").HasAttribute("not-null", "true");
         }
 
@@ -352,9 +449,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyFormulaOnDiscriminator()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .Formula("formula"))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .Formula("formula");
+                })
                 .Element("class/discriminator")
                     .HasAttribute("formula", "formula");
         }
@@ -363,9 +463,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyLengthOnDiscriminator()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .Length(1234))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .Length(1234);
+                })
                 .Element("class/discriminator/column")
                     .HasAttribute("length", "1234");
         }
@@ -374,9 +477,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void MapsSubclassProperty()
         {
             new MappingTester<MappedObject>()
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .SubClass<MappedObjectSubclass>(("foo"), sc => sc.Map(x => x.SubclassProperty)))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .SubClass<MappedObjectSubclass>(("foo"), sc => sc.Map(x => x.SubclassProperty));
+                })
                 .Element("//subclass/property")
                     .HasAttribute("name", "SubclassProperty");
         }
@@ -385,26 +491,29 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void SubclassPropertyHasConventionApplied()
         {
             new MappingTester<MappedObject>()
-                .Conventions(cf => { cf.Add<TestPropertyConvention>(); })
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .SubClass<MappedObjectSubclass>(("foo"), sc => sc.Map(x => x.SubclassProperty)))
-
+                .Conventions(cf => cf.Add<TestPropertyConvention>())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .SubClass<MappedObjectSubclass>(("foo"), sc => sc.Map(x => x.SubclassProperty));
+                })
                 .Element("//subclass/property[@name='SubclassProperty']")
                     .HasAttribute("generated", "never");
-
         }
 
         [Test]
         public void SubSubclassPropertyHasConventionApplied()
         {
             new MappingTester<MappedObject>()
-                .Conventions(cf => { cf.Add<TestPropertyConvention>(); })
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
+                .Conventions(cf => cf.Add<TestPropertyConvention>())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
                         .SubClass<MappedObjectSubclass>(("foo"), sc => sc.Map(x => x.SubclassProperty))
-                        .SubClass<MappedObjectSubSubClass>("bar", sc => sc.Map(x => x.SubSubclassProperty)))
-
+                        .SubClass<MappedObjectSubSubClass>("bar", sc => sc.Map(x => x.SubSubclassProperty));
+                })
                 .Element("//subclass/property[@name='SubSubclassProperty']")
                     .HasAttribute("generated", "never");
 
@@ -414,29 +523,33 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void SubclassManyToOneReferenceHasConventionApplied()
         {
             new MappingTester<MappedObject>()
-                .Conventions(cf => { cf.Add<TestManyToOneConvention>(); })
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .SubClass<MappedObjectSubclass>(("foo"), sc => sc.References(x => x.Child)))
-                
+                .Conventions(cf => cf.Add<TestManyToOneConvention>())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .SubClass<MappedObjectSubclass>(("foo"), sc => sc.References(x => x.Child));
+                })
                 .Element("//subclass/many-to-one/column")
                     .HasAttribute("name", "`test_column`");
-
         }
 
         [Test]
         public void SubSubclassManyToOneReferenceHasConventionApplied()
         {
             new MappingTester<MappedObject>()
-                .Conventions(cf => { cf.Add<TestManyToOneConvention>(); })
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .SubClass<MappedObjectSubclass>(("foo"),
-                        sc => { 
+                .Conventions(cf => cf.Add<TestManyToOneConvention>())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .SubClass<MappedObjectSubclass>(("foo"), sc =>
+                        {
                             sc.References(x => x.Child);
-                            sc.SubClass<MappedObjectSubSubClass>("bar", 
+                            sc.SubClass<MappedObjectSubSubClass>("bar",
                                 ssc => ssc.References(x => x.Child));
-                        }))
+                        });
+                })
                 .Element("//subclass/subclass/many-to-one/column")
                     .HasAttribute("name", "`test_column`");
 
@@ -447,11 +560,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void SubclassOneToManyReferenceHasConventionApplied()
         {
             new MappingTester<MappedObject>()
-                .Conventions(cf => { cf.Add<TestOneToManyConvention>(); })
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .SubClass<MappedObjectSubclass>(("foo"), sc => sc.HasMany(x => x.Children).AsBag()))
-
+                .Conventions(cf => cf.Add<TestOneToManyConvention>())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .SubClass<MappedObjectSubclass>(("foo"), sc => sc.HasMany(x => x.Children).AsBag());
+                })
                 .Element("//subclass/bag/key")
                     .HasAttribute("foreign-key", "test_fk");
 
@@ -461,15 +576,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void SubSubclassOneToManyReferenceHasConventionApplied()
         {
             new MappingTester<MappedObject>()
-                .Conventions(cf => { cf.Add<TestOneToManyConvention>(); })
-                .ForMapping(map =>
-                    map.DiscriminateSubClassesOnColumn("Type")
-                        .SubClass<MappedObjectSubclass>(("foo"),
-                        sc =>
+                .Conventions(cf => cf.Add<TestOneToManyConvention>())
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn("Type")
+                        .SubClass<MappedObjectSubclass>(("foo"), sc =>
                         {
                             sc.HasMany(x => x.Children).AsBag();
                             sc.SubClass<MappedObjectSubSubClass>("bar", ssc => ssc.HasMany(x => x.Children).AsBag());
-                        }))
+                        });
+                })
                 .Element("//subclass/subclass/bag/key")
                     .HasAttribute("foreign-key", "test_fk");
 

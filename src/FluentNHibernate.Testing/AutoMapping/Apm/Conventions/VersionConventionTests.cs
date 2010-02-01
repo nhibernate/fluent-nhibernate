@@ -17,8 +17,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
                 AutoMap.Source(new StubTypeSource(typeof(VersionTarget)))
                     .Conventions.Add<VersionConvention>();
 
-            model.CompileMappings();
-
             var classMapping = model.BuildMappings()
                 .First()
                 .Classes.First();
@@ -37,6 +35,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
 
     internal class VersionTarget
     {
+        public int Id { get; set; }
         public byte[] Version { get; set; }
     }
 }

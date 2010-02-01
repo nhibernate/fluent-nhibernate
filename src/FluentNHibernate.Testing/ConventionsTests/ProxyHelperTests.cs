@@ -13,7 +13,11 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             new MappingTester<ProxiedObject>()
                 .Conventions(x => x.Add(Proxy<IProxiedObject>.UsedForType<ProxiedObject>()))
-                .ForMapping(m => m.HasMany(x => x.Children))
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.HasMany(x => x.Children);
+                })
 
                 // The mapping for ProxiedObject should specify the proxy type using the proxy attribute
                 .Element("class").HasAttribute("proxy", typeof(IProxiedObject).AssemblyQualifiedName)

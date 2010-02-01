@@ -25,7 +25,7 @@ namespace FluentNHibernate.Testing.Automapping.Apm
 
             model
                 .Alterations(alterations => alterations.Add(alteration))
-                .CompileMappings();
+                .BuildMappings();
 
             alteration.AssertWasCalled(x => x.Alter(model));
         }

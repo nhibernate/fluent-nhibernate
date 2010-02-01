@@ -19,8 +19,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
                 AutoMap.Source(new StubTypeSource(typeof(IdTarget)))
                     .Conventions.Add<IdConvention>();
 
-            model.CompileMappings();
-
             var classMapping = model.BuildMappings()
                 .First()
                 .Classes.First();

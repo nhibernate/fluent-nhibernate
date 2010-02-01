@@ -5,6 +5,7 @@ using System.Reflection;
 using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Automapping
 {
@@ -79,7 +80,14 @@ namespace FluentNHibernate.Automapping
             return this;
         }
 
-        public void CompileMappings()
+        public override IEnumerable<HibernateMapping> BuildMappings()
+        {
+            CompileMappings();
+
+            return base.BuildMappings();
+        }
+
+        private void CompileMappings()
         {
             if (autoMappingsCreated)
                 return;

@@ -83,6 +83,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         private void Mapping(Action<DynamicComponentPart<IDictionary>> mappingDefinition)
         {
             var classMap = new ClassMap<PropertyTarget>();
+            classMap.Id(x => x.Id);
             var map = classMap.DynamicComponent(x => x.ExtensionData, m =>
             {
                 m.Map(x => (string)x["Name"]);

@@ -80,7 +80,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         private void VerifyModel(Action<JoinMapping> modelVerification)
         {
             var classMap = new ClassMap<ExampleClass>();
-
+            classMap.Id(x => x.Id);
             classMap.Join("table", m => {});
 
             model.Add(classMap);
