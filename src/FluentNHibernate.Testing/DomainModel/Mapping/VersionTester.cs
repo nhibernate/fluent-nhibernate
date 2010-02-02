@@ -25,7 +25,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.Version(x => x.VersionNumber);
                 })
                 .Element("//version").Exists()
-                .Element("//version/column").HasAttribute("name", "`VersionNumber`");
+                .Element("//version/column").HasAttribute("name", "VersionNumber");
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 				    m.Id(x => x.Id);
                     m.Version(x => x.VersionNumber).Column("Version");
                 })
-                .Element("//version/column").HasAttribute("name", "`Version`");
+                .Element("//version/column").HasAttribute("name", "Version");
         }
 
         [Test]

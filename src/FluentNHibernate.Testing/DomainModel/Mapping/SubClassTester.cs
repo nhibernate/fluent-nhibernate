@@ -21,7 +21,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.DiscriminateSubClassesOnColumn<string>("Type");
                 })
                 .Element("class/discriminator").HasAttribute("type", "String")
-                .Element("class/discriminator/column").HasAttribute("name", "`Type`");
+                .Element("class/discriminator/column").HasAttribute("name", "Type");
         }
 
         [Test]
@@ -531,7 +531,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         .SubClass<MappedObjectSubclass>(("foo"), sc => sc.References(x => x.Child));
                 })
                 .Element("//subclass/many-to-one/column")
-                    .HasAttribute("name", "`test_column`");
+                    .HasAttribute("name", "test_column");
         }
 
         [Test]
@@ -551,7 +551,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         });
                 })
                 .Element("//subclass/subclass/many-to-one/column")
-                    .HasAttribute("name", "`test_column`");
+                    .HasAttribute("name", "test_column");
 
         }
 

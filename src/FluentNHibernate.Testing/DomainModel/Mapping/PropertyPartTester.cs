@@ -23,7 +23,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.Map(x => x.Name);
                 })
                 .Element("class/property[@name='Name']/column")
-                    .HasAttribute("name", "`Name`");
+                    .HasAttribute("name", "Name");
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.Id(x => x.Id);
                     m.Map(x => x.Name);
                 })
-                .Element("class/property/column").HasAttribute("name", "`Name`");
+                .Element("class/property/column").HasAttribute("name", "Name");
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.Map(x => x.Name, "column_name");
                 })
                 .Element("class/property[@name='Name']/column")
-                    .HasAttribute("name", "`column_name`");
+                    .HasAttribute("name", "column_name");
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.Id(x => x.Id);
                     m.Map(x => x.Name, "column_name");
                 })
-                .Element("class/property/column").HasAttribute("name", "`column_name`");
+                .Element("class/property/column").HasAttribute("name", "column_name");
         }
         
         [Test]
@@ -72,7 +72,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.Id(x => x.Id);
                     m.Map(x => x.Name).Column("column_name");
                 })
-                .Element("class/property/column").HasAttribute("name", "`column_name`");
+                .Element("class/property/column").HasAttribute("name", "column_name");
         }
 
         private MappingTester<T> Model<T>(Action<ClassMap<T>> mapping)
@@ -101,9 +101,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 m.Map(x => x.Name).Columns.Add("one", "two", "three");
             })
                 .Element("class/property[@name='Name']").HasThisManyChildNodes(3)
-                .Element("class/property[@name='Name']/column[@name='`one`']").Exists()
-                .Element("class/property[@name='Name']/column[@name='`two`']").Exists()
-                .Element("class/property[@name='Name']/column[@name='`three`']").Exists();
+                .Element("class/property[@name='Name']/column[@name='one']").Exists()
+                .Element("class/property[@name='Name']/column[@name='two']").Exists()
+                .Element("class/property[@name='Name']/column[@name='three']").Exists();
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 m.Map(x => x.Name);
             })
                 .Element("class/property[@name='Name']/column")
-                .HasAttribute("name", "`Name`");
+                .HasAttribute("name", "Name");
         }
 
         [Test]
@@ -127,7 +127,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 m.Map(x => x.Name, "column_name");
             })
                 .Element("class/property[@name='Name']/column")
-                .HasAttribute("name", "`column_name`");
+                .HasAttribute("name", "column_name");
         }
 
         [Test]
@@ -139,7 +139,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 m.Map(x => x.Name).Columns.Add("column_name");
             })
                 .Element("class/property[@name='Name']/column")
-                .HasAttribute("name", "`column_name`");
+                .HasAttribute("name", "column_name");
         }
 
         [Test]
@@ -290,7 +290,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.Id(x => x.Id);
                     m.Map(x => x.Name).Index("name_index");
                 })
-                .Element("class/property/column[@name='`Name`']").HasAttribute("index", "name_index");
+                .Element("class/property/column[@name='Name']").HasAttribute("index", "name_index");
         }
 
         [Test]

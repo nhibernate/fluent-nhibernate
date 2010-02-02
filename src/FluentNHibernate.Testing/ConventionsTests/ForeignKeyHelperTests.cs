@@ -21,7 +21,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
                     m.Id(x => x.Id);
                     m.References(x => x.Parent);
                 })
-                .Element("class/many-to-one/column").HasAttribute("name", "`ParentWoo`");
+                .Element("class/many-to-one/column").HasAttribute("name", "ParentWoo");
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
                     m.Id(x => x.Id);
                     m.References(x => x.Parent);
                 })
-                .Element("class/many-to-one/column").HasAttribute("name", "`ParentWoo`");
+                .Element("class/many-to-one/column").HasAttribute("name", "ParentWoo");
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
                     m.Id(x => x.Id);
                     m.HasMany(x => x.BagOfChildren);
                 })
-                .Element("class/bag/key/column").HasAttribute("name", "`OneToManyTargetWoo`");
+                .Element("class/bag/key/column").HasAttribute("name", "OneToManyTargetWoo");
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
                     m.Id(x => x.Id);
                     m.HasMany(x => x.BagOfChildren);
                 })
-                .Element("class/bag/key/column").HasAttribute("name", "`OneToManyTargetWoo`");
+                .Element("class/bag/key/column").HasAttribute("name", "OneToManyTargetWoo");
         }
 
         [Test]
@@ -73,8 +73,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
                     m.Id(x => x.Id);
                     m.HasManyToMany(x => x.BagOfChildren);
                 })
-                .Element("class/bag/key/column").HasAttribute("name", "`OneToManyTargetWoo`")
-                .Element("class/bag/many-to-many/column").HasAttribute("name", "`ChildObjectWoo`");
+                .Element("class/bag/key/column").HasAttribute("name", "OneToManyTargetWoo")
+                .Element("class/bag/many-to-many/column").HasAttribute("name", "ChildObjectWoo");
         }
 
         [Test]
@@ -87,8 +87,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
                     m.Id(x => x.Id);
                     m.HasManyToMany(x => x.BagOfChildren);
                 })
-                .Element("class/bag/key/column").HasAttribute("name", "`OneToManyTargetWoo`")
-                .Element("class/bag/many-to-many/column").HasAttribute("name", "`ChildObjectWoo`");
+                .Element("class/bag/key/column").HasAttribute("name", "OneToManyTargetWoo")
+                .Element("class/bag/many-to-many/column").HasAttribute("name", "ChildObjectWoo");
         }
     }
 }
