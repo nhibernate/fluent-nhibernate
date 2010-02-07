@@ -8,6 +8,8 @@ using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
+using NHibernate.Engine;
+using NHibernate.Id;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
@@ -143,6 +145,15 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.Type.GetUnderlyingSystemType().ShouldEqual(typeof(string)));
         }
 
+        [Test]
+        public void ShouldSetCustomGenerator()
+        {
+            Convention(x => x.GeneratedBy.Custom<CustomGenerator>());
+
+            VerifyModel(x => x.Generator.Class.ShouldEqual(typeof(CustomGenerator).AssemblyQualifiedName));
+        }
+
+
         #region Helpers
 
         private void Convention(Action<IIdentityInstance> convention)
@@ -167,5 +178,13 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         }
 
         #endregion
+
+        private class CustomGenerator : IIdentifierGenerator
+        {
+            public object Generate(ISessionImplementor session, object obj)
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }
