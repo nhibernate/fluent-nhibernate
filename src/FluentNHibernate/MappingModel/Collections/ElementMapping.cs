@@ -9,7 +9,7 @@ namespace FluentNHibernate.MappingModel.Collections
 {
     public class ElementMapping : MappingBase
     {
-        private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
+        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
         private readonly AttributeStore<ElementMapping> attributes;
 
         public ElementMapping()
@@ -50,6 +50,11 @@ namespace FluentNHibernate.MappingModel.Collections
         public void AddColumn(ColumnMapping mapping)
         {
             columns.Add(mapping);
+        }
+
+        public void AddDefaultColumn(ColumnMapping mapping)
+        {
+            columns.AddDefault(mapping);
         }
 
         public IEnumerable<ColumnMapping> Columns

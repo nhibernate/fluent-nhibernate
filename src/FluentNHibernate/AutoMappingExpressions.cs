@@ -30,6 +30,11 @@ namespace FluentNHibernate
         /// </summary>
         public Func<Type, bool> AbstractClassIsLayerSupertype = t => true;
 
+        /// <summary>
+        /// Specifies the value column used in a table of simple types. 
+        /// </summary>
+        public Func<Member, string> SimpleTypeCollectionValueColumn = t => "Value";
+
         public AutoMappingExpressions()
 		{
 			IsDiscriminated = t => SubclassStrategy(t) == Automapping.SubclassStrategy.Subclass;

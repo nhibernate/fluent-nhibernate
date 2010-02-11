@@ -73,8 +73,11 @@
     <Compile Include="Automapping\Alterations\IAutoMappingAlteration.cs" />
     <Compile Include="Automapping\Alterations\IAutoMappingOverride.cs" />
     <Compile Include="AssemblyTypeSource.cs" />
+    <Compile Include="Automapping\AutoCollectionCreator.cs" />
     <Compile Include="Automapping\AutoCompositeIdentityPart.cs" />
+    <Compile Include="Automapping\AutoEntityCollection.cs" />
     <Compile Include="Automapping\AutoJoinedSubClassPart.cs" />
+    <Compile Include="Automapping\AutoKeyMapper.cs" />
     <Compile Include="Automapping\AutoMap.cs" />
     <Compile Include="Automapping\AutoMapping.cs" />
     <Compile Include="Automapping\AutoMapComponent.cs" />
@@ -89,6 +92,7 @@
     <Compile Include="Automapping\AutoMapType.cs" />
     <Compile Include="Automapping\AutoMapVersion.cs" />
     <Compile Include="Automapping\AutoPersistenceModel.cs" />
+    <Compile Include="Automapping\AutoSimpleTypeCollection.cs" />
     <Compile Include="Automapping\AutoSubClassPart.cs" />
     <Compile Include="Automapping\IAutoClasslike.cs" />
     <Compile Include="Automapping\IAutoMapper.cs" />
@@ -645,7 +649,7 @@
     <Compile Include="Mapping\Prefix.cs" />
     <Compile Include="Mapping\PropertyGeneratedBuilder.cs" />
     <Compile Include="Mapping\VersionGeneratedBuilder.cs" />
-    <Compile Include="Utils\TypeExtensions.cs" />
+    <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Testing\PersistenceSpecificationExtensions.cs" />
     <Compile Include="Testing\Values\List.cs" />
     <Compile Include="Testing\Values\ReferenceList.cs" />

@@ -4,11 +4,21 @@ using NHibernate.Util;
 
 namespace FluentNHibernate.Utils
 {
-    public static class TypeExtensions
+    public static class Extensions
     {
+        public static bool In<T>(this T instance, params T[] expected)
+        {
+            return expected.Any(x => instance.Equals(x));
+        }
+
         public static bool Closes(this Type type, Type openGenericType)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == openGenericType;
+        }
+
+        public static bool ClosesInterface(this Type type, Type openGenericInterface)
+        {
+            return type.IsGenericType && type.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == openGenericInterface);
         }
 
         public static bool IsEnum(this Type type)

@@ -459,6 +459,8 @@
       <Link>FluentKey.snk</Link>
     </None>
     <None Include="App.config" />
+    <Compile Include="AutoMapping\Apm\AutomappingSpecs.ElementCollections.cs" />
+    <Compile Include="AutoMapping\Apm\FakeMembers.cs" />
     <Compile Include="ConventionsTests\AutoImportHelperTests.cs" />
     <Compile Include="ConventionsTests\DefaultAccessHelperTests.cs" />
     <Compile Include="ConventionsTests\DefaultCascadeHelperTests.cs" />
