@@ -128,8 +128,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 						.AsMap(null)
 						.AsSimpleAssociation("Name", "ChildObject")
 						.ParentKeyColumn("ParentId"))
-				.Element("class/map/key/column").HasAttribute("name", "`ParentId`")
-				.Element("class/map/index/column").HasAttribute("name", "`Name`")
+				.Element("class/map/key/column").HasAttribute("name", "ParentId")
+				.Element("class/map/index/column").HasAttribute("name", "Name")
 				.Element("class/map/many-to-many").HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName);
 		}
 
