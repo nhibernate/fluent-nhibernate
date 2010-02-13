@@ -8,7 +8,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
     public interface ISubclassMapping : IMappingBase  
     {
         string Name { get; set; }
-        Type Type { get; }
+        Type Type { get; set; }
         IEnumerable<ISubclassMapping> Subclasses { get; }
         IEnumerable<IComponentMapping> Components { get; }
         IEnumerable<PropertyMapping> Properties { get; }
