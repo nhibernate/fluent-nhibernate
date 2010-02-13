@@ -27,6 +27,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.NotFound))
                 element.WithAtt("not-found", mapping.NotFound);
+
+            if (mapping.HasValue(x => x.EntityName))
+                element.WithAtt("entity-name", mapping.EntityName);
         }
     }
 }

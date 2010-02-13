@@ -62,6 +62,12 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.ForeignKey, value); }
         }
 
+        public string EntityName
+        {
+            get { return attributes.Get(x => x.EntityName); }
+            set { attributes.Set(x => x.EntityName, value); }
+        }     
+
         public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);

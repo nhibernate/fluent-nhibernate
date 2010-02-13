@@ -75,6 +75,12 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Lazy, value); }
         }
 
+        public string EntityName
+        {
+            get { return attributes.Get(x => x.EntityName); }
+            set { attributes.Set(x => x.EntityName, value); }
+        }
+
         public Type ContainingEntityType { get; set; }
 
         public override bool IsSpecified(string property)

@@ -33,6 +33,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.ForeignKey))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
+
+            if (mapping.HasValue(x => x.EntityName))
+                element.WithAtt("entity-name", mapping.EntityName);
         }
 
         public override void Visit(ColumnMapping columnMapping)

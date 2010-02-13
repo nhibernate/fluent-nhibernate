@@ -47,6 +47,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.PropertyRef))
                 element.WithAtt("property-ref", mapping.PropertyRef);
+
+            if (mapping.HasValue(x => x.EntityName))
+                element.WithAtt("entity-name", mapping.EntityName);
         }
     }
 }
