@@ -3,13 +3,13 @@ using FluentNHibernate.Mapping;
 using FluentNHibernate.Visitors;
 using Machine.Specifications;
 
-namespace FluentNHibernate.Testing.PersistenceModelTests
+namespace FluentNHibernate.Specs.PersistenceModel
 {
     public class when_the_persistence_model_is_told_to_build_the_mappings_with_a_valid_class_mapping : PersistenceModelValidationSpec
     {
         Establish context = () =>
         {
-            model = new PersistenceModel();
+            model = new FluentNHibernate.PersistenceModel();
             
             var class_map = new ClassMap<Target>();
             class_map.Id(x => x.Id);
@@ -28,7 +28,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
     {
         Establish context = () =>
         {
-            model = new PersistenceModel();
+            model = new FluentNHibernate.PersistenceModel();
             model.Add(new ClassMap<Target>());
         };
 
@@ -55,7 +55,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
     {
         Establish context = () =>
         {
-            model = new PersistenceModel();
+            model = new FluentNHibernate.PersistenceModel();
             model.Add(new ClassMap<Target>());
             model.ValidationEnabled = false;
         };
@@ -67,11 +67,9 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             exception.ShouldBeNull();
     }
 
-    #region base spec
-
     public abstract class PersistenceModelValidationSpec
     {
-        protected static PersistenceModel model;
+        protected static FluentNHibernate.PersistenceModel model;
         protected static Exception exception;
 
         protected class Target
@@ -79,6 +77,4 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             public int Id { get; set; }
         }
     }
-
-    #endregion
 }

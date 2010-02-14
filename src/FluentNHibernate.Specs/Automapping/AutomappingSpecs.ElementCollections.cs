@@ -3,9 +3,10 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
 
-namespace FluentNHibernate.Testing.AutoMapping.Apm
+namespace FluentNHibernate.Specs.Automapping
 {
     public class when_the_automapper_is_asked_if_it_can_map_a_list_of_strings : AutoMapOneToManyVisitSpec
     {
@@ -113,7 +114,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             step.Map(container, FakeMembers.IListOfStrings);
 
         It should_create_a_collection = () =>
-            container.Collections.ShouldHaveCount(1);
+            container.Collections.Count().ShouldEqual(1);
 
         It should_create_a_collection_that_s_a_bag = () =>
             container.Collections.Single().ShouldBeOfType<BagMapping>();
@@ -152,8 +153,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             container.Collections.Single().CompositeElement.ShouldBeNull();
     }
 
-    #region base spec
-
     public abstract class AutoMapOneToManySpec
     {
         Establish context = () =>
@@ -182,6 +181,4 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         protected static AutoSimpleTypeCollection step;
         protected static AutoMappingExpressions expressions;
     }
-
-    #endregion
 }

@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using Machine.Specifications;
-using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.FluentInterfaceTests
+namespace FluentNHibernate.Specs.FluentInterface
 {
-    public class when_creating_the_mapping_for_a_component_using_ComponentMap
+    public class when_creating_the_mapping_for_a_component_using_component_map
     {
         Establish context = () =>
         {
@@ -103,7 +101,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             class_map.Id(x => x.Id);
             class_map.Component(x => x.Component);
 
-            persistence_model = new PersistenceModel();
+            persistence_model = new FluentNHibernate.PersistenceModel();
             persistence_model.Add(class_map);
             persistence_model.Add(component_map);
         };
@@ -122,7 +120,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             component_mapping.Properties.ShouldContain(x => x.Name == "Property");
         };
 
-        private static PersistenceModel persistence_model;
+        private static FluentNHibernate.PersistenceModel persistence_model;
         private static IEnumerable<HibernateMapping> mappings;
         private static ClassMapping class_mapping;
 

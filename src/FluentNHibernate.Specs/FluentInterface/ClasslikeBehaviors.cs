@@ -2,10 +2,10 @@ using System.Linq;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
-using FluentNHibernate.Testing.DomainModel.Mapping;
+using FluentNHibernate.Specs.FluentInterface.Fixtures;
 using Machine.Specifications;
 
-namespace FluentNHibernate.Testing.FluentInterfaceTests
+namespace FluentNHibernate.Specs.FluentInterface
 {
     [Behaviors]
     public class ClasslikePropertyBehaviour
@@ -86,7 +86,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             mapping.Collections.Single().Key.Columns.Count().ShouldEqual(1);
 
         It should_use_the_containing_type_name_suffixed_with_id_as_the_key_column_name = () =>
-            mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("OneToManyTarget_id");
+            mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("EntityWithCollections_id");
 
         protected static ClassMappingBase mapping;
     }
@@ -162,7 +162,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             mapping.Collections.Single().Key.Columns.Count().ShouldEqual(1);
 
         It should_use_the_containing_type_name_suffixed_with_id_as_the_key_column_name = () =>
-            mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("OneToManyTarget_id");
+            mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("EntityWithCollections_id");
 
         It should_create_an_index_for_the_collection_mapping = () =>
             mapping.Collections.Single().As<ArrayMapping>().Index.ShouldNotBeNull();
@@ -174,5 +174,26 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             mapping.Collections.Single().As<ArrayMapping>().Index.Columns.Single().Name.ShouldEqual("Position");
 
         protected static ClassMappingBase mapping;
+    }
+
+    [Behaviors]
+    public class HasManyElementBehaviour
+    {
+        It should_create_a_collection = () =>
+            collection.ShouldNotBeNull();
+
+        It should_create_a_element_mapping_in_the_collection = () =>
+            collection.Element.ShouldNotBeNull();
+
+        It should_not_create_an_inner_relationship = () =>
+            collection.Relationship.ShouldBeNull();
+
+        It should_not_create_a_component = () =>
+            collection.CompositeElement.ShouldBeNull();
+
+        It should_use_the_default_column_name_for_the_element = () =>
+            collection.Element.Columns.Single().Name.ShouldEqual("value");
+
+        protected static ICollectionMapping collection;
     }
 }

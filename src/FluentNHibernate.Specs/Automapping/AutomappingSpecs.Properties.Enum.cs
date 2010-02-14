@@ -2,9 +2,10 @@ using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
 
-namespace FluentNHibernate.Testing.AutoMapping.Apm
+namespace FluentNHibernate.Specs.Automapping
 {
     public class when_the_automapper_is_told_to_map_an_entity_with_a_enum_property : AutomapperEnumPropertySpec
     {
@@ -42,8 +43,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             mapping.Properties.First().Columns.ShouldContain(x => x.Name == "EnumProperty");
     }
 
-    #region base spec
-
     class Target
     {
         public int Id { get; set; }
@@ -63,6 +62,4 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         protected static AutoPersistenceModel mapper;
         protected static ClassMapping mapping;
     }
-
-    #endregion
 }

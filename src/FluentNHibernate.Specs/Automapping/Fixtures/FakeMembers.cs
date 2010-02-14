@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FluentNHibernate.Testing.AutoMapping.Apm
+namespace FluentNHibernate.Specs.Automapping.Fixtures
 {
     public static class FakeMembers
     {

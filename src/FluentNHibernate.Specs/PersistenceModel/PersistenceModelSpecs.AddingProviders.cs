@@ -1,8 +1,8 @@
 ﻿using FluentNHibernate.Mapping;
+using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
-using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.PersistenceModelTests
+namespace FluentNHibernate.Specs.PersistenceModel
 {
     public class when_the_persistence_model_has_a_component_added_by_type : PersistenceModelSpec
     {
@@ -46,14 +46,12 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             persistence_model.ContainsMapping(typeof(MyFilterMap)).ShouldBeTrue();
     }
 
-    #region base spec
-
     public abstract class PersistenceModelSpec
     {
         Establish context = () =>
-            persistence_model = new PersistenceModel();
+            persistence_model = new FluentNHibernate.PersistenceModel();
 
-        protected static PersistenceModel persistence_model;
+        protected static FluentNHibernate.PersistenceModel persistence_model;
 
         protected class MyComponentMap : ComponentMap<Target> { }
         protected class MyClassMap : ClassMap<Target> {}
@@ -61,6 +59,4 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         protected class MyFilterMap : FilterDefinition {}
         protected class Target { }
     }
-
-    #endregion
 }

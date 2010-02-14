@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Testing.DomainModel;
+using FluentNHibernate.Specs.FluentInterface.Fixtures;
 using Machine.Specifications;
 
-namespace FluentNHibernate.Testing.FluentInterfaceTests
+namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs
 {
     public class when_class_map_is_told_to_create_an_inline_subclass : ProviderSpec
     {
@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 #pragma warning disable 612,618
 
         Because of = () =>
-            class_mapping = map_as_class<SuperRecord>(m => m.DiscriminateSubClassesOnColumn("col").SubClass<ChildRecord>(sc => { }));
+            class_mapping = map_as_class<SuperTarget>(m => m.DiscriminateSubClassesOnColumn("col").SubClass<ChildTarget>(sc => { }));
 
 #pragma warning restore 612,618
 
@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 #pragma warning disable 612,618
 
         Because of = () =>
-            class_mapping = map_as_class<SuperRecord>(m => m.JoinedSubClass<ChildRecord>("key", c => { }));
+            class_mapping = map_as_class<SuperTarget>(m => m.JoinedSubClass<ChildTarget>("key", c => { }));
 
 #pragma warning restore 612,618
 

@@ -1,14 +1,14 @@
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Testing.DomainModel.Mapping;
+using FluentNHibernate.Specs.FluentInterface.Fixtures;
 using Machine.Specifications;
 
-namespace FluentNHibernate.Testing.FluentInterfaceTests
+namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs
 {
     public class when_class_map_is_told_to_configure_the_cache : ProviderSpec
     {
         Because of = () =>
-            mapping = map_as_class<PropertyTarget>(m => m.Cache.ReadOnly());
+            mapping = map_as_class<EntityWithProperties>(m => m.Cache.ReadOnly());
 
         It should_set_the_cache_property_on_the_mapping = () =>
             mapping.Cache.ShouldNotBeNull();

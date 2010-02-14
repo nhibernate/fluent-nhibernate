@@ -1,14 +1,14 @@
 using System.Linq;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Testing.DomainModel.Mapping;
+using FluentNHibernate.Specs.FluentInterface.Fixtures;
 using Machine.Specifications;
 
-namespace FluentNHibernate.Testing.FluentInterfaceTests
+namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs
 {
     public class when_class_map_is_told_to_map_a_version : ProviderSpec
     {
         Because of = () =>
-            mapping = map_as_class<VersionTarget>(m => m.Version(x => x.VersionNumber));
+            mapping = map_as_class<EntityWithVersion>(m => m.Version(x => x.VersionNumber));
 
         It should_set_the_version_property_on_the_mapping = () =>
             mapping.Version.ShouldNotBeNull();
@@ -25,7 +25,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
     public class when_class_map_is_told_to_map_a_version_using_reveal : ProviderSpec
     {
         Because of = () =>
-            mapping = map_as_class<VersionTarget>(m => m.Version(Reveal.Property<VersionTarget>("VersionNumber")));
+            mapping = map_as_class<EntityWithVersion>(m => m.Version(Reveal.Property<EntityWithVersion>("VersionNumber")));
 
         It should_set_the_version_property_on_the_mapping = () =>
             mapping.Version.ShouldNotBeNull();

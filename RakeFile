@@ -55,7 +55,7 @@ namespace :specs do
   desc 'Run MSpec specs'
   mspec :mspec do |mspec|
     mspec.path_to_command = 'tools/mspec/mspec.exe'
-    mspec.assemblies << 'src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll'
+    mspec.assemblies << 'src/FluentNHibernate.Specs/bin/Release/FluentNHibernate.Specs.dll'
   end
 
   desc 'Run NUnit tests'

@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D6C908E5-2B12-43DB-A8AB-2B6849D9CB7B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FluentNHibernate.Specs</RootNamespace>
+    <AssemblyName>FluentNHibernate.Specs</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\NHibernate\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Machine.Specifications, Version=0.3.0.0, Culture=neutral, PublicKeyToken=5c474de7a495cff1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\mspec\Machine.Specifications.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Automapping\AutomappingSpecs.Properties.Enum.cs" />
+    <Compile Include="Automapping\AutomappingSpecs.ElementCollections.cs" />
+    <Compile Include="Automapping\Fixtures\FakeMembers.cs" />
+    <Compile Include="Automapping\Fixtures\StubTypeSource.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="FluentInterface\ClasslikeBehaviors.cs" />
+    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Cache.cs" />
+    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Component.cs" />
+    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Discriminator.cs" />
+    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.HasMany.cs" />
+    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.HasOne.cs" />
+    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Property.cs" />
+    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Subclass.cs" />
+    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Version.cs" />
+    <Compile Include="FluentInterface\ComponentMapSpecs.cs" />
+    <Compile Include="FluentInterface\Fixtures\EntityWithComponent.cs" />
+    <Compile Include="FluentInterface\Fixtures\EntityWithFields.cs" />
+    <Compile Include="FluentInterface\Fixtures\EntityWithReferences.cs" />
+    <Compile Include="FluentInterface\Fixtures\EntityWithVersion.cs" />
+    <Compile Include="FluentInterface\Fixtures\IndexTarget.cs" />
+    <Compile Include="FluentInterface\Fixtures\EntityWithCollections.cs" />
+    <Compile Include="FluentInterface\Fixtures\EntityWithProperties.cs" />
+    <Compile Include="FluentInterface\Fixtures\SuperTarget.cs" />
+    <Compile Include="FluentInterface\ProviderSpec.cs" />
+    <Compile Include="FluentInterface\SubclassMapSpecs\SubclassMapSpecs.Component.cs" />
+    <Compile Include="FluentInterface\SubclassMapSpecs\SubclassMapSpecs.HasMany.cs" />
+    <Compile Include="FluentInterface\SubclassMapSpecs\SubclassMapSpecs.HasOne.cs" />
+    <Compile Include="FluentInterface\SubclassMapSpecs\SubclassMapSpecs.Property.cs" />
+    <Compile Include="PersistenceModel\PersistenceModelSpecs.AddingProviders.cs" />
+    <Compile Include="PersistenceModel\PersistenceModelSpecs.Validation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\Fixtures\Target.cs" />
+    <Compile Include="Utilities\Fixtures\TargetParent.cs" />
+    <Compile Include="Utilities\RevealSpecs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
+      <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>
+      <Name>FluentNHibernate</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
