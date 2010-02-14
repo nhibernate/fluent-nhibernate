@@ -36,9 +36,9 @@ namespace FluentNHibernate.Mapping
 		/// <returns>The composite identity part fluent interface</returns>
 		public CompositeIdentityPart<T> KeyProperty(Expression<Func<T, object>> expression)
 		{
-	        var property = ReflectionHelper.GetProperty(expression).ToMember();
+	        var member = ReflectionHelper.GetMember(expression);
 
-            return KeyProperty(property, property.Name, null);
+            return KeyProperty(member, member.Name, null);
 		}
 
 		/// <summary>
@@ -49,9 +49,9 @@ namespace FluentNHibernate.Mapping
 		/// <returns>The composite identity part fluent interface</returns>
 		public CompositeIdentityPart<T> KeyProperty(Expression<Func<T, object>> expression, string columnName)
 		{
-            var property = ReflectionHelper.GetProperty(expression).ToMember();
+            var member = ReflectionHelper.GetMember(expression);
 
-		    return KeyProperty(property, columnName, null);
+		    return KeyProperty(member, columnName, null);
 		}
 
         /// <summary>
@@ -62,8 +62,8 @@ namespace FluentNHibernate.Mapping
         /// <returns>The composite identity part fluent interface</returns>
         public CompositeIdentityPart<T> KeyProperty(Expression<Func<T, object>> expression, Action<KeyPropertyPart> keyPropertyAction)
         {
-            var property = ReflectionHelper.GetProperty(expression).ToMember();
-            return KeyProperty(property, string.Empty, keyPropertyAction);
+            var member = ReflectionHelper.GetMember(expression);
+            return KeyProperty(member, string.Empty, keyPropertyAction);
         }
 
         protected virtual CompositeIdentityPart<T> KeyProperty(Member property, string columnName, Action<KeyPropertyPart> customMapping)
@@ -96,9 +96,9 @@ namespace FluentNHibernate.Mapping
 		/// <returns>The composite identity part fluent interface</returns>
 		public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression)
 		{
-		    var property = ReflectionHelper.GetProperty(expression).ToMember();
+		    var member = ReflectionHelper.GetMember(expression);
 
-		    return KeyReference(property, property.Name, null);
+		    return KeyReference(member, member.Name, null);
 		}
 
 		/// <summary>
@@ -109,9 +109,9 @@ namespace FluentNHibernate.Mapping
 		/// <returns>The composite identity part fluent interface</returns>
 		public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression, string columnName)
 		{
-            var property = ReflectionHelper.GetProperty(expression).ToMember();
+            var member = ReflectionHelper.GetMember(expression);
 
-            return KeyReference(property, columnName, null);
+            return KeyReference(member, columnName, null);
 		}
 
 
@@ -124,9 +124,9 @@ namespace FluentNHibernate.Mapping
         /// <returns>The composite identity part fluent interface</returns>
         public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression, string columnName, Action<KeyManyToOnePart> customMapping)
         {
-            var property = ReflectionHelper.GetProperty(expression).ToMember();
+            var member = ReflectionHelper.GetMember(expression);
 
-            return KeyReference(property, columnName, customMapping);
+            return KeyReference(member, columnName, customMapping);
         }
 
         protected virtual CompositeIdentityPart<T> KeyReference(Member property, string columnName, Action<KeyManyToOnePart> customMapping)

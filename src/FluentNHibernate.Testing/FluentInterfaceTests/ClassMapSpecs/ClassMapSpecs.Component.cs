@@ -15,6 +15,16 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         protected static ClassMapping mapping;
     }
 
+    public class when_class_map_is_told_to_map_a_component_from_a_field : ProviderSpec
+    {
+        Because of = () =>
+            mapping = map_as_class<FieldTarget>(m => m.Component(x => x.Component, c => { }));
+
+        Behaves_like<ClasslikeComponentBehaviour> a_component_in_a_classlike;
+
+        protected static ClassMapping mapping;
+    }
+
     public class when_class_map_is_told_to_map_a_component_using_reveal : ProviderSpec
     {
         Because of = () =>
@@ -35,6 +45,16 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         protected static ClassMapping mapping;
     }
 
+    public class when_class_map_is_told_to_map_a_dynamic_component_from_a_field : ProviderSpec
+    {
+        Because of = () =>
+            mapping = map_as_class<FieldTarget>(m => m.DynamicComponent(x => x.ExtensionData, c => { }));
+
+        Behaves_like<ClasslikeComponentBehaviour> a_component_in_a_classlike;
+
+        protected static ClassMapping mapping;
+    }
+
     public class when_class_map_is_told_to_map_a_dynamic_component_using_reveal : ProviderSpec
     {
         Because of = () =>
@@ -49,6 +69,16 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
     {
         Because of = () =>
             mapping = map_as_class<PropertyTarget>(m => m.Component(x => x.Component));
+
+        Behaves_like<ClasslikeComponentBehaviour> a_component_in_a_classlike;
+
+        protected static ClassMapping mapping;
+    }
+
+    public class when_class_map_is_told_to_map_a_reference_component_from_a_field : ProviderSpec
+    {
+        Because of = () =>
+            mapping = map_as_class<FieldTarget>(m => m.Component(x => x.Component));
 
         Behaves_like<ClasslikeComponentBehaviour> a_component_in_a_classlike;
 

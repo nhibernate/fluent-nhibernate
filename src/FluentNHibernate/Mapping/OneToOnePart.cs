@@ -71,9 +71,9 @@ namespace FluentNHibernate.Mapping
 
         public OneToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> propRefExpression)
         {
-            var prop = ReflectionHelper.GetProperty(propRefExpression);
+            var member = ReflectionHelper.GetMember(propRefExpression);
 
-            return PropertyRef(prop.Name);
+            return PropertyRef(member.Name);
         }
 
         public OneToOnePart<TOther> PropertyRef(string propertyName)

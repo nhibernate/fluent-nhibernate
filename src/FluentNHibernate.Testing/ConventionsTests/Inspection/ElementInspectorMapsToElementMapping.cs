@@ -115,7 +115,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
 
         private Member Prop(Expression<Func<IElementInspector, object>> propertyExpression)
         {
-            return ReflectionHelper.GetProperty(propertyExpression).ToMember();
+            return ReflectionHelper.GetMember(propertyExpression);
         }
 
         #endregion

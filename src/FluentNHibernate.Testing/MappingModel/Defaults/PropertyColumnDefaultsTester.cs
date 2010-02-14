@@ -49,7 +49,7 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
 
         private Member Prop(Expression<Func<PropertyTarget, object>> propertyAccessor)
         {
-            return ReflectionHelper.GetProperty(propertyAccessor).ToMember();
+            return ReflectionHelper.GetMember(propertyAccessor);
         }
     }
 }

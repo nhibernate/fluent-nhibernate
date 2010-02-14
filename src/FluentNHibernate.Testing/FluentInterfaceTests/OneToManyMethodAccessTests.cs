@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ShouldGuessBackingFieldName()
         {
-            OneToManyMethod(x => x.GetOtherChildren())
+            OneToMany(x => x.GetOtherChildren())
                 .Mapping(m => {})
                 .ModelShouldMatch(x => x.Name.ShouldEqual("otherChildren"));
         }

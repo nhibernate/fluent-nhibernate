@@ -1,7 +1,5 @@
 using System;
 using System.Linq.Expressions;
-using System.Reflection;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Utils
 {
@@ -9,7 +7,7 @@ namespace FluentNHibernate.Utils
     {
         public static Member ToMember<TMapping, TReturn>(this Expression<Func<TMapping, TReturn>> propertyExpression)
         {
-            return ReflectionHelper.GetProperty(propertyExpression).ToMember();
+            return ReflectionHelper.GetMember(propertyExpression);
         }
     }
 }

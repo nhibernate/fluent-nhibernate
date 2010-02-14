@@ -64,9 +64,6 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         It should_create_a_single_column_for_the_key = () =>
             mapping.Collections.Single().Key.Columns.Count().ShouldEqual(1);
 
-        It should_use_the_containing_type_name_suffixed_with_id_as_the_key_column_name = () =>
-            mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("OneToManyTarget_id");
-
         protected static ClassMappingBase mapping;
     }
 

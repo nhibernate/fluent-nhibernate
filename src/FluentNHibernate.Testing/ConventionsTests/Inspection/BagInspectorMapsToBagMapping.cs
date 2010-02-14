@@ -42,7 +42,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
 
         private Member Prop(Expression<Func<IBagInspector, object>> propertyExpression)
         {
-            return ReflectionHelper.GetProperty(propertyExpression).ToMember();
+            return ReflectionHelper.GetMember(propertyExpression);
         }
 
         #endregion

@@ -46,6 +46,9 @@ namespace FluentNHibernate
         {
             return !Equals(left, right);
         }
+
+        public abstract void SetValue(object target, object value);
+        public abstract object GetValue(object target);
     }
 
     internal class FieldMember : Member
@@ -68,6 +71,16 @@ namespace FluentNHibernate
         public override int GetHashCode()
         {
             return 0;
+        }
+
+        public override void SetValue(object target, object value)
+        {
+            _fieldInfo.SetValue(target, value);
+        }
+
+        public override object GetValue(object target)
+        {
+            return _fieldInfo.GetValue(target);
         }
 
         public FieldMember(FieldInfo fieldInfo)
@@ -133,6 +146,16 @@ namespace FluentNHibernate
         public override int GetHashCode()
         {
             return 0;
+        }
+
+        public override void SetValue(object target, object value)
+        {
+            throw new NotSupportedException("Cannot set the value of a method Member.");
+        }
+
+        public override object GetValue(object target)
+        {
+            return _methodInfo.Invoke(target, null);
         }
 
         public MethodMember(MethodInfo propertyInfo)
@@ -205,6 +228,16 @@ namespace FluentNHibernate
             return 0;
         }
 
+        public override void SetValue(object target, object value)
+        {
+            _propertyInfo.SetValue(target, value, null);
+        }
+
+        public override object GetValue(object target)
+        {
+            return _propertyInfo.GetValue(target, null);
+        }
+
         public override string Name
         {
             get { return _propertyInfo.Name; }
@@ -249,14 +282,27 @@ namespace FluentNHibernate
         {
             return new PropertyMember(propertyInfo);
         }
+
         public static Member ToMember(this MethodInfo methodInfo)
         {
             return new MethodMember(methodInfo);
         }
+
         public static Member ToMember(this FieldInfo fieldInfo)
         {
             return new FieldMember(fieldInfo);
         }
 
+        public static Member ToMember(this MemberInfo memberInfo)
+        {
+            if (memberInfo is PropertyInfo)
+                return ((PropertyInfo)memberInfo).ToMember();
+            if (memberInfo is FieldInfo)
+                return ((FieldInfo)memberInfo).ToMember();
+            if (memberInfo is MethodInfo)
+                return ((MethodInfo)memberInfo).ToMember();
+
+            throw new InvalidOperationException("Cannot convert MemberInfo '" + memberInfo.Name + "' to Member.");
+        }
     }
 }

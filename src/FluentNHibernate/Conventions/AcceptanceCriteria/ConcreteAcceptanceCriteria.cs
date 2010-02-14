@@ -44,8 +44,8 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
 
         public IAcceptanceCriteria<TInspector> Expect(Expression<Func<TInspector, string>> propertyExpression, IAcceptanceCriterion value)
         {
-            var property = ReflectionHelper.GetProperty(propertyExpression);
-            var castedExpression = ExpressionBuilder.Create<TInspector>(property);
+            var member = ReflectionHelper.GetMember(propertyExpression);
+            var castedExpression = ExpressionBuilder.Create<TInspector>(member);
             var expectation = CreateExpectation(castedExpression, value);
 
             expectations.Add(expectation);

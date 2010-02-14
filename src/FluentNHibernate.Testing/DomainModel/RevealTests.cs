@@ -20,7 +20,7 @@ namespace FluentNHibernate.Testing.DomainModel
             expression.ShouldNotBeNull();
 
         It should_create_an_expression_that_s_convertable_to_a_member = () =>
-            ReflectionHelper.GetProperty(expression).ToMember().Name.ShouldEqual("PrivateProperty");
+            ReflectionHelper.GetMember(expression).Name.ShouldEqual("PrivateProperty");
 
         static Expression<Func<StringTarget, object>> expression;
     }
@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.DomainModel
             expression.ShouldNotBeNull();
 
         It should_create_an_expression_that_s_convertable_to_a_member = () =>
-            ReflectionHelper.GetProperty(expression).ToMember().Name.ShouldEqual("ProtectedProperty");
+            ReflectionHelper.GetMember(expression).Name.ShouldEqual("ProtectedProperty");
 
         static Expression<Func<StringTarget, object>> expression;
     }
@@ -48,7 +48,7 @@ namespace FluentNHibernate.Testing.DomainModel
             expression.ShouldNotBeNull();
 
         It should_create_an_expression_that_s_convertable_to_a_member = () =>
-            ReflectionHelper.GetProperty(expression).ToMember().Name.ShouldEqual("PublicProperty");
+            ReflectionHelper.GetMember(expression).Name.ShouldEqual("PublicProperty");
 
         static Expression<Func<StringTarget, object>> expression;
     }
@@ -62,7 +62,7 @@ namespace FluentNHibernate.Testing.DomainModel
             expression.ShouldNotBeNull();
 
         It should_create_an_expression_that_s_convertable_to_a_member = () =>
-            ReflectionHelper.GetProperty(expression).ToMember().Name.ShouldEqual("IntProperty");
+            ReflectionHelper.GetMember(expression).Name.ShouldEqual("IntProperty");
 
         static Expression<Func<StringTarget, object>> expression;
     }
@@ -76,7 +76,7 @@ namespace FluentNHibernate.Testing.DomainModel
             expression.ShouldNotBeNull();
 
         It should_create_an_expression_that_s_convertable_to_a_member = () =>
-            ReflectionHelper.GetProperty(expression).ToMember().Name.ShouldEqual("SuperProperty");
+            ReflectionHelper.GetMember(expression).Name.ShouldEqual("SuperProperty");
 
         static Expression<Func<StringTarget, object>> expression;
     }

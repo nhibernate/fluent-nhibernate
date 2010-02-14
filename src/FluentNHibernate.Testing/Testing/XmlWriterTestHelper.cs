@@ -97,7 +97,7 @@ namespace FluentNHibernate.Testing.Testing
 
                     Assert.That(areEqual,
                                     "Property '{0}' was set to '{1}' and was expected to be written to attribute '{2}' with value '{3}'. The value was instead '{4}'",
-                                    _sourceProperty.InnerProperty.ReflectedType.Name + "." + _sourceProperty.Name,
+                                    _sourceProperty.InnerMember.MemberInfo.ReflectedType.Name + "." + _sourceProperty.Name,
                                     _sourceValue, check.Key, check.Value, attributeValue
                         );
                     //string.Equals()

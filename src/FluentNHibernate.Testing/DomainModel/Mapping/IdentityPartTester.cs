@@ -258,7 +258,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [ExpectedException(typeof(InvalidOperationException))]
         public void IdentityType_MustBeIntegral_ForIncrement()
         {
-            Member property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId).ToMember();
+            Member property = ReflectionHelper.GetMember<IdentityTarget>(x => x.GuidId);
             new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.Increment();
         }
 
@@ -267,7 +267,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void IdentityType_MustBeIntegral_ForIdentity()
         {
 
-            Member property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId).ToMember();
+            Member property = ReflectionHelper.GetMember<IdentityTarget>(x => x.GuidId);
             new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.Identity();
         }
 
@@ -276,7 +276,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void IdentityType_MustBeIntegral_ForSequence()
         {
 
-            Member property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId).ToMember();
+            Member property = ReflectionHelper.GetMember<IdentityTarget>(x => x.GuidId);
             new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.Sequence("no");
         }
 
@@ -285,7 +285,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void IdentityType_MustBeIntegral_ForHiLo()
         {
 
-            Member property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId).ToMember();
+            Member property = ReflectionHelper.GetMember<IdentityTarget>(x => x.GuidId);
             new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.HiLo("no", "no", "no");
         }
 
@@ -294,7 +294,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void IdentityType_MustBeIntegral_ForSeqHiLo()
         {
 
-            Member property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId).ToMember();
+            Member property = ReflectionHelper.GetMember<IdentityTarget>(x => x.GuidId);
             new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.SeqHiLo("no", "no");
         }
 
@@ -303,7 +303,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void IdentityType_MustBeString_ForUuidHex()
         {
 
-            Member property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId).ToMember();
+            Member property = ReflectionHelper.GetMember<IdentityTarget>(x => x.IntId);
             new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.UuidHex("format");
         }
 
@@ -312,7 +312,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void IdentityType_MustBeString_ForUuidString()
         {
 
-            Member property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId).ToMember();
+            Member property = ReflectionHelper.GetMember<IdentityTarget>(x => x.IntId);
             new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.UuidString();
         }
 
@@ -321,7 +321,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void IdentityType_MustBeGuid_ForGuid()
         {
 
-            Member property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId).ToMember();
+            Member property = ReflectionHelper.GetMember<IdentityTarget>(x => x.IntId);
             new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.Guid();
         }
 
@@ -330,7 +330,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void IdentityType_MustBeGuid_ForGuidComb()
         {
 
-            Member property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId).ToMember();
+            Member property = ReflectionHelper.GetMember<IdentityTarget>(x => x.IntId);
             new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.GuidComb();
         }
 
@@ -338,7 +338,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [ExpectedException(typeof(InvalidOperationException))]
         public void IdentityType_MustBeIntegral_ForNative()
         {
-            Member property = ReflectionHelper.GetProperty<IdentityTarget>(x => x.GuidId).ToMember();
+            Member property = ReflectionHelper.GetMember<IdentityTarget>(x => x.GuidId);
             new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.Native();
         }
 

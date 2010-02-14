@@ -14,7 +14,7 @@ namespace FluentNHibernate.Testing.Automapping
         [Test]
         public void CanMapManyToManyProperty()
         {
-            var Member = ReflectionHelper.GetProperty<ManyToMany1>(x => x.Many1).ToMember();
+            var Member = ReflectionHelper.GetMember<ManyToMany1>(x => x.Many1);
             var autoMap = new ClassMapping();
 
             var mapper = new AutoMapManyToMany(new AutoMappingExpressions());

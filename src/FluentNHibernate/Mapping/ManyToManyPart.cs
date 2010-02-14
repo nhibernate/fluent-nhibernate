@@ -30,12 +30,6 @@ namespace FluentNHibernate.Mapping
             childType = property.PropertyType;
         }
 
-        public ManyToManyPart(Type entity, MethodInfo method)
-            : this(entity, method.ToMember(), method.ReturnType)
-        {
-            childType = method.ReturnType;
-        }
-
         protected ManyToManyPart(Type entity, Member member, Type collectionType)
             : base(entity, member, collectionType)
         {

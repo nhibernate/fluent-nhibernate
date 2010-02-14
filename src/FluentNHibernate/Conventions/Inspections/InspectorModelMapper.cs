@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Utils;
-using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
@@ -14,7 +11,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public void Map(Expression<Func<TInspector, object>> inspectorProperty, Expression<Func<TMapping, object>> mappingProperty)
         {
-            Map(ReflectionHelper.GetProperty(inspectorProperty).ToMember(), mappingProperty);
+            Map(ReflectionHelper.GetMember(inspectorProperty), mappingProperty);
         }
 
         public void Map(Expression<Func<TInspector, object>> inspectorProperty, string mappingProperty)

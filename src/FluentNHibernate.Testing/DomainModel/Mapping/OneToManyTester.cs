@@ -23,6 +23,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
     public class IndexTarget {}
 
+    public class FieldOneToManyTarget
+    {
+        public IList<ChildObject> BagOfChildren;
+    }
+
     public class OneToManyTarget
     {
         public virtual int Id { get; set; }
