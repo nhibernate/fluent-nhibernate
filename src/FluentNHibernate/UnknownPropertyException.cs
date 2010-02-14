@@ -8,6 +8,7 @@ namespace FluentNHibernate
     public class UnknownPropertyException : Exception
     {
         public UnknownPropertyException(Type classType, string propertyName)
+            : base("Could not find property '" + propertyName + "' on '" + classType.FullName + "'")
         {
             Type = classType;
             Property = propertyName;

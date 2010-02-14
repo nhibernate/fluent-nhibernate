@@ -47,4 +47,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected static SubclassMapping mapping;
     }
+
+    public class when_subclass_map_is_told_to_map_an_has_many_using_reveal : ProviderSpec
+    {
+        Because of = () =>
+            mapping = map_as_subclass<OneToManyTarget>(m => m.HasMany<ChildObject>(Reveal.Property<OneToManyTarget>("BagOfChildren")));
+
+        Behaves_like<ClasslikeBagBehaviour> a_bag_in_a_classlike_mapping;
+
+        protected static SubclassMapping mapping;
+    }
 }

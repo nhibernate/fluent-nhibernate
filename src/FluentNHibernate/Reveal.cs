@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -32,7 +34,8 @@ namespace FluentNHibernate
         private static Expression<Func<TEntity, TReturn>> CreateExpression<TEntity, TReturn>(string propertyName)
         {
             var type = typeof(TEntity);
-            var property = type.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
+            var property = GetProperties(type)
+                .FirstOrDefault(x => x.Name == propertyName);
 
             if (property == null)
                 throw new UnknownPropertyException(type, propertyName);
@@ -44,6 +47,21 @@ namespace FluentNHibernate
                 expression = Expression.Convert(expression, typeof(object));
 
             return (Expression<Func<TEntity, TReturn>>)Expression.Lambda(typeof(Func<TEntity, TReturn>), expression, param);
+        }
+
+        private static IEnumerable<PropertyInfo> GetProperties(Type type)
+        {
+            if (type == typeof(object))
+                return new PropertyInfo[0];
+
+            var properties = new List<PropertyInfo>();
+
+            foreach (var property in type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+                properties.Add(property);
+
+            properties.AddRange(GetProperties(type.BaseType));
+
+            return properties;
         }
     }
 }

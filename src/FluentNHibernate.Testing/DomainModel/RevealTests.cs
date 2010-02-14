@@ -5,110 +5,108 @@ using System.Linq.Expressions;
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using FluentNHibernate.Utils;
+using Machine.Specifications;
 using NUnit.Framework;
+using MCatch=Machine.Specifications.Catch;
 
 namespace FluentNHibernate.Testing.DomainModel
 {
+    public class when_reveal_is_told_to_get_a_private_property
+    {
+        Because of = () =>
+            expression = Reveal.Property<StringTarget>("PrivateProperty");
+
+        It should_return_an_expression_for_the_private_property = () =>
+            expression.ShouldNotBeNull();
+
+        It should_create_an_expression_that_s_convertable_to_a_member = () =>
+            ReflectionHelper.GetProperty(expression).ToMember().Name.ShouldEqual("PrivateProperty");
+
+        static Expression<Func<StringTarget, object>> expression;
+    }
+
+    public class when_reveal_is_told_to_get_a_protected_property
+    {
+        Because of = () =>
+            expression = Reveal.Property<StringTarget>("ProtectedProperty");
+
+        It should_return_an_expression_for_the_protected_property = () =>
+            expression.ShouldNotBeNull();
+
+        It should_create_an_expression_that_s_convertable_to_a_member = () =>
+            ReflectionHelper.GetProperty(expression).ToMember().Name.ShouldEqual("ProtectedProperty");
+
+        static Expression<Func<StringTarget, object>> expression;
+    }
+
+    public class when_reveal_is_told_to_get_a_public_property
+    {
+        Because of = () =>
+            expression = Reveal.Property<StringTarget>("PublicProperty");
+
+        It should_return_an_expression_for_the_public_property = () =>
+            expression.ShouldNotBeNull();
+
+        It should_create_an_expression_that_s_convertable_to_a_member = () =>
+            ReflectionHelper.GetProperty(expression).ToMember().Name.ShouldEqual("PublicProperty");
+
+        static Expression<Func<StringTarget, object>> expression;
+    }
+
+    public class when_reveal_is_told_to_get_an_int_property
+    {
+        Because of = () =>
+            expression = Reveal.Property<StringTarget>("IntProperty");
+
+        It should_return_an_expression_for_the_public_property = () =>
+            expression.ShouldNotBeNull();
+
+        It should_create_an_expression_that_s_convertable_to_a_member = () =>
+            ReflectionHelper.GetProperty(expression).ToMember().Name.ShouldEqual("IntProperty");
+
+        static Expression<Func<StringTarget, object>> expression;
+    }
+
+    public class when_reveal_is_told_to_get_property_from_a_super_class
+    {
+        Because of = () =>
+            expression = Reveal.Property<StringTarget>("SuperProperty");
+
+        It should_return_an_expression_for_the_public_property = () =>
+            expression.ShouldNotBeNull();
+
+        It should_create_an_expression_that_s_convertable_to_a_member = () =>
+            ReflectionHelper.GetProperty(expression).ToMember().Name.ShouldEqual("SuperProperty");
+
+        static Expression<Func<StringTarget, object>> expression;
+    }
+
+    public class when_reveal_is_told_to_get_a_property_that_doesnt_exist
+    {
+        Because of = () =>
+            ex = MCatch.Exception(() => Reveal.Property<StringTarget>("UnknownProperty"));
+
+        It should_throw_an_unknown_property_exception = () =>
+        {
+            ex.ShouldNotBeNull();
+            ex.ShouldBeOfType<UnknownPropertyException>();
+        };
+
+        It should_throw_an_exception_with_the_correct_message = () =>
+            ex.Message.ShouldEqual("Could not find property 'UnknownProperty' on '" + typeof(StringTarget).FullName + "'");
+
+        It should_throw_an_exception_with_it_s_property_set_to_the_expected_name = () =>
+            ex.As<UnknownPropertyException>().Property.ShouldEqual("UnknownProperty");
+
+        It should_throw_an_exception_with_it_s_type_set_to_the_specified_type = () =>
+            ex.As<UnknownPropertyException>().Type.ShouldEqual(typeof(StringTarget));
+
+        static Exception ex;
+    }
+
     [TestFixture]
     public class RevealTests
     {
-        [Test]
-        public void Should_return_expression_for_private_property()
-        {
-            var expression = Reveal.Property<StringTarget>("PrivateProperty");
-
-            Assert.That(expression, Is.Not.Null);
-            Assert.That(ReflectionHelper.GetProperty(expression).ToMember().Name, Is.EqualTo("PrivateProperty"));
-        }
-
-        [Test]
-        public void Should_return_expression_for_protected_property()
-        {
-            var expression = Reveal.Property<StringTarget>("ProtectedProperty");
-
-            Assert.That(expression, Is.Not.Null);
-            Assert.That(ReflectionHelper.GetProperty(expression).ToMember().Name, Is.EqualTo("ProtectedProperty"));
-        }
-
-        [Test]
-        public void Should_return_expression_for_public_property()
-        {
-            var expression = Reveal.Property<StringTarget>("PublicProperty");
-
-            Assert.That(expression, Is.Not.Null);
-            Assert.That(ReflectionHelper.GetProperty(expression).ToMember().Name, Is.EqualTo("PublicProperty"));
-        }
-
-        [Test]
-        public void Should_throw_on_invalid_name()
-        {
-            var ex = Assert.Throws<UnknownPropertyException>(() => Reveal.Property<StringTarget>("UnknownProperty"),
-                "Could not find property 'UnknownProperty' on '" + typeof(StringTarget).FullName + "'");
-
-            ex.Property.ShouldEqual("UnknownProperty");
-            ex.Type.ShouldEqual(typeof(StringTarget));
-        }
-
-        [Test]
-        public void Can_map_using_string_name_on_private_property()
-        {
-            new MappingTester<StringTarget>()
-                .ForMapping(map =>
-                {
-                    map.Id(x => x.Id);
-                    map.Map(Reveal.Property<StringTarget>("PrivateProperty"));
-                })
-                .Element("class/property").HasAttribute("name", "PrivateProperty");
-        }
-
-        [Test]
-        public void Can_map_using_string_name_on_protected_property()
-        {
-            new MappingTester<StringTarget>()
-                .ForMapping(map =>
-                {
-                    map.Id(x => x.Id);
-                    map.Map(Reveal.Property<StringTarget>("ProtectedProperty"));
-                })
-                .Element("class/property").HasAttribute("name", "ProtectedProperty");
-        }
-
-        [Test]
-        public void Can_use_hasmany_using_string_name_on_private_property()
-        {
-            new MappingTester<StringTarget>()
-                .ForMapping(map =>
-                {
-                    map.Id(x => x.Id);
-                    map.HasMany<ExampleClass>(Reveal.Property<StringTarget>("PrivateCollection"));
-                })
-                .Element("class/bag").HasAttribute("name", "PrivateCollection");
-        }
-
-        [Test]
-        public void Can_use_hasone_using_string_name_on_private_property()
-        {
-            new MappingTester<StringTarget>()
-                .ForMapping(map =>
-                {
-                    map.Id(x => x.Id);
-                    map.HasOne(Reveal.Property<StringTarget, ExampleClass>("PrivateObject"));
-                })
-                .Element("class/one-to-one").HasAttribute("name", "PrivateObject");
-        }
-
-        [Test]
-        public void Can_use_dynamiccomponent_using_string_name_on_private_property()
-        {
-            new MappingTester<StringTarget>()
-                .ForMapping(map =>
-                {
-                    map.Id(x => x.Id);
-                    map.DynamicComponent(Reveal.Property<StringTarget, IDictionary>("PrivateDictionary"), x => { });
-                })
-                .Element("class/dynamic-component").HasAttribute("name", "PrivateDictionary");
-        }
-
         [Test]
         public void Can_use_manytomany_using_string_name_on_private_property()
         {
@@ -144,33 +142,9 @@ namespace FluentNHibernate.Testing.DomainModel
                 })
                 .Element("class/many-to-one").HasAttribute("name", "PrivateObject");
         }
-
-        [Test]
-        public void Can_use_version_using_string_name_on_private_property()
-        {
-            new MappingTester<StringTarget>()
-                .ForMapping(map =>
-                {
-                    map.Id(x => x.Id);
-                    map.Version(Reveal.Property<StringTarget>("PrivateObject"));
-                })
-                .Element("class/version").HasAttribute("name", "PrivateObject");
-        }
-
-        [Test]
-        public void Can_reveal_an_int_property()
-        {
-            Reveal.Property<StringTarget>("IntProperty");
-        }
-
-        [Test]
-        public void Can_reveal_a_Double_property()
-        {
-            Reveal.Property<StringTarget>("DoubleProperty");
-        }
     }
 
-    public class StringTarget
+    public class StringTarget : StringTargetParent
     {
         public int Id { get; set; }
         private Double DoubleProperty { get; set; }
@@ -181,5 +155,10 @@ namespace FluentNHibernate.Testing.DomainModel
         private IList<ExampleClass> PrivateCollection { get; set; }
         private IDictionary PrivateDictionary { get; set; }
         private ExampleClass PrivateObject { get; set; }
+    }
+
+    public abstract class StringTargetParent
+    {
+        private string SuperProperty { get; set; }
     }
 }
