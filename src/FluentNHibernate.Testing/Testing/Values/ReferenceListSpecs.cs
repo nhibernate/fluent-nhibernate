@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.Testing.Values;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using NHibernate;
 using NUnit.Framework;
 using Rhino.Mocks;

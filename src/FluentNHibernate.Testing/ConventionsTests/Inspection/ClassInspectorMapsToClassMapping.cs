@@ -10,7 +10,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Testing.DomainModel;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.Inspection

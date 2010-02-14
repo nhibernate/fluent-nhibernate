@@ -5,7 +5,7 @@ using System.Reflection;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.Inspection

@@ -27,7 +27,7 @@ namespace FluentNHibernate.Mapping
 
         public PropertyPart Map(Expression<Func<T, object>> expression, string columnName)
         {
-            return Map(ReflectionHelper.GetMember(expression), columnName);
+            return Map(expression.ToMember(), columnName);
         }
 
         protected virtual PropertyPart Map(Member property, string columnName)
@@ -49,7 +49,7 @@ namespace FluentNHibernate.Mapping
 
         public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> expression, string columnName)
         {
-            return References<TOther>(ReflectionHelper.GetMember(expression), columnName);
+            return References<TOther>(expression.ToMember(), columnName);
         }
 
         public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, object>> expression)
@@ -59,7 +59,7 @@ namespace FluentNHibernate.Mapping
 
         public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, object>> expression, string columnName)
         {
-            return References<TOther>(ReflectionHelper.GetMember(expression), columnName);
+            return References<TOther>(expression.ToMember(), columnName);
         }
 
         protected virtual ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
@@ -76,7 +76,7 @@ namespace FluentNHibernate.Mapping
 
         public AnyPart<TOther> ReferencesAny<TOther>(Expression<Func<T, TOther>> expression)
         {
-            return ReferencesAny<TOther>(ReflectionHelper.GetMember(expression));
+            return ReferencesAny<TOther>(expression.ToMember());
         }
 
         protected virtual AnyPart<TOther> ReferencesAny<TOther>(Member property)
@@ -90,12 +90,12 @@ namespace FluentNHibernate.Mapping
 
         public OneToOnePart<TOther> HasOne<TOther>(Expression<Func<T, Object>> expression)
         {
-            return HasOne<TOther>(ReflectionHelper.GetMember(expression));
+            return HasOne<TOther>(expression.ToMember());
         }
 
         public OneToOnePart<TOther> HasOne<TOther>(Expression<Func<T, TOther>> expression)
         {
-            return HasOne<TOther>(ReflectionHelper.GetMember(expression));
+            return HasOne<TOther>(expression.ToMember());
         }
 
         protected virtual OneToOnePart<TOther> HasOne<TOther>(Member property)
@@ -109,7 +109,7 @@ namespace FluentNHibernate.Mapping
 
         public DynamicComponentPart<IDictionary> DynamicComponent(Expression<Func<T, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action)
         {
-            return DynamicComponent(ReflectionHelper.GetMember(expression), action);
+            return DynamicComponent(expression.ToMember(), action);
         }
 
         protected DynamicComponentPart<IDictionary> DynamicComponent(Member property, Action<DynamicComponentPart<IDictionary>> action)
@@ -148,7 +148,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="action">Component mapping</param>
         public ComponentPart<TComponent> Component<TComponent>(Expression<Func<T, TComponent>> expression, Action<ComponentPart<TComponent>> action)
         {
-            return Component(ReflectionHelper.GetMember(expression), action);
+            return Component(expression.ToMember(), action);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="action">Component mapping</param>
         public ComponentPart<TComponent> Component<TComponent>(Expression<Func<T, object>> expression, Action<ComponentPart<TComponent>> action)
         {
-            return Component(ReflectionHelper.GetMember(expression), action);
+            return Component(expression.ToMember(), action);
         }
         
         protected virtual ComponentPart<TComponent> Component<TComponent>(Member property, Action<ComponentPart<TComponent>> action)
@@ -182,7 +182,7 @@ namespace FluentNHibernate.Mapping
         /// <returns>one-to-many part</returns>
         private OneToManyPart<TChild> MapHasMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
         {
-            return HasMany<TChild>(ReflectionHelper.GetMember(expression));
+            return HasMany<TChild>(expression.ToMember());
         }
 
         protected virtual OneToManyPart<TChild> HasMany<TChild>(Member member)
@@ -237,7 +237,7 @@ namespace FluentNHibernate.Mapping
         /// <returns>many-to-many part</returns>
         private ManyToManyPart<TChild> MapHasManyToMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
         {
-            return HasManyToMany<TChild>(ReflectionHelper.GetMember(expression));
+            return HasManyToMany<TChild>(expression.ToMember());
         }
 
         protected virtual ManyToManyPart<TChild> HasManyToMany<TChild>(Member property)

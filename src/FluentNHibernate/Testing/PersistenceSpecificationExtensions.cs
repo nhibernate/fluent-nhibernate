@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using FluentNHibernate.Testing.Values;
 using FluentNHibernate.Utils;
 using System.Collections;
+using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.Testing
 {

@@ -3,10 +3,34 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace FluentNHibernate.Utils
+namespace FluentNHibernate.Utils.Reflection
 {
     public static class ReflectionHelper
     {
+        public static Member GetMember<TModel, TReturn>(Expression<Func<TModel, TReturn>> expression)
+        {
+            return GetMember(expression.Body);
+        }
+
+        public static Member GetMember<TModel>(Expression<Func<TModel, object>> expression)
+        {
+            return GetMember(expression.Body);
+        }
+
+        public static Accessor GetAccessor<MODEL>(Expression<Func<MODEL, object>> expression)
+        {
+            MemberExpression memberExpression = GetMemberExpression(expression.Body);
+
+            return getAccessor(memberExpression);
+        }
+
+        public static Accessor GetAccessor<MODEL, T>(Expression<Func<MODEL, T>> expression)
+        {
+            MemberExpression memberExpression = GetMemberExpression(expression.Body);
+
+            return getAccessor(memberExpression);
+        }
+
         private static bool IsIndexedPropertyAccess(Expression expression)
         {
             return IsMethodExpression(expression) && expression.ToString().Contains("get_Item");
@@ -27,16 +51,6 @@ namespace FluentNHibernate.Utils
             var memberExpression = GetMemberExpression(expression);
 
             return memberExpression.Member.ToMember();
-        }
-
-        public static Member GetMember<TModel, TReturn>(Expression<Func<TModel, TReturn>> expression)
-        {
-            return GetMember(expression.Body);
-        }
-
-        public static Member GetMember<TModel>(Expression<Func<TModel, object>> expression)
-        {
-            return GetMember(expression.Body);
         }
 
         private static PropertyInfo GetDynamicComponentProperty(Expression expression)
@@ -93,13 +107,6 @@ namespace FluentNHibernate.Utils
             return memberExpression;
         }
 
-        public static Accessor GetAccessor<MODEL>(Expression<Func<MODEL, object>> expression)
-        {
-            MemberExpression memberExpression = GetMemberExpression(expression.Body);
-
-            return getAccessor(memberExpression);
-        }
-
         private static Accessor getAccessor(MemberExpression memberExpression)
         {
             var list = new List<Member>();
@@ -117,13 +124,6 @@ namespace FluentNHibernate.Utils
 
             list.Reverse();
             return new PropertyChain(list.ToArray());
-        }
-
-        public static Accessor GetAccessor<MODEL, T>(Expression<Func<MODEL, T>> expression)
-        {
-            MemberExpression memberExpression = GetMemberExpression(expression.Body);
-
-            return getAccessor(memberExpression);
         }
     }
 }

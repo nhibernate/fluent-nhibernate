@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq.Expressions;
 using FluentNHibernate.Testing.Values;
 using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 using Rhino.Mocks;
 

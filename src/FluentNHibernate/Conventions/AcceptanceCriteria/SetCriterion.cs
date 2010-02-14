@@ -17,7 +17,7 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
 
         public bool IsSatisfiedBy<T>(Expression<Func<T, object>> expression, T inspector) where T : IInspector
         {
-            var member = ReflectionHelper.GetMember(expression);
+            var member = expression.ToMember();
             var result = inspector.IsSet(member);
 
             return inverse ? !result : result;

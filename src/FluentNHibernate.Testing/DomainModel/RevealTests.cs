@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Testing.DomainModel.Mapping;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using Machine.Specifications;
 using NUnit.Framework;
 using MCatch=Machine.Specifications.Catch;

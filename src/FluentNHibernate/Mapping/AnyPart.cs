@@ -52,7 +52,7 @@ namespace FluentNHibernate.Mapping
 
         public AnyPart<T> IdentityType(Expression<Func<T, object>> expression)
         {
-            return IdentityType(ReflectionHelper.GetMember(expression).PropertyType);
+            return IdentityType(expression.ToMember().PropertyType);
         }
 
         public AnyPart<T> IdentityType<TIdentity>()

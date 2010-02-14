@@ -8,7 +8,7 @@ using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping

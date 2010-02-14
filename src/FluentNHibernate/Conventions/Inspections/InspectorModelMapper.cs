@@ -11,7 +11,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public void Map(Expression<Func<TInspector, object>> inspectorProperty, Expression<Func<TMapping, object>> mappingProperty)
         {
-            Map(ReflectionHelper.GetMember(inspectorProperty), mappingProperty);
+            Map(inspectorProperty.ToMember(), mappingProperty);
         }
 
         public void Map(Expression<Func<TInspector, object>> inspectorProperty, string mappingProperty)

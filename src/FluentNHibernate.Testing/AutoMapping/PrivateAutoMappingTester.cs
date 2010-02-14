@@ -7,7 +7,7 @@ using System.Text;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 using System.Linq.Expressions;
 

@@ -33,7 +33,7 @@ namespace FluentNHibernate.Utils
 
         public Accessor GetChildAccessor<T>(Expression<Func<T, object>> expression)
         {
-            var property = ReflectionHelper.GetMember(expression);
+            var property = expression.ToMember();
             return new PropertyChain(new[] {member, property});
         }
 
@@ -56,7 +56,7 @@ namespace FluentNHibernate.Utils
 
         public static SingleMember Build<T>(Expression<Func<T, object>> expression)
         {
-            var member = ReflectionHelper.GetMember(expression);
+            var member = expression.ToMember();
             return new SingleMember(member);
         }
 

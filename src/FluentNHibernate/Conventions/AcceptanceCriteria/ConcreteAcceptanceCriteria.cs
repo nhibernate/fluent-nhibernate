@@ -42,9 +42,9 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
             return this;
         }
 
-        public IAcceptanceCriteria<TInspector> Expect(Expression<Func<TInspector, string>> propertyExpression, IAcceptanceCriterion value)
+        public IAcceptanceCriteria<TInspector> Expect(Expression<Func<TInspector, string>> expression, IAcceptanceCriterion value)
         {
-            var member = ReflectionHelper.GetMember(propertyExpression);
+            var member = expression.ToMember();
             var castedExpression = ExpressionBuilder.Create<TInspector>(member);
             var expectation = CreateExpectation(castedExpression, value);
 

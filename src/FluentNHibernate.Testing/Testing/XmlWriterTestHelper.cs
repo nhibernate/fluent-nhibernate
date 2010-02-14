@@ -7,6 +7,7 @@ using System.Xml;
 using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.MappingModel;
 using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Testing

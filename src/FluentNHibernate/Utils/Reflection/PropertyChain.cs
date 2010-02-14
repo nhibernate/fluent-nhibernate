@@ -64,7 +64,7 @@ namespace FluentNHibernate.Utils
 
         public Accessor GetChildAccessor<T>(Expression<Func<T, object>> expression)
         {
-            var member = ReflectionHelper.GetMember(expression);
+            var member = expression.ToMember();
             var list = new List<Member>(_chain);
             list.Add(innerMember.InnerMember);
             list.Add(member);

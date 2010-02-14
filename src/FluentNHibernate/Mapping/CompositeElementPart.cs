@@ -32,7 +32,7 @@ namespace FluentNHibernate.Mapping
 
         public PropertyPart Map(Expression<Func<T, object>> expression, string columnName)
         {
-            return Map(ReflectionHelper.GetMember(expression), columnName);
+            return Map(expression.ToMember(), columnName);
         }
 
         protected virtual PropertyPart Map(Member property, string columnName)
@@ -54,7 +54,7 @@ namespace FluentNHibernate.Mapping
 
         public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> expression, string columnName)
         {
-            return References<TOther>(ReflectionHelper.GetMember(expression), columnName);
+            return References<TOther>(expression.ToMember(), columnName);
         }
 
         protected virtual ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
@@ -72,11 +72,11 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Maps a property of the component class as a reference back to the containing entity
         /// </summary>
-        /// <param name="exp">Parent reference property</param>
+        /// <param name="expression">Parent reference property</param>
         /// <returns>Component being mapped</returns>
-        public CompositeElementPart<T> ParentReference(Expression<Func<T, object>> exp)
+        public CompositeElementPart<T> ParentReference(Expression<Func<T, object>> expression)
         {
-            var member = ReflectionHelper.GetMember(exp);
+            var member = expression.ToMember();
             attributes.Set(x => x.Parent, new ParentMapping
             {
                 Name = member.Name,

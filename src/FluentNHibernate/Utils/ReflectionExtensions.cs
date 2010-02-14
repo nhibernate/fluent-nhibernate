@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.Utils
 {

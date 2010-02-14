@@ -11,7 +11,7 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {

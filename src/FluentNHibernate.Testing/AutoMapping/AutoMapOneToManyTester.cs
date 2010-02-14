@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using Iesi.Collections.Generic;
 using NUnit.Framework;
 
