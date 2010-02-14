@@ -46,6 +46,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.Where))
                 element.WithAtt("where", mapping.Where);
+
+            if (mapping.HasValue(x => x.EntityName))
+                element.WithAtt("entity-name", mapping.EntityName);
         }
 
         public override void Visit(ColumnMapping mapping)

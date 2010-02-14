@@ -11,10 +11,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     {
         private XmlOneToManyWriter writer;
 
+        [SetUp]
+        public void SetUp()
+        {
+            writer = new XmlOneToManyWriter();
+        }
+
         [Test]
         public void ShouldWriteClassAttribute()
         {
-            writer = new XmlOneToManyWriter();
             var testHelper = new XmlWriterTestHelper<OneToManyMapping>();
             testHelper.Check(x => x.Class, new TypeReference("type")).MapsToAttribute("class");
 
@@ -24,9 +29,17 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteNotFoundAttribute()
         {
-            writer = new XmlOneToManyWriter();
             var testHelper = new XmlWriterTestHelper<OneToManyMapping>();
             testHelper.Check(x => x.NotFound, "nf").MapsToAttribute("not-found");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteEntityName()
+        {
+            var testHelper = new XmlWriterTestHelper<OneToManyMapping>();
+            testHelper.Check(x => x.EntityName, "name1").MapsToAttribute("entity-name");
 
             testHelper.VerifyAll(writer);
         }

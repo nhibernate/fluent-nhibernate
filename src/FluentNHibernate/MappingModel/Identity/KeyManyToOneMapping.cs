@@ -54,9 +54,16 @@ namespace FluentNHibernate.MappingModel.Identity
             set { attributes.Set(x => x.NotFound, value); }
         }
 
+        public string EntityName
+        {
+            get { return attributes.Get(x => x.EntityName); }
+            set { attributes.Set(x => x.EntityName, value); }
+        }
+
         public IEnumerable<ColumnMapping> Columns
         {
-            get {
+            get
+            {
                 return columns;
             }
         }
