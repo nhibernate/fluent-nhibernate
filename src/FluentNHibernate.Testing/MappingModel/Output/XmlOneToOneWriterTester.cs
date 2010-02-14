@@ -75,7 +75,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             writer = new XmlOneToOneWriter();
             var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
-            testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
+            testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy", "proxy");
 
             testHelper.VerifyAll(writer);
         }
@@ -96,6 +96,16 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer = new XmlOneToOneWriter();
             var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
             testHelper.Check(x => x.PropertyRef, "pr").MapsToAttribute("property-ref");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteEntityNameAttribute()
+        {
+            writer = new XmlOneToOneWriter();
+            var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
+            testHelper.Check(x => x.EntityName, "name1").MapsToAttribute("entity-name");
 
             testHelper.VerifyAll(writer);
         }

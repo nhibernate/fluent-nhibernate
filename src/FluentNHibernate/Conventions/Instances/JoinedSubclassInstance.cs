@@ -42,14 +42,12 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Abstract()
         {
-            if (mapping.IsSpecified("Abstract"))
-                return;
-
-            mapping.Abstract = nextBool;
+            if (!mapping.IsSpecified("Abstract"))
+                mapping.Abstract = nextBool;
             nextBool = true;
         }
 
-        public void Check(string constraint)
+        public new void Check(string constraint)
         {
             if (!mapping.IsSpecified("Check"))
                 mapping.Check = constraint;
@@ -57,28 +55,22 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void DynamicInsert()
         {
-            if (mapping.IsSpecified("DynamicInsert"))
-                return;
-
-            mapping.DynamicInsert = nextBool;
+            if (!mapping.IsSpecified("DynamicInsert"))
+                mapping.DynamicInsert = nextBool;
             nextBool = true;
         }
 
         public new void DynamicUpdate()
         {
-            if (mapping.IsSpecified("DynamicUpdate"))
-                return;
-
-            mapping.DynamicUpdate = nextBool;
+            if (!mapping.IsSpecified("DynamicUpdate"))
+                mapping.DynamicUpdate = nextBool;
             nextBool = true;
         }
 
         public new void LazyLoad()
         {
-            if (mapping.IsSpecified("Lazy"))
-                return;
-
-            mapping.Lazy = nextBool;
+            if (!mapping.IsSpecified("Lazy"))
+                mapping.Lazy = nextBool;
             nextBool = true;
         }
 
@@ -102,10 +94,8 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void SelectBeforeUpdate()
         {
-            if (mapping.IsSpecified("SelectBeforeUpdate"))
-                return;
-
-            mapping.SelectBeforeUpdate = nextBool;
+            if (!mapping.IsSpecified("SelectBeforeUpdate"))
+                mapping.SelectBeforeUpdate = nextBool;
             nextBool = true;
         }
 

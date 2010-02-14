@@ -41,10 +41,8 @@ namespace FluentNHibernate.Conventions.Inspections
         public new void Inverse()
         {
             if (!mapping.IsSpecified("Inverse"))
-            {
                 mapping.Inverse = nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new IKeyInstance Key
@@ -55,10 +53,8 @@ namespace FluentNHibernate.Conventions.Inspections
         public new void Optional()
         {
             if (!mapping.IsSpecified("Optional"))
-            {
                 mapping.Optional = nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new void Schema(string schema)

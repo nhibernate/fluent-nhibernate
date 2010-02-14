@@ -89,11 +89,33 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
                 .ShouldBeFalse();
         }
 
+        [Test]
+        public void LengthMapped()
+        {
+            mapping.Length = 50;
+            inspector.Length.ShouldEqual(50);
+        }
+
+        [Test]
+        public void LengthIsSet()
+        {
+            mapping.Length = 50;
+            inspector.IsSet(Prop(x => x.Length))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void LengthIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Length))
+                .ShouldBeFalse();
+        }
+
         #region Helpers
 
-        private PropertyInfo Prop(Expression<Func<IElementInspector, object>> propertyExpression)
+        private Member Prop(Expression<Func<IElementInspector, object>> propertyExpression)
         {
-            return ReflectionHelper.GetProperty(propertyExpression);
+            return ReflectionHelper.GetProperty(propertyExpression).ToMember();
         }
 
         #endregion

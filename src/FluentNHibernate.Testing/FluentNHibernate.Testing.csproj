@@ -12,19 +12,21 @@
     <AssemblyName>FluentNHibernate.Testing</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>..\FluentKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>169</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -40,6 +42,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="Machine.Specifications, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\mspec\Machine.Specifications.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate, Version=2.0.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
@@ -53,6 +59,7 @@
       <HintPath>..\..\tools\rhino\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -61,6 +68,9 @@
       <HintPath>..\..\tools\sqlite\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -75,6 +85,7 @@
     <Compile Include="AutoMapping\Apm\AlterationCollectionTests.cs" />
     <Compile Include="AutoMapping\Apm\AlterationTests.cs" />
     <Compile Include="AutoMapping\Apm\AutoMappedPropertyEnumerablesTests.cs" />
+    <Compile Include="AutoMapping\Apm\ConcreteBaseClassTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\VersionConventionTests.cs" />
     <Compile Include="AutoMapping\AutoMapVersionTester.cs" />
     <Compile Include="AutoMapping\Overrides\AutoMappingOverrideAlterationTests.cs" />
@@ -96,25 +107,31 @@
     <Compile Include="AutoMapping\JoinedSubclassConventionTests.cs" />
     <Compile Include="AutoMapping\ManyToMany.cs" />
     <Compile Include="AutoMapping\ManyToManyAutomapperTester.cs" />
+    <Compile Include="AutoMapping\Overrides\ClassMappingOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\CompositeIdOverrides.cs" />
+    <Compile Include="AutoMapping\Overrides\HibernateMappingOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\ParentOverridesWithSubclasses.cs" />
     <Compile Include="AutoMapping\PrivateAutoMappingTester.cs" />
-    <Compile Include="AutoMapping\StubTypeSource.cs" />
+    <Compile Include="StubTypeSource.cs" />
     <Compile Include="AutoMapping\TestFixtures.cs" />
     <Compile Include="AutoMapping\XXAppenderPropertyConvention.cs" />
+    <Compile Include="Cfg\Db\DB2ConfigurationTester.cs" />
     <Compile Include="Cfg\Db\OracleClientConfigurationTester.cs" />
     <Compile Include="Cfg\Db\JetDriverConfigurationTester.cs" />
     <Compile Include="Cfg\Db\OracleDataClientConfigurationTester.cs" />
+    <Compile Include="Cfg\ExceptionSerializationTests.cs" />
     <Compile Include="ConventionFinderTests\AddingTypeTests.cs" />
-    <Compile Include="ConventionFinderTests\FindTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaCollectionTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaAnyTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaInheritanceTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaIsAnyTests.cs" />
+    <Compile Include="ConventionsTests\AccessConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\ArrayConventionTests.cs" />
+    <Compile Include="ConventionsTests\ApplyingToModel\CompositeIdConventionTests.cs" />
+    <Compile Include="ConventionsTests\ApplyingToModel\KeyManyToOneConventionTests.cs" />
+    <Compile Include="ConventionsTests\ApplyingToModel\KeyPropertyConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\HibernateMappingConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\JoinConventionTests.cs" />
-    <Compile Include="ConventionsTests\AutoImportHelperTests.cs" />
     <Compile Include="ConventionsTests\ConventionsCollectionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\ClassConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\ComponentConventionTests.cs" />
@@ -130,14 +147,48 @@
     <Compile Include="ConventionsTests\ApplyingToModel\PropertyConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\SubclassConventionTests.cs" />
     <Compile Include="ConventionsTests\ApplyingToModel\VersionConventionTests.cs" />
-    <Compile Include="ConventionsTests\DefaultAccessHelperTests.cs" />
-    <Compile Include="ConventionsTests\DefaultCascadeHelperTests.cs" />
-    <Compile Include="ConventionsTests\DefaultLazyHelperTests.cs" />
+    <Compile Include="ConventionFinderTests\FindTests.cs" />
     <Compile Include="ConventionsTests\ForeignKeyConventionTests.cs" />
     <Compile Include="ConventionsTests\Inspection\HibernateMappingInspectorMapsToHibernateMapping.cs" />
     <Compile Include="ConventionsTests\Inspection\ValueTypes\SchemaActionTests.cs" />
+    <Compile Include="DomainModel\InverseOneToManyTester.cs" />
+    <Compile Include="DomainModel\Mapping\StoredProcedureTests.cs" />
+    <Compile Include="FluentInterfaceTests\ColumnPartTests.cs" />
+    <Compile Include="FluentInterfaceTests\ComponentMapSpecs.cs" />
+    <Compile Include="ConventionsTests\OverridingFluentInterface\CompositeIdConventionTests.cs" />
+    <Compile Include="ConventionsTests\OverridingFluentInterface\KeyManyToOneConventionTests.cs" />
+    <Compile Include="ConventionsTests\OverridingFluentInterface\KeyPropertyConventionTests.cs" />
+    <Compile Include="DomainModel\Access\ComponentModel.cs" />
+    <Compile Include="DomainModel\Access\CompositeIdModel.cs" />
+    <Compile Include="DomainModel\Access\ManyToManyModel.cs" />
+    <Compile Include="DomainModel\Access\ManyToOneModel.cs" />
+    <Compile Include="DomainModel\Access\Mappings\CompositeIdModelMapping.cs" />
+    <Compile Include="DomainModel\Access\Mappings\ManyToManyModelMapping.cs" />
+    <Compile Include="DomainModel\Access\Mappings\ManyToOneModelMapping.cs" />
+    <Compile Include="DomainModel\Access\Mappings\OneToOneModelMapping.cs" />
+    <Compile Include="DomainModel\Access\Mappings\ParentModelMapping.cs" />
+    <Compile Include="DomainModel\Access\OneToOneModel.cs" />
+    <Compile Include="DomainModel\Access\ParentModel.cs" />
+    <Compile Include="FluentInterfaceTests\ElementPartTests.cs" />
+    <Compile Include="DomainModel\Mapping\FilterTester.cs" />
+    <Compile Include="FluentInterfaceTests\ClassMapFilterPartModelGenerationTests.cs" />
+    <Compile Include="FluentInterfaceTests\KeyManyToOnePartTests.cs" />
+    <Compile Include="FluentInterfaceTests\KeyPropertyPartTests.cs" />
+    <Compile Include="FluentInterfaceTests\ManyToManyPartAsTernaryTests.cs" />
+    <Compile Include="FluentInterfaceTests\OneToManyPartAsTernaryTests.cs" />
+    <Compile Include="FluentInterfaceTests\StoredProcedurePartGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\WhereTests.cs" />
+    <Compile Include="MappingModel\Equality\CollectionContentEqualitySpecs.cs" />
+    <Compile Include="MappingModel\Defaults\MutableDefaultsTester.cs" />
+    <Compile Include="MappingModel\Equality\MappingEqualitySpecs.cs" />
+    <Compile Include="MappingModel\Output\ExternalComponentOutputSpecs.cs" />
     <Compile Include="MappingModel\Output\XmlDiscriminatorWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlFilterDefinitionWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlFilterWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlReferenceComponentWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlStoredProcedureWriterTester.cs" />
+    <Compile Include="MappingModel\Output\XmlTuplizerWriterTester.cs" />
+    <Compile Include="MappingModel\ReferenceComponentMappingSpecs.cs" />
     <Compile Include="ModelTestExtensions.cs" />
     <Compile Include="ConventionsTests\MultipleHelperConventions.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\ArrayConventionTests.cs" />
@@ -209,6 +260,7 @@
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaTests.cs" />
     <Compile Include="ConventionsTests\MixedConventionInstanceTester.cs" />
     <Compile Include="ConventionsTests\OptionalAcceptTests.cs" />
+    <Compile Include="ConventionsTests\ProxyConventionTester.cs" />
     <Compile Include="ConventionsTests\RunnableConventionsTests.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapConventionsTester.cs" />
     <Compile Include="DomainModel\Mapping\ClassMapDynamicInsertTester.cs" />
@@ -302,7 +354,6 @@
     <Compile Include="FluentInterfaceTests\JoinedSubclassMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\DiscriminatorMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ManyToManyMutablePropertyModelGenerationTests.cs" />
-    <Compile Include="FluentInterfaceTests\ManyToManySubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ManyToOneMutablePropertyModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\ModelTester.cs" />
     <Compile Include="FluentInterfaceTests\OneToManyMutablePropertyModelGenerationTests.cs" />
@@ -358,7 +409,13 @@
     <Compile Include="MappingModel\Output\XmlVersionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
     <Compile Include="PersistenceModelTests\JoinPersistenceModelTests.cs" />
+    <Compile Include="PersistenceModelTests\PersistenceModelSpecs.AddingProviders.cs" />
+    <Compile Include="PersistenceModelTests\SeparateSubclassVisitorFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PersistenceModelTests\SubclassPersistenceModelTests.cs" />
+    <Compile Include="Serialization\SerializationFixture.cs" />
+    <Compile Include="Testing\PersistenceSpecificationExtensionsSpecs.cs" />
     <Compile Include="Testing\PersistenceSpecificationTester.cs" />
     <Compile Include="Testing\PersistenceSpecificationTransactionTest.cs" />
     <Compile Include="Testing\SessionSourceConfigurationTester.cs" />
@@ -371,10 +428,19 @@
     <Compile Include="MappingModel\ClassMappingTester.cs" />
     <Compile Include="MappingModel\HibernateMappingTester.cs" />
     <Compile Include="MappingModel\MappingTestingExtensions.cs" />
+    <Compile Include="Testing\Values\ListSpecs.cs" />
+    <Compile Include="Testing\Values\ReferenceListSpecs.cs" />
+    <Compile Include="Testing\Values\ReferencePropertySpecs.cs" />
+    <Compile Include="Testing\Values\PropertySpecs.cs" />
+    <Compile Include="Testing\Values\Entities.cs" />
+    <Compile Include="Utils\Mock.cs" />
     <Compile Include="Utils\ReflectionHelperTests.cs" />
     <Compile Include="Testing\XmlWriterTestHelper.cs" />
+    <Compile Include="Utils\Stub.cs" />
     <Compile Include="Utils\TypeReferenceEqualityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Visitors\ComponentColumnPrefixVisitorSpecs.cs" />
+    <Compile Include="Visitors\ComponentReferenceResolutionVisitorSpecs.cs" />
     <Compile Include="Xml\MappingXmlTestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -393,9 +459,30 @@
       <Link>FluentKey.snk</Link>
     </None>
     <None Include="App.config" />
+    <Compile Include="AutoMapping\Apm\AutomappingSpecs.ElementCollections.cs" />
+    <Compile Include="AutoMapping\Apm\FakeMembers.cs" />
+    <Compile Include="ConventionsTests\AutoImportHelperTests.cs" />
+    <Compile Include="ConventionsTests\DefaultAccessHelperTests.cs" />
+    <Compile Include="ConventionsTests\DefaultCascadeHelperTests.cs" />
+    <Compile Include="ConventionsTests\DefaultLazyHelperTests.cs" />
+    <Compile Include="ConventionsTests\ProxyHelperTests.cs" />
+    <Compile Include="FluentInterfaceTests\ClasslikeBehaviors.cs" />
+    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.Cache.cs" />
+    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.Component.cs" />
+    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.HasMany.cs" />
+    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.HasOne.cs" />
+    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.Property.cs" />
+    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.Discriminator.cs" />
+    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.Subclass.cs" />
+    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.Version.cs" />
+    <Compile Include="FluentInterfaceTests\SubclassMapSpecs\SubclassMapSpecs.HasMany.cs" />
+    <Compile Include="FluentInterfaceTests\SubclassMapSpecs\SubclassMapSpecs.HasOne.cs" />
+    <Compile Include="FluentInterfaceTests\SubclassMapSpecs\SubclassMapSpecs.Component.cs" />
+    <Compile Include="FluentInterfaceTests\SubclassMapSpecs\SubclassMapSpecs.Property.cs" />
+    <Compile Include="PersistenceModelTests\PersistenceModelSpecs.Validation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\tools\NHibernate\nhib2.1\NHibernate.ByteCode.Castle.dll">
+    <Content Include="..\..\tools\NHibernate\NHibernate.ByteCode.Castle.dll">
       <Link>NHibernate.ByteCode.Castle.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

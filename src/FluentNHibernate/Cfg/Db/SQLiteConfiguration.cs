@@ -30,5 +30,11 @@ namespace FluentNHibernate.Cfg.Db
             return ConnectionString(c => c
                 .Is(string.Format("Data Source={0};Version=3;New=True;", fileName)));
         }
+
+        public SQLiteConfiguration UsingFileWithPassword(string fileName, string password)
+        {
+            return ConnectionString(c => c
+                .Is(string.Format("Data Source={0};Version=3;New=True;Password={1};", fileName, password)));
+        }
     }
 }

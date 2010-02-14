@@ -115,6 +115,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         private void Mapping(Action<OneToOnePart<ExampleParentClass>> mappingDefinition)
         {
             var classMap = new ClassMap<ExampleClass>();
+            classMap.Id(x => x.Id);
             var map = classMap.HasOne(x => x.Parent);
 
             mappingDefinition(map);

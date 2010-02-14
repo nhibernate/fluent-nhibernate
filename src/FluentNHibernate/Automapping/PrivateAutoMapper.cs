@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -24,7 +25,7 @@ namespace FluentNHibernate.Automapping
             if (rule == null)
                 throw new InvalidOperationException("The FindMappablePrivateProperties convention must be supplied to use the PrivateAutoMapper. ");
 
-            foreach (var property in entityType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic))
+            foreach (var property in entityType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic).Select(x => x.ToMember()))
             {
                 if (rule(property))
                     TryToMapProperty(mapping, property, mappedProperties);

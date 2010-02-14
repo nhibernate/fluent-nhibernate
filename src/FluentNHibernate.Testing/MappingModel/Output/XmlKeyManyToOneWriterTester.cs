@@ -82,5 +82,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer.VerifyXml(mapping)
                 .Element("column").Exists();
         }
+
+        [Test]
+        public void ShouldWriteEntityName()
+        {
+            var testHelper = new XmlWriterTestHelper<KeyManyToOneMapping>();
+            testHelper.Check(x => x.EntityName, "name1").MapsToAttribute("entity-name");
+
+            testHelper.VerifyAll(writer);
+        }
     }
 }

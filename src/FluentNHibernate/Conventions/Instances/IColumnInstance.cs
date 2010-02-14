@@ -4,6 +4,6 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public interface IColumnInstance : IColumnInspector
     {
-        void Length(int length);
+        new void Length(int length);
     }
 }

@@ -59,6 +59,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 				.Element("class/composite-id/key-many-to-one/column").HasAttribute("name", "SomeColumn");
 		}
 
+	    [Test]
+	    public void KeyManyToOneForeignKey()
+	    {
+            new MappingTester<CompIdTarget>()
+                .ForMapping(c => c.CompositeId().KeyReference(x => x.Child, "SomeColumn", p => p.ForeignKey("fk1")))
+                .Element("class/composite-id/key-many-to-one").HasAttribute("foreign-key", "fk1");
+	    }
+
+
 		[Test]
 		public void MixedKeyPropertyAndManyToOne()
 		{
@@ -86,7 +95,26 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/*[1]").HasName("composite-id");
         }
 
+        [Test]
+        public void ComponentNamesAreSet()
+        {
+            new MappingTester<CompIdTarget>()
+                .ForMapping(c => c.CompositeId(x => x.Child).KeyProperty(x => x.ChildId))
+                .Element("class/composite-id/key-property")
+                .HasAttribute("name", "ChildId")
+                .RootElement.Element("class/composite-id")
+                .HasAttribute("name", "Child");
+          
+        }
 
+	    [Test]
+	    public void KeyPropertyCustomType()
+	    {
+	        new MappingTester<CompIdTarget>()
+	            .ForMapping(c => c.CompositeId(x => x.Child).KeyProperty(x => x.ChildId, kp => kp.Type(typeof(int))))
+	            .Element("class/composite-id/key-property")
+	            .HasAttribute("type", typeof(int).AssemblyQualifiedName);
+	    }
 
 		public class CompIdTarget
 		{

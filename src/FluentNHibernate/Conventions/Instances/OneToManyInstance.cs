@@ -1,4 +1,6 @@
+using System;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -23,6 +25,16 @@ namespace FluentNHibernate.Conventions.Instances
                         mapping.NotFound = value;
                 });
             }
+        }
+
+        public void CustomClass<T>()
+        {
+            mapping.Class = new TypeReference(typeof(T));
+        }
+
+        public void CustomClass(Type type)
+        {
+            mapping.Class = new TypeReference(type);
         }
 
 		public new IEntityNameInstance EntityName

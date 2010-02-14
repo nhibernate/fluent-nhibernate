@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Utils;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
@@ -25,10 +27,10 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             visitor.ProcessCompositeElement(this);
 
-            mappedMembers.AcceptVisitor(visitor);
-
             if (Parent != null)
                 visitor.Visit(Parent);
+
+            mappedMembers.AcceptVisitor(visitor);
         }
 
         public TypeReference Class
@@ -78,6 +80,32 @@ namespace FluentNHibernate.MappingModel.Collections
         public void SetDefaultValue<TResult>(Expression<Func<CompositeElementMapping, TResult>> property, TResult value)
         {
             attributes.SetDefault(property, value);
+        }
+
+        public bool Equals(CompositeElementMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.mappedMembers, mappedMembers) && Equals(other.attributes, attributes) && Equals(other.ContainingEntityType, ContainingEntityType);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(CompositeElementMapping)) return false;
+            return Equals((CompositeElementMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = (mappedMembers != null ? mappedMembers.GetHashCode() : 0);
+                result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+                result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+                return result;
+            }
         }
     }
 }

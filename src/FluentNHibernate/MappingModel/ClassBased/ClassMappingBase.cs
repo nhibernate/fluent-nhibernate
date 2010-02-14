@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
@@ -63,9 +64,19 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mappedMembers.Joins; }
         }
 
+        public IEnumerable<FilterMapping> Filters
+        {
+            get { return mappedMembers.Filters; }
+        }
+
         public IEnumerable<ISubclassMapping> Subclasses
         {
             get { return subclasses; }
+        }
+
+        public IEnumerable<StoredProcedureMapping> StoredProcedures
+        {
+            get { return mappedMembers.StoredProcedures; }
         }
 
         public void AddProperty(PropertyMapping property)
@@ -133,11 +144,20 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers.AddJoin(mapping);
         }
 
+        public void AddFilter(FilterMapping mapping)
+        {
+            mappedMembers.AddFilter(mapping);
+        }
+
         public void AddSubclass(ISubclassMapping subclass)
         {
             subclasses.Add(subclass);
         }
 
+        public void AddStoredProcedure(StoredProcedureMapping mapping)
+        {
+            mappedMembers.AddStoredProcedure(mapping);
+        }
         #endregion
 
         public override string ToString()
@@ -146,5 +166,29 @@ namespace FluentNHibernate.MappingModel.ClassBased
         }
 
         public abstract void MergeAttributes(AttributeStore store);
+
+        public bool Equals(ClassMappingBase other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.mappedMembers, mappedMembers) &&
+                other.subclasses.ContentEquals(subclasses);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(ClassMappingBase)) return false;
+            return Equals((ClassMappingBase)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((mappedMembers != null ? mappedMembers.GetHashCode() : 0) * 397) ^ (subclasses != null ? subclasses.GetHashCode() : 0);
+            }
+        }
     }
 }

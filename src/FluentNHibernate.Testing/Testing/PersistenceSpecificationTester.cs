@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using NHibernate;
 using System.Collections;
+using System.Drawing;
 
 namespace FluentNHibernate.Testing.Testing
 {
@@ -16,6 +17,18 @@ namespace FluentNHibernate.Testing.Testing
             public string Name { get; set; }
             public Kitten FirstKitten { get; set; }
             public IList<Kitten> AllKittens { get; set; }
+            public Bitmap Picture { get; set; }
+
+            public Cat()
+            {
+                AllKittens = new List<Kitten>();
+            }
+
+            public IEnumerable<Kitten> EnumerableOfKittens { get { return AllKittens; } }
+            public void AddKitten(Kitten kitten)
+            {
+                AllKittens.Add(kitten);
+            }
         }
 
         public class Kitten
@@ -38,10 +51,25 @@ namespace FluentNHibernate.Testing.Testing
             public int GetHashCode(object obj)
             {
                 if (obj is Cat)
-                    return (int) ((Cat) obj).Id;
+                    return (int)((Cat)obj).Id;
                 else if (obj is Kitten)
-                    return (int) ((Kitten)obj).Id;
+                    return (int)((Kitten)obj).Id;
                 throw new NotImplementedException();
+            }
+        }
+
+        public class DummyBitmapComparer : IEqualityComparer
+        {
+            public new bool Equals(object x, object y)
+            {
+                if (x is Bitmap && y is Bitmap)
+                    return true;
+                throw new NotImplementedException();
+            }
+
+            public int GetHashCode(object obj)
+            {
+                return ((Bitmap)obj).GetHashCode();
             }
         }
 
@@ -61,6 +89,7 @@ namespace FluentNHibernate.Testing.Testing
                 Id = 100,
                 Name = "Cat",
                 FirstKitten = firstKitten,
+                Picture = new Bitmap(5, 5),
                 AllKittens = new List<Kitten>
                 {
                     firstKitten,
@@ -74,6 +103,7 @@ namespace FluentNHibernate.Testing.Testing
                 Id = 100,
                 Name = "IdenticalCat",
                 FirstKitten = firstKitten,
+                Picture = new Bitmap(5, 5),
                 AllKittens = new List<Kitten>
                 {
                     firstKitten,
@@ -111,9 +141,33 @@ namespace FluentNHibernate.Testing.Testing
         {
             _spec = new PersistenceSpecification<Cat>(_sessionSource);
 
-            typeof (ApplicationException).ShouldBeThrownBy(() => 
+            typeof(ApplicationException).ShouldBeThrownBy(() =>
                 _spec.CheckList(x => x.AllKittens, _cat.AllKittens).VerifyTheMappings());
         }
+
+        [Test]
+        public void Can_test_enumerable()
+        {
+            var kittens = new[] {new Kitten {Id = 3, Name = "kitten3"}, new Kitten {Id = 4, Name = "kitten4"}};
+#pragma warning disable 618,612
+            _spec.CheckEnumerable(x => x.EnumerableOfKittens, (cat, kitten) => cat.AddKitten(kitten), kittens);
+#pragma warning restore 618,612
+
+            typeof(ApplicationException).ShouldBeThrownBy(() => _spec.VerifyTheMappings());
+        }
+
+        [Test]
+        public void Comparing_two_properties_should_use_the_specified_property_IEqualityComparer()
+        {
+            _spec.CheckProperty(cat => cat.Picture, _cat.Picture, new DummyBitmapComparer()).VerifyTheMappings ();
+        }
+
+    	[Test]
+    	public void VerifyTheMappings_returns_instance()
+    	{
+			var cat = _spec.CheckProperty(x => x.FirstKitten, _cat.FirstKitten).VerifyTheMappings();
+			cat.ShouldNotBeNull();
+    	}
     }
 
     [TestFixture]
@@ -157,19 +211,26 @@ namespace FluentNHibernate.Testing.Testing
         public void Should_reject_classes_without_a_parameterless_constructor()
         {
             var _spec = new PersistenceSpecification<NoParameterlessConstructorClass>(sessionSource);
-            
+
             typeof(MissingConstructorException).ShouldBeThrownBy(() =>
                 _spec.VerifyTheMappings());
         }
 
-        public class PublicConstructorClass 
+        [Test]
+        public void Should_accept_instances_regardless_of_constructor()
         {
-            public PublicConstructorClass() {}
+            var _spec = new PersistenceSpecification<NoParameterlessConstructorClass>(sessionSource);
+            _spec.VerifyTheMappings(new NoParameterlessConstructorClass(123));
+        }
+
+        public class PublicConstructorClass
+        {
+            public PublicConstructorClass() { }
         }
 
         public class ProtectedConstructorClass
         {
-            protected ProtectedConstructorClass() {}
+            protected ProtectedConstructorClass() { }
         }
 
         public class PrivateConstructorClass
@@ -179,7 +240,7 @@ namespace FluentNHibernate.Testing.Testing
 
         public class NoParameterlessConstructorClass
         {
-            public NoParameterlessConstructorClass(int someParameter) {}
+            public NoParameterlessConstructorClass(int someParameter) { }
         }
     }
 }

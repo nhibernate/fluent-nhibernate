@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
@@ -28,6 +29,12 @@ namespace FluentNHibernate.Mapping
             attributes.Set(x => x.Type, new TypeReference(typeof(TIndex)));
             return this;
         }
+
+	public IndexPart Type(Type type)
+	{
+            attributes.Set(x => x.Type, new TypeReference(type));
+            return this;
+	}
 
         public IndexMapping GetIndexMapping()
         {

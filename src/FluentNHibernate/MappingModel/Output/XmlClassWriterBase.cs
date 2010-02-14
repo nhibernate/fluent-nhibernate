@@ -1,6 +1,7 @@
 using System.Xml;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -58,6 +59,14 @@ namespace FluentNHibernate.MappingModel.Output
         {
             var writer = serviceLocator.GetWriter<ICollectionMapping>();
             var xml = writer.Write(collectionMapping);
+
+            document.ImportAndAppendChild(xml);
+        }
+
+        public override void Visit(StoredProcedureMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<StoredProcedureMapping>();
+            var xml = writer.Write(mapping);
 
             document.ImportAndAppendChild(xml);
         }

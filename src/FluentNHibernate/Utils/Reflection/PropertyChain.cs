@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Utils
 {
@@ -78,7 +79,7 @@ namespace FluentNHibernate.Utils
                 string returnValue = string.Empty;
                 foreach (var info in _chain)
                 {
-                    returnValue += info.Name;
+                    returnValue += info.Name + ".";
                 }
 
                 returnValue += _innerProperty.Name;

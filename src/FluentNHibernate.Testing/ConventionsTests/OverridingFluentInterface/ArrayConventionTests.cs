@@ -203,6 +203,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         private void Mapping(Action<OneToManyPart<ExampleClass>> mappingDefinition)
         {
             var classMap = new ClassMap<ExampleParentClass>();
+            classMap.Id(x => x.Id);
             var map = classMap.HasMany(x => x.Examples)
                 .AsArray(x => x.Id);
 

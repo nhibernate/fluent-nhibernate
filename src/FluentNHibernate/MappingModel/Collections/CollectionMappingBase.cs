@@ -1,18 +1,27 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
     public abstract class CollectionMappingBase : MappingBase, ICollectionMapping
     {
         private readonly AttributeStore<ICollectionMapping> attributes;
+        private readonly IList<FilterMapping> filters = new List<FilterMapping>();
         public Type ContainingEntityType { get; set; }
-        public MemberInfo MemberInfo { get; set; }
+        public Member Member { get; set; }
 
         protected CollectionMappingBase(AttributeStore underlyingStore)
         {
             attributes = new AttributeStore<ICollectionMapping>(underlyingStore);
+            attributes.SetDefault(x => x.Mutable, true);
+        }
+
+        public IList<FilterMapping> Filters
+        {
+            get { return filters; }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -28,6 +37,9 @@ namespace FluentNHibernate.MappingModel.Collections
 
             if (Relationship != null)
                 visitor.Visit(Relationship);
+
+            foreach (var filter in Filters)
+                visitor.Visit(filter);
 
             if (Cache != null)
                 visitor.Visit(Cache);
@@ -189,5 +201,37 @@ namespace FluentNHibernate.MappingModel.Collections
         }
 
 		public abstract string OrderBy { get; set; }
+
+        public bool Equals(CollectionMappingBase other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.attributes, attributes) &&
+                other.filters.ContentEquals(filters) &&
+                Equals(other.ContainingEntityType, ContainingEntityType)
+                && Equals(other.Member, Member) &&
+                Equals(other.OtherSide, OtherSide);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(CollectionMappingBase)) return false;
+            return Equals((CollectionMappingBase)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = (attributes != null ? attributes.GetHashCode() : 0);
+                result = (result * 397) ^ (filters != null ? filters.GetHashCode() : 0);
+                result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+                result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
+                result = (result * 397) ^ (OtherSide != null ? OtherSide.GetHashCode() : 0);
+                return result;
+            }
+        }
     }
 }

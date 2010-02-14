@@ -21,12 +21,12 @@ namespace FluentNHibernate.Testing.Automapping
 
         protected void ShouldMap(Expression<Func<PropertyTarget, object>> property)
         {
-            mapper.MapsProperty(ReflectionHelper.GetProperty(property)).ShouldBeTrue();
+            mapper.MapsProperty(ReflectionHelper.GetProperty(property).ToMember()).ShouldBeTrue();
         }
 
         protected void ShouldntMap(Expression<Func<PropertyTarget, object>> property)
         {
-            mapper.MapsProperty(ReflectionHelper.GetProperty(property)).ShouldBeFalse();
+            mapper.MapsProperty(ReflectionHelper.GetProperty(property).ToMember()).ShouldBeFalse();
         }
 
         protected class PropertyTarget

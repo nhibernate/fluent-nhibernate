@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
@@ -12,15 +13,14 @@ namespace FluentNHibernate.Automapping
         private static readonly IList<string> ValidNames = new List<string> { "version", "timestamp" };
         private static readonly IList<Type> ValidTypes = new List<Type> { typeof(int), typeof(long), typeof(TimeSpan), typeof(byte[]) };
 
-        public bool MapsProperty(PropertyInfo property)
+        public bool MapsProperty(Member property)
         {
             return ValidNames.Contains(property.Name.ToLowerInvariant()) && ValidTypes.Contains(property.PropertyType);
         }
 
-        public void Map(ClassMappingBase classMap, PropertyInfo property)
+        public void Map(ClassMappingBase classMap, Member property)
         {
-            if (property.DeclaringType != classMap.Type || !(classMap is ClassMapping))
-                return;
+            if (!(classMap is ClassMapping)) return;
 
             var version = new VersionMapping
             {
@@ -43,12 +43,12 @@ namespace FluentNHibernate.Automapping
             ((ClassMapping)classMap).Version = version;
         }
 
-        private bool IsSqlTimestamp(PropertyInfo property)
+        private bool IsSqlTimestamp(Member property)
         {
             return property.PropertyType == typeof(byte[]);
         }
 
-        private TypeReference GetDefaultType(PropertyInfo property)
+        private TypeReference GetDefaultType(Member property)
         {
             if (IsSqlTimestamp(property))
                 return new TypeReference("BinaryBlob");

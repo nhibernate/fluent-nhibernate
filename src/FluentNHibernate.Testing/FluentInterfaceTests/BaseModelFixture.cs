@@ -53,17 +53,17 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<ComponentPart<T>, ComponentMapping> Component<T>()
         {
-            return new ModelTester<ComponentPart<T>, ComponentMapping>(() => new ComponentPart<T>(typeof(ExampleClass), ReflectionHelper.GetProperty<VersionTarget>(x => x.VersionNumber)), x => (ComponentMapping)((IComponentMappingProvider)x).GetComponentMapping());
+            return new ModelTester<ComponentPart<T>, ComponentMapping>(() => new ComponentPart<T>(typeof(ExampleClass), ReflectionHelper.GetProperty<VersionTarget>(x => x.VersionNumber).ToMember()), x => (ComponentMapping)((IComponentMappingProvider)x).GetComponentMapping());
         }
 
         protected ModelTester<DynamicComponentPart<T>, DynamicComponentMapping> DynamicComponent<T>()
         {
-            return new ModelTester<DynamicComponentPart<T>, DynamicComponentMapping>(() => new DynamicComponentPart<T>(typeof(ExampleClass), ReflectionHelper.GetProperty<VersionTarget>(x => x.VersionNumber)), x => (DynamicComponentMapping)((IComponentMappingProvider)x).GetComponentMapping());
+            return new ModelTester<DynamicComponentPart<T>, DynamicComponentMapping>(() => new DynamicComponentPart<T>(typeof(ExampleClass), ReflectionHelper.GetProperty<VersionTarget>(x => x.VersionNumber).ToMember()), x => (DynamicComponentMapping)((IComponentMappingProvider)x).GetComponentMapping());
         }
 
         protected ModelTester<VersionPart, VersionMapping> Version()
         {
-            return new ModelTester<VersionPart, VersionMapping>(() => new VersionPart(typeof(VersionTarget), ReflectionHelper.GetProperty<VersionTarget>(x => x.VersionNumber)), x => ((IVersionMappingProvider)x).GetVersionMapping());
+            return new ModelTester<VersionPart, VersionMapping>(() => new VersionPart(typeof(VersionTarget), ReflectionHelper.GetProperty<VersionTarget>(x => x.VersionNumber).ToMember()), x => ((IVersionMappingProvider)x).GetVersionMapping());
         }
 
         protected ModelTester<CachePart, CacheMapping> Cache()
@@ -73,7 +73,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<IdentityPart, IdMapping> Id()
         {
-            return new ModelTester<IdentityPart, IdMapping>(() => new IdentityPart(typeof(IdentityTarget), ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId)), x => ((IIdentityMappingProvider)x).GetIdentityMapping());
+            return new ModelTester<IdentityPart, IdMapping>(() => new IdentityPart(typeof(IdentityTarget), ReflectionHelper.GetProperty<IdentityTarget>(x => x.IntId).ToMember()), x => ((IIdentityMappingProvider)x).GetIdentityMapping());
         }
 
         protected ModelTester<CompositeIdentityPart<T>, CompositeIdMapping> CompositeId<T>()
@@ -83,17 +83,17 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<OneToOnePart<PropertyReferenceTarget>, OneToOneMapping> OneToOne()
         {
-            return new ModelTester<OneToOnePart<PropertyReferenceTarget>, OneToOneMapping>(() => new OneToOnePart<PropertyReferenceTarget>(typeof(PropertyTarget), ReflectionHelper.GetProperty<PropertyTarget>(x => x.Reference)), x => ((IOneToOneMappingProvider)x).GetOneToOneMapping());
+            return new ModelTester<OneToOnePart<PropertyReferenceTarget>, OneToOneMapping>(() => new OneToOnePart<PropertyReferenceTarget>(typeof(PropertyTarget), ReflectionHelper.GetProperty<PropertyTarget>(x => x.Reference).ToMember()), x => ((IOneToOneMappingProvider)x).GetOneToOneMapping());
         }
 
         protected ModelTester<PropertyPart, PropertyMapping> Property()
         {
-            return new ModelTester<PropertyPart, PropertyMapping>(() => new PropertyPart(ReflectionHelper.GetProperty<PropertyTarget>(x => x.Name), typeof(PropertyTarget)), x => ((IPropertyMappingProvider)x).GetPropertyMapping());
+            return new ModelTester<PropertyPart, PropertyMapping>(() => new PropertyPart(ReflectionHelper.GetProperty<PropertyTarget>(x => x.Name).ToMember(), typeof(PropertyTarget)), x => ((IPropertyMappingProvider)x).GetPropertyMapping());
         }
 
         protected ModelTester<PropertyPart, PropertyMapping> Property<T>(Expression<Func<T, object>> property)
         {
-            return new ModelTester<PropertyPart, PropertyMapping>(() => new PropertyPart(ReflectionHelper.GetProperty(property), typeof(T)), x => ((IPropertyMappingProvider)x).GetPropertyMapping());
+            return new ModelTester<PropertyPart, PropertyMapping>(() => new PropertyPart(ReflectionHelper.GetProperty(property).ToMember(), typeof(T)), x => ((IPropertyMappingProvider)x).GetPropertyMapping());
         }
 
         protected ModelTester<OneToManyPart<T>, ICollectionMapping> OneToManyMethod<T>(Expression<Func<OneToManyTarget, IList<T>>> property)
@@ -103,32 +103,32 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<OneToManyPart<T>, ICollectionMapping> OneToMany<T>(Expression<Func<OneToManyTarget, object>> property)
         {
-            return new ModelTester<OneToManyPart<T>, ICollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
+            return new ModelTester<OneToManyPart<T>, ICollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetProperty(property).ToMember()), x => x.GetCollectionMapping());
         }
 
         protected ModelTester<ManyToManyPart<T>, ICollectionMapping> ManyToMany<T>(Expression<Func<ManyToManyTarget, IList<T>>> property)
         {
-            return new ModelTester<ManyToManyPart<T>, ICollectionMapping>(() => new ManyToManyPart<T>(typeof(ManyToManyTarget), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
+            return new ModelTester<ManyToManyPart<T>, ICollectionMapping>(() => new ManyToManyPart<T>(typeof(ManyToManyTarget), ReflectionHelper.GetProperty(property).ToMember()), x => x.GetCollectionMapping());
         }
 
         protected ModelTester<ManyToManyPart<IDictionary>, ICollectionMapping> ManyToMany(Expression<Func<ManyToManyTarget, IDictionary>> property)
         {
-            return new ModelTester<ManyToManyPart<IDictionary>, ICollectionMapping>(() => new ManyToManyPart<IDictionary>(typeof(ManyToManyTarget), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
+            return new ModelTester<ManyToManyPart<IDictionary>, ICollectionMapping>(() => new ManyToManyPart<IDictionary>(typeof(ManyToManyTarget), ReflectionHelper.GetProperty(property).ToMember()), x => x.GetCollectionMapping());
         }
 
         protected ModelTester<ManyToManyPart<IDictionary<TIndex, TValue>>, ICollectionMapping> ManyToMany<TIndex, TValue>(Expression<Func<ManyToManyTarget, IDictionary<TIndex, TValue>>> property)
         {
-            return new ModelTester<ManyToManyPart<IDictionary<TIndex, TValue>>, ICollectionMapping>(() => new ManyToManyPart<IDictionary<TIndex, TValue>>(typeof(ManyToManyTarget), ReflectionHelper.GetProperty(property)), x => x.GetCollectionMapping());
+            return new ModelTester<ManyToManyPart<IDictionary<TIndex, TValue>>, ICollectionMapping>(() => new ManyToManyPart<IDictionary<TIndex, TValue>>(typeof(ManyToManyTarget), ReflectionHelper.GetProperty(property).ToMember()), x => x.GetCollectionMapping());
         }
 
         protected ModelTester<ManyToOnePart<PropertyReferenceTarget>, ManyToOneMapping> ManyToOne()
         {
-            return new ModelTester<ManyToOnePart<PropertyReferenceTarget>, ManyToOneMapping>(() => new ManyToOnePart<PropertyReferenceTarget>(typeof(PropertyTarget), ReflectionHelper.GetProperty<PropertyTarget>(x => x.Reference)), x => ((IManyToOneMappingProvider)x).GetManyToOneMapping());
+            return new ModelTester<ManyToOnePart<PropertyReferenceTarget>, ManyToOneMapping>(() => new ManyToOnePart<PropertyReferenceTarget>(typeof(PropertyTarget), ReflectionHelper.GetProperty<PropertyTarget>(x => x.Reference).ToMember()), x => ((IManyToOneMappingProvider)x).GetManyToOneMapping());
         }
 
         protected ModelTester<AnyPart<T>, AnyMapping> Any<T>()
         {
-            return new ModelTester<AnyPart<T>, AnyMapping>(() => new AnyPart<T>(typeof(MappedObject), ReflectionHelper.GetProperty<MappedObject>(x => x.Parent)), x => ((IAnyMappingProvider)x).GetAnyMapping());
+            return new ModelTester<AnyPart<T>, AnyMapping>(() => new AnyPart<T>(typeof(MappedObject), ReflectionHelper.GetProperty<MappedObject>(x => x.Parent).ToMember()), x => ((IAnyMappingProvider)x).GetAnyMapping());
         }
 
         protected ModelTester<JoinPart<T>, JoinMapping> Join<T>(string table)
@@ -144,6 +144,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         protected ModelTester<CompositeElementPart<T>, CompositeElementMapping> CompositeElement<T>()
         {
             return new ModelTester<CompositeElementPart<T>, CompositeElementMapping>(() => new CompositeElementPart<T>(typeof(MappedObject)), x => ((ICompositeElementMappingProvider)x).GetCompositeElementMapping());
+        }
+
+        protected ModelTester<StoredProcedurePart, StoredProcedureMapping> StoredProcedure()
+        {
+            return new ModelTester<StoredProcedurePart, StoredProcedureMapping>(() => new StoredProcedurePart(null, null), x => x.GetStoredProcedureMapping());
         }
     }
 }

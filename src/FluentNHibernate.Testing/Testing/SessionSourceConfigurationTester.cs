@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Testing
 {
+    [TestFixture]
     public class when_building_a_session_source : with_fluent_configuration
     {
         private ISessionSource _sessionSource;
@@ -28,6 +29,7 @@ namespace FluentNHibernate.Testing.Testing
         }
     }
 
+    [TestFixture]
     public class when_using_a_session_source_and_schema : with_fluent_configuration
     {
         private ISessionSource _sessionSource;

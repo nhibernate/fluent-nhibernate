@@ -23,7 +23,7 @@ namespace FluentNHibernate.Conventions.Instances
                 return;
 
             var originalColumn = mapping.Columns.FirstOrDefault();
-            var column = originalColumn == null ? new ColumnMapping() : ColumnMapping.BaseOn(originalColumn);
+            var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
             column.Name = columnName;
 
@@ -67,7 +67,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public IFetchInstance Fetch
+        new public IFetchInstance Fetch
         {
             get
             {
@@ -89,7 +89,7 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public INotFoundInstance NotFound
+        public new INotFoundInstance NotFound
         {
             get
             {
@@ -124,29 +124,23 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Insert()
         {
-            if (mapping.IsSpecified("Insert"))
-                return;
-
-            mapping.Insert = nextBool;
+            if (!mapping.IsSpecified("Insert"))
+                mapping.Insert = nextBool;
             nextBool = true;
         }
 
         public new void LazyLoad()
         {
-            if (mapping.IsSpecified("Lazy"))
-                return;
-
-            mapping.Lazy = nextBool;
+            if (!mapping.IsSpecified("Lazy"))
+                mapping.Lazy = nextBool;
             nextBool = true;
         }
 
         public void Nullable()
         {
-            if (mapping.Columns.First().IsSpecified("NotNull"))
-                return;
-
-            foreach (var column in mapping.Columns)
-                column.NotNull = !nextBool;
+            if (!mapping.Columns.First().IsSpecified("NotNull"))
+                foreach (var column in mapping.Columns)
+                    column.NotNull = !nextBool;
 
             nextBool = true;
         }
@@ -159,21 +153,19 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void ReadOnly()
         {
-            if (mapping.IsSpecified("Insert") || mapping.IsSpecified("Update"))
-                return;
-
-            mapping.Insert = !nextBool;
-            mapping.Update = !nextBool;
+            if (!mapping.IsSpecified("Insert") && !mapping.IsSpecified("Update"))
+            {
+                mapping.Insert = !nextBool;
+                mapping.Update = !nextBool;
+            }
             nextBool = true;
         }
 
         public void Unique()
         {
-            if (mapping.Columns.First().IsSpecified("Unique"))
-                return;
-
-            foreach (var column in mapping.Columns)
-                column.Unique = nextBool;
+            if (!mapping.Columns.First().IsSpecified("Unique"))
+                foreach (var column in mapping.Columns)
+                    column.Unique = nextBool;
 
             nextBool = true;
         }
@@ -189,10 +181,8 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Update()
         {
-            if (mapping.IsSpecified("Update"))
-                return;
-
-            mapping.Update = nextBool;
+            if (!mapping.IsSpecified("Update"))
+                mapping.Update = nextBool;
             nextBool = true;
         }
 
@@ -200,6 +190,11 @@ namespace FluentNHibernate.Conventions.Instances
         {
             if (!mapping.IsSpecified("ForeignKey"))
                 mapping.ForeignKey = key;
+        }
+
+        public void OverrideInferredClass(Type type)
+        {
+            mapping.Class = new TypeReference(type);
         }
     }
 }

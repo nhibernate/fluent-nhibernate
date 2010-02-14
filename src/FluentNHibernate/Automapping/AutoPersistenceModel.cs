@@ -5,6 +5,7 @@ using System.Reflection;
 using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Automapping
 {
@@ -79,7 +80,14 @@ namespace FluentNHibernate.Automapping
             return this;
         }
 
-        public void CompileMappings()
+        public override IEnumerable<HibernateMapping> BuildMappings()
+        {
+            CompileMappings();
+
+            return base.BuildMappings();
+        }
+
+        private void CompileMappings()
         {
             if (autoMappingsCreated)
                 return;
@@ -164,7 +172,9 @@ namespace FluentNHibernate.Automapping
                 return false; // generic definition is excluded
             if (type.IsAbstract && Expressions.AbstractClassIsLayerSupertype(type))
                 return false; // is abstract and a layer supertype
+#pragma warning disable 618,612
             if (Expressions.IsBaseType(type))
+#pragma warning restore 618,612
                 return false; // excluded
             if (type == typeof(object))
                 return false; // object!

@@ -1,216 +1,123 @@
-COMPILE_TARGET = "release"
-require "BuildUtils.rb"
 require 'fileutils'
-
-include FileTest
-
-RESULTS_DIR = "results"
-DIST_DIR = 'dist'
-PRODUCT = "FluentNHibernate"
-COPYRIGHT = 'Copyright 2008-2009 James Gregory and contributors (Paul Batum, Andrew Stewart, Hudson Akridge, Stuart Childs et al). All rights reserved.';
-COMMON_ASSEMBLY_INFO = 'src/CommonAssemblyInfo.cs';
-CLR_VERSION = "v3.5"
-
-props = { :archive => "build" }
-
-desc "Compiles, unit tests, generates the database, and then runs integration tests"
-task :all => [:default]
-
-desc "**Default**, compiles and runs tests"
-task :default => [:use_nhib_21, :compile, :unit_test]
-
-desc "Builds Fluent NHibernate against the NHibernate trunk libs (instead of the normal NHibernate 2.1GA)"
-task :nhibtrunk =>[:use_nhib_trunk, :compile, :unit_test, :use_nhib_201]
-
-desc "Switches NHibernate dependencies to NHibernate 2.1"
-task :use_nhib_21 do
-	switch_nhib_libs('nhib2.1')
-end
-
-desc "Switches NHibernate dependencies to NHibernate trunk"
-task :use_nhib_trunk do	
-	switch_nhib_libs('trunk')
-end
-
-#### hidden task, don't call directly
-def switch_nhib_libs(nhib_lib_dir)
-	puts "Switching NHibernate dependencies to #{nhib_lib_dir}"
-	# clear the nhib dir
-	Dir.foreach('tools/NHibernate') {|file| 
-		relFile = File.join('tools/NHibernate',file)
-		File.delete(relFile) if File.file?(relFile)
-	}
-	
-	# copy the source files over
-	Dir.foreach("tools/NHibernate/#{nhib_lib_dir}"){|file| 
-		relFile = File.join("tools/NHibernate/#{nhib_lib_dir}",file)
-		copy(relFile, 'tools/NHibernate') if File.file?(relFile)
-	}
-end
+require 'albacore'
 
 def get_version
-	return ENV['BUILD_NUMBER'].to_s unless ENV['BUILD_NUMBER'].nil?
-	return "1.0.0.0"
+  ENV['BUILD_NUMBER'] || '1.0.0.0'
 end
 
-desc "Displays a list of tasks"
-task :help do
-  taskHash = Hash[*(`rake.cmd -T`.split(/\n/).collect { |l| l.match(/rake (\S+)\s+\#\s(.+)/).to_a }.collect { |l| [l[1], l[2]] }).flatten] 
- 
-  indent = "                          "
-  
-  puts "rake #{indent}#Runs the 'default' task"
-  
-  taskHash.each_pair do |key, value|
-    if key.nil?  
-      next
+task :default => 'build:all'
+
+namespace :setup do
+  task :ensure_gemcutter_source do
+    puts 'Ensuring gemcutter.org is registered as a gem source'
+    unless `gem source -l`.include? 'http://gemcutter.org'
+      puts 'Setting Gemcutter as a gem source'
+      `gem source -a http://gemcutter.org`
     end
-    puts "rake #{key}#{indent.slice(0, indent.length - key.length)}##{value}"
   end
 end
 
-desc "Update the version information for the build"
-task :version do
-  builder = AsmInfoBuilder.new get_version(),
-                               :product => PRODUCT,
-                               :copyright => COPYRIGHT,
-                               :company => 'http://fluentnhibernate.org',
-                               :allow_partially_trusted_callers => true
-  buildNumber = builder.buildnumber
-  puts "The build number is #{buildNumber}"
-  builder.write COMMON_ASSEMBLY_INFO  
+namespace :ci do
+  task :run_ci_build => [
+    'build:all',
+    'docs:build',
+    'package:all',
+  ]
 end
 
-desc "Prepares the working directory for a new build"
-task :clean do
-	#TODO: do any other tasks required to clean/prepare the working directory
-	Dir.mkdir props[:archive] unless exists?(props[:archive])
-end
-
-desc "Compiles the app"
-task :compile => [:clean, :version] do
-  MSBuildRunner.compile :compilemode => COMPILE_TARGET, :solutionfile => 'src/FluentNHibernate.sln', :clrversion => CLR_VERSION
-  outDir = "src/FluentNHibernate/bin/#{COMPILE_TARGET}"
+namespace :source do
+  desc 'Update assembly info with latest version number'
+  assemblyinfo :update_version do |asm|
+    asm.output_file = 'src/CommonAssemblyInfo.cs'
     
-  Dir.glob(File.join(outDir, "*.{dll,pdb,xml}")){|file| 
-	copy(file, props[:archive]) if File.file?(file)
-  }
-end
-
-desc "Runs unit tests"
-task :unit_test => :compile do
-  runner = NUnitRunner.new :compilemode => COMPILE_TARGET, :source => 'src', :platform => 'x86'
-  runner.executeTests ['FluentNHibernate.Testing']  
-end
-
-desc "Clear built zips"
-task :clear_dist do
-  FileUtils.rm_rf DIST_DIR if File.exists? DIST_DIR
-end
-
-desc "Creates a source zip"
-task :create_source_zip do
-  puts "Creating source zip"
-
-  Dir.mkdir DIST_DIR unless File.exists? DIST_DIR
-  version = get_version()
-  
-  create_zip("#{DIST_DIR}/fluentnhibernate-source-#{version}.zip", './', /.git|build|dist|results|_ReSharper|bin|obj|.user|.suo|.resharper|.cache/)
-end
-
-desc "Create a binary zip"
-task :create_binary_zip do
-  puts "Creating binary zip"
-
-  Dir.mkdir DIST_DIR unless File.exists? DIST_DIR
-  version = get_version()
-  
-  create_zip("#{DIST_DIR}/fluentnhibernate-binary-#{version}.zip", 'build/')
-end
-
-desc "Creates binary and source zip files"
-task :create_zips => [:create_source_zip, :create_binary_zip]
-
-desc "Builds the API documentation and puts it in 'output'"
-task :build_docs do
-  puts "Creating docs"
-  
-  docu("src/FluentNHibernate/bin/#{COMPILE_TARGET}/FluentNHibernate.dll")
-end
-
-desc "Creates a zip of the API documentation"
-task :create_zip_docs => :build_docs do
-  puts "Creating docs zip"
-  Dir.mkdir DIST_DIR unless File.exists? DIST_DIR
-  version = get_version()
-  
-  create_zip("#{DIST_DIR}/fluentnhibernate-docs-#{version}.zip", 'output/')
-end
-
-class NCover
-  NCOVER_PATH = 'tools\\ncover\\ncover.console.exe'
-  NUNIT_PATH = 'tools\\nunit\\nunit-console.exe'
-  
-  def initialize(args)
-    @categories = args[:categories]
-	@included_assemblies = args[:included_assemblies]
-	@included_types = args[:included_types]
-	@excluded_types = args[:excluded_types]
-	@excluded_methods = args[:excluded_methods]
+    asm.version = get_version
+    asm.company_name = 'http://fluentnhibernate.org'
+    asm.product_name = 'FluentNHibernate'
+    asm.copyright = 'Copyright 2008-2009 James Gregory and contributors (Paul Batum, Andrew Stewart, Hudson Akridge, Stuart Childs et al). All rights reserved.'
+    asm.namespaces = ['System.Security']
+    asm.custom_attributes :AllowPartiallyTrustedCallers => nil
+    
+    puts "The build number is #{asm.version}"
   end
   
-  def run
-    puts `#{get_ncover_cmd}`
-  end
-  
-  private
-  def get_ncover_cmd
-    [NCOVER_PATH, get_nunit_cmd, get_ncover_args].join(' ')
-  end
-  
-  def get_ncover_args
-    included_assemblies = ncover_concat(escape(@included_assemblies))
-	included_types = ncover_concat(escape(@included_types))
-	excluded_types = ncover_concat(escape(@excluded_types))
-	excluded_methods = ncover_concat(escape(@excluded_methods))
-	
-    ['//w src\\FluentNHibernate.Testing\\bin\\x86\\Debug',
-	 "//ias #{included_assemblies}",
-	 "//it #{included_types}",
-	 "//et #{excluded_types}",
-	 "//em #{excluded_methods}",
-	 "//reg"].join(' ')
-  end
-  
-  def get_nunit_cmd
-    [NUNIT_PATH, 'FluentNHibernate.Testing.dll', "/include=#{get_categories}"].join(' ')
-  end
-  
-  def get_categories
-    escape(@categories).join(',')
-  end
-  
-  def escape(array)
-    array.map { |i| "\"#{i}\"" }
-  end
-  
-  def ncover_concat(array)
-    array.join(';')
+  desc 'Compile the source'
+  msbuild :compile do |msb|
+    msb.properties = { :configuration => :Release }
+    msb.targets [:Clean, :Build]
+    msb.solution = 'src/FluentNHibernate.sln'
   end
 end
 
-desc "Coverage report for Inspection DSL"
-task :coverage_for_inspection_dsl do
-  puts "Running coverage report for Inspection DSL"
+namespace :specs do
+  desc 'Run all tests and specs'
+  task :all => [:nunit, :mspec]
   
-  ncover = NCover.new :categories => ['Inspection DSL'],
-                      :included_assemblies => ['FluentNHiberate'],
-					  :included_types => ['FluentNHibernate.Conventions.DslImplementation*',
-					                      'FluentNHibernate.Conventions.Inspections.*',
-										  'FluentNHibernate.MappingModel.*'],
-                      :excluded_types => ['FluentNHibernate.MappingMode.(Conventions|Output|).*'],
-					  :excluded_methods => ['.*\.Add.*',             # AddColumn etc...
-					                        '.*\.AcceptVisitor',     # AcceptVisitor
-											'.*\.I.*Alteration\..*'] # Any IXAlteration explicit implementations
-  ncover.run
+  desc 'Run MSpec specs'
+  mspec :mspec do |mspec|
+    mspec.path_to_command = 'tools/mspec/mspec.exe'
+    mspec.assemblies << 'src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll'
+  end
+
+  desc 'Run NUnit tests'
+  nunit :nunit do |nunit|
+    nunit.path_to_command = 'tools/nunit/nunit-console-x86.exe'
+    nunit.assemblies << 'src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll'
+  end
+end
+
+namespace :build do
+  desc 'Run full build including tests'
+  task :all => ['source:update_version', 'source:compile', 'specs:all'] do
+    puts 'Copying output to build directory'
+      Dir.mkdir 'build' unless File.exist? 'build'
+      Dir.glob 'src/FluentNHibernate/bin/Release/*.{dll,pdb,xml}' do |path|
+        copy path, 'build' if File.file? path
+      end
+    
+    puts 'Build complete'
+  end
+end
+
+namespace :docs do
+  desc 'Create API docs'
+  docu :build do |d|
+    d.path_to_command = 'tools/docu/docu.exe'
+    d.assemblies << 'build/FluentNHibernate.dll'
+  end
+end
+
+namespace :package do
+  task :prepare_dist_directory do
+    Dir.mkdir 'dist' unless File.exists? 'dist'
+  end
+  
+  desc 'Create zip of source-tree'
+  zip :source => :prepare_dist_directory do |zip|
+    zip.directories_to_zip = ['./']
+    zip.output_file = "fluentnhibernate-source-#{get_version}.zip"
+    zip.output_path = 'dist'
+    zip.exclusions = [/.git/, /build/, /dist/, /results/, /_ReSharper/, /bin/, /obj/, /.user/, /.suo/, /.resharper/, /.cache/, /output/]
+  end
+  
+  desc 'Create zip of binaries'
+  zip :binaries => :prepare_dist_directory do |zip|
+    zip.directories_to_zip = ['build']
+    zip.output_file = "fluentnhibernate-binary-#{get_version}.zip"
+    zip.output_path = 'dist'
+  end
+  
+  desc 'Create zip of API docs'
+  zip :docs => :prepare_dist_directory do |zip|
+    zip.directories_to_zip = ['output']
+    zip.output_file = "fluentnhibernate-docs-#{get_version}.zip"
+    zip.output_path = 'dist'
+  end
+  
+  task :all => [:source, :binaries, :docs]
+end
+
+task :sln do
+  Thread.new do
+    system "devenv src/FluentNHibernate.sln"
+  end
 end

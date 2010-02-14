@@ -1,6 +1,7 @@
 using System.Xml;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -29,6 +30,12 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.Type))
                 element.WithAtt("type", mapping.Type);
+
+            if (mapping.HasValue(x => x.Length))
+                element.WithAtt("length", mapping.Length);
+
+            if (mapping.HasValue(x => x.Formula))
+                element.WithAtt("formula", mapping.Formula);
         }
 
         public override void Visit(ColumnMapping columnMapping)

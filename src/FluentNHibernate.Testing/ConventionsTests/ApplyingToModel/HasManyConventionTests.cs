@@ -56,7 +56,15 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.Cascade.ShouldEqual("none"));
         }
 
-        [Test]
+		[Test]
+		public void ShouldSetClassProperty()
+		{
+			Convention(x => x.Relationship.CustomClass(typeof(int)));
+
+			VerifyModel(x => x.Relationship.Class.GetUnderlyingSystemType().ShouldEqual(typeof(int)));
+		}
+
+		[Test]
         public void ShouldSetCheckConstraintProperty()
         {
             Convention(x => x.Check("constraint = 0"));
@@ -178,6 +186,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         private void VerifyModel(Action<ICollectionMapping> modelVerification)
         {
             var classMap = new ClassMap<ExampleInheritedClass>();
+            classMap.Id(x => x.Id);
             var map = classMap.HasMany(x => x.Children);
 
             model.Add(classMap);

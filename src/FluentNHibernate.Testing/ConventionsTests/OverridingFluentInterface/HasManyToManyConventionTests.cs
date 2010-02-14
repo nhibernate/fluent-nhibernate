@@ -206,6 +206,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         private void Mapping<TChild>(Expression<Func<ExampleInheritedClass, IEnumerable<TChild>>> property, Action<ManyToManyPart<TChild>> mappingDefinition)
         {
             var classMap = new ClassMap<ExampleInheritedClass>();
+            classMap.Id(x => x.Id);
             var map = classMap.HasManyToMany(property);
 
             mappingDefinition(map);

@@ -24,6 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -71,9 +72,12 @@
     <Compile Include="Automapping\Alterations\AutoMappingOverrideAlteration.cs" />
     <Compile Include="Automapping\Alterations\IAutoMappingAlteration.cs" />
     <Compile Include="Automapping\Alterations\IAutoMappingOverride.cs" />
-    <Compile Include="Automapping\AssemblyTypeSource.cs" />
+    <Compile Include="AssemblyTypeSource.cs" />
+    <Compile Include="Automapping\AutoCollectionCreator.cs" />
     <Compile Include="Automapping\AutoCompositeIdentityPart.cs" />
+    <Compile Include="Automapping\AutoEntityCollection.cs" />
     <Compile Include="Automapping\AutoJoinedSubClassPart.cs" />
+    <Compile Include="Automapping\AutoKeyMapper.cs" />
     <Compile Include="Automapping\AutoMap.cs" />
     <Compile Include="Automapping\AutoMapping.cs" />
     <Compile Include="Automapping\AutoMapComponent.cs" />
@@ -88,24 +92,37 @@
     <Compile Include="Automapping\AutoMapType.cs" />
     <Compile Include="Automapping\AutoMapVersion.cs" />
     <Compile Include="Automapping\AutoPersistenceModel.cs" />
+    <Compile Include="Automapping\AutoSimpleTypeCollection.cs" />
     <Compile Include="Automapping\AutoSubClassPart.cs" />
     <Compile Include="Automapping\IAutoClasslike.cs" />
     <Compile Include="Automapping\IAutoMapper.cs" />
     <Compile Include="Automapping\IAutoMappingAlteration.cs" />
     <Compile Include="Automapping\InlineOverride.cs" />
     <Compile Include="Automapping\IPropertyIgnorer.cs" />
-    <Compile Include="Automapping\ITypeSource.cs" />
+    <Compile Include="ITypeSource.cs" />
     <Compile Include="Automapping\PrivateAutoMapper.cs" />
     <Compile Include="Automapping\PrivateAutoPersistenceModel.cs" />
     <Compile Include="Automapping\SubclassStrategy.cs" />
+    <Compile Include="Cfg\Db\DB2Configuration.cs" />
+    <Compile Include="Cfg\Db\DB2ConnectionStringBuilder.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\AnyExpectation.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\CollectionExpectation.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\InvertedExpectation.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\InverterAcceptanceCriteria.cs" />
+    <Compile Include="Conventions\AttributeCollectionConvention.cs" />
+    <Compile Include="Conventions\AccessConvention.cs" />
+    <Compile Include="Conventions\Helpers\Builders\KeyManyToOneConventionBuilder.cs" />
+    <Compile Include="Conventions\Helpers\Builders\KeyPropertyConventionBuilder.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltKeyPropertyConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltKeyManyToOneConvention.cs" />
+    <Compile Include="Conventions\IAnyConvention.cs" />
+    <Compile Include="Conventions\IKeyManyToOneConventionAcceptance.cs" />
+    <Compile Include="Conventions\IKeyPropertyConventionAcceptance.cs" />
     <Compile Include="Conventions\Helpers\AutoImport.cs" />
     <Compile Include="Conventions\Helpers\Builders\BagConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\CollectionConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\ArrayConventionBuilder.cs" />
+    <Compile Include="Conventions\Helpers\Builders\CompositeIdConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\HibernateMappingConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\JoinConventionBuilder.cs" />
     <Compile Include="Conventions\Helpers\Builders\MapConventionBuilder.cs" />
@@ -132,6 +149,7 @@
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltJoinedSubclassConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltListConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltMapConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltProxyConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltSetConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltSubclassConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltCollectionConvention.cs" />
@@ -142,6 +160,8 @@
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltVersionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltComponentConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltDynamicComponentConvention.cs" />
+    <Compile Include="Conventions\Helpers\Proxy.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltCompositeIdConvention.cs" />
     <Compile Include="Conventions\IArrayConvention.cs" />
     <Compile Include="Conventions\IArrayConventionAcceptance.cs" />
     <Compile Include="Conventions\IBagConvention.cs" />
@@ -150,6 +170,8 @@
     <Compile Include="Conventions\ICollectionConventionAcceptance.cs" />
     <Compile Include="Conventions\IColumnConventionAcceptance.cs" />
     <Compile Include="Conventions\IComponentConventionAcceptance.cs" />
+    <Compile Include="Conventions\ICompositeIdentityConvention.cs" />
+    <Compile Include="Conventions\ICompositeIdentityConventionAcceptance.cs" />
     <Compile Include="Conventions\IDynamicComponentConventionAcceptance.cs" />
     <Compile Include="Conventions\IHasManyConventionAcceptance.cs" />
     <Compile Include="Conventions\IHasManyToManyConventionAcceptance.cs" />
@@ -162,6 +184,8 @@
     <Compile Include="Conventions\IIndexManyToManyConventionAcceptance.cs" />
     <Compile Include="Conventions\IJoinConventionAcceptance.cs" />
     <Compile Include="Conventions\IJoinedSubclassConventionAcceptance.cs" />
+    <Compile Include="Conventions\IKeyManyToOneConvention.cs" />
+    <Compile Include="Conventions\IKeyPropertyConvention.cs" />
     <Compile Include="Conventions\IListConvention.cs" />
     <Compile Include="Conventions\IListConventionAcceptance.cs" />
     <Compile Include="Conventions\IMapConvention.cs" />
@@ -180,7 +204,8 @@
     <Compile Include="Conventions\Inspections\CompositeIdentityInspector.cs" />
     <Compile Include="Conventions\Inspections\EntityName.cs" />
     <Compile Include="Conventions\Inspections\HibernateMappingInspector.cs" />
-    <Compile Include="Conventions\Inspections\IAnyInstance.cs" />
+    <Compile Include="Conventions\Instances\AnyInstance.cs" />
+    <Compile Include="Conventions\Instances\IAnyInstance.cs" />
     <Compile Include="Conventions\Inspections\IArrayInspector.cs" />
     <Compile Include="Conventions\Inspections\IBagInspector.cs" />
     <Compile Include="Conventions\Inspections\IHibernateMappingInspector.cs" />
@@ -251,6 +276,7 @@
     <Compile Include="Conventions\Instances\CascadeInstance.cs" />
     <Compile Include="Conventions\Instances\CollectionCascadeInstance.cs" />
     <Compile Include="Conventions\Instances\ComponentInstance.cs" />
+    <Compile Include="Conventions\Instances\CompositeIdentityInstance.cs" />
     <Compile Include="Conventions\Instances\IEntityNameInstance.cs" />
     <Compile Include="Conventions\Instances\EntityNameInstance.cs" />
     <Compile Include="Conventions\Instances\DynamicComponentInstance.cs" />
@@ -264,6 +290,7 @@
     <Compile Include="Conventions\Instances\ICascadeInstance.cs" />
     <Compile Include="Conventions\Instances\ICollectionCascadeInstance.cs" />
     <Compile Include="Conventions\Instances\IComponentInstance.cs" />
+    <Compile Include="Conventions\Instances\ICompositeIdentityInstance.cs" />
     <Compile Include="Conventions\Instances\IdentityInstance.cs" />
     <Compile Include="Conventions\Instances\IFetchInstance.cs" />
     <Compile Include="Conventions\Instances\IGeneratedInstance.cs" />
@@ -274,6 +301,8 @@
     <Compile Include="Conventions\Instances\IIndexManyToManyInstance.cs" />
     <Compile Include="Conventions\Instances\IJoinedSubclassInstance.cs" />
     <Compile Include="Conventions\Instances\IJoinInstance.cs" />
+    <Compile Include="Conventions\Instances\IKeyManyToOneInstance.cs" />
+    <Compile Include="Conventions\Instances\IKeyPropertyInstance.cs" />
     <Compile Include="Conventions\Instances\IListInstance.cs" />
     <Compile Include="Conventions\Instances\IManyToManyInstance.cs" />
     <Compile Include="Conventions\Instances\IKeyInstance.cs" />
@@ -300,6 +329,8 @@
     <Compile Include="Conventions\Instances\ISubclassInstance.cs" />
     <Compile Include="Conventions\Instances\IVersionInstance.cs" />
     <Compile Include="Conventions\Instances\JoinedSubclassInstance.cs" />
+    <Compile Include="Conventions\Instances\KeyManyToOneInstance.cs" />
+    <Compile Include="Conventions\Instances\KeyPropertyInstance.cs" />
     <Compile Include="Conventions\Instances\ListInstance.cs" />
     <Compile Include="Conventions\Instances\ManyToManyCollectionInstance.cs" />
     <Compile Include="Conventions\Instances\MapInstance.cs" />
@@ -361,13 +392,44 @@
     <Compile Include="Conventions\IVersionConventionAcceptance.cs" />
     <Compile Include="Conventions\ManyToManyTableNameConvention.cs" />
     <Compile Include="Conventions\ObjectExtensionsForConventions.cs" />
-    <Compile Include="MappingModel\BiDirectionalManyToManyPairingVisitor.cs" />
+    <Compile Include="Conventions\ProxyConvention.cs" />
+    <Compile Include="MappingModel\ClassBased\ExternalComponentMapping.cs" />
+    <Compile Include="MappingModel\EqualityExtensions.cs" />
+    <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />
+    <Compile Include="Mapping\Providers\IReferenceComponentMappingProvider.cs" />
+    <Compile Include="Visitors\AmbiguousComponentReferenceException.cs" />
+    <Compile Include="Visitors\BiDirectionalManyToManyPairingVisitor.cs" />
+    <Compile Include="MappingModel\ClassBased\ReferenceComponentMapping.cs" />
     <Compile Include="MappingModel\ColumnBasedMappingBase.cs" />
-    <Compile Include="MappingModel\ManyToManyTableNameVisitor.cs" />
+    <Compile Include="MappingModel\FilterDefinitionMapping.cs" />
+    <Compile Include="MappingModel\FilterMapping.cs" />
+    <Compile Include="Visitors\ComponentColumnPrefixVisitor.cs" />
+    <Compile Include="Visitors\ComponentReferenceResolutionVisitor.cs" />
+    <Compile Include="Visitors\ManyToManyTableNameVisitor.cs" />
+    <Compile Include="MappingModel\Output\XmlFilterDefinitionWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlFilterWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlStoredProcedureWriter.cs" />
+    <Compile Include="MappingModel\Output\XmlTuplizerWriter.cs" />
+    <Compile Include="MappingModel\StoredProcedureMapping.cs" />
+    <Compile Include="MappingModel\TuplizerMapping.cs" />
+    <Compile Include="Mapping\CheckTypeExpression.cs" />
+    <Compile Include="Mapping\ColumnPart.cs" />
+    <Compile Include="Mapping\ComponentMap.cs" />
+    <Compile Include="Mapping\ReferenceComponentPart.cs" />
+    <Compile Include="Mapping\FilterDefinition.cs" />
+    <Compile Include="Mapping\FilterPart.cs" />
+    <Compile Include="Mapping\IFilterDefinition.cs" />
+    <Compile Include="Mapping\KeyManyToOnePart.cs" />
+    <Compile Include="Mapping\KeyPropertyPart.cs" />
+    <Compile Include="Mapping\Member.cs" />
+    <Compile Include="Mapping\Providers\IFilterMappingProvider.cs" />
+    <Compile Include="Mapping\Providers\IStoredProcedureMappingProvider.cs" />
+    <Compile Include="Mapping\StoredProcedurePart.cs" />
     <Compile Include="Utils\ReflectionExtensions.cs" />
     <Compile Include="Mapping\PolymorphismBuilder.cs" />
     <Compile Include="Mapping\SchemaActionBuilder.cs" />
-    <Compile Include="SeparateSubclassVisitor.cs" />
+    <Compile Include="Visitors\MissingExternalComponentException.cs" />
+    <Compile Include="Visitors\SeparateSubclassVisitor.cs" />
     <Compile Include="MappingModel\Collections\IIndexedCollectionMapping.cs" />
     <Compile Include="MappingModel\Collections\SortType.cs" />
     <Compile Include="MappingModel\DefaultableList.cs" />
@@ -409,6 +471,12 @@
     <Compile Include="Cfg\Db\OracleConnectionStringBuilder.cs" />
     <Compile Include="Cfg\Db\OracleDataClientConfiguration.cs" />
     <Compile Include="Cfg\Db\PostgreSQLConnectionStringBuilder.cs" />
+    <Compile Include="Cfg\Db\OdbcConnectionStringBuilder.cs" />
+    <Compile Include="Cfg\Db\IfxOdbcConfiguration.cs" />
+    <Compile Include="Cfg\Db\IfxDRDAConfiguration.cs" />
+    <Compile Include="Cfg\Db\IfxDRDAConnectionStringBuilder.cs" />
+    <Compile Include="Cfg\Db\IfxSQLIConfiguration.cs" />
+    <Compile Include="Cfg\Db\IfxSQLIConnectionStringBuilder.cs" />
     <Compile Include="Cfg\FluentConfiguration.cs" />
     <Compile Include="Cfg\FluentConfigurationException.cs" />
     <Compile Include="Cfg\Fluently.cs" />
@@ -428,7 +496,7 @@
     <Compile Include="Conventions\Instances\INullableInstance.cs" />
     <Compile Include="Conventions\Instances\IReadOnlyInstance.cs" />
     <Compile Include="Conventions\Instances\IUpdateInstance.cs" />
-    <Compile Include="Conventions\ConventionVisitor.cs" />
+    <Compile Include="Visitors\ConventionVisitor.cs" />
     <Compile Include="Conventions\Inspections\ClassInspector.cs" />
     <Compile Include="Conventions\Instances\ColumnInstance.cs" />
     <Compile Include="Conventions\Inspections\InspectorModelMapper.cs" />
@@ -567,7 +635,7 @@
     <Compile Include="Conventions\IVersionConvention.cs" />
     <Compile Include="Mapping\CascadeExpression.cs" />
     <Compile Include="Mapping\CollectionCascadeExpression.cs" />
-    <Compile Include="Mapping\ColumnNameCollection.cs" />
+    <Compile Include="Mapping\ColumnMappingCollection.cs" />
     <Compile Include="Mapping\DynamicComponentPart.cs" />
     <Compile Include="Mapping\FetchTypeExpression.cs" />
     <Compile Include="Mapping\GenericEnumMapper.cs" />
@@ -584,7 +652,12 @@
     <Compile Include="Mapping\Prefix.cs" />
     <Compile Include="Mapping\PropertyGeneratedBuilder.cs" />
     <Compile Include="Mapping\VersionGeneratedBuilder.cs" />
-    <Compile Include="Utils\TypeExtensions.cs" />
+    <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Testing\PersistenceSpecificationExtensions.cs" />
+    <Compile Include="Testing\Values\List.cs" />
+    <Compile Include="Testing\Values\ReferenceList.cs" />
+    <Compile Include="Testing\Values\Property.cs" />
+    <Compile Include="Testing\Values\ReferenceProperty.cs" />
     <Compile Include="Utils\XmlExtensions.cs" />
     <Compile Include="SessionSource.cs" />
     <Compile Include="Testing\PersistenceSpecification.cs" />
@@ -627,10 +700,10 @@
     <Compile Include="MappingModel\DiscriminatorMapping.cs" />
     <Compile Include="MappingModel\IHasMappedMembers.cs" />
     <Compile Include="MappingModel\MappedMembers.cs" />
-    <Compile Include="MappingModel\NullMappingModelVisitor.cs" />
+    <Compile Include="Visitors\NullMappingModelVisitor.cs" />
     <Compile Include="MappingModel\KeyMapping.cs" />
-    <Compile Include="MappingModel\IMappingModelVisitor.cs" />
-    <Compile Include="MappingModel\DefaultMappingModelVisitor.cs" />
+    <Compile Include="Visitors\IMappingModelVisitor.cs" />
+    <Compile Include="Visitors\DefaultMappingModelVisitor.cs" />
     <Compile Include="MappingModel\Output\XmlClassWriter.cs" />
     <Compile Include="MappingModel\Output\XmlWriterFactory.cs" />
     <Compile Include="MappingModel\Output\IXmlWriter.cs" />
@@ -653,6 +726,9 @@
     <Compile Include="Utils\Reflection\ReflectionHelper.cs" />
     <Compile Include="Reveal.cs" />
     <Compile Include="UnknownPropertyException.cs" />
+    <Compile Include="Visitors\UnresolvedComponentReferenceVisitedException.cs" />
+    <Compile Include="Visitors\ValidationException.cs" />
+    <Compile Include="Visitors\ValidationVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\tools\NHibernate\nhibernate-mapping.xsd">

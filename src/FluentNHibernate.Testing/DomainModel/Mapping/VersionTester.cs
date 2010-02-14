@@ -19,7 +19,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyVersion()
         {
             new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.VersionNumber))
+                .ForMapping(m =>
+                {
+				    m.Id(x => x.Id);
+                    m.Version(x => x.VersionNumber);
+                })
                 .Element("//version").Exists()
                 .Element("//version/column").HasAttribute("name", "VersionNumber");
         }
@@ -28,7 +32,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyVersionOverrideColumnName()
         {
             new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.VersionNumber).Column("Version"))
+                .ForMapping(m =>
+                {
+				    m.Id(x => x.Id);
+                    m.Version(x => x.VersionNumber).Column("Version");
+                })
                 .Element("//version/column").HasAttribute("name", "Version");
         }
 
@@ -36,7 +44,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSepecifyAccessType()
         {
             new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.VersionNumber).Access.Field())
+                .ForMapping(m =>
+                {
+				    m.Id(x => x.Id);
+                    m.Version(x => x.VersionNumber).Access.Field();
+                })
                 .Element("//version").HasAttribute("access", "field");
         }
 
@@ -44,7 +56,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyTimestamp()
         {
             new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.TimeStamp))
+                .ForMapping(m =>
+                {
+				    m.Id(x => x.Id);
+                    m.Version(x => x.TimeStamp);
+                })
                 .Element("//version").HasAttribute("type", "timestamp");
         }
 
@@ -52,7 +68,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSepecifyAsNeverGenerated()
         {
             new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.VersionNumber).Generated.Never())
+                .ForMapping(m =>
+                {
+				    m.Id(x => x.Id);
+                    m.Version(x => x.VersionNumber).Generated.Never();
+                })
                 .Element("//version").HasAttribute("generated", "never");
         }
 
@@ -60,13 +80,18 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSepecifyUnsavedValue()
         {
             new MappingTester<VersionTarget>()
-                .ForMapping(map => map.Version(x => x.VersionNumber).UnsavedValue("1"))
+                .ForMapping(m =>
+                {
+				    m.Id(x => x.Id);
+                    m.Version(x => x.VersionNumber).UnsavedValue("1");
+                })
                 .Element("//version").HasAttribute("unsaved-value", "1");
         }
     }
 
     public class VersionTarget
     {
+        public int Id { get; set; }
         public int VersionNumber { get; set; }
         public DateTime TimeStamp { get; set; }
     }

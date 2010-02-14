@@ -155,9 +155,17 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void DiscriminatorValueShouldntBreakEvenThoughItIsntSupported()
         {
-            SubclassMapForSubclass<ChildRecord>()
+            SubclassMapForJoinedSubclass<ChildRecord>()
                 .Mapping(m => m.DiscriminatorValue("value"))
                 .ModelShouldMatch(x => { });
+        }
+
+        [Test]
+        public void EntityNameShouldSetModelEntityName()
+        {
+            SubclassMapForJoinedSubclass<ChildRecord>()
+                .Mapping(m => m.EntityName("name1"))
+                .ModelShouldMatch(x => x.EntityName.ShouldEqual("name1"));
         }
 
         private class FakeProxyType

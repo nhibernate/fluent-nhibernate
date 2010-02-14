@@ -5,8 +5,8 @@ namespace FluentNHibernate.Conventions.Instances
     public interface IMapInstance : IMapInspector
     {
         new IIndexInstanceBase Index { get; }
-        void OrderBy(string orderBy);
-        void Sort(string sort);
+        new void OrderBy(string orderBy);
+        new void Sort(string sort);
         new IAccessInstance Access { get; }
     }
 }

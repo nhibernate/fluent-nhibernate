@@ -18,7 +18,7 @@ namespace FluentNHibernate.Mapping
     {
         private readonly AttributeStore<AnyMapping> attributes = new AttributeStore<AnyMapping>();
         private readonly Type entity;
-        private readonly PropertyInfo property;
+        private readonly Member property;
         private readonly AccessStrategyBuilder<AnyPart<T>> access;
         private readonly CascadeExpression<AnyPart<T>> cascade;
         private readonly IList<string> typeColumns = new List<string>();
@@ -26,7 +26,7 @@ namespace FluentNHibernate.Mapping
         private readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
         private bool nextBool = true;
 
-        public AnyPart(Type entity, PropertyInfo property)
+        public AnyPart(Type entity, Member property)
         {
             this.entity = entity;
             this.property = property;
@@ -52,7 +52,7 @@ namespace FluentNHibernate.Mapping
 
         public AnyPart<T> IdentityType(Expression<Func<T, object>> expression)
         {
-            return IdentityType(ReflectionHelper.GetProperty(expression).PropertyType);
+            return IdentityType(ReflectionHelper.GetProperty(expression).ToMember().PropertyType);
         }
 
         public AnyPart<T> IdentityType<TIdentity>()

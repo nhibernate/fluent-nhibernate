@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
@@ -129,6 +130,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.BatchSize, value); }
         }
 
+        public string EntityName
+        {
+            get { return attributes.Get(x => x.EntityName); }
+            set { attributes.Set(x => x.EntityName, value); }
+        }
+
         public override bool IsSpecified(string property)
         {
             return attributes.IsSpecified(property);
@@ -147,6 +154,30 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public void OverrideAttributes(AttributeStore store)
         {
             attributes = new AttributeStore<JoinedSubclassMapping>(store);
+        }
+
+        public bool Equals(JoinedSubclassMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(other.attributes, attributes);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return Equals(obj as JoinedSubclassMapping);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                {
+                    return (base.GetHashCode() * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+                }
+            }
         }
     }
 }

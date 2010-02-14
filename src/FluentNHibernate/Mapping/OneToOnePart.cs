@@ -11,14 +11,14 @@ namespace FluentNHibernate.Mapping
     public class OneToOnePart<TOther> : IOneToOneMappingProvider
     {
         private readonly Type entity;
-        private readonly PropertyInfo property;
+        private readonly Member property;
         private readonly AccessStrategyBuilder<OneToOnePart<TOther>> access;
         private readonly FetchTypeExpression<OneToOnePart<TOther>> fetch;
         private readonly CascadeExpression<OneToOnePart<TOther>> cascade;
         private readonly AttributeStore<OneToOneMapping> attributes = new AttributeStore<OneToOneMapping>();
         private bool nextBool = true;
 
-        public OneToOnePart(Type entity, PropertyInfo property)
+        public OneToOnePart(Type entity, Member property)
         {
             access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this, value => attributes.Set(x => x.Access, value));
             fetch = new FetchTypeExpression<OneToOnePart<TOther>>(this, value => attributes.Set(x => x.Fetch, value));

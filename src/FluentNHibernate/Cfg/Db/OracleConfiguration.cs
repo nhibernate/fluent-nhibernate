@@ -14,6 +14,16 @@ namespace FluentNHibernate.Cfg.Db
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OracleConfiguration"/> class using the
+        /// Oracle Data Provider (Oracle.DataAccess) library specifying the Oracle 8i dialect.
+        /// The Oracle.DataAccess library must be available to the calling application/library.
+        /// </summary>
+        public static OracleConfiguration Oracle8
+        {
+            get { return new OracleConfiguration().Dialect<Oracle8iDialect>(); }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OracleConfiguration"/> class using the
         /// Oracle Data Provider (Oracle.DataAccess) library specifying the Oracle 9i dialect.
         /// The Oracle.DataAccess library must be available to the calling application/library.
         /// </summary>

@@ -30,10 +30,8 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void LazyLoad()
         {
-            if (mapping.IsSpecified("Lazy"))
-                return;
-
-            mapping.Lazy = nextBool;
+            if (!mapping.IsSpecified("Lazy"))
+                mapping.Lazy = nextBool;
             nextBool = true;
         }
 
@@ -51,37 +49,29 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Update()
         {
-            if (mapping.IsSpecified("Update"))
-                return;
-
-            mapping.Update = nextBool;
+            if (!mapping.IsSpecified("Update"))
+                mapping.Update = nextBool;
             nextBool = true;
         }
 
         public new void Insert()
         {
-            if (mapping.IsSpecified("Insert"))
-                return;
-
-            mapping.Insert = nextBool;
+            if (!mapping.IsSpecified("Insert"))
+                mapping.Insert = nextBool;
             nextBool = true;
         }
 
         public new void Unique()
         {
-            if (mapping.IsSpecified("Unique"))
-                return;
-
-            mapping.Unique = nextBool;
+            if (!mapping.IsSpecified("Unique"))
+                mapping.Unique = nextBool;
             nextBool = true;
         }
 
         public new void OptimisticLock()
         {
-            if (mapping.IsSpecified("OptimisticLock"))
-                return;
-
-            mapping.OptimisticLock = nextBool;
+            if (!mapping.IsSpecified("OptimisticLock"))
+                mapping.OptimisticLock = nextBool;
             nextBool = true;
         }
     }

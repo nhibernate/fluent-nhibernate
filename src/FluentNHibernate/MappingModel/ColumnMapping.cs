@@ -1,6 +1,6 @@
 using System;
 using System.Linq.Expressions;
-using System.Reflection;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -22,7 +22,7 @@ namespace FluentNHibernate.MappingModel
             visitor.ProcessColumn(this);
         }
 
-        public PropertyInfo PropertyInfo { get; set; }
+        public Member Member { get; set; }
 
         public string Name
         {
@@ -105,9 +105,37 @@ namespace FluentNHibernate.MappingModel
             attributes.SetDefault(property, value);
         }
 
-        public static ColumnMapping BaseOn(ColumnMapping originalMapping)
+        internal void MergeAttributes(AttributeStore<ColumnMapping> store)
         {
-            return new ColumnMapping(originalMapping.attributes.CloneInner());
+            attributes.Merge(store);
+        }
+
+        public ColumnMapping Clone()
+        {
+            return new ColumnMapping(attributes.CloneInner());
+        }
+
+        public bool Equals(ColumnMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.attributes, attributes) && Equals(other.Member, Member);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(ColumnMapping)) return false;
+            return Equals((ColumnMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^ (Member != null ? Member.GetHashCode() : 0);
+            }
         }
     }
 }

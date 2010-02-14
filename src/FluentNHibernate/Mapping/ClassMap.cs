@@ -32,6 +32,7 @@ namespace FluentNHibernate.Mapping
         private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
         private readonly PolymorphismBuilder<ClassMap<T>> polymorphism;
         private SchemaActionBuilder<ClassMap<T>> schemaAction;
+        protected TuplizerMapping tuplizerMapping;
 
         public ClassMap()
         {
@@ -90,6 +91,14 @@ namespace FluentNHibernate.Mapping
             if (!mapping.IsSpecified("TableName"))
                 mapping.SetDefaultValue(x => x.TableName, GetDefaultTableName());
 
+            foreach (var filter in filters)
+                mapping.AddFilter(filter.GetFilterMapping());
+
+            foreach (var storedProcedure in storedProcedures)
+                mapping.AddStoredProcedure(storedProcedure.GetStoredProcedureMapping());
+
+            mapping.Tuplizer = tuplizerMapping;
+
             return mapping;
         }
 
@@ -141,12 +150,21 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public VersionPart Version(Expression<Func<T, object>> expression)
+        public virtual CompositeIdentityPart<TId> CompositeId<TId>(Expression<Func<T, TId>> expression)
         {
-            return Version(ReflectionHelper.GetProperty(expression));
+            var part = new CompositeIdentityPart<TId>(ReflectionHelper.GetProperty(expression).Name);
+
+            compositeId = part;
+
+            return part;
         }
 
-        protected virtual VersionPart Version(PropertyInfo property)
+        public VersionPart Version(Expression<Func<T, object>> expression)
+        {
+            return Version(ReflectionHelper.GetProperty(expression).ToMember());
+        }
+
+        protected virtual VersionPart Version(Member property)
         {
             var versionPart = new VersionPart(typeof(T), property);
 
@@ -187,7 +205,7 @@ namespace FluentNHibernate.Mapping
 
         public virtual IdentityPart Id(Expression<Func<T, object>> expression, string column)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
+            Member property = ReflectionHelper.GetProperty(expression).ToMember();
             var part = column == null ? new IdentityPart(EntityType, property) : new IdentityPart(EntityType, property);
 
             if (column != null)
@@ -399,6 +417,46 @@ namespace FluentNHibernate.Mapping
         public void Subselect(string subselectSql)
         {
             attributes.Set(x => x.Subselect, subselectSql);
+        }
+
+
+		/// <overloads>
+        /// Applies a named filter to this one-to-many.
+        /// </overloads>
+        /// <summary>
+        /// Applies a named filter to this one-to-many.
+        /// </summary>
+        /// <param name="condition">The condition to apply</param>
+        /// <typeparam name="TFilter">
+        /// The type of a <see cref="FilterDefinition"/> implementation
+        /// defining the filter to apply.
+        /// </typeparam>
+        public ClassMap<T> ApplyFilter<TFilter>(string condition) where TFilter : FilterDefinition, new()
+        {
+            var part = new FilterPart(new TFilter().Name, condition);
+            filters.Add(part);
+            return this;
+        }
+
+        /// <summary>
+        /// Applies a named filter to this one-to-many.
+        /// </summary>
+        /// <typeparam name="TFilter">
+        /// The type of a <see cref="FilterDefinition"/> implementation
+        /// defining the filter to apply.
+        /// </typeparam>
+        public ClassMap<T> ApplyFilter<TFilter>() where TFilter : FilterDefinition, new()
+        {
+            return ApplyFilter<TFilter>(null);
+        }
+
+        public ClassMap<T> Tuplizer(TuplizerMode mode, Type tuplizerType)
+        {
+            tuplizerMapping = new TuplizerMapping();
+            tuplizerMapping.Mode = mode;
+            tuplizerMapping.Type = new TypeReference(tuplizerType);
+
+            return this;
         }
     }
 }

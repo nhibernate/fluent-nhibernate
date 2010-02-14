@@ -141,16 +141,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
 		[Test]
-		public void ShouldWriteEntityNameAttribute()
-		{
-
-			var testHelper = new XmlWriterTestHelper<ClassMapping>();
-			testHelper.Check(x => x.EntityName, "en").MapsToAttribute("entity-name");
-
-			testHelper.VerifyAll(writer);
-		}
-
-		[Test]
         public void ShouldWriteLazyAttribute()
         {
 
@@ -214,6 +204,16 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var testHelper = new XmlWriterTestHelper<ClassMapping>();
             testHelper.Check(x => x.SchemaAction, "none").MapsToAttribute("schema-action");
+
+            testHelper.VerifyAll(writer);
+        }
+
+
+        [Test]
+        public void ShouldWriteEntityNameAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<ClassMapping>();
+            testHelper.Check(x => x.EntityName, "entity1").MapsToAttribute("entity-name");
 
             testHelper.VerifyAll(writer);
         }
@@ -439,5 +439,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer.VerifyXml(mapping)
                 .Element("discriminator").Exists();
         }
+
     }
 }

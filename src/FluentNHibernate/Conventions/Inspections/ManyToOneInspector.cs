@@ -52,14 +52,14 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Name; }
         }
 
-        public bool IsSet(PropertyInfo property)
+        public bool IsSet(Member property)
         {
             return mapping.IsSpecified(propertyMappings.Get(property));
         }
 
-        public PropertyInfo Property
+        public Member Property
         {
-            get { return mapping.PropertyInfo; }
+            get { return mapping.Member; }
         }
 
         public string Name

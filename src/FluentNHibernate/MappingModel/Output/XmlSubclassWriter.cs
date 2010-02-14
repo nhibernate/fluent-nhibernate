@@ -55,6 +55,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.Abstract))
                 element.WithAtt("abstract", mapping.Abstract);
+
+            if (mapping.HasValue(x => x.EntityName))
+                element.WithAtt("entity-name", mapping.EntityName);
         }
 
         public override void Visit(ISubclassMapping subclassMapping)

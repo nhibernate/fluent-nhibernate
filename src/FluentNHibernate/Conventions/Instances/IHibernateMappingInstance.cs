@@ -5,12 +5,12 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public interface IHibernateMappingInstance : IHibernateMappingInspector
     {
-        void Catalog(string catalog);
-        void Schema(string schema);
+        new void Catalog(string catalog);
+        new void Schema(string schema);
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IHibernateMappingInstance Not { get; }
-        void DefaultLazy();
-        void AutoImport();
+        new void DefaultLazy();
+        new void AutoImport();
         new ICascadeInstance DefaultCascade { get; }
         new IAccessInstance DefaultAccess { get; }
     }

@@ -127,6 +127,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ModelShouldMatch(x => x.Check.ShouldEqual("constraint"));
         }
 
+        [Test]
+        public void EntityNameShouldSetModelEntityNamePropertyToFalse()
+        {
+            JoinedSubclass<ChildRecord>()
+                .Mapping(m => m.EntityName("entity1"))
+                .ModelShouldMatch(x => x.EntityName.ShouldEqual("entity1"));
+        }
+
         private class FakeProxyType
         {}
     }

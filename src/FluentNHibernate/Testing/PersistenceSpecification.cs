@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
+using FluentNHibernate.Testing.Values;
 using FluentNHibernate.Utils;
-using Iesi.Collections;
-using Iesi.Collections.Generic;
 using NHibernate;
 
 namespace FluentNHibernate.Testing
 {
     public class PersistenceSpecification<T>
     {
-        private readonly List<PropertyValue> allProperties = new List<PropertyValue>();
+        protected readonly List<Property<T>> allProperties = new List<Property<T>>();
         private readonly ISession currentSession;
         private readonly IEqualityComparer entityEqualityComparer;
         private readonly bool hasExistingSession;
@@ -40,65 +35,13 @@ namespace FluentNHibernate.Testing
             this.entityEqualityComparer = entityEqualityComparer;
         }
 
-        public PersistenceSpecification<T> CheckProperty(Expression<Func<T, object>> expression, object propertyValue)
+        public T VerifyTheMappings()
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            allProperties.Add(new PropertyValue(property, propertyValue, entityEqualityComparer));
-
-            return this;
+            return VerifyTheMappings(typeof(T).InstantiateUsingParameterlessConstructor<T>());
         }
 
-        public PersistenceSpecification<T> CheckProperty<TElement>(Expression<Func<T, Array>> expression, IList<TElement> propertyValue)
+        public T VerifyTheMappings(T first)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            allProperties.Add(new ListValue<TElement>(property, propertyValue, entityEqualityComparer));
-
-            return this;
-        }
-        public PersistenceSpecification<T> CheckReference(Expression<Func<T, object>> expression, object propertyValue)
-        {
-            TransactionalSave(propertyValue);
-
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            allProperties.Add(new PropertyValue(property, propertyValue, entityEqualityComparer));
-
-            return this;
-        }
-
-
-        public PersistenceSpecification<T> CheckList<TList>(Expression<Func<T, object>> expression,
-            IList<TList> propertyValue)
-        {
-            foreach (TList item in propertyValue)
-            {
-                TransactionalSave(item);
-            }
-
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            allProperties.Add(new ListValue<TList>(property, propertyValue, entityEqualityComparer));
-
-            return this;
-        }
-
-        /// <summary>
-        /// Checks a list of components for validity.
-        /// </summary>
-        /// <typeparam name="TList">Type of list element</typeparam>
-        /// <param name="expression">Property</param>
-        /// <param name="propertyValue">Value to save</param>
-        public PersistenceSpecification<T> CheckComponentList<TList>(Expression<Func<T, object>> expression, IList<TList> propertyValue)
-        {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            allProperties.Add(new ListValue<TList>(property, propertyValue, entityEqualityComparer));
-
-            return this;
-        }
-
-        public void VerifyTheMappings()
-        {
-            // CreateProperties the initial copy
-            var first = typeof(T).InstantiateUsingParameterlessConstructor();
-
             // Set the "suggested" properties, including references
             // to other entities and possibly collections
             allProperties.ForEach(p => p.SetValue(first));
@@ -119,9 +62,11 @@ namespace FluentNHibernate.Testing
             // made the round trip
             // It's a bit naive right now because it fails on the first failure
             allProperties.ForEach(p => p.CheckValue(second));
+
+			return second;
         }
 
-        private void TransactionalSave(object propertyValue)
+        public void TransactionalSave(object propertyValue)
         {
             if (hasExistingSession)
             {
@@ -137,145 +82,19 @@ namespace FluentNHibernate.Testing
             }
         }
 
-        #region Nested type: ListValue
-
-        internal class ListValue<TListelement> : PropertyValue
+        public PersistenceSpecification<T> RegisterCheckedProperty(Property<T> property)
         {
-            private readonly IList<TListelement> expected;
-
-            public ListValue(PropertyInfo property, IList<TListelement> propertyValue, IEqualityComparer entityEqualityComparer)
-                : base(property, propertyValue, entityEqualityComparer)
-            {
-                expected = propertyValue;
-            }
-
-            internal override void SetValue(object target)
-            {
-                try
-                {
-                    object collection;
-
-                    // sorry guys - create an instance of the collection type because we can't rely
-                    // on the user to pass in the correct collection type (especially if they're using
-                    // an interface). I've tried to create the common ones, but I'm sure this won't be
-                    // infallable.
-                    if (property.PropertyType.IsAssignableFrom(typeof(ISet<TListelement>)))
-                        collection = new HashedSet<TListelement>(expected);
-                    else if (property.PropertyType.IsAssignableFrom(typeof(ISet)))
-                        collection = new HashedSet((ICollection)expected);
-                    else if (property.PropertyType.IsArray)
-                    {
-                        collection = Array.CreateInstance(typeof(TListelement), expected.Count);
-                        Array.Copy((Array)expected, (Array)collection, expected.Count);
-                    }
-                    else
-                        collection = new List<TListelement>(expected);
-
-                    property.SetValue(target, collection, null);
-                }
-                catch (Exception e)
-                {
-                    string message = "Error while trying to set property " + property.Name;
-                    throw new ApplicationException(message, e);
-                }
-            }
-
-            internal override void CheckValue(object target)
-            {
-                var actual = (IEnumerable<TListelement>)property.GetValue(target, null);
-                AssertGenericListMatches(actual, expected);
-            }
-
-            private void AssertGenericListMatches<TItem>(IEnumerable<TItem> actualEnumerable, IEnumerable<TItem> expectedEnumerable)
-            {
-                if (actualEnumerable == null)
-                    throw new ArgumentNullException("actualEnumerable",
-                        "Actual and expected are not equal (Actual was null).");
-                if (expectedEnumerable == null)
-                    throw new ArgumentNullException("expectedEnumerable",
-                        "Actual and expected are not equal (expected was null).");
-
-                var actualList = actualEnumerable.ToList();
-                var expectedList = expectedEnumerable.ToList();
-
-                if (actualList.Count != expectedList.Count)
-                    throw new ApplicationException("Actual count does not equal expected count");
-
-                var equalsFunc = (entityEqualityComparer != null)
-                    ? new Func<object, object, bool>((a, b) => entityEqualityComparer.Equals(a, b))
-                    : new Func<object, object, bool>(Equals);
-
-                for (var i = 0; i < actualList.Count; i++)
-                {
-                    if (equalsFunc(actualList[i], expectedList[i])) continue;
-
-                    var message = string.Format("Expected '{0}' but got '{1}' at position {2}",
-                        expectedList[i],
-                        actualList[i],
-                        i);
-
-                    throw new ApplicationException(message);
-                }
-            }
+            return RegisterCheckedProperty(property, null);
         }
 
-        #endregion
-
-        #region Nested type: PropertyValue
-
-        internal class PropertyValue
+        public PersistenceSpecification<T> RegisterCheckedProperty(Property<T> property, IEqualityComparer equalityComparer)
         {
-            protected readonly PropertyInfo property;
-            protected readonly object propertyValue;
-            protected readonly IEqualityComparer entityEqualityComparer;
+            property.EntityEqualityComparer = equalityComparer ?? entityEqualityComparer;
+            allProperties.Add(property);
 
-            internal PropertyValue(PropertyInfo property, object propertyValue, IEqualityComparer entityEqualityComparer)
-            {
-                this.property = property;
-                this.propertyValue = propertyValue;
-                this.entityEqualityComparer = entityEqualityComparer;
-            }
+            property.HasRegistered(this);
 
-            internal virtual void SetValue(object target)
-            {
-                try
-                {
-                    property.SetValue(target, propertyValue, null);
-                }
-                catch (Exception e)
-                {
-                    string message = "Error while trying to set property " + property.Name;
-                    throw new ApplicationException(message, e);
-                }
-            }
-
-            internal virtual void CheckValue(object target)
-            {
-                object actual = property.GetValue(target, null);
-
-                bool areEqual;
-                if (entityEqualityComparer != null)
-                {
-                    areEqual = entityEqualityComparer.Equals(propertyValue, actual);
-                }
-                else
-                {
-                    areEqual = propertyValue.Equals(actual);
-                }
-
-                if (!areEqual)
-                {
-                    string message =
-                        string.Format(
-                            "Expected '{0}' but got '{1}' for Property '{2}'",
-                            propertyValue,
-                            actual, property.Name);
-
-                    throw new ApplicationException(message);
-                }
-            }
+            return this;
         }
-
-        #endregion
     }
 }

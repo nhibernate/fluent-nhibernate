@@ -208,8 +208,8 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void PropertyMapped()
         {
-            mapping.PropertyInfo = Prop(x => x.Access);
-            inspector.Property.ShouldEqual(mapping.PropertyInfo);
+            mapping.Member = Prop(x => x.Access);
+            inspector.Property.ShouldEqual(mapping.Member);
         }
 
         [Test]
@@ -474,9 +474,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
                 .ShouldBeFalse();
         }
 
-        private PropertyInfo Prop(Expression<Func<IPropertyInspector, object>> propertyExpression)
+        private Member Prop(Expression<Func<IPropertyInspector, object>> propertyExpression)
         {
-            return ReflectionHelper.GetProperty(propertyExpression);
+            return ReflectionHelper.GetProperty(propertyExpression).ToMember();
         }
     }
 }

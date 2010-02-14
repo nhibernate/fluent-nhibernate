@@ -9,7 +9,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		public void ShouldAddWhereAttributeToClass()
 		{
 			new MappingTester<MappedObject>()
-				.ForMapping(x => x.Where("deleted=0"))
+				.ForMapping(m =>
+				{
+				    m.Id(x => x.Id);
+				    m.Where("deleted=0");
+				})
 				.Element("class")
 				.HasAttribute("where", "deleted=0");
 		}

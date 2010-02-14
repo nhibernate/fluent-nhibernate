@@ -3,6 +3,7 @@ using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Visitors;
 using NUnit.Framework;
 using Is=FluentNHibernate.Conventions.AcceptanceCriteria.Is;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
@@ -30,7 +31,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         }
 
         public Type ContainingEntityType { get; set; }
-        public PropertyInfo PropertyInfo { get; set; }
+        public Member Member { get; set; }
 
         public ParentMapping Parent
         {
@@ -73,6 +74,8 @@ namespace FluentNHibernate.MappingModel.ClassBased
             return attributes.IsSpecified(property);
         }
 
+        public abstract bool HasValue(string property);
+
         public bool HasValue<TResult>(Expression<Func<ComponentMappingBase, TResult>> property)
         {
             return attributes.HasValue(property);
@@ -81,6 +84,35 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public void SetDefaultValue<TResult>(Expression<Func<ComponentMappingBase, TResult>> property, TResult value)
         {
             attributes.SetDefault(property, value);
+        }
+
+        public bool Equals(ComponentMappingBase other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) &&
+                Equals(other.attributes, attributes) &&
+                Equals(other.ContainingEntityType, ContainingEntityType) &&
+                Equals(other.Member, Member);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return Equals(obj as ComponentMappingBase);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = base.GetHashCode();
+                result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+                result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+                result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
+                return result;
+            }
         }
     }
 }

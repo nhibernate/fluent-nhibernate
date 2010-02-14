@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using FluentNHibernate.Utils;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -49,6 +50,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (columnMapping.HasValue(x => x.Scale))
                 element.WithAtt("scale", columnMapping.Scale);
+
+            if (columnMapping.HasValue(x => x.Default))
+                element.WithAtt("default", columnMapping.Default);
 
             document.AppendChild(element);
         }

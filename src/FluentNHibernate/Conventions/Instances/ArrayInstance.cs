@@ -112,19 +112,15 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Generic()
         {
-            if (mapping.IsSpecified("Generic"))
-                return;
-
-            mapping.Generic = nextBool;
+            if (!mapping.IsSpecified("Generic"))
+                mapping.Generic = nextBool;
             nextBool = true;
         }
 
         public new void Inverse()
         {
-            if (mapping.IsSpecified("Inverse"))
-                return;
-
-            mapping.Inverse = nextBool;
+            if (!mapping.IsSpecified("Inverse"))
+                mapping.Inverse = nextBool;
             nextBool = true;
         }
 
@@ -172,10 +168,8 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void LazyLoad()
         {
-            if (mapping.IsSpecified("Lazy"))
-                return;
-
-            mapping.Lazy = nextBool;
+            if (!mapping.IsSpecified("Lazy"))
+                mapping.Lazy = nextBool;
             nextBool = true;
         }
 
@@ -187,10 +181,8 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void ReadOnly()
         {
-            if (mapping.IsSpecified("Mutable"))
-                return;
-
-            mapping.Mutable = !nextBool;
+            if (!mapping.IsSpecified("Mutable"))
+                mapping.Mutable = !nextBool;
             nextBool = true;
         }
 

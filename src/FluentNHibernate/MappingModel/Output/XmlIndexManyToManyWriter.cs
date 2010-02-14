@@ -1,6 +1,7 @@
 using System.Xml;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -32,6 +33,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.ForeignKey))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
+
+            if (mapping.HasValue(x => x.EntityName))
+                element.WithAtt("entity-name", mapping.EntityName);
         }
 
         public override void Visit(ColumnMapping columnMapping)

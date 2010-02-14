@@ -222,6 +222,12 @@ namespace FluentNHibernate.Mapping
             joinedSubclassAttributes.Set(x => x.BatchSize, batchSize);
         }
 
+        public void EntityName(string entityname)
+        {
+            joinedSubclassAttributes.Set(x => x.EntityName, entityname);
+            subclassAttributes.Set(x => x.EntityName, entityname);
+        }
+
         /// <summary>
         /// Sets additional tables for the class via the NH 2.0 Join element, this only works if
         /// the hierarchy you're mapping has a discriminator.

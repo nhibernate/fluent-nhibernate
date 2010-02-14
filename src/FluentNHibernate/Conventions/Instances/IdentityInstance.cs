@@ -25,7 +25,7 @@ namespace FluentNHibernate.Conventions.Instances
                 return;
 
             var originalColumn = mapping.Columns.FirstOrDefault();
-            var column = originalColumn == null ? new ColumnMapping() : ColumnMapping.BaseOn(originalColumn);
+            var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
             column.Name = columnName;
 
@@ -118,22 +118,18 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Nullable()
         {
-            if (mapping.Columns.First().IsSpecified("NotNull"))
-                return;
-
-            foreach (var column in mapping.Columns)
-                column.NotNull = !nextBool;
+            if (!mapping.Columns.First().IsSpecified("NotNull"))
+                foreach (var column in mapping.Columns)
+                    column.NotNull = !nextBool;
 
             nextBool = true;
         }
 
         public new void Unique()
         {
-            if (mapping.Columns.First().IsSpecified("Unique"))
-                return;
-
-            foreach (var column in mapping.Columns)
-                column.Unique = nextBool;
+            if (!mapping.Columns.First().IsSpecified("Unique"))
+                foreach (var column in mapping.Columns)
+                    column.Unique = nextBool;
 
             nextBool = true;
         }

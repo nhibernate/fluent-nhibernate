@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-using System.Reflection;
+using System.Linq;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
@@ -10,18 +10,19 @@ namespace FluentNHibernate.Mapping
 {
     public class PropertyPart : IPropertyMappingProvider
     {
-        private readonly PropertyInfo property;
+        private readonly Member property;
         private readonly Type parentType;
         private readonly AccessStrategyBuilder<PropertyPart> access;
         private readonly PropertyGeneratedBuilder generated;
-        private readonly ColumnNameCollection<PropertyPart> columns;
+        private readonly ColumnMappingCollection<PropertyPart> columns;
         private readonly AttributeStore<PropertyMapping> attributes = new AttributeStore<PropertyMapping>();
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
+        
         private bool nextBool = true;
 
-        public PropertyPart(PropertyInfo property, Type parentType)
+        public PropertyPart(Member property, Type parentType)
         {
-            columns = new ColumnNameCollection<PropertyPart>(this);
+            columns = new ColumnMappingCollection<PropertyPart>(this);            
             access = new AccessStrategyBuilder<PropertyPart>(this, value => attributes.Set(x => x.Access, value));
             generated = new PropertyGeneratedBuilder(this, value => attributes.Set(x => x.Generated, value));
 
@@ -39,21 +40,25 @@ namespace FluentNHibernate.Mapping
             var mapping = new PropertyMapping(attributes.CloneInner())
             {
                 ContainingEntityType = parentType,
-                PropertyInfo = property
+                Member = property
             };
+       
+            if (columns.Count() == 0 && !mapping.IsSpecified("Formula"))
+                mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = property.Name });
 
-            if (columns.List().Count == 0)
-                mapping.AddDefaultColumn(CreateColumn(mapping.PropertyInfo.Name));
+            foreach (var column in columns)
+                mapping.AddColumn(column);
 
-            foreach (var column in columns.List())
-            {
-                var columnMapping = CreateColumn(column);
+            foreach(var column in mapping.Columns)
+            {                
+                if (!column.IsSpecified("NotNull") && property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
+                    column.SetDefaultValue(x => x.NotNull, false);
 
-                mapping.AddColumn(columnMapping);
+                column.MergeAttributes(columnAttributes);
             }
 
             if (!mapping.IsSpecified("Name"))
-                mapping.Name = mapping.PropertyInfo.Name;
+                mapping.Name = mapping.Member.Name;
 
             if (!mapping.IsSpecified("Type"))
                 mapping.SetDefaultValue("Type", GetDefaultType());
@@ -74,19 +79,6 @@ namespace FluentNHibernate.Mapping
             return type;
         }
 
-        private ColumnMapping CreateColumn(string column)
-        {
-            var columnMapping = new ColumnMapping(columnAttributes.CloneInner())
-            {
-                Name = column
-            };
-
-            if (!columnMapping.IsSpecified("NotNull") && property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
-                columnMapping.SetDefaultValue(x => x.NotNull, false);
-
-            return columnMapping;
-        }
-
         public PropertyPart Column(string columnName)
         {
             Columns.Clear();
@@ -94,7 +86,7 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public ColumnNameCollection<PropertyPart> Columns
+        public ColumnMappingCollection<PropertyPart> Columns
         {
             get { return columns; }
         }

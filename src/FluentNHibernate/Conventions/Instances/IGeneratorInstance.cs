@@ -1,6 +1,7 @@
 using System;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
+using NHibernate.Id;
 
 namespace FluentNHibernate.Conventions.Instances
 {
@@ -32,5 +33,11 @@ namespace FluentNHibernate.Conventions.Instances
         void Native(Action<ParamBuilder> paramValues);
         void Foreign(string property);
         void Foreign(string property, Action<ParamBuilder> paramValues);
+        void Custom<T>() where T : IIdentifierGenerator;
+        void Custom(Type generator);
+        void Custom(string generator);
+        void Custom<T>(Action<ParamBuilder> paramValues) where T : IIdentifierGenerator;
+        void Custom(Type generator, Action<ParamBuilder> paramValues);
+        void Custom(string generator, Action<ParamBuilder> paramValues);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
@@ -39,13 +40,13 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.NotFound, value); }
         }
 
-		public string EntityName
-		{
-			get { return attributes.Get(x => x.EntityName); }
-			set { attributes.Set(x => x.EntityName, value); }
-		}
+        public string EntityName
+        {
+            get { return attributes.Get(x => x.EntityName); }
+            set { attributes.Set(x => x.EntityName, value); }
+        }
 
-		public Type ContainingEntityType { get; set; }
+        public Type ContainingEntityType { get; set; }
 
         public override bool IsSpecified(string property)
         {
@@ -60,6 +61,29 @@ namespace FluentNHibernate.MappingModel.Collections
         public void SetDefaultValue<TResult>(Expression<Func<OneToManyMapping, TResult>> property, TResult value)
         {
             attributes.SetDefault(property, value);
+        }
+
+        public bool Equals(OneToManyMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.attributes, attributes) && Equals(other.ContainingEntityType, ContainingEntityType);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(OneToManyMapping)) return false;
+            return Equals((OneToManyMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            }
         }
     }
 }

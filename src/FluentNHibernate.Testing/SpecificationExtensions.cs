@@ -99,7 +99,7 @@ namespace FluentNHibernate.Testing
 
         public static void ShouldContain<T>(this IEnumerable<T> actual, Func<T, bool> expected)
         {
-            actual.Single(expected).ShouldNotEqual(default(T));
+            actual.FirstOrDefault(expected).ShouldNotEqual(default(T));
         }
 
         public static void ShouldContain(this IDictionary actual, string key, string value)
@@ -161,6 +161,21 @@ namespace FluentNHibernate.Testing
             actual.Count().ShouldEqual(0);
         }
 
+        public static void ItemsShouldBeEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected)
+        {
+            actual.Count().ShouldEqual(expected.Count());
+
+            var index = 0;
+
+            foreach (var item in actual)
+            {
+                var expectedItem = expected.ElementAt(index);
+
+                item.ShouldEqual(expectedItem);
+                index++;
+            }
+        }
+
         public static IEnumerable<T> ShouldHaveCount<T>(this IEnumerable<T> actual, int expected)
         {
             actual.Count().ShouldEqual(expected);
@@ -218,6 +233,11 @@ namespace FluentNHibernate.Testing
         public static void ShouldStartWith(this string actual, string expected)
         {
             StringAssert.StartsWith(expected, actual);
+        }
+
+        public static void ShouldNotStartWith(this string actual, string expected)
+        {
+            StringAssert.DoesNotStartWith(expected, actual);
         }
 
         public static void ShouldContainErrorMessage(this Exception exception, string expected)
@@ -282,5 +302,9 @@ namespace FluentNHibernate.Testing
             return element;
         }
 
+        public static T As<T>(this object instance) where T : class
+        {
+            return instance as T;
+        }
     }
 }

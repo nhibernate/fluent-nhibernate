@@ -103,17 +103,20 @@ namespace FluentNHibernate.Automapping
                 else
                     subclassMapping = new SubclassMapping();
 
-                MapSubclass(mappedProperties, subclassMapping, inheritedClass);
+				// track separate set of properties for each sub-tree within inheritance hierarchy
+            	var subClassProperties = new List<string>(mappedProperties);
+				MapSubclass(subClassProperties, subclassMapping, inheritedClass);
 
                 mapping.AddSubclass(subclassMapping);
 
-                MergeMap(inheritedClass.Type, (ClassMappingBase)subclassMapping, mappedProperties);
+				MergeMap(inheritedClass.Type, (ClassMappingBase)subclassMapping, subClassProperties);
             }
         }
 
         private void MapSubclass(IList<string> mappedProperties, ISubclassMapping subclass, AutoMapType inheritedClass)
         {
             subclass.Name = inheritedClass.Type.AssemblyQualifiedName;
+            subclass.Type = inheritedClass.Type;
             ApplyOverrides(inheritedClass.Type, mappedProperties, (ClassMappingBase)subclass);
             MapEverythingInClass((ClassMappingBase)subclass, inheritedClass.Type, mappedProperties);
             inheritedClass.IsMapped = true;
@@ -123,19 +126,19 @@ namespace FluentNHibernate.Automapping
         {
             foreach (var property in entityType.GetProperties())
             {
-                TryToMapProperty(mapping, property, mappedProperties);
+                TryToMapProperty(mapping, property.ToMember(), mappedProperties);
             }
         }
 
-        protected void TryToMapProperty(ClassMappingBase mapping, PropertyInfo property, IList<string> mappedProperties)
+        protected void TryToMapProperty(ClassMappingBase mapping, Member property, IList<string> mappedProperties)
         {
-            if (property.GetIndexParameters().Length == 0)
+            if (!property.HasIndexParameters)
             {
                 foreach (var rule in mappingRules)
                 {
                     if (rule.MapsProperty(property))
                     {
-                        if (mappedProperties.Count(name => name == property.Name) == 0)
+                        if (!mappedProperties.Any(name => name == property.Name))
                         {
                             rule.Map(mapping, property);
                             mappedProperties.Add(property.Name);

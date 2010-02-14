@@ -55,7 +55,7 @@ namespace FluentNHibernate.Testing.Automapping
                 Type = typeof(PropertyTarget)
             };
 
-            mapper.Map(classMapping, typeof(PropertyTarget).GetProperty("List"));
+            mapper.Map(classMapping, typeof(PropertyTarget).GetProperty("List").ToMember());
 
             classMapping.Collections
                 .First().ShouldBeOfType(typeof(BagMapping));
@@ -69,7 +69,7 @@ namespace FluentNHibernate.Testing.Automapping
                 Type = typeof(PropertyTarget)
             };
 
-            mapper.Map(classMapping, typeof(PropertyTarget).GetProperty("Set"));
+            mapper.Map(classMapping, typeof(PropertyTarget).GetProperty("Set").ToMember());
 
             classMapping.Collections
                 .First().ShouldBeOfType(typeof(SetMapping));
@@ -83,7 +83,7 @@ namespace FluentNHibernate.Testing.Automapping
                 Type = typeof(PropertyTarget)
             };
 
-            mapper.Map(classMapping, typeof(PropertyTarget).GetProperty("HashSet"));
+            mapper.Map(classMapping, typeof(PropertyTarget).GetProperty("HashSet").ToMember());
 
             classMapping.Collections
                 .First().ShouldBeOfType(typeof(SetMapping));
@@ -91,12 +91,12 @@ namespace FluentNHibernate.Testing.Automapping
 
         protected void ShouldMap(Expression<System.Func<PropertyTarget, object>> property)
         {
-            mapper.MapsProperty(ReflectionHelper.GetProperty(property)).ShouldBeTrue();
+            mapper.MapsProperty(ReflectionHelper.GetProperty(property).ToMember()).ShouldBeTrue();
         }
 
         protected void ShouldntMap(Expression<System.Func<PropertyTarget, object>> property)
         {
-            mapper.MapsProperty(ReflectionHelper.GetProperty(property)).ShouldBeFalse();
+            mapper.MapsProperty(ReflectionHelper.GetProperty(property).ToMember()).ShouldBeFalse();
         }
 
         protected class PropertyTarget

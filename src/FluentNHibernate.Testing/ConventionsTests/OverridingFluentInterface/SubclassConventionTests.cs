@@ -93,6 +93,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         private void Mapping(Action<SubclassMap<ExampleInheritedClass>> mappingDefinition)
         {
             var classMap = new ClassMap<ExampleClass>();
+            classMap.Id(x => x.Id);
             classMap.DiscriminateSubClassesOnColumn("col");
 
             var subclassMap = new SubclassMap<ExampleInheritedClass>();

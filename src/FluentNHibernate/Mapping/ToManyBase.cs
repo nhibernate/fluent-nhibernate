@@ -26,14 +26,15 @@ namespace FluentNHibernate.Mapping
         protected bool nextBool = true;
 
         protected readonly AttributeStore<ICollectionMapping> collectionAttributes = new AttributeStore<ICollectionMapping>();
-        protected readonly AttributeStore<KeyMapping> keyAttributes = new AttributeStore<KeyMapping>();
+        protected readonly KeyMapping keyMapping = new KeyMapping();
         protected readonly AttributeStore<TRelationshipAttributes> relationshipAttributes = new AttributeStore<TRelationshipAttributes>();
+        private readonly IList<FilterPart> filters = new List<FilterPart>();
         private Func<AttributeStore, ICollectionMapping> collectionBuilder;
         private IndexMapping indexMapping;
-        protected MemberInfo member;
+        protected Member member;
         private Type entity;
 
-        protected ToManyBase(Type entity, MemberInfo member, Type type)
+        protected ToManyBase(Type entity, Member member, Type type)
         {
             this.entity = entity;
             this.member = member;
@@ -74,8 +75,9 @@ namespace FluentNHibernate.Mapping
 
             mapping.ContainingEntityType = entity;
             mapping.ChildType = typeof(TChild);
-            mapping.MemberInfo = member;
-            mapping.Key = new KeyMapping(keyAttributes.CloneInner()) { ContainingEntityType = entity };
+            mapping.Member = member;
+            mapping.Key = keyMapping;
+            mapping.Key.ContainingEntityType = entity;
             mapping.Relationship = GetRelationship();
 
             if (Cache.IsDirty)
@@ -97,12 +99,15 @@ namespace FluentNHibernate.Mapping
                 mapping.Relationship = null;
             }
 
+            foreach (var filterPart in Filters)
+                mapping.Filters.Add(filterPart.GetFilterMapping());
+
             return mapping;
         }
 
         private string GetDefaultName()
         {
-            if (member is MethodInfo)
+            if (member.IsMethod)
             {
                 // try to guess the backing field name (GetSomething -> something)
                 if (member.Name.StartsWith("Get"))
@@ -173,19 +178,32 @@ namespace FluentNHibernate.Mapping
         {
             collectionBuilder = attrs => new ListMapping(attrs);
             CreateIndexMapping(null);
+
+            if (indexMapping.Columns.IsEmpty())
+                indexMapping.AddDefaultColumn(new ColumnMapping { Name = "Index" });
+
             return (T)this;
         }
 
         public T AsList(Action<IndexPart> customIndexMapping)
         {
-            AsList();
+            collectionBuilder = attrs => new ListMapping(attrs);
             CreateIndexMapping(customIndexMapping);
+
+            if (indexMapping.Columns.IsEmpty())
+                indexMapping.AddDefaultColumn(new ColumnMapping { Name = "Index" });
+
             return (T)this;
         }
 
         public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector)
         {
             return AsMap(indexSelector, null);
+        }
+
+        public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, SortType sort)
+        {
+            return AsMap(indexSelector, null, sort);
         }
 
         public T AsMap(string indexColumnName)
@@ -226,6 +244,12 @@ namespace FluentNHibernate.Mapping
         public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
         {
             collectionBuilder = attrs => new MapMapping(attrs);
+            return AsIndexedCollection(indexSelector, customIndexMapping);
+        }
+
+        public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping, SortType sort)
+        {
+            collectionBuilder = attrs => new MapMapping(attrs) { Sort = sort.ToString().ToLowerInvariant() };
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 
@@ -291,6 +315,13 @@ namespace FluentNHibernate.Mapping
             return (T)this;
         }
 
+        public T Element(string columnName, Action<ElementPart> customElementMapping)
+        {
+            Element(columnName);
+            if (customElementMapping != null) customElementMapping(elementPart);
+            return (T)this;
+        }
+
         /// <summary>
         /// Maps this collection as a collection of components.
         /// </summary>
@@ -318,7 +349,7 @@ namespace FluentNHibernate.Mapping
 
         public T ForeignKeyCascadeOnDelete()
         {
-            keyAttributes.Set(x => x.OnDelete, "cascade");
+            keyMapping.OnDelete = "cascade";
             return (T)this;
         }
 
@@ -436,5 +467,42 @@ namespace FluentNHibernate.Mapping
             collectionAttributes.Set(x => x.Schema, schema);
             return (T)this;
         }
+
+        /// <overloads>
+        /// Applies a named filter to this one-to-many.
+        /// </overloads>
+        /// <summary>
+        /// Applies a named filter to this one-to-many.
+        /// </summary>
+        /// <param name="condition">The condition to apply</param>
+        /// <typeparam name="TFilter">
+        /// The type of a <see cref="FilterDefinition"/> implementation
+        /// defining the filter to apply.
+        /// </typeparam>
+        public T ApplyFilter<TFilter>(string condition) where TFilter : FilterDefinition, new()
+        {
+            var part = new FilterPart(new TFilter().Name, condition);
+            Filters.Add(part);
+            return (T)this;
+        }
+
+        /// <summary>
+        /// Applies a named filter to this one-to-many.
+        /// </summary>
+        /// <typeparam name="TFilter">
+        /// The type of a <see cref="FilterDefinition"/> implementation
+        /// defining the filter to apply.
+        /// </typeparam>
+        public T ApplyFilter<TFilter>() where TFilter : FilterDefinition, new()
+        {
+            return ApplyFilter<TFilter>(null);
+        }
+
+        protected IList<FilterPart> Filters
+        {
+            get { return filters; }
+        }
+
+
     }
 }

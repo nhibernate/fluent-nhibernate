@@ -97,6 +97,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         private void VerifyModel(Action<OneToOneMapping> modelVerification)
         {
             var classMap = new ClassMap<ExampleClass>();
+            classMap.Id(x => x.Id);
             var map = classMap.HasOne(x => x.Parent);
 
             model.Add(classMap);

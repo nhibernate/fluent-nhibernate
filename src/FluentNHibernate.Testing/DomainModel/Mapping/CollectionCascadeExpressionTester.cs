@@ -22,5 +22,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 			A_call_to(_collectionCascade.AllDeleteOrphan).should_set_the_cascade_value_to("all-delete-orphan");
 		}
+
+        [Test]
+        public void DeleteOrphan_should_correctly_add_the_cascade_attribute_to_the_parent_part()
+        {
+            A_call_to(_collectionCascade.DeleteOrphan).should_set_the_cascade_value_to("delete-orphan");
+        }
 	}
 }

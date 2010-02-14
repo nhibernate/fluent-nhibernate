@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 using FluentNHibernate.Mapping;
 
@@ -385,6 +386,18 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void CanSetTuplizer()
+        {
+            Type tuplizerType = typeof(NHibernate.Tuple.Entity.PocoEntityTuplizer);
+
+            new MappingTester<MappedObject>()
+                .ForMapping(m => m.Tuplizer(TuplizerMode.Poco, tuplizerType))
+                .Element("class/tuplizer").Exists()
+                .HasAttribute("entity-mode", "poco")
+                .HasAttribute("class", tuplizerType.AssemblyQualifiedName);
+        }
+
+        [Test]
         public void ShouldWriteBatchSizeAttributeWhenAssigned()
         {
             new MappingTester<MappedObject>()
@@ -453,6 +466,28 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .ShouldBeInParentAtPosition(0)
                 .Element("class/version")
                     .ShouldBeInParentAtPosition(1);
+        }
+
+        [Test]
+        public void AssociationsToProxiedTypeUsesSpecifiedType()
+        {
+            new MappingTester<ProxiedObject>()
+                .ForMapping(x =>
+                {
+                    x.Proxy<IProxiedObject>();
+                    x.Id(y => y.Id);
+                    x.Map(y => y.Name);
+                    x.References<ProxiedObject>(y => y.Parent);
+                    x.HasOne<ProxiedObject>(y => y.Self);
+                    x.HasMany<ProxiedObject>(y => y.Children).AsBag();
+                    x.HasManyToMany<ProxiedObject>(y => y.Siblings);
+                    x.HasMany<ProxiedObject>(y => y.MapOfChildren).AsMap(y=>y.Name);
+                })
+                .Element("class/many-to-one[@name='Parent']").HasAttribute("class", typeof(ProxiedObject).AssemblyQualifiedName)
+                .Element("class/one-to-one[@name='Self']").HasAttribute("class", typeof(ProxiedObject).AssemblyQualifiedName)
+                .Element("class/bag[@name='Children']/one-to-many").HasAttribute("class", typeof(ProxiedObject).AssemblyQualifiedName)
+                .Element("class/bag[@name='Siblings']/many-to-many").HasAttribute("class", typeof(ProxiedObject).AssemblyQualifiedName)
+                .Element("class/map[@name='MapOfChildren']/one-to-many").HasAttribute("class", typeof(ProxiedObject).AssemblyQualifiedName);
         }
     }
 
@@ -527,4 +562,26 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 	{
 		public T Owner { get; set; }
 	}
+
+    public interface IProxiedObject
+    {
+        int Id { get; set; }
+        string Name { get; set; }
+        IProxiedObject Parent { get; set; }
+        IProxiedObject Self { get; set; }
+        IList<IProxiedObject> Children { get; set; }
+        IList<IProxiedObject> Siblings { get; set; }
+        IDictionary<String, IProxiedObject> MapOfChildren { get; set; }
+    }
+
+    public class ProxiedObject : IProxiedObject
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public IProxiedObject Parent { get; set; }
+        public IProxiedObject Self { get; set; }
+        public IList<IProxiedObject> Children { get; set; }
+        public IList<IProxiedObject> Siblings { get; set; }
+        public IDictionary<String, IProxiedObject> MapOfChildren { get; set; }
+    }
 }

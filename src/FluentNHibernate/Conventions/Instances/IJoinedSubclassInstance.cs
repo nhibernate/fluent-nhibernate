@@ -10,15 +10,15 @@ namespace FluentNHibernate.Conventions.Instances
         new IKeyInstance Key { get; }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IJoinedSubclassInstance Not { get; }
-        void Abstract();
-        void Check(string constraint);
-        void DynamicInsert();
-        void DynamicUpdate();
-        void LazyLoad();
-        void Proxy(Type type);
-        void Proxy<T>();
+        new void Abstract();
+        new void Check(string constraint);
+        new void DynamicInsert();
+        new void DynamicUpdate();
+        new void LazyLoad();
+        new void Proxy(Type type);
+        new void Proxy<T>();
         void Schema(string schema);
-        void SelectBeforeUpdate();
+        new void SelectBeforeUpdate();
         void Table(string tableName);
         void Subselect(string subselect);
         void Persister<T>() where T : IEntityPersister;

@@ -109,5 +109,11 @@ namespace FluentNHibernate.Testing.Xml
 
             return this;
         }
+
+        public MappingXmlTestHelper IsFirst()
+        {
+            Assert.That(_currentElement.ParentNode.FirstChild.OuterXml, Is.EqualTo(_currentElement.OuterXml));
+            return this;
+        }
     }
 }

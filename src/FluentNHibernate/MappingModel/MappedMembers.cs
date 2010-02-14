@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -14,6 +15,8 @@ namespace FluentNHibernate.MappingModel
         private readonly List<OneToOneMapping> oneToOnes;
         private readonly List<AnyMapping> anys;
         private readonly List<JoinMapping> joins;
+        private readonly List<FilterMapping> filters;
+        private readonly List<StoredProcedureMapping> storedProcedures;
 
         public MappedMembers()
         {
@@ -24,6 +27,8 @@ namespace FluentNHibernate.MappingModel
             oneToOnes = new List<OneToOneMapping>();
             anys = new List<AnyMapping>();
             joins = new List<JoinMapping>();
+            filters = new List<FilterMapping>();
+            storedProcedures = new List<StoredProcedureMapping>();
         }
 
         public IEnumerable<PropertyMapping> Properties
@@ -59,6 +64,16 @@ namespace FluentNHibernate.MappingModel
         public IEnumerable<JoinMapping> Joins
         {
             get { return joins; }
+        }
+
+        public IEnumerable<FilterMapping> Filters
+        {
+            get { return filters; }
+        }
+
+        public IEnumerable<StoredProcedureMapping> StoredProcedures
+        {
+            get { return storedProcedures; }
         }
 
         public void AddProperty(PropertyMapping property)
@@ -153,6 +168,14 @@ namespace FluentNHibernate.MappingModel
             joins.Add(mapping);
         }
 
+        public void AddFilter(FilterMapping mapping)
+        {
+            if (filters.Exists(x => x.Name == mapping.Name))
+                throw new InvalidOperationException("Tried to add filter with name '" + mapping.Name + "' when already added.");
+
+            filters.Add(mapping);
+        }
+
         public virtual void AcceptVisitor(IMappingModelVisitor visitor)
         {
             foreach (var collection in Collections)
@@ -175,11 +198,62 @@ namespace FluentNHibernate.MappingModel
 
             foreach (var join in joins)
                 visitor.Visit(join);
+
+            foreach (var filter in filters)
+                visitor.Visit(filter);
+
+            foreach (var storedProcedure in storedProcedures)
+                visitor.Visit(storedProcedure);
         }
 
         public bool IsSpecified(string property)
         {
             return false;
+        }
+
+        public void AddStoredProcedure(StoredProcedureMapping mapping)
+        {
+            storedProcedures.Add(mapping);
+        }
+
+        public bool Equals(MappedMembers other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return other.properties.ContentEquals(properties) &&
+                other.collections.ContentEquals(collections) &&
+                other.references.ContentEquals(references) &&
+                other.components.ContentEquals(components) &&
+                other.oneToOnes.ContentEquals(oneToOnes) &&
+                other.anys.ContentEquals(anys) &&
+                other.joins.ContentEquals(joins) &&
+                other.filters.ContentEquals(filters) &&
+                other.storedProcedures.ContentEquals(storedProcedures);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(MappedMembers)) return false;
+            return Equals((MappedMembers)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = (properties != null ? properties.GetHashCode() : 0);
+                result = (result * 397) ^ (collections != null ? collections.GetHashCode() : 0);
+                result = (result * 397) ^ (references != null ? references.GetHashCode() : 0);
+                result = (result * 397) ^ (components != null ? components.GetHashCode() : 0);
+                result = (result * 397) ^ (oneToOnes != null ? oneToOnes.GetHashCode() : 0);
+                result = (result * 397) ^ (anys != null ? anys.GetHashCode() : 0);
+                result = (result * 397) ^ (joins != null ? joins.GetHashCode() : 0);
+                result = (result * 397) ^ (filters != null ? filters.GetHashCode() : 0);
+                result = (result * 397) ^ (storedProcedures != null ? storedProcedures.GetHashCode() : 0);
+                return result;
+            }
         }
     }
 }

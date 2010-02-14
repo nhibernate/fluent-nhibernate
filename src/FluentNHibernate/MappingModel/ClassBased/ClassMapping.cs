@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.MappingModel.Identity;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
@@ -16,6 +17,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public ClassMapping(AttributeStore store)
         {
             attributes = new AttributeStore<ClassMapping>(store);
+            attributes.SetDefault(x => x.Mutable, true);
         }
 
         public IIdentityMapping Id
@@ -54,6 +56,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Discriminator, value); }
         }
 
+        public TuplizerMapping Tuplizer
+        {
+            get { return attributes.Get(x => x.Tuplizer); }
+            set { attributes.Set(x => x.Tuplizer, value); }
+        }
+
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessClass(this);            
@@ -69,6 +77,9 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
             if (Version != null)
                 visitor.Visit(Version);
+
+            if (Tuplizer != null)
+                visitor.Visit(Tuplizer);
 
             base.AcceptVisitor(visitor);
         }
@@ -205,6 +216,27 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public void SetDefaultValue<TResult>(Expression<Func<ClassMapping, TResult>> property, TResult value)
         {
             attributes.SetDefault(property, value);
+        }
+
+        public bool Equals(ClassMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) &&
+                Equals(other.attributes, attributes);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(ClassMapping)) return false;
+            return Equals((ClassMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (attributes != null ? attributes.GetHashCode() : 0);
         }
     }
 }

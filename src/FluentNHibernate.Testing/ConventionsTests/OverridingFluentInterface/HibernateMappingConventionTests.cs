@@ -94,6 +94,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         private void Mapping(Action<HibernateMappingPart> mappingDefinition)
         {
             var classMap = new ClassMap<ExampleClass>();
+            classMap.Id(x => x.Id);
 
             mappingDefinition(classMap.HibernateMapping);
 

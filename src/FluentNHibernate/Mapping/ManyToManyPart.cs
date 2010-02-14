@@ -11,37 +11,38 @@ using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Mapping
 {
-	public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild, ManyToManyMapping>
+    public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild, ManyToManyMapping>
     {
-	    private readonly Type entity;
-	    private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
-	    private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
-	    private IndexManyToManyPart manyToManyIndex;
-	    private readonly IList<string> childColumns = new List<string>();
-	    private readonly IList<string> parentColumns = new List<string>();
-	    private readonly Type childType;
-	    private Type valueType;
-	    private bool isTernary;
+        private readonly Type entity;
+        private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
+        private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
+        private IndexManyToManyPart manyToManyIndex;
+        private IndexPart index;
+        private readonly IList<string> childColumns = new List<string>();
+        private readonly IList<string> parentColumns = new List<string>();
+        private readonly Type childType;
+        private Type valueType;
+        private bool isTernary;
 
-	    public ManyToManyPart(Type entity, PropertyInfo property)
+        public ManyToManyPart(Type entity, Member property)
             : this(entity, property, property.PropertyType)
-	    {
-	        childType = property.PropertyType;
-	    }
+        {
+            childType = property.PropertyType;
+        }
 
-	    public ManyToManyPart(Type entity, MethodInfo method)
-	        : this(entity, method, method.ReturnType)
-	    {
-	        childType = method.ReturnType;
-	    }
+        public ManyToManyPart(Type entity, MethodInfo method)
+            : this(entity, method.ToMember(), method.ReturnType)
+        {
+            childType = method.ReturnType;
+        }
 
-	    protected ManyToManyPart(Type entity, MemberInfo member, Type collectionType)
+        protected ManyToManyPart(Type entity, Member member, Type collectionType)
             : base(entity, member, collectionType)
         {
-	        this.entity = entity;
-	        childType = collectionType;
+            this.entity = entity;
+            childType = collectionType;
 
-	        fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Fetch, value));
+            fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Fetch, value));
             notFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
         }
 
@@ -63,6 +64,10 @@ namespace FluentNHibernate.Mapping
             foreach (var column in childColumns)
                 ((ManyToManyMapping)collection.Relationship).AddColumn(new ColumnMapping { Name = column });
 
+            // HACK: Index only on list and map - shouldn't have to do this!
+            if (index != null && collection is IIndexedCollectionMapping)
+                ((IIndexedCollectionMapping)collection).Index = index.GetIndexMapping();
+
             // HACK: shouldn't have to do this!
             if (manyToManyIndex != null && collection is MapMapping)
                 ((MapMapping)collection).Index = manyToManyIndex.GetIndexMapping();
@@ -70,31 +75,31 @@ namespace FluentNHibernate.Mapping
             return collection;
         }
 
-	    public ManyToManyPart<TChild> ChildKeyColumn(string childKeyColumn)
-		{
-	        childColumns.Clear(); // support only one currently
-	        childColumns.Add(childKeyColumn);
-			return this;
-		}
-		
-		public ManyToManyPart<TChild> ParentKeyColumn(string parentKeyColumn)
-		{
+        public ManyToManyPart<TChild> ChildKeyColumn(string childKeyColumn)
+        {
+            childColumns.Clear(); // support only one currently
+            childColumns.Add(childKeyColumn);
+            return this;
+        }
+
+        public ManyToManyPart<TChild> ParentKeyColumn(string parentKeyColumn)
+        {
             parentColumns.Clear(); // support only one currently
             parentColumns.Add(parentKeyColumn);
-			return this;
-		}
+            return this;
+        }
 
         public ManyToManyPart<TChild> ForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName)
         {
-            keyAttributes.Set(x => x.ForeignKey, parentForeignKeyName);
+            keyMapping.ForeignKey = parentForeignKeyName;
             relationshipAttributes.Set(x => x.ForeignKey, childForeignKeyName);
             return this;
         }
-		
-		public FetchTypeExpression<ManyToManyPart<TChild>> FetchType
-		{
-			get { return fetch; }
-		}
+
+        public FetchTypeExpression<ManyToManyPart<TChild>> FetchType
+        {
+            get { return fetch; }
+        }
 
         private void EnsureDictionary()
         {
@@ -158,6 +163,47 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public ManyToManyPart<TChild> AsSimpleAssociation()
+        {
+            EnsureGenericDictionary();
+
+            var indexType = typeof(TChild).GetGenericArguments()[0];
+            var valueType = typeof(TChild).GetGenericArguments()[1];
+
+            return AsSimpleAssociation(indexType.Name + "_id", valueType.Name + "_id");
+        }
+
+        public ManyToManyPart<TChild> AsSimpleAssociation(string indexColumn, string valueColumn)
+        {
+            EnsureGenericDictionary();
+
+            var indexType = typeof(TChild).GetGenericArguments()[0];
+            var valueType = typeof(TChild).GetGenericArguments()[1];
+
+            index = new IndexPart(indexType);
+            index.Column(indexColumn);
+            index.Type(indexType);
+
+            ChildKeyColumn(valueColumn);
+            this.valueType = valueType;
+
+            isTernary = true;
+
+            return this;
+        }
+
+        public ManyToManyPart<TChild> AsEntityMap()
+        {
+            // The argument to AsMap will be ignored as the ternary association will overwrite the index mapping for the map.
+            // Therefore just pass null.
+            return AsMap(null).AsTernaryAssociation();
+        }
+
+        public ManyToManyPart<TChild> AsEntityMap(string indexColumn, string valueColumn)
+        {
+            return AsMap(null).AsTernaryAssociation(indexColumn, valueColumn);
+        }
+
         public Type ChildType
         {
             get { return typeof(TChild); }
@@ -168,19 +214,19 @@ namespace FluentNHibernate.Mapping
             get { return notFound; }
         }
 
-	    protected override ICollectionRelationshipMapping GetRelationship()
-	    {
-	        var mapping = new ManyToManyMapping(relationshipAttributes.CloneInner())
-	        {
-	            ContainingEntityType = entity,
-                
-	        };
+        protected override ICollectionRelationshipMapping GetRelationship()
+        {
+            var mapping = new ManyToManyMapping(relationshipAttributes.CloneInner())
+            {
+                ContainingEntityType = entity,
+
+            };
 
             if (isTernary && valueType != null)
                 mapping.Class = new TypeReference(valueType);
 
-	        return mapping;
-	    }
+            return mapping;
+        }
 
         /// <summary>
         /// Sets the order-by clause for this one-to-many relationship.
@@ -192,16 +238,16 @@ namespace FluentNHibernate.Mapping
         }
 
         public ManyToManyPart<TChild> ReadOnly()
-	    {
+        {
             collectionAttributes.Set(x => x.Mutable, !nextBool);
             nextBool = true;
             return this;
-	    }
+        }
 
-	    public ManyToManyPart<TChild> Subselect(string subselect)
-	    {
-	        collectionAttributes.Set(x => x.Subselect, subselect);
-	        return this;
-	    }
+        public ManyToManyPart<TChild> Subselect(string subselect)
+        {
+            collectionAttributes.Set(x => x.Subselect, subselect);
+            return this;
+        }
     }
 }

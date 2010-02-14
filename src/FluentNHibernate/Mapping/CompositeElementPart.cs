@@ -32,10 +32,10 @@ namespace FluentNHibernate.Mapping
 
         public PropertyPart Map(Expression<Func<T, object>> expression, string columnName)
         {
-            return Map(ReflectionHelper.GetProperty(expression), columnName);
+            return Map(ReflectionHelper.GetProperty(expression).ToMember(), columnName);
         }
 
-        protected virtual PropertyPart Map(PropertyInfo property, string columnName)
+        protected virtual PropertyPart Map(Member property, string columnName)
         {
             var propertyMap = new PropertyPart(property, typeof(T));
 
@@ -54,10 +54,10 @@ namespace FluentNHibernate.Mapping
 
         public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> expression, string columnName)
         {
-            return References<TOther>(ReflectionHelper.GetProperty(expression), columnName);
+            return References<TOther>(ReflectionHelper.GetProperty(expression).ToMember(), columnName);
         }
 
-        protected virtual ManyToOnePart<TOther> References<TOther>(PropertyInfo property, string columnName)
+        protected virtual ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
         {
             var part = new ManyToOnePart<TOther>(typeof(T), property);
 

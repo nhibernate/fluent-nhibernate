@@ -11,9 +11,10 @@ using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Testing
 {
-    public class XmlWriterTestHelper<TMappingType> where TMappingType : new()
+    public class XmlWriterTestHelper<TMappingType>
     {
         private readonly IList<XmlTest> _tests;
+        private Func<TMappingType> constructor;
 
         public XmlWriterTestHelper()
         {
@@ -27,12 +28,22 @@ namespace FluentNHibernate.Testing.Testing
             return test;
         }
 
+        public void CreateInstance(Func<TMappingType> construct)
+        {
+            constructor = construct;
+        }
 
         public void VerifyAll(IXmlWriter<TMappingType> writer)
         {
             foreach (var test in _tests)
             {
-                var mapping = new TMappingType();
+                TMappingType mapping;
+
+                if (constructor == null)
+                    mapping = (TMappingType)typeof(TMappingType).InstantiateUsingParameterlessConstructor();
+                else
+                    mapping = constructor();
+
                 test.ApplyToSource(mapping);
 
                 var serializer = new MappingXmlSerializer();

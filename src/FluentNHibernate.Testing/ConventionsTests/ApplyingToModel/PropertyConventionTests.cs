@@ -198,6 +198,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.Columns.First().Default.ShouldEqual("xxx"));
         }
 
+        [Test]
+        public void ShouldSetCheckProperty()
+        {
+            Convention(x => x.Check("check"));
+
+            VerifyModel(x => x.Columns.First().Check.ShouldEqual("check"));
+        }
+
         #region Helpers
 
         private void Convention(Action<IPropertyInstance> convention)
@@ -208,6 +216,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         private void VerifyModel(Action<PropertyMapping> modelVerification)
         {
             var classMap = new ClassMap<ExampleClass>();
+            classMap.Id(x => x.Id);
             var map = classMap.Map(x => x.LineOne);
 
             model.Add(classMap);

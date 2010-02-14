@@ -26,7 +26,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteClassAttribute()
         {
             var testHelper = new XmlWriterTestHelper<CompositeElementMapping>();
-            
+
             testHelper.Check(x => x.Class, new TypeReference("t")).MapsToAttribute("class");
             testHelper.VerifyAll(writer);
         }
@@ -65,6 +65,18 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             writer.VerifyXml(mapping)
                 .Element("parent").Exists();
+        }
+
+        [Test]
+        public void ShouldWriteParentAsFirstElement()
+        {
+            var mapping = new CompositeElementMapping();
+            mapping.Parent = new ParentMapping();
+            mapping.AddProperty(new PropertyMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("parent").IsFirst()
+                .Element("property").Exists();
         }
     }
 }

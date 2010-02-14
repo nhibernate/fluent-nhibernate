@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Inspections
@@ -15,12 +16,12 @@ namespace FluentNHibernate.Conventions.Inspections
             mappedProperties.Map(x => x.LazyLoad, x => x.Lazy);
         }
 
-        public new bool IsSet(PropertyInfo property)
+        public new bool IsSet(Member property)
         {
             return mapping.IsSpecified(mappedProperties.Get(property));
         }
 
-        public string OrderBy
+        public new string OrderBy
         {
             get { return mapping.OrderBy; }
         }

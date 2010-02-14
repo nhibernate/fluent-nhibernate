@@ -114,6 +114,18 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterWriter<JoinedSubclassMapping>(c =>
                 new XmlJoinedSubclassWriter(c.Resolve<IXmlWriterServiceLocator>()));
+
+            RegisterWriter<FilterMapping>(c =>
+                new XmlFilterWriter());
+
+            RegisterWriter<FilterDefinitionMapping>(c =>
+                new XmlFilterDefinitionWriter());
+
+            RegisterWriter<StoredProcedureMapping>(c =>
+                new XmlStoredProcedureWriter(c.Resolve<IXmlWriterServiceLocator>()));
+
+            RegisterWriter<TuplizerMapping>(c =>
+                new XmlTuplizerWriter());
         }
 
         private void RegisterIdWriters()
@@ -144,6 +156,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterWriter<ComponentMapping>(c =>
                 new XmlComponentWriter(c.Resolve<IXmlWriterServiceLocator>()));
+
+            RegisterWriter<ReferenceComponentMapping>(c =>
+                new XmlReferenceComponentWriter(c.Resolve<IXmlWriterServiceLocator>()));
 
             RegisterWriter<DynamicComponentMapping>(c =>
                 new XmlDynamicComponentWriter(c.Resolve<IXmlWriterServiceLocator>()));

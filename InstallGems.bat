@@ -1,11 +1,11 @@
-@ECHO *** Installing Rake 
-@call gem install rake --include-dependencies
+@echo off
 
-@ECHO *** Installing ActiveRecord
-@call gem install activerecord --include-dependencies
+echo Setting up rake environment for building
 
-@ECHO *** Installing RubyZip
-@call gem install rubyzip --include-dependencies
+echo Installing Rake
+call gem install rake
 
-@ECHO *** Installing Rails
-@call gem install rails --include-dependencies
+call rake setup:ensure_gemcutter_source
+
+echo Installing Albacore
+call gem install albacore

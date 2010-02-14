@@ -171,6 +171,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         private void VerifyModel(Action<ICollectionMapping> modelVerification)
         {
             var classMap = new ClassMap<ExampleInheritedClass>();
+            classMap.Id(x => x.Id);
             var map = classMap.HasMany(x => x.Children);
 
             model.Add(classMap);

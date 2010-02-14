@@ -48,19 +48,15 @@ namespace FluentNHibernate.Conventions.Instances
         public new void DynamicInsert()
         {
             if (!mapping.IsSpecified("DynamicInsert"))
-            {
                 mapping.DynamicInsert = nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new void DynamicUpdate()
         {
             if (!mapping.IsSpecified("DynamicUpdate"))
-            {
                 mapping.DynamicUpdate = nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new IOptimisticLockInstance OptimisticLock
@@ -84,19 +80,16 @@ namespace FluentNHibernate.Conventions.Instances
         public new void LazyLoad()
         {
             if (!mapping.IsSpecified("Lazy"))
-            {
                 mapping.Lazy = nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
+
 
         public new void ReadOnly()
         {
             if (!mapping.IsSpecified("Mutable"))
-            {
                 mapping.Mutable = !nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new void Schema(string schema)

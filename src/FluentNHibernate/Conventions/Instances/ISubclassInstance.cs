@@ -8,13 +8,13 @@ namespace FluentNHibernate.Conventions.Instances
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         ISubclassInstance Not { get; }
-        void DiscriminatorValue(object value);
-        void Abstract();
-        void DynamicInsert();
-        void DynamicUpdate();
-        void LazyLoad();
-        void Proxy(Type type);
-        void Proxy<T>();
-        void SelectBeforeUpdate();
+        new void DiscriminatorValue(object value);
+        new void Abstract();
+        new void DynamicInsert();
+        new void DynamicUpdate();
+        new void LazyLoad();
+        new void Proxy(Type type);
+        new void Proxy<T>();
+        new void SelectBeforeUpdate();
     }
 }

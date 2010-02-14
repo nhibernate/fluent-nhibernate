@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
+using NHibernate.Type;
+using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Conventions.Instances
 {
@@ -20,37 +22,29 @@ namespace FluentNHibernate.Conventions.Instances
         public new void Insert()
         {
             if (!mapping.IsSpecified("Insert"))
-            {
                 mapping.Insert = nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new void Update()
         {
             if (!mapping.IsSpecified("Update"))
-            {
                 mapping.Update = nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new void ReadOnly()
         {
             if (!mapping.IsSpecified("Insert") && !mapping.IsSpecified("Update"))
-            {
                 mapping.Insert = mapping.Update = !nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new void Nullable()
         {
-            if (mapping.Columns.First().IsSpecified("NotNull"))
-                return;
-
-            foreach (var column in mapping.Columns)
-                column.NotNull = !nextBool;
+            if (!mapping.Columns.First().IsSpecified("NotNull"))
+                foreach (var column in mapping.Columns)
+                    column.NotNull = !nextBool;
 
             nextBool = true;
         }
@@ -67,28 +61,30 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public void CustomType<T>()
-        {
-            if (!mapping.IsSpecified("Type"))
-                mapping.Type = new TypeReference(typeof(T));
-        }
-
         public void CustomType(TypeReference type)
         {
             if (!mapping.IsSpecified("Type"))
+            {
                 mapping.Type = type;
+
+                if (typeof(ICompositeUserType).IsAssignableFrom(mapping.Type.GetUnderlyingSystemType()))
+                    AddColumnsForCompositeUserType();
+            }
+        }
+
+        public void CustomType<T>()
+        {
+            CustomType(typeof(T));
         }
 
         public void CustomType(Type type)
         {
-            if (!mapping.IsSpecified("Type"))
-                mapping.Type = new TypeReference(type);
+            CustomType(new TypeReference(type));
         }
 
         public void CustomType(string type)
         {
-            if (!mapping.IsSpecified("Type"))
-                mapping.Type = new TypeReference(type);
+            CustomType(new TypeReference(type));
         }
 
         public void CustomSqlType(string sqlType)
@@ -129,11 +125,9 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Unique()
         {
-            if (mapping.Columns.First().IsSpecified("Unique"))
-                return;
-
-            foreach (var column in mapping.Columns)
-                column.Unique = nextBool;
+            if (!mapping.Columns.First().IsSpecified("Unique"))
+                foreach (var column in mapping.Columns)
+                    column.Unique = nextBool;
 
             nextBool = true;
         }
@@ -163,7 +157,7 @@ namespace FluentNHibernate.Conventions.Instances
                 return;
 
             var originalColumn = mapping.Columns.FirstOrDefault();
-            var column = originalColumn == null ? new ColumnMapping() : ColumnMapping.BaseOn(originalColumn);
+            var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
             column.Name = columnName;
 
@@ -192,10 +186,8 @@ namespace FluentNHibernate.Conventions.Instances
         public new void OptimisticLock()
         {
             if (!mapping.IsSpecified("OptimisticLock"))
-            {
                 mapping.OptimisticLock = nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new void Length(int length)
@@ -210,10 +202,8 @@ namespace FluentNHibernate.Conventions.Instances
         public new void LazyLoad()
         {
             if (!mapping.IsSpecified("Lazy"))
-            {
                 mapping.Lazy = nextBool;
-                nextBool = true;
-            }
+            nextBool = true;
         }
 
         public new void Index(string value)
@@ -223,6 +213,36 @@ namespace FluentNHibernate.Conventions.Instances
 
             foreach (var column in mapping.Columns)
                 column.Index = value;
+        }
+
+        public new void Check(string constraint)
+        {
+            if (mapping.Columns.First().IsSpecified("Check"))
+                return;
+
+            foreach (var column in mapping.Columns)
+                column.Check = constraint;
+        }
+
+        private void AddColumnsForCompositeUserType()
+        {
+            var inst = (ICompositeUserType)Activator.CreateInstance(mapping.Type.GetUnderlyingSystemType());
+
+            if (inst.PropertyNames.Length > 1)
+            {
+                var existingColumn = mapping.Columns.Single();
+                mapping.ClearColumns();
+                var propertyPrefix = existingColumn.Name;
+                for (int i = 0; i < inst.PropertyNames.Length; i++)
+                {
+                    var propertyName = inst.PropertyNames[i];
+                    var propertyType = inst.PropertyTypes[i];
+
+                    var column = existingColumn.Clone();
+                    column.Name = propertyPrefix + "_" + propertyName;
+                    mapping.AddColumn(column);
+                }
+            }
         }
     }
 }

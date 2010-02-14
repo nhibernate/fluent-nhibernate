@@ -1,5 +1,6 @@
 using System.Xml;
 using FluentNHibernate.Utils;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -39,13 +40,16 @@ namespace FluentNHibernate.MappingModel.Output
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
             if (mapping.HasValue(x => x.Lazy))
-                element.WithAtt("lazy", mapping.Lazy);
+                element.WithAtt("lazy", mapping.Lazy ? "proxy" : "false");
 
             if (mapping.HasValue(x => x.Name))
                 element.WithAtt("name", mapping.Name);
 
             if (mapping.HasValue(x => x.PropertyRef))
                 element.WithAtt("property-ref", mapping.PropertyRef);
+
+            if (mapping.HasValue(x => x.EntityName))
+                element.WithAtt("entity-name", mapping.EntityName);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         Access Access { get; }
         Cascade Cascade { get; }
+        TypeReference Class { get; }
         bool Constrained { get; }
         Fetch Fetch { get; }
         string ForeignKey { get; }

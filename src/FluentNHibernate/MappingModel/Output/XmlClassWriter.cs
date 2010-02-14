@@ -89,10 +89,9 @@ namespace FluentNHibernate.MappingModel.Output
             if (classMapping.HasValue(x => x.SchemaAction))
                 classElement.WithAtt("schema-action", classMapping.SchemaAction);
 
-			if (classMapping.HasValue(x => x.EntityName))
-				classElement.WithAtt("entity-name", classMapping.EntityName);
-
-		}
+            if (classMapping.HasValue(x => x.EntityName))
+                classElement.WithAtt("entity-name", classMapping.EntityName);
+        }
 
         public override void Visit(DiscriminatorMapping discriminatorMapping)
         {
@@ -148,6 +147,22 @@ namespace FluentNHibernate.MappingModel.Output
             var manyToOneXml = writer.Write(manyToOneMapping);
 
             document.ImportAndAppendChild(manyToOneXml);
+        }
+
+        public override void Visit(FilterMapping filterMapping)
+        {
+            var writer = serviceLocator.GetWriter<FilterMapping>();
+            var filterXml = writer.Write(filterMapping);
+
+            document.ImportAndAppendChild(filterXml);
+        }
+
+        public override void Visit(TuplizerMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<TuplizerMapping>();
+            var filterXml = writer.Write(mapping);
+
+            document.ImportAndAppendChild(filterXml);
         }
     }
 }

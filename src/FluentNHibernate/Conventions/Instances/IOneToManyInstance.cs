@@ -4,7 +4,7 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public interface IOneToManyInstance : IOneToManyInspector, IRelationshipInstance
     {
-        INotFoundInstance NotFound { get; }
+        new INotFoundInstance NotFound { get; }
 		IEntityNameInstance EntityName { get; }
 	}
 }

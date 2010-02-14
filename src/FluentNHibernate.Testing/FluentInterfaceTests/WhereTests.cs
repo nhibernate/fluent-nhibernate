@@ -109,6 +109,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         private string Where(Expression<Func<Child, bool>> where)
         {
             var classMap = new ClassMap<Target>();
+            classMap.Id(x => x.Id);
             classMap.HasMany(x => x.Children)
                 .Where(where);
 
@@ -126,6 +127,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         private string Where(string where)
         {
             var classMap = new ClassMap<Target>();
+            classMap.Id(x => x.Id);
             classMap.HasMany(x => x.Children)
                 .Where(where);
 
@@ -144,6 +146,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         private class Target
         {
+            public int Id { get; set; }
             public IList<Child> Children { get; set;}
         }
 

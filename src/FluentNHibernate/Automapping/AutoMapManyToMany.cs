@@ -16,7 +16,7 @@ namespace FluentNHibernate.Automapping
             this.expressions = expressions;
         }
 
-        public bool MapsProperty(PropertyInfo property)
+        public bool MapsProperty(Member property)
         {
             var type = property.PropertyType;
             if (type.Namespace != "Iesi.Collections.Generic" &&
@@ -27,7 +27,7 @@ namespace FluentNHibernate.Automapping
             return hasInverse;
         }
 
-        private static PropertyInfo GetInverseProperty(PropertyInfo property)
+        private static Member GetInverseProperty(Member property)
         {
             Type type = property.PropertyType;
             var inverseSide = type.GetGenericTypeDefinition()
@@ -36,10 +36,11 @@ namespace FluentNHibernate.Automapping
             var argument = type.GetGenericArguments()[0];
             return argument.GetProperties()
                 .Where(x => x.PropertyType == inverseSide)
+                .Select(x => x.ToMember())
                 .FirstOrDefault();
         }
 
-        private ICollectionMapping GetCollection(PropertyInfo property)
+        private ICollectionMapping GetCollection(Member property)
         {
             if (property.PropertyType.FullName.Contains("ISet"))
                 return new SetMapping();
@@ -47,14 +48,14 @@ namespace FluentNHibernate.Automapping
             return new BagMapping();
         }
 
-        private void ConfigureModel(PropertyInfo property, ICollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
+        private void ConfigureModel(Member property, ICollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
         {
             // TODO: Make the child type safer
             mapping.SetDefaultValue(x => x.Name, property.Name);
             mapping.Relationship = CreateManyToMany(property, property.PropertyType.GetGenericArguments()[0], classMap.Type);
             mapping.ContainingEntityType = classMap.Type;
             mapping.ChildType = property.PropertyType.GetGenericArguments()[0];
-            mapping.MemberInfo = property;
+            mapping.Member = property;
 
             SetKey(property, classMap, mapping);
 
@@ -62,7 +63,7 @@ namespace FluentNHibernate.Automapping
                 mapping.Inverse = true;
         }
 
-        private ICollectionRelationshipMapping CreateManyToMany(PropertyInfo property, Type child, Type parent)
+        private ICollectionRelationshipMapping CreateManyToMany(Member property, Type child, Type parent)
         {
             var mapping = new ManyToManyMapping
             {
@@ -75,12 +76,12 @@ namespace FluentNHibernate.Automapping
             return mapping;
         }
 
-        private void SetKey(PropertyInfo property, ClassMappingBase classMap, ICollectionMapping mapping)
+        private void SetKey(Member property, ClassMappingBase classMap, ICollectionMapping mapping)
         {
-            var columnName = property.DeclaringType.Name + "_Id";
+            var columnName = property.DeclaringType.Name + "_id";
 
             if (classMap is ComponentMapping)
-                columnName = expressions.GetComponentColumnPrefix(((ComponentMapping)classMap).PropertyInfo) + columnName;
+                columnName = expressions.GetComponentColumnPrefix(((ComponentMapping)classMap).Member) + columnName;
 
             var key = new KeyMapping();
 
@@ -90,7 +91,7 @@ namespace FluentNHibernate.Automapping
             mapping.SetDefaultValue(x => x.Key, key);
         }
 
-        public void Map(ClassMappingBase classMap, PropertyInfo property)
+        public void Map(ClassMappingBase classMap, Member property)
         {
             var inverseProperty = GetInverseProperty(property);
             var parentSide = expressions.GetParentSideForManyToMany(property.DeclaringType, inverseProperty.DeclaringType);

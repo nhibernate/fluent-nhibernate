@@ -78,6 +78,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         private void VerifyModel(Action<HibernateMapping> modelVerification)
         {
             var classMap = new ClassMap<ExampleClass>();
+            classMap.Id(x => x.Id);
 
             model.Add(classMap);
 

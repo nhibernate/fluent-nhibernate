@@ -1,154 +1,45 @@
 using System.Linq;
+using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
+using Machine.Specifications;
 using NUnit.Framework;
+using System;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
+    public abstract class ProviderSpec
+    {
+        public static ClassMapping map_as_class<T>(Action<ClassMap<T>> setup)
+        {
+            var provider = new ClassMap<T>();
+
+            setup(provider);
+
+            return ((IMappingProvider)provider).GetClassMapping();
+        }
+
+        public static SubclassMapping map_as_subclass<T>(Action<SubclassMap<T>> setup)
+        {
+            var provider = new SubclassMap<T>();
+            var mapping = new SubclassMapping();
+            
+            setup(provider);
+
+            ((IIndeterminateSubclassMappingProvider)provider).GetSubclassMapping(mapping);
+
+            return mapping;
+        }
+    }
+
     [TestFixture]
     public class ClassMapSubPartModelGenerationTests : BaseModelFixture
     {
-        [Test]
-        public void MapShouldAddPropertyMappingToPropertiesCollectionOnModel()
-        {
-            ClassMap<PropertyTarget>()
-                .Mapping(m => m.Map(x => x.Name))
-                .ModelShouldMatch(x => x.Properties.Count().ShouldEqual(1));
-        }
-
-        [Test]
-        public void MapShouldAddPropertyMappingWithCorrectName()
-        {
-            ClassMap<PropertyTarget>()
-                .Mapping(m => m.Map(x => x.Name))
-                .ModelShouldMatch(x => x.Properties.First().Name.ShouldEqual("Name"));
-        }
-
-        [Test]
-        public void DiscriminateShouldSetDiscriminatorModel()
-        {
-            ClassMap<SuperRecord>()
-                .Mapping(m => m.DiscriminateSubClassesOnColumn("col"))
-                .ModelShouldMatch(x => x.Discriminator.ShouldNotBeNull());
-        }
-
-        [Test]
-        public void DiscriminateShouldSetDiscriminatorColumnOnModel()
-        {
-            ClassMap<SuperRecord>()
-                .Mapping(m => m.DiscriminateSubClassesOnColumn("col"))
-                .ModelShouldMatch(x => x.Discriminator.Columns.First().Name.ShouldEqual("col"));
-        }
-
-        [Test]
-        public void DiscriminateOverloadShouldSetDiscriminatorBaseValueOnClassModel()
-        {
-            ClassMap<SuperRecord>()
-                .Mapping(m => m.DiscriminateSubClassesOnColumn("col", "base-value"))
-                .ModelShouldMatch(x => x.DiscriminatorValue.ShouldEqual("base-value"));
-        }
-
-// ignored warning for obsolete SubClass
-#pragma warning disable 612,618
-
-        [Test]
-        public void DiscriminateSubClassShouldAddSubclassToModelSubclassesCollection()
-        {
-            ClassMap<SuperRecord>()
-                .Mapping(m => m.DiscriminateSubClassesOnColumn("col").SubClass<ChildRecord>(sc => { }))
-                .ModelShouldMatch(x => x.Subclasses.Count().ShouldEqual(1));
-        }
-
-#pragma warning restore 612,618
-
-        [Test]
-        public void ComponentShouldAddToModelComponentsCollection()
-        {
-            ClassMap<PropertyTarget>()
-                .Mapping(m => m.Component(x => x.Component, c => { }))
-                .ModelShouldMatch(x => x.Components.Count().ShouldEqual(1));
-        }
-
-        [Test]
-        public void DynamicComponentShouldAddToModelComponentsCollection()
-        {
-            ClassMap<PropertyTarget>()
-                .Mapping(m => m.DynamicComponent(x => x.ExtensionData, c => { }))
-                .ModelShouldMatch(x => x.Components.Count().ShouldEqual(1));
-        }
-
-// disabled warnings for obsolete for JoinedSubClass
-#pragma warning disable 612,618
-
-        [Test]
-        public void JoinedSubclassShouldAddToModelSubclassesCollection()
-        {
-            ClassMap<SuperRecord>()
-                .Mapping(m => m.JoinedSubClass<ChildRecord>("key", c => {}))
-                .ModelShouldMatch(x => x.Subclasses.Count().ShouldEqual(1));
-        }
-
-        [Test]
-        public void JoinedSubclassShouldSetKeyColumnOnModel()
-        {
-            ClassMap<SuperRecord>()
-                .Mapping(m => m.JoinedSubClass<ChildRecord>("key", c => { }))
-                .ModelShouldMatch(x => ((JoinedSubclassMapping)x.Subclasses.First()).Key.Columns.First().Name.ShouldEqual("key"));
-        }
-
-#pragma warning restore 612,618
-
-        [Test]
-        public void VersionShouldSetModelVersion()
-        {
-            ClassMap<VersionTarget>()
-                .Mapping(m => m.Version(x => x.VersionNumber))
-                .ModelShouldMatch(x => x.Version.ShouldNotBeNull());
-        }
-
-        [Test]
-        public void CacheShouldSetCacheModel()
-        {
-            ClassMap<PropertyTarget>()
-                .Mapping(m => m.Cache.ReadOnly())
-                .ModelShouldMatch(x => x.Cache.ShouldNotBeNull());
-        }
-
-        [Test]
-        public void HasOneShouldAddToOneToOneCollectionOnModel()
-        {
-            ClassMap<PropertyTarget>()
-                .Mapping(m => m.HasOne(x => x.Reference))
-                .ModelShouldMatch(x => x.OneToOnes.Count().ShouldEqual(1));
-        }
-
-        [Test]
-        public void HasOneShouldCorrectOneToOneToCollectionOnModel()
-        {
-            ClassMap<PropertyTarget>()
-                .Mapping(m => m.HasOne(x => x.Reference))
-                .ModelShouldMatch(x => x.OneToOnes.First().Name.ShouldEqual("Reference"));
-        }
-
-        [Test]
-        public void PropertyAddsToPropertiesCollectionOnModel()
-        {
-            ClassMap<PropertyTarget>()
-                .Mapping(m => m.Map(x => x.Name))
-                .ModelShouldMatch(x => x.Properties.Count().ShouldEqual(1));
-        }
-
-        [Test]
-        public void PropertyAddsToPropertiesCollectionOnModelWithName()
-        {
-            ClassMap<PropertyTarget>()
-                .Mapping(m => m.Map(x => x.Name))
-                .ModelShouldMatch(x => x.Properties.First().Name.ShouldEqual("Name"));
-        }
-
         [Test]
         public void HasManyShouldAddToCollectionsCollectionOnModel()
         {
@@ -223,5 +114,20 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     .KeyProperty(x => x.Id))
                 .ModelShouldMatch(x => x.Id.ShouldBeOfType<CompositeIdMapping>());
         }
+
+        [Test]
+        public void TuplizerShouldSetTuplizerOnModel()
+        {
+            Type tuplizerType = typeof(NHibernate.Tuple.Entity.PocoEntityTuplizer);
+            ClassMap<PropertyTarget>()
+                .Mapping(m => m.Tuplizer(TuplizerMode.Poco, tuplizerType))
+                .ModelShouldMatch(x =>
+                {
+                    x.Tuplizer.ShouldNotBeNull();
+                    x.Tuplizer.Mode.ShouldEqual(TuplizerMode.Poco);
+                    x.Tuplizer.Type.ShouldEqual(new TypeReference(tuplizerType));
+                });
+        }
+
     }
 }

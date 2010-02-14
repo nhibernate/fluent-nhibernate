@@ -23,7 +23,7 @@ namespace FluentNHibernate.Conventions.Instances
                 return;
 
             var originalColumn = mapping.Columns.FirstOrDefault();
-            var column = originalColumn == null ? new ColumnMapping() : ColumnMapping.BaseOn(originalColumn);
+            var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
             column.Name = columnName;
 
@@ -40,6 +40,16 @@ namespace FluentNHibernate.Conventions.Instances
                     .Cast<IColumnInstance>()
                     .ToDefaultableList();
             }
+        }
+
+        public void CustomClass<T>()
+        {
+            mapping.Class = new TypeReference(typeof(T));
+        }
+
+        public void CustomClass(Type type)
+        {
+            mapping.Class = new TypeReference(type);
         }
     }
 }

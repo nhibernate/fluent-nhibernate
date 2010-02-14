@@ -12,6 +12,6 @@ namespace FluentNHibernate.Conventions.Instances
         void IncludeNonLazy();
         void CustomInclude(string include);
         void CustomUsage(string custom);
-        void Region(string name);
+        new void Region(string name);
     }
 }

@@ -9,8 +9,9 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
         protected override IDictionary<string, SortValue> GetSorting()
         {
             return new Dictionary<string, SortValue>
-            {
+            {                
                 { "cache", new SortValue { Position = First, Level = 1 } },
+                { "tuplizer", new SortValue { Position = First, Level = 1 } },
                 { "key", new SortValue { Position = First, Level = 1 } },
                 { "id", new SortValue { Position = First, Level = 2 } },
                 { "composite-id", new SortValue { Position = First, Level = 2 } },
@@ -19,6 +20,7 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
                 { "component", new SortValue { Position = Anywhere, Level = 1 } },
                 { "dynamic-component", new SortValue { Position = Anywhere, Level = 1 } },
                 { "one-to-one", new SortValue { Position = Anywhere, Level = 1 } },
+                { "parent", new SortValue { Position = First, Level = 2 } },
                 { "property", new SortValue { Position = Anywhere, Level = 2 } },
                 { "many-to-one", new SortValue { Position = Anywhere, Level = 3 } },
                 { "array", new SortValue { Position = Anywhere, Level = 3 } },
@@ -29,13 +31,17 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
                 { "joined-subclass", new SortValue { Position = Anywhere, Level = 4 } },
                 { "subclass", new SortValue { Position = Last, Level = 3 } },
                 { "join", new SortValue { Position = Last, Level = 3 } },
-                { "any", new SortValue { Position = Anywhere, Level = 2}}
+                { "any", new SortValue { Position = Anywhere, Level = 2 } },
+                { "filter", new SortValue { Position = Last, Level = 5 } },
+                { "sql-insert", new SortValue { Position = Last, Level = 5 } },
+                { "sql-update", new SortValue { Position = Last, Level = 5 } },
+                { "sql-delete", new SortValue { Position = Last, Level = 5 } },
             };
         }
 
         protected override void SortChildren(XmlNode node)
         {
-            if (node.Name == "subclass" || node.Name == "joined-subclass")
+            if (node.Name == "subclass" || node.Name == "joined-subclass" || node.Name == "component")
                 Sort(node);
             else if (node.Name == "id")
                 new XmlIdNodeSorter().Sort(node);

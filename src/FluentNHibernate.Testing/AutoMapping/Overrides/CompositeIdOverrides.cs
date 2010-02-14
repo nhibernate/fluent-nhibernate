@@ -1,6 +1,5 @@
 using System.Linq;
 using FluentNHibernate.Automapping;
-using FluentNHibernate.Testing.Automapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.AutoMapping.Overrides
@@ -17,7 +16,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Overrides
                         .KeyProperty(x => x.ObjectId)
                         .KeyProperty(x => x.SecondId));
 
-            model.CompileMappings();
             var classMapping = model.BuildMappings()
                 .First()
                 .Classes.First();
@@ -34,7 +32,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Overrides
                     o.CompositeId()
                         .KeyReference(x => x.Child));
 
-            model.CompileMappings();
             var classMapping = model.BuildMappings()
                 .First()
                 .Classes.First();

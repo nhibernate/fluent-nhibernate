@@ -220,5 +220,38 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.Subselect("whee"))
                 .ModelShouldMatch(x => x.Subselect.ShouldEqual("whee"));
         }
+
+        [Test]
+        public void KeyUpdateShouldSetModelValue()
+        {
+            OneToMany<ChildObject>(x => x.BagOfChildren)
+                .Mapping(m => m.KeyUpdate())
+                .ModelShouldMatch(x => x.Key.Update.ShouldBeTrue());
+        }
+
+        [Test]
+        public void KeyNullableShouldSetModelValue()
+        {
+            OneToMany<ChildObject>(x => x.BagOfChildren)
+                .Mapping(m => m.KeyNullable())
+                .ModelShouldMatch(x => x.Key.NotNull.ShouldBeFalse());
+        }
+
+        [Test]
+        public void KeyNotNullableShouldSetModelValue()
+        {
+            OneToMany<ChildObject>(x => x.BagOfChildren)
+                .Mapping(m => m.Not.KeyNullable())
+                .ModelShouldMatch(x => x.Key.NotNull.ShouldBeTrue());
+        }
+
+        [Test]
+        public void PropertyRefShouldSetModelValue()
+        {
+            OneToMany<ChildObject>(x => x.BagOfChildren)
+                .Mapping(m => m.PropertyRef("prop1"))
+                .ModelShouldMatch(x => x.Key.PropertyRef.ShouldEqual("prop1"));
+        }
+
     }
 }

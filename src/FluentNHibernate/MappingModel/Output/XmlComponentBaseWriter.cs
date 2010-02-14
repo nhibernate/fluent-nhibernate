@@ -1,6 +1,7 @@
 using System;
 using System.Xml;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -33,6 +34,13 @@ namespace FluentNHibernate.MappingModel.Output
             var writer = serviceLocator.GetWriter<DynamicComponentMapping>();
 
             document = writer.Write(componentMapping);
+        }
+
+        public override void ProcessComponent(ReferenceComponentMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<ReferenceComponentMapping>();
+
+            document = writer.Write(mapping);
         }
     }
 }

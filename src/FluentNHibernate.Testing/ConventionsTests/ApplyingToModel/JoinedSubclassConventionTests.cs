@@ -129,6 +129,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         private void VerifyModel(Action<JoinedSubclassMapping> modelVerification)
         {
             var classMap = new ClassMap<ExampleClass>();
+            classMap.Id(x => x.Id);
             var subclassMap = new SubclassMap<ExampleInheritedClass>();
 
             model.Add(classMap);

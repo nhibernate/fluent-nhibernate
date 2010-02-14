@@ -82,6 +82,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         private void Mapping(Action<ComponentPart<ComponentTarget>> mappingDefinition)
         {
             var classMap = new ClassMap<PropertyTarget>();
+            classMap.Id(x => x.Id);
             var map = classMap.Component(x => x.Component, mappingDefinition);
 
             mappingDefinition(map);

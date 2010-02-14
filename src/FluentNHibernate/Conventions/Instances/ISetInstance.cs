@@ -4,8 +4,8 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public interface ISetInstance : ISetInspector
     {
-        void OrderBy(string orderBy);
-        void Sort(string sort);
+        new void OrderBy(string orderBy);
+        new void Sort(string sort);
         new IAccessInstance Access { get; }
     }
 }

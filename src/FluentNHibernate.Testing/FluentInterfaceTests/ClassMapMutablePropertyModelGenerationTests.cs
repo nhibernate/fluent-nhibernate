@@ -162,6 +162,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ModelShouldMatch(x => x.SchemaAction.ShouldEqual("none"));
         }
 
+        [Test]
+        public void EntityNameShouldSetModelPropertyToValue()
+        {
+            ClassMap<PropertyTarget>()
+                .Mapping(x => x.EntityName("entity1"))
+                .ModelShouldMatch(x => x.EntityName.ShouldEqual("entity1"));
+        }
+
         public class FakeProxy
         { }
     }

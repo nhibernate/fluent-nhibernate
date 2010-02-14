@@ -12,7 +12,7 @@ namespace FluentNHibernate.Mapping
     {
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
         private readonly IList<string> columns = new List<string>();
-        private readonly PropertyInfo property;
+        private readonly Member property;
         private readonly Type entityType;
         private readonly AccessStrategyBuilder<IdentityPart> access;
         private readonly AttributeStore<IdMapping> attributes = new AttributeStore<IdMapping>();
@@ -20,7 +20,7 @@ namespace FluentNHibernate.Mapping
         private bool nextBool = true;
         private readonly string columnName;
 
-        public IdentityPart(Type entity, PropertyInfo property)
+        public IdentityPart(Type entity, Member property)
         {
             this.property = property;
             entityType = entity;

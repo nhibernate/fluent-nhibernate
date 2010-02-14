@@ -10,7 +10,7 @@ namespace FluentNHibernate.Testing
         public static bool IsSpecified<T>(this T model, Expression<Func<T, object>> propertyExpression)
             where T : IMappingBase
         {
-            return model.IsSpecified(propertyExpression.ToPropertyInfo().Name);
+            return model.IsSpecified(propertyExpression.ToMember().Name);
         }
     }
 }

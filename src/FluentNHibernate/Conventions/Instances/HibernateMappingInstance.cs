@@ -40,19 +40,15 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void DefaultLazy()
         {
-            if (mapping.IsSpecified("DefaultLazy"))
-                return;
-
-            mapping.DefaultLazy = nextBool;
+            if (!mapping.IsSpecified("DefaultLazy"))
+                mapping.DefaultLazy = nextBool;
             nextBool = true;
         }
 
         public new void AutoImport()
         {
-            if (mapping.IsSpecified("AutoImport"))
-                return;
-
-            mapping.AutoImport = nextBool;
+            if (!mapping.IsSpecified("AutoImport"))
+                mapping.AutoImport = nextBool;
             nextBool = true;
         }
 

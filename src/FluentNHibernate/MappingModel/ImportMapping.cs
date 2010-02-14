@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -46,6 +47,26 @@ namespace FluentNHibernate.MappingModel
         public void SetDefaultValue<TResult>(Expression<Func<ImportMapping, TResult>> property, TResult value)
         {
             attributes.SetDefault(property, value);
+        }
+
+        public bool Equals(ImportMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.attributes, attributes);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(ImportMapping)) return false;
+            return Equals((ImportMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (attributes != null ? attributes.GetHashCode() : 0);
         }
     }
 }

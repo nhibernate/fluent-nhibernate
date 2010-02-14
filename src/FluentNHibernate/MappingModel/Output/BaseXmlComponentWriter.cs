@@ -17,24 +17,24 @@ namespace FluentNHibernate.MappingModel.Output
             this.serviceLocator = serviceLocator;
         }
 
-        protected XmlDocument WriteComponent(string element, ComponentMappingBase mapping)
+        protected XmlDocument WriteComponent(string element, IComponentMapping mapping)
         {
             var doc = new XmlDocument();
             var componentElement = doc.AddElement(element);
 
-            if (mapping.HasValue(x => x.Name))
+            if (mapping.HasValue("Name"))
                 componentElement.WithAtt("name", mapping.Name);
 
-            if (mapping.HasValue(x => x.Insert))
+            if (mapping.HasValue("Insert"))
                 componentElement.WithAtt("insert", mapping.Insert);
 
-            if (mapping.HasValue(x => x.Update))
+            if (mapping.HasValue("Update"))
                 componentElement.WithAtt("update", mapping.Update);
 
-            if (mapping.HasValue(x => x.Access))
+            if (mapping.HasValue("Access"))
                 componentElement.WithAtt("access", mapping.Access);
 
-            if (mapping.HasValue(x => x.OptimisticLock))
+            if (mapping.HasValue("OptimisticLock"))
                 componentElement.WithAtt("optimistic-lock", mapping.OptimisticLock);
 
             return doc;

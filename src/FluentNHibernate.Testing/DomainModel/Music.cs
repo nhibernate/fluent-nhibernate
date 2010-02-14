@@ -1,20 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using FluentNHibernate.Data;
 using Iesi.Collections.Generic;
 
 namespace FluentNHibernate.Testing.DomainModel
 {
-    public class Artist
+    public class Artist : Entity
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public ISet<Album> Albums { get; set; }
+        public virtual string Name { get; set; }
+        public virtual ISet<Album> Albums { get; set; }
+        public virtual Genre Genre { get; set; }
 
         public Artist()
         {
             Albums = new HashedSet<Album>();
+        }
+    }
+
+    public class Genre : Entity
+    {
+        public virtual string Name { get; set; }
+        public virtual IList<Artist> Artists { get; set; }
+
+        public Genre()
+        {
+            Artists = new List<Artist>();
+        }
+
+        public virtual void AddArtist(Artist artist)
+        {
+            artist.Genre = this;
+            Artists.Add(artist);
         }
     }
 

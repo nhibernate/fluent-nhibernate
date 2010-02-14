@@ -16,5 +16,10 @@ namespace FluentNHibernate.Conventions.Instances
         {
             setter("all-delete-orphan");
         }
+
+        public void DeleteOrphan()
+        {
+            setter("delete-orphan");
+        }
     }
 }

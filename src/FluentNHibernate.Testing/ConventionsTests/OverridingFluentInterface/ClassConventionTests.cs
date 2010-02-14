@@ -26,7 +26,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void BatchSizeShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.BatchSize(10));
+            Mapping(x => x.BatchSize(10));
 
             Convention(x => x.BatchSize(100));
 
@@ -36,7 +36,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void CacheShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.Cache.CustomUsage("fish"));
+            Mapping(x => x.Cache.CustomUsage("fish"));
 
             Convention(x => x.Cache.ReadOnly());
 
@@ -46,7 +46,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void DynamicInsertShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.DynamicInsert());
+            Mapping(x => x.DynamicInsert());
 
             Convention(x => x.Not.DynamicInsert());
 
@@ -56,7 +56,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void DynamicUpdateShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.DynamicUpdate());
+            Mapping(x => x.DynamicUpdate());
 
             Convention(x => x.Not.DynamicUpdate());
 
@@ -66,7 +66,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void LazyLoadShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.LazyLoad());
+            Mapping(x => x.LazyLoad());
 
             Convention(x => x.Not.LazyLoad());
 
@@ -76,7 +76,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void OptimisticLockShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.OptimisticLock.All());
+            Mapping(x => x.OptimisticLock.All());
 
             Convention(x => x.OptimisticLock.Dirty());
 
@@ -86,7 +86,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void ReadOnlyShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.ReadOnly());
+            Mapping(x => x.ReadOnly());
 
             Convention(x => x.Not.ReadOnly());
 
@@ -96,7 +96,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void SchemaShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.Schema("test"));
+            Mapping(x => x.Schema("test"));
 
             Convention(x => x.Schema("dbo"));
 
@@ -106,7 +106,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void TableShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.Table("test"));
+            Mapping(x => x.Table("test"));
 
             Convention(x => x.Table("different"));
 
@@ -116,7 +116,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void WhereShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.Where("test"));
+            Mapping(x => x.Where("test"));
 
             Convention(x => x.Where("xxx"));
 
@@ -126,7 +126,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void SubselectShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.Subselect("test"));
+            Mapping(x => x.Subselect("test"));
 
             Convention(x => x.Subselect("xxx"));
 
@@ -136,7 +136,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void SchemaActionShouldntBeOverwritten()
         {
-            Mapping<ExampleClass>(x => x.SchemaAction.Drop());
+            Mapping(x => x.SchemaAction.Drop());
 
             Convention(x => x.SchemaAction.None());
 
@@ -146,7 +146,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void ShouldSetProxyProperty()
         {
-            Mapping<ExampleClass>(x => x.Proxy("type"));
+            Mapping(x => x.Proxy("type"));
 
             Convention(x => x.Proxy<CustomProxy>());
 
@@ -156,7 +156,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
 		[Test]
 		public void ShouldSetEntityNameProperty()
 		{
-			Mapping<ExampleClass>(x => x.EntityName("xxx"));
+			Mapping(x => x.EntityName("xxx"));
 
 			Convention(x => x.EntityName("xxx"));
 
@@ -173,14 +173,15 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             model.Conventions.Add(new ClassConventionBuilder().Always(convention));
         }
 
-        private void Mapping<T>(Action<ClassMap<T>> mappingDefinition)
+        private void Mapping(Action<ClassMap<ExampleClass>> mappingDefinition)
         {
-            var classMap = new ClassMap<T>();
+            var classMap = new ClassMap<ExampleClass>();
+            classMap.Id(x => x.Id);
 
             mappingDefinition(classMap);
 
             mapping = classMap;
-            mappingType = typeof(T);
+            mappingType = typeof(ExampleClass);
         }
 
         private void VerifyModel(Action<ClassMapping> modelVerification)

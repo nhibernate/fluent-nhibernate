@@ -15,7 +15,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         c.Map(x => x.Name);
                         c.ParentReference(x => x.MyParent);
                     }))
-                .Element("class/component/parent").Exists()
+                .Element("class/component/parent").ShouldBeInParentAtPosition(0)
                 .HasAttribute("name", "MyParent");
         }
 
@@ -80,5 +80,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     }))
                 .Element("//class/component").HasAttribute("update", "true");
         }
+
+        [Test]
+        public void ComponentSetsClass()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m =>
+                    m.Component(x => x.Component, c => c.Map(x => x.Name)))
+                .Element("class/component").HasAttribute("class", typeof(ComponentTarget).AssemblyQualifiedName);                
+        }        
+
     }
 }

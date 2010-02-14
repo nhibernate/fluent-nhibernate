@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -74,6 +75,12 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Lazy, value); }
         }
 
+        public string EntityName
+        {
+            get { return attributes.Get(x => x.EntityName); }
+            set { attributes.Set(x => x.EntityName, value); }
+        }
+
         public Type ContainingEntityType { get; set; }
 
         public override bool IsSpecified(string property)
@@ -89,6 +96,29 @@ namespace FluentNHibernate.MappingModel
         public void SetDefaultValue<TResult>(Expression<Func<OneToOneMapping, TResult>> property, TResult value)
         {
             attributes.SetDefault(property, value);
+        }
+
+        public bool Equals(OneToOneMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.attributes, attributes) && Equals(other.ContainingEntityType, ContainingEntityType);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(OneToOneMapping)) return false;
+            return Equals((OneToOneMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            }
         }
     }
 }

@@ -16,12 +16,12 @@ namespace FluentNHibernate.Automapping
             this.expressions = conventions;
         }
 
-        public bool MapsProperty(PropertyInfo property)
+        public bool MapsProperty(Member property)
         {
             return expressions.FindIdentity(property);
         }
 
-        public void Map(ClassMappingBase classMap, PropertyInfo property)
+        public void Map(ClassMappingBase classMap, Member property)
         {
             if (!(classMap is ClassMapping)) return;
 
@@ -29,12 +29,12 @@ namespace FluentNHibernate.Automapping
             idMapping.AddDefaultColumn(new ColumnMapping() { Name = property.Name });
             idMapping.Name = property.Name;
             idMapping.Type = new TypeReference(property.PropertyType);
-            idMapping.PropertyInfo = property;
+            idMapping.Member = property;
             idMapping.SetDefaultValue("Generator", GetDefaultGenerator(property));
             ((ClassMapping)classMap).Id = idMapping;        
         }
 
-        private GeneratorMapping GetDefaultGenerator(PropertyInfo property)
+        private GeneratorMapping GetDefaultGenerator(Member property)
         {
             var generatorMapping = new GeneratorMapping();
             var defaultGenerator = new GeneratorBuilder(generatorMapping, property.PropertyType);

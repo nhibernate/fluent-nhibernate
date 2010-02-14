@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Conventions;
-using FluentNHibernate.Testing.Automapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
@@ -18,8 +17,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
                 AutoMap.Source(new StubTypeSource(typeof(Target)))
                     .Conventions.Add<FKConvention>();
 
-            model.CompileMappings();
-
             model.BuildMappings()
                 .First()
                 .Classes.First()
@@ -29,7 +26,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
 
         private class FKConvention : ForeignKeyConvention
         {
-            protected override string GetKeyName(PropertyInfo property, Type type)
+            protected override string GetKeyName(Member property, Type type)
             {
                 return "xxx";
             }

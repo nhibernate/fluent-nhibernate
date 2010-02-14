@@ -33,7 +33,7 @@ namespace FluentNHibernate.Conventions.Inspections
         /// e.g. for a ColumnMapping the StringIdentifierForModel would be the Name attribute,
         /// this allows the user to find any columns with the matching name.
         /// </summary>
-        public bool IsSet(PropertyInfo property)
+        public bool IsSet(Member property)
         {
             return mapping.IsSpecified(propertyMappings.Get(property));
         }
@@ -56,12 +56,12 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public bool IsMethodAccess
         {
-            get { return mapping.MemberInfo is MethodInfo; }
+            get { return mapping.Member.IsMethod; }
         }
 
         public MemberInfo Member
         {
-            get { return mapping.MemberInfo; }
+            get { return mapping.Member.MemberInfo; }
         }
 
         public IRelationshipInspector Relationship

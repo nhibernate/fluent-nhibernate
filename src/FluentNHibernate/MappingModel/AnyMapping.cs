@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -149,6 +149,34 @@ namespace FluentNHibernate.MappingModel
         public void SetDefaultValue<TResult>(Expression<Func<AnyMapping, TResult>> property, TResult value)
         {
             attributes.SetDefault(property, value);
+        }
+
+        public bool Equals(AnyMapping other)
+        {
+            return Equals(other.attributes, attributes) &&
+                other.typeColumns.ContentEquals(typeColumns) &&
+                other.identifierColumns.ContentEquals(identifierColumns) &&
+                other.metaValues.ContentEquals(metaValues) &&
+                Equals(other.ContainingEntityType, ContainingEntityType);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != typeof(AnyMapping)) return false;
+            return Equals((AnyMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = (attributes != null ? attributes.GetHashCode() : 0);
+                result = (result * 397) ^ (typeColumns != null ? typeColumns.GetHashCode() : 0);
+                result = (result * 397) ^ (identifierColumns != null ? identifierColumns.GetHashCode() : 0);
+                result = (result * 397) ^ (metaValues != null ? metaValues.GetHashCode() : 0);
+                result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+                return result;
+            }
         }
     }
 }

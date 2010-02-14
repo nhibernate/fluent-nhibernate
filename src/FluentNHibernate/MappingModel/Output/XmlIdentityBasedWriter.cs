@@ -1,5 +1,6 @@
 using System.Xml;
 using FluentNHibernate.MappingModel.Identity;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output
 {

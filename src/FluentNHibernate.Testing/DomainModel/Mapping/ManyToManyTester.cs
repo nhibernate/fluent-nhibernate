@@ -119,6 +119,20 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/bag").HasAttribute("collection-type", "name");
         }
 
+		[Test]
+		public void CanSpecifyCollectionTypeAsMapWithStringColumnName()
+		{
+			new MappingTester<ManyToManyTarget>()
+				.ForMapping(map => map
+					.HasManyToMany(x => x.MapOfChildren)
+						.AsMap(null)
+						.AsSimpleAssociation("Name", "ChildObject")
+						.ParentKeyColumn("ParentId"))
+				.Element("class/map/key/column").HasAttribute("name", "ParentId")
+				.Element("class/map/index/column").HasAttribute("name", "Name")
+				.Element("class/map/many-to-many").HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName);
+		}
+
         [Test]
         public void NotFound_sets_attribute()
         {

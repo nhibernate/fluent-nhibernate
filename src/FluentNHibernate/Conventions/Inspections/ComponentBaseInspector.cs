@@ -31,11 +31,11 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Name; }
         }
 
-        public abstract bool IsSet(PropertyInfo property);
+        public abstract bool IsSet(Member property);
 
-        public PropertyInfo Property
+        public Member Property
         {
-            get { return mapping.PropertyInfo; }
+            get { return mapping.Member; }
         }
 
         public IParentInspector Parent

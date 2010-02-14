@@ -368,6 +368,21 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Element("class/joined-subclass/property[@name='ExampleProperty']").Exists();
         }
 
+		[Test]
+		public void TestInheritanceMappingPropertiesWithSameSignatureOnDifferentSubClasses()
+		{
+			var autoMapper = AutoMap.AssemblyOf<ExampleBaseClass>()
+				.Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
+
+			const string propertyPathFormat = "class/joined-subclass[@name='{0}']/property[@name='PropertyAlsoOnSiblingInheritedClass']";
+			string firstSubClassPropertyPath = string.Format
+				(propertyPathFormat, typeof(FirstInheritedClass).AssemblyQualifiedName);
+			string secondSubClassPropertyPath = string.Format
+				(propertyPathFormat, typeof(SecondInheritedClass).AssemblyQualifiedName);
+			new AutoMappingTester<ExampleBaseClass>(autoMapper)
+				.Element(firstSubClassPropertyPath).Exists().RootElement.Element(secondSubClassPropertyPath).Exists();
+		}
+
         [Test]
         public void TestInheritanceSubclassMappingProperties()
         {
@@ -504,7 +519,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
-            autoMapper.CompileMappings();
+            autoMapper.BuildMappings();
             autoMapper.FindMapping(typeof(SomeOpenGenericType<>));
         }
 
@@ -517,6 +532,20 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
 
             new AutoMappingTester<ClassWithUserType>(autoMapper)
                 .Element("class/property").HasAttribute("name", "Custom");
+        }
+
+        [Test]
+        public void TypeConventionShouldForceCompositePropertyToBeMappedWithCorrectNumberOfColumns()
+        {
+            var autoMapper = AutoMap.AssemblyOf<ClassWithCompositeUserType>()
+                .Conventions.Add<CustomCompositeTypeConvention>()
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures" && t != typeof(DoubleString));
+
+            var mappedColumns = new
+            AutoMappingTester<ClassWithCompositeUserType>(autoMapper)
+                .Element("class/property");
+
+            mappedColumns.HasThisManyChildNodes(2);
         }
 
         [Test]
@@ -625,7 +654,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
                 .Override<ExampleInheritedClass>(m => m.HasMany(x => x.Children).Inverse());
 
-            autoMapper.CompileMappings();
+            autoMapper.BuildMappings();
             var mappings = autoMapper.BuildMappings();
             var classes = mappings.Select(x => x.Classes.First());
 
@@ -906,7 +935,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 });
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("class/component/bag[@name='Examples']/key/column").HasAttribute("name", "Parent_ExampleParentClass_Id");
+                .Element("class/component/bag[@name='Examples']/key/column").HasAttribute("name", "Parent_ExampleParentClass_id");
         }
 
         [Test]
@@ -977,7 +1006,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Setup(x => x.IsComponentType = type => type == typeof(ExampleParentClass))
                 .Where(x => x.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
-            autoMapper.CompileMappings();
             var mappings = autoMapper.BuildMappings();
 
             var exampleClassMapping = mappings

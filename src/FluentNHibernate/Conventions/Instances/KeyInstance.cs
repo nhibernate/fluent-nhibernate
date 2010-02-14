@@ -21,7 +21,7 @@ namespace FluentNHibernate.Conventions.Instances
                 return;
 
             var originalColumn = mapping.Columns.FirstOrDefault();
-            var column = originalColumn == null ? new ColumnMapping() : ColumnMapping.BaseOn(originalColumn);
+            var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
             column.Name = columnName;
 
@@ -29,7 +29,7 @@ namespace FluentNHibernate.Conventions.Instances
             mapping.AddColumn(column);
         }
 
-        public void ForeignKey(string constraint)
+        public new void ForeignKey(string constraint)
         {
             if (!mapping.IsSpecified("ForeignKey"))
                 mapping.ForeignKey = constraint;

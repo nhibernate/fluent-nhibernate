@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
@@ -14,7 +17,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         string Access { get; set; }
         Type ContainingEntityType { get; }
         string Name { get; set; }
-        PropertyInfo PropertyInfo { get; }
+        Member Member { get; }
         Type Type { get; }
         bool OptimisticLock { get; }
         bool Unique { get; }
@@ -30,5 +33,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         void AddCollection(ICollectionMapping mapping);
         void AddReference(ManyToOneMapping mapping);
         void AddAny(AnyMapping mapping);
+        bool HasValue(string property);
     }
 }

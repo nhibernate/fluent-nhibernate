@@ -40,5 +40,10 @@ namespace FluentNHibernate.Conventions.Instances
                 });
             }
         }
+
+        public void OverrideInferredChildType(Type type)
+        {
+            mapping.ChildType = type;
+        }
     }
 }

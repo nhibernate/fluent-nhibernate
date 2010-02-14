@@ -37,5 +37,23 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer.VerifyXml(mapping)
                 .Element("column").Exists();
         }
+
+        [Test]
+        public void ShouldWriteLength()
+        {
+            var testHelper = new XmlWriterTestHelper<ElementMapping>();
+            testHelper.Check(x => x.Length, 50).MapsToAttribute("length");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteFormula()
+        {
+            var testHelper = new XmlWriterTestHelper<ElementMapping>();
+            testHelper.Check(x => x.Formula, "formula").MapsToAttribute("formula");
+
+            testHelper.VerifyAll(writer);
+        }
     }
 }

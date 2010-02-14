@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
+using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Helpers
 {
@@ -11,7 +12,7 @@ namespace FluentNHibernate.Conventions.Helpers
             return new BuiltSuffixForeignKeyConvention(suffix);
         }
 
-        public static ForeignKeyConvention Format(Func<PropertyInfo, Type, string> format)
+        public static ForeignKeyConvention Format(Func<Member, Type, string> format)
         {
             return new BuiltFuncForeignKeyConvention(format);
         }

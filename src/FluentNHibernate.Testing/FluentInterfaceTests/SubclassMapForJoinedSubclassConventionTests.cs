@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
@@ -16,6 +17,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             var model = new PersistenceModel();
 
             var parent = new ClassMap<Parent>();
+            parent.Id(x => x.Id);
             var child = new SubclassMap<Child>();
 
             model.Add(parent);
@@ -40,7 +42,9 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         private class Parent 
-        {}
+        {
+            public int Id { get; set; }
+        }
 
         private class Child : Parent
         {}
