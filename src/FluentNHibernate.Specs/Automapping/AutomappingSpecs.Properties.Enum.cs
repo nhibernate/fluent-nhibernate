@@ -7,6 +7,21 @@ using Machine.Specifications;
 
 namespace FluentNHibernate.Specs.Automapping
 {
+    public class when_the_automapper_is_told_to_map_an_entity_with_static_properties
+    {
+        Establish context = () =>
+            mapper = AutoMap.Source(new StubTypeSource(typeof(EntityWithStaticProperties)));
+
+        Because of = () =>
+            mapping = mapper.BuildMappings().SelectMany(x => x.Classes).First();
+
+        It should_not_create_property_mappings_for_the_static_properties = () =>
+            mapping.Properties.Any(x => x.Name == "StaticProperty").ShouldBeFalse();
+
+        static AutoPersistenceModel mapper;
+        static ClassMapping mapping;
+    }
+
     public class when_the_automapper_is_told_to_map_an_entity_with_a_enum_property : AutomapperEnumPropertySpec
     {
         Establish context = () =>
