@@ -23,11 +23,6 @@ namespace FluentNHibernate.Mapping
         {
         }
 
-        public OneToManyPart(Type entity, MethodInfo method)
-            : this(entity, method.ToMember(), method.ReturnType)
-        {
-        }
-
         protected OneToManyPart(Type entity, Member member, Type collectionType)
             : base(entity, member, collectionType)
         {

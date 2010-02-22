@@ -10,7 +10,7 @@ namespace FluentNHibernate.Utils
         string FieldName { get; }
 
         Type PropertyType { get; }
-        PropertyInfo InnerProperty { get; }
+        Member InnerMember { get; }
         void SetValue(object target, object propertyValue);
         object GetValue(object target);
 

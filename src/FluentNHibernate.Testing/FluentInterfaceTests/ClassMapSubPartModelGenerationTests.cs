@@ -3,40 +3,13 @@ using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
-using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
-using Machine.Specifications;
 using NUnit.Framework;
 using System;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
-    public abstract class ProviderSpec
-    {
-        public static ClassMapping map_as_class<T>(Action<ClassMap<T>> setup)
-        {
-            var provider = new ClassMap<T>();
-
-            setup(provider);
-
-            return ((IMappingProvider)provider).GetClassMapping();
-        }
-
-        public static SubclassMapping map_as_subclass<T>(Action<SubclassMap<T>> setup)
-        {
-            var provider = new SubclassMap<T>();
-            var mapping = new SubclassMapping();
-            
-            setup(provider);
-
-            ((IIndeterminateSubclassMappingProvider)provider).GetSubclassMapping(mapping);
-
-            return mapping;
-        }
-    }
-
     [TestFixture]
     public class ClassMapSubPartModelGenerationTests : BaseModelFixture
     {

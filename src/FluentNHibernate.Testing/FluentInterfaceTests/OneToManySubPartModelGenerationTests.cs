@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ComponentShouldSetCompositeElement()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Component(c => c.Map(x => x.Name)))
                 .ModelShouldMatch(x => x.CompositeElement.ShouldNotBeNull());
         }
@@ -20,7 +20,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ListShouldSetIndex()
         {
-            OneToMany<ChildObject>(x => x.ListOfChildren)
+            OneToMany(x => x.ListOfChildren)
                 .Mapping(m => m.AsList(x =>
                 {
                     x.Column("index-column");
@@ -39,7 +39,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void MapShouldSetIndex()
         {
-            OneToMany<ChildObject>(x => x.ListOfChildren)
+            OneToMany(x => x.ListOfChildren)
                 .Mapping(m => m.AsMap<int>("index-column"))
                 .ModelShouldMatch(x =>
                 {
@@ -54,7 +54,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ShouldSetElement()
         {
-            OneToMany<ChildObject>(x => x.ListOfChildren)
+            OneToMany(x => x.ListOfChildren)
                 .Mapping(m => m.Element("element"))
                 .ModelShouldMatch(x =>
                 {
@@ -67,7 +67,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ElementMappingShouldntHaveOneToMany()
         {
-            OneToMany<ChildObject>(x => x.ListOfChildren)
+            OneToMany(x => x.ListOfChildren)
                 .Mapping(m => m.Element("element"))
                 .ModelShouldMatch(x => x.Relationship.ShouldBeNull());
         }
@@ -75,7 +75,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ShouldPerformKeyColumnMapping()
         {
-            OneToMany<ChildObject>(x => x.ListOfChildren)
+            OneToMany(x => x.ListOfChildren)
                 .Mapping(m => m.KeyColumns.Add("col1", c => c.Length(50).Not.Nullable()))                
                 .ModelShouldMatch(x =>
                 {

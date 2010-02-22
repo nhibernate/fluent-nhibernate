@@ -8,7 +8,7 @@ using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.Inspection
@@ -436,7 +436,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
 
         private Member Prop(Expression<Func<IJoinedSubclassInspector, object>> propertyExpression)
         {
-            return ReflectionHelper.GetProperty(propertyExpression).ToMember();
+            return ReflectionHelper.GetMember(propertyExpression);
         }
 
         #endregion

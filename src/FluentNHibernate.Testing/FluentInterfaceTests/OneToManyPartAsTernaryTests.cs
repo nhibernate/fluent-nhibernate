@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void AsTernaryAssocationShouldCreateIndexManyToMany()
         {
-            OneToMany<ChildObject>(x => x.EntityMapOfChildren)
+            OneToMany(x => x.EntityMapOfChildren)
                 .Mapping(m => m.AsMap("irrelevant-value").AsTernaryAssociation())
                 .ModelShouldMatch(x =>
                 {
@@ -24,7 +24,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void AsTernaryAssocationShouldSetIndexManyToManyClass()
         {
-            OneToMany<ChildObject>(x => x.EntityMapOfChildren)
+            OneToMany(x => x.EntityMapOfChildren)
                 .Mapping(m => m.AsMap("irrelevant-value").AsTernaryAssociation())
                 .ModelShouldMatch(x =>
                 {
@@ -36,7 +36,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void AsTernaryAssocationShouldSetDefaultColumnName()
         {
-            OneToMany<ChildObject>(x => x.EntityMapOfChildren)
+            OneToMany(x => x.EntityMapOfChildren)
                 .Mapping(m => m.AsMap("irrelevant-value").AsTernaryAssociation())
                 .ModelShouldMatch(x =>
                 {
@@ -49,7 +49,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void AsTernaryAssociationShouldSetProvidedColumnName()
         {
             const string indexName = "index-name";
-            OneToMany<ChildObject>(x => x.EntityMapOfChildren)
+            OneToMany(x => x.EntityMapOfChildren)
                 .Mapping(m => m.AsMap("irrelevant-value").AsTernaryAssociation(indexName))
                 .ModelShouldMatch(x =>
                 {
@@ -61,7 +61,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void EntityMapIsAMapWithAManyToManyIndex()
         {
-            OneToMany<ChildObject>(x => x.EntityMapOfChildren)
+            OneToMany(x => x.EntityMapOfChildren)
                 .Mapping(m => m.AsEntityMap())
                 .ModelShouldMatch(x =>
                 {
@@ -76,7 +76,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             const string indexName = "index-name";
 
-            OneToMany<ChildObject>(x => x.EntityMapOfChildren)
+            OneToMany(x => x.EntityMapOfChildren)
                 .Mapping(m => m.AsEntityMap(indexName))
                 .ModelShouldMatch(x =>
                 {

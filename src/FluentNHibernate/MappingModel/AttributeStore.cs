@@ -176,10 +176,10 @@ namespace FluentNHibernate.MappingModel
             store.CopyTo(target.store);
         }
 
-        private static string GetKey<TResult>(Expression<Func<T, TResult>> exp)
+        private static string GetKey<TResult>(Expression<Func<T, TResult>> expression)
         {
-            var info = ReflectionHelper.GetProperty(exp);
-            return info.Name;
+            var member = expression.ToMember();
+            return member.Name;
         }
 
         public AttributeStore<T> Clone()

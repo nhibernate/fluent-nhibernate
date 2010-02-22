@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.Automapping;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using Iesi.Collections.Generic;
 using NUnit.Framework;
 
@@ -21,12 +21,12 @@ namespace FluentNHibernate.Testing.Automapping
 
         protected void ShouldMap(Expression<Func<PropertyTarget, object>> property)
         {
-            mapper.MapsProperty(ReflectionHelper.GetProperty(property).ToMember()).ShouldBeTrue();
+            mapper.MapsProperty(ReflectionHelper.GetMember(property)).ShouldBeTrue();
         }
 
         protected void ShouldntMap(Expression<Func<PropertyTarget, object>> property)
         {
-            mapper.MapsProperty(ReflectionHelper.GetProperty(property).ToMember()).ShouldBeFalse();
+            mapper.MapsProperty(ReflectionHelper.GetMember(property)).ShouldBeFalse();
         }
 
         protected class PropertyTarget

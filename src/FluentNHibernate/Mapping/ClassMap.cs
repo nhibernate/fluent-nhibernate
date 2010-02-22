@@ -152,7 +152,7 @@ namespace FluentNHibernate.Mapping
 
         public virtual CompositeIdentityPart<TId> CompositeId<TId>(Expression<Func<T, TId>> expression)
         {
-            var part = new CompositeIdentityPart<TId>(ReflectionHelper.GetProperty(expression).Name);
+            var part = new CompositeIdentityPart<TId>(expression.ToMember().Name);
 
             compositeId = part;
 
@@ -161,7 +161,7 @@ namespace FluentNHibernate.Mapping
 
         public VersionPart Version(Expression<Func<T, object>> expression)
         {
-            return Version(ReflectionHelper.GetProperty(expression).ToMember());
+            return Version(expression.ToMember());
         }
 
         protected virtual VersionPart Version(Member property)
@@ -205,8 +205,8 @@ namespace FluentNHibernate.Mapping
 
         public virtual IdentityPart Id(Expression<Func<T, object>> expression, string column)
         {
-            Member property = ReflectionHelper.GetProperty(expression).ToMember();
-            var part = column == null ? new IdentityPart(EntityType, property) : new IdentityPart(EntityType, property);
+            var member = expression.ToMember();
+            var part = new IdentityPart(EntityType, member);
 
             if (column != null)
                 part.Column(column);

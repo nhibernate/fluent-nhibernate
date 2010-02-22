@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void AccessShouldSetModelAccessPropertyToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Access.Field())
                 .ModelShouldMatch(x => x.Access.ShouldEqual("field"));
         }
@@ -20,7 +20,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void BatchSizeShouldSetModelBatchSizePropertyToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.BatchSize(10))
                 .ModelShouldMatch(x => x.BatchSize.ShouldEqual(10));
         }
@@ -28,7 +28,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void CacheShouldSetModelCachePropertyToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Cache.ReadOnly())
                 .ModelShouldMatch(x =>
                 {
@@ -40,7 +40,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void CascadeShouldSetModelCascadePropertyToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Cascade.All())
                 .ModelShouldMatch(x => x.Cascade.ShouldEqual("all"));
         }
@@ -48,7 +48,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void CollectionTypeShouldSetModelCollectionTypePropertyToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.CollectionType("type"))
                 .ModelShouldMatch(x => x.CollectionType.ShouldEqual(new TypeReference("type")));
         }
@@ -56,7 +56,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ForeignKeyCascadeOnDeleteShouldSetModelKeyOnDeletePropertyToCascade()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.ForeignKeyCascadeOnDelete())
                 .ModelShouldMatch(x => x.Key.OnDelete.ShouldEqual("cascade"));
         }
@@ -64,7 +64,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void InverseShouldSetModelInversePropertyToTrue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Inverse())
                 .ModelShouldMatch(x => x.Inverse.ShouldBeTrue());
         }
@@ -72,7 +72,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotInverseShouldSetModelInversePropertyToFalse()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Not.Inverse())
                 .ModelShouldMatch(x => x.Inverse.ShouldBeFalse());
         }
@@ -80,7 +80,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void KeyColumnNameShouldAddColumnToModelKeyColumnsCollection()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.KeyColumn("col"))
                 .ModelShouldMatch(x => x.Key.Columns.Count().ShouldEqual(1));
         }
@@ -88,7 +88,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void KeyColumnNamesShouldAddColumnsToModelKeyColumnsCollection()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.KeyColumns.Add("col1", "col2"))
                 .ModelShouldMatch(x => x.Key.Columns.Count().ShouldEqual(2));
         }
@@ -96,7 +96,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void LazyLoadShouldSetModelLazyPropertyToTrue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.LazyLoad())
                 .ModelShouldMatch(x => x.Lazy.ShouldEqual(true));
         }
@@ -104,7 +104,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotLazyLoadShouldSetModelLazyPropertyToFalse()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Not.LazyLoad())
                 .ModelShouldMatch(x => x.Lazy.ShouldEqual(false));
         }
@@ -112,7 +112,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotFoundShouldSetModelRelationshipNotFoundPropertyToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.NotFound.Ignore())
                 .ModelShouldMatch(x => ((OneToManyMapping)x.Relationship).NotFound.ShouldEqual("ignore"));
         }
@@ -120,7 +120,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void WhereShouldSetModelWherePropertyToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Where("x = 1"))
                 .ModelShouldMatch(x => x.Where.ShouldEqual("x = 1"));
         }
@@ -128,7 +128,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void WithForeignKeyConstraintNameShouldSetModelKeyForeignKeyPropertyToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.ForeignKeyConstraintName("fk"))
                 .ModelShouldMatch(x => x.Key.ForeignKey.ShouldEqual("fk"));
         }
@@ -136,7 +136,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void WithTableNameShouldSetModelTableNamePropertyToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Table("t"))
                 .ModelShouldMatch(x => x.TableName.ShouldEqual("t"));
         }
@@ -144,7 +144,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void SchemaIsShouldSetModelSchemaPropertyToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Schema("dto"))
                 .ModelShouldMatch(x => x.Schema.ShouldEqual("dto"));
         }
@@ -152,7 +152,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void FetchShouldSetModelFetchPropertyToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Fetch.Select())
                 .ModelShouldMatch(x => x.Fetch.ShouldEqual("select"));
         }
@@ -160,7 +160,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void PersisterShouldSetModelPersisterPropertyToAssemblyQualifiedName()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Persister<CustomPersister>())
                 .ModelShouldMatch(x => x.Persister.GetUnderlyingSystemType().ShouldEqual(typeof(CustomPersister)));
         }
@@ -168,7 +168,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void CheckShouldSetModelCheckToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Check("x > 100"))
                 .ModelShouldMatch(x => x.Check.ShouldEqual("x > 100"));
         }
@@ -176,7 +176,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void OptimisticLockShouldSetModelOptimisticLockToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.OptimisticLock.All())
                 .ModelShouldMatch(x => x.OptimisticLock.ShouldEqual("all"));
         }
@@ -184,7 +184,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void GenericShouldSetModelGenericToTrue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Generic())
                 .ModelShouldMatch(x => x.Generic.ShouldBeTrue());
         }
@@ -192,7 +192,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotGenericShouldSetModelGenericToFalse()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Not.Generic())
                 .ModelShouldMatch(x => x.Generic.ShouldBeFalse());
         }
@@ -200,7 +200,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ReadOnlyShouldSetModelMutableToFalse()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.ReadOnly())
                 .ModelShouldMatch(x => x.Mutable.ShouldBeFalse());
         }
@@ -208,7 +208,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void NotReadOnlyShouldSetModelMutableToTrue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Not.ReadOnly())
                 .ModelShouldMatch(x => x.Mutable.ShouldBeTrue());
         }
@@ -216,7 +216,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void SubselectShouldSetModelSubselectToValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Subselect("whee"))
                 .ModelShouldMatch(x => x.Subselect.ShouldEqual("whee"));
         }
@@ -224,7 +224,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void KeyUpdateShouldSetModelValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.KeyUpdate())
                 .ModelShouldMatch(x => x.Key.Update.ShouldBeTrue());
         }
@@ -232,7 +232,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void KeyNullableShouldSetModelValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.KeyNullable())
                 .ModelShouldMatch(x => x.Key.NotNull.ShouldBeFalse());
         }
@@ -240,7 +240,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void KeyNotNullableShouldSetModelValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Not.KeyNullable())
                 .ModelShouldMatch(x => x.Key.NotNull.ShouldBeTrue());
         }
@@ -248,7 +248,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void PropertyRefShouldSetModelValue()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
+            OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.PropertyRef("prop1"))
                 .ModelShouldMatch(x => x.Key.PropertyRef.ShouldEqual("prop1"));
         }

@@ -69,11 +69,11 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public OneToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> propRefExpression)
+        public OneToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> expression)
         {
-            var prop = ReflectionHelper.GetProperty(propRefExpression);
+            var member = expression.ToMember();
 
-            return PropertyRef(prop.Name);
+            return PropertyRef(member.Name);
         }
 
         public OneToOnePart<TOther> PropertyRef(string propertyName)

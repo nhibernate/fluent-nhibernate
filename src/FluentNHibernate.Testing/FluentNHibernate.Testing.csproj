@@ -42,10 +42,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Specifications, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\mspec\Machine.Specifications.dll</HintPath>
-    </Reference>
     <Reference Include="NHibernate, Version=2.0.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
@@ -84,7 +80,6 @@
     <Compile Include="AutoMapping\Apm\AbstractBaseClassTests.cs" />
     <Compile Include="AutoMapping\Apm\AlterationCollectionTests.cs" />
     <Compile Include="AutoMapping\Apm\AlterationTests.cs" />
-    <Compile Include="AutoMapping\Apm\AutoMappedPropertyEnumerablesTests.cs" />
     <Compile Include="AutoMapping\Apm\ConcreteBaseClassTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\VersionConventionTests.cs" />
     <Compile Include="AutoMapping\AutoMapVersionTester.cs" />
@@ -154,7 +149,6 @@
     <Compile Include="DomainModel\InverseOneToManyTester.cs" />
     <Compile Include="DomainModel\Mapping\StoredProcedureTests.cs" />
     <Compile Include="FluentInterfaceTests\ColumnPartTests.cs" />
-    <Compile Include="FluentInterfaceTests\ComponentMapSpecs.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\CompositeIdConventionTests.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\KeyManyToOneConventionTests.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\KeyPropertyConventionTests.cs" />
@@ -409,7 +403,6 @@
     <Compile Include="MappingModel\Output\XmlVersionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlWriterContainerTester.cs" />
     <Compile Include="PersistenceModelTests\JoinPersistenceModelTests.cs" />
-    <Compile Include="PersistenceModelTests\PersistenceModelSpecs.AddingProviders.cs" />
     <Compile Include="PersistenceModelTests\SeparateSubclassVisitorFixture.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -459,27 +452,11 @@
       <Link>FluentKey.snk</Link>
     </None>
     <None Include="App.config" />
-    <Compile Include="AutoMapping\Apm\AutomappingSpecs.ElementCollections.cs" />
-    <Compile Include="AutoMapping\Apm\FakeMembers.cs" />
     <Compile Include="ConventionsTests\AutoImportHelperTests.cs" />
     <Compile Include="ConventionsTests\DefaultAccessHelperTests.cs" />
     <Compile Include="ConventionsTests\DefaultCascadeHelperTests.cs" />
     <Compile Include="ConventionsTests\DefaultLazyHelperTests.cs" />
     <Compile Include="ConventionsTests\ProxyHelperTests.cs" />
-    <Compile Include="FluentInterfaceTests\ClasslikeBehaviors.cs" />
-    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.Cache.cs" />
-    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.Component.cs" />
-    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.HasMany.cs" />
-    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.HasOne.cs" />
-    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.Property.cs" />
-    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.Discriminator.cs" />
-    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.Subclass.cs" />
-    <Compile Include="FluentInterfaceTests\ClassMapSpecs\ClassMapSpecs.Version.cs" />
-    <Compile Include="FluentInterfaceTests\SubclassMapSpecs\SubclassMapSpecs.HasMany.cs" />
-    <Compile Include="FluentInterfaceTests\SubclassMapSpecs\SubclassMapSpecs.HasOne.cs" />
-    <Compile Include="FluentInterfaceTests\SubclassMapSpecs\SubclassMapSpecs.Component.cs" />
-    <Compile Include="FluentInterfaceTests\SubclassMapSpecs\SubclassMapSpecs.Property.cs" />
-    <Compile Include="PersistenceModelTests\PersistenceModelSpecs.Validation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\tools\NHibernate\NHibernate.ByteCode.Castle.dll">

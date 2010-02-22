@@ -2,7 +2,7 @@ using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 using Is=FluentNHibernate.Conventions.AcceptanceCriteria.Is;
 
@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
 
             acceptance.Matches(new PropertyInspector(new PropertyMapping
             {
-                Member = ReflectionHelper.GetProperty<Record>(x => x.Age).ToMember(),
+                Member = ReflectionHelper.GetMember<Record>(x => x.Age),
                 Type = new TypeReference(typeof(Record))
             }))
                 .ShouldBeTrue();

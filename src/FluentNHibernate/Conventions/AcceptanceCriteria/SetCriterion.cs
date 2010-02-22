@@ -15,10 +15,10 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
             this.inverse = inverse;
         }
 
-        public bool IsSatisfiedBy<T>(Expression<Func<T, object>> propertyExpression, T inspector) where T : IInspector
+        public bool IsSatisfiedBy<T>(Expression<Func<T, object>> expression, T inspector) where T : IInspector
         {
-            var property = ReflectionHelper.GetProperty(propertyExpression).ToMember();
-            var result = inspector.IsSet(property);
+            var member = expression.ToMember();
+            var result = inspector.IsSet(member);
 
             return inverse ? !result : result;
         }

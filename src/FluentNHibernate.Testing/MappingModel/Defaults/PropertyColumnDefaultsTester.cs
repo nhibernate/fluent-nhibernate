@@ -5,7 +5,7 @@ using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.Testing.DomainModel.Mapping;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.MappingModel.Defaults
@@ -49,7 +49,7 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
 
         private Member Prop(Expression<Func<PropertyTarget, object>> propertyAccessor)
         {
-            return ReflectionHelper.GetProperty(propertyAccessor).ToMember();
+            return ReflectionHelper.GetMember(propertyAccessor);
         }
     }
 }

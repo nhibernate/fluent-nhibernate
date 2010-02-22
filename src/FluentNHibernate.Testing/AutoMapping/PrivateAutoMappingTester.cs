@@ -7,7 +7,7 @@ using System.Text;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 using System.Linq.Expressions;
 
@@ -24,7 +24,7 @@ namespace FluentNHibernate.Testing.Automapping
             Model<PrivateExampleClass>(p => p.Name.StartsWith("_"));
 
             Test<PrivateExampleClass>(mapping =>
-                mapping.Properties.ShouldContain(x => x.Member == ReflectionHelper.GetProperty(PrivateExampleClass.PrivateProperties.Property).ToMember()));
+                mapping.Properties.ShouldContain(x => x.Member == ReflectionHelper.GetMember(PrivateExampleClass.PrivateProperties.Property)));
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace FluentNHibernate.Testing.Automapping
             Model<PrivateExampleParent>(p => p.Name.StartsWith("_"));
 
             Test<PrivateExampleParent>(mapping =>
-                mapping.Collections.ShouldContain(x => x.Member == ReflectionHelper.GetProperty(PrivateExampleParent.PrivateProperties.Children).ToMember()));
+                mapping.Collections.ShouldContain(x => x.Member == ReflectionHelper.GetMember(PrivateExampleParent.PrivateProperties.Children)));
         }
 
         private void Model<T>(Func<Member, bool> convention)

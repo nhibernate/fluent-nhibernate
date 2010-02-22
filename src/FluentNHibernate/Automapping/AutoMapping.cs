@@ -85,7 +85,7 @@ namespace FluentNHibernate.Automapping
 
         public void IgnoreProperty(Expression<Func<T, object>> expression)
         {
-            mappedProperties.Add(ReflectionHelper.GetProperty(expression).ToMember().Name);
+            mappedProperties.Add(expression.ToMember().Name);
         }
 
         IPropertyIgnorer IPropertyIgnorer.IgnoreProperty(string name)
@@ -116,7 +116,7 @@ namespace FluentNHibernate.Automapping
 
         public override IdentityPart Id(Expression<Func<T, object>> expression)
         {
-            mappedProperties.Add(ReflectionHelper.GetProperty(expression).ToMember().Name);
+            mappedProperties.Add(expression.ToMember().Name);
             return base.Id(expression);
         }
 
@@ -159,7 +159,7 @@ namespace FluentNHibernate.Automapping
 
         public override IdentityPart Id(Expression<Func<T, object>> expression, string column)
         {
-            mappedProperties.Add(ReflectionHelper.GetProperty(expression).ToMember().Name);
+            mappedProperties.Add(expression.ToMember().Name);
             return base.Id(expression, column);
         }
 

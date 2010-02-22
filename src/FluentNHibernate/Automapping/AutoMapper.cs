@@ -124,7 +124,7 @@ namespace FluentNHibernate.Automapping
 
         public virtual void MapEverythingInClass(ClassMappingBase mapping, Type entityType, IList<string> mappedProperties)
         {
-            foreach (var property in entityType.GetProperties())
+            foreach (var property in entityType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 TryToMapProperty(mapping, property.ToMember(), mappedProperties);
             }

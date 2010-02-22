@@ -277,8 +277,8 @@ namespace FluentNHibernate.Mapping
 
         public T AsIndexedCollection<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
         {
-            var indexProperty = ReflectionHelper.GetProperty(indexSelector);
-            return AsIndexedCollection<TIndex>(indexProperty.Name, customIndexMapping);
+            var indexMember = indexSelector.ToMember();
+            return AsIndexedCollection<TIndex>(indexMember.Name, customIndexMapping);
         }
 
         public T AsIndexedCollection<TIndex>(string indexColumn, Action<IndexPart> customIndexMapping)

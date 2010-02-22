@@ -8,18 +8,18 @@ namespace FluentNHibernate.Utils
 {
     public class PropertyChain : Accessor
     {
-        private readonly PropertyInfo[] _chain;
-        private readonly SingleProperty _innerProperty;
+        private readonly Member[] _chain;
+        private readonly SingleMember innerMember;
 
-        public PropertyChain(PropertyInfo[] properties)
+        public PropertyChain(Member[] members)
         {
-            _chain = new PropertyInfo[properties.Length - 1];
+            _chain = new Member[members.Length - 1];
             for (int i = 0; i < _chain.Length; i++)
             {
-                _chain[i] = properties[i];
+                _chain[i] = members[i];
             }
 
-            _innerProperty = new SingleProperty(properties[properties.Length - 1]);
+            innerMember = new SingleMember(members[members.Length - 1]);
         }
 
         #region Accessor Members
@@ -32,7 +32,7 @@ namespace FluentNHibernate.Utils
                 return;
             }
 
-            _innerProperty.SetValue(target, propertyValue);
+            innerMember.SetValue(target, propertyValue);
         }
 
         public object GetValue(object target)
@@ -44,30 +44,30 @@ namespace FluentNHibernate.Utils
                 return null;
             }
 
-            return _innerProperty.GetValue(target);
+            return innerMember.GetValue(target);
         }
 
         public string FieldName
         {
-            get { return _innerProperty.FieldName; }
+            get { return innerMember.FieldName; }
         }
 
         public Type PropertyType
         {
-            get { return _innerProperty.PropertyType; }
+            get { return innerMember.PropertyType; }
         }
 
-        public PropertyInfo InnerProperty
+        public Member InnerMember
         {
-            get { return _innerProperty.InnerProperty; }
+            get { return innerMember.InnerMember; }
         }
 
         public Accessor GetChildAccessor<T>(Expression<Func<T, object>> expression)
         {
-            PropertyInfo property = ReflectionHelper.GetProperty(expression);
-            var list = new List<PropertyInfo>(_chain);
-            list.Add(_innerProperty.InnerProperty);
-            list.Add(property);
+            var member = expression.ToMember();
+            var list = new List<Member>(_chain);
+            list.Add(innerMember.InnerMember);
+            list.Add(member);
 
             return new PropertyChain(list.ToArray());
         }
@@ -82,7 +82,7 @@ namespace FluentNHibernate.Utils
                     returnValue += info.Name + ".";
                 }
 
-                returnValue += _innerProperty.Name;
+                returnValue += innerMember.Name;
 
                 return returnValue;
             }
@@ -92,9 +92,9 @@ namespace FluentNHibernate.Utils
 
         private object findInnerMostTarget(object target)
         {
-            foreach (PropertyInfo info in _chain)
+            foreach (var info in _chain)
             {
-                target = info.GetValue(target, null);
+                target = info.GetValue(target);
                 if (target == null)
                 {
                     return null;

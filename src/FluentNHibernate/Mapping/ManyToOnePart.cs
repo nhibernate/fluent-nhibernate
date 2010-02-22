@@ -161,9 +161,9 @@ namespace FluentNHibernate.Mapping
         {
             foreach (var expression in columns)
             {
-                var property = ReflectionHelper.GetProperty(expression).ToMember();
+                var member = expression.ToMember();
 
-                Columns(property.Name);
+                Columns(member.Name);
             }
 
             return this;
@@ -182,11 +182,11 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public ManyToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> propertyRef)
+        public ManyToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> expression)
         {
-            var property = ReflectionHelper.GetProperty(propertyRef);
+            var member = expression.ToMember();
 
-            return PropertyRef(property.Name);
+            return PropertyRef(member.Name);
         }
 
         public ManyToOnePart<TOther> PropertyRef(string property)

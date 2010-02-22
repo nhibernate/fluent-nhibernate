@@ -3,42 +3,61 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace FluentNHibernate.Utils
+namespace FluentNHibernate.Utils.Reflection
 {
     public static class ReflectionHelper
     {
-        public static bool IsMethodExpression<TModel>(Expression<Func<TModel, object>> expression)
+        public static Member GetMember<TModel, TReturn>(Expression<Func<TModel, TReturn>> expression)
         {
-            return IsMethodExpression<TModel, object>(expression);
+            return GetMember(expression.Body);
         }
 
-        public static bool IsMethodExpression<TModel, TResult>(Expression<Func<TModel, TResult>> expression)
+        public static Member GetMember<TModel>(Expression<Func<TModel, object>> expression)
         {
-            return expression.Body is MethodCallExpression;
+            return GetMember(expression.Body);
         }
 
-        public static bool IsPropertyExpression<TModel>(Expression<Func<TModel, object>> expression)
+        public static Accessor GetAccessor<MODEL>(Expression<Func<MODEL, object>> expression)
         {
-            return GetMemberExpression(expression, false) != null;
+            MemberExpression memberExpression = GetMemberExpression(expression.Body);
+
+            return getAccessor(memberExpression);
         }
 
-        public static PropertyInfo GetProperty<TModel>(Expression<Func<TModel, object>> expression)
+        public static Accessor GetAccessor<MODEL, T>(Expression<Func<MODEL, T>> expression)
         {
-            var isExpressionOfDynamicComponent = expression.ToString().Contains("get_Item");
+            MemberExpression memberExpression = GetMemberExpression(expression.Body);
 
-            if (isExpressionOfDynamicComponent)
-                return GetDynamicComponentProperty(expression);
-		    
+            return getAccessor(memberExpression);
+        }
+
+        private static bool IsIndexedPropertyAccess(Expression expression)
+        {
+            return IsMethodExpression(expression) && expression.ToString().Contains("get_Item");
+        }
+
+        private static bool IsMethodExpression(Expression expression)
+        {
+            return expression is MethodCallExpression || (expression is UnaryExpression && IsMethodExpression((expression as UnaryExpression).Operand));
+        }
+
+        private static Member GetMember(Expression expression)
+        {
+            if (IsIndexedPropertyAccess(expression))
+                return GetDynamicComponentProperty(expression).ToMember();
+            if (IsMethodExpression(expression))
+                return ((MethodCallExpression)expression).Method.ToMember();
+
             var memberExpression = GetMemberExpression(expression);
 
-            return (PropertyInfo) memberExpression.Member;
+            return memberExpression.Member.ToMember();
         }
 
-        private static PropertyInfo GetDynamicComponentProperty<TModel, T>(Expression<Func<TModel, T>> expression)
+        private static PropertyInfo GetDynamicComponentProperty(Expression expression)
         {
             Type desiredConversionType = null;
             MethodCallExpression methodCallExpression = null;
-            var nextOperand = expression.Body;
+            var nextOperand = expression;
 
             while (nextOperand != null)
             {
@@ -62,34 +81,22 @@ namespace FluentNHibernate.Utils
             return new DummyPropertyInfo((string)constExpression.Value, desiredConversionType);
         }
 
-        public static PropertyInfo GetProperty<TModel, T>(Expression<Func<TModel, T>> expression)
-        {
-            var isExpressionOfDynamicComponent = expression.ToString().Contains("get_Item");
-
-            if (isExpressionOfDynamicComponent)
-                return GetDynamicComponentProperty(expression);
-
-            MemberExpression memberExpression = GetMemberExpression(expression);
-
-            return (PropertyInfo)memberExpression.Member;
-        }
-
-        private static MemberExpression GetMemberExpression<TModel, T>(Expression<Func<TModel, T>> expression)
+        private static MemberExpression GetMemberExpression(Expression expression)
         {
             return GetMemberExpression(expression, true);
         }
 
-        private static MemberExpression GetMemberExpression<TModel, T>(Expression<Func<TModel, T>> expression, bool enforceCheck)
+        private static MemberExpression GetMemberExpression(Expression expression, bool enforceCheck)
         {
             MemberExpression memberExpression = null;
-            if (expression.Body.NodeType == ExpressionType.Convert)
+            if (expression.NodeType == ExpressionType.Convert)
             {
-                var body = (UnaryExpression) expression.Body;
+                var body = (UnaryExpression) expression;
                 memberExpression = body.Operand as MemberExpression;
             }
-            else if (expression.Body.NodeType == ExpressionType.MemberAccess)
+            else if (expression.NodeType == ExpressionType.MemberAccess)
             {
-                memberExpression = expression.Body as MemberExpression;
+                memberExpression = expression as MemberExpression;
             }
 
             if (enforceCheck && memberExpression == null)
@@ -100,62 +107,23 @@ namespace FluentNHibernate.Utils
             return memberExpression;
         }
 
-        public static Accessor GetAccessor<MODEL>(Expression<Func<MODEL, object>> expression)
-        {
-            MemberExpression memberExpression = GetMemberExpression(expression);
-
-            return getAccessor(memberExpression);
-        }
-
         private static Accessor getAccessor(MemberExpression memberExpression)
         {
-            var list = new List<PropertyInfo>();
+            var list = new List<Member>();
 
             while (memberExpression != null)
             {
-                list.Add((PropertyInfo)memberExpression.Member);
+                list.Add(memberExpression.Member.ToMember());
                 memberExpression = memberExpression.Expression as MemberExpression;
             }
 
             if (list.Count == 1)
             {
-                return new SingleProperty(list[0]);
+                return new SingleMember(list[0]);
             }
 
             list.Reverse();
             return new PropertyChain(list.ToArray());
-        }
-
-        public static Accessor GetAccessor<MODEL, T>(Expression<Func<MODEL, T>> expression)
-        {
-            MemberExpression memberExpression = GetMemberExpression(expression);
-
-            return getAccessor(memberExpression);
-        }
-
-
-        public static MethodInfo GetMethod<T>(Expression<Func<T, object>> expression)
-        {
-            MethodCallExpression methodCall = (MethodCallExpression) expression.Body;
-            return methodCall.Method;
-        }
-
-        public static MethodInfo GetMethod<T, TResult>(Expression<Func<T, TResult>> expression)
-        {
-            MethodCallExpression methodCall = (MethodCallExpression)expression.Body;
-            return methodCall.Method;
-        }
-
-        public static MethodInfo GetMethod<T, U, V>(Expression<Func<T, U, V>> expression)
-        {
-            MethodCallExpression methodCall = (MethodCallExpression)expression.Body;
-            return methodCall.Method;
-        }
-
-        public static MethodInfo GetMethod(Expression<Func<object>> expression)
-        {
-            MethodCallExpression methodCall = (MethodCallExpression)expression.Body;
-            return methodCall.Method;
         }
     }
 }

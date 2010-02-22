@@ -503,6 +503,19 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public IDictionary ExtensionData { get; set; }
     }
 
+    public class FieldTarget
+    {
+        public int Id;
+        public string Name;
+        public PropertyReferenceTarget Reference;
+        public IList<PropertyReferenceTarget> References;
+        public ComponentTarget Component;
+        public IList<ComponentTarget> Components;
+        public byte[] Data;
+        public decimal DecimalProperty;
+        public IDictionary ExtensionData;
+    }
+
     public class PrivatePropertyTarget
     {
         public int Id { get; set; }
