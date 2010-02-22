@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Xml;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils;
@@ -131,6 +128,14 @@ namespace FluentNHibernate.MappingModel.Output
             var idXml = writer.Write(mapping);
 
             document.ImportAndAppendChild(idXml);
+        }
+
+        public override void Visit(NaturalIdMapping naturalIdMapping)
+        {
+            var writer = serviceLocator.GetWriter<NaturalIdMapping>();
+            var naturalIdXml = writer.Write(naturalIdMapping);
+
+            document.ImportAndAppendChild(naturalIdXml);
         }
 
         public override void Visit(CacheMapping mapping)

@@ -1,4 +1,3 @@
-using System;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
@@ -9,6 +8,11 @@ namespace FluentNHibernate.Visitors
     public abstract class NullMappingModelVisitor : IMappingModelVisitor
     {
         public virtual void ProcessId(IdMapping idMapping)
+        {
+
+        }
+
+        public virtual void ProcessNaturalId(NaturalIdMapping naturalIdMapping)
         {
 
         }
@@ -221,6 +225,11 @@ namespace FluentNHibernate.Visitors
         public virtual void Visit(IdMapping mapping)
         {
             
+        }
+
+        public virtual void Visit(NaturalIdMapping naturalIdMapping)
+        {
+
         }
 
         public virtual void Visit(ClassMapping classMapping)

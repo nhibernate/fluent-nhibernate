@@ -8,6 +8,7 @@ namespace FluentNHibernate.Visitors
     public interface IMappingModelVisitor
     {
         void ProcessId(IdMapping idMapping);
+        void ProcessNaturalId(NaturalIdMapping naturalIdMapping);
         void ProcessCache(CacheMapping mapping);
         void ProcessCompositeId(CompositeIdMapping idMapping);
         void ProcessClass(ClassMapping classMapping);
@@ -51,6 +52,7 @@ namespace FluentNHibernate.Visitors
         void ProcessTuplizer(TuplizerMapping mapping);
 
         void Visit(IdMapping mapping);
+        void Visit(NaturalIdMapping naturalIdMapping);
         void Visit(ClassMapping classMapping);
         void Visit(CacheMapping mapping);
         void Visit(ImportMapping importMapping);

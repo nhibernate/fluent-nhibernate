@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -29,6 +28,7 @@ namespace FluentNHibernate.Mapping
         protected DiscriminatorPart discriminator;
         protected IVersionMappingProvider version;
         protected ICompositeIdMappingProvider compositeId;
+        protected INaturalIdMappingProvider naturalId;
         private readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
         private readonly PolymorphismBuilder<ClassMap<T>> polymorphism;
         private SchemaActionBuilder<ClassMap<T>> schemaAction;
@@ -88,6 +88,9 @@ namespace FluentNHibernate.Mapping
             if (compositeId != null)
                 mapping.Id = compositeId.GetCompositeIdMapping();
 
+            if (naturalId != null)
+                mapping.NaturalId = naturalId.GetNaturalIdMapping();
+
             if (!mapping.IsSpecified("TableName"))
                 mapping.SetDefaultValue(x => x.TableName, GetDefaultTableName());
 
@@ -139,6 +142,15 @@ namespace FluentNHibernate.Mapping
         public HibernateMappingPart HibernateMapping
         {
             get { return hibernateMappingPart; }
+        }
+
+        public virtual NaturalIdPart<T> NaturalId()
+        {
+            var part = new NaturalIdPart<T>();
+
+            naturalId = part;
+
+            return part;
         }
 
         public virtual CompositeIdentityPart<T> CompositeId()

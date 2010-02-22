@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Xml;
 
@@ -19,16 +18,17 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
                 { "version", new SortValue { Position = First, Level = 4 } },
                 { "component", new SortValue { Position = Anywhere, Level = 1 } },
                 { "dynamic-component", new SortValue { Position = Anywhere, Level = 1 } },
-                { "one-to-one", new SortValue { Position = Anywhere, Level = 1 } },
-                { "parent", new SortValue { Position = First, Level = 2 } },
-                { "property", new SortValue { Position = Anywhere, Level = 2 } },
-                { "many-to-one", new SortValue { Position = Anywhere, Level = 3 } },
-                { "array", new SortValue { Position = Anywhere, Level = 3 } },
-                { "bag", new SortValue { Position = Anywhere, Level = 3 } },
-                { "set", new SortValue { Position = Anywhere, Level = 3 } },
-                { "map", new SortValue { Position = Anywhere, Level = 3 } },
-                { "list", new SortValue { Position = Anywhere, Level = 3 } },
-                { "joined-subclass", new SortValue { Position = Anywhere, Level = 4 } },
+                { "natural-id", new SortValue { Position = Anywhere, Level = 1 } },
+                { "one-to-one", new SortValue { Position = Anywhere, Level = 2 } },
+                { "parent", new SortValue { Position = First, Level = 3 } },
+                { "property", new SortValue { Position = Anywhere, Level = 3 } },
+                { "many-to-one", new SortValue { Position = Anywhere, Level = 4 } },
+                { "array", new SortValue { Position = Anywhere, Level = 4 } },
+                { "bag", new SortValue { Position = Anywhere, Level = 4 } },
+                { "set", new SortValue { Position = Anywhere, Level = 4 } },
+                { "map", new SortValue { Position = Anywhere, Level = 4 } },
+                { "list", new SortValue { Position = Anywhere, Level = 4 } },
+                { "joined-subclass", new SortValue { Position = Anywhere, Level = 5 } },
                 { "subclass", new SortValue { Position = Last, Level = 3 } },
                 { "join", new SortValue { Position = Last, Level = 3 } },
                 { "any", new SortValue { Position = Anywhere, Level = 2 } },

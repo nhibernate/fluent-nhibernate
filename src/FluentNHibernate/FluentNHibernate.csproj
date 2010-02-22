@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{529145D5-6CC3-4016-89B5-826563024AF1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -393,7 +393,11 @@
     <Compile Include="Conventions\ProxyConvention.cs" />
     <Compile Include="MappingModel\ClassBased\ExternalComponentMapping.cs" />
     <Compile Include="MappingModel\EqualityExtensions.cs" />
+    <Compile Include="MappingModel\NaturalIdMapping.cs" />
+    <Compile Include="MappingModel\Output\XmlNaturalIdWriter.cs" />
+    <Compile Include="Mapping\NaturalIdPart.cs" />
     <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />
+    <Compile Include="Mapping\Providers\INaturalIdMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IReferenceComponentMappingProvider.cs" />
     <Compile Include="Visitors\AmbiguousComponentReferenceException.cs" />
     <Compile Include="Visitors\BiDirectionalManyToManyPairingVisitor.cs" />

@@ -241,6 +241,17 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteNaturalId()
+        {
+            var mapping = new ClassMapping();
+
+            mapping.NaturalId = new NaturalIdMapping();
+
+            writer.VerifyXml(mapping)
+                .Element("natural-id").Exists();
+        }
+
+        [Test]
         public void ShouldWriteCompositeId()
         {
             var mapping = new ClassMapping();
