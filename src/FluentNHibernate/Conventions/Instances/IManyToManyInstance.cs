@@ -7,5 +7,6 @@ namespace FluentNHibernate.Conventions.Instances
     {
         void Column(string columnName);
         new IDefaultableEnumerable<IColumnInstance> Columns { get; }
+        new void ForeignKey(string constraint);
     }
 }
