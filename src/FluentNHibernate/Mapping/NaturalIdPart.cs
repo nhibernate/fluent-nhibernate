@@ -74,7 +74,7 @@ namespace FluentNHibernate.Mapping
         public NaturalIdPart<T> Reference(Expression<Func<T, object>> expression, string columnName)
         {
             var member = expression.ToMember();
-            return Reference(expression, columnName);
+            return Reference(member, columnName);
         }
 
         protected virtual NaturalIdPart<T> Reference(Member member, string columnName)
@@ -94,7 +94,7 @@ namespace FluentNHibernate.Mapping
 
         public NaturalIdPart<T> ReadOnly()
         {
-            attributes.Set(x => x.Mutable, nextBool);
+            attributes.Set(x => x.Mutable, !nextBool);
             nextBool = true;
             return this;
         }

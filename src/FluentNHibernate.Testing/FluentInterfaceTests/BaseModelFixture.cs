@@ -144,5 +144,10 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             return new ModelTester<StoredProcedurePart, StoredProcedureMapping>(() => new StoredProcedurePart(null, null), x => x.GetStoredProcedureMapping());
         }
+
+        protected ModelTester<NaturalIdPart<T>, NaturalIdMapping> NaturalId<T>()
+        {
+            return new ModelTester<NaturalIdPart<T>, NaturalIdMapping>(() => new NaturalIdPart<T>(), x => ((INaturalIdMappingProvider)x).GetNaturalIdMapping());
+        }
     }
 }
