@@ -64,6 +64,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldNotWriteCollectionTypeWhenEmpty()
+        {
+            var bagMapping = new ArrayMapping { CollectionType = TypeReference.Empty };
+            writer.VerifyXml(bagMapping)
+                .DoesntHaveAttribute("collection-type");
+        }
+
+        [Test]
         public void ShouldWriteFetchAttribute()
         {
             var testHelper = new XmlWriterTestHelper<ArrayMapping>();
