@@ -6,10 +6,10 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public class DynamicComponentInstance : DynamicComponentInspector, IDynamicComponentInstance
     {
-        private readonly DynamicComponentMapping mapping;
+        private readonly ComponentMapping mapping;
         private bool nextBool;
 
-        public DynamicComponentInstance(DynamicComponentMapping mapping)
+        public DynamicComponentInstance(ComponentMapping mapping)
             : base(mapping)
         {
             this.mapping = mapping;

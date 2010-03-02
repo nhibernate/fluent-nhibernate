@@ -43,7 +43,7 @@ namespace FluentNHibernate.Mapping
 
         IComponentMapping IComponentMappingProvider.GetComponentMapping()
         {
-            return new ReferenceComponentMapping(property, typeof(T), containingEntityType, columnPrefix);
+            return new ReferenceComponentMapping(ComponentType.Component, property, typeof(T), containingEntityType, columnPrefix);
         }
 
         Type IReferenceComponentMappingProvider.Type

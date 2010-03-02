@@ -98,17 +98,7 @@ namespace FluentNHibernate.Visitors
             
         }
 
-        public virtual void ProcessComponent(IComponentMapping componentMapping)
-        {
-            
-        }
-
         public virtual void ProcessComponent(ComponentMapping mapping)
-        {
-            
-        }
-
-        public virtual void ProcessComponent(DynamicComponentMapping componentMapping)
         {
             
         }

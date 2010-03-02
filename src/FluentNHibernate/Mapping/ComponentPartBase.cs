@@ -24,8 +24,8 @@ namespace FluentNHibernate.Mapping
             this.propertyName = propertyName;
         }
 
-        protected abstract IComponentMapping CreateComponentMappingRoot(AttributeStore store);
-        protected IComponentMapping CreateComponentMapping()
+        protected abstract ComponentMapping CreateComponentMappingRoot(AttributeStore store);
+        protected ComponentMapping CreateComponentMapping()
         {
             var mapping = CreateComponentMappingRoot(attributes.CloneInner());
 

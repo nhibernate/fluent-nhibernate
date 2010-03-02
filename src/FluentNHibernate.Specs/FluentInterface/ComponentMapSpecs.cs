@@ -46,7 +46,7 @@ namespace FluentNHibernate.Specs.FluentInterface
             mapping.References.ShouldContain(x => x.Name == "a_reference");
         
         private static ComponentMap<Target> component;
-        private static IComponentMapping mapping;
+        private static ComponentMapping mapping;
 
         private class Target
         {

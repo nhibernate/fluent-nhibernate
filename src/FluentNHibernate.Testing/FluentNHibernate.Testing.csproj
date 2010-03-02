@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -386,7 +386,6 @@
     <Compile Include="MappingModel\Output\XmlCollectionRelationshipWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlCollectionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlColumnWriterTester.cs" />
-    <Compile Include="MappingModel\Output\XmlComponentBaseWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeElementWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlGeneratorWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlIdWriterTester.cs" />

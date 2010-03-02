@@ -12,7 +12,7 @@ namespace FluentNHibernate.Mapping
     {
         private readonly Type entity;
         private readonly AccessStrategyBuilder<DynamicComponentPart<T>> access;
-        private readonly AttributeStore<DynamicComponentMapping> attributes;
+        private readonly AttributeStore<ComponentMapping> attributes;
 
         public DynamicComponentPart(Type entity, Member property)
             : this(entity, property.Name, new AttributeStore())
@@ -22,13 +22,13 @@ namespace FluentNHibernate.Mapping
             : base(underlyingStore, propertyName)
         {
             this.entity = entity;
-            attributes = new AttributeStore<DynamicComponentMapping>(underlyingStore);
+            attributes = new AttributeStore<ComponentMapping>(underlyingStore);
             access = new AccessStrategyBuilder<DynamicComponentPart<T>>(this, value => attributes.Set(x => x.Access, value));
         }
 
-        protected override IComponentMapping CreateComponentMappingRoot(AttributeStore store)
+        protected override ComponentMapping CreateComponentMappingRoot(AttributeStore store)
         {
-            return new DynamicComponentMapping(store)
+            return new ComponentMapping(ComponentType.DynamicComponent, store)
             {
                 ContainingEntityType = entity
             };

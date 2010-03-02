@@ -25,9 +25,7 @@ namespace FluentNHibernate.Visitors
         void ProcessMap(MapMapping mapping);
         void ProcessSubclass(SubclassMapping subclassMapping);
         void ProcessDiscriminator(DiscriminatorMapping discriminatorMapping);
-        void ProcessComponent(IComponentMapping componentMapping);
         void ProcessComponent(ComponentMapping mapping);
-        void ProcessComponent(DynamicComponentMapping componentMapping);
         void ProcessComponent(ReferenceComponentMapping componentMapping);
         void ProcessList(ListMapping listMapping);
         void ProcessIndex(IIndexMapping indexMapping);

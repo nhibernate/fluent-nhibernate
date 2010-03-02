@@ -11,19 +11,26 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlComponentWriterTester
     {
-        private IXmlWriter<ComponentMapping> writer;
+        private IXmlWriter<IComponentMapping> writer;
+
+        private XmlWriterTestHelper<IComponentMapping> create_helper()
+        {
+            var helper = new XmlWriterTestHelper<IComponentMapping>();
+            helper.CreateInstance(() => new ComponentMapping(ComponentType.Component));
+            return helper;
+        }
 
         [SetUp]
         public void GetWriterFromContainer()
         {
             var container = new XmlWriterContainer();
-            writer = container.Resolve<IXmlWriter<ComponentMapping>>();
+            writer = container.Resolve<IXmlWriter<IComponentMapping>>();
         }
 
         [Test]
         public void ShouldWriteNameAttribute()
         {
-            var testHelper = new XmlWriterTestHelper<ComponentMapping>();
+            var testHelper = create_helper();
             
             testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
             testHelper.VerifyAll(writer);
@@ -32,7 +39,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteAccessAttribute()
         {
-            var testHelper = new XmlWriterTestHelper<ComponentMapping>();
+            var testHelper = create_helper();
 
             testHelper.Check(x => x.Access, "acc").MapsToAttribute("access");
             testHelper.VerifyAll(writer);
@@ -41,7 +48,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteClassAttribute()
         {
-            var testHelper = new XmlWriterTestHelper<ComponentMapping>();
+            var testHelper = create_helper();
 
             testHelper.Check(x => x.Class, new TypeReference("class")).MapsToAttribute("class");
             testHelper.VerifyAll(writer);
@@ -50,7 +57,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteUpdateAttribute()
         {
-            var testHelper = new XmlWriterTestHelper<ComponentMapping>();
+            var testHelper = create_helper();
 
             testHelper.Check(x => x.Update, true).MapsToAttribute("update");
             testHelper.VerifyAll(writer);
@@ -59,7 +66,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteInsertAttribute()
         {
-            var testHelper = new XmlWriterTestHelper<ComponentMapping>();
+            var testHelper = create_helper();
 
             testHelper.Check(x => x.Insert, true).MapsToAttribute("insert");
             testHelper.VerifyAll(writer);
@@ -68,7 +75,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteLazyAttribute()
         {
-            var testHelper = new XmlWriterTestHelper<ComponentMapping>();
+            var testHelper = create_helper();
 
             testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
             testHelper.VerifyAll(writer);
@@ -77,7 +84,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteOptimisticLockAttribute()
         {
-            var testHelper = new XmlWriterTestHelper<ComponentMapping>();
+            var testHelper = create_helper();
 
             testHelper.Check(x => x.OptimisticLock, true).MapsToAttribute("optimistic-lock");
             testHelper.VerifyAll(writer);
@@ -86,9 +93,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteComponents()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
 
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
 
             writer.VerifyXml(mapping)
                 .Element("component").Exists();
@@ -97,9 +104,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteDynamicComponents()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.DynamicComponent);
 
-            mapping.AddComponent(new DynamicComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.DynamicComponent));
 
             writer.VerifyXml(mapping)
                 .Element("dynamic-component").Exists();
@@ -108,7 +115,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteProperties()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
 
             mapping.AddProperty(new PropertyMapping());
 
@@ -119,7 +126,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteManyToOnes()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
 
             mapping.AddReference(new ManyToOneMapping());
 
@@ -130,7 +137,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteOneToOnes()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
 
             mapping.AddOneToOne(new OneToOneMapping());
 
@@ -141,7 +148,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteAnys()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
 
             mapping.AddAny(new AnyMapping());
 
@@ -152,7 +159,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteMaps()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
 
             mapping.AddCollection(new MapMapping());
 
@@ -163,7 +170,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteSets()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
 
             mapping.AddCollection(new SetMapping());
 
@@ -174,7 +181,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteBags()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
 
             mapping.AddCollection(new BagMapping());
 
@@ -185,7 +192,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteLists()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
 
             mapping.AddCollection(new ListMapping());
 

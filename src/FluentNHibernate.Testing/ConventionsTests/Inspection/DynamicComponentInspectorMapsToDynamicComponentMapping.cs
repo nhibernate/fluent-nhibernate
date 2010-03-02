@@ -16,13 +16,13 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
     [TestFixture, Category("Inspection DSL")]
     public class DynamicComponentInspectorMapsToDynamicComponentMapping
     {
-        private DynamicComponentMapping mapping;
+        private ComponentMapping mapping;
         private IDynamicComponentInspector inspector;
 
         [SetUp]
         public void CreateDsl()
         {
-            mapping = new DynamicComponentMapping();
+            mapping = new ComponentMapping(ComponentType.DynamicComponent);
             inspector = new DynamicComponentInspector(mapping);
         }
 
@@ -91,14 +91,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void ComponentsCollectionHasSameCountAsMapping()
         {
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.DynamicComponent));
             inspector.Components.Count().ShouldEqual(1);
         }
 
         [Test]
         public void ComponentsCollectionOfInspectors()
         {
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.DynamicComponent));
             inspector.Components.First().ShouldBeOfType<IComponentBaseInspector>();
         }
 

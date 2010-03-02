@@ -146,16 +146,10 @@ namespace FluentNHibernate.MappingModel.Output
         private void RegisterComponentWriters()
         {
             RegisterWriter<IComponentMapping>(c =>
-                new XmlComponentBaseWriter(c.Resolve<IXmlWriterServiceLocator>()));
-
-            RegisterWriter<ComponentMapping>(c =>
                 new XmlComponentWriter(c.Resolve<IXmlWriterServiceLocator>()));
 
             RegisterWriter<ReferenceComponentMapping>(c =>
                 new XmlReferenceComponentWriter(c.Resolve<IXmlWriterServiceLocator>()));
-
-            RegisterWriter<DynamicComponentMapping>(c =>
-                new XmlDynamicComponentWriter(c.Resolve<IXmlWriterServiceLocator>()));
         }
 
         private void RegisterWriter<T>(Func<Container, object> instantiate)

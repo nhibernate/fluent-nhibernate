@@ -13,13 +13,13 @@ namespace FluentNHibernate.Testing.MappingModel
         public override void establish_context()
         {
             member_property = new DummyPropertyInfo("Component", typeof(Target)).ToMember();
-            reference_component_mapping = new ReferenceComponentMapping(member_property, typeof(ComponentType), typeof(Target), null);
+            reference_component_mapping = new ReferenceComponentMapping(ComponentType.Component, member_property, typeof(ComponentTarget), typeof(Target), null);
         }
 
         [Test]
         public void should_allow_access_to_the_type_property()
         {
-            reference_component_mapping.Type.ShouldEqual(typeof(ComponentType));
+            reference_component_mapping.Type.ShouldEqual(typeof(ComponentTarget));
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace FluentNHibernate.Testing.MappingModel
         private Member member_property;
         private ReferenceComponentMapping reference_component_mapping;
         private class Target {}
-        private class ComponentType {}
+        private class ComponentTarget {}
     }
 
     [TestFixture]
@@ -52,7 +52,7 @@ namespace FluentNHibernate.Testing.MappingModel
         public override void establish_context()
         {
             parent_mapping = new ParentMapping();
-            external_component_mapping = new ExternalComponentMapping
+            external_component_mapping = new ExternalComponentMapping(ComponentType.Component)
             {
                 Access = "access",
                 Insert = true,
@@ -64,14 +64,14 @@ namespace FluentNHibernate.Testing.MappingModel
             };
             external_component_mapping.AddAny(new AnyMapping());
             external_component_mapping.AddCollection(new BagMapping());
-            external_component_mapping.AddComponent(new ComponentMapping());
+            external_component_mapping.AddComponent(new ComponentMapping(ComponentType.Component));
             external_component_mapping.AddFilter(new FilterMapping());
             external_component_mapping.AddOneToOne(new OneToOneMapping());
             external_component_mapping.AddProperty(new PropertyMapping());
             external_component_mapping.AddReference(new ManyToOneMapping());
 
             member_property = new DummyPropertyInfo("Component", typeof(Target)).ToMember();
-            reference_component_mapping = new ReferenceComponentMapping(member_property, typeof(ComponentType), typeof(Target), "column-prefix");
+            reference_component_mapping = new ReferenceComponentMapping(ComponentType.Component, member_property, typeof(ComponentTarget), typeof(Target), "column-prefix");
         }
 
         public override void because()
@@ -82,8 +82,8 @@ namespace FluentNHibernate.Testing.MappingModel
         [Test]
         public void should_retain_type_information_from_before_the_association_occurred()
         {
-            reference_component_mapping.Type.ShouldEqual(typeof(ComponentType));
-            reference_component_mapping.Class.ShouldEqual(new TypeReference(typeof(ComponentType)));
+            reference_component_mapping.Type.ShouldEqual(typeof(ComponentTarget));
+            reference_component_mapping.Class.ShouldEqual(new TypeReference(typeof(ComponentTarget)));
             reference_component_mapping.ContainingEntityType.ShouldEqual(typeof(Target));
         }
 
@@ -128,10 +128,10 @@ namespace FluentNHibernate.Testing.MappingModel
         private Member member_property;
         private ParentMapping parent_mapping;
 
-        private class ComponentType { }
+        private class ComponentTarget { }
         private class Target
         {
-            public ComponentType Component { get; set; }
+            public ComponentTarget Component { get; set; }
         }
     }
 }

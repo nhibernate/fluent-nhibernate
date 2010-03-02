@@ -68,7 +68,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             model.Conventions.Add(new DynamicComponentConventionBuilder().Always(convention));
         }
 
-        private void VerifyModel(Action<DynamicComponentMapping> modelVerification)
+        private void VerifyModel(Action<ComponentMapping> modelVerification)
         {
             var classMap = new ClassMap<PropertyTarget>();
             classMap.Id(x => x.Id);
@@ -82,10 +82,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             model.Add(classMap);
 
             var generatedModels = model.BuildMappings();
-            var modelInstance = (DynamicComponentMapping)generatedModels
+            var modelInstance = (ComponentMapping)generatedModels
                 .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(PropertyTarget)) != null)
                 .Classes.First()
-                .Components.Where(x => x is DynamicComponentMapping).First();
+                .Components.Where(x => x is ComponentMapping).First();
 
             modelVerification(modelInstance);
         }

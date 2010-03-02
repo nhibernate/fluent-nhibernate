@@ -9,35 +9,35 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
         [Test]
         public void UniqueShouldDefaultToFalse()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
             mapping.Unique.ShouldBeFalse();
         }
 
         [Test]
         public void InsertShouldDefaultToTrue()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
             mapping.Insert.ShouldBeTrue();
         }
 
         [Test]
         public void UpdateShouldDefaultToTrue()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
             mapping.Update.ShouldBeTrue();
         }
 
         [Test]
         public void OptimisticLockShouldDefaultToTrue()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
             mapping.OptimisticLock.ShouldBeTrue();
         }
 
         [Test]
         public void LazyShouldDefaultToFalse()
         {
-            var mapping = new ComponentMapping();
+            var mapping = new ComponentMapping(ComponentType.Component);
             mapping.Lazy.ShouldBeFalse();
         }
     }

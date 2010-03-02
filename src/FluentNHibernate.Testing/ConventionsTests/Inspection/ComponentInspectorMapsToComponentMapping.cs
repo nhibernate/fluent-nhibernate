@@ -22,7 +22,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [SetUp]
         public void CreateDsl()
         {
-            mapping = new ComponentMapping();
+            mapping = new ComponentMapping(ComponentType.Component);
             inspector = new ComponentInspector(mapping);
         }
 
@@ -113,14 +113,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void ComponentsCollectionHasSameCountAsMapping()
         {
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
             inspector.Components.Count().ShouldEqual(1);
         }
 
         [Test]
         public void ComponentsCollectionOfInspectors()
         {
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
             inspector.Components.First().ShouldBeOfType<IComponentBaseInspector>();
         }
 

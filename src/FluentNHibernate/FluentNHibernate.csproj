@@ -391,6 +391,7 @@
     <Compile Include="Conventions\ManyToManyTableNameConvention.cs" />
     <Compile Include="Conventions\ObjectExtensionsForConventions.cs" />
     <Compile Include="Conventions\ProxyConvention.cs" />
+    <Compile Include="MappingModel\ClassBased\ComponentType.cs" />
     <Compile Include="MappingModel\ClassBased\ExternalComponentMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassType.cs" />
     <Compile Include="MappingModel\EqualityExtensions.cs" />
@@ -537,7 +538,6 @@
     <Compile Include="MappingModel\ClassBased\ClassMappingBase.cs" />
     <Compile Include="MappingModel\ClassBased\ComponentMapping.cs" />
     <Compile Include="MappingModel\ClassBased\ComponentMappingBase.cs" />
-    <Compile Include="MappingModel\ClassBased\DynamicComponentMapping.cs" />
     <Compile Include="MappingModel\ClassBased\IComponentMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassMapping.cs" />
     <Compile Include="MappingModel\Collections\ArrayMapping.cs" />
@@ -559,12 +559,10 @@
     <Compile Include="MappingModel\Output\XmlClassWriterBase.cs" />
     <Compile Include="MappingModel\Output\XmlCollectionRelationshipWriter.cs" />
     <Compile Include="MappingModel\Output\XmlCollectionWriter.cs" />
-    <Compile Include="MappingModel\Output\XmlComponentBaseWriter.cs" />
     <Compile Include="MappingModel\Output\XmlComponentWriter.cs" />
     <Compile Include="MappingModel\Output\BaseXmlComponentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeElementWriter.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeIdWriter.cs" />
-    <Compile Include="MappingModel\Output\XmlDynamicComponentWriter.cs" />
     <Compile Include="MappingModel\Output\XmlElementWriter.cs" />
     <Compile Include="MappingModel\Output\XmlGeneratorWriter.cs" />
     <Compile Include="MappingModel\Output\XmlIdentityBasedWriter.cs" />
