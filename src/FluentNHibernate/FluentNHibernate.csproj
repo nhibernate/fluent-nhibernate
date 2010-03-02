@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{529145D5-6CC3-4016-89B5-826563024AF1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -392,6 +392,7 @@
     <Compile Include="Conventions\ObjectExtensionsForConventions.cs" />
     <Compile Include="Conventions\ProxyConvention.cs" />
     <Compile Include="MappingModel\ClassBased\ExternalComponentMapping.cs" />
+    <Compile Include="MappingModel\ClassBased\SubclassType.cs" />
     <Compile Include="MappingModel\EqualityExtensions.cs" />
     <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IReferenceComponentMappingProvider.cs" />
@@ -538,8 +539,6 @@
     <Compile Include="MappingModel\ClassBased\ComponentMappingBase.cs" />
     <Compile Include="MappingModel\ClassBased\DynamicComponentMapping.cs" />
     <Compile Include="MappingModel\ClassBased\IComponentMapping.cs" />
-    <Compile Include="MappingModel\ClassBased\ISubclassMapping.cs" />
-    <Compile Include="MappingModel\ClassBased\JoinedSubclassMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassMapping.cs" />
     <Compile Include="MappingModel\Collections\ArrayMapping.cs" />
     <Compile Include="MappingModel\Collections\CompositeElementMapping.cs" />
@@ -576,8 +575,6 @@
     <Compile Include="MappingModel\Output\XmlKeyManyToOneWriter.cs" />
     <Compile Include="MappingModel\Output\XmlKeyPropertyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlKeyWriter.cs" />
-    <Compile Include="MappingModel\Output\XmlInheritanceWriter.cs" />
-    <Compile Include="MappingModel\Output\XmlJoinedSubclassWriter.cs" />
     <Compile Include="MappingModel\Output\XmlListWriter.cs" />
     <Compile Include="MappingModel\Output\XmlManyToManyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlManyToOneWriter.cs" />

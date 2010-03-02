@@ -5,7 +5,7 @@ namespace FluentNHibernate.Mapping.Providers
 {
     public interface IIndeterminateSubclassMappingProvider
     {
-        ISubclassMapping GetSubclassMapping(ISubclassMapping mapping);
+        SubclassMapping GetSubclassMapping(SubclassMapping mapping);
         Type EntityType { get; }
     }
 }

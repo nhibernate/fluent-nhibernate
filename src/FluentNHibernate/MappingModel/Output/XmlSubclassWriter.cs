@@ -27,13 +27,10 @@ namespace FluentNHibernate.MappingModel.Output
         {
             document = new XmlDocument();
 
-            var element = document.AddElement("subclass");
+            var element = document.AddElement(mapping.SubclassType.GetElementName());
 
             if (mapping.HasValue(x => x.Name))
                 element.WithAtt("name", mapping.Name);
-
-            if (mapping.HasValue(x => x.DiscriminatorValue))
-                element.WithAtt("discriminator-value", mapping.DiscriminatorValue.ToString());
 
             if (mapping.HasValue(x => x.Extends))
                 element.WithAtt("extends", mapping.Extends);
@@ -58,11 +55,38 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.EntityName))
                 element.WithAtt("entity-name", mapping.EntityName);
+
+            if (mapping.SubclassType == SubclassType.Subclass)
+            {
+                if (mapping.HasValue(x => x.DiscriminatorValue))
+                    element.WithAtt("discriminator-value", mapping.DiscriminatorValue.ToString());
+            }
+            else
+            {
+                if (mapping.HasValue(x => x.TableName))
+                    element.WithAtt("table", mapping.TableName);
+
+                if (mapping.HasValue(x => x.Schema))
+                    element.WithAtt("schema", mapping.Schema);
+
+                if (mapping.HasValue(x => x.Check))
+                    element.WithAtt("check", mapping.Check);
+
+                if (mapping.HasValue(x => x.Subselect))
+                    element.WithAtt("subselect", mapping.Subselect);
+
+                if (mapping.HasValue(x => x.Persister))
+                    element.WithAtt("persister", mapping.Persister);
+
+                if (mapping.HasValue(x => x.BatchSize))
+                    element.WithAtt("batch-size", mapping.BatchSize);
+            }
         }
 
-        public override void Visit(ISubclassMapping subclassMapping)
+        public override void Visit(KeyMapping keyMapping)        {            var writer = serviceLocator.GetWriter<KeyMapping>();            var keyXml = writer.Write(keyMapping);            document.ImportAndAppendChild(keyXml);        }
+        public override void Visit(SubclassMapping subclassMapping)
         {
-            var writer = serviceLocator.GetWriter<ISubclassMapping>();
+            var writer = serviceLocator.GetWriter<SubclassMapping>();
             var subclassXml = writer.Write(subclassMapping);
 
             document.ImportAndAppendChild(subclassXml);

@@ -406,7 +406,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ClassMapping();
 
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             writer.VerifyXml(mapping)
                 .Element("subclass").Exists();
@@ -417,7 +417,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ClassMapping();
 
-            mapping.AddSubclass(new JoinedSubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.JoinedSubclass));
 
             writer.VerifyXml(mapping)
                 .Element("joined-subclass").Exists();

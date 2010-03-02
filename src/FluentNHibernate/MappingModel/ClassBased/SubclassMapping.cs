@@ -1,27 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
-    public class SubclassMapping : ClassMappingBase, ISubclassMapping
+    public class SubclassMapping : ClassMappingBase
     {
+        public SubclassType SubclassType { get; private set; }
         private AttributeStore<SubclassMapping> attributes;
 
-        public SubclassMapping()
-            : this(new AttributeStore())
+        public SubclassMapping(SubclassType subclassType)
+            : this(subclassType, new AttributeStore())
         {}
 
-        public SubclassMapping(AttributeStore underlyingStore)
+        public SubclassMapping(SubclassType subclassType, AttributeStore underlyingStore)
         {
+            SubclassType = subclassType;
             attributes = new AttributeStore<SubclassMapping>(underlyingStore);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessSubclass(this);
+
+            if (SubclassType == SubclassType.JoinedSubclass && Key != null)
+                visitor.Visit(Key);
 
             base.AcceptVisitor(visitor);
         }
@@ -95,6 +98,48 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return attributes.Get(x => x.EntityName); }
             set { attributes.Set(x => x.EntityName, value); }
+        }
+
+        public string TableName
+        {
+            get { return attributes.Get(x => x.TableName); }
+            set { attributes.Set(x => x.TableName, value); }
+        }
+
+        public KeyMapping Key
+        {
+            get { return attributes.Get(x => x.Key); }
+            set { attributes.Set(x => x.Key, value); }
+        }
+
+        public string Check
+        {
+            get { return attributes.Get(x => x.Check); }
+            set { attributes.Set(x => x.Check, value); }
+        }
+
+        public string Schema
+        {
+            get { return attributes.Get(x => x.Schema); }
+            set { attributes.Set(x => x.Schema, value); }
+        }
+
+        public string Subselect
+        {
+            get { return attributes.Get(x => x.Subselect); }
+            set { attributes.Set(x => x.Subselect, value); }
+        }
+
+        public TypeReference Persister
+        {
+            get { return attributes.Get(x => x.Persister); }
+            set { attributes.Set(x => x.Persister, value); }
+        }
+
+        public int BatchSize
+        {
+            get { return attributes.Get(x => x.BatchSize); }
+            set { attributes.Set(x => x.BatchSize, value); }
         }
 
         public override bool IsSpecified(string property)

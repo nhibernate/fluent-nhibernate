@@ -151,7 +151,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
             mapping.AddStoredProcedure(new StoredProcedureMapping());
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             return mapping;
         }
@@ -246,7 +246,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
             mapping.AddStoredProcedure(new StoredProcedureMapping());
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             return mapping;
         }
@@ -342,7 +342,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
             mapping.AddStoredProcedure(new StoredProcedureMapping());
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             return mapping;
         }
@@ -407,7 +407,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
             mapping.AddStoredProcedure(new StoredProcedureMapping());
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             return mapping;
         }
@@ -616,11 +616,11 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
     }
 
     [TestFixture]
-    public class when_comparing_two_identical_JoinedSubclassMappings : MappingEqualitySpec<JoinedSubclassMapping>
+    public class when_comparing_two_identical_JoinedSubclassMappings : MappingEqualitySpec<SubclassMapping>
     {
-        public override JoinedSubclassMapping create_mapping()
+        public override SubclassMapping create_mapping()
         {
-            var mapping = new JoinedSubclassMapping
+            var mapping = new SubclassMapping(SubclassType.JoinedSubclass)
             {
                 Abstract = true,
                 BatchSize = 10,
@@ -650,7 +650,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
             mapping.AddStoredProcedure(new StoredProcedureMapping());
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             return mapping;
         }
@@ -1114,7 +1114,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
     {
         public override SubclassMapping create_mapping()
         {
-            var mapping = new SubclassMapping
+            var mapping = new SubclassMapping(SubclassType.Subclass)
             {
                 Abstract = true,
                 DynamicInsert = true,
@@ -1138,7 +1138,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
             mapping.AddStoredProcedure(new StoredProcedureMapping());
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             return mapping;
         }

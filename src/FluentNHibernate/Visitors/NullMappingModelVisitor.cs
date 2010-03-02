@@ -88,11 +88,6 @@ namespace FluentNHibernate.Visitors
             
         }
 
-        public virtual void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
-        {
-
-        }
-
         public virtual void ProcessSubclass(SubclassMapping subclassMapping)
         {
 
@@ -274,16 +269,6 @@ namespace FluentNHibernate.Visitors
         }
 
         public virtual void Visit(ColumnMapping columnMapping)
-        {
-
-        }
-
-        public virtual void Visit(ISubclassMapping subclassMapping)
-        {
-
-        }
-
-        public virtual void Visit(JoinedSubclassMapping subclassMapping)
         {
 
         }

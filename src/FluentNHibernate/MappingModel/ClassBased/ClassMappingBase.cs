@@ -8,12 +8,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
     public abstract class ClassMappingBase : MappingBase, IHasMappedMembers
     {
         private readonly MappedMembers mappedMembers;
-        private readonly IList<ISubclassMapping> subclasses;
+        private readonly IList<SubclassMapping> subclasses;
 
         protected ClassMappingBase()
         {
             mappedMembers = new MappedMembers();
-            subclasses = new List<ISubclassMapping>();
+            subclasses = new List<SubclassMapping>();
         }
 
         public abstract string Name { get; set; }
@@ -69,7 +69,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mappedMembers.Filters; }
         }
 
-        public IEnumerable<ISubclassMapping> Subclasses
+        public IEnumerable<SubclassMapping> Subclasses
         {
             get { return subclasses; }
         }
@@ -149,7 +149,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers.AddFilter(mapping);
         }
 
-        public void AddSubclass(ISubclassMapping subclass)
+        public void AddSubclass(SubclassMapping subclass)
         {
             subclasses.Add(subclass);
         }

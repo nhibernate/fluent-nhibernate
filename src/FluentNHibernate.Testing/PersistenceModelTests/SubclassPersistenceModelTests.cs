@@ -98,7 +98,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
                 .First()
                 .Classes.First();
 
-            (classMapping.Subclasses.First() is JoinedSubclassMapping).ShouldBeTrue();
+            classMapping.Subclasses.First().SubclassType.ShouldEqual(SubclassType.JoinedSubclass);
         }
 
         [Test]

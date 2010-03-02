@@ -90,11 +90,6 @@ namespace FluentNHibernate.Visitors
             ProcessClassBase(subclassMapping);
         }
 
-        public override void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
-        {
-            ProcessClassBase(subclassMapping);
-        }
-
         #endregion
 
         public override void Visit(AnyMapping mapping)
@@ -145,16 +140,6 @@ namespace FluentNHibernate.Visitors
         public override void Visit(ColumnMapping columnMapping)
         {
             columnMapping.AcceptVisitor(this);
-        }
-
-        public override void Visit(ISubclassMapping subclassMapping)
-        {
-            subclassMapping.AcceptVisitor(this);
-        }
-
-        public override void Visit(JoinedSubclassMapping subclassMapping)
-        {
-            subclassMapping.AcceptVisitor(this);
         }
 
         public override void Visit(SubclassMapping subclassMapping)

@@ -22,7 +22,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [SetUp]
         public void CreateDsl()
         {
-            mapping = new SubclassMapping();
+            mapping = new SubclassMapping(SubclassType.Subclass);
             inspector = new SubclassInspector(mapping);
         }
 
@@ -347,14 +347,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void SubclassesCollectionHasSameCountAsMapping()
         {
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
             inspector.Subclasses.Count().ShouldEqual(1);
         }
 
         [Test]
         public void SubclassesCollectionOfInspectors()
         {
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
             inspector.Subclasses.First().ShouldBeOfType<ISubclassInspector>();
         }
 

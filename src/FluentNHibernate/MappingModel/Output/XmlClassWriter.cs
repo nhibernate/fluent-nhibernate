@@ -101,9 +101,9 @@ namespace FluentNHibernate.MappingModel.Output
             document.ImportAndAppendChild(discriminatorXml);
         }
 
-        public override void Visit(ISubclassMapping subclassMapping)
+        public override void Visit(SubclassMapping subclassMapping)
         {
-            var writer = serviceLocator.GetWriter<ISubclassMapping>();
+            var writer = serviceLocator.GetWriter<SubclassMapping>();
             var subclassXml = writer.Write(subclassMapping);
 
             document.ImportAndAppendChild(subclassXml);

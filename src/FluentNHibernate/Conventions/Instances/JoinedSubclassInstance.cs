@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -10,10 +9,10 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public class JoinedSubclassInstance : JoinedSubclassInspector, IJoinedSubclassInstance
     {
-        private readonly JoinedSubclassMapping mapping;
+        private readonly SubclassMapping mapping;
         private bool nextBool = true;
 
-        public JoinedSubclassInstance(JoinedSubclassMapping mapping)
+        public JoinedSubclassInstance(SubclassMapping mapping)
             : base(mapping)
         {
             this.mapping = mapping;

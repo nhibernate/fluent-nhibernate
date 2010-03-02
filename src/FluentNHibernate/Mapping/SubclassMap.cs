@@ -10,8 +10,7 @@ namespace FluentNHibernate.Mapping
 {
     public class SubclassMap<T> : ClasslikeMapBase<T>, IIndeterminateSubclassMappingProvider
     {
-        private readonly AttributeStore<SubclassMapping> subclassAttributes = new AttributeStore<SubclassMapping>();
-        private readonly AttributeStore<JoinedSubclassMapping> joinedSubclassAttributes = new AttributeStore<JoinedSubclassMapping>();
+        private readonly AttributeStore<SubclassMapping> attributes = new AttributeStore<SubclassMapping>();
 
         // this is a bit weird, but we need a way of delaying the generation of the subclass mappings until we know
         // what the parent subclass type is...
@@ -29,33 +28,26 @@ namespace FluentNHibernate.Mapping
             }
         }
 
-        ISubclassMapping IIndeterminateSubclassMappingProvider.GetSubclassMapping(ISubclassMapping mapping)
+        SubclassMapping IIndeterminateSubclassMappingProvider.GetSubclassMapping(SubclassMapping mapping)
         {
             GenerateNestedSubclasses(mapping);
 
-            subclassAttributes.SetDefault(x => x.Type, typeof(T));
-            subclassAttributes.SetDefault(x => x.Name, typeof(T).AssemblyQualifiedName);
-            subclassAttributes.SetDefault(x => x.DiscriminatorValue, typeof(T).Name);
+            attributes.SetDefault(x => x.Type, typeof(T));
+            attributes.SetDefault(x => x.Name, typeof(T).AssemblyQualifiedName);
+            attributes.SetDefault(x => x.DiscriminatorValue, typeof(T).Name);
 
             // TODO: un-hardcode this
             var key = new KeyMapping();
             key.AddDefaultColumn(new ColumnMapping { Name = typeof(T).BaseType.Name + "_id" });
 
-            joinedSubclassAttributes.SetDefault(x => x.Type, typeof(T));
-            joinedSubclassAttributes.SetDefault(x => x.Name, typeof(T).AssemblyQualifiedName);
-            joinedSubclassAttributes.SetDefault(x => x.TableName, GetDefaultTableName());
-            joinedSubclassAttributes.SetDefault(x => x.Key, key);
+            attributes.SetDefault(x => x.TableName, GetDefaultTableName());
+            attributes.SetDefault(x => x.Key, key);
 
             // TODO: this is nasty, we should find a better way
-            if (mapping is JoinedSubclassMapping)
-                mapping.OverrideAttributes(joinedSubclassAttributes.CloneInner());
-            else
-            {
-                mapping.OverrideAttributes(subclassAttributes.CloneInner());
+            mapping.OverrideAttributes(attributes.CloneInner());
 
-                foreach (var join in joins)
-                    ((SubclassMapping)mapping).AddJoin(join);
-            }
+            foreach (var join in joins)
+                mapping.AddJoin(join);
 
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());
@@ -78,11 +70,11 @@ namespace FluentNHibernate.Mapping
             return mapping;
         }
 
-        private void GenerateNestedSubclasses(ISubclassMapping mapping)
+        private void GenerateNestedSubclasses(SubclassMapping mapping)
         {
             foreach (var subclassType in indetermineateSubclasses.Keys)
             {
-                var emptySubclassMapping = (ISubclassMapping)mapping.GetType().InstantiateUsingParameterlessConstructor();
+                var emptySubclassMapping = new SubclassMapping(mapping.SubclassType);
                 var subclassMapping = indetermineateSubclasses[subclassType].GetSubclassMapping(emptySubclassMapping);
 
                 mapping.AddSubclass(subclassMapping);
@@ -110,29 +102,25 @@ namespace FluentNHibernate.Mapping
 
         public void Abstract()
         {
-            subclassAttributes.Set(x => x.Abstract, nextBool);
-            joinedSubclassAttributes.Set(x => x.Abstract, nextBool);
+            attributes.Set(x => x.Abstract, nextBool);
             nextBool = true;
         }
 
         public void DynamicInsert()
         {
-            subclassAttributes.Set(x => x.DynamicInsert, nextBool);
-            joinedSubclassAttributes.Set(x => x.DynamicInsert, nextBool);
+            attributes.Set(x => x.DynamicInsert, nextBool);
             nextBool = true;
         }
 
         public void DynamicUpdate()
         {
-            subclassAttributes.Set(x => x.DynamicUpdate, nextBool);
-            joinedSubclassAttributes.Set(x => x.DynamicUpdate, nextBool);
+            attributes.Set(x => x.DynamicUpdate, nextBool);
             nextBool = true;
         }
 
         public void LazyLoad()
         {
-            subclassAttributes.Set(x => x.Lazy, nextBool);
-            joinedSubclassAttributes.Set(x => x.Lazy, nextBool);
+            attributes.Set(x => x.Lazy, nextBool);
             nextBool = true;
         }
 
@@ -143,14 +131,12 @@ namespace FluentNHibernate.Mapping
 
         public void Proxy(Type proxyType)
         {
-            subclassAttributes.Set(x => x.Proxy, proxyType.AssemblyQualifiedName);
-            joinedSubclassAttributes.Set(x => x.Proxy, proxyType.AssemblyQualifiedName);
+            attributes.Set(x => x.Proxy, proxyType.AssemblyQualifiedName);
         }
 
         public void SelectBeforeUpdate()
         {
-            subclassAttributes.Set(x => x.SelectBeforeUpdate, nextBool);
-            joinedSubclassAttributes.Set(x => x.SelectBeforeUpdate, nextBool);
+            attributes.Set(x => x.SelectBeforeUpdate, nextBool);
             nextBool = true;
         }
 
@@ -165,67 +151,66 @@ namespace FluentNHibernate.Mapping
 
         public void DiscriminatorValue(object discriminatorValue)
         {
-            subclassAttributes.Set(x => x.DiscriminatorValue, discriminatorValue);
+            attributes.Set(x => x.DiscriminatorValue, discriminatorValue);
         }
 
         public void Table(string table)
         {
-            joinedSubclassAttributes.Set(x => x.TableName, table);
+            attributes.Set(x => x.TableName, table);
         }
 
         public void Schema(string schema)
         {
-            joinedSubclassAttributes.Set(x => x.Schema, schema);
+            attributes.Set(x => x.Schema, schema);
         }
 
         public void Check(string constraint)
         {
-            joinedSubclassAttributes.Set(x => x.Check, constraint);
+            attributes.Set(x => x.Check, constraint);
         }
 
         public void KeyColumn(string column)
         {
             KeyMapping key;
 
-            if (joinedSubclassAttributes.IsSpecified(x => x.Key))
-                key = joinedSubclassAttributes.Get(x => x.Key);
+            if (attributes.IsSpecified(x => x.Key))
+                key = attributes.Get(x => x.Key);
             else
                 key = new KeyMapping();
 
             key.AddColumn(new ColumnMapping { Name = column });
 
-            joinedSubclassAttributes.Set(x => x.Key, key);
+            attributes.Set(x => x.Key, key);
         }
 
         public void Subselect(string subselect)
         {
-            joinedSubclassAttributes.Set(x => x.Subselect, subselect);
+            attributes.Set(x => x.Subselect, subselect);
         }
 
         public void Persister<TPersister>()
         {
-            joinedSubclassAttributes.Set(x => x.Persister, new TypeReference(typeof(TPersister)));
+            attributes.Set(x => x.Persister, new TypeReference(typeof(TPersister)));
         }
 
         public void Persister(Type type)
         {
-            joinedSubclassAttributes.Set(x => x.Persister, new TypeReference(type));
+            attributes.Set(x => x.Persister, new TypeReference(type));
         }
 
         public void Persister(string type)
         {
-            joinedSubclassAttributes.Set(x => x.Persister, new TypeReference(type));
+            attributes.Set(x => x.Persister, new TypeReference(type));
         }
 
         public void BatchSize(int batchSize)
         {
-            joinedSubclassAttributes.Set(x => x.BatchSize, batchSize);
+            attributes.Set(x => x.BatchSize, batchSize);
         }
 
         public void EntityName(string entityname)
         {
-            joinedSubclassAttributes.Set(x => x.EntityName, entityname);
-            subclassAttributes.Set(x => x.EntityName, entityname);
+            attributes.Set(x => x.EntityName, entityname);
         }
 
         /// <summary>

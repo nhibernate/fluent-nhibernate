@@ -121,18 +121,20 @@ namespace FluentNHibernate.Visitors
 
         public override void ProcessSubclass(SubclassMapping subclassMapping)
         {
-            var conventions = finder.Find<ISubclassConvention>();
+            if (subclassMapping.SubclassType == SubclassType.Subclass)
+            {
+                var conventions = finder.Find<ISubclassConvention>();
 
-            Apply<ISubclassInspector, ISubclassInstance>(conventions,
-                new SubclassInstance(subclassMapping));
-        }
+                Apply<ISubclassInspector, ISubclassInstance>(conventions,
+                    new SubclassInstance(subclassMapping));
+            }
+            else
+            {
+                var conventions = finder.Find<IJoinedSubclassConvention>();
 
-        public override void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
-        {
-            var conventions = finder.Find<IJoinedSubclassConvention>();
-
-            Apply<IJoinedSubclassInspector, IJoinedSubclassInstance>(conventions,
-                new JoinedSubclassInstance(subclassMapping));
+                Apply<IJoinedSubclassInspector, IJoinedSubclassInstance>(conventions,
+                    new JoinedSubclassInstance(subclassMapping));
+            }
         }
 
         public override void ProcessComponent(ComponentMapping mapping)

@@ -31,19 +31,9 @@ namespace FluentNHibernate.Visitors
             var subclasses = FindClosestSubclasses(mapping.Type);
 
             foreach (var provider in subclasses)
-                mapping.AddSubclass(provider.GetSubclassMapping(new SubclassMapping()));
+                mapping.AddSubclass(provider.GetSubclassMapping(new SubclassMapping(mapping.SubclassType)));
 
             base.ProcessSubclass(mapping);
-        }
-
-        public override void ProcessJoinedSubclass(JoinedSubclassMapping mapping)
-        {
-            var subclasses = FindClosestSubclasses(mapping.Type);
-
-            foreach (var provider in subclasses)
-                mapping.AddSubclass(provider.GetSubclassMapping(new JoinedSubclassMapping()));
-
-            base.ProcessJoinedSubclass(mapping);
         }
 
         private IEnumerable<IIndeterminateSubclassMappingProvider> FindClosestSubclasses(Type type)
@@ -58,12 +48,12 @@ namespace FluentNHibernate.Visitors
             return subclasses[lowestDistance];
         }
 
-        private ISubclassMapping CreateSubclass(ClassMapping mapping)
+        private SubclassMapping CreateSubclass(ClassMapping mapping)
         {
             if (mapping.Discriminator == null)
-                return new JoinedSubclassMapping();
+                return new SubclassMapping(SubclassType.JoinedSubclass);
 
-            return new SubclassMapping();
+            return new SubclassMapping(SubclassType.Subclass);
         }
 
         private bool IsMapped(Type type, IEnumerable<IIndeterminateSubclassMappingProvider> providers)

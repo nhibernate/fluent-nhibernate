@@ -23,7 +23,6 @@ namespace FluentNHibernate.Visitors
         void ProcessManyToMany(ManyToManyMapping manyToManyMapping);
         void ProcessSet(SetMapping setMapping);
         void ProcessMap(MapMapping mapping);
-        void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping);
         void ProcessSubclass(SubclassMapping subclassMapping);
         void ProcessDiscriminator(DiscriminatorMapping discriminatorMapping);
         void ProcessComponent(IComponentMapping componentMapping);
@@ -62,8 +61,6 @@ namespace FluentNHibernate.Visitors
         void Visit(ICollectionRelationshipMapping relationshipMapping);
         void Visit(GeneratorMapping generatorMapping);
         void Visit(ColumnMapping columnMapping);
-        void Visit(ISubclassMapping subclassMapping);
-        void Visit(JoinedSubclassMapping subclassMapping);
         void Visit(SubclassMapping subclassMapping);
         void Visit(DiscriminatorMapping discriminatorMapping);
         void Visit(IComponentMapping componentMapping);

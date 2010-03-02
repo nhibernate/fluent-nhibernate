@@ -16,13 +16,13 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
     [TestFixture, Category("Inspection DSL")]
     public class JoinedSubclassInspectorMapsToJoinedSubclassMapping
     {
-        private JoinedSubclassMapping mapping;
+        private SubclassMapping mapping;
         private IJoinedSubclassInspector inspector;
 
         [SetUp]
         public void CreateDsl()
         {
-            mapping = new JoinedSubclassMapping();
+            mapping = new SubclassMapping(SubclassType.JoinedSubclass);
             inspector = new JoinedSubclassInspector(mapping);
         }
 
@@ -371,14 +371,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void SubclassesCollectionHasSameCountAsMapping()
         {
-            mapping.AddSubclass(new JoinedSubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.JoinedSubclass));
             inspector.Subclasses.Count().ShouldEqual(1);
         }
 
         [Test]
         public void SubclassesCollectionOfInspectors()
         {
-            mapping.AddSubclass(new JoinedSubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.JoinedSubclass));
             inspector.Subclasses.First().ShouldBeOfType<IJoinedSubclassInspector>();
         }
 

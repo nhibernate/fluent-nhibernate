@@ -35,10 +35,10 @@ namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs
             class_mapping.Subclasses.Count().ShouldEqual(1);
 
         It should_create_a_key_for_the_subclass = () =>
-            ((JoinedSubclassMapping)class_mapping.Subclasses.First()).Key.ShouldNotBeNull();
+            class_mapping.Subclasses.First().Key.ShouldNotBeNull();
 
         It should_create_a_column_for_the_key_with_the_name_specified = () =>
-            ((JoinedSubclassMapping)class_mapping.Subclasses.First()).Key.Columns.Single().Name.ShouldEqual("key");
+            class_mapping.Subclasses.First().Key.Columns.Single().Name.ShouldEqual("key");
 
         static ClassMapping class_mapping;
     }

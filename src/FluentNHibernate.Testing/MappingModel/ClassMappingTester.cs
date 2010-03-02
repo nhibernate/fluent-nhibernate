@@ -101,7 +101,7 @@ namespace FluentNHibernate.Testing.MappingModel
         [Test]
         public void Can_add_subclass()
         {
-            var joinedSubclass = new JoinedSubclassMapping();
+            var joinedSubclass = new SubclassMapping(SubclassType.JoinedSubclass);
             _classMapping.AddSubclass(joinedSubclass);
             _classMapping.Subclasses.ShouldContain(joinedSubclass);
         }
@@ -110,7 +110,7 @@ namespace FluentNHibernate.Testing.MappingModel
         public void Should_pass_subclasses_to_the_visitor()
         {
             var classMap = new ClassMapping {Name = "class1" };
-            classMap.AddSubclass(new JoinedSubclassMapping());
+            classMap.AddSubclass(new SubclassMapping(SubclassType.JoinedSubclass));
 
             var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
             visitor.Expect(x => x.Visit(classMap.Subclasses.First()));

@@ -29,8 +29,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .First()
                 .Subclasses.First();
 
-            ((JoinedSubclassMapping)subclass).Key.Columns.First().Name.ShouldEqual("xxx");
-            ((JoinedSubclassMapping)subclass).Key.Columns.Count().ShouldEqual(1);
+            subclass.Key.Columns.First().Name.ShouldEqual("xxx");
+            subclass.Key.Columns.Count().ShouldEqual(1);
         }
 
         private class SCKeyConvention : IJoinedSubclassConvention

@@ -103,7 +103,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             model.BuildMappings()
                 .First()
                 .Classes.First()
-                .Subclasses.Cast<JoinedSubclassMapping>().First()
+                .Subclasses.First()
                 .Key.Columns.First().Name.ShouldEqual("ExampleClass!");
         }
 
