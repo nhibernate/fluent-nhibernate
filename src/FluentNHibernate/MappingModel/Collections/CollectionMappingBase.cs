@@ -209,8 +209,7 @@ namespace FluentNHibernate.MappingModel.Collections
             return Equals(other.attributes, attributes) &&
                 other.filters.ContentEquals(filters) &&
                 Equals(other.ContainingEntityType, ContainingEntityType)
-                && Equals(other.Member, Member) &&
-                Equals(other.OtherSide, OtherSide);
+                && Equals(other.Member, Member);
         }
 
         public override bool Equals(object obj)
@@ -229,7 +228,6 @@ namespace FluentNHibernate.MappingModel.Collections
                 result = (result * 397) ^ (filters != null ? filters.GetHashCode() : 0);
                 result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
                 result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
-                result = (result * 397) ^ (OtherSide != null ? OtherSide.GetHashCode() : 0);
                 return result;
             }
         }

@@ -30,15 +30,17 @@ namespace FluentNHibernate
         public bool MergeMappings { get; set; }
         private IEnumerable<HibernateMapping> compiledMappings;
         private ValidationVisitor validationVisitor;
+        public PairBiDirectionalManyToManySidesDelegate BiDirectionalManyToManyPairer { get; set; }
 
         public PersistenceModel(IConventionFinder conventionFinder)
         {
+            BiDirectionalManyToManyPairer = (c,o,w) => {};
             Conventions = conventionFinder;
 
             visitors.Add(new ComponentReferenceResolutionVisitor(componentProviders));
             visitors.Add(new ComponentColumnPrefixVisitor());
             visitors.Add(new SeparateSubclassVisitor(subclassProviders));
-            visitors.Add(new BiDirectionalManyToManyPairingVisitor());
+            visitors.Add(new BiDirectionalManyToManyPairingVisitor(BiDirectionalManyToManyPairer));
             visitors.Add(new ManyToManyTableNameVisitor());
             visitors.Add(new ConventionVisitor(Conventions));
             visitors.Add((validationVisitor = new ValidationVisitor()));
@@ -181,8 +183,7 @@ namespace FluentNHibernate
         private void ApplyVisitors(IEnumerable<HibernateMapping> mappings)
         {
             foreach (var visitor in visitors)
-                foreach (var mapping in mappings)
-                    mapping.AcceptVisitor(visitor);
+                visitor.Visit(mappings);
         }
 
         private void EnsureMappingsBuilt()

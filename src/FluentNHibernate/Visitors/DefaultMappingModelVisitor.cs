@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Visitors
 {
@@ -91,6 +93,11 @@ namespace FluentNHibernate.Visitors
         }
 
         #endregion
+
+        public override void Visit(IEnumerable<HibernateMapping> mappings)
+        {
+            mappings.Each(x => x.AcceptVisitor(this));
+        }
 
         public override void Visit(AnyMapping mapping)
         {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
@@ -199,6 +200,11 @@ namespace FluentNHibernate.Visitors
         }
 
         public virtual void ProcessTuplizer(TuplizerMapping tuplizerMapping)
+        {
+            
+        }
+
+        public virtual void Visit(IEnumerable<HibernateMapping> mappings)
         {
             
         }

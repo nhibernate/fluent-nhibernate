@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
@@ -46,6 +47,12 @@ namespace FluentNHibernate.Visitors
         void ProcessFilterDefinition(FilterDefinitionMapping mapping);
         void ProcessStoredProcedure(StoredProcedureMapping mapping);
         void ProcessTuplizer(TuplizerMapping mapping);
+
+        /// <summary>
+        /// This bad boy is the entry point to the visitor
+        /// </summary>
+        /// <param name="mappings"></param>
+        void Visit(IEnumerable<HibernateMapping> mappings);
 
         void Visit(IdMapping mapping);
         void Visit(ClassMapping classMapping);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Visitors;
 using NHibernate.Cfg;
 
 namespace FluentNHibernate.Cfg
@@ -24,6 +25,12 @@ namespace FluentNHibernate.Cfg
         public PersistenceModel PersistenceModel
         {
             get { return model; }
+        }
+
+        public FluentMappingsContainer OverrideBiDirectionalManyToManyPairing(PairBiDirectionalManyToManySidesDelegate userControlledPairing)
+        {
+            model.BiDirectionalManyToManyPairer = userControlledPairing;
+            return this;
         }
 
         /// <summary>

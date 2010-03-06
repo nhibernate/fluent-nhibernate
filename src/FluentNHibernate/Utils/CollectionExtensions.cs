@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace FluentNHibernate.Utils
 {
@@ -11,6 +13,12 @@ namespace FluentNHibernate.Utils
         {
             foreach (var item in enumerable)
                 each(item);
+        }
+
+        [DebuggerStepThrough]
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> enumerable, params T[] singles)
+        {
+            return enumerable.Except((IEnumerable<T>)singles);
         }
     }
 }
