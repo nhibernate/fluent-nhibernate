@@ -197,33 +197,49 @@ namespace FluentNHibernate
             return "FluentMappings.hbm.xml";
         }
 
+        private string DetermineMappingFileName(HibernateMapping mapping)
+        {
+            if (MergeMappings)
+                return GetMappingFileName();
+
+            if (mapping.Classes.Count() > 0)
+                return mapping.Classes.First().Type.FullName + ".hbm.xml";
+
+            return "filter-def." + mapping.Filters.First().Name + ".hbm.xml";
+        }
+
         public void WriteMappingsTo(string folder)
+        {
+            WriteMappingsTo(mapping => new XmlTextWriter(Path.Combine(folder, DetermineMappingFileName(mapping)), Encoding.Default), true);
+        }
+
+        public void WriteMappingsTo(TextWriter writer)
+        {            
+            WriteMappingsTo( _ => new XmlTextWriter(writer), false);
+        }
+
+        private void WriteMappingsTo(Func<HibernateMapping, XmlTextWriter> writerBuilder, bool shouldDispose)
         {
             EnsureMappingsBuilt();
 
-            foreach (var mapping in compiledMappings)
+            foreach (HibernateMapping mapping in compiledMappings)
             {
                 var serializer = new MappingXmlSerializer();
                 var document = serializer.Serialize(mapping);
-                string filename;
-                if (MergeMappings)
-                {
-                    filename = GetMappingFileName();
-                }
-                else if (mapping.Classes.Count() > 0)
-                {
-                    filename = mapping.Classes.First().Type.FullName + ".hbm.xml";
-                }
-                else
-                {
-                    filename = "filter-def." + mapping.Filters.First().Name + ".hbm.xml";
-                }
 
-                using (var writer = new XmlTextWriter(Path.Combine(folder, filename), Encoding.Default))
+                XmlTextWriter xmlWriter = null;
+
+                try
                 {
-                    writer.Formatting = Formatting.Indented;
-                    document.WriteTo(writer);
-                }    
+                    xmlWriter = writerBuilder(mapping);
+                    xmlWriter.Formatting = Formatting.Indented;
+                    document.WriteTo(xmlWriter);
+                }
+                finally
+                {
+                    if(shouldDispose && xmlWriter != null)
+                        xmlWriter.Close();
+                }
             }
         }
 
