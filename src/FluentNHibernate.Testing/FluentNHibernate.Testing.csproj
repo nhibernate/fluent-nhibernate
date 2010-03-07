@@ -456,6 +456,8 @@
     <Compile Include="ConventionsTests\DefaultCascadeHelperTests.cs" />
     <Compile Include="ConventionsTests\DefaultLazyHelperTests.cs" />
     <Compile Include="ConventionsTests\ProxyHelperTests.cs" />
+    <Compile Include="FluentInterfaceTests\NaturalIdPartTests.cs" />
+    <Compile Include="MappingModel\Output\XmlNaturalIdWriterTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\tools\NHibernate\NHibernate.ByteCode.Castle.dll">

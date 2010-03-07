@@ -4,6 +4,7 @@ using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Visitors;
 using NHibernate.Cfg;
+using System.IO;
 
 namespace FluentNHibernate.Cfg
 {
@@ -15,6 +16,7 @@ namespace FluentNHibernate.Cfg
         private readonly IList<Assembly> assemblies = new List<Assembly>();
         protected List<Type> types = new List<Type>();
         private string exportPath;
+        private TextWriter exportTextWriter;
         private readonly PersistenceModel model;
 
         internal FluentMappingsContainer()
@@ -91,6 +93,16 @@ namespace FluentNHibernate.Cfg
         }
 
         /// <summary>
+        /// Sets the text writer to write the generated mappings to.
+        /// </summary>                
+        /// <returns>Fluent mappings configuration</returns>
+        public FluentMappingsContainer ExportTo(TextWriter textWriter)
+        {
+            exportTextWriter = textWriter;
+            return this;
+        }
+
+        /// <summary>
         /// Alter convention discovery
         /// </summary>
         public SetupConventionFinder<FluentMappingsContainer> Conventions
@@ -121,6 +133,9 @@ namespace FluentNHibernate.Cfg
 
             if (!string.IsNullOrEmpty(exportPath))
                 model.WriteMappingsTo(exportPath);
+
+            if (exportTextWriter != null)
+                model.WriteMappingsTo(exportTextWriter);
 
             model.Configure(cfg);
         }

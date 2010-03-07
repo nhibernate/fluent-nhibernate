@@ -51,5 +51,11 @@ namespace FluentNHibernate.Conventions.Instances
         {
             mapping.Class = new TypeReference(type);
         }
+
+        public new void ForeignKey(string constraint)
+        {
+            if (!mapping.IsSpecified("ForeignKey"))
+                mapping.ForeignKey = constraint;
+        }
     }
 }

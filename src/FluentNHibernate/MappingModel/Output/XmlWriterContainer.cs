@@ -28,6 +28,9 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterIdWriters();
             RegisterComponentWriters();
 
+            RegisterWriter<NaturalIdMapping>(c =>
+                new XmlNaturalIdWriter(c.Resolve<IXmlWriterServiceLocator>()));
+
             RegisterWriter<ColumnMapping>(c =>
                 new XmlColumnWriter());
                 

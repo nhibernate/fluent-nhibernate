@@ -14,6 +14,11 @@ namespace FluentNHibernate.Visitors
 
         }
 
+        public virtual void ProcessNaturalId(NaturalIdMapping naturalIdMapping)
+        {
+
+        }
+
         public virtual void ProcessCache(CacheMapping mapping)
         {
             
@@ -212,6 +217,11 @@ namespace FluentNHibernate.Visitors
         public virtual void Visit(IdMapping mapping)
         {
             
+        }
+
+        public virtual void Visit(NaturalIdMapping naturalIdMapping)
+        {
+
         }
 
         public virtual void Visit(ClassMapping classMapping)
