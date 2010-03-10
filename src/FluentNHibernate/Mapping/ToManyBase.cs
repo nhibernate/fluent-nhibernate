@@ -66,6 +66,18 @@ namespace FluentNHibernate.Mapping
             collectionAttributes.Set(x => x.CollectionType, new TypeReference(type));
         }
 
+        /// <summary>
+        /// This method is used to set a different key column in this table to be used for joins.
+        /// The output is set as the property-ref attribute in the "key" subelement of the collection
+        /// </summary>
+        /// <param name="propertyRef">The name of the column in this table which is linked to the foreign key</param>
+        /// <returns>OneToManyPart</returns>
+        public T PropertyRef(string propertyRef)
+        {
+            keyMapping.PropertyRef = propertyRef;
+            return (T)this;
+        }
+
         public virtual ICollectionMapping GetCollectionMapping()
         {
             var mapping = collectionBuilder(collectionAttributes.CloneInner());

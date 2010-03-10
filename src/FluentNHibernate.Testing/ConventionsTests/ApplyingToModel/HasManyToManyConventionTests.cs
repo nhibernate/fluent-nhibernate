@@ -169,6 +169,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         }
 
         [Test]
+        public void ShouldSetParentPropertyRefProperty()
+        {
+            Convention(x => x.Key.PropertyRef("xxx"));
+
+            VerifyModel(x => x.Key.PropertyRef.ShouldEqual("xxx"));
+        }
+
+        [Test]
         public void ShouldSetChildForeignKeyProperty()
         {
             Convention(x => x.Relationship.ForeignKey("xxx"));
