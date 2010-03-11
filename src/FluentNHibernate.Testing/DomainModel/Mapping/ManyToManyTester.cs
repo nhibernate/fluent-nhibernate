@@ -30,6 +30,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public virtual IList<string> ListOfSimpleChildren { get; set; }
         public virtual CustomCollection<ChildObject> CustomCollection { get; set; }
         public virtual IDictionary<ChildObject, ChildObject> GenericTernaryMapOfChildren { get; set; }
+        public virtual IDictionary<ChildObject, bool> MapOfChildrenToBools{ get; set; }
         public virtual IDictionary NonGenericTernaryMapOfChildren { get; set; }
 
         private IList<ChildObject> otherChildren = new List<ChildObject>();
@@ -288,6 +289,19 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         .AsTernaryAssociation(typeof(ChildObject), "index1", typeof(ChildObject), "index2"))
                 .Element("class/map/index-many-to-many/column").HasAttribute("name", "index1")
                 .Element("class/map/many-to-many/column").HasAttribute("name", "index2");
+        }
+
+        [Test]
+        public void TernaryAssociationCanBeUsedWithElement()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map =>
+                    map.HasManyToMany(x => x.MapOfChildrenToBools)
+                        .AsMap(null)
+                        .AsTernaryAssociation()
+                        .Element("IsManager", ep => ep.Type<bool>()))
+                .Element("class/map/index-many-to-many").HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
+                .Element("class/map/element").HasAttribute("type", typeof(bool).AssemblyQualifiedName);
         }
 
         [Test]
