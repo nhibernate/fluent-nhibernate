@@ -13,5 +13,8 @@ namespace FluentNHibernate.Conventions.Instances
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         ICompositeIdentityInstance Not { get; }
+
+        new IEnumerable<IKeyPropertyInstance> KeyProperties { get; }
+        new IEnumerable<IKeyManyToOneInstance> KeyManyToOnes { get; }
     }
 }
