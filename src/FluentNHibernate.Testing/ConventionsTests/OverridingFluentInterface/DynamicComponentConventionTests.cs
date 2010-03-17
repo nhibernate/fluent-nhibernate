@@ -97,15 +97,15 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             mappingType = typeof(PropertyTarget);
         }
 
-        private void VerifyModel(Action<DynamicComponentMapping> modelVerification)
+        private void VerifyModel(Action<ComponentMapping> modelVerification)
         {
             model.Add(mapping);
 
             var generatedModels = model.BuildMappings();
-            var modelInstance = (DynamicComponentMapping)generatedModels
+            var modelInstance = (ComponentMapping)generatedModels
                 .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) != null)
                 .Classes.First()
-                .Components.Where(x => x is DynamicComponentMapping).First();
+                .Components.First();
 
             modelVerification(modelInstance);
         }

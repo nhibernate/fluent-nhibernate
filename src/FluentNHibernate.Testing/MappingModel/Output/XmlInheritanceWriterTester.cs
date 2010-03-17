@@ -7,28 +7,28 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlInheritanceWriterTester
     {
-        private IXmlWriter<ISubclassMapping> writer;
+        private IXmlWriter<SubclassMapping> writer;
 
         [SetUp]
         public void GetWriterFromContainer()
         {
             var container = new XmlWriterContainer();
-            writer = container.Resolve<IXmlWriter<ISubclassMapping>>();
+            writer = container.Resolve<IXmlWriter<SubclassMapping>>();
         }
 
         [Test]
         public void ShouldWriteSubclassForSubclassMapping()
         {
-            var mapping = new SubclassMapping();
+            var mapping = new SubclassMapping(SubclassType.Subclass);
 
             writer.VerifyXml(mapping)
                 .RootElement.HasName("subclass");
         }
 
         [Test]
-        public void ShouldWriteSetForSetMapping()
+        public void ShouldWriteJoinedSubclassForJoinedSubclassMapping()
         {
-            var mapping = new JoinedSubclassMapping();
+            var mapping = new SubclassMapping(SubclassType.JoinedSubclass);
 
             writer.VerifyXml(mapping)
                 .RootElement.HasName("joined-subclass");

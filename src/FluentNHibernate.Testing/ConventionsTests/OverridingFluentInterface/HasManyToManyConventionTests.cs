@@ -196,6 +196,36 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             VerifyModel(x => x.TableName.ShouldEqual("table"));
         }
 
+        [Test]
+        public void ParentForeignKeyConstraintNameShouldntBeOverwritten()
+        {
+            Mapping(x => x.Children, x => x.ForeignKeyConstraintNames("parent", "child"));
+
+            Convention(x => x.Key.ForeignKey("xxx"));
+
+            VerifyModel(x => x.Key.ForeignKey.ShouldEqual("parent"));
+        }
+
+        [Test]
+        public void PropertyRefShouldntBeOverwritten()
+        {
+            Mapping(x => x.Children, x => x.PropertyRef("ref"));
+
+            Convention(x => x.Key.PropertyRef("xxx"));
+
+            VerifyModel(x => x.Key.PropertyRef.ShouldEqual("ref"));
+        }
+
+        [Test]
+        public void ChildForeignKeyConstraintNameShouldntBeOverwritten()
+        {
+            Mapping(x => x.Children, x => x.ForeignKeyConstraintNames("parent", "child"));
+
+            Convention(x => x.Relationship.ForeignKey("xxx"));
+
+            VerifyModel(x => ((ManyToManyMapping)x.Relationship).ForeignKey.ShouldEqual("child"));
+        }
+
         #region Helpers
 
         private void Convention(Action<IManyToManyCollectionInstance> convention)

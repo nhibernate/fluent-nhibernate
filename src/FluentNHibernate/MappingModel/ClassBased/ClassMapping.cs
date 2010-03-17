@@ -1,6 +1,5 @@
 using System;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Visitors;
 
@@ -24,6 +23,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return attributes.Get(x => x.Id); }
             set { attributes.Set(x => x.Id, value); }
+        }
+
+        public NaturalIdMapping NaturalId
+        {
+            get { return attributes.Get(x => x.NaturalId); }
+            set { attributes.Set(x => x.NaturalId, value); }
         }
 
         public override string Name
@@ -68,6 +73,9 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
             if (Id != null)
                 visitor.Visit(Id);
+
+            if (NaturalId != null)
+                visitor.Visit(NaturalId);
 
             if (Discriminator != null)
                 visitor.Visit(Discriminator);

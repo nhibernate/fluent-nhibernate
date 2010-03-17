@@ -126,7 +126,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             model.Conventions.Add(new JoinedSubclassConventionBuilder().Always(convention));
         }
 
-        private void VerifyModel(Action<JoinedSubclassMapping> modelVerification)
+        private void VerifyModel(Action<SubclassMapping> modelVerification)
         {
             var classMap = new ClassMap<ExampleClass>();
             classMap.Id(x => x.Id);
@@ -141,7 +141,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
                 .Classes.First()
                 .Subclasses.First();
 
-            modelVerification((JoinedSubclassMapping)modelInstance);
+            modelVerification(modelInstance);
         }
 
         #endregion

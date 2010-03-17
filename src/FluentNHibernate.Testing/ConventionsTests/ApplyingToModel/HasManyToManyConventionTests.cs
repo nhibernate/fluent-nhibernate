@@ -160,6 +160,30 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.TableName.ShouldEqual("xxx"));
         }
 
+        [Test]
+        public void ShouldSetParentForeignKeyProperty()
+        {
+            Convention(x => x.Key.ForeignKey("xxx"));
+
+            VerifyModel(x => x.Key.ForeignKey.ShouldEqual("xxx"));
+        }
+
+        [Test]
+        public void ShouldSetParentPropertyRefProperty()
+        {
+            Convention(x => x.Key.PropertyRef("xxx"));
+
+            VerifyModel(x => x.Key.PropertyRef.ShouldEqual("xxx"));
+        }
+
+        [Test]
+        public void ShouldSetChildForeignKeyProperty()
+        {
+            Convention(x => x.Relationship.ForeignKey("xxx"));
+
+            VerifyModel(x => ((ManyToManyMapping)x.Relationship).ForeignKey.ShouldEqual("xxx"));
+        }
+        
         #region Helpers
 
         private void Convention(Action<IManyToManyCollectionInstance> convention)

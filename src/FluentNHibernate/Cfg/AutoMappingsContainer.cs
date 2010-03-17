@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using FluentNHibernate.Automapping;
 using NHibernate.Cfg;
+using System.IO;
 
 namespace FluentNHibernate.Cfg
 {
@@ -13,6 +14,7 @@ namespace FluentNHibernate.Cfg
     {
         private readonly IList<AutoPersistenceModel> mappings = new List<AutoPersistenceModel>();
         private string exportPath;
+        private TextWriter exportTextWriter;
 
         internal AutoMappingsContainer()
         {}
@@ -51,6 +53,16 @@ namespace FluentNHibernate.Cfg
         }
 
         /// <summary>
+        /// Sets the text writer to write the generated mappings to.
+        /// </summary>                
+        /// <returns>Fluent mappings configuration</returns>
+        public AutoMappingsContainer ExportTo(TextWriter textWriter)
+        {
+            exportTextWriter = textWriter;
+            return this;
+        }
+
+        /// <summary>
         /// Gets whether any mappings were added
         /// </summary>
         internal bool WasUsed { get; set; }
@@ -65,6 +77,9 @@ namespace FluentNHibernate.Cfg
             {
                 if (!string.IsNullOrEmpty(exportPath))
                     mapping.WriteMappingsTo(exportPath);
+
+                if (exportTextWriter != null)
+                    mapping.WriteMappingsTo(exportTextWriter);
 
                 mapping.Configure(cfg);
             }

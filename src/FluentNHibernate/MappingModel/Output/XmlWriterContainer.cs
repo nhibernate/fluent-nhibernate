@@ -28,6 +28,9 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterIdWriters();
             RegisterComponentWriters();
 
+            RegisterWriter<NaturalIdMapping>(c =>
+                new XmlNaturalIdWriter(c.Resolve<IXmlWriterServiceLocator>()));
+
             RegisterWriter<ColumnMapping>(c =>
                 new XmlColumnWriter());
                 
@@ -106,14 +109,8 @@ namespace FluentNHibernate.MappingModel.Output
                 new XmlManyToManyWriter(c.Resolve<IXmlWriterServiceLocator>()));
 
             // subclasses
-            RegisterWriter<ISubclassMapping>(c =>
-                new XmlInheritanceWriter(c.Resolve<IXmlWriterServiceLocator>()));
-
             RegisterWriter<SubclassMapping>(c =>
                 new XmlSubclassWriter(c.Resolve<IXmlWriterServiceLocator>()));
-
-            RegisterWriter<JoinedSubclassMapping>(c =>
-                new XmlJoinedSubclassWriter(c.Resolve<IXmlWriterServiceLocator>()));
 
             RegisterWriter<FilterMapping>(c =>
                 new XmlFilterWriter());
@@ -152,16 +149,10 @@ namespace FluentNHibernate.MappingModel.Output
         private void RegisterComponentWriters()
         {
             RegisterWriter<IComponentMapping>(c =>
-                new XmlComponentBaseWriter(c.Resolve<IXmlWriterServiceLocator>()));
-
-            RegisterWriter<ComponentMapping>(c =>
                 new XmlComponentWriter(c.Resolve<IXmlWriterServiceLocator>()));
 
             RegisterWriter<ReferenceComponentMapping>(c =>
                 new XmlReferenceComponentWriter(c.Resolve<IXmlWriterServiceLocator>()));
-
-            RegisterWriter<DynamicComponentMapping>(c =>
-                new XmlDynamicComponentWriter(c.Resolve<IXmlWriterServiceLocator>()));
         }
 
         private void RegisterWriter<T>(Func<Container, object> instantiate)

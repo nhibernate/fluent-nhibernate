@@ -257,6 +257,23 @@ namespace FluentNHibernate.Testing.Cfg
         }
 
         [Test]
+        public void WritesFluentMappingsOutToTextWriter()
+        {
+            var stringWriter = new StringWriter();            
+
+            Fluently.Configure()
+                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Mappings(m =>
+                    m.FluentMappings
+                        .AddFromAssemblyOf<Record>()
+                        .ExportTo(stringWriter))
+                .BuildConfiguration();
+
+            string export = stringWriter.ToString();
+            export.ShouldNotBeEmpty();
+        }
+
+        [Test]
         public void WritesFluentMappingsOutMergedWhenFlagSet()
         {
             Fluently.Configure()

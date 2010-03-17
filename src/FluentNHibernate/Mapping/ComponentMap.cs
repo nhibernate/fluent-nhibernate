@@ -19,9 +19,9 @@ namespace FluentNHibernate.Mapping
             attributes = new AttributeStore<ComponentMapping>(underlyingStore);
         }
 
-        protected override IComponentMapping CreateComponentMappingRoot(AttributeStore store)
+        protected override ComponentMapping CreateComponentMappingRoot(AttributeStore store)
         {
-            return new ExternalComponentMapping(attributes.CloneInner());
+            return new ExternalComponentMapping(ComponentType.Component, attributes.CloneInner());
         }
 
         ExternalComponentMapping IExternalComponentMappingProvider.GetComponentMapping()

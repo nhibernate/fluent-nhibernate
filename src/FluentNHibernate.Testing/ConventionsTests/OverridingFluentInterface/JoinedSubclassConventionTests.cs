@@ -165,7 +165,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             mappingType = typeof(ExampleClass);
         }
 
-        private void VerifyModel(Action<JoinedSubclassMapping> modelVerification)
+        private void VerifyModel(Action<SubclassMapping> modelVerification)
         {
             model.Add(mapping);
 
@@ -175,7 +175,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
                 .Classes.First()
                 .Subclasses.First();
 
-            modelVerification((JoinedSubclassMapping)modelInstance);
+            modelVerification(modelInstance);
         }
 
         #endregion

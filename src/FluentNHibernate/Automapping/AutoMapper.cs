@@ -82,26 +82,17 @@ namespace FluentNHibernate.Automapping
                     discriminatorSet = true;
                 }
 
-                ISubclassMapping subclassMapping;
+                SubclassMapping subclassMapping;
                 var subclassStrategy = expressions.SubclassStrategy(classType);
 
                 if (subclassStrategy == SubclassStrategy.JoinedSubclass)
                 {
-                    // TODO: This id name should be removed. Ideally it needs to be set by a
-                    // default and be overridable by a convention (preferably the ForeignKey convention
-                    // that already exists)
-                    var subclass = new JoinedSubclassMapping
-                    {
-                        Type = inheritedClass.Type
-                    };
-
-                    subclass.Key = new KeyMapping();
-                    subclass.Key.AddDefaultColumn(new ColumnMapping { Name = mapping.Type.Name + "_id" });
-
-                    subclassMapping = subclass;
+                    subclassMapping = new SubclassMapping(SubclassType.JoinedSubclass);
+                    subclassMapping.Key = new KeyMapping();
+                    subclassMapping.Key.AddDefaultColumn(new ColumnMapping { Name = mapping.Type.Name + "_id" });
                 }
                 else
-                    subclassMapping = new SubclassMapping();
+                    subclassMapping = new SubclassMapping(SubclassType.Subclass);
 
 				// track separate set of properties for each sub-tree within inheritance hierarchy
             	var subClassProperties = new List<string>(mappedProperties);
@@ -113,12 +104,12 @@ namespace FluentNHibernate.Automapping
             }
         }
 
-        private void MapSubclass(IList<string> mappedProperties, ISubclassMapping subclass, AutoMapType inheritedClass)
+        private void MapSubclass(IList<string> mappedProperties, SubclassMapping subclass, AutoMapType inheritedClass)
         {
             subclass.Name = inheritedClass.Type.AssemblyQualifiedName;
             subclass.Type = inheritedClass.Type;
-            ApplyOverrides(inheritedClass.Type, mappedProperties, (ClassMappingBase)subclass);
-            MapEverythingInClass((ClassMappingBase)subclass, inheritedClass.Type, mappedProperties);
+            ApplyOverrides(inheritedClass.Type, mappedProperties, subclass);
+            MapEverythingInClass(subclass, inheritedClass.Type, mappedProperties);
             inheritedClass.IsMapped = true;
         }
 

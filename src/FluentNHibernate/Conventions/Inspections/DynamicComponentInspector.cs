@@ -6,10 +6,10 @@ namespace FluentNHibernate.Conventions.Inspections
 {
     public class DynamicComponentInspector : ComponentBaseInspector, IDynamicComponentInspector
     {
-        private readonly InspectorModelMapper<IDynamicComponentInspector, DynamicComponentMapping> mappedProperties = new InspectorModelMapper<IDynamicComponentInspector, DynamicComponentMapping>();
-        private readonly DynamicComponentMapping mapping;
+        private readonly InspectorModelMapper<IDynamicComponentInspector, ComponentMapping> mappedProperties = new InspectorModelMapper<IDynamicComponentInspector, ComponentMapping>();
+        private readonly ComponentMapping mapping;
 
-        public DynamicComponentInspector(DynamicComponentMapping mapping)
+        public DynamicComponentInspector(ComponentMapping mapping)
             : base(mapping)
         {
             this.mapping = mapping;

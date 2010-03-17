@@ -39,9 +39,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         private ReferenceComponentMapping CreateInstance()
         {
             var property = new DummyPropertyInfo("ComponentProperty", typeof(ComponentTarget)).ToMember();
-            var instance = new ReferenceComponentMapping(property, typeof(ComponentTarget), typeof(Target), null);
+            var instance = new ReferenceComponentMapping(ComponentType.Component, property, typeof(ComponentTarget), typeof(Target), null);
 
-            instance.AssociateExternalMapping(new ExternalComponentMapping());
+            instance.AssociateExternalMapping(new ExternalComponentMapping(ComponentType.Component));
 
             return instance;
         }
@@ -105,7 +105,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = CreateInstance();
 
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
 
             writer.VerifyXml(mapping)
                 .Element("component").Exists();
@@ -116,7 +116,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = CreateInstance();
 
-            mapping.AddComponent(new DynamicComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.DynamicComponent));
 
             writer.VerifyXml(mapping)
                 .Element("dynamic-component").Exists();

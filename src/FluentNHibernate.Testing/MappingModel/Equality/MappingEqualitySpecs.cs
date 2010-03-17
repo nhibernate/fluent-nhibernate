@@ -144,14 +144,14 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
 
             mapping.AddAny(new AnyMapping());
             mapping.AddCollection(new BagMapping());
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
             mapping.AddFilter(new FilterMapping());
             mapping.AddJoin(new JoinMapping());
             mapping.AddOneToOne(new OneToOneMapping());
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
             mapping.AddStoredProcedure(new StoredProcedureMapping());
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             return mapping;
         }
@@ -221,7 +221,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
     {
         public override ComponentMapping create_mapping()
         {
-            var mapping = new ComponentMapping
+            var mapping = new ComponentMapping(ComponentType.Component)
             {
                 Access = "access",
                 Class = new TypeReference(typeof(Target)),
@@ -239,14 +239,14 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
 
             mapping.AddAny(new AnyMapping());
             mapping.AddCollection(new BagMapping());
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
             mapping.AddFilter(new FilterMapping());
             mapping.AddJoin(new JoinMapping());
             mapping.AddOneToOne(new OneToOneMapping());
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
             mapping.AddStoredProcedure(new StoredProcedureMapping());
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             return mapping;
         }
@@ -315,11 +315,11 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
     }
 
     [TestFixture]
-    public class when_comparing_two_identical_DynamicComponentMappings : MappingEqualitySpec<DynamicComponentMapping>
+    public class when_comparing_two_identical_DynamicComponentMappings : MappingEqualitySpec<ComponentMapping>
     {
-        public override DynamicComponentMapping create_mapping()
+        public override ComponentMapping create_mapping()
         {
-            var mapping = new DynamicComponentMapping
+            var mapping = new ComponentMapping(ComponentType.DynamicComponent)
             {
                 Access = "access",
                 ContainingEntityType = typeof(Target),
@@ -335,14 +335,14 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
 
             mapping.AddAny(new AnyMapping());
             mapping.AddCollection(new BagMapping());
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
             mapping.AddFilter(new FilterMapping());
             mapping.AddJoin(new JoinMapping());
             mapping.AddOneToOne(new OneToOneMapping());
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
             mapping.AddStoredProcedure(new StoredProcedureMapping());
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             return mapping;
         }
@@ -384,7 +384,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
     {
         public override ExternalComponentMapping create_mapping()
         {
-            var mapping = new ExternalComponentMapping
+            var mapping = new ExternalComponentMapping(ComponentType.Component)
             {
                 Access = "access",
                 ContainingEntityType = typeof(Target),
@@ -400,14 +400,14 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
 
             mapping.AddAny(new AnyMapping());
             mapping.AddCollection(new BagMapping());
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
             mapping.AddFilter(new FilterMapping());
             mapping.AddJoin(new JoinMapping());
             mapping.AddOneToOne(new OneToOneMapping());
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
             mapping.AddStoredProcedure(new StoredProcedureMapping());
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             return mapping;
         }
@@ -616,11 +616,11 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
     }
 
     [TestFixture]
-    public class when_comparing_two_identical_JoinedSubclassMappings : MappingEqualitySpec<JoinedSubclassMapping>
+    public class when_comparing_two_identical_JoinedSubclassMappings : MappingEqualitySpec<SubclassMapping>
     {
-        public override JoinedSubclassMapping create_mapping()
+        public override SubclassMapping create_mapping()
         {
-            var mapping = new JoinedSubclassMapping
+            var mapping = new SubclassMapping(SubclassType.JoinedSubclass)
             {
                 Abstract = true,
                 BatchSize = 10,
@@ -643,14 +643,14 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
 
             mapping.AddAny(new AnyMapping());
             mapping.AddCollection(new BagMapping());
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
             mapping.AddFilter(new FilterMapping());
             mapping.AddJoin(new JoinMapping());
             mapping.AddOneToOne(new OneToOneMapping());
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
             mapping.AddStoredProcedure(new StoredProcedureMapping());
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             return mapping;
         }
@@ -681,7 +681,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             };
 
             mapping.AddAny(new AnyMapping());
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
 
@@ -1029,8 +1029,8 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
     {
         public override ReferenceComponentMapping create_mapping()
         {
-            var mapping = new ReferenceComponentMapping(new DummyPropertyInfo("name", typeof(Target)).ToMember(), typeof(Target), typeof(Target), null);
-            mapping.AssociateExternalMapping(new ExternalComponentMapping());
+            var mapping = new ReferenceComponentMapping(ComponentType.Component, new DummyPropertyInfo("name", typeof(Target)).ToMember(), typeof(Target), typeof(Target), null);
+            mapping.AssociateExternalMapping(new ExternalComponentMapping(ComponentType.Component));
             mapping.Access = "access";
             mapping.ContainingEntityType = typeof(Target);
             mapping.Insert = true;
@@ -1041,7 +1041,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             mapping.Update = true;
             mapping.AddAny(new AnyMapping());
             mapping.AddCollection(new BagMapping());
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
             mapping.AddOneToOne(new OneToOneMapping());
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
@@ -1114,7 +1114,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
     {
         public override SubclassMapping create_mapping()
         {
-            var mapping = new SubclassMapping
+            var mapping = new SubclassMapping(SubclassType.Subclass)
             {
                 Abstract = true,
                 DynamicInsert = true,
@@ -1131,14 +1131,14 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
 
             mapping.AddAny(new AnyMapping());
             mapping.AddCollection(new BagMapping());
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
             mapping.AddFilter(new FilterMapping());
             mapping.AddJoin(new JoinMapping());
             mapping.AddOneToOne(new OneToOneMapping());
             mapping.AddProperty(new PropertyMapping());
             mapping.AddReference(new ManyToOneMapping());
             mapping.AddStoredProcedure(new StoredProcedureMapping());
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             return mapping;
         }

@@ -13,16 +13,18 @@ namespace FluentNHibernate.MappingModel.ClassBased
     /// </summary>
     public class ReferenceComponentMapping : IComponentMapping
     {
+        public ComponentType ComponentType { get; set; }
         private readonly Member property;
         private readonly Type componentType;
         private ExternalComponentMapping mergedComponent;
         private Type containingEntityType;
         private readonly string columnPrefix;
 
-        public ReferenceComponentMapping(Member property, Type componentType, Type containingEntityType, string columnPrefix)
+        public ReferenceComponentMapping(ComponentType componentType, Member property, Type componentEntityType, Type containingEntityType, string columnPrefix)
         {
+            ComponentType = componentType;
             this.property = property;
-            this.componentType = componentType;
+            this.componentType = componentEntityType;
             this.containingEntityType = containingEntityType;
             this.columnPrefix = columnPrefix;
         }

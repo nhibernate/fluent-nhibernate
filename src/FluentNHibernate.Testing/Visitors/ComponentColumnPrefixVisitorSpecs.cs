@@ -18,9 +18,9 @@ namespace FluentNHibernate.Testing.Visitors
         public override void establish_context()
         {
             visitor = new ComponentColumnPrefixVisitor();
-            reference_with_a_prefix = new ReferenceComponentMapping(new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), column_prefix);
+            reference_with_a_prefix = new ReferenceComponentMapping(ComponentType.Component, new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), column_prefix);
 
-            var external_mapping = new ExternalComponentMapping();
+            var external_mapping = new ExternalComponentMapping(ComponentType.Component);
             external_mapping.AddProperty(property_with_column("propertyColumn"));
 
             reference_with_a_prefix.AssociateExternalMapping(external_mapping);
@@ -50,17 +50,17 @@ namespace FluentNHibernate.Testing.Visitors
         public override void establish_context()
         {
             visitor = new ComponentColumnPrefixVisitor();
-            reference_with_a_prefix = new ReferenceComponentMapping(new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), first_prefix);
-            reference_with_a_prefix.AssociateExternalMapping(new ExternalComponentMapping());
+            reference_with_a_prefix = new ReferenceComponentMapping(ComponentType.Component, new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), first_prefix);
+            reference_with_a_prefix.AssociateExternalMapping(new ExternalComponentMapping(ComponentType.Component));
 
-            var sub_component = new ReferenceComponentMapping(new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), second_prefix);
+            var sub_component = new ReferenceComponentMapping(ComponentType.Component, new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), second_prefix);
 
-            var sub_component_mapping = new ExternalComponentMapping();
+            var sub_component_mapping = new ExternalComponentMapping(ComponentType.Component);
             sub_component_mapping.AddProperty(property_with_column("propertyColumn"));
 
             sub_component.AssociateExternalMapping(sub_component_mapping);
 
-            reference_with_a_prefix.AssociateExternalMapping(new ExternalComponentMapping());
+            reference_with_a_prefix.AssociateExternalMapping(new ExternalComponentMapping(ComponentType.Component));
             reference_with_a_prefix.AddComponent(sub_component);
         }
 
@@ -88,12 +88,12 @@ namespace FluentNHibernate.Testing.Visitors
         public override void establish_context()
         {
             visitor = new ComponentColumnPrefixVisitor();
-            reference_with_a_prefix = new ReferenceComponentMapping(new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), column_prefix);
-            reference_with_a_prefix.AssociateExternalMapping(new ExternalComponentMapping());
+            reference_with_a_prefix = new ReferenceComponentMapping(ComponentType.Component, new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), column_prefix);
+            reference_with_a_prefix.AssociateExternalMapping(new ExternalComponentMapping(ComponentType.Component));
 
-            reference_without_a_prefix = new ReferenceComponentMapping(new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), null);
+            reference_without_a_prefix = new ReferenceComponentMapping(ComponentType.Component, new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), null);
 
-            var external_mapping = new ExternalComponentMapping();
+            var external_mapping = new ExternalComponentMapping(ComponentType.Component);
             external_mapping.AddProperty(property_with_column("propertyColumn"));
 
             reference_without_a_prefix.AssociateExternalMapping(external_mapping);
@@ -123,14 +123,14 @@ namespace FluentNHibernate.Testing.Visitors
         public override void establish_context()
         {
             visitor = new ComponentColumnPrefixVisitor();
-            reference_with_a_prefix = new ReferenceComponentMapping(new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), column_prefix);
+            reference_with_a_prefix = new ReferenceComponentMapping(ComponentType.Component, new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), column_prefix);
 
-            var external_mapping = new ExternalComponentMapping();
+            var external_mapping = new ExternalComponentMapping(ComponentType.Component);
 
             external_mapping.AddAny(any_with_column("anyColumn"));
             external_mapping.AddCollection(collection_with_column("collectionColumn"));
 
-            var component = new ComponentMapping();
+            var component = new ComponentMapping(ComponentType.Component);
             component.AddProperty(property_with_column("componentPropertyColumn"));
 
             external_mapping.AddComponent(component);

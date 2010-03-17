@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -144,10 +143,10 @@ namespace FluentNHibernate.Conventions.Inspections
                 return mapping.Components
                     .Select(x =>
                     {
-                        if (x is ComponentMapping)
+                        if (x.ComponentType == ComponentType.Component)
                             return (IComponentBaseInspector)new ComponentInspector((ComponentMapping)x);
 
-                        return (IComponentBaseInspector)new DynamicComponentInspector((DynamicComponentMapping)x);
+                        return (IComponentBaseInspector)new DynamicComponentInspector((ComponentMapping)x);
                     })
                     .ToDefaultableList();
             }
@@ -201,14 +200,8 @@ namespace FluentNHibernate.Conventions.Inspections
             get
             {
                 return mapping.Subclasses
-                    .Where(x => x is SubclassMapping)
-                    .Select(x =>
-                    {
-                        if (x is SubclassMapping)
-                            return (ISubclassInspectorBase)new SubclassInspector((SubclassMapping)x);
-
-                        return (ISubclassInspectorBase)new JoinedSubclassInspector((JoinedSubclassMapping)x);
-                    })
+                    .Where(x => x.SubclassType == SubclassType.Subclass)
+                    .Select(x => (ISubclassInspectorBase)new SubclassInspector(x))
                     .Cast<ISubclassInspectorBase>()
                     .ToDefaultableList();
             }

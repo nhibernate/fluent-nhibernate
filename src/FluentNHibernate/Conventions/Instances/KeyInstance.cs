@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
@@ -33,6 +34,12 @@ namespace FluentNHibernate.Conventions.Instances
         {
             if (!mapping.IsSpecified("ForeignKey"))
                 mapping.ForeignKey = constraint;
+        }
+
+        public new void PropertyRef(string property)
+        {
+            if (!mapping.IsSpecified("PropertyRef"))
+                mapping.PropertyRef = property;
         }
 
         public new IEnumerable<IColumnInstance> Columns

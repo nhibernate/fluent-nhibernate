@@ -161,14 +161,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void ComponentsCollectionHasSameCountAsMapping()
         {
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
             inspector.Components.Count().ShouldEqual(1);
         }
 
         [Test]
         public void ComponentsCollectionOfInspectors()
         {
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
             inspector.Components.First().ShouldImplementType<IComponentBaseInspector>();
         }
 
@@ -615,14 +615,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void SubclassesCollectionHasSameCountAsMapping()
         {
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
             inspector.Subclasses.Count().ShouldEqual(1);
         }
 
         [Test]
         public void SubclassesCollectionOfInspectors()
         {
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
             inspector.Subclasses.First().ShouldImplementType<ISubclassInspector>();
         }
 

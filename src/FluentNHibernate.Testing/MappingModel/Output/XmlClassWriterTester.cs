@@ -241,6 +241,17 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteNaturalId()
+        {
+            var mapping = new ClassMapping();
+
+            mapping.NaturalId = new NaturalIdMapping();
+
+            writer.VerifyXml(mapping)
+                .Element("natural-id").Exists();
+        }
+
+        [Test]
         public void ShouldWriteCompositeId()
         {
             var mapping = new ClassMapping();
@@ -300,7 +311,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ClassMapping();
 
-            mapping.AddComponent(new ComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
 
             writer.VerifyXml(mapping)
                 .Element("component").Exists();
@@ -311,7 +322,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ClassMapping();
 
-            mapping.AddComponent(new DynamicComponentMapping());
+            mapping.AddComponent(new ComponentMapping(ComponentType.DynamicComponent));
 
             writer.VerifyXml(mapping)
                 .Element("dynamic-component").Exists();
@@ -406,7 +417,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ClassMapping();
 
-            mapping.AddSubclass(new SubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.Subclass));
 
             writer.VerifyXml(mapping)
                 .Element("subclass").Exists();
@@ -417,7 +428,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ClassMapping();
 
-            mapping.AddSubclass(new JoinedSubclassMapping());
+            mapping.AddSubclass(new SubclassMapping(SubclassType.JoinedSubclass));
 
             writer.VerifyXml(mapping)
                 .Element("joined-subclass").Exists();

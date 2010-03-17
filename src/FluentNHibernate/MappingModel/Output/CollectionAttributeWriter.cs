@@ -69,7 +69,7 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.HasValue(x => x.Check))
                 element.WithAtt("check", mapping.Check);
 
-            if (mapping.HasValue(x => x.CollectionType))
+            if (mapping.HasValue(x => x.CollectionType) && mapping.CollectionType != TypeReference.Empty)
                 element.WithAtt("collection-type", mapping.CollectionType);
 
             if (mapping.HasValue(x => x.Fetch))

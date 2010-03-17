@@ -32,22 +32,22 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<SubClassPart<T>, SubclassMapping> Subclass<T>()
         {
-            return new ModelTester<SubClassPart<T>, SubclassMapping>(() => new SubClassPart<T>(null, null), x => (SubclassMapping)((ISubclassMappingProvider)x).GetSubclassMapping());
+            return new ModelTester<SubClassPart<T>, SubclassMapping>(() => new SubClassPart<T>(null, null), x => ((ISubclassMappingProvider)x).GetSubclassMapping());
         }
 
         protected ModelTester<SubclassMap<T>, SubclassMapping> SubclassMapForSubclass<T>()
         {
-            return new ModelTester<SubclassMap<T>, SubclassMapping>(() => new SubclassMap<T>(), x => (SubclassMapping)((IIndeterminateSubclassMappingProvider)x).GetSubclassMapping(new SubclassMapping()));
+            return new ModelTester<SubclassMap<T>, SubclassMapping>(() => new SubclassMap<T>(), x => ((IIndeterminateSubclassMappingProvider)x).GetSubclassMapping(new SubclassMapping(SubclassType.Subclass)));
         }
 
-        protected ModelTester<JoinedSubClassPart<T>, JoinedSubclassMapping> JoinedSubclass<T>()
+        protected ModelTester<JoinedSubClassPart<T>, SubclassMapping> JoinedSubclass<T>()
         {
-            return new ModelTester<JoinedSubClassPart<T>, JoinedSubclassMapping>(() => new JoinedSubClassPart<T>("column"), x => (JoinedSubclassMapping)((ISubclassMappingProvider)x).GetSubclassMapping());
+            return new ModelTester<JoinedSubClassPart<T>, SubclassMapping>(() => new JoinedSubClassPart<T>("column"), x => ((ISubclassMappingProvider)x).GetSubclassMapping());
         }
 
-        protected ModelTester<SubclassMap<T>, JoinedSubclassMapping> SubclassMapForJoinedSubclass<T>()
+        protected ModelTester<SubclassMap<T>, SubclassMapping> SubclassMapForJoinedSubclass<T>()
         {
-            return new ModelTester<SubclassMap<T>, JoinedSubclassMapping>(() => new SubclassMap<T>(), x => (JoinedSubclassMapping)((IIndeterminateSubclassMappingProvider)x).GetSubclassMapping(new JoinedSubclassMapping()));
+            return new ModelTester<SubclassMap<T>, SubclassMapping>(() => new SubclassMap<T>(), x => ((IIndeterminateSubclassMappingProvider)x).GetSubclassMapping(new SubclassMapping(SubclassType.JoinedSubclass)));
         }
 
         protected ModelTester<ComponentPart<T>, ComponentMapping> Component<T>()
@@ -55,9 +55,9 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             return new ModelTester<ComponentPart<T>, ComponentMapping>(() => new ComponentPart<T>(typeof(ExampleClass), ReflectionHelper.GetMember<VersionTarget>(x => x.VersionNumber)), x => (ComponentMapping)((IComponentMappingProvider)x).GetComponentMapping());
         }
 
-        protected ModelTester<DynamicComponentPart<T>, DynamicComponentMapping> DynamicComponent<T>()
+        protected ModelTester<DynamicComponentPart<T>, ComponentMapping> DynamicComponent<T>()
         {
-            return new ModelTester<DynamicComponentPart<T>, DynamicComponentMapping>(() => new DynamicComponentPart<T>(typeof(ExampleClass), ReflectionHelper.GetMember<VersionTarget>(x => x.VersionNumber)), x => (DynamicComponentMapping)((IComponentMappingProvider)x).GetComponentMapping());
+            return new ModelTester<DynamicComponentPart<T>, ComponentMapping>(() => new DynamicComponentPart<T>(typeof(ExampleClass), ReflectionHelper.GetMember<VersionTarget>(x => x.VersionNumber)), x => (ComponentMapping)((IComponentMappingProvider)x).GetComponentMapping());
         }
 
         protected ModelTester<VersionPart, VersionMapping> Version()
@@ -143,6 +143,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         protected ModelTester<StoredProcedurePart, StoredProcedureMapping> StoredProcedure()
         {
             return new ModelTester<StoredProcedurePart, StoredProcedureMapping>(() => new StoredProcedurePart(null, null), x => x.GetStoredProcedureMapping());
+        }
+
+        protected ModelTester<NaturalIdPart<T>, NaturalIdMapping> NaturalId<T>()
+        {
+            return new ModelTester<NaturalIdPart<T>, NaturalIdMapping>(() => new NaturalIdPart<T>(), x => ((INaturalIdMappingProvider)x).GetNaturalIdMapping());
         }
     }
 }

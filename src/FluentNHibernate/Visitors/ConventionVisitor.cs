@@ -121,34 +121,38 @@ namespace FluentNHibernate.Visitors
 
         public override void ProcessSubclass(SubclassMapping subclassMapping)
         {
-            var conventions = finder.Find<ISubclassConvention>();
+            if (subclassMapping.SubclassType == SubclassType.Subclass)
+            {
+                var conventions = finder.Find<ISubclassConvention>();
 
-            Apply<ISubclassInspector, ISubclassInstance>(conventions,
-                new SubclassInstance(subclassMapping));
-        }
+                Apply<ISubclassInspector, ISubclassInstance>(conventions,
+                    new SubclassInstance(subclassMapping));
+            }
+            else
+            {
+                var conventions = finder.Find<IJoinedSubclassConvention>();
 
-        public override void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
-        {
-            var conventions = finder.Find<IJoinedSubclassConvention>();
-
-            Apply<IJoinedSubclassInspector, IJoinedSubclassInstance>(conventions,
-                new JoinedSubclassInstance(subclassMapping));
+                Apply<IJoinedSubclassInspector, IJoinedSubclassInstance>(conventions,
+                    new JoinedSubclassInstance(subclassMapping));
+            }
         }
 
         public override void ProcessComponent(ComponentMapping mapping)
         {
-            var conventions = finder.Find<IComponentConvention>();
+            if (mapping.ComponentType == ComponentType.Component)
+            {
+                var conventions = finder.Find<IComponentConvention>();
 
-            Apply<IComponentInspector, IComponentInstance>(conventions,
-                new ComponentInstance(mapping));
-        }
+                Apply<IComponentInspector, IComponentInstance>(conventions,
+                    new ComponentInstance((ComponentMapping)mapping));
+            }
+            else
+            {
+                var conventions = finder.Find<IDynamicComponentConvention>();
 
-        public override void ProcessComponent(DynamicComponentMapping componentMapping)
-        {
-            var conventions = finder.Find<IDynamicComponentConvention>();
-
-            Apply<IDynamicComponentInspector, IDynamicComponentInstance>(conventions,
-                new DynamicComponentInstance(componentMapping));
+                Apply<IDynamicComponentInspector, IDynamicComponentInstance>(conventions,
+                    new DynamicComponentInstance((ComponentMapping)mapping));
+            }
         }
 
         public override void ProcessIndex(IndexMapping indexMapping)

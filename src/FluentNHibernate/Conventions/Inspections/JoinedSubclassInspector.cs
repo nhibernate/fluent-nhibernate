@@ -9,10 +9,10 @@ namespace FluentNHibernate.Conventions.Inspections
 {
     public class JoinedSubclassInspector : IJoinedSubclassInspector
     {
-        private readonly InspectorModelMapper<IJoinedSubclassInspector, JoinedSubclassMapping> mappedProperties = new InspectorModelMapper<IJoinedSubclassInspector, JoinedSubclassMapping>();
-        private readonly JoinedSubclassMapping mapping;
+        private readonly InspectorModelMapper<IJoinedSubclassInspector, SubclassMapping> mappedProperties = new InspectorModelMapper<IJoinedSubclassInspector, SubclassMapping>();
+        private readonly SubclassMapping mapping;
 
-        public JoinedSubclassInspector(JoinedSubclassMapping mapping)
+        public JoinedSubclassInspector(SubclassMapping mapping)
         {
             this.mapping = mapping;
             mappedProperties.Map(x => x.LazyLoad, x => x.Lazy);
@@ -153,7 +153,7 @@ namespace FluentNHibernate.Conventions.Inspections
             get
             {
                 return mapping.Subclasses
-                    .Select(x => new JoinedSubclassInspector((JoinedSubclassMapping)x))
+                    .Select(x => new JoinedSubclassInspector(x))
                     .Cast<IJoinedSubclassInspector>();
             }
         }

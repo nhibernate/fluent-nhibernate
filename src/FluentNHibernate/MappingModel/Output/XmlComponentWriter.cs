@@ -6,12 +6,12 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class XmlReferenceComponentWriter : BaseXmlComponentWriter, IXmlWriter<ReferenceComponentMapping>
     {
-        private IXmlWriter<ComponentMapping> innerWriter;
+        private IXmlWriter<IComponentMapping> innerWriter;
 
         public XmlReferenceComponentWriter(IXmlWriterServiceLocator serviceLocator)
             : base(serviceLocator)
         {
-            innerWriter = serviceLocator.GetWriter<ComponentMapping>();
+            innerWriter = serviceLocator.GetWriter<IComponentMapping>();
         }
 
         public XmlDocument Write(ReferenceComponentMapping mappingModel)
@@ -20,13 +20,13 @@ namespace FluentNHibernate.MappingModel.Output
         }
     }
 
-    public class XmlComponentWriter : BaseXmlComponentWriter, IXmlWriter<ComponentMapping>
+    public class XmlComponentWriter : BaseXmlComponentWriter, IXmlWriter<IComponentMapping>
     {
         public XmlComponentWriter(IXmlWriterServiceLocator serviceLocator)
             : base(serviceLocator)
         {}
 
-        public XmlDocument Write(ComponentMapping mappingModel)
+        public XmlDocument Write(IComponentMapping mappingModel)
         {
             document = null;
             mappingModel.AcceptVisitor(this);
@@ -35,12 +35,12 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void ProcessComponent(ComponentMapping mapping)
         {
-            document = WriteComponent("component", mapping);
+            document = WriteComponent(mapping.ComponentType.GetElementName(), mapping);
 
-            if (mapping.HasValue(x => x.Class))
+            if (mapping.HasValue("Class"))
                 document.DocumentElement.WithAtt("class", mapping.Class);
 
-            if (mapping.HasValue(x => x.Lazy))
+            if (mapping.HasValue("Lazy"))
                 document.DocumentElement.WithAtt("lazy", mapping.Lazy);
         }
     }

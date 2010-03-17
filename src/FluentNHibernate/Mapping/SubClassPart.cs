@@ -13,7 +13,7 @@ namespace FluentNHibernate.Mapping
         private readonly DiscriminatorPart parent;
         private readonly object discriminatorValue;
         private readonly AttributeStore<SubclassMapping> attributes = new AttributeStore<SubclassMapping>();
-        private readonly List<ISubclassMapping> subclassMappings = new List<ISubclassMapping>();
+        private readonly List<SubclassMapping> subclassMappings = new List<SubclassMapping>();
         private bool nextBool = true;
 
         public SubClassPart(DiscriminatorPart parent, object discriminatorValue)
@@ -22,9 +22,9 @@ namespace FluentNHibernate.Mapping
             this.discriminatorValue = discriminatorValue;
         }
 
-        ISubclassMapping ISubclassMappingProvider.GetSubclassMapping()
+        SubclassMapping ISubclassMappingProvider.GetSubclassMapping()
         {
-            var mapping = new SubclassMapping(attributes.CloneInner());
+            var mapping = new SubclassMapping(SubclassType.Subclass, attributes.CloneInner());
 
             if (discriminatorValue != null)
                 mapping.DiscriminatorValue = discriminatorValue;

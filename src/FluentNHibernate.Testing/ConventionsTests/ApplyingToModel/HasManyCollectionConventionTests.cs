@@ -154,6 +154,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         }
 
         [Test]
+        public void ShouldSetPropertyRefProperty()
+        {
+            Convention(x => x.Key.PropertyRef("xxx"));
+
+            VerifyModel(x => x.Key.PropertyRef.ShouldEqual("xxx"));
+        }
+
+        [Test]
         public void ShouldSetTableNameProperty()
         {
             Convention(x => x.Table("xxx"));

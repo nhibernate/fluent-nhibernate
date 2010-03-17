@@ -187,6 +187,16 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         }
 
         [Test]
+        public void PropertyRefShouldntBeOverwritten()
+        {
+            Mapping(x => x.Children, x => x.PropertyRef("ref"));
+
+            Convention(x => x.Key.PropertyRef("xxx"));
+
+            VerifyModel(x => x.Key.PropertyRef.ShouldEqual("ref"));
+        }
+
+        [Test]
         public void TableNameShouldntBeOverwritten()
         {
             Mapping(x => x.Children, x => x.Table("table"));

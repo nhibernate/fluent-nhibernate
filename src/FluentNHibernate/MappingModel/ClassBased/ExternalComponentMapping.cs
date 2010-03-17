@@ -7,12 +7,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
     /// </summary>
     public class ExternalComponentMapping : ComponentMapping
     {
-        public ExternalComponentMapping()
-            : this(new AttributeStore())
+        public ExternalComponentMapping(ComponentType componentType)
+            : this(componentType, new AttributeStore())
         {}
 
-        public ExternalComponentMapping(AttributeStore underlyingStore)
-            : base(underlyingStore)
+        public ExternalComponentMapping(ComponentType componentType, AttributeStore underlyingStore)
+            : base(componentType, underlyingStore)
         {}
     }
 }

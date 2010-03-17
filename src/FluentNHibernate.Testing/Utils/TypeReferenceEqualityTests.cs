@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 
@@ -102,5 +103,41 @@ namespace FluentNHibernate.Testing.Utils
         {
             new TypeReference(typeof(string)).Equals(typeof(int)).ShouldBeFalse();
         }
+
+        [Test]
+        public void EmptyShouldEqualEmpty()
+        {
+            TypeReference.Empty.Equals(TypeReference.Empty).ShouldBeTrue();
+        }
+
+        [Test]
+        public void EmptyShouldNotEqualNullTypeReference()
+        {
+            var nullTypeReference = (TypeReference)null;
+            TypeReference.Empty.Equals(nullTypeReference).ShouldBeFalse();
+        }
+
+        [Test]
+        public void EmptyShouldNotEqualNullType()
+        {
+            var nullType = (Type)null;
+            TypeReference.Empty.Equals(nullType).ShouldBeFalse();
+        }
+
+        [Test]
+        public void EmptyShouldNotEqualIntTypeReference()
+        {
+            var intTypeReference = new TypeReference(typeof(int));
+            TypeReference.Empty.Equals(intTypeReference).ShouldBeFalse();
+        }
+
+        [Test]
+        public void IntTypeReferenceShouldNotEqualEmpty()
+        {
+            var intTypeReference = new TypeReference(typeof(int));
+            intTypeReference.Equals(TypeReference.Empty).ShouldBeFalse();
+        }
+
+
     }
 }

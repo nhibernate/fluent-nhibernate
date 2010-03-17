@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
@@ -9,6 +10,11 @@ namespace FluentNHibernate.Visitors
     public abstract class NullMappingModelVisitor : IMappingModelVisitor
     {
         public virtual void ProcessId(IdMapping idMapping)
+        {
+
+        }
+
+        public virtual void ProcessNaturalId(NaturalIdMapping naturalIdMapping)
         {
 
         }
@@ -88,11 +94,6 @@ namespace FluentNHibernate.Visitors
             
         }
 
-        public virtual void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
-        {
-
-        }
-
         public virtual void ProcessSubclass(SubclassMapping subclassMapping)
         {
 
@@ -103,17 +104,7 @@ namespace FluentNHibernate.Visitors
             
         }
 
-        public virtual void ProcessComponent(IComponentMapping componentMapping)
-        {
-            
-        }
-
         public virtual void ProcessComponent(ComponentMapping mapping)
-        {
-            
-        }
-
-        public virtual void ProcessComponent(DynamicComponentMapping componentMapping)
         {
             
         }
@@ -218,9 +209,19 @@ namespace FluentNHibernate.Visitors
             
         }
 
+        public virtual void Visit(IEnumerable<HibernateMapping> mappings)
+        {
+            
+        }
+
         public virtual void Visit(IdMapping mapping)
         {
             
+        }
+
+        public virtual void Visit(NaturalIdMapping naturalIdMapping)
+        {
+
         }
 
         public virtual void Visit(ClassMapping classMapping)
@@ -274,16 +275,6 @@ namespace FluentNHibernate.Visitors
         }
 
         public virtual void Visit(ColumnMapping columnMapping)
-        {
-
-        }
-
-        public virtual void Visit(ISubclassMapping subclassMapping)
-        {
-
-        }
-
-        public virtual void Visit(JoinedSubclassMapping subclassMapping)
         {
 
         }

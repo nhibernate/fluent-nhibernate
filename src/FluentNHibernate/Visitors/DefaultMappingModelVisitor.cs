@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Visitors
 {
@@ -90,12 +92,12 @@ namespace FluentNHibernate.Visitors
             ProcessClassBase(subclassMapping);
         }
 
-        public override void ProcessJoinedSubclass(JoinedSubclassMapping subclassMapping)
-        {
-            ProcessClassBase(subclassMapping);
-        }
-
         #endregion
+
+        public override void Visit(IEnumerable<HibernateMapping> mappings)
+        {
+            mappings.Each(x => x.AcceptVisitor(this));
+        }
 
         public override void Visit(AnyMapping mapping)
         {
@@ -145,16 +147,6 @@ namespace FluentNHibernate.Visitors
         public override void Visit(ColumnMapping columnMapping)
         {
             columnMapping.AcceptVisitor(this);
-        }
-
-        public override void Visit(ISubclassMapping subclassMapping)
-        {
-            subclassMapping.AcceptVisitor(this);
-        }
-
-        public override void Visit(JoinedSubclassMapping subclassMapping)
-        {
-            subclassMapping.AcceptVisitor(this);
         }
 
         public override void Visit(SubclassMapping subclassMapping)

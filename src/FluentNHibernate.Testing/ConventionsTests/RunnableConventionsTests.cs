@@ -283,7 +283,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             })
                 .Subclasses.First();
 
-            ((JoinedSubclassMapping)subclass)
+            subclass
                 .TableName.ShouldEqual("tbl");
         }
 

@@ -29,9 +29,9 @@ namespace FluentNHibernate.Mapping
             Update();
         }
 
-        protected override IComponentMapping CreateComponentMappingRoot(AttributeStore store)
+        protected override ComponentMapping CreateComponentMappingRoot(AttributeStore store)
         {
-            return new ComponentMapping(store)
+            return new ComponentMapping(ComponentType.Component, store)
             {
                 ContainingEntityType = entity,
                 Class = new TypeReference(typeof(T))

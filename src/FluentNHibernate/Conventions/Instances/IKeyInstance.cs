@@ -7,6 +7,7 @@ namespace FluentNHibernate.Conventions.Instances
     {
         void Column(string columnName);
         new void ForeignKey(string constraint);
+        new void PropertyRef(string property);
         new IEnumerable<IColumnInspector> Columns { get; }
     }
 }
