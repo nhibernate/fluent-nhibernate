@@ -74,6 +74,16 @@ namespace FluentNHibernate.Testing.Automapping
             Assert.That(mapping.Version, Is.Not.Null);
         }
 
+        [Test]
+        public void ShouldSetContainingEntityType()
+        {
+            var mapping = new ClassMapping { Type = typeof(Target) };
+
+            mapper.Map(mapping, typeof(Target).GetProperty("Version").ToMember());
+
+            mapping.Version.ContainingEntityType.ShouldEqual(typeof(Target));
+        }
+
         private class Target
         {
             public byte[] Version { get; set; }
