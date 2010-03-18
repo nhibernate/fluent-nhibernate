@@ -117,7 +117,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ManyToMany(x => x.BagOfChildren)
                 .Mapping(m => m.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(true));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Lazy.True));
         }
 
         [Test]
@@ -125,7 +125,23 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ManyToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Not.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(false));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Lazy.False));
+        }
+        
+        [Test]
+        public void ExtraLazyLoadShouldSetModelLazyPropertyToExtra()
+        {
+            ManyToMany(x => x.BagOfChildren)
+                .Mapping(m => m.ExtraLazyLoad())
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Lazy.Extra));
+        }
+
+        [Test]
+        public void NotExtraLazyLoadShouldSetModelLazyPropertyToTrue()
+        {
+            ManyToMany(x => x.BagOfChildren)
+                .Mapping(m => m.Not.ExtraLazyLoad())
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Lazy.True));
         }
 
         [Test]

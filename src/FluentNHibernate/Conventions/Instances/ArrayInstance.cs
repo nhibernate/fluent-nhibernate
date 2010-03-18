@@ -169,7 +169,7 @@ namespace FluentNHibernate.Conventions.Instances
         public new void LazyLoad()
         {
             if (!mapping.IsSpecified("Lazy"))
-                mapping.Lazy = nextBool;
+                mapping.Lazy = nextBool ? Lazy.True : Lazy.False;
             nextBool = true;
         }
 

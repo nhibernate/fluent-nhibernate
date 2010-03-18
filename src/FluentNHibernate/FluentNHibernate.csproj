@@ -394,6 +394,7 @@
     <Compile Include="MappingModel\ClassBased\ComponentType.cs" />
     <Compile Include="MappingModel\ClassBased\ExternalComponentMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassType.cs" />
+    <Compile Include="MappingModel\Collections\Lazy.cs" />
     <Compile Include="MappingModel\EqualityExtensions.cs" />
     <Compile Include="MappingModel\NaturalIdMapping.cs" />
     <Compile Include="MappingModel\Output\XmlNaturalIdWriter.cs" />

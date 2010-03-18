@@ -9,7 +9,7 @@ namespace FluentNHibernate.MappingModel.Collections
     {
         CacheMapping Cache { get; set; }
         bool Inverse { get; set; }
-        bool Lazy { get; set; }
+        Lazy Lazy { get; set; }
         string Access { get; set; }
         string TableName { get; set; }
         string Schema { get; set; }

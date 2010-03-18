@@ -14,6 +14,7 @@ namespace FluentNHibernate.Conventions.Instances
         new void Name(string name);
         new void Schema(string schema);
         new void LazyLoad();
+        void ExtraLazyLoad();
         new void BatchSize(int batchSize);
         void ReadOnly();
 
