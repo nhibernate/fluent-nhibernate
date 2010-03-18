@@ -202,13 +202,12 @@ namespace FluentNHibernate.Mapping
         /// Since a composite identifier must be assigned to the object before saving it, we can't use unsaved-value of the identifier to distinguish between newly instantiated instances and instances saved in a previous session.
         /// You may instead implement IInterceptor.IsUnsaved() if you wish to use SaveOrUpdate() or cascading save / update. As an alternative, you may also set the unsaved-value attribute on a <version> (or <timestamp>) element to specify a value that indicates a new transient instance. In this case, the version of the entity is used instead of the (assigned) identifier and you don't have to implement IInterceptor.IsUnsaved() yourself. 
         /// </summary>
-        /// <param name="expression">The property of component type that holds the composite identifier.</param>
-        /// <param name="className">The component class used as a composite identifier</param>
+        /// <param name="expression">The property of component type that holds the composite identifier.</param>        
         /// <returns></returns>
         /// <remarks>Your persistent class must override Equals() and GetHashCode() to implement composite identifier equality. It must also be Serializable.</remarks>
-        public CompositeIdentityPart<T> ComponentCompositeIdentifier(Expression<Func<T, object>> expression, string className)
+        public CompositeIdentityPart<T> ComponentCompositeIdentifier<TComponentType>(Expression<Func<T, TComponentType>> expression)
         {
-            attributes.Set(x => x.Class, string.IsNullOrEmpty(className) ? null : new TypeReference(className));
+            attributes.Set(x => x.Class, new TypeReference(typeof(TComponentType)));
             attributes.Set(x => x.Name, ReflectionHelper.GetMember(expression).Name);
 
             return this;

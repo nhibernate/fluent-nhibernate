@@ -116,10 +116,21 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 	            .HasAttribute("type", typeof(int).AssemblyQualifiedName);
 	    }
 
+	    [Test]
+	    public void ComponentCompositeIdWillSetNameAndClass()
+	    {
+	        new MappingTester<CompIdTarget>()
+	            .ForMapping(c => c.CompositeId().ComponentCompositeIdentifier(x => x.Key))
+	            .Element("class/composite-id")
+	            .HasAttribute("name", "Key")
+	            .HasAttribute("class", typeof(ComponentKey).AssemblyQualifiedName);
+	    }
+
 		public class CompIdTarget
 		{
 			public virtual long LongId { get; set; }
 			public virtual long? NullableLongId { get; set; }
+            public virtual ComponentKey Key { get; set; }
 			public virtual CompIdChild Child { get; set; }
 		    public virtual string DummyProp { get; set; }
 		}
@@ -128,5 +139,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 			public virtual long ChildId { get; set; }
 		}
+
+        public class ComponentKey
+        {
+            public virtual int KeyCol1 { get; set; }
+            public virtual int KeyCol2 { get; set; }
+        }
 	}
 }
