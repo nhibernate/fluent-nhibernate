@@ -145,6 +145,32 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void GeneratorClass_CanSpecifyHiLoWithWhere()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.IntId)
+                        .GeneratedBy.HiLo("hi_value", "next_value", "100", "(Id = 1)"))
+                .Element("class/id/generator").HasAttribute("class", "hilo")
+                .Element("class/id/generator/param[1]")
+                    .Exists()
+                    .HasAttribute("name", "table")
+                    .ValueEquals("hi_value")
+                .Element("class/id/generator/param[2]")
+                    .Exists()
+                    .HasAttribute("name", "column")
+                    .ValueEquals("next_value")
+                .Element("class/id/generator/param[3]")
+                    .Exists()
+                    .HasAttribute("name", "where")
+                    .ValueEquals("(Id = 1)")
+                .Element("class/id/generator/param[4]")
+                    .Exists()
+                    .HasAttribute("name", "max_lo")
+                    .ValueEquals("100");
+        }
+
+        [Test]
         public void GeneratorClass_CanSpecifySeqHiLo()
         {
             new MappingTester<IdentityTarget>()

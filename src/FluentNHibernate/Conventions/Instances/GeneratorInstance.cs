@@ -91,22 +91,39 @@ namespace FluentNHibernate.Conventions.Instances
                 builder.Sequence(sequenceName, paramValues);
         }
 
-		/// <summary>
-		/// uses a hi/lo algorithm to efficiently generate identifiers of any integral type, 
-		/// given a table and column (by default hibernate_unique_key and next_hi respectively) 
-		/// as a source of hi values. The hi/lo algorithm generates identifiers that are unique 
-		/// only for a particular database. Do not use this generator with a user-supplied connection.
-		/// requires a "special" database table to hold the next available "hi" value
-		/// </summary>
-		/// <param name="table"></param>
-		/// <param name="column"></param>
-		/// <param name="maxLo"></param>
-		/// <returns></returns>
+        /// <summary>
+        /// uses a hi/lo algorithm to efficiently generate identifiers of any integral type,
+        /// given a table and column (by default hibernate_unique_key and next_hi respectively)
+        /// as a source of hi values. The hi/lo algorithm generates identifiers that are unique
+        /// only for a particular database. Do not use this generator with a user-supplied connection.
+        /// requires a "special" database table to hold the next available "hi" value
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <param name="column">The column.</param>
+        /// <param name="maxLo">The max lo.</param>
+        /// <param name="where">The where.</param>
+        public void HiLo(string table, string column, string maxLo, string where)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.HiLo(table, column, maxLo, where);
+        }
+
+        /// <summary>
+        /// uses a hi/lo algorithm to efficiently generate identifiers of any integral type, 
+        /// given a table and column (by default hibernate_unique_key and next_hi respectively) 
+        /// as a source of hi values. The hi/lo algorithm generates identifiers that are unique 
+        /// only for a particular database. Do not use this generator with a user-supplied connection.
+        /// requires a "special" database table to hold the next available "hi" value
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="column"></param>
+        /// <param name="maxLo"></param>
+        /// <returns></returns>
         public void HiLo(string table, string column, string maxLo)
-		{
+        {
             if (!mapping.IsSpecified("Class"))
                 builder.HiLo(table, column, maxLo);
-		}
+        }
 
         /// <summary>
         /// uses a hi/lo algorithm to efficiently generate identifiers of any integral type, 
