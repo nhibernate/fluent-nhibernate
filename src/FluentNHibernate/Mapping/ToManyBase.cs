@@ -481,6 +481,33 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <overloads>
+        /// Applies a filter to this entity given it's name.
+        /// </overloads>
+        /// <summary>
+        /// Applies a filter to this entity given it's name.
+        /// </summary>
+        /// <param name="name">The filter's name</param>
+        /// <param name="condition">The condition to apply</param>
+        public T ApplyFilter(string name, string condition)
+        {
+            var part = new FilterPart(name, condition);
+            filters.Add(part);
+            return (T)this;
+        }
+
+        /// <overloads>
+        /// Applies a filter to this entity given it's name.
+        /// </overloads>
+        /// <summary>
+        /// Applies a filter to this entity given it's name.
+        /// </summary>
+        /// <param name="name">The filter's name</param>
+        public T ApplyFilter(string name)
+        {
+            return (T)this.ApplyFilter(name, null);
+        }
+
+        /// <overloads>
         /// Applies a named filter to this one-to-many.
         /// </overloads>
         /// <summary>
@@ -493,9 +520,7 @@ namespace FluentNHibernate.Mapping
         /// </typeparam>
         public T ApplyFilter<TFilter>(string condition) where TFilter : FilterDefinition, new()
         {
-            var part = new FilterPart(new TFilter().Name, condition);
-            Filters.Add(part);
-            return (T)this;
+            return this.ApplyFilter(new TFilter().Name, condition);
         }
 
         /// <summary>
@@ -507,7 +532,7 @@ namespace FluentNHibernate.Mapping
         /// </typeparam>
         public T ApplyFilter<TFilter>() where TFilter : FilterDefinition, new()
         {
-            return ApplyFilter<TFilter>(null);
+            return this.ApplyFilter<TFilter>(null);
         }
 
         protected IList<FilterPart> Filters
