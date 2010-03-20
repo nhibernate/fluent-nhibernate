@@ -284,6 +284,28 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
             inspector.IsSet(Prop(x => x.Update))
                 .ShouldBeFalse();
         }
+        
+        [Test]
+        public void FormulaMapped()
+        {
+            mapping.Formula = "formula";
+            inspector.Formula.ShouldEqual(mapping.Formula);
+        }
+        
+        [Test]
+        public void FormulaIsSet()
+        {
+            mapping.Formula = "formula";
+            inspector.IsSet(Prop(x => x.Formula))
+                .ShouldBeTrue();
+        }
+        
+        [Test]
+        public void FormulaIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Formula))
+                .ShouldBeFalse();
+        }
 
         #region Helpers
 

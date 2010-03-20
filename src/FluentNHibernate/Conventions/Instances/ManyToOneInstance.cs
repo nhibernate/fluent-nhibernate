@@ -30,6 +30,12 @@ namespace FluentNHibernate.Conventions.Instances
             mapping.ClearColumns();
             mapping.AddColumn(column);
         }
+        
+        public new void Formula(string formula)
+        {
+            if (!mapping.IsSpecified("Formula"))
+                mapping.Formula = formula;
+        }
 
         public void CustomClass<T>()
         {

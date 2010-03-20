@@ -153,6 +153,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
 
             VerifyModel(x => x.ForeignKey.ShouldEqual("xxx"));
         }
+        
+        [Test]
+        public void ShouldSetFormulaProperty()
+        {
+            Convention(x => x.Formula("xxx"));
+            
+            VerifyModel(x => x.Formula.ShouldEqual("xxx"));
+        }
 
         #region Helpers
 

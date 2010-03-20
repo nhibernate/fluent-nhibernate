@@ -138,6 +138,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             testHelper.VerifyAll(writer);
         }
-
+        
+        [Test]
+        public void ShouldWriteFormulaAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
+            testHelper.Check(x => x.Formula, "form").MapsToAttribute("formula");
+            
+            testHelper.VerifyAll(writer);
+        }
     }
 }

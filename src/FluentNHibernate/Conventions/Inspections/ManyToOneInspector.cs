@@ -76,6 +76,11 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get { return Cascade.FromString(mapping.Cascade); }
         }
+        
+        public string Formula
+        {
+            get { return mapping.Formula; }
+        }
 
         public TypeReference Class
         {

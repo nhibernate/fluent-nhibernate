@@ -54,6 +54,9 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.HasValue(x => x.NotFound))
                 element.WithAtt("not-found", mapping.NotFound);
 
+            if (mapping.HasValue(x => x.Formula))
+                element.WithAtt("formula", mapping.Formula);
+
             if (mapping.HasValue(x => x.PropertyRef))
                 element.WithAtt("property-ref", mapping.PropertyRef);
 

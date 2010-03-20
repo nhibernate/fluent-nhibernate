@@ -187,6 +187,16 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
 
             VerifyModel(x => x.ForeignKey.ShouldEqual("key"));
         }
+        
+        [Test]
+        public void FormulaShouldntBeOverwritten()
+        {
+            Mapping(x => x.Formula("form"));
+            
+            Convention(x => x.Formula("xxx"));
+            
+            VerifyModel(x => x.Formula.ShouldEqual("form"));
+        }
 
         #region Helpers
 

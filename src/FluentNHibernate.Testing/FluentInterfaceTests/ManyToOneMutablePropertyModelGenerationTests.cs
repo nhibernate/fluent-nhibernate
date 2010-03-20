@@ -215,5 +215,13 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.Index("ix"))
                 .ModelShouldMatch(x => x.Columns.First().Index.ShouldEqual("ix"));
         }
+        
+        [Test]
+        public void FormulaIsShouldSetModelFormulaPropertyToValue()
+        {
+            Property()
+                .Mapping(m => m.Formula("form"))
+                .ModelShouldMatch(x => x.Formula.ShouldEqual("form"));
+        }
     }
 }

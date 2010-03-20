@@ -72,6 +72,12 @@ namespace FluentNHibernate.MappingModel
             get { return attributes.Get(x => x.Insert); }
             set { attributes.Set(x => x.Insert, value); }
         }
+        
+        public string Formula
+        {
+            get { return attributes.Get(x => x.Formula); }
+            set { attributes.Set(x => x.Formula, value); }
+        }
 
         public string ForeignKey
         {

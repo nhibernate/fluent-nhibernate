@@ -169,6 +169,12 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public ManyToOnePart<TOther> Formula(string formula)
+        {
+            attributes.Set(x => x.Formula, formula);
+            return this;
+        }
+
         public CascadeExpression<ManyToOnePart<TOther>> Cascade
 		{
 			get { return cascade; }
