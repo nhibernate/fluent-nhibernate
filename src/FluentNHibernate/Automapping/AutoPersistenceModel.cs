@@ -51,7 +51,17 @@ namespace FluentNHibernate.Automapping
         /// <returns>AutoPersistenceModel</returns>
         public AutoPersistenceModel UseOverridesFromAssemblyOf<T>()
         {
-            alterations.Add(new AutoMappingOverrideAlteration(typeof(T).Assembly));
+            return UseOverridesFromAssembly(typeof(T).Assembly);
+        }
+
+        /// <summary>
+        /// Use auto mapping overrides defined in the assembly of T.
+        /// </summary>
+        /// <param name="assembly">Assembly to scan</param>
+        /// <returns>AutoPersistenceModel</returns>
+        public AutoPersistenceModel UseOverridesFromAssembly(Assembly assembly)
+        {
+            alterations.Add(new AutoMappingOverrideAlteration(assembly));
             return this;
         }
 
