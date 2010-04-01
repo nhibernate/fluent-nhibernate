@@ -131,7 +131,7 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="TComponent">Component type</typeparam>
         /// <param name="member">Property exposing the component</param>
         /// <returns>Component reference builder</returns>
-        public ReferenceComponentPart<TComponent> Component<TComponent>(Expression<Func<T, TComponent>> member)
+        public virtual ReferenceComponentPart<TComponent> Component<TComponent>(Expression<Func<T, TComponent>> member)
         {
             var part = new ReferenceComponentPart<TComponent>(member.ToMember(), typeof(T));
 

@@ -37,9 +37,9 @@ namespace FluentNHibernate
             BiDirectionalManyToManyPairer = (c,o,w) => {};
             Conventions = conventionFinder;
 
+            visitors.Add(new SeparateSubclassVisitor(subclassProviders));
             visitors.Add(new ComponentReferenceResolutionVisitor(componentProviders));
             visitors.Add(new ComponentColumnPrefixVisitor());
-            visitors.Add(new SeparateSubclassVisitor(subclassProviders));
             visitors.Add(new BiDirectionalManyToManyPairingVisitor(BiDirectionalManyToManyPairer));
             visitors.Add(new ManyToManyTableNameVisitor());
             visitors.Add(new ConventionVisitor(Conventions));

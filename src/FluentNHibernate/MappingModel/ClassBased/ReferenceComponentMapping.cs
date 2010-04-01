@@ -31,12 +31,10 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
         public void AcceptVisitor(IMappingModelVisitor visitor)
         {
-            visitor.ProcessComponent(this);
-
-            if (mergedComponent == null)
-                throw new UnresolvedComponentReferenceVisitedException(componentType, containingEntityType, property);
-
-            mergedComponent.AcceptVisitor(visitor);
+            if (MergedModel != null)
+                visitor.Visit(MergedModel);
+            else
+                visitor.ProcessComponent(this);
         }
 
         public virtual void AssociateExternalMapping(ExternalComponentMapping mapping)
