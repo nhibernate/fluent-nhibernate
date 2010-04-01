@@ -8,6 +8,7 @@ using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.Mapping
 {
@@ -191,5 +192,25 @@ namespace FluentNHibernate.Mapping
 
 	        return mapping;
 	    }
+
+        /// <summary>
+        ///  You may use a component as an identifier of an entity class. Your component class must satisfy certain requirements:
+        /// * It must be Serializable.
+        /// * It must re-implement Equals() and GetHashCode(), consistently with the database's notion of composite key equality. 
+        /// 
+        /// You can't use an IIdentifierGenerator  to generate composite keys. Instead the application must assign its own identifiers.
+        /// Since a composite identifier must be assigned to the object before saving it, we can't use unsaved-value of the identifier to distinguish between newly instantiated instances and instances saved in a previous session.
+        /// You may instead implement IInterceptor.IsUnsaved() if you wish to use SaveOrUpdate() or cascading save / update. As an alternative, you may also set the unsaved-value attribute on a <version> (or <timestamp>) element to specify a value that indicates a new transient instance. In this case, the version of the entity is used instead of the (assigned) identifier and you don't have to implement IInterceptor.IsUnsaved() yourself. 
+        /// </summary>
+        /// <param name="expression">The property of component type that holds the composite identifier.</param>        
+        /// <returns></returns>
+        /// <remarks>Your persistent class must override Equals() and GetHashCode() to implement composite identifier equality. It must also be Serializable.</remarks>
+        public CompositeIdentityPart<T> ComponentCompositeIdentifier<TComponentType>(Expression<Func<T, TComponentType>> expression)
+        {
+            attributes.Set(x => x.Class, new TypeReference(typeof(TComponentType)));
+            attributes.Set(x => x.Name, ReflectionHelper.GetMember(expression).Name);
+
+            return this;
+        }
 	}
 }

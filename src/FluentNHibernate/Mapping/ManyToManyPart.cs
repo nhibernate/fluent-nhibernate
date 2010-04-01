@@ -51,12 +51,15 @@ namespace FluentNHibernate.Mapping
             foreach (var column in parentColumns)
                 collection.Key.AddColumn(new ColumnMapping { Name = column });
 
-            // child columns
-            if (childColumns.Count == 0)
-                ((ManyToManyMapping)collection.Relationship).AddDefaultColumn(new ColumnMapping { Name = typeof(TChild).Name + "_id" });
+            if (collection.Relationship != null)
+            {
+                // child columns
+                if (childColumns.Count == 0)
+                    ((ManyToManyMapping)collection.Relationship).AddDefaultColumn(new ColumnMapping {Name = typeof(TChild).Name + "_id"});
 
-            foreach (var column in childColumns)
-                ((ManyToManyMapping)collection.Relationship).AddColumn(new ColumnMapping { Name = column });
+                foreach (var column in childColumns)
+                    ((ManyToManyMapping)collection.Relationship).AddColumn(new ColumnMapping {Name = column});
+            }
 
             // HACK: Index only on list and map - shouldn't have to do this!
             if (index != null && collection is IIndexedCollectionMapping)

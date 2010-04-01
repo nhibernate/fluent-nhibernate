@@ -457,6 +457,7 @@
     <Compile Include="ConventionsTests\DefaultLazyHelperTests.cs" />
     <Compile Include="ConventionsTests\ProxyHelperTests.cs" />
     <Compile Include="FluentInterfaceTests\NaturalIdPartTests.cs" />
+    <Compile Include="MappingModel\Identity\CompositeIdMappingTester.cs" />
     <Compile Include="MappingModel\Output\XmlNaturalIdWriterTester.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -467,7 +468,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fixtures\Conventions\" />
-    <Folder Include="MappingModel\Identity\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

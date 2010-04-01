@@ -19,7 +19,7 @@ namespace FluentNHibernate.MappingModel.Identity
         public CompositeIdMapping(AttributeStore underlyingStore)
         {
             attributes = new AttributeStore<CompositeIdMapping>(underlyingStore);
-            attributes.SetDefault(x => x.Mapped, false);
+            attributes.SetDefault(x => x.Mapped, !string.IsNullOrEmpty(Name));
             attributes.SetDefault(x => x.UnsavedValue, "undefined");
         }
 
@@ -37,7 +37,11 @@ namespace FluentNHibernate.MappingModel.Identity
         public string Name
         {
             get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            set
+            {
+            	attributes.Set(x => x.Name, value);
+				Mapped = !string.IsNullOrEmpty(value);
+            }
         }
 
         public string Access

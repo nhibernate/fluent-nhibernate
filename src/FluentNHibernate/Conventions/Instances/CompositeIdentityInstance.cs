@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.MappingModel;
@@ -51,6 +52,26 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 nextBool = !nextBool;
                 return this;
+            }
+        }
+
+        public new IEnumerable<IKeyPropertyInstance> KeyProperties
+        {
+            get
+            {
+                return mapping.KeyProperties
+                    .Select(x => new KeyPropertyInstance(x))
+                    .Cast<IKeyPropertyInstance>();
+            }
+        }
+
+        public new IEnumerable<IKeyManyToOneInstance> KeyManyToOnes
+        {
+            get
+            {
+                return mapping.KeyManyToOnes
+                    .Select(x => new KeyManyToOneInstance(x))
+                    .Cast<IKeyManyToOneInstance>();
             }
         }
     }
