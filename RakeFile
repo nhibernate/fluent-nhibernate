@@ -15,6 +15,19 @@ namespace :setup do
       `gem source -a http://gemcutter.org`
     end
   end
+  
+  task :install_mspec, :version do |t, args|
+    version = args[:version] || '4.5'
+    puts 'Installing MSpec ReSharper runner'
+    plugins = "#{ENV['APPDATA']}/JetBrains/ReSharper/v#{version}/vs9.0/Plugins"
+    to_copy = ['Machine.Specifications', "Machine.Specifications.ReSharperRunner.#{version}"]
+
+    FileUtils.mkdir plugins unless File.exists? plugins
+    to_copy.each do |f|
+      FileUtils.cp "tools/mspec/#{f}.dll", plugins
+      FileUtils.cp "tools/mspec/#{f}.pdb", plugins
+    end
+  end
 end
 
 namespace :ci do
