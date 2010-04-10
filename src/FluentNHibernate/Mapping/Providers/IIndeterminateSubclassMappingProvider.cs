@@ -7,5 +7,6 @@ namespace FluentNHibernate.Mapping.Providers
     {
         SubclassMapping GetSubclassMapping(SubclassMapping mapping);
         Type EntityType { get; }
+        Type Extends { get; }
     }
 }

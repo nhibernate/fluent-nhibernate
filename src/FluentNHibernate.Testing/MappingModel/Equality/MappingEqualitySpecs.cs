@@ -637,7 +637,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 Subselect = "subselect",
                 TableName = "table",
                 Type = typeof(Target),
-                Extends = "extends",
+                Extends = typeof(Target),
                 Key = new KeyMapping()
             };
 
@@ -1125,7 +1125,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 Proxy = "proxy",
                 SelectBeforeUpdate = true,
                 Type = typeof(Target),
-                Extends = "extends",
+                Extends = typeof(Target),
                 DiscriminatorValue = "value"
             };
 

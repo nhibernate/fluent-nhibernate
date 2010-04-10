@@ -83,6 +83,16 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             VerifyModel(x => x.SelectBeforeUpdate.ShouldBeTrue());
         }
 
+        [Test]
+        public void ExtendsShouldntBeOverwritten()
+        {
+            Mapping(x => x.Extends<ExampleClass>());
+
+            Convention(x => x.Extends<ExampleParentClass>());
+
+            VerifyModel(x => x.Extends.ShouldEqual(typeof(ExampleClass)));
+        }
+
         #region Helpers
 
         private void Convention(Action<ISubclassInstance> convention)

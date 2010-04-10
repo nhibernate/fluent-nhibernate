@@ -70,6 +70,11 @@ namespace FluentNHibernate.Mapping
             return mapping;
         }
 
+        Type IIndeterminateSubclassMappingProvider.Extends
+        {
+            get { return attributes.Get(x => x.Extends); }
+        }
+
         private void GenerateNestedSubclasses(SubclassMapping mapping)
         {
             foreach (var subclassType in indetermineateSubclasses.Keys)
@@ -226,6 +231,24 @@ namespace FluentNHibernate.Mapping
             action(join);
 
             joins.Add(((IJoinMappingProvider)join).GetJoinMapping());
+        }
+
+        /// <summary>
+        /// (optional) Specifies the entity from which this subclass descends/extends.
+        /// </summary>
+        /// <typeparam name="TOther">Type of the entity to extend</typeparam>
+        public void Extends<TOther>()
+        {
+            Extends(typeof(TOther));
+        }
+
+        /// <summary>
+        /// (optional) Specifies the entity from which this subclass descends/extends.
+        /// </summary>
+        /// <param name="type">Type of the entity to extend</param>
+        public void Extends(Type type)
+        {
+            attributes.Set(x => x.Extends, type);
         }
     }
 }

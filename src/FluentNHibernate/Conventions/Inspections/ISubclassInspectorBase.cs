@@ -16,7 +16,7 @@ namespace FluentNHibernate.Conventions.Inspections
         IEnumerable<ISubclassInspectorBase> Subclasses { get; }
         bool DynamicInsert { get; }
         bool DynamicUpdate { get; }
-        string Extends { get; }
+        Type Extends { get; }
         bool LazyLoad { get; }
         string Name { get; }
         string Proxy { get; }

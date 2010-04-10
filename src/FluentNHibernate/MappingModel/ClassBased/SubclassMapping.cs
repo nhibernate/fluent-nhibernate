@@ -19,6 +19,18 @@ namespace FluentNHibernate.MappingModel.ClassBased
             attributes = new AttributeStore<SubclassMapping>(underlyingStore);
         }
 
+        /// <summary>
+        /// Set which type this subclass extends.
+        /// Note: This doesn't actually get output into the XML, it's
+        /// instead used as a marker for the <see cref="SeparateSubclassVisitor"/>
+        /// to pair things up.
+        /// </summary>
+        public Type Extends
+        {
+            get { return attributes.Get(x => x.Extends); }
+            set { attributes.Set(x => x.Extends, value); }
+        }
+
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessSubclass(this);
@@ -50,12 +62,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return attributes.Get(x => x.DiscriminatorValue); }
             set { attributes.Set(x => x.DiscriminatorValue, value); }
-        }
-
-        public string Extends
-        {
-            get { return attributes.Get(x => x.Extends); }
-            set { attributes.Set(x => x.Extends, value); }
         }
 
         public bool Lazy

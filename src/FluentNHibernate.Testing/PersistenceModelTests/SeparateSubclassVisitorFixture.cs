@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Mapping;
@@ -124,6 +125,18 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             Assert.AreEqual(1, fooMapping.Subclasses.Where(sub => sub.Type.Equals(typeof(BaseImpl))).Count());
         }
 
+        [Test]
+        public void Should_add_explicit_extend_subclasses_to_their_parent()
+        {
+            fooMapping = ((IMappingProvider)new ExtendsParentMap()).GetClassMapping();
+
+            providers.Add(new ExtendsChildMap());
+            var sut = CreateSut();
+            sut.ProcessClass(fooMapping);
+            Assert.AreEqual(1, fooMapping.Subclasses.Count());
+            Assert.AreEqual(1, fooMapping.Subclasses.Where(sub => sub.Type.Equals(typeof(ExtendsChild))).Count());
+        }
+
         private SeparateSubclassVisitor CreateSut()
         {
             return new SeparateSubclassVisitor(providers);
@@ -166,5 +179,22 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
 
         private class StandAloneMap : SubclassMap<StandAlone>
         { }
+
+        class ExtendsParent
+        {}
+
+        class ExtendsChild
+        {}
+
+        class ExtendsParentMap : ClassMap<ExtendsParent>
+        {}
+
+        class ExtendsChildMap : SubclassMap<ExtendsChild>
+        {
+            public ExtendsChildMap()
+            {
+                Extends<ExtendsParent>();
+            }
+        }
     }
 }

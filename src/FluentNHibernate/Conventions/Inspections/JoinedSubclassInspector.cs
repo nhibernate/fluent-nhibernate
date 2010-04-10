@@ -84,7 +84,7 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.DynamicUpdate; }
         }
 
-        public string Extends
+        public Type Extends
         {
             get { return mapping.Extends; }
         }

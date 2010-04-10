@@ -28,15 +28,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldWriteExtendsAttribute()
-        {
-            var testHelper = create_helper();
-            testHelper.Check(x => x.Extends, "ext").MapsToAttribute("extends");
-
-            testHelper.VerifyAll(writer);
-        }
-
-        [Test]
         public void ShouldWriteTableAttribute()
         {
             var testHelper = create_helper();

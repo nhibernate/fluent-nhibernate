@@ -38,14 +38,18 @@ namespace FluentNHibernate.Visitors
 
         private IEnumerable<IIndeterminateSubclassMappingProvider> FindClosestSubclasses(Type type)
         {
-            var subclasses = SortByDistanceFrom(type, subclassProviders);
+            var extendsSubclasses = subclassProviders
+                .Where(x => x.Extends == type);
+            var subclasses = SortByDistanceFrom(type, subclassProviders.Except(extendsSubclasses));
 
-            if (subclasses.Keys.Count == 0)
+            if (subclasses.Keys.Count == 0 && !extendsSubclasses.Any())
                 return new IIndeterminateSubclassMappingProvider[0];
+            if (subclasses.Keys.Count == 0)
+                return extendsSubclasses;
 
             var lowestDistance = subclasses.Keys.Min();
 
-            return subclasses[lowestDistance];
+            return subclasses[lowestDistance].Concat(extendsSubclasses);
         }
 
         private SubclassMapping CreateSubclass(ClassMapping mapping)
