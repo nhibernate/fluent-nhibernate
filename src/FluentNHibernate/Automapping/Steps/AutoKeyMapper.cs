@@ -1,16 +1,16 @@
-using FluentNHibernate.MappingModel;
+﻿using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.Automapping
+namespace FluentNHibernate.Automapping.Steps
 {
     public class AutoKeyMapper
     {
-        readonly AutoMappingExpressions expressions;
+        readonly IAutomappingConfiguration cfg;
 
-        public AutoKeyMapper(AutoMappingExpressions expressions)
+        public AutoKeyMapper(IAutomappingConfiguration cfg)
         {
-            this.expressions = expressions;
+            this.cfg = cfg;
         }
 
         public void SetKey(Member property, ClassMappingBase classMap, ICollectionMapping mapping)
@@ -18,7 +18,7 @@ namespace FluentNHibernate.Automapping
             var columnName = property.DeclaringType.Name + "_id";
 
             if (classMap is ComponentMapping)
-                columnName = expressions.GetComponentColumnPrefix(((ComponentMapping)classMap).Member) + columnName;
+                columnName = cfg.GetComponentColumnPrefix(((ComponentMapping)classMap).Member) + columnName;
 
             var key = new KeyMapping();
 

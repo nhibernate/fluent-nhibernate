@@ -93,7 +93,8 @@ namespace FluentNHibernate.Testing.Cfg
                 .Mappings(m =>
                 {
                     m.FluentMappings.AddFromAssemblyOf<Foo>();
-                    m.AutoMappings.Add(AutoMap.AssemblyOf<Bar>(t => t.Namespace == typeof(Bar).Namespace));
+                    m.AutoMappings.Add(AutoMap.AssemblyOf<Bar>()
+                        .Where(t => t.Namespace == typeof(Bar).Namespace));
                 })
                 .BuildSessionFactory();
 
@@ -295,7 +296,8 @@ namespace FluentNHibernate.Testing.Cfg
             Fluently.Configure()
                 .Database(SQLiteConfiguration.Standard.InMemory)
                 .Mappings(m =>
-                    m.AutoMappings.Add(AutoMap.AssemblyOf<Person>(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
+                    m.AutoMappings.Add(AutoMap.AssemblyOf<Person>()
+                                        .Where(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
                         .ExportTo(ExportPath))
                 .BuildSessionFactory();
 
@@ -310,7 +312,8 @@ namespace FluentNHibernate.Testing.Cfg
                 .Database(SQLiteConfiguration.Standard.InMemory)
                 .Mappings(m =>
                     m.MergeMappings()
-                     .AutoMappings.Add(AutoMap.AssemblyOf<Person>(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
+                     .AutoMappings.Add(AutoMap.AssemblyOf<Person>()
+                        .Where(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
                      .ExportTo(ExportPath))
                 .BuildSessionFactory();
 
@@ -329,7 +332,8 @@ namespace FluentNHibernate.Testing.Cfg
                         .AddFromAssemblyOf<Record>()
                         .ExportTo(ExportPath);
 
-                    m.AutoMappings.Add(AutoMap.AssemblyOf<Person>(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
+                    m.AutoMappings.Add(AutoMap.AssemblyOf<Person>()
+                                        .Where(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
                         .ExportTo(ExportPath);
                 })
                 .BuildSessionFactory();

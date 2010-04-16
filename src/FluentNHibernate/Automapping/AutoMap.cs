@@ -22,10 +22,10 @@ namespace FluentNHibernate.Automapping
         /// Automatically map classes in the assembly that contains <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">Class in the assembly you want to map</typeparam>
-        /// <param name="where">Criteria for selecting a subset of the types in the assembly for mapping</param>
-        public static AutoPersistenceModel AssemblyOf<T>(Func<Type, bool> where)
+        /// <param name="cfg">Automapping configuration</param>
+        public static AutoPersistenceModel AssemblyOf<T>(IAutomappingConfiguration cfg)
         {
-            return Assembly(typeof(T).Assembly, where);
+            return Assembly(typeof(T).Assembly, cfg);
         }
 
         /// <summary>
@@ -34,17 +34,17 @@ namespace FluentNHibernate.Automapping
         /// <param name="assembly">Assembly containing the classes to map</param>
         public static AutoPersistenceModel Assembly(Assembly assembly)
         {
-            return Assembly(assembly, null);
+            return Source(new AssemblyTypeSource(assembly));
         }
 
         /// <summary>
         /// Automatically map the classes in <paramref name="assembly"/>.
         /// </summary>
         /// <param name="assembly">Assembly containing the classes to map</param>
-        /// <param name="where">Criteria for selecting a subset of the types in the assembly for mapping</param>
-        public static AutoPersistenceModel Assembly(Assembly assembly, Func<Type, bool> where)
+        /// <param name="cfg">Automapping configuration</param>
+        public static AutoPersistenceModel Assembly(Assembly assembly, IAutomappingConfiguration cfg)
         {
-            return Source(new AssemblyTypeSource(assembly), where);
+            return Source(new AssemblyTypeSource(assembly), cfg);
         }
 
         /// <summary>
@@ -59,10 +59,21 @@ namespace FluentNHibernate.Automapping
         /// <summary>
         /// Automatically map the classes in each assembly supplied.
         /// </summary>
+        /// <param name="cfg">Automapping configuration</param>
         /// <param name="assemblies">Assemblies containing classes to map</param>
-        public static AutoPersistenceModel Assemblies(IEnumerable<Assembly> assemblies)
+        public static AutoPersistenceModel Assemblies(IAutomappingConfiguration cfg, params Assembly[] assemblies)
         {
-            return Source(new CombinedAssemblyTypeSource(assemblies));
+            return Source(new CombinedAssemblyTypeSource(assemblies), cfg);
+        }
+
+        /// <summary>
+        /// Automatically map the classes in each assembly supplied.
+        /// </summary>
+        /// <param name="cfg">Automapping configuration</param>
+        /// <param name="assemblies">Assemblies containing classes to map</param>
+        public static AutoPersistenceModel Assemblies(IAutomappingConfiguration cfg, IEnumerable<Assembly> assemblies)
+        {
+            return Source(new CombinedAssemblyTypeSource(assemblies), cfg);
         }
 
         /// <summary>
@@ -71,24 +82,59 @@ namespace FluentNHibernate.Automapping
         /// <param name="source"><see cref="ITypeSource"/> containing classes to map</param>
         public static AutoPersistenceModel Source(ITypeSource source)
         {
-            return Source(source, null);
+            return new AutoPersistenceModel()
+                .AddTypeSource(source);
         }
 
         /// <summary>
         /// Automatically map the classes exposed through the supplied <see cref="ITypeSource"/>.
         /// </summary>
         /// <param name="source"><see cref="ITypeSource"/> containing classes to map</param>
+        /// <param name="cfg">Automapping configuration</param>
+        public static AutoPersistenceModel Source(ITypeSource source, IAutomappingConfiguration cfg)
+        {
+            return new AutoPersistenceModel(cfg)
+                .AddTypeSource(source);
+        }
+
+        #region Depreciated overloads
+
+        /// <summary>
+        /// Automatically map the classes exposed through the supplied <see cref="ITypeSource"/>.
+        /// </summary>
+        /// <param name="source"><see cref="ITypeSource"/> containing classes to map</param>
         /// <param name="where">Criteria for selecting a subset of the types in the assembly for mapping</param>
+        [Obsolete("Depreciated overload. Use either chained Where method or ShouldMap(Type) in IAutomappingConfiguration.")]
         public static AutoPersistenceModel Source(ITypeSource source, Func<Type, bool> where)
         {
-            var persistenceModel = new AutoPersistenceModel();
-
-            persistenceModel.AddTypeSource(source);
-
-            if (where != null)
-                persistenceModel.Where(where);
-
-            return persistenceModel;
+            return Source(source)
+                .Where(where);
         }
+
+        /// <summary>
+        /// Automatically map the classes in <paramref name="assembly"/>.
+        /// </summary>
+        /// <param name="assembly">Assembly containing the classes to map</param>
+        /// <param name="where">Criteria for selecting a subset of the types in the assembly for mapping</param>
+        [Obsolete("Depreciated overload. Use either chained Where method or ShouldMap(Type) in IAutomappingConfiguration.")]
+        public static AutoPersistenceModel Assembly(Assembly assembly, Func<Type, bool> where)
+        {
+            return Source(new AssemblyTypeSource(assembly))
+                .Where(where);
+        }
+
+        /// <summary>
+        /// Automatically map classes in the assembly that contains <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">Class in the assembly you want to map</typeparam>
+        /// <param name="where">Criteria for selecting a subset of the types in the assembly for mapping</param>
+        [Obsolete("Depreciated overload. Use either chained Where method or ShouldMap(Type) in IAutomappingConfiguration.")]
+        public static AutoPersistenceModel AssemblyOf<T>(Func<Type, bool> where)
+        {
+            return Assembly(typeof(T).Assembly)
+                .Where(where);
+        }
+
+        #endregion
     }
 }

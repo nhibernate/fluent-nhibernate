@@ -1,24 +1,23 @@
-using System;
-using System.Reflection;
+﻿using System;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Identity;
 
-namespace FluentNHibernate.Automapping
+namespace FluentNHibernate.Automapping.Steps
 {
-    public class AutoMapIdentity : IAutoMapper
+    public class IdentityStep : IAutomappingStep
     {
-        private readonly AutoMappingExpressions expressions;
+        private readonly IAutomappingConfiguration cfg;
 
-        public AutoMapIdentity(AutoMappingExpressions conventions)
+        public IdentityStep(IAutomappingConfiguration cfg)
         {
-            this.expressions = conventions;
+            this.cfg = cfg;
         }
 
-        public bool MapsProperty(Member property)
+        public bool ShouldMap(Member member)
         {
-            return expressions.FindIdentity(property);
+            return cfg.IsId(member);
         }
 
         public void Map(ClassMappingBase classMap, Member property)

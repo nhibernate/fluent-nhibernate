@@ -11,8 +11,7 @@ namespace FluentNHibernate.Testing.Automapping
         [Test]
         public void AutoMapIdentification()
         {
-            Model<ExampleClass>(model =>
-                model.Where(type => type == typeof(ExampleClass)));
+            Model<ExampleClass>();
 
             Test<ExampleClass>(mapping =>
                                    {
@@ -24,8 +23,7 @@ namespace FluentNHibernate.Testing.Automapping
         [Test]
         public void AutoMapVersion()
         {
-            Model<ExampleClass>(model =>
-                model.Where(type => type == typeof(ExampleClass)));
+            Model<ExampleClass>();
 
             Test<ExampleClass>(mapping =>
                 mapping
@@ -36,8 +34,7 @@ namespace FluentNHibernate.Testing.Automapping
         [Test]
         public void AutoMapProperty()
         {
-            Model<ExampleClass>(model =>
-                model.Where(type => type == typeof(ExampleClass)));
+            Model<ExampleClass>();
 
             Test<ExampleClass>(mapping =>
                 mapping.Element("//property[@name='LineOne']/column").HasAttribute("name", "LineOne"));
@@ -47,7 +44,6 @@ namespace FluentNHibernate.Testing.Automapping
         public void AutoMapIgnoreProperty()
         {
             Model<ExampleClass>(model => model
-                .Where(type => type == typeof(ExampleClass))
                 .Override<ExampleClass>(m => m.IgnoreProperty(x => x.LineOne)));
 
             Test<ExampleClass>(mapping =>
@@ -59,8 +55,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             Model<ExampleClass>(model => model
                 .Override<ExampleClass>(mapping =>
-                    mapping.Map(x => x.Enum))
-                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures"));
+                    mapping.Map(x => x.Enum)));
 
             Test<ExampleClass>(mapping =>
                 mapping.Element("//property[@name='Enum']").Exists());
@@ -69,8 +64,7 @@ namespace FluentNHibernate.Testing.Automapping
         [Test]
         public void AutoMapManyToOne()
         {
-            Model<ExampleClass>(model =>
-                model.Where(type => type == typeof(ExampleClass)));
+            Model<ExampleClass>();
 
             Test<ExampleClass>(mapping =>
                 mapping.Element("//many-to-one").HasAttribute("name", "Parent")
@@ -80,8 +74,7 @@ namespace FluentNHibernate.Testing.Automapping
         [Test]
         public void AutoMapManyToMany()
         {
-            Model<ManyToMany1>(model =>
-                model.Where(type => type == typeof(ManyToMany1)));
+            Model<ManyToMany1>();
 
             Test<ManyToMany1>(mapping =>
                 mapping.Element("//many-to-many/column").HasAttribute("name", "ManyToMany2_id"));
@@ -90,8 +83,7 @@ namespace FluentNHibernate.Testing.Automapping
         [Test]
         public void AutoMapManyToMany_ShouldRecognizeSet_BaseOnType()
         {
-            Model<ManyToMany1>(model =>
-                model.Where(type => type == typeof(ManyToMany1)));
+            Model<ManyToMany1>();
 
             Test<ManyToMany1>(mapping =>
                 mapping.Element("//set[@name='Many1']").Exists());
@@ -100,8 +92,7 @@ namespace FluentNHibernate.Testing.Automapping
         [Test]
         public void AutoMapOneToMany()
         {
-            Model<ExampleParentClass>(model =>
-                model.Where(type => type == typeof(ExampleParentClass)));
+            Model<ExampleParentClass>();
 
             Test<ExampleParentClass>(mapping =>
                 mapping.Element("//bag[@name='Examples']").Exists());
@@ -110,8 +101,7 @@ namespace FluentNHibernate.Testing.Automapping
         [Test]
         public void AutoMapDoesntSetCacheWithDefaultConvention()
         {
-            Model<ExampleClass>(model =>
-                model.Where(type => type == typeof(ExampleClass)));
+            Model<ExampleClass>();
 
             Test<ExampleClass>(mapping =>
                 mapping.Element("//cache").DoesntExist());
@@ -121,8 +111,7 @@ namespace FluentNHibernate.Testing.Automapping
         public void AutoMapSetsCacheOnClassUsingConvention()
         {
             Model<ExampleClass>(model => model
-                .Conventions.Add(Cache.Is(cache => cache.ReadOnly()))
-                .Where(type => type == typeof(ExampleClass)));
+                .Conventions.Add(Cache.Is(cache => cache.ReadOnly())));
 
             Test<ExampleClass>(mapping =>
                 mapping.Element("//cache").Exists());
@@ -132,8 +121,7 @@ namespace FluentNHibernate.Testing.Automapping
         public void ShouldAutoMapBitmapPropertyAsColumn()
         {
             //This is a regression test for issue 198
-            Model<ClassWithBitmap>(model =>
-                model.Where(type => type == typeof(ClassWithBitmap)));
+            Model<ClassWithBitmap>();
 
             Test<ClassWithBitmap>(mapping =>
                 mapping.Element("//property[@name='Bitmap']/column").HasAttribute("name", "Bitmap"));

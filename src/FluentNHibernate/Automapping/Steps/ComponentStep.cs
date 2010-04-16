@@ -1,24 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Collections.Generic;
 using FluentNHibernate.MappingModel.ClassBased;
 
-namespace FluentNHibernate.Automapping
+namespace FluentNHibernate.Automapping.Steps
 {
-    public class AutoMapComponent : IAutoMapper
+    public class ComponentStep : IAutomappingStep
     {
-        private readonly AutoMappingExpressions expressions;
+        private readonly IAutomappingConfiguration cfg;
         private readonly AutoMapper mapper;
 
-        public AutoMapComponent(AutoMappingExpressions expressions, AutoMapper mapper)
+        public ComponentStep(IAutomappingConfiguration cfg, AutoMapper mapper)
         {
-            this.expressions = expressions;
+            this.cfg = cfg;
             this.mapper = mapper;
         }
 
-        public bool MapsProperty(Member property)
+        public bool ShouldMap(Member member)
         {
-            return expressions.IsComponentType(property.PropertyType);
+            return cfg.IsComponent(member.PropertyType);
         }
 
         public void Map(ClassMappingBase classMap, Member property)
@@ -32,7 +30,7 @@ namespace FluentNHibernate.Automapping
             };
 
             mapper.FlagAsMapped(property.PropertyType);
-            mapper.MergeMap(property.PropertyType, mapping, new List<string>());
+            mapper.MergeMap(property.PropertyType, mapping, new List<Member>());
 
             classMap.AddComponent(mapping);
         }

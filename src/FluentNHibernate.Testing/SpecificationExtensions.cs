@@ -158,7 +158,7 @@ namespace FluentNHibernate.Testing
 
         public static void ShouldBeEmpty<T>(this IEnumerable<T> actual)
         {
-            actual.Count().ShouldEqual(0);
+            Assert.IsEmpty(actual.ToArray());
         }
 
         public static void ItemsShouldBeEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected)

@@ -11,26 +11,29 @@ namespace FluentNHibernate.Automapping
 {
     public class AutoPersistenceModel : PersistenceModel
     {
-        protected AutoMapper autoMapper;
-        private readonly List<ITypeSource> sources = new List<ITypeSource>();
-        private Func<Type, bool> shouldIncludeType;
-        private readonly List<AutoMapType> mappingTypes = new List<AutoMapType>();
-        private bool autoMappingsCreated;
-        private readonly AutoMappingAlterationCollection alterations = new AutoMappingAlterationCollection();
-        protected readonly List<InlineOverride> inlineOverrides = new List<InlineOverride>();
-        private readonly List<Type> ignoredTypes = new List<Type>();
-        private readonly List<Type> includedTypes = new List<Type>();
+        readonly IAutomappingConfiguration cfg;
+        readonly AutoMappingExpressions expressions;
+        readonly AutoMapper autoMapper;
+        readonly List<ITypeSource> sources = new List<ITypeSource>();
+        Func<Type, bool> whereClause;
+        readonly List<AutoMapType> mappingTypes = new List<AutoMapType>();
+        bool autoMappingsCreated;
+        readonly AutoMappingAlterationCollection alterations = new AutoMappingAlterationCollection();
+        readonly List<InlineOverride> inlineOverrides = new List<InlineOverride>();
+        readonly List<Type> ignoredTypes = new List<Type>();
+        readonly List<Type> includedTypes = new List<Type>();
 
         public AutoPersistenceModel()
         {
-            Expressions = new AutoMappingExpressions();
-            autoMapper = new AutoMapper(Expressions, Conventions, inlineOverrides);
+            expressions = new AutoMappingExpressions();
+            cfg = new ExpressionBasedAutomappingConfiguration(expressions);
+            autoMapper = new AutoMapper(cfg, Conventions, inlineOverrides);
         }
 
-        public AutoPersistenceModel(AutoMapper customAutomapper)
+        public AutoPersistenceModel(IAutomappingConfiguration cfg)
         {
-            Expressions = new AutoMappingExpressions();
-            autoMapper = customAutomapper;
+            this.cfg = cfg;
+            autoMapper = new AutoMapper(cfg, Conventions, inlineOverrides);
         }
 
         /// <summary>
@@ -74,19 +77,31 @@ namespace FluentNHibernate.Automapping
         }
 
         /// <summary>
-        /// Alter some of the configuration options that control how the automapper works
+        /// Alter some of the configuration options that control how the automapper works.
+        /// Depreciated in favour of supplying your own IAutomappingConfiguration instance to AutoMap: <see cref="AutoMap.AssemblyOf{T}(FluentNHibernate.Automapping.IAutomappingConfiguration)"/>.
+        /// Cannot be used in combination with a user-defined configuration.
         /// </summary>
+        [Obsolete("Depreciated in favour of supplying your own IAutomappingConfiguration instance to AutoMap: AutoMap.AssemblyOf<T>(your_configuration_instance)")]
         public AutoPersistenceModel Setup(Action<AutoMappingExpressions> expressionsAction)
         {
-            expressionsAction(Expressions);
+            if (HasUserDefinedConfiguration)
+                throw new InvalidOperationException("Cannot use Setup method when using a user-defined IAutomappingConfiguration instance.");
+
+            expressionsAction(expressions);
             return this;
         }
 
-        internal AutoMappingExpressions Expressions { get; private set; }
-
+        /// <summary>
+        /// Supply a criteria for which types will be mapped.
+        /// Cannot be used in combination with a user-defined configuration.
+        /// </summary>
+        /// <param name="where">Where clause</param>
         public AutoPersistenceModel Where(Func<Type, bool> where)
         {
-            this.shouldIncludeType = where;
+            if (HasUserDefinedConfiguration)
+                throw new InvalidOperationException("Cannot use Where method when using a user-defined IAutomappingConfiguration instance.");
+
+            whereClause = where;
             return this;
         }
 
@@ -106,12 +121,13 @@ namespace FluentNHibernate.Automapping
 
             foreach (var type in sources.SelectMany(x => x.GetTypes()))
             {
-                if (shouldIncludeType != null)
-                {
-                    if (!shouldIncludeType(type))
-                        continue;
-                }
-
+                // skipped by user-defined configuration criteria
+                if (HasUserDefinedConfiguration && !cfg.ShouldMap(type))
+                    continue;
+                // skipped by inline where clause
+                if (whereClause != null && !whereClause(type))
+                    continue;
+                // skipped because either already mapped elsewhere, or not valid for mapping            
                 if (!ShouldMap(type))
                     continue;
 
@@ -120,18 +136,15 @@ namespace FluentNHibernate.Automapping
 
             foreach (var type in mappingTypes)
             {
-                if (type.Type.IsClass && IsNotAnonymousMethodClass(type))
-                {
-                    if (!type.IsMapped)
-                    {
-                        var mapping = FindMapping(type.Type);
+                if (!type.Type.IsClass || !IsNotInnerClass(type)) continue;
+                if (type.IsMapped) continue;
 
-                        if (mapping != null)
-                            MergeMap(type.Type, mapping);
-                        else
-                            AddMapping(type.Type);
-                    }
-                }
+                var mapping = FindMapping(type.Type);
+
+                if (mapping == null)
+                    AddMapping(type.Type);
+                else
+                    MergeMap(type.Type, mapping);
             }
 
             autoMappingsCreated = true;
@@ -144,7 +157,7 @@ namespace FluentNHibernate.Automapping
             base.Configure(configuration);
         }
 
-        private static bool IsNotAnonymousMethodClass(AutoMapType type)
+        static bool IsNotInnerClass(AutoMapType type)
         {
             return type.Type.ReflectedType == null;
         }
@@ -169,7 +182,7 @@ namespace FluentNHibernate.Automapping
 
         private bool ShouldMapParent(Type type)
         {
-            return ShouldMap(type.BaseType) && !Expressions.IsConcreteBaseType(type.BaseType);
+            return ShouldMap(type.BaseType) && !cfg.IsConcreteBaseType(type.BaseType);
         }
 
         private bool ShouldMap(Type type)
@@ -180,12 +193,8 @@ namespace FluentNHibernate.Automapping
                 return false; // excluded
             if (type.IsGenericType && ignoredTypes.Contains(type.GetGenericTypeDefinition()))
                 return false; // generic definition is excluded
-            if (type.IsAbstract && Expressions.AbstractClassIsLayerSupertype(type))
+            if (type.IsAbstract && cfg.AbstractClassIsLayerSupertype(type))
                 return false; // is abstract and a layer supertype
-#pragma warning disable 618,612
-            if (Expressions.IsBaseType(type))
-#pragma warning restore 618,612
-                return false; // excluded
             if (type == typeof(object))
                 return false; // object!
 
@@ -195,7 +204,7 @@ namespace FluentNHibernate.Automapping
         private void MergeMap(Type type, IMappingProvider mapping)
         {
             Type typeToMap = GetTypeToMap(type);
-            autoMapper.MergeMap(typeToMap, mapping.GetClassMapping(), new List<string>(mapping.GetIgnoredProperties()));
+            autoMapper.MergeMap(typeToMap, mapping.GetClassMapping(), new List<Member>(mapping.GetIgnoredProperties()));
         }
 
         public IMappingProvider FindMapping<T>()
@@ -232,7 +241,7 @@ namespace FluentNHibernate.Automapping
             // if we haven't found a map yet then try to find a map of the
             // base type to merge if not a concrete base type
 
-			if (type.BaseType != typeof(object) && !Expressions.IsConcreteBaseType(type.BaseType))
+			if (type.BaseType != typeof(object) && !cfg.IsConcreteBaseType(type.BaseType))
 			{
 				return FindMapping(type.BaseType);
 			}
@@ -325,7 +334,7 @@ namespace FluentNHibernate.Automapping
         /// Abstract classes are probably what you'll be using this method with. Fluent NHibernate considers abstract
         /// classes to be layer supertypes, so doesn't automatically map them as part of an inheritance hierarchy. You
         /// can use this method to override that behavior for a specific type; otherwise you should consider using the
-        /// <see cref="AutoMappingExpressions.AbstractClassIsLayerSupertype"/> setting.
+        /// <see cref="IAutomappingConfiguration.AbstractClassIsLayerSupertype"/> setting.
         /// </remarks>
         /// <typeparam name="T">Type to include</typeparam>
         public AutoPersistenceModel IncludeBase<T>()
@@ -352,6 +361,11 @@ namespace FluentNHibernate.Automapping
         protected override string GetMappingFileName()
         {
             return "AutoMappings.hbm.xml";
+        }
+
+        bool HasUserDefinedConfiguration
+        {
+            get { return !(cfg is ExpressionBasedAutomappingConfiguration); }
         }
     }
 }

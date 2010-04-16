@@ -1,12 +1,10 @@
-using System;
-using System.Reflection;
-using FluentNHibernate.Mapping;
+﻿using System;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
-namespace FluentNHibernate.Automapping
+namespace FluentNHibernate.Automapping.Steps
 {
-    public class AutoMapManyToOne : IAutoMapper
+    public class ReferenceStep : IAutomappingStep
     {
         private readonly Func<Member, bool> findPropertyconvention = p => (
             p.PropertyType.Namespace != "System" && // ignore clr types (won't be entities)
@@ -14,10 +12,10 @@ namespace FluentNHibernate.Automapping
             p.PropertyType.Namespace != "Iesi.Collections.Generic" &&
 	    !p.PropertyType.IsEnum);
 
-        public bool MapsProperty(Member property)
+        public bool ShouldMap(Member member)
         {
-            if (property.CanWrite)
-                return findPropertyconvention(property);
+            if (member.CanWrite)
+                return findPropertyconvention(member);
 
             return false;
         }

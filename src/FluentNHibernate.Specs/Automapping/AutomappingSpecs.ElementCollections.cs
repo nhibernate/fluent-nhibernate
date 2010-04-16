@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FluentNHibernate.Automapping;
+using FluentNHibernate.Automapping.Steps;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
@@ -11,7 +13,7 @@ namespace FluentNHibernate.Specs.Automapping
     public class when_the_automapper_is_asked_if_it_can_map_a_list_of_strings : AutoMapOneToManyVisitSpec
     {
         Because of = () =>
-            maps_property = step.MapsProperty(FakeMembers.IListOfStrings);
+            maps_property = step.ShouldMap(FakeMembers.IListOfStrings);
 
         It should_accept_the_property = () =>
             maps_property.ShouldBeTrue();
@@ -22,7 +24,7 @@ namespace FluentNHibernate.Specs.Automapping
     public class when_the_automapper_is_asked_if_it_can_map_a_list_of_ints : AutoMapOneToManyVisitSpec
     {
         Because of = () =>
-            maps_property = step.MapsProperty(FakeMembers.IListOfInts);
+            maps_property = step.ShouldMap(FakeMembers.IListOfInts);
 
         It should_accept_the_property = () =>
             maps_property.ShouldBeTrue();
@@ -33,7 +35,7 @@ namespace FluentNHibernate.Specs.Automapping
     public class when_the_automapper_is_asked_if_it_can_map_a_list_of_doubles : AutoMapOneToManyVisitSpec
     {
         Because of = () =>
-            maps_property = step.MapsProperty(FakeMembers.IListOfDoubles);
+            maps_property = step.ShouldMap(FakeMembers.IListOfDoubles);
 
         It should_accept_the_property = () =>
             maps_property.ShouldBeTrue();
@@ -44,7 +46,7 @@ namespace FluentNHibernate.Specs.Automapping
     public class when_the_automapper_is_asked_if_it_can_map_a_list_of_shorts : AutoMapOneToManyVisitSpec
     {
         Because of = () =>
-            maps_property = step.MapsProperty(FakeMembers.IListOfShorts);
+            maps_property = step.ShouldMap(FakeMembers.IListOfShorts);
 
         It should_accept_the_property = () =>
             maps_property.ShouldBeTrue();
@@ -55,7 +57,7 @@ namespace FluentNHibernate.Specs.Automapping
     public class when_the_automapper_is_asked_if_it_can_map_a_list_of_longs : AutoMapOneToManyVisitSpec
     {
         Because of = () =>
-            maps_property = step.MapsProperty(FakeMembers.IListOfLongs);
+            maps_property = step.ShouldMap(FakeMembers.IListOfLongs);
 
         It should_accept_the_property = () =>
             maps_property.ShouldBeTrue();
@@ -66,7 +68,7 @@ namespace FluentNHibernate.Specs.Automapping
     public class when_the_automapper_is_asked_if_it_can_map_a_list_of_floats : AutoMapOneToManyVisitSpec
     {
         Because of = () =>
-            maps_property = step.MapsProperty(FakeMembers.IListOfFloats);
+            maps_property = step.ShouldMap(FakeMembers.IListOfFloats);
 
         It should_accept_the_property = () =>
             maps_property.ShouldBeTrue();
@@ -77,7 +79,7 @@ namespace FluentNHibernate.Specs.Automapping
     public class when_the_automapper_is_asked_if_it_can_map_a_list_of_bools : AutoMapOneToManyVisitSpec
     {
         Because of = () =>
-            maps_property = step.MapsProperty(FakeMembers.IListOfBools);
+            maps_property = step.ShouldMap(FakeMembers.IListOfBools);
 
         It should_accept_the_property = () =>
             maps_property.ShouldBeTrue();
@@ -88,7 +90,7 @@ namespace FluentNHibernate.Specs.Automapping
     public class when_the_automapper_is_asked_if_it_can_map_a_list_of_DateTimes : AutoMapOneToManyVisitSpec
     {
         Because of = () =>
-            maps_property = step.MapsProperty(FakeMembers.IListOfDateTimes);
+            maps_property = step.ShouldMap(FakeMembers.IListOfDateTimes);
 
         It should_accept_the_property = () =>
             maps_property.ShouldBeTrue();
@@ -99,7 +101,7 @@ namespace FluentNHibernate.Specs.Automapping
     public class when_the_automapper_is_told_to_map_a_list_of_simple_types_with_a_custom_column_defined : AutoMapOneToManySpec
     {
         Establish context = () =>
-            expressions.SimpleTypeCollectionValueColumn = t => "custom_column";
+            cfg.FixedSimpleTypeCollectionValueColumn = "custom_column";
 
         Because of = () =>
             step.Map(container, FakeMembers.IListOfStrings);
@@ -157,28 +159,38 @@ namespace FluentNHibernate.Specs.Automapping
     {
         Establish context = () =>
         {
-            expressions = new AutoMappingExpressions();
-            step = new AutoMapOneToMany(expressions);
+            cfg = new TestConfiguration();
+            step = new HasManyStep(cfg);
             container = new ClassMapping
             {
                 Type = FakeMembers.Type
             };
         };
 
-        protected static AutoMapOneToMany step;
+        protected static HasManyStep step;
         protected static ClassMapping container;
-        protected static AutoMappingExpressions expressions;
+        protected static TestConfiguration cfg;
+
+        protected class TestConfiguration : DefaultAutomappingConfiguration
+        {
+            public override string SimpleTypeCollectionValueColumn(Member member)
+            {
+                return FixedSimpleTypeCollectionValueColumn ?? base.SimpleTypeCollectionValueColumn(member);
+            }
+
+            public string FixedSimpleTypeCollectionValueColumn { get; set; }
+        }
     }
 
     public abstract class AutoMapOneToManyVisitSpec
     {
         Establish context = () =>
         {
-            expressions = new AutoMappingExpressions();
-            step = new AutoSimpleTypeCollection(expressions);
+            cfg = new DefaultAutomappingConfiguration();
+            step = new SimpleTypeCollectionStep(cfg);
         };
 
-        protected static AutoSimpleTypeCollection step;
-        protected static AutoMappingExpressions expressions;
+        protected static SimpleTypeCollectionStep step;
+        protected static IAutomappingConfiguration cfg;
     }
 }

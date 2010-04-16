@@ -1,27 +1,27 @@
-using System.Linq;
-using FluentNHibernate.Automapping;
+﻿using System.Linq;
+using FluentNHibernate.Automapping.Steps;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.Automapping
+namespace FluentNHibernate.Testing.AutoMapping.Steps
 {
     [TestFixture]
-    public class AutoMapVersionTester
+    public class VersionStepTests
     {
-        private AutoMapVersion mapper;
+        private VersionStep mapper;
 
         [SetUp]
         public void CreateMapper()
         {
-            mapper = new AutoMapVersion();
+            mapper = new VersionStep();
         }
 
         [Test]
         public void ShouldMapByteArray()
         {
-            mapper.MapsProperty(typeof(Target).GetProperty("Version").ToMember()).ShouldBeTrue();
+            mapper.ShouldMap(typeof(Target).GetProperty("Version").ToMember()).ShouldBeTrue();
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace FluentNHibernate.Testing.Automapping
 
             mapper.Map(mapping, typeof(Target).GetProperty("Version").ToMember());
 
-            mapping.Version.Columns.All(x => x.SqlType == "timestamp").ShouldBeTrue();
+            SpecificationExtensions.ShouldBeTrue(mapping.Version.Columns.All(x => x.SqlType == "timestamp"));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace FluentNHibernate.Testing.Automapping
 
             mapper.Map(mapping, typeof(Target).GetProperty("Version").ToMember());
 
-            mapping.Version.Columns.All(x => x.NotNull == true).ShouldBeTrue();
+            SpecificationExtensions.ShouldBeTrue(mapping.Version.Columns.All(x => x.NotNull == true));
         }
 
         [Test]
@@ -86,18 +86,18 @@ namespace FluentNHibernate.Testing.Automapping
     [TestFixture]
     public class When_mapping_a_byte_array_version_property_and_the_version_property_is_on_a_base_class
     {
-        private AutoMapVersion mapper;
+        private VersionStep mapper;
 
         [SetUp]
         public void CreateMapper()
         {
-            mapper = new AutoMapVersion();
+            mapper = new VersionStep();
         }
 
         [Test]
         public void ShouldMapByteArray()
         {
-            mapper.MapsProperty(ReflectionHelper.GetMember<BaseEntityClass>(x => x.Version)).ShouldBeTrue();
+            mapper.ShouldMap(ReflectionHelper.GetMember<BaseEntityClass>(x => x.Version)).ShouldBeTrue();
         }
 
         [Test]
@@ -149,4 +149,5 @@ namespace FluentNHibernate.Testing.Automapping
             public byte[] Version { get; set; }
         }
     }
+
 }

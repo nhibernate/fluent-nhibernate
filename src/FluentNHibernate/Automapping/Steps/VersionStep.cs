@@ -1,21 +1,19 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.Automapping
+namespace FluentNHibernate.Automapping.Steps
 {
-    public class AutoMapVersion : IAutoMapper
+    public class VersionStep : IAutomappingStep
     {
         private static readonly IList<string> ValidNames = new List<string> { "version", "timestamp" };
         private static readonly IList<Type> ValidTypes = new List<Type> { typeof(int), typeof(long), typeof(TimeSpan), typeof(byte[]) };
 
-        public bool MapsProperty(Member property)
+        public bool ShouldMap(Member member)
         {
-            return ValidNames.Contains(property.Name.ToLowerInvariant()) && ValidTypes.Contains(property.PropertyType);
+            return ValidNames.Contains(member.Name.ToLowerInvariant()) && ValidTypes.Contains(member.PropertyType);
         }
 
         public void Map(ClassMappingBase classMap, Member property)

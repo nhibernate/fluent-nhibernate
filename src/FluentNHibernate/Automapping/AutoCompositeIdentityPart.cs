@@ -7,23 +7,23 @@ namespace FluentNHibernate.Automapping
 {
     public class AutoCompositeIdentityPart<T> : CompositeIdentityPart<T>
     {
-        private readonly IList<string> mappedProperties;
+        private readonly IList<Member> mappedMembers;
 
-        public AutoCompositeIdentityPart(IList<string> mappedProperties)
+        public AutoCompositeIdentityPart(IList<Member> mappedMembers)
         {
-            this.mappedProperties = mappedProperties;
+            this.mappedMembers = mappedMembers;
         }
 
         protected override CompositeIdentityPart<T> KeyProperty(Member property, string columnName, Action<KeyPropertyPart> customMapping)
         {
-            mappedProperties.Add(property.Name);
+            mappedMembers.Add(property);
 
             return base.KeyProperty(property, columnName, customMapping);
         }
 
         protected override CompositeIdentityPart<T> KeyReference(Member property, string columnName, Action<KeyManyToOnePart> customMapping)
         {
-            mappedProperties.Add(property.Name);
+            mappedMembers.Add(property);
 
             return base.KeyReference(property, columnName, customMapping);
         }

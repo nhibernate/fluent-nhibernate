@@ -58,11 +58,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Automapping\AutoMapBackwardsCompatibilitySpecs.cs" />
     <Compile Include="Automapping\AutomappingSpecs.Properties.Enum.cs" />
     <Compile Include="Automapping\AutomappingSpecs.ElementCollections.cs" />
+    <Compile Include="Automapping\AutoPersistenceModelSpecs.cs" />
+    <Compile Include="Automapping\AutoPersistenceModelSpecs.Conventions.cs" />
+    <Compile Include="Automapping\Fixtures\AutomappingSpecExtensions.cs" />
+    <Compile Include="Automapping\Fixtures\Entity.cs" />
     <Compile Include="Automapping\Fixtures\EntityWithStaticProperties.cs" />
+    <Compile Include="Automapping\Fixtures\EntityUsingPrivateFields.cs" />
     <Compile Include="Automapping\Fixtures\FakeMembers.cs" />
     <Compile Include="Automapping\Fixtures\StubTypeSource.cs" />
+    <Compile Include="Automapping\PrivateAutomapperSpecs.cs" />
+    <Compile Include="Automapping\PrivateFieldsSpecs.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FluentInterface\ClasslikeBehaviors.cs" />
     <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Cache.cs" />
@@ -92,6 +100,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Fixtures\Target.cs" />
     <Compile Include="Utilities\Fixtures\TargetParent.cs" />
+    <Compile Include="Utilities\MemberReflectionSpecs.cs" />
     <Compile Include="Utilities\RevealSpecs.cs" />
     <Compile Include="Visitors\BiDirectionalManyToManyPairingVisitorSpecs.cs" />
   </ItemGroup>

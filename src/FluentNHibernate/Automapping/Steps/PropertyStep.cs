@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
@@ -9,26 +8,26 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.Automapping
+namespace FluentNHibernate.Automapping.Steps
 {
-    public class AutoMapProperty : IAutoMapper
+    public class PropertyStep : IAutomappingStep
     {
         private readonly IConventionFinder conventionFinder;
-        private readonly AutoMappingExpressions expressions;
+        private readonly IAutomappingConfiguration cfg;
 
-        public AutoMapProperty(IConventionFinder conventionFinder, AutoMappingExpressions expressions)
+        public PropertyStep(IConventionFinder conventionFinder, IAutomappingConfiguration cfg)
         {
             this.conventionFinder = conventionFinder;
-            this.expressions = expressions;
+            this.cfg = cfg;
         }
 
-        public bool MapsProperty(Member property)
+        public bool ShouldMap(Member member)
         {
-            if (HasExplicitTypeConvention(property))
+            if (HasExplicitTypeConvention(member))
                 return true;
 
-            if (property.CanWrite)
-                return IsMappableToColumnType(property);
+            if (member.CanWrite)
+                return IsMappableToColumnType(member);
 
             return false;
         }
@@ -87,7 +86,7 @@ namespace FluentNHibernate.Automapping
             var columnName = property.Name;
             
             if (component != null)
-                columnName = expressions.GetComponentColumnPrefix(component.Member) + columnName;
+                columnName = cfg.GetComponentColumnPrefix(component.Member) + columnName;
 
             mapping.AddDefaultColumn(new ColumnMapping { Name = columnName });
 

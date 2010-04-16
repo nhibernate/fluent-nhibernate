@@ -1,34 +1,34 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.Automapping
+namespace FluentNHibernate.Automapping.Steps
 {
-    public class AutoSimpleTypeCollection : IAutoMapper
+    public class SimpleTypeCollectionStep : IAutomappingStep
     {
-        readonly AutoMappingExpressions expressions;
+        readonly IAutomappingConfiguration cfg;
         readonly AutoKeyMapper keys;
         readonly AutoCollectionCreator collections;
 
-        public AutoSimpleTypeCollection(AutoMappingExpressions expressions)
+        public SimpleTypeCollectionStep(IAutomappingConfiguration cfg)
         {
-            this.expressions = expressions;
-            keys = new AutoKeyMapper(expressions);
+            this.cfg = cfg;
+            keys = new AutoKeyMapper(cfg);
             collections = new AutoCollectionCreator();
         }
 
-        public bool MapsProperty(Member property)
+        public bool ShouldMap(Member member)
         {
-            if (!property.PropertyType.IsGenericType)
+            if (!member.PropertyType.IsGenericType)
                 return false;
 
-            var childType = property.PropertyType.GetGenericArguments()[0];
+            var childType = member.PropertyType.GetGenericArguments()[0];
 
-            return property.CanWrite &&
-                property.PropertyType.ClosesInterface(typeof(IEnumerable<>)) &&
+            return member.CanWrite &&
+                member.PropertyType.ClosesInterface(typeof(IEnumerable<>)) &&
                     (childType.IsPrimitive || childType.In(typeof(string), typeof(DateTime)));
         }
 
@@ -57,7 +57,7 @@ namespace FluentNHibernate.Automapping
                 Type = new TypeReference(property.PropertyType.GetGenericArguments()[0])
             };
 
-            element.AddDefaultColumn(new ColumnMapping { Name = expressions.SimpleTypeCollectionValueColumn(property) });
+            element.AddDefaultColumn(new ColumnMapping { Name = cfg.SimpleTypeCollectionValueColumn(property) });
             mapping.SetDefaultValue(x => x.Element, element);
         }
     }

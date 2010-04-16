@@ -288,7 +288,7 @@ namespace FluentNHibernate
         ClassMapping GetClassMapping();
         // HACK: In place just to keep compatibility until verdict is made
         HibernateMapping GetHibernateMapping();
-        IEnumerable<string> GetIgnoredProperties();
+        IEnumerable<Member> GetIgnoredProperties();
     }
 
     public class PassThroughMappingProvider : IMappingProvider
@@ -310,9 +310,9 @@ namespace FluentNHibernate
             return new HibernateMapping();
         }
 
-        public IEnumerable<string> GetIgnoredProperties()
+        public IEnumerable<Member> GetIgnoredProperties()
         {
-            return new string[0];
+            return new Member[0];
         }
     }
 }

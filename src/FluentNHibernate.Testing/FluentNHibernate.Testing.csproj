@@ -82,7 +82,6 @@
     <Compile Include="AutoMapping\Apm\AlterationTests.cs" />
     <Compile Include="AutoMapping\Apm\ConcreteBaseClassTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\VersionConventionTests.cs" />
-    <Compile Include="AutoMapping\AutoMapVersionTester.cs" />
     <Compile Include="AutoMapping\Overrides\AutoMappingOverrideAlterationTests.cs" />
     <Compile Include="AutoMapping\Apm\CacheOverrideTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\HasManyConventionTests.cs" />
@@ -91,8 +90,6 @@
     <Compile Include="AutoMapping\Apm\Conventions\ReferencesConventionTests.cs" />
     <Compile Include="AutoMapping\Apm\GenericBaseClassTests.cs" />
     <Compile Include="AutoMapping\Apm\IgnoreBaseAutoPersistenceModelTests.cs" />
-    <Compile Include="AutoMapping\AutoMapManyToOneTester.cs" />
-    <Compile Include="AutoMapping\AutoMapOneToManyTester.cs" />
     <Compile Include="AutoMapping\AutoMappingTester.cs" />
     <Compile Include="AutoMapping\AutoMapTests.cs" />
     <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.cs" />
@@ -101,15 +98,12 @@
     <Compile Include="AutoMapping\BaseAutoPersistenceTests.cs" />
     <Compile Include="AutoMapping\JoinedSubclassConventionTests.cs" />
     <Compile Include="AutoMapping\ManyToMany.cs" />
-    <Compile Include="AutoMapping\ManyToManyAutomapperTester.cs" />
     <Compile Include="AutoMapping\Overrides\ClassMappingOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\CompositeIdOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\HibernateMappingOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\ParentOverridesWithSubclasses.cs" />
-    <Compile Include="AutoMapping\PrivateAutoMappingTester.cs" />
     <Compile Include="StubTypeSource.cs" />
     <Compile Include="AutoMapping\TestFixtures.cs" />
-    <Compile Include="AutoMapping\XXAppenderPropertyConvention.cs" />
     <Compile Include="Cfg\Db\DB2ConfigurationTester.cs" />
     <Compile Include="Cfg\Db\OracleClientConfigurationTester.cs" />
     <Compile Include="Cfg\Db\JetDriverConfigurationTester.cs" />
@@ -451,11 +445,21 @@
       <Link>FluentKey.snk</Link>
     </None>
     <None Include="App.config" />
+    <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.Components.cs" />
+    <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.Conventions.cs" />
+    <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.IgnoringProperties.cs" />
+    <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.Inheritance.cs" />
+    <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.Overrides.cs" />
+    <Compile Include="AutoMapping\Steps\HasManyToManyStepTests.cs" />
+    <Compile Include="AutoMapping\Steps\ReferenceStepTests.cs" />
+    <Compile Include="AutoMapping\Steps\HasManyStepTests.cs" />
+    <Compile Include="AutoMapping\Steps\VersionStepTests.cs" />
     <Compile Include="ConventionsTests\AutoImportHelperTests.cs" />
     <Compile Include="ConventionsTests\DefaultAccessHelperTests.cs" />
     <Compile Include="ConventionsTests\DefaultCascadeHelperTests.cs" />
     <Compile Include="ConventionsTests\DefaultLazyHelperTests.cs" />
     <Compile Include="ConventionsTests\ProxyHelperTests.cs" />
+    <Compile Include="EmptySource.cs" />
     <Compile Include="FluentInterfaceTests\NaturalIdPartTests.cs" />
     <Compile Include="MappingModel\Identity\CompositeIdMappingTester.cs" />
     <Compile Include="MappingModel\Output\XmlNaturalIdWriterTester.cs" />

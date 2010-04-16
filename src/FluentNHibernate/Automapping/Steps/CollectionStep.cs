@@ -1,27 +1,27 @@
-using FluentNHibernate.MappingModel;
+﻿using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.Automapping
+namespace FluentNHibernate.Automapping.Steps
 {
-    public class AutoEntityCollection : IAutoMapper
+    public class CollectionStep : IAutomappingStep
     {
-        readonly AutoMappingExpressions expressions;
+        readonly IAutomappingConfiguration cfg;
         readonly AutoKeyMapper keys;
         AutoCollectionCreator collections;
 
-        public AutoEntityCollection(AutoMappingExpressions expressions)
+        public CollectionStep(IAutomappingConfiguration cfg)
         {
-            this.expressions = expressions;
-            keys = new AutoKeyMapper(expressions);
+            this.cfg = cfg;
+            keys = new AutoKeyMapper(cfg);
             collections = new AutoCollectionCreator();
         }
 
-        public bool MapsProperty(Member property)
+        public bool ShouldMap(Member member)
         {
-            return property.CanWrite &&
-                property.PropertyType.Namespace.In("System.Collections.Generic", "Iesi.Collections.Generic");
+            return member.CanWrite &&
+                member.PropertyType.Namespace.In("System.Collections.Generic", "Iesi.Collections.Generic");
         }
 
         public void Map(ClassMappingBase classMap, Member property)
