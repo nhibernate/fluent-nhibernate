@@ -75,6 +75,9 @@ namespace FluentNHibernate.Automapping
 
             foreach (var storedProcedure in storedProcedures)
                 mapping.AddStoredProcedure(storedProcedure.GetStoredProcedureMapping());
+
+            foreach (var filter in filters)
+                mapping.AddOrReplaceFilter(filter.GetFilterMapping());
         }
 
         protected override OneToManyPart<TChild> HasMany<TChild>(Member property)
