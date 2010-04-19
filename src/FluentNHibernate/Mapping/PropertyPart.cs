@@ -190,6 +190,21 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+		/// <summary>
+		/// Specifies that a custom type (an implementation of <see cref="IUserType"/>) should be used for this property for mapping it to/from one or more database columns whose format or type doesn't match this .NET property.
+		/// </summary>
+		/// <param name="typeFunc">A function which returns a type which implements <see cref="IUserType"/>. The argument of the function is the mapped property type</param>
+		/// <returns>This property mapping to continue the method chain</returns>
+		public PropertyPart CustomType(Func<Type, Type> typeFunc)
+		{
+			var type = typeFunc.Invoke(this.property.PropertyType);
+
+			if (typeof(ICompositeUserType).IsAssignableFrom(type))
+				AddColumnsFromCompositeUserType(type);
+
+			return CustomType(TypeMapping.GetTypeString(type));
+		}
+
         private void AddColumnsFromCompositeUserType(Type compositeUserType)
         {
             var inst = (ICompositeUserType)Activator.CreateInstance(compositeUserType);

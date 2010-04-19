@@ -305,6 +305,18 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/property").HasAttribute("type", typeof(custom_type_for_testing).AssemblyQualifiedName);
         }
 
+		[Test]
+		public void CanSpecifyCustomTypeAsDotNetTypeViaFunctionFromPropertyType()
+		{
+			new MappingTester<PropertyTarget>()
+				.ForMapping(m =>
+				{
+					m.Id(x => x.Id);
+					m.Map(x => x.Data).CustomType(t => typeof(custom_generic_type_for_testing<>).MakeGenericType(t));
+				})
+				.Element("class/property").HasAttribute("type", typeof(custom_generic_type_for_testing<byte[]>).AssemblyQualifiedName);
+		}
+
         [Test]
         public void CanSpecifyCustomTypeAsDotNetType()
         {
@@ -487,6 +499,64 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 get { throw new System.NotImplementedException(); }
             }
         }
+
+		public class custom_generic_type_for_testing<T> : IUserType
+		{
+			public new bool Equals(object x, object y)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public int GetHashCode(object x)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public object NullSafeGet(IDataReader rs, string[] names, object owner)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public void NullSafeSet(IDbCommand cmd, object value, int index)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public object DeepCopy(object value)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public object Replace(object original, object target, object owner)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public object Assemble(object cached, object owner)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public object Disassemble(object value)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public SqlType[] SqlTypes
+			{
+				get { throw new System.NotImplementedException(); }
+			}
+
+			public Type ReturnedType
+			{
+				get { throw new System.NotImplementedException(); }
+			}
+
+			public bool IsMutable
+			{
+				get { throw new System.NotImplementedException(); }
+			}
+		}
         #endregion
     }
 
