@@ -62,7 +62,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 })
                 .Element("class/property/column").HasAttribute("name", "column_name");
         }
-        
+
         [Test]
         public void MapWithFluentColumnNameUsesColumnNameForColumnNameAttribute()
         {
@@ -154,17 +154,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/property[@name='Name']/column").HasAttribute("length", "20");
         }
 
-		[Test]
-		public void MapWithFluentLengthOnDecimalUsesWithLengthOfPropertyColumnAttribute()
-		{
-		    new MappingTester<PropertyTarget>()
-		        .ForMapping(m =>
-		        {
+        [Test]
+        public void MapWithFluentLengthOnDecimalUsesWithLengthOfPropertyColumnAttribute()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m =>
+                {
                     m.Id(x => x.Id);
-		            m.Map(x => x.DecimalProperty).Length(1);
-		        })
-		        .Element("class/property[@name='DecimalProperty']/column").HasAttribute("length", "1");
-		}
+                    m.Map(x => x.DecimalProperty).Length(1);
+                })
+                .Element("class/property[@name='DecimalProperty']/column").HasAttribute("length", "1");
+        }
 
         [Test]
         public void MapWithFluentLengthAllowOnAnythingPropertyColumnAttribute()
@@ -257,7 +257,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void MapWithFluentFormulaUsesFormula() 
+        public void MapWithFluentFormulaUsesFormula()
         {
             new MappingTester<PropertyTarget>()
                 .ForMapping(m =>
@@ -305,17 +305,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/property").HasAttribute("type", typeof(custom_type_for_testing).AssemblyQualifiedName);
         }
 
-		[Test]
-		public void CanSpecifyCustomTypeAsDotNetTypeViaFunctionFromPropertyType()
-		{
-			new MappingTester<PropertyTarget>()
-				.ForMapping(m =>
-				{
-					m.Id(x => x.Id);
-					m.Map(x => x.Data).CustomType(t => typeof(custom_generic_type_for_testing<>).MakeGenericType(t));
-				})
-				.Element("class/property").HasAttribute("type", typeof(custom_generic_type_for_testing<byte[]>).AssemblyQualifiedName);
-		}
+        [Test]
+        public void CanSpecifyCustomTypeAsDotNetTypeViaFunctionFromPropertyType()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Data).CustomType(t => typeof(custom_generic_type_for_testing<>).MakeGenericType(t));
+                })
+                .Element("class/property").HasAttribute("type", typeof(custom_generic_type_for_testing<byte[]>).AssemblyQualifiedName);
+        }
 
         [Test]
         public void CanSpecifyCustomTypeAsDotNetType()
@@ -380,18 +380,18 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/property/column").HasAttribute("unique", "false");
         }
 
-	    [Test]
-	    public void CanSpecifyDefault()
-	    {
-		    new MappingTester<MappedObject>()
-			    .ForMapping(m =>
-			    {
+        [Test]
+        public void CanSpecifyDefault()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m =>
+                {
                     m.Id(x => x.Id);
-			        m.Map(x => x.Name).Default("SomeName");
-			    })
-			    .Element("class/property").DoesntHaveAttribute("default")
-			    .Element("class/property/column").HasAttribute("default", "SomeName");
-	    }
+                    m.Map(x => x.Name).Default("SomeName");
+                })
+                .Element("class/property").DoesntHaveAttribute("default")
+                .Element("class/property/column").HasAttribute("default", "SomeName");
+        }
 
         [Test]
         public void CanSpecifyInsert()
@@ -500,63 +500,63 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             }
         }
 
-		public class custom_generic_type_for_testing<T> : IUserType
-		{
-			public new bool Equals(object x, object y)
-			{
-				throw new System.NotImplementedException();
-			}
+        public class custom_generic_type_for_testing<T> : IUserType
+        {
+            public new bool Equals(object x, object y)
+            {
+                throw new System.NotImplementedException();
+            }
 
-			public int GetHashCode(object x)
-			{
-				throw new System.NotImplementedException();
-			}
+            public int GetHashCode(object x)
+            {
+                throw new System.NotImplementedException();
+            }
 
-			public object NullSafeGet(IDataReader rs, string[] names, object owner)
-			{
-				throw new System.NotImplementedException();
-			}
+            public object NullSafeGet(IDataReader rs, string[] names, object owner)
+            {
+                throw new System.NotImplementedException();
+            }
 
-			public void NullSafeSet(IDbCommand cmd, object value, int index)
-			{
-				throw new System.NotImplementedException();
-			}
+            public void NullSafeSet(IDbCommand cmd, object value, int index)
+            {
+                throw new System.NotImplementedException();
+            }
 
-			public object DeepCopy(object value)
-			{
-				throw new System.NotImplementedException();
-			}
+            public object DeepCopy(object value)
+            {
+                throw new System.NotImplementedException();
+            }
 
-			public object Replace(object original, object target, object owner)
-			{
-				throw new System.NotImplementedException();
-			}
+            public object Replace(object original, object target, object owner)
+            {
+                throw new System.NotImplementedException();
+            }
 
-			public object Assemble(object cached, object owner)
-			{
-				throw new System.NotImplementedException();
-			}
+            public object Assemble(object cached, object owner)
+            {
+                throw new System.NotImplementedException();
+            }
 
-			public object Disassemble(object value)
-			{
-				throw new System.NotImplementedException();
-			}
+            public object Disassemble(object value)
+            {
+                throw new System.NotImplementedException();
+            }
 
-			public SqlType[] SqlTypes
-			{
-				get { throw new System.NotImplementedException(); }
-			}
+            public SqlType[] SqlTypes
+            {
+                get { throw new System.NotImplementedException(); }
+            }
 
-			public Type ReturnedType
-			{
-				get { throw new System.NotImplementedException(); }
-			}
+            public Type ReturnedType
+            {
+                get { throw new System.NotImplementedException(); }
+            }
 
-			public bool IsMutable
-			{
-				get { throw new System.NotImplementedException(); }
-			}
-		}
+            public bool IsMutable
+            {
+                get { throw new System.NotImplementedException(); }
+            }
+        }
         #endregion
     }
 
@@ -569,7 +569,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public ComponentTarget Component { get; set; }
         public IList<ComponentTarget> Components { get; set; }
         public byte[] Data { get; set; }
-		public decimal DecimalProperty { get; set; }
+        public decimal DecimalProperty { get; set; }
         public IDictionary ExtensionData { get; set; }
     }
 
@@ -606,9 +606,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
     public class PropertyReferenceTargetProxy
     {
-        
+
     }
-    
+
     public class ComponentTarget
     {
         public PropertyTarget MyParent { get; set; }

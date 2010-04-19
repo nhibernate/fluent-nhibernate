@@ -17,12 +17,12 @@ namespace FluentNHibernate.Mapping
         private readonly ColumnMappingCollection<PropertyPart> columns;
         private readonly AttributeStore<PropertyMapping> attributes = new AttributeStore<PropertyMapping>();
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
-        
+
         private bool nextBool = true;
 
         public PropertyPart(Member property, Type parentType)
         {
-            columns = new ColumnMappingCollection<PropertyPart>(this);            
+            columns = new ColumnMappingCollection<PropertyPart>(this);
             access = new AccessStrategyBuilder<PropertyPart>(this, value => attributes.Set(x => x.Access, value));
             generated = new PropertyGeneratedBuilder(this, value => attributes.Set(x => x.Generated, value));
 
@@ -42,15 +42,15 @@ namespace FluentNHibernate.Mapping
                 ContainingEntityType = parentType,
                 Member = property
             };
-       
+
             if (columns.Count() == 0 && !mapping.IsSpecified("Formula"))
                 mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = property.Name });
 
             foreach (var column in columns)
                 mapping.AddColumn(column);
 
-            foreach(var column in mapping.Columns)
-            {                
+            foreach (var column in mapping.Columns)
+            {
                 if (!column.IsSpecified("NotNull") && property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
                     column.SetDefaultValue(x => x.NotNull, false);
 
@@ -136,7 +136,7 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public PropertyPart Formula(string formula) 
+        public PropertyPart Formula(string formula)
         {
             attributes.Set(x => x.Formula, formula);
             return this;
@@ -190,20 +190,20 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-		/// <summary>
-		/// Specifies that a custom type (an implementation of <see cref="IUserType"/>) should be used for this property for mapping it to/from one or more database columns whose format or type doesn't match this .NET property.
-		/// </summary>
-		/// <param name="typeFunc">A function which returns a type which implements <see cref="IUserType"/>. The argument of the function is the mapped property type</param>
-		/// <returns>This property mapping to continue the method chain</returns>
-		public PropertyPart CustomType(Func<Type, Type> typeFunc)
-		{
-			var type = typeFunc.Invoke(this.property.PropertyType);
+        /// <summary>
+        /// Specifies that a custom type (an implementation of <see cref="IUserType"/>) should be used for this property for mapping it to/from one or more database columns whose format or type doesn't match this .NET property.
+        /// </summary>
+        /// <param name="typeFunc">A function which returns a type which implements <see cref="IUserType"/>. The argument of the function is the mapped property type</param>
+        /// <returns>This property mapping to continue the method chain</returns>
+        public PropertyPart CustomType(Func<Type, Type> typeFunc)
+        {
+            var type = typeFunc.Invoke(this.property.PropertyType);
 
-			if (typeof(ICompositeUserType).IsAssignableFrom(type))
-				AddColumnsFromCompositeUserType(type);
+            if (typeof(ICompositeUserType).IsAssignableFrom(type))
+                AddColumnsFromCompositeUserType(type);
 
-			return CustomType(TypeMapping.GetTypeString(type));
-		}
+            return CustomType(TypeMapping.GetTypeString(type));
+        }
 
         private void AddColumnsFromCompositeUserType(Type compositeUserType)
         {
