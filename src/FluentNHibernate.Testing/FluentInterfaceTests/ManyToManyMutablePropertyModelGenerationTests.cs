@@ -247,5 +247,22 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.Subselect("whee"))
                 .ModelShouldMatch(x => x.Subselect.ShouldEqual("whee"));
         }
+
+        [Test]
+        public void OrderByShouldSetAttributeOnBag()
+        {
+            ManyToMany(x => x.BagOfChildren)
+               .Mapping(m => m.OrderBy("col1"))
+               .ModelShouldMatch(x => x.OrderBy.ShouldEqual("col1"));
+        }
+
+        [Test]
+        public void OrderByOnRelationshipElementShouldSetAttributeOnRelationshipModel()
+        {
+            ManyToMany(x => x.BagOfChildren)
+                .Mapping(m => m.OrderByOnRelationshipElement("col1"))
+                .ModelShouldMatch(x => ((ManyToManyMapping)x.Relationship).OrderBy.ShouldEqual("col1"));
+        }
+
     }
 }

@@ -49,6 +49,10 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.EntityName))
                 element.WithAtt("entity-name", mapping.EntityName);
+
+            if (mapping.HasValue(x => x.OrderBy))
+                element.WithAtt("order-by", mapping.OrderBy);
+
         }
 
         public override void Visit(ColumnMapping mapping)
