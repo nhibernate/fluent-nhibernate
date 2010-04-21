@@ -8,6 +8,8 @@ namespace FluentNHibernate.Utils
     {
         public static bool In<T>(this T instance, params T[] expected)
         {
+            if(ReferenceEquals(instance, null))
+                return false;
             return expected.Any(x => instance.Equals(x));
         }
 
