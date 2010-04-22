@@ -61,6 +61,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
             set { attributes.Set(x => x.Discriminator, value); }
         }
 
+        public bool IsUnionSubclass
+        {
+            get { return attributes.Get(x => x.IsUnionSubclass); }
+            set {attributes.Set(x => x.IsUnionSubclass, value);}
+        }
+
         public TuplizerMapping Tuplizer
         {
             get { return attributes.Get(x => x.Tuplizer); }

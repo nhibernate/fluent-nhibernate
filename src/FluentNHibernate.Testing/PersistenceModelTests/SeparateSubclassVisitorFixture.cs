@@ -124,6 +124,21 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             Assert.AreEqual(1, fooMapping.Subclasses.Where(sub => sub.Type.Equals(typeof(BaseImpl))).Count());
         }
 
+        [Test]
+        public void Should_choose_UnionSubclass_when_the_class_mapping_IsUnionSubclass_is_true()
+        {
+            fooMapping = ((IMappingProvider)new BaseMap()).GetClassMapping();
+            fooMapping.IsUnionSubclass = true;
+
+            providers.Add(new StringFooMap());
+
+            var sut = CreateSut();
+
+            sut.ProcessClass(fooMapping);
+
+            fooMapping.Subclasses.First().SubclassType.ShouldEqual(SubclassType.UnionSubclass);
+        }
+
         private SeparateSubclassVisitor CreateSut()
         {
             return new SeparateSubclassVisitor(providers);
