@@ -202,7 +202,10 @@ namespace FluentNHibernate.Mapping
 
         public virtual void UseUnionSubclassForInheritanceMapping()
         {
-            _modifications.Add(mapping => mapping.IsUnionSubclass = true);
+            _modifications.Add(mapping => 
+            {
+                mapping.IsUnionSubclass = mapping.Abstract = true;
+            });
         }
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)

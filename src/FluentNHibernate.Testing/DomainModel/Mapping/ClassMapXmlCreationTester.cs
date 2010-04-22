@@ -469,6 +469,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void ShouldMarkClassAsAbstractIfUsingUnionSubclasses()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(x => x.UseUnionSubclassForInheritanceMapping())
+                .Element("class").HasAttribute("abstract", "true");
+        }
+
+        [Test]
         public void AssociationsToProxiedTypeUsesSpecifiedType()
         {
             new MappingTester<ProxiedObject>()
