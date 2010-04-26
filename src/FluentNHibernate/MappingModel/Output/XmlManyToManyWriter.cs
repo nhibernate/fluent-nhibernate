@@ -38,6 +38,9 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.HasValue(x => x.ForeignKey))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
+            if (mapping.HasValue(x => x.ChildPropertyRef))
+                element.WithAtt("property-ref", mapping.ChildPropertyRef);
+
             if (mapping.HasValue(x => x.Lazy))
                 element.WithAtt("lazy", mapping.Lazy);
 

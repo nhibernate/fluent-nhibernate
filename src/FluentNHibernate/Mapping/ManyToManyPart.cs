@@ -93,6 +93,12 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public ManyToManyPart<TChild> ChildPropertyRef(string childPropertyRef)
+        {
+            relationshipAttributes.Set(x => x.ChildPropertyRef, childPropertyRef);
+            return this;
+        }
+
         public FetchTypeExpression<ManyToManyPart<TChild>> FetchType
         {
             get { return fetch; }

@@ -88,6 +88,12 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.OrderBy, value); }
         }        
 
+        public string ChildPropertyRef
+        {
+            get { return attributes.Get(x => x.ChildPropertyRef); }
+            set { attributes.Set(x => x.ChildPropertyRef, value); }
+        }
+
         public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
