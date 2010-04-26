@@ -65,5 +65,12 @@ namespace FluentNHibernate.MappingModel.Output
 
             document.ImportAndAppendChild(columnXml);
         }
+
+        public override void Visit(FilterMapping filterMapping)
+        {
+            var writer = serviceLocator.GetWriter<FilterMapping>();
+            var xml = writer.Write(filterMapping);
+            document.ImportAndAppendChild(xml);
+        }
     }
 }

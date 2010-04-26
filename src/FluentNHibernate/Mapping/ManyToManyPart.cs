@@ -13,6 +13,7 @@ namespace FluentNHibernate.Mapping
 {
     public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild, ManyToManyMapping>
     {
+        private readonly IList<FilterPart> childFilters = new List<FilterPart>();
         private readonly Type entity;
         private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
         private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
@@ -228,6 +229,9 @@ namespace FluentNHibernate.Mapping
             if (isTernary && valueType != null)
                 mapping.Class = new TypeReference(valueType);
 
+            foreach (var filterPart in childFilters)
+                mapping.ChildFilters.Add(filterPart.GetFilterMapping());
+
             return mapping;
         }
 
@@ -260,6 +264,63 @@ namespace FluentNHibernate.Mapping
         {
             collectionAttributes.Set(x => x.Subselect, subselect);
             return this;
+        }
+
+        /// <overloads>
+        /// Applies a filter to the child element of this entity given it's name.
+        /// </overloads>
+        /// <summary>
+        /// Applies a filter to the child element of this entity given it's name.
+        /// </summary>
+        /// <param name="name">The filter's name</param>
+        /// <param name="condition">The condition to apply</param>
+        public ManyToManyPart<TChild> ApplyChildFilter(string name, string condition)
+        {
+            var part = new FilterPart(name, condition);
+            childFilters.Add(part);
+            return this;
+        }
+
+        /// <overloads>
+        /// Applies a filter to the child element of this entity given it's name.
+        /// </overloads>
+        /// <summary>
+        /// Applies a filter to the child element of this entity given it's name.
+        /// </summary>
+        /// <param name="name">The filter's name</param>
+        public ManyToManyPart<TChild> ApplyChildFilter(string name)
+        {
+            return this.ApplyChildFilter(name, null);
+        }
+
+        /// <overloads>
+        /// Applies a named filter to the child element of this many-to-many.
+        /// </overloads>
+        /// <summary>
+        /// Applies a named filter to the child element of this many-to-many.
+        /// </summary>
+        /// <param name="condition">The condition to apply</param>
+        /// <typeparam name="TFilter">
+        /// The type of a <see cref="FilterDefinition"/> implementation
+        /// defining the filter to apply.
+        /// </typeparam>
+        public ManyToManyPart<TChild> ApplyChildFilter<TFilter>(string condition) where TFilter : FilterDefinition, new()
+        {
+            var part = new FilterPart(new TFilter().Name, condition);
+            childFilters.Add(part);
+            return this;
+        }
+
+        /// <summary>
+        /// Applies a named filter to the child element of this many-to-many.
+        /// </summary>
+        /// <typeparam name="TFilter">
+        /// The type of a <see cref="FilterDefinition"/> implementation
+        /// defining the filter to apply.
+        /// </typeparam>
+        public ManyToManyPart<TChild> ApplyChildFilter<TFilter>() where TFilter : FilterDefinition, new()
+        {
+            return ApplyChildFilter<TFilter>(null);
         }
     }
 }
