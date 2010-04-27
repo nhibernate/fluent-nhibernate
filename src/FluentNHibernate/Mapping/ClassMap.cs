@@ -34,7 +34,6 @@ namespace FluentNHibernate.Mapping
         private SchemaActionBuilder<ClassMap<T>> schemaAction;
         protected TuplizerMapping tuplizerMapping;
 
-        private readonly IList<Action<ClassMapping>> _modifications = new List<Action<ClassMapping>>();
 
         public ClassMap()
         {
@@ -103,8 +102,6 @@ namespace FluentNHibernate.Mapping
                 mapping.AddStoredProcedure(storedProcedure.GetStoredProcedureMapping());
 
             mapping.Tuplizer = tuplizerMapping;
-
-            _modifications.Each(x => x(mapping));
 
             return mapping;
         }
@@ -202,10 +199,8 @@ namespace FluentNHibernate.Mapping
 
         public virtual void UseUnionSubclassForInheritanceMapping()
         {
-            _modifications.Add(mapping => 
-            {
-                mapping.IsUnionSubclass = mapping.Abstract = true;
-            });
+            attributes.Set(x => x.Abstract, true);
+            attributes.Set(x => x.IsUnionSubclass, true);
         }
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
