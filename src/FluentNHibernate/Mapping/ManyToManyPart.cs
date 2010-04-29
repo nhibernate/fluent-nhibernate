@@ -247,7 +247,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the order-by clause on the many-to-many element.
         /// </summary>
-        public ManyToManyPart<TChild> OrderByOnRelationshipElement(string orderBy)
+        public ManyToManyPart<TChild> ChildOrderBy(string orderBy)
         {
             relationshipAttributes.Set(x => x.OrderBy, orderBy);
             return this;
@@ -322,5 +322,15 @@ namespace FluentNHibernate.Mapping
         {
             return ApplyChildFilter<TFilter>(null);
         }
+
+        /// <summary>
+        /// Sets the where clause for this relationship, on the many-to-many element.
+        /// </summary>
+        public ManyToManyPart<TChild> ChildWhere(string where)
+        {
+            relationshipAttributes.Set(x => x.Where, where);
+            return this;
+        }
+        
     }
 }

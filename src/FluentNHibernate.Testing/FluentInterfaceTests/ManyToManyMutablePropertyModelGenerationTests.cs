@@ -257,11 +257,19 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
-        public void OrderByOnRelationshipElementShouldSetAttributeOnRelationshipModel()
+        public void ChildOrderByShouldSetAttributeOnRelationshipModel()
         {
             ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.OrderByOnRelationshipElement("col1"))
+                .Mapping(m => m.ChildOrderBy("col1"))
                 .ModelShouldMatch(x => ((ManyToManyMapping)x.Relationship).OrderBy.ShouldEqual("col1"));
+        }
+
+        [Test]
+        public void ChildWhereShouldSetAttributeOnRelationshipModel()
+        {
+            ManyToMany(x => x.BagOfChildren)
+                .Mapping(m => m.ChildWhere("some condition"))
+                .ModelShouldMatch(x => ((ManyToManyMapping)x.Relationship).Where.ShouldEqual("some condition"));
         }
 
     }
