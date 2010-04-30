@@ -4,7 +4,10 @@ namespace FluentNHibernate.Specs.Utilities.Fixtures
     {
         private int IntProperty { get; set; }
         private string PrivateProperty { get; set; }
+        private string privateField;
         protected string ProtectedProperty { get; set; }
-        protected string PublicProperty { get; set; }
+        protected string protectedField;
+        public string PublicProperty { get; set; }
+        public string publicField;
     }
 }
