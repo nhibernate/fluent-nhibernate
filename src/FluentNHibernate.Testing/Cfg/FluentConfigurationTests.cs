@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
@@ -144,6 +145,16 @@ namespace FluentNHibernate.Testing.Cfg
 
 			configuration.Properties["current_session_context_class"].ShouldEqual(typeof(NHibernate.Context.ThreadStaticSessionContext).AssemblyQualifiedName);
     	}
+
+        [Test]
+        public void ShouldSetConnectionIsolationLevel()
+        {
+            var configuration = Fluently.Configure()
+                .Database(SQLiteConfiguration.Standard.IsolationLevel(IsolationLevel.ReadUncommitted))
+                .BuildConfiguration();
+
+            configuration.Properties["connection.isolation"].ShouldEqual("ReadUncommitted");
+        }
     }
 
     [TestFixture]

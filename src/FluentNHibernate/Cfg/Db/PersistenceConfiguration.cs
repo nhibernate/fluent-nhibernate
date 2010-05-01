@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using NHibernate.Bytecode;
 using NHibernate.Connection;
 using NHibernate.Dialect;
@@ -30,10 +31,11 @@ namespace FluentNHibernate.Cfg.Db
         protected const string DefaultConnectionProviderClassName = "NHibernate.Connection.DriverConnectionProvider";
         protected const string DriverClassKey = "connection.driver_class";
         protected const string ConnectionStringKey = "connection.connection_string";
+        const string IsolationLevelKey = "connection.isolation";
         protected const string ProxyFactoryFactoryClassKey = "proxyfactory.factory_class";
         protected const string DefaultProxyFactoryFactoryClassName = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
         protected const string AdoNetBatchSizeKey = "adonet.batch_size";
-		protected const string CurrentSessionContextClassKey = "current_session_context_class";
+        protected const string CurrentSessionContextClassKey = "current_session_context_class";
 
         private readonly Dictionary<string, string> values = new Dictionary<string, string>();
 
@@ -145,11 +147,11 @@ namespace FluentNHibernate.Cfg.Db
             return (TThisConfiguration)this;
         }
 
-		public TThisConfiguration FormatSql()
-		{
-			ToggleBooleanSetting(FormatSqlKey);
-			return (TThisConfiguration)this;
-		}
+        public TThisConfiguration FormatSql()
+        {
+            ToggleBooleanSetting(FormatSqlKey);
+            return (TThisConfiguration)this;
+        }
 
         public TThisConfiguration Provider(string provider)
         {
@@ -233,25 +235,46 @@ namespace FluentNHibernate.Cfg.Db
             return (TThisConfiguration)this;
         }
 
-		/// <summary>
-		/// Sets the current_session_context_class property.
-		/// </summary>
-		/// <param name="currentSessionContextClass">current session context class</param>
-		/// <returns>Configuration</returns>
-		public TThisConfiguration CurrentSessionContext(string currentSessionContextClass)
-		{
-			values[CurrentSessionContextClassKey] = currentSessionContextClass;
-			return (TThisConfiguration)this;
-		}
+        /// <summary>
+        /// Sets the current_session_context_class property.
+        /// </summary>
+        /// <param name="currentSessionContextClass">current session context class</param>
+        /// <returns>Configuration</returns>
+        public TThisConfiguration CurrentSessionContext(string currentSessionContextClass)
+        {
+            values[CurrentSessionContextClassKey] = currentSessionContextClass;
+            return (TThisConfiguration)this;
+        }
 
-		/// <summary>
-		/// Sets the current_session_context_class property.
-		/// </summary>
-		/// <typeparam name="TSessionContext">Implementation of ICurrentSessionContext to use</typeparam>
-		/// <returns>Configuration</returns>
-		public TThisConfiguration CurrentSessionContext<TSessionContext>() where TSessionContext : NHibernate.Context.ICurrentSessionContext
-		{
-			return CurrentSessionContext(typeof(TSessionContext).AssemblyQualifiedName);
-		}
+        /// <summary>
+        /// Sets the current_session_context_class property.
+        /// </summary>
+        /// <typeparam name="TSessionContext">Implementation of ICurrentSessionContext to use</typeparam>
+        /// <returns>Configuration</returns>
+        public TThisConfiguration CurrentSessionContext<TSessionContext>() where TSessionContext : NHibernate.Context.ICurrentSessionContext
+        {
+            return CurrentSessionContext(typeof(TSessionContext).AssemblyQualifiedName);
+        }
+
+        /// <summary>
+        /// Sets the connection isolation level. NHibernate setting: connection.isolation
+        /// </summary>
+        /// <param name="connectionIsolation">Isolation level</param>
+        /// <returns>Configuration builder</returns>
+        public TThisConfiguration IsolationLevel(IsolationLevel connectionIsolation)
+        {
+            return IsolationLevel(connectionIsolation.ToString());
+        }
+
+        /// <summary>
+        /// Sets the connection isolation level. NHibernate setting: connection.isolation
+        /// </summary>
+        /// <param name="connectionIsolation">Isolation level</param>
+        /// <returns>Configuration builder</returns>
+        public TThisConfiguration IsolationLevel(string connectionIsolation)
+        {
+            values[IsolationLevelKey] = connectionIsolation;
+            return (TThisConfiguration)this;
+        }
     }
 }
