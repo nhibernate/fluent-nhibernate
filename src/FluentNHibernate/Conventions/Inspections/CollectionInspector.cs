@@ -158,7 +158,7 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
-        public bool LazyLoad
+        public Lazy LazyLoad
         {
             get { return mapping.Lazy; }
         }
@@ -186,6 +186,14 @@ namespace FluentNHibernate.Conventions.Inspections
         public string OrderBy
         {
             get { return mapping.OrderBy; }
+        }
+
+        public virtual void ExtraLazyLoad()
+        {
+            // I'm having trouble understanding the relationship between CollectionInspector, CollectionInstance, 
+            // and their derivative types. I'm sure adding this method on here is not the right way to do this, but 
+            // I have to fulfill the ICollectionInspector.ExtraLazyLoad() signature or conventions can't use it.
+            throw new NotImplementedException();
         }
     }
 }

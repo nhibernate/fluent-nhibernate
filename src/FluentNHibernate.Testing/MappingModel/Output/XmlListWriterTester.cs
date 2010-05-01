@@ -111,7 +111,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
 
             var testHelper = new XmlWriterTestHelper<ListMapping>();
-            testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
+            testHelper.Check(x => x.Lazy, Lazy.True).MapsToAttribute("lazy");
 
             testHelper.VerifyAll(writer);
         }

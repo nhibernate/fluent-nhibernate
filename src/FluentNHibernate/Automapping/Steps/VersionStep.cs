@@ -23,6 +23,7 @@ namespace FluentNHibernate.Automapping.Steps
             var version = new VersionMapping
             {
                 Name = property.Name,
+                ContainingEntityType = classMap.Type,
             };
 
             version.SetDefaultValue("Type", GetDefaultType(property));

@@ -145,7 +145,14 @@ namespace FluentNHibernate.Mapping
 
         public T LazyLoad()
         {
-            collectionAttributes.Set(x => x.Lazy, nextBool);
+            collectionAttributes.Set(x => x.Lazy, nextBool ? Lazy.True : Lazy.False);
+            nextBool = true;
+            return (T)this;
+        }
+
+        public T ExtraLazyLoad()
+        {
+            collectionAttributes.Set(x => x.Lazy, nextBool ? Lazy.Extra : Lazy.True);
             nextBool = true;
             return (T)this;
         }

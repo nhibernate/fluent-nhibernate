@@ -134,7 +134,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
 
             Convention(x => x.Not.LazyLoad());
 
-            VerifyModel(x => x.Lazy.ShouldEqual(true));
+            VerifyModel(x => x.Lazy.ShouldEqual(Lazy.True));
         }
 
         [Test]

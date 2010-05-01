@@ -226,7 +226,7 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Sets the order-by clause for this one-to-many relationship.
+        /// Sets the order-by clause on the collection element.
         /// </summary>
         public ManyToManyPart<TChild> OrderBy(string orderBy)
         {
@@ -234,8 +234,17 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public ManyToManyPart<TChild> ReadOnly()
+        /// <summary>
+        /// Sets the order-by clause on the many-to-many element.
+        /// </summary>
+        public ManyToManyPart<TChild> OrderByOnRelationshipElement(string orderBy)
         {
+            relationshipAttributes.Set(x => x.OrderBy, orderBy);
+            return this;
+        }
+
+        public ManyToManyPart<TChild> ReadOnly()
+        {            
             collectionAttributes.Set(x => x.Mutable, !nextBool);
             nextBool = true;
             return this;

@@ -82,6 +82,12 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.EntityName, value); }
         }
 
+        public string OrderBy
+        {
+            get { return attributes.Get(x => x.OrderBy); }
+            set { attributes.Set(x => x.OrderBy, value); }
+        }        
+
         public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }

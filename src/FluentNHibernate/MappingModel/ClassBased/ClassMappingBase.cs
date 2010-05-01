@@ -149,6 +149,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers.AddFilter(mapping);
         }
 
+        public void AddOrReplaceFilter(FilterMapping mapping)
+        {
+            mappedMembers.AddOrReplaceFilter(mapping);
+        }
+
         public void AddSubclass(SubclassMapping subclass)
         {
             subclasses.Add(subclass);
@@ -190,5 +195,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
                 return ((mappedMembers != null ? mappedMembers.GetHashCode() : 0) * 397) ^ (subclasses != null ? subclasses.GetHashCode() : 0);
             }
         }
+
     }
 }

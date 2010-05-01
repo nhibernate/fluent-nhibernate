@@ -71,6 +71,15 @@ namespace FluentNHibernate.MappingModel
             get { return filters; }
         }
 
+        public void AddOrReplaceFilter(FilterMapping mapping)
+        {
+            var filter = filters.Find(x => x.Name == mapping.Name);
+            if (filter != null)
+                filters.Remove(filter);
+            filters.Add(mapping);
+        }
+
+
         public IEnumerable<StoredProcedureMapping> StoredProcedures
         {
             get { return storedProcedures; }
@@ -255,5 +264,6 @@ namespace FluentNHibernate.MappingModel
                 return result;
             }
         }
+
     }
 }
