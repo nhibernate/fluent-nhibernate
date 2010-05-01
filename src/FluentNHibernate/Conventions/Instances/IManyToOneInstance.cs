@@ -18,7 +18,7 @@ namespace FluentNHibernate.Conventions.Instances
         void Index(string index);
         new void Insert();
         new void LazyLoad();
-        void Nullable();
+        new void Nullable();
         new void PropertyRef(string property);
         void ReadOnly();
         void Unique();

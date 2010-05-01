@@ -284,6 +284,28 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
             inspector.IsSet(Prop(x => x.Update))
                 .ShouldBeFalse();
         }
+
+        [Test]
+        public void NullableMapped()
+        {
+            mapping.AddColumn(new ColumnMapping { NotNull = false });
+            inspector.Nullable.ShouldEqual(true);
+        }
+
+        [Test]
+        public void NullableIsSet()
+        {
+            mapping.AddColumn(new ColumnMapping { NotNull = false });
+            inspector.IsSet(Prop(x => x.Nullable))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void NullableIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Nullable))
+                .ShouldBeFalse();
+        }
         
         [Test]
         public void FormulaMapped()

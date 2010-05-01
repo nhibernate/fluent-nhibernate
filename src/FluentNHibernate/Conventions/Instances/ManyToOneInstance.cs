@@ -130,7 +130,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public void Nullable()
+        public new void Nullable()
         {
             if (!mapping.Columns.First().IsSpecified("NotNull"))
                 foreach (var column in mapping.Columns)

@@ -17,5 +17,6 @@ namespace FluentNHibernate.Conventions.Inspections
         NotFound NotFound { get; }
         string PropertyRef { get; }
         bool Update { get; }
+        bool Nullable { get; }
     }
 }

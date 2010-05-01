@@ -15,6 +15,7 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             this.mapping = mapping;
             propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
+            propertyMappings.Map(x => x.Nullable, "NotNull");
         }
 
         public Access Access
@@ -37,6 +38,17 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Update; }
         }
 
+        public bool Nullable
+        {
+            get
+            {
+                if (!mapping.Columns.Any())
+                    return false;
+
+                return !mapping.Columns.First().NotNull;
+            }
+        }
+
         public Type EntityType
         {
             get { return mapping.ContainingEntityType; }
@@ -49,7 +61,10 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public bool IsSet(Member property)
         {
-            return mapping.IsSpecified(propertyMappings.Get(property));
+            var mappedProperty = propertyMappings.Get(property);
+
+            return mapping.Columns.Any(x => x.IsSpecified(mappedProperty)) ||
+                mapping.IsSpecified(mappedProperty);
         }
 
         public Member Property
