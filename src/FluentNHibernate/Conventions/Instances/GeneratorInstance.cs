@@ -284,6 +284,156 @@ namespace FluentNHibernate.Conventions.Instances
                 builder.GuidComb(paramValues);
         }
 
+        /// <summary>
+        /// Generator that uses the RDBMS native function to generate a GUID.
+        /// The behavior is similar to the “sequence” generator. When a new
+        /// object is saved NH run two queries: the first to retrieve the GUID
+        /// value and the second to insert the entity using the Guid retrieved
+        /// from the RDBMS. Your entity Id must be System.Guid and the SQLType
+        /// will depend on the dialect (RAW(16) in Oracle, UniqueIdentifier in
+        /// MsSQL for example).
+        /// </summary>
+        public void GuidNative()
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.GuidNative();
+        }
+
+        /// <summary>
+        /// Generator that uses the RDBMS native function to generate a GUID.
+        /// The behavior is similar to the “sequence” generator. When a new
+        /// object is saved NH run two queries: the first to retrieve the GUID
+        /// value and the second to insert the entity using the Guid retrieved
+        /// from the RDBMS. Your entity Id must be System.Guid and the SQLType
+        /// will depend on the dialect (RAW(16) in Oracle, UniqueIdentifier in
+        /// MsSQL for example).
+        /// </summary>
+        /// <example>
+        ///     GuidNative(x =>
+        ///     {
+        ///       x.AddParam("key", "value");
+        ///     });
+        /// </example>
+        /// <param name="paramValues">Parameter builder closure</param>
+        public void GuidNative(Action<ParamBuilder> paramValues)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.GuidNative(paramValues);
+        }
+
+        /// <summary>
+        /// A deviation of the trigger-identity. This generator works
+        /// together with the <see cref="ClassMap{T}.NaturalId"/> feature.
+        /// The difference with trigger-identity is that the POID value
+        /// is retrieved by a SELECT using the natural-id fields as filter.
+        /// </summary>
+        public void Select()
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.Select();
+        }
+
+        /// <summary>
+        /// A deviation of the trigger-identity. This generator works
+        /// together with the <see cref="ClassMap{T}.NaturalId"/> feature.
+        /// The difference with trigger-identity is that the POID value
+        /// is retrieved by a SELECT using the natural-id fields as filter.
+        /// </summary>
+        /// <example>
+        ///     Select(x =>
+        ///     {
+        ///       x.AddParam("key", "value");
+        ///     });
+        /// </example>
+        /// <param name="paramValues">Parameter builder closure</param>
+        public void Select(Action<ParamBuilder> paramValues)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.Select(paramValues);
+        }
+
+        /// <summary>
+        /// Based on sequence but works like an identity. The POID
+        /// value is retrieved with an INSERT query. Your entity Id must
+        /// be an integral type.
+        /// "hibernate_sequence" is the default name for the sequence, unless
+        /// another is provided.
+        /// </summary>
+        public void SequenceIdentity()
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.SequenceIdentity();
+        }
+
+        /// <summary>
+        /// Based on sequence but works like an identity. The POID
+        /// value is retrieved with an INSERT query. Your entity Id must
+        /// be an integral type.
+        /// "hibernate_sequence" is the default name for the sequence, unless
+        /// another is provided.
+        /// </summary>
+        /// <param name="sequence">Custom sequence name</param>
+        public void SequenceIdentity(string sequence)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.SequenceIdentity(sequence);
+        }
+
+        /// <summary>
+        /// Based on sequence but works like an identity. The POID
+        /// value is retrieved with an INSERT query. Your entity Id must
+        /// be an integral type.
+        /// "hibernate_sequence" is the default name for the sequence, unless
+        /// another is provided.
+        /// </summary>
+        /// <param name="paramValues">Parameter builder closure</param>
+        public void SequenceIdentity(Action<ParamBuilder> paramValues)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.SequenceIdentity(paramValues);
+        }
+
+        /// <summary>
+        /// Based on sequence but works like an identity. The POID
+        /// value is retrieved with an INSERT query. Your entity Id must
+        /// be an integral type.
+        /// "hibernate_sequence" is the default name for the sequence, unless
+        /// another is provided.
+        /// </summary>
+        /// <param name="sequence">Custom sequence name</param>
+        /// <param name="paramValues">Parameter builder closure</param>
+        public void SequenceIdentity(string sequence, Action<ParamBuilder> paramValues)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.SequenceIdentity(sequence, paramValues);
+        }
+
+
+        /// <summary>
+        /// trigger-identity is a NHibernate specific feature where the POID
+        /// is generated by the RDBMS with an INSERT query through a
+        /// BEFORE INSERT trigger. In this case you can use any supported type,
+        /// including a custom type, with the limitation of a single column usage.
+        /// </summary>
+        public void TriggerIdentity()
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.TriggerIdentity();
+        }
+
+        /// <summary>
+        /// trigger-identity is a NHibernate specific feature where the POID
+        /// is generated by the RDBMS with an INSERT query through a
+        /// BEFORE INSERT trigger. In this case you can use any supported type,
+        /// including a custom type, with the limitation of a single column usage.
+        /// </summary>
+        /// <param name="paramValues">Parameter builder closure</param>
+        public void TriggerIdentity(Action<ParamBuilder> paramValues)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.TriggerIdentity(paramValues);
+        }
+
 		/// <summary>
 		/// lets the application to assign an identifier to the object before Save() is called. 
 		/// </summary>

@@ -281,6 +281,69 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void GeneratorClass_CanSpecifyGuidNative()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.GuidId)
+                        .GeneratedBy.GuidNative())
+                .Element("class/id/generator").HasAttribute("class", "guid.native");
+        }
+
+        [Test]
+        public void GeneratorClass_CanSpecifySelect()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.GuidId)
+                        .GeneratedBy.Select())
+                .Element("class/id/generator").HasAttribute("class", "select");
+        }
+
+        [Test]
+        public void GeneratorClass_CanSpecifySequenceIdentity()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.IntId)
+                        .GeneratedBy.SequenceIdentity())
+                .Element("class/id/generator")
+                    .HasAttribute("class", "sequence-identity");
+        }
+
+        [Test]
+        public void GeneratorClass_CanSpecifySequenceIdentityWithName()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.IntId)
+                        .GeneratedBy.SequenceIdentity("seq"))
+                .Element("class/id/generator")
+                    .HasAttribute("class", "sequence-identity")
+                .Element("//generator/param")
+                    .HasAttribute("name", "sequence")
+                    .ValueEquals("seq");
+        }
+
+        [Test]
+        public void GeneratorClass_CanSpecifyTriggerIdentity()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(mapping =>
+                    mapping.Id(x => x.GuidId)
+                        .GeneratedBy.TriggerIdentity())
+                .Element("class/id/generator").HasAttribute("class", "trigger-identity");
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void IdentityType_MustBeIntegral_ForSequenceIdentity()
+        {
+            Member property = ReflectionHelper.GetMember<IdentityTarget>(x => x.GuidId);
+            new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.SequenceIdentity();
+        }
+
+        [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public void IdentityType_MustBeIntegral_ForIncrement()
         {
@@ -358,6 +421,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             Member property = ReflectionHelper.GetMember<IdentityTarget>(x => x.IntId);
             new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.GuidComb();
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void IdentityType_MustBeGuid_ForGuidNative()
+        {
+
+            Member property = ReflectionHelper.GetMember<IdentityTarget>(x => x.IntId);
+            new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.GuidNative();
         }
 
         [Test]
