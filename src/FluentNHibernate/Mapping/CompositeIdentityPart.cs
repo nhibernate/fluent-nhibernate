@@ -67,12 +67,17 @@ namespace FluentNHibernate.Mapping
             return KeyProperty(member, string.Empty, keyPropertyAction);
         }
 
-        protected virtual CompositeIdentityPart<T> KeyProperty(Member property, string columnName, Action<KeyPropertyPart> customMapping)
+        protected virtual CompositeIdentityPart<T> KeyProperty(Member member, string columnName, Action<KeyPropertyPart> customMapping)
         {
+            var type = member.PropertyType;
+
+            if (type.IsEnum)
+                type = typeof(GenericEnumMapper<>).MakeGenericType(type);
+
             var key = new KeyPropertyMapping
             {
-                Name = property.Name,
-                Type = new TypeReference(property.PropertyType),
+                Name = member.Name,
+                Type = new TypeReference(type),
                 ContainingEntityType = typeof(T)
             };
 

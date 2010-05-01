@@ -1,3 +1,5 @@
+using System;
+using FluentNHibernate.Mapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
@@ -67,6 +69,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/composite-id/key-many-to-one").HasAttribute("foreign-key", "fk1");
         }
 
+        [Test]
+        public void KeyPropertyEnumShouldBeStringByDefault()
+        {
+            new MappingTester<CompIdTarget>()
+                .ForMapping(c =>
+                    c.CompositeId()
+                        .KeyProperty(x => x.EnumProperty))
+                .Element("class/composite-id/key-property")
+                    .HasAttribute("type", typeof(GenericEnumMapper<SomeEnum>).AssemblyQualifiedName);
+        }
 
         [Test]
         public void MixedKeyPropertyAndManyToOne()
@@ -133,7 +145,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             public virtual ComponentKey Key { get; set; }
             public virtual CompIdChild Child { get; set; }
             public virtual string DummyProp { get; set; }
+            public virtual SomeEnum EnumProperty { get; set; }
         }
+
+        public enum SomeEnum
+        {}
 
         public class CompIdChild
         {
