@@ -19,8 +19,8 @@ namespace FluentNHibernate.Mapping
         private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
         private IndexManyToManyPart manyToManyIndex;
         private IndexPart index;
-        private readonly IList<string> childColumns = new List<string>();
-        private readonly IList<string> parentColumns = new List<string>();
+        private readonly ColumnMappingCollection<ManyToManyPart<TChild>> childKeyColumns;
+        private readonly ColumnMappingCollection<ManyToManyPart<TChild>> parentKeyColumns;
         private readonly Type childType;
         private Type valueType;
         private bool isTernary;
@@ -39,6 +39,9 @@ namespace FluentNHibernate.Mapping
 
             fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Fetch, value));
             notFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
+
+            childKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
+            parentKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
         }
 
         public override ICollectionMapping GetCollectionMapping()
@@ -46,20 +49,20 @@ namespace FluentNHibernate.Mapping
             var collection = base.GetCollectionMapping();
 
             // key columns
-            if (parentColumns.Count == 0)
+            if (parentKeyColumns.Count == 0)
                 collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
 
-            foreach (var column in parentColumns)
-                collection.Key.AddColumn(new ColumnMapping { Name = column });
+            foreach (var column in parentKeyColumns)
+                collection.Key.AddColumn(column);
 
             if (collection.Relationship != null)
             {
                 // child columns
-                if (childColumns.Count == 0)
+                if (childKeyColumns.Count == 0)
                     ((ManyToManyMapping)collection.Relationship).AddDefaultColumn(new ColumnMapping {Name = typeof(TChild).Name + "_id"});
 
-                foreach (var column in childColumns)
-                    ((ManyToManyMapping)collection.Relationship).AddColumn(new ColumnMapping {Name = column});
+                foreach (var column in childKeyColumns)
+                    ((ManyToManyMapping)collection.Relationship).AddColumn(column);
             }
 
             // HACK: Index only on list and map - shouldn't have to do this!
@@ -73,18 +76,34 @@ namespace FluentNHibernate.Mapping
             return collection;
         }
 
+        /// <summary>
+        /// Sets a single child key column. If there are multiple columns, use ChildKeyColumns.Add
+        /// </summary>
         public ManyToManyPart<TChild> ChildKeyColumn(string childKeyColumn)
         {
-            childColumns.Clear(); // support only one currently
-            childColumns.Add(childKeyColumn);
+            childKeyColumns.Clear(); 
+            childKeyColumns.Add(childKeyColumn);
             return this;
         }
 
+        /// <summary>
+        /// Sets a single parent key column. If there are multiple columns, use ParentKeyColumns.Add
+        /// </summary>
         public ManyToManyPart<TChild> ParentKeyColumn(string parentKeyColumn)
         {
-            parentColumns.Clear(); // support only one currently
-            parentColumns.Add(parentKeyColumn);
+            parentKeyColumns.Clear(); 
+            parentKeyColumns.Add(parentKeyColumn);
             return this;
+        }
+
+        public ColumnMappingCollection<ManyToManyPart<TChild>> ChildKeyColumns
+        {
+            get { return childKeyColumns; }
+        }
+
+        public ColumnMappingCollection<ManyToManyPart<TChild>> ParentKeyColumns
+        {
+            get { return parentKeyColumns; }
         }
 
         public ManyToManyPart<TChild> ForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName)
