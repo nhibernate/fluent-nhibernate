@@ -34,6 +34,7 @@ namespace FluentNHibernate.Mapping
         private SchemaActionBuilder<ClassMap<T>> schemaAction;
         protected TuplizerMapping tuplizerMapping;
 
+
         public ClassMap()
         {
             optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => attributes.Set(x => x.OptimisticLock, value));
@@ -194,6 +195,12 @@ namespace FluentNHibernate.Mapping
             attributes.Set(x => x.DiscriminatorValue, baseClassDiscriminator);
 
             return part;
+        }
+
+        public virtual void UseUnionSubclassForInheritanceMapping()
+        {
+            attributes.Set(x => x.Abstract, true);
+            attributes.Set(x => x.IsUnionSubclass, true);
         }
 
         public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)

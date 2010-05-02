@@ -10,8 +10,8 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
             return new Dictionary<string, SortValue>
             {
                 { "meta", new SortValue { Position = First, Level = 1 } },
-                { "jcs-cache", new SortValue { Position = First, Level = 2 } },
-                { "cache", new SortValue { Position = First, Level = 2 } },
+                { "jcs-cache", new SortValue { Position = First, Level = 1 } },
+                { "cache", new SortValue { Position = First, Level = 1 } },
                 { "key", new SortValue { Position = First, Level = 3 } },
                 { "index", new SortValue { Position = First, Level = 4 } },
                 { "list-index", new SortValue { Position = First, Level = 4 } },

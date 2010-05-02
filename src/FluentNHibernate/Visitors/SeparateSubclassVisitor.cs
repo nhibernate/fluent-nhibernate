@@ -54,6 +54,11 @@ namespace FluentNHibernate.Visitors
 
         private SubclassMapping CreateSubclass(ClassMapping mapping)
         {
+            if (mapping.IsUnionSubclass)
+            {
+                return new SubclassMapping(SubclassType.UnionSubclass);
+            }
+
             if (mapping.Discriminator == null)
                 return new SubclassMapping(SubclassType.JoinedSubclass);
 
