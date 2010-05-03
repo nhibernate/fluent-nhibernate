@@ -29,6 +29,7 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
                 { "map", new SortValue { Position = Anywhere, Level = 4 } },
                 { "list", new SortValue { Position = Anywhere, Level = 4 } },
                 { "joined-subclass", new SortValue { Position = Anywhere, Level = 5 } },
+                { "union-subclass", new SortValue { Position = Anywhere, Level = 5 } },
                 { "subclass", new SortValue { Position = Last, Level = 3 } },
                 { "join", new SortValue { Position = Last, Level = 3 } },
                 { "any", new SortValue { Position = Anywhere, Level = 2 } },
@@ -41,7 +42,7 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
 
         protected override void SortChildren(XmlNode node)
         {
-            if (node.Name == "subclass" || node.Name == "joined-subclass" || node.Name == "component")
+            if (node.Name == "subclass" || node.Name == "joined-subclass" || node.Name == "union-subclass" || node.Name == "component")
                 Sort(node);
             else if (node.Name == "id")
                 new XmlIdNodeSorter().Sort(node);

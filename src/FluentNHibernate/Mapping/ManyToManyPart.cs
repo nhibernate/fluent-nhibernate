@@ -13,13 +13,14 @@ namespace FluentNHibernate.Mapping
 {
     public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild, ManyToManyMapping>
     {
+        private readonly IList<FilterPart> childFilters = new List<FilterPart>();
         private readonly Type entity;
         private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
         private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
         private IndexManyToManyPart manyToManyIndex;
         private IndexPart index;
-        private readonly IList<string> childColumns = new List<string>();
-        private readonly IList<string> parentColumns = new List<string>();
+        private readonly ColumnMappingCollection<ManyToManyPart<TChild>> childKeyColumns;
+        private readonly ColumnMappingCollection<ManyToManyPart<TChild>> parentKeyColumns;
         private readonly Type childType;
         private Type valueType;
         private bool isTernary;
@@ -38,6 +39,9 @@ namespace FluentNHibernate.Mapping
 
             fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Fetch, value));
             notFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
+
+            childKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
+            parentKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
         }
 
         public override ICollectionMapping GetCollectionMapping()
@@ -45,20 +49,20 @@ namespace FluentNHibernate.Mapping
             var collection = base.GetCollectionMapping();
 
             // key columns
-            if (parentColumns.Count == 0)
+            if (parentKeyColumns.Count == 0)
                 collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
 
-            foreach (var column in parentColumns)
-                collection.Key.AddColumn(new ColumnMapping { Name = column });
+            foreach (var column in parentKeyColumns)
+                collection.Key.AddColumn(column);
 
             if (collection.Relationship != null)
             {
                 // child columns
-                if (childColumns.Count == 0)
+                if (childKeyColumns.Count == 0)
                     ((ManyToManyMapping)collection.Relationship).AddDefaultColumn(new ColumnMapping {Name = typeof(TChild).Name + "_id"});
 
-                foreach (var column in childColumns)
-                    ((ManyToManyMapping)collection.Relationship).AddColumn(new ColumnMapping {Name = column});
+                foreach (var column in childKeyColumns)
+                    ((ManyToManyMapping)collection.Relationship).AddColumn(column);
             }
 
             // HACK: Index only on list and map - shouldn't have to do this!
@@ -72,24 +76,46 @@ namespace FluentNHibernate.Mapping
             return collection;
         }
 
+        /// <summary>
+        /// Sets a single child key column. If there are multiple columns, use ChildKeyColumns.Add
+        /// </summary>
         public ManyToManyPart<TChild> ChildKeyColumn(string childKeyColumn)
         {
-            childColumns.Clear(); // support only one currently
-            childColumns.Add(childKeyColumn);
+            childKeyColumns.Clear(); 
+            childKeyColumns.Add(childKeyColumn);
             return this;
         }
 
+        /// <summary>
+        /// Sets a single parent key column. If there are multiple columns, use ParentKeyColumns.Add
+        /// </summary>
         public ManyToManyPart<TChild> ParentKeyColumn(string parentKeyColumn)
         {
-            parentColumns.Clear(); // support only one currently
-            parentColumns.Add(parentKeyColumn);
+            parentKeyColumns.Clear(); 
+            parentKeyColumns.Add(parentKeyColumn);
             return this;
+        }
+
+        public ColumnMappingCollection<ManyToManyPart<TChild>> ChildKeyColumns
+        {
+            get { return childKeyColumns; }
+        }
+
+        public ColumnMappingCollection<ManyToManyPart<TChild>> ParentKeyColumns
+        {
+            get { return parentKeyColumns; }
         }
 
         public ManyToManyPart<TChild> ForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName)
         {
             keyMapping.ForeignKey = parentForeignKeyName;
             relationshipAttributes.Set(x => x.ForeignKey, childForeignKeyName);
+            return this;
+        }
+
+        public ManyToManyPart<TChild> ChildPropertyRef(string childPropertyRef)
+        {
+            relationshipAttributes.Set(x => x.ChildPropertyRef, childPropertyRef);
             return this;
         }
 
@@ -222,6 +248,9 @@ namespace FluentNHibernate.Mapping
             if (isTernary && valueType != null)
                 mapping.Class = new TypeReference(valueType);
 
+            foreach (var filterPart in childFilters)
+                mapping.ChildFilters.Add(filterPart.GetFilterMapping());
+
             return mapping;
         }
 
@@ -237,7 +266,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the order-by clause on the many-to-many element.
         /// </summary>
-        public ManyToManyPart<TChild> OrderByOnRelationshipElement(string orderBy)
+        public ManyToManyPart<TChild> ChildOrderBy(string orderBy)
         {
             relationshipAttributes.Set(x => x.OrderBy, orderBy);
             return this;
@@ -255,5 +284,72 @@ namespace FluentNHibernate.Mapping
             collectionAttributes.Set(x => x.Subselect, subselect);
             return this;
         }
+
+        /// <overloads>
+        /// Applies a filter to the child element of this entity given it's name.
+        /// </overloads>
+        /// <summary>
+        /// Applies a filter to the child element of this entity given it's name.
+        /// </summary>
+        /// <param name="name">The filter's name</param>
+        /// <param name="condition">The condition to apply</param>
+        public ManyToManyPart<TChild> ApplyChildFilter(string name, string condition)
+        {
+            var part = new FilterPart(name, condition);
+            childFilters.Add(part);
+            return this;
+        }
+
+        /// <overloads>
+        /// Applies a filter to the child element of this entity given it's name.
+        /// </overloads>
+        /// <summary>
+        /// Applies a filter to the child element of this entity given it's name.
+        /// </summary>
+        /// <param name="name">The filter's name</param>
+        public ManyToManyPart<TChild> ApplyChildFilter(string name)
+        {
+            return this.ApplyChildFilter(name, null);
+        }
+
+        /// <overloads>
+        /// Applies a named filter to the child element of this many-to-many.
+        /// </overloads>
+        /// <summary>
+        /// Applies a named filter to the child element of this many-to-many.
+        /// </summary>
+        /// <param name="condition">The condition to apply</param>
+        /// <typeparam name="TFilter">
+        /// The type of a <see cref="FilterDefinition"/> implementation
+        /// defining the filter to apply.
+        /// </typeparam>
+        public ManyToManyPart<TChild> ApplyChildFilter<TFilter>(string condition) where TFilter : FilterDefinition, new()
+        {
+            var part = new FilterPart(new TFilter().Name, condition);
+            childFilters.Add(part);
+            return this;
+        }
+
+        /// <summary>
+        /// Applies a named filter to the child element of this many-to-many.
+        /// </summary>
+        /// <typeparam name="TFilter">
+        /// The type of a <see cref="FilterDefinition"/> implementation
+        /// defining the filter to apply.
+        /// </typeparam>
+        public ManyToManyPart<TChild> ApplyChildFilter<TFilter>() where TFilter : FilterDefinition, new()
+        {
+            return ApplyChildFilter<TFilter>(null);
+        }
+
+        /// <summary>
+        /// Sets the where clause for this relationship, on the many-to-many element.
+        /// </summary>
+        public ManyToManyPart<TChild> ChildWhere(string where)
+        {
+            relationshipAttributes.Set(x => x.Where, where);
+            return this;
+        }
+        
     }
 }

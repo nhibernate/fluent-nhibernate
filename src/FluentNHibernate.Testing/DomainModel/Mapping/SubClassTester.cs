@@ -487,6 +487,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .HasAttribute("name", "SubclassProperty");
         }
 
+
         [Test]
         public void SubclassPropertyHasConventionApplied()
         {

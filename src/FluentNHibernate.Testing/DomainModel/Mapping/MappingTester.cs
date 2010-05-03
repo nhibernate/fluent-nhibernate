@@ -41,6 +41,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             return this;
         }
 
+        public virtual MappingTester<T> SubClassMapping<TSubClass>(Action<SubclassMap<TSubClass>> action) where TSubClass : T
+        {
+            var map = new SubclassMap<TSubClass>();
+            action(map);
+
+            this.model.Add(map);
+
+            return this;
+        }
+
         public virtual MappingTester<T> ForMapping(Action<ClassMap<T>> mappingAction)
         {
             var classMap = new ClassMap<T>();

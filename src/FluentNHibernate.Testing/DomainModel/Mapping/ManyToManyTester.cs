@@ -308,7 +308,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyOrderByClause()
         {
             new MappingTester<ManyToManyTarget>()
-                .ForMapping(m => m.HasMany(x => x.BagOfChildren).OrderBy("foo"))
+                .ForMapping(m => m.HasManyToMany(x => x.BagOfChildren).OrderBy("foo"))
                 .Element("class/bag").HasAttribute("order-by", "foo");
         }
       
@@ -316,8 +316,30 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void OrderByClauseIgnoredForUnorderableCollections()
         {
             new MappingTester<ManyToManyTarget>()
-                .ForMapping(m => m.HasMany(x => x.MapOfChildren).AsMap("indexCol"))
+                .ForMapping(m => m.HasManyToMany(x => x.MapOfChildren).AsMap("indexCol"))
                 .Element("class/map").DoesntHaveAttribute("order-by");
+        }
+
+        [Test]
+        public void CanSpecifyMultipleParentKeyColumns()
+        {
+              new MappingTester<ManyToManyTarget>()
+                .ForMapping(m => m.HasManyToMany(x => x.BagOfChildren)
+                    .ParentKeyColumns.Add("ID1")
+                    .ParentKeyColumns.Add("ID2"))
+                .Element("class/bag/key/column[@name='ID1']").Exists()
+                .Element("class/bag/key/column[@name='ID2']").Exists();
+        }
+
+        [Test]
+        public void CanSpecifyMultipleChildKeyColumns()
+        {
+            new MappingTester<ManyToManyTarget>()
+              .ForMapping(m => m.HasManyToMany(x => x.BagOfChildren)
+                  .ChildKeyColumns.Add("ID1")
+                  .ChildKeyColumns.Add("ID2"))
+              .Element("class/bag/many-to-many/column[@name='ID1']").Exists()
+              .Element("class/bag/many-to-many/column[@name='ID2']").Exists();
         }
     }
 }

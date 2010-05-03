@@ -10,7 +10,16 @@ namespace FluentNHibernate.MappingModel.Collections
     {
         private readonly AttributeStore<ManyToManyMapping> attributes;
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
-        
+        private readonly IList<FilterMapping> childFilters = new List<FilterMapping>();
+
+        public IList<FilterMapping> ChildFilters
+        {
+            get
+            {
+                return childFilters;
+            }
+        }
+
         public ManyToManyMapping()
             : this(new AttributeStore())
         {}
@@ -26,6 +35,9 @@ namespace FluentNHibernate.MappingModel.Collections
 
             foreach (var column in columns)
                 visitor.Visit(column);
+
+            foreach (var filter in ChildFilters)
+                visitor.Visit(filter);
         }
 
         public Type ChildType
@@ -87,6 +99,12 @@ namespace FluentNHibernate.MappingModel.Collections
             get { return attributes.Get(x => x.OrderBy); }
             set { attributes.Set(x => x.OrderBy, value); }
         }        
+
+        public string ChildPropertyRef
+        {
+            get { return attributes.Get(x => x.ChildPropertyRef); }
+            set { attributes.Set(x => x.ChildPropertyRef, value); }
+        }
 
         public IDefaultableEnumerable<ColumnMapping> Columns
         {

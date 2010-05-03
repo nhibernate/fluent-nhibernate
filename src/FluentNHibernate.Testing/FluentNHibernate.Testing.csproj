@@ -460,6 +460,7 @@
     <Compile Include="ConventionsTests\DefaultLazyHelperTests.cs" />
     <Compile Include="ConventionsTests\ProxyHelperTests.cs" />
     <Compile Include="EmptySource.cs" />
+    <Compile Include="DomainModel\Mapping\UnionSubclassTester.cs" />
     <Compile Include="FluentInterfaceTests\NaturalIdPartTests.cs" />
     <Compile Include="MappingModel\Identity\CompositeIdMappingTester.cs" />
     <Compile Include="MappingModel\Output\XmlNaturalIdWriterTester.cs" />

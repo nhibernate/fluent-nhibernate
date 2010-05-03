@@ -71,6 +71,28 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .DoesntHaveAttribute("condition");
         }
 
+        [Test]
+        public void Applying_a_generic_child_filter_to_a_many_to_many()
+        {
+            MappingTester<ManyToManyTarget> mapping = new MappingTester<ManyToManyTarget>()
+                .ForMapping(m => m.HasManyToMany(x => x.BagOfChildren)
+                    .ApplyChildFilter<TestFilter>("Name = :name"));
+            mapping
+                .Element("class/bag/many-to-many/filter")
+                .HasAttribute("name", "test")
+                .HasAttribute("condition", "Name = :name");
+        }
+
+        [Test]
+        public void Applying_a_generic_child_filter_to_a_many_to_many_with_no_condition()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(m => m.HasManyToMany(x => x.BagOfChildren)
+                    .ApplyChildFilter<TestFilter>())
+                .Element("class/bag/many-to-many/filter")
+                .HasAttribute("name", "test")
+                .DoesntHaveAttribute("condition");
+        }
 
         [Test]
         public void Applying_a_named_filter()
@@ -133,6 +155,29 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.HasManyToMany(x => x.BagOfChildren)
                     .ApplyFilter("test"))
                 .Element("class/bag/filter")
+                .HasAttribute("name", "test")
+                .DoesntHaveAttribute("condition");
+        }
+
+        [Test]
+        public void Applying_a_named_child_filter_to_a_many_to_many()
+        {
+            MappingTester<ManyToManyTarget> mapping = new MappingTester<ManyToManyTarget>()
+                .ForMapping(m => m.HasManyToMany(x => x.BagOfChildren)
+                    .ApplyChildFilter("test", "Name = :name"));
+            mapping
+                .Element("class/bag/many-to-many/filter")
+                .HasAttribute("name", "test")
+                .HasAttribute("condition", "Name = :name");
+        }
+
+        [Test]
+        public void Applying_a_named_child_filter_to_a_many_to_many_with_no_condition()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(m => m.HasManyToMany(x => x.BagOfChildren)
+                    .ApplyChildFilter("test"))
+                .Element("class/bag/many-to-many/filter")
                 .HasAttribute("name", "test")
                 .DoesntHaveAttribute("condition");
         }
