@@ -17,5 +17,10 @@ namespace FluentNHibernate.Specs
         {
             collection.Any(predicate).ShouldBeTrue();
         }
+
+        public static void ShouldNotContain<T>(this IEnumerable<T> collection, Func<T, bool> predicate)
+        {
+            collection.Any(predicate).ShouldBeFalse();
+        }
     }
 }

@@ -195,6 +195,8 @@ namespace FluentNHibernate.Automapping
                 return false; // generic definition is excluded
             if (type.IsAbstract && cfg.AbstractClassIsLayerSupertype(type))
                 return false; // is abstract and a layer supertype
+            if (cfg.IsComponent(type))
+                return false; // skipped because we don't want to map components as entities
             if (type == typeof(object))
                 return false; // object!
 

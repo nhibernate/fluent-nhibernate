@@ -9,6 +9,7 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
         public TestEnum Enum { get; set; }
         public Entity Parent { get; set; }
         public IList<EntityChild> Children { get; set; }
+        public Component Component { get; set; }
 
         internal enum TestEnum {}
     }

@@ -7,11 +7,7 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
     {
         private readonly IEnumerable<Type> types;
 
-        public StubTypeSource(Type type)
-            : this(new[] { type })
-        { }
-
-        public StubTypeSource(IEnumerable<Type> types)
+        public StubTypeSource(params Type[] types)
         {
             this.types = types;
         }
