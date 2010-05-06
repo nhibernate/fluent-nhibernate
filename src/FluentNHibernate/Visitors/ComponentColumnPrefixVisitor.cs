@@ -22,6 +22,16 @@ namespace FluentNHibernate.Visitors
             ResetPrefix();
         }
 
+        public override void ProcessComponent(ComponentMapping mapping)
+        {
+            base.ProcessComponent(mapping);
+        }
+
+        public override void ProcessComponent(ReferenceComponentMapping componentMapping)
+        {
+            componentMapping.MergedModel.AcceptVisitor(this);
+        }
+
         public override void ProcessColumn(ColumnMapping columnMapping)
         {
             if (prefixes.Any())

@@ -225,9 +225,6 @@
           <Kind Name="Machine.Specifications_Context" />
           <Kind Name="Machine.Specifications_Specification" />
           <Kind Name="Machine.Specifications_SupportingField" />
-          <Kind Name="Machine.Specifications_Field" />
-          <Kind Name="Machine.Specifications_Constant" />
-          <Kind Name="Machine.Specifications_Local" />
         </ElementKinds>
         <ExtraRule Prefix="" Suffix="" Style="Aa_bb" />
       </UserRule>

@@ -33,6 +33,11 @@ namespace FluentNHibernate.MappingModel.Output
             return document;
         }
 
+        public override void ProcessComponent(ReferenceComponentMapping componentMapping)
+        {
+            componentMapping.MergedModel.AcceptVisitor(this);
+        }
+
         public override void ProcessComponent(ComponentMapping mapping)
         {
             document = WriteComponent(mapping.ComponentType.GetElementName(), mapping);

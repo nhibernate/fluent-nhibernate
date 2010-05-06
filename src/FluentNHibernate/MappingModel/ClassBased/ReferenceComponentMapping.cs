@@ -31,10 +31,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
         public void AcceptVisitor(IMappingModelVisitor visitor)
         {
-            if (MergedModel != null)
-                visitor.Visit(MergedModel);
-            else
-                visitor.ProcessComponent(this);
+            visitor.ProcessComponent(this);
         }
 
         public virtual void AssociateExternalMapping(ExternalComponentMapping mapping)
