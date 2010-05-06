@@ -16,4 +16,15 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
 
     class EntityChild
     {}
+
+    public class A_Child : B_Parent
+    {
+        
+    }
+
+    public class B_Parent
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
 }

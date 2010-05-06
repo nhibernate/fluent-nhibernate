@@ -55,4 +55,23 @@ namespace FluentNHibernate.Specs.Automapping
         static FluentConfiguration setup;
         static Exception ex;
     }
+
+    public class when_the_automapper_is_told_to_map_an_inheritance_hierarchy
+    {
+        Because of = () =>
+            ex = Catch.Exception(() =>
+                    AutoMap.Source(new StubTypeSource(typeof(A_Child), typeof(B_Parent)))
+                        .BuildMappings());
+
+        // this will fail with an exception if this is broken:
+        // was failing because the child class was being mapped first
+        // adding all properties from it and it's base class. Then the
+        // base class was being mapped, duplicating those properties
+        // that were already mapped in the child. Needed to change the
+        // ordering so parents are always mapped before their children
+        It should_map_the_top_most_class_first = () =>
+            ex.ShouldBeNull();
+        
+        static Exception ex;
+    }
 }

@@ -119,7 +119,11 @@ namespace FluentNHibernate.Automapping
 
             alterations.Apply(this);
 
-            foreach (var type in sources.SelectMany(x => x.GetTypes()))
+            var types = sources
+                .SelectMany(x => x.GetTypes())
+                .OrderBy(x => InheritanceHierarchyDepth(x));
+
+            foreach (var type in types)
             {
                 // skipped by user-defined configuration criteria
                 if (HasUserDefinedConfiguration && !cfg.ShouldMap(type))
@@ -148,6 +152,20 @@ namespace FluentNHibernate.Automapping
             }
 
             autoMappingsCreated = true;
+        }
+
+        private int InheritanceHierarchyDepth(Type type)
+        {
+            var depth = 0;
+            var parent = type;
+
+            while (parent != null && parent != typeof(object))
+            {
+                parent = parent.BaseType;
+                depth++;
+            }
+
+            return depth;
         }
 
         public override void Configure(NHibernate.Cfg.Configuration configuration)

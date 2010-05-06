@@ -131,6 +131,11 @@ namespace FluentNHibernate
         {
             get { return member.IsAssembly || member.IsFamilyAndAssembly; }
         }
+
+        public override string ToString()
+        {
+            return "{Field: " + member.Name + "}";
+        }
     }
 
     internal class MethodMember : Member
@@ -207,6 +212,11 @@ namespace FluentNHibernate
         public override bool IsInternal
         {
             get { return member.IsAssembly || member.IsFamilyAndAssembly; }
+        }
+
+        public override string ToString()
+        {
+            return "{Method: " + member.Name + "}";
         }
     }
 
@@ -306,6 +316,11 @@ namespace FluentNHibernate
         public MethodMember Set
         {
             get { return setMethod; }
+        }
+
+        public override string ToString()
+        {
+            return "{Property: " + member.Name + "}";
         }
     }
 
