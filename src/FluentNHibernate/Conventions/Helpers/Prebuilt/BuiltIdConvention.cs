@@ -5,7 +5,7 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt
 {
-    internal class BuiltIdConvention : BuiltConventionBase<IIdentityInspector, IIdentityInstance>, IIdConvention
+    internal class BuiltIdConvention : BuiltConventionBase<IIdentityInspector, IIdentityInstance>, IIdConvention, IIdConventionAcceptance
     {
         public BuiltIdConvention(Action<IAcceptanceCriteria<IIdentityInspector>> accept, Action<IIdentityInstance> convention)
             : base(accept, convention)

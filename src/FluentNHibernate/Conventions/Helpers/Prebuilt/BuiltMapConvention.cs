@@ -5,7 +5,7 @@ using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt
 {
-    internal class BuiltMapConvention : BuiltConventionBase<IMapInspector, IMapInstance>, IMapConvention
+    internal class BuiltMapConvention : BuiltConventionBase<IMapInspector, IMapInstance>, IMapConvention, IMapConventionAcceptance
     {
         public BuiltMapConvention(Action<IAcceptanceCriteria<IMapInspector>> accept, Action<IMapInstance> convention)
             : base(accept, convention)

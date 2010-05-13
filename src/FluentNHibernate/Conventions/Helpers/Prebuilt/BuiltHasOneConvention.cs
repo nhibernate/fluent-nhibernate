@@ -6,7 +6,7 @@ using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt
 {
-    internal class BuiltHasOneConvention : BuiltConventionBase<IOneToOneInspector, IOneToOneInstance>, IHasOneConvention
+    internal class BuiltHasOneConvention : BuiltConventionBase<IOneToOneInspector, IOneToOneInstance>, IHasOneConvention, IHasOneConventionAcceptance
     {
         public BuiltHasOneConvention(Action<IAcceptanceCriteria<IOneToOneInspector>> accept, Action<IOneToOneInstance> convention)
             : base(accept, convention)

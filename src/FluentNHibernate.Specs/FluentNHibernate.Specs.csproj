@@ -73,6 +73,9 @@
     <Compile Include="Automapping\Fixtures\StubTypeSource.cs" />
     <Compile Include="Automapping\PrivateAutomapperSpecs.cs" />
     <Compile Include="Automapping\PrivateFieldsSpecs.cs" />
+    <Compile Include="Conventions\ConventionBuilderSpecs.cs" />
+    <Compile Include="Conventions\Fixtures\TwoPropertyEntity.cs" />
+    <Compile Include="Conventions\Fixtures\TwoPropertyEntityMap.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FluentInterface\ClasslikeBehaviors.cs" />
     <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Cache.cs" />
