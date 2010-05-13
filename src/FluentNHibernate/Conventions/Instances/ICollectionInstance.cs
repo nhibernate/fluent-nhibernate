@@ -31,7 +31,7 @@ namespace FluentNHibernate.Conventions.Instances
         new void CollectionType(Type type);
         new void Generic();
         new void Inverse();
-        new void Persister<T>() where T : IEntityPersister;
+        new void Persister<T>();
         new void Where(string whereClause);
         new void OrderBy(string orderBy);
         void Subselect(string subselect);

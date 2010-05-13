@@ -390,7 +390,7 @@ namespace FluentNHibernate.Mapping
             get { return optimisticLock; }
         }
 
-        public T Persister<TPersister>() where TPersister : IEntityPersister
+        public T Persister<TPersister>()
         {
             collectionAttributes.Set(x => x.Persister, new TypeReference(typeof(TPersister)));
             return (T)this;

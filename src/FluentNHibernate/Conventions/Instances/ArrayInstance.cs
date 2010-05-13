@@ -124,7 +124,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public new void Persister<T>() where T : IEntityPersister
+        public new void Persister<T>()
         {
             if (!mapping.IsSpecified("Persister"))
                 mapping.Persister = new TypeReference(typeof(T));
