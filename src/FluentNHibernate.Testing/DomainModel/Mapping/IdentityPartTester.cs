@@ -481,6 +481,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     .Element("class/id").HasAttribute("access", "field");
         }
 
+        [Test]
+        public void CanCreateIdWithoutPropertyOrColumns()
+        {
+            new MappingTester<IdentityTarget>()
+                .ForMapping(map => map.Id())
+                    .Element("class/id")
+                        .Exists()
+                        .DoesntHaveAttribute("name")
+                        .HasAttribute("type", typeof(int).AssemblyQualifiedName)
+                    .Element("class/id/generator")
+                        .Exists()
+                        .HasAttribute("class", "increment")
+                    .Element("class/id/column")
+                        .DoesntExist();
+        }
+
         private class TestIdConvention : IIdConvention
         {
             public void Apply(IIdentityInstance instance)

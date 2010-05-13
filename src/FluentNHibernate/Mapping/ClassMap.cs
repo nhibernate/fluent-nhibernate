@@ -235,13 +235,45 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public virtual IdentityPart Id<TColumn>(string column)
+        /// <summary>
+        /// Create an Id that doesn't have a corresponding property in
+        /// the domain object, or a column in the database. This is mainly
+        /// for use with read-only access and/or views. Defaults to an int
+        /// identity with an "increment" generator.
+        /// </summary>
+        public IdentityPart Id()
         {
-            var part = new IdentityPart(typeof(T), typeof(TColumn), column);
-            
+            return Id<int>(null)
+                .GeneratedBy.Increment();
+        }
+
+        /// <summary>
+        /// Create an Id that doesn't have a corresponding property in
+        /// the domain object, or a column in the database. This is mainly
+        /// for use with read-only access and/or views.
+        /// </summary>
+        /// <typeparam name="TId">Type of the id</typeparam>
+        public IdentityPart Id<TId>()
+        {
+            return Id<TId>(null);
+        }
+
+        /// <summary>
+        /// Create an Id that doesn't have a corresponding property in
+        /// the domain object.
+        /// </summary>
+        /// <typeparam name="TId">Type of the id</typeparam>
+        /// <param name="column">Name and column name of the id</param>
+        public IdentityPart Id<TId>(string column)
+        {
+            var part = new IdentityPart(typeof(T), typeof(TId));
+
             if (column != null)
+            {
+                part.SetName(column);
                 part.Column(column);
-            
+            }
+
             id = part;
 
             return part;

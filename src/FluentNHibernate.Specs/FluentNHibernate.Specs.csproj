@@ -83,6 +83,7 @@
     <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Property.cs" />
     <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Subclass.cs" />
     <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Version.cs" />
+    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Id.cs" />
     <Compile Include="FluentInterface\ComponentMapSpecs.cs" />
     <Compile Include="FluentInterface\Fixtures\EntityWithComponent.cs" />
     <Compile Include="FluentInterface\Fixtures\EntityWithFields.cs" />

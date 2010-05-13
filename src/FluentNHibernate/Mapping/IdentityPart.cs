@@ -12,38 +12,45 @@ namespace FluentNHibernate.Mapping
     {
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
         private readonly IList<string> columns = new List<string>();
-        private readonly Member property;
+        private Member member;
         private readonly Type entityType;
         private readonly AccessStrategyBuilder<IdentityPart> access;
         private readonly AttributeStore<IdMapping> attributes = new AttributeStore<IdMapping>();
-        private readonly Type identityType;
+        private Type identityType;
         private bool nextBool = true;
-        private readonly string columnName;
+        string name;
 
-        public IdentityPart(Type entity, Member property)
+        public IdentityPart(Type entity, Member member)
         {
-            this.property = property;
             entityType = entity;
-            this.identityType = property.PropertyType;
-            this.columnName = property.Name;
-
+            this.member = member;
+            identityType = member.PropertyType;
+            
             access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set(x => x.Access, value));
-            GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, property.PropertyType, entity);
-
+            GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, member.PropertyType, entityType);
+            SetName(member.Name);
             SetDefaultGenerator();
         }
 
-        public IdentityPart(Type entity, Type identityType, string columnName)
+        public IdentityPart(Type entity, Type identityType)
         {
-            this.property = null;
             this.entityType = entity;
             this.identityType = identityType;
-            this.columnName = columnName;
 
             access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set(x => x.Access, value));
             GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, this.identityType, entity);
 
             SetDefaultGenerator();
+        }
+
+        internal void SetName(string newName)
+        {
+            name = newName;
+        }
+
+        bool HasNameSpecified
+        {
+            get { return !string.IsNullOrEmpty(name); }
         }
 
         private void SetDefaultGenerator()
@@ -73,12 +80,12 @@ namespace FluentNHibernate.Mapping
                 foreach (var column in columns)
                     mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = column });
             }
-            else
-                mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = columnName });
+            else if (HasNameSpecified)
+                mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = name });
 
-            if (property != null)
+            if (member != null)
             {
-                mapping.Name = columnName;
+                mapping.Name = name;
             }
             mapping.SetDefaultValue("Type", new TypeReference(identityType));
 
