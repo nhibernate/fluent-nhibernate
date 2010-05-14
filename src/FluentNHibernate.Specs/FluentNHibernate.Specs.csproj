@@ -74,8 +74,17 @@
     <Compile Include="Automapping\PrivateAutomapperSpecs.cs" />
     <Compile Include="Automapping\PrivateFieldsSpecs.cs" />
     <Compile Include="Conventions\ConventionBuilderSpecs.cs" />
+    <Compile Include="Conventions\Fixtures\Child.cs" />
+    <Compile Include="Conventions\Fixtures\SetCollectionEntity.cs" />
+    <Compile Include="Conventions\Fixtures\SetCollectionEntityMap.cs" />
+    <Compile Include="Conventions\Fixtures\SetCompositeElementCollectionEntity.cs" />
+    <Compile Include="Conventions\Fixtures\SetCompositeElementCollectionEntityMap.cs" />
+    <Compile Include="Conventions\Fixtures\SetElementCollectionEntity.cs" />
+    <Compile Include="Conventions\Fixtures\SetElementCollectionEntityMap.cs" />
     <Compile Include="Conventions\Fixtures\TwoPropertyEntity.cs" />
     <Compile Include="Conventions\Fixtures\TwoPropertyEntityMap.cs" />
+    <Compile Include="Conventions\Fixtures\Value.cs" />
+    <Compile Include="Conventions\ForeignKeyConventionSpecs.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FluentInterface\ClasslikeBehaviors.cs" />
     <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Cache.cs" />

@@ -1,14 +1,10 @@
 using System;
-using System.Reflection;
-using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions
 {
     public abstract class ForeignKeyConvention
-        : IReferenceConvention, IHasManyConvention, IHasManyToManyConvention, IJoinedSubclassConvention, IJoinConvention
+        : IReferenceConvention, IHasManyToManyConvention, IJoinedSubclassConvention, IJoinConvention, ICollectionConvention
     {
         protected abstract string GetKeyName(Member property, Type type);
 
@@ -17,13 +13,6 @@ namespace FluentNHibernate.Conventions
             var columnName = GetKeyName(instance.Property, instance.Class.GetUnderlyingSystemType());
 
             instance.Column(columnName);
-        }
-
-        public void Apply(IOneToManyCollectionInstance instance)
-        {
-            var columnName = GetKeyName(null, instance.EntityType);
-
-            instance.Key.Column(columnName);
         }
 
         public void Apply(IManyToManyCollectionInstance instance)
@@ -46,6 +35,13 @@ namespace FluentNHibernate.Conventions
         }
 
         public void Apply(IJoinInstance instance)
+        {
+            var columnName = GetKeyName(null, instance.EntityType);
+
+            instance.Key.Column(columnName);
+        }
+
+        public void Apply(ICollectionInstance instance)
         {
             var columnName = GetKeyName(null, instance.EntityType);
 
