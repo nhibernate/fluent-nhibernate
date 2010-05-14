@@ -6,7 +6,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class ManyToOneMapping : MappingBase, IHasColumnMappings
+    public class ManyToOneMapping : MappingBase, IHasColumnMappings, IRelationship
     {
         private readonly AttributeStore<ManyToOneMapping> attributes;
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
@@ -173,5 +173,7 @@ namespace FluentNHibernate.MappingModel
                 return result;
             }
         }
+
+        public IRelationship OtherSide { get; set; }
     }
 }

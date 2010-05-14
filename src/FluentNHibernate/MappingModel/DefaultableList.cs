@@ -177,5 +177,10 @@ namespace FluentNHibernate.MappingModel
         {
             get { return userDefined; }
         }
+
+        public bool HasUserDefined()
+        {
+            return userDefined.Count > 0;
+        }
     }
 }

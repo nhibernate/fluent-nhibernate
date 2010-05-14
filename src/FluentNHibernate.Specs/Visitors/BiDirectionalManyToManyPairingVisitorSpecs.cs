@@ -230,9 +230,9 @@ namespace FluentNHibernate.Specs.Visitors
     public abstract class BiDirectionalManyToManyPairingVisitorSpec
     {
         Establish context = () =>
-            visitor = new BiDirectionalManyToManyPairingVisitor((c, o, w) => udf_was_called = true);
+            visitor = new RelationshipPairingVisitor((c, o, w) => udf_was_called = true);
 
-        static BiDirectionalManyToManyPairingVisitor visitor;
+        static RelationshipPairingVisitor visitor;
         protected static bool udf_was_called;
 
         protected static ICollectionMapping collection<T>(Expression<Func<T, object>> expression)

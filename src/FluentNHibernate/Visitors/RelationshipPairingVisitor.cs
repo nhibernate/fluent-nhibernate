@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.MappingModel;
@@ -9,89 +8,57 @@ namespace FluentNHibernate.Visitors
 {
     public delegate void PairBiDirectionalManyToManySidesDelegate(ICollectionMapping current, IEnumerable<ICollectionMapping> possibles, bool wasResolved);
 
-    public class BiDirectionalManyToManyPairingVisitor : DefaultMappingModelVisitor
+    public class RelationshipPairingVisitor : DefaultMappingModelVisitor
     {
         readonly PairBiDirectionalManyToManySidesDelegate userControlledPair;
-        readonly List<ICollectionMapping> relationships = new List<ICollectionMapping>();
+        readonly List<ICollectionMapping> manyToManys = new List<ICollectionMapping>();
+        readonly List<ICollectionMapping> oneToManys = new List<ICollectionMapping>();
+        readonly List<ManyToOneMapping> references = new List<ManyToOneMapping>();
 
-        public BiDirectionalManyToManyPairingVisitor(PairBiDirectionalManyToManySidesDelegate userControlledPair)
+        public RelationshipPairingVisitor(PairBiDirectionalManyToManySidesDelegate userControlledPair)
         {
             this.userControlledPair = userControlledPair;
-        }
-
-        private static string GetMemberName(Member member)
-        {
-            if (member is MethodMember && member.Name.StartsWith("Get"))
-                return member.Name.Substring(3);
-
-            return member.Name;
-        }
-
-        private static LikenessContainer GetLikeness(ICollectionMapping currentMapping, ICollectionMapping mapping)
-        {
-            var currentMemberName = GetMemberName(currentMapping.Member);
-            var mappingMemberName = GetMemberName(mapping.Member);
-
-            return new LikenessContainer
-            {
-                Collection = currentMapping,
-                CurrentMemberName = currentMemberName,
-                MappingMemberName = mappingMemberName,
-                Differences = StringLikeness.EditDistance(currentMemberName, mappingMemberName)
-            };
-        }
-
-        private class LikenessContainer
-        {
-            public ICollectionMapping Collection { get; set; }
-            public string CurrentMemberName { get; set; }
-            public string MappingMemberName { get; set; }
-            public int Differences { get; set; }
-
-            public override bool Equals(object obj)
-            {
-                if (obj is LikenessContainer)
-                {
-                    return ((LikenessContainer)obj).CurrentMemberName == CurrentMemberName &&
-                        ((LikenessContainer)obj).MappingMemberName == MappingMemberName;
-                }
-
-                return false;
-            }
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    int result = (CurrentMemberName != null ? CurrentMemberName.GetHashCode() : 0);
-                    result = (result * 397) ^ (MappingMemberName != null ? MappingMemberName.GetHashCode() : 0);
-                    return result;
-                }
-            }
-        }
-
-        protected override void ProcessCollection(ICollectionMapping mapping)
-        {
-            if (!(mapping.Relationship is ManyToManyMapping))
-                return;
-
-            relationships.Add(mapping);
         }
 
         public override void Visit(IEnumerable<HibernateMapping> mappings)
         {
             base.Visit(mappings);
 
-            PairCollections(relationships);
+            PairManyToManys(manyToManys);
+            PairOneToManys(oneToManys, references);
         }
 
-        private static bool both_collections_point_to_each_others_types(ICollectionMapping left, ICollectionMapping right)
+        protected override void ProcessCollection(ICollectionMapping mapping)
         {
-            return left.ContainingEntityType == right.ChildType &&
-                left.ChildType == right.ContainingEntityType;
+            if (mapping.Relationship is ManyToManyMapping)
+                manyToManys.Add(mapping);
+            if (mapping.Relationship is OneToManyMapping)
+                oneToManys.Add(mapping);
         }
 
-        void PairCollections(IEnumerable<ICollectionMapping> rs)
+        public override void ProcessManyToOne(ManyToOneMapping manyToOneMapping)
+        {
+            references.Add(manyToOneMapping);
+        }
+
+        void PairOneToManys(IEnumerable<ICollectionMapping> collections, IEnumerable<ManyToOneMapping> refs)
+        {
+            var orderedCollections = collections.OrderBy(x => x.Name).ToArray();
+            var orderedRefs = refs.OrderBy(x => x.Name).ToArray();
+
+            foreach (var collection in orderedCollections)
+            {
+                var type = collection.ContainingEntityType;
+                var reference = orderedRefs.FirstOrDefault(x => x.OtherSide == null && x.Class.GetUnderlyingSystemType() == type);
+
+                if (reference == null) continue;
+
+                collection.OtherSide = reference;
+                reference.OtherSide = collection;
+            }
+        }
+
+        void PairManyToManys(IEnumerable<ICollectionMapping> rs)
         {
             if (!rs.Any()) return;
 
@@ -122,7 +89,35 @@ namespace FluentNHibernate.Visitors
 
             // both collections have been paired, so remove them
             // from the available collections
-            PairCollections(rs.Except(mapping, mapping.OtherSide));
+            PairManyToManys(rs.Except(mapping, (ICollectionMapping)mapping.OtherSide));
+        }
+
+        static string GetMemberName(Member member)
+        {
+            if (member is MethodMember && member.Name.StartsWith("Get"))
+                return member.Name.Substring(3);
+
+            return member.Name;
+        }
+
+        static LikenessContainer GetLikeness(ICollectionMapping currentMapping, ICollectionMapping mapping)
+        {
+            var currentMemberName = GetMemberName(currentMapping.Member);
+            var mappingMemberName = GetMemberName(mapping.Member);
+
+            return new LikenessContainer
+            {
+                Collection = currentMapping,
+                CurrentMemberName = currentMemberName,
+                MappingMemberName = mappingMemberName,
+                Differences = StringLikeness.EditDistance(currentMemberName, mappingMemberName)
+            };
+        }
+
+        static bool both_collections_point_to_each_others_types(ICollectionMapping left, ICollectionMapping right)
+        {
+            return left.ContainingEntityType == right.ChildType &&
+                left.ChildType == right.ContainingEntityType;
         }
 
         static bool likeness_within_threshold(LikenessContainer current)
@@ -196,6 +191,35 @@ namespace FluentNHibernate.Visitors
             return likenesses
                 .Except(current)
                 .Any(x => x.Differences == current.Differences);
+        }
+
+        class LikenessContainer
+        {
+            public ICollectionMapping Collection { get; set; }
+            public string CurrentMemberName { get; set; }
+            public string MappingMemberName { get; set; }
+            public int Differences { get; set; }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is LikenessContainer)
+                {
+                    return ((LikenessContainer)obj).CurrentMemberName == CurrentMemberName &&
+                        ((LikenessContainer)obj).MappingMemberName == MappingMemberName;
+                }
+
+                return false;
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int result = (CurrentMemberName != null ? CurrentMemberName.GetHashCode() : 0);
+                    result = (result * 397) ^ (MappingMemberName != null ? MappingMemberName.GetHashCode() : 0);
+                    return result;
+                }
+            }
         }
     }
 }

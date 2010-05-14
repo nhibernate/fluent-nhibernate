@@ -51,7 +51,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.ChildType, value); }
         }
 
-        public ICollectionMapping OtherSide { get; set; }
+        public IRelationship OtherSide { get; set; }
 
         public KeyMapping Key
         {

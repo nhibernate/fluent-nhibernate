@@ -34,6 +34,7 @@ namespace FluentNHibernate.Automapping.Steps
             mapping.ContainingEntityType = classMap.Type;
             mapping.Member = property;
             mapping.SetDefaultValue(x => x.Name, property.Name);
+            mapping.ChildType = property.PropertyType.GetGenericArguments()[0];
 
             SetRelationship(property, classMap, mapping);
             keys.SetKey(property, classMap, mapping);

@@ -26,16 +26,16 @@ namespace FluentNHibernate.Automapping.Steps
             return hasInverse;
         }
 
-        private static Member GetInverseProperty(Member property)
+        private static Member GetInverseProperty(Member member)
         {
-            Type type = property.PropertyType;
-            var inverseSide = type.GetGenericTypeDefinition()
-                .MakeGenericType(property.DeclaringType);
+            var type = member.PropertyType;
+            var expectedInversePropertyType = type.GetGenericTypeDefinition()
+                .MakeGenericType(member.DeclaringType);
 
             var argument = type.GetGenericArguments()[0];
             return argument.GetProperties()
-                .Where(x => x.PropertyType == inverseSide)
                 .Select(x => x.ToMember())
+                .Where(x => x.PropertyType == expectedInversePropertyType && x != member)
                 .FirstOrDefault();
         }
 

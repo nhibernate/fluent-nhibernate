@@ -40,9 +40,10 @@ namespace FluentNHibernate
             visitors.Add(new SeparateSubclassVisitor(subclassProviders));
             visitors.Add(new ComponentReferenceResolutionVisitor(componentProviders));
             visitors.Add(new ComponentColumnPrefixVisitor());
-            visitors.Add(new BiDirectionalManyToManyPairingVisitor(BiDirectionalManyToManyPairer));
+            visitors.Add(new RelationshipPairingVisitor(BiDirectionalManyToManyPairer));
             visitors.Add(new ManyToManyTableNameVisitor());
             visitors.Add(new ConventionVisitor(Conventions));
+            visitors.Add(new RelationshipKeyPairingVisitor());
             visitors.Add((validationVisitor = new ValidationVisitor()));
         }
 

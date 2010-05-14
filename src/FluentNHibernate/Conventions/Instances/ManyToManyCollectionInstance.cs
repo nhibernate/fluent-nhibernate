@@ -35,10 +35,10 @@ namespace FluentNHibernate.Conventions.Instances
         {
             get
             {
-                if (mapping.OtherSide == null)
+                if (mapping.OtherSide == null || !(mapping.OtherSide is ICollectionMapping))
                     return null;
 
-                return new ManyToManyCollectionInstance(mapping.OtherSide);
+                return new ManyToManyCollectionInstance((ICollectionMapping)mapping.OtherSide);
             }
         }
 
