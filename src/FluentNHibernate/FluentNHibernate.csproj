@@ -75,6 +75,7 @@
     <Compile Include="Automapping\AutoCollectionCreator.cs" />
     <Compile Include="Automapping\AutoCompositeIdentityPart.cs" />
     <Compile Include="Automapping\AutoJoinedSubClassPart.cs" />
+    <Compile Include="Automapping\AutoJoinPart.cs" />
     <Compile Include="Automapping\AutoMap.cs" />
     <Compile Include="Automapping\AutoMapping.cs" />
     <Compile Include="Automapping\AutoMapper.cs" />

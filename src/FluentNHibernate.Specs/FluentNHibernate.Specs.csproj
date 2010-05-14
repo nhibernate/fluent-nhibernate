@@ -129,6 +129,7 @@
     <Compile Include="Automapping\AutomappingSpecs.Relationships.cs" />
     <Compile Include="Automapping\Fixtures\SelfReferenceEntity.cs" />
     <Compile Include="Automapping\Fixtures\SelfReferencingCollectionEntity.cs" />
+    <Compile Include="Automapping\OverrideSpecs.cs" />
     <Compile Include="Conventions\BiDirectionalKeysSpecs.cs" />
     <Compile Include="Conventions\Fixtures\Parent.cs" />
   </ItemGroup>

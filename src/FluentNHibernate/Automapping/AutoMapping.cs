@@ -52,6 +52,9 @@ namespace FluentNHibernate.Automapping
                 if (Cache.IsDirty)
                     classMapping.Cache = ((ICacheMappingProvider)Cache).GetCacheMapping();
 
+                foreach (var join in joins)
+                    classMapping.AddJoin(join);
+
                 classMapping.Tuplizer = tuplizerMapping;
             }
 
@@ -239,6 +242,19 @@ namespace FluentNHibernate.Automapping
             subclasses[type] = subclass;
 
             return (IAutoClasslike)subclass;
+        }
+        
+        // hide the base one D:
+        private new void Join(string table, Action<JoinPart<T>> action)
+        { }
+
+        public void Join(string table, Action<AutoJoinPart<T>> action)
+        {
+            var join = new AutoJoinPart<T>(mappedMembers, table);
+
+            action(join);
+
+            joins.Add(((IJoinMappingProvider)join).GetJoinMapping());
         }
     }
 }

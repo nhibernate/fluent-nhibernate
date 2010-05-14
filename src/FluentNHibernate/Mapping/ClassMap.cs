@@ -13,7 +13,7 @@ namespace FluentNHibernate.Mapping
     public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     {
         protected readonly AttributeStore<ClassMapping> attributes = new AttributeStore<ClassMapping>();
-        private readonly IList<JoinMapping> joins = new List<JoinMapping>();
+        protected readonly IList<JoinMapping> joins = new List<JoinMapping>();
         private readonly OptimisticLockBuilder<ClassMap<T>> optimisticLock;
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="tableName">Joined table name</param>
         /// <param name="action">Joined table mapping</param>
-        public void Join(string tableName, Action<JoinPart<T>> action)
+        public virtual void Join(string tableName, Action<JoinPart<T>> action)
         {
             var join = new JoinPart<T>(tableName);
 
