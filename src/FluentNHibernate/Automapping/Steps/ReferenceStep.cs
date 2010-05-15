@@ -11,13 +11,16 @@ namespace FluentNHibernate.Automapping.Steps
             p.PropertyType.Namespace != "System.Collections.Generic" &&
             p.PropertyType.Namespace != "Iesi.Collections.Generic" &&
 	    !p.PropertyType.IsEnum);
+        readonly IAutomappingConfiguration cfg;
+
+        public ReferenceStep(IAutomappingConfiguration cfg)
+        {
+            this.cfg = cfg;
+        }
 
         public bool ShouldMap(Member member)
         {
-            if (member.CanWrite)
-                return findPropertyconvention(member);
-
-            return false;
+            return findPropertyconvention(member);
         }
 
         public void Map(ClassMappingBase classMap, Member member)
@@ -26,13 +29,16 @@ namespace FluentNHibernate.Automapping.Steps
             classMap.AddReference(manyToOne);
         }
 
-        private ManyToOneMapping CreateMapping(Member property)
+        private ManyToOneMapping CreateMapping(Member member)
         {
-            var mapping = new ManyToOneMapping { Member = property };
+            var mapping = new ManyToOneMapping { Member = member };
 
-            mapping.SetDefaultValue(x => x.Name, property.Name);
-            mapping.SetDefaultValue(x => x.Class, new TypeReference(property.PropertyType));
-            mapping.AddDefaultColumn(new ColumnMapping { Name = property.Name + "_id" });
+            mapping.SetDefaultValue(x => x.Name, member.Name);
+            mapping.SetDefaultValue(x => x.Class, new TypeReference(member.PropertyType));
+            mapping.AddDefaultColumn(new ColumnMapping { Name = member.Name + "_id" });
+
+            if (member.IsProperty && !member.CanWrite)
+                mapping.Access = cfg.GetAccessStrategyForReadOnlyProperty(member).ToString();
 
             return mapping;
         }

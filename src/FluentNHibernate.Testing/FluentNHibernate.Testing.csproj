@@ -93,7 +93,6 @@
     <Compile Include="AutoMapping\AutoMappingTester.cs" />
     <Compile Include="AutoMapping\AutoMapTests.cs" />
     <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.cs" />
-    <Compile Include="AutoMapping\BaseAutoMapTester.cs" />
     <Compile Include="AutoMapping\BaseAutoMapFixture.cs" />
     <Compile Include="AutoMapping\BaseAutoPersistenceTests.cs" />
     <Compile Include="AutoMapping\JoinedSubclassConventionTests.cs" />

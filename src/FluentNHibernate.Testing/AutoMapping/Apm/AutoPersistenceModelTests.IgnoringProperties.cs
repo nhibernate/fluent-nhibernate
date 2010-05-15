@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Override<ExampleCustomColumn>(c => c.IgnoreProperty(p => p.ExampleCustomColumnId));
 
             new AutoMappingTester<ExampleCustomColumn>(autoMapper)
-                .Element("//property").DoesntExist();
+                .Element("//property[@name='ExampleCustomColumnId']").DoesntExist();
         }
 
         [Test]

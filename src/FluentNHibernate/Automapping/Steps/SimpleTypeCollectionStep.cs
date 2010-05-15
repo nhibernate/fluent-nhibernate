@@ -27,8 +27,7 @@ namespace FluentNHibernate.Automapping.Steps
 
             var childType = member.PropertyType.GetGenericArguments()[0];
 
-            return member.CanWrite &&
-                member.PropertyType.ClosesInterface(typeof(IEnumerable<>)) &&
+            return member.PropertyType.ClosesInterface(typeof(IEnumerable<>)) &&
                     (childType.IsPrimitive || childType.In(typeof(string), typeof(DateTime)));
         }
 
@@ -42,6 +41,9 @@ namespace FluentNHibernate.Automapping.Steps
             mapping.ContainingEntityType = classMap.Type;
             mapping.Member = member;
             mapping.SetDefaultValue(x => x.Name, member.Name);
+
+            if (member.IsProperty && !member.CanWrite)
+                mapping.Access = cfg.GetAccessStrategyForReadOnlyProperty(member).ToString();
 
             keys.SetKey(member, classMap, mapping);
             SetElement(member, classMap, mapping);

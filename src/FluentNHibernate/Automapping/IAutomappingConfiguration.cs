@@ -54,6 +54,13 @@ namespace FluentNHibernate.Automapping
         /// <returns>Member is id</returns>
         bool IsId(Member member);
 
+        /// <summary>
+        /// Gets the access strategy to be used for a read-only property. This method is
+        /// called for every setterless property and private-setter autoproperty in your
+        /// domain that has been accepted through <see cref="ShouldMap(FluentNHibernate.Member)"/>.
+        /// </summary>
+        /// <param name="member">Member to get access strategy for</param>
+        /// <returns>Access strategy</returns>
         Access GetAccessStrategyForReadOnlyProperty(Member member);
 
         Type GetParentSideForManyToMany(Type left, Type right);

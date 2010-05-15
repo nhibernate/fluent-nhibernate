@@ -26,10 +26,7 @@ namespace FluentNHibernate.Automapping.Steps
             if (HasExplicitTypeConvention(member))
                 return true;
 
-            if (member.CanWrite)
-                return IsMappableToColumnType(member);
-
-            return false;
+            return IsMappableToColumnType(member);
         }
 
         private bool HasExplicitTypeConvention(Member property)

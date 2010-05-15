@@ -30,6 +30,10 @@ namespace FluentNHibernate.Automapping.Steps
             idMapping.Type = new TypeReference(member.PropertyType);
             idMapping.Member = member;
             idMapping.SetDefaultValue("Generator", GetDefaultGenerator(member));
+
+            if (member.IsProperty && !member.CanWrite)
+                idMapping.Access = cfg.GetAccessStrategyForReadOnlyProperty(member).ToString();
+
             ((ClassMapping)classMap).Id = idMapping;        
         }
 

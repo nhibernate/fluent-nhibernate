@@ -81,11 +81,11 @@ namespace FluentNHibernate.Automapping
             return new IAutomappingStep[]
             {
                 new IdentityStep(this),
-                new VersionStep(),
+                new VersionStep(this),
                 new ComponentStep(this, mapper),
                 new PropertyStep(conventionFinder, this),
                 new HasManyToManyStep(this),
-                new ReferenceStep(),
+                new ReferenceStep(this),
                 new HasManyStep(this)
             };
         }

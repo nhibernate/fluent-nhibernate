@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Steps;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -15,7 +16,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps
         [SetUp]
         public void CreateMapper()
         {
-            mapper = new VersionStep();
+            mapper = new VersionStep(new DefaultAutomappingConfiguration());
         }
 
         [Test]
@@ -101,7 +102,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps
         [SetUp]
         public void CreateMapper()
         {
-            mapper = new VersionStep();
+            mapper = new VersionStep(new DefaultAutomappingConfiguration());
         }
 
         [Test]

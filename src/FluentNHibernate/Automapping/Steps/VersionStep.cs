@@ -10,6 +10,12 @@ namespace FluentNHibernate.Automapping.Steps
     {
         private static readonly IList<string> ValidNames = new List<string> { "version", "timestamp" };
         private static readonly IList<Type> ValidTypes = new List<Type> { typeof(int), typeof(long), typeof(TimeSpan), typeof(byte[]) };
+        readonly IAutomappingConfiguration cfg;
+
+        public VersionStep(IAutomappingConfiguration cfg)
+        {
+            this.cfg = cfg;
+        }
 
         public bool ShouldMap(Member member)
         {
@@ -28,6 +34,9 @@ namespace FluentNHibernate.Automapping.Steps
 
             version.SetDefaultValue("Type", GetDefaultType(member));
             version.AddDefaultColumn(new ColumnMapping { Name = member.Name });
+
+            if (member.IsProperty && !member.CanWrite)
+                version.Access = cfg.GetAccessStrategyForReadOnlyProperty(member).ToString();
 
             if (IsSqlTimestamp(member))
             {

@@ -29,6 +29,9 @@ namespace FluentNHibernate.Automapping.Steps
                 Type = member.PropertyType
             };
 
+            if (member.IsProperty && !member.CanWrite)
+                mapping.Access = cfg.GetAccessStrategyForReadOnlyProperty(member).ToString();
+
             mapper.FlagAsMapped(member.PropertyType);
             mapper.MergeMap(member.PropertyType, mapping, new List<Member>());
 
