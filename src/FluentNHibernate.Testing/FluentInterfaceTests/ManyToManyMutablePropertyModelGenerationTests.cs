@@ -272,5 +272,12 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ModelShouldMatch(x => ((ManyToManyMapping)x.Relationship).Where.ShouldEqual("some condition"));
         }
 
+        [Test]
+        public void EntityNameShouldSetModelValue()
+        {
+            ManyToMany(x => x.BagOfChildren)
+                .Mapping(m => m.EntityName("name"))
+                .ModelShouldMatch(x => x.Relationship.EntityName.ShouldEqual("name"));
+        }
     }
 }
