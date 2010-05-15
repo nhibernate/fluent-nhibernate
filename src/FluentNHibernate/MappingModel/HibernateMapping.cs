@@ -7,6 +7,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class HibernateMapping : MappingBase
     {
         private readonly IList<ClassMapping> classes;

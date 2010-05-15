@@ -217,4 +217,61 @@ namespace FluentNHibernate.Specs.FluentInterface
             public string Property { get; set; }
         }
     }
+
+    public class when_compiling_the_mappings_with_two_of_the_same_reference_component_and_a_related_external_component
+    {
+        Establish context = () =>
+        {
+            var component_map = new ComponentMap<Component>();
+            component_map.Map(x => x.Property, "PROP");
+
+            var class_map = new ClassMap<Target>();
+            class_map.Id(x => x.Id);
+            class_map.Component(x => x.ComponentA)
+                .ColumnPrefix("A_");
+            class_map.Component(x => x.ComponentB)
+                .ColumnPrefix("B_");
+
+            persistence_model = new FluentNHibernate.PersistenceModel();
+            persistence_model.Add(class_map);
+            persistence_model.Add(component_map);
+        };
+
+        Because of = () =>
+        {
+            mappings = persistence_model.BuildMappings();
+            class_mapping = mappings.SelectMany(x => x.Classes).First();
+        };
+
+        It should_merge_the_component_mappings_with_the_mapping_from_the_component_map = () =>
+            class_mapping.Components.Select(x => x.Name).ShouldContain("ComponentA", "ComponentB");
+
+        It should_use_the_column_prefixes_for_the_columns = () =>
+        {
+            class_mapping.Components.First(x => x.Name == "ComponentA")
+                .Properties.SelectMany(x => x.Columns)
+                .Select(x => x.Name)
+                .ShouldContain("A_PROP");
+            class_mapping.Components.First(x => x.Name == "ComponentB")
+                .Properties.SelectMany(x => x.Columns)
+                .Select(x => x.Name)
+                .ShouldContain("B_PROP");
+        };
+
+        private static FluentNHibernate.PersistenceModel persistence_model;
+        private static IEnumerable<HibernateMapping> mappings;
+        private static ClassMapping class_mapping;
+
+        private class Target
+        {
+            public int Id { get; set; }
+            public Component ComponentA { get; set; }
+            public Component ComponentB { get; set; }
+        }
+
+        private class Component
+        {
+            public string Property { get; set; }
+        }
+    }
 }

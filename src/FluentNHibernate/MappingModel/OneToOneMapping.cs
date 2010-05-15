@@ -4,6 +4,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class OneToOneMapping : MappingBase
     {
         private readonly AttributeStore<OneToOneMapping> attributes;

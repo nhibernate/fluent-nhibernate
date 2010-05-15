@@ -6,6 +6,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     internal class MappedMembers : IMappingBase, IHasMappedMembers
     {
         private readonly List<PropertyMapping> properties;

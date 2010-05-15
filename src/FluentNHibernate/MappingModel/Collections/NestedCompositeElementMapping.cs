@@ -1,5 +1,8 @@
-﻿namespace FluentNHibernate.MappingModel.Collections
+﻿using System;
+
+namespace FluentNHibernate.MappingModel.Collections
 {
+    [Serializable]
     public class NestedCompositeElementMapping : CompositeElementMapping
     {
         readonly AttributeStore<NestedCompositeElementMapping> attributes;

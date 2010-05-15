@@ -4,6 +4,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class TuplizerMapping : MappingBase
     {
         private readonly AttributeStore<TuplizerMapping> attributes;

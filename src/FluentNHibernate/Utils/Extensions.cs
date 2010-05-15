@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using NHibernate.Util;
 
 namespace FluentNHibernate.Utils
@@ -54,6 +56,19 @@ namespace FluentNHibernate.Utils
         public static bool HasInterface(this Type type, Type interfaceType)
         {
             return type.GetInterfaces().Contains(interfaceType);
+        }
+
+        public static T DeepClone<T>(this T obj)
+        {
+            using (var stream = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                
+                formatter.Serialize(stream, obj);
+                stream.Position = 0;
+
+                return (T)formatter.Deserialize(stream);
+            }
         }
     }
 }

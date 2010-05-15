@@ -5,6 +5,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
+    [Serializable]
     public class ComponentMapping : ComponentMappingBase, IComponentMapping
     {
         public ComponentType ComponentType { get; set; }

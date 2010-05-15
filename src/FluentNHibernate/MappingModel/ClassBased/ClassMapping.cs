@@ -5,6 +5,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
+    [Serializable]
     public class ClassMapping : ClassMappingBase
     {
         private readonly AttributeStore<ClassMapping> attributes;

@@ -5,6 +5,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class AttributeStore
     {
         private readonly IDictionary<string, object> attributes;
@@ -109,6 +110,7 @@ namespace FluentNHibernate.MappingModel
         }
     }
 
+    [Serializable]
     public class AttributeStore<T>
     {
         private readonly AttributeStore store;

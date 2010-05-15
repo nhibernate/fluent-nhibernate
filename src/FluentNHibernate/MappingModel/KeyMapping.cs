@@ -6,6 +6,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class KeyMapping : MappingBase, IHasColumnMappings
     {
         private readonly AttributeStore<KeyMapping> attributes;

@@ -11,6 +11,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
     /// A reference to a component which is declared externally. Contains properties
     /// that can't be declared externally (property name, for example)
     /// </summary>
+    [Serializable]
     public class ReferenceComponentMapping : IComponentMapping
     {
         public ComponentType ComponentType { get; set; }
@@ -32,6 +33,14 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessComponent(this);
+        }
+
+        public bool IsSpecified(string name)
+        {
+            if (!IsAssociated)
+                return false;
+
+            return mergedComponent.IsSpecified(name);
         }
 
         public virtual void AssociateExternalMapping(ExternalComponentMapping mapping)

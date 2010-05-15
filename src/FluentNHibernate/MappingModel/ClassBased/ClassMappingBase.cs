@@ -5,6 +5,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
+    [Serializable]
     public abstract class ClassMappingBase : MappingBase, IHasMappedMembers
     {
         private readonly MappedMembers mappedMembers;

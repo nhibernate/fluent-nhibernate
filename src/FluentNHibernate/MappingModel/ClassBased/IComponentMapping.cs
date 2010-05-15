@@ -1,16 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Collections;
-using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
-    public interface IComponentMapping
+    public interface IComponentMapping : IMappingBase
     {
-        void AcceptVisitor(IMappingModelVisitor visitor);
         ParentMapping Parent { get; set; }
         bool Insert { get; set; }
         bool Update { get; set; }

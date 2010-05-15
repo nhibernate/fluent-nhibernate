@@ -9,6 +9,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate
 {
+    [Serializable]
     public abstract class Member : IEquatable<Member>
     {
         public abstract string Name { get; }
@@ -58,6 +59,7 @@ namespace FluentNHibernate
         public abstract object GetValue(object target);
     }
 
+    [Serializable]
     internal class MethodMember : Member
     {
         private readonly MethodInfo member;
@@ -150,6 +152,7 @@ namespace FluentNHibernate
         }
     }
 
+    [Serializable]
     internal class FieldMember : Member
     {
         private readonly FieldInfo member;
@@ -237,6 +240,7 @@ namespace FluentNHibernate
         }
     }
 
+    [Serializable]
     internal class PropertyMember : Member
     {
         readonly PropertyInfo member;

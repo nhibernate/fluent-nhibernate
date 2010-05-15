@@ -5,6 +5,7 @@ using NHibernate.Type;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class FilterDefinitionMapping : MappingBase
     {
         private readonly AttributeStore<FilterMapping> attributes;

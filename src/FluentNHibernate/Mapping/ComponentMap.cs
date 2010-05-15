@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
@@ -43,7 +44,9 @@ namespace FluentNHibernate.Mapping
 
         ExternalComponentMapping IExternalComponentMappingProvider.GetComponentMapping()
         {
-            return (ExternalComponentMapping)CreateComponentMapping();
+            var mapping = (ExternalComponentMapping)CreateComponentMapping();
+
+            return mapping.DeepClone();
         }
 
         Type IExternalComponentMappingProvider.Type

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class DefaultableList<T> : IDefaultableList<T>
     {
         private readonly IList<T> userDefined = new List<T>();

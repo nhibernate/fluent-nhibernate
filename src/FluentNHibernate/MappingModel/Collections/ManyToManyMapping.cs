@@ -6,6 +6,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
+    [Serializable]
     public class ManyToManyMapping : MappingBase, ICollectionRelationshipMapping, IHasColumnMappings
     {
         private readonly AttributeStore<ManyToManyMapping> attributes;

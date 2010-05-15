@@ -1,5 +1,8 @@
+using System;
+
 namespace FluentNHibernate.MappingModel.ClassBased
 {
+    [Serializable]
     public class ComponentType
     {
         public static readonly ComponentType Component = new ComponentType("component");

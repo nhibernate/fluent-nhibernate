@@ -4,6 +4,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
+    [Serializable]
     public class SubclassMapping : ClassMappingBase
     {
         public SubclassType SubclassType { get; private set; }

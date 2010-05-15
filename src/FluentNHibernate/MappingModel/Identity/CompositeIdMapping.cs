@@ -6,6 +6,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
+    [Serializable]
     public class CompositeIdMapping : MappingBase, IIdentityMapping
     {
         private readonly AttributeStore<CompositeIdMapping> attributes;
