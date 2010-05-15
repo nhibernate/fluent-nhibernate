@@ -397,6 +397,7 @@
     <Compile Include="MappingModel\ClassBased\ExternalComponentMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassType.cs" />
     <Compile Include="MappingModel\Collections\Lazy.cs" />
+    <Compile Include="MappingModel\Collections\NestedCompositeElementMapping.cs" />
     <Compile Include="MappingModel\EqualityExtensions.cs" />
     <Compile Include="MappingModel\IRelationship.cs" />
     <Compile Include="MappingModel\NaturalIdMapping.cs" />
@@ -405,6 +406,7 @@
     <Compile Include="Mapping\NaturalIdPart.cs" />
     <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />
     <Compile Include="Mapping\Providers\INaturalIdMappingProvider.cs" />
+    <Compile Include="Mapping\Providers\INestedCompositeElementMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IReferenceComponentMappingProvider.cs" />
     <Compile Include="Utils\StringLikeness.cs" />
     <Compile Include="Visitors\AmbiguousComponentReferenceException.cs" />

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Iesi.Collections.Generic;
 
 namespace FluentNHibernate.Specs.FluentInterface.Fixtures
@@ -20,5 +21,12 @@ namespace FluentNHibernate.Specs.FluentInterface.Fixtures
     class EntityCollectionChild
     {
         public int Position { get; set; }
+        public AreaComponent Area { get; set; }
+    }
+
+    class AreaComponent
+    {
+        public int Lat { get; set; }
+        public int Long { get; set; }
     }
 }
