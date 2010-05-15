@@ -175,5 +175,35 @@ namespace FluentNHibernate.Mapping
 
             return mapping;
         }
+
+        /// <summary>
+        /// Sets the meta-type value for this any mapping.
+        /// </summary>
+        /// <typeparam name="TMetaType">Meta type</typeparam>
+        public AnyPart<T> MetaType<TMetaType>()
+        {
+            attributes.Set(x => x.MetaType, new TypeReference(typeof(TMetaType)));
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the meta-type value for this any mapping.
+        /// </summary>
+        /// <param name="metaType">Meta type</param>
+        public AnyPart<T> MetaType(string metaType)
+        {
+            attributes.Set(x => x.MetaType, new TypeReference(metaType));
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the meta-type value for this any mapping.
+        /// </summary>
+        /// <param name="metaType">Meta type</param>
+        public AnyPart<T> MetaType(Type metaType)
+        {
+            attributes.Set(x => x.MetaType, new TypeReference(metaType));
+            return this;
+        }
     }
 }

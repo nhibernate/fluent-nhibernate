@@ -266,5 +266,17 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     .AddMetaValue<Record>("Rec"))
                 .ModelShouldMatch(x => x.MetaValues.Count().ShouldEqual(1));
         }
+
+        [Test]
+        public void MetaTypeShouldSetMetaTypePropertyOnModel()
+        {
+            Any<SecondMappedObject>()
+                .Mapping(m => m
+                    .IdentityType<int>()
+                    .EntityIdentifierColumn("col")
+                    .EntityTypeColumn("col2")
+                    .MetaType<object>())
+                .ModelShouldMatch(x => x.MetaType.ShouldEqual(new TypeReference(typeof(object))));
+        }
     }
 }
