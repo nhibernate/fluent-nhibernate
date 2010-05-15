@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'albacore'
+require 'tools/albacore/zipdirectory_patch.rb'
 
 def get_version
   ENV['BUILD_NUMBER'] || '1.0.0.0'
@@ -109,7 +110,14 @@ namespace :package do
     zip.directories_to_zip = ['./']
     zip.output_file = "fluentnhibernate-source-#{get_version}.zip"
     zip.output_path = 'dist'
-    zip.exclusions = [/.git/, /build\//, /dist\//, /results\//, /_ReSharper/, /bin\//, /obj\//, /.user/, /.suo/, /.resharper/, /.cache/, /output\//]
+    zip.exclusions = get_exclusions
+  end
+
+  def get_exclusions
+    exclusions = []
+    %w{build dist results bin obj output}.each {|x| exclusions << "**/#{x}" << "**/#{x}/**/**" }
+    [/_ReSharper/, /.user/, /.suo/, /.resharper/, /.cache/].each {|x| exclusions << x }
+    exclusions
   end
   
   desc 'Create zip of binaries'
