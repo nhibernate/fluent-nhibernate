@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils.Reflection;

@@ -16,20 +16,20 @@ namespace FluentNHibernate.Automapping.Steps
             return ValidNames.Contains(member.Name.ToLowerInvariant()) && ValidTypes.Contains(member.PropertyType);
         }
 
-        public void Map(ClassMappingBase classMap, Member property)
+        public void Map(ClassMappingBase classMap, Member member)
         {
             if (!(classMap is ClassMapping)) return;
 
             var version = new VersionMapping
             {
-                Name = property.Name,
+                Name = member.Name,
                 ContainingEntityType = classMap.Type,
             };
 
-            version.SetDefaultValue("Type", GetDefaultType(property));
-            version.AddDefaultColumn(new ColumnMapping { Name = property.Name });
+            version.SetDefaultValue("Type", GetDefaultType(member));
+            version.AddDefaultColumn(new ColumnMapping { Name = member.Name });
 
-            if (IsSqlTimestamp(property))
+            if (IsSqlTimestamp(member))
             {
                 version.Columns.Each(x =>
                 {

@@ -70,9 +70,9 @@ namespace FluentNHibernate.Automapping.Steps
                     || property.PropertyType.IsEnum;
         }
 
-        public void Map(ClassMappingBase classMap, Member property)
+        public void Map(ClassMappingBase classMap, Member member)
         {
-            classMap.AddProperty(GetPropertyMapping(classMap.Type, property, classMap as ComponentMapping));
+            classMap.AddProperty(GetPropertyMapping(classMap.Type, member, classMap as ComponentMapping));
         }
 
         private PropertyMapping GetPropertyMapping(Type type, Member property, ComponentMapping component)

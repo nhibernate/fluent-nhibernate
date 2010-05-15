@@ -19,18 +19,18 @@ namespace FluentNHibernate.Automapping.Steps
             return cfg.IsComponent(member.PropertyType);
         }
 
-        public void Map(ClassMappingBase classMap, Member property)
+        public void Map(ClassMappingBase classMap, Member member)
         {
             var mapping = new ComponentMapping(ComponentType.Component)
             {
-                Name = property.Name,
-                Member = property,
+                Name = member.Name,
+                Member = member,
                 ContainingEntityType = classMap.Type,
-                Type = property.PropertyType
+                Type = member.PropertyType
             };
 
-            mapper.FlagAsMapped(property.PropertyType);
-            mapper.MergeMap(property.PropertyType, mapping, new List<Member>());
+            mapper.FlagAsMapped(member.PropertyType);
+            mapper.MergeMap(member.PropertyType, mapping, new List<Member>());
 
             classMap.AddComponent(mapping);
         }

@@ -47,18 +47,21 @@ namespace FluentNHibernate.Automapping.Steps
             return new BagMapping();
         }
 
-        private void ConfigureModel(Member property, ICollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
+        private void ConfigureModel(Member member, ICollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
         {
             // TODO: Make the child type safer
-            mapping.SetDefaultValue(x => x.Name, property.Name);
-            mapping.Relationship = CreateManyToMany(property, property.PropertyType.GetGenericArguments()[0], classMap.Type);
+            mapping.SetDefaultValue(x => x.Name, member.Name);
+            mapping.Relationship = CreateManyToMany(member, member.PropertyType.GetGenericArguments()[0], classMap.Type);
             mapping.ContainingEntityType = classMap.Type;
-            mapping.ChildType = property.PropertyType.GetGenericArguments()[0];
-            mapping.Member = property;
+            mapping.ChildType = member.PropertyType.GetGenericArguments()[0];
+            mapping.Member = member;
 
-            SetKey(property, classMap, mapping);
+            if (member.IsProperty && !member.CanWrite)
+                mapping.Access = cfg.GetAccessStrategyForReadOnlyProperty(member).ToString();
 
-            if (parentSide != property.DeclaringType)
+            SetKey(member, classMap, mapping);
+
+            if (parentSide != member.DeclaringType)
                 mapping.Inverse = true;
         }
 
@@ -90,13 +93,13 @@ namespace FluentNHibernate.Automapping.Steps
             mapping.SetDefaultValue(x => x.Key, key);
         }
 
-        public void Map(ClassMappingBase classMap, Member property)
+        public void Map(ClassMappingBase classMap, Member member)
         {
-            var inverseProperty = GetInverseProperty(property);
-            var parentSide = cfg.GetParentSideForManyToMany(property.DeclaringType, inverseProperty.DeclaringType);
-            var mapping = GetCollection(property);
+            var inverseProperty = GetInverseProperty(member);
+            var parentSide = cfg.GetParentSideForManyToMany(member.DeclaringType, inverseProperty.DeclaringType);
+            var mapping = GetCollection(member);
 
-            ConfigureModel(property, mapping, classMap, parentSide);
+            ConfigureModel(member, mapping, classMap, parentSide);
 
             classMap.AddCollection(mapping);
         }

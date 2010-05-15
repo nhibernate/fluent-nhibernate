@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using FluentNHibernate.Automapping.Steps;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Automapping
 {
@@ -52,6 +53,8 @@ namespace FluentNHibernate.Automapping
         /// <param name="member">Member</param>
         /// <returns>Member is id</returns>
         bool IsId(Member member);
+
+        Access GetAccessStrategyForReadOnlyProperty(Member member);
 
         Type GetParentSideForManyToMany(Type left, Type right);
         bool IsConcreteBaseType(Type type);

@@ -32,19 +32,19 @@ namespace FluentNHibernate.Automapping.Steps
                     (childType.IsPrimitive || childType.In(typeof(string), typeof(DateTime)));
         }
 
-        public void Map(ClassMappingBase classMap, Member property)
+        public void Map(ClassMappingBase classMap, Member member)
         {
-            if (property.DeclaringType != classMap.Type)
+            if (member.DeclaringType != classMap.Type)
                 return;
 
-            var mapping = collections.CreateCollectionMapping(property.PropertyType);
+            var mapping = collections.CreateCollectionMapping(member.PropertyType);
 
             mapping.ContainingEntityType = classMap.Type;
-            mapping.Member = property;
-            mapping.SetDefaultValue(x => x.Name, property.Name);
+            mapping.Member = member;
+            mapping.SetDefaultValue(x => x.Name, member.Name);
 
-            keys.SetKey(property, classMap, mapping);
-            SetElement(property, classMap, mapping);
+            keys.SetKey(member, classMap, mapping);
+            SetElement(member, classMap, mapping);
         
             classMap.AddCollection(mapping);
         }

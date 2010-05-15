@@ -20,16 +20,16 @@ namespace FluentNHibernate.Automapping.Steps
             return cfg.IsId(member);
         }
 
-        public void Map(ClassMappingBase classMap, Member property)
+        public void Map(ClassMappingBase classMap, Member member)
         {
             if (!(classMap is ClassMapping)) return;
 
             var idMapping = new IdMapping { ContainingEntityType = classMap.Type };
-            idMapping.AddDefaultColumn(new ColumnMapping() { Name = property.Name });
-            idMapping.Name = property.Name;
-            idMapping.Type = new TypeReference(property.PropertyType);
-            idMapping.Member = property;
-            idMapping.SetDefaultValue("Generator", GetDefaultGenerator(property));
+            idMapping.AddDefaultColumn(new ColumnMapping() { Name = member.Name });
+            idMapping.Name = member.Name;
+            idMapping.Type = new TypeReference(member.PropertyType);
+            idMapping.Member = member;
+            idMapping.SetDefaultValue("Generator", GetDefaultGenerator(member));
             ((ClassMapping)classMap).Id = idMapping;        
         }
 

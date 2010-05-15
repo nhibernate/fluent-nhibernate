@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using FluentNHibernate.Automapping;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Specs.Automapping.Fixtures;
@@ -92,10 +92,85 @@ namespace FluentNHibernate.Specs.Automapping
         static ClassMapping mapping;
     }
 
-    public class ParentChildSelfReferenceEntity
+    public class when_the_automapper_is_told_to_map_an_entity_with_a_collection_exposed_as_a_read_only_enumerable_with_a_backing_field
     {
-        public int Id { get; set; }
-        public ParentChildSelfReferenceEntity Parent { get; set; }
-        public IList<ParentChildSelfReferenceEntity> Children { get; set; }
+        Establish context = () =>
+            mapper = AutoMap.Source(new StubTypeSource(typeof(ReadOnlyEnumerableEntity)));
+
+        Because of = () =>
+            mapping = mapper.BuildMappingFor<ReadOnlyEnumerableEntity>();
+
+        It should_map_the_read_only_property_collection = () =>
+            mapping.Collections.Select(x => x.Name).ShouldContain("BackingFieldCollection");
+
+        It should_map_the_property_using_property_through_field_access_strategy = () =>
+            mapping.Collections.First(x => x.Name == "BackingFieldCollection").Access.ShouldEqual("nosetter.camelcase");
+        
+        static AutoPersistenceModel mapper;
+        static ClassMapping mapping;
+    }
+
+    public class when_the_automapper_is_told_to_map_an_entity_with_a_collection_exposed_as_a_read_only_enumerable_with_a_backing_field_with_an_overridden_configuration
+    {
+        Establish context = () =>
+            mapper = AutoMap.Source(new StubTypeSource(typeof(ReadOnlyEnumerableEntity)), new TestConfiguration());
+
+        Because of = () =>
+            mapping = mapper.BuildMappingFor<ReadOnlyEnumerableEntity>();
+
+        It should_map_the_property_using_the_access_strategy_from_the_configuration = () =>
+            mapping.Collections.First(x => x.Name == "BackingFieldCollection").Access.ShouldEqual("noop");
+
+        static AutoPersistenceModel mapper;
+        static ClassMapping mapping;
+
+        class TestConfiguration : DefaultAutomappingConfiguration
+        {
+            public override Access GetAccessStrategyForReadOnlyProperty(Member member)
+            {
+                return Access.NoOp;
+            }
+        }
+    }
+
+    public class when_the_automapper_is_told_to_map_an_entity_with_a_collection_exposed_as_a_read_only_enumerable_autoproperty
+    {
+        Establish context = () =>
+            mapper = AutoMap.Source(new StubTypeSource(typeof(ReadOnlyEnumerableEntity)));
+
+        Because of = () =>
+            mapping = mapper.BuildMappingFor<ReadOnlyEnumerableEntity>();
+
+        It should_map_the_read_only_property_collection = () =>
+            mapping.Collections.Select(x => x.Name).ShouldContain("AutoPropertyCollection");
+
+        It should_map_the_property_using_backfield_access_strategy = () =>
+            mapping.Collections.First(x => x.Name == "AutoPropertyCollection").Access.ShouldEqual("backfield");
+
+        static AutoPersistenceModel mapper;
+        static ClassMapping mapping;
+    }
+
+    public class when_the_automapper_is_told_to_map_an_entity_with_a_collection_exposed_as_a_read_only_enumerable_autoproperty_with_an_overridden_configuration
+    {
+        Establish context = () =>
+            mapper = AutoMap.Source(new StubTypeSource(typeof(ReadOnlyEnumerableEntity)), new TestConfiguration());
+
+        Because of = () =>
+            mapping = mapper.BuildMappingFor<ReadOnlyEnumerableEntity>();
+
+        It should_map_the_property_using_the_access_strategy_from_the_configuration = () =>
+            mapping.Collections.First(x => x.Name == "AutoPropertyCollection").Access.ShouldEqual("noop");
+
+        static AutoPersistenceModel mapper;
+        static ClassMapping mapping;
+
+        class TestConfiguration : DefaultAutomappingConfiguration
+        {
+            public override Access GetAccessStrategyForReadOnlyProperty(Member member)
+            {
+                return Access.NoOp;
+            }
+        }
     }
 }

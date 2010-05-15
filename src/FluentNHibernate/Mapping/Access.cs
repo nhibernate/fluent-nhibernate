@@ -1,6 +1,7 @@
-using System;
+﻿using System;
+using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Mapping
 {
     public class Access
     {
@@ -8,7 +9,7 @@ namespace FluentNHibernate.Conventions.Inspections
         public static readonly Access Field = new Access("field");
         public static readonly Access BackField = new Access("backfield");
         public static readonly Access Property = new Access("property");
-        public static readonly Access ReadOnlyProperty = new Access("no-setter");
+        public static readonly Access ReadOnlyProperty = new Access("nosetter");
         public static readonly Access NoOp = new Access("noop");
         public static readonly Access None = new Access("none");
 
@@ -44,7 +45,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public static Access ReadOnlyPropertyThroughCamelCaseField(CamelCasePrefix prefix)
         {
-            return new Access("no-setter.camelcase" + prefix);
+            return new Access("nosetter.camelcase" + prefix);
         }
 
         public static Access ReadOnlyPropertyThroughLowerCaseField()
@@ -54,12 +55,12 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public static Access ReadOnlyPropertyThroughLowerCaseField(LowerCasePrefix prefix)
         {
-            return new Access("no-setter.lowercase" + prefix);
+            return new Access("nosetter.lowercase" + prefix);
         }
 
         public static Access ReadOnlyPropertyThroughPascalCaseField(PascalCasePrefix prefix)
         {
-            return new Access("no-setter.pascalcase" + prefix);
+            return new Access("nosetter.pascalcase" + prefix);
         }
 
         public static Access Using(string value)

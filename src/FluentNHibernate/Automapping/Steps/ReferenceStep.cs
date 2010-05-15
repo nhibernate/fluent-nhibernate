@@ -20,9 +20,9 @@ namespace FluentNHibernate.Automapping.Steps
             return false;
         }
 
-        public void Map(ClassMappingBase classMap, Member property)
+        public void Map(ClassMappingBase classMap, Member member)
         {
-            var manyToOne = CreateMapping(property);
+            var manyToOne = CreateMapping(member);
             classMap.AddReference(manyToOne);
         }
 

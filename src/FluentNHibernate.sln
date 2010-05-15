@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentNHibernate.Specs", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples.FirstAutomappedProject", "Examples.FirstAutomappedProject\Examples.FirstAutomappedProject.csproj", "{38CB7FE2-9018-4EF2-A3BA-21A939E70718}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{3D285AE0-E5CF-4923-B543-0D70E5C6DE18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,5 +87,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{38CB7FE2-9018-4EF2-A3BA-21A939E70718} = {3D285AE0-E5CF-4923-B543-0D70E5C6DE18}
+		{B43FC076-1704-409A-A4F5-91A5DB22B4CF} = {3D285AE0-E5CF-4923-B543-0D70E5C6DE18}
 	EndGlobalSection
 EndGlobal

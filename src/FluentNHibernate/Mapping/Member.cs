@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using FluentNHibernate.Utils;
 
@@ -19,6 +20,7 @@ namespace FluentNHibernate
         public abstract bool IsMethod { get; }
         public abstract bool IsField { get; }
         public abstract bool IsProperty { get; }
+        public abstract bool IsAutoProperty { get; }
         public abstract bool IsPrivate { get; }
         public abstract bool IsProtected { get; }
         public abstract bool IsPublic { get; }
@@ -54,88 +56,6 @@ namespace FluentNHibernate
 
         public abstract void SetValue(object target, object value);
         public abstract object GetValue(object target);
-    }
-
-    internal class FieldMember : Member
-    {
-        private readonly FieldInfo member;
-
-        public override void SetValue(object target, object value)
-        {
-            member.SetValue(target, value);
-        }
-
-        public override object GetValue(object target)
-        {
-            return member.GetValue(target);
-        }
-
-        public FieldMember(FieldInfo member)
-        {
-            this.member = member;
-        }
-
-        public override string Name
-        {
-            get { return member.Name; }
-        }
-        public override Type PropertyType
-        {
-            get { return member.FieldType; }
-        }
-        public override bool CanWrite
-        {
-            get { return true; }
-        }
-        public override MemberInfo MemberInfo
-        {
-            get { return member; }
-        }
-        public override Type DeclaringType
-        {
-            get { return member.DeclaringType; }
-        }
-        public override bool HasIndexParameters
-        {
-            get { return false; }
-        }
-        public override bool IsMethod
-        {
-            get { return false; }
-        }
-        public override bool IsField
-        {
-            get { return true; }
-        }
-        public override bool IsProperty
-        {
-            get { return false; }
-        }
-
-        public override bool IsPrivate
-        {
-            get { return member.IsPrivate; }
-        }
-
-        public override bool IsProtected
-        {
-            get { return member.IsFamily || member.IsFamilyAndAssembly; }
-        }
-
-        public override bool IsPublic
-        {
-            get { return member.IsPublic; }
-        }
-
-        public override bool IsInternal
-        {
-            get { return member.IsAssembly || member.IsFamilyAndAssembly; }
-        }
-
-        public override string ToString()
-        {
-            return "{Field: " + member.Name + "}";
-        }
     }
 
     internal class MethodMember : Member
@@ -194,6 +114,103 @@ namespace FluentNHibernate
             get { return false; }
         }
 
+        public override bool IsAutoProperty
+        {
+            get { return false; }
+        }
+
+        public override bool IsPrivate
+        {
+            get { return member.IsPrivate; }
+        }
+
+        public override bool IsProtected
+        {
+            get { return member.IsFamily || member.IsFamilyAndAssembly; }
+        }
+
+        public override bool IsPublic
+        {
+            get { return member.IsPublic; }
+        }
+
+        public override bool IsInternal
+        {
+            get { return member.IsAssembly || member.IsFamilyAndAssembly; }
+        }
+
+        public bool IsCompilerGenerated
+        {
+            get { return member.GetCustomAttributes(typeof(CompilerGeneratedAttribute), true).Any(); }
+        }
+
+        public override string ToString()
+        {
+            return "{Method: " + member.Name + "}";
+        }
+    }
+
+    internal class FieldMember : Member
+    {
+        private readonly FieldInfo member;
+
+        public override void SetValue(object target, object value)
+        {
+            member.SetValue(target, value);
+        }
+
+        public override object GetValue(object target)
+        {
+            return member.GetValue(target);
+        }
+
+        public FieldMember(FieldInfo member)
+        {
+            this.member = member;
+        }
+
+        public override string Name
+        {
+            get { return member.Name; }
+        }
+        public override Type PropertyType
+        {
+            get { return member.FieldType; }
+        }
+        public override bool CanWrite
+        {
+            get { return true; }
+        }
+        public override MemberInfo MemberInfo
+        {
+            get { return member; }
+        }
+        public override Type DeclaringType
+        {
+            get { return member.DeclaringType; }
+        }
+        public override bool HasIndexParameters
+        {
+            get { return false; }
+        }
+        public override bool IsMethod
+        {
+            get { return false; }
+        }
+        public override bool IsField
+        {
+            get { return true; }
+        }
+        public override bool IsProperty
+        {
+            get { return false; }
+        }
+
+        public override bool IsAutoProperty
+        {
+            get { return false; }
+        }
+
         public override bool IsPrivate
         {
             get { return member.IsPrivate; }
@@ -216,7 +233,7 @@ namespace FluentNHibernate
 
         public override string ToString()
         {
-            return "{Method: " + member.Name + "}";
+            return "{Field: " + member.Name + "}";
         }
     }
 
@@ -229,8 +246,8 @@ namespace FluentNHibernate
         public PropertyMember(PropertyInfo member)
         {
             this.member = member;
-            getMethod = GetMember(member.GetGetMethod());
-            setMethod = GetMember(member.GetSetMethod());
+            getMethod = GetMember(member.GetGetMethod(true));
+            setMethod = GetMember(member.GetSetMethod(true));
         }
 
         MethodMember GetMember(MethodInfo method)
@@ -261,7 +278,16 @@ namespace FluentNHibernate
         }
         public override bool CanWrite
         {
-            get { return member.CanWrite; }
+            get
+            {
+                // override the default reflection value here. Private setters aren't
+                // considered "settable" in the same sense that public ones are. We can
+                // use this to control the access strategy later
+                if (IsAutoProperty && setMethod.IsPrivate)
+                    return false;
+
+                return member.CanWrite;
+            }
         }
         public override MemberInfo MemberInfo
         {
@@ -286,6 +312,11 @@ namespace FluentNHibernate
         public override bool IsProperty
         {
             get { return true; }
+        }
+
+        public override bool IsAutoProperty
+        {
+            get { return setMethod != null && setMethod.IsCompilerGenerated; }
         }
 
         public override bool IsPrivate

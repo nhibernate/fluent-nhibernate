@@ -19,15 +19,15 @@ namespace FluentNHibernate.Automapping.Steps
                    collectionStep.ShouldMap(member);
         }
 
-        public void Map(ClassMappingBase classMap, Member property)
+        public void Map(ClassMappingBase classMap, Member member)
         {
-            if (property.DeclaringType != classMap.Type)
+            if (member.DeclaringType != classMap.Type)
                 return;
 
-            if (simpleTypeCollectionStepStep.ShouldMap(property))
-                simpleTypeCollectionStepStep.Map(classMap, property);
-            else if (collectionStep.ShouldMap(property))
-                collectionStep.Map(classMap, property);
+            if (simpleTypeCollectionStepStep.ShouldMap(member))
+                simpleTypeCollectionStepStep.Map(classMap, member);
+            else if (collectionStep.ShouldMap(member))
+                collectionStep.Map(classMap, member);
         }
     }
 }

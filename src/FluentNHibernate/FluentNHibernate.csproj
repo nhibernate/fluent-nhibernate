@@ -401,6 +401,7 @@
     <Compile Include="MappingModel\IRelationship.cs" />
     <Compile Include="MappingModel\NaturalIdMapping.cs" />
     <Compile Include="MappingModel\Output\XmlNaturalIdWriter.cs" />
+    <Compile Include="Mapping\Access.cs" />
     <Compile Include="Mapping\NaturalIdPart.cs" />
     <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />
     <Compile Include="Mapping\Providers\INaturalIdMappingProvider.cs" />
@@ -511,7 +512,6 @@
     <Compile Include="Conventions\Instances\ColumnInstance.cs" />
     <Compile Include="Conventions\Inspections\InspectorModelMapper.cs" />
     <Compile Include="Conventions\Inspections\UnmappedPropertyException.cs" />
-    <Compile Include="Conventions\Inspections\Access.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\ConcreteAcceptanceCriteria.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\EqualCriterion.cs" />
     <Compile Include="Conventions\AcceptanceCriteria\Expectation.cs" />

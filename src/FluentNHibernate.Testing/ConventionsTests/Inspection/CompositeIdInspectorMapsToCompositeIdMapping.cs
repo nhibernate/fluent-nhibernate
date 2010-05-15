@@ -5,6 +5,7 @@ using System.Reflection;
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils.Reflection;

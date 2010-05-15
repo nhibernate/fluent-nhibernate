@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FluentNHibernate.Automapping.Steps;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Automapping
 {
@@ -9,7 +10,7 @@ namespace FluentNHibernate.Automapping
     {
         public virtual bool ShouldMap(Member member)
         {
-            return member.IsProperty && member.CanWrite;
+            return member.IsProperty && member.IsPublic;
         }
 
         public virtual bool ShouldMap(Type type)
@@ -20,6 +21,14 @@ namespace FluentNHibernate.Automapping
         public virtual bool IsId(Member member)
         {
             return member.Name.Equals("id", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public virtual Access GetAccessStrategyForReadOnlyProperty(Member member)
+        {
+            if (member.IsAutoProperty)
+                return Access.BackField;
+
+            return Access.ReadOnlyPropertyThroughCamelCaseField();
         }
 
         public virtual Type GetParentSideForManyToMany(Type left, Type right)

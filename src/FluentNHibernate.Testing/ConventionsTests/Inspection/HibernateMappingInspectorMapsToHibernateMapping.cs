@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
