@@ -18,6 +18,11 @@ namespace FluentNHibernate
             this.type = type;
         }
 
+        public override Module Module
+        {
+            get { return null; }
+        }
+
         public override int MetadataToken
         {
             get { return name.GetHashCode(); }

@@ -29,7 +29,7 @@ namespace FluentNHibernate
 
         public bool Equals(Member other)
         {
-            return other.MemberInfo.MetadataToken.Equals(MemberInfo.MetadataToken);
+            return Equals(other.MemberInfo.MetadataToken, MemberInfo.MetadataToken) && Equals(other.MemberInfo.Module, MemberInfo.Module);
         }
 
         public override bool Equals(object obj)
@@ -443,12 +443,12 @@ namespace FluentNHibernate
     {
         public bool Equals(Member x, Member y)
         {
-            return x.MemberInfo.MetadataToken.Equals(y.MemberInfo.MetadataToken);
+            return x.MemberInfo.MetadataToken.Equals(y.MemberInfo.MetadataToken) && x.MemberInfo.Module.Equals(y.MemberInfo.Module);
         }
 
         public int GetHashCode(Member obj)
         {
-            return obj.MemberInfo.MetadataToken.GetHashCode();
+            return obj.MemberInfo.MetadataToken.GetHashCode() & obj.MemberInfo.Module.GetHashCode();
         }
     }
 }
