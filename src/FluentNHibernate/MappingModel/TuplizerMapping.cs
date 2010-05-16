@@ -29,6 +29,12 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.Mode, value); }
         }
 
+        public string EntityName
+        {
+            get { return attributes.Get(x => x.EntityName); }
+            set { attributes.Set(x => x.EntityName, value); }
+        }
+
         public TypeReference Type
         {
             get { return attributes.Get(x => x.Type); }

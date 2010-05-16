@@ -529,13 +529,22 @@ namespace FluentNHibernate.Mapping
             return ApplyFilter<TFilter>(null);
         }
 
-        public ClassMap<T> Tuplizer(TuplizerMode mode, Type tuplizerType)
+        /// <summary>
+        /// Configures the tuplizer for this entity. The tuplizer defines how to transform
+        /// a Property-Value to its persistent representation, and viceversa a Column-Value
+        /// to its in-memory representation, and the EntityMode defines which tuplizer is in use.
+        /// </summary>
+        /// <param name="mode">Tuplizer entity-mode</param>
+        /// <param name="tuplizerType">Tuplizer type</param>
+        public TuplizerPart Tuplizer(TuplizerMode mode, Type tuplizerType)
         {
             tuplizerMapping = new TuplizerMapping();
             tuplizerMapping.Mode = mode;
             tuplizerMapping.Type = new TypeReference(tuplizerType);
 
-            return this;
+            return new TuplizerPart(tuplizerMapping)
+                .Type(tuplizerType)
+                .Mode(mode);
         }
     }
 }

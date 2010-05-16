@@ -409,6 +409,7 @@
     <Compile Include="Mapping\Providers\INaturalIdMappingProvider.cs" />
     <Compile Include="Mapping\Providers\INestedCompositeElementMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IReferenceComponentMappingProvider.cs" />
+    <Compile Include="Mapping\TuplizerPart.cs" />
     <Compile Include="Utils\StringLikeness.cs" />
     <Compile Include="Visitors\AmbiguousComponentReferenceException.cs" />
     <Compile Include="Visitors\RelationshipKeyPairingVisitor.cs" />

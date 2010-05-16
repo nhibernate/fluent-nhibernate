@@ -28,6 +28,9 @@ namespace FluentNHibernate.MappingModel.Output
             if (tuplizerMapping.HasValue(x => x.Type))
                 element.WithAtt("class", tuplizerMapping.Type);
 
+            if (tuplizerMapping.HasValue(x => x.EntityName))
+                element.WithAtt("entity-name", tuplizerMapping.EntityName);
+
             document.AppendChild(element);
         }
 

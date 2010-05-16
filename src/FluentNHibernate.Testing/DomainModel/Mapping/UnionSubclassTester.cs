@@ -26,5 +26,23 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
                 }).Element("class/union-subclass").Exists();
         }
+
+        [Test]
+        public void ShouldAllowEntityNameToBeSetOnUnionSubclasses()
+        {
+            new MappingTester<MappedObject>()
+                .SubClassMapping<MappedObjectSubclass>(m =>
+                {
+                    m.EntityName("name");
+                })
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.UseUnionSubclassForInheritanceMapping();
+
+
+                }).Element("class/union-subclass")
+                    .HasAttribute("entity-name", "name");
+        }
     }
 }
