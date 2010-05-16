@@ -197,6 +197,11 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+        /// <summary>
+        /// Specifies that any subclasses of this entity should be treated as union-subclass
+        /// mappings. Don't use this in combination with a discriminator, as they are mutually
+        /// exclusive.
+        /// </summary>
         public virtual void UseUnionSubclassForInheritanceMapping()
         {
             attributes.Set(x => x.Abstract, true);
