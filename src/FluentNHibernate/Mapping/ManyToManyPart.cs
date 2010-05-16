@@ -148,6 +148,11 @@ namespace FluentNHibernate.Mapping
 
         public ManyToManyPart<TChild> AsTernaryAssociation(string indexColumn, string valueColumn)
         {
+            return AsTernaryAssociation(indexColumn, valueColumn, x => {});
+        }
+
+        public ManyToManyPart<TChild> AsTernaryAssociation(string indexColumn, string valueColumn, Action<IndexManyToManyPart> indexAction)
+        {
             EnsureGenericDictionary();
 
             var indexType = typeof(TChild).GetGenericArguments()[0];
@@ -156,6 +161,9 @@ namespace FluentNHibernate.Mapping
             manyToManyIndex = new IndexManyToManyPart(typeof(ManyToManyPart<TChild>));
             manyToManyIndex.Column(indexColumn);
             manyToManyIndex.Type(indexType);
+
+            if (indexAction != null)
+                indexAction(manyToManyIndex);
 
             ChildKeyColumn(valueColumn);
             this.valueType = valueType;
@@ -172,11 +180,19 @@ namespace FluentNHibernate.Mapping
 
         public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, string indexColumn, Type valueType, string valueColumn)
         {
+            return AsTernaryAssociation(indexType, indexColumn, valueType, valueColumn, x => {});
+        }
+
+        public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, string indexColumn, Type valueType, string valueColumn, Action<IndexManyToManyPart> indexAction)
+        {
             EnsureDictionary();
 
             manyToManyIndex = new IndexManyToManyPart(typeof(ManyToManyPart<TChild>));
             manyToManyIndex.Column(indexColumn);
             manyToManyIndex.Type(indexType);
+
+            if (indexAction != null)
+                indexAction(manyToManyIndex);
 
             ChildKeyColumn(valueColumn);
             this.valueType = valueType;
