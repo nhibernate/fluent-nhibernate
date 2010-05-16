@@ -24,6 +24,8 @@ namespace FluentNHibernate.Automapping.Steps
         {
             if (!member.PropertyType.IsGenericType)
                 return false;
+            if (member.PropertyType.ClosesInterface(typeof(IDictionary<,>)) || member.PropertyType.Closes(typeof(IDictionary<,>)))
+                return false;
 
             var childType = member.PropertyType.GetGenericArguments()[0];
 

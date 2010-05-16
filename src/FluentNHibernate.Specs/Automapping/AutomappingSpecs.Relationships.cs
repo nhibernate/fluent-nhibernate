@@ -173,4 +173,22 @@ namespace FluentNHibernate.Specs.Automapping
             }
         }
     }
+
+    public class when_automapping_an_entity_with_dictionary_properties
+    {
+        Establish context = () =>
+            mapper = AutoMap.Source(new StubTypeSource(typeof(DictionaryEntity)));
+
+        Because of = () =>
+            mapping = mapper.BuildMappingFor<DictionaryEntity>();
+
+        It should_not_map_the_non_generic_dictionary = () =>
+            mapping.Collections.Select(x => x.Name).ShouldNotContain("Dictionary");
+
+        It should_not_map_the_generic_dictionary = () =>
+            mapping.Collections.Select(x => x.Name).ShouldNotContain("GenericDictionary");
+        
+        static AutoPersistenceModel mapper;
+        static ClassMapping mapping;
+    }
 }

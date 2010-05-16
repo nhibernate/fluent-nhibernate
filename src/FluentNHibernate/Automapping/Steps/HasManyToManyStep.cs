@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping.Steps
 {
@@ -20,6 +23,8 @@ namespace FluentNHibernate.Automapping.Steps
             var type = member.PropertyType;
             if (type.Namespace != "Iesi.Collections.Generic" &&
                 type.Namespace != "System.Collections.Generic")
+                return false;
+            if (type.HasInterface(typeof(IDictionary)) || type.ClosesInterface(typeof(IDictionary<,>)) || type.Closes(typeof(System.Collections.Generic.IDictionary<,>)))
                 return false;
 
             var hasInverse = GetInverseProperty(member) != null;

@@ -1,4 +1,6 @@
-﻿using FluentNHibernate.MappingModel;
+﻿using System.Collections;
+using System.Collections.Generic;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
@@ -20,7 +22,10 @@ namespace FluentNHibernate.Automapping.Steps
 
         public bool ShouldMap(Member member)
         {
-            return member.PropertyType.Namespace.In("System.Collections.Generic", "Iesi.Collections.Generic");
+            return member.PropertyType.Namespace.In("System.Collections.Generic", "Iesi.Collections.Generic") &&
+                !member.PropertyType.HasInterface(typeof(IDictionary)) &&
+                !member.PropertyType.ClosesInterface(typeof(IDictionary<,>)) &&
+                !member.PropertyType.Closes(typeof(IDictionary<,>));
         }
 
         public void Map(ClassMappingBase classMap, Member member)

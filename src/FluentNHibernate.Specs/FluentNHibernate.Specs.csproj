@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Automapping\AutomappingSpecs.Relationships.cs" />
+    <Compile Include="Automapping\Fixtures\DictionaryEntity.cs" />
     <Compile Include="Automapping\Fixtures\ParentChildSelfReferenceEntity.cs" />
     <Compile Include="Automapping\Fixtures\ReadOnlyEnumerableEntity.cs" />
     <Compile Include="Automapping\Fixtures\SelfReferenceEntity.cs" />
