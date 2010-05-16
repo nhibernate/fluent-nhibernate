@@ -77,12 +77,18 @@ namespace FluentNHibernate.Automapping
 
                 if (subclassStrategy == SubclassStrategy.JoinedSubclass)
                 {
-                    subclassMapping = new SubclassMapping(SubclassType.JoinedSubclass);
+                    subclassMapping = new SubclassMapping(SubclassType.JoinedSubclass)
+                    {
+                        Type = inheritedClass.Type
+                    };
                     subclassMapping.Key = new KeyMapping();
                     subclassMapping.Key.AddDefaultColumn(new ColumnMapping { Name = mapping.Type.Name + "_id" });
                 }
                 else
-                    subclassMapping = new SubclassMapping(SubclassType.Subclass);
+                    subclassMapping = new SubclassMapping(SubclassType.Subclass)
+                    {
+                        Type = inheritedClass.Type
+                    };
 
 				// track separate set of properties for each sub-tree within inheritance hierarchy
             	var subclassMembers = new List<Member>(mappedMembers);
