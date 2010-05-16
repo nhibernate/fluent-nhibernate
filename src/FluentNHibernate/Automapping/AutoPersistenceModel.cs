@@ -143,12 +143,7 @@ namespace FluentNHibernate.Automapping
                 if (!type.Type.IsClass || !IsNotInnerClass(type)) continue;
                 if (type.IsMapped) continue;
 
-                var mapping = FindMapping(type.Type);
-
-                if (mapping == null)
-                    AddMapping(type.Type);
-                else
-                    MergeMap(type.Type, mapping);
+                AddMapping(type.Type);
             }
 
             autoMappingsCreated = true;
@@ -219,12 +214,6 @@ namespace FluentNHibernate.Automapping
                 return false; // object!
 
             return true;
-        }
-
-        private void MergeMap(Type type, IMappingProvider mapping)
-        {
-            Type typeToMap = GetTypeToMap(type);
-            autoMapper.MergeMap(typeToMap, mapping.GetClassMapping(), new List<Member>(mapping.GetIgnoredProperties()));
         }
 
         public IMappingProvider FindMapping<T>()

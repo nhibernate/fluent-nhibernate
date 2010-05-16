@@ -70,7 +70,17 @@ namespace FluentNHibernate.Automapping
         bool IsDiscriminated(Type type);
         string GetDiscriminatorColumn(Type type);
         SubclassStrategy GetSubclassStrategy(Type type);
+
+        /// <summary>
+        /// Specifies whether an abstract type is considered a Layer Supertype
+        /// (http://martinfowler.com/eaaCatalog/layerSupertype.html). Defaults to
+        /// true for all abstract classes. Override this method if you have an
+        /// abstract class that you want mapping as a regular entity.
+        /// </summary>
+        /// <param name="type">Abstract class type</param>
+        /// <returns>Whether the type is a Layer Supertype</returns>
         bool AbstractClassIsLayerSupertype(Type type);
+
         string SimpleTypeCollectionValueColumn(Member member);
 
         /// <summary>

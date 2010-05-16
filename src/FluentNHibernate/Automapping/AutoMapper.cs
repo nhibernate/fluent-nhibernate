@@ -52,10 +52,11 @@ namespace FluentNHibernate.Automapping
         {
             var discriminatorSet = false;
             var isDiscriminated = cfg.IsDiscriminated(classType);
+            var mappingTypesWithLogicalParents = GetMappingTypesWithLogicalParents();
 
-            foreach (var inheritedClass in mappingTypes.Where(q =>
-                q.Type.BaseType == classType &&
-                    !cfg.IsConcreteBaseType(q.Type.BaseType)))
+            foreach (var inheritedClass in mappingTypesWithLogicalParents
+                .Where(x => x.Value != null && x.Value.Type == classType)
+                .Select(x => x.Key))
             {
                 if (isDiscriminated && !discriminatorSet && mapping is ClassMapping)
                 {
@@ -91,6 +92,32 @@ namespace FluentNHibernate.Automapping
 
 				MergeMap(inheritedClass.Type, subclassMapping, subclassMembers);
             }
+        }
+
+        Dictionary<AutoMapType, AutoMapType> GetMappingTypesWithLogicalParents()
+        {
+            var excludedTypes = mappingTypes
+                .Where(x => cfg.IsConcreteBaseType(x.Type.BaseType))
+                .ToArray();
+            var availableTypes = mappingTypes.Except(excludedTypes);
+            var mappingTypesWithLogicalParents = new Dictionary<AutoMapType, AutoMapType>();
+
+            foreach (var type in availableTypes)
+                mappingTypesWithLogicalParents.Add(type, GetLogicalParent(type.Type, availableTypes));
+            return mappingTypesWithLogicalParents;
+        }
+
+        AutoMapType GetLogicalParent(Type type, IEnumerable<AutoMapType> availableTypes)
+        {
+            if (type.BaseType == typeof(object) || type.BaseType == null)
+                return null;
+
+            var baseType = availableTypes.FirstOrDefault(x => x.Type == type.BaseType);
+
+            if (baseType != null)
+                return baseType;
+
+            return GetLogicalParent(type.BaseType, availableTypes);
         }
 
         private void MapSubclass(IList<Member> mappedMembers, SubclassMapping subclass, AutoMapType inheritedClass)

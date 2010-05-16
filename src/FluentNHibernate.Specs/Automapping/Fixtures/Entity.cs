@@ -17,7 +17,7 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
     class EntityChild
     {}
 
-    public class A_Child : B_Parent
+    public abstract class A_Child : B_Parent
     {
         
     }
@@ -26,5 +26,21 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
     {
         public int Id { get; set; }
         public string Name { get; set; }
+    }
+
+    public class Child : Parent
+    {
+
+    }
+
+    public class Parent
+    {
+        public int Id { get; set; }
+        public Component Component { get; set; }
+    }
+
+    public class ChildChild : Child
+    {
+
     }
 }

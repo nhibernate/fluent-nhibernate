@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
 
@@ -73,5 +77,26 @@ namespace FluentNHibernate.Specs.Automapping
             ex.ShouldBeNull();
         
         static Exception ex;
+    }
+
+    public class when_the_automapper_maps_an_inheritance_hierarchy_with_three_levels_and_the_middle_ignored
+    {
+        Establish context = () =>
+            mapper = AutoMap.Source(new StubTypeSource(typeof(ChildChild), typeof(Parent), typeof(Child)))
+                .IgnoreBase<Child>();
+
+        Because of = () =>
+            mappings = mapper.BuildMappings()
+                .SelectMany(x => x.Classes);
+
+        It should_map_the_parent = () =>
+            mappings.Count().ShouldEqual(1);
+
+        It should_map_the_child_child_as_a_subclass_of_parent = () =>
+            mappings.Single()
+                .Subclasses.Single().Type.ShouldEqual(typeof(ChildChild));
+
+        static AutoPersistenceModel mapper;
+        static IEnumerable<ClassMapping> mappings;
     }
 }
