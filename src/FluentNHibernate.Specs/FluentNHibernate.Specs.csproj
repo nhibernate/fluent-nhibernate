@@ -135,6 +135,10 @@
     <Compile Include="Automapping\OverrideSpecs.cs" />
     <Compile Include="Conventions\BiDirectionalKeysSpecs.cs" />
     <Compile Include="Conventions\Fixtures\Parent.cs" />
+    <Compile Include="PersistenceModel\Fixtures\UnionChildEntity.cs" />
+    <Compile Include="PersistenceModel\Fixtures\UnionChildEntityMap.cs" />
+    <Compile Include="PersistenceModel\Fixtures\UnionEntity.cs" />
+    <Compile Include="PersistenceModel\Fixtures\UnionEntityMap.cs" />
     <Compile Include="PersistenceModel\SubclassSpecs.cs" />
     <Compile Include="SerializableSpecs.cs" />
   </ItemGroup>
