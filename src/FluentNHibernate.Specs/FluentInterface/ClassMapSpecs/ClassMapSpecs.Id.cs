@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Identity;
@@ -32,5 +33,21 @@ namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs
         static ClassMapping mapping;
         
         static IdMapping Id { get { return mapping.Id as IdMapping; }}
+    }
+
+    public class when_class_map_has_a_composite_id_with_a_key_reference_with_multiple_columns : ProviderSpec
+    {
+        Because of = () =>
+            mapping = map_as_class<EntityWithReferences>(m =>
+                m.CompositeId()
+                    .KeyReference(x => x.Reference, "col1", "col2"));
+
+        It should_add_all_the_columns_to_the_composite_id_mapping = () =>
+            mapping.Id.As<CompositeIdMapping>()
+                .KeyManyToOnes.Single()
+                .Columns.Select(x => x.Name)
+                .ShouldContain("col1", "col2");
+
+        static ClassMapping mapping;
     }
 }

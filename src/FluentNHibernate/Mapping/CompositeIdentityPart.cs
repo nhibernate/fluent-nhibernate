@@ -104,20 +104,20 @@ namespace FluentNHibernate.Mapping
 		{
             var member = expression.ToMember();
 
-		    return KeyReference(member, member.Name, null);
+		    return KeyReference(member, new[] { member.Name }, null);
 		}
 
 		/// <summary>
 		/// Defines a reference to be used as a many-to-one key for this composite-id with an explicit column name.
 		/// </summary>
 		/// <param name="expression">A member access lambda expression for the property</param>
-		/// <param name="columnName">The column name in the database to use for this key, or null to use the property name</param>
+        /// <param name="columnNames">A list of column names used for this key</param>
 		/// <returns>The composite identity part fluent interface</returns>
-		public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression, string columnName)
+		public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression, params string[] columnNames)
 		{
             var member = expression.ToMember();
 
-            return KeyReference(member, columnName, null);
+            return KeyReference(member, columnNames, null);
 		}
 
 
@@ -125,17 +125,17 @@ namespace FluentNHibernate.Mapping
         /// Defines a reference to be used as a many-to-one key for this composite-id with an explicit column name.
         /// </summary>
         /// <param name="expression">A member access lambda expression for the property</param>
-        /// <param name="columnName">The column name in the database to use for this key, or null to use the property name</param>
         /// <param name="customMapping">A lambda expression specifying additional settings for the key reference</param>
+        /// <param name="columnNames">A list of column names used for this key</param>
         /// <returns>The composite identity part fluent interface</returns>
-        public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression, string columnName, Action<KeyManyToOnePart> customMapping)
+        public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression, Action<KeyManyToOnePart> customMapping, params string[] columnNames)
         {
             var member = expression.ToMember();
 
-            return KeyReference(member, columnName, customMapping);
+            return KeyReference(member, columnNames, customMapping);
         }
 
-        protected virtual CompositeIdentityPart<T> KeyReference(Member property, string columnName, Action<KeyManyToOnePart> customMapping)
+        protected virtual CompositeIdentityPart<T> KeyReference(Member property, IEnumerable<string> columnNames, Action<KeyManyToOnePart> customMapping)
         {
             var key = new KeyManyToOneMapping
             {
@@ -143,7 +143,9 @@ namespace FluentNHibernate.Mapping
                 Class = new TypeReference(property.PropertyType),
                 ContainingEntityType = typeof(T)
             };
-            key.AddColumn(new ColumnMapping { Name = columnName });
+
+            foreach (var column in columnNames)
+                key.AddColumn(new ColumnMapping { Name = column });
 
             var keyPart = new KeyManyToOnePart(key);
 

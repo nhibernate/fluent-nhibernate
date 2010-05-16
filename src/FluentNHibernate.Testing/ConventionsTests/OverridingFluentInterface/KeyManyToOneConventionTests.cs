@@ -76,7 +76,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             var classMap = new ClassMap<ExampleClass>();
             var map = classMap.CompositeId()
                 .KeyProperty(x => x.Id)
-                .KeyReference(x => x.Parent, null, mappingDefinition);
+                .KeyReference(x => x.Parent, mappingDefinition);
 
             mapping = classMap;
         }
