@@ -203,8 +203,8 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 UnsavedValue = "unsaved"
             };
 
-            mapping.AddKeyManyToOne(new KeyManyToOneMapping());
-            mapping.AddKeyProperty(new KeyPropertyMapping());
+            mapping.AddKey(new KeyManyToOneMapping());
+            mapping.AddKey(new KeyPropertyMapping());
 
             return mapping;
         }

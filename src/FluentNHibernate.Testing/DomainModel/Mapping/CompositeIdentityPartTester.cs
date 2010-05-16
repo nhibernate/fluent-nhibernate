@@ -138,6 +138,19 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .HasAttribute("class", typeof(ComponentKey).AssemblyQualifiedName);
         }
 
+        [Test]
+        public void MixedKeyPropertyAndManyToOneOrdering()
+        {
+            new MappingTester<CompIdTarget>()
+                .ForMapping(c => c.CompositeId()
+                    .KeyReference(x => x.Child)
+                    .KeyProperty(x => x.LongId))
+                .Element("class/composite-id/*[1]")
+                    .HasName("key-many-to-one")
+                .RootElement.Element("class/composite-id/*[2]")
+                    .HasName("key-property");
+        }
+
         public class CompIdTarget
         {
             public virtual long LongId { get; set; }

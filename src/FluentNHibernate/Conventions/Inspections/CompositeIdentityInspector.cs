@@ -47,8 +47,9 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get
             {
-                return mapping.KeyManyToOnes
-                    .Select(x => new KeyManyToOneInspector(x))
+                return mapping.Keys
+                    .Where(x => x is KeyManyToOneMapping)
+                    .Select(x => new KeyManyToOneInspector((KeyManyToOneMapping)x))
                     .Cast<IKeyManyToOneInspector>();
             }
         }
@@ -57,8 +58,9 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get
             {
-                return mapping.KeyProperties
-                    .Select(x => new KeyPropertyInspector(x))
+                return mapping.Keys
+                    .Where(x => x is KeyPropertyMapping)
+                    .Select(x => new KeyPropertyInspector((KeyPropertyMapping)x))
                     .Cast<IKeyPropertyInspector>();
             }
         }

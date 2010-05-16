@@ -44,7 +44,7 @@ namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs
 
         It should_add_all_the_columns_to_the_composite_id_mapping = () =>
             mapping.Id.As<CompositeIdMapping>()
-                .KeyManyToOnes.Single()
+                .Keys.Single()
                 .Columns.Select(x => x.Name)
                 .ShouldContain("col1", "col2");
 

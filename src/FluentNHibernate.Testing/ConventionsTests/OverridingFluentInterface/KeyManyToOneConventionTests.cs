@@ -91,7 +91,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
                 .Classes.First()
                 .Id;
 
-            modelVerification(((CompositeIdMapping)modelInstance).KeyManyToOnes.First());
+            modelVerification((KeyManyToOneMapping)((CompositeIdMapping)modelInstance).Keys.First(x => x is KeyManyToOneMapping));
         }
 
         #endregion

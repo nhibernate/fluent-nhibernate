@@ -59,8 +59,9 @@ namespace FluentNHibernate.Conventions.Instances
         {
             get
             {
-                return mapping.KeyProperties
-                    .Select(x => new KeyPropertyInstance(x))
+                return mapping.Keys
+                    .Where(x => x is KeyPropertyMapping)
+                    .Select(x => new KeyPropertyInstance((KeyPropertyMapping)x))
                     .Cast<IKeyPropertyInstance>();
             }
         }
@@ -69,8 +70,9 @@ namespace FluentNHibernate.Conventions.Instances
         {
             get
             {
-                return mapping.KeyManyToOnes
-                    .Select(x => new KeyManyToOneInstance(x))
+                return mapping.Keys
+                    .Where(x => x is KeyManyToOneMapping)
+                    .Select(x => new KeyManyToOneInstance((KeyManyToOneMapping)x))
                     .Cast<IKeyManyToOneInstance>();
             }
         }

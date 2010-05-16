@@ -16,8 +16,7 @@ namespace FluentNHibernate.Mapping
 	{
         private readonly AccessStrategyBuilder<CompositeIdentityPart<T>> access;
         private readonly AttributeStore<CompositeIdMapping> attributes = new AttributeStore<CompositeIdMapping>();
-        private readonly IList<KeyPropertyMapping> keyProperties = new List<KeyPropertyMapping>();
-        private readonly IList<KeyManyToOneMapping> keyManyToOnes = new List<KeyManyToOneMapping>();
+        private readonly IList<ICompositeIdKeyMapping> keys = new List<ICompositeIdKeyMapping>();
         private bool nextBool = true;
 
         public CompositeIdentityPart()
@@ -90,7 +89,7 @@ namespace FluentNHibernate.Mapping
             if(!string.IsNullOrEmpty(columnName))
                 key.AddColumn(new ColumnMapping { Name = columnName });
 
-            keyProperties.Add(key);
+            keys.Add(key);
 
             return this;
         }
@@ -152,7 +151,7 @@ namespace FluentNHibernate.Mapping
             if (customMapping != null)
                 customMapping(keyPart);
 
-            keyManyToOnes.Add(key);            
+            keys.Add(key);            
 
             return this;
         }
@@ -194,8 +193,7 @@ namespace FluentNHibernate.Mapping
 
 	        mapping.ContainingEntityType = typeof(T);
 
-            keyProperties.Each(mapping.AddKeyProperty);
-            keyManyToOnes.Each(mapping.AddKeyManyToOne);
+            keys.Each(mapping.AddKey);
 
 	        return mapping;
 	    }
