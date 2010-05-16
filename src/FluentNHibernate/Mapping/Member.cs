@@ -287,7 +287,7 @@ namespace FluentNHibernate
                 // override the default reflection value here. Private setters aren't
                 // considered "settable" in the same sense that public ones are. We can
                 // use this to control the access strategy later
-                if (IsAutoProperty && setMethod.IsPrivate)
+                if (IsAutoProperty && (setMethod == null || setMethod.IsPrivate))
                     return false;
 
                 return member.CanWrite;
@@ -320,7 +320,11 @@ namespace FluentNHibernate
 
         public override bool IsAutoProperty
         {
-            get { return setMethod != null && setMethod.IsCompilerGenerated; }
+            get
+            {
+                return (getMethod != null && getMethod.IsCompilerGenerated) 
+                    || (setMethod != null && setMethod.IsCompilerGenerated);
+            }
         }
 
         public override bool IsPrivate

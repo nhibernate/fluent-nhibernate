@@ -20,6 +20,16 @@ using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Automapping.TestFixtures
 {
+    public abstract class EntityBaseClassWithPrivateSetter
+    {
+        public int Id { get; private set; }
+    }
+
+    public class ClassThatInheritsIdFromParentWithPrivateSetter : EntityBaseClassWithPrivateSetter
+    {
+
+    }
+
     public abstract class EntityBase<TPK>
     {
         public virtual TPK Id { get; set; }
@@ -434,4 +444,6 @@ namespace FluentNHibernate.Automapping.TestFixtures.SuperTypes
         public int ExampleParentClassId { get; set; } 
         public virtual IList<ExampleClass> Examples {get; set;}
     }
+
+
 }

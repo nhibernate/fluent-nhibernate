@@ -126,6 +126,16 @@ namespace FluentNHibernate.Testing.Automapping
             Test<ClassWithBitmap>(mapping =>
                 mapping.Element("//property[@name='Bitmap']/column").HasAttribute("name", "Bitmap"));
         }
+
+        [Test]
+        public void ShouldAutoMapInheritedIdAutoPropertyWithPrivateSetter()
+        {
+            Model<ClassThatInheritsIdFromParentWithPrivateSetter>();
+
+            Test<ClassThatInheritsIdFromParentWithPrivateSetter>(mapping =>
+                mapping.Element("//id").HasAttribute("access", "backfield"));
+        }
+
     }
 }
 
