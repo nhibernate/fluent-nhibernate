@@ -120,10 +120,10 @@ namespace FluentNHibernate.Automapping
             return this;
         }
 
-        public override IdentityPart Id(Expression<Func<T, object>> expression)
+        public override IdentityPart Id(Expression<Func<T, object>> memberExpression)
         {
-            mappedMembers.Add(expression.ToMember());
-            return base.Id(expression);
+            mappedMembers.Add(memberExpression.ToMember());
+            return base.Id(memberExpression);
         }
 
         public override CompositeIdentityPart<T> CompositeId()
@@ -163,10 +163,10 @@ namespace FluentNHibernate.Automapping
             return base.Component(property, action);
         }
 
-        public override IdentityPart Id(Expression<Func<T, object>> expression, string column)
+        public override IdentityPart Id(Expression<Func<T, object>> memberExpression, string column)
         {
-            mappedMembers.Add(expression.ToMember());
-            return base.Id(expression, column);
+            mappedMembers.Add(memberExpression.ToMember());
+            return base.Id(memberExpression, column);
         }
 
         protected override OneToOnePart<TOther> HasOne<TOther>(Member property)

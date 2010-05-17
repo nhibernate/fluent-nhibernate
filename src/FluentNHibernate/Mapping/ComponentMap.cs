@@ -7,6 +7,21 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
+    /// <summary>
+    /// Defines a mapping for a component. Derive from this class to create a mapping,
+    /// and use the constructor to control how your component is persisted.
+    /// </summary>
+    /// <example>
+    /// public class AddressMap : ComponentMap&lt;Address&gt;
+    /// {
+    ///   public AddressMap()
+    ///   {
+    ///     Map(x => x.Street);
+    ///     Map(x => x.City);
+    ///   }
+    /// }
+    /// </example>
+    /// <typeparam name="T">Component type to map</typeparam>
     public class ComponentMap<T> : ComponentPartBase<T>, IExternalComponentMappingProvider
     {
         private readonly AttributeStore<ComponentMapping> attributes;

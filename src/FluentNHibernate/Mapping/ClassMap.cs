@@ -10,16 +10,28 @@ using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Mapping
 {
+    /// <summary>
+    /// Defines a mapping for an entity. Derive from this class to create a mapping,
+    /// and use the constructor to control how your entity is persisted.
+    /// </summary>
+    /// <example>
+    /// public class PersonMap : ClassMap&lt;Person&gt;
+    /// {
+    ///   public PersonMap()
+    ///   {
+    ///     Id(x => x.PersonId);
+    ///     Map(x => x.Name);
+    ///     Map(x => x.Age);
+    ///   }
+    /// }
+    /// </example>
+    /// <typeparam name="T">Entity type to map</typeparam>
     public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     {
         protected readonly AttributeStore<ClassMapping> attributes = new AttributeStore<ClassMapping>();
         protected readonly IList<JoinMapping> joins = new List<JoinMapping>();
         private readonly OptimisticLockBuilder<ClassMap<T>> optimisticLock;
 
-        /// <summary>
-        /// Specify caching for this entity.
-        /// </summary>
-        public CachePart Cache { get; private set; }
         protected IIdentityMappingProvider id;
 
         private readonly IList<ImportPart> imports = new List<ImportPart>();
@@ -34,7 +46,6 @@ namespace FluentNHibernate.Mapping
         private SchemaActionBuilder<ClassMap<T>> schemaAction;
         protected TuplizerMapping tuplizerMapping;
 
-
         public ClassMap()
         {
             optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => attributes.Set(x => x.OptimisticLock, value));
@@ -43,200 +54,58 @@ namespace FluentNHibernate.Mapping
             Cache = new CachePart(typeof(T));
         }
 
-        ClassMapping IMappingProvider.GetClassMapping()
-        {
-		    var mapping = new ClassMapping(attributes.CloneInner());
+        /// <summary>
+        /// Specify the caching for this entity.
+        /// </summary>
+        /// <example>
+        /// Cache.ReadWrite();
+        /// </example>
+        public CachePart Cache { get; private set; }
 
-            mapping.Type = typeof(T);
-            mapping.Name = typeof(T).AssemblyQualifiedName;
-
-            foreach (var property in properties)
-                mapping.AddProperty(property.GetPropertyMapping());
-
-            foreach (var component in components)
-                mapping.AddComponent(component.GetComponentMapping());
-
-            if (version != null)
-                mapping.Version = version.GetVersionMapping();
-
-            foreach (var oneToOne in oneToOnes)
-                mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
-
-            foreach (var collection in collections)
-                mapping.AddCollection(collection.GetCollectionMapping());
-
-            foreach (var reference in references)
-                mapping.AddReference(reference.GetManyToOneMapping());
-
-            foreach (var any in anys)
-                mapping.AddAny(any.GetAnyMapping());
-
-            foreach (var subclass in subclasses.Values)
-                mapping.AddSubclass(subclass.GetSubclassMapping());
-
-		    foreach (var join in joins)
-		        mapping.AddJoin(join);
-
-            if (discriminator != null)
-                mapping.Discriminator = ((IDiscriminatorMappingProvider)discriminator).GetDiscriminatorMapping();
-
-            if (Cache.IsDirty)
-                mapping.Cache = ((ICacheMappingProvider)Cache).GetCacheMapping();
-
-            if (id != null)
-                mapping.Id = id.GetIdentityMapping();
-
-            if (compositeId != null)
-                mapping.Id = compositeId.GetCompositeIdMapping();
-
-            if (naturalId != null)
-                mapping.NaturalId = naturalId.GetNaturalIdMapping();
-
-            if (!mapping.IsSpecified("TableName"))
-                mapping.SetDefaultValue(x => x.TableName, GetDefaultTableName());
-
-            foreach (var filter in filters)
-                mapping.AddFilter(filter.GetFilterMapping());
-
-            foreach (var storedProcedure in storedProcedures)
-                mapping.AddStoredProcedure(storedProcedure.GetStoredProcedureMapping());
-
-            mapping.Tuplizer = tuplizerMapping;
-
-            return mapping;
-        }
-
-        private string GetDefaultTableName()
-        {
-            var tableName = EntityType.Name;
-
-            if (EntityType.IsGenericType)
-            {
-                // special case for generics: GenericType_GenericParameterType
-                tableName = EntityType.Name.Substring(0, EntityType.Name.IndexOf('`'));
-
-                foreach (var argument in EntityType.GetGenericArguments())
-                {
-                    tableName += "_";
-                    tableName += argument.Name;
-                }
-            }
-
-            return "`" + tableName + "`";
-        }
-
-        public HibernateMapping GetHibernateMapping()
-        {
-            var hibernateMapping = ((IHibernateMappingProvider)hibernateMappingPart).GetHibernateMapping();
-
-            foreach (var import in imports)
-                hibernateMapping.AddImport(import.GetImportMapping());
-
-            return hibernateMapping;
-        }
-
-        IEnumerable<Member> IMappingProvider.GetIgnoredProperties()
-        {
-            return new Member[0];
-        }
-
+        /// <summary>
+        /// Specify settings for the container/hibernate-mapping for this class.
+        /// Note: Avoid using this, if possible prefer using conventions.
+        /// </summary>
+        /// <example>
+        /// HibernateMapping.Schema("dto");
+        /// </example>
         public HibernateMappingPart HibernateMapping
         {
             get { return hibernateMappingPart; }
         }
 
-        public virtual NaturalIdPart<T> NaturalId()
+        #region Ids
+
+        /// <summary>
+        /// Specify the identifier for this entity.
+        /// </summary>
+        /// <param name="memberExpression">Identity property</param>
+        /// <example>
+        /// Id(x => x.PersonId);
+        /// </example>
+        public virtual IdentityPart Id(Expression<Func<T, object>> memberExpression)
         {
-            var part = new NaturalIdPart<T>();
-
-            naturalId = part;
-
-            return part;
-        }
-
-        public virtual CompositeIdentityPart<T> CompositeId()
-        {
-            var part = new CompositeIdentityPart<T>();
-
-            compositeId = part;
-
-            return part;
-        }
-
-        public virtual CompositeIdentityPart<TId> CompositeId<TId>(Expression<Func<T, TId>> expression)
-        {
-            var part = new CompositeIdentityPart<TId>(expression.ToMember().Name);
-
-            compositeId = part;
-
-            return part;
-        }
-
-        public VersionPart Version(Expression<Func<T, object>> expression)
-        {
-            return Version(expression.ToMember());
-        }
-
-        protected virtual VersionPart Version(Member property)
-        {
-            var versionPart = new VersionPart(typeof(T), property);
-
-            version = versionPart;
-
-            return versionPart;
-        }
-
-        public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
-        {
-            var part = new DiscriminatorPart(columnName, typeof(T), subclasses.Add, new TypeReference(typeof(TDiscriminator)));
-
-            discriminator = part;
-
-            attributes.Set(x => x.DiscriminatorValue, baseClassDiscriminator);
-
-            return part;
+            return Id(memberExpression, null);
         }
 
         /// <summary>
-        /// Specifies that any subclasses of this entity should be treated as union-subclass
-        /// mappings. Don't use this in combination with a discriminator, as they are mutually
-        /// exclusive.
+        /// Specify the identifier for this entity.
         /// </summary>
-        public virtual void UseUnionSubclassForInheritanceMapping()
+        /// <param name="memberExpression">Identity property</param>
+        /// <param name="column">Column name</param>
+        /// <example>
+        /// Id(x => x.PersonId, "id");
+        /// </example>
+        public virtual IdentityPart Id(Expression<Func<T, object>> memberExpression, string column)
         {
-            attributes.Set(x => x.Abstract, true);
-            attributes.Set(x => x.IsUnionSubclass, true);
-        }
-
-        public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
-        {
-            var part = new DiscriminatorPart(columnName, typeof(T), subclasses.Add, new TypeReference(typeof(TDiscriminator)));
-
-            discriminator = part;
-
-            return part;
-        }
-
-        public virtual DiscriminatorPart DiscriminateSubClassesOnColumn(string columnName)
-        {
-            return DiscriminateSubClassesOnColumn<string>(columnName);
-        }
-
-        public virtual IdentityPart Id(Expression<Func<T, object>> expression)
-        {
-            return Id(expression, null);
-        }
-
-        public virtual IdentityPart Id(Expression<Func<T, object>> expression, string column)
-        {
-            var member = expression.ToMember();
+            var member = memberExpression.ToMember();
             var part = new IdentityPart(EntityType, member);
 
             if (column != null)
                 part.Column(column);
 
             id = part;
-            
+
             return part;
         }
 
@@ -282,7 +151,147 @@ namespace FluentNHibernate.Mapping
             id = part;
 
             return part;
-        } 
+        }
+
+        /// <summary>
+        /// Create a natural identity. This is a secondary identifier
+        /// that has "business meaning" moreso than the primary key.
+        /// </summary>
+        /// <example>
+        /// NaturalId()
+        ///   .Property(x => x.Name);
+        /// </example>
+        public virtual NaturalIdPart<T> NaturalId()
+        {
+            var part = new NaturalIdPart<T>();
+
+            naturalId = part;
+
+            return part;
+        }
+
+        /// <summary>
+        /// Create a composite identity. This is an identity composed of multiple
+        /// columns.
+        /// Note: Prefer using a surrogate key over a composite key whenever possible.
+        /// </summary>
+        /// <example>
+        /// CompositeId()
+        ///   .KeyProperty(x => x.FirstName)
+        ///   .KeyProperty(x => x.LastName);
+        /// </example>
+        public virtual CompositeIdentityPart<T> CompositeId()
+        {
+            var part = new CompositeIdentityPart<T>();
+
+            compositeId = part;
+
+            return part;
+        }
+
+        /// <summary>
+        /// Create a composite identity represented by an identity class. This is an
+        /// identity composed of multiple columns.
+        /// Note: Prefer using a surrogate key over a composite key whenever possible.
+        /// </summary>
+        /// <param name="memberExpression">Composite id property</param>
+        /// <example>
+        /// CompositeId(x => x.Id)
+        ///   .KeyProperty(x => x.FirstName)
+        ///   .KeyProperty(x => x.LastName);
+        /// </example>
+        public virtual CompositeIdentityPart<TId> CompositeId<TId>(Expression<Func<T, TId>> memberExpression)
+        {
+            var part = new CompositeIdentityPart<TId>(memberExpression.ToMember().Name);
+
+            compositeId = part;
+
+            return part;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Specifies that this class should be versioned/timestamped using the
+        /// given property.
+        /// </summary>
+        /// <param name="memberExpression">Version/timestamp property</param>
+        /// <example>
+        /// Version(x => x.Timestamp);
+        /// </example>
+        public VersionPart Version(Expression<Func<T, object>> memberExpression)
+        {
+            return Version(memberExpression.ToMember());
+        }
+
+        protected virtual VersionPart Version(Member property)
+        {
+            var versionPart = new VersionPart(typeof(T), property);
+
+            version = versionPart;
+
+            return versionPart;
+        }
+
+        /// <summary>
+        /// Specify that this entity should use a discriminator with it's subclasses.
+        /// This is a mapping strategy called table-per-inheritance-hierarchy; where all
+        /// subclasses are stored in the same table, differenciated by a discriminator
+        /// column value.
+        /// </summary>
+        /// <typeparam name="TDiscriminator">Type of the discriminator column</typeparam>
+        /// <param name="columnName">Discriminator column name</param>
+        /// <param name="baseClassDiscriminator">Default discriminator value</param>
+        public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
+        {
+            var part = new DiscriminatorPart(columnName, typeof(T), subclasses.Add, new TypeReference(typeof(TDiscriminator)));
+
+            discriminator = part;
+
+            attributes.Set(x => x.DiscriminatorValue, baseClassDiscriminator);
+
+            return part;
+        }
+
+        /// <summary>
+        /// Specify that this entity should use a discriminator with it's subclasses.
+        /// This is a mapping strategy called table-per-inheritance-hierarchy; where all
+        /// subclasses are stored in the same table, differenciated by a discriminator
+        /// column value.
+        /// </summary>
+        /// <typeparam name="TDiscriminator">Type of the discriminator column</typeparam>
+        /// <param name="columnName">Discriminator column name</param>
+        public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
+        {
+            var part = new DiscriminatorPart(columnName, typeof(T), subclasses.Add, new TypeReference(typeof(TDiscriminator)));
+
+            discriminator = part;
+
+            return part;
+        }
+
+        /// <summary>
+        /// Specify that this entity should use a discriminator with it's subclasses.
+        /// This is a mapping strategy called table-per-inheritance-hierarchy; where all
+        /// subclasses are stored in the same table, differenciated by a discriminator
+        /// column value.
+        /// </summary>
+        /// <param name="columnName">Discriminator column name</param>
+        public virtual DiscriminatorPart DiscriminateSubClassesOnColumn(string columnName)
+        {
+            return DiscriminateSubClassesOnColumn<string>(columnName);
+        }
+
+        /// <summary>
+        /// Specifies that any subclasses of this entity should be treated as union-subclass
+        /// mappings. Don't use this in combination with a discriminator, as they are mutually
+        /// exclusive.
+        /// </summary>
+        public virtual void UseUnionSubclassForInheritanceMapping()
+        {
+            attributes.Set(x => x.Abstract, true);
+            attributes.Set(x => x.IsUnionSubclass, true);
+        }
 
         [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
         public virtual void JoinedSubClass<TSubclass>(string keyColumn, Action<JoinedSubClassPart<TSubclass>> action) where TSubclass : T
@@ -295,7 +304,7 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Sets the hibernate-mapping schema for this class.
+        /// Sets the schema for this class.
         /// </summary>
         /// <param name="schema">Schema name</param>
         public void Schema(string schema)
@@ -313,7 +322,7 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Inverse next boolean
+        /// Inverts the next boolean option
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ClassMap<T> Not
@@ -335,10 +344,18 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Sets additional tables for the class via the NH 2.0 Join element.
+        /// Links this entity to another table, to create a composite entity from two or
+        /// more tables.
         /// </summary>
         /// <param name="tableName">Joined table name</param>
         /// <param name="action">Joined table mapping</param>
+        /// <example>
+        /// Join("another_table", join =>
+        /// {
+        ///   join.Map(x => x.Name);
+        ///   join.Map(x => x.Age);
+        /// });
+        /// </example>
         public virtual void Join(string tableName, Action<JoinPart<T>> action)
         {
             var join = new JoinPart<T>(tableName);
@@ -388,6 +405,10 @@ namespace FluentNHibernate.Mapping
             nextBool = true;
         }
 
+        /// <summary>
+        /// Sets the query batch size for this entity.
+        /// </summary>
+        /// <param name="size">Batch size</param>
         public ClassMap<T> BatchSize(int size)
         {
             attributes.Set(x => x.BatchSize, size);
@@ -402,58 +423,96 @@ namespace FluentNHibernate.Mapping
             get { return optimisticLock; }
         }
 
+        /// <summary>
+        /// Sets the polymorphism behaviour
+        /// </summary>
         public PolymorphismBuilder<ClassMap<T>> Polymorphism
         {
             get { return polymorphism; }
         }
 
+        /// <summary>
+        /// Sets the schema action behaviour
+        /// </summary>
         public SchemaActionBuilder<ClassMap<T>> SchemaAction
         {
             get { return schemaAction; }
         }
 
+        /// <summary>
+        /// Specifies a check constraint
+        /// </summary>
+        /// <param name="constraint">Constraint name</param>
         public void CheckConstraint(string constraint)
         {
             attributes.Set(x => x.Check, constraint);
         }
 
+        /// <summary>
+        /// Specifies a persister to be used with this entity
+        /// </summary>
+        /// <typeparam name="TPersister">Persister type</typeparam>
         public void Persister<TPersister>() where TPersister : IEntityPersister
         {
             Persister(typeof(TPersister));
         }
 
+        /// <summary>
+        /// Specifies a persister to be used with this entity
+        /// </summary>
+        /// <param name="type">Persister type</param>
         private void Persister(Type type)
         {
             Persister(type.AssemblyQualifiedName);
         }
 
-        private void Persister(string type)
+        /// <summary>
+        /// Specifies a persister to be used with this entity
+        /// </summary>
+        /// <param name="type">Persister type</param>
+        public void Persister(string type)
         {
             attributes.Set(x => x.Persister, type);
         }
 
+        /// <summary>
+        /// Specifies a proxy class for this entity.
+        /// </summary>
+        /// <typeparam name="TProxy">Proxy type</typeparam>
         public void Proxy<TProxy>()
         {
             Proxy(typeof(TProxy));
         }
 
+        /// <summary>
+        /// Specifies a proxy class for this entity.
+        /// </summary>
+        /// <param name="type">Proxy type</param>
         public void Proxy(Type type)
         {
             Proxy(type.AssemblyQualifiedName);
         }
 
+        /// <summary>
+        /// Specifies a proxy class for this entity.
+        /// </summary>
+        /// <param name="type">Proxy type</param>
         public void Proxy(string type)
         {
             attributes.Set(x => x.Proxy, type);
         }
 
+        /// <summary>
+        /// Specifies that a select should be performed before updating
+        /// this entity
+        /// </summary>
         public void SelectBeforeUpdate()
         {
             attributes.Set(x => x.SelectBeforeUpdate, nextBool);
             nextBool = true;
         }
 
-		/// <summary>
+        /// <summary>
 		/// Defines a SQL 'where' clause used when retrieving objects of this type.
 		/// </summary>
     	public void Where(string where)
@@ -550,6 +609,103 @@ namespace FluentNHibernate.Mapping
             return new TuplizerPart(tuplizerMapping)
                 .Type(tuplizerType)
                 .Mode(mode);
+        }
+
+        ClassMapping IMappingProvider.GetClassMapping()
+        {
+            var mapping = new ClassMapping(attributes.CloneInner());
+
+            mapping.Type = typeof(T);
+            mapping.Name = typeof(T).AssemblyQualifiedName;
+
+            foreach (var property in properties)
+                mapping.AddProperty(property.GetPropertyMapping());
+
+            foreach (var component in components)
+                mapping.AddComponent(component.GetComponentMapping());
+
+            if (version != null)
+                mapping.Version = version.GetVersionMapping();
+
+            foreach (var oneToOne in oneToOnes)
+                mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
+
+            foreach (var collection in collections)
+                mapping.AddCollection(collection.GetCollectionMapping());
+
+            foreach (var reference in references)
+                mapping.AddReference(reference.GetManyToOneMapping());
+
+            foreach (var any in anys)
+                mapping.AddAny(any.GetAnyMapping());
+
+            foreach (var subclass in subclasses.Values)
+                mapping.AddSubclass(subclass.GetSubclassMapping());
+
+            foreach (var join in joins)
+                mapping.AddJoin(join);
+
+            if (discriminator != null)
+                mapping.Discriminator = ((IDiscriminatorMappingProvider)discriminator).GetDiscriminatorMapping();
+
+            if (Cache.IsDirty)
+                mapping.Cache = ((ICacheMappingProvider)Cache).GetCacheMapping();
+
+            if (id != null)
+                mapping.Id = id.GetIdentityMapping();
+
+            if (compositeId != null)
+                mapping.Id = compositeId.GetCompositeIdMapping();
+
+            if (naturalId != null)
+                mapping.NaturalId = naturalId.GetNaturalIdMapping();
+
+            if (!mapping.IsSpecified("TableName"))
+                mapping.SetDefaultValue(x => x.TableName, GetDefaultTableName());
+
+            foreach (var filter in filters)
+                mapping.AddFilter(filter.GetFilterMapping());
+
+            foreach (var storedProcedure in storedProcedures)
+                mapping.AddStoredProcedure(storedProcedure.GetStoredProcedureMapping());
+
+            mapping.Tuplizer = tuplizerMapping;
+
+            return mapping;
+        }
+
+        HibernateMapping IMappingProvider.GetHibernateMapping()
+        {
+            var hibernateMapping = ((IHibernateMappingProvider)hibernateMappingPart).GetHibernateMapping();
+
+            foreach (var import in imports)
+                hibernateMapping.AddImport(import.GetImportMapping());
+
+            return hibernateMapping;
+        }
+
+        string GetDefaultTableName()
+        {
+            var tableName = EntityType.Name;
+
+            if (EntityType.IsGenericType)
+            {
+                // special case for generics: GenericType_GenericParameterType
+                tableName = EntityType.Name.Substring(0, EntityType.Name.IndexOf('`'));
+
+                foreach (var argument in EntityType.GetGenericArguments())
+                {
+                    tableName += "_";
+                    tableName += argument.Name;
+                }
+            }
+
+            return "`" + tableName + "`";
+        }
+
+        IEnumerable<Member> IMappingProvider.GetIgnoredProperties()
+        {
+            return new Member[0];
         }
     }
 }
