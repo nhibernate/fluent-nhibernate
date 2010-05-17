@@ -126,7 +126,7 @@ namespace FluentNHibernate.Automapping
             foreach (var type in types)
             {
                 // skipped by user-defined configuration criteria
-                if (HasUserDefinedConfiguration && !cfg.ShouldMap(type))
+                if (!cfg.ShouldMap(type))
                     continue;
                 // skipped by inline where clause
                 if (whereClause != null && !whereClause(type))

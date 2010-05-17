@@ -37,8 +37,10 @@ namespace FluentNHibernate.Automapping
         [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override GetDiscriminatorColumn")]
         public Func<Type, string> DiscriminatorColumn;
 
-        [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override GetSubclassStrategy")]
+#pragma warning disable 612,618
+        [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override IsDiscriminated", true)]
         public Func<Type, SubclassStrategy> SubclassStrategy;
+#pragma warning restore 612,618
 
         /// <summary>
         /// Determines whether an abstract class is a layer supertype or part of a mapped inheritance hierarchy.
@@ -127,14 +129,6 @@ namespace FluentNHibernate.Automapping
                 return expressions.DiscriminatorColumn(type);
 
             return base.GetDiscriminatorColumn(type);
-        }
-
-        public override SubclassStrategy GetSubclassStrategy(Type type)
-        {
-            if (expressions.SubclassStrategy != null)
-                return expressions.SubclassStrategy(type);
-
-            return base.GetSubclassStrategy(type);
         }
 
         public override bool AbstractClassIsLayerSupertype(Type type)

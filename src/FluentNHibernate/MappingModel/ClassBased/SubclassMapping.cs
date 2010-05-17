@@ -192,5 +192,10 @@ namespace FluentNHibernate.MappingModel.ClassBased
                 }
             }
         }
+
+        public override string ToString()
+        {
+            return "Subclass(" + Type.Name + ")";
+        }
     }
 }

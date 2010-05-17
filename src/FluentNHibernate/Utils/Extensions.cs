@@ -22,7 +22,7 @@ namespace FluentNHibernate.Utils
 
         public static bool ClosesInterface(this Type type, Type openGenericInterface)
         {
-            return type.IsGenericType && type.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == openGenericInterface);
+            return type.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == openGenericInterface);
         }
 
         public static bool IsEnum(this Type type)

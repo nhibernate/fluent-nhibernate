@@ -36,7 +36,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .IgnoreBase<SuperType>()
                 .Setup(c =>
                 {
-                    c.SubclassStrategy = t => SubclassStrategy.Subclass;
+                    c.IsDiscriminated = type => true;
                 });
 
             new AutoMappingTester<SuperType>(autoMapper);
@@ -53,7 +53,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestInheritanceSubclassMapping()
         {
             AutoMap.AssemblyOf<ExampleClass>()
-                .Setup(x => x.SubclassStrategy = t => SubclassStrategy.Subclass)
+                .Setup(x => x.IsDiscriminated = type => true)
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
         }
 
@@ -86,7 +86,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestInheritanceSubclassMappingProperties()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Setup(x => x.SubclassStrategy = t => SubclassStrategy.Subclass)
+                .Setup(x => x.IsDiscriminated = type => true)
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -114,7 +114,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Setup(c =>
                 {
                     c.IsConcreteBaseType = b => b == typeof(ExampleClass);
-                    c.SubclassStrategy = t => SubclassStrategy.Subclass;
+                    c.IsDiscriminated = type => true;
                 });
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -144,7 +144,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Setup(c =>
                 {
                     c.IsConcreteBaseType = b => b == typeof(ExampleClass);
-                    c.SubclassStrategy = t => SubclassStrategy.Subclass;
+                    c.IsDiscriminated = type => true;
                 });
 
             new AutoMappingTester<ExampleInheritedClass>(autoMapper)
@@ -168,7 +168,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestInheritanceMappingDoesntIncludeBaseTypePropertiesWithSubclass()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Setup(x => x.SubclassStrategy = t => SubclassStrategy.Subclass)
+                .Setup(x => x.IsDiscriminated = type => true)
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -192,7 +192,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestInheritanceSubclassOverridingMappingProperties()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Setup(x => x.SubclassStrategy = t => SubclassStrategy.Subclass)
+                .Setup(x => x.IsDiscriminated = type => true)
                 .Override<ExampleClass>(t => t.SubClass<ExampleInheritedClass>("discriminator", p => p.Map(c => c.ExampleProperty, "columnName")))
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 

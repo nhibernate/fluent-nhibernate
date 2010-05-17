@@ -67,8 +67,19 @@ namespace FluentNHibernate.Automapping
         bool IsConcreteBaseType(Type type);
         bool IsComponent(Type type);
         string GetComponentColumnPrefix(Member member);
+
+        /// <summary>
+        /// Specifies whether a particular type is mapped with a discriminator.
+        /// This method will be called for every type that has already been
+        /// approved by <see cref="ShouldMap(System.Type)"/>.
+        /// </summary>
+        /// <param name="type">Type to check</param>
+        /// <returns>Whether the type is to be discriminated</returns>
         bool IsDiscriminated(Type type);
+
         string GetDiscriminatorColumn(Type type);
+
+        [Obsolete("Use IsDiscriminated instead.", true)]
         SubclassStrategy GetSubclassStrategy(Type type);
 
         /// <summary>

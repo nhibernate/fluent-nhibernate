@@ -50,8 +50,8 @@ namespace FluentNHibernate.Automapping
 
         private void MapInheritanceTree(Type classType, ClassMappingBase mapping, IList<Member> mappedMembers)
         {
-            var discriminatorSet = false;
-            var isDiscriminated = cfg.IsDiscriminated(classType);
+            var discriminatorSet = HasDiscriminator(mapping);
+            var isDiscriminated = cfg.IsDiscriminated(classType) || discriminatorSet;
             var mappingTypesWithLogicalParents = GetMappingTypesWithLogicalParents();
 
             foreach (var inheritedClass in mappingTypesWithLogicalParents
@@ -73,9 +73,8 @@ namespace FluentNHibernate.Automapping
                 }
 
                 SubclassMapping subclassMapping;
-                var subclassStrategy = cfg.GetSubclassStrategy(classType);
 
-                if (subclassStrategy == SubclassStrategy.JoinedSubclass)
+                if (!isDiscriminated)
                 {
                     subclassMapping = new SubclassMapping(SubclassType.JoinedSubclass)
                     {
@@ -98,6 +97,14 @@ namespace FluentNHibernate.Automapping
 
 				MergeMap(inheritedClass.Type, subclassMapping, subclassMembers);
             }
+        }
+
+        bool HasDiscriminator(ClassMappingBase mapping)
+        {
+            if (mapping is ClassMapping && ((ClassMapping)mapping).Discriminator != null)
+                return true;
+
+            return false;
         }
 
         Dictionary<AutoMapType, AutoMapType> GetMappingTypesWithLogicalParents()

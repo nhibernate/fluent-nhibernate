@@ -235,7 +235,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
 #pragma warning disable 612,618
-                .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
+                .Setup(x => x.IsDiscriminated = type => true)
 #pragma warning restore 612,618
                 .Override<ExampleInheritedClass>(c => c.Map(x => x.ExampleProperty).Column("test"));
 
@@ -254,7 +254,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
 #pragma warning disable 612,618
                 .Setup(x =>
                 {
-                    x.SubclassStrategy = type => SubclassStrategy.Subclass;
+                    x.IsDiscriminated = type => true;
                     x.IsComponentType = type => type == typeof(ExampleParentClass);
                 })
 #pragma warning restore 612,618
@@ -270,7 +270,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
 #pragma warning disable 612,618
-                .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
+                .Setup(x => x.IsDiscriminated = type => true)
 #pragma warning restore 612,618
                 .Override<ExampleInheritedClass>(m => m.HasMany(x => x.Children).Inverse());
 
@@ -284,7 +284,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
 #pragma warning disable 612,618
-                .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
+                .Setup(x => x.IsDiscriminated = type => true)
 #pragma warning restore 612,618
                 .Override<ExampleInheritedClass>(m => m.HasManyToMany(x => x.Children).Inverse());
 
@@ -299,7 +299,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
 #pragma warning disable 612,618
-                .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
+                .Setup(x => x.IsDiscriminated = type => true)
 #pragma warning restore 612,618
                 .Override<ExampleInheritedClass>(m => m.HasOne(x => x.Parent));
 
@@ -314,7 +314,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
 #pragma warning disable 612,618
-                .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
+                .Setup(x => x.IsDiscriminated = type => true)
 #pragma warning restore 612,618
                 .Override<ExampleInheritedClass>(m => m.References(x => x.Parent).Access.Field());
 
@@ -328,7 +328,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
 #pragma warning disable 612,618
-                .Setup(x => x.SubclassStrategy = type => SubclassStrategy.Subclass)
+                .Setup(x => x.IsDiscriminated = type => true)
 #pragma warning restore 612,618
                 .Override<ExampleInheritedClass>(m =>
                     m.ReferencesAny(x => x.DictionaryChild)

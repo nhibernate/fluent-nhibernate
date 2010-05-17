@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Automapping.Steps;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping
 {
@@ -15,7 +17,8 @@ namespace FluentNHibernate.Automapping
 
         public virtual bool ShouldMap(Type type)
         {
-            return true;
+            return !type.ClosesInterface(typeof(IAutoMappingOverride<>)) &&
+                !type.HasInterface(typeof(IMappingProvider));
         }
 
         public virtual bool IsId(Member member)
@@ -53,7 +56,7 @@ namespace FluentNHibernate.Automapping
 
         public virtual bool IsDiscriminated(Type type)
         {
-            return GetSubclassStrategy(type) == SubclassStrategy.Subclass;
+            return false;
         }
 
         public virtual string GetDiscriminatorColumn(Type type)
@@ -61,9 +64,10 @@ namespace FluentNHibernate.Automapping
             return "discriminator";
         }
 
-        public virtual SubclassStrategy GetSubclassStrategy(Type type)
+        [Obsolete("Use IsDiscriminated instead.", true)]
+        public SubclassStrategy GetSubclassStrategy(Type type)
         {
-            return SubclassStrategy.JoinedSubclass;
+            throw new NotSupportedException();
         }
 
         public virtual bool AbstractClassIsLayerSupertype(Type type)
