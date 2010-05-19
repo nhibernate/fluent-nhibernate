@@ -256,5 +256,14 @@ namespace FluentNHibernate.Automapping
 
             joins.Add(((IJoinMappingProvider)join).GetJoinMapping());
         }
+
+#pragma warning disable 809
+        // hide this - imports aren't supported in overrides
+        [Obsolete("Imports aren't supported in overrides.", true)]
+        public override ImportPart ImportType<TImport>()
+        {
+            return null;
+        }
+#pragma warning restore 809
     }
 }

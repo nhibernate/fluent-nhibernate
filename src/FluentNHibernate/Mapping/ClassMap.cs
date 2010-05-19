@@ -369,7 +369,7 @@ namespace FluentNHibernate.Mapping
         /// Imports an existing type for use in the mapping.
         /// </summary>
         /// <typeparam name="TImport">Type to import.</typeparam>
-        public ImportPart ImportType<TImport>()
+        public virtual ImportPart ImportType<TImport>()
         {
             var part = new ImportPart(typeof(TImport));
             
