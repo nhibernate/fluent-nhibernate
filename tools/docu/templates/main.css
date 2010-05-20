@@ -206,3 +206,7 @@ blockquote {
 	border-bottom-width: 1px;
 	font-size: 90%;
 }
+
+#index p {
+  padding: 10px;
+}
