@@ -14,7 +14,7 @@ namespace FluentNHibernate.Cfg
     public class FluentMappingsContainer
     {
         private readonly IList<Assembly> assemblies = new List<Assembly>();
-        protected List<Type> types = new List<Type>();
+        private readonly List<Type> types = new List<Type>();
         private string exportPath;
         private TextWriter exportTextWriter;
         private readonly PersistenceModel model;
@@ -58,7 +58,7 @@ namespace FluentNHibernate.Cfg
 		}
 
         /// <summary>
-        /// Adds a single <see cref="IClassMap" /> represented by the specified type.
+        /// Adds a single <see cref="IMappingProvider" /> represented by the specified type.
         /// </summary>
         /// <returns>Fluent mappings configuration</returns>
         public FluentMappingsContainer Add<T>()
@@ -67,7 +67,7 @@ namespace FluentNHibernate.Cfg
         }
 
         /// <summary>
-        /// Adds a single <see cref="IClassMap" /> represented by the specified type.
+        /// Adds a single <see cref="IMappingProvider" /> represented by the specified type.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>Fluent mappings configuration</returns>

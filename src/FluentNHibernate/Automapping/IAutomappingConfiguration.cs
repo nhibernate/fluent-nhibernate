@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using FluentNHibernate.Automapping.Steps;
 using FluentNHibernate.Conventions;
@@ -9,6 +8,9 @@ namespace FluentNHibernate.Automapping
 {
     /// <summary>
     /// Implement this interface to control how the automapper behaves.
+    /// Typically you're better off deriving from the <see cref="DefaultAutomappingConfiguration"/>
+    /// class, which is pre-configured with the default settings; you can then
+    /// just override specific methods that you'd like to alter.
     /// </summary>
     public interface IAutomappingConfiguration
     {
@@ -38,7 +40,7 @@ namespace FluentNHibernate.Automapping
         /// </remarks>
         /// <example>
         /// // all writable public properties:
-        /// return member.IsProperty && member.IsPublic && member.CanWrite;
+        /// return member.IsProperty &amp;&amp; member.IsPublic &amp;&amp; member.CanWrite;
         /// </example>
         /// <param name="member">Member to map</param>
         /// <returns>Should map member</returns>
@@ -63,9 +65,36 @@ namespace FluentNHibernate.Automapping
         /// <returns>Access strategy</returns>
         Access GetAccessStrategyForReadOnlyProperty(Member member);
 
+        /// <summary>
+        /// Controls which side of a many-to-many relationship is considered the "parent".
+        /// </summary>
+        /// <param name="left">Left side of the relationship</param>
+        /// <param name="right">Right side of the relationship</param>
+        /// <returns>left or right</returns>
         Type GetParentSideForManyToMany(Type left, Type right);
+
+        /// <summary>
+        /// Determines whether a type is a concrete, or instantiatable, base class. This
+        /// affects how the inheritance mappings are built, specifically that any types
+        /// this method returns true for will not be mapped as a subclass.
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Base type is concrete?</returns>
         bool IsConcreteBaseType(Type type);
+
+        /// <summary>
+        /// Specifies that a particular type should be mapped as a component rather than
+        /// an entity.
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Type is a component?</returns>
         bool IsComponent(Type type);
+
+        /// <summary>
+        /// Gets the column prefix for a component.
+        /// </summary>
+        /// <param name="member">Member defining the component</param>
+        /// <returns>Component column prefix</returns>
         string GetComponentColumnPrefix(Member member);
 
         /// <summary>
@@ -77,6 +106,11 @@ namespace FluentNHibernate.Automapping
         /// <returns>Whether the type is to be discriminated</returns>
         bool IsDiscriminated(Type type);
 
+        /// <summary>
+        /// Gets the column name of the discriminator.
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Discriminator column name</returns>
         string GetDiscriminatorColumn(Type type);
 
         [Obsolete("Use IsDiscriminated instead.", true)]
@@ -92,6 +126,14 @@ namespace FluentNHibernate.Automapping
         /// <returns>Whether the type is a Layer Supertype</returns>
         bool AbstractClassIsLayerSupertype(Type type);
 
+        /// <summary>
+        /// Gets the value column for a collection of simple types.
+        /// </summary>
+        /// <remarks>
+        /// This is the name of the &lt;element&gt; column.
+        /// </remarks>
+        /// <param name="member">Collection property</param>
+        /// <returns>Value column name</returns>
         string SimpleTypeCollectionValueColumn(Member member);
 
         /// <summary>

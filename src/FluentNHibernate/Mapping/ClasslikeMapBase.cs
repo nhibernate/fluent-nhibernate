@@ -35,6 +35,7 @@ namespace FluentNHibernate.Mapping
         /// Create a property mapping.
         /// </summary>
         /// <param name="memberExpression">Property to map</param>
+        /// <param name="columnName">Property column name</param>
         /// <example>
         /// Map(x => x.Name, "person_name");
         /// </example>
