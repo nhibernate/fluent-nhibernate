@@ -34,6 +34,13 @@ namespace FluentNHibernate.MappingModel.ClassBased
             attributes.Merge(new AttributeStore<ComponentMapping>(store));
         }
 
+        public bool HasColumnPrefix
+        {
+            get { return !string.IsNullOrEmpty(ColumnPrefix); }
+        }
+
+        public string ColumnPrefix { get; set; }
+
         public override string Name
         {
             get { return attributes.Get(x => x.Name); }

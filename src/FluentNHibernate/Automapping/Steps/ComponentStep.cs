@@ -26,7 +26,8 @@ namespace FluentNHibernate.Automapping.Steps
                 Name = member.Name,
                 Member = member,
                 ContainingEntityType = classMap.Type,
-                Type = member.PropertyType
+                Type = member.PropertyType,
+                ColumnPrefix = cfg.GetComponentColumnPrefix(member)
             };
 
             if (member.IsProperty && !member.CanWrite)

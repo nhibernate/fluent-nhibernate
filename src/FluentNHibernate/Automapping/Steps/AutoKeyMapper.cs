@@ -16,10 +16,6 @@ namespace FluentNHibernate.Automapping.Steps
         public void SetKey(Member property, ClassMappingBase classMap, ICollectionMapping mapping)
         {
             var columnName = property.DeclaringType.Name + "_id";
-
-            if (classMap is ComponentMapping)
-                columnName = cfg.GetComponentColumnPrefix(((ComponentMapping)classMap).Member) + columnName;
-
             var key = new KeyMapping();
 
             key.ContainingEntityType = classMap.Type;

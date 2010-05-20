@@ -6,6 +6,8 @@ namespace FluentNHibernate.MappingModel.ClassBased
 {
     public interface IComponentMapping : IMappingBase
     {
+        bool HasColumnPrefix { get; }
+        string ColumnPrefix { get; set; }
         ParentMapping Parent { get; set; }
         bool Insert { get; set; }
         bool Update { get; set; }

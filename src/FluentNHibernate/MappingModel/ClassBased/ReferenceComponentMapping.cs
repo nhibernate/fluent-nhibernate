@@ -19,7 +19,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         private readonly Type componentType;
         private ExternalComponentMapping mergedComponent;
         private Type containingEntityType;
-        private readonly string columnPrefix;
 
         public ReferenceComponentMapping(ComponentType componentType, Member property, Type componentEntityType, Type containingEntityType, string columnPrefix)
         {
@@ -27,7 +26,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             this.property = property;
             this.componentType = componentEntityType;
             this.containingEntityType = containingEntityType;
-            this.columnPrefix = columnPrefix;
+            ColumnPrefix = columnPrefix;
         }
 
         public void AcceptVisitor(IMappingModelVisitor visitor)
@@ -140,10 +139,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return !string.IsNullOrEmpty(ColumnPrefix); }
         }
 
-        public string ColumnPrefix
-        {
-            get { return columnPrefix; }
-        }
+        public string ColumnPrefix { get; set; }
 
         public bool Insert
         {

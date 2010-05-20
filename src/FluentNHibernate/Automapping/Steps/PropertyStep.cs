@@ -69,10 +69,10 @@ namespace FluentNHibernate.Automapping.Steps
 
         public void Map(ClassMappingBase classMap, Member member)
         {
-            classMap.AddProperty(GetPropertyMapping(classMap.Type, member, classMap as ComponentMapping));
+            classMap.AddProperty(GetPropertyMapping(classMap.Type, member));
         }
 
-        private PropertyMapping GetPropertyMapping(Type type, Member property, ComponentMapping component)
+        private PropertyMapping GetPropertyMapping(Type type, Member property)
         {
             var mapping = new PropertyMapping
             {
@@ -80,12 +80,7 @@ namespace FluentNHibernate.Automapping.Steps
                 Member = property
             };
 
-            var columnName = property.Name;
-            
-            if (component != null)
-                columnName = cfg.GetComponentColumnPrefix(component.Member) + columnName;
-
-            mapping.AddDefaultColumn(new ColumnMapping { Name = columnName });
+            mapping.AddDefaultColumn(new ColumnMapping { Name = property.Name });
 
             if (!mapping.IsSpecified("Name"))
                 mapping.Name = mapping.Member.Name;
