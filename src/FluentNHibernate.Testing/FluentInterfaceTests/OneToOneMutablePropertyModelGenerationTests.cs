@@ -1,3 +1,4 @@
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
@@ -64,11 +65,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
-        public void LazyLoadShouldSetModelLazyLoadPropertyToTrue()
+        public void LazyLoadShouldSetModelLazyLoadPropertyToProxy()
         {
             OneToOne()
                 .Mapping(m => m.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(true));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.Proxy.ToString()));
         }
 
         [Test]
@@ -76,7 +77,15 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             OneToOne()
                 .Mapping(m => m.Not.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(false));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.False.ToString()));
+        }
+
+        [Test]
+        public void NoProxyLazyLoadShouldSetModelLazyLoadPropertyToNoProxy()
+        {
+            OneToOne()
+                .Mapping(m => m.LazyLoad(Laziness.NoProxy))
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.NoProxy.ToString()));
         }
 
         [Test]

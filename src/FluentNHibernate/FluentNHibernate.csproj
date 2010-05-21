@@ -404,6 +404,7 @@
     <Compile Include="MappingModel\NaturalIdMapping.cs" />
     <Compile Include="MappingModel\Output\XmlNaturalIdWriter.cs" />
     <Compile Include="Mapping\Access.cs" />
+    <Compile Include="Mapping\Laziness.cs" />
     <Compile Include="Mapping\NaturalIdPart.cs" />
     <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />
     <Compile Include="Mapping\Providers\INaturalIdMappingProvider.cs" />

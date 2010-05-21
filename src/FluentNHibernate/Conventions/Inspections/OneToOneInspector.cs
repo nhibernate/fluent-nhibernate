@@ -65,9 +65,9 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.ForeignKey; }
         }
 
-        public bool LazyLoad
+        public Laziness LazyLoad
         {
-            get { return mapping.Lazy; }
+            get { return new Laziness(mapping.Lazy); }
         }
 
         public string Name

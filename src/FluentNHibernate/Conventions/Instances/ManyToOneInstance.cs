@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -126,7 +127,18 @@ namespace FluentNHibernate.Conventions.Instances
         public new void LazyLoad()
         {
             if (!mapping.IsSpecified("Lazy"))
-                mapping.Lazy = nextBool;
+            {
+                if (nextBool)
+                    LazyLoad(Laziness.Proxy);
+                else
+                    LazyLoad(Laziness.False);
+            }
+            nextBool = true;
+        }
+
+        public new void LazyLoad(Laziness laziness)
+        {
+            mapping.Lazy = laziness.ToString();
             nextBool = true;
         }
 

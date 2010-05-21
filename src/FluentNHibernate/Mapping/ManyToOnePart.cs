@@ -115,9 +115,40 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specify the lazy behaviour of this relationship.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to Proxy lazy-loading. Use the <see cref="Not"/> modifier to disable
+        /// lazy-loading, and use the <see cref="LazyLoad(FluentNHibernate.Mapping.Laziness)"/>
+        /// overload to specify alternative lazy strategies.
+        /// </remarks>
+        /// <example>
+        /// LazyLoad();
+        /// Not.LazyLoad();
+        /// </example>
         public ManyToOnePart<TOther> LazyLoad()
         {
-            attributes.Set(x => x.Lazy, nextBool);
+            if (nextBool)
+                LazyLoad(Laziness.Proxy);
+            else
+                LazyLoad(Laziness.False);
+
+            nextBool = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Specify the lazy behaviour of this relationship. Cannot be used
+        /// with the <see cref="Not"/> modifier.
+        /// </summary>
+        /// <param name="laziness">Laziness strategy</param>
+        /// <example>
+        /// LazyLoad(Laziness.NoProxy);
+        /// </example>
+        public ManyToOnePart<TOther> LazyLoad(Laziness laziness)
+        {
+            attributes.Set(x => x.Lazy, laziness.ToString());
             nextBool = true;
             return this;
         }

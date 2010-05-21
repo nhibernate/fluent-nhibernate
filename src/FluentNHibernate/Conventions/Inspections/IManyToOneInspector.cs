@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
@@ -13,7 +14,7 @@ namespace FluentNHibernate.Conventions.Inspections
         Fetch Fetch { get; }
         string ForeignKey { get; }
         bool Insert { get; }
-        bool LazyLoad { get; }
+        Laziness LazyLoad { get; }
         NotFound NotFound { get; }
         string PropertyRef { get; }
         bool Update { get; }

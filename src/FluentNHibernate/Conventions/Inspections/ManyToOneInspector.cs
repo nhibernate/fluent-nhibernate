@@ -118,9 +118,9 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Insert; }
         }
 
-        public bool LazyLoad
+        public Laziness LazyLoad
         {
-            get { return mapping.Lazy; }
+            get { return new Laziness(mapping.Lazy); }
         }
     }
 }

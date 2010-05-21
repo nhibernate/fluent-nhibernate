@@ -46,7 +46,7 @@ namespace FluentNHibernate.MappingModel.Output
                 element.WithAtt("insert", mapping.Insert);
 
             if (mapping.HasValue(x => x.Lazy))
-                element.WithAtt("lazy", mapping.Lazy ? "proxy" : "false");
+                element.WithAtt("lazy", mapping.Lazy);
 
             if (mapping.HasValue(x => x.Name))
                 element.WithAtt("name", mapping.Name);

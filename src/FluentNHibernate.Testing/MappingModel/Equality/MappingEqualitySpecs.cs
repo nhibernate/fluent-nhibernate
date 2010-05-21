@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
@@ -821,7 +822,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 Fetch = "fetch",
                 ForeignKey = "fk",
                 Insert = true,
-                Lazy = true,
+                Lazy = Laziness.Proxy.ToString(),
                 Member = new DummyPropertyInfo("prop", typeof(Target)).ToMember(),
                 PropertyRef = "prop",
                 Update = true,
@@ -958,7 +959,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 ContainingEntityType = typeof(Target),
                 Fetch = "fetch",
                 ForeignKey = "fk",
-                Lazy = true,
+                Lazy = Laziness.Proxy.ToString(),
                 PropertyRef = "prop",
                 Name = "name",
                 Constrained = true
