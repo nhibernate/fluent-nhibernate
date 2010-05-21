@@ -26,48 +26,59 @@ namespace FluentNHibernate.Mapping
             this.property = property;
         }
 
-        OneToOneMapping IOneToOneMappingProvider.GetOneToOneMapping()
-        {
-            var mapping = new OneToOneMapping(attributes.CloneInner());
-
-            mapping.ContainingEntityType = entity;
-
-            if (!mapping.IsSpecified("Class"))
-                mapping.SetDefaultValue(x => x.Class, new TypeReference(typeof(TOther)));
-
-            if (!mapping.IsSpecified("Name"))
-                mapping.SetDefaultValue(x => x.Name, property.Name);
-
-            return mapping;
-        }
-
+        /// <summary>
+        /// Specifies the child class
+        /// </summary>
+        /// <typeparam name="T">Child</typeparam>
         public OneToOnePart<TOther> Class<T>()
         {
             return Class(typeof(T));
         }
 
+        /// <summary>
+        /// Specifies the child class
+        /// </summary>
+        /// <param name="type">Child</param>
         public OneToOnePart<TOther> Class(Type type)
         {
             attributes.Set(x => x.Class, new TypeReference(type));
             return this;
         }
 
+        /// <summary>
+        /// Sets the fetch behaviour for this relationship
+        /// </summary>
+        /// <example>
+        /// Fetch.Select();
+        /// </example>
         public FetchTypeExpression<OneToOnePart<TOther>> Fetch
         {
             get { return fetch; }
         }
 
+        /// <summary>
+        /// Specifies that this relationship should be created with a default-named
+        /// foreign-key
+        /// </summary>
         public OneToOnePart<TOther> ForeignKey()
         {
             return ForeignKey(string.Format("FK_{0}To{1}", property.DeclaringType.Name, property.Name));
         }
 
+        /// <summary>
+        /// Specify the foreign-key constraint name
+        /// </summary>
+        /// <param name="foreignKeyName">Foreign-key constraint</param>
         public OneToOnePart<TOther> ForeignKey(string foreignKeyName)
         {
             attributes.Set(x => x.ForeignKey, foreignKeyName);
             return this;
         }
 
+        /// <summary>
+        /// Sets the property reference
+        /// </summary>
+        /// <param name="expression">Property</param>
         public OneToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> expression)
         {
             var member = expression.ToMember();
@@ -75,6 +86,10 @@ namespace FluentNHibernate.Mapping
             return PropertyRef(member.Name);
         }
 
+        /// <summary>
+        /// Sets the property reference
+        /// </summary>
+        /// <param name="propertyName">Property</param>
         public OneToOnePart<TOther> PropertyRef(string propertyName)
         {
             attributes.Set(x => x.PropertyRef, propertyName);
@@ -82,6 +97,9 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies that this relationship is constrained
+        /// </summary>
         public OneToOnePart<TOther> Constrained()
         {
             attributes.Set(x => x.Constrained, nextBool);
@@ -90,11 +108,23 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Sets the cascade behaviour for this relationship
+        /// </summary>
+        /// <example>
+        /// Cascade.All();
+        /// </example>
         public CascadeExpression<OneToOnePart<TOther>> Cascade
         {
             get { return cascade; }
         }
 
+        /// <summary>
+        /// Specifies the access strategy for this relationship
+        /// </summary>
+        /// <example>
+        /// Access.Field();
+        /// </example>
         public AccessStrategyBuilder<OneToOnePart<TOther>> Access
         {
             get { return access; }
@@ -148,6 +178,9 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Inverts the next boolean operation
+        /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public OneToOnePart<TOther> Not
         {
@@ -156,6 +189,21 @@ namespace FluentNHibernate.Mapping
                 nextBool = !nextBool;
                 return this;
             }
+        }
+
+        OneToOneMapping IOneToOneMappingProvider.GetOneToOneMapping()
+        {
+            var mapping = new OneToOneMapping(attributes.CloneInner());
+
+            mapping.ContainingEntityType = entity;
+
+            if (!mapping.IsSpecified("Class"))
+                mapping.SetDefaultValue(x => x.Class, new TypeReference(typeof(TOther)));
+
+            if (!mapping.IsSpecified("Name"))
+                mapping.SetDefaultValue(x => x.Name, property.Name);
+
+            return mapping;
         }
     }
 }

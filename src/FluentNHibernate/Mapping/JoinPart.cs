@@ -25,6 +25,10 @@ namespace FluentNHibernate.Mapping
             attributes.Set(x => x.Key, new KeyMapping { ContainingEntityType = typeof(T) });
         }
 
+        /// <summary>
+        /// Specify the key column name
+        /// </summary>
+        /// <param name="column">Column name</param>
         public JoinPart<T> KeyColumn(string column)
         {
             columns.Clear(); // only one supported currently
@@ -32,17 +36,27 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specify the schema
+        /// </summary>
+        /// <param name="schema">Schema name</param>
         public JoinPart<T> Schema(string schema)
         {
             attributes.Set(x => x.Schema, schema);
             return this;
         }
 
+        /// <summary>
+        /// Specify the fetching strategy
+        /// </summary>
         public FetchTypeExpression<JoinPart<T>> Fetch
         {
             get { return fetch; }
         }
 
+        /// <summary>
+        /// Inverse the ownership of this relationship
+        /// </summary>
         public JoinPart<T> Inverse()
         {
             attributes.Set(x => x.Inverse, nextBool);
@@ -50,6 +64,9 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specify this relationship as optional
+        /// </summary>
         public JoinPart<T> Optional()
         {
             attributes.Set(x => x.Optional, nextBool);
@@ -57,18 +74,29 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specify the catalog
+        /// </summary>
+        /// <param name="catalog">Catalog</param>
         public JoinPart<T> Catalog(string catalog)
         {
             attributes.Set(x => x.Catalog, catalog);
             return this;
         }
 
+        /// <summary>
+        /// Specify a subselect for fetching this join
+        /// </summary>
+        /// <param name="subselect">Query</param>
         public JoinPart<T> Subselect(string subselect)
         {
             attributes.Set(x => x.Subselect, subselect);
             return this;
         }
 
+        /// <summary>
+        /// Invert the next boolean operation
+        /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public JoinPart<T> Not
         {
@@ -77,6 +105,15 @@ namespace FluentNHibernate.Mapping
                 nextBool = !nextBool;
                 return this;
             }
+        }
+
+        /// <summary>
+        /// Specify the table name
+        /// </summary>
+        /// <param name="tableName">Table name</param>
+        public void Table(string tableName)
+        {
+            attributes.Set(x => x.TableName, tableName);
         }
 
         JoinMapping IJoinMappingProvider.GetJoinMapping()
@@ -104,11 +141,6 @@ namespace FluentNHibernate.Mapping
                 mapping.AddAny(any.GetAnyMapping());
 
             return mapping;
-        }
-
-        public void Table(string tableName)
-        {
-            attributes.Set(x => x.TableName, tableName);
         }
     }
 }

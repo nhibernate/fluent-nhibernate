@@ -406,6 +406,7 @@
     <Compile Include="Mapping\Access.cs" />
     <Compile Include="Mapping\Laziness.cs" />
     <Compile Include="Mapping\NaturalIdPart.cs" />
+    <Compile Include="Mapping\Providers\IElementMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />
     <Compile Include="Mapping\Providers\INaturalIdMappingProvider.cs" />
     <Compile Include="Mapping\Providers\INestedCompositeElementMappingProvider.cs" />

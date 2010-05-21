@@ -162,6 +162,9 @@ namespace FluentNHibernate.Mapping
 			get { return access; }
 		}
 
+        /// <summary>
+        /// Invert the next boolean operation
+        /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public CompositeIdentityPart<T> Not
         {
@@ -172,6 +175,10 @@ namespace FluentNHibernate.Mapping
             }
         }
 
+        /// <summary>
+        /// Specifies that this composite id is "mapped"; aka, a composite id where
+        /// the properties exist in the identity class as well as in the entity itself
+        /// </summary>
         public CompositeIdentityPart<T> Mapped()
         {
             attributes.Set(x => x.Mapped, nextBool);
@@ -179,22 +186,15 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies the unsaved value for the identity
+        /// </summary>
+        /// <param name="value">Unsaved value</param>
         public CompositeIdentityPart<T> UnsavedValue(string value)
         {
             attributes.Set(x => x.UnsavedValue, value);
             return this;
         }
-
-	    CompositeIdMapping ICompositeIdMappingProvider.GetCompositeIdMapping()
-	    {
-            var mapping = new CompositeIdMapping(attributes.CloneInner());
-
-	        mapping.ContainingEntityType = typeof(T);
-
-            keys.Each(mapping.AddKey);
-
-	        return mapping;
-	    }
 
         /// <summary>
         /// You may use a component as an identifier of an entity class. Your component class must
@@ -226,5 +226,16 @@ namespace FluentNHibernate.Mapping
 
             return this;
         }
+
+        CompositeIdMapping ICompositeIdMappingProvider.GetCompositeIdMapping()
+	    {
+            var mapping = new CompositeIdMapping(attributes.CloneInner());
+
+	        mapping.ContainingEntityType = typeof(T);
+
+            keys.Each(mapping.AddKey);
+
+	        return mapping;
+	    }
 	}
 }

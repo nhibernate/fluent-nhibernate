@@ -22,7 +22,7 @@ namespace FluentNHibernate.Mapping
     /// }
     /// </example>
     /// <typeparam name="T">Component type to map</typeparam>
-    public class ComponentMap<T> : ComponentPartBase<T>, IExternalComponentMappingProvider
+    public class ComponentMap<T> : ComponentPartBase<T, ComponentMap<T>>, IExternalComponentMappingProvider
     {
         private readonly AttributeStore<ComponentMapping> attributes;
 

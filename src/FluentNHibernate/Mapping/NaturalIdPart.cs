@@ -92,6 +92,10 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies that this id is read-only
+        /// </summary>
+        /// <remarks>This is the same as setting the mutable attribute to false</remarks>
         public NaturalIdPart<T> ReadOnly()
         {
             attributes.Set(x => x.Mutable, !nextBool);
@@ -99,6 +103,9 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Inverts the next boolean operation
+        /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public NaturalIdPart<T> Not
         {

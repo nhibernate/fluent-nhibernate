@@ -13,12 +13,18 @@ namespace FluentNHibernate.Mapping
             this.setter = setter;
         }
 
+        /// <summary>
+        /// Implicit polymorphism
+        /// </summary>
         public T Implicit()
         {
             setter("implicit");
             return parent;
         }
 
+        /// <summary>
+        /// Explicit polymorphism
+        /// </summary>
         public T Explicit()
         {
             setter("explicit");

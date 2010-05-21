@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using System.Diagnostics;
+using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping
 {
@@ -43,6 +43,196 @@ namespace FluentNHibernate.Mapping
             SetDefaultGenerator();
         }
 
+        /// <summary>
+        /// Specify the generator
+        /// </summary>
+        /// <example>
+        /// Id(x => x.PersonId)
+        ///   .GeneratedBy.Assigned();
+        /// </example>
+        public IdentityGenerationStrategyBuilder<IdentityPart> GeneratedBy { get; private set; }
+
+        /// <summary>
+        /// Set the access and naming strategy for this identity.
+        /// </summary>
+        public AccessStrategyBuilder<IdentityPart> Access
+        {
+            get { return access; }
+        }
+
+        /// <summary>
+        /// Invert the next boolean operation
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public IdentityPart Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
+        }
+
+        /// <summary>
+        /// Sets the unsaved-value of the identity.
+        /// </summary>
+        /// <param name="unsavedValue">Value that represents an unsaved value.</param>
+        public IdentityPart UnsavedValue(object unsavedValue)
+        {
+            attributes.Set(x => x.UnsavedValue, (unsavedValue ?? "null").ToString());
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the column name for the identity field.
+        /// </summary>
+        /// <param name="columnName">Column name</param>
+        public IdentityPart Column(string columnName)
+        {
+            columns.Clear(); // only currently support one column for ids
+            columns.Add(columnName);
+            return this;
+        }
+
+        /// <summary>
+        /// Specify the identity column length
+        /// </summary>
+        /// <param name="length">Column length</param>
+        public IdentityPart Length(int length)
+        {
+            columnAttributes.Set(x => x.Length, length);
+            return this;
+        }
+
+        /// <summary>
+        /// Specify the decimal precision
+        /// </summary>
+        /// <param name="precision">Decimal precision</param>
+        public IdentityPart Precision(int precision)
+        {
+            columnAttributes.Set(x => x.Precision, precision);
+            return this;
+        }
+
+        /// <summary>
+        /// Specify the decimal scale
+        /// </summary>
+        /// <param name="scale">Decimal scale</param>
+        public IdentityPart Scale(int scale)
+        {
+            columnAttributes.Set(x => x.Scale, scale);
+            return this;
+        }
+
+        /// <summary>
+        /// Specify the nullability of the identity column
+        /// </summary>
+        public IdentityPart Nullable()
+        {
+            columnAttributes.Set(x => x.NotNull, !nextBool);
+            nextBool = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Specify the uniqueness of the identity column
+        /// </summary>
+        public IdentityPart Unique()
+        {
+            columnAttributes.Set(x => x.Unique, nextBool);
+            nextBool = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Specify a unique key constraint
+        /// </summary>
+        /// <param name="keyColumns">Constraint columns</param>
+        public IdentityPart UniqueKey(string keyColumns)
+        {
+            columnAttributes.Set(x => x.UniqueKey, keyColumns);
+            return this;
+        }
+
+        /// <summary>
+        /// Specify a custom SQL type
+        /// </summary>
+        /// <param name="sqlType">SQL type</param>
+        public IdentityPart CustomSqlType(string sqlType)
+        {
+            columnAttributes.Set(x => x.SqlType, sqlType);
+            return this;
+        }
+
+        /// <summary>
+        /// Specify an index name
+        /// </summary>
+        /// <param name="key">Index name</param>
+        public IdentityPart Index(string key)
+        {
+            columnAttributes.Set(x => x.Index, key);
+            return this;
+        }
+
+        /// <summary>
+        /// Specify a check constraint
+        /// </summary>
+        /// <param name="constraint">Constraint name</param>
+        public IdentityPart Check(string constraint)
+        {
+            columnAttributes.Set(x => x.Check, constraint);
+            return this;
+        }
+
+        /// <summary>
+        /// Specify a default value
+        /// </summary>
+        /// <param name="value">Default value</param>
+        public IdentityPart Default(object value)
+        {
+            columnAttributes.Set(x => x.Default, value.ToString());
+            return this;
+        }
+
+        /// <summary>
+        /// Specify a custom type
+        /// </summary>
+        /// <remarks>
+        /// This is usually used with an <see cref="IUserType"/>
+        /// </remarks>
+        /// <typeparam name="T">Custom type</typeparam>
+        public IdentityPart CustomType<T>()
+        {
+            attributes.Set(x => x.Type, new TypeReference(typeof(T)));
+            return this;
+        }
+
+        /// <summary>
+        /// Specify a custom type
+        /// </summary>
+        /// <remarks>
+        /// This is usually used with an <see cref="IUserType"/>
+        /// </remarks>
+        /// <param name="type">Custom type</param>
+        public IdentityPart CustomType(Type type)
+        {
+            attributes.Set(x => x.Type, new TypeReference(type));
+            return this;
+        }
+
+        /// <summary>
+        /// Specify a custom type
+        /// </summary>
+        /// <remarks>
+        /// This is usually used with an <see cref="IUserType"/>
+        /// </remarks>
+        /// <param name="type">Custom type</param>
+        public IdentityPart CustomType(string type)
+        {
+            attributes.Set(x => x.Type, new TypeReference(type));
+            return this;
+        }
+
         internal void SetName(string newName)
         {
             name = newName;
@@ -53,7 +243,7 @@ namespace FluentNHibernate.Mapping
             get { return !string.IsNullOrEmpty(name); }
         }
 
-        private void SetDefaultGenerator()
+        void SetDefaultGenerator()
         {
             var generatorMapping = new GeneratorMapping();
             var defaultGenerator = new GeneratorBuilder(generatorMapping, identityType);
@@ -93,127 +283,6 @@ namespace FluentNHibernate.Mapping
                 mapping.Generator = GeneratedBy.GetGeneratorMapping();
 
             return mapping;
-        }
-
-        public IdentityGenerationStrategyBuilder<IdentityPart> GeneratedBy { get; private set; }
-
-        /// <summary>
-        /// Set the access and naming strategy for this identity.
-        /// </summary>
-        public AccessStrategyBuilder<IdentityPart> Access
-        {
-            get { return access; }
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public IdentityPart Not
-        {
-            get
-            {
-                nextBool = !nextBool;
-                return this;
-            }
-        }
-
-        /// <summary>
-        /// Sets the unsaved-value of the identity.
-        /// </summary>
-        /// <param name="unsavedValue">Value that represents an unsaved value.</param>
-        public IdentityPart UnsavedValue(object unsavedValue)
-        {
-            attributes.Set(x => x.UnsavedValue, (unsavedValue ?? "null").ToString());
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the column name for the identity field.
-        /// </summary>
-        /// <param name="columnName">Column name</param>
-        public IdentityPart Column(string columnName)
-        {
-            columns.Clear(); // only currently support one column for ids
-            columns.Add(columnName);
-            return this;
-        }
-
-        public IdentityPart Length(int length)
-        {
-            columnAttributes.Set(x => x.Length, length);
-            return this;
-        }
-
-        public IdentityPart Precision(int precision)
-        {
-            columnAttributes.Set(x => x.Precision, precision);
-            return this;
-        }
-
-        public IdentityPart Scale(int scale)
-        {
-            columnAttributes.Set(x => x.Scale, scale);
-            return this;
-        }
-
-        public IdentityPart Nullable()
-        {
-            columnAttributes.Set(x => x.NotNull, !nextBool);
-            nextBool = true;
-            return this;
-        }
-
-        public IdentityPart Unique()
-        {
-            columnAttributes.Set(x => x.Unique, nextBool);
-            nextBool = true;
-            return this;
-        }
-
-        public IdentityPart UniqueKey(string keyColumns)
-        {
-            columnAttributes.Set(x => x.UniqueKey, keyColumns);
-            return this;
-        }
-
-        public IdentityPart CustomSqlType(string sqlType)
-        {
-            columnAttributes.Set(x => x.SqlType, sqlType);
-            return this;
-        }
-
-        public IdentityPart Index(string key)
-        {
-            columnAttributes.Set(x => x.Index, key);
-            return this;
-        }
-
-        public IdentityPart Check(string constraint)
-        {
-            columnAttributes.Set(x => x.Check, constraint);
-            return this;
-        }
-
-        public IdentityPart Default(object value)
-        {
-            columnAttributes.Set(x => x.Default, value.ToString());
-            return this;
-        }
-
-        public IdentityPart CustomType<T>()
-        {
-            attributes.Set(x => x.Type, new TypeReference(typeof(T)));
-            return this;
-        }
-
-        public IdentityPart CustomType(Type type)
-        {
-            attributes.Set(x => x.Type, new TypeReference(type));
-            return this;
-        }
-
-        public IdentityPart CustomType(string type)
-        {
-            attributes.Set(x => x.Type, new TypeReference(type));
-            return this;
         }
     }
 }

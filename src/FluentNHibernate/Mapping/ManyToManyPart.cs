@@ -44,38 +44,6 @@ namespace FluentNHibernate.Mapping
             parentKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
         }
 
-        public override ICollectionMapping GetCollectionMapping()
-        {
-            var collection = base.GetCollectionMapping();
-
-            // key columns
-            if (parentKeyColumns.Count == 0)
-                collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
-
-            foreach (var column in parentKeyColumns)
-                collection.Key.AddColumn(column);
-
-            if (collection.Relationship != null)
-            {
-                // child columns
-                if (childKeyColumns.Count == 0)
-                    ((ManyToManyMapping)collection.Relationship).AddDefaultColumn(new ColumnMapping {Name = typeof(TChild).Name + "_id"});
-
-                foreach (var column in childKeyColumns)
-                    ((ManyToManyMapping)collection.Relationship).AddColumn(column);
-            }
-
-            // HACK: Index only on list and map - shouldn't have to do this!
-            if (index != null && collection is IIndexedCollectionMapping)
-                ((IIndexedCollectionMapping)collection).Index = index.GetIndexMapping();
-
-            // HACK: shouldn't have to do this!
-            if (manyToManyIndex != null && collection is MapMapping)
-                ((MapMapping)collection).Index = manyToManyIndex.GetIndexMapping();
-
-            return collection;
-        }
-
         /// <summary>
         /// Sets a single child key column. If there are multiple columns, use ChildKeyColumns.Add
         /// </summary>
@@ -366,6 +334,37 @@ namespace FluentNHibernate.Mapping
             relationshipAttributes.Set(x => x.Where, where);
             return this;
         }
-        
+
+        protected override ICollectionMapping GetCollectionMapping()
+        {
+            var collection = base.GetCollectionMapping();
+
+            // key columns
+            if (parentKeyColumns.Count == 0)
+                collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
+
+            foreach (var column in parentKeyColumns)
+                collection.Key.AddColumn(column);
+
+            if (collection.Relationship != null)
+            {
+                // child columns
+                if (childKeyColumns.Count == 0)
+                    ((ManyToManyMapping)collection.Relationship).AddDefaultColumn(new ColumnMapping {Name = typeof(TChild).Name + "_id"});
+
+                foreach (var column in childKeyColumns)
+                    ((ManyToManyMapping)collection.Relationship).AddColumn(column);
+            }
+
+            // HACK: Index only on list and map - shouldn't have to do this!
+            if (index != null && collection is IIndexedCollectionMapping)
+                ((IIndexedCollectionMapping)collection).Index = index.GetIndexMapping();
+
+            // HACK: shouldn't have to do this!
+            if (manyToManyIndex != null && collection is MapMapping)
+                ((MapMapping)collection).Index = manyToManyIndex.GetIndexMapping();
+
+            return collection;
+        }
     }
 }

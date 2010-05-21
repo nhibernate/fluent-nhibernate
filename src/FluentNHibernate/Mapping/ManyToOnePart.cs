@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
@@ -32,47 +31,35 @@ namespace FluentNHibernate.Mapping
             notFound = new NotFoundExpression<ManyToOnePart<TOther>>(this, value => attributes.Set(x => x.NotFound, value));
         }
 
-        ManyToOneMapping IManyToOneMappingProvider.GetManyToOneMapping()
-        {
-            var mapping = new ManyToOneMapping(attributes.CloneInner());
-
-            mapping.ContainingEntityType = entity;
-            mapping.Member = property;
-
-            if (!mapping.IsSpecified("Name"))
-                mapping.Name = property.Name;
-
-            if (!mapping.IsSpecified("Class"))
-                mapping.SetDefaultValue(x => x.Class, new TypeReference(typeof(TOther)));
-
-            if (columns.Count == 0)
-                mapping.AddDefaultColumn(CreateColumn(property.Name + "_id"));
-
-            foreach (var column in columns)
-            {
-                var columnMapping = CreateColumn(column);
-
-                mapping.AddColumn(columnMapping);
-            }
-
-            return mapping;
-        }
-
-        private ColumnMapping CreateColumn(string column)
-        {
-            return new ColumnMapping(columnAttributes.CloneInner()) { Name = column };
-        }
-
+        /// <summary>
+        /// Set the fetching strategy
+        /// </summary>
+        /// <example>
+        /// Fetch.Select();
+        /// </example>
         public FetchTypeExpression<ManyToOnePart<TOther>> Fetch
 		{
 			get { return fetch; }
 		}
 
+        /// <summary>
+        /// Set the behaviour for when this relationship is null in the database
+        /// </summary>
+        /// <example>
+        /// NotFound.Exception();
+        /// </example>
         public NotFoundExpression<ManyToOnePart<TOther>> NotFound
         {
             get { return notFound; }
         }
 
+        /// <summary>
+        /// Sets whether this relationship is unique
+        /// </summary>
+        /// <example>
+        /// Unique();
+        /// Not.Unique();
+        /// </example>
         public ManyToOnePart<TOther> Unique()
         {
             columnAttributes.Set(x => x.Unique, nextBool);
@@ -90,23 +77,45 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies the index name
+        /// </summary>
+        /// <param name="indexName">Index name</param>
         public ManyToOnePart<TOther> Index(string indexName)
         {
             columnAttributes.Set(x => x.Index, indexName);
             return this;
         }
 
+        /// <summary>
+        /// Specifies the child class of this relationship
+        /// </summary>
+        /// <typeparam name="T">Child</typeparam>
         public ManyToOnePart<TOther> Class<T>()
         {
 	        return Class(typeof(T));
         }
 
+        /// <summary>
+        /// Specifies the child class of this relationship
+        /// </summary>
+        /// <param name="type">Child</param>
         public ManyToOnePart<TOther> Class(Type type)
         {
             attributes.Set(x => x.Class, new TypeReference(type));
             return this;
         }
 
+        /// <summary>
+        /// Sets this relationship to read-only
+        /// </summary>
+        /// <remarks>
+        /// This is the same as calling both Not.Insert() and Not.Update()
+        /// </remarks>
+        /// <example>
+        /// ReadOnly();
+        /// Not.ReadOnly();
+        /// </example>
         public ManyToOnePart<TOther> ReadOnly()
         {
             attributes.Set(x => x.Insert, !nextBool);
@@ -152,18 +161,29 @@ namespace FluentNHibernate.Mapping
             nextBool = true;
             return this;
         }
-		
-		public ManyToOnePart<TOther> ForeignKey()
+
+        /// <summary>
+        /// Specifies this relationship should be created with a default-named
+        /// foreign key.
+        /// </summary>
+        public ManyToOnePart<TOther> ForeignKey()
 		{
 			return ForeignKey(string.Format("FK_{0}To{1}", property.DeclaringType.Name, property.Name));
 		}
-		
-		public ManyToOnePart<TOther> ForeignKey(string foreignKeyName)
+
+        /// <summary>
+        /// Specifies the foreign-key constraint name
+        /// </summary>
+        /// <param name="foreignKeyName">Constraint name</param>
+        public ManyToOnePart<TOther> ForeignKey(string foreignKeyName)
 		{
 		    attributes.Set(x => x.ForeignKey, foreignKeyName);
 			return this;
 		}
 
+        /// <summary>
+        /// Specifies that this relationship is insertable
+        /// </summary>
         public ManyToOnePart<TOther> Insert()
         {
             attributes.Set(x => x.Insert, nextBool);
@@ -171,6 +191,9 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies that this relationship is updatable
+        /// </summary>
         public ManyToOnePart<TOther> Update()
         {
             attributes.Set(x => x.Update, nextBool);
@@ -178,6 +201,23 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Sets the single column used in this relationship. Use <see cref="Columns(string[])"/>
+        /// if you need to specify more than one column.
+        /// </summary>
+        /// <param name="name">Column name</param>
+        public ManyToOnePart<TOther> Column(string name)
+        {
+            columns.Clear();
+            columns.Add(name);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Specifies the columns used in this relationship
+        /// </summary>
+        /// <param name="columns">Columns</param>
         public ManyToOnePart<TOther> Columns(params string[] columns)
         {
             foreach (var column in columns)
@@ -188,6 +228,10 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies the columns used in this relationship
+        /// </summary>
+        /// <param name="columns">Columns</param>
         public ManyToOnePart<TOther> Columns(params Expression<Func<TOther, object>>[] columns)
         {
             foreach (var expression in columns)
@@ -200,25 +244,31 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies the sql formula used for this relationship
+        /// </summary>
+        /// <param name="formula">Formula</param>
         public ManyToOnePart<TOther> Formula(string formula)
         {
             attributes.Set(x => x.Formula, formula);
             return this;
         }
 
+        /// <summary>
+        /// Specifies the cascade behaviour for this relationship
+        /// </summary>
+        /// <example>
+        /// Cascade.All();
+        /// </example>
         public CascadeExpression<ManyToOnePart<TOther>> Cascade
 		{
 			get { return cascade; }
 		}
 
-        public ManyToOnePart<TOther> Column(string name)
-        {
-            columns.Clear();
-            columns.Add(name);
-
-            return this;
-        }
-
+        /// <summary>
+        /// Specifies the property reference
+        /// </summary>
+        /// <param name="expression">Property</param>
         public ManyToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> expression)
         {
             var member = expression.ToMember();
@@ -226,12 +276,23 @@ namespace FluentNHibernate.Mapping
             return PropertyRef(member.Name);
         }
 
+        /// <summary>
+        /// Specifies the property reference
+        /// </summary>
+        /// <param name="property">Property</param>
         public ManyToOnePart<TOther> PropertyRef(string property)
         {
             attributes.Set(x => x.PropertyRef, property);
             return this;
         }
 
+        /// <summary>
+        /// Sets this relationship to nullable
+        /// </summary>
+        /// <example>
+        /// Nullable();
+        /// Not.Nullable();
+        /// </example>
         public ManyToOnePart<TOther> Nullable()
         {
             columnAttributes.Set(x => x.NotNull, !nextBool);
@@ -249,6 +310,12 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies the access strategy for this relationship
+        /// </summary>
+        /// <example>
+        /// Access.Field();
+        /// </example>
         public AccessStrategyBuilder<ManyToOnePart<TOther>> Access
         {
             get { return access; }
@@ -265,6 +332,37 @@ namespace FluentNHibernate.Mapping
                 nextBool = !nextBool;
                 return this;
             }
+        }
+
+        ManyToOneMapping IManyToOneMappingProvider.GetManyToOneMapping()
+        {
+            var mapping = new ManyToOneMapping(attributes.CloneInner());
+
+            mapping.ContainingEntityType = entity;
+            mapping.Member = property;
+
+            if (!mapping.IsSpecified("Name"))
+                mapping.Name = property.Name;
+
+            if (!mapping.IsSpecified("Class"))
+                mapping.SetDefaultValue(x => x.Class, new TypeReference(typeof(TOther)));
+
+            if (columns.Count == 0)
+                mapping.AddDefaultColumn(CreateColumn(property.Name + "_id"));
+
+            foreach (var column in columns)
+            {
+                var columnMapping = CreateColumn(column);
+
+                mapping.AddColumn(columnMapping);
+            }
+
+            return mapping;
+        }
+
+        ColumnMapping CreateColumn(string column)
+        {
+            return new ColumnMapping(columnAttributes.CloneInner()) { Name = column };
         }
     }
 }

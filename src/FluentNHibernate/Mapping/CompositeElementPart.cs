@@ -33,11 +33,26 @@ namespace FluentNHibernate.Mapping
             this.member = member;
         }
 
+        /// <summary>
+        /// Map a property
+        /// </summary>
+        /// <param name="expression">Property</param>
+        /// <example>
+        /// Map(x => x.Age);
+        /// </example>
         public PropertyPart Map(Expression<Func<T, object>> expression)
         {
             return Map(expression, null);
         }
 
+        /// <summary>
+        /// Map a property
+        /// </summary>
+        /// <param name="expression">Property</param>
+        /// <param name="columnName">Column name</param>
+        /// <example>
+        /// Map(x => x.Age, "person_age");
+        /// </example>
         public PropertyPart Map(Expression<Func<T, object>> expression, string columnName)
         {
             return Map(expression.ToMember(), columnName);
@@ -55,11 +70,30 @@ namespace FluentNHibernate.Mapping
             return propertyMap;
         }
 
+        /// <summary>
+        /// Create a reference to another entity. In database terms, this is a many-to-one
+        /// relationship.
+        /// </summary>
+        /// <typeparam name="TOther">Other entity</typeparam>
+        /// <param name="expression">Property on the current entity</param>
+        /// <example>
+        /// References(x => x.Company);
+        /// </example>
         public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> expression)
         {
             return References(expression, null);
         }
 
+        /// <summary>
+        /// Create a reference to another entity. In database terms, this is a many-to-one
+        /// relationship.
+        /// </summary>
+        /// <typeparam name="TOther">Other entity</typeparam>
+        /// <param name="expression">Property on the current entity</param>
+        /// <param name="columnName">Column name</param>
+        /// <example>
+        /// References(x => x.Company, "person_company_id");
+        /// </example>
         public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> expression, string columnName)
         {
             return References<TOther>(expression.ToMember(), columnName);

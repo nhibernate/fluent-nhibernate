@@ -14,7 +14,6 @@ namespace FluentNHibernate.Mapping
             this.setValue = setter;
         }
 
-
         public void None()
         {
             setValue("none");
