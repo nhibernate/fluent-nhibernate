@@ -41,10 +41,8 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
                 return Array.IndexOf(originalSortOrder, x).CompareTo(Array.IndexOf(originalSortOrder, y));
             });
 
-            for (var i = 0; i < node.ChildNodes.Count; i++)
-            {
-                node.RemoveChild(node.ChildNodes[i]);
-            }
+            while (node.ChildNodes.Count > 0)
+                node.RemoveChild(node.ChildNodes[0]);            
 
             foreach (var child in children)
             {
