@@ -410,6 +410,7 @@
     <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />
     <Compile Include="Mapping\Providers\INaturalIdMappingProvider.cs" />
     <Compile Include="Mapping\Providers\INestedCompositeElementMappingProvider.cs" />
+    <Compile Include="Mapping\Providers\IPropertyMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IReferenceComponentMappingProvider.cs" />
     <Compile Include="Mapping\TuplizerPart.cs" />
     <Compile Include="Utils\StringLikeness.cs" />
@@ -468,7 +469,6 @@
     <Compile Include="Mapping\Providers\IJoinMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IManyToOneMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IOneToOneMappingProvider.cs" />
-    <Compile Include="Mapping\Providers\IPropertyMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IIndeterminateSubclassMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IVersionMappingProvider.cs" />
     <Compile Include="Mapping\SubclassMap.cs" />

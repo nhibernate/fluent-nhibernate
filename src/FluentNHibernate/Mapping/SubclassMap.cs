@@ -4,6 +4,7 @@ using System.Diagnostics;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
@@ -269,8 +270,10 @@ namespace FluentNHibernate.Mapping
             attributes.Set(x => x.Extends, type);
         }
 
-        SubclassMapping IIndeterminateSubclassMappingProvider.GetSubclassMapping(SubclassMapping mapping)
+        SubclassMapping IIndeterminateSubclassMappingProvider.GetSubclassMapping(SubclassType type)
         {
+            var mapping = new SubclassMapping(type);
+
             GenerateNestedSubclasses(mapping);
 
             attributes.SetDefault(x => x.Type, typeof(T));
@@ -308,7 +311,7 @@ namespace FluentNHibernate.Mapping
             foreach (var any in anys)
                 mapping.AddAny(any.GetAnyMapping());
 
-            return mapping;
+            return mapping.DeepClone();
         }
 
         Type IIndeterminateSubclassMappingProvider.Extends
@@ -320,8 +323,7 @@ namespace FluentNHibernate.Mapping
         {
             foreach (var subclassType in indetermineateSubclasses.Keys)
             {
-                var emptySubclassMapping = new SubclassMapping(mapping.SubclassType);
-                var subclassMapping = indetermineateSubclasses[subclassType].GetSubclassMapping(emptySubclassMapping);
+                var subclassMapping = indetermineateSubclasses[subclassType].GetSubclassMapping(mapping.SubclassType);
 
                 mapping.AddSubclass(subclassMapping);
             }

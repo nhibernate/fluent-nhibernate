@@ -19,5 +19,22 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             return elementName;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ComponentType)
+                return Equals(obj as ComponentType);
+            return false;
+        }
+
+        public bool Equals(ComponentType other)
+        {
+            return Equals(other.elementName, elementName);
+        }
+
+        public override int GetHashCode()
+        {
+            return (elementName != null ? elementName.GetHashCode() : 0);
+        }
     }
 }

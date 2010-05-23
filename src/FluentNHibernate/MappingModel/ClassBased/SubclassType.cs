@@ -1,5 +1,8 @@
+using System;
+
 namespace FluentNHibernate.MappingModel.ClassBased
 {
+    [Serializable]
     public class SubclassType
     {
         public static readonly SubclassType Subclass = new SubclassType("subclass");
@@ -20,15 +23,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
         public bool Equals(SubclassType other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
             return Equals(other.elementName, elementName);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != typeof(SubclassType)) return false;
             return Equals((SubclassType)obj);
         }
@@ -41,6 +40,16 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public override string ToString()
         {
             return string.Format("ElementName: {0}", elementName);
+        }
+
+        public static bool operator ==(SubclassType left, SubclassType right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(SubclassType left, SubclassType right)
+        {
+            return !(left == right);
         }
     }
 }

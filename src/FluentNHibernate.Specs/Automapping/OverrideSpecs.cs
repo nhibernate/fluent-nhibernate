@@ -43,7 +43,10 @@ namespace FluentNHibernate.Specs.Automapping
             mapping.Discriminator.ShouldNotBeNull();
 
         It should_map_subclasses_as_subclass_instead_of_joined_subclass = () =>
+        {
+            mapping.Subclasses.Count().ShouldEqual(1);
             mapping.Subclasses.ShouldEachConformTo(x => x.SubclassType == SubclassType.Subclass);
+        };
         
         static AutoPersistenceModel model;
         static ClassMapping mapping;

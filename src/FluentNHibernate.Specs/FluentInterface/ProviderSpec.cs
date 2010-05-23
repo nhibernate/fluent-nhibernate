@@ -19,13 +19,10 @@ namespace FluentNHibernate.Specs.FluentInterface
         public static SubclassMapping map_as_subclass<T>(Action<SubclassMap<T>> setup)
         {
             var provider = new SubclassMap<T>();
-            var mapping = new SubclassMapping(SubclassType.Subclass);
 
             setup(provider);
 
-            ((IIndeterminateSubclassMappingProvider)provider).GetSubclassMapping(mapping);
-
-            return mapping;
+            return ((IIndeterminateSubclassMappingProvider)provider).GetSubclassMapping(SubclassType.Subclass);
         }
     }
 }

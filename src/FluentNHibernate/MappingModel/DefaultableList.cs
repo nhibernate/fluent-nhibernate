@@ -62,7 +62,7 @@ namespace FluentNHibernate.MappingModel
 
         public bool Contains(T item)
         {
-            return userDefined.Contains(item);
+            return userDefined.Contains(item) || ContainsDefault(item);
         }
 
         public bool ContainsDefault(T item)
@@ -117,7 +117,7 @@ namespace FluentNHibernate.MappingModel
 
         public int CountAll
         {
-            get { return Count + CountDefaults; }
+            get { return userDefined.Count + CountDefaults; }
         }
 
         public bool IsReadOnly
