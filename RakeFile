@@ -115,7 +115,8 @@ namespace :package do
 
   def get_exclusions
     exclusions = []
-    %w{build dist results bin obj output}.each {|x| exclusions << "**/#{x}" << "**/#{x}/**/**" }
+    %w{build dist results output}.each {|x| exclusions << "#{x}" << "#{x}/**/**" }
+    %w{bin obj}.each {|x| exclusions << "**/#{x}" << "**/#{x}/**/**" }
     [/_ReSharper/, /.user/, /.suo/, /.resharper/, /.cache/].each {|x| exclusions << x }
     exclusions
   end
