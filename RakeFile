@@ -3,7 +3,7 @@ require 'albacore'
 require 'tools/albacore/zipdirectory_patch.rb'
 
 def get_version
-  ENV['BUILD_NUMBER'] || '1.0.0.0'
+  ENV['BUILD_NUMBER'] || '1.1.0.0'
 end
 
 task :default => 'build:all'
@@ -47,7 +47,7 @@ namespace :source do
     asm.version = get_version
     asm.company_name = 'http://fluentnhibernate.org'
     asm.product_name = 'FluentNHibernate'
-    asm.copyright = 'Copyright 2008-2009 James Gregory and contributors (Paul Batum, Andrew Stewart, Hudson Akridge, Stuart Childs et al). All rights reserved.'
+    asm.copyright = 'Copyright 2008-2009 James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved.'
     asm.namespaces = ['System.Security']
     asm.custom_attributes :AllowPartiallyTrustedCallers => nil
     
