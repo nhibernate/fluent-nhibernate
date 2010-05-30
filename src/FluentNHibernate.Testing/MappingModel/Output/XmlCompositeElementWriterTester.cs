@@ -61,11 +61,17 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Element("nested-composite-element").Exists();
         }
 
-        [Test, Ignore]
-        public void ShouldWriteNestedCompositeElement()
+        [Test]
+        public void ShouldWriteNestedCompositeElementName()
         {
-            Assert.Fail();
+            var mapping = new CompositeElementMapping();
+            mapping.AddCompositeElement(new NestedCompositeElementMapping { Name = "testName"});
+
+            writer.VerifyXml(mapping)
+                .Element("nested-composite-element")
+                .HasAttribute("name", "testName");
         }
+
 
         [Test]
         public void ShouldWriteParent()

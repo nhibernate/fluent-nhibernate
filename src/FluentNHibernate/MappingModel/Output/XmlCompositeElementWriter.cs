@@ -31,6 +31,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.Class))
                 element.WithAtt("class", mapping.Class);
+
+            if (mapping is NestedCompositeElementMapping)
+                element.WithAtt("name", ((NestedCompositeElementMapping)mapping).Name);
         }
 
         public override void Visit(CompositeElementMapping compositeElementMapping)
