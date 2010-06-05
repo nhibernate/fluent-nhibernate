@@ -32,7 +32,7 @@ namespace FluentNHibernate.Automapping.Steps
             idMapping.SetDefaultValue("Generator", GetDefaultGenerator(member));
 
             if (member.IsProperty && !member.CanWrite)
-                idMapping.Access = cfg.GetAccessStrategyForReadOnlyProperty(member).ToString();
+                idMapping.SetDefaultValue("Access", cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());                
 
             ((ClassMapping)classMap).Id = idMapping;        
         }

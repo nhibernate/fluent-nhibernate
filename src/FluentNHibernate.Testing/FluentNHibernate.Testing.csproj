@@ -450,6 +450,7 @@
     <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.Inheritance.cs" />
     <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.Overrides.cs" />
     <Compile Include="AutoMapping\Steps\HasManyToManyStepTests.cs" />
+    <Compile Include="AutoMapping\Steps\IdentityStepTests.cs" />
     <Compile Include="AutoMapping\Steps\ReferenceStepTests.cs" />
     <Compile Include="AutoMapping\Steps\HasManyStepTests.cs" />
     <Compile Include="AutoMapping\Steps\VersionStepTests.cs" />
