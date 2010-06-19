@@ -134,6 +134,11 @@ namespace FluentNHibernate.MappingModel.Collections
             return attributes.IsSpecified(property);
         }
 
+        public bool IsSpecified<TResult>(Expression<Func<ManyToManyMapping, TResult>> property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
         public bool HasValue<TResult>(Expression<Func<ManyToManyMapping, TResult>> property)
         {
             return attributes.HasValue(property);
