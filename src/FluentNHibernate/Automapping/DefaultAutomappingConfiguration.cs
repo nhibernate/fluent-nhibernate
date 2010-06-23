@@ -18,7 +18,8 @@ namespace FluentNHibernate.Automapping
         public virtual bool ShouldMap(Type type)
         {
             return !type.ClosesInterface(typeof(IAutoMappingOverride<>)) &&
-                !type.HasInterface(typeof(IMappingProvider));
+                !type.HasInterface(typeof(IMappingProvider)) &&
+                !type.IsNested;
         }
 
         public virtual bool IsId(Member member)

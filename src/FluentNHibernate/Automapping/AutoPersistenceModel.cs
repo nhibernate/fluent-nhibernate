@@ -140,7 +140,7 @@ namespace FluentNHibernate.Automapping
 
             foreach (var type in mappingTypes)
             {
-                if (!type.Type.IsClass || !IsNotInnerClass(type)) continue;
+                if (!type.Type.IsClass) continue;
                 if (type.IsMapped) continue;
 
                 AddMapping(type.Type);
@@ -168,11 +168,6 @@ namespace FluentNHibernate.Automapping
             CompileMappings();
 
             base.Configure(configuration);
-        }
-
-        static bool IsNotInnerClass(AutoMapType type)
-        {
-            return type.Type.ReflectedType == null;
         }
 
         private void AddMapping(Type type)
