@@ -32,9 +32,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessComponent(this);
-
-            if(mergedComponent != null)
-                visitor.Visit(mergedComponent);
         }
 
         public bool IsSpecified(string name)
