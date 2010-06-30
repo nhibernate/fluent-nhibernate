@@ -18,13 +18,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public override void establish_context()
         {
             inline_component = new ClassMap<Target>();
-            inline_component.Component(x => x.ComponentProperty, c => c.Map(x => x.Property));
+            inline_component.Component(x => x.ComponentProperty1, c => c.Map(x => x.Property));
+            inline_component.Component(x => x.ComponentProperty2, c => c.Map(x => x.Property));
 
             external_component = new ComponentMap<Component>();
             external_component.Map(x => x.Property);
 
             reference_component = new ClassMap<Target>();
-            reference_component.Component(x => x.ComponentProperty);
+            reference_component.Component(x => x.ComponentProperty1);
+            reference_component.Component(x => x.ComponentProperty2);
         }
 
         private string render_xml(Action<PersistenceModel> addMappings)
@@ -53,11 +55,13 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void should_be_rendered_the_same_as_an_inline_component()
         {
             referenced_xml.ShouldEqual(inline_xml);
+            System.Diagnostics.Debug.WriteLine(referenced_xml);
         }
 
         private class Target
         {
-            public Component ComponentProperty { get; set; }
+            public Component ComponentProperty1 { get; set; }
+            public Component ComponentProperty2 { get; set; }
         }
 
         private class Component
