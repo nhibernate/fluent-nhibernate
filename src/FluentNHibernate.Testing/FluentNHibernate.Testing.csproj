@@ -168,7 +168,6 @@
     <Compile Include="MappingModel\Equality\CollectionContentEqualitySpecs.cs" />
     <Compile Include="MappingModel\Defaults\MutableDefaultsTester.cs" />
     <Compile Include="MappingModel\Equality\MappingEqualitySpecs.cs" />
-    <Compile Include="MappingModel\Output\ExternalComponentOutputSpecs.cs" />
     <Compile Include="MappingModel\Output\XmlDiscriminatorWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterDefinitionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterWriterTester.cs" />
