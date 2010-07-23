@@ -26,6 +26,7 @@ namespace FluentNHibernate.Automapping.Steps
         public void Map(ClassMappingBase classMap, Member member)
         {
             var manyToOne = CreateMapping(member);
+            manyToOne.ContainingEntityType = classMap.Type;
             classMap.AddReference(manyToOne);
         }
 

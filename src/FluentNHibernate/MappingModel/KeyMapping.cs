@@ -87,7 +87,7 @@ namespace FluentNHibernate.MappingModel
 
         public void ClearColumns()
         {
-            columns.Clear();
+            columns.ClearAll();
         }
 
         public override bool IsSpecified(string property)

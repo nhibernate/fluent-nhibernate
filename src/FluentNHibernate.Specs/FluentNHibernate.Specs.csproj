@@ -144,7 +144,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Automapping\AutomappingSpecs.NestedClasses.cs" />
+    <Compile Include="FluentInterface\BiDirectionalKeyIssueSpecs.cs" />
     <Compile Include="FluentInterface\ExternalComponentOutputSpecs.cs" />
+    <Compile Include="FluentInterface\Fixtures\BiDirectionalKeyIssue.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
