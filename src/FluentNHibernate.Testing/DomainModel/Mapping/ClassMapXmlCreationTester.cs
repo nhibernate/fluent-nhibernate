@@ -497,6 +497,23 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/bag[@name='Siblings']/many-to-many").HasAttribute("class", typeof(ProxiedObject).AssemblyQualifiedName)
                 .Element("class/map[@name='MapOfChildren']/one-to-many").HasAttribute("class", typeof(ProxiedObject).AssemblyQualifiedName);
         }
+
+        [Test]
+        public void ShouldOutputNaturalIdBeforeVersion()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                {
+                    map.Id(x => x.Id);
+                    map.Version(x => x.Version);
+                    map.NaturalId()
+                        .Property(x => x.Name)
+                        .Property(x => x.NickName);
+                })
+                .Element("class/id").ShouldBeInParentAtPosition(0)
+                .Element("class/natural-id").ShouldBeInParentAtPosition(1)
+                .Element("class/version").ShouldBeInParentAtPosition(2);
+        }
     }
 
     public class SecondMappedObject

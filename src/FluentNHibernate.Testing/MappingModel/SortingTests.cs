@@ -19,7 +19,7 @@ namespace FluentNHibernate.Testing.MappingModel
             var sorter = new XmlClasslikeNodeSorter();
 
             var xml = @"<class><property /><joined-subclass /><many-to-one /><union-subclass /><cache /><key /><one-to-one /></class>";
-            var expected = @"<class><cache /><key /><one-to-one /><property /><many-to-one /><joined-subclass /><union-subclass /></class>";
+            var expected = @"<class><cache /><key /><property /><many-to-one /><one-to-one /><joined-subclass /><union-subclass /></class>";
             
             var doc = new XmlDocument();
             doc.LoadXml(xml);
