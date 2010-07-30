@@ -53,7 +53,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
                 .Classes.First()
                 .Id;
 
-            modelVerification(((CompositeIdMapping)modelInstance).KeyProperties.First());
+            modelVerification((KeyPropertyMapping)((CompositeIdMapping)modelInstance).Keys.First(x => x is KeyPropertyMapping));
         }
 
         #endregion

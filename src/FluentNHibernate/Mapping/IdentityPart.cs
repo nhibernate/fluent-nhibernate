@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using System.Diagnostics;
+using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping
 {
@@ -12,33 +12,30 @@ namespace FluentNHibernate.Mapping
     {
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
         private readonly IList<string> columns = new List<string>();
-        private readonly Member property;
+        private Member member;
         private readonly Type entityType;
         private readonly AccessStrategyBuilder<IdentityPart> access;
         private readonly AttributeStore<IdMapping> attributes = new AttributeStore<IdMapping>();
-        private readonly Type identityType;
+        private Type identityType;
         private bool nextBool = true;
-        private readonly string columnName;
+        string name;
 
-        public IdentityPart(Type entity, Member property)
+        public IdentityPart(Type entity, Member member)
         {
-            this.property = property;
             entityType = entity;
-            this.identityType = property.PropertyType;
-            this.columnName = property.Name;
-
+            this.member = member;
+            identityType = member.PropertyType;
+            
             access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set(x => x.Access, value));
-            GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, property.PropertyType, entity);
-
+            GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, member.PropertyType, entityType);
+            SetName(member.Name);
             SetDefaultGenerator();
         }
 
-        public IdentityPart(Type entity, Type identityType, string columnName)
+        public IdentityPart(Type entity, Type identityType)
         {
-            this.property = null;
             this.entityType = entity;
             this.identityType = identityType;
-            this.columnName = columnName;
 
             access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set(x => x.Access, value));
             GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, this.identityType, entity);
@@ -46,48 +43,13 @@ namespace FluentNHibernate.Mapping
             SetDefaultGenerator();
         }
 
-        private void SetDefaultGenerator()
-        {
-            var generatorMapping = new GeneratorMapping();
-            var defaultGenerator = new GeneratorBuilder(generatorMapping, identityType);
-
-            if (identityType == typeof(Guid))
-                defaultGenerator.GuidComb();
-            else if (identityType == typeof(int) || identityType == typeof(long))
-                defaultGenerator.Identity();
-            else
-                defaultGenerator.Assigned();
-
-            attributes.SetDefault(x => x.Generator, generatorMapping);
-        }
-
-        IdMapping IIdentityMappingProvider.GetIdentityMapping()
-        {
-            var mapping = new IdMapping(attributes.CloneInner())
-            {
-                ContainingEntityType = entityType
-            };
-
-            if (columns.Count > 0)
-            {
-                foreach (var column in columns)
-                    mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = column });
-            }
-            else
-                mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = columnName });
-
-            if (property != null)
-            {
-                mapping.Name = columnName;
-            }
-            mapping.SetDefaultValue("Type", new TypeReference(identityType));
-
-            if (GeneratedBy.IsDirty)
-                mapping.Generator = GeneratedBy.GetGeneratorMapping();
-
-            return mapping;
-        }
-
+        /// <summary>
+        /// Specify the generator
+        /// </summary>
+        /// <example>
+        /// Id(x => x.PersonId)
+        ///   .GeneratedBy.Assigned();
+        /// </example>
         public IdentityGenerationStrategyBuilder<IdentityPart> GeneratedBy { get; private set; }
 
         /// <summary>
@@ -98,6 +60,9 @@ namespace FluentNHibernate.Mapping
             get { return access; }
         }
 
+        /// <summary>
+        /// Invert the next boolean operation
+        /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public IdentityPart Not
         {
@@ -129,24 +94,39 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specify the identity column length
+        /// </summary>
+        /// <param name="length">Column length</param>
         public IdentityPart Length(int length)
         {
             columnAttributes.Set(x => x.Length, length);
             return this;
         }
 
+        /// <summary>
+        /// Specify the decimal precision
+        /// </summary>
+        /// <param name="precision">Decimal precision</param>
         public IdentityPart Precision(int precision)
         {
             columnAttributes.Set(x => x.Precision, precision);
             return this;
         }
 
+        /// <summary>
+        /// Specify the decimal scale
+        /// </summary>
+        /// <param name="scale">Decimal scale</param>
         public IdentityPart Scale(int scale)
         {
             columnAttributes.Set(x => x.Scale, scale);
             return this;
         }
 
+        /// <summary>
+        /// Specify the nullability of the identity column
+        /// </summary>
         public IdentityPart Nullable()
         {
             columnAttributes.Set(x => x.NotNull, !nextBool);
@@ -154,6 +134,9 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specify the uniqueness of the identity column
+        /// </summary>
         public IdentityPart Unique()
         {
             columnAttributes.Set(x => x.Unique, nextBool);
@@ -161,52 +144,145 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specify a unique key constraint
+        /// </summary>
+        /// <param name="keyColumns">Constraint columns</param>
         public IdentityPart UniqueKey(string keyColumns)
         {
             columnAttributes.Set(x => x.UniqueKey, keyColumns);
             return this;
         }
 
+        /// <summary>
+        /// Specify a custom SQL type
+        /// </summary>
+        /// <param name="sqlType">SQL type</param>
         public IdentityPart CustomSqlType(string sqlType)
         {
             columnAttributes.Set(x => x.SqlType, sqlType);
             return this;
         }
 
+        /// <summary>
+        /// Specify an index name
+        /// </summary>
+        /// <param name="key">Index name</param>
         public IdentityPart Index(string key)
         {
             columnAttributes.Set(x => x.Index, key);
             return this;
         }
 
+        /// <summary>
+        /// Specify a check constraint
+        /// </summary>
+        /// <param name="constraint">Constraint name</param>
         public IdentityPart Check(string constraint)
         {
             columnAttributes.Set(x => x.Check, constraint);
             return this;
         }
 
+        /// <summary>
+        /// Specify a default value
+        /// </summary>
+        /// <param name="value">Default value</param>
         public IdentityPart Default(object value)
         {
             columnAttributes.Set(x => x.Default, value.ToString());
             return this;
         }
 
+        /// <summary>
+        /// Specify a custom type
+        /// </summary>
+        /// <remarks>
+        /// This is usually used with an <see cref="IUserType"/>
+        /// </remarks>
+        /// <typeparam name="T">Custom type</typeparam>
         public IdentityPart CustomType<T>()
         {
             attributes.Set(x => x.Type, new TypeReference(typeof(T)));
             return this;
         }
 
+        /// <summary>
+        /// Specify a custom type
+        /// </summary>
+        /// <remarks>
+        /// This is usually used with an <see cref="IUserType"/>
+        /// </remarks>
+        /// <param name="type">Custom type</param>
         public IdentityPart CustomType(Type type)
         {
             attributes.Set(x => x.Type, new TypeReference(type));
             return this;
         }
 
+        /// <summary>
+        /// Specify a custom type
+        /// </summary>
+        /// <remarks>
+        /// This is usually used with an <see cref="IUserType"/>
+        /// </remarks>
+        /// <param name="type">Custom type</param>
         public IdentityPart CustomType(string type)
         {
             attributes.Set(x => x.Type, new TypeReference(type));
             return this;
+        }
+
+        internal void SetName(string newName)
+        {
+            name = newName;
+        }
+
+        bool HasNameSpecified
+        {
+            get { return !string.IsNullOrEmpty(name); }
+        }
+
+        void SetDefaultGenerator()
+        {
+            var generatorMapping = new GeneratorMapping();
+            var defaultGenerator = new GeneratorBuilder(generatorMapping, identityType);
+
+            if (identityType == typeof(Guid))
+                defaultGenerator.GuidComb();
+            else if (identityType == typeof(int) || identityType == typeof(long))
+                defaultGenerator.Identity();
+            else
+                defaultGenerator.Assigned();
+
+            attributes.SetDefault(x => x.Generator, generatorMapping);
+        }
+
+        IdMapping IIdentityMappingProvider.GetIdentityMapping()
+        {
+            var mapping = new IdMapping(attributes.CloneInner())
+            {
+                ContainingEntityType = entityType
+            };
+
+            if (columns.Count > 0)
+            {
+                foreach (var column in columns)
+                    mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = column });
+            }
+            else if (HasNameSpecified)
+                mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = name });
+
+            if (member != null)
+            {
+                mapping.Name = name;
+            }
+            mapping.SetDefaultValue("Type", new TypeReference(identityType));
+
+            if (GeneratedBy.IsDirty)
+                mapping.Generator = GeneratedBy.GetGeneratorMapping();
+
+            return mapping;
         }
     }
 }

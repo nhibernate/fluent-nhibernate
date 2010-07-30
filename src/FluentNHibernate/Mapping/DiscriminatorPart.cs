@@ -3,6 +3,7 @@ using System.Diagnostics;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping
 {
@@ -24,20 +25,6 @@ namespace FluentNHibernate.Mapping
             this.discriminatorValueType = discriminatorValueType;
         }
 
-        DiscriminatorMapping IDiscriminatorMappingProvider.GetDiscriminatorMapping()
-        {
-            var mapping = new DiscriminatorMapping(attributes.CloneInner())
-            {
-                ContainingEntityType = entity,
-            };
-
-            mapping.SetDefaultValue("Type", discriminatorValueType);
-
-            mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = columnName });
-
-            return mapping;
-        }
-
         [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
         public DiscriminatorPart SubClass<TSubClass>(object discriminatorValue, Action<SubClassPart<TSubClass>> action)
         {
@@ -55,6 +42,9 @@ namespace FluentNHibernate.Mapping
             return SubClass(null, action);
         }
 
+        /// <summary>
+        /// Invert the next boolean operation
+        /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public DiscriminatorPart Not
         {
@@ -98,24 +88,39 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Sets the precision for decimals
+        /// </summary>
+        /// <param name="precision">Decimal precision</param>
         public DiscriminatorPart Precision(int precision)
         {
             columnAttributes.Set(x => x.Precision, precision);
             return this;
         }
 
-        public DiscriminatorPart Length(int length)
-        {
-            columnAttributes.Set(x => x.Length, length);
-            return this;
-        }
-
+        /// <summary>
+        /// Specifies the scale for decimals
+        /// </summary>
+        /// <param name="scale">Decimal scale</param>
         public DiscriminatorPart Scale(int scale)
         {
             columnAttributes.Set(x => x.Scale, scale);
             return this;
         }
 
+        /// <summary>
+        /// Specify the column length
+        /// </summary>
+        /// <param name="length">Column length</param>
+        public DiscriminatorPart Length(int length)
+        {
+            columnAttributes.Set(x => x.Length, length);
+            return this;
+        }
+
+        /// <summary>
+        /// Specify the nullability of this column
+        /// </summary>
         public DiscriminatorPart Nullable()
         {
             columnAttributes.Set(x => x.NotNull, !nextBool);
@@ -123,6 +128,9 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies the uniqueness of this column
+        /// </summary>
         public DiscriminatorPart Unique()
         {
             columnAttributes.Set(x => x.Unique, nextBool);
@@ -130,46 +138,97 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies the unique key constraint name
+        /// </summary>
+        /// <param name="keyColumns">Constraint columns</param>
         public DiscriminatorPart UniqueKey(string keyColumns)
         {
             columnAttributes.Set(x => x.UniqueKey, keyColumns);
             return this;
         }
 
+        /// <summary>
+        /// Specifies the index name
+        /// </summary>
+        /// <param name="index">Index name</param>
         public DiscriminatorPart Index(string index)
         {
             columnAttributes.Set(x => x.Index, index);
             return this;
         }
 
+        /// <summary>
+        /// Specifies a check constraint name
+        /// </summary>
+        /// <param name="constraint">Constraint name</param>
         public DiscriminatorPart Check(string constraint)
         {
             columnAttributes.Set(x => x.Check, constraint);
             return this;
         }
 
+        /// <summary>
+        /// Specifies the default value for the discriminator
+        /// </summary>
+        /// <param name="value">Default value</param>
         public DiscriminatorPart Default(object value)
         {
             columnAttributes.Set(x => x.Default, value.ToString());
             return this;
         }
 
+        /// <summary>
+        /// Specifies a custom type for the discriminator
+        /// </summary>
+        /// <remarks>
+        /// This is often used with <see cref="IUserType"/>
+        /// </remarks>
+        /// <typeparam name="T">Custom type</typeparam>
         public DiscriminatorPart CustomType<T>()
         {
             attributes.Set(x => x.Type, new TypeReference(typeof(T)));
             return this;
         }
 
+        /// <summary>
+        /// Specifies a custom type for the discriminator
+        /// </summary>
+        /// <remarks>
+        /// This is often used with <see cref="IUserType"/>
+        /// </remarks>
+        /// <param name="type">Custom type</param>
         public DiscriminatorPart CustomType(Type type)
         {
             attributes.Set(x => x.Type, new TypeReference(type));
             return this;
         }
 
+        /// <summary>
+        /// Specifies a custom type for the discriminator
+        /// </summary>
+        /// <remarks>
+        /// This is often used with <see cref="IUserType"/>
+        /// </remarks>
+        /// <param name="type">Custom type</param>
         public DiscriminatorPart CustomType(string type)
         {
             attributes.Set(x => x.Type, new TypeReference(type));
             return this;
+        }
+
+        DiscriminatorMapping IDiscriminatorMappingProvider.GetDiscriminatorMapping()
+        {
+            var mapping = new DiscriminatorMapping(attributes.CloneInner())
+            {
+                ContainingEntityType = entity,
+            };
+
+            mapping.SetDefaultValue("Type", discriminatorValueType);
+
+            mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = columnName });
+
+            return mapping;
         }
     }
 }

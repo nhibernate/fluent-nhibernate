@@ -182,9 +182,12 @@ namespace FluentNHibernate.Testing
         /// <summary>
         /// Checks a list of components for validity.
         /// </summary>
+        /// <typeparam name="T">Entity type</typeparam>
         /// <typeparam name="TListElement">Type of list element</typeparam>
+        /// <param name="spec">Persistence specification</param>
         /// <param name="expression">Property</param>
         /// <param name="propertyValue">Value to save</param>
+        /// <param name="elementComparer">Equality comparer</param>
         public static PersistenceSpecification<T> CheckComponentList<T, TListElement>(this PersistenceSpecification<T> spec,
                                                                                       Expression<Func<T, object>> expression,
                                                                                       IEnumerable<TListElement> propertyValue,

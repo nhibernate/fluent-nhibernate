@@ -5,7 +5,7 @@ using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt
 {
-    internal class BuiltSetConvention : BuiltConventionBase<ISetInspector, ISetInstance>, ISetConvention
+    internal class BuiltSetConvention : BuiltConventionBase<ISetInspector, ISetInstance>, ISetConvention, ISetConventionAcceptance
     {
         public BuiltSetConvention(Action<IAcceptanceCriteria<ISetInspector>> accept, Action<ISetInstance> convention)
             : base(accept, convention)

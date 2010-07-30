@@ -1,3 +1,4 @@
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
@@ -75,7 +76,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             writer = new XmlOneToOneWriter();
             var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
-            testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy", "proxy");
+            testHelper.Check(x => x.Lazy, Laziness.Proxy.ToString()).MapsToAttribute("lazy", "proxy");
 
             testHelper.VerifyAll(writer);
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class TypeReference
     {
         public static readonly TypeReference Empty = new TypeReference("nop");

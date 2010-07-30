@@ -3,6 +3,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class FilterMapping : IMappingBase
     {
         private readonly AttributeStore<FilterMapping> attributes;

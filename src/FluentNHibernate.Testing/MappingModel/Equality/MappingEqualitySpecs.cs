@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
@@ -51,7 +52,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             var mapping = new ArrayMapping
             {
                 Access = "access", Cascade = "cascade", ContainingEntityType = typeof(Target),
-                Lazy = true, Name = "name", OptimisticLock = "lock",
+                Lazy = Lazy.True, Name = "name", OptimisticLock = "lock",
                 BatchSize = 1, Cache = new CacheMapping(), Check = "check",
                 ChildType = typeof(Target), CollectionType = new TypeReference(typeof(Target)), CompositeElement = new CompositeElementMapping(),
                 Element = new ElementMapping(), Fetch = "fetch", Generic = true,
@@ -81,7 +82,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             var mapping = new BagMapping
             {
                 Access = "access", Cascade = "cascade", ContainingEntityType = typeof(Target),
-                Lazy = true, Name = "name", OptimisticLock = "lock",
+                Lazy = Lazy.True, Name = "name", OptimisticLock = "lock",
                 BatchSize = 1, Cache = new CacheMapping(), Check = "check",
                 ChildType = typeof(Target), CollectionType = new TypeReference(typeof(Target)), CompositeElement = new CompositeElementMapping(),
                 Element = new ElementMapping(), Fetch = "fetch", Generic = true,
@@ -203,8 +204,8 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 UnsavedValue = "unsaved"
             };
 
-            mapping.AddKeyManyToOne(new KeyManyToOneMapping());
-            mapping.AddKeyProperty(new KeyPropertyMapping());
+            mapping.AddKey(new KeyManyToOneMapping());
+            mapping.AddKey(new KeyPropertyMapping());
 
             return mapping;
         }
@@ -637,7 +638,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 Subselect = "subselect",
                 TableName = "table",
                 Type = typeof(Target),
-                Extends = "extends",
+                Extends = typeof(Target),
                 Key = new KeyMapping()
             };
 
@@ -785,7 +786,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             var mapping = new ListMapping
             {
                 Access = "access", Cascade = "cascade", ContainingEntityType = typeof(Target),
-                Lazy = true, Name = "name", OptimisticLock = "lock",
+                Lazy = Lazy.True, Name = "name", OptimisticLock = "lock",
                 BatchSize = 1, Cache = new CacheMapping(), Check = "check",
                 ChildType = typeof(Target), CollectionType = new TypeReference(typeof(Target)), CompositeElement = new CompositeElementMapping(),
                 Element = new ElementMapping(), Fetch = "fetch", Generic = true,
@@ -821,7 +822,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 Fetch = "fetch",
                 ForeignKey = "fk",
                 Insert = true,
-                Lazy = true,
+                Lazy = Laziness.Proxy.ToString(),
                 Member = new DummyPropertyInfo("prop", typeof(Target)).ToMember(),
                 PropertyRef = "prop",
                 Update = true,
@@ -881,7 +882,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             var mapping = new MapMapping
             {
                 Access = "access", Cascade = "cascade", ContainingEntityType = typeof(Target),
-                Lazy = true, Name = "name", OptimisticLock = "lock",
+                Lazy = Lazy.True, Name = "name", OptimisticLock = "lock",
                 BatchSize = 1, Cache = new CacheMapping(), Check = "check",
                 ChildType = typeof(Target), CollectionType = new TypeReference(typeof(Target)), CompositeElement = new CompositeElementMapping(),
                 Element = new ElementMapping(), Fetch = "fetch", Generic = true,
@@ -958,7 +959,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 ContainingEntityType = typeof(Target),
                 Fetch = "fetch",
                 ForeignKey = "fk",
-                Lazy = true,
+                Lazy = Laziness.Proxy.ToString(),
                 PropertyRef = "prop",
                 Name = "name",
                 Constrained = true
@@ -1064,7 +1065,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             var mapping = new SetMapping
             {
                 Access = "access", Cascade = "cascade", ContainingEntityType = typeof(Target),
-                Lazy = true, Name = "name", OptimisticLock = "lock",
+                Lazy = Lazy.True, Name = "name", OptimisticLock = "lock",
                 BatchSize = 1, Cache = new CacheMapping(), Check = "check",
                 ChildType = typeof(Target), CollectionType = new TypeReference(typeof(Target)), CompositeElement = new CompositeElementMapping(),
                 Element = new ElementMapping(), Fetch = "fetch", Generic = true,
@@ -1125,7 +1126,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 Proxy = "proxy",
                 SelectBeforeUpdate = true,
                 Type = typeof(Target),
-                Extends = "extends",
+                Extends = typeof(Target),
                 DiscriminatorValue = "value"
             };
 

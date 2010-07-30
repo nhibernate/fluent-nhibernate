@@ -44,7 +44,7 @@ namespace FluentNHibernate.Automapping.Alterations
             {
                 var mappingOverride = Activator.CreateInstance(typeMatch.OverrideType);
                 var autoMapType = typeof(AutoMapping<>).MakeGenericType(typeMatch.EntityType);
-                var mapping = (IMappingProvider)Activator.CreateInstance(autoMapType, new List<string>());
+                var mapping = (IMappingProvider)Activator.CreateInstance(autoMapType, new List<Member>());
 
                 // HACK: call the Override method with the generic AutoMapping<T>
                 var overrideMethod = typeMatch.OverrideType

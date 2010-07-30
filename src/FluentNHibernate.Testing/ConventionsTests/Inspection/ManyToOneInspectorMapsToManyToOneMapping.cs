@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
@@ -178,14 +179,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void LazyLoadMapped()
         {
-            mapping.Lazy = true;
-            inspector.LazyLoad.ShouldEqual(true);
+            mapping.Lazy = Laziness.Proxy.ToString();
+            inspector.LazyLoad.ShouldEqual(Laziness.Proxy);
         }
 
         [Test]
         public void LazyLoadIsSet()
         {
-            mapping.Lazy = true;
+            mapping.Lazy = Laziness.Proxy.ToString();
             inspector.IsSet(Prop(x => x.LazyLoad))
                 .ShouldBeTrue();
         }
@@ -282,6 +283,50 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         public void UpdateIsNotSet()
         {
             inspector.IsSet(Prop(x => x.Update))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void NullableMapped()
+        {
+            mapping.AddColumn(new ColumnMapping { NotNull = false });
+            inspector.Nullable.ShouldEqual(true);
+        }
+
+        [Test]
+        public void NullableIsSet()
+        {
+            mapping.AddColumn(new ColumnMapping { NotNull = false });
+            inspector.IsSet(Prop(x => x.Nullable))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void NullableIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Nullable))
+                .ShouldBeFalse();
+        }
+        
+        [Test]
+        public void FormulaMapped()
+        {
+            mapping.Formula = "formula";
+            inspector.Formula.ShouldEqual(mapping.Formula);
+        }
+        
+        [Test]
+        public void FormulaIsSet()
+        {
+            mapping.Formula = "formula";
+            inspector.IsSet(Prop(x => x.Formula))
+                .ShouldBeTrue();
+        }
+        
+        [Test]
+        public void FormulaIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Formula))
                 .ShouldBeFalse();
         }
 

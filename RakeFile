@@ -1,8 +1,9 @@
 require 'fileutils'
 require 'albacore'
+require 'tools/albacore/zipdirectory_patch.rb'
 
 def get_version
-  ENV['BUILD_NUMBER'] || '1.0.0.0'
+  ENV['BUILD_NUMBER'] || '1.1.0.0'
 end
 
 task :default => 'build:all'
@@ -13,6 +14,19 @@ namespace :setup do
     unless `gem source -l`.include? 'http://gemcutter.org'
       puts 'Setting Gemcutter as a gem source'
       `gem source -a http://gemcutter.org`
+    end
+  end
+  
+  task :install_mspec, :version do |t, args|
+    version = args[:version] || '4.5'
+    puts 'Installing MSpec ReSharper runner'
+    plugins = "#{ENV['APPDATA']}/JetBrains/ReSharper/v#{version}/vs9.0/Plugins"
+    to_copy = ['Machine.Specifications', "Machine.Specifications.ReSharperRunner.#{version}"]
+
+    FileUtils.mkdir plugins unless File.exists? plugins
+    to_copy.each do |f|
+      FileUtils.cp "tools/mspec/#{f}.dll", plugins
+      FileUtils.cp "tools/mspec/#{f}.pdb", plugins
     end
   end
 end
@@ -33,7 +47,7 @@ namespace :source do
     asm.version = get_version
     asm.company_name = 'http://fluentnhibernate.org'
     asm.product_name = 'FluentNHibernate'
-    asm.copyright = 'Copyright 2008-2009 James Gregory and contributors (Paul Batum, Andrew Stewart, Hudson Akridge, Stuart Childs et al). All rights reserved.'
+    asm.copyright = 'Copyright 2008-2009 James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved.'
     asm.namespaces = ['System.Security']
     asm.custom_attributes :AllowPartiallyTrustedCallers => nil
     
@@ -96,7 +110,15 @@ namespace :package do
     zip.directories_to_zip = ['./']
     zip.output_file = "fluentnhibernate-source-#{get_version}.zip"
     zip.output_path = 'dist'
-    zip.exclusions = [/.git/, /build/, /dist/, /results/, /_ReSharper/, /bin/, /obj/, /.user/, /.suo/, /.resharper/, /.cache/, /output/]
+    zip.exclusions = get_exclusions
+  end
+
+  def get_exclusions
+    exclusions = []
+    %w{build dist results output}.each {|x| exclusions << "#{x}" << "#{x}/**/**" }
+    %w{bin obj}.each {|x| exclusions << "**/#{x}" << "**/#{x}/**/**" }
+    [/_ReSharper/, /.user/, /.suo/, /.resharper/, /.cache/].each {|x| exclusions << x }
+    exclusions
   end
   
   desc 'Create zip of binaries'

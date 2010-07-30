@@ -5,6 +5,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
+    [Serializable]
     public class ComponentMapping : ComponentMappingBase, IComponentMapping
     {
         public ComponentType ComponentType { get; set; }
@@ -32,6 +33,13 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             attributes.Merge(new AttributeStore<ComponentMapping>(store));
         }
+
+        public bool HasColumnPrefix
+        {
+            get { return !string.IsNullOrEmpty(ColumnPrefix); }
+        }
+
+        public string ColumnPrefix { get; set; }
 
         public override string Name
         {

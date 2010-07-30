@@ -55,6 +55,14 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        
+        /// <summary>
+        /// Specifies an entity-name.
+        /// </summary>
+        /// <remarks>See http://nhforge.org/blogs/nhibernate/archive/2008/10/21/entity-name-in-action-a-strongly-typed-entity.aspx</remarks>
+        public KeyManyToOnePart EntityName(string entityName)
+        {
+            mapping.EntityName = entityName;
+            return this;
+        }
     }
 }

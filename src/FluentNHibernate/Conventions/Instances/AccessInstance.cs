@@ -55,7 +55,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void ReadOnlyProperty()
         {
-            setter("no-setter");
+            setter("nosetter");
         }
 
         public void ReadOnlyPropertyThroughCamelCaseField()

@@ -6,5 +6,6 @@ namespace FluentNHibernate.MappingModel
     {
         IEnumerable<T> Defaults { get; }
         IEnumerable<T> UserDefined { get; }
+        bool HasUserDefined();
     }
 }

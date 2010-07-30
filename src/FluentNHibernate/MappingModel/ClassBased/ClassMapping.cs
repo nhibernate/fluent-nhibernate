@@ -5,6 +5,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
+    [Serializable]
     public class ClassMapping : ClassMappingBase
     {
         private readonly AttributeStore<ClassMapping> attributes;
@@ -59,6 +60,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return attributes.Get(x => x.Discriminator); }
             set { attributes.Set(x => x.Discriminator, value); }
+        }
+
+        public bool IsUnionSubclass
+        {
+            get { return attributes.Get(x => x.IsUnionSubclass); }
+            set {attributes.Set(x => x.IsUnionSubclass, value);}
         }
 
         public TuplizerMapping Tuplizer

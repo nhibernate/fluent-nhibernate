@@ -1,4 +1,5 @@
 using System.Linq;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
@@ -129,11 +130,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
-        public void LazyShouldSetLazyModelPropertyToTrue()
+        public void LazyShouldSetLazyModelPropertyToProxy()
         {
             ManyToOne()
                 .Mapping(m => m.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(true));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.Proxy.ToString()));
         }
 
         [Test]
@@ -141,7 +142,15 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ManyToOne()
                 .Mapping(m => m.Not.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(false));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.False.ToString()));
+        }
+
+        [Test]
+        public void NoProxyLazyShouldSetLazyModelPropertyToNoProxy()
+        {
+            ManyToOne()
+                .Mapping(m => m.LazyLoad(Laziness.NoProxy))
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Laziness.NoProxy.ToString()));
         }
 
         [Test]
@@ -214,6 +223,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             ManyToOne()
                 .Mapping(m => m.Index("ix"))
                 .ModelShouldMatch(x => x.Columns.First().Index.ShouldEqual("ix"));
+        }
+        
+        [Test]
+        public void FormulaIsShouldSetModelFormulaPropertyToValue()
+        {
+            Property()
+                .Mapping(m => m.Formula("form"))
+                .ModelShouldMatch(x => x.Formula.ShouldEqual("form"));
         }
     }
 }

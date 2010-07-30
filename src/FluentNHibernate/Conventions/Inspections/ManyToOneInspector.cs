@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
@@ -15,6 +16,7 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             this.mapping = mapping;
             propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
+            propertyMappings.Map(x => x.Nullable, "NotNull");
         }
 
         public Access Access
@@ -37,6 +39,17 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Update; }
         }
 
+        public bool Nullable
+        {
+            get
+            {
+                if (!mapping.Columns.Any())
+                    return false;
+
+                return !mapping.Columns.First().NotNull;
+            }
+        }
+
         public Type EntityType
         {
             get { return mapping.ContainingEntityType; }
@@ -49,7 +62,10 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public bool IsSet(Member property)
         {
-            return mapping.IsSpecified(propertyMappings.Get(property));
+            var mappedProperty = propertyMappings.Get(property);
+
+            return mapping.Columns.Any(x => x.IsSpecified(mappedProperty)) ||
+                mapping.IsSpecified(mappedProperty);
         }
 
         public Member Property
@@ -76,6 +92,11 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get { return Cascade.FromString(mapping.Cascade); }
         }
+        
+        public string Formula
+        {
+            get { return mapping.Formula; }
+        }
 
         public TypeReference Class
         {
@@ -97,9 +118,9 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Insert; }
         }
 
-        public bool LazyLoad
+        public Laziness LazyLoad
         {
-            get { return mapping.Lazy; }
+            get { return new Laziness(mapping.Lazy); }
         }
     }
 }

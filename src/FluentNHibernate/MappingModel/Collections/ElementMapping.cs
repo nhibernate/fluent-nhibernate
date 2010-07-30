@@ -7,6 +7,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
+    [Serializable]
     public class ElementMapping : MappingBase
     {
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();

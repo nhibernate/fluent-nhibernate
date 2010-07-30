@@ -6,11 +6,11 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
+    [Serializable]
     public class CompositeIdMapping : MappingBase, IIdentityMapping
     {
         private readonly AttributeStore<CompositeIdMapping> attributes;
-        private readonly IList<KeyPropertyMapping> keyProperties = new List<KeyPropertyMapping>();
-        private readonly IList<KeyManyToOneMapping> keyManyToOnes = new List<KeyManyToOneMapping>();
+        private readonly IList<ICompositeIdKeyMapping> keys = new List<ICompositeIdKeyMapping>();
 
         public CompositeIdMapping()
             : this(new AttributeStore())
@@ -19,7 +19,7 @@ namespace FluentNHibernate.MappingModel.Identity
         public CompositeIdMapping(AttributeStore underlyingStore)
         {
             attributes = new AttributeStore<CompositeIdMapping>(underlyingStore);
-            attributes.SetDefault(x => x.Mapped, false);
+            attributes.SetDefault(x => x.Mapped, !string.IsNullOrEmpty(Name));
             attributes.SetDefault(x => x.UnsavedValue, "undefined");
         }
 
@@ -27,17 +27,23 @@ namespace FluentNHibernate.MappingModel.Identity
         {
             visitor.ProcessCompositeId(this);
 
-            foreach (var key in keyProperties)
-                visitor.Visit(key);
-
-            foreach (var key in keyManyToOnes)
-                visitor.Visit(key);
+            foreach (var key in keys)
+            {
+                if (key is KeyPropertyMapping)
+                    visitor.Visit((KeyPropertyMapping)key);
+                if (key is KeyManyToOneMapping)
+                    visitor.Visit((KeyManyToOneMapping)key);
+            }
         }
 
         public string Name
         {
             get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            set
+            {
+            	attributes.Set(x => x.Name, value);
+				Mapped = !string.IsNullOrEmpty(value);
+            }
         }
 
         public string Access
@@ -64,26 +70,16 @@ namespace FluentNHibernate.MappingModel.Identity
             set { attributes.Set(x => x.UnsavedValue, value); }
         }
 
-        public IEnumerable<KeyPropertyMapping> KeyProperties
+        public IEnumerable<ICompositeIdKeyMapping> Keys
         {
-            get { return keyProperties; }
-        }
-
-        public IEnumerable<KeyManyToOneMapping> KeyManyToOnes
-        {
-            get { return keyManyToOnes; }
+            get { return keys; }
         }
 
         public Type ContainingEntityType { get; set; }
 
-        public void AddKeyProperty(KeyPropertyMapping mapping)
+        public void AddKey(ICompositeIdKeyMapping mapping)
         {
-            keyProperties.Add(mapping);
-        }
-
-        public void AddKeyManyToOne(KeyManyToOneMapping mapping)
-        {
-            keyManyToOnes.Add(mapping);
+            keys.Add(mapping);
         }
 
         public override bool IsSpecified(string property)
@@ -106,8 +102,7 @@ namespace FluentNHibernate.MappingModel.Identity
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             return Equals(other.attributes, attributes) &&
-                other.keyProperties.ContentEquals(keyProperties) &&
-                other.keyManyToOnes.ContentEquals(keyManyToOnes) &&
+                other.keys.ContentEquals(keys) &&
                 Equals(other.ContainingEntityType, ContainingEntityType);
         }
 
@@ -124,8 +119,7 @@ namespace FluentNHibernate.MappingModel.Identity
             unchecked
             {
                 int result = (attributes != null ? attributes.GetHashCode() : 0);
-                result = (result * 397) ^ (keyProperties != null ? keyProperties.GetHashCode() : 0);
-                result = (result * 397) ^ (keyManyToOnes != null ? keyManyToOnes.GetHashCode() : 0);
+                result = (result * 397) ^ (keys != null ? keys.GetHashCode() : 0);
                 result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
                 return result;
             }

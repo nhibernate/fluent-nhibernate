@@ -82,7 +82,7 @@ namespace FluentNHibernate.MappingModel.Output
                 element.WithAtt("inverse", mapping.Inverse);
 
             if (mapping.HasValue(x => x.Lazy))
-                element.WithAtt("lazy", mapping.Lazy);
+                element.WithAtt("lazy", mapping.Lazy.ToString().ToLowerInvariant());
 
             if (mapping.HasValue(x => x.Name))
                 element.WithAtt("name", mapping.Name);

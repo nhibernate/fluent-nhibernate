@@ -32,9 +32,6 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.HasValue(x => x.Name))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.HasValue(x => x.Extends))
-                element.WithAtt("extends", mapping.Extends);
-
             if (mapping.HasValue(x => x.Proxy))
                 element.WithAtt("proxy", mapping.Proxy);
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Xml;
 
@@ -8,40 +9,57 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
         protected override IDictionary<string, SortValue> GetSorting()
         {
             return new Dictionary<string, SortValue>
-            {                
-                { "cache", new SortValue { Position = First, Level = 1 } },
-                { "tuplizer", new SortValue { Position = First, Level = 1 } },
-                { "key", new SortValue { Position = First, Level = 1 } },
-                { "id", new SortValue { Position = First, Level = 2 } },
-                { "composite-id", new SortValue { Position = First, Level = 2 } },
-                { "discriminator", new SortValue { Position = First, Level = 3 } },
-                { "version", new SortValue { Position = First, Level = 4 } },
-                { "component", new SortValue { Position = Anywhere, Level = 1 } },
-                { "dynamic-component", new SortValue { Position = Anywhere, Level = 1 } },
-                { "natural-id", new SortValue { Position = Anywhere, Level = 1 } },
-                { "one-to-one", new SortValue { Position = Anywhere, Level = 2 } },
-                { "parent", new SortValue { Position = First, Level = 3 } },
-                { "property", new SortValue { Position = Anywhere, Level = 3 } },
-                { "many-to-one", new SortValue { Position = Anywhere, Level = 4 } },
-                { "array", new SortValue { Position = Anywhere, Level = 4 } },
-                { "bag", new SortValue { Position = Anywhere, Level = 4 } },
-                { "set", new SortValue { Position = Anywhere, Level = 4 } },
-                { "map", new SortValue { Position = Anywhere, Level = 4 } },
-                { "list", new SortValue { Position = Anywhere, Level = 4 } },
-                { "joined-subclass", new SortValue { Position = Anywhere, Level = 5 } },
-                { "subclass", new SortValue { Position = Last, Level = 3 } },
-                { "join", new SortValue { Position = Last, Level = 3 } },
-                { "any", new SortValue { Position = Anywhere, Level = 2 } },
-                { "filter", new SortValue { Position = Last, Level = 5 } },
-                { "sql-insert", new SortValue { Position = Last, Level = 5 } },
-                { "sql-update", new SortValue { Position = Last, Level = 5 } },
-                { "sql-delete", new SortValue { Position = Last, Level = 5 } },
+            {          
+                // top section
+                { "meta", new SortValue { DocumentSection = Top, RankWithinSection = 1 } },
+                { "subselect", new SortValue { DocumentSection = Top, RankWithinSection = 2 } },
+                { "cache", new SortValue { DocumentSection = Top, RankWithinSection = 3 } },
+                { "synchronize", new SortValue { DocumentSection = Top, RankWithinSection = 4 } },
+                { "comment", new SortValue { DocumentSection = Top, RankWithinSection = 5 } },
+                { "tuplizer", new SortValue { DocumentSection = Top, RankWithinSection = 6 } },
+                { "key", new SortValue { DocumentSection = Top, RankWithinSection = 7 } },
+                { "parent", new SortValue { DocumentSection = Top, RankWithinSection = 7 } },
+                { "id", new SortValue { DocumentSection = Top, RankWithinSection = 7 } },
+                { "composite-id", new SortValue { DocumentSection = Top, RankWithinSection = 7 } },
+                { "discriminator", new SortValue { DocumentSection = Top, RankWithinSection = 8 } },
+                { "natural-id", new SortValue { DocumentSection = Top, RankWithinSection = 9 } },
+                { "version", new SortValue { DocumentSection = Top, RankWithinSection = 10 } },
+                { "timestamp", new SortValue { DocumentSection = Top, RankWithinSection = 10 } },
+
+                // middle section
+                { "property", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+                { "many-to-one", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+                { "one-to-one", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+                { "component", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+                { "dynamic-component", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+                { "properties", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+                { "any", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+                { "map", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+                { "set", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+                { "list", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+                { "bag", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+                { "idbag", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+                { "array", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+                { "primitive-array", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
+
+                // bottom section
+                { "join", new SortValue { DocumentSection = Bottom, RankWithinSection = 1 } },
+                { "subclass", new SortValue { DocumentSection = Bottom, RankWithinSection = 2 } },
+                { "joined-subclass", new SortValue { DocumentSection = Bottom, RankWithinSection = 3 } },
+                { "union-subclass", new SortValue { DocumentSection = Bottom, RankWithinSection = 4 } },
+                { "loader", new SortValue { DocumentSection = Bottom, RankWithinSection = 5 } },
+                { "sql-insert", new SortValue { DocumentSection = Bottom, RankWithinSection = 6 } },
+                { "sql-update", new SortValue { DocumentSection = Bottom, RankWithinSection = 7 } },
+                { "sql-delete", new SortValue { DocumentSection = Bottom, RankWithinSection = 8 } },
+                { "filter", new SortValue { DocumentSection = Bottom, RankWithinSection = 9 } },
+                { "query", new SortValue { DocumentSection = Bottom, RankWithinSection = 10 } },
+                { "sql-query", new SortValue { DocumentSection = Bottom, RankWithinSection = 11 } },
             };
         }
 
         protected override void SortChildren(XmlNode node)
         {
-            if (node.Name == "subclass" || node.Name == "joined-subclass" || node.Name == "component")
+            if (node.Name == "subclass" || node.Name == "joined-subclass" || node.Name == "union-subclass" || node.Name == "component")
                 Sort(node);
             else if (node.Name == "id")
                 new XmlIdNodeSorter().Sort(node);

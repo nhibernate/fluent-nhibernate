@@ -52,6 +52,11 @@ namespace FluentNHibernate.Mapping
             return parent;
         }
 
+        public int Count
+        {
+            get { return columns.Count; }
+        }
+
         public IEnumerator<ColumnMapping> GetEnumerator()
         {
             return columns.GetEnumerator();

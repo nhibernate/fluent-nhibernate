@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel.ClassBased;
 
@@ -66,5 +68,14 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.OptimisticLock = nextBool;
             nextBool = true;
         }
+
+        public new IEnumerable<IOneToOneInstance> OneToOnes
+        {
+            get { return mapping.OneToOnes.Select(x => new OneToOneInstance(x)).Cast<IOneToOneInstance>(); }
+        }
+        public new IEnumerable<IPropertyInstance> Properties
+        {
+            get { return mapping.Properties.Select(x => new PropertyInstance(x)).Cast<IPropertyInstance>(); }
+        }    
     }
 }

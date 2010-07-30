@@ -25,7 +25,7 @@ namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs
     public class when_class_map_is_told_to_map_a_version_using_reveal : ProviderSpec
     {
         Because of = () =>
-            mapping = map_as_class<EntityWithVersion>(m => m.Version(Reveal.Property<EntityWithVersion>("VersionNumber")));
+            mapping = map_as_class<EntityWithVersion>(m => m.Version(Reveal.Member<EntityWithVersion>("VersionNumber")));
 
         It should_set_the_version_property_on_the_mapping = () =>
             mapping.Version.ShouldNotBeNull();

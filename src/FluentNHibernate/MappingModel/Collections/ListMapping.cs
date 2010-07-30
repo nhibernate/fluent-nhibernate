@@ -5,6 +5,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
+    [Serializable]
     public class ListMapping : CollectionMappingBase, IIndexedCollectionMapping
     {
         private readonly AttributeStore<ListMapping> attributes;

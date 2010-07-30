@@ -1,12 +1,12 @@
 ﻿<div id="types">
-	<h2 class="fixed">Types</h2>
+  <h2 class="fixed">Types in ${Namespace.PrettyName}</h2>
 	<div class="scroll">
 		<ul>
 				<li each="var type in Namespace.Types">
           <if condition="type == Type">
-            <a href="../${type.Namespace.Name}/${type.Name}.htm" class="current">${h(type.PrettyName)}</a>
-            <else />
-            <a href="../${type.Namespace.Name}/${type.Name}.htm">${h(type.PrettyName)}</a>
+            ${Format(type, class => "current")}
+          <else />
+            ${Format(type)}
           </if>
         </li>
 		</ul>

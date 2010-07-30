@@ -105,7 +105,7 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
-        public new void Persister<T>() where T : IEntityPersister
+        public new void Persister<T>()
         {
             if (!mapping.IsSpecified("Persister"))
                 mapping.Persister = new TypeReference(typeof(T));
@@ -150,7 +150,14 @@ namespace FluentNHibernate.Conventions.Instances
         public new void LazyLoad()
         {
             if (!mapping.IsSpecified("Lazy"))
-                mapping.Lazy = nextBool;
+                mapping.Lazy = nextBool ? Lazy.True : Lazy.False;
+            nextBool = true;
+        }
+        
+        public override void ExtraLazyLoad()
+        {
+            if (!mapping.IsSpecified("Lazy"))
+                mapping.Lazy = nextBool ? Lazy.Extra : Lazy.True;
             nextBool = true;
         }
 

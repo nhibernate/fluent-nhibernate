@@ -28,6 +28,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteEntityNameAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<TuplizerMapping>();
+            testHelper.Check(x => x.EntityName, "test").MapsToAttribute("entity-name", "test");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
         public void ShouldWriteClassAttribute()
         {
             Type tuplizerType = typeof(NHibernate.Tuple.Entity.PocoEntityTuplizer);

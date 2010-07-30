@@ -26,6 +26,8 @@ namespace FluentNHibernate.Visitors
                 throw new AmbiguousComponentReferenceException(mapping.Type, mapping.ContainingEntityType, mapping.Member);
 
             mapping.AssociateExternalMapping(providers.Single().GetComponentMapping());
+
+            mapping.MergedModel.AcceptVisitor(this);
         }
     }
 }

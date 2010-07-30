@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class DefaultableList<T> : IDefaultableList<T>
     {
         private readonly IList<T> userDefined = new List<T>();
@@ -61,7 +62,7 @@ namespace FluentNHibernate.MappingModel
 
         public bool Contains(T item)
         {
-            return userDefined.Contains(item);
+            return userDefined.Contains(item) || ContainsDefault(item);
         }
 
         public bool ContainsDefault(T item)
@@ -116,7 +117,7 @@ namespace FluentNHibernate.MappingModel
 
         public int CountAll
         {
-            get { return Count + CountDefaults; }
+            get { return userDefined.Count + CountDefaults; }
         }
 
         public bool IsReadOnly
@@ -176,6 +177,11 @@ namespace FluentNHibernate.MappingModel
         public IEnumerable<T> UserDefined
         {
             get { return userDefined; }
+        }
+
+        public bool HasUserDefined()
+        {
+            return userDefined.Count > 0;
         }
     }
 }

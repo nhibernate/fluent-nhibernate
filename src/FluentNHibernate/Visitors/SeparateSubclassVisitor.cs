@@ -21,7 +21,7 @@ namespace FluentNHibernate.Visitors
             var subclasses = FindClosestSubclasses(mapping.Type);
 
             foreach (var provider in subclasses)
-                mapping.AddSubclass(provider.GetSubclassMapping(CreateSubclass(mapping)));
+                mapping.AddSubclass(provider.GetSubclassMapping(GetSubclassType(mapping)));
 
             base.ProcessClass(mapping);
         }
@@ -31,29 +31,38 @@ namespace FluentNHibernate.Visitors
             var subclasses = FindClosestSubclasses(mapping.Type);
 
             foreach (var provider in subclasses)
-                mapping.AddSubclass(provider.GetSubclassMapping(new SubclassMapping(mapping.SubclassType)));
+                mapping.AddSubclass(provider.GetSubclassMapping(mapping.SubclassType));
 
             base.ProcessSubclass(mapping);
         }
 
         private IEnumerable<IIndeterminateSubclassMappingProvider> FindClosestSubclasses(Type type)
         {
-            var subclasses = SortByDistanceFrom(type, subclassProviders);
+            var extendsSubclasses = subclassProviders
+                .Where(x => x.Extends == type);
+            var subclasses = SortByDistanceFrom(type, subclassProviders.Except(extendsSubclasses));
 
-            if (subclasses.Keys.Count == 0)
+            if (subclasses.Keys.Count == 0 && !extendsSubclasses.Any())
                 return new IIndeterminateSubclassMappingProvider[0];
+            if (subclasses.Keys.Count == 0)
+                return extendsSubclasses;
 
             var lowestDistance = subclasses.Keys.Min();
 
-            return subclasses[lowestDistance];
+            return subclasses[lowestDistance].Concat(extendsSubclasses);
         }
 
-        private SubclassMapping CreateSubclass(ClassMapping mapping)
+        private SubclassType GetSubclassType(ClassMapping mapping)
         {
-            if (mapping.Discriminator == null)
-                return new SubclassMapping(SubclassType.JoinedSubclass);
+            if (mapping.IsUnionSubclass)
+            {
+                return SubclassType.UnionSubclass;
+            }
 
-            return new SubclassMapping(SubclassType.Subclass);
+            if (mapping.Discriminator == null)
+                return SubclassType.JoinedSubclass;
+
+            return SubclassType.Subclass;
         }
 
         private bool IsMapped(Type type, IEnumerable<IIndeterminateSubclassMappingProvider> providers)

@@ -16,23 +16,25 @@ namespace FluentNHibernate.Visitors
             }
             else
             {
+                var otherSide = (ICollectionMapping)mapping.OtherSide;
+
                 // bi-directional
-                if (mapping.IsSpecified("TableName") && mapping.OtherSide.IsSpecified("TableName"))
+                if (mapping.IsSpecified("TableName") && otherSide.IsSpecified("TableName"))
                 {
                     // TODO: We could check if they're the same here and warn the user if they're not
                     return;
                 }
 
-                if (mapping.IsSpecified("TableName") && !mapping.OtherSide.IsSpecified("TableName"))
-                    mapping.OtherSide.SetDefaultValue(x => x.TableName, mapping.TableName);
-                else if (!mapping.IsSpecified("TableName") && mapping.OtherSide.IsSpecified("TableName"))
-                    mapping.SetDefaultValue(x => x.TableName, mapping.OtherSide.TableName);
+                if (mapping.IsSpecified("TableName") && !otherSide.IsSpecified("TableName"))
+                    otherSide.SetDefaultValue(x => x.TableName, mapping.TableName);
+                else if (!mapping.IsSpecified("TableName") && otherSide.IsSpecified("TableName"))
+                    mapping.SetDefaultValue(x => x.TableName, otherSide.TableName);
                 else
                 {
-                    var tableName = mapping.Member.Name + "To" + mapping.OtherSide.Member.Name;
+                    var tableName = mapping.Member.Name + "To" + otherSide.Member.Name;
 
                     mapping.SetDefaultValue(x => x.TableName, tableName);
-                    mapping.OtherSide.SetDefaultValue(x => x.TableName, tableName);
+                    otherSide.SetDefaultValue(x => x.TableName, tableName);
                 }
             }
         }

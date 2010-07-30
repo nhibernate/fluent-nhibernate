@@ -4,6 +4,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
 {
+    [Serializable]
     public class SubclassMapping : ClassMappingBase
     {
         public SubclassType SubclassType { get; private set; }
@@ -17,6 +18,18 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             SubclassType = subclassType;
             attributes = new AttributeStore<SubclassMapping>(underlyingStore);
+        }
+
+        /// <summary>
+        /// Set which type this subclass extends.
+        /// Note: This doesn't actually get output into the XML, it's
+        /// instead used as a marker for the <see cref="SeparateSubclassVisitor"/>
+        /// to pair things up.
+        /// </summary>
+        public Type Extends
+        {
+            get { return attributes.Get(x => x.Extends); }
+            set { attributes.Set(x => x.Extends, value); }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -50,12 +63,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         {
             get { return attributes.Get(x => x.DiscriminatorValue); }
             set { attributes.Set(x => x.DiscriminatorValue, value); }
-        }
-
-        public string Extends
-        {
-            get { return attributes.Get(x => x.Extends); }
-            set { attributes.Set(x => x.Extends, value); }
         }
 
         public bool Lazy
@@ -184,6 +191,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
                     return (base.GetHashCode() * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return "Subclass(" + Type.Name + ")";
         }
     }
 }

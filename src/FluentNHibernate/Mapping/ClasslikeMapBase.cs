@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.Utils;
 
@@ -20,14 +19,29 @@ namespace FluentNHibernate.Mapping
         protected readonly IList<IFilterMappingProvider> filters = new List<IFilterMappingProvider>();
         protected readonly IList<IStoredProcedureMappingProvider> storedProcedures = new List<IStoredProcedureMappingProvider>();
 
-        public PropertyPart Map(Expression<Func<T, object>> expression)
+        /// <summary>
+        /// Create a property mapping.
+        /// </summary>
+        /// <param name="memberExpression">Property to map</param>
+        /// <example>
+        /// Map(x => x.Name);
+        /// </example>
+        public PropertyPart Map(Expression<Func<T, object>> memberExpression)
         {
-            return Map(expression, null);
+            return Map(memberExpression, null);
         }
 
-        public PropertyPart Map(Expression<Func<T, object>> expression, string columnName)
+        /// <summary>
+        /// Create a property mapping.
+        /// </summary>
+        /// <param name="memberExpression">Property to map</param>
+        /// <param name="columnName">Property column name</param>
+        /// <example>
+        /// Map(x => x.Name, "person_name");
+        /// </example>
+        public PropertyPart Map(Expression<Func<T, object>> memberExpression, string columnName)
         {
-            return Map(expression.ToMember(), columnName);
+            return Map(memberExpression.ToMember(), columnName);
         }
 
         protected virtual PropertyPart Map(Member property, string columnName)
@@ -42,24 +56,62 @@ namespace FluentNHibernate.Mapping
             return propertyMap;
         }
 
-        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> expression)
+        /// <summary>
+        /// Create a reference to another entity. In database terms, this is a many-to-one
+        /// relationship.
+        /// </summary>
+        /// <typeparam name="TOther">Other entity</typeparam>
+        /// <param name="memberExpression">Property on the current entity</param>
+        /// <example>
+        /// References(x => x.Company);
+        /// </example>
+        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> memberExpression)
         {
-            return References(expression, null);
+            return References(memberExpression, null);
         }
 
-        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> expression, string columnName)
+        /// <summary>
+        /// Create a reference to another entity. In database terms, this is a many-to-one
+        /// relationship.
+        /// </summary>
+        /// <typeparam name="TOther">Other entity</typeparam>
+        /// <param name="memberExpression">Property on the current entity</param>
+        /// <param name="columnName">Column name</param>
+        /// <example>
+        /// References(x => x.Company, "company_id");
+        /// </example>
+        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> memberExpression, string columnName)
         {
-            return References<TOther>(expression.ToMember(), columnName);
+            return References<TOther>(memberExpression.ToMember(), columnName);
         }
 
-        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, object>> expression)
+        /// <summary>
+        /// Create a reference to another entity. In database terms, this is a many-to-one
+        /// relationship.
+        /// </summary>
+        /// <typeparam name="TOther">Other entity</typeparam>
+        /// <param name="memberExpression">Property on the current entity</param>
+        /// <example>
+        /// References(x => x.Company, "company_id");
+        /// </example>
+        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, object>> memberExpression)
         {
-            return References<TOther>(expression, null);
+            return References<TOther>(memberExpression, null);
         }
 
-        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, object>> expression, string columnName)
+        /// <summary>
+        /// Create a reference to another entity. In database terms, this is a many-to-one
+        /// relationship.
+        /// </summary>
+        /// <typeparam name="TOther">Other entity</typeparam>
+        /// <param name="memberExpression">Property on the current entity</param>
+        /// <param name="columnName">Column name</param>
+        /// <example>
+        /// References(x => x.Company, "company_id");
+        /// </example>
+        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, object>> memberExpression, string columnName)
         {
-            return References<TOther>(expression.ToMember(), columnName);
+            return References<TOther>(memberExpression.ToMember(), columnName);
         }
 
         protected virtual ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
@@ -74,9 +126,14 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public AnyPart<TOther> ReferencesAny<TOther>(Expression<Func<T, TOther>> expression)
+        /// <summary>
+        /// Create a reference to any other entity. This is an "any" polymorphic relationship.
+        /// </summary>
+        /// <typeparam name="TOther">Other entity to reference</typeparam>
+        /// <param name="memberExpression">Property</param>
+        public AnyPart<TOther> ReferencesAny<TOther>(Expression<Func<T, TOther>> memberExpression)
         {
-            return ReferencesAny<TOther>(expression.ToMember());
+            return ReferencesAny<TOther>(memberExpression.ToMember());
         }
 
         protected virtual AnyPart<TOther> ReferencesAny<TOther>(Member property)
@@ -88,14 +145,36 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public OneToOnePart<TOther> HasOne<TOther>(Expression<Func<T, Object>> expression)
+        /// <summary>
+        /// Create a reference to another entity based exclusively on the primary-key values.
+        /// This is sometimes called a one-to-one relationship, in database terms. Generally
+        /// you should use <see cref="References{TOther}(System.Linq.Expressions.Expression{System.Func{T,object}})"/>
+        /// whenever possible.
+        /// </summary>
+        /// <typeparam name="TOther">Other entity</typeparam>
+        /// <param name="memberExpression">Property</param>
+        /// <example>
+        /// HasOne(x => x.ExtendedInfo);
+        /// </example>
+        public OneToOnePart<TOther> HasOne<TOther>(Expression<Func<T, Object>> memberExpression)
         {
-            return HasOne<TOther>(expression.ToMember());
+            return HasOne<TOther>(memberExpression.ToMember());
         }
 
-        public OneToOnePart<TOther> HasOne<TOther>(Expression<Func<T, TOther>> expression)
+        /// <summary>
+        /// Create a reference to another entity based exclusively on the primary-key values.
+        /// This is sometimes called a one-to-one relationship, in database terms. Generally
+        /// you should use <see cref="References{TOther}(System.Linq.Expressions.Expression{System.Func{T,object}})"/>
+        /// whenever possible.
+        /// </summary>
+        /// <typeparam name="TOther">Other entity</typeparam>
+        /// <param name="memberExpression">Property</param>
+        /// <example>
+        /// HasOne(x => x.ExtendedInfo);
+        /// </example>
+        public OneToOnePart<TOther> HasOne<TOther>(Expression<Func<T, TOther>> memberExpression)
         {
-            return HasOne<TOther>(expression.ToMember());
+            return HasOne<TOther>(memberExpression.ToMember());
         }
 
         protected virtual OneToOnePart<TOther> HasOne<TOther>(Member property)
@@ -107,16 +186,28 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        public DynamicComponentPart<IDictionary> DynamicComponent(Expression<Func<T, IDictionary>> expression, Action<DynamicComponentPart<IDictionary>> action)
+        /// <summary>
+        /// Create a dynamic component mapping. This is a dictionary that represents
+        /// a limited number of columns in the database.
+        /// </summary>
+        /// <param name="memberExpression">Property containing component</param>
+        /// <param name="dynamicComponentAction">Component setup action</param>
+        /// <example>
+        /// DynamicComponent(x => x.Data, comp =>
+        /// {
+        ///   comp.Map(x => (int)x["age"]);
+        /// });
+        /// </example>
+        public DynamicComponentPart<IDictionary> DynamicComponent(Expression<Func<T, IDictionary>> memberExpression, Action<DynamicComponentPart<IDictionary>> dynamicComponentAction)
         {
-            return DynamicComponent(expression.ToMember(), action);
+            return DynamicComponent(memberExpression.ToMember(), dynamicComponentAction);
         }
 
-        protected DynamicComponentPart<IDictionary> DynamicComponent(Member property, Action<DynamicComponentPart<IDictionary>> action)
+        protected DynamicComponentPart<IDictionary> DynamicComponent(Member property, Action<DynamicComponentPart<IDictionary>> dynamicComponentAction)
         {
             var part = new DynamicComponentPart<IDictionary>(typeof(T), property);
             
-            action(part);
+            dynamicComponentAction(part);
 
             components.Add(part);
 
@@ -131,7 +222,7 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="TComponent">Component type</typeparam>
         /// <param name="member">Property exposing the component</param>
         /// <returns>Component reference builder</returns>
-        public ReferenceComponentPart<TComponent> Component<TComponent>(Expression<Func<T, TComponent>> member)
+        public virtual ReferenceComponentPart<TComponent> Component<TComponent>(Expression<Func<T, TComponent>> member)
         {
             var part = new ReferenceComponentPart<TComponent>(member.ToMember(), typeof(T));
 
@@ -146,6 +237,13 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="TComponent">Type of component</typeparam>
         /// <param name="expression">Component property</param>
         /// <param name="action">Component mapping</param>
+        /// <example>
+        /// Component(x => x.Address, comp =>
+        /// {
+        ///   comp.Map(x => x.Street);
+        ///   comp.Map(x => x.City);
+        /// });
+        /// </example>
         public ComponentPart<TComponent> Component<TComponent>(Expression<Func<T, TComponent>> expression, Action<ComponentPart<TComponent>> action)
         {
             return Component(expression.ToMember(), action);
@@ -157,6 +255,13 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="TComponent">Type of component</typeparam>
         /// <param name="expression">Component property</param>
         /// <param name="action">Component mapping</param>
+        /// <example>
+        /// Component(x => x.Address, comp =>
+        /// {
+        ///   comp.Map(x => x.Street);
+        ///   comp.Map(x => x.City);
+        /// });
+        /// </example>
         public ComponentPart<TComponent> Component<TComponent>(Expression<Func<T, object>> expression, Action<ComponentPart<TComponent>> action)
         {
             return Component(expression.ToMember(), action);
@@ -173,13 +278,6 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
-        /// <summary>
-        /// CreateProperties a one-to-many relationship
-        /// </summary>
-        /// <typeparam name="TChild">Child object type</typeparam>
-        /// <typeparam name="TReturn">Property return type</typeparam>
-        /// <param name="expression">Expression to get property from</param>
-        /// <returns>one-to-many part</returns>
         private OneToManyPart<TChild> MapHasMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
         {
             return HasMany<TChild>(expression.ToMember());
@@ -195,46 +293,36 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// CreateProperties a one-to-many relationship
+        /// Maps a collection of entities as a one-to-many
         /// </summary>
-        /// <typeparam name="TChild">Child object type</typeparam>
-        /// <param name="expression">Expression to get property from</param>
-        /// <returns>one-to-many part</returns>
-        public OneToManyPart<TChild> HasMany<TChild>(Expression<Func<T, IEnumerable<TChild>>> expression)
+        /// <typeparam name="TChild">Child entity type</typeparam>
+        /// <param name="memberExpression">Collection property</param>
+        /// <example>
+        /// HasMany(x => x.Locations);
+        /// </example>
+        public OneToManyPart<TChild> HasMany<TChild>(Expression<Func<T, IEnumerable<TChild>>> memberExpression)
         {
-            return MapHasMany<TChild, IEnumerable<TChild>>(expression);
+            return MapHasMany<TChild, IEnumerable<TChild>>(memberExpression);
+        }
+
+        public OneToManyPart<TChild> HasMany<TKey, TChild>(Expression<Func<T, IDictionary<TKey, TChild>>> memberExpression)
+        {
+            return MapHasMany<TChild, IDictionary<TKey, TChild>>(memberExpression);
         }
 
         /// <summary>
-        /// CreateProperties a one-to-many relationship with a IDictionary
+        /// Maps a collection of entities as a one-to-many
         /// </summary>
-        /// <typeparam name="TKey">Dictionary key type</typeparam>
-        /// <typeparam name="TChild">Child object type / Dictionary value type</typeparam>
-        /// <param name="expression">Expression to get property from</param>
-        /// <returns>one-to-many part</returns>
-        public OneToManyPart<TChild> HasMany<TKey, TChild>(Expression<Func<T, IDictionary<TKey, TChild>>> expression)
+        /// <typeparam name="TChild">Child entity type</typeparam>
+        /// <param name="memberExpression">Collection property</param>
+        /// <example>
+        /// HasMany(x => x.Locations);
+        /// </example>
+        public OneToManyPart<TChild> HasMany<TChild>(Expression<Func<T, object>> memberExpression)
         {
-            return MapHasMany<TChild, IDictionary<TKey, TChild>>(expression);
+            return MapHasMany<TChild, object>(memberExpression);
         }
 
-        /// <summary>
-        /// CreateProperties a one-to-many relationship
-        /// </summary>
-        /// <typeparam name="TChild">Child object type</typeparam>
-        /// <param name="expression">Expression to get property from</param>
-        /// <returns>one-to-many part</returns>
-        public OneToManyPart<TChild> HasMany<TChild>(Expression<Func<T, object>> expression)
-        {
-            return MapHasMany<TChild, object>(expression);
-        }
-
-        /// <summary>
-        /// CreateProperties a many-to-many relationship
-        /// </summary>
-        /// <typeparam name="TChild">Child object type</typeparam>
-        /// <typeparam name="TReturn">Property return type</typeparam>
-        /// <param name="expression">Expression to get property from</param>
-        /// <returns>many-to-many part</returns>
         private ManyToManyPart<TChild> MapHasManyToMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
         {
             return HasManyToMany<TChild>(expression.ToMember());
@@ -250,54 +338,62 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// CreateProperties a many-to-many relationship
+        /// Maps a collection of entities as a many-to-many
         /// </summary>
-        /// <typeparam name="TChild">Child object type</typeparam>
-        /// <param name="expression">Expression to get property from</param>
-        /// <returns>many-to-many part</returns>
-        public ManyToManyPart<TChild> HasManyToMany<TChild>(Expression<Func<T, IEnumerable<TChild>>> expression)
+        /// <typeparam name="TChild">Child entity type</typeparam>
+        /// <param name="memberExpression">Collection property</param>
+        /// <example>
+        /// HasManyToMany(x => x.Locations);
+        /// </example>
+        public ManyToManyPart<TChild> HasManyToMany<TChild>(Expression<Func<T, IEnumerable<TChild>>> memberExpression)
         {
-            return MapHasManyToMany<TChild, IEnumerable<TChild>>(expression);
+            return MapHasManyToMany<TChild, IEnumerable<TChild>>(memberExpression);
         }
-
-	/// <summary>
-        /// CreateProperties a many-to-many relationship with a IDictionary
-        /// </summary>
-        /// <typeparam name="TKey">Dictionary key type</typeparam>
-        /// <typeparam name="TChild">Child object type / Dictionary value type</typeparam>
-        /// <param name="expression">Expression to get property from</param>
-        /// <returns>one-to-many part</returns>
-/*	public ManyToManyPart<TChild> HasManyToMany<TKey, TChild>(Expression<Func<T, IDictionary<TKey, TChild>>> expression)
-	{
-		return MapHasManyToMany<TChild, IDictionary<TKey, TChild>>(expression);
-	}*/
 
         /// <summary>
-        /// CreateProperties a many-to-many relationship
+        /// Maps a collection of entities as a many-to-many
         /// </summary>
-        /// <typeparam name="TChild">Child object type</typeparam>
-        /// <param name="expression">Expression to get property from</param>
-        /// <returns>many-to-many part</returns>
-        public ManyToManyPart<TChild> HasManyToMany<TChild>(Expression<Func<T, object>> expression)
+        /// <typeparam name="TChild">Child entity type</typeparam>
+        /// <param name="memberExpression">Collection property</param>
+        /// <example>
+        /// HasManyToMany(x => x.Locations);
+        /// </example>
+        public ManyToManyPart<TChild> HasManyToMany<TChild>(Expression<Func<T, object>> memberExpression)
         {
-            return MapHasManyToMany<TChild, object>(expression);
+            return MapHasManyToMany<TChild, object>(memberExpression);
         }
 
+        /// <summary>
+        /// Specify an insert stored procedure
+        /// </summary>
+        /// <param name="innerText">Stored procedure call</param>
         public StoredProcedurePart SqlInsert(string innerText)
         {
             return StoredProcedure("sql-insert", innerText);
         }
 
+        /// <summary>
+        /// Specify an update stored procedure
+        /// </summary>
+        /// <param name="innerText">Stored procedure call</param>
         public StoredProcedurePart SqlUpdate(string innerText)
         {
             return StoredProcedure("sql-update", innerText);
-        }     
+        }
 
+        /// <summary>
+        /// Specify an delete stored procedure
+        /// </summary>
+        /// <param name="innerText">Stored procedure call</param>
         public StoredProcedurePart SqlDelete(string innerText)
         {
             return StoredProcedure("sql-delete", innerText);
         }
 
+        /// <summary>
+        /// Specify an delete all stored procedure
+        /// </summary>
+        /// <param name="innerText">Stored procedure call</param>
         public StoredProcedurePart SqlDeleteAll(string innerText)
         {
             return StoredProcedure("sql-delete-all", innerText);

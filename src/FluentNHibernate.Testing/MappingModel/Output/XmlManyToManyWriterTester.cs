@@ -93,5 +93,23 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             testHelper.VerifyAll(writer);
         }
+
+        [Test]
+        public void ShouldWriteOrderByAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
+            testHelper.Check(x => x.OrderBy, "col1").MapsToAttribute("order-by");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWritePropertyRef()
+        {
+            var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
+            testHelper.Check(x => x.ChildPropertyRef, "childprop").MapsToAttribute("property-ref");
+
+            testHelper.VerifyAll(writer);
+        }
     }
 }

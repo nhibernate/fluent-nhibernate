@@ -1,6 +1,8 @@
 using System;
 using System.Reflection;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
@@ -24,7 +26,7 @@ namespace FluentNHibernate.Conventions.Inspections
         TypeReference CollectionType { get; }
         ICompositeElementInspector CompositeElement { get; }
         IElementInspector Element { get; }
-        bool LazyLoad { get; }
+        Lazy LazyLoad { get; }
         string Name { get; }
         TypeReference Persister { get; }
         string Schema { get; }

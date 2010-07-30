@@ -30,6 +30,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public virtual IList<string> ListOfSimpleChildren { get; set; }
         public virtual CustomCollection<ChildObject> CustomCollection { get; set; }
         public virtual IDictionary<ChildObject, ChildObject> GenericTernaryMapOfChildren { get; set; }
+        public virtual IDictionary<ChildObject, bool> MapOfChildrenToBools{ get; set; }
         public virtual IDictionary NonGenericTernaryMapOfChildren { get; set; }
 
         private IList<ChildObject> otherChildren = new List<ChildObject>();
@@ -291,10 +292,23 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void TernaryAssociationCanBeUsedWithElement()
+        {
+            new MappingTester<ManyToManyTarget>()
+                .ForMapping(map =>
+                    map.HasManyToMany(x => x.MapOfChildrenToBools)
+                        .AsMap(null)
+                        .AsTernaryAssociation()
+                        .Element("IsManager", ep => ep.Type<bool>()))
+                .Element("class/map/index-many-to-many").HasAttribute("class", typeof(ChildObject).AssemblyQualifiedName)
+                .Element("class/map/element").HasAttribute("type", typeof(bool).AssemblyQualifiedName);
+        }
+
+        [Test]
         public void CanSpecifyOrderByClause()
         {
             new MappingTester<ManyToManyTarget>()
-                .ForMapping(m => m.HasMany(x => x.BagOfChildren).OrderBy("foo"))
+                .ForMapping(m => m.HasManyToMany(x => x.BagOfChildren).OrderBy("foo"))
                 .Element("class/bag").HasAttribute("order-by", "foo");
         }
       
@@ -302,8 +316,30 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void OrderByClauseIgnoredForUnorderableCollections()
         {
             new MappingTester<ManyToManyTarget>()
-                .ForMapping(m => m.HasMany(x => x.MapOfChildren).AsMap("indexCol"))
+                .ForMapping(m => m.HasManyToMany(x => x.MapOfChildren).AsMap("indexCol"))
                 .Element("class/map").DoesntHaveAttribute("order-by");
+        }
+
+        [Test]
+        public void CanSpecifyMultipleParentKeyColumns()
+        {
+              new MappingTester<ManyToManyTarget>()
+                .ForMapping(m => m.HasManyToMany(x => x.BagOfChildren)
+                    .ParentKeyColumns.Add("ID1")
+                    .ParentKeyColumns.Add("ID2"))
+                .Element("class/bag/key/column[@name='ID1']").Exists()
+                .Element("class/bag/key/column[@name='ID2']").Exists();
+        }
+
+        [Test]
+        public void CanSpecifyMultipleChildKeyColumns()
+        {
+            new MappingTester<ManyToManyTarget>()
+              .ForMapping(m => m.HasManyToMany(x => x.BagOfChildren)
+                  .ChildKeyColumns.Add("ID1")
+                  .ChildKeyColumns.Add("ID2"))
+              .Element("class/bag/many-to-many/column[@name='ID1']").Exists()
+              .Element("class/bag/many-to-many/column[@name='ID2']").Exists();
         }
     }
 }

@@ -2,7 +2,7 @@
 	<h2 class="fixed">Namespaces</h2>
 	<div class="scroll">
 		<ul>
-			<li each="var ns in Namespaces"><a href="${ns.Name}/index.htm">${ns.Name}</a></li>
+			<li each="var ns in Namespaces">${Format(ns)}</li>
 		</ul>
 	</div>
 </div>

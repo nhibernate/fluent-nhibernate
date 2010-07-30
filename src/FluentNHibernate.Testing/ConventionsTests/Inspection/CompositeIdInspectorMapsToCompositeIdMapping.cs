@@ -5,6 +5,7 @@ using System.Reflection;
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils.Reflection;
@@ -72,14 +73,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void KeyManyToOnesCollectionHasSameCountAsMapping()
         {
-            mapping.AddKeyManyToOne(new KeyManyToOneMapping());
+            mapping.AddKey(new KeyManyToOneMapping());
             inspector.KeyManyToOnes.Count().ShouldEqual(1);
         }
 
         [Test]
         public void KeyManyToOnesCollectionOfInspectors()
         {
-            mapping.AddKeyManyToOne(new KeyManyToOneMapping());
+            mapping.AddKey(new KeyManyToOneMapping());
             inspector.KeyManyToOnes.First().ShouldBeOfType<IKeyManyToOneInspector>();
         }
 
@@ -92,15 +93,15 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void KeyPropertiesCollectionHasSameCountAsMapping()
         {
-            mapping.AddKeyProperty(new KeyPropertyMapping());
+            mapping.AddKey(new KeyPropertyMapping());
             inspector.KeyProperties.Count().ShouldEqual(1);
         }
 
         [Test]
         public void KeyPropertiesCollectionOfInspectors()
         {
-            mapping.AddKeyProperty(new KeyPropertyMapping());
-            inspector.KeyProperties.First().ShouldBeOfType<IKeyPropertyInspector>();
+            mapping.AddKey(new KeyPropertyMapping());
+            inspector.KeyProperties.First().ShouldBeOfType<KeyPropertyInspector>();
         }
 
         [Test]

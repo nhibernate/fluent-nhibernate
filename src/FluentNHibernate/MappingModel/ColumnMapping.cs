@@ -4,6 +4,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class ColumnMapping : MappingBase
     {
         private readonly AttributeStore<ColumnMapping> attributes;
@@ -117,15 +118,11 @@ namespace FluentNHibernate.MappingModel
 
         public bool Equals(ColumnMapping other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
             return Equals(other.attributes, attributes) && Equals(other.Member, Member);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != typeof(ColumnMapping)) return false;
             return Equals((ColumnMapping)obj);
         }

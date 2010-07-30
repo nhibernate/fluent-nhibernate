@@ -1,3 +1,4 @@
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
@@ -10,7 +11,7 @@ namespace FluentNHibernate.Conventions.Inspections
         bool Constrained { get; }
         Fetch Fetch { get; }
         string ForeignKey { get; }
-        bool LazyLoad { get; }
+        Laziness LazyLoad { get; }
         string Name { get; }
         string PropertyRef { get; }
     }

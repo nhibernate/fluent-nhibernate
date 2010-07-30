@@ -7,9 +7,10 @@ namespace FluentNHibernate.Testing
     {
         private readonly IEnumerable<Type> types;
 
-        public StubTypeSource(Type type)
-            : this(new[] { type })
-        {}
+        public StubTypeSource(params Type[] types)
+        {
+            this.types = types;
+        }
 
         public StubTypeSource(IEnumerable<Type> types)
         {

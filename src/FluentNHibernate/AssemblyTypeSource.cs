@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 
 namespace FluentNHibernate
 {
@@ -18,7 +19,7 @@ namespace FluentNHibernate
 
         public IEnumerable<Type> GetTypes()
         {
-            return source.GetExportedTypes();
+            return source.GetExportedTypes().OrderBy(x => x.FullName);
         }
     }
 }

@@ -21,9 +21,14 @@ namespace FluentNHibernate.Testing.Automapping
                 .ConfigureProperties(cfg);
         }
 
+        protected void Model<T>()
+        {
+            apm = AutoMap.Source(new StubTypeSource(typeof(T)));
+        }
+
         protected void Model<T>(Action<AutoPersistenceModel> modelSetup)
         {
-            apm = AutoMap.AssemblyOf<T>();
+            apm = AutoMap.Source(new StubTypeSource(typeof(T)));
             modelSetup(apm);
         }
 

@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -57,11 +58,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Automapping\AutoMapBackwardsCompatibilitySpecs.cs" />
+    <Compile Include="Automapping\AutomappingSpecs.Components.cs" />
     <Compile Include="Automapping\AutomappingSpecs.Properties.Enum.cs" />
     <Compile Include="Automapping\AutomappingSpecs.ElementCollections.cs" />
+    <Compile Include="Automapping\AutoPersistenceModelSpecs.cs" />
+    <Compile Include="Automapping\AutoPersistenceModelSpecs.Conventions.cs" />
+    <Compile Include="Automapping\Fixtures\AutomappingSpecExtensions.cs" />
+    <Compile Include="Automapping\Fixtures\Component.cs" />
+    <Compile Include="Automapping\Fixtures\Entity.cs" />
     <Compile Include="Automapping\Fixtures\EntityWithStaticProperties.cs" />
+    <Compile Include="Automapping\Fixtures\EntityUsingPrivateFields.cs" />
     <Compile Include="Automapping\Fixtures\FakeMembers.cs" />
     <Compile Include="Automapping\Fixtures\StubTypeSource.cs" />
+    <Compile Include="Automapping\PrivateAutomapperSpecs.cs" />
+    <Compile Include="Automapping\PrivateFieldsSpecs.cs" />
+    <Compile Include="Conventions\ConventionBuilderSpecs.cs" />
+    <Compile Include="Conventions\Fixtures\Child.cs" />
+    <Compile Include="Conventions\Fixtures\SetCollectionEntity.cs" />
+    <Compile Include="Conventions\Fixtures\SetCollectionEntityMap.cs" />
+    <Compile Include="Conventions\Fixtures\SetCompositeElementCollectionEntity.cs" />
+    <Compile Include="Conventions\Fixtures\SetCompositeElementCollectionEntityMap.cs" />
+    <Compile Include="Conventions\Fixtures\SetElementCollectionEntity.cs" />
+    <Compile Include="Conventions\Fixtures\SetElementCollectionEntityMap.cs" />
+    <Compile Include="Conventions\Fixtures\TwoPropertyEntity.cs" />
+    <Compile Include="Conventions\Fixtures\TwoPropertyEntityMap.cs" />
+    <Compile Include="Conventions\Fixtures\Value.cs" />
+    <Compile Include="Conventions\ForeignKeyConventionSpecs.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FluentInterface\ClasslikeBehaviors.cs" />
     <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Cache.cs" />
@@ -72,6 +95,7 @@
     <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Property.cs" />
     <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Subclass.cs" />
     <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Version.cs" />
+    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Id.cs" />
     <Compile Include="FluentInterface\ComponentMapSpecs.cs" />
     <Compile Include="FluentInterface\Fixtures\EntityWithComponent.cs" />
     <Compile Include="FluentInterface\Fixtures\EntityWithFields.cs" />
@@ -91,6 +115,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Fixtures\Target.cs" />
     <Compile Include="Utilities\Fixtures\TargetParent.cs" />
+    <Compile Include="Utilities\MemberReflectionSpecs.cs" />
     <Compile Include="Utilities\RevealSpecs.cs" />
     <Compile Include="Visitors\BiDirectionalManyToManyPairingVisitorSpecs.cs" />
   </ItemGroup>
@@ -99,6 +124,29 @@
       <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>
       <Name>FluentNHibernate</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Automapping\AutomappingSpecs.Relationships.cs" />
+    <Compile Include="Automapping\Fixtures\DictionaryEntity.cs" />
+    <Compile Include="Automapping\Fixtures\ParentChildSelfReferenceEntity.cs" />
+    <Compile Include="Automapping\Fixtures\ReadOnlyEnumerableEntity.cs" />
+    <Compile Include="Automapping\Fixtures\SelfReferenceEntity.cs" />
+    <Compile Include="Automapping\Fixtures\SelfReferencingCollectionEntity.cs" />
+    <Compile Include="Automapping\OverrideSpecs.cs" />
+    <Compile Include="Conventions\BiDirectionalKeysSpecs.cs" />
+    <Compile Include="Conventions\Fixtures\Parent.cs" />
+    <Compile Include="PersistenceModel\Fixtures\UnionChildEntity.cs" />
+    <Compile Include="PersistenceModel\Fixtures\UnionChildEntityMap.cs" />
+    <Compile Include="PersistenceModel\Fixtures\UnionEntity.cs" />
+    <Compile Include="PersistenceModel\Fixtures\UnionEntityMap.cs" />
+    <Compile Include="PersistenceModel\SubclassSpecs.cs" />
+    <Compile Include="SerializableSpecs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Automapping\AutomappingSpecs.NestedClasses.cs" />
+    <Compile Include="FluentInterface\BiDirectionalKeyIssueSpecs.cs" />
+    <Compile Include="FluentInterface\ExternalComponentOutputSpecs.cs" />
+    <Compile Include="FluentInterface\Fixtures\BiDirectionalKeyIssue.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -17,7 +17,6 @@ namespace FluentNHibernate.Mapping
         /// Used to set the Not-Found attribute to ignore.  This tells NHibernate to 
         /// return a null object rather then throw an exception when the join fails
         /// </summary>
-        /// <returns></returns>
         public TParent Ignore()
         {
             setter("ignore");
@@ -28,7 +27,6 @@ namespace FluentNHibernate.Mapping
         /// Used to set the Not-Found attribute to exception (Nhibernate default).  This 
         /// tells NHibernate to throw an exception when the join fails
         /// </summary>
-        /// <returns></returns>
         public TParent Exception()
         {
             setter("exception");

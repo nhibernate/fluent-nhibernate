@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
-using FluentNHibernate.Mapping;
-using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
+    [Serializable]
     public class CompositeElementMapping : MappingBase
     {
-        private readonly MappedMembers mappedMembers;
-        protected readonly AttributeStore<CompositeElementMapping> attributes;
+        readonly MappedMembers mappedMembers;
+        readonly List<NestedCompositeElementMapping> compositeElements = new List<NestedCompositeElementMapping>();
+        readonly AttributeStore<CompositeElementMapping> attributes;
 
         public CompositeElementMapping()
             : this(new AttributeStore())
@@ -29,6 +28,9 @@ namespace FluentNHibernate.MappingModel.Collections
 
             if (Parent != null)
                 visitor.Visit(Parent);
+
+            foreach (var compositeElement in CompositeElements)
+                visitor.Visit(compositeElement);
 
             mappedMembers.AcceptVisitor(visitor);
         }
@@ -60,11 +62,21 @@ namespace FluentNHibernate.MappingModel.Collections
             get { return mappedMembers.References; }
         }
 
+        public IEnumerable<NestedCompositeElementMapping> CompositeElements
+        {
+            get { return compositeElements; }
+        }
+
         public Type ContainingEntityType { get; set; }
 
         public void AddReference(ManyToOneMapping manyToOne)
         {
             mappedMembers.AddReference(manyToOne);
+        }
+
+        public void AddCompositeElement(NestedCompositeElementMapping compositeElement)
+        {
+            compositeElements.Add(compositeElement);
         }
 
         public override bool IsSpecified(string property)

@@ -117,7 +117,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         {
             Convention(x => x.LazyLoad());
 
-            VerifyModel(x => x.Lazy.ShouldEqual(true));
+            VerifyModel(x => x.Lazy.ShouldEqual(Lazy.True));
         }
 
         [Test]
@@ -182,6 +182,22 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             Convention(x => x.Relationship.ForeignKey("xxx"));
 
             VerifyModel(x => ((ManyToManyMapping)x.Relationship).ForeignKey.ShouldEqual("xxx"));
+        }
+
+        [Test]
+        public void ShouldSetRelationshipWhereProperty()
+        {
+            Convention(x => x.Relationship.Where("where clause"));
+
+            VerifyModel(x => ((ManyToManyMapping)x.Relationship).Where.ShouldEqual("where clause"));
+        }
+
+        [Test]
+        public void ShouldSetOrderByProperty()
+        {
+            Convention(x => x.Relationship.OrderBy("order clause"));
+
+            VerifyModel(x => ((ManyToManyMapping)x.Relationship).OrderBy.ShouldEqual("order clause"));
         }
         
         #region Helpers

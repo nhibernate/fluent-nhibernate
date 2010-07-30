@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -10,6 +11,8 @@ namespace FluentNHibernate.Conventions.Instances
         new void Insert();
         new void Unique();
         new void OptimisticLock();
+        new IEnumerable<IOneToOneInstance> OneToOnes { get; }
+        new IEnumerable<IPropertyInstance> Properties { get; }
     }
 
     public interface IComponentInstance : IComponentBaseInstance, IComponentInspector

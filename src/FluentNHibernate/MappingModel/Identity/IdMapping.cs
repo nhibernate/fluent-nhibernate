@@ -5,6 +5,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Identity
 {
+    [Serializable]
     public class IdMapping : ColumnBasedMappingBase, IIdentityMapping
     {
         public IdMapping()

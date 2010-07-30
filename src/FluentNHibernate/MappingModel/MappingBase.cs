@@ -3,6 +3,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public abstract class MappingBase : IMappingBase
     {
         public abstract void AcceptVisitor(IMappingModelVisitor visitor);

@@ -6,6 +6,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
+    [Serializable]
     public class IndexMapping : MappingBase, IIndexMapping, IHasColumnMappings
     {
         private readonly AttributeStore<IndexMapping> attributes;

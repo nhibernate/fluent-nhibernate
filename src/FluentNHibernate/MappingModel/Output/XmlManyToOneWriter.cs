@@ -46,13 +46,16 @@ namespace FluentNHibernate.MappingModel.Output
                 element.WithAtt("insert", mapping.Insert);
 
             if (mapping.HasValue(x => x.Lazy))
-                element.WithAtt("lazy", mapping.Lazy ? "proxy" : "false");
+                element.WithAtt("lazy", mapping.Lazy);
 
             if (mapping.HasValue(x => x.Name))
                 element.WithAtt("name", mapping.Name);
 
             if (mapping.HasValue(x => x.NotFound))
                 element.WithAtt("not-found", mapping.NotFound);
+
+            if (mapping.HasValue(x => x.Formula))
+                element.WithAtt("formula", mapping.Formula);
 
             if (mapping.HasValue(x => x.PropertyRef))
                 element.WithAtt("property-ref", mapping.PropertyRef);

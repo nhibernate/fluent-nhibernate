@@ -80,5 +80,24 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.SelectBeforeUpdate = nextBool;
             nextBool = true;
         }
+
+        /// <summary>
+        /// (optional) Specifies the entity from which this subclass descends/extends.
+        /// </summary>
+        /// <typeparam name="T">Type of the entity to extend</typeparam>
+        public new void Extends<T>()
+        {
+            Extends(typeof(T));
+        }
+
+        /// <summary>
+        /// (optional) Specifies the entity from which this subclass descends/extends.
+        /// </summary>
+        /// <param name="type">Type of the entity to extend</param>
+        public new void Extends(Type type)
+        {
+            if (!mapping.IsSpecified("Extends"))
+                mapping.Extends = type;
+        }
     }
 }

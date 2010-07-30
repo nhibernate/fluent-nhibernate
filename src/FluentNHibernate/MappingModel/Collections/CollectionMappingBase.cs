@@ -6,6 +6,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
+    [Serializable]
     public abstract class CollectionMappingBase : MappingBase, ICollectionMapping
     {
         private readonly AttributeStore<ICollectionMapping> attributes;
@@ -51,7 +52,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.ChildType, value); }
         }
 
-        public ICollectionMapping OtherSide { get; set; }
+        public IRelationship OtherSide { get; set; }
 
         public KeyMapping Key
         {
@@ -89,7 +90,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Generic, value); }
         }
 
-        public bool Lazy
+        public Lazy Lazy
         {
             get { return attributes.Get(x => x.Lazy); }
             set { attributes.Set(x => x.Lazy, value); }

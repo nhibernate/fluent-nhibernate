@@ -6,7 +6,8 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
-    public class ManyToOneMapping : MappingBase, IHasColumnMappings
+    [Serializable]
+    public class ManyToOneMapping : MappingBase, IHasColumnMappings, IRelationship
     {
         private readonly AttributeStore<ManyToOneMapping> attributes;
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
@@ -72,6 +73,12 @@ namespace FluentNHibernate.MappingModel
             get { return attributes.Get(x => x.Insert); }
             set { attributes.Set(x => x.Insert, value); }
         }
+        
+        public string Formula
+        {
+            get { return attributes.Get(x => x.Formula); }
+            set { attributes.Set(x => x.Formula, value); }
+        }
 
         public string ForeignKey
         {
@@ -91,7 +98,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.NotFound, value); }
         }
 
-        public bool Lazy
+        public string Lazy
         {
             get { return attributes.Get(x => x.Lazy); }
             set { attributes.Set(x => x.Lazy, value); }
@@ -167,5 +174,7 @@ namespace FluentNHibernate.MappingModel
                 return result;
             }
         }
+
+        public IRelationship OtherSide { get; set; }
     }
 }

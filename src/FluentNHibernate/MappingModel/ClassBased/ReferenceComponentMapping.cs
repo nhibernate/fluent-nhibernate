@@ -11,6 +11,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
     /// A reference to a component which is declared externally. Contains properties
     /// that can't be declared externally (property name, for example)
     /// </summary>
+    [Serializable]
     public class ReferenceComponentMapping : IComponentMapping
     {
         public ComponentType ComponentType { get; set; }
@@ -18,7 +19,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         private readonly Type componentType;
         private ExternalComponentMapping mergedComponent;
         private Type containingEntityType;
-        private readonly string columnPrefix;
 
         public ReferenceComponentMapping(ComponentType componentType, Member property, Type componentEntityType, Type containingEntityType, string columnPrefix)
         {
@@ -26,17 +26,20 @@ namespace FluentNHibernate.MappingModel.ClassBased
             this.property = property;
             this.componentType = componentEntityType;
             this.containingEntityType = containingEntityType;
-            this.columnPrefix = columnPrefix;
+            ColumnPrefix = columnPrefix;
         }
 
         public void AcceptVisitor(IMappingModelVisitor visitor)
         {
             visitor.ProcessComponent(this);
+        }
 
-            if (mergedComponent == null)
-                throw new UnresolvedComponentReferenceVisitedException(componentType, containingEntityType, property);
+        public bool IsSpecified(string name)
+        {
+            if (!IsAssociated)
+                return false;
 
-            mergedComponent.AcceptVisitor(visitor);
+            return mergedComponent.IsSpecified(name);
         }
 
         public virtual void AssociateExternalMapping(ExternalComponentMapping mapping)
@@ -136,10 +139,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return !string.IsNullOrEmpty(ColumnPrefix); }
         }
 
-        public string ColumnPrefix
-        {
-            get { return columnPrefix; }
-        }
+        public string ColumnPrefix { get; set; }
 
         public bool Insert
         {

@@ -1,17 +1,58 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.Specs.Utilities.Fixtures;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Utils.Reflection;
 using Machine.Specifications;
 
 namespace FluentNHibernate.Specs.Utilities
 {
+    public class when_reveal_is_told_to_get_a_private_field
+    {
+        Because of = () =>
+            expression = Reveal.Member<Target>("privateField");
+
+        It should_return_an_expression_for_the_private_field = () =>
+            expression.ShouldNotBeNull();
+
+        It should_create_an_expression_that_s_convertable_to_a_member = () =>
+            expression.ToMember().Name.ShouldEqual("privateField");
+
+        static Expression<Func<Target, object>> expression;
+    }
+
+    public class when_reveal_is_told_to_get_a_protected_field
+    {
+        Because of = () =>
+            expression = Reveal.Member<Target>("protectedField");
+
+        It should_return_an_expression_for_the_protected_field = () =>
+            expression.ShouldNotBeNull();
+
+        It should_create_an_expression_that_s_convertable_to_a_member = () =>
+            expression.ToMember().Name.ShouldEqual("protectedField");
+
+        static Expression<Func<Target, object>> expression;
+    }
+
+    public class when_reveal_is_told_to_get_a_public_field
+    {
+        Because of = () =>
+            expression = Reveal.Member<Target>("publicField");
+
+        It should_return_an_expression_for_the_public_field = () =>
+            expression.ShouldNotBeNull();
+
+        It should_create_an_expression_that_s_convertable_to_a_member = () =>
+            expression.ToMember().Name.ShouldEqual("publicField");
+
+        static Expression<Func<Target, object>> expression;
+    }
+
     public class when_reveal_is_told_to_get_a_private_property
     {
         Because of = () =>
-            expression = Reveal.Property<Target>("PrivateProperty");
+            expression = Reveal.Member<Target>("PrivateProperty");
 
         It should_return_an_expression_for_the_private_property = () =>
             expression.ShouldNotBeNull();
@@ -25,7 +66,7 @@ namespace FluentNHibernate.Specs.Utilities
     public class when_reveal_is_told_to_get_a_protected_property
     {
         Because of = () =>
-            expression = Reveal.Property<Target>("ProtectedProperty");
+            expression = Reveal.Member<Target>("ProtectedProperty");
 
         It should_return_an_expression_for_the_protected_property = () =>
             expression.ShouldNotBeNull();
@@ -39,7 +80,7 @@ namespace FluentNHibernate.Specs.Utilities
     public class when_reveal_is_told_to_get_a_public_property
     {
         Because of = () =>
-            expression = Reveal.Property<Target>("PublicProperty");
+            expression = Reveal.Member<Target>("PublicProperty");
 
         It should_return_an_expression_for_the_public_property = () =>
             expression.ShouldNotBeNull();
@@ -53,7 +94,7 @@ namespace FluentNHibernate.Specs.Utilities
     public class when_reveal_is_told_to_get_an_int_property
     {
         Because of = () =>
-            expression = Reveal.Property<Target>("IntProperty");
+            expression = Reveal.Member<Target>("IntProperty");
 
         It should_return_an_expression_for_the_public_property = () =>
             expression.ShouldNotBeNull();
@@ -67,7 +108,7 @@ namespace FluentNHibernate.Specs.Utilities
     public class when_reveal_is_told_to_get_property_from_a_super_class
     {
         Because of = () =>
-            expression = Reveal.Property<Target>("SuperProperty");
+            expression = Reveal.Member<Target>("SuperProperty");
 
         It should_return_an_expression_for_the_public_property = () =>
             expression.ShouldNotBeNull();
@@ -81,7 +122,7 @@ namespace FluentNHibernate.Specs.Utilities
     public class when_reveal_is_told_to_get_a_property_that_doesnt_exist
     {
         Because of = () =>
-            ex = Catch.Exception(() => Reveal.Property<Target>("UnknownProperty"));
+            ex = Catch.Exception(() => Reveal.Member<Target>("UnknownProperty"));
 
         It should_throw_an_unknown_property_exception = () =>
         {

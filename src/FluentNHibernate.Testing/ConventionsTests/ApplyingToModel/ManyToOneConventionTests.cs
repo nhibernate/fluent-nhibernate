@@ -83,7 +83,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         {
             Convention(x => x.LazyLoad());
 
-            VerifyModel(x => x.Lazy.ShouldEqual(true));
+            VerifyModel(x => x.Lazy.ShouldEqual(Laziness.Proxy.ToString()));
         }
 
         [Test]
@@ -152,6 +152,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             Convention(x => x.ForeignKey("xxx"));
 
             VerifyModel(x => x.ForeignKey.ShouldEqual("xxx"));
+        }
+        
+        [Test]
+        public void ShouldSetFormulaProperty()
+        {
+            Convention(x => x.Formula("xxx"));
+            
+            VerifyModel(x => x.Formula.ShouldEqual("xxx"));
         }
 
         #region Helpers

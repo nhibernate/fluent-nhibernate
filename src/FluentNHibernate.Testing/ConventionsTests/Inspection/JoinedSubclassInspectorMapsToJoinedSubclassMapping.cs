@@ -157,14 +157,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void ExtendsMapped()
         {
-            mapping.Extends = "other-class";
-            inspector.Extends.ShouldEqual("other-class");
+            mapping.Extends = typeof(ExampleClass);
+            inspector.Extends.ShouldEqual(typeof(ExampleClass));
         }
 
         [Test]
         public void ExtendsIsSet()
         {
-            mapping.Extends = "other-class";
+            mapping.Extends = typeof(ExampleClass);
             inspector.IsSet(Prop(x => x.Extends))
                 .ShouldBeTrue();
         }
