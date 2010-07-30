@@ -5,6 +5,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class AnyMapping : MappingBase
     {
         private readonly AttributeStore<AnyMapping> attributes;

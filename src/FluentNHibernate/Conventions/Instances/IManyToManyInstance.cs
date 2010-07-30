@@ -8,5 +8,15 @@ namespace FluentNHibernate.Conventions.Instances
         void Column(string columnName);
         new IDefaultableEnumerable<IColumnInstance> Columns { get; }
         new void ForeignKey(string constraint);
+
+        /// <summary>
+        /// Applies to the joining table for this many-to-many. 
+        /// </summary>
+        new void Where(string where);
+
+        /// <summary>
+        /// Applies to the joining table for this many-to-many. 
+        /// </summary>
+        new void OrderBy(string orderBy);
     }
 }

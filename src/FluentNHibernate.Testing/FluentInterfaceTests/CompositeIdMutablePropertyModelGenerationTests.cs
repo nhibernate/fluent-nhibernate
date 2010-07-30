@@ -20,7 +20,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             CompositeId<IdentityTarget>()
                 .Mapping(m => m.KeyProperty(x => x.IntId))
-                .ModelShouldMatch(x => x.KeyProperties.Count().ShouldEqual(1));
+                .ModelShouldMatch(x => x.Keys.Count().ShouldEqual(1));
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             CompositeId<IdentityTarget>()
                 .Mapping(m => m.KeyReference(x => x.IntId))
-                .ModelShouldMatch(x => x.KeyManyToOnes.Count().ShouldEqual(1));
+                .ModelShouldMatch(x => x.Keys.Count().ShouldEqual(1));
         }
 
         [Test]

@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.Automapping
     {
         private AutoMappingTester<TEntity> VerifyAutoMap<TEntity>()
         {
-            var autoMapper = AutoMap.AssemblyOf<TEntity>(t => t == typeof(TEntity));
+            var autoMapper = AutoMap.Source(new StubTypeSource(typeof(TEntity)));
 
             return new AutoMappingTester<TEntity>(autoMapper);
         }

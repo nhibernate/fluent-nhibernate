@@ -4,6 +4,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class ImportMapping : MappingBase
     {
         private readonly AttributeStore<ImportMapping> attributes = new AttributeStore<ImportMapping>();

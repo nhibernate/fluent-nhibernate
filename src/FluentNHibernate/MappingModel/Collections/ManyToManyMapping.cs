@@ -6,11 +6,21 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
+    [Serializable]
     public class ManyToManyMapping : MappingBase, ICollectionRelationshipMapping, IHasColumnMappings
     {
         private readonly AttributeStore<ManyToManyMapping> attributes;
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
-        
+        private readonly IList<FilterMapping> childFilters = new List<FilterMapping>();
+
+        public IList<FilterMapping> ChildFilters
+        {
+            get
+            {
+                return childFilters;
+            }
+        }
+
         public ManyToManyMapping()
             : this(new AttributeStore())
         {}
@@ -26,6 +36,9 @@ namespace FluentNHibernate.MappingModel.Collections
 
             foreach (var column in columns)
                 visitor.Visit(column);
+
+            foreach (var filter in ChildFilters)
+                visitor.Visit(filter);
         }
 
         public Type ChildType
@@ -82,6 +95,18 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.EntityName, value); }
         }
 
+        public string OrderBy
+        {
+            get { return attributes.Get(x => x.OrderBy); }
+            set { attributes.Set(x => x.OrderBy, value); }
+        }        
+
+        public string ChildPropertyRef
+        {
+            get { return attributes.Get(x => x.ChildPropertyRef); }
+            set { attributes.Set(x => x.ChildPropertyRef, value); }
+        }
+
         public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
@@ -105,6 +130,11 @@ namespace FluentNHibernate.MappingModel.Collections
         }
 
         public override bool IsSpecified(string property)
+        {
+            return attributes.IsSpecified(property);
+        }
+
+        public bool IsSpecified<TResult>(Expression<Func<ManyToManyMapping, TResult>> property)
         {
             return attributes.IsSpecified(property);
         }

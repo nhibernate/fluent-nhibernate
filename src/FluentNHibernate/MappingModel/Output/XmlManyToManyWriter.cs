@@ -38,6 +38,9 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.HasValue(x => x.ForeignKey))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
+            if (mapping.HasValue(x => x.ChildPropertyRef))
+                element.WithAtt("property-ref", mapping.ChildPropertyRef);
+
             if (mapping.HasValue(x => x.Lazy))
                 element.WithAtt("lazy", mapping.Lazy);
 
@@ -49,6 +52,10 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.EntityName))
                 element.WithAtt("entity-name", mapping.EntityName);
+
+            if (mapping.HasValue(x => x.OrderBy))
+                element.WithAtt("order-by", mapping.OrderBy);
+
         }
 
         public override void Visit(ColumnMapping mapping)
@@ -57,6 +64,13 @@ namespace FluentNHibernate.MappingModel.Output
             var columnXml = writer.Write(mapping);
 
             document.ImportAndAppendChild(columnXml);
+        }
+
+        public override void Visit(FilterMapping filterMapping)
+        {
+            var writer = serviceLocator.GetWriter<FilterMapping>();
+            var xml = writer.Write(filterMapping);
+            document.ImportAndAppendChild(xml);
         }
     }
 }

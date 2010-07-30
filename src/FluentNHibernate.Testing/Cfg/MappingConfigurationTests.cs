@@ -2,11 +2,9 @@ using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-//using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures;
-using FluentNHibernate.Testing.Fixtures.Basic;
 using NHibernate.Cfg;
 using NUnit.Framework;
 
@@ -64,7 +62,7 @@ namespace FluentNHibernate.Testing.Cfg
         [Test]
         public void AddAutoMappingAddsAnyAutoMappedMappingsToCfg()
         {
-            mapping.AutoMappings.Add(AutoMap.AssemblyOf<Record>(type => type == typeof(Record)));
+            mapping.AutoMappings.Add(AutoMap.Source(new StubTypeSource(typeof(Record))));
             mapping.Apply(cfg);
 
             cfg.ClassMappings.Count.ShouldBeGreaterThan(0);
@@ -75,7 +73,7 @@ namespace FluentNHibernate.Testing.Cfg
         public void AddAutoMappingAddsAnyAutoMappedMappingsToCfgWhenMerged()
         {
             mapping.MergeMappings();
-            mapping.AutoMappings.Add(AutoMap.AssemblyOf<Record>(type => type == typeof(Record)));
+            mapping.AutoMappings.Add(AutoMap.Source(new StubTypeSource(typeof(Record))));
             mapping.Apply(cfg);
 
             cfg.ClassMappings.Count.ShouldBeGreaterThan(0);
@@ -165,7 +163,7 @@ namespace FluentNHibernate.Testing.Cfg
         [Test]
         public void WasUsedIsTrueWhenAddAutoMappingsCalled()
         {
-            mapping.AutoMappings.Add(AutoMap.AssemblyOf<Record>(type => type == typeof(Record)));
+            mapping.AutoMappings.Add(AutoMap.Source(new StubTypeSource(typeof(Record))));
             mapping.WasUsed.ShouldBeTrue();
         }
 
@@ -193,7 +191,7 @@ namespace FluentNHibernate.Testing.Cfg
         [Test]
         public void MergeOutputShouldSetFlagOnAutoPersistenceModels()
         {
-            mapping.AutoMappings.Add(AutoMap.AssemblyOf<Record>(type => false));
+            mapping.AutoMappings.Add(AutoMap.Source(new EmptySource()));
             mapping.MergeMappings();
             mapping.Apply(new Configuration());
             mapping.AutoMappings.First().MergeMappings.ShouldBeTrue();

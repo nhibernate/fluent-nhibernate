@@ -6,6 +6,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
+    [Serializable]
     public class BagMapping : CollectionMappingBase
     {
         private readonly AttributeStore<BagMapping> attributes;

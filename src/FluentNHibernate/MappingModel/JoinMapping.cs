@@ -8,6 +8,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class JoinMapping : IMappingBase
     {
         private readonly AttributeStore<JoinMapping> attributes;

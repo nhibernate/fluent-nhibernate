@@ -98,7 +98,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(true));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Lazy.True));
         }
 
         [Test]
@@ -106,7 +106,23 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             OneToMany(x => x.BagOfChildren)
                 .Mapping(m => m.Not.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(false));
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Lazy.False));
+        }
+        
+        [Test]
+        public void ExtraLazyLoadShouldSetModelLazyPropertyToExtra()
+        {
+            OneToMany(x => x.BagOfChildren)
+                .Mapping(m => m.ExtraLazyLoad())
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Lazy.Extra));
+        }
+
+        [Test]
+        public void NotExtraLazyLoadShouldSetModelLazyPropertyToTrue()
+        {
+            OneToMany(x => x.BagOfChildren)
+                .Mapping(m => m.Not.ExtraLazyLoad())
+                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Lazy.True));
         }
 
         [Test]
@@ -253,5 +269,12 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ModelShouldMatch(x => x.Key.PropertyRef.ShouldEqual("prop1"));
         }
 
+        [Test]
+        public void EntityNameShouldSetModelValue()
+        {
+            OneToMany(x => x.BagOfChildren)
+                .Mapping(m => m.EntityName("name"))
+                .ModelShouldMatch(x => x.Relationship.EntityName.ShouldEqual("name"));
+        }
     }
 }

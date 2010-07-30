@@ -54,8 +54,20 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void ForeignKey(string constraint)
         {
-            if (!mapping.IsSpecified("ForeignKey"))
+            if (!mapping.IsSpecified(x => x.ForeignKey))
                 mapping.ForeignKey = constraint;
+        }
+
+        public new void Where(string where)
+        {
+            if (!mapping.IsSpecified(x => x.Where))
+                mapping.Where = where;
+        }
+
+        public new void OrderBy(string orderBy)
+        {
+            if (!mapping.IsSpecified(x => x.OrderBy))
+                mapping.OrderBy = orderBy;
         }
     }
 }

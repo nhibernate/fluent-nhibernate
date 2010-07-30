@@ -14,12 +14,18 @@ namespace FluentNHibernate.Mapping
             this.setter = setter;
         }
 
+        /// <summary>
+        /// Cascade all actions, deleting any orphaned records
+        /// </summary>
         public TParent AllDeleteOrphan()
 		{
 			setter("all-delete-orphan");
 			return parent;
 		}
 
+        /// <summary>
+        /// Cascade deletes, deleting any orphaned records
+        /// </summary>
         public TParent DeleteOrphan()
         {
             setter("delete-orphan");

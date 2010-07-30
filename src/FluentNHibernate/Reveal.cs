@@ -1,67 +1,62 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace FluentNHibernate
 {
-    public class Reveal
+    public static class Reveal
     {
-        /// <summary>
-        /// Reveals a hidden property for use instead of expressions.
-        /// </summary>
-        /// <typeparam name="TEntity">Entity type</typeparam>
-        /// <param name="propertyName">Name of property</param>
-        /// <returns>Expression for the hidden property</returns>
+        [Obsolete("Use Reveal.Member")]
         public static Expression<Func<TEntity, object>> Property<TEntity>(string propertyName)
         {
-            return CreateExpression<TEntity, object>(propertyName);
+            return Member<TEntity>(propertyName);
+        }
+
+        [Obsolete("Use Reveal.Member")]
+        public static Expression<Func<TEntity, TReturn>> Property<TEntity, TReturn>(string propertyName)
+        {
+            return Member<TEntity, TReturn>(propertyName);
         }
 
         /// <summary>
-        /// Reveals a hidden property with a specific return type for use instead of expressions.
+        /// Reveals a hidden property or field for use instead of expressions.
         /// </summary>
         /// <typeparam name="TEntity">Entity type</typeparam>
-        /// <typeparam name="TReturn">Property return type</typeparam>
-        /// <param name="propertyName">Name of property</param>
-        /// <returns>Expression for the hidden property</returns>
-        public static Expression<Func<TEntity, TReturn>> Property<TEntity, TReturn>(string propertyName)
+        /// <param name="name">Name of property or field</param>
+        /// <returns>Expression for the hidden property or field</returns>
+        public static Expression<Func<TEntity, object>> Member<TEntity>(string name)
         {
-            return CreateExpression<TEntity, TReturn>(propertyName);
+            return CreateExpression<TEntity, object>(name);
         }
 
-        private static Expression<Func<TEntity, TReturn>> CreateExpression<TEntity, TReturn>(string propertyName)
+        /// <summary>
+        /// Reveals a hidden property or field with a specific return type for use instead of expressions.
+        /// </summary>
+        /// <typeparam name="TEntity">Entity type</typeparam>
+        /// <typeparam name="TReturn">Property or field return type</typeparam>
+        /// <param name="name">Name of property or field</param>
+        /// <returns>Expression for the hidden property or field</returns>
+        public static Expression<Func<TEntity, TReturn>> Member<TEntity, TReturn>(string name)
+        {
+            return CreateExpression<TEntity, TReturn>(name);
+        }
+
+        static Expression<Func<TEntity, TReturn>> CreateExpression<TEntity, TReturn>(string propertyName)
         {
             var type = typeof(TEntity);
-            var property = GetProperties(type)
+            var member = type.GetInstanceMembers()
                 .FirstOrDefault(x => x.Name == propertyName);
 
-            if (property == null)
+            if (member == null)
                 throw new UnknownPropertyException(type, propertyName);
 
-            var param = Expression.Parameter(type, "x");
-            Expression expression = Expression.Property(param, property);
+            var param = Expression.Parameter(member.DeclaringType, "x");
+            Expression expression = Expression.PropertyOrField(param, propertyName);
 
-            if (property.PropertyType.IsValueType)
+            if (member.PropertyType.IsValueType)
                 expression = Expression.Convert(expression, typeof(object));
 
             return (Expression<Func<TEntity, TReturn>>)Expression.Lambda(typeof(Func<TEntity, TReturn>), expression, param);
-        }
-
-        private static IEnumerable<PropertyInfo> GetProperties(Type type)
-        {
-            if (type == typeof(object))
-                return new PropertyInfo[0];
-
-            var properties = new List<PropertyInfo>();
-
-            foreach (var property in type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
-                properties.Add(property);
-
-            properties.AddRange(GetProperties(type.BaseType));
-
-            return properties;
         }
     }
 }

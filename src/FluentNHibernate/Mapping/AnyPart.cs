@@ -80,9 +80,14 @@ namespace FluentNHibernate.Mapping
 
         public AnyPart<T> AddMetaValue<TModel>(string valueMap)
         {
+            return AddMetaValue(typeof(TModel), valueMap);
+        }
+
+        public AnyPart<T> AddMetaValue(Type @class, string valueMap)
+        {
             metaValues.Add(new MetaValueMapping
             {
-                Class = new TypeReference(typeof(TModel)),
+                Class = new TypeReference(@class),
                 Value = valueMap,
                 ContainingEntityType = entity
             });
@@ -169,6 +174,36 @@ namespace FluentNHibernate.Mapping
                 mapping.AddIdentifierColumn(new ColumnMapping { Name = column });
 
             return mapping;
+        }
+
+        /// <summary>
+        /// Sets the meta-type value for this any mapping.
+        /// </summary>
+        /// <typeparam name="TMetaType">Meta type</typeparam>
+        public AnyPart<T> MetaType<TMetaType>()
+        {
+            attributes.Set(x => x.MetaType, new TypeReference(typeof(TMetaType)));
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the meta-type value for this any mapping.
+        /// </summary>
+        /// <param name="metaType">Meta type</param>
+        public AnyPart<T> MetaType(string metaType)
+        {
+            attributes.Set(x => x.MetaType, new TypeReference(metaType));
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the meta-type value for this any mapping.
+        /// </summary>
+        /// <param name="metaType">Meta type</param>
+        public AnyPart<T> MetaType(Type metaType)
+        {
+            attributes.Set(x => x.MetaType, new TypeReference(metaType));
+            return this;
         }
     }
 }

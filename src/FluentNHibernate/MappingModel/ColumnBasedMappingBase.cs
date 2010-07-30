@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public abstract class ColumnBasedMappingBase : MappingBase, IHasColumnMappings
     {
         private readonly string[] columnAttributes = new[] { "Length", "Precision", "Scale", "NotNull", "Unique", "UniqueKey", "SqlType", "Index", "Check", "Default" };

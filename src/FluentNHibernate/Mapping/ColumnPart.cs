@@ -30,18 +30,29 @@ namespace FluentNHibernate.Mapping
             }
         }
 
+        /// <summary>
+        /// Specify the column name
+        /// </summary>
+        /// <param name="columnName">Column name</param>
         public ColumnPart Name(string columnName)
         {
             columnMapping.Name = columnName;
             return this;
         }
 
+        /// <summary>
+        /// Specify the column length
+        /// </summary>
+        /// <param name="length">Column length</param>
         public ColumnPart Length(int length)
         {
             columnMapping.Length = length;
             return this;
         }
 
+        /// <summary>
+        /// Specify the nullability of the column
+        /// </summary>
         public ColumnPart Nullable()
         {
             columnMapping.NotNull = !nextBool;
@@ -49,6 +60,9 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specify the uniquness of the column
+        /// </summary>
         public ColumnPart Unique()
         {
             columnMapping.Unique = nextBool;
@@ -56,18 +70,30 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public ColumnPart UniqueKey(string key1)
+        /// <summary>
+        /// Specify the unique key constraint name
+        /// </summary>
+        /// <param name="key">Constraint name</param>
+        public ColumnPart UniqueKey(string key)
         {
-            columnMapping.UniqueKey = key1;
+            columnMapping.UniqueKey = key;
             return this;
         }
 
+        /// <summary>
+        /// Specify the SQL type for the column
+        /// </summary>
+        /// <param name="sqlType">SQL type</param>
         public ColumnPart SqlType(string sqlType)
         {
             columnMapping.SqlType = sqlType;
             return this;
         }
 
+        /// <summary>
+        /// Specify the index name
+        /// </summary>
+        /// <param name="index">Index name</param>
         public ColumnPart Index(string index)
         {
             columnMapping.Index = index;

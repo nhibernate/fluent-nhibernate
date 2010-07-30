@@ -1,11 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using System.Reflection;
-using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class KeyMapping : MappingBase, IHasColumnMappings
     {
         private readonly AttributeStore<KeyMapping> attributes;
@@ -72,17 +71,23 @@ namespace FluentNHibernate.MappingModel
 
         public void AddColumn(ColumnMapping mapping)
         {
+            if (columns.Contains(mapping))
+                return;
+
             columns.Add(mapping);
         }
 
         public void AddDefaultColumn(ColumnMapping mapping)
         {
+            if (columns.Contains(mapping))
+                return;
+
             columns.AddDefault(mapping);
         }
 
         public void ClearColumns()
         {
-            columns.Clear();
+            columns.ClearAll();
         }
 
         public override bool IsSpecified(string property)

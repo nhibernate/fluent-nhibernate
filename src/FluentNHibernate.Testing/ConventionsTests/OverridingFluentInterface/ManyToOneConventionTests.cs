@@ -101,7 +101,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
 
             Convention(x => x.Not.LazyLoad());
 
-            VerifyModel(x => x.Lazy.ShouldEqual(true));
+            VerifyModel(x => x.Lazy.ShouldEqual(Laziness.Proxy.ToString()));
         }
 
         [Test]
@@ -186,6 +186,16 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             Convention(x => x.ForeignKey("xxx"));
 
             VerifyModel(x => x.ForeignKey.ShouldEqual("key"));
+        }
+        
+        [Test]
+        public void FormulaShouldntBeOverwritten()
+        {
+            Mapping(x => x.Formula("form"));
+            
+            Convention(x => x.Formula("xxx"));
+            
+            VerifyModel(x => x.Formula.ShouldEqual("form"));
         }
 
         #region Helpers

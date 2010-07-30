@@ -37,7 +37,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<SubclassMap<T>, SubclassMapping> SubclassMapForSubclass<T>()
         {
-            return new ModelTester<SubclassMap<T>, SubclassMapping>(() => new SubclassMap<T>(), x => ((IIndeterminateSubclassMappingProvider)x).GetSubclassMapping(new SubclassMapping(SubclassType.Subclass)));
+            return new ModelTester<SubclassMap<T>, SubclassMapping>(() => new SubclassMap<T>(), x => ((IIndeterminateSubclassMappingProvider)x).GetSubclassMapping(SubclassType.Subclass));
         }
 
         protected ModelTester<JoinedSubClassPart<T>, SubclassMapping> JoinedSubclass<T>()
@@ -47,7 +47,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<SubclassMap<T>, SubclassMapping> SubclassMapForJoinedSubclass<T>()
         {
-            return new ModelTester<SubclassMap<T>, SubclassMapping>(() => new SubclassMap<T>(), x => ((IIndeterminateSubclassMappingProvider)x).GetSubclassMapping(new SubclassMapping(SubclassType.JoinedSubclass)));
+            return new ModelTester<SubclassMap<T>, SubclassMapping>(() => new SubclassMap<T>(), x => ((IIndeterminateSubclassMappingProvider)x).GetSubclassMapping(SubclassType.JoinedSubclass));
         }
 
         protected ModelTester<ComponentPart<T>, ComponentMapping> Component<T>()
@@ -97,22 +97,22 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<OneToManyPart<T>, ICollectionMapping> OneToMany<T>(Expression<Func<OneToManyTarget, IEnumerable<T>>> property)
         {
-            return new ModelTester<OneToManyPart<T>, ICollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetMember(property)), x => x.GetCollectionMapping());
+            return new ModelTester<OneToManyPart<T>, ICollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetMember(property)), x => ((ICollectionMappingProvider)x).GetCollectionMapping());
         }
 
         protected ModelTester<ManyToManyPart<T>, ICollectionMapping> ManyToMany<T>(Expression<Func<ManyToManyTarget, IList<T>>> property)
         {
-            return new ModelTester<ManyToManyPart<T>, ICollectionMapping>(() => new ManyToManyPart<T>(typeof(ManyToManyTarget), ReflectionHelper.GetMember(property)), x => x.GetCollectionMapping());
+            return new ModelTester<ManyToManyPart<T>, ICollectionMapping>(() => new ManyToManyPart<T>(typeof(ManyToManyTarget), ReflectionHelper.GetMember(property)), x => ((ICollectionMappingProvider)x).GetCollectionMapping());
         }
 
         protected ModelTester<ManyToManyPart<IDictionary>, ICollectionMapping> ManyToMany(Expression<Func<ManyToManyTarget, IDictionary>> property)
         {
-            return new ModelTester<ManyToManyPart<IDictionary>, ICollectionMapping>(() => new ManyToManyPart<IDictionary>(typeof(ManyToManyTarget), ReflectionHelper.GetMember(property)), x => x.GetCollectionMapping());
+            return new ModelTester<ManyToManyPart<IDictionary>, ICollectionMapping>(() => new ManyToManyPart<IDictionary>(typeof(ManyToManyTarget), ReflectionHelper.GetMember(property)), x => ((ICollectionMappingProvider)x).GetCollectionMapping());
         }
 
         protected ModelTester<ManyToManyPart<IDictionary<TIndex, TValue>>, ICollectionMapping> ManyToMany<TIndex, TValue>(Expression<Func<ManyToManyTarget, IDictionary<TIndex, TValue>>> property)
         {
-            return new ModelTester<ManyToManyPart<IDictionary<TIndex, TValue>>, ICollectionMapping>(() => new ManyToManyPart<IDictionary<TIndex, TValue>>(typeof(ManyToManyTarget), ReflectionHelper.GetMember(property)), x => x.GetCollectionMapping());
+            return new ModelTester<ManyToManyPart<IDictionary<TIndex, TValue>>, ICollectionMapping>(() => new ManyToManyPart<IDictionary<TIndex, TValue>>(typeof(ManyToManyTarget), ReflectionHelper.GetMember(property)), x => ((ICollectionMappingProvider)x).GetCollectionMapping());
         }
 
         protected ModelTester<ManyToOnePart<PropertyReferenceTarget>, ManyToOneMapping> ManyToOne()

@@ -18,6 +18,16 @@ namespace FluentNHibernate
             this.type = type;
         }
 
+        public override Module Module
+        {
+            get { return null; }
+        }
+
+        public override int MetadataToken
+        {
+            get { return name.GetHashCode(); }
+        }
+
         public override object[] GetCustomAttributes(bool inherit)
         {
             throw new NotImplementedException();
@@ -45,12 +55,12 @@ namespace FluentNHibernate
 
         public override MethodInfo GetGetMethod(bool nonPublic)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override MethodInfo GetSetMethod(bool nonPublic)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override ParameterInfo[] GetIndexParameters()

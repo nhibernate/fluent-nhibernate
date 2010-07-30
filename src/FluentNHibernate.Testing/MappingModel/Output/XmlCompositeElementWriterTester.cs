@@ -51,11 +51,27 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Element("many-to-one").Exists();
         }
 
-        [Test, Ignore]
-        public void ShouldWriteNestedCompositeElement()
+        [Test]
+        public void ShouldWriteNestedCompositeElements()
         {
-            Assert.Fail();
+            var mapping = new CompositeElementMapping();
+            mapping.AddCompositeElement(new NestedCompositeElementMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("nested-composite-element").Exists();
         }
+
+        [Test]
+        public void ShouldWriteNestedCompositeElementName()
+        {
+            var mapping = new CompositeElementMapping();
+            mapping.AddCompositeElement(new NestedCompositeElementMapping { Name = "testName"});
+
+            writer.VerifyXml(mapping)
+                .Element("nested-composite-element")
+                .HasAttribute("name", "testName");
+        }
+
 
         [Test]
         public void ShouldWriteParent()

@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils.Reflection;
@@ -321,14 +322,21 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void LazyMapped()
         {
-            mapping.Lazy = true;
-            inspector.LazyLoad.ShouldEqual(true);
+            mapping.Lazy = Lazy.True;
+            inspector.LazyLoad.ShouldEqual(Lazy.True);
+        }
+
+        [Test]
+        public void ExtraLazyMapped()
+        {
+            mapping.Lazy = Lazy.Extra;
+            inspector.LazyLoad.ShouldEqual(Lazy.Extra);
         }
 
         [Test]
         public void LazyIsSet()
         {
-            mapping.Lazy = true;
+            mapping.Lazy = Lazy.True;
             inspector.IsSet(Prop(x => x.LazyLoad))
                 .ShouldBeTrue();
         }
@@ -338,6 +346,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         {
             inspector.IsSet(Prop(x => x.LazyLoad))
                 .ShouldBeFalse();
+        }
+
+        [Test]
+        public void ExtraLazyIsSet()
+        {
+            mapping.Lazy = Lazy.Extra;
+            inspector.IsSet(Prop(x => x.LazyLoad))
+                .ShouldBeTrue();
         }
 
         [Test]

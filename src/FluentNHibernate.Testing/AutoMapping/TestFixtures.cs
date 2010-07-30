@@ -20,6 +20,16 @@ using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Automapping.TestFixtures
 {
+    public abstract class EntityBaseClassWithPrivateSetter
+    {
+        public int Id { get; private set; }
+    }
+
+    public class ClassThatInheritsIdFromParentWithPrivateSetter : EntityBaseClassWithPrivateSetter
+    {
+
+    }
+
     public abstract class EntityBase<TPK>
     {
         public virtual TPK Id { get; set; }
@@ -98,14 +108,7 @@ namespace FluentNHibernate.Automapping.TestFixtures
 
     public class PrivateIdSetterClass
     {
-#pragma warning disable 649
-        private int id;
-#pragma warning restore 649
-
-        public virtual int Id
-        {
-            get { return id; }
-        }
+        public virtual int Id { get; private set; }
     }
 
 
@@ -199,6 +202,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.ComponentTypes
         public int Number { get; set; }
         public string Street { get; set; }
         public Custom Custom { get; set; }
+        public IList<Customer> Residents { get; set; }
     }
 }
 
@@ -440,4 +444,6 @@ namespace FluentNHibernate.Automapping.TestFixtures.SuperTypes
         public int ExampleParentClassId { get; set; } 
         public virtual IList<ExampleClass> Examples {get; set;}
     }
+
+
 }

@@ -1,4 +1,5 @@
 ﻿using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Mapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.Inspection.ValueTypes
@@ -83,43 +84,43 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection.ValueTypes
         [Test]
         public void ReadOnlyPropertyThroughLowerCaseFieldShouldHaveCorrectValue()
         {
-            Access.ReadOnlyPropertyThroughLowerCaseField().ToString().ShouldEqual("no-setter.lowercase");
+            Access.ReadOnlyPropertyThroughLowerCaseField().ToString().ShouldEqual("nosetter.lowercase");
         }
 
         [Test]
         public void ReadOnlyPropertyThroughUnderscoreLowerCaseFieldShouldHaveCorrectValue()
         {
-            Access.ReadOnlyPropertyThroughLowerCaseField(LowerCasePrefix.Underscore).ToString().ShouldEqual("no-setter.lowercase-underscore");
+            Access.ReadOnlyPropertyThroughLowerCaseField(LowerCasePrefix.Underscore).ToString().ShouldEqual("nosetter.lowercase-underscore");
         }
 
         [Test]
         public void ReadOnlyPropertyThroughCamelCaseFieldShouldHaveCorrectValue()
         {
-            Access.ReadOnlyPropertyThroughCamelCaseField().ToString().ShouldEqual("no-setter.camelcase");
+            Access.ReadOnlyPropertyThroughCamelCaseField().ToString().ShouldEqual("nosetter.camelcase");
         }
 
         [Test]
         public void ReadOnlyPropertyThroughUnderscoreCamelCaseFieldShouldHaveCorrectValue()
         {
-            Access.ReadOnlyPropertyThroughCamelCaseField(CamelCasePrefix.Underscore).ToString().ShouldEqual("no-setter.camelcase-underscore");
+            Access.ReadOnlyPropertyThroughCamelCaseField(CamelCasePrefix.Underscore).ToString().ShouldEqual("nosetter.camelcase-underscore");
         }
 
         [Test]
         public void ReadOnlyPropertyThroughUnderscorePascalCaseFieldShouldHaveCorrectValue()
         {
-            Access.ReadOnlyPropertyThroughPascalCaseField(PascalCasePrefix.Underscore).ToString().ShouldEqual("no-setter.pascalcase-underscore");
+            Access.ReadOnlyPropertyThroughPascalCaseField(PascalCasePrefix.Underscore).ToString().ShouldEqual("nosetter.pascalcase-underscore");
         }
 
         [Test]
         public void ReadOnlyPropertyThroughMPascalCaseFieldShouldHaveCorrectValue()
         {
-            Access.ReadOnlyPropertyThroughPascalCaseField(PascalCasePrefix.M).ToString().ShouldEqual("no-setter.pascalcase-m");
+            Access.ReadOnlyPropertyThroughPascalCaseField(PascalCasePrefix.M).ToString().ShouldEqual("nosetter.pascalcase-m");
         }
 
         [Test]
         public void ReadOnlyPropertyThroughMUnderscorePascalCaseFieldShouldHaveCorrectValue()
         {
-            Access.ReadOnlyPropertyThroughPascalCaseField(PascalCasePrefix.MUnderscore).ToString().ShouldEqual("no-setter.pascalcase-m-underscore");
+            Access.ReadOnlyPropertyThroughPascalCaseField(PascalCasePrefix.MUnderscore).ToString().ShouldEqual("nosetter.pascalcase-m-underscore");
         }
 
         [Test]

@@ -6,6 +6,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class DiscriminatorMapping : ColumnBasedMappingBase
     {
         public DiscriminatorMapping()

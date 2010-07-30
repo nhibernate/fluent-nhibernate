@@ -76,7 +76,9 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void SubClassShouldAddToModelSubclassesCollection()
         {
             SubclassMapForSubclass<SuperRecord>()
+#pragma warning disable 612,618
                 .Mapping(m => m.Subclass<ChildRecord>(x => { }))
+#pragma warning restore 612,618
                 .ModelShouldMatch(x => x.Subclasses.Count().ShouldEqual(1));
         }
 

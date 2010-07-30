@@ -17,7 +17,7 @@ namespace FluentNHibernate.Testing.DomainModel
                 .ForMapping(map =>
                 {
                     map.Id(x => x.Id);
-                    map.HasManyToMany<ExampleClass>(Reveal.Property<StringTarget>("PrivateObject"));
+                    map.HasManyToMany<ExampleClass>(Reveal.Member<StringTarget>("PrivateObject"));
                 })
                 .Element("class/bag").HasAttribute("name", "PrivateObject");
         }
@@ -29,7 +29,7 @@ namespace FluentNHibernate.Testing.DomainModel
                 .ForMapping(map =>
                 {
                     map.Id(x => x.Id);
-                    map.Id(Reveal.Property<StringTarget>("PrivateObject"));
+                    map.Id(Reveal.Member<StringTarget>("PrivateObject"));
                 })
                 .Element("class/id").HasAttribute("name", "PrivateObject");
         }
@@ -41,7 +41,7 @@ namespace FluentNHibernate.Testing.DomainModel
                 .ForMapping(map =>
                 {
                     map.Id(x => x.Id);
-                    map.References(Reveal.Property<StringTarget>("PrivateObject"));
+                    map.References(Reveal.Member<StringTarget>("PrivateObject"));
                 })
                 .Element("class/many-to-one").HasAttribute("name", "PrivateObject");
         }

@@ -6,6 +6,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     internal class MappedMembers : IMappingBase, IHasMappedMembers
     {
         private readonly List<PropertyMapping> properties;
@@ -70,6 +71,15 @@ namespace FluentNHibernate.MappingModel
         {
             get { return filters; }
         }
+
+        public void AddOrReplaceFilter(FilterMapping mapping)
+        {
+            var filter = filters.Find(x => x.Name == mapping.Name);
+            if (filter != null)
+                filters.Remove(filter);
+            filters.Add(mapping);
+        }
+
 
         public IEnumerable<StoredProcedureMapping> StoredProcedures
         {
@@ -255,5 +265,6 @@ namespace FluentNHibernate.MappingModel
                 return result;
             }
         }
+
     }
 }

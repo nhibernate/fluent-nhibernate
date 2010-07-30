@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils;
+using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.Mapping
 {
@@ -15,8 +14,7 @@ namespace FluentNHibernate.Mapping
 	{
         private readonly AccessStrategyBuilder<CompositeIdentityPart<T>> access;
         private readonly AttributeStore<CompositeIdMapping> attributes = new AttributeStore<CompositeIdMapping>();
-        private readonly IList<KeyPropertyMapping> keyProperties = new List<KeyPropertyMapping>();
-        private readonly IList<KeyManyToOneMapping> keyManyToOnes = new List<KeyManyToOneMapping>();
+        private readonly IList<ICompositeIdKeyMapping> keys = new List<ICompositeIdKeyMapping>();
         private bool nextBool = true;
 
         public CompositeIdentityPart()
@@ -66,12 +64,17 @@ namespace FluentNHibernate.Mapping
             return KeyProperty(member, string.Empty, keyPropertyAction);
         }
 
-        protected virtual CompositeIdentityPart<T> KeyProperty(Member property, string columnName, Action<KeyPropertyPart> customMapping)
+        protected virtual CompositeIdentityPart<T> KeyProperty(Member member, string columnName, Action<KeyPropertyPart> customMapping)
         {
+            var type = member.PropertyType;
+
+            if (type.IsEnum)
+                type = typeof(GenericEnumMapper<>).MakeGenericType(type);
+
             var key = new KeyPropertyMapping
             {
-                Name = property.Name,
-                Type = new TypeReference(property.PropertyType),
+                Name = member.Name,
+                Type = new TypeReference(type),
                 ContainingEntityType = typeof(T)
             };
 
@@ -84,7 +87,7 @@ namespace FluentNHibernate.Mapping
             if(!string.IsNullOrEmpty(columnName))
                 key.AddColumn(new ColumnMapping { Name = columnName });
 
-            keyProperties.Add(key);
+            keys.Add(key);
 
             return this;
         }
@@ -98,20 +101,20 @@ namespace FluentNHibernate.Mapping
 		{
             var member = expression.ToMember();
 
-		    return KeyReference(member, member.Name, null);
+		    return KeyReference(member, new[] { member.Name }, null);
 		}
 
 		/// <summary>
 		/// Defines a reference to be used as a many-to-one key for this composite-id with an explicit column name.
 		/// </summary>
 		/// <param name="expression">A member access lambda expression for the property</param>
-		/// <param name="columnName">The column name in the database to use for this key, or null to use the property name</param>
+        /// <param name="columnNames">A list of column names used for this key</param>
 		/// <returns>The composite identity part fluent interface</returns>
-		public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression, string columnName)
+		public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression, params string[] columnNames)
 		{
             var member = expression.ToMember();
 
-            return KeyReference(member, columnName, null);
+            return KeyReference(member, columnNames, null);
 		}
 
 
@@ -119,17 +122,17 @@ namespace FluentNHibernate.Mapping
         /// Defines a reference to be used as a many-to-one key for this composite-id with an explicit column name.
         /// </summary>
         /// <param name="expression">A member access lambda expression for the property</param>
-        /// <param name="columnName">The column name in the database to use for this key, or null to use the property name</param>
         /// <param name="customMapping">A lambda expression specifying additional settings for the key reference</param>
+        /// <param name="columnNames">A list of column names used for this key</param>
         /// <returns>The composite identity part fluent interface</returns>
-        public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression, string columnName, Action<KeyManyToOnePart> customMapping)
+        public CompositeIdentityPart<T> KeyReference(Expression<Func<T, object>> expression, Action<KeyManyToOnePart> customMapping, params string[] columnNames)
         {
             var member = expression.ToMember();
 
-            return KeyReference(member, columnName, customMapping);
+            return KeyReference(member, columnNames, customMapping);
         }
 
-        protected virtual CompositeIdentityPart<T> KeyReference(Member property, string columnName, Action<KeyManyToOnePart> customMapping)
+        protected virtual CompositeIdentityPart<T> KeyReference(Member property, IEnumerable<string> columnNames, Action<KeyManyToOnePart> customMapping)
         {
             var key = new KeyManyToOneMapping
             {
@@ -137,14 +140,16 @@ namespace FluentNHibernate.Mapping
                 Class = new TypeReference(property.PropertyType),
                 ContainingEntityType = typeof(T)
             };
-            key.AddColumn(new ColumnMapping { Name = columnName });
+
+            foreach (var column in columnNames)
+                key.AddColumn(new ColumnMapping { Name = column });
 
             var keyPart = new KeyManyToOnePart(key);
 
             if (customMapping != null)
                 customMapping(keyPart);
 
-            keyManyToOnes.Add(key);            
+            keys.Add(key);            
 
             return this;
         }
@@ -157,6 +162,9 @@ namespace FluentNHibernate.Mapping
 			get { return access; }
 		}
 
+        /// <summary>
+        /// Invert the next boolean operation
+        /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public CompositeIdentityPart<T> Not
         {
@@ -167,6 +175,10 @@ namespace FluentNHibernate.Mapping
             }
         }
 
+        /// <summary>
+        /// Specifies that this composite id is "mapped"; aka, a composite id where
+        /// the properties exist in the identity class as well as in the entity itself
+        /// </summary>
         public CompositeIdentityPart<T> Mapped()
         {
             attributes.Set(x => x.Mapped, nextBool);
@@ -174,20 +186,54 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies the unsaved value for the identity
+        /// </summary>
+        /// <param name="value">Unsaved value</param>
         public CompositeIdentityPart<T> UnsavedValue(string value)
         {
             attributes.Set(x => x.UnsavedValue, value);
             return this;
         }
 
-	    CompositeIdMapping ICompositeIdMappingProvider.GetCompositeIdMapping()
+        /// <summary>
+        /// You may use a component as an identifier of an entity class. Your component class must
+        /// satisfy certain requirements:
+        ///
+        ///   * It must be Serializable.
+        ///   * It must re-implement Equals() and GetHashCode(), consistently with the database's
+        ///     notion of composite key equality. 
+        /// 
+        /// You can't use an IIdentifierGenerator to generate composite keys. Instead the application
+        /// must assign its own identifiers. Since a composite identifier must be assigned to the object
+        /// before saving it, we can't use unsaved-value of the identifier to distinguish between newly
+        /// instantiated instances and instances saved in a previous session. You may instead implement
+        /// IInterceptor.IsUnsaved() if you wish to use SaveOrUpdate() or cascading save / update. As an
+        /// alternative, you may also set the unsaved-value attribute on a version or timestamp to specify
+        /// a value that indicates a new transient instance. In this case, the version of the entity is
+        /// used instead of the (assigned) identifier and you don't have to implement
+        /// IInterceptor.IsUnsaved() yourself. 
+        /// </summary>
+        /// <param name="expression">The property of component type that holds the composite identifier.</param>        
+        /// <remarks>
+        /// Your persistent class must override Equals() and GetHashCode() to implement composite identifier
+        /// equality. It must also be Serializable.
+        /// </remarks>
+        public CompositeIdentityPart<T> ComponentCompositeIdentifier<TComponentType>(Expression<Func<T, TComponentType>> expression)
+        {
+            attributes.Set(x => x.Class, new TypeReference(typeof(TComponentType)));
+            attributes.Set(x => x.Name, ReflectionHelper.GetMember(expression).Name);
+
+            return this;
+        }
+
+        CompositeIdMapping ICompositeIdMappingProvider.GetCompositeIdMapping()
 	    {
             var mapping = new CompositeIdMapping(attributes.CloneInner());
 
 	        mapping.ContainingEntityType = typeof(T);
 
-            keyProperties.Each(mapping.AddKeyProperty);
-            keyManyToOnes.Each(mapping.AddKeyManyToOne);
+            keys.Each(mapping.AddKey);
 
 	        return mapping;
 	    }

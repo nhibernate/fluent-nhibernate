@@ -11,21 +11,33 @@ namespace FluentNHibernate.Mapping
             this.setter = setter;
         }
 
+        /// <summary>
+        /// No optimistic locking
+        /// </summary>
         public void None()
         {
             setter("none");
         }
 
+        /// <summary>
+        /// Version locking
+        /// </summary>
         public void Version()
         {
             setter("version");
         }
 
+        /// <summary>
+        /// Dirty locking
+        /// </summary>
         public void Dirty()
         {
             setter("dirty");
         }
 
+        /// <summary>
+        /// Lock on everything
+        /// </summary>
         public void All()
         {
             setter("all");

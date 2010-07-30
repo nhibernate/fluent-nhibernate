@@ -13,12 +13,16 @@ namespace FluentNHibernate.Mapping
             attributes.SetDefault(x => x.Class, new TypeReference(importType));
         }
 
+        /// <summary>
+        /// Specify an alternative name for the type
+        /// </summary>
+        /// <param name="alternativeName">Alternative name</param>
         public void As(string alternativeName)
         {
-            attributes.Set( x=> x.Rename, alternativeName);
+            attributes.Set(x => x.Rename, alternativeName);
         }
 
-        public ImportMapping GetImportMapping()
+        internal ImportMapping GetImportMapping()
         {
             return new ImportMapping(attributes.CloneInner());
         }

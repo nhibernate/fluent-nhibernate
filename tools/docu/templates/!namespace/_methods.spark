@@ -2,25 +2,29 @@
 	<h3 class="section">${title}</h3>
 	
 	<div id="${method.Name}" class="method" each="var method in methods">
-		<h4>${h(method.ReturnType.PrettyName)} <strong>${h(method.PrettyName)}</strong>(${OutputMethodParams(method)})</h4>
+		<h4>${Format(method.ReturnType)} <strong>${h(method.PrettyName)}</strong>(${OutputMethodParams(method)})</h4>
 		<div class="content">
       <comment content="method.Summary" />
       <remarks content="method.Remarks" />
 
       <var hasReturn="method.ReturnType.PrettyName != 'void'" />
-      <var hasParams="method.Parameters.Count > 0" />
+      <var hasParams="method.Parameters.Any(x => x.HasDocumentation)" />
+
+      <div class="parameters" if="hasParams">
+        <h5>Parameters</h5>
+
+        <for each="var param in method.Parameters">
+          <h6><code>${Format(param.Reference)}</code> ${param.Name}</h6>
+          <p class="comments" if="!param.Summary.IsEmpty"><comment content="param.Summary" /></p>
+        </for>
+      </div>
+
+      <div class="return" if="!method.Returns.IsEmpty">
+        <h5>Return</h5>
+        <h6><code>${Format(method.ReturnType)}</code></h6>
+        <p><comment content="method.Returns" /></p>
+      </div>
       
-			<table if="hasReturn || hasParams">
-        <caption>Parameters</caption>
-				<tr if="hasReturn">
-					<td>return <code>${Format(method.ReturnType)}</code></td>
-					<td><comment content="method.Returns" /></td>
-				</tr>
-				<tr each="var param in method.Parameters">
-					<td><code>${Format(param.Reference)}</code> ${param.Name}</td>
-					<td><comment content="param.Summary" /></td>
-				</tr>
-			</table>
       <value content="method.Value" />
 		</div>
 	</div>

@@ -5,6 +5,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class NaturalIdMapping : MappingBase
     {
         private readonly AttributeStore<NaturalIdMapping> attributes;

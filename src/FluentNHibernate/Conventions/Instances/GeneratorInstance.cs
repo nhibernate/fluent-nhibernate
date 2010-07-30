@@ -91,22 +91,39 @@ namespace FluentNHibernate.Conventions.Instances
                 builder.Sequence(sequenceName, paramValues);
         }
 
-		/// <summary>
-		/// uses a hi/lo algorithm to efficiently generate identifiers of any integral type, 
-		/// given a table and column (by default hibernate_unique_key and next_hi respectively) 
-		/// as a source of hi values. The hi/lo algorithm generates identifiers that are unique 
-		/// only for a particular database. Do not use this generator with a user-supplied connection.
-		/// requires a "special" database table to hold the next available "hi" value
-		/// </summary>
-		/// <param name="table"></param>
-		/// <param name="column"></param>
-		/// <param name="maxLo"></param>
-		/// <returns></returns>
+        /// <summary>
+        /// uses a hi/lo algorithm to efficiently generate identifiers of any integral type,
+        /// given a table and column (by default hibernate_unique_key and next_hi respectively)
+        /// as a source of hi values. The hi/lo algorithm generates identifiers that are unique
+        /// only for a particular database. Do not use this generator with a user-supplied connection.
+        /// requires a "special" database table to hold the next available "hi" value
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <param name="column">The column.</param>
+        /// <param name="maxLo">The max lo.</param>
+        /// <param name="where">The where.</param>
+        public void HiLo(string table, string column, string maxLo, string where)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.HiLo(table, column, maxLo, where);
+        }
+
+        /// <summary>
+        /// uses a hi/lo algorithm to efficiently generate identifiers of any integral type, 
+        /// given a table and column (by default hibernate_unique_key and next_hi respectively) 
+        /// as a source of hi values. The hi/lo algorithm generates identifiers that are unique 
+        /// only for a particular database. Do not use this generator with a user-supplied connection.
+        /// requires a "special" database table to hold the next available "hi" value
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="column"></param>
+        /// <param name="maxLo"></param>
+        /// <returns></returns>
         public void HiLo(string table, string column, string maxLo)
-		{
+        {
             if (!mapping.IsSpecified("Class"))
                 builder.HiLo(table, column, maxLo);
-		}
+        }
 
         /// <summary>
         /// uses a hi/lo algorithm to efficiently generate identifiers of any integral type, 
@@ -265,6 +282,156 @@ namespace FluentNHibernate.Conventions.Instances
         {
             if (!mapping.IsSpecified("Class"))
                 builder.GuidComb(paramValues);
+        }
+
+        /// <summary>
+        /// Generator that uses the RDBMS native function to generate a GUID.
+        /// The behavior is similar to the “sequence” generator. When a new
+        /// object is saved NH run two queries: the first to retrieve the GUID
+        /// value and the second to insert the entity using the Guid retrieved
+        /// from the RDBMS. Your entity Id must be System.Guid and the SQLType
+        /// will depend on the dialect (RAW(16) in Oracle, UniqueIdentifier in
+        /// MsSQL for example).
+        /// </summary>
+        public void GuidNative()
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.GuidNative();
+        }
+
+        /// <summary>
+        /// Generator that uses the RDBMS native function to generate a GUID.
+        /// The behavior is similar to the “sequence” generator. When a new
+        /// object is saved NH run two queries: the first to retrieve the GUID
+        /// value and the second to insert the entity using the Guid retrieved
+        /// from the RDBMS. Your entity Id must be System.Guid and the SQLType
+        /// will depend on the dialect (RAW(16) in Oracle, UniqueIdentifier in
+        /// MsSQL for example).
+        /// </summary>
+        /// <example>
+        ///     GuidNative(x =>
+        ///     {
+        ///       x.AddParam("key", "value");
+        ///     });
+        /// </example>
+        /// <param name="paramValues">Parameter builder closure</param>
+        public void GuidNative(Action<ParamBuilder> paramValues)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.GuidNative(paramValues);
+        }
+
+        /// <summary>
+        /// A deviation of the trigger-identity. This generator works
+        /// together with the <see cref="ClassMap{T}.NaturalId"/> feature.
+        /// The difference with trigger-identity is that the POID value
+        /// is retrieved by a SELECT using the natural-id fields as filter.
+        /// </summary>
+        public void Select()
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.Select();
+        }
+
+        /// <summary>
+        /// A deviation of the trigger-identity. This generator works
+        /// together with the <see cref="ClassMap{T}.NaturalId"/> feature.
+        /// The difference with trigger-identity is that the POID value
+        /// is retrieved by a SELECT using the natural-id fields as filter.
+        /// </summary>
+        /// <example>
+        ///     Select(x =>
+        ///     {
+        ///       x.AddParam("key", "value");
+        ///     });
+        /// </example>
+        /// <param name="paramValues">Parameter builder closure</param>
+        public void Select(Action<ParamBuilder> paramValues)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.Select(paramValues);
+        }
+
+        /// <summary>
+        /// Based on sequence but works like an identity. The POID
+        /// value is retrieved with an INSERT query. Your entity Id must
+        /// be an integral type.
+        /// "hibernate_sequence" is the default name for the sequence, unless
+        /// another is provided.
+        /// </summary>
+        public void SequenceIdentity()
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.SequenceIdentity();
+        }
+
+        /// <summary>
+        /// Based on sequence but works like an identity. The POID
+        /// value is retrieved with an INSERT query. Your entity Id must
+        /// be an integral type.
+        /// "hibernate_sequence" is the default name for the sequence, unless
+        /// another is provided.
+        /// </summary>
+        /// <param name="sequence">Custom sequence name</param>
+        public void SequenceIdentity(string sequence)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.SequenceIdentity(sequence);
+        }
+
+        /// <summary>
+        /// Based on sequence but works like an identity. The POID
+        /// value is retrieved with an INSERT query. Your entity Id must
+        /// be an integral type.
+        /// "hibernate_sequence" is the default name for the sequence, unless
+        /// another is provided.
+        /// </summary>
+        /// <param name="paramValues">Parameter builder closure</param>
+        public void SequenceIdentity(Action<ParamBuilder> paramValues)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.SequenceIdentity(paramValues);
+        }
+
+        /// <summary>
+        /// Based on sequence but works like an identity. The POID
+        /// value is retrieved with an INSERT query. Your entity Id must
+        /// be an integral type.
+        /// "hibernate_sequence" is the default name for the sequence, unless
+        /// another is provided.
+        /// </summary>
+        /// <param name="sequence">Custom sequence name</param>
+        /// <param name="paramValues">Parameter builder closure</param>
+        public void SequenceIdentity(string sequence, Action<ParamBuilder> paramValues)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.SequenceIdentity(sequence, paramValues);
+        }
+
+
+        /// <summary>
+        /// trigger-identity is a NHibernate specific feature where the POID
+        /// is generated by the RDBMS with an INSERT query through a
+        /// BEFORE INSERT trigger. In this case you can use any supported type,
+        /// including a custom type, with the limitation of a single column usage.
+        /// </summary>
+        public void TriggerIdentity()
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.TriggerIdentity();
+        }
+
+        /// <summary>
+        /// trigger-identity is a NHibernate specific feature where the POID
+        /// is generated by the RDBMS with an INSERT query through a
+        /// BEFORE INSERT trigger. In this case you can use any supported type,
+        /// including a custom type, with the limitation of a single column usage.
+        /// </summary>
+        /// <param name="paramValues">Parameter builder closure</param>
+        public void TriggerIdentity(Action<ParamBuilder> paramValues)
+        {
+            if (!mapping.IsSpecified("Class"))
+                builder.TriggerIdentity(paramValues);
         }
 
 		/// <summary>

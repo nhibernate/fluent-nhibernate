@@ -11,16 +11,11 @@ namespace FluentNHibernate.Automapping
 {
     public class AutoJoinedSubClassPart<T> : JoinedSubClassPart<T>, IAutoClasslike
     {
-        private readonly IList<Member> propertiesMapped = new List<Member>();
+        private readonly IList<Member> membersMapped = new List<Member>();
 
         public AutoJoinedSubClassPart(string keyColumn)
             : base(keyColumn)
         {}
-
-        public IEnumerable<Member> PropertiesMapped
-        {
-            get { return propertiesMapped; }
-        }
 
         public object GetMapping()
         {
@@ -37,31 +32,31 @@ namespace FluentNHibernate.Automapping
 
         protected override OneToManyPart<TChild> HasMany<TChild>(Member property)
         {
-            propertiesMapped.Add(property);
+            membersMapped.Add(property);
             return base.HasMany<TChild>(property);
         }
 
         protected override PropertyPart Map(Member property, string columnName)
         {
-            propertiesMapped.Add(property);
+            membersMapped.Add(property);
             return base.Map(property, columnName);
         }
 
         protected override ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
         {
-            propertiesMapped.Add(property);
+            membersMapped.Add(property);
             return base.References<TOther>(property, columnName);
         }
 
         protected override ManyToManyPart<TChild> HasManyToMany<TChild>(Member property)
         {
-            propertiesMapped.Add(property);
+            membersMapped.Add(property);
             return base.HasManyToMany<TChild>(property);
         }
 
         protected override ComponentPart<TComponent> Component<TComponent>(Member property, Action<ComponentPart<TComponent>> action)
         {
-            propertiesMapped.Add(property);
+            membersMapped.Add(property);
 
             if (action == null)
                 action = c => { };
@@ -71,7 +66,7 @@ namespace FluentNHibernate.Automapping
 
         protected override OneToOnePart<TOther> HasOne<TOther>(Member property)
         {
-            propertiesMapped.Add(property);
+            membersMapped.Add(property);
             return base.HasOne<TOther>(property);
         }
 
@@ -125,9 +120,9 @@ namespace FluentNHibernate.Automapping
             throw new NotImplementedException();
         }
 
-        public IEnumerable<string> GetIgnoredProperties()
+        public IEnumerable<Member> GetIgnoredProperties()
         {
-            return propertiesMapped.Select(x => x.Name);
+            return membersMapped;
         }
     }
 }

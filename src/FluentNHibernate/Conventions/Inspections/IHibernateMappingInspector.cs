@@ -1,3 +1,5 @@
+using FluentNHibernate.Mapping;
+
 namespace FluentNHibernate.Conventions.Inspections
 {
     public interface IHibernateMappingInspector : IInspector

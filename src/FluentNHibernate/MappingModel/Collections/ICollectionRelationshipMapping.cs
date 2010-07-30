@@ -8,5 +8,6 @@ namespace FluentNHibernate.MappingModel.Collections
         Type ChildType { get; }
         TypeReference Class { get; set; }
         string NotFound { get; set; }
+        string EntityName { get; set; }
     }
 }

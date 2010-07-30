@@ -4,9 +4,9 @@
 		<ul>
 			<li each="var ns in Namespaces">
         <if condition="ns == Namespace">
-          <a href="../${ns.Name}/index.htm" class="current">${ns.Name}</a>
-          <else />
-          <a href="../${ns.Name}/index.htm">${ns.Name}</a>
+          ${Format(ns, class => "current")}
+        <else />
+          ${Format(ns)}
         </if>
       </li>
 		</ul>

@@ -4,6 +4,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class OneToOneMapping : MappingBase
     {
         private readonly AttributeStore<OneToOneMapping> attributes;
@@ -69,7 +70,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.PropertyRef, value); }
         }
 
-        public bool Lazy
+        public string Lazy
         {
             get { return attributes.Get(x => x.Lazy); }
             set { attributes.Set(x => x.Lazy, value); }

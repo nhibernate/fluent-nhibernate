@@ -16,5 +16,17 @@ namespace FluentNHibernate.Conventions.Instances
         new void Proxy(Type type);
         new void Proxy<T>();
         new void SelectBeforeUpdate();
+
+        /// <summary>
+        /// (optional) Specifies the entity from which this subclass descends/extends.
+        /// </summary>
+        /// <typeparam name="T">Type of the entity to extend</typeparam>
+        new void Extends<T>();
+
+        /// <summary>
+        /// (optional) Specifies the entity from which this subclass descends/extends.
+        /// </summary>
+        /// <param name="type">Type of the entity to extend</param>
+        new void Extends(Type type);
     }
 }

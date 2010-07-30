@@ -4,6 +4,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class MetaValueMapping : MappingBase
     {
         private readonly AttributeStore<MetaValueMapping> attributes;

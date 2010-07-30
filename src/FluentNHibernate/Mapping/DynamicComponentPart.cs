@@ -1,14 +1,11 @@
 using System;
-using System.Diagnostics;
-using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {
-    public class DynamicComponentPart<T> : ComponentPartBase<T>, IComponentMappingProvider
+    public class DynamicComponentPart<T> : ComponentPartBase<T, DynamicComponentPart<T>>, IComponentMappingProvider
     {
         private readonly Type entity;
         private readonly AccessStrategyBuilder<DynamicComponentPart<T>> access;
@@ -35,64 +32,25 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Set the access and naming strategy for this component.
+        /// Map a property
         /// </summary>
-        public new AccessStrategyBuilder<DynamicComponentPart<T>> Access
-        {
-            get { return access; }
-        }
-
-        public new DynamicComponentPart<T> ParentReference(Expression<Func<T, object>> exp)
-        {
-            base.ParentReference(exp);
-            return this;
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public new DynamicComponentPart<T> Not
-        {
-            get
-            {
-                var forceExecution = base.Not;
-                return this;
-            }
-        }
-
-        public new DynamicComponentPart<T> Unique()
-        {
-            base.Unique();
-            return this;
-        }
-
-        public new DynamicComponentPart<T> ReadOnly()
-        {
-            base.ReadOnly();
-            return this;
-        }
-
-        public new DynamicComponentPart<T> Insert()
-        {
-            base.Insert();
-            return this;
-        }
-
-        public new DynamicComponentPart<T> Update()
-        {
-            base.Update();
-            return this;
-        }
-
-        public new DynamicComponentPart<T> OptimisticLock()
-        {
-            base.OptimisticLock();
-            return this;
-        }
-
+        /// <param name="key">Dictionary key</param>
+        /// <example>
+        /// Map("Age");
+        /// </example>
         public PropertyPart Map(string key)
         {
             return Map<string>(key);
         }
 
+        /// <summary>
+        /// Map a property
+        /// </summary>
+        /// <param name="key">Dictionary key</param>
+        /// <typeparam name="TProperty">Property type</typeparam>
+        /// <example>
+        /// Map&lt;int&gt;("Age");
+        /// </example>
         public PropertyPart Map<TProperty>(string key)
         {
             var property = new DummyPropertyInfo(key, typeof(TProperty));

@@ -4,6 +4,7 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
+    [Serializable]
     public class TuplizerMapping : MappingBase
     {
         private readonly AttributeStore<TuplizerMapping> attributes;
@@ -26,6 +27,12 @@ namespace FluentNHibernate.MappingModel
         {
             get { return attributes.Get(x => x.Mode); }
             set { attributes.Set(x => x.Mode, value); }
+        }
+
+        public string EntityName
+        {
+            get { return attributes.Get(x => x.EntityName); }
+            set { attributes.Set(x => x.EntityName, value); }
         }
 
         public TypeReference Type

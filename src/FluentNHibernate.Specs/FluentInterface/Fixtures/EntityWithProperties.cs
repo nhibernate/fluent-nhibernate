@@ -8,5 +8,6 @@
     class EntityWithPrivateProperties
     {
         private string Name { get; set; }
+        string name;
     }
 }

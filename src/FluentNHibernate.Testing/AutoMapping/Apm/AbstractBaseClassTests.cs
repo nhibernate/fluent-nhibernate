@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.MappingModel.Identity;
@@ -24,9 +25,8 @@ namespace FluentNHibernate.Testing.Automapping.Apm
         [Test]
         public void ShouldAllowSpecifyingToNotTreatAbstractsAsLayerSuperTypes()
         {
-            var automapper =
-                AutoMap.Source(new StubTypeSource(new[] { typeof(AbstractBase), typeof(Child) }))
-                    .Setup(x => x.AbstractClassIsLayerSupertype = t => false);
+            var cfg = new TestConfiguration_AbstractClassIsNeverLayerSupertype();
+            var automapper = AutoMap.Source(new StubTypeSource(new[] { typeof(AbstractBase), typeof(Child) }), cfg);
 
             automapper.ValidationEnabled = false;
             var mappings = automapper.BuildMappings();
@@ -49,6 +49,14 @@ namespace FluentNHibernate.Testing.Automapping.Apm
             mappings
                 .SelectMany(x => x.Classes)
                 .ShouldContain(x => x.Type == typeof(AbstractBase));
+        }
+
+        class TestConfiguration_AbstractClassIsNeverLayerSupertype : DefaultAutomappingConfiguration
+        {
+            public override bool AbstractClassIsLayerSupertype(Type type)
+            {
+                return false;
+            }
         }
     }
 

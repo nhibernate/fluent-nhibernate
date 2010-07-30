@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
-    public interface ICollectionMapping : IMappingBase
+    public interface ICollectionMapping : IMappingBase, IRelationship
     {
         CacheMapping Cache { get; set; }
         bool Inverse { get; set; }
-        bool Lazy { get; set; }
+        Lazy Lazy { get; set; }
         string Access { get; set; }
         string TableName { get; set; }
         string Schema { get; set; }
@@ -33,7 +32,6 @@ namespace FluentNHibernate.MappingModel.Collections
         CompositeElementMapping CompositeElement { get; set; }
         Type ContainingEntityType { get; set; }
         Type ChildType { get; set; }
-        ICollectionMapping OtherSide { get; set; }
         IList<FilterMapping> Filters { get; }
 
         bool HasValue<TResult>(Expression<Func<ICollectionMapping, TResult>> property);

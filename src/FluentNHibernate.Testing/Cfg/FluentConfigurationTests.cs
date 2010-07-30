@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
@@ -93,7 +94,8 @@ namespace FluentNHibernate.Testing.Cfg
                 .Mappings(m =>
                 {
                     m.FluentMappings.AddFromAssemblyOf<Foo>();
-                    m.AutoMappings.Add(AutoMap.AssemblyOf<Bar>(t => t.Namespace == typeof(Bar).Namespace));
+                    m.AutoMappings.Add(AutoMap.AssemblyOf<Bar>()
+                        .Where(t => t.Namespace == typeof(Bar).Namespace));
                 })
                 .BuildSessionFactory();
 
@@ -143,6 +145,16 @@ namespace FluentNHibernate.Testing.Cfg
 
 			configuration.Properties["current_session_context_class"].ShouldEqual(typeof(NHibernate.Context.ThreadStaticSessionContext).AssemblyQualifiedName);
     	}
+
+        [Test]
+        public void ShouldSetConnectionIsolationLevel()
+        {
+            var configuration = Fluently.Configure()
+                .Database(SQLiteConfiguration.Standard.IsolationLevel(IsolationLevel.ReadUncommitted))
+                .BuildConfiguration();
+
+            configuration.Properties["connection.isolation"].ShouldEqual("ReadUncommitted");
+        }
     }
 
     [TestFixture]
@@ -295,7 +307,8 @@ namespace FluentNHibernate.Testing.Cfg
             Fluently.Configure()
                 .Database(SQLiteConfiguration.Standard.InMemory)
                 .Mappings(m =>
-                    m.AutoMappings.Add(AutoMap.AssemblyOf<Person>(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
+                    m.AutoMappings.Add(AutoMap.AssemblyOf<Person>()
+                                        .Where(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
                         .ExportTo(ExportPath))
                 .BuildSessionFactory();
 
@@ -310,7 +323,8 @@ namespace FluentNHibernate.Testing.Cfg
                 .Database(SQLiteConfiguration.Standard.InMemory)
                 .Mappings(m =>
                     m.MergeMappings()
-                     .AutoMappings.Add(AutoMap.AssemblyOf<Person>(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
+                     .AutoMappings.Add(AutoMap.AssemblyOf<Person>()
+                        .Where(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
                      .ExportTo(ExportPath))
                 .BuildSessionFactory();
 
@@ -329,7 +343,8 @@ namespace FluentNHibernate.Testing.Cfg
                         .AddFromAssemblyOf<Record>()
                         .ExportTo(ExportPath);
 
-                    m.AutoMappings.Add(AutoMap.AssemblyOf<Person>(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
+                    m.AutoMappings.Add(AutoMap.AssemblyOf<Person>()
+                                        .Where(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
                         .ExportTo(ExportPath);
                 })
                 .BuildSessionFactory();

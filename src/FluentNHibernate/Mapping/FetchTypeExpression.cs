@@ -13,18 +13,27 @@ namespace FluentNHibernate.Mapping
 		    this.setter = setter;
 		}
 
+        /// <summary>
+        /// Join fetching
+        /// </summary>
 	    public TParent Join()
 		{
 		    setter("join");
             return parent;
 		}
 
+        /// <summary>
+        /// Select fetching
+        /// </summary>
 		public TParent Select()
 		{
 		    setter("select");
             return parent;
 		}
 
+        /// <summary>
+        /// Subselect/subquery fetching
+        /// </summary>
         public TParent Subselect()
         {
             setter("subselect");

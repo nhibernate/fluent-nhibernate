@@ -26,10 +26,22 @@ namespace FluentNHibernate.MappingModel.Output
         {
             document = new XmlDocument();
 
-            var element = document.AddElement("composite-element");
+            var name = mapping is NestedCompositeElementMapping ? "nested-composite-element" : "composite-element";
+            var element = document.AddElement(name);
 
             if (mapping.HasValue(x => x.Class))
                 element.WithAtt("class", mapping.Class);
+
+            if (mapping is NestedCompositeElementMapping)
+                element.WithAtt("name", ((NestedCompositeElementMapping)mapping).Name);
+        }
+
+        public override void Visit(CompositeElementMapping compositeElementMapping)
+        {
+            var writer = serviceLocator.GetWriter<CompositeElementMapping>();
+            var xml = writer.Write(compositeElementMapping);
+
+            document.ImportAndAppendChild(xml);
         }
 
         public override void Visit(PropertyMapping propertyMapping)
