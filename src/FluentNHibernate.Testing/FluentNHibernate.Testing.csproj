@@ -464,6 +464,7 @@
     <Compile Include="MappingModel\Identity\CompositeIdMappingTester.cs" />
     <Compile Include="MappingModel\Output\XmlNaturalIdWriterTester.cs" />
     <Compile Include="MappingModel\SortingTests.cs" />
+    <Compile Include="Utils\TypeReferenceEnumTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\tools\NHibernate\NHibernate.ByteCode.Castle.dll">
