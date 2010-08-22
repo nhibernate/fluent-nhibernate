@@ -135,6 +135,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void AccessAsReadOnlySetsAccessStrategyToReadOnly()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(c => c.HibernateMapping.DefaultAccess.ReadOnly())
+                .RootElement.HasAttribute("default-access", "readonly");
+        }
+
+        [Test]
         public void AccessUsingClassName_SetsAccessAttributeToClassName()
         {
             string className = typeof(FakePropertyAccessor).AssemblyQualifiedName;
