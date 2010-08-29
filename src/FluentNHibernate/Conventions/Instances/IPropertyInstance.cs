@@ -21,6 +21,7 @@ namespace FluentNHibernate.Conventions.Instances
         void CustomType(Type type);
         void CustomType(Type type, string columnPrefix);
         void CustomType(string type);
+        void CustomType(string type, string columnPrefix);
         void CustomSqlType(string sqlType);
         new void Precision(int precision);
         new void Scale(int scale);
