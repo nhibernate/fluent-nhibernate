@@ -5,6 +5,7 @@ using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Builders;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using NUnit.Framework;
@@ -205,7 +206,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             model.Conventions.Add(new ReferenceConventionBuilder().Always(convention));
         }
 
-        private void Mapping(Action<ManyToOnePart<ExampleParentClass>> mappingDefinition)
+        private void Mapping(Action<ManyToOneBuilder<ExampleParentClass>> mappingDefinition)
         {
             var classMap = new ClassMap<ExampleClass>();
             classMap.Id(x => x.Id);

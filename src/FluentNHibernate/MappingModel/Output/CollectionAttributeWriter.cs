@@ -96,6 +96,9 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.HasValue(x => x.Schema))
                 element.WithAtt("schema", mapping.Schema);
 
+            if (mapping.HasValue(x => x.Catalog))
+                element.WithAtt("catalog", mapping.Catalog);
+
             if (mapping.HasValue(x => x.TableName))
                 element.WithAtt("table", mapping.TableName);
 

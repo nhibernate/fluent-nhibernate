@@ -5,5 +5,6 @@ namespace FluentNHibernate.Conventions.Inspections
     public interface IIndexInspector : IIndexInspectorBase
     {
         TypeReference Type { get; }
+        int Length { get; }
     }
 }

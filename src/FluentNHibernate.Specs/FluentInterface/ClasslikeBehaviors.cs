@@ -98,10 +98,10 @@ namespace FluentNHibernate.Specs.FluentInterface
             mapping.Collections.Single().As<ListMapping>().Index.ShouldNotBeNull();
 
         It should_create_a_single_column_for_the_index = () =>
-            mapping.Collections.Single().As<ListMapping>().Index.Columns.Count().ShouldEqual(1);
+            mapping.Collections.Single().As<ListMapping>().Index.As<IndexMapping>().Columns.Count().ShouldEqual(1);
 
         It should_use_index_as_the_index_column_name = () =>
-            mapping.Collections.Single().As<ListMapping>().Index.Columns.Single().Name.ShouldEqual("Index");
+            mapping.Collections.Single().As<ListMapping>().Index.As<IndexMapping>().Columns.Single().Name.ShouldEqual("Index");
     }
 
     [Behaviors]
@@ -111,10 +111,10 @@ namespace FluentNHibernate.Specs.FluentInterface
             mapping.Collections.Single().As<ListMapping>().Index.ShouldNotBeNull();
 
         It should_create_a_single_column_for_the_index = () =>
-            mapping.Collections.Single().As<ListMapping>().Index.Columns.Count().ShouldEqual(1);
+            mapping.Collections.Single().As<ListMapping>().Index.As<IndexMapping>().Columns.Count().ShouldEqual(1);
 
         It should_use_specified_column_name_as_the_index_column_name = () =>
-            mapping.Collections.Single().As<ListMapping>().Index.Columns.Single().Name.ShouldEqual("custom-column");
+            mapping.Collections.Single().As<ListMapping>().Index.As<IndexMapping>().Columns.Single().Name.ShouldEqual("custom-column");
 
         It should_use_specified_type_as_the_index_type = () =>
             mapping.Collections.Single().As<ListMapping>().Index.As<IndexMapping>().Type.ShouldEqual(new TypeReference(typeof(IndexTarget)));
@@ -168,10 +168,10 @@ namespace FluentNHibernate.Specs.FluentInterface
             mapping.Collections.Single().As<ArrayMapping>().Index.ShouldNotBeNull();
 
         It should_create_a_single_column_for_the_index = () =>
-            mapping.Collections.Single().As<ArrayMapping>().Index.Columns.Count().ShouldEqual(1);
+            mapping.Collections.Single().As<ArrayMapping>().Index.As<IndexMapping>().Columns.Count().ShouldEqual(1);
 
         It should_use_specified_property_as_the_index_column_name = () =>
-            mapping.Collections.Single().As<ArrayMapping>().Index.Columns.Single().Name.ShouldEqual("Position");
+            mapping.Collections.Single().As<ArrayMapping>().Index.As<IndexMapping>().Columns.Single().Name.ShouldEqual("Position");
 
         protected static ClassMappingBase mapping;
     }

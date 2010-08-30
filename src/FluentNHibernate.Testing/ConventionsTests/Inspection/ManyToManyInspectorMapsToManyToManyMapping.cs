@@ -156,6 +156,28 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         }
 
         [Test]
+        public void UniqueMapped()
+        {
+            mapping.Unique = true;
+            inspector.Unique.ShouldEqual(true);
+        }
+
+        [Test]
+        public void UniqueIsSet()
+        {
+            mapping.Unique = true;
+            inspector.IsSet(Prop(x => x.Unique))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void UniqueIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Unique))
+                .ShouldBeFalse();
+        }
+
+        [Test]
         public void NotFoundMapped()
         {
             mapping.NotFound = "exception";

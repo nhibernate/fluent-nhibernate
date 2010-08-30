@@ -2,8 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using FluentNHibernate.Mapping.Builders;
 using FluentNHibernate.Mapping.Providers;
+using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
+using NHibernate.Collection.Generic;
 
 namespace FluentNHibernate.Mapping
 {
@@ -26,7 +30,7 @@ namespace FluentNHibernate.Mapping
         /// <example>
         /// Map(x => x.Name);
         /// </example>
-        public PropertyPart Map(Expression<Func<T, object>> memberExpression)
+        public PropertyBuilder Map(Expression<Func<T, object>> memberExpression)
         {
             return Map(memberExpression, null);
         }
@@ -39,21 +43,22 @@ namespace FluentNHibernate.Mapping
         /// <example>
         /// Map(x => x.Name, "person_name");
         /// </example>
-        public PropertyPart Map(Expression<Func<T, object>> memberExpression, string columnName)
+        public PropertyBuilder Map(Expression<Func<T, object>> memberExpression, string columnName)
         {
             return Map(memberExpression.ToMember(), columnName);
         }
 
-        protected virtual PropertyPart Map(Member property, string columnName)
+        protected virtual PropertyBuilder Map(Member property, string columnName)
         {
-            var propertyMap = new PropertyPart(property, typeof(T));
+            var propertyMapping = new PropertyMapping();
+            var builder = new PropertyBuilder(propertyMapping, typeof(T), property);
 
             if (!string.IsNullOrEmpty(columnName))
-                propertyMap.Column(columnName);
+                builder.Column(columnName);
 
-            properties.Add(propertyMap);
+            properties.Add(new PassThroughMappingProvider(propertyMapping));
 
-            return propertyMap;
+            return builder;
         }
 
         /// <summary>
@@ -65,7 +70,7 @@ namespace FluentNHibernate.Mapping
         /// <example>
         /// References(x => x.Company);
         /// </example>
-        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> memberExpression)
+        public ManyToOneBuilder<TOther> References<TOther>(Expression<Func<T, TOther>> memberExpression)
         {
             return References(memberExpression, null);
         }
@@ -80,7 +85,7 @@ namespace FluentNHibernate.Mapping
         /// <example>
         /// References(x => x.Company, "company_id");
         /// </example>
-        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> memberExpression, string columnName)
+        public ManyToOneBuilder<TOther> References<TOther>(Expression<Func<T, TOther>> memberExpression, string columnName)
         {
             return References<TOther>(memberExpression.ToMember(), columnName);
         }
@@ -94,7 +99,7 @@ namespace FluentNHibernate.Mapping
         /// <example>
         /// References(x => x.Company, "company_id");
         /// </example>
-        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, object>> memberExpression)
+        public ManyToOneBuilder<TOther> References<TOther>(Expression<Func<T, object>> memberExpression)
         {
             return References<TOther>(memberExpression, null);
         }
@@ -109,19 +114,20 @@ namespace FluentNHibernate.Mapping
         /// <example>
         /// References(x => x.Company, "company_id");
         /// </example>
-        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, object>> memberExpression, string columnName)
+        public ManyToOneBuilder<TOther> References<TOther>(Expression<Func<T, object>> memberExpression, string columnName)
         {
             return References<TOther>(memberExpression.ToMember(), columnName);
         }
 
-        protected virtual ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
+        protected virtual ManyToOneBuilder<TOther> References<TOther>(Member property, string columnName)
         {
-            var part = new ManyToOnePart<TOther>(EntityType, property);
+            var manyToOneMapping = new ManyToOneMapping();
+            var part = new ManyToOneBuilder<TOther>(manyToOneMapping, EntityType, property);
 
             if (columnName != null)
                 part.Column(columnName);
 
-            references.Add(part);
+            references.Add(new PassThroughMappingProvider(manyToOneMapping));
 
             return part;
         }
@@ -278,6 +284,8 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+        #region HasMany
+
         private OneToManyPart<TChild> MapHasMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
         {
             return HasMany<TChild>(expression.ToMember());
@@ -305,11 +313,6 @@ namespace FluentNHibernate.Mapping
             return MapHasMany<TChild, IEnumerable<TChild>>(memberExpression);
         }
 
-        public OneToManyPart<TChild> HasMany<TKey, TChild>(Expression<Func<T, IDictionary<TKey, TChild>>> memberExpression)
-        {
-            return MapHasMany<TChild, IDictionary<TKey, TChild>>(memberExpression);
-        }
-
         /// <summary>
         /// Maps a collection of entities as a one-to-many
         /// </summary>
@@ -322,6 +325,63 @@ namespace FluentNHibernate.Mapping
         {
             return MapHasMany<TChild, object>(memberExpression);
         }
+
+        /// <summary>
+        /// Maps a dictionary
+        /// </summary>
+        /// <typeparam name="TKey">Key type</typeparam>
+        /// <typeparam name="TValue">Value type</typeparam>
+        /// <param name="memberExpression">Collection property</param>
+        /// <example>
+        /// HasMany(x => x.Locations);
+        /// </example>
+        public MapBuilder<TKey, TValue> HasMany<TKey, TValue>(Expression<Func<T, IDictionary<TKey, TValue>>> memberExpression)        {
+            return HasManyMap(memberExpression);
+        }
+
+        /// <summary>
+        /// Maps a dictionary with a non-generic custom collection derived from <see cref="PersistentGenericMap{TKey,TValue}"/>.
+        /// </summary>
+        /// <typeparam name="TKey">Key type</typeparam>
+        /// <typeparam name="TValue">Value type</typeparam>
+        /// <param name="memberExpression">Collection property</param>
+        /// <example>
+        /// HasMany(x => x.Locations);
+        /// </example>
+        public MapBuilder<TKey, TValue> HasMany<TKey, TValue>(Expression<Func<T, PersistentGenericMap<TKey, TValue>>> memberExpression)
+        {
+            return HasManyMap<TKey, TValue>(memberExpression.ToMember());
+        }
+
+        /// <summary>
+        /// Maps a dictionary
+        /// </summary>
+        /// <typeparam name="TKey">Key type</typeparam>
+        /// <typeparam name="TValue">Value type</typeparam>
+        /// <param name="memberExpression">Collection property</param>
+        /// <example>
+        /// HasMany(x => x.Locations);
+        /// </example>
+        public MapBuilder<TKey, TValue> HasMany<TKey, TValue>(Expression<Func<T, IDictionary>> memberExpression)
+        {
+            return HasManyMap<TKey, TValue>(memberExpression.ToMember());
+        }
+
+        /// <summary>
+        /// Maps a dictionary
+        /// </summary>
+        /// <param name="memberExpression">Collection property</param>
+        /// <example>
+        /// HasMany(x => x.Locations);
+        /// </example>
+        public MapBuilder<string, string> HasMany(Expression<Func<T, IDictionary>> memberExpression)
+        {
+            return HasManyMap<string, string>(memberExpression.ToMember());
+        }
+
+        #endregion
+
+        #region HasManyToMany
 
         private ManyToManyPart<TChild> MapHasManyToMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
         {
@@ -361,6 +421,79 @@ namespace FluentNHibernate.Mapping
         public ManyToManyPart<TChild> HasManyToMany<TChild>(Expression<Func<T, object>> memberExpression)
         {
             return MapHasManyToMany<TChild, object>(memberExpression);
+        }
+
+        /// <summary>
+        /// Maps a generic dictionary
+        /// </summary>
+        /// <typeparam name="TKey">Key type</typeparam>
+        /// <typeparam name="TValue">Value type</typeparam>
+        /// <param name="memberExpression">Collection property</param>
+        /// <example>
+        /// HasManyToMany(x => x.Locations);
+        /// </example>
+        public MapBuilder<TKey, TValue> HasManyToMany<TKey, TValue>(Expression<Func<T, IDictionary<TKey, TValue>>> memberExpression)
+        {
+            return HasManyMap(memberExpression);
+        }
+
+        /// <summary>
+        /// Maps a generic dictionary
+        /// </summary>
+        /// <typeparam name="TKey">Key type</typeparam>
+        /// <typeparam name="TValue">Value type</typeparam>
+        /// <param name="memberExpression">Collection property</param>
+        /// <example>
+        /// HasManyToMany(x => x.Locations);
+        /// </example>
+        public MapBuilder<TKey, TValue> HasManyToMany<TKey, TValue>(Expression<Func<T, PersistentGenericMap<TKey, TValue>>> memberExpression)
+        {
+            return HasManyMap<TKey, TValue>(memberExpression.ToMember());
+        }
+
+        /// <summary>
+        /// Maps a dictionary
+        /// </summary>
+        /// <typeparam name="TKey">Key type</typeparam>
+        /// <typeparam name="TValue">Value type</typeparam>
+        /// <param name="memberExpression">Collection property</param>
+        /// <example>
+        /// HasManyToMany(x => x.Locations);
+        /// </example>
+        public MapBuilder<TKey, TValue> HasManyToMany<TKey, TValue>(Expression<Func<T, IDictionary>> memberExpression)
+        {
+            return HasManyMap<TKey, TValue>(memberExpression.ToMember());
+        }
+
+        /// <summary>
+        /// Maps a dictionary
+        /// </summary>
+        /// <param name="memberExpression">Collection property</param>
+        /// <example>
+        /// HasManyToMany(x => x.Locations);
+        /// </example>
+        public MapBuilder<string, string> HasManyToMany(Expression<Func<T, IDictionary>> memberExpression)
+        {
+            return HasManyMap<string, string>(memberExpression.ToMember());
+        }
+
+        #endregion
+
+        MapBuilder<TKey, TValue> HasManyMap<TKey, TValue>(Expression<Func<T, IDictionary<TKey, TValue>>> memberExpression)
+        {
+            return HasManyMap<TKey, TValue>(memberExpression.ToMember());
+        }
+
+        MapBuilder<TKey, TValue> HasManyMap<TKey, TValue>(Member member)
+        {
+            var mapping = new MapMapping
+            {
+                ContainingEntityType = typeof(T)
+            };
+
+            collections.Add(new PassThroughMappingProvider(mapping));
+
+            return new MapBuilder<TKey, TValue>(mapping, member);
         }
 
         /// <summary>

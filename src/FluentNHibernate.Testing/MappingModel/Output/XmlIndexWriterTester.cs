@@ -37,5 +37,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer.VerifyXml(mapping)
                 .Element("column").Exists();
         }
+
+        [Test]
+        public void ShouldWriteElement()
+        {
+            var mapping = new IndexMapping();
+
+            writer.VerifyXml(mapping)
+                .RootElement.HasName("index");
+        }
     }
 }

@@ -291,29 +291,4 @@ namespace FluentNHibernate
         HibernateMapping GetHibernateMapping();
         IEnumerable<Member> GetIgnoredProperties();
     }
-
-    public class PassThroughMappingProvider : IMappingProvider
-    {
-        private readonly ClassMapping mapping;
-
-        public PassThroughMappingProvider(ClassMapping mapping)
-        {
-            this.mapping = mapping;
-        }
-
-        public ClassMapping GetClassMapping()
-        {
-            return mapping;
-        }
-
-        public HibernateMapping GetHibernateMapping()
-        {
-            return new HibernateMapping();
-        }
-
-        public IEnumerable<Member> GetIgnoredProperties()
-        {
-            return new Member[0];
-        }
-    }
 }

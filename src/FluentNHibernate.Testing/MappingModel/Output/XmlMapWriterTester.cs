@@ -167,6 +167,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteCatalogAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            testHelper.Check(x => x.Catalog, "dbo").MapsToAttribute("catalog");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
         public void ShouldWriteTableAttribute()
         {
 

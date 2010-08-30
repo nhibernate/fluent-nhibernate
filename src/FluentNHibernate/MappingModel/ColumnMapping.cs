@@ -15,7 +15,7 @@ namespace FluentNHibernate.MappingModel
 
         public ColumnMapping(AttributeStore underlyingStore)
         {
-            attributes = new AttributeStore<ColumnMapping>(underlyingStore);
+            attributes = new AttributeStore<ColumnMapping>(new DerivedAttributeStore(underlyingStore));
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)

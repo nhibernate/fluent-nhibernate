@@ -9,5 +9,6 @@ namespace FluentNHibernate.MappingModel.Collections
         TypeReference Class { get; set; }
         string NotFound { get; set; }
         string EntityName { get; set; }
+        void SetDefaultClass(TypeReference type);
     }
 }

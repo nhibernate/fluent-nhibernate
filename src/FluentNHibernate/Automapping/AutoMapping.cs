@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Builders;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
@@ -49,8 +50,8 @@ namespace FluentNHibernate.Automapping
                 if (discriminator != null)
                     classMapping.Discriminator = ((IDiscriminatorMappingProvider)discriminator).GetDiscriminatorMapping();
 
-                if (Cache.IsDirty)
-                    classMapping.Cache = ((ICacheMappingProvider)Cache).GetCacheMapping();
+                if (cache != null)
+                    classMapping.Cache = cache;
 
                 foreach (var join in joins)
                     classMapping.AddJoin(join);
@@ -135,13 +136,13 @@ namespace FluentNHibernate.Automapping
             return part;
         }
 
-        protected override PropertyPart Map(Member property, string columnName)
+        protected override PropertyBuilder Map(Member property, string columnName)
         {
             mappedMembers.Add(property);
             return base.Map(property, columnName);
         }
 
-        protected override ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
+        protected override ManyToOneBuilder<TOther> References<TOther>(Member property, string columnName)
         {
             mappedMembers.Add(property);
             return base.References<TOther>(property, columnName);

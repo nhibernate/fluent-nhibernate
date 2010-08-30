@@ -156,7 +156,7 @@
     <Compile Include="DomainModel\Access\Mappings\ParentModelMapping.cs" />
     <Compile Include="DomainModel\Access\OneToOneModel.cs" />
     <Compile Include="DomainModel\Access\ParentModel.cs" />
-    <Compile Include="FluentInterfaceTests\ElementPartTests.cs" />
+    <Compile Include="FluentInterfaceTests\ElementBuilderTests.cs" />
     <Compile Include="DomainModel\Mapping\FilterTester.cs" />
     <Compile Include="FluentInterfaceTests\ClassMapFilterPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\KeyManyToOnePartTests.cs" />
@@ -462,6 +462,7 @@
     <Compile Include="DomainModel\Mapping\UnionSubclassTester.cs" />
     <Compile Include="FluentInterfaceTests\NaturalIdPartTests.cs" />
     <Compile Include="MappingModel\Identity\CompositeIdMappingTester.cs" />
+    <Compile Include="MappingModel\Output\XmlCompositeIndexWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlNaturalIdWriterTester.cs" />
     <Compile Include="MappingModel\SortingTests.cs" />
     <Compile Include="Utils\TypeReferenceEnumTests.cs" />

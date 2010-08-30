@@ -1,6 +1,7 @@
 using System.Linq;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
@@ -11,273 +12,314 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ShouldSetName()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => { })
-                .ModelShouldMatch(x => x.Name.ShouldEqual("BagOfChildren"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren));
+            var collection = mapping.Collections.Single();
+            
+            collection.Name.ShouldEqual("BagOfChildren");
         }
 
         [Test]
         public void AccessShouldSetModelAccessPropertyToValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Access.Field())
-                .ModelShouldMatch(x => x.Access.ShouldEqual("field"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Access.Field());
+            var collection = mapping.Collections.Single();
+
+            collection.Access.ShouldEqual("field");
         }
 
         [Test]
         public void BatchSizeShouldSetModelBatchSizePropertyToValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.BatchSize(10))
-                .ModelShouldMatch(x => x.BatchSize.ShouldEqual(10));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .BatchSize(10));
+            var collection = mapping.Collections.Single();
+
+            collection.BatchSize.ShouldEqual(10);
         }
 
         [Test]
         public void CacheShouldSetModelCachePropertyToValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Cache.ReadOnly())
-                .ModelShouldMatch(x =>
-                {
-                    x.Cache.ShouldNotBeNull();
-                    x.Cache.Usage.ShouldEqual("read-only");
-                });
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Cache.ReadOnly());
+            var collection = mapping.Collections.Single();
+                    
+            collection.Cache.ShouldNotBeNull();
+            collection.Cache.Usage.ShouldEqual("read-only");
         }
 
         [Test]
         public void CascadeShouldSetModelCascadePropertyToValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Cascade.All())
-                .ModelShouldMatch(x => x.Cascade.ShouldEqual("all"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Cascade.All());
+            var collection = mapping.Collections.Single();
+            
+            collection.Cascade.ShouldEqual("all");
         }
 
         [Test]
         public void CollectionTypeShouldSetModelCollectionTypePropertyToValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.CollectionType("type"))
-                .ModelShouldMatch(x => x.CollectionType.ShouldEqual(new TypeReference("type")));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .CollectionType("type"));
+            var collection = mapping.Collections.Single();
+            
+            collection.CollectionType.ShouldEqual(new TypeReference("type"));
         }
 
         [Test]
         public void ForeignKeyCascadeOnDeleteShouldSetModelKeyOnDeletePropertyToCascade()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.ForeignKeyCascadeOnDelete())
-                .ModelShouldMatch(x => x.Key.OnDelete.ShouldEqual("cascade"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .ForeignKeyCascadeOnDelete());
+            var collection = mapping.Collections.Single();
+            
+            collection.Key.OnDelete.ShouldEqual("cascade");
         }
 
         [Test]
         public void InverseShouldSetModelInversePropertyToTrue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Inverse())
-                .ModelShouldMatch(x => x.Inverse.ShouldBeTrue());
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Inverse());
+            var collection = mapping.Collections.Single();
+            
+            collection.Inverse.ShouldBeTrue();
         }
 
         [Test]
         public void NotInverseShouldSetModelInversePropertyToFalse()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Not.Inverse())
-                .ModelShouldMatch(x => x.Inverse.ShouldBeFalse());
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Not.Inverse());
+            var collection = mapping.Collections.Single();
+            
+            collection.Inverse.ShouldBeFalse();
         }
 
         [Test]
         public void WithParentKeyColumnShouldAddColumnToModelKeyColumnsCollection()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.ParentKeyColumn("col"))
-                .ModelShouldMatch(x => x.Key.Columns.Count().ShouldEqual(1));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .ParentKeyColumn("col"));
+            var collection = mapping.Collections.Single();
+            
+            collection.Key.Columns.Count().ShouldEqual(1);
         }
 
         [Test]
         public void WithForeignKeyConstraintNamesShouldAddForeignKeyToBothColumns()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.ForeignKeyConstraintNames("p_fk", "c_fk"))
-                .ModelShouldMatch(x =>
-                {
-                    x.Key.ForeignKey.ShouldEqual("p_fk");
-                    ((ManyToManyMapping)x.Relationship).ForeignKey.ShouldEqual("c_fk");
-                });
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .ForeignKeyConstraintNames("p_fk", "c_fk"));
+            var collection = mapping.Collections.Single();
+                
+            collection.Key.ForeignKey.ShouldEqual("p_fk");
+            ((ManyToManyMapping)collection.Relationship).ForeignKey.ShouldEqual("c_fk");
         }
 
         [Test]
         public void WithChildKeyColumnShouldAddColumnToModelRelationshipColumnsCollection()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.ChildKeyColumn("col"))
-                .ModelShouldMatch(x => ((ManyToManyMapping)x.Relationship).Columns.Count().ShouldEqual(1));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .ChildKeyColumn("col"));
+            var collection = mapping.Collections.Single();
+                
+            ((ManyToManyMapping)collection.Relationship).Columns.Count().ShouldEqual(1);
         }
 
         [Test]
         public void LazyLoadShouldSetModelLazyPropertyToTrue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Lazy.True));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .LazyLoad());
+            var collection = mapping.Collections.Single();
+            collection.Lazy.ShouldEqual(Lazy.True);
         }
 
         [Test]
         public void NotLazyLoadShouldSetModelLazyPropertyToFalse()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Not.LazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Lazy.False));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Not.LazyLoad());
+            var collection = mapping.Collections.Single();
+            collection.Lazy.ShouldEqual(Lazy.False);
         }
         
         [Test]
         public void ExtraLazyLoadShouldSetModelLazyPropertyToExtra()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.ExtraLazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Lazy.Extra));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .ExtraLazyLoad());
+            var collection = mapping.Collections.Single();
+            collection.Lazy.ShouldEqual(Lazy.Extra);
         }
 
         [Test]
         public void NotExtraLazyLoadShouldSetModelLazyPropertyToTrue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Not.ExtraLazyLoad())
-                .ModelShouldMatch(x => x.Lazy.ShouldEqual(Lazy.True));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Not.ExtraLazyLoad());
+            var collection = mapping.Collections.Single();
+            collection.Lazy.ShouldEqual(Lazy.True);
         }
 
         [Test]
         public void NotFoundShouldSetModelRelationshipNotFoundPropertyToValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.NotFound.Ignore())
-                .ModelShouldMatch(x => ((ManyToManyMapping)x.Relationship).NotFound.ShouldEqual("ignore"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .NotFound.Ignore());
+            var collection = mapping.Collections.Single();
+                
+            ((ManyToManyMapping)collection.Relationship).NotFound.ShouldEqual("ignore");
         }
 
         [Test]
         public void WhereShouldSetModelWherePropertyToValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Where("x = 1"))
-                .ModelShouldMatch(x => x.Where.ShouldEqual("x = 1"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Where("x = 1"));
+            var collection = mapping.Collections.Single();
+            collection.Where.ShouldEqual("x = 1");
         }
 
         [Test]
         public void WithTableNameShouldSetModelTableNamePropertyToValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Table("t"))
-                .ModelShouldMatch(x => x.TableName.ShouldEqual("t"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Table("t"));
+            var collection = mapping.Collections.Single();
+            collection.TableName.ShouldEqual("t");
         }
 
         [Test]
         public void SchemaIsShouldSetModelSchemaPropertyToValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Schema("dto"))
-                .ModelShouldMatch(x => x.Schema.ShouldEqual("dto"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Schema("dto"));
+            var collection = mapping.Collections.Single();
+            collection.Schema.ShouldEqual("dto");
         }
 
         [Test]
         public void FetchShouldSetModelFetchPropertyToValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Fetch.Select())
-                .ModelShouldMatch(x => x.Fetch.ShouldEqual("select"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Fetch.Select());
+            var collection = mapping.Collections.Single();
+            collection.Fetch.ShouldEqual("select");
         }
 
         [Test]
         public void PersisterShouldSetModelPersisterPropertyToAssemblyQualifiedName()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Persister<CustomPersister>())
-                .ModelShouldMatch(x => x.Persister.GetUnderlyingSystemType().ShouldEqual(typeof(CustomPersister)));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Persister<CustomPersister>());
+            var collection = mapping.Collections.Single();
+            collection.Persister.GetUnderlyingSystemType().ShouldEqual(typeof(CustomPersister));
         }
 
         [Test]
         public void CheckShouldSetModelCheckToValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Check("x > 100"))
-                .ModelShouldMatch(x => x.Check.ShouldEqual("x > 100"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Check("x > 100"));
+            var collection = mapping.Collections.Single();
+            collection.Check.ShouldEqual("x > 100");
         }
 
         [Test]
         public void OptimisticLockShouldSetModelOptimisticLockToValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.OptimisticLock.All())
-                .ModelShouldMatch(x => x.OptimisticLock.ShouldEqual("all"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .OptimisticLock.All());
+            var collection = mapping.Collections.Single();
+            collection.OptimisticLock.ShouldEqual("all");
         }
 
         [Test]
         public void GenericShouldSetModelGenericToTrue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Generic())
-                .ModelShouldMatch(x => x.Generic.ShouldBeTrue());
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Generic());
+            var collection = mapping.Collections.Single();
+            collection.Generic.ShouldBeTrue();
         }
 
         [Test]
         public void NotGenericShouldSetModelGenericToTrue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Not.Generic())
-                .ModelShouldMatch(x => x.Generic.ShouldBeFalse());
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Not.Generic());
+            var collection = mapping.Collections.Single();
+            collection.Generic.ShouldBeFalse();
         }
 
         [Test]
         public void ReadOnlyShouldSetModelMutableToFalse()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.ReadOnly())
-                .ModelShouldMatch(x => x.Mutable.ShouldBeFalse());
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .ReadOnly());
+            var collection = mapping.Collections.Single();
+            collection.Mutable.ShouldBeFalse();
         }
 
         [Test]
         public void NotReadOnlyShouldSetModelMutableToTrue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Not.ReadOnly())
-                .ModelShouldMatch(x => x.Mutable.ShouldBeTrue());
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Not.ReadOnly());
+            var collection = mapping.Collections.Single();
+            collection.Mutable.ShouldBeTrue();
         }
 
         [Test]
         public void SubselectShouldSetModelSubselectToValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Subselect("whee"))
-                .ModelShouldMatch(x => x.Subselect.ShouldEqual("whee"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .Subselect("whee"));
+            var collection = mapping.Collections.Single();
+            collection.Subselect.ShouldEqual("whee");
         }
 
         [Test]
         public void OrderByShouldSetAttributeOnBag()
         {
-            ManyToMany(x => x.BagOfChildren)
-               .Mapping(m => m.OrderBy("col1"))
-               .ModelShouldMatch(x => x.OrderBy.ShouldEqual("col1"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .OrderBy("col1"));
+            var collection = mapping.Collections.Single();
+           collection.OrderBy.ShouldEqual("col1");
         }
 
         [Test]
         public void ChildOrderByShouldSetAttributeOnRelationshipModel()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.ChildOrderBy("col1"))
-                .ModelShouldMatch(x => ((ManyToManyMapping)x.Relationship).OrderBy.ShouldEqual("col1"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .ChildOrderBy("col1"));
+            var collection = mapping.Collections.Single();
+                
+            ((ManyToManyMapping)collection.Relationship).OrderBy.ShouldEqual("col1");
         }
 
         [Test]
         public void ChildWhereShouldSetAttributeOnRelationshipModel()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.ChildWhere("some condition"))
-                .ModelShouldMatch(x => ((ManyToManyMapping)x.Relationship).Where.ShouldEqual("some condition"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .ChildWhere("some condition"));
+            var collection = mapping.Collections.Single();
+
+            ((ManyToManyMapping)collection.Relationship).Where.ShouldEqual("some condition");
         }
 
         [Test]
         public void EntityNameShouldSetModelValue()
         {
-            ManyToMany(x => x.BagOfChildren)
-                .Mapping(m => m.EntityName("name"))
-                .ModelShouldMatch(x => x.Relationship.EntityName.ShouldEqual("name"));
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.BagOfChildren)
+                .EntityName("name"));
+            var collection = mapping.Collections.Single();
+            collection.Relationship.EntityName.ShouldEqual("name");
         }
     }
 }

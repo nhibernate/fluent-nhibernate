@@ -1,33 +1,35 @@
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.Linq;
-using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 using NHibernate.UserTypes;
 
-namespace FluentNHibernate.Mapping
+namespace FluentNHibernate.Mapping.Builders
 {
-    public class PropertyPart : IPropertyMappingProvider
+    public class PropertyBuilder
     {
-        private readonly Member property;
-        private readonly Type parentType;
-        private readonly AccessStrategyBuilder<PropertyPart> access;
-        private readonly PropertyGeneratedBuilder generated;
-        private readonly ColumnMappingCollection<PropertyPart> columns;
-        private readonly AttributeStore<PropertyMapping> attributes = new AttributeStore<PropertyMapping>();
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
 
         private bool nextBool = true;
+        readonly PropertyMapping mapping;
 
-        public PropertyPart(Member property, Type parentType)
+        public PropertyBuilder(PropertyMapping mapping, Type containingEntityType, Member member)
         {
-            columns = new ColumnMappingCollection<PropertyPart>(this);
-            access = new AccessStrategyBuilder<PropertyPart>(this, value => attributes.Set(x => x.Access, value));
-            generated = new PropertyGeneratedBuilder(this, value => attributes.Set(x => x.Generated, value));
+            this.mapping = mapping;
 
-            this.property = property;
-            this.parentType = parentType;
+            InitialiseDefaults(containingEntityType, member);
+        }
+
+        void InitialiseDefaults(Type containingEntityType, Member member)
+        {
+            mapping.ContainingEntityType = containingEntityType;
+            mapping.Member = member;
+            mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.InnerStore) { Name = member.Name });
+            mapping.SetDefaultValue("Name", mapping.Member.Name);
+            mapping.SetDefaultValue("Type", GetDefaultType());
+
+            if (member.PropertyType.IsEnum() && member.PropertyType.IsNullable())
+                columnAttributes.SetDefault(x => x.NotNull, false);
         }
 
         /// <summary>
@@ -38,14 +40,14 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public PropertyGeneratedBuilder Generated
         {
-            get { return generated; }
+            get { return new PropertyGeneratedBuilder(this, value => mapping.Generated = value); }
         }
 
         /// <summary>
         /// Specify the property column name
         /// </summary>
         /// <param name="columnName">Column name</param>
-        public PropertyPart Column(string columnName)
+        public PropertyBuilder Column(string columnName)
         {
             Columns.Clear();
             Columns.Add(columnName);
@@ -55,25 +57,25 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Modify the columns collection
         /// </summary>
-        public ColumnMappingCollection<PropertyPart> Columns
+        public ColumnMappingCollection<PropertyBuilder> Columns
         {
-            get { return columns; }
+            get { return new ColumnMappingCollection<PropertyBuilder>(this, mapping, columnAttributes.InnerStore); }
         }
 
         /// <summary>
         /// Set the access and naming strategy for this property.
         /// </summary>
-        public AccessStrategyBuilder<PropertyPart> Access
+        public AccessStrategyBuilder<PropertyBuilder> Access
         {
-            get { return access; }
+            get { return new AccessStrategyBuilder<PropertyBuilder>(this, value => mapping.Access = value); }
         }
 
         /// <summary>
         /// Specify that this property is insertable
         /// </summary>
-        public PropertyPart Insert()
+        public PropertyBuilder Insert()
         {
-            attributes.Set(x => x.Insert, nextBool);
+            mapping.Insert = nextBool;
             nextBool = true;
 
             return this;
@@ -82,9 +84,9 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specify that this property is updatable
         /// </summary>
-        public PropertyPart Update()
+        public PropertyBuilder Update()
         {
-            attributes.Set(x => x.Update, nextBool);
+            mapping.Update = nextBool;
             nextBool = true;
 
             return this;
@@ -94,7 +96,7 @@ namespace FluentNHibernate.Mapping
         /// Specify the column length
         /// </summary>
         /// <param name="length">Column length</param>
-        public PropertyPart Length(int length)
+        public PropertyBuilder Length(int length)
         {
             columnAttributes.Set(x => x.Length, length);
             return this;
@@ -103,7 +105,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specify the nullability of this property
         /// </summary>
-        public PropertyPart Nullable()
+        public PropertyBuilder Nullable()
         {
             columnAttributes.Set(x => x.NotNull, !nextBool);
             nextBool = true;
@@ -113,10 +115,10 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specify that this property is read-only
         /// </summary>
-        public PropertyPart ReadOnly()
+        public PropertyBuilder ReadOnly()
         {
-            attributes.Set(x => x.Insert, !nextBool);
-            attributes.Set(x => x.Update, !nextBool);
+            mapping.Insert = !nextBool;
+            mapping.Update = !nextBool;
             nextBool = true;
             return this;
         }
@@ -125,18 +127,18 @@ namespace FluentNHibernate.Mapping
         /// Specify the property formula
         /// </summary>
         /// <param name="formula">Formula</param>
-        public PropertyPart Formula(string formula)
+        public PropertyBuilder Formula(string formula)
         {
-            attributes.Set(x => x.Formula, formula);
+            mapping.Formula = formula;
             return this;
         }
 
         /// <summary>
         /// Specify the lazy-loading behaviour
         /// </summary>
-        public PropertyPart LazyLoad()
+        public PropertyBuilder LazyLoad()
         {
-            attributes.Set(x => x.Lazy, nextBool);
+            mapping.Lazy = nextBool;
             nextBool = true;
             return this;
         }
@@ -145,7 +147,7 @@ namespace FluentNHibernate.Mapping
         /// Specify an index name
         /// </summary>
         /// <param name="index">Index name</param>
-        public PropertyPart Index(string index)
+        public PropertyBuilder Index(string index)
         {
             columnAttributes.Set(x => x.Index, index);
             return this;
@@ -156,7 +158,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <typeparam name="TCustomtype">A type which implements <see cref="IUserType"/>.</typeparam>
         /// <returns>This property mapping to continue the method chain</returns>
-        public PropertyPart CustomType<TCustomtype>()
+        public PropertyBuilder CustomType<TCustomtype>()
         {
             return CustomType(typeof(TCustomtype));
         }
@@ -166,7 +168,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="type">A type which implements <see cref="IUserType"/>.</param>
         /// <returns>This property mapping to continue the method chain</returns>
-        public PropertyPart CustomType(Type type)
+        public PropertyBuilder CustomType(Type type)
         {
             if (typeof(ICompositeUserType).IsAssignableFrom(type))
                 AddColumnsFromCompositeUserType(type);
@@ -179,10 +181,9 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="type">A type which implements <see cref="IUserType"/>.</param>
         /// <returns>This property mapping to continue the method chain</returns>
-        public PropertyPart CustomType(string type)
+        public PropertyBuilder CustomType(string type)
         {
-            attributes.Set(x => x.Type, new TypeReference(type));
-
+            mapping.Type = new TypeReference(type);
             return this;
         }
 
@@ -191,9 +192,9 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="typeFunc">A function which returns a type which implements <see cref="IUserType"/>. The argument of the function is the mapped property type</param>
         /// <returns>This property mapping to continue the method chain</returns>
-        public PropertyPart CustomType(Func<Type, Type> typeFunc)
+        public PropertyBuilder CustomType(Func<Type, Type> typeFunc)
         {
-            var type = typeFunc.Invoke(this.property.PropertyType);
+            var type = typeFunc.Invoke(mapping.Member.PropertyType);
 
             if (typeof(ICompositeUserType).IsAssignableFrom(type))
                 AddColumnsFromCompositeUserType(type);
@@ -215,7 +216,7 @@ namespace FluentNHibernate.Mapping
         /// Specify a custom SQL type
         /// </summary>
         /// <param name="sqlType">SQL type</param>
-        public PropertyPart CustomSqlType(string sqlType)
+        public PropertyBuilder CustomSqlType(string sqlType)
         {
             columnAttributes.Set(x => x.SqlType, sqlType);
             return this;
@@ -224,7 +225,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specify that this property has a unique constranit
         /// </summary>
-        public PropertyPart Unique()
+        public PropertyBuilder Unique()
         {
             columnAttributes.Set(x => x.Unique, nextBool);
             nextBool = true;
@@ -235,7 +236,7 @@ namespace FluentNHibernate.Mapping
         /// Specify decimal precision
         /// </summary>
         /// <param name="precision">Decimal precision</param>
-        public PropertyPart Precision(int precision)
+        public PropertyBuilder Precision(int precision)
         {
             columnAttributes.Set(x => x.Precision, precision);
             return this;
@@ -245,7 +246,7 @@ namespace FluentNHibernate.Mapping
         /// Specify decimal scale
         /// </summary>
         /// <param name="scale">Decimal scale</param>
-        public PropertyPart Scale(int scale)
+        public PropertyBuilder Scale(int scale)
         {
             columnAttributes.Set(x => x.Scale, scale);
             return this;
@@ -255,7 +256,7 @@ namespace FluentNHibernate.Mapping
         /// Specify a default value
         /// </summary>
         /// <param name="value">Default value</param>
-        public PropertyPart Default(string value)
+        public PropertyBuilder Default(string value)
         {
             columnAttributes.Set(x => x.Default, value);
             return this;
@@ -265,7 +266,7 @@ namespace FluentNHibernate.Mapping
         /// Specifies the name of a multi-column unique constraint.
         /// </summary>
         /// <param name="keyName">Name of constraint</param>
-        public PropertyPart UniqueKey(string keyName)
+        public PropertyBuilder UniqueKey(string keyName)
         {
             columnAttributes.Set(x => x.UniqueKey, keyName);
             return this;
@@ -274,9 +275,9 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specify that this property is optimistically locked
         /// </summary>
-        public PropertyPart OptimisticLock()
+        public PropertyBuilder OptimisticLock()
         {
-            attributes.Set(x => x.OptimisticLock, nextBool);
+            mapping.OptimisticLock = nextBool;
             nextBool = true;
             return this;
         }
@@ -285,7 +286,7 @@ namespace FluentNHibernate.Mapping
         /// Inverts the next boolean
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public PropertyPart Not
+        public PropertyBuilder Not
         {
             get
             {
@@ -298,52 +299,22 @@ namespace FluentNHibernate.Mapping
         /// Specify a check constraint
         /// </summary>
         /// <param name="constraint">Constraint name</param>
-        public PropertyPart Check(string constraint)
+        public PropertyBuilder Check(string constraint)
         {
             columnAttributes.Set(x => x.Check, constraint);
             return this;
         }
 
-        PropertyMapping IPropertyMappingProvider.GetPropertyMapping()
-        {
-            var mapping = new PropertyMapping(attributes.CloneInner())
-            {
-                ContainingEntityType = parentType,
-                Member = property
-            };
-
-            if (columns.Count() == 0 && !mapping.IsSpecified("Formula"))
-                mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = property.Name });
-
-            foreach (var column in columns)
-                mapping.AddColumn(column);
-
-            foreach (var column in mapping.Columns)
-            {
-                if (!column.IsSpecified("NotNull") && property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
-                    column.SetDefaultValue(x => x.NotNull, false);
-
-                column.MergeAttributes(columnAttributes);
-            }
-
-            if (!mapping.IsSpecified("Name"))
-                mapping.Name = mapping.Member.Name;
-
-            if (!mapping.IsSpecified("Type"))
-                mapping.SetDefaultValue("Type", GetDefaultType());
-
-            return mapping;
-        }
-
         TypeReference GetDefaultType()
         {
-            var type = new TypeReference(property.PropertyType);
+            var propertyType = mapping.Member.PropertyType;
+            var type = new TypeReference(propertyType);
 
-            if (property.PropertyType.IsEnum())
-                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(property.PropertyType));
+            if (propertyType.IsEnum())
+                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(propertyType));
 
-            if (property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
-                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(property.PropertyType.GetGenericArguments()[0]));
+            if (propertyType.IsNullable() && propertyType.IsEnum())
+                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(propertyType.GetGenericArguments()[0]));
 
             return type;
         }

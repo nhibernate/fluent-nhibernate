@@ -228,7 +228,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
                 .Collections.First();
 
             ((ArrayMapping)collection).Index
-                .Columns.First().Name.ShouldEqual("test");
+                .As<IndexMapping>().Columns.First().Name.ShouldEqual("test");
         }
 
         [Test]
@@ -239,15 +239,13 @@ namespace FluentNHibernate.Testing.ConventionsTests
                 var map = new ClassMap<Target>();
 
                 map.Id(x => x.Id);
-                map.HasManyToMany(x => x.DictionaryBag)
-                    .AsMap("index")
-                    .AsTernaryAssociation("index", "value");
+                map.HasManyToMany(x => x.EntityDictionary);
 
                 return map;
             })
                 .Collections.First();
 
-            ((IndexManyToManyMapping)((MapMapping)collection).Index).ForeignKey.ShouldEqual("fk");
+            ((IndexMapping)((MapMapping)collection).Index).ForeignKey.ShouldEqual("fk");
         }
 
         [Test]
@@ -314,8 +312,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
                 var map = new ClassMap<Target>();
 
                 map.Id(x => x.Id);
-                map.HasMany(x => x.DictionaryBag)
-                    .AsMap("index");
+                map.HasMany(x => x.Dictionary);
 
                 return map;
             })
@@ -723,7 +720,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
             public IDictionary DynamicComponent { get; set; }
             public OtherObject Other { get; set; }
             public int Id { get; set; }
-            public IDictionary<string, OtherObject> DictionaryBag { get; set; }
+            public IDictionary<string, OtherObject> Dictionary { get; set; }
+            public IDictionary<OtherObject, OtherObject> EntityDictionary { get; set; }
         }
 
         private class TargetSubclass : Target

@@ -22,10 +22,15 @@ namespace FluentNHibernate.Conventions.Instances
         {
             get
             {
-                if (mapping.Index is IndexMapping)
-                { return new IndexInstance(mapping.Index as IndexMapping); }
-                if (mapping.Index is IndexManyToManyMapping)
-                { return new IndexManyToManyInstance(mapping.Index as IndexManyToManyMapping); }
+                var index = mapping.Index as IndexMapping;
+
+                if (index != null)
+                {
+                    if (index.IsManyToMany)
+                        return new IndexManyToManyInstance(index);
+
+                    return new IndexInstance(index);
+                }
 
                 throw new InvalidOperationException("IIndexMapping is not a valid type for building an Index Instance ");
             }

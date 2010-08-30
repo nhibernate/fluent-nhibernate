@@ -364,6 +364,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             {
                 ContainingEntityType = typeof(Target),
                 Formula = "formula",
+                Precision = 10,
                 Length = 1,
                 Type = new TypeReference(typeof(Target))
             };
@@ -568,14 +569,14 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
     }
 
     [TestFixture]
-    public class when_comparing_two_identical_IndexManyToManyMappings : MappingEqualitySpec<IndexManyToManyMapping>
+    public class when_comparing_two_identical_IndexManyToManyMappings : MappingEqualitySpec<IndexMapping>
     {
-        public override IndexManyToManyMapping create_mapping()
+        public override IndexMapping create_mapping()
         {
-            var mapping = new IndexManyToManyMapping
+            var mapping = new IndexMapping
             {
                 ContainingEntityType = typeof(Target),
-                Class = new TypeReference(typeof(Target)),
+                Type = new TypeReference(typeof(Target)),
                 ForeignKey = "fk"
             };
 

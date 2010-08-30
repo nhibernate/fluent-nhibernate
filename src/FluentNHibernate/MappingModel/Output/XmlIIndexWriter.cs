@@ -26,11 +26,5 @@ namespace FluentNHibernate.MappingModel.Output
             var writer = serviceLocator.GetWriter<IndexMapping>();
             document = writer.Write(mapping);
         }
-
-        public override void ProcessIndex(IndexManyToManyMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<IndexManyToManyMapping>();
-            document = writer.Write(mapping);
-        }
     }
 }

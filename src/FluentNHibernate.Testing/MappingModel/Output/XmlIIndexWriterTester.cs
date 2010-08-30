@@ -26,7 +26,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteIndexManyToManyForIndexManyToManyMapping()
         {
-            writer.VerifyXml(new IndexManyToManyMapping())
+            writer.VerifyXml(new IndexMapping { IsManyToMany = true })
                 .RootElement.HasName("index-many-to-many");
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Builders;
 
 namespace FluentNHibernate.Automapping
 {
@@ -39,13 +40,13 @@ namespace FluentNHibernate.Automapping
             return base.HasOne<TOther>(property);
         }
 
-        protected override PropertyPart Map(Member property, string columnName)
+        protected override PropertyBuilder Map(Member property, string columnName)
         {
             mappedMembers.Add(property);
             return base.Map(property, columnName);
         }
 
-        protected override ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
+        protected override ManyToOneBuilder<TOther> References<TOther>(Member property, string columnName)
         {
             mappedMembers.Add(property);
             return base.References<TOther>(property, columnName);
