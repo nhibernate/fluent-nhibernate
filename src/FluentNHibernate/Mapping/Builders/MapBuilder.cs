@@ -630,8 +630,8 @@ namespace FluentNHibernate.Mapping.Builders
         }
 
         /// <summary>
-        /// Specify this relationship as a many-to-many with the <see cref="relationshipColumn"/> column name,
-        /// and type of <typeparam name="TChild" />
+        /// Specify this relationship as a many-to-many with the <paramref name="relationshipColumn"/> column name,
+        /// and type of <typeparamref name="TChild" />
         /// </summary>
         /// <param name="relationshipColumn">Column name</param>
         /// <typeparam name="TChild">Child type</typeparam>
@@ -646,7 +646,7 @@ namespace FluentNHibernate.Mapping.Builders
         }
 
         /// <summary>
-        /// Specify this relationship as a many-to-many with the <see cref="relationshipColumn"/> column name
+        /// Specify this relationship as a many-to-many with the <paramref name="relationshipColumn"/> column name
         /// </summary>
         /// <param name="relationshipColumn">Column name</param>
         /// <returns>Builder</returns>
