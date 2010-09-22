@@ -121,7 +121,7 @@ namespace FluentNHibernate.Automapping
 
             var types = sources
                 .SelectMany(x => x.GetTypes())
-                .OrderBy(InheritanceHierarchyDepth);
+                .OrderBy(x => InheritanceHierarchyDepth(x));
 
             foreach (var type in types)
             {
