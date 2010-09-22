@@ -1,4 +1,5 @@
 using System;
+using FluentNHibernate.Diagnostics;
 using NHibernate.Cfg;
 
 namespace FluentNHibernate.Cfg
@@ -9,10 +10,15 @@ namespace FluentNHibernate.Cfg
     public class MappingConfiguration
     {
         private bool mergeMappings;
+        IDiagnosticLogger logger;
 
-        public MappingConfiguration()
+        public MappingConfiguration(IDiagnosticLogger logger)
         {
+            this.logger = logger;
+
             FluentMappings = new FluentMappingsContainer();
+            FluentMappings.PersistenceModel.SetLogger(logger);
+
             AutoMappings = new AutoMappingsContainer();
             HbmMappings = new HbmMappingsContainer();
         }
@@ -48,9 +54,13 @@ namespace FluentNHibernate.Cfg
         /// <summary>
         /// Applies any mappings to the NHibernate Configuration
         /// </summary>
+        /// <param name="logger">Diagnostics logger</param>
         /// <param name="cfg">NHibernate Configuration instance</param>
         public void Apply(Configuration cfg)
         {
+            foreach (var autoMapping in AutoMappings)
+                autoMapping.SetLogger(logger);
+
             if (mergeMappings)
             {
                 foreach (var model in AutoMappings)

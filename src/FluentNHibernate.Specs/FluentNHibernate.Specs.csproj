@@ -144,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Automapping\AutomappingSpecs.NestedClasses.cs" />
+    <Compile Include="Diagnostics\Registration_diagnostics_specs.cs" />
     <Compile Include="FluentInterface\BiDirectionalKeyIssueSpecs.cs" />
     <Compile Include="FluentInterface\ExternalComponentOutputSpecs.cs" />
     <Compile Include="FluentInterface\Fixtures\BiDirectionalKeyIssue.cs" />
