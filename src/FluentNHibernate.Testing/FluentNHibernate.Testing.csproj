@@ -458,6 +458,11 @@
     <Compile Include="ConventionsTests\DefaultCascadeHelperTests.cs" />
     <Compile Include="ConventionsTests\DefaultLazyHelperTests.cs" />
     <Compile Include="ConventionsTests\ProxyHelperTests.cs" />
+    <Compile Include="Diagnostics\DefaultOutputFormatterTests.cs" />
+    <Compile Include="Diagnostics\DiagnosticConfigurationTests.cs" />
+    <Compile Include="Diagnostics\DiagnosticLoggerTests.cs" />
+    <Compile Include="Diagnostics\DiagnosticMessageDespatcherTests.cs" />
+    <Compile Include="Diagnostics\StringLambdaOutputListenerTests.cs" />
     <Compile Include="EmptySource.cs" />
     <Compile Include="DomainModel\Mapping\UnionSubclassTester.cs" />
     <Compile Include="FluentInterfaceTests\NaturalIdPartTests.cs" />
