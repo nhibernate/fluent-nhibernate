@@ -47,6 +47,11 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.EntityName, value); }
         }
 
+        public void SetDefaultClass(TypeReference type)
+        {
+            SetDefaultValue(x => x.Class, type);
+        }
+
         public Type ContainingEntityType { get; set; }
 
         public override bool IsSpecified(string property)

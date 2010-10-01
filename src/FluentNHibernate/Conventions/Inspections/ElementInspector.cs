@@ -56,5 +56,25 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get { return mapping.Length;  }
         }
+
+        public int Precision
+        {
+            get { return mapping.Precision; }
+        }
+
+        public int Scale
+        {
+            get { return mapping.Scale; }
+        }
+
+        public bool NotNull
+        {
+            get { return mapping.NotNull; }
+        }
+
+        public bool Unique
+        {
+            get { return mapping.Unique; }
+        }
     }
 }

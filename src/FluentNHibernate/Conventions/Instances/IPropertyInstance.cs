@@ -15,9 +15,13 @@ namespace FluentNHibernate.Conventions.Instances
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IPropertyInstance Not { get; }
         void CustomType<T>();
+        void CustomType<T>(string columnPrefix);
         void CustomType(TypeReference type);
+        void CustomType(TypeReference type, string columnPrefix);
         void CustomType(Type type);
+        void CustomType(Type type, string columnPrefix);
         void CustomType(string type);
+        void CustomType(string type, string columnPrefix);
         void CustomSqlType(string sqlType);
         new void Precision(int precision);
         new void Scale(int scale);

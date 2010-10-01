@@ -480,16 +480,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void AssociationsToProxiedTypeUsesSpecifiedType()
         {
             new MappingTester<ProxiedObject>()
-                .ForMapping(x =>
+                .ForMapping(m =>
                 {
-                    x.Proxy<IProxiedObject>();
-                    x.Id(y => y.Id);
-                    x.Map(y => y.Name);
-                    x.References<ProxiedObject>(y => y.Parent);
-                    x.HasOne<ProxiedObject>(y => y.Self);
-                    x.HasMany<ProxiedObject>(y => y.Children).AsBag();
-                    x.HasManyToMany<ProxiedObject>(y => y.Siblings);
-                    x.HasMany<ProxiedObject>(y => y.MapOfChildren).AsMap(y=>y.Name);
+                    m.Proxy<IProxiedObject>();
+                    m.Id(y => y.Id);
+                    m.Map(y => y.Name);
+                    m.References<ProxiedObject>(y => y.Parent);
+                    m.HasOne<ProxiedObject>(y => y.Self);
+                    m.HasMany<ProxiedObject>(y => y.Children).AsBag();
+                    m.HasManyToMany<ProxiedObject>(y => y.Siblings);
+                    m.HasMany(x => x.MapOfChildren)
+                        .OneToMany<ProxiedObject>();
                 })
                 .Element("class/many-to-one[@name='Parent']").HasAttribute("class", typeof(ProxiedObject).AssemblyQualifiedName)
                 .Element("class/one-to-one[@name='Self']").HasAttribute("class", typeof(ProxiedObject).AssemblyQualifiedName)

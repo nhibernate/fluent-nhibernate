@@ -1,5 +1,4 @@
 using System;
-using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
@@ -19,8 +18,12 @@ namespace FluentNHibernate.MappingModel
         {
             visitor.ProcessProperty(this);
 
-            foreach (var column in columns)
-                visitor.Visit(column);
+            if (!IsSpecified("Formula"))
+            {
+                // only output columns if no formula defined
+                foreach (var column in Columns)
+                    visitor.Visit(column);
+            }
         }
 
         public Type ContainingEntityType { get; set; }

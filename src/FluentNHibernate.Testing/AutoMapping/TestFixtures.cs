@@ -235,6 +235,19 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomTypes
         }
     }
 
+    public class CompositeTypeConventionWithCustomPrefix : IUserTypeConvention
+    {
+        public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
+        {
+           criteria.Expect(x => x.Type == typeof(DoubleString));
+        }
+
+        public void Apply(IPropertyInstance instance)
+        {
+            instance.CustomType<DoubleStringType>(instance.Property.PropertyType.Name + "WithCustomPrefix_");
+        }
+    }
+
     public class CustomUserType : IUserType
     {
         public new bool Equals(object x, object y)

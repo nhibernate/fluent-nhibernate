@@ -6,6 +6,7 @@ using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Builders;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 
@@ -259,7 +260,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             model.Conventions.Add(new PropertyConventionBuilder().Always(convention));
         }
 
-        private void Mapping(Expression<Func<ExampleClass, object>> property, Action<PropertyPart> mappingDefinition)
+        private void Mapping(Expression<Func<ExampleClass, object>> property, Action<PropertyBuilder> mappingDefinition)
         {
             var classMap = new ClassMap<ExampleClass>();
             classMap.Id(x => x.Id);

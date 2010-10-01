@@ -23,5 +23,6 @@ namespace FluentNHibernate.Conventions.Inspections
         /// Applies to the joining table for this many-to-many. 
         /// </summary>
         string OrderBy { get; }
+        bool Unique { get; }
     }
 }

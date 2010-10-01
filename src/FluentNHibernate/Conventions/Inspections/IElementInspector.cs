@@ -9,5 +9,9 @@ namespace FluentNHibernate.Conventions.Inspections
         IEnumerable<IColumnInspector> Columns { get; }
         string Formula { get; }
         int Length { get; }
+        int Precision { get; }
+        int Scale { get; }
+        bool NotNull { get; }
+        bool Unique { get; }
     }
 }

@@ -35,6 +35,13 @@ namespace FluentNHibernate.MappingModel
                 if (innerType == null)
                     return false;
 
+                if (innerType.IsGenericType 
+                    && innerType.GetGenericTypeDefinition() == typeof(FluentNHibernate.Mapping.GenericEnumMapper<>))
+                {
+                    return true;
+                }
+                
+
                 return innerType.IsEnum;
             }
         }

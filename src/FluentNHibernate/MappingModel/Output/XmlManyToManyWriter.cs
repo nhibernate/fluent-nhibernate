@@ -56,6 +56,8 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.HasValue(x => x.OrderBy))
                 element.WithAtt("order-by", mapping.OrderBy);
 
+            if (mapping.HasValue(x => x.Formula))
+                element.WithAtt("formula", mapping.Formula);
         }
 
         public override void Visit(ColumnMapping mapping)

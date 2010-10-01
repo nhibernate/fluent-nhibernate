@@ -157,18 +157,20 @@ namespace FluentNHibernate.Visitors
 
         public override void ProcessIndex(IndexMapping indexMapping)
         {
-            var conventions = finder.Find<IIndexConvention>();
+            if (indexMapping.IsManyToMany)
+            {
+                var conventions = finder.Find<IIndexManyToManyConvention>();
 
-            Apply<IIndexInspector, IIndexInstance>(conventions,
-                new IndexInstance(indexMapping));
-        }
+                Apply<IIndexManyToManyInspector, IIndexManyToManyInstance>(conventions,
+                    new IndexManyToManyInstance(indexMapping));
+            }
+            else
+            {
+                var conventions = finder.Find<IIndexConvention>();
 
-        public override void ProcessIndex(IndexManyToManyMapping indexMapping)
-        {
-            var conventions = finder.Find<IIndexManyToManyConvention>();
-
-            Apply<IIndexManyToManyInspector, IIndexManyToManyInstance>(conventions,
-                new IndexManyToManyInstance(indexMapping));
+                Apply<IIndexInspector, IIndexInstance>(conventions,
+                    new IndexInstance(indexMapping));
+            }
         }
 
         public override void ProcessArray(ArrayMapping mapping)

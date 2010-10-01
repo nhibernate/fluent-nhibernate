@@ -55,5 +55,41 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             testHelper.VerifyAll(writer);
         }
+
+        [Test]
+        public void ShouldWritePrecision()
+        {
+            var testHelper = new XmlWriterTestHelper<ElementMapping>();
+            testHelper.Check(x => x.Precision, 10).MapsToAttribute("precision");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteScale()
+        {
+            var testHelper = new XmlWriterTestHelper<ElementMapping>();
+            testHelper.Check(x => x.Scale, 10).MapsToAttribute("scale");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteNotNull()
+        {
+            var testHelper = new XmlWriterTestHelper<ElementMapping>();
+            testHelper.Check(x => x.NotNull, true).MapsToAttribute("not-null");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
+        public void ShouldWriteUnique()
+        {
+            var testHelper = new XmlWriterTestHelper<ElementMapping>();
+            testHelper.Check(x => x.Unique, true).MapsToAttribute("unique");
+
+            testHelper.VerifyAll(writer);
+        }
     }
 }

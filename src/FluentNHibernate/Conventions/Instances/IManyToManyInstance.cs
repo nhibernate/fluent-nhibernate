@@ -18,5 +18,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// Applies to the joining table for this many-to-many. 
         /// </summary>
         new void OrderBy(string orderBy);
+
+        new void Unique();
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using FluentNHibernate.Mapping.Builders;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 
@@ -12,17 +13,29 @@ namespace FluentNHibernate.Mapping
     /// <typeparam name="T"></typeparam>
     public class JoinPart<T> : ClasslikeMapBase<T>, IJoinMappingProvider
     {
-        private readonly IList<string> columns = new List<string>();
         private readonly FetchTypeExpression<JoinPart<T>> fetch;
         private readonly AttributeStore<JoinMapping> attributes = new AttributeStore<JoinMapping>();
         private bool nextBool = true;
+        readonly KeyMapping keyMapping;
 
         public JoinPart(string tableName)
         {
             fetch = new FetchTypeExpression<JoinPart<T>>(this, value => attributes.Set(x => x.Fetch, value));
 
+            keyMapping = new KeyMapping { ContainingEntityType = typeof(T) };
+            keyMapping.AddDefaultColumn(new ColumnMapping { Name = typeof(T).Name + "_id" });
             attributes.SetDefault(x => x.TableName, tableName);
-            attributes.Set(x => x.Key, new KeyMapping { ContainingEntityType = typeof(T) });
+            attributes.Set(x => x.Key, keyMapping);
+        }
+
+        /// <summary>
+        /// Specify how the foreign key is configured.
+        /// </summary>
+        /// <param name="keyConfiguration">Configuration <see cref="Action"/></param>
+        /// <returns>Builder</returns>
+        public void Key(Action<KeyBuilder> keyConfiguration)
+        {
+            keyConfiguration(new KeyBuilder(keyMapping));
         }
 
         /// <summary>
@@ -31,8 +44,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="column">Column name</param>
         public JoinPart<T> KeyColumn(string column)
         {
-            columns.Clear(); // only one supported currently
-            columns.Add(column);
+            Key(ke => ke.Column(column));
             return this;
         }
 
@@ -121,12 +133,6 @@ namespace FluentNHibernate.Mapping
             var mapping = new JoinMapping(attributes.CloneInner());
 
             mapping.ContainingEntityType = typeof(T);
-
-            if (columns.Count == 0)
-                mapping.Key.AddDefaultColumn(new ColumnMapping { Name = typeof(T).Name + "_id" });
-            else
-                foreach (var column in columns)
-                    mapping.Key.AddColumn(new ColumnMapping { Name = column });
 
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());

@@ -111,6 +111,94 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
                 .ShouldBeFalse();
         }
 
+        [Test]
+        public void PrecisionMapped()
+        {
+            mapping.Precision = 50;
+            inspector.Precision.ShouldEqual(50);
+        }
+
+        [Test]
+        public void PrecisionIsSet()
+        {
+            mapping.Precision = 50;
+            inspector.IsSet(Prop(x => x.Precision))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void PrecisionIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Precision))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void ScaleMapped()
+        {
+            mapping.Scale = 50;
+            inspector.Scale.ShouldEqual(50);
+        }
+
+        [Test]
+        public void ScaleIsSet()
+        {
+            mapping.Scale = 50;
+            inspector.IsSet(Prop(x => x.Scale))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void ScaleIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Scale))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void NotNullMapped()
+        {
+            mapping.NotNull = true;
+            inspector.NotNull.ShouldBeTrue();
+        }
+
+        [Test]
+        public void NotNullIsSet()
+        {
+            mapping.NotNull = true;
+            inspector.IsSet(Prop(x => x.NotNull))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void NotNullIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.NotNull))
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void UniqueMapped()
+        {
+            mapping.Unique = true;
+            inspector.Unique.ShouldBeTrue();
+        }
+
+        [Test]
+        public void UniqueIsSet()
+        {
+            mapping.Unique = true;
+            inspector.IsSet(Prop(x => x.Unique))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void UniqueIsNotSet()
+        {
+            inspector.IsSet(Prop(x => x.Unique))
+                .ShouldBeFalse();
+        }
+
         #region Helpers
 
         private Member Prop(Expression<Func<IElementInspector, object>> propertyExpression)

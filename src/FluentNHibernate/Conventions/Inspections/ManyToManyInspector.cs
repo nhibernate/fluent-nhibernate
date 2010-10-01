@@ -68,6 +68,11 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Lazy; }
         }
 
+        public bool Unique
+        {
+            get { return mapping.Unique; }
+        }
+
         public NotFound NotFound
         {
             get { return NotFound.FromString(mapping.NotFound); }

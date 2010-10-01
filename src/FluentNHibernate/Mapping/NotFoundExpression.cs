@@ -1,16 +1,17 @@
 using System;
+using FluentNHibernate.Mapping.Builders;
 
 namespace FluentNHibernate.Mapping
 {
     public class NotFoundExpression<TParent>
     {
         private readonly TParent parent;
-        private readonly Action<string> setter;
+        readonly NotFoundBuilder builder;
 
         public NotFoundExpression(TParent parent, Action<string> setter)
         {
             this.parent = parent;
-            this.setter = setter;
+            builder = new NotFoundBuilder(setter);
         }
 
         /// <summary>
@@ -19,7 +20,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public TParent Ignore()
         {
-            setter("ignore");
+            builder.Ignore();
             return parent;
         }
 
@@ -29,7 +30,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public TParent Exception()
         {
-            setter("exception");
+            builder.Exception();
             return parent;
         }
     }

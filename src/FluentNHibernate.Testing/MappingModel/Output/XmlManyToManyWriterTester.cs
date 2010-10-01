@@ -73,6 +73,15 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
+        public void ShouldWriteFormulaAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<ManyToManyMapping>();
+            testHelper.Check(x => x.Formula, "x = 1").MapsToAttribute("formula");
+
+            testHelper.VerifyAll(writer);
+        }
+
+        [Test]
         public void ShouldWriteColumns()
         {
             var container = new XmlWriterContainer();

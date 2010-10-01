@@ -105,6 +105,30 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         }
 
         [Test]
+        public void TypeConventionShouldUsePropertyNameAsDefaultPrefixForCompositeUserType()
+        {
+            var autoMapper = AutoMap.AssemblyOf<ClassWithCompositeUserType>()
+                .Conventions.Add<CustomCompositeTypeConvention>()
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures" && t != typeof(DoubleString));
+
+            new AutoMappingTester<ClassWithCompositeUserType>(autoMapper)
+                .Element("class/property/column[1]").HasAttribute("name", "SomeStringTuple_s1")
+                .Element("class/property/column[2]").HasAttribute("name", "SomeStringTuple_s2");
+        }
+
+        [Test]
+        public void TypeConventionShouldAllowCompositeUserTypePrefixToBeChanged()
+        {
+            var autoMapper = AutoMap.AssemblyOf<ClassWithCompositeUserType>()
+                .Conventions.Add<CompositeTypeConventionWithCustomPrefix>()
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures" && t != typeof(DoubleString));
+
+            new AutoMappingTester<ClassWithCompositeUserType>(autoMapper)
+                .Element("class/property/column[1]").HasAttribute("name", "DoubleStringWithCustomPrefix_s1")
+                .Element("class/property/column[2]").HasAttribute("name", "DoubleStringWithCustomPrefix_s2");
+        }
+
+        [Test]
         public void ShouldBeAbleToOverrideKeyColumnNameOfJoinedSubclassInConvention()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleInheritedClass>()

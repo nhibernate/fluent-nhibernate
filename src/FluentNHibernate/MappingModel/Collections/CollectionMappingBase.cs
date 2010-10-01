@@ -126,6 +126,12 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Schema, value); }
         }
 
+        public string Catalog
+        {
+            get { return attributes.Get(x => x.Catalog); }
+            set { attributes.Set(x => x.Catalog, value); }
+        }
+
         public string Fetch
         {
             get { return attributes.Get(x => x.Fetch); }

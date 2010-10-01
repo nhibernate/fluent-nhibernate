@@ -1,4 +1,5 @@
 using System;
+using FluentNHibernate.Mapping.Builders;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -38,7 +39,7 @@ namespace FluentNHibernate.Mapping
         /// <example>
         /// Map("Age");
         /// </example>
-        public PropertyPart Map(string key)
+        public PropertyBuilder Map(string key)
         {
             return Map<string>(key);
         }
@@ -51,14 +52,15 @@ namespace FluentNHibernate.Mapping
         /// <example>
         /// Map&lt;int&gt;("Age");
         /// </example>
-        public PropertyPart Map<TProperty>(string key)
+        public PropertyBuilder Map<TProperty>(string key)
         {
             var property = new DummyPropertyInfo(key, typeof(TProperty));
-            var propertyMap = new PropertyPart(property.ToMember(), typeof(T));
+            var propertyMapping = new PropertyMapping();
+            var builder = new PropertyBuilder(propertyMapping, typeof(T), property.ToMember());
 
-            properties.Add(propertyMap);
+            properties.Add(new PassThroughMappingProvider(propertyMapping));
 
-            return propertyMap;
+            return builder;
         }
 
         IComponentMapping IComponentMappingProvider.GetComponentMapping()

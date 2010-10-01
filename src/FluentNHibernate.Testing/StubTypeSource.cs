@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FluentNHibernate.Diagnostics;
 
 namespace FluentNHibernate.Testing
 {
@@ -20,6 +21,16 @@ namespace FluentNHibernate.Testing
         public IEnumerable<Type> GetTypes()
         {
             return types;
+        }
+
+        public void LogSource(IDiagnosticLogger logger)
+        {
+            logger.LoadedFluentMappingsFromSource(this);
+        }
+
+        public string GetIdentifier()
+        {
+            return "StubTypeSource";
         }
     }
 }

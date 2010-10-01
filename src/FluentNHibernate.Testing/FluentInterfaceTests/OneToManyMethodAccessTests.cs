@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+using System.Linq;
+using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
@@ -9,9 +10,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ShouldGuessBackingFieldName()
         {
-            OneToMany(x => x.GetOtherChildren())
-                .Mapping(m => {})
-                .ModelShouldMatch(x => x.Name.ShouldEqual("otherChildren"));
+            var mapping = MappingFor<OneToManyTarget>(class_map =>
+                class_map.HasMany(x => x.GetOtherChildren()));
+
+            mapping.Collections.Single()
+                .Name.ShouldEqual("otherChildren");
         }
     }
 }

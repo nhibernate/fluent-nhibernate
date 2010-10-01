@@ -31,11 +31,6 @@ namespace FluentNHibernate.Visitors
             ProcessCollection(listMapping);
         }
 
-        public override void ProcessIndex(IndexManyToManyMapping indexMapping)
-        {
-            ProcessIndex((IIndexMapping)indexMapping);
-        }
-
         public override void ProcessIndex(IndexMapping indexMapping)
         {
             ProcessIndex((IIndexMapping)indexMapping);

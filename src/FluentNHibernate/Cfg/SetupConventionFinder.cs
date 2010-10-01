@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Diagnostics;
 
 namespace FluentNHibernate.Cfg
 {
@@ -14,6 +15,17 @@ namespace FluentNHibernate.Cfg
         {
             parent = container;
             this.conventionFinder = conventionFinder;
+        }
+
+        public TReturn AddSource(ITypeSource source)
+        {
+            conventionFinder.AddSource(source);
+            return parent;
+        }
+
+        void IConventionFinder.AddSource(ITypeSource source)
+        {
+            AddSource(source);
         }
 
         public TReturn AddAssembly(Assembly assembly)
@@ -95,6 +107,11 @@ namespace FluentNHibernate.Cfg
         public IEnumerable<T> Find<T>() where T : IConvention
         {
             return conventionFinder.Find<T>();
+        }
+
+        public void SetLogger(IDiagnosticLogger logger)
+        {
+            conventionFinder.SetLogger(logger);
         }
     }
 }

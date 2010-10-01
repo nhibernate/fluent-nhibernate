@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Reflection;
-using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -35,6 +33,25 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Type, value); }
         }
 
+        public string ForeignKey
+        {
+            get { return attributes.Get(x => x.ForeignKey); }
+            set { attributes.Set(x => x.ForeignKey, value); }
+        }
+
+        public int Length
+        {
+            get { return attributes.Get(x => x.Length); }
+            set { attributes.Set(x => x.Length, value); }
+        }
+
+        public string EntityName
+        {
+            get { return attributes.Get(x => x.EntityName); }
+            set { attributes.Set(x => x.EntityName, value); }
+        }
+
+        public bool IsManyToMany { get; set; }
         public Type ContainingEntityType { get; set; }
 
         public IDefaultableEnumerable<ColumnMapping> Columns

@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
@@ -10,33 +11,37 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ShouldPredictBagUsage()
         {
-            OneToMany<ChildObject>(x => x.BagOfChildren)
-                .Mapping(m => { })
-                .ModelShouldMatch(x => x.ShouldBeOfType<BagMapping>());
+            var mapping = MappingFor<OneToManyTarget>(class_map =>
+                class_map.HasMany(x => x.BagOfChildren));
+
+            mapping.Collections.Single().ShouldBeOfType<BagMapping>();
         }
 
         [Test]
         public void ShouldPredictSetUsage()
         {
-            OneToMany<ChildObject>(x => x.SetOfChildren)
-                .Mapping(m => { })
-                .ModelShouldMatch(x => x.ShouldBeOfType<SetMapping>());
+            var mapping = MappingFor<OneToManyTarget>(class_map =>
+                class_map.HasMany(x => x.SetOfChildren));
+
+            mapping.Collections.Single().ShouldBeOfType<SetMapping>();
         }
 
         [Test]
         public void ShouldPredictSetUsageWithHashSet()
         {
-            OneToMany<ChildObject>(x => x.HashSetOfChildren)
-                .Mapping(m => { })
-                .ModelShouldMatch(x => x.ShouldBeOfType<SetMapping>());
+            var mapping = MappingFor<OneToManyTarget>(class_map =>
+                class_map.HasMany(x => x.HashSetOfChildren));
+         
+            mapping.Collections.Single().ShouldBeOfType<SetMapping>();
         }
 
         [Test, Ignore]
         public void ShouldPredictArrayUsage()
         {
-            OneToMany<ChildObject>(x => x.ArrayOfChildren)
-                .Mapping(m => { })
-                .ModelShouldMatch(x => x.ShouldBeOfType<ArrayMapping>());
+            var mapping = MappingFor<OneToManyTarget>(class_map =>
+                class_map.HasMany(x => x.ArrayOfChildren));
+            
+            mapping.Collections.Single().ShouldBeOfType<ArrayMapping>();
         }
     }
 }

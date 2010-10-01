@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using FluentNHibernate.Mapping;
-using FluentNHibernate.Mapping.Providers;
+using FluentNHibernate.Mapping.Builders;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
@@ -16,8 +15,9 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
         [Test]
         public void ShouldHaveDefaultColumnIfNoneSpecified()
         {
-            var mapping = ((IPropertyMappingProvider)new PropertyPart(Prop(x => x.Name), typeof(PropertyTarget)))
-                .GetPropertyMapping();
+            var mapping = new PropertyMapping();                
+
+            new PropertyBuilder(mapping, typeof(PropertyTarget), Prop(x => x.Name));
 
             mapping.Columns.Defaults.Count().ShouldEqual(1);
             mapping.Columns.UserDefined.Count().ShouldEqual(0);
@@ -27,9 +27,10 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
         [Test]
         public void ShouldHaveNoDefaultsIfUserSpecifiedColumn()
         {
-            var mapping = ((IPropertyMappingProvider)new PropertyPart(Prop(x => x.Name), typeof(PropertyTarget))
-                .Column("explicit"))
-                .GetPropertyMapping();
+            var mapping = new PropertyMapping();
+
+            new PropertyBuilder(mapping, typeof(PropertyTarget), Prop(x => x.Name))
+                .Column("explicit");
 
             mapping.Columns.Defaults.Count().ShouldEqual(0);
             mapping.Columns.UserDefined.Count().ShouldEqual(1);
@@ -39,9 +40,10 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
         [Test]
         public void DefaultColumnShouldInheritColumnAttributes()
         {
-            var mapping = ((IPropertyMappingProvider)new PropertyPart(Prop(x => x.Name), typeof(PropertyTarget))
-                .Not.Nullable())
-                .GetPropertyMapping();
+            var mapping = new PropertyMapping();
+
+            new PropertyBuilder(mapping, typeof(PropertyTarget), Prop(x => x.Name))
+                .Not.Nullable();
 
             mapping.Columns.Defaults.First().NotNull.ShouldBeTrue();
             mapping.Columns.First().NotNull.ShouldBeTrue();

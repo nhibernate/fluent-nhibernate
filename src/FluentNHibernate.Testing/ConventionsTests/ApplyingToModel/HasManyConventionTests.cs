@@ -184,6 +184,15 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.Relationship.NotFound.ShouldEqual("ignore"));
         }
 
+
+        [Test]
+        public void ShouldSetInversePropertyToFalseWhenUsingNot()
+        {
+            Convention(x => x.Not.Inverse());
+
+            VerifyModel(x => x.Inverse.ShouldBeFalse());
+        }
+
         #region Helpers
 
         private void Convention(Action<IOneToManyCollectionInstance> convention)

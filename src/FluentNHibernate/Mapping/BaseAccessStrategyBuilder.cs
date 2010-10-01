@@ -49,6 +49,14 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
+        /// Sets the access-strategy to readonly.
+        /// </summary>
+        public void ReadOnly()
+        {
+            setValue("readonly");
+        }
+
+        /// <summary>
         /// Sets the access-strategy to field and the naming-strategy to camelcase (field.camelcase).
         /// </summary>
         public void CamelCaseField()
