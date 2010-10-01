@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FluentNHibernate.Diagnostics;
 
 namespace FluentNHibernate
 {
@@ -9,5 +10,7 @@ namespace FluentNHibernate
     public interface ITypeSource
     {
         IEnumerable<Type> GetTypes();
+        void LogSource(IDiagnosticLogger logger);
+        string GetIdentifier();
     }
 }

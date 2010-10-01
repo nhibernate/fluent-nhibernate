@@ -36,6 +36,18 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.Formula))
                 element.WithAtt("formula", mapping.Formula);
+
+            if (mapping.HasValue(x => x.Precision))
+                element.WithAtt("precision", mapping.Precision);
+
+            if (mapping.HasValue(x => x.Scale))
+                element.WithAtt("scale", mapping.Scale);
+
+            if (mapping.HasValue(x => x.NotNull))
+                element.WithAtt("not-null", mapping.NotNull);
+
+            if (mapping.HasValue(x => x.Unique))
+                element.WithAtt("unique", mapping.Unique);
         }
 
         public override void Visit(ColumnMapping columnMapping)

@@ -1,16 +1,17 @@
 using System;
+using FluentNHibernate.Mapping.Builders;
 
 namespace FluentNHibernate.Mapping
 {
-	public class FetchTypeExpression<TParent> 
+    public class FetchTypeExpression<TParent> 
 	{
 	    private readonly TParent parent;
-	    private readonly Action<string> setter;
+        readonly FetchTypeBuilder builder;
 
-		public FetchTypeExpression(TParent parent, Action<string> setter)
+        public FetchTypeExpression(TParent parent, Action<string> setter)
 		{
 		    this.parent = parent;
-		    this.setter = setter;
+		    builder = new FetchTypeBuilder(setter);
 		}
 
         /// <summary>
@@ -18,7 +19,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
 	    public TParent Join()
 		{
-		    setter("join");
+            builder.Join();
             return parent;
 		}
 
@@ -27,7 +28,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
 		public TParent Select()
 		{
-		    setter("select");
+            builder.Select();
             return parent;
 		}
 
@@ -36,7 +37,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public TParent Subselect()
         {
-            setter("subselect");
+            builder.Subselect();
             return parent;
         }
 	}

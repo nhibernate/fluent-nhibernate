@@ -12,79 +12,72 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void AsTernaryAssocationShouldCreateIndexManyToMany()
         {
-            OneToMany(x => x.EntityMapOfChildren)
-                .Mapping(m => m.AsMap("irrelevant-value").AsTernaryAssociation())
-                .ModelShouldMatch(x =>
-                {
-                    IIndexMapping index = ((MapMapping)x).Index;
-                    index.ShouldBeOfType(typeof(IndexManyToManyMapping));
-                });
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasMany(x => x.EntityMapOfChildren));
+            var collection = mapping.Collections.Single() as MapMapping;
+
+            collection.ShouldNotBeNull();
+            collection.Index.ShouldBeOfType<IndexMapping>();
         }
 
         [Test]
         public void AsTernaryAssocationShouldSetIndexManyToManyClass()
         {
-            OneToMany(x => x.EntityMapOfChildren)
-                .Mapping(m => m.AsMap("irrelevant-value").AsTernaryAssociation())
-                .ModelShouldMatch(x =>
-                {
-                    var index = (IndexManyToManyMapping)((MapMapping)x).Index;
-                    index.Class.ShouldEqual(new TypeReference(typeof(SomeEntity)));
-                });
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasMany(x => x.EntityMapOfChildren));
+            var collection = mapping.Collections.Single() as MapMapping;
+
+            collection.ShouldNotBeNull();
+            collection.Index.Type.ShouldEqual(new TypeReference(typeof(SomeEntity)));
         }
 
         [Test]
         public void AsTernaryAssocationShouldSetDefaultColumnName()
         {
-            OneToMany(x => x.EntityMapOfChildren)
-                .Mapping(m => m.AsMap("irrelevant-value").AsTernaryAssociation())
-                .ModelShouldMatch(x =>
-                {
-                    var index = (IndexManyToManyMapping)((MapMapping)x).Index;
-                    index.Columns.Single().Name.ShouldEqual(typeof(SomeEntity).Name + "_id");
-                });
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasMany(x => x.EntityMapOfChildren));
+            var collection = mapping.Collections.Single() as MapMapping;
+
+            collection.ShouldNotBeNull();
+            collection.Index.As<IndexMapping>()
+                .Columns.Single().Name.ShouldEqual(typeof(SomeEntity).Name + "_id");
         }
 
         [Test]
         public void AsTernaryAssociationShouldSetProvidedColumnName()
         {
             const string indexName = "index-name";
-            OneToMany(x => x.EntityMapOfChildren)
-                .Mapping(m => m.AsMap("irrelevant-value").AsTernaryAssociation(indexName))
-                .ModelShouldMatch(x =>
-                {
-                    var index = (IndexManyToManyMapping)((MapMapping)x).Index;
-                    index.Columns.Single().Name.ShouldEqual(indexName);
-                });
+            var mapping = MappingFor<OneToManyTarget>(class_map =>
+                class_map.HasMany(x => x.EntityMapOfChildren)
+                    .DictionaryKey(indexName));
+
+            var collection = mapping.Collections.Single() as MapMapping;
+
+            collection.ShouldNotBeNull();
+            collection.Index.As<IndexMapping>()
+                .Columns.Single().Name.ShouldEqual(indexName);
         }
 
         [Test]
         public void EntityMapIsAMapWithAManyToManyIndex()
         {
-            OneToMany(x => x.EntityMapOfChildren)
-                .Mapping(m => m.AsEntityMap())
-                .ModelShouldMatch(x =>
-                {
-                    x.ShouldBeOfType(typeof(MapMapping));
-                    IIndexMapping index = ((MapMapping)x).Index;
-                    index.ShouldBeOfType(typeof(IndexManyToManyMapping));
-                });
+            var mapping = MappingFor<OneToManyTarget>(class_map => class_map.HasManyToMany(x => x.EntityMapOfChildren));
+            var collection = mapping.Collections.Single() as MapMapping;
+
+            collection.ShouldNotBeNull();
+            collection.Index.ShouldBeOfType<IndexMapping>();
         }
 
         [Test]
         public void AsEntityMapShouldSetProvidedColumnName()
         {
             const string indexName = "index-name";
+            var mapping = MappingFor<OneToManyTarget>(class_map =>
+                class_map.HasMany(x => x.EntityMapOfChildren)
+                    .DictionaryKey(indexName));
 
-            OneToMany(x => x.EntityMapOfChildren)
-                .Mapping(m => m.AsEntityMap(indexName))
-                .ModelShouldMatch(x =>
-                {
-                    x.ShouldBeOfType(typeof(MapMapping));
-                    IIndexMapping index = ((MapMapping)x).Index;
-                    index.ShouldBeOfType(typeof(IndexManyToManyMapping));
-                    index.Columns.Single().Name.ShouldEqual(indexName);
-                });
+            var collection = mapping.Collections.Single() as MapMapping;
+
+            collection.ShouldNotBeNull();
+            collection.Index.As<IndexMapping>()
+                .Columns.Single().Name.ShouldEqual(indexName);
         }
     }
 }

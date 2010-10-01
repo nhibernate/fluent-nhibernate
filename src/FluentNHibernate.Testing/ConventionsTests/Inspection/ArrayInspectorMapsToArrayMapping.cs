@@ -48,14 +48,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void MapsIndexManyToManyToInspector()
         {
-            mapping.Index = new IndexManyToManyMapping();
+            mapping.Index = new IndexMapping { IsManyToMany = true };
             inspector.Index.ShouldBeOfType<IIndexManyToManyInspector>();
         }
 
         [Test]
         public void IndexManyToManyIsSet()
         {
-            mapping.Index = new IndexManyToManyMapping();
+            mapping.Index = new IndexMapping();
             inspector.IsSet(Prop(x => x.Index))
                 .ShouldBeTrue();
         }

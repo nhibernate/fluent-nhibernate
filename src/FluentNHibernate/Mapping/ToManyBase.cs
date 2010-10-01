@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Mapping.Builders;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
@@ -18,18 +19,19 @@ namespace FluentNHibernate.Mapping
         private readonly FetchTypeExpression<T> fetch;
         private readonly OptimisticLockBuilder<T> optimisticLock;
         private readonly CollectionCascadeExpression<T> cascade;
-        protected ElementPart elementPart;
         protected ICompositeElementMappingProvider componentMapping;
         protected bool nextBool = true;
 
         protected readonly AttributeStore<ICollectionMapping> collectionAttributes = new AttributeStore<ICollectionMapping>();
-        protected readonly KeyMapping keyMapping = new KeyMapping();
-        protected readonly AttributeStore<TRelationshipAttributes> relationshipAttributes = new AttributeStore<TRelationshipAttributes>();
-        private readonly IList<FilterPart> filters = new List<FilterPart>();
+        protected readonly KeyMapping keyMapping;
+        protected ICollectionRelationshipMapping relationshipMapping;
+        private readonly IList<FilterMapping> filters = new List<FilterMapping>();
         private Func<AttributeStore, ICollectionMapping> collectionBuilder;
-        private IndexMapping indexMapping;
+        protected IndexMapping indexMapping;
         protected Member member;
         private Type entity;
+        ElementMapping elementMapping;
+        CacheMapping cache;
 
         protected ToManyBase(Type entity, Member member, Type type)
         {
@@ -43,10 +45,22 @@ namespace FluentNHibernate.Mapping
 
             SetDefaultCollectionType(type);
             SetCustomCollectionType(type);
-            Cache = new CachePart(entity);
 
             collectionAttributes.SetDefault(x => x.Name, member.Name);
-            relationshipAttributes.SetDefault(x => x.Class, new TypeReference(typeof(TChild)));
+
+            keyMapping = new KeyMapping();
+            keyMapping.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
+        }
+
+        /// <summary>
+        /// Specify how the foreign key is configured.
+        /// </summary>
+        /// <param name="keyConfiguration">Configuration <see cref="Action"/></param>
+        /// <returns>Builder</returns>
+        public T Key(Action<KeyBuilder> keyConfiguration)
+        {
+            keyConfiguration(new KeyBuilder(keyMapping));
+            return (T)this;
         }
 
         /// <summary>
@@ -57,14 +71,20 @@ namespace FluentNHibernate.Mapping
         /// <returns>OneToManyPart</returns>
         public T PropertyRef(string propertyRef)
         {
-            keyMapping.PropertyRef = propertyRef;
-            return (T)this;
+            return Key(ke => ke.PropertyRef(propertyRef));
         }
 
         /// <summary>
         /// Specify caching for this entity.
         /// </summary>
-        public CachePart Cache { get; private set; }
+        public CacheBuilder Cache
+        {
+            get
+            {
+                cache = cache ?? new CacheMapping();
+                return new CacheBuilder(cache, entity);
+            }
+        }
 
         /// <summary>
         /// Specify the lazy-load behaviour
@@ -161,7 +181,7 @@ namespace FluentNHibernate.Mapping
         /// Use a list collection with an index
         /// </summary>
         /// <param name="customIndexMapping">Index mapping</param>
-        public T AsList(Action<IndexPart> customIndexMapping)
+        public T AsList(Action<IndexBuilder> customIndexMapping)
         {
             collectionBuilder = attrs => new ListMapping(attrs);
             CreateIndexMapping(customIndexMapping);
@@ -169,130 +189,6 @@ namespace FluentNHibernate.Mapping
             if (indexMapping.Columns.IsEmpty())
                 indexMapping.AddDefaultColumn(new ColumnMapping { Name = "Index" });
 
-            return (T)this;
-        }
-
-        /// <summary>
-        /// Use a map collection
-        /// </summary>
-        /// <typeparam name="TIndex">Index type</typeparam>
-        /// <param name="indexSelector">Index property</param>
-        public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector)
-        {
-            return AsMap(indexSelector, null);
-        }
-
-        /// <summary>
-        /// Use a map collection
-        /// </summary>
-        /// <typeparam name="TIndex">Index type</typeparam>
-        /// <param name="indexSelector">Index property</param>
-        /// <param name="sort">Sorting</param>
-        public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, SortType sort)
-        {
-            return AsMap(indexSelector, null, sort);
-        }
-
-        /// <summary>
-        /// Use a map collection
-        /// </summary>
-        /// <param name="indexColumnName">Index column name</param>
-        public T AsMap(string indexColumnName)
-        {
-            collectionBuilder = attrs => new MapMapping(attrs);
-            AsIndexedCollection<Int32>(indexColumnName, null);
-            return (T)this;
-        }
-
-        /// <summary>
-        /// Use a map collection
-        /// </summary>
-        /// <param name="indexColumnName">Index column name</param>
-        /// <param name="sort">Sorting</param>
-        public T AsMap(string indexColumnName, SortType sort)
-        {
-            collectionBuilder = attrs => new MapMapping(attrs) { Sort = sort.ToString().ToLowerInvariant() };
-            AsIndexedCollection<Int32>(indexColumnName, null);
-            return (T)this;
-        }
-
-        /// <summary>
-        /// Use a map collection
-        /// </summary>
-        /// <typeparam name="TIndex">Index type</typeparam>
-        /// <param name="indexColumnName">Index column name</param>
-        public T AsMap<TIndex>(string indexColumnName)
-        {
-            collectionBuilder = attrs => new MapMapping(attrs);
-            AsIndexedCollection<TIndex>(indexColumnName, null);
-            return (T)this;
-        }
-
-        /// <summary>
-        /// Use a map collection
-        /// </summary>
-        /// <typeparam name="TIndex">Index type</typeparam>
-        /// <param name="indexColumnName">Index column name</param>
-        /// <param name="sort">Sorting</param>
-        public T AsMap<TIndex>(string indexColumnName, SortType sort)
-        {
-            collectionBuilder = attrs => new MapMapping(attrs) { Sort = sort.ToString().ToLowerInvariant() };
-            AsIndexedCollection<TIndex>(indexColumnName, null);
-            return (T)this;
-        }
-
-        /// <summary>
-        /// Use a map collection
-        /// </summary>
-        /// <typeparam name="TIndex">Index type</typeparam>
-        /// <typeparam name="TComparer">Comparer</typeparam>
-        /// <param name="indexColumnName">Index column name</param>
-        public T AsMap<TIndex, TComparer>(string indexColumnName) where TComparer : IComparer<TChild>
-        {
-            collectionBuilder = attrs => new MapMapping(attrs) { Sort = typeof(TComparer).AssemblyQualifiedName };
-            AsIndexedCollection<TIndex>(indexColumnName, null);
-            return (T)this;
-        }
-
-        /// <summary>
-        /// Use a map collection
-        /// </summary>
-        /// <typeparam name="TIndex">Index type</typeparam>
-        /// <param name="indexSelector">Index property</param>
-        /// <param name="customIndexMapping">Index mapping</param>
-        public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
-        {
-            collectionBuilder = attrs => new MapMapping(attrs);
-            return AsIndexedCollection(indexSelector, customIndexMapping);
-        }
-
-        /// <summary>
-        /// Use a map collection
-        /// </summary>
-        /// <typeparam name="TIndex">Index type</typeparam>
-        /// <param name="indexSelector">Index property</param>
-        /// <param name="customIndexMapping">Index mapping</param>
-        /// <param name="sort">Sorting</param>
-        public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping, SortType sort)
-        {
-            collectionBuilder = attrs => new MapMapping(attrs) { Sort = sort.ToString().ToLowerInvariant() };
-            return AsIndexedCollection(indexSelector, customIndexMapping);
-        }
-
-        // I'm not proud of this. The fluent interface for maps really needs to be rethought. But I've let maps sit unsupported for way too long
-        // so a hack is better than nothing.
-        /// <summary>
-        /// Use a map collection
-        /// </summary>
-        /// <typeparam name="TIndex">Index type</typeparam>
-        /// <param name="customIndexMapping">Index mapping</param>
-        /// <param name="customElementMapping">Element mapping</param>
-        public T AsMap<TIndex>(Action<IndexPart> customIndexMapping, Action<ElementPart> customElementMapping)
-        {
-            collectionBuilder = attrs => new MapMapping(attrs);
-            AsIndexedCollection<TIndex>(string.Empty, customIndexMapping);
-            Element(string.Empty);
-            customElementMapping(elementPart);
             return (T)this;
         }
 
@@ -312,7 +208,7 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="TIndex">Index type</typeparam>
         /// <param name="indexSelector">Index property</param>
         /// <param name="customIndexMapping">Index mapping</param>
-        public T AsArray<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
+        public T AsArray<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexBuilder> customIndexMapping)
         {
             collectionBuilder = attrs => new ArrayMapping(attrs);
             return AsIndexedCollection(indexSelector, customIndexMapping);
@@ -324,7 +220,7 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="TIndex">Index type</typeparam>
         /// <param name="indexSelector">Index property</param>
         /// <param name="customIndexMapping">Index mapping</param>
-        public T AsIndexedCollection<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
+        public T AsIndexedCollection<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexBuilder> customIndexMapping)
         {
             var indexMember = indexSelector.ToMember();
             return AsIndexedCollection<TIndex>(indexMember.Name, customIndexMapping);
@@ -336,7 +232,7 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="TIndex">Index type</typeparam>
         /// <param name="indexColumn">Index column</param>
         /// <param name="customIndexMapping">Index mapping</param>
-        public T AsIndexedCollection<TIndex>(string indexColumn, Action<IndexPart> customIndexMapping)
+        public T AsIndexedCollection<TIndex>(string indexColumn, Action<IndexBuilder> customIndexMapping)
         {
             CreateIndexMapping(customIndexMapping);
 
@@ -349,14 +245,13 @@ namespace FluentNHibernate.Mapping
             return (T)this;
         }
 
-        private void CreateIndexMapping(Action<IndexPart> customIndex)
+        private void CreateIndexMapping(Action<IndexBuilder> customIndex)
         {
-            var indexPart = new IndexPart(typeof(T));
+            indexMapping = new IndexMapping();
+            var builder = new IndexBuilder(indexMapping);
 
             if (customIndex != null)
-                customIndex(indexPart);
-
-            indexMapping = indexPart.GetIndexMapping();
+                customIndex(builder);
         }
 
         /// <summary>
@@ -365,11 +260,13 @@ namespace FluentNHibernate.Mapping
         /// <param name="columnName">Column name</param>
         public T Element(string columnName)
         {
-            elementPart = new ElementPart(typeof(T));
-            elementPart.Type<TChild>();
+            elementMapping = new ElementMapping { ContainingEntityType = typeof(T) };
+            
+            var builder = new ElementBuilder(elementMapping);
+            builder.Type<TChild>();
 
             if (!string.IsNullOrEmpty(columnName))
-                elementPart.Column(columnName);
+                builder.Column(columnName);
 
             return (T)this;
         }
@@ -379,10 +276,10 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <param name="columnName">Column name</param>
         /// <param name="customElementMapping">Custom mapping</param>
-        public T Element(string columnName, Action<ElementPart> customElementMapping)
+        public T Element(string columnName, Action<ElementBuilder> customElementMapping)
         {
             Element(columnName);
-            if (customElementMapping != null) customElementMapping(elementPart);
+            if (customElementMapping != null) customElementMapping(new ElementBuilder(elementMapping));
             return (T)this;
         }
 
@@ -390,13 +287,14 @@ namespace FluentNHibernate.Mapping
         /// Maps this collection as a collection of components.
         /// </summary>
         /// <param name="action">Component mapping</param>
-        public T Component(Action<CompositeElementPart<TChild>> action)
+        public T Component(Action<CompositeElementBuilder<TChild>> action)
         {
-            var part = new CompositeElementPart<TChild>(typeof(T));
+            var compositeElementMapping = new CompositeElementMapping();
+            var part = new CompositeElementBuilder<TChild>(compositeElementMapping, typeof(T));
 
             action(part);
 
-            componentMapping = part;
+            componentMapping = new PassThroughMappingProvider(compositeElementMapping);
 
             return (T)this;
         }
@@ -416,8 +314,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public T ForeignKeyCascadeOnDelete()
         {
-            keyMapping.OnDelete = "cascade";
-            return (T)this;
+            return Key(ke => ke.CascadeOnDelete());
         }
 
         /// <summary>
@@ -566,7 +463,7 @@ namespace FluentNHibernate.Mapping
         /// <remarks>See http://nhforge.org/blogs/nhibernate/archive/2008/10/21/entity-name-in-action-a-strongly-typed-entity.aspx</remarks>
         public T EntityName(string entityName)
         {
-            relationshipAttributes.Set(x => x.EntityName, entityName);
+            relationshipMapping.EntityName = entityName;
             return (T)this;
         }
 
@@ -580,8 +477,13 @@ namespace FluentNHibernate.Mapping
         /// <param name="condition">The condition to apply</param>
         public T ApplyFilter(string name, string condition)
         {
-            var part = new FilterPart(name, condition);
-            filters.Add(part);
+            var filterMapping = new FilterMapping();
+            var builder = new FilterBuilder(filterMapping);
+            
+            builder.Name(name);
+            builder.Condition(condition);
+            
+            filters.Add(filterMapping);
             return (T)this;
         }
 
@@ -625,11 +527,6 @@ namespace FluentNHibernate.Mapping
             return this.ApplyFilter<TFilter>(null);
         }
 
-        protected IList<FilterPart> Filters
-        {
-            get { return filters; }
-        }
-
         void SetDefaultCollectionType(Type type)
         {
             if (type.Namespace == "Iesi.Collections.Generic" || type.Closes(typeof(HashSet<>)))
@@ -662,9 +559,10 @@ namespace FluentNHibernate.Mapping
             mapping.Key = keyMapping;
             mapping.Key.ContainingEntityType = entity;
             mapping.Relationship = GetRelationship();
+            mapping.Relationship.SetDefaultClass(new TypeReference(typeof(TChild)));
 
-            if (Cache.IsDirty)
-                mapping.Cache = ((ICacheMappingProvider)Cache).GetCacheMapping();
+            if (cache != null)
+                mapping.Cache = cache;
 
             if (componentMapping != null)
             {
@@ -676,14 +574,14 @@ namespace FluentNHibernate.Mapping
             if (indexMapping != null && mapping is IIndexedCollectionMapping)
                 ((IIndexedCollectionMapping)mapping).Index = indexMapping;
 
-            if (elementPart != null)
+            if (elementMapping != null)
             {
-                mapping.Element = ((IElementMappingProvider)elementPart).GetElementMapping();
+                mapping.Element = elementMapping;
                 mapping.Relationship = null;
             }
 
-            foreach (var filterPart in Filters)
-                mapping.Filters.Add(filterPart.GetFilterMapping());
+            foreach (var filterMapping in filters)
+                mapping.Filters.Add(filterMapping);
 
             return mapping;
         }

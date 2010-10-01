@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using FluentNHibernate.Mapping.Builders;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -157,11 +158,11 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Adds a column to the key for this subclass, if used
-        /// in a table-per-subclass strategy.
+        /// Specify how the foreign key is configured.
         /// </summary>
-        /// <param name="column">Column name</param>
-        public void KeyColumn(string column)
+        /// <param name="keyConfiguration">Configuration <see cref="Action"/></param>
+        /// <returns>Builder</returns>
+        public void Key(Action<KeyBuilder> keyConfiguration)
         {
             KeyMapping key;
 
@@ -170,9 +171,19 @@ namespace FluentNHibernate.Mapping
             else
                 key = new KeyMapping();
 
-            key.AddColumn(new ColumnMapping { Name = column });
+            keyConfiguration(new KeyBuilder(key));
 
             attributes.Set(x => x.Key, key);
+        }
+
+        /// <summary>
+        /// Adds a column to the key for this subclass, if used
+        /// in a table-per-subclass strategy.
+        /// </summary>
+        /// <param name="column">Column name</param>
+        public void KeyColumn(string column)
+        {
+            Key(ke => ke.Column(column));
         }
 
         /// <summary>

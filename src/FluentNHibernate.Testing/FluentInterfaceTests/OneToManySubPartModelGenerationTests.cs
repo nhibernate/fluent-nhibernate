@@ -12,78 +12,81 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void ComponentShouldSetCompositeElement()
         {
-            OneToMany(x => x.BagOfChildren)
-                .Mapping(m => m.Component(c => c.Map(x => x.Name)))
-                .ModelShouldMatch(x => x.CompositeElement.ShouldNotBeNull());
+            var mapping = MappingFor<OneToManyTarget>(class_map =>
+                class_map.HasMany(x => x.BagOfChildren)
+                    .Component(c => c.Map(x => x.Name)));
+
+            mapping.Collections.Single()
+                .CompositeElement.ShouldNotBeNull();
         }
 
         [Test]
         public void ListShouldSetIndex()
         {
-            OneToMany(x => x.ListOfChildren)
-                .Mapping(m => m.AsList(x =>
-                {
-                    x.Column("index-column");
-                    x.Type<int>();
-                }))
-                .ModelShouldMatch(x =>
-                {
-                    var list = (ListMapping)x;
+            var mapping = MappingFor<OneToManyTarget>(class_map =>
+                class_map.HasMany(x => x.ListOfChildren)
+                    .AsList(ls =>
+                    {
+                        ls.Column("index-column");
+                        ls.Type<int>();
+                    }));
 
-                    list.Index.ShouldNotBeNull();
-                    list.Index.Columns.Count().ShouldEqual(1);
-                    ((IndexMapping)list.Index).Type.ShouldEqual(new TypeReference(typeof(int)));
-                });
+            var collection = mapping.Collections.Single() as ListMapping;
+
+            collection.ShouldNotBeNull();
+            collection.Index.ShouldNotBeNull();
+            collection.Index.Type.ShouldEqual(new TypeReference(typeof(int)));
+            collection.Index.As<IndexMapping>().Columns.Count().ShouldEqual(1);
         }
 
         [Test]
         public void MapShouldSetIndex()
         {
-            OneToMany(x => x.ListOfChildren)
-                .Mapping(m => m.AsMap<int>("index-column"))
-                .ModelShouldMatch(x =>
-                {
-                    var index = (IndexMapping)((MapMapping)x).Index;
+            var mapping = MappingFor<OneToManyTarget>(class_map =>
+                class_map.HasMany(x => x.MapOfValues));
+            var collection = mapping.Collections.Single() as MapMapping;
 
-                    index.ShouldNotBeNull();
-                    index.Columns.Count().ShouldEqual(1);
-                    index.Type.ShouldEqual(new TypeReference(typeof(int)));
-                });
+            collection.ShouldNotBeNull();
+            collection.Index.ShouldBeOfType<IndexMapping>();
+            collection.Index.Type.ShouldEqual(new TypeReference(typeof(string)));
+            collection.Index.As<IndexMapping>().Columns.Count().ShouldEqual(1);
         }
 
         [Test]
         public void ShouldSetElement()
         {
-            OneToMany(x => x.ListOfChildren)
-                .Mapping(m => m.Element("element"))
-                .ModelShouldMatch(x =>
-                {
-                    x.Element.ShouldNotBeNull();
-                    x.Element.Columns.Count().ShouldEqual(1);
-                    x.Element.Type.ShouldEqual(new TypeReference(typeof(ChildObject)));
-                });
+            var mapping = MappingFor<OneToManyTarget>(class_map =>
+                    class_map.HasMany(x => x.ListOfChildren)
+                        .Element("element"));
+            var collection = mapping.Collections.Single();
+
+            collection.Element.ShouldNotBeNull();
+            collection.Element.Columns.Count().ShouldEqual(1);
+            collection.Element.Type.ShouldEqual(new TypeReference(typeof(ChildObject)));
         }
 
         [Test]
         public void ElementMappingShouldntHaveOneToMany()
         {
-            OneToMany(x => x.ListOfChildren)
-                .Mapping(m => m.Element("element"))
-                .ModelShouldMatch(x => x.Relationship.ShouldBeNull());
+            var mapping = MappingFor<OneToManyTarget>(class_map =>
+                class_map.HasMany(x => x.ListOfChildren)
+                    .Element("element"));
+
+            mapping.Collections.Single()
+                .Relationship.ShouldBeNull();
         }
 
         [Test]
         public void ShouldPerformKeyColumnMapping()
         {
-            OneToMany(x => x.ListOfChildren)
-                .Mapping(m => m.KeyColumns.Add("col1", c => c.Length(50).Not.Nullable()))                
-                .ModelShouldMatch(x =>
-                {
-                    var column = x.Key.Columns.Single();
-                    column.Name.ShouldEqual("col1");
-                    column.Length.ShouldEqual(50);
-                    column.NotNull.ShouldBeTrue();
-                });                
+            var mapping = MappingFor<OneToManyTarget>(class_map =>
+                class_map.HasMany(x => x.ListOfChildren)
+                    .Key(ke => ke.Columns.Add("col1", c => c.Length(50).Not.Nullable())));
+            var column = mapping.Collections.Single().Key.Columns.Single();
+
+            column.Name.ShouldEqual("col1");
+            column.Length.ShouldEqual(50);
+            column.NotNull.ShouldBeTrue();
         }
     }
 }

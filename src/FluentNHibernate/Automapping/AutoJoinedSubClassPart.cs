@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Builders;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -14,8 +13,9 @@ namespace FluentNHibernate.Automapping
         private readonly IList<Member> membersMapped = new List<Member>();
 
         public AutoJoinedSubClassPart(string keyColumn)
-            : base(keyColumn)
-        {}
+        {
+            KeyColumn(keyColumn);
+        }
 
         public object GetMapping()
         {
@@ -36,13 +36,13 @@ namespace FluentNHibernate.Automapping
             return base.HasMany<TChild>(property);
         }
 
-        protected override PropertyPart Map(Member property, string columnName)
+        protected override PropertyBuilder Map(Member property, string columnName)
         {
             membersMapped.Add(property);
             return base.Map(property, columnName);
         }
 
-        protected override ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
+        protected override ManyToOneBuilder<TOther> References<TOther>(Member property, string columnName)
         {
             membersMapped.Add(property);
             return base.References<TOther>(property, columnName);

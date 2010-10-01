@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentNHibernate.Cfg.Db;
+using FluentNHibernate.Diagnostics;
 using NHibernate;
 using NHibernate.Cfg;
 
@@ -16,10 +17,12 @@ namespace FluentNHibernate.Cfg
         private const string ExceptionMappingMessage = "No mappings were configured through the Mappings method.";
 
         private readonly Configuration cfg;
-        private readonly MappingConfiguration mappingCfg;
         private bool dbSet;
         private bool mappingsSet;
         private readonly IList<Action<Configuration>> configAlterations = new List<Action<Configuration>>();
+        readonly IDiagnosticMessageDespatcher despatcher = new DefaultDiagnosticMessageDespatcher();
+        IDiagnosticLogger logger = new NullDiagnosticsLogger();
+        Action<MappingConfiguration> mappingsBuilder;
 
         internal FluentConfiguration()
             : this(new Configuration())
@@ -28,12 +31,24 @@ namespace FluentNHibernate.Cfg
         internal FluentConfiguration(Configuration cfg)
         {
             this.cfg = cfg;
-            mappingCfg = new MappingConfiguration();
         }
 
         internal Configuration Configuration
         {
             get { return cfg; }
+        }
+
+        /// <summary>
+        /// Configure diagnostic logging
+        /// </summary>
+        /// <param name="diagnosticsSetup">Diagnostic configuration</param>
+        public FluentConfiguration Diagnostics(Action<DiagnosticsConfiguration> diagnosticsSetup)
+        {
+            var diagnosticsCfg = new DiagnosticsConfiguration(despatcher, new_logger => logger = new_logger);
+
+            diagnosticsSetup(diagnosticsCfg);
+
+            return this;
         }
 
         /// <summary>
@@ -65,8 +80,8 @@ namespace FluentNHibernate.Cfg
         /// <returns>Fluent configuration</returns>
         public FluentConfiguration Mappings(Action<MappingConfiguration> mappings)
         {
-            mappings(mappingCfg);
-            mappingsSet = mappingCfg.WasUsed;
+            mappingsBuilder = mappings;
+            mappingsSet = true;
             return this;
         }
 
@@ -107,6 +122,11 @@ namespace FluentNHibernate.Cfg
 		{
 			try
 			{
+			    var mappingCfg = new MappingConfiguration(logger);
+
+                if (mappingsBuilder != null)
+                    mappingsBuilder(mappingCfg);
+
 				mappingCfg.Apply(Configuration);
 
 				foreach (var configAlteration in configAlterations)

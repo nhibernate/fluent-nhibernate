@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using FluentNHibernate.Mapping.Builders;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -9,26 +10,26 @@ namespace FluentNHibernate.Mapping
 {
     public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclassMappingProvider
     {
-        private readonly ColumnMappingCollection<JoinedSubClassPart<TSubclass>> columns;
         private readonly List<SubclassMapping> subclassMappings = new List<SubclassMapping>();
         private readonly AttributeStore<SubclassMapping> attributes;
         private bool nextBool = true;
+        KeyMapping keyMapping;
 
-        public JoinedSubClassPart(string keyColumn)
+        public JoinedSubClassPart()
             : this(new AttributeStore())
-        {
-            columns.Add(keyColumn);
-        }
+        {}
 
         public JoinedSubClassPart(AttributeStore underlyingStore)
         {
             attributes = new AttributeStore<SubclassMapping>(underlyingStore);
-            columns = new ColumnMappingCollection<JoinedSubClassPart<TSubclass>>(this);
+            keyMapping = new KeyMapping { ContainingEntityType = typeof(TSubclass) };
         }
 
         public virtual void JoinedSubClass<TNextSubclass>(string keyColumn, Action<JoinedSubClassPart<TNextSubclass>> action)
         {
-            var subclass = new JoinedSubClassPart<TNextSubclass>(keyColumn);
+            var subclass = new JoinedSubClassPart<TNextSubclass>();
+
+            subclass.KeyColumn(keyColumn);
 
             action(subclass);
 
@@ -37,9 +38,33 @@ namespace FluentNHibernate.Mapping
             subclassMappings.Add(((ISubclassMappingProvider)subclass).GetSubclassMapping());
         }
 
+        /// <summary>
+        /// Specify how the foreign key is configured.
+        /// </summary>
+        /// <param name="keyConfiguration">Configuration <see cref="Action"/></param>
+        /// <returns>Builder</returns>
+        public void Key(Action<KeyBuilder> keyConfiguration)
+        {
+            keyConfiguration(new KeyBuilder(keyMapping));
+        }
+
+
+        /// <summary>
+        /// Specify the foreign key column name
+        /// </summary>
+        /// <param name="keyColumn">Key column name</param>
+        public void KeyColumn(string keyColumn)
+        {
+            Key(ke => ke.Column(keyColumn));
+        }
+
+        /// <summary>
+        /// Modify the key columns collection
+        /// </summary>
+        [Obsolete("Deprecated in favour of Key(ke => ke.Columns...)")]
         public ColumnMappingCollection<JoinedSubClassPart<TSubclass>> KeyColumns
         {
-            get { return columns; }
+            get { return new ColumnMappingCollection<JoinedSubClassPart<TSubclass>>(this, new KeyBuilder(keyMapping).Columns); }
         }
 
         public JoinedSubClassPart<TSubclass> Table(string tableName)
@@ -133,12 +158,9 @@ namespace FluentNHibernate.Mapping
         {
             var mapping = new SubclassMapping(SubclassType.JoinedSubclass, attributes.CloneInner());
 
-            mapping.Key = new KeyMapping { ContainingEntityType = typeof(TSubclass) };
+            mapping.Key = keyMapping;
             mapping.Name = typeof(TSubclass).AssemblyQualifiedName;
             mapping.Type = typeof(TSubclass);
-
-            foreach (var column in columns)
-                mapping.Key.AddColumn(column);
 
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());

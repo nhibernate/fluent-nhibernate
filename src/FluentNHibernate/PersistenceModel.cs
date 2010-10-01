@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using FluentNHibernate.Conventions;
+using FluentNHibernate.Diagnostics;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
@@ -32,6 +33,9 @@ namespace FluentNHibernate
         private ValidationVisitor validationVisitor;
         public PairBiDirectionalManyToManySidesDelegate BiDirectionalManyToManyPairer { get; set; }
 
+        IDiagnosticMessageDespatcher diagnosticDespatcher = new DefaultDiagnosticMessageDespatcher();
+        protected IDiagnosticLogger log = new NullDiagnosticsLogger();
+
         public PersistenceModel(IConventionFinder conventionFinder)
         {
             BiDirectionalManyToManyPairer = (c,o,w) => {};
@@ -50,6 +54,12 @@ namespace FluentNHibernate
         public PersistenceModel()
             : this(new DefaultConventionFinder())
         {}
+
+        public void SetLogger(IDiagnosticLogger logger)
+        {
+            log = logger;
+            Conventions.SetLogger(logger);
+        }
 
         protected void AddMappingsFromThisAssembly()
         {
@@ -70,6 +80,8 @@ namespace FluentNHibernate
                             IsMappingOf<IExternalComponentMappingProvider>(x) ||
                             IsMappingOf<IFilterDefinition>(x))
                 .Each(Add);
+
+            log.LoadedFluentMappingsFromSource(source);
         }
 
         private static Assembly FindTheCallingAssembly()
@@ -116,13 +128,22 @@ namespace FluentNHibernate
             var mapping = type.InstantiateUsingParameterlessConstructor();
 
             if (mapping is IMappingProvider)
+            {
+                log.FluentMappingDiscovered(type);
                 Add((IMappingProvider)mapping);
+            }
             else if (mapping is IIndeterminateSubclassMappingProvider)
+            {
+                log.FluentMappingDiscovered(type);
                 Add((IIndeterminateSubclassMappingProvider)mapping);
+            }
             else if (mapping is IFilterDefinition)
                 Add((IFilterDefinition)mapping);
             else if (mapping is IExternalComponentMappingProvider)
+            {
+                log.FluentMappingDiscovered(type);
                 Add((IExternalComponentMappingProvider)mapping);
+            }
             else
                 throw new InvalidOperationException("Unsupported mapping type '" + type.FullName + "'");
         }
@@ -142,6 +163,8 @@ namespace FluentNHibernate
                 BuildSeparateMappings(hbms.Add);
 
             ApplyVisitors(hbms);
+
+            log.Flush();
 
             return hbms;
         }
@@ -290,30 +313,5 @@ namespace FluentNHibernate
         // HACK: In place just to keep compatibility until verdict is made
         HibernateMapping GetHibernateMapping();
         IEnumerable<Member> GetIgnoredProperties();
-    }
-
-    public class PassThroughMappingProvider : IMappingProvider
-    {
-        private readonly ClassMapping mapping;
-
-        public PassThroughMappingProvider(ClassMapping mapping)
-        {
-            this.mapping = mapping;
-        }
-
-        public ClassMapping GetClassMapping()
-        {
-            return mapping;
-        }
-
-        public HibernateMapping GetHibernateMapping()
-        {
-            return new HibernateMapping();
-        }
-
-        public IEnumerable<Member> GetIgnoredProperties()
-        {
-            return new Member[0];
-        }
     }
 }

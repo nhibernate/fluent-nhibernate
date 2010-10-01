@@ -14,7 +14,7 @@ namespace FluentNHibernate.Specs.Conventions.Fixtures
         {
             Id(x => x.Id);
             References(x => x.Parent)
-                .Columns("one", "two");
+                .Columns.Add("one", "two");
         }
     }
 }

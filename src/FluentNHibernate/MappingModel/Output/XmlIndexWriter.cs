@@ -1,3 +1,4 @@
+using System;
 using System.Xml;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
@@ -26,10 +27,32 @@ namespace FluentNHibernate.MappingModel.Output
         {
             document = new XmlDocument();
 
+            if (mapping.IsManyToMany)
+                WriteManyToManyIndex(mapping);
+            else
+                WriteIndex(mapping);
+        }
+
+        void WriteIndex(IndexMapping mapping)
+        {
             var element = document.AddElement("index");
 
             if (mapping.HasValue(x => x.Type))
                 element.WithAtt("type", mapping.Type);
+        }
+
+        void WriteManyToManyIndex(IndexMapping mapping)
+        {
+            var element = document.AddElement("index-many-to-many");
+
+            if (mapping.HasValue(x => x.Type))
+                element.WithAtt("class", mapping.Type);
+
+            if (mapping.HasValue(x => x.EntityName))
+                element.WithAtt("entity-name", mapping.EntityName);
+
+            if (mapping.HasValue(x => x.ForeignKey))
+                element.WithAtt("foreign-key", mapping.ForeignKey);
         }
 
         public override void Visit(ColumnMapping columnMapping)

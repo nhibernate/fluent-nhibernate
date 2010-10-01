@@ -27,6 +27,7 @@ namespace FluentNHibernate.Cfg.Db
         protected const string ShowSqlKey = "show_sql";
         protected const string FormatSqlKey = "format_sql";
 
+		protected const string CollectionTypeFactoryClassKey = NHibernate.Cfg.Environment.CollectionTypeFactoryClass;
         protected const string ConnectionProviderKey = "connection.provider";
         protected const string DefaultConnectionProviderClassName = "NHibernate.Connection.DriverConnectionProvider";
         protected const string DriverClassKey = "connection.driver_class";
@@ -305,6 +306,41 @@ namespace FluentNHibernate.Cfg.Db
             values[key] = value;
             return (TThisConfiguration) this;
         }
+
+		/// <summary>
+		/// Sets the collectiontype.factory_class property.
+		/// NOTE: NHibernate 2.1 only
+		/// </summary>
+		/// <param name="collectionTypeFactoryClass">factory class</param>
+		/// <returns>Configuration</returns>
+		public TThisConfiguration CollectionTypeFactory(string collectionTypeFactoryClass)
+		{
+			values[CollectionTypeFactoryClassKey] = collectionTypeFactoryClass;
+			return (TThisConfiguration)this;
+		}
+
+		/// <summary>
+		/// Sets the collectiontype.factory_class property.
+		/// NOTE: NHibernate 2.1 only
+		/// </summary>
+		/// <param name="collectionTypeFactoryClass">factory class</param>
+		/// <returns>Configuration</returns>
+		public TThisConfiguration CollectionTypeFactory(Type collectionTypeFactoryClass)
+		{
+			values[CollectionTypeFactoryClassKey] = collectionTypeFactoryClass.AssemblyQualifiedName;
+			return (TThisConfiguration)this;
+		}
+
+		/// <summary>
+		/// Sets the collectiontype.factory_class property.
+		/// NOTE: NHibernate 2.1 only
+		/// </summary>
+		/// <typeparam name="TCollectionTypeFactory">factory class</typeparam>
+		/// <returns>Configuration</returns>
+		public TThisConfiguration CollectionTypeFactory<TCollectionTypeFactory>() where TCollectionTypeFactory : ICollectionTypeFactory
+		{
+			return CollectionTypeFactory(typeof(TCollectionTypeFactory));
+		}
 
         /// <summary>
         /// Sets the proxyfactory.factory_class property.

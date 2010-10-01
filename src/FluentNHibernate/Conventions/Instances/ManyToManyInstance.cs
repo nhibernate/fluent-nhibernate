@@ -69,5 +69,11 @@ namespace FluentNHibernate.Conventions.Instances
             if (!mapping.IsSpecified(x => x.OrderBy))
                 mapping.OrderBy = orderBy;
         }
+
+        public new void Unique()
+        {
+            if (!mapping.IsSpecified(x => x.Unique))
+                mapping.Unique = true;
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -14,6 +14,25 @@
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\FluentKey.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,6 +44,7 @@
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,6 +55,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\FluentNHibernate.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.DynamicProxy2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
@@ -108,6 +129,22 @@
     <Compile Include="Conventions\Inspections\KeyPropertyInspector.cs" />
     <Compile Include="Conventions\Instances\IKeyPropertyInstance.cs" />
     <Compile Include="Conventions\Instances\KeyPropertyInstance.cs" />
+    <Compile Include="Diagnostics\AutomappingType.cs" />
+    <Compile Include="Diagnostics\ConsoleOutputListener.cs" />
+    <Compile Include="Diagnostics\DefaultDiagnosticMessageDespatcher.cs" />
+    <Compile Include="Diagnostics\DefaultOutputFormatter.cs" />
+    <Compile Include="Diagnostics\DiagnosticResults.cs" />
+    <Compile Include="Diagnostics\DiagnosticsConfiguration.cs" />
+    <Compile Include="Diagnostics\DefaultDiagnosticLogger.cs" />
+    <Compile Include="Diagnostics\IDiagnosticListener.cs" />
+    <Compile Include="Diagnostics\IDiagnosticLogger.cs" />
+    <Compile Include="Diagnostics\IDiagnosticMessageDespatcher.cs" />
+    <Compile Include="Diagnostics\IDiagnosticResultsFormatter.cs" />
+    <Compile Include="Diagnostics\NullDiagnosticsLogger.cs" />
+    <Compile Include="Diagnostics\ScannedSource.cs" />
+    <Compile Include="Diagnostics\ScanPhase.cs" />
+    <Compile Include="Diagnostics\SkippedAutomappingType.cs" />
+    <Compile Include="Diagnostics\StringLambdaOutputListener.cs" />
     <Compile Include="ITypeSource.cs" />
     <Compile Include="Automapping\PrivateAutoPersistenceModel.cs" />
     <Compile Include="Automapping\SubclassStrategy.cs" />
@@ -396,16 +433,35 @@
     <Compile Include="MappingModel\ClassBased\ComponentType.cs" />
     <Compile Include="MappingModel\ClassBased\ExternalComponentMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassType.cs" />
+    <Compile Include="MappingModel\Collections\CompositeIndexMapping.cs" />
     <Compile Include="MappingModel\Collections\Lazy.cs" />
     <Compile Include="MappingModel\Collections\NestedCompositeElementMapping.cs" />
     <Compile Include="MappingModel\EqualityExtensions.cs" />
     <Compile Include="MappingModel\Identity\ICompositeIdKeyMapping.cs" />
     <Compile Include="MappingModel\IRelationship.cs" />
     <Compile Include="MappingModel\NaturalIdMapping.cs" />
+    <Compile Include="MappingModel\Output\XmlCompositeIndexWriter.cs" />
     <Compile Include="MappingModel\Output\XmlNaturalIdWriter.cs" />
     <Compile Include="Mapping\Access.cs" />
+    <Compile Include="Mapping\Builders\CacheBuilder.cs" />
+    <Compile Include="Mapping\Builders\CompositeElementBuilder.cs" />
+    <Compile Include="Mapping\Builders\CompositeIndexBuilder.cs" />
+    <Compile Include="Mapping\Builders\ElementBuilder.cs" />
+    <Compile Include="Mapping\Builders\FetchTypeBuilder.cs" />
+    <Compile Include="Mapping\Builders\FilterBuilder.cs" />
+    <Compile Include="Mapping\Builders\IndexBuilder.cs" />
+    <Compile Include="Mapping\Builders\KeyBuilder.cs" />
+    <Compile Include="Mapping\Builders\ManyToManyBuilder.cs" />
+    <Compile Include="Mapping\Builders\ManyToOneBuilder.cs" />
+    <Compile Include="Mapping\Builders\MapBuilder.cs" />
+    <Compile Include="Mapping\Builders\NotFoundBuilder.cs" />
+    <Compile Include="Mapping\Builders\OneToManyBuilder.cs" />
+    <Compile Include="Mapping\Builders\PropertyGeneratedBuilder.cs" />
+    <Compile Include="Mapping\Builders\PropertyBuilder.cs" />
+    <Compile Include="Mapping\Builders\SortBuilder.cs" />
     <Compile Include="Mapping\Laziness.cs" />
     <Compile Include="Mapping\NaturalIdPart.cs" />
+    <Compile Include="Mapping\PassThroughMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IElementMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />
     <Compile Include="Mapping\Providers\INaturalIdMappingProvider.cs" />
@@ -435,7 +491,6 @@
     <Compile Include="Mapping\ComponentMap.cs" />
     <Compile Include="Mapping\ReferenceComponentPart.cs" />
     <Compile Include="Mapping\FilterDefinition.cs" />
-    <Compile Include="Mapping\FilterPart.cs" />
     <Compile Include="Mapping\IFilterDefinition.cs" />
     <Compile Include="Mapping\KeyManyToOnePart.cs" />
     <Compile Include="Mapping\KeyPropertyPart.cs" />
@@ -463,7 +518,6 @@
     <Compile Include="MappingModel\TypeReference.cs" />
     <Compile Include="Mapping\GeneratorBuilder.cs" />
     <Compile Include="Mapping\Providers\IAnyMappingProvider.cs" />
-    <Compile Include="Mapping\Providers\ICacheMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IComponentMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IIdentityMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IJoinMappingProvider.cs" />
@@ -560,7 +614,6 @@
     <Compile Include="MappingModel\Collections\CompositeElementMapping.cs" />
     <Compile Include="MappingModel\Collections\ElementMapping.cs" />
     <Compile Include="MappingModel\Collections\IIndexMapping.cs" />
-    <Compile Include="MappingModel\Collections\IndexManyToManyMapping.cs" />
     <Compile Include="MappingModel\Collections\MapMapping.cs" />
     <Compile Include="MappingModel\Identity\KeyManyToOneMapping.cs" />
     <Compile Include="MappingModel\Identity\KeyPropertyMapping.cs" />
@@ -584,7 +637,6 @@
     <Compile Include="MappingModel\Output\XmlIdentityBasedWriter.cs" />
     <Compile Include="MappingModel\Output\XmlIdWriter.cs" />
     <Compile Include="MappingModel\Output\XmlIIndexWriter.cs" />
-    <Compile Include="MappingModel\Output\XmlIndexManyToManyWriter.cs" />
     <Compile Include="MappingModel\Output\XmlIndexWriter.cs" />
     <Compile Include="MappingModel\Output\XmlKeyManyToOneWriter.cs" />
     <Compile Include="MappingModel\Output\XmlKeyPropertyWriter.cs" />
@@ -620,7 +672,6 @@
     <Compile Include="Mapping\ComponentPartBase.cs" />
     <Compile Include="Mapping\DiscriminatorPart.cs" />
     <Compile Include="Mapping\DiscriminatorValue.cs" />
-    <Compile Include="Mapping\ElementPart.cs" />
     <Compile Include="Mapping\HibernateMappingPart.cs" />
     <Compile Include="MappingModel\ImportMapping.cs" />
     <Compile Include="MappingModel\Output\XmlHibernateMappingWriter.cs">
@@ -628,7 +679,6 @@
     </Compile>
     <Compile Include="MappingModel\Output\XmlImportWriter.cs" />
     <Compile Include="Mapping\Attributes.cs" />
-    <Compile Include="Mapping\CachePart.cs" />
     <Compile Include="Conventions\UserTypeConvention.cs" />
     <Compile Include="Conventions\AttributePropertyConvention.cs" />
     <Compile Include="Conventions\IClassConvention.cs" />
@@ -654,12 +704,10 @@
     <Compile Include="Mapping\Providers\IDiscriminatorMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IHibernateMappingProvider.cs" />
     <Compile Include="Mapping\IndexManyToManyPart.cs" />
-    <Compile Include="Mapping\IndexPart.cs" />
     <Compile Include="Mapping\InvalidPrefixException.cs" />
     <Compile Include="Mapping\Providers\ISubclassMappingProviders.cs" />
     <Compile Include="Mapping\ParamBuilder.cs" />
     <Compile Include="Mapping\Prefix.cs" />
-    <Compile Include="Mapping\PropertyGeneratedBuilder.cs" />
     <Compile Include="Mapping\VersionGeneratedBuilder.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Testing\PersistenceSpecificationExtensions.cs" />
@@ -682,15 +730,12 @@
     <Compile Include="Mapping\AccessStrategyBuilder.cs" />
     <Compile Include="Mapping\ClasslikeMapBase.cs" />
     <Compile Include="Mapping\ComponentPart.cs" />
-    <Compile Include="Mapping\CompositeElementPart.cs" />
     <Compile Include="Mapping\CompositeIdentityPart.cs" />
     <Compile Include="Mapping\IdentityGenerationStrategyBuilder.cs" />
     <Compile Include="Mapping\IdentityPart.cs" />
     <Compile Include="Mapping\JoinedSubClassPart.cs" />
     <Compile Include="Mapping\ManyToManyPart.cs" />
-    <Compile Include="Mapping\ManyToOnePart.cs" />
     <Compile Include="Mapping\OneToManyPart.cs" />
-    <Compile Include="Mapping\PropertyPart.cs" />
     <Compile Include="Mapping\SubClassPart.cs" />
     <Compile Include="Mapping\TypeMapping.cs" />
     <Compile Include="Mapping\VersionPart.cs" />
@@ -748,6 +793,23 @@
     <None Include="..\FluentKey.snk">
       <Link>FluentKey.snk</Link>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

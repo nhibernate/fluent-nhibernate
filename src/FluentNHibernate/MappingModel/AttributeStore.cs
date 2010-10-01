@@ -6,6 +6,68 @@ using FluentNHibernate.Utils;
 namespace FluentNHibernate.MappingModel
 {
     [Serializable]
+    public class DerivedAttributeStore : AttributeStore
+    {
+        readonly AttributeStore baseStore;
+
+        public DerivedAttributeStore(AttributeStore baseStore)
+        {
+            this.baseStore = baseStore;
+        }
+
+        public override object this[string key]
+        {
+            get
+            {
+                var value = base[key];
+
+                if (value == null)
+                    return baseStore[key];
+
+                return value;
+            }
+            set { base[key] = value; }
+        }
+
+        public override void CopyTo(AttributeStore store)
+        {
+            baseStore.CopyTo(store);
+
+            base.CopyTo(store);
+        }
+
+        public override string Get(string property)
+        {
+            var value = base.Get(property);
+
+            if (value == null)
+                return baseStore.Get(property);
+
+            return value;
+        }
+
+        public override bool HasValue(string key)
+        {
+            var hasValue = base.HasValue(key);
+
+            if (!hasValue)
+                return baseStore.HasValue(key);
+
+            return hasValue;
+        }
+
+        public override bool IsSpecified(string key)
+        {
+            var isSpecified = base.IsSpecified(key);
+
+            if (!isSpecified)
+                return baseStore.IsSpecified(key);
+
+            return isSpecified;
+        }
+    }
+
+    [Serializable]
     public class AttributeStore
     {
         private readonly IDictionary<string, object> attributes;
@@ -17,7 +79,7 @@ namespace FluentNHibernate.MappingModel
             defaults = new Dictionary<string, object>();
         }
 
-        public object this[string key]
+        public virtual object this[string key]
         {
             get
             {
@@ -32,7 +94,7 @@ namespace FluentNHibernate.MappingModel
             set { attributes[key] = value; }
         }
 
-        public string Get(string property)
+        public virtual string Get(string property)
         {
             return Get<string>(property);
         }
@@ -47,17 +109,17 @@ namespace FluentNHibernate.MappingModel
             this[property] = value;
         }
 
-        public bool IsSpecified(string key)
+        public virtual bool IsSpecified(string key)
         {
             return attributes.ContainsKey(key);
         }
 
-        public bool HasValue(string key)
+        public virtual bool HasValue(string key)
         {
             return attributes.ContainsKey(key) || defaults.ContainsKey(key);
         }
 
-        public void CopyTo(AttributeStore store)
+        public virtual void CopyTo(AttributeStore store)
         {
             foreach (var pair in attributes)
                 store.attributes[pair.Key] = pair.Value;
@@ -80,7 +142,7 @@ namespace FluentNHibernate.MappingModel
                 attributes[key] = otherStore.attributes[key];
         }
 
-        public AttributeStore Clone()
+        public virtual AttributeStore Clone()
         {
             var clonedStore = new AttributeStore();
 
@@ -96,8 +158,9 @@ namespace FluentNHibernate.MappingModel
 
         public override bool Equals(object obj)
         {
-            if (obj.GetType() != typeof(AttributeStore)) return false;
-            return Equals((AttributeStore)obj);
+            var store = obj as AttributeStore;
+            if (store == null) return false;
+            return Equals(store);
         }
 
         public override int GetHashCode()
@@ -191,6 +254,11 @@ namespace FluentNHibernate.MappingModel
             store.CopyTo(clonedStore.store);
 
             return clonedStore;
+        }
+
+        public AttributeStore InnerStore
+        {
+            get { return store; }
         }
 
         public AttributeStore CloneInner()

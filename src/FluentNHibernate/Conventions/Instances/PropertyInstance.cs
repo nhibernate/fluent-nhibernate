@@ -63,13 +63,24 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void CustomType(TypeReference type)
         {
+            // Use "PropertyName_" as default prefix to avoid breaking existing code
+            CustomType(type, Property.Name + "_");
+        }
+
+        public void CustomType(TypeReference type, string columnPrefix)
+        {
             if (!mapping.IsSpecified("Type"))
             {
                 mapping.Type = type;
 
                 if (typeof(ICompositeUserType).IsAssignableFrom(mapping.Type.GetUnderlyingSystemType()))
-                    AddColumnsForCompositeUserType();
+                    AddColumnsForCompositeUserType(columnPrefix);
             }
+        }
+
+        public void CustomType<T>(string columnPrefix)
+        {
+            CustomType(typeof(T), columnPrefix);
         }
 
         public void CustomType<T>()
@@ -82,9 +93,19 @@ namespace FluentNHibernate.Conventions.Instances
             CustomType(new TypeReference(type));
         }
 
+        public void CustomType(Type type, string columnPrefix)
+        {
+            CustomType(new TypeReference(type), columnPrefix);
+        }
+
         public void CustomType(string type)
         {
             CustomType(new TypeReference(type));
+        }
+        
+        public void CustomType(string type, string columnPrefix)
+        {
+            CustomType(new TypeReference(type), columnPrefix);
         }
 
         public void CustomSqlType(string sqlType)
@@ -224,7 +245,7 @@ namespace FluentNHibernate.Conventions.Instances
                 column.Check = constraint;
         }
 
-        private void AddColumnsForCompositeUserType()
+        private void AddColumnsForCompositeUserType(string columnPrefix)
         {
             var inst = (ICompositeUserType)Activator.CreateInstance(mapping.Type.GetUnderlyingSystemType());
 
@@ -232,14 +253,11 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 var existingColumn = mapping.Columns.Single();
                 mapping.ClearColumns();
-                var propertyPrefix = existingColumn.Name;
-                for (int i = 0; i < inst.PropertyNames.Length; i++)
-                {
-                    var propertyName = inst.PropertyNames[i];
-                    var propertyType = inst.PropertyTypes[i];
 
+                foreach (var propertyName in inst.PropertyNames)
+                {
                     var column = existingColumn.Clone();
-                    column.Name = propertyPrefix + "_" + propertyName;
+                    column.Name = columnPrefix + propertyName;
                     mapping.AddColumn(column);
                 }
             }

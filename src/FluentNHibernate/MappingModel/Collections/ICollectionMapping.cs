@@ -12,6 +12,7 @@ namespace FluentNHibernate.MappingModel.Collections
         string Access { get; set; }
         string TableName { get; set; }
         string Schema { get; set; }
+        string Catalog { get; set; }
         string Fetch { get; set; }
         string Cascade { get; set; }
         string Where { get; set; }

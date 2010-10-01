@@ -29,11 +29,15 @@ namespace FluentNHibernate.Conventions.Inspections
                 if (mapping.Index == null)
                     return new IndexInspector(new IndexMapping());
 
-                if (mapping.Index is IndexMapping)
-                    return new IndexInspector(mapping.Index as IndexMapping);
+                var index = mapping.Index as IndexMapping;
 
-                if (mapping.Index is IndexManyToManyMapping)
-                    return new IndexManyToManyInspector(mapping.Index as IndexManyToManyMapping);
+                if (index != null)
+                {
+                    if (index.IsManyToMany)
+                        return new IndexManyToManyInspector(index);
+
+                    return new IndexInspector(index);
+                }
 
                 throw new InvalidOperationException("This IIndexMapping is not a valid type for inspecting");
             }

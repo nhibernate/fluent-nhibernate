@@ -131,6 +131,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             return this;
         }
 
+        public virtual MappingTester<T> ShouldNotBeNull()
+        {
+            return Exists();
+        }
+
         public virtual MappingTester<T> DoesntExist()
         {
             Assert.IsNull(currentElement);
@@ -186,6 +191,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         /// <param name="elementPosition">Zero based index of elements on the parent</param>
         public virtual MappingTester<T> ShouldBeInParentAtPosition(int elementPosition)
         {
+            Assert.IsNotNull(currentElement, "Couldn't find element matching '" + currentPath + "'");
+
             XmlElement parentElement = (XmlElement)currentElement.ParentNode;
             if (parentElement == null)
             {
