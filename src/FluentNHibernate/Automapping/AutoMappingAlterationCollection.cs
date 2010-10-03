@@ -36,9 +36,10 @@ namespace FluentNHibernate.Automapping
         /// <param name="alteration">Alteration to add</param>
         /// <returns>Container</returns>
         public AutoMappingAlterationCollection Add(IAutoMappingAlteration alteration)
-        {
-            if (!alterations.Exists(a => a.GetType() == alteration.GetType()))
+        {           
+            if (!alterations.Exists(a => a.Equals(alteration)))
                 alterations.Add(alteration);
+            
             return this;
         }
 

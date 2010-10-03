@@ -65,5 +65,41 @@ namespace FluentNHibernate.Automapping.Alterations
                     mappingOverride.Override((AutoMapping<T>)x);
             });
         }
+
+        /// <summary>
+        /// Determines whether this alteration and the specified object are equal.
+        /// </summary>
+        /// <param name="alteration">The object to compare with this instance.</param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            var alteration = obj as AutoMappingOverrideAlteration;
+
+            if (alteration == null)
+                return false;
+
+            return Equals(alteration);
+        }
+
+        /// <summary>
+        /// Determines whether this alteration and the specified alteration are equal.
+        /// </summary>
+        /// <param name="alteration">The alteration to compare with this instance.</param>
+        /// <returns></returns>
+        public bool Equals(AutoMappingOverrideAlteration alteration)
+        {
+            if (alteration == null)
+                return false;
+                        
+            return alteration.assembly.Equals(assembly);            
+        }
+
+        public override int GetHashCode()
+        {
+            return assembly.GetHashCode();
+        }
     }
 }
