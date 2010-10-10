@@ -335,7 +335,8 @@ namespace FluentNHibernate.Mapping
         /// <example>
         /// HasMany(x => x.Locations);
         /// </example>
-        public MapBuilder<TKey, TValue> HasMany<TKey, TValue>(Expression<Func<T, IDictionary<TKey, TValue>>> memberExpression)        {
+        public MapBuilder<TKey, TValue> HasMany<TKey, TValue>(Expression<Func<T, IDictionary<TKey, TValue>>> memberExpression)
+        {
             return HasManyMap(memberExpression);
         }
 
