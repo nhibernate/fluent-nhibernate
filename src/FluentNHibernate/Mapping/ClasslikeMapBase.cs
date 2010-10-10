@@ -278,6 +278,19 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+        /// <summary>
+        /// Allows the user to add a custom component mapping to the class mapping.        
+        /// Note: not a fluent method.
+        /// </summary>
+        /// <remarks>
+        /// In some cases, our users need a way to add an instance of their own implementation of IComponentMappingProvider.
+        /// For an example of where this might be necessary, see: http://codebetter.com/blogs/jeremy.miller/archive/2010/02/16/our-extension-properties-story.aspx
+        /// </remarks>        
+        public void Component(IComponentMappingProvider componentProvider)
+        {
+            components.Add(componentProvider);
+        }
+
         private OneToManyPart<TChild> MapHasMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
         {
             return HasMany<TChild>(expression.ToMember());
