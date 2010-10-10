@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.FluentInterface.Fixtures;
 using Machine.Specifications;
@@ -23,6 +26,24 @@ namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs
         Behaves_like<ClasslikeComponentBehaviour> a_component_in_a_classlike;
 
         protected static ClassMapping mapping;
+    }
+
+    public class when_class_map_is_told_to_map_a_component_using_a_provider : ProviderSpec
+    {
+        Because of = () =>
+            mapping = map_as_class<EntityWithComponent>(m => m.Component(new ComponentMappingProviderStub()));
+
+        Behaves_like<ClasslikeComponentBehaviour> a_component_in_a_classlike;
+
+        protected static ClassMapping mapping;        
+
+        private class ComponentMappingProviderStub : IComponentMappingProvider
+        {
+            public IComponentMapping GetComponentMapping()
+            {
+                return null;
+            }
+        }
     }
 
     public class when_class_map_is_told_to_map_a_component_using_reveal : ProviderSpec
