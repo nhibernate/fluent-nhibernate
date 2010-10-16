@@ -65,6 +65,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.EntityName))
                 element.WithAtt("entity-name", mapping.EntityName);
+
+            if (mapping.HasValue(x => x.OptimisticLock))
+                element.WithAtt("optimstic-lock", mapping.OptimisticLock);
         }
 
         public override void Visit(ColumnMapping columnMapping)

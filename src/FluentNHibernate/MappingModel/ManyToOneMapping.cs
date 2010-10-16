@@ -110,6 +110,12 @@ namespace FluentNHibernate.MappingModel
             set { attributes.Set(x => x.EntityName, value); }
         }
 
+        public bool OptimisticLock
+        {
+            get { return attributes.Get(x => x.OptimisticLock); }
+            set { attributes.Set(x => x.OptimisticLock, value); }
+        }
+
         public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }

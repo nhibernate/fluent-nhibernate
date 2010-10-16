@@ -228,9 +228,17 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         [Test]
         public void FormulaIsShouldSetModelFormulaPropertyToValue()
         {
-            Property()
+            ManyToOne()
                 .Mapping(m => m.Formula("form"))
                 .ModelShouldMatch(x => x.Formula.ShouldEqual("form"));
+        }
+
+        [Test]
+        public void OptimisticLockShouldSetModelOptimisticLockPropertyToValue()
+        {
+            ManyToOne()
+                .Mapping(m => m.OptimisticLock())
+                .ModelShouldMatch(x => x.OptimisticLock.ShouldBeTrue());
         }
     }
 }
