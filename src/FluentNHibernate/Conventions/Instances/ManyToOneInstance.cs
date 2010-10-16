@@ -124,6 +124,13 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
+        public new void OptimisticLock()
+        {
+            if (!mapping.IsSpecified("OptimisticLock"))
+                mapping.OptimisticLock = nextBool;
+            nextBool = true;
+        }
+
         public new void LazyLoad()
         {
             if (!mapping.IsSpecified("Lazy"))

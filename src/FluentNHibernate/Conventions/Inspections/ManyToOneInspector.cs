@@ -49,6 +49,10 @@ namespace FluentNHibernate.Conventions.Inspections
                 return !mapping.Columns.First().NotNull;
             }
         }
+        public bool OptimisticLock
+        {
+            get { return mapping.OptimisticLock; }
+        }
 
         public Type EntityType
         {

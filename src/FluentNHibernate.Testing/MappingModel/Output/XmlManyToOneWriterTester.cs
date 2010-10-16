@@ -148,5 +148,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             
             testHelper.VerifyAll(writer);
         }
+
+        [Test]
+        public void ShouldWriteOptimisticLockAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<ManyToOneMapping>();
+            testHelper.Check(x => x.OptimisticLock, true).MapsToAttribute("optimistic-lock");
+
+            testHelper.VerifyAll(writer);
+        }
     }
 }

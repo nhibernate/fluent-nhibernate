@@ -364,5 +364,12 @@ namespace FluentNHibernate.Mapping
         {
             return new ColumnMapping(columnAttributes.CloneInner()) { Name = column };
         }
+
+        public ManyToOneBuilder<TOther> OptimisticLock()
+        {
+            mapping.OptimisticLock = nextBool;
+            nextBool = true;
+            return this;
+        }
     }
 }

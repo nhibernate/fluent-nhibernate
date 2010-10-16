@@ -162,6 +162,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.Formula.ShouldEqual("xxx"));
         }
 
+        [Test]
+        public void ShouldSetOptimisticLockProperty()
+        {
+            Convention(x => x.OptimisticLock());
+
+            VerifyModel(x => x.OptimisticLock.ShouldBeTrue());
+        }
+
         #region Helpers
 
         private void Convention(Action<IManyToOneInstance> convention)

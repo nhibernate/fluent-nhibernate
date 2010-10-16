@@ -18,6 +18,7 @@ namespace FluentNHibernate.Conventions.Instances
         new INotFoundInstance NotFound { get; }
         void Index(string index);
         new void Insert();
+        new void OptimisticLock();
 
         /// <summary>
         /// Specify the lazy behaviour of this relationship.
