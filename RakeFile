@@ -18,7 +18,7 @@ namespace :setup do
   end
   
   task :install_mspec, :resharper_version, :vs_version do |t, args|
-    resharper_version = args[:resharper_version] || '5.0'
+    resharper_version = args[:resharper_version] || '5.1'
     vs_version = args[:vs_version] || 10.0
     puts 'Installing MSpec ReSharper runner'
     plugins = "#{ENV['APPDATA']}/JetBrains/ReSharper/v#{resharper_version}/vs#{vs_version}/Plugins"
