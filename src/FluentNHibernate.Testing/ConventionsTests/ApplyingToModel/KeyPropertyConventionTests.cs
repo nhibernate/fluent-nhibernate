@@ -31,6 +31,13 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.Access.ShouldEqual("property"));
         }
 
+        [Test]
+        public void ShouldSetLength()
+        {
+            Convention(x => x.Length(8));
+            VerifyModel(x => x.Length.ShouldEqual(8));
+        }
+
         #region Helpers
 
         private void Convention(Action<IKeyPropertyInstance> convention)
