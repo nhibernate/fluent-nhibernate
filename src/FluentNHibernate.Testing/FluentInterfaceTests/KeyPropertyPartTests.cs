@@ -43,5 +43,12 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             part.Access.Field();
             mapping.Access.ShouldEqual("field");
         }
+
+        [Test]
+        public void ShouldSetLength()
+        {
+            part.Length(8);
+            mapping.Length.ShouldEqual(8);
+        }
     }
 }

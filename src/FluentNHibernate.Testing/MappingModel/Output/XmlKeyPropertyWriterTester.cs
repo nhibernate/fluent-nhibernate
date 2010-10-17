@@ -55,5 +55,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             writer.VerifyXml(mapping)
                 .Element("column").Exists();
         }
+
+        [Test]
+        public void ShouldWriteLengthAttribute()
+        {
+            var testHelper = new XmlWriterTestHelper<KeyPropertyMapping>();
+            testHelper.Check(x => x.Length, 8).MapsToAttribute("length");
+
+            testHelper.VerifyAll(writer);
+        }
     }
 }
