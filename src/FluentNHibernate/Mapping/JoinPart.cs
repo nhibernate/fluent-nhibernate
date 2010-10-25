@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
@@ -33,6 +34,17 @@ namespace FluentNHibernate.Mapping
         {
             columns.Clear(); // only one supported currently
             columns.Add(column);
+            return this;
+        }
+
+        /// <summary>
+        /// Specify the key column name
+        /// </summary>
+        /// <param name="columnNames">Column names</param>
+        public JoinPart<T> KeyColumn(params string[] columnNames)
+        {
+            columns.Clear(); // only one supported currently
+            columnNames.Each(columns.Add);
             return this;
         }
 
