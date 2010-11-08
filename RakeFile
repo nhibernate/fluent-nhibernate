@@ -3,7 +3,7 @@ require 'albacore'
 require 'tools/albacore/zipdirectory_patch.rb'
 
 def get_version
-  ENV['BUILD_NUMBER'] || '1.1.0.0'
+  ENV['BUILD_NUMBER'] || '1.2.0.0'
 end
 
 task :default => 'build:all'
@@ -128,7 +128,7 @@ namespace :package do
     zip.output_file = "fluentnhibernate-binary-#{get_version}.zip"
     zip.output_path = 'dist'
   end
-  
+  `
   desc 'Create zip of API docs'
   zip :docs => :prepare_dist_directory do |zip|
     zip.directories_to_zip = ['output']
