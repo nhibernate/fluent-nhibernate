@@ -128,7 +128,7 @@ namespace :package do
     zip.output_file = "fluentnhibernate-binary-#{get_version}.zip"
     zip.output_path = 'dist'
   end
-  `
+  
   desc 'Create zip of API docs'
   zip :docs => :prepare_dist_directory do |zip|
     zip.directories_to_zip = ['output']
