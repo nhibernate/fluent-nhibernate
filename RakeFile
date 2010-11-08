@@ -3,7 +3,7 @@ require 'albacore'
 require 'tools/albacore/zipdirectory_patch.rb'
 
 def get_version
-  ENV['BUILD_NUMBER'] || '1.1.0.0'
+  ENV['BUILD_NUMBER'] || '2.0.0.0'
 end
 
 task :default => 'build:all'
