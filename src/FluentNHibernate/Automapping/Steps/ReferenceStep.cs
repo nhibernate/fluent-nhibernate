@@ -39,7 +39,7 @@ namespace FluentNHibernate.Automapping.Steps
             mapping.AddDefaultColumn(new ColumnMapping { Name = member.Name + "_id" });
 
             if (member.IsProperty && !member.CanWrite)
-                mapping.Access = cfg.GetAccessStrategyForReadOnlyProperty(member).ToString();
+                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
 
             return mapping;
         }

@@ -4,6 +4,8 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
 {
     class Entity
     {
+        EntityChild readOnlyChild;
+
         public int Id { get; set; }
         public string One { get; set; }
         public TestEnum Enum { get; set; }
@@ -12,6 +14,11 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
         public Component Component { get; set; }
 
         internal enum TestEnum {}
+
+        public EntityChild ReadOnlyChild
+        {
+            get { return readOnlyChild; }
+        }
     }
 
     class EntityChild
