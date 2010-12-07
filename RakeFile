@@ -55,9 +55,29 @@ namespace :source do
     puts "The build number is #{asm.version}"
   end
   
+  task :nhibernate_version, :nhibernate_version do |t,args|
+	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || '2.1'
+	
+	raise "Unknown NHibernate version #{args.nhibernate_version} (check your tools/NHibernate folder)" unless File.directory? "tools/NHibernate/#{args.nhibernate_version}"
+	
+	# clear out existing selected nh version
+	files_to_delete = Dir["tools/NHibernate/*.*"].reject {|f| File.directory? f }
+	files_to_delete.each {|f| File.delete f }
+	
+	# copy specific nh version files to the main directory
+	files_to_copy = Dir["tools/NHibernate/#{args.nhibernate_version}/*.*"]
+	files_to_copy.each {|f| FileUtils.copy f, "tools/NHibernate/" }
+  end
+  
   desc 'Compile the source'
-  msbuild :compile do |msb|
-    msb.properties = { :configuration => :Release }
+  msbuild :compile, [:nhibernate_version] => :nhibernate_version do |msb,args|
+	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || '2.1'
+	
+	nh_version_precompiler_switch = 'NH' +  args.nhibernate_version.gsub('.', '')
+	
+	puts nh_version_precompiler_switch
+	
+    msb.properties = { :configuration => :Release, :DefineConstants => nh_version_precompiler_switch }
     msb.targets [:Clean, :Build]
     msb.solution = 'src/FluentNHibernate.sln'
   end
