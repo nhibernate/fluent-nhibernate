@@ -128,8 +128,9 @@ namespace :package do
   
   desc 'Create zip of source-tree'
   zip :source => :prepare_dist_directory do |zip|
+    file_prefix = ENV['SourceDistFilename'] || 'fluentnhibernate-source'
     zip.directories_to_zip = ['./']
-    zip.output_file = "fluentnhibernate-source-#{get_version}.zip"
+    zip.output_file = "#{file_prefix}-#{get_version}.zip"
     zip.output_path = 'dist'
     zip.exclusions = get_exclusions
   end
@@ -144,8 +145,9 @@ namespace :package do
   
   desc 'Create zip of binaries'
   zip :binaries => :prepare_dist_directory do |zip|
+    file_prefix = ENV['BinaryDistFilename'] || 'fluentnhibernate-binary'
     zip.directories_to_zip = ['build']
-    zip.output_file = "fluentnhibernate-binary-#{get_version}.zip"
+    zip.output_file = "#{file_prefix}-#{get_version}.zip"
     zip.output_path = 'dist'
   end
   
