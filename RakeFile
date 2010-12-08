@@ -56,7 +56,7 @@ namespace :source do
   end
   
   task :nhibernate_version, :nhibernate_version do |t,args|
-	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || '2.1'
+	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || '3.0'
 	
 	raise "Unknown NHibernate version #{args.nhibernate_version} (check your tools/NHibernate folder)" unless File.directory? "tools/NHibernate/#{args.nhibernate_version}"
 	
@@ -71,7 +71,7 @@ namespace :source do
   
   desc 'Compile the source'
   msbuild :compile, [:nhibernate_version] => :nhibernate_version do |msb,args|
-	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || '2.1'
+	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || '3.0'
 	
 	nh_version_precompiler_switch = 'NH' +  args.nhibernate_version.gsub('.', '')
 	
