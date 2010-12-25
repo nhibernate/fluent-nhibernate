@@ -6,9 +6,9 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
 {
     public abstract class BaseXmlNodeSorter
     {
-        protected const int Top = 0;
-        protected const int Middle = 1;
-        protected const int Bottom = 2;
+        protected const int First = 0;    // Top
+        protected const int Anywhere = 1; // Middle
+        protected const int Last = 2;     // Bottom
 
         public XmlNode Sort(XmlNode node)
         {
@@ -33,9 +33,9 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
                 var ySort = sorting[y.Name];
 
                 //General Position
-                if (xSort.DocumentSection != ySort.DocumentSection) return xSort.DocumentSection.CompareTo(ySort.DocumentSection);
+                if (xSort.Position != ySort.Position) return xSort.Position.CompareTo(ySort.Position);
                 //Sub-Position if positions are the same
-                if (xSort.RankWithinSection != ySort.RankWithinSection) return xSort.RankWithinSection.CompareTo(ySort.RankWithinSection);
+                if (xSort.Level != ySort.Level) return xSort.Level.CompareTo(ySort.Level);
 
                 //Relative Index based on the order the part was added
                 return Array.IndexOf(originalSortOrder, x).CompareTo(Array.IndexOf(originalSortOrder, y));

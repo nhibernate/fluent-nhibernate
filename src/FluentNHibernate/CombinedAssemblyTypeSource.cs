@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using FluentNHibernate.Diagnostics;
 
 namespace FluentNHibernate
@@ -11,6 +12,10 @@ namespace FluentNHibernate
     public class CombinedAssemblyTypeSource : ITypeSource
     {
         readonly AssemblyTypeSource[] sources;
+
+        public CombinedAssemblyTypeSource(IEnumerable<Assembly> sources)
+            : this(sources.Select(x => new AssemblyTypeSource(x)))
+        {}
 
         public CombinedAssemblyTypeSource(IEnumerable<AssemblyTypeSource> sources)
         {

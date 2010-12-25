@@ -12,6 +12,10 @@ namespace FluentNHibernate.Cfg
         private bool mergeMappings;
         IDiagnosticLogger logger;
 
+        public MappingConfiguration()
+            : this(new NullDiagnosticsLogger())
+        {}
+
         public MappingConfiguration(IDiagnosticLogger logger)
         {
             this.logger = logger;

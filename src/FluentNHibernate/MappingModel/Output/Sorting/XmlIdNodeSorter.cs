@@ -9,9 +9,9 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
         {
             return new Dictionary<string, SortValue>
             {
-                { "meta", new SortValue { DocumentSection = Top, RankWithinSection = 1 } },
-                { "column", new SortValue { DocumentSection = Middle, RankWithinSection = 1 } },
-                { "generator", new SortValue { DocumentSection = Bottom, RankWithinSection = 1 } },
+                { "meta", new SortValue { Position = First, Level = 1 } },
+                { "column", new SortValue { Position = Anywhere, Level = 1 } },
+                { "generator", new SortValue { Position = Last, Level = 1 } },
             };
         }
 
