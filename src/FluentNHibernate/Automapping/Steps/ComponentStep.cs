@@ -1,17 +1,14 @@
-﻿using System.Collections.Generic;
-using FluentNHibernate.MappingModel.ClassBased;
+﻿using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Automapping.Steps
 {
     public class ComponentStep : IAutomappingStep
     {
         private readonly IAutomappingConfiguration cfg;
-        private readonly AutoMapper mapper;
 
-        public ComponentStep(IAutomappingConfiguration cfg, AutoMapper mapper)
+        public ComponentStep(IAutomappingConfiguration cfg)
         {
             this.cfg = cfg;
-            this.mapper = mapper;
         }
 
         public bool ShouldMap(Member member)
@@ -21,20 +18,10 @@ namespace FluentNHibernate.Automapping.Steps
 
         public void Map(ClassMappingBase classMap, Member member)
         {
-            var mapping = new ComponentMapping(ComponentType.Component)
-            {
-                Name = member.Name,
-                Member = member,
-                ContainingEntityType = classMap.Type,
-                Type = member.PropertyType,
-                ColumnPrefix = cfg.GetComponentColumnPrefix(member)
-            };
-
-            if (member.IsProperty && !member.CanWrite)
-                mapping.Access = cfg.GetAccessStrategyForReadOnlyProperty(member).ToString();
-
-            mapper.FlagAsMapped(member.PropertyType);
-            mapper.MergeMap(member.PropertyType, mapping, new List<Member>());
+            // don't map the component here, mark it as a reference which'll
+            // allow us to integrate with ComponentMap or automap at a later
+            // stage
+            var mapping = new ReferenceComponentMapping(ComponentType.Component, member, member.PropertyType, classMap.Type, cfg.GetComponentColumnPrefix(member));
 
             classMap.AddComponent(mapping);
         }

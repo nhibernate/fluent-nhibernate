@@ -144,14 +144,14 @@ namespace FluentNHibernate.Visitors
                 var conventions = finder.Find<IComponentConvention>();
 
                 Apply<IComponentInspector, IComponentInstance>(conventions,
-                    new ComponentInstance((ComponentMapping)mapping));
+                    new ComponentInstance(mapping));
             }
             else
             {
                 var conventions = finder.Find<IDynamicComponentConvention>();
 
                 Apply<IDynamicComponentInspector, IDynamicComponentInstance>(conventions,
-                    new DynamicComponentInstance((ComponentMapping)mapping));
+                    new DynamicComponentInstance(mapping));
             }
         }
 

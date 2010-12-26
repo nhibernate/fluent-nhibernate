@@ -26,6 +26,10 @@ namespace FluentNHibernate
         protected readonly IList<IFilterDefinition> filterDefinitions = new List<IFilterDefinition>();
         protected readonly IList<IIndeterminateSubclassMappingProvider> subclassProviders = new List<IIndeterminateSubclassMappingProvider>();
         protected readonly IList<IExternalComponentMappingProvider> componentProviders = new List<IExternalComponentMappingProvider>();
+        protected readonly IList<IComponentReferenceResolver> componentResolvers = new List<IComponentReferenceResolver>
+        {
+            new ComponentMapComponentReferenceResolver()
+        };
         private readonly IList<IMappingModelVisitor> visitors = new List<IMappingModelVisitor>();
         public IConventionFinder Conventions { get; private set; }
         public bool MergeMappings { get; set; }
@@ -42,7 +46,7 @@ namespace FluentNHibernate
             Conventions = conventionFinder;
 
             visitors.Add(new SeparateSubclassVisitor(subclassProviders));
-            visitors.Add(new ComponentReferenceResolutionVisitor(componentProviders));
+            visitors.Add(new ComponentReferenceResolutionVisitor(componentResolvers, componentProviders));
             visitors.Add(new ComponentColumnPrefixVisitor());
             visitors.Add(new RelationshipPairingVisitor(BiDirectionalManyToManyPairer));
             visitors.Add(new ManyToManyTableNameVisitor());

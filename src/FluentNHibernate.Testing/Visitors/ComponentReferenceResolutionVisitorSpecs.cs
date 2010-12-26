@@ -16,7 +16,7 @@ namespace FluentNHibernate.Testing.Visitors
             var external_component = Stub<IExternalComponentMappingProvider>.Create(cfg =>
                 cfg.Stub(x => x.GetComponentMapping()).Return(external_component_mapping));
 
-            visitor = new ComponentReferenceResolutionVisitor(new[] { external_component });
+            visitor = new ComponentReferenceResolutionVisitor(new [] { new ComponentMapComponentReferenceResolver() }, new[] { external_component });
             reference_component_mapping = new ReferenceComponentMapping(ComponentType.Component, null, null, null, null);
         }
 
@@ -40,7 +40,7 @@ namespace FluentNHibernate.Testing.Visitors
     {
         public override void establish_context()
         {
-            visitor = new ComponentReferenceResolutionVisitor(new IExternalComponentMappingProvider[0]);
+            visitor = new ComponentReferenceResolutionVisitor(new[] { new ComponentMapComponentReferenceResolver() }, new IExternalComponentMappingProvider[0]);
             member_property = new DummyPropertyInfo("Component", typeof(ComponentTarget)).ToMember();
         }
 
@@ -97,7 +97,7 @@ namespace FluentNHibernate.Testing.Visitors
                 cfg.Stub(x => x.Type).Return(typeof(ComponentTarget));
             });
 
-            visitor = new ComponentReferenceResolutionVisitor(new[] { external_component_one, external_component_two});
+            visitor = new ComponentReferenceResolutionVisitor(new[] { new ComponentMapComponentReferenceResolver() }, new[] { external_component_one, external_component_two });
             member_property = new DummyPropertyInfo("Component", typeof(ComponentTarget)).ToMember();
         }
 
@@ -137,7 +137,6 @@ namespace FluentNHibernate.Testing.Visitors
             (thrown_exception as AmbiguousComponentReferenceException).SourceMember.ShouldEqual(member_property);
         }
     }
-
 
     public abstract class ComponentReferenceResolutionVisitorSpec : Specification
     {

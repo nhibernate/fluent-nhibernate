@@ -5,7 +5,10 @@ using System.Reflection;
 using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.Automapping
 {
@@ -28,12 +31,16 @@ namespace FluentNHibernate.Automapping
             expressions = new AutoMappingExpressions();
             cfg = new ExpressionBasedAutomappingConfiguration(expressions);
             autoMapper = new AutoMapper(cfg, Conventions, inlineOverrides);
+
+            componentResolvers.Add(new AutomappedComponentResolver(autoMapper, cfg));
         }
 
         public AutoPersistenceModel(IAutomappingConfiguration cfg)
         {
             this.cfg = cfg;
             autoMapper = new AutoMapper(cfg, Conventions, inlineOverrides);
+
+            componentResolvers.Add(new AutomappedComponentResolver(autoMapper, cfg));
         }
 
         /// <summary>
@@ -391,6 +398,38 @@ namespace FluentNHibernate.Automapping
         bool HasUserDefinedConfiguration
         {
             get { return !(cfg is ExpressionBasedAutomappingConfiguration); }
+        }
+    }
+
+    public class AutomappedComponentResolver : IComponentReferenceResolver
+    {
+        readonly AutoMapper mapper;
+        IAutomappingConfiguration cfg;
+
+        public AutomappedComponentResolver(AutoMapper mapper, IAutomappingConfiguration cfg)
+        {
+            this.mapper = mapper;
+            this.cfg = cfg;
+        }
+
+        public ExternalComponentMapping Resolve(ComponentResolutionContext context, IEnumerable<IExternalComponentMappingProvider> componentProviders)
+        {
+            // this will only be called if there was no ComponentMap found
+            var mapping = new ExternalComponentMapping(ComponentType.Component)
+            {
+                Name = context.ComponentMember.Name,
+                Member = context.ComponentMember,
+                ContainingEntityType = context.EntityType,
+                Type = context.ComponentType
+            };
+
+            if (context.ComponentMember.IsProperty && !context.ComponentMember.CanWrite)
+                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(context.ComponentMember).ToString());
+
+            mapper.FlagAsMapped(context.ComponentType);
+            mapper.MergeMap(context.ComponentType, mapping, new List<Member>());
+
+            return mapping;
         }
     }
 }

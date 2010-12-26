@@ -88,7 +88,7 @@ namespace FluentNHibernate.Automapping
             {
                 new IdentityStep(this),
                 new VersionStep(this),
-                new ComponentStep(this, mapper),
+                new ComponentStep(this),
                 new PropertyStep(conventionFinder, this),
                 new HasManyToManyStep(this),
                 new ReferenceStep(this),
