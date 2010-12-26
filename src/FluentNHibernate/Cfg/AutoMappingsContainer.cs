@@ -71,7 +71,8 @@ namespace FluentNHibernate.Cfg
         /// Applies any added mappings to the NHibernate Configuration
         /// </summary>
         /// <param name="cfg">NHibernate Configuration instance</param>
-        internal void Apply(Configuration cfg)
+        /// <param name="model"></param>
+        internal void Apply(Configuration cfg, PersistenceModel model)
         {
             foreach (var mapping in mappings)
             {
@@ -81,6 +82,7 @@ namespace FluentNHibernate.Cfg
                 if (exportTextWriter != null)
                     mapping.WriteMappingsTo(exportTextWriter);
 
+                mapping.ImportProviders(model);
                 mapping.Configure(cfg);
             }
         }

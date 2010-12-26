@@ -309,6 +309,27 @@ namespace FluentNHibernate
             get { return validationVisitor.Enabled; }
             set { validationVisitor.Enabled = value; }
         }
+
+        internal void ImportProviders(PersistenceModel model)
+        {
+            model.classProviders.Each(x =>
+            {
+                if (!classProviders.Contains(x))
+                    classProviders.Add(x);
+            });
+
+            model.subclassProviders.Each(x =>
+            {
+                if (!subclassProviders.Contains(x))
+                    subclassProviders.Add(x);
+            });
+
+            model.componentProviders.Each(x =>
+            {
+                if (!componentProviders.Contains(x))
+                    componentProviders.Add(x);
+            });
+        }
     }
 
     public interface IMappingProvider

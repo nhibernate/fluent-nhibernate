@@ -43,6 +43,23 @@ namespace FluentNHibernate.Automapping
             componentResolvers.Add(new AutomappedComponentResolver(autoMapper, cfg));
         }
 
+        public AutoPersistenceModel AddMappingsFromAssemblyOf<T>()
+        {
+            return AddMappingsFromAssembly(typeof(T).Assembly);
+        }
+
+        public new AutoPersistenceModel AddMappingsFromAssembly(Assembly assembly)
+        {
+            AddMappingsFromSource(new AssemblyTypeSource(assembly));
+            return this;
+        }
+
+        public new AutoPersistenceModel AddMappingsFromSource(ITypeSource source)
+        {
+            base.AddMappingsFromSource(source);
+            return this;
+        }
+
         /// <summary>
         /// Specify alterations to be used with this AutoPersisteceModel
         /// </summary>

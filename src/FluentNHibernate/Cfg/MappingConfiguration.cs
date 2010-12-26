@@ -83,7 +83,7 @@ namespace FluentNHibernate.Cfg
 
             HbmMappings.Apply(cfg);
             FluentMappings.Apply(model);
-            AutoMappings.Apply(cfg);
+            AutoMappings.Apply(cfg, model);
 
             model.Configure(cfg);
         }
