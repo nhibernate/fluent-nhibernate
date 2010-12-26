@@ -358,11 +358,15 @@ namespace FluentNHibernate.Mapping
 
             // HACK: Index only on list and map - shouldn't have to do this!
             if (index != null && collection is IIndexedCollectionMapping)
+#pragma warning disable 612,618
                 ((IIndexedCollectionMapping)collection).Index = index.GetIndexMapping();
+#pragma warning restore 612,618
 
             // HACK: shouldn't have to do this!
             if (manyToManyIndex != null && collection is MapMapping)
+#pragma warning disable 612,618
                 ((MapMapping)collection).Index = manyToManyIndex.GetIndexMapping();
+#pragma warning restore 612,618
 
             return collection;
         }

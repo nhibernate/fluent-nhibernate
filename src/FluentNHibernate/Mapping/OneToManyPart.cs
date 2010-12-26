@@ -192,7 +192,9 @@ namespace FluentNHibernate.Mapping
 
             // HACK: shouldn't have to do this!
             if (manyToManyIndex != null && collection is MapMapping)
+#pragma warning disable 612,618
                 ((MapMapping)collection).Index = manyToManyIndex.GetIndexMapping();
+#pragma warning restore 612,618
 
             return collection;
         }

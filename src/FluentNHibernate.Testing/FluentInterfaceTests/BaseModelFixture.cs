@@ -142,7 +142,9 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<StoredProcedurePart, StoredProcedureMapping> StoredProcedure()
         {
+#pragma warning disable 612,618
             return new ModelTester<StoredProcedurePart, StoredProcedureMapping>(() => new StoredProcedurePart(null, null), x => x.GetStoredProcedureMapping());
+#pragma warning restore 612,618
         }
 
         protected ModelTester<NaturalIdPart<T>, NaturalIdMapping> NaturalId<T>()

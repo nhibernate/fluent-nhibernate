@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 
@@ -25,7 +26,7 @@ namespace FluentNHibernate.Mapping
             get { return check; }
         }
 
-
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         public StoredProcedureMapping GetStoredProcedureMapping()
         {
             var mapping = new StoredProcedureMapping(attributes.CloneInner());

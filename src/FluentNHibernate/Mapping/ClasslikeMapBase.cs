@@ -41,9 +41,12 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public PropertyPart Map(Expression<Func<T, object>> memberExpression, string columnName)
         {
+#pragma warning disable 612,618
             return Map(memberExpression.ToMember(), columnName);
+#pragma warning restore 612,618
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected virtual PropertyPart Map(Member property, string columnName)
         {
             var propertyMap = new PropertyPart(property, typeof(T));
@@ -82,7 +85,9 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> memberExpression, string columnName)
         {
+#pragma warning disable 612,618
             return References<TOther>(memberExpression.ToMember(), columnName);
+#pragma warning restore 612,618
         }
 
         /// <summary>
@@ -111,9 +116,12 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, object>> memberExpression, string columnName)
         {
+#pragma warning disable 612,618
             return References<TOther>(memberExpression.ToMember(), columnName);
+#pragma warning restore 612,618
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected virtual ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
         {
             var part = new ManyToOnePart<TOther>(EntityType, property);
@@ -133,9 +141,12 @@ namespace FluentNHibernate.Mapping
         /// <param name="memberExpression">Property</param>
         public AnyPart<TOther> ReferencesAny<TOther>(Expression<Func<T, TOther>> memberExpression)
         {
+#pragma warning disable 612,618
             return ReferencesAny<TOther>(memberExpression.ToMember());
+#pragma warning restore 612,618
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected virtual AnyPart<TOther> ReferencesAny<TOther>(Member property)
         {
             var part = new AnyPart<TOther>(typeof(T), property);
@@ -158,7 +169,9 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public OneToOnePart<TOther> HasOne<TOther>(Expression<Func<T, Object>> memberExpression)
         {
+#pragma warning disable 612,618
             return HasOne<TOther>(memberExpression.ToMember());
+#pragma warning restore 612,618
         }
 
         /// <summary>
@@ -174,9 +187,12 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public OneToOnePart<TOther> HasOne<TOther>(Expression<Func<T, TOther>> memberExpression)
         {
+#pragma warning disable 612,618
             return HasOne<TOther>(memberExpression.ToMember());
+#pragma warning restore 612,618
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected virtual OneToOnePart<TOther> HasOne<TOther>(Member property)
         {
             var part = new OneToOnePart<TOther>(EntityType, property);
@@ -200,9 +216,12 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public DynamicComponentPart<IDictionary> DynamicComponent(Expression<Func<T, IDictionary>> memberExpression, Action<DynamicComponentPart<IDictionary>> dynamicComponentAction)
         {
+#pragma warning disable 612,618
             return DynamicComponent(memberExpression.ToMember(), dynamicComponentAction);
+#pragma warning restore 612,618
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected DynamicComponentPart<IDictionary> DynamicComponent(Member property, Action<DynamicComponentPart<IDictionary>> dynamicComponentAction)
         {
             var part = new DynamicComponentPart<IDictionary>(typeof(T), property);
@@ -246,7 +265,9 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public ComponentPart<TComponent> Component<TComponent>(Expression<Func<T, TComponent>> expression, Action<ComponentPart<TComponent>> action)
         {
+#pragma warning disable 612,618
             return Component(expression.ToMember(), action);
+#pragma warning restore 612,618
         }
 
         /// <summary>
@@ -264,9 +285,12 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public ComponentPart<TComponent> Component<TComponent>(Expression<Func<T, object>> expression, Action<ComponentPart<TComponent>> action)
         {
+#pragma warning disable 612,618
             return Component(expression.ToMember(), action);
+#pragma warning restore 612,618
         }
-        
+
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected virtual ComponentPart<TComponent> Component<TComponent>(Member property, Action<ComponentPart<TComponent>> action)
         {
             var part = new ComponentPart<TComponent>(typeof(T), property);
@@ -293,9 +317,12 @@ namespace FluentNHibernate.Mapping
 
         private OneToManyPart<TChild> MapHasMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
         {
+#pragma warning disable 612,618
             return HasMany<TChild>(expression.ToMember());
+#pragma warning restore 612,618
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected virtual OneToManyPart<TChild> HasMany<TChild>(Member member)
         {
             var part = new OneToManyPart<TChild>(EntityType, member);
@@ -338,9 +365,12 @@ namespace FluentNHibernate.Mapping
 
         private ManyToManyPart<TChild> MapHasManyToMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
         {
+#pragma warning disable 612,618
             return HasManyToMany<TChild>(expression.ToMember());
+#pragma warning restore 612,618
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected virtual ManyToManyPart<TChild> HasManyToMany<TChild>(Member property)
         {
             var part = new ManyToManyPart<TChild>(EntityType, property);
@@ -419,16 +449,19 @@ namespace FluentNHibernate.Mapping
             return part;
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected virtual IEnumerable<IPropertyMappingProvider> Properties
 		{
 			get { return properties; }
 		}
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected virtual IEnumerable<IComponentMappingProvider> Components
 		{
 			get { return components; }
 		}
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         public Type EntityType
         {
             get { return typeof(T); }

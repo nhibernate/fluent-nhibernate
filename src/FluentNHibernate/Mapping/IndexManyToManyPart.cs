@@ -45,6 +45,7 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         public IndexManyToManyMapping GetIndexMapping()
         {
             var mapping = new IndexManyToManyMapping(attributes.CloneInner());

@@ -30,12 +30,13 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-	public IndexPart Type(Type type)
-	{
+        public IndexPart Type(Type type)
+        {
             attributes.Set(x => x.Type, new TypeReference(type));
             return this;
-	}
+        }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         public IndexMapping GetIndexMapping()
         {
             var mapping = new IndexMapping(attributes.CloneInner());

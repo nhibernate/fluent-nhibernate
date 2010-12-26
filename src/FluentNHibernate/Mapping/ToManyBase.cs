@@ -356,7 +356,9 @@ namespace FluentNHibernate.Mapping
             if (customIndex != null)
                 customIndex(indexPart);
 
+#pragma warning disable 612,618
             indexMapping = indexPart.GetIndexMapping();
+#pragma warning restore 612,618
         }
 
         /// <summary>

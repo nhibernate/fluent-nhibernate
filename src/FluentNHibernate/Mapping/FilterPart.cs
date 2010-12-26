@@ -39,6 +39,7 @@ namespace FluentNHibernate.Mapping
             get { return filterName; }
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         public void Write(XmlElement classElement, IMappingModelVisitor visitor)
         {
             XmlElement filterElement = classElement.AddElement("filter");

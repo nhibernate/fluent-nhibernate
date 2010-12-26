@@ -9,6 +9,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Automapping
 {
+#pragma warning disable 612,618,672
     public class AutoJoinedSubClassPart<T> : JoinedSubClassPart<T>, IAutoClasslike
     {
         private readonly IList<Member> membersMapped = new List<Member>();
@@ -125,4 +126,5 @@ namespace FluentNHibernate.Automapping
             return membersMapped;
         }
     }
+#pragma warning restore 612,618,672
 }

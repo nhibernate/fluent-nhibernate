@@ -10,6 +10,7 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping
 {
+#pragma warning disable 612,618,672
     public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
     {
         readonly IList<Member> mappedMembers;
@@ -265,5 +266,6 @@ namespace FluentNHibernate.Automapping
             return null;
         }
 #pragma warning restore 809
+#pragma warning restore 612,618,672
     }
 }

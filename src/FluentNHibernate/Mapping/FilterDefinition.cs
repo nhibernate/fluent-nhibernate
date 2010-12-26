@@ -58,6 +58,7 @@ namespace FluentNHibernate.Mapping
             return mapping;
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         public HibernateMapping GetHibernateMapping()
         {
             return new HibernateMapping();
