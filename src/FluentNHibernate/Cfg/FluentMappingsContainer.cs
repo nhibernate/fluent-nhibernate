@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using FluentNHibernate.Mapping;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.Visitors;
-using NHibernate.Cfg;
 using System.IO;
 
 namespace FluentNHibernate.Cfg
@@ -13,25 +12,22 @@ namespace FluentNHibernate.Cfg
     /// </summary>
     public class FluentMappingsContainer
     {
-        private readonly IList<Assembly> assemblies = new List<Assembly>();
-        private readonly List<Type> types = new List<Type>();
-        private string exportPath;
-        private TextWriter exportTextWriter;
-        private readonly PersistenceModel model;
+        readonly IList<Assembly> assemblies = new List<Assembly>();
+        readonly List<Type> types = new List<Type>();
+        readonly IConventionFinder conventionFinder = new DefaultConventionFinder();
+        string exportPath;
+        TextWriter exportTextWriter;
+        PairBiDirectionalManyToManySidesDelegate biDirectionalManyToManyPairer;
 
-        internal FluentMappingsContainer()
-        {
-            model = new PersistenceModel();
-        }
-
+        [Obsolete("PersistenceModel is no longer available through FluentMappingsContainer. Use MappingConfiguration.UsePersistenceModel to supply a custom PersistenceModel", true)]
         public PersistenceModel PersistenceModel
         {
-            get { return model; }
+            get { return null; }
         }
 
         public FluentMappingsContainer OverrideBiDirectionalManyToManyPairing(PairBiDirectionalManyToManySidesDelegate userControlledPairing)
         {
-            model.BiDirectionalManyToManyPairer = userControlledPairing;
+            biDirectionalManyToManyPairer = userControlledPairing;
             return this;
         }
 
@@ -107,7 +103,7 @@ namespace FluentNHibernate.Cfg
         /// </summary>
         public SetupConventionFinder<FluentMappingsContainer> Conventions
         {
-            get { return new SetupConventionFinder<FluentMappingsContainer>(this, model.Conventions); }
+            get { return new SetupConventionFinder<FluentMappingsContainer>(this, conventionFinder); }
         }
 
         /// <summary>
@@ -118,8 +114,8 @@ namespace FluentNHibernate.Cfg
         /// <summary>
         /// Applies any added mappings to the NHibernate Configuration
         /// </summary>
-        /// <param name="cfg">NHibernate Configuration instance</param>
-        internal void Apply(Configuration cfg)
+        /// <param name="model">PersistenceModel to alter</param>
+        internal void Apply(PersistenceModel model)
         {
             foreach (var assembly in assemblies)
             {
@@ -137,7 +133,10 @@ namespace FluentNHibernate.Cfg
             if (exportTextWriter != null)
                 model.WriteMappingsTo(exportTextWriter);
 
-            model.Configure(cfg);
+            if (biDirectionalManyToManyPairer != null)
+                model.BiDirectionalManyToManyPairer = biDirectionalManyToManyPairer;
+
+            model.Conventions.Merge(conventionFinder);
         }
     }
 }

@@ -35,6 +35,16 @@ namespace FluentNHibernate.Conventions
             log = logger;
         }
 
+        public void Merge(IConventionFinder conventionFinder)
+        {
+            conventions.Merge(conventionFinder.Conventions);
+        }
+
+        public ConventionsCollection Conventions
+        {
+            get { return conventions; }
+        }
+
         public void AddSource(ITypeSource source)
         {
             foreach (var type in source.GetTypes())

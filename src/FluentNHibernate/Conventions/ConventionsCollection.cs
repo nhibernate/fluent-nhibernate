@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Conventions
 {
@@ -67,6 +68,12 @@ namespace FluentNHibernate.Conventions
             {
                 return new List<object>(Instances);
             }
+        }
+
+        public void Merge(ConventionsCollection conventions)
+        {
+            conventions.inner.Each(inner.Add);
+            conventions.types.Each(types.Add);
         }
     }
 }

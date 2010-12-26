@@ -204,9 +204,13 @@ namespace FluentNHibernate.Testing.Cfg
         [Test]
         public void MergeOutputShouldSetFlagOnFluentPersistenceModelsOnApply()
         {
+            var model = new PersistenceModel();
+            
+            mapping.UsePersistenceModel(model);
             mapping.MergeMappings();
             mapping.Apply(new Configuration());
-            mapping.FluentMappings.PersistenceModel.MergeMappings.ShouldBeTrue();
+            
+            model.MergeMappings.ShouldBeTrue();
         }
     }
 }

@@ -10,6 +10,8 @@ namespace FluentNHibernate.Conventions
     /// </summary>
     public interface IConventionFinder
     {
+        ConventionsCollection Conventions { get; }
+
         /// <summary>
         /// Add a source to be queried.
         /// </summary>
@@ -71,5 +73,6 @@ namespace FluentNHibernate.Conventions
         IEnumerable<T> Find<T>() where T : IConvention;
 
         void SetLogger(IDiagnosticLogger logger);
+        void Merge(IConventionFinder conventionFinder);
     }
 }
