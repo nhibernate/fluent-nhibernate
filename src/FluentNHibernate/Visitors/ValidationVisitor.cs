@@ -1,4 +1,5 @@
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Visitors
 {
@@ -21,6 +22,22 @@ namespace FluentNHibernate.Visitors
                     "Use the Id method to map your identity property. For example: Id(x => x.Id)",
                     classMapping.Type
                 );
+        }
+
+        protected override void ProcessCollection(ICollectionMapping mapping)
+        {
+            if (!Enabled) return;
+
+            var otherSide = mapping.OtherSide as ICollectionMapping;
+
+            if (otherSide == null) return;
+            if (mapping.Inverse && otherSide.Inverse)
+            {
+                throw new ValidationException(
+                    string.Format("The relationship {0}.{1} to {2}.{3} has Inverse specified on both sides.", mapping.ContainingEntityType.Name, mapping.Name, otherSide.ContainingEntityType.Name, otherSide.Name),
+                    "Remove Inverse from one side of the relationship",
+                    mapping.ContainingEntityType);
+            }
         }
 
         /// <summary>
