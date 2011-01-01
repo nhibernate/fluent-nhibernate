@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
+using FluentNHibernate;
+
 namespace FluentNHibernate.Utils.Reflection
 {
     public static class ReflectionHelper
