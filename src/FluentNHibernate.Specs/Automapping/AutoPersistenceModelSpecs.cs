@@ -8,6 +8,7 @@ using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Automapping.Fixtures;
+using FluentNHibernate.Specs.ExternalFixtures;
 using Machine.Specifications;
 
 namespace FluentNHibernate.Specs.Automapping

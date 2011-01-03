@@ -5,6 +5,7 @@ using FluentNHibernate.Conventions;
 using FluentNHibernate.Diagnostics;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Specs.Automapping.Fixtures;
+using FluentNHibernate.Specs.ExternalFixtures;
 using Machine.Specifications;
 
 namespace FluentNHibernate.Specs.Diagnostics

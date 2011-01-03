@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace FluentNHibernate.Specs.Automapping.Fixtures
+namespace FluentNHibernate.Specs.ExternalFixtures
 {
-    class Entity
+    public class Entity
     {
         EntityChild readOnlyChild;
 
@@ -13,7 +13,7 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
         public IList<EntityChild> Children { get; set; }
         public Component Component { get; set; }
 
-        internal enum TestEnum {}
+        public enum TestEnum {}
 
         public EntityChild ReadOnlyChild
         {
@@ -21,7 +21,7 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
         }
     }
 
-    class EntityChild
+    public class EntityChild
     {}
 
     public abstract class A_Child : B_Parent
