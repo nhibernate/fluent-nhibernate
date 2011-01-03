@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using FluentNHibernate.Automapping;
-using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
+using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Automapping.Fixtures;
+using FluentNHibernate.Specs.Automapping.Fixtures.Overrides;
+using FluentNHibernate.Specs.ExternalFixtures;
+using FluentNHibernate.Specs.ExternalFixtures.Overrides;
 using Machine.Specifications;
 
 namespace FluentNHibernate.Specs.Automapping
@@ -50,6 +52,27 @@ namespace FluentNHibernate.Specs.Automapping
             mapping.Subclasses.ShouldEachConformTo(x => x.SubclassType == SubclassType.Subclass);
         };
         
+        static AutoPersistenceModel model;
+        static ClassMapping mapping;
+    }
+
+    [Subject(typeof(IAutoMappingOverride<>))]
+    public class when_using_multiple_overrides_from_different_assemblies
+    {
+        Establish context = () =>
+            model = AutoMap.Source(new StubTypeSource(typeof(Entity)))
+                .UseOverridesFromAssemblyOf<EntityBatchSizeOverride>()
+                .UseOverridesFromAssemblyOf<EntityTableOverride>();
+
+        Because of = () =>
+            mapping = model.BuildMappingFor<Entity>();
+
+        It should_apply_override_from_the_first_assembly = () =>
+            mapping.BatchSize.ShouldEqual(1234);
+
+        It should_apply_override_from_the_second_assembly = () =>
+            mapping.TableName.ShouldEqual("OverriddenTableName");
+
         static AutoPersistenceModel model;
         static ClassMapping mapping;
     }

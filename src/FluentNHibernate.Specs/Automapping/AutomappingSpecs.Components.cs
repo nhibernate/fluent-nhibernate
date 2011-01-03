@@ -5,6 +5,7 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Automapping.Fixtures;
+using FluentNHibernate.Specs.ExternalFixtures;
 using FluentNHibernate.Utils;
 using Machine.Specifications;
 

@@ -4,6 +4,7 @@ using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Specs.Automapping.Fixtures;
+using FluentNHibernate.Specs.ExternalFixtures;
 using Machine.Specifications;
 
 namespace FluentNHibernate.Specs.Automapping
