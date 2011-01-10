@@ -1,4 +1,5 @@
 require 'fileutils'
+gem 'albacore', '=0.1.5'
 require 'albacore'
 require 'tools/albacore/zipdirectory_patch.rb'
 
