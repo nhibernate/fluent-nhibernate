@@ -12,7 +12,7 @@ namespace FluentNHibernate.Mapping
         private readonly Type entity;
         private readonly Member property;
         private readonly AccessStrategyBuilder<VersionPart> access;
-        private readonly VersionGeneratedBuilder<IVersionMappingProvider> generated;
+        private readonly VersionGeneratedBuilder<VersionPart> generated;
         private readonly AttributeStore<VersionMapping> attributes = new AttributeStore<VersionMapping>();
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
         private readonly List<string> columns = new List<string>();
@@ -23,7 +23,7 @@ namespace FluentNHibernate.Mapping
             this.entity = entity;
             this.property = property;
             access = new AccessStrategyBuilder<VersionPart>(this, value => attributes.Set(x => x.Access, value));
-            generated = new VersionGeneratedBuilder<IVersionMappingProvider>(this, value => attributes.Set(x => x.Generated, value));
+            generated = new VersionGeneratedBuilder<VersionPart>(this, value => attributes.Set(x => x.Generated, value));
         }
 
         /// <summary>
