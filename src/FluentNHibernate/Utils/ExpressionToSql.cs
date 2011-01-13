@@ -32,6 +32,14 @@ namespace FluentNHibernate.Utils
         {
             if (expression.Body is BinaryExpression)
                 return Convert<T>((BinaryExpression)expression.Body);
+            var memberExpression = expression.Body as MemberExpression;
+            if (memberExpression != null && memberExpression.Type == typeof(bool))
+                    return Convert(CreateExpression<T>(memberExpression)) + " = " + Convert(true);
+            var unaryExpression = expression.Body as UnaryExpression;
+            if (unaryExpression != null && unaryExpression.Type == typeof(bool) && unaryExpression.NodeType == ExpressionType.Not)
+                    return Convert(CreateExpression<T>(unaryExpression.Operand)) + " = " + Convert(false);
+                
+
 
             throw new NotImplementedException();
         }
@@ -135,6 +143,10 @@ namespace FluentNHibernate.Utils
         {
             if (value is string)
                 return "'" + value + "'";
+            if (value is bool)
+            {
+                return (bool)value ? "1" : "0";
+            }
             
             return value.ToString();
         }
