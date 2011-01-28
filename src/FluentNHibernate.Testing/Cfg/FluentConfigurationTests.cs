@@ -130,7 +130,7 @@ namespace FluentNHibernate.Testing.Cfg
     	public void ShouldSetCurrentSessionContext()
     	{
 			var configuration = Fluently.Configure()
-				.Database(SQLiteConfiguration.Standard.CurrentSessionContext("thread_static").InMemory)
+                .CurrentSessionContext("thread_static")
 				.BuildConfiguration();
 
 			configuration.Properties["current_session_context_class"].ShouldEqual("thread_static");
@@ -140,7 +140,7 @@ namespace FluentNHibernate.Testing.Cfg
     	public void ShouldSetCurrentSessionContextUsingGeneric()
     	{
 			var configuration = Fluently.Configure()
-				.Database(SQLiteConfiguration.Standard.CurrentSessionContext<NHibernate.Context.ThreadStaticSessionContext>())
+				.CurrentSessionContext<NHibernate.Context.ThreadStaticSessionContext>()
 				.BuildConfiguration();
 
 			configuration.Properties["current_session_context_class"].ShouldEqual(typeof(NHibernate.Context.ThreadStaticSessionContext).AssemblyQualifiedName);
@@ -154,6 +154,55 @@ namespace FluentNHibernate.Testing.Cfg
                 .BuildConfiguration();
 
             configuration.Properties["connection.isolation"].ShouldEqual("ReadUncommitted");
+        }
+
+        [Test]
+        public void Use_Minimal_Puts_should_set_value_to_const_true()
+        {
+            var configuration = Fluently.Configure()
+                .Cache(x => x.UseMinimalPuts())
+                .BuildConfiguration();
+
+            configuration.Properties.ShouldContain("cache.use_minimal_puts", "true");
+        }
+
+        [Test]
+        public void Use_Query_Cache_should_set_value_to_const_true()
+        {
+            var configuration = Fluently.Configure()
+                .Cache(x => x.UseQueryCache())
+                .BuildConfiguration();
+
+            configuration.Properties.ShouldContain("cache.use_query_cache", "true");
+        }
+
+        [Test]
+        public void Query_Cache_Factory_should_set_property_value()
+        {
+            var configuration = Fluently.Configure()
+                .Cache(x => x.QueryCacheFactory("foo"))
+                .BuildConfiguration();
+
+            configuration.Properties.ShouldContain("cache.query_cache_factory", "foo");
+        }
+
+        [Test]
+        public void Region_Prefix_should_set_property_value()
+        {
+            var configuration = Fluently.Configure()
+                .Cache(x => x.RegionPrefix("foo"))
+                .BuildConfiguration();
+
+            configuration.Properties.ShouldContain("cache.region_prefix", "foo");
+        }
+
+        [Test]
+        public void Provider_Class_should_set_property_value()
+        {
+            var configuration = Fluently.Configure()
+                .Cache(x => x.ProviderClass("foo"))
+                .BuildConfiguration();
+
         }
     }
 
