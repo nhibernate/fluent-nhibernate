@@ -130,7 +130,7 @@ namespace FluentNHibernate.Testing.Cfg
     	public void ShouldSetCurrentSessionContext()
     	{
 			var configuration = Fluently.Configure()
-				.Database(SQLiteConfiguration.Standard.CurrentSessionContext("thread_static").InMemory)
+                .CurrentSessionContext("thread_static")
 				.BuildConfiguration();
 
 			configuration.Properties["current_session_context_class"].ShouldEqual("thread_static");
@@ -140,7 +140,7 @@ namespace FluentNHibernate.Testing.Cfg
     	public void ShouldSetCurrentSessionContextUsingGeneric()
     	{
 			var configuration = Fluently.Configure()
-				.Database(SQLiteConfiguration.Standard.CurrentSessionContext<NHibernate.Context.ThreadStaticSessionContext>())
+				.CurrentSessionContext<NHibernate.Context.ThreadStaticSessionContext>()
 				.BuildConfiguration();
 
 			configuration.Properties["current_session_context_class"].ShouldEqual(typeof(NHibernate.Context.ThreadStaticSessionContext).AssemblyQualifiedName);
