@@ -23,6 +23,7 @@ namespace FluentNHibernate.Cfg
         readonly IDiagnosticMessageDespatcher despatcher = new DefaultDiagnosticMessageDespatcher();
         IDiagnosticLogger logger = new NullDiagnosticsLogger();
         Action<MappingConfiguration> mappingsBuilder;
+        private readonly CacheSettingsBuilder cache = new CacheSettingsBuilder();
 
         internal FluentConfiguration()
             : this(new Configuration())
@@ -70,6 +71,24 @@ namespace FluentNHibernate.Cfg
         {
             config.ConfigureProperties(Configuration);
             dbSet = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Configure caching.
+        /// </summary>
+        /// <example>
+        ///     Cache(x =>
+        ///     {
+        ///       x.UseQueryCache();
+        ///       x.UseMinimalPuts();
+        ///     });
+        /// </example>
+        /// <param name="cacheExpression">Closure for configuring caching</param>
+        /// <returns>Configuration builder</returns>
+        public FluentConfiguration Cache(Action<CacheSettingsBuilder> cacheExpression)
+        {
+            cacheExpression(cache);
             return this;
         }
 
@@ -127,7 +146,10 @@ namespace FluentNHibernate.Cfg
                 if (mappingsBuilder != null)
                     mappingsBuilder(mappingCfg);
 
-				mappingCfg.Apply(Configuration);
+                mappingCfg.Apply(Configuration);
+
+                if (cache.IsDirty)
+                    Configuration.SetProperties(cache.Create());
 
 				foreach (var configAlteration in configAlterations)
 					configAlteration(Configuration);

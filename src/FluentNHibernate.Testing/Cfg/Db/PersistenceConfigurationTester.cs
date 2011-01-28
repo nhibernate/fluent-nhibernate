@@ -77,47 +77,6 @@ namespace FluentNHibernate.Testing.Cfg.Db
         }
 
         [Test]
-        public void Provider_Class_should_set_property_value()
-        {
-            _config.Cache(c => c
-                .ProviderClass("foo"));
-            ValueOf("cache.provider_class").ShouldEqual("foo");
-
-        }
-
-        [Test]
-        public void Use_Minimal_Puts_should_set_value_to_const_true()
-        {
-            _config.Cache(c => c
-                .UseMinimalPuts());
-            ValueOf("cache.use_minimal_puts").ShouldEqual("true");
-        }
-
-        [Test]
-        public void Use_Query_Cache_should_set_value_to_const_true()
-        {
-            _config.Cache(c => c
-                .UseQueryCache());
-            ValueOf("cache.use_query_cache").ShouldEqual("true");
-        }
-
-        [Test]
-        public void Query_Cache_Factory_should_set_property_value()
-        {
-            _config.Cache(c => c
-                .QueryCacheFactory("foo"));
-            ValueOf("cache.query_cache_factory").ShouldEqual("foo");
-        }
-
-        [Test]
-        public void Region_Prefix_should_set_property_value()
-        {
-            _config.Cache(c => c
-                .RegionPrefix("foo"));
-            ValueOf("cache.region_prefix").ShouldEqual("foo");
-        }
-
-        [Test]
         public void Query_Substitutions_should_set_property_value()
         {
             _config.QuerySubstitutions("foo");

@@ -42,7 +42,6 @@ namespace FluentNHibernate.Cfg.Db
 
         private bool nextBoolSettingValue = true;
         private readonly TConnectionString connectionString;
-        private readonly CacheSettingsBuilder cache = new CacheSettingsBuilder();
 
         protected PersistenceConfiguration()
         {
@@ -55,14 +54,6 @@ namespace FluentNHibernate.Cfg.Db
         {
             if (connectionString.IsDirty)
                 Raw(ConnectionStringKey, connectionString.Create());
-
-            if (cache.IsDirty)
-            {
-                foreach (var pair in cache.Create())
-                {
-                    Raw(pair.Key, pair.Value);
-                }
-            }
 
             return values;
         }
@@ -273,24 +264,6 @@ namespace FluentNHibernate.Cfg.Db
         public TThisConfiguration ConnectionString(string value)
         {
             connectionString.Is(value);
-            return (TThisConfiguration)this;
-        }
-
-        /// <summary>
-        /// Configure caching.
-        /// </summary>
-        /// <example>
-        ///     Cache(x =>
-        ///     {
-        ///       x.UseQueryCache();
-        ///       x.UseMinimalPuts();
-        ///     });
-        /// </example>
-        /// <param name="cacheExpression">Closure for configuring caching</param>
-        /// <returns>Configuration builder</returns>
-        public TThisConfiguration Cache(Action<CacheSettingsBuilder> cacheExpression)
-        {
-            cacheExpression(cache);
             return (TThisConfiguration)this;
         }
 
