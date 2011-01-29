@@ -246,7 +246,11 @@ namespace FluentNHibernate.Cfg
                 mappingCfg.Apply(Configuration);
 
                 if (cache.IsDirty)
-                    Configuration.SetProperties(cache.Create());
+                {
+                    var properties = cache.Create();
+                    foreach (var property in properties)
+                        Configuration.SetProperty(property.Key, property.Value);
+                }
 
                 foreach (var configAlteration in configAlterations)
                     configAlteration(Configuration);
