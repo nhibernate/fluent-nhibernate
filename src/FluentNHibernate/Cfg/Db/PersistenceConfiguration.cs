@@ -58,8 +58,7 @@ namespace FluentNHibernate.Cfg.Db
         {
             var settings = CreateProperties();
 
-            foreach (var property in settings)
-                nhibernateConfig.SetProperty(property.Key, property.Value);
+            nhibernateConfig.AddProperties(settings);
 
             return nhibernateConfig;
         }
