@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using NHibernate.Cache;
+using NHibEnvironment = NHibernate.Cfg.Environment;
 
 namespace FluentNHibernate.Cfg.Db
 {
     public class CacheSettingsBuilder
     {
-        protected const string ProviderClassKey = "cache.provider_class";
-        protected const string CacheUseMininmalPutsKey = "cache.use_minimal_puts";
-        protected const string CacheUseQueryCacheKey = "cache.use_query_cache";
-        protected const string CacheQueryCacheFactoryKey = "cache.query_cache_factory";
-        protected const string CacheRegionPrefixKey = "cache.region_prefix";
+        protected const string ProviderClassKey = NHibEnvironment.CacheProvider;
+        protected const string CacheUseMininmalPutsKey = NHibEnvironment.UseMinimalPuts;
+        protected const string CacheUseQueryCacheKey = NHibEnvironment.UseQueryCache;
+        protected const string CacheQueryCacheFactoryKey = NHibEnvironment.QueryCacheFactory;
+        protected const string CacheRegionPrefixKey = NHibEnvironment.CacheRegionPrefix;
 
         private readonly IDictionary<string, string> settings = new Dictionary<string, string>();
         private bool nextBool = true;

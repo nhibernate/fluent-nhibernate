@@ -6,6 +6,7 @@ using NHibernate.Connection;
 using NHibernate.Dialect;
 using NHibernate.Driver;
 using NHibConfiguration = NHibernate.Cfg.Configuration;
+using NHibEnvironment = NHibernate.Cfg.Environment;
 
 namespace FluentNHibernate.Cfg.Db
 {
@@ -17,22 +18,22 @@ namespace FluentNHibernate.Cfg.Db
         where TThisConfiguration : PersistenceConfiguration<TThisConfiguration, TConnectionString>
         where TConnectionString : ConnectionStringBuilder, new()
     {
-        protected const string DialectKey = "dialect"; // Newer one, but not supported by everything
+        protected const string DialectKey = NHibEnvironment.Dialect; // Newer one, but not supported by everything
         protected const string AltDialectKey = "hibernate.dialect"; // Some older NHib tools require this
         protected const string DefaultSchemaKey = "default_schema"; 
         protected const string UseOuterJoinKey = "use_outer_join";
-        protected const string MaxFetchDepthKey = "max_fetch_depth";
-        protected const string UseReflectionOptimizerKey = "use_reflection_optimizer";
-        protected const string QuerySubstitutionsKey = "query.substitutions";
-        protected const string ShowSqlKey = "show_sql";
-        protected const string FormatSqlKey = "format_sql";
+        protected const string MaxFetchDepthKey = NHibEnvironment.MaxFetchDepth;
+        protected const string UseReflectionOptimizerKey = NHibEnvironment.PropertyUseReflectionOptimizer;
+        protected const string QuerySubstitutionsKey = NHibEnvironment.QuerySubstitutions;
+        protected const string ShowSqlKey = NHibEnvironment.ShowSql;
+        protected const string FormatSqlKey = NHibEnvironment.FormatSql;
 
-        protected const string ConnectionProviderKey = "connection.provider";
+        protected const string ConnectionProviderKey = NHibEnvironment.ConnectionProvider;
         protected const string DefaultConnectionProviderClassName = "NHibernate.Connection.DriverConnectionProvider";
-        protected const string DriverClassKey = "connection.driver_class";
-        protected const string ConnectionStringKey = "connection.connection_string";
-        const string IsolationLevelKey = "connection.isolation";
-        protected const string AdoNetBatchSizeKey = "adonet.batch_size";
+        protected const string DriverClassKey = NHibEnvironment.ConnectionDriver;
+        protected const string ConnectionStringKey = NHibEnvironment.ConnectionString;
+        protected const string IsolationLevelKey = NHibEnvironment.Isolation;
+        protected const string AdoNetBatchSizeKey = NHibEnvironment.BatchSize;
 
         private readonly Dictionary<string, string> values = new Dictionary<string, string>();
 

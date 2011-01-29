@@ -5,6 +5,7 @@ using FluentNHibernate.Diagnostics;
 using NHibernate;
 using NHibernate.Bytecode;
 using NHibernate.Cfg;
+using NHibEnvironment = NHibernate.Cfg.Environment;
 
 namespace FluentNHibernate.Cfg
 {
@@ -17,23 +18,23 @@ namespace FluentNHibernate.Cfg
         private const string ExceptionDatabaseMessage = "Database was not configured through Database method.";
         private const string ExceptionMappingMessage = "No mappings were configured through the Mappings method.";
 
-        protected const string CollectionTypeFactoryClassKey = NHibernate.Cfg.Environment.CollectionTypeFactoryClass;
-        protected const string ProxyFactoryFactoryClassKey = "proxyfactory.factory_class";
+        protected const string CollectionTypeFactoryClassKey = NHibEnvironment.CollectionTypeFactoryClass;
+        protected const string ProxyFactoryFactoryClassKey = NHibEnvironment.ProxyFactoryFactoryClass;
         protected const string DefaultProxyFactoryFactoryClassName = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
-        protected const string CurrentSessionContextClassKey = "current_session_context_class";
+        protected const string CurrentSessionContextClassKey = NHibEnvironment.CurrentSessionContextClass;
 
         private readonly Configuration cfg;
         private bool dbSet;
         private bool mappingsSet;
         private readonly IList<Action<Configuration>> configAlterations = new List<Action<Configuration>>();
-        readonly IDiagnosticMessageDespatcher despatcher = new DefaultDiagnosticMessageDespatcher();
-        IDiagnosticLogger logger = new NullDiagnosticsLogger();
-        Action<MappingConfiguration> mappingsBuilder;
+        private readonly IDiagnosticMessageDespatcher despatcher = new DefaultDiagnosticMessageDespatcher();
+        private IDiagnosticLogger logger = new NullDiagnosticsLogger();
+        private Action<MappingConfiguration> mappingsBuilder;
         private readonly CacheSettingsBuilder cache = new CacheSettingsBuilder();
 
         internal FluentConfiguration()
             : this(new Configuration())
-        {}
+        { }
 
         internal FluentConfiguration(Configuration cfg)
         {
@@ -220,7 +221,7 @@ namespace FluentNHibernate.Cfg
         {
             try
             {
-				return BuildConfiguration()
+                return BuildConfiguration()
                     .BuildSessionFactory();
             }
             catch (Exception ex)
@@ -233,11 +234,11 @@ namespace FluentNHibernate.Cfg
         /// Verifies the configuration and populates the NHibernate Configuration instance.
         /// </summary>
         /// <returns>NHibernate Configuration instance</returns>
-		public Configuration BuildConfiguration()
-		{
-			try
-			{
-			    var mappingCfg = new MappingConfiguration(logger);
+        public Configuration BuildConfiguration()
+        {
+            try
+            {
+                var mappingCfg = new MappingConfiguration(logger);
 
                 if (mappingsBuilder != null)
                     mappingsBuilder(mappingCfg);
@@ -247,16 +248,16 @@ namespace FluentNHibernate.Cfg
                 if (cache.IsDirty)
                     Configuration.SetProperties(cache.Create());
 
-				foreach (var configAlteration in configAlterations)
-					configAlteration(Configuration);
+                foreach (var configAlteration in configAlterations)
+                    configAlteration(Configuration);
 
-				return Configuration;
-			}
-			catch (Exception ex)
-			{
-				throw CreateConfigurationException(ex);
-			}
-		}
+                return Configuration;
+            }
+            catch (Exception ex)
+            {
+                throw CreateConfigurationException(ex);
+            }
+        }
 
         /// <summary>
         /// Creates an exception based on the current state of the configuration.
