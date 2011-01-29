@@ -10,6 +10,7 @@ namespace FluentNHibernate.Cfg.Db
         protected const string ProviderClassKey = NHibEnvironment.CacheProvider;
         protected const string CacheUseMininmalPutsKey = NHibEnvironment.UseMinimalPuts;
         protected const string CacheUseQueryCacheKey = NHibEnvironment.UseQueryCache;
+        protected const string CacheUseSecondLevelCacheKey = NHibEnvironment.UseSecondLevelCache;
         protected const string CacheQueryCacheFactoryKey = NHibEnvironment.QueryCacheFactory;
         protected const string CacheRegionPrefixKey = NHibEnvironment.CacheRegionPrefix;
 
@@ -50,6 +51,14 @@ namespace FluentNHibernate.Cfg.Db
         public CacheSettingsBuilder UseQueryCache()
         {
             settings.Add(CacheUseQueryCacheKey, nextBool.ToString().ToLowerInvariant());
+            nextBool = true;
+            IsDirty = true;
+            return this;
+        }
+
+        public CacheSettingsBuilder UseSecondLevelCache()
+        {
+            settings.Add(CacheUseSecondLevelCacheKey, nextBool.ToString().ToLowerInvariant());
             nextBool = true;
             IsDirty = true;
             return this;
