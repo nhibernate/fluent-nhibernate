@@ -287,7 +287,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         index.Base(1);
                         index.Column("ListIndex");
                     }))
-                .Element("class/list/list-index").HasAttribute("base", 1)
+                .Element("class/list/list-index").HasAttribute("base", "1")
                 .Element("class/list/list-index/column").HasAttribute("name", "ListIndex");
         }
 
