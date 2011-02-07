@@ -54,6 +54,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void KeyManyToOneLazySetToProxyForTrue()
+        {
+            new MappingTester<CompIdTarget>()
+                .ForMapping(c => c.CompositeId().KeyReference(x => x.Child, m => m.Lazy()))
+                .Element("class/composite-id/key-many-to-one")
+                    .HasAttribute("lazy", "proxy");
+        }
+
+        [Test]
         public void KeyManyToOneExplicitColumnName()
         {
             new MappingTester<CompIdTarget>()

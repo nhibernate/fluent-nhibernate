@@ -41,7 +41,7 @@ namespace FluentNHibernate.MappingModel.Output
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
             if (mapping.HasValue(x => x.Lazy))
-                element.WithAtt("lazy", mapping.Lazy);
+                element.WithAtt("lazy", mapping.Lazy ? "proxy" : "false");
 
             if (mapping.HasValue(x => x.NotFound))
                 element.WithAtt("not-found", mapping.NotFound);
