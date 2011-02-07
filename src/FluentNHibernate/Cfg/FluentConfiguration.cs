@@ -12,17 +12,19 @@ namespace FluentNHibernate.Cfg
     /// </summary>
     public class FluentConfiguration
     {
-        private const string ExceptionMessage = "An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.";
-        private const string ExceptionDatabaseMessage = "Database was not configured through Database method.";
-        private const string ExceptionMappingMessage = "No mappings were configured through the Mappings method.";
+        const string ExceptionMessage = "An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.";
+        const string ExceptionDatabaseMessage = "Database was not configured through Database method.";
+        const string ExceptionMappingMessage = "No mappings were configured through the Mappings method.";
 
-        private readonly Configuration cfg;
-        private bool dbSet;
-        private bool mappingsSet;
-        private readonly IList<Action<Configuration>> configAlterations = new List<Action<Configuration>>();
+        readonly Configuration cfg;
+        readonly IList<Action<Configuration>> configAlterations = new List<Action<Configuration>>();
         readonly IDiagnosticMessageDespatcher despatcher = new DefaultDiagnosticMessageDespatcher();
+        readonly List<Action<MappingConfiguration>> mappingsBuilders = new List<Action<MappingConfiguration>>();
+
+        bool dbSet;
+        bool mappingsSet;
+        
         IDiagnosticLogger logger = new NullDiagnosticsLogger();
-        Action<MappingConfiguration> mappingsBuilder;
 
         internal FluentConfiguration()
             : this(new Configuration())
@@ -80,7 +82,7 @@ namespace FluentNHibernate.Cfg
         /// <returns>Fluent configuration</returns>
         public FluentConfiguration Mappings(Action<MappingConfiguration> mappings)
         {
-            mappingsBuilder = mappings;
+            mappingsBuilders.Add(mappings);
             mappingsSet = true;
             return this;
         }
@@ -94,6 +96,7 @@ namespace FluentNHibernate.Cfg
         {
             if (config != null)
                 configAlterations.Add(config);
+
             return this;
         }
 
@@ -124,8 +127,8 @@ namespace FluentNHibernate.Cfg
 			{
 			    var mappingCfg = new MappingConfiguration(logger);
 
-                if (mappingsBuilder != null)
-                    mappingsBuilder(mappingCfg);
+			    foreach (var builder in mappingsBuilders)
+			        builder(mappingCfg);
 
 				mappingCfg.Apply(Configuration);
 
