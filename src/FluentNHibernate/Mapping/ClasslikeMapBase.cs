@@ -9,15 +9,12 @@ namespace FluentNHibernate.Mapping
 {
     public abstract class ClasslikeMapBase<T>
     {
-        protected readonly IList<IPropertyMappingProvider> properties = new List<IPropertyMappingProvider>();
-        protected readonly IList<IComponentMappingProvider> components = new List<IComponentMappingProvider>();
-        protected readonly IList<IOneToOneMappingProvider> oneToOnes = new List<IOneToOneMappingProvider>();
-        protected readonly Dictionary<Type, ISubclassMappingProvider> subclasses = new Dictionary<Type, ISubclassMappingProvider>();
-        protected readonly IList<ICollectionMappingProvider> collections = new List<ICollectionMappingProvider>();
-        protected readonly IList<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
-        protected readonly IList<IAnyMappingProvider> anys = new List<IAnyMappingProvider>();
-        protected readonly IList<IFilterMappingProvider> filters = new List<IFilterMappingProvider>();
-        protected readonly IList<IStoredProcedureMappingProvider> storedProcedures = new List<IStoredProcedureMappingProvider>();
+        readonly MappingProviderStore providers;
+
+        protected ClasslikeMapBase(MappingProviderStore providers)
+        {
+            this.providers = providers;
+        }
 
         /// <summary>
         /// Create a property mapping.
@@ -54,7 +51,7 @@ namespace FluentNHibernate.Mapping
             if (!string.IsNullOrEmpty(columnName))
                 propertyMap.Column(columnName);
 
-            properties.Add(propertyMap);
+            providers.Properties.Add(propertyMap);
 
             return propertyMap;
         }
@@ -129,7 +126,7 @@ namespace FluentNHibernate.Mapping
             if (columnName != null)
                 part.Column(columnName);
 
-            references.Add(part);
+            providers.References.Add(part);
 
             return part;
         }
@@ -151,7 +148,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new AnyPart<TOther>(typeof(T), property);
 
-            anys.Add(part);
+            providers.Anys.Add(part);
 
             return part;
         }
@@ -197,7 +194,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new OneToOnePart<TOther>(EntityType, property);
 
-            oneToOnes.Add(part);
+            providers.OneToOnes.Add(part);
 
             return part;
         }
@@ -228,7 +225,7 @@ namespace FluentNHibernate.Mapping
             
             dynamicComponentAction(part);
 
-            components.Add(part);
+            providers.Components.Add(part);
 
             return part;
         }
@@ -245,7 +242,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new ReferenceComponentPart<TComponent>(member.ToMember(), typeof(T));
 
-            components.Add(part);
+            providers.Components.Add(part);
 
             return part;
         }
@@ -297,7 +294,7 @@ namespace FluentNHibernate.Mapping
 
             action(part);
 
-            components.Add(part);
+            providers.Components.Add(part);
 
             return part;
         }
@@ -312,7 +309,7 @@ namespace FluentNHibernate.Mapping
         /// </remarks>        
         public void Component(IComponentMappingProvider componentProvider)
         {
-            components.Add(componentProvider);
+            providers.Components.Add(componentProvider);
         }
 
         private OneToManyPart<TChild> MapHasMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
@@ -327,7 +324,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new OneToManyPart<TChild>(EntityType, member);
 
-            collections.Add(part);
+            providers.Collections.Add(part);
 
             return part;
         }
@@ -375,7 +372,7 @@ namespace FluentNHibernate.Mapping
         {
             var part = new ManyToManyPart<TChild>(EntityType, property);
 
-            collections.Add(part);
+            providers.Collections.Add(part);
 
             return part;
         }
@@ -445,20 +442,20 @@ namespace FluentNHibernate.Mapping
         protected StoredProcedurePart StoredProcedure(string element, string innerText)
         {
             var part = new StoredProcedurePart(element, innerText);
-            storedProcedures.Add(part);
+            providers.StoredProcedures.Add(part);
             return part;
         }
 
         [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected virtual IEnumerable<IPropertyMappingProvider> Properties
 		{
-			get { return properties; }
+            get { return providers.Properties; }
 		}
 
         [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected virtual IEnumerable<IComponentMappingProvider> Components
 		{
-			get { return components; }
+            get { return providers.Components; }
 		}
 
         [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]

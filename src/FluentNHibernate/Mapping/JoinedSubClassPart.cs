@@ -9,21 +9,23 @@ namespace FluentNHibernate.Mapping
 {
     public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclassMappingProvider
     {
+        private readonly MappingProviderStore providers;
         private readonly ColumnMappingCollection<JoinedSubClassPart<TSubclass>> columns;
         private readonly List<SubclassMapping> subclassMappings = new List<SubclassMapping>();
         private readonly AttributeStore<SubclassMapping> attributes;
         private bool nextBool = true;
 
         public JoinedSubClassPart(string keyColumn)
-            : this(new AttributeStore())
-        {
-            columns.Add(keyColumn);
-        }
+            : this(keyColumn, new AttributeStore(), new MappingProviderStore())
+        {}
 
-        public JoinedSubClassPart(AttributeStore underlyingStore)
+        protected JoinedSubClassPart(string keyColumn, AttributeStore underlyingStore, MappingProviderStore providers)
+            : base(providers)
         {
+            this.providers = providers;
             attributes = new AttributeStore<SubclassMapping>(underlyingStore);
             columns = new ColumnMappingCollection<JoinedSubClassPart<TSubclass>>(this);
+            columns.Add(keyColumn);
         }
 
         public virtual void JoinedSubClass<TNextSubclass>(string keyColumn, Action<JoinedSubClassPart<TNextSubclass>> action)
@@ -32,7 +34,7 @@ namespace FluentNHibernate.Mapping
 
             action(subclass);
 
-            subclasses[typeof(TNextSubclass)] = subclass;
+            providers.Subclasses[typeof(TNextSubclass)] = subclass;
 
             subclassMappings.Add(((ISubclassMappingProvider)subclass).GetSubclassMapping());
         }
@@ -140,22 +142,22 @@ namespace FluentNHibernate.Mapping
             foreach (var column in columns)
                 mapping.Key.AddColumn(column);
 
-            foreach (var property in properties)
+            foreach (var property in providers.Properties)
                 mapping.AddProperty(property.GetPropertyMapping());
 
-            foreach (var component in components)
+            foreach (var component in providers.Components)
                 mapping.AddComponent(component.GetComponentMapping());
 
-            foreach (var oneToOne in oneToOnes)
+            foreach (var oneToOne in providers.OneToOnes)
                 mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
 
-            foreach (var collection in collections)
+            foreach (var collection in providers.Collections)
                 mapping.AddCollection(collection.GetCollectionMapping());
 
-            foreach (var reference in references)
+            foreach (var reference in providers.References)
                 mapping.AddReference(reference.GetManyToOneMapping());
 
-            foreach (var any in anys)
+            foreach (var any in providers.Anys)
                 mapping.AddAny(any.GetAnyMapping());
 
             return mapping;

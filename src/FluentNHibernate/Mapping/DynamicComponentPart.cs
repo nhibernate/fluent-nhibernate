@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -8,17 +9,19 @@ namespace FluentNHibernate.Mapping
     public class DynamicComponentPart<T> : ComponentPartBase<T, DynamicComponentPart<T>>, IComponentMappingProvider
     {
         private readonly Type entity;
+        private readonly MappingProviderStore providers;
         private readonly AccessStrategyBuilder<DynamicComponentPart<T>> access;
         private readonly AttributeStore<ComponentMapping> attributes;
 
         public DynamicComponentPart(Type entity, Member property)
-            : this(entity, property.Name, new AttributeStore())
+            : this(entity, property.Name, new AttributeStore(), new MappingProviderStore())
         {}
 
-        private DynamicComponentPart(Type entity, string propertyName, AttributeStore underlyingStore)
-            : base(underlyingStore, propertyName)
+        private DynamicComponentPart(Type entity, string propertyName, AttributeStore underlyingStore, MappingProviderStore providers)
+            : base(underlyingStore, propertyName, providers)
         {
             this.entity = entity;
+            this.providers = providers;
             attributes = new AttributeStore<ComponentMapping>(underlyingStore);
             access = new AccessStrategyBuilder<DynamicComponentPart<T>>(this, value => attributes.Set(x => x.Access, value));
         }
@@ -56,7 +59,7 @@ namespace FluentNHibernate.Mapping
             var property = new DummyPropertyInfo(key, typeof(TProperty));
             var propertyMap = new PropertyPart(property.ToMember(), typeof(T));
 
-            properties.Add(propertyMap);
+            providers.Properties.Add(propertyMap);
 
             return propertyMap;
         }

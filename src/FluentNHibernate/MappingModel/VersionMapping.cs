@@ -20,7 +20,7 @@ namespace FluentNHibernate.MappingModel
         {
             visitor.ProcessVersion(this);
 
-            columns.Each(visitor.Visit);
+            Columns.Each(visitor.Visit);
         }
 
         public string Name

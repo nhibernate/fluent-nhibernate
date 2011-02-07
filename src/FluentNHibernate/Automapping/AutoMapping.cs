@@ -2,22 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping
 {
-#pragma warning disable 612,618,672
     public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
     {
+        private readonly AttributeStore<ClassMapping> attributes;
+        private readonly MappingProviderStore providers;
         readonly IList<Member> mappedMembers;
 
         public AutoMapping(IList<Member> mappedMembers)
+            : this(mappedMembers, new AttributeStore<ClassMapping>(), new MappingProviderStore())
+        {}
+
+        AutoMapping(IList<Member> mappedMembers, AttributeStore<ClassMapping> attributes, MappingProviderStore providers)
+            : base(attributes, providers)
         {
             this.mappedMembers = mappedMembers;
+            this.attributes = attributes;
+            this.providers = providers;
         }
 
         void IAutoClasslike.DiscriminateSubClassesOnColumn(string column)
@@ -38,52 +46,53 @@ namespace FluentNHibernate.Automapping
             {
                 var classMapping = (ClassMapping)mapping;
 
-                if (id != null)
-                    classMapping.Id = id.GetIdentityMapping();
+                if (providers.Id != null)
+                    classMapping.Id = providers.Id.GetIdentityMapping();
 
-                if (compositeId != null)
-                    classMapping.Id = compositeId.GetCompositeIdMapping();
+                if (providers.CompositeId != null)
+                    classMapping.Id = providers.CompositeId.GetCompositeIdMapping();
 
-                if (version != null)
-                    classMapping.Version = version.GetVersionMapping();
+                if (providers.Version != null)
+                    classMapping.Version = providers.Version.GetVersionMapping();
 
-                if (discriminator != null)
-                    classMapping.Discriminator = ((IDiscriminatorMappingProvider)discriminator).GetDiscriminatorMapping();
+                if (providers.Discriminator != null)
+                    classMapping.Discriminator = providers.Discriminator.GetDiscriminatorMapping();
 
                 if (Cache.IsDirty)
                     classMapping.Cache = ((ICacheMappingProvider)Cache).GetCacheMapping();
 
-                foreach (var join in joins)
-                    classMapping.AddJoin(join);
+                foreach (var join in providers.Joins)
+                    classMapping.AddJoin(join.GetJoinMapping());
 
-                classMapping.Tuplizer = tuplizerMapping;
+                classMapping.Tuplizer = providers.TuplizerMapping;
             }
 
-            foreach (var property in Properties)
+            foreach (var property in providers.Properties)
                 mapping.AddOrReplaceProperty(property.GetPropertyMapping());
 
-            foreach (var collection in collections)
+            foreach (var collection in providers.Collections)
                 mapping.AddOrReplaceCollection(collection.GetCollectionMapping());
 
-            foreach (var component in Components)
+            foreach (var component in providers.Components)
                 mapping.AddOrReplaceComponent(component.GetComponentMapping());
 
-            foreach (var oneToOne in oneToOnes)
+            foreach (var oneToOne in providers.OneToOnes)
                 mapping.AddOrReplaceOneToOne(oneToOne.GetOneToOneMapping());
 
-            foreach (var reference in references)
+            foreach (var reference in providers.References)
                 mapping.AddOrReplaceReference(reference.GetManyToOneMapping());
 
-            foreach (var any in anys)
+            foreach (var any in providers.Anys)
                 mapping.AddOrReplaceAny(any.GetAnyMapping());
 
-            foreach (var storedProcedure in storedProcedures)
+            foreach (var storedProcedure in providers.StoredProcedures)
                 mapping.AddStoredProcedure(storedProcedure.GetStoredProcedureMapping());
 
-            foreach (var filter in filters)
+            foreach (var filter in providers.Filters)
                 mapping.AddOrReplaceFilter(filter.GetFilterMapping());
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected override OneToManyPart<TChild> HasMany<TChild>(Member property)
         {
             mappedMembers.Add(property);
@@ -131,29 +140,33 @@ namespace FluentNHibernate.Automapping
         {
             var part = new AutoCompositeIdentityPart<T>(mappedMembers);
 
-            compositeId = part;
+            providers.CompositeId = part;
 
             return part;
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected override PropertyPart Map(Member property, string columnName)
         {
             mappedMembers.Add(property);
             return base.Map(property, columnName);
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected override ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
         {
             mappedMembers.Add(property);
             return base.References<TOther>(property, columnName);
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected override ManyToManyPart<TChild> HasManyToMany<TChild>(Member property)
         {
             mappedMembers.Add(property);
             return base.HasManyToMany<TChild>(property);
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected override ComponentPart<TComponent> Component<TComponent>(Member property, Action<ComponentPart<TComponent>> action)
         {
             mappedMembers.Add(property);
@@ -170,6 +183,7 @@ namespace FluentNHibernate.Automapping
             return base.Id(memberExpression, column);
         }
 
+        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         protected override OneToOnePart<TOther> HasOne<TOther>(Member property)
         {
             mappedMembers.Add(property);
@@ -191,7 +205,7 @@ namespace FluentNHibernate.Automapping
             if (action != null)
                 action(joinedclass);
 
-            subclasses[typeof(TSubclass)] = joinedclass;
+            providers.Subclasses[typeof(TSubclass)] = joinedclass;
 
 		    return joinedclass;
         }
@@ -202,7 +216,7 @@ namespace FluentNHibernate.Automapping
             var joinedclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, keyColumn);
 
             // remove any mappings for the same type, then re-add
-            subclasses[type] = joinedclass;
+            providers.Subclasses[type] = joinedclass;
 
             return (IAutoClasslike)joinedclass;
         }
@@ -223,7 +237,7 @@ namespace FluentNHibernate.Automapping
                 action(subclass);
 
             // remove any mappings for the same type, then re-add
-            subclasses[typeof(TSubclass)] = subclass;
+            providers.Subclasses[typeof(TSubclass)] = subclass;
 
 		    return subclass;
         }
@@ -240,7 +254,7 @@ namespace FluentNHibernate.Automapping
             var subclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, null, discriminatorValue);
 
             // remove any mappings for the same type, then re-add
-            subclasses[type] = subclass;
+            providers.Subclasses[type] = subclass;
 
             return (IAutoClasslike)subclass;
         }
@@ -255,7 +269,7 @@ namespace FluentNHibernate.Automapping
 
             action(join);
 
-            joins.Add(((IJoinMappingProvider)join).GetJoinMapping());
+            providers.Joins.Add(join);
         }
 
 #pragma warning disable 809
@@ -266,6 +280,5 @@ namespace FluentNHibernate.Automapping
             return null;
         }
 #pragma warning restore 809
-#pragma warning restore 612,618,672
     }
 }

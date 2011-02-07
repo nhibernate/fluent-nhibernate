@@ -442,6 +442,7 @@
     <Compile Include="MappingModel\Output\XmlNaturalIdWriter.cs" />
     <Compile Include="Mapping\Access.cs" />
     <Compile Include="Mapping\Laziness.cs" />
+    <Compile Include="Mapping\MappingProviderStore.cs" />
     <Compile Include="Mapping\NaturalIdPart.cs" />
     <Compile Include="Mapping\Providers\IElementMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />

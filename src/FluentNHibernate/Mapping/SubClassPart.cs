@@ -12,14 +12,21 @@ namespace FluentNHibernate.Mapping
     {
         private readonly DiscriminatorPart parent;
         private readonly object discriminatorValue;
+        private readonly MappingProviderStore providers;
         private readonly AttributeStore<SubclassMapping> attributes = new AttributeStore<SubclassMapping>();
         private readonly List<SubclassMapping> subclassMappings = new List<SubclassMapping>();
         private bool nextBool = true;
 
         public SubClassPart(DiscriminatorPart parent, object discriminatorValue)
+            : this(parent, discriminatorValue, new MappingProviderStore())
+        {}
+
+        protected SubClassPart(DiscriminatorPart parent, object discriminatorValue, MappingProviderStore providers)
+            : base(providers)
         {
             this.parent = parent;
             this.discriminatorValue = discriminatorValue;
+            this.providers = providers;
         }
 
         SubclassMapping ISubclassMappingProvider.GetSubclassMapping()
@@ -32,22 +39,22 @@ namespace FluentNHibernate.Mapping
             mapping.SetDefaultValue(x => x.Type, typeof(TSubclass));
             mapping.SetDefaultValue(x => x.Name, typeof(TSubclass).AssemblyQualifiedName);
             
-            foreach (var property in properties)
+            foreach (var property in providers.Properties)
                 mapping.AddProperty(property.GetPropertyMapping());
 
-            foreach (var component in components)
+            foreach (var component in providers.Components)
                 mapping.AddComponent(component.GetComponentMapping());
-            
-            foreach (var oneToOne in oneToOnes)
+
+            foreach (var oneToOne in providers.OneToOnes)
                 mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
 
-            foreach (var collection in collections)
+            foreach (var collection in providers.Collections)
                 mapping.AddCollection(collection.GetCollectionMapping());
 
-            foreach (var reference in references)
+            foreach (var reference in providers.References)
                 mapping.AddReference(reference.GetManyToOneMapping());
 
-            foreach (var any in anys)
+            foreach (var any in providers.Anys)
                 mapping.AddAny(any.GetAnyMapping());
 
             subclassMappings.Each(mapping.AddSubclass);

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
@@ -12,11 +10,18 @@ namespace FluentNHibernate.Automapping
 #pragma warning disable 612,618,672
     public class AutoSubClassPart<T> : SubClassPart<T>, IAutoClasslike
     {
+        private readonly MappingProviderStore providers;
         private readonly IList<Member> membersMapped = new List<Member>();
 
         public AutoSubClassPart(DiscriminatorPart parent, string discriminatorValue)
-            : base(parent, discriminatorValue)
+            : this(parent, discriminatorValue, new MappingProviderStore())
         {}
+
+        AutoSubClassPart(DiscriminatorPart parent, string discriminatorValue, MappingProviderStore providers)
+            : base(parent, discriminatorValue, providers)
+        {
+            this.providers = providers;
+        }
 
         public object GetMapping()
         {
@@ -78,7 +83,7 @@ namespace FluentNHibernate.Automapping
 
             action(joinedclass);
 
-            subclasses[typeof(TSubclass)] = joinedclass;
+            providers.Subclasses[typeof(TSubclass)] = joinedclass;
         }
 
         public IAutoClasslike JoinedSubClass(Type type, string keyColumn)
@@ -86,7 +91,7 @@ namespace FluentNHibernate.Automapping
             var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(type);
             var joinedclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, keyColumn);
 
-            subclasses[type] = joinedclass;
+            providers.Subclasses[type] = joinedclass;
 
             return (IAutoClasslike)joinedclass;
         }
@@ -98,7 +103,7 @@ namespace FluentNHibernate.Automapping
 
             action(subclass);
 
-            subclasses[typeof(TSubclass)] = subclass;
+            providers.Subclasses[typeof(TSubclass)] = subclass;
         }
 
         public IAutoClasslike SubClass(Type type, string discriminatorValue)
@@ -106,7 +111,7 @@ namespace FluentNHibernate.Automapping
             var genericType = typeof(AutoSubClassPart<>).MakeGenericType(type);
             var subclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, discriminatorValue);
 
-            subclasses[type] = subclass;
+            providers.Subclasses[type] = subclass;
 
             return (IAutoClasslike)subclass;
         }

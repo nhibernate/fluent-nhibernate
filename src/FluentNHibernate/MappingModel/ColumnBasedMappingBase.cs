@@ -6,8 +6,8 @@ namespace FluentNHibernate.MappingModel
     [Serializable]
     public abstract class ColumnBasedMappingBase : MappingBase, IHasColumnMappings
     {
-        private readonly string[] columnAttributes = new[] { "Length", "Precision", "Scale", "NotNull", "Unique", "UniqueKey", "SqlType", "Index", "Check", "Default" };
-        protected readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+        readonly string[] columnAttributes = new[] { "Length", "Precision", "Scale", "NotNull", "Unique", "UniqueKey", "SqlType", "Index", "Check", "Default" };
+        readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
         protected readonly AttributeStore attributes;
 
         protected ColumnBasedMappingBase(AttributeStore underlyingStore)

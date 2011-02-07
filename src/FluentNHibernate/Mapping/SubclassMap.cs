@@ -25,13 +25,24 @@ namespace FluentNHibernate.Mapping
     /// <typeparam name="T">Entity type to map</typeparam>
     public class SubclassMap<T> : ClasslikeMapBase<T>, IIndeterminateSubclassMappingProvider
     {
+        private readonly MappingProviderStore providers;
         readonly AttributeStore<SubclassMapping> attributes = new AttributeStore<SubclassMapping>();
 
         // this is a bit weird, but we need a way of delaying the generation of the subclass mappings until we know
         // what the parent subclass type is...
         readonly IDictionary<Type, IIndeterminateSubclassMappingProvider> indetermineateSubclasses = new Dictionary<Type, IIndeterminateSubclassMappingProvider>();
         bool nextBool = true;
-        IList<JoinMapping> joins = new List<JoinMapping>();
+        readonly IList<JoinMapping> joins = new List<JoinMapping>();
+
+        public SubclassMap()
+            : this(new MappingProviderStore())
+        {}
+
+        protected SubclassMap(MappingProviderStore providers)
+            : base(providers)
+        {
+            this.providers = providers;
+        }
 
         /// <summary>
         /// Inverts the next boolean setting
@@ -293,22 +304,22 @@ namespace FluentNHibernate.Mapping
             foreach (var join in joins)
                 mapping.AddJoin(join);
 
-            foreach (var property in properties)
+            foreach (var property in providers.Properties)
                 mapping.AddProperty(property.GetPropertyMapping());
 
-            foreach (var component in components)
+            foreach (var component in providers.Components)
                 mapping.AddComponent(component.GetComponentMapping());
 
-            foreach (var oneToOne in oneToOnes)
+            foreach (var oneToOne in providers.OneToOnes)
                 mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
 
-            foreach (var collection in collections)
+            foreach (var collection in providers.Collections)
                 mapping.AddCollection(collection.GetCollectionMapping());
 
-            foreach (var reference in references)
+            foreach (var reference in providers.References)
                 mapping.AddReference(reference.GetManyToOneMapping());
 
-            foreach (var any in anys)
+            foreach (var any in providers.Anys)
                 mapping.AddAny(any.GetAnyMapping());
 
             return mapping.DeepClone();

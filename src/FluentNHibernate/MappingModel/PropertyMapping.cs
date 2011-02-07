@@ -19,7 +19,7 @@ namespace FluentNHibernate.MappingModel
         {
             visitor.ProcessProperty(this);
 
-            foreach (var column in columns)
+            foreach (var column in Columns)
                 visitor.Visit(column);
         }
 

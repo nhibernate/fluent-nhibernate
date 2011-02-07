@@ -11,15 +11,22 @@ namespace FluentNHibernate.Mapping
         where TBuilder : ComponentPartBase<TEntity, TBuilder>
     {
         readonly string propertyName;
+        private readonly MappingProviderStore providers;
         readonly AccessStrategyBuilder<TBuilder> access;
         readonly AttributeStore<ComponentMappingBase> attributes;
         protected bool nextBool = true;
 
         protected ComponentPartBase(AttributeStore underlyingStore, string propertyName)
+            : this(underlyingStore, propertyName, new MappingProviderStore())
+        {}
+
+        protected ComponentPartBase(AttributeStore underlyingStore, string propertyName, MappingProviderStore providers)
+            : base(providers)
         {
             attributes = new AttributeStore<ComponentMappingBase>(underlyingStore);
             access = new AccessStrategyBuilder<TBuilder>((TBuilder)this, value => attributes.Set(x => x.Access, value));
             this.propertyName = propertyName;
+            this.providers = providers;
         }
 
         /// <summary>
@@ -129,22 +136,22 @@ namespace FluentNHibernate.Mapping
 
             mapping.Name = propertyName;
 
-            foreach (var property in properties)
+            foreach (var property in providers.Properties)
                 mapping.AddProperty(property.GetPropertyMapping());
 
-            foreach (var component in components)
+            foreach (var component in providers.Components)
                 mapping.AddComponent(component.GetComponentMapping());
 
-            foreach (var oneToOne in oneToOnes)
+            foreach (var oneToOne in providers.OneToOnes)
                 mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
 
-            foreach (var collection in collections)
+            foreach (var collection in providers.Collections)
                 mapping.AddCollection(collection.GetCollectionMapping());
 
-            foreach (var reference in references)
+            foreach (var reference in providers.References)
                 mapping.AddReference(reference.GetManyToOneMapping());
 
-            foreach (var any in anys)
+            foreach (var any in providers.Anys)
                 mapping.AddAny(any.GetAnyMapping());
 
             return mapping;
