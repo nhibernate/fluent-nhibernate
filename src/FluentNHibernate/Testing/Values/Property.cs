@@ -79,17 +79,71 @@ namespace FluentNHibernate.Testing.Values
 
             if (!areEqual)
             {
-                string message =
+                throw new ApplicationException(GetInequalityComparisonMessage(actual));
+            }
+        }
+
+        private string GetInequalityComparisonMessage(object actual)
+        {
+            string message;
+
+            string actualToPrint = actual.ToString();
+            string actualTypeToPrint = PropertyAccessor.PropertyType.FullName;
+
+            string valueToPrint = Value != null ? Value.ToString() : "(null)";
+            string valueTypeToPrint = Value != null ? Value.GetType().FullName : "(null)";
+
+            if (actualToPrint != valueToPrint && actualTypeToPrint != valueTypeToPrint)
+            {
+                message =
                     String.Format(
                         "For property '{0}' expected '{1}' of type '{2}' but got '{3}' of type '{4}'",
                         PropertyAccessor.Name,
-                        (Value != null ? Value.ToString() : "(null)"),
-                        (Value != null ? Value.GetType().FullName : "(null)"),
-                        actual,
-                        PropertyAccessor.PropertyType.FullName);
-
-                throw new ApplicationException(message);
+                        valueToPrint,
+                        valueTypeToPrint,
+                        actualToPrint,
+                        actualTypeToPrint);
             }
+            else if (actualToPrint != valueToPrint)
+            {
+                message =
+                    String.Format(
+                        "For property '{0}' of type '{1}' expected '{2}' but got '{3}'",
+                        PropertyAccessor.Name,
+                        actualTypeToPrint,
+                        valueToPrint,
+                        actualToPrint);
+            }
+            else if (actualTypeToPrint != valueTypeToPrint)
+            {
+                message =
+                    String.Format(
+                        "For property '{0}' expected type '{1}' but got '{2}'",
+                        PropertyAccessor.Name,
+                        valueTypeToPrint,
+                        actualTypeToPrint);
+            }
+            else if (actualTypeToPrint != actualToPrint)
+            {
+                message =
+                    String.Format(
+                        "For property '{0}' expected same element, but got different element with the same value '{1}' of type '{2}'."
+                        + Environment.NewLine + "Tip: use a CustomEqualityComparer when creating the PersistenceSpecification object.",
+                        PropertyAccessor.Name,
+                        actualToPrint,
+                        actualTypeToPrint);
+            }
+            else
+            {
+                message =
+                    String.Format(
+                        "For property '{0}' expected same element, but got different element of type '{1}'."
+                        + Environment.NewLine + "Tip: override ToString() on the type to find out the difference.",
+                        PropertyAccessor.Name,
+                        actualTypeToPrint);
+            }
+
+            return message;
         }
     }
 }
