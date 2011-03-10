@@ -490,7 +490,7 @@ namespace FluentNHibernate
             type.GetInstanceFields().Each(x => members.Add(x));
             type.GetInstanceMethods().Each(x => members.Add(x));
 
-            if (type.BaseType != typeof(object))
+            if (type.BaseType != null && type.BaseType != typeof(object))
                 type.BaseType.GetInstanceMembers().Each(x => members.Add(x));
 
             return members;
