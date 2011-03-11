@@ -57,7 +57,7 @@ namespace :source do
   end
   
   task :nhibernate_version, :nhibernate_version do |t,args|
-	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || '3.0'
+	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || '3.1'
 	
 	raise "Unknown NHibernate version #{args.nhibernate_version} (check your tools/NHibernate folder)" unless File.directory? "tools/NHibernate/#{args.nhibernate_version}"
 	
