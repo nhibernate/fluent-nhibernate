@@ -359,7 +359,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
             return (first == null && second == null) ? null : new string[] { first, second };
         }
 
-#if NH30
+#if NH3x
         public void NullSafeSet(IDbCommand st, Object value, int index, bool[] unknown, ISessionImplementor session)
         {
             DoubleString ds = value as DoubleString ?? new DoubleString();

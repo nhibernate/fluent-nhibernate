@@ -1,7 +1,6 @@
 require 'fileutils'
-gem 'albacore', '=0.1.5'
+gem 'albacore', '=0.2.4'
 require 'albacore'
-require 'tools/albacore/zipdirectory_patch.rb'
 
 def get_version
   ENV['BUILD_NUMBER'] || '1.2.0.0'
@@ -90,14 +89,14 @@ namespace :specs do
   
   desc 'Run MSpec specs'
   mspec :mspec do |mspec|
-    mspec.path_to_command = 'tools/mspec/mspec.exe'
-    mspec.assemblies << 'src/FluentNHibernate.Specs/bin/Release/FluentNHibernate.Specs.dll'
+    mspec.command = 'tools/mspec/mspec.exe'
+    mspec.assemblies 'src/FluentNHibernate.Specs/bin/Release/FluentNHibernate.Specs.dll'
   end
 
   desc 'Run NUnit tests'
   nunit :nunit do |nunit|
-    nunit.path_to_command = 'tools/nunit/nunit-console-x86.exe'
-    nunit.assemblies << 'src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll'
+    nunit.command = 'tools/nunit/nunit-console-x86.exe'
+    nunit.assemblies 'src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll'
   end
 end
 
