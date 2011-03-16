@@ -116,8 +116,8 @@ end
 namespace :docs do
   desc 'Create API docs'
   docu :build do |d|
-    d.path_to_command = 'tools/docu/docu.exe'
-    d.assemblies << 'build/FluentNHibernate.dll'
+    d.command 'tools/docu/docu.exe'
+    d.assemblies 'build/FluentNHibernate.dll'
   end
 end
 
