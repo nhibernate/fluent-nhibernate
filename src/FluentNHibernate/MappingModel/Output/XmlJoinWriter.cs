@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
@@ -85,6 +86,14 @@ namespace FluentNHibernate.MappingModel.Output
         public override void Visit(AnyMapping mapping)
         {
             var writer = serviceLocator.GetWriter<AnyMapping>();
+            var xml = writer.Write(mapping);
+
+            document.ImportAndAppendChild(xml);
+        }
+
+        public override void Visit(ICollectionMapping mapping)
+        {
+            var writer = serviceLocator.GetWriter<ICollectionMapping>();
             var xml = writer.Write(mapping);
 
             document.ImportAndAppendChild(xml);

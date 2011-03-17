@@ -5,6 +5,7 @@ using System.Reflection;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 
@@ -42,6 +43,27 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         {
             inspector.Anys.IsEmpty().ShouldBeTrue();
         }
+
+        [Test]
+        public void CollectionsCollectionHasSameCountAsMapping()
+        {
+            mapping.AddCollection(new BagMapping());
+            inspector.Collections.Count().ShouldEqual(1);
+        }
+
+        [Test]
+        public void CollectionsCollectionOfInspectors()
+        {
+            mapping.AddCollection(new BagMapping());
+            inspector.Collections.First().ShouldBeOfType<ICollectionInspector>();
+        }
+
+        [Test]
+        public void CollectionsCollectionIsEmpty()
+        {
+            inspector.Collections.IsEmpty().ShouldBeTrue();
+        }
+
 
         [Test]
         public void CatalogMapped()

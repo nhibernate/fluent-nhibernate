@@ -57,6 +57,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
+        public void HasManyShouldAddToCollectionsCollectionOnModel()
+        {
+            Join<OneToManyTarget>("table")
+                .Mapping(m => m.HasMany(x => x.BagOfChildren))
+                .ModelShouldMatch(x => x.Collections.Count().ShouldEqual(1));
+        }
+
+        [Test]
         public void ReferencesAnyShouldAddToAnyCollectionOnModel()
         {
             Join<PropertyTarget>("table")

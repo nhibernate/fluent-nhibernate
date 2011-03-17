@@ -1,5 +1,6 @@
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using FluentNHibernate.Testing.Testing;
@@ -147,6 +148,17 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             writer.VerifyXml(mapping)
                 .Element("any").Exists();
+        }
+
+        [Test]
+        public void ShouldWriteCollection()
+        {
+            var mapping = new JoinMapping();
+
+            mapping.AddCollection(new BagMapping());
+
+            writer.VerifyXml(mapping)
+                .Element("bag").Exists();
         }
     }
 }

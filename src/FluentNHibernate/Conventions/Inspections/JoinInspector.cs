@@ -87,6 +87,17 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
+
+        public IEnumerable<ICollectionInspector> Collections
+        {
+            get
+            {
+                return mapping.Collections
+                    .Select(x => new CollectionInspector(x))
+                    .Cast<ICollectionInspector>();
+            }
+        }
+
         public string Schema
         {
             get { return mapping.Schema; }
