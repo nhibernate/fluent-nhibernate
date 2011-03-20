@@ -3,7 +3,6 @@ using NHibernate.Driver;
 
 namespace FluentNHibernate.Cfg.Db
 {
-
     public class SQLAnywhereConfiguration : PersistenceConfiguration<SQLAnywhereConfiguration, SybaseSQLAnywhereConnectionStringBuilder>
     {
         protected SQLAnywhereConfiguration()
@@ -16,6 +15,7 @@ namespace FluentNHibernate.Cfg.Db
             get { return new SQLAnywhereConfiguration().Dialect<SybaseASA9Dialect>(); }
         }
 
+#if NH3x
         public static SQLAnywhereConfiguration SQLAnywhere10
         {
             get { return new SQLAnywhereConfiguration().Dialect<SybaseSQLAnywhere10Dialect>(); }
@@ -25,7 +25,6 @@ namespace FluentNHibernate.Cfg.Db
         {
             get { return new SQLAnywhereConfiguration().Dialect<SybaseSQLAnywhere11Dialect>(); }
         }
+#endif
     }
-
-
 }
