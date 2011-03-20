@@ -159,6 +159,9 @@ namespace FluentNHibernate.Mapping
             foreach (var any in providers.Anys)
                 mapping.AddAny(any.GetAnyMapping());
 
+            foreach (var collection in providers.Collections)
+                mapping.AddCollection(collection.GetCollectionMapping());
+
             return mapping;
         }
     }
