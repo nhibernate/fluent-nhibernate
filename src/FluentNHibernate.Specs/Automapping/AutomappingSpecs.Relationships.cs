@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FluentNHibernate.Automapping;
+using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
@@ -108,6 +111,33 @@ namespace FluentNHibernate.Specs.Automapping
         
         static AutoPersistenceModel mapper;
         static ClassMapping mapping;
+    }
+
+    public class when_the_automapper_is_told_to_map_an_entity_with_a_collection_exposed_as_a_read_only_enumerable_with_a_backing_field_with_a_convention_which_changes_the_access_strategy
+    {
+        Establish context = () =>
+            mapper = AutoMap.Source(new StubTypeSource(typeof(ReadOnlyEnumerableEntity)))
+                .Conventions.Add<Convention>();
+
+        Because of = () =>
+            mapping = mapper.BuildMappingFor<ReadOnlyEnumerableEntity>();
+
+        It should_map_the_read_only_property_collection = () =>
+            mapping.Collections.Select(x => x.Name).ShouldContain("BackingFieldCollection");
+
+        It should_map_the_property_using_property_through_field_access_strategy = () =>
+            mapping.Collections.First(x => x.Name == "BackingFieldCollection").Access.ShouldEqual("property");
+
+        static AutoPersistenceModel mapper;
+        static ClassMapping mapping;
+
+        class Convention : IHasManyConvention
+        {
+            public void Apply(IOneToManyCollectionInstance instance)
+            {
+                instance.Access.Property();
+            }
+        }
     }
 
     public class when_the_automapper_is_told_to_map_an_entity_with_a_collection_exposed_as_a_read_only_enumerable_with_a_backing_field_with_an_overridden_configuration

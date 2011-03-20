@@ -41,7 +41,7 @@ namespace FluentNHibernate.Automapping.Steps
             mapping.ChildType = member.PropertyType.GetGenericArguments()[0];
 
             if (member.IsProperty && !member.CanWrite)
-                mapping.Access = cfg.GetAccessStrategyForReadOnlyProperty(member).ToString();
+                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
 
             SetRelationship(member, classMap, mapping);
             keys.SetKey(member, classMap, mapping);
