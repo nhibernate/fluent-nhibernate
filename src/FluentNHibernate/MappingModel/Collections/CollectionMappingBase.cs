@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -20,9 +19,14 @@ namespace FluentNHibernate.MappingModel.Collections
             attributes.SetDefault(x => x.Mutable, true);
         }
 
-        public IList<FilterMapping> Filters
+        public IEnumerable<FilterMapping> Filters
         {
             get { return filters; }
+        }
+
+        public void AddFilter(FilterMapping mapping)
+        {
+            filters.Add(mapping);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)

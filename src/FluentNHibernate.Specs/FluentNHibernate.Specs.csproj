@@ -93,8 +93,11 @@
     <Compile Include="Automapping\Fixtures\StubTypeSource.cs" />
     <Compile Include="Automapping\PrivateAutomapperSpecs.cs" />
     <Compile Include="Automapping\PrivateFieldsSpecs.cs" />
+    <Compile Include="Conventions\ApplyFilterSpecs.cs" />
     <Compile Include="Conventions\ConventionBuilderSpecs.cs" />
     <Compile Include="Conventions\Fixtures\Child.cs" />
+    <Compile Include="Conventions\Fixtures\FilterClassConvention.cs" />
+    <Compile Include="Conventions\Fixtures\FilterTarget.cs" />
     <Compile Include="Conventions\Fixtures\SetCollectionEntity.cs" />
     <Compile Include="Conventions\Fixtures\SetCollectionEntityMap.cs" />
     <Compile Include="Conventions\Fixtures\SetCompositeElementCollectionEntity.cs" />

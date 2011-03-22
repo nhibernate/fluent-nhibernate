@@ -540,11 +540,8 @@ namespace FluentNHibernate.Mapping
             attributes.Set(x => x.EntityName, entityName);
         }
 
-        /// <overloads>
-        /// Applies a filter to this entity given it's name.
-        /// </overloads>
         /// <summary>
-        /// Applies a filter to this entity given it's name.
+        /// Applies a filter to this entity given its name.
         /// </summary>
         /// <param name="name">The filter's name</param>
         /// <param name="condition">The condition to apply</param>
@@ -555,11 +552,8 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        /// <overloads>
-        /// Applies a filter to this entity given it's name.
-        /// </overloads>
         /// <summary>
-        /// Applies a filter to this entity given it's name.
+        /// Applies a filter to this entity given its name.
         /// </summary>
         /// <param name="name">The filter's name</param>
         public ClassMap<T> ApplyFilter(string name)
@@ -567,9 +561,6 @@ namespace FluentNHibernate.Mapping
             return this.ApplyFilter(name, null);
         }
 
-        /// <overloads>
-        /// Applies a named filter to this entity.
-        /// </overloads>
         /// <summary>
         /// Applies a named filter to this entity.
         /// </summary>
@@ -580,11 +571,11 @@ namespace FluentNHibernate.Mapping
         /// </typeparam>
         public ClassMap<T> ApplyFilter<TFilter>(string condition) where TFilter : FilterDefinition, new()
         {
-            return this.ApplyFilter(new TFilter().Name, condition);
+            return ApplyFilter(new TFilter().Name, condition);
         }
 
         /// <summary>
-        /// Applies a named filter to this one-to-many.
+        /// Applies a named filter to this entity.
         /// </summary>
         /// <typeparam name="TFilter">
         /// The type of a <see cref="FilterDefinition"/> implementation

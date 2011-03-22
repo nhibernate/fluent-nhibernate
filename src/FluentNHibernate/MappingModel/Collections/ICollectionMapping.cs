@@ -32,9 +32,10 @@ namespace FluentNHibernate.MappingModel.Collections
         CompositeElementMapping CompositeElement { get; set; }
         Type ContainingEntityType { get; set; }
         Type ChildType { get; set; }
-        IList<FilterMapping> Filters { get; }
+        IEnumerable<FilterMapping> Filters { get; }
 
         bool HasValue<TResult>(Expression<Func<ICollectionMapping, TResult>> property);
         void SetDefaultValue<TResult>(Expression<Func<ICollectionMapping, TResult>> property, TResult value);
+        void AddFilter(FilterMapping filter);
     }
 }

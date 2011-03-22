@@ -62,7 +62,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 Schema = "schema", Subselect = "subselect", TableName = "table", Where = "where"
             };
 
-            mapping.Filters.Add(new FilterMapping());
+            mapping.AddFilter(new FilterMapping());
 
             return mapping;
         }
@@ -92,7 +92,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 Schema = "schema", Subselect = "subselect", TableName = "table", Where = "where"
             };
 
-            mapping.Filters.Add(new FilterMapping());
+            mapping.AddFilter(new FilterMapping());
 
             return mapping;
         }
@@ -796,7 +796,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 Schema = "schema", Subselect = "subselect", TableName = "table", Where = "where"
             };
 
-            mapping.Filters.Add(new FilterMapping());
+            mapping.AddFilter(new FilterMapping());
 
             return mapping;
         }
@@ -893,7 +893,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 Sort = "sort"
             };
 
-            mapping.Filters.Add(new FilterMapping());
+            mapping.AddFilter(new FilterMapping());
 
             return mapping;
         }
@@ -1076,7 +1076,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
                 Sort = "sort"
             };
 
-            mapping.Filters.Add(new FilterMapping());
+            mapping.AddFilter(new FilterMapping());
 
             return mapping;
         }

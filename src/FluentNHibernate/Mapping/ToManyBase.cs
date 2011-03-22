@@ -685,7 +685,7 @@ namespace FluentNHibernate.Mapping
             }
 
             foreach (var filterPart in Filters)
-                mapping.Filters.Add(filterPart.GetFilterMapping());
+                mapping.AddFilter(filterPart.GetFilterMapping());
 
             return mapping;
         }

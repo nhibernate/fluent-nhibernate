@@ -212,5 +212,29 @@ namespace FluentNHibernate.Conventions.Instances
         {
             get { return new KeyInstance(mapping.Key); }
         }
+
+        public void ApplyFilter(string name, string condition)
+        {
+            mapping.AddFilter(new FilterMapping
+            {
+                Name = name,
+                Condition = condition
+            });
+        }
+
+        public void ApplyFilter(string name)
+        {
+            ApplyFilter(name, null);
+        }
+
+        public void ApplyFilter<TFilter>(string condition) where TFilter : FilterDefinition, new()
+        {
+            ApplyFilter(new TFilter().Name, condition);
+        }
+
+        public void ApplyFilter<TFilter>() where TFilter : FilterDefinition, new()
+        {
+            ApplyFilter<TFilter>(null);
+        }
     }
 }
