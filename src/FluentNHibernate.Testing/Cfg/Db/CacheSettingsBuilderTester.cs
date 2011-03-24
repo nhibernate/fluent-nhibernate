@@ -17,6 +17,22 @@ namespace FluentNHibernate.Testing.Cfg.Db
         }
 
         [Test]
+        public void CanUseSecondLevelCache()
+        {
+            cache.UseSecondLevelCache();
+
+            HasProperty("cache.use_second_level_cache", "true");
+        }
+
+        [Test]
+        public void CanNotUseSecondLevelCache()
+        {
+            cache.Not.UseSecondLevelCache();
+
+            HasProperty("cache.use_second_level_cache", "false");
+        }
+
+        [Test]
         public void CanUseQueryCache()
         {
             cache.UseQueryCache();
@@ -94,6 +110,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
             cache.ProviderClass("provider")
                 .QueryCacheFactory("factory")
                 .RegionPrefix("prefix")
+                .UseSecondLevelCache()
                 .UseMinimalPuts()
                 .UseQueryCache();
 
@@ -102,6 +119,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
             HasProperty("cache.region_prefix", "prefix");
             HasProperty("cache.use_minimal_puts", "true");
             HasProperty("cache.use_query_cache", "true");
+            HasProperty("cache.use_second_level_cache", "true");
         }
 
         private void HasProperty(string key, string value)

@@ -9,6 +9,7 @@ namespace FluentNHibernate.Cfg.Db
         protected const string ProviderClassKey = "cache.provider_class";
         protected const string CacheUseMininmalPutsKey = "cache.use_minimal_puts";
         protected const string CacheUseQueryCacheKey = "cache.use_query_cache";
+        protected const string CacheUseSecondLevelCacheKey = "cache.use_second_level_cache";
         protected const string CacheQueryCacheFactoryKey = "cache.query_cache_factory";
         protected const string CacheRegionPrefixKey = "cache.region_prefix";
 
@@ -41,6 +42,14 @@ namespace FluentNHibernate.Cfg.Db
         public CacheSettingsBuilder UseMinimalPuts()
         {
             settings.Add(CacheUseMininmalPutsKey, nextBool.ToString().ToLowerInvariant());
+            nextBool = true;
+            IsDirty = true;
+            return this;
+        }
+
+        public CacheSettingsBuilder UseSecondLevelCache()
+        {
+            settings.Add(CacheUseSecondLevelCacheKey, nextBool.ToString().ToLowerInvariant());
             nextBool = true;
             IsDirty = true;
             return this;
