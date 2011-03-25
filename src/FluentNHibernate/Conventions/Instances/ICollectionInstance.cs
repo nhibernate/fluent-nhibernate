@@ -7,6 +7,7 @@ namespace FluentNHibernate.Conventions.Instances
     public interface ICollectionInstance : ICollectionInspector
     {
         new IKeyInstance Key { get; }
+        new IIndexInstanceBase Index { get; }
         new IRelationshipInstance Relationship { get; }
         void Table(string tableName);
         new void Name(string name);
@@ -29,6 +30,7 @@ namespace FluentNHibernate.Conventions.Instances
         new ICollectionCascadeInstance Cascade { get; }
         new IFetchInstance Fetch { get; }
         new IOptimisticLockInstance OptimisticLock { get; }
+        
         new void Check(string constraint);
         new void CollectionType<T>();
         new void CollectionType(string type);
@@ -38,6 +40,7 @@ namespace FluentNHibernate.Conventions.Instances
         new void Persister<T>();
         new void Where(string whereClause);
         new void OrderBy(string orderBy);
+        new void Sort(string sort);
         void Subselect(string subselect);
     }
 }

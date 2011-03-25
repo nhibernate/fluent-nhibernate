@@ -167,10 +167,12 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
 
         #region Helpers
 
+#pragma warning disable 612,618
         private void Convention(Action<IArrayInstance> convention)
         {
             model.Conventions.Add(new ArrayConventionBuilder().Always(convention));
         }
+#pragma warning restore 612,618
 
         private void VerifyModel(Action<CollectionMapping> modelVerification)
         {

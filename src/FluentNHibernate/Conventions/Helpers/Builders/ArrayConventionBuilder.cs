@@ -1,11 +1,12 @@
 using System;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders
 {
+    [Obsolete("Use CollectionConventionBuilder")]
     public class ArrayConventionBuilder : IConventionBuilder<IArrayConvention, IArrayInspector, IArrayInstance>
     {
         public IArrayConvention Always(Action<IArrayInstance> convention)

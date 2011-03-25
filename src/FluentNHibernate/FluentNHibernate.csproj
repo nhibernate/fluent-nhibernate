@@ -126,6 +126,11 @@
     <Compile Include="Cfg\Db\SybaseSQLAnywhere.cs" />
     <Compile Include="Cfg\Db\SybaseSQLAnywhereConnectionStringBuilder.cs" />
     <Compile Include="CombinedAssemblyTypeSource.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltArrayConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltBagConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltListConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltMapConvention.cs" />
+    <Compile Include="Conventions\Helpers\Prebuilt\BuiltSetConvention.cs" />
     <Compile Include="Conventions\Inspections\IKeyManyToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\IKeyPropertyInspector.cs" />
     <Compile Include="Conventions\Inspections\KeyPropertyInspector.cs" />
@@ -189,15 +194,10 @@
     <Compile Include="Conventions\Helpers\LazyLoad.cs" />
     <Compile Include="Conventions\Helpers\ForeignKey.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltHibernateMappingConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltArrayConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltBagConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltFuncForeignKeyConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltJoinConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltJoinedSubclassConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltListConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltMapConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltProxyConvention.cs" />
-    <Compile Include="Conventions\Helpers\Prebuilt\BuiltSetConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltSubclassConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltCollectionConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltHasOneConvention.cs" />

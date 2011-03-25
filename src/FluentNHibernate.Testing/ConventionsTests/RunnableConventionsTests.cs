@@ -444,6 +444,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         #region conventions
 
+#pragma warning disable 612,618
         private class ArrayConvention : IArrayConvention
         {
             public void Apply(IArrayInstance instance)
@@ -632,6 +633,8 @@ namespace FluentNHibernate.Testing.ConventionsTests
                 instance.Not.DefaultLazy();
             }
         }
+
+#pragma warning restore 612,618
 
         private class OtherObjectUserType : IUserType
         {

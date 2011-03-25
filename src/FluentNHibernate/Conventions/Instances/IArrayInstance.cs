@@ -1,9 +1,9 @@
-﻿using FluentNHibernate.Conventions.Inspections;
+﻿using System;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Instances
 {
+    [Obsolete("Use IConventionInstance")]
     public interface IArrayInstance : IArrayInspector, ICollectionInstance
-    {
-        new IIndexInstanceBase Index { get; }
-    }
+    {}
 }
