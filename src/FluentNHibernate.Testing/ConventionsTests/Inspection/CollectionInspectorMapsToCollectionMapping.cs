@@ -1,9 +1,6 @@
 using System;
 using System.Linq.Expressions;
-using System.Reflection;
-using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
@@ -11,16 +8,16 @@ using NUnit.Framework;
 namespace FluentNHibernate.Testing.ConventionsTests.Inspection
 {
     [TestFixture, Category("Inspection DSL")]
-    public class MapInspectorMapsToMapMapping
+    public class CollectionInspectorMapsToCollectionMapping
     {
-        private MapMapping mapping;
+        private CollectionMapping mapping;
         private IMapInspector inspector;
 
         [SetUp]
         public void CreateDsl()
         {
-            mapping = new MapMapping();
-            inspector = new MapInspector(mapping);
+            mapping = CollectionMapping.Bag();
+            inspector = new CollectionInspector(mapping);
         }
         [Test]
         public void MapsIndexToInspector()

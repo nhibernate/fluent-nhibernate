@@ -48,20 +48,6 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
-        public void CanAddBag()
-        {
-            var bag = new BagMapping
-                          {
-                              Name = "bag1",
-                              Key = new KeyMapping(),
-                              Relationship = new OneToManyMapping { Class = new TypeReference("class1") }
-                          };
-            _classMapping.AddCollection(bag);
-
-            _classMapping.Collections.ShouldContain(bag);
-        }
-
-        [Test]
         public void CanAddReference()
         {
             var reference = new ManyToOneMapping { Name = "parent" };

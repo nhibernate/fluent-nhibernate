@@ -141,14 +141,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
         [Test]
         public void CollectionsCollectionHasSameCountAsMapping()
         {
-            mapping.AddCollection(new BagMapping());
+            mapping.AddCollection(CollectionMapping.Bag());
             inspector.Collections.Count().ShouldEqual(1);
         }
 
         [Test]
         public void CollectionsCollectionOfInspectors()
         {
-            mapping.AddCollection(new BagMapping());
+            mapping.AddCollection(CollectionMapping.Bag());
             inspector.Collections.First().ShouldImplementType<ICollectionInspector>();
         }
 

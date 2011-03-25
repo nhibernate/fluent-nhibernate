@@ -52,7 +52,7 @@ namespace FluentNHibernate.MappingModel
             get { return mappedMembers.Anys; }
         }
 
-        public IEnumerable<ICollectionMapping> Collections
+        public IEnumerable<CollectionMapping> Collections
         {
             get { return mappedMembers.Collections; }
         }
@@ -77,7 +77,7 @@ namespace FluentNHibernate.MappingModel
             mappedMembers.AddAny(mapping);
         }
 
-        public void AddCollection(ICollectionMapping collectionMapping)
+        public void AddCollection(CollectionMapping collectionMapping)
         {
             mappedMembers.AddCollection(collectionMapping);
         }

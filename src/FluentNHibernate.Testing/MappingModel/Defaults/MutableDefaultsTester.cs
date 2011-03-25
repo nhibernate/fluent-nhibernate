@@ -14,39 +14,10 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
         }
 
         [Test]
-        public void MutableShouldBeTrueByDefaultOnBagMapping()
+        public void MutableShouldBeTrueByDefaultOnCollectionMapping()
         {
-            var mapping = new BagMapping();
+            var mapping = CollectionMapping.Bag();
             mapping.Mutable.ShouldBeTrue();
         }
-
-        [Test]
-        public void MutableShouldBeTrueByDefaultOnListMapping()
-        {
-            var mapping = new ListMapping();
-            mapping.Mutable.ShouldBeTrue();
-        }
-
-        [Test]
-        public void MutableShouldBeTrueByDefaultOnSetMapping()
-        {
-            var mapping = new SetMapping();
-            mapping.Mutable.ShouldBeTrue();
-        }
-
-        [Test]
-        public void MutableShouldBeTrueByDefaultOnMapMapping()
-        {
-            var mapping = new MapMapping();
-            mapping.Mutable.ShouldBeTrue();
-        }
-
-        [Test]
-        public void MutableShouldBeTrueByDefaultOnArrayMapping()
-        {
-            var mapping = new ArrayMapping();
-            mapping.Mutable.ShouldBeTrue();
-        }
-        
     }
 }

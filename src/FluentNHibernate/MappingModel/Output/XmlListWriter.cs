@@ -4,9 +4,9 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class XmlListWriter : BaseXmlCollectionWriter, IXmlWriter<ListMapping>
+    public class XmlListWriter : BaseXmlCollectionWriter, IXmlWriter<CollectionMapping>
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
+        readonly IXmlWriterServiceLocator serviceLocator;
 
         public XmlListWriter(IXmlWriterServiceLocator serviceLocator)
             : base(serviceLocator)
@@ -14,14 +14,14 @@ namespace FluentNHibernate.MappingModel.Output
             this.serviceLocator = serviceLocator;
         }
 
-        public XmlDocument Write(ListMapping mappingModel)
+        public XmlDocument Write(CollectionMapping mappingModel)
         {
             document = null;
             mappingModel.AcceptVisitor(this);
             return document;
         }
 
-        public override void ProcessList(ListMapping mapping)
+        public override void ProcessCollection(CollectionMapping mapping)
         {
             document = new XmlDocument();
 

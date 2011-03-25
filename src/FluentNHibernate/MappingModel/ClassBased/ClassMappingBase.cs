@@ -35,7 +35,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mappedMembers.References; }
         }
 
-        public IEnumerable<ICollectionMapping> Collections
+        public IEnumerable<Collections.CollectionMapping> Collections
         {
             get { return mappedMembers.Collections; }
         }
@@ -90,12 +90,12 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers.AddOrReplaceProperty(mapping);
         }
 
-        public void AddCollection(ICollectionMapping collection)
+        public void AddCollection(Collections.CollectionMapping collection)
         {
             mappedMembers.AddCollection(collection);
         }
 
-        public void AddOrReplaceCollection(ICollectionMapping mapping)
+        public void AddOrReplaceCollection(Collections.CollectionMapping mapping)
         {
             mappedMembers.AddOrReplaceCollection(mapping);
         }

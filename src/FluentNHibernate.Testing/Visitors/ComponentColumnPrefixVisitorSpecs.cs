@@ -216,9 +216,9 @@ namespace FluentNHibernate.Testing.Visitors
             return any;
         }
 
-        protected ICollectionMapping collection_with_column(string column)
+        protected CollectionMapping collection_with_column(string column)
         {
-            var collection = new BagMapping();
+            var collection = CollectionMapping.Bag();
 
             collection.Key = new KeyMapping();
             collection.Key.AddDefaultColumn(new ColumnMapping { Name = column });

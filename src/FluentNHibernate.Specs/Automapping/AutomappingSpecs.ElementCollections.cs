@@ -119,7 +119,7 @@ namespace FluentNHibernate.Specs.Automapping
             container.Collections.Count().ShouldEqual(1);
 
         It should_create_a_collection_that_s_a_bag = () =>
-            container.Collections.Single().ShouldBeOfType<BagMapping>();
+            container.Collections.Single().Collection.ShouldEqual(Collection.Bag);
 
         It should_create_an_element_for_the_collection = () =>
             container.Collections.Single().Element.ShouldNotBeNull();

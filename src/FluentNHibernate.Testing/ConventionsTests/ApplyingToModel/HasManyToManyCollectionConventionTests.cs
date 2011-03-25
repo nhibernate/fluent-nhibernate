@@ -160,7 +160,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             model.Conventions.Add(new CollectionConventionBuilder().Always(convention));
         }
 
-        private void VerifyModel(Action<ICollectionMapping> modelVerification)
+        private void VerifyModel(Action<CollectionMapping> modelVerification)
         {
             var classMap = new ClassMap<ExampleInheritedClass>();
             classMap.Id(x => x.Id);

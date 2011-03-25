@@ -44,15 +44,15 @@ namespace FluentNHibernate.Automapping.Steps
                 .FirstOrDefault();
         }
 
-        private ICollectionMapping GetCollection(Member property)
+        static CollectionMapping GetCollection(Member property)
         {
             if (property.PropertyType.FullName.Contains("ISet"))
-                return new SetMapping();
+                return CollectionMapping.Set();
 
-            return new BagMapping();
+            return CollectionMapping.Bag();
         }
 
-        private void ConfigureModel(Member member, ICollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
+        private void ConfigureModel(Member member, CollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
         {
             // TODO: Make the child type safer
             mapping.SetDefaultValue(x => x.Name, member.Name);
@@ -83,7 +83,7 @@ namespace FluentNHibernate.Automapping.Steps
             return mapping;
         }
 
-        private void SetKey(Member property, ClassMappingBase classMap, ICollectionMapping mapping)
+        private void SetKey(Member property, ClassMappingBase classMap, CollectionMapping mapping)
         {
             var columnName = property.DeclaringType.Name + "_id";
             var key = new KeyMapping();

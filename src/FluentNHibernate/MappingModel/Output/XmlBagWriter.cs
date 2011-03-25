@@ -4,20 +4,20 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class XmlBagWriter : BaseXmlCollectionWriter, IXmlWriter<BagMapping>
+    public class XmlBagWriter : BaseXmlCollectionWriter, IXmlWriter<CollectionMapping>
     {
         public XmlBagWriter(IXmlWriterServiceLocator serviceLocator)
             : base(serviceLocator)
         {}
 
-        public XmlDocument Write(BagMapping mappingModel)
+        public XmlDocument Write(CollectionMapping mappingModel)
         {
             document = null;
             mappingModel.AcceptVisitor(this);
             return document;
         }
 
-        public override void ProcessBag(BagMapping mapping)
+        public override void ProcessCollection(CollectionMapping mapping)
         {
             document = new XmlDocument();
 

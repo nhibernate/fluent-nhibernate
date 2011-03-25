@@ -15,6 +15,11 @@ namespace FluentNHibernate.Utils
             return expected.Any(x => instance.Equals(x));
         }
 
+        public static string ToLowerInvariantString(this object value)
+        {
+            return value.ToString().ToLowerInvariant();
+        }
+
         public static bool Closes(this Type type, Type openGenericType)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == openGenericType;

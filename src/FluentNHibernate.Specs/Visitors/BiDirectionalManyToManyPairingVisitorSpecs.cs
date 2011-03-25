@@ -38,10 +38,10 @@ namespace FluentNHibernate.Specs.Visitors
         It should_set_other_side_for_the_supervisored_queues_collection = () =>
             supervised_queues_in_user.OtherSide.ShouldEqual(supervisors_in_queue);
 
-        static ICollectionMapping members_in_queue;
-        static ICollectionMapping supervisors_in_queue;
-        static ICollectionMapping membership_queues_in_user;
-        static ICollectionMapping supervised_queues_in_user;
+        static CollectionMapping members_in_queue;
+        static CollectionMapping supervisors_in_queue;
+        static CollectionMapping membership_queues_in_user;
+        static CollectionMapping supervised_queues_in_user;
 
         private class User
         {
@@ -84,10 +84,10 @@ namespace FluentNHibernate.Specs.Visitors
             eggs_in_queue.OtherSide.ShouldBeNull();
         };
 
-        static ICollectionMapping fish_in_queue;
-        static ICollectionMapping chips_in_queue;
-        static ICollectionMapping bacon_in_queue;
-        static ICollectionMapping eggs_in_queue;
+        static CollectionMapping fish_in_queue;
+        static CollectionMapping chips_in_queue;
+        static CollectionMapping bacon_in_queue;
+        static CollectionMapping eggs_in_queue;
         static Exception ex;
 
         private class User
@@ -131,10 +131,10 @@ namespace FluentNHibernate.Specs.Visitors
             eueues_in_user.OtherSide.ShouldBeNull();
         };
 
-        static ICollectionMapping dsers_in_queue;
-        static ICollectionMapping fsers_in_queue;
-        static ICollectionMapping wueues_in_user;
-        static ICollectionMapping eueues_in_user;
+        static CollectionMapping dsers_in_queue;
+        static CollectionMapping fsers_in_queue;
+        static CollectionMapping wueues_in_user;
+        static CollectionMapping eueues_in_user;
         static Exception ex;
 
         private class User
@@ -175,9 +175,9 @@ namespace FluentNHibernate.Specs.Visitors
         It shouldnt_link_the_orphaned_member_with_anything = () =>
             users2_in_queue.OtherSide.ShouldBeNull();
 
-        static ICollectionMapping users_in_queue;
-        static ICollectionMapping users2_in_queue;
-        static ICollectionMapping queues_in_user;
+        static CollectionMapping users_in_queue;
+        static CollectionMapping users2_in_queue;
+        static CollectionMapping queues_in_user;
 
         private class User
         {
@@ -211,8 +211,8 @@ namespace FluentNHibernate.Specs.Visitors
         It should_set_other_side_for_the_queues_collection = () =>
             queues_in_user.OtherSide.ShouldEqual(users_in_queue);
 
-        static ICollectionMapping users_in_queue;
-        static ICollectionMapping queues_in_user;
+        static CollectionMapping users_in_queue;
+        static CollectionMapping queues_in_user;
 
         private class User
         {
@@ -235,20 +235,21 @@ namespace FluentNHibernate.Specs.Visitors
         static RelationshipPairingVisitor visitor;
         protected static bool udf_was_called;
 
-        protected static ICollectionMapping collection<T>(Expression<Func<T, object>> expression)
+        protected static CollectionMapping collection<T>(Expression<Func<T, object>> expression)
         {
             var member = expression.ToMember();
 
-            return new BagMapping
-            {
-                ContainingEntityType = typeof(T),
-                Member = member,
-                Relationship = new ManyToManyMapping(),
-                ChildType = member.PropertyType.GetGenericArguments()[0]
-            };
+            var bag = CollectionMapping.Bag();
+            
+            bag.ContainingEntityType = typeof(T);
+            bag.Member = member;
+            bag.Relationship = new ManyToManyMapping();
+            bag.ChildType = member.PropertyType.GetGenericArguments()[0];
+            
+            return bag;
         }
 
-        protected static void visit(params ICollectionMapping[] mappings)
+        protected static void visit(params CollectionMapping[] mappings)
         {
             mappings.Each(visitor.Visit);
             visitor.Visit(new HibernateMapping[0]); // simulate end of visit

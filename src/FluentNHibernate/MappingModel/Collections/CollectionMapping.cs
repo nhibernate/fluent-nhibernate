@@ -6,16 +6,18 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Collections
 {
     [Serializable]
-    public abstract class CollectionMappingBase : MappingBase, ICollectionMapping
+    public class CollectionMapping : MappingBase, IRelationship
     {
-        private readonly AttributeStore<ICollectionMapping> attributes;
-        private readonly IList<FilterMapping> filters = new List<FilterMapping>();
+        readonly AttributeStore<CollectionMapping> attributes;
+        readonly IList<FilterMapping> filters = new List<FilterMapping>();
+
         public Type ContainingEntityType { get; set; }
         public Member Member { get; set; }
 
-        protected CollectionMappingBase(AttributeStore underlyingStore)
+        CollectionMapping(AttributeStore underlyingStore)
         {
-            attributes = new AttributeStore<ICollectionMapping>(underlyingStore);
+            Collection = Collection.Bag;
+            attributes = new AttributeStore<CollectionMapping>(underlyingStore);
             attributes.SetDefault(x => x.Mutable, true);
         }
 
@@ -31,8 +33,13 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
+            visitor.ProcessCollection(this);
+
             if (Key != null)
                 visitor.Visit(Key);
+
+            if (Index != null && (Collection == Collection.Array || Collection == Collection.List || Collection == Collection.Map))
+                visitor.Visit(Index);
 
             if (Element != null)
                 visitor.Visit(Element);
@@ -195,19 +202,37 @@ namespace FluentNHibernate.MappingModel.Collections
             return attributes.IsSpecified(property);
         }
 
-        public bool HasValue<TResult>(Expression<Func<ICollectionMapping, TResult>> property)
+        public bool HasValue<TResult>(Expression<Func<CollectionMapping, TResult>> property)
         {
             return attributes.HasValue(property);
         }
 
-        public void SetDefaultValue<TResult>(Expression<Func<ICollectionMapping, TResult>> property, TResult value)
+        public void SetDefaultValue<TResult>(Expression<Func<CollectionMapping, TResult>> property, TResult value)
         {
             attributes.SetDefault(property, value);
         }
 
-		public abstract string OrderBy { get; set; }
+        public string OrderBy
+        {
+            get { return attributes.Get(x => x.OrderBy); }
+            set { attributes.Set(x => x.OrderBy, value); }
+        }
 
-        public bool Equals(CollectionMappingBase other)
+        public Collection Collection { get; set; }
+        
+        public string Sort
+        {
+            get { return attributes.Get(x => x.Sort); }
+            set { attributes.Set(x => x.Sort, value); }
+        }
+
+        public IIndexMapping Index
+        {
+            get { return attributes.Get(x => x.Index); }
+            set { attributes.Set(x => x.Index, value); }
+        }
+
+        public bool Equals(CollectionMapping other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -221,8 +246,8 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof(CollectionMappingBase)) return false;
-            return Equals((CollectionMappingBase)obj);
+            if (obj.GetType() != typeof(CollectionMapping)) return false;
+            return Equals((CollectionMapping)obj);
         }
 
         public override int GetHashCode()
@@ -235,6 +260,69 @@ namespace FluentNHibernate.MappingModel.Collections
                 result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        public static CollectionMapping Array()
+        {
+            return Array(new AttributeStore());
+        }
+
+        public static CollectionMapping Array(AttributeStore underlyingStore)
+        {
+            return For(Collection.Array, underlyingStore);
+        }
+
+        public static CollectionMapping Bag()
+        {
+            return Bag(new AttributeStore());
+        }
+
+        public static CollectionMapping Bag(AttributeStore underlyingStore)
+        {
+            return For(Collection.Bag, underlyingStore);
+        }
+
+        public static CollectionMapping List()
+        {
+            return List(new AttributeStore());
+        }
+
+        public static CollectionMapping List(AttributeStore underlyingStore)
+        {
+            return For(Collection.List, underlyingStore);
+        }
+
+        public static CollectionMapping Map()
+        {
+            return Map(new AttributeStore());
+        }
+
+        public static CollectionMapping Map(AttributeStore underlyingStore)
+        {
+            return For(Collection.Map, underlyingStore);
+        }
+
+        public static CollectionMapping Set()
+        {
+            return Set(new AttributeStore());
+        }
+
+        public static CollectionMapping Set(AttributeStore underlyingStore)
+        {
+            return For(Collection.Set, underlyingStore);
+        }
+
+        public static CollectionMapping For(Collection collectionType)
+        {
+            return For(collectionType, new AttributeStore());
+        }
+
+        public static CollectionMapping For(Collection collectionType, AttributeStore underlyingStore)
+        {
+            return new CollectionMapping(underlyingStore)
+            {
+                Collection = collectionType
+            };
         }
     }
 }

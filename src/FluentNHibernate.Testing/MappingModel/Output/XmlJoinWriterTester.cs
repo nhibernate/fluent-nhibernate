@@ -155,7 +155,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new JoinMapping();
 
-            mapping.AddCollection(new BagMapping());
+            mapping.AddCollection(CollectionMapping.Bag());
 
             writer.VerifyXml(mapping)
                 .Element("bag").Exists();

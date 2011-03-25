@@ -1,20 +1,18 @@
 using System;
 using System.Diagnostics;
-using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
-using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public class CollectionInstance : CollectionInspector, ICollectionInstance
+    public class CollectionInstance : CollectionInspector, IArrayInstance, IBagInstance, IListInstance, IMapInstance, ISetInstance
     {
-        private readonly ICollectionMapping mapping;
+        readonly CollectionMapping mapping;
         protected bool nextBool = true;
 
-        public CollectionInstance(ICollectionMapping mapping)
+        public CollectionInstance(CollectionMapping mapping)
             : base(mapping)
         {
             this.mapping = mapping;
@@ -117,10 +115,35 @@ namespace FluentNHibernate.Conventions.Instances
                 mapping.Where = whereClause;
         }
 
+        public new IIndexInstanceBase Index
+        {
+            get
+            {
+                if (mapping.Index == null)
+                    return new IndexInstance(new IndexMapping());
+
+                if (mapping.Index is IndexMapping)
+                    return new IndexInstance(mapping.Index as IndexMapping);
+
+                if (mapping.Index is IndexManyToManyMapping)
+                    return new IndexManyToManyInstance(mapping.Index as IndexManyToManyMapping);
+
+                throw new InvalidOperationException("This IIndexMapping is not a valid type for inspecting");
+            }
+        }
+
         public new void OrderBy(string orderBy)
         {
             if (!mapping.IsSpecified("OrderBy"))
                 mapping.OrderBy = orderBy;
+        }
+
+        public new void Sort(string sort)
+        {
+            if (mapping.IsSpecified("Sort"))
+                return;
+
+            mapping.Sort = sort;
         }
 
         public void Subselect(string subselect)
@@ -174,6 +197,31 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
+        void ICollectionInstance.AsArray()
+        {
+            mapping.Collection = Collection.Array;
+        }
+
+        void ICollectionInstance.AsBag()
+        {
+            mapping.Collection = Collection.Bag;
+        }
+
+        void ICollectionInstance.AsList()
+        {
+            mapping.Collection = Collection.List;
+        }
+
+        void ICollectionInstance.AsMap()
+        {
+            mapping.Collection = Collection.Map;
+        }
+
+        void ICollectionInstance.AsSet()
+        {
+            mapping.Collection = Collection.Set;
+        }
+
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ICollectionInstance Not
         {
@@ -194,6 +242,14 @@ namespace FluentNHibernate.Conventions.Instances
 
                 return new CacheInstance(mapping.Cache);
             }
+        }
+
+        public void SetOrderBy(string orderBy)
+        {
+            if (mapping.IsSpecified("OrderBy"))
+                return;
+
+            mapping.OrderBy = orderBy;
         }
 
         public new IAccessInstance Access

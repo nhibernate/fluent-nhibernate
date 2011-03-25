@@ -1,8 +1,6 @@
 using System;
 using System.Diagnostics;
-using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
-using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Conventions.Instances
 {
@@ -17,6 +15,12 @@ namespace FluentNHibernate.Conventions.Instances
         void ExtraLazyLoad();
         new void BatchSize(int batchSize);
         void ReadOnly();
+
+        void AsArray();
+        void AsBag();
+        void AsList();
+        void AsMap();
+        void AsSet();
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         ICollectionInstance Not { get; }

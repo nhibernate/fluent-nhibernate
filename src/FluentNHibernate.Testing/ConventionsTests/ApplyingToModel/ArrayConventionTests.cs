@@ -172,7 +172,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             model.Conventions.Add(new ArrayConventionBuilder().Always(convention));
         }
 
-        private void VerifyModel(Action<ArrayMapping> modelVerification)
+        private void VerifyModel(Action<CollectionMapping> modelVerification)
         {
             var classMap = new ClassMap<ExampleParentClass>();
             classMap.Id(x => x.Id);
@@ -187,7 +187,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
                 .Classes.First()
                 .Collections.First();
 
-            modelVerification((ArrayMapping)modelInstance);
+            modelVerification(modelInstance);
         }
 
         #endregion

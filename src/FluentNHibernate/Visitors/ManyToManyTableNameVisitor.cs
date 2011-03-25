@@ -4,7 +4,7 @@ namespace FluentNHibernate.Visitors
 {
     public class ManyToManyTableNameVisitor : DefaultMappingModelVisitor
     {
-        protected override void ProcessCollection(ICollectionMapping mapping)
+        public override void ProcessCollection(CollectionMapping mapping)
         {
             if (!(mapping.Relationship is ManyToManyMapping))
                 return;
@@ -16,7 +16,7 @@ namespace FluentNHibernate.Visitors
             }
             else
             {
-                var otherSide = (ICollectionMapping)mapping.OtherSide;
+                var otherSide = (MappingModel.Collections.CollectionMapping)mapping.OtherSide;
 
                 // bi-directional
                 if (mapping.IsSpecified("TableName") && otherSide.IsSpecified("TableName"))

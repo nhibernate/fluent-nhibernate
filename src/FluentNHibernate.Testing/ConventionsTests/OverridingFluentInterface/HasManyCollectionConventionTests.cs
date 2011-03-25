@@ -224,7 +224,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             mappingType = typeof(ExampleInheritedClass);
         }
 
-        private void VerifyModel(Action<ICollectionMapping> modelVerification)
+        private void VerifyModel(Action<CollectionMapping> modelVerification)
         {
             model.Add(mapping);
 

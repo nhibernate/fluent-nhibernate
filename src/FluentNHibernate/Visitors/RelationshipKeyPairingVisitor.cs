@@ -12,7 +12,7 @@ namespace FluentNHibernate.Visitors
                 return;
 
             // other side is always going to be a collection for a many-to-one mapping
-            var otherSide = (ICollectionMapping)thisSide.OtherSide;
+            var otherSide = (CollectionMapping)thisSide.OtherSide;
 
             if (thisSide.ContainingEntityType == otherSide.ContainingEntityType)
             {

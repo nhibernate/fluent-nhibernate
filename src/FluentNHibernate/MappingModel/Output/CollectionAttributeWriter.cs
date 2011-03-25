@@ -55,7 +55,14 @@ namespace FluentNHibernate.MappingModel.Output
             document.ImportAndAppendChild(xml);
         }
 
-        protected void WriteBaseCollectionAttributes(XmlElement element, ICollectionMapping mapping)
+        public override void Visit(FilterMapping filterMapping)
+        {
+            var writer = serviceLocator.GetWriter<FilterMapping>();
+            var xml = writer.Write(filterMapping);
+            document.ImportAndAppendChild(xml);
+        }
+
+        protected void WriteBaseCollectionAttributes(XmlElement element, CollectionMapping mapping)
         {
             if (mapping.HasValue(x => x.Access))
                 element.WithAtt("access", mapping.Access);

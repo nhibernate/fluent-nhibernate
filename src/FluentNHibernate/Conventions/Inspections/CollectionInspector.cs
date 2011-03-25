@@ -6,12 +6,12 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public class CollectionInspector : ICollectionInspector
+    public class CollectionInspector : IArrayInspector, IBagInspector, IListInspector, IMapInspector, ISetInspector
     {
-        private readonly InspectorModelMapper<ICollectionInspector, ICollectionMapping> propertyMappings = new InspectorModelMapper<ICollectionInspector, ICollectionMapping>();
-        private readonly ICollectionMapping mapping;
+        InspectorModelMapper<ICollectionInspector, CollectionMapping> propertyMappings = new InspectorModelMapper<ICollectionInspector, CollectionMapping>();
+        CollectionMapping mapping;
 
-        public CollectionInspector(ICollectionMapping mapping)
+        public CollectionInspector(CollectionMapping mapping)
         {
             this.mapping = mapping;
             propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
@@ -25,6 +25,11 @@ namespace FluentNHibernate.Conventions.Inspections
         public string StringIdentifierForModel
         {
             get { return mapping.Name; }
+        }
+
+        Collection ICollectionInspector.Collection
+        {
+            get { return mapping.Collection; }
         }
 
         /// <summary>
@@ -189,8 +194,31 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.OrderBy; }
         }
 
+        public string Sort
+        {
+            get { return mapping.Sort; }
+        }
+
+        public IIndexInspectorBase Index
+        {
+            get
+            {
+                if (mapping.Index == null)
+                    return new IndexInspector(new IndexMapping());
+
+                if (mapping.Index is IndexMapping)
+                    return new IndexInspector(mapping.Index as IndexMapping);
+
+                if (mapping.Index is IndexManyToManyMapping)
+                    return new IndexManyToManyInspector(mapping.Index as IndexManyToManyMapping);
+
+                throw new InvalidOperationException("This IIndexMapping is not a valid type for inspecting");
+            }
+        }
+
         public virtual void ExtraLazyLoad()
         {
+            // TODO: Fix this...
             // I'm having trouble understanding the relationship between CollectionInspector, CollectionInstance, 
             // and their derivative types. I'm sure adding this method on here is not the right way to do this, but 
             // I have to fulfill the ICollectionInspector.ExtraLazyLoad() signature or conventions can't use it.

@@ -14,11 +14,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             OneToMany(x => x.EntityMapOfChildren)
                 .Mapping(m => m.AsMap("irrelevant-value").AsTernaryAssociation())
-                .ModelShouldMatch(x =>
-                {
-                    IIndexMapping index = ((MapMapping)x).Index;
-                    index.ShouldBeOfType(typeof(IndexManyToManyMapping));
-                });
+                .ModelShouldMatch(x => x.Index.ShouldBeOfType(typeof(IndexManyToManyMapping)));
         }
 
         [Test]
@@ -28,7 +24,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.AsMap("irrelevant-value").AsTernaryAssociation())
                 .ModelShouldMatch(x =>
                 {
-                    var index = (IndexManyToManyMapping)((MapMapping)x).Index;
+                    var index = (IndexManyToManyMapping)x.Index;
                     index.Class.ShouldEqual(new TypeReference(typeof(SomeEntity)));
                 });
         }
@@ -40,7 +36,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.AsMap("irrelevant-value").AsTernaryAssociation())
                 .ModelShouldMatch(x =>
                 {
-                    var index = (IndexManyToManyMapping)((MapMapping)x).Index;
+                    var index = (IndexManyToManyMapping)x.Index;
                     index.Columns.Single().Name.ShouldEqual(typeof(SomeEntity).Name + "_id");
                 });
         }
@@ -53,7 +49,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.AsMap("irrelevant-value").AsTernaryAssociation(indexName))
                 .ModelShouldMatch(x =>
                 {
-                    var index = (IndexManyToManyMapping)((MapMapping)x).Index;
+                    var index = (IndexManyToManyMapping)x.Index;
                     index.Columns.Single().Name.ShouldEqual(indexName);
                 });
         }
@@ -65,9 +61,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.AsEntityMap())
                 .ModelShouldMatch(x =>
                 {
-                    x.ShouldBeOfType(typeof(MapMapping));
-                    IIndexMapping index = ((MapMapping)x).Index;
-                    index.ShouldBeOfType(typeof(IndexManyToManyMapping));
+                    x.Collection.ShouldEqual(Collection.Map);
+                    x.Index.ShouldBeOfType(typeof(IndexManyToManyMapping));
                 });
         }
 
@@ -80,10 +75,9 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.AsEntityMap(indexName))
                 .ModelShouldMatch(x =>
                 {
-                    x.ShouldBeOfType(typeof(MapMapping));
-                    IIndexMapping index = ((MapMapping)x).Index;
-                    index.ShouldBeOfType(typeof(IndexManyToManyMapping));
-                    index.Columns.Single().Name.ShouldEqual(indexName);
+                    x.Collection.ShouldEqual(Collection.Map);
+                    x.Index.ShouldBeOfType(typeof(IndexManyToManyMapping));
+                    x.Index.Columns.Single().Name.ShouldEqual(indexName);
                 });
         }
     }

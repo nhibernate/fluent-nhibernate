@@ -59,23 +59,8 @@ namespace FluentNHibernate.MappingModel.Output
                 new XmlOneToOneWriter());
 
             // collections
-            RegisterWriter<ICollectionMapping>(c =>
+            RegisterWriter<CollectionMapping>(c =>
                 new XmlCollectionWriter(c.Resolve<IXmlWriterServiceLocator>()));
-
-            RegisterWriter<BagMapping>(c =>
-                new XmlBagWriter(c.Resolve<IXmlWriterServiceLocator>()));
-
-            RegisterWriter<SetMapping>(c =>
-                new XmlSetWriter(c.Resolve<IXmlWriterServiceLocator>()));
-
-            RegisterWriter<ListMapping>(c =>
-                new XmlListWriter(c.Resolve<IXmlWriterServiceLocator>()));
-
-            RegisterWriter<MapMapping>(c =>
-                new XmlMapWriter(c.Resolve<IXmlWriterServiceLocator>()));
-
-            RegisterWriter<ArrayMapping>(c =>
-                new XmlArrayWriter(c.Resolve<IXmlWriterServiceLocator>()));
 
             RegisterWriter<IIndexMapping>(c =>
                 new XmlIIndexWriter(c.Resolve<IXmlWriterServiceLocator>()));

@@ -3,6 +3,7 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
+using CollectionMapping = FluentNHibernate.MappingModel.Collections.CollectionMapping;
 
 namespace FluentNHibernate.Visitors
 {
@@ -20,16 +21,12 @@ namespace FluentNHibernate.Visitors
         void ProcessKey(KeyMapping keyMapping);
         void ProcessGenerator(GeneratorMapping generatorMapping);
         void ProcessColumn(ColumnMapping columnMapping);
-        void ProcessBag(BagMapping bagMapping);
         void ProcessOneToMany(OneToManyMapping oneToManyMapping);
         void ProcessManyToMany(ManyToManyMapping manyToManyMapping);
-        void ProcessSet(SetMapping setMapping);
-        void ProcessMap(MapMapping mapping);
         void ProcessSubclass(SubclassMapping subclassMapping);
         void ProcessDiscriminator(DiscriminatorMapping discriminatorMapping);
         void ProcessComponent(ComponentMapping mapping);
         void ProcessComponent(ReferenceComponentMapping componentMapping);
-        void ProcessList(ListMapping listMapping);
         void ProcessIndex(IIndexMapping indexMapping);
         void ProcessIndex(IndexMapping indexMapping);
         void ProcessIndex(IndexManyToManyMapping indexMapping);
@@ -43,11 +40,11 @@ namespace FluentNHibernate.Visitors
         void ProcessKeyProperty(KeyPropertyMapping mapping);
         void ProcessKeyManyToOne(KeyManyToOneMapping mapping);
         void ProcessElement(ElementMapping mapping);
-        void ProcessArray(ArrayMapping mapping);
         void ProcessFilter(FilterMapping mapping);
         void ProcessFilterDefinition(FilterDefinitionMapping mapping);
         void ProcessStoredProcedure(StoredProcedureMapping mapping);
         void ProcessTuplizer(TuplizerMapping mapping);
+        void ProcessCollection(MappingModel.Collections.CollectionMapping mapping);
 
         /// <summary>
         /// This bad boy is the entry point to the visitor
@@ -61,7 +58,7 @@ namespace FluentNHibernate.Visitors
         void Visit(CacheMapping mapping);
         void Visit(ImportMapping importMapping);
         void Visit(IIdentityMapping identityMapping);
-        void Visit(ICollectionMapping collectionMapping);
+        void Visit(MappingModel.Collections.CollectionMapping collectionMapping);
         void Visit(PropertyMapping propertyMapping);
         void Visit(ManyToOneMapping manyToOneMapping);
         void Visit(KeyMapping keyMapping);
@@ -84,7 +81,6 @@ namespace FluentNHibernate.Visitors
         void Visit(KeyPropertyMapping mapping);
         void Visit(KeyManyToOneMapping mapping);
         void Visit(ElementMapping mapping);
-        void Visit(ArrayMapping mapping);
         void Visit(FilterMapping mapping);
         void Visit(FilterDefinitionMapping mapping);
         void Visit(StoredProcedureMapping mapping);

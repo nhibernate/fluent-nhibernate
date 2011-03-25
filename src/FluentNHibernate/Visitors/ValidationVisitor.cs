@@ -24,11 +24,11 @@ namespace FluentNHibernate.Visitors
                 );
         }
 
-        protected override void ProcessCollection(ICollectionMapping mapping)
+        public override void ProcessCollection(CollectionMapping mapping)
         {
             if (!Enabled) return;
 
-            var otherSide = mapping.OtherSide as ICollectionMapping;
+            var otherSide = mapping.OtherSide as CollectionMapping;
 
             if (otherSide == null) return;
             if (mapping.Inverse && otherSide.Inverse)

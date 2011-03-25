@@ -94,8 +94,11 @@
     <Compile Include="Automapping\PrivateAutomapperSpecs.cs" />
     <Compile Include="Automapping\PrivateFieldsSpecs.cs" />
     <Compile Include="Conventions\ApplyFilterSpecs.cs" />
+    <Compile Include="Conventions\CollectionTypeChangeSpecs.cs" />
     <Compile Include="Conventions\ConventionBuilderSpecs.cs" />
     <Compile Include="Conventions\Fixtures\Child.cs" />
+    <Compile Include="Conventions\Fixtures\CollectionTarget.cs" />
+    <Compile Include="Conventions\Fixtures\CollectionConvention.cs" />
     <Compile Include="Conventions\Fixtures\FilterClassConvention.cs" />
     <Compile Include="Conventions\Fixtures\FilterTarget.cs" />
     <Compile Include="Conventions\Fixtures\SetCollectionEntity.cs" />

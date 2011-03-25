@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
+using CollectionMapping = FluentNHibernate.MappingModel.Collections.CollectionMapping;
 
 namespace FluentNHibernate.Visitors
 {
@@ -69,27 +69,12 @@ namespace FluentNHibernate.Visitors
 
         }
 
-        public virtual void ProcessBag(BagMapping bagMapping)
-        {
-
-        }
-
         public virtual void ProcessOneToMany(OneToManyMapping oneToManyMapping)
         {
 
         }
 
         public virtual void ProcessManyToMany(ManyToManyMapping manyToManyMapping)
-        {
-            
-        }
-
-        public virtual void ProcessSet(SetMapping setMapping)
-        {
-
-        }
-
-        public virtual void ProcessMap(MapMapping mapping)
         {
             
         }
@@ -110,11 +95,6 @@ namespace FluentNHibernate.Visitors
         }
 
         public virtual void ProcessComponent(ReferenceComponentMapping componentMapping)
-        {
-            
-        }
-
-        public virtual void ProcessList(ListMapping listMapping)
         {
             
         }
@@ -164,11 +144,6 @@ namespace FluentNHibernate.Visitors
             
         }
 
-        public virtual void ProcessArray(ArrayMapping mapping)
-        {
-            
-        }
-
         public virtual void ProcessFilter(FilterMapping mapping)
         {
 
@@ -209,6 +184,11 @@ namespace FluentNHibernate.Visitors
             
         }
 
+        public virtual void ProcessCollection(MappingModel.Collections.CollectionMapping mapping)
+        {
+            
+        }
+
         public virtual void Visit(IEnumerable<HibernateMapping> mappings)
         {
             
@@ -244,7 +224,7 @@ namespace FluentNHibernate.Visitors
 
         }
 
-        public virtual void Visit(ICollectionMapping collectionMapping)
+        public virtual void Visit(MappingModel.Collections.CollectionMapping collectionMapping)
         {
 
         }
@@ -354,11 +334,6 @@ namespace FluentNHibernate.Visitors
         }
 
         public virtual void Visit(ElementMapping mapping)
-        {
-            
-        }
-
-        public virtual void Visit(ArrayMapping mapping)
         {
             
         }

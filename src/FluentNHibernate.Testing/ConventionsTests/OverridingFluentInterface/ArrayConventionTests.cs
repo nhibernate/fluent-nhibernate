@@ -213,7 +213,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             mappingType = typeof(ExampleParentClass);
         }
 
-        private void VerifyModel(Action<ArrayMapping> modelVerification)
+        private void VerifyModel(Action<CollectionMapping> modelVerification)
         {
             model.Add(mapping);
 
@@ -223,7 +223,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
                 .Classes.First()
                 .Collections.First();
 
-            modelVerification((ArrayMapping)modelInstance);
+            modelVerification(modelInstance);
         }
 
         #endregion

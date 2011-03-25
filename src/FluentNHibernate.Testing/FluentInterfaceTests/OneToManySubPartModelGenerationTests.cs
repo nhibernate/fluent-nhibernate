@@ -28,11 +28,9 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 }))
                 .ModelShouldMatch(x =>
                 {
-                    var list = (ListMapping)x;
-
-                    list.Index.ShouldNotBeNull();
-                    list.Index.Columns.Count().ShouldEqual(1);
-                    ((IndexMapping)list.Index).Type.ShouldEqual(new TypeReference(typeof(int)));
+                    x.Index.ShouldNotBeNull();
+                    x.Index.Columns.Count().ShouldEqual(1);
+                    ((IndexMapping)x.Index).Type.ShouldEqual(new TypeReference(typeof(int)));
                 });
         }
 
@@ -43,7 +41,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.AsMap<int>("index-column"))
                 .ModelShouldMatch(x =>
                 {
-                    var index = (IndexMapping)((MapMapping)x).Index;
+                    var index = (IndexMapping)x.Index;
 
                     index.ShouldNotBeNull();
                     index.Columns.Count().ShouldEqual(1);

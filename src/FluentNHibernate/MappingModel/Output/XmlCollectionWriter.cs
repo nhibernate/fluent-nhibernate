@@ -6,58 +6,52 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class XmlCollectionWriter : NullMappingModelVisitor, IXmlWriter<ICollectionMapping>
+    public class XmlCollectionWriter : NullMappingModelVisitor, IXmlWriter<CollectionMapping>
     {
         private readonly IXmlWriterServiceLocator serviceLocator;
         private XmlDocument document;
+        Collection collection;
 
         public XmlCollectionWriter(IXmlWriterServiceLocator serviceLocator)
         {
             this.serviceLocator = serviceLocator;
         }
 
-        public XmlDocument Write(ICollectionMapping mappingModel)
+        public XmlDocument Write(CollectionMapping mappingModel)
         {
+            collection = mappingModel.Collection;
+
             document = null;
             mappingModel.AcceptVisitor(this);
             return document;
         }
 
-        public override void ProcessBag(BagMapping mapping)
+        public override void ProcessCollection(CollectionMapping mapping)
         {
-            var writer = serviceLocator.GetWriter<BagMapping>();
-            document = writer.Write(mapping);
-        }
+            IXmlWriter<CollectionMapping> writer = null;
 
-        public override void ProcessSet(SetMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<SetMapping>();
-            document = writer.Write(mapping);
-        }
+            switch (mapping.Collection)
+            {
+                case Collection.Array:
+                    writer = new XmlArrayWriter(serviceLocator);
+                    break;
+                case Collection.Bag:
+                    writer = new XmlBagWriter(serviceLocator);
+                    break;
+                case Collection.List:
+                    writer = new XmlListWriter(serviceLocator);
+                    break;
+                case Collection.Map:
+                    writer = new XmlMapWriter(serviceLocator);
+                    break;
+                case Collection.Set:
+                    writer = new XmlSetWriter(serviceLocator);
+                    break;
+                default:
+                    throw new InvalidOperationException("Unrecognised collection type " + mapping.Collection);
+            }
 
-        public override void ProcessList(ListMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<ListMapping>();
             document = writer.Write(mapping);
-        }
-
-        public override void ProcessMap(MapMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<MapMapping>();
-            document = writer.Write(mapping);
-        }
-
-        public override void ProcessArray(ArrayMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<ArrayMapping>();
-            document = writer.Write(mapping);
-        }
-
-        public override void Visit(FilterMapping filterMapping)
-        {
-            var writer = serviceLocator.GetWriter<FilterMapping>();
-            var xml = writer.Write(filterMapping);
-            document.ImportAndAppendChild(xml);
         }
     }
 }

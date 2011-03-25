@@ -4,6 +4,6 @@ namespace FluentNHibernate.Mapping.Providers
 {
     public interface ICollectionMappingProvider
     {
-        ICollectionMapping GetCollectionMapping();
+        MappingModel.Collections.CollectionMapping GetCollectionMapping();
     }
 }

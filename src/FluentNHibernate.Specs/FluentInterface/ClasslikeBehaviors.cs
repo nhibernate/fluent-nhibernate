@@ -53,7 +53,7 @@ namespace FluentNHibernate.Specs.FluentInterface
             mapping.Collections.Count().ShouldEqual(1);
 
         It should_add_a_bag_to_the_collections_of_the_mapping = () =>
-            mapping.Collections.Single().ShouldBeOfType<BagMapping>();
+            mapping.Collections.Single().Collection.ShouldEqual(Collection.Bag);
 
         It should_use_the_property_name_as_the_collection_name = () =>
             mapping.Collections.Single().Name.ShouldEqual("BagOfChildren");
@@ -74,7 +74,7 @@ namespace FluentNHibernate.Specs.FluentInterface
             mapping.Collections.Count().ShouldEqual(1);
 
         It should_add_a_set_to_the_collections_of_the_mapping = () =>
-            mapping.Collections.Single().ShouldBeOfType<SetMapping>();
+            mapping.Collections.Single().Collection.ShouldEqual(Collection.Set);
 
         It should_use_the_property_name_as_the_collection_name = () =>
             mapping.Collections.Single().Name.ShouldEqual("SetOfChildren");
@@ -95,29 +95,29 @@ namespace FluentNHibernate.Specs.FluentInterface
     public class ClasslikeListWithDefaultIndexBehaviour : ClasslikeListBehaviour
     {
         It should_create_an_index_for_the_collection_mapping = () =>
-            mapping.Collections.Single().As<ListMapping>().Index.ShouldNotBeNull();
+            mapping.Collections.Single().Index.ShouldNotBeNull();
 
         It should_create_a_single_column_for_the_index = () =>
-            mapping.Collections.Single().As<ListMapping>().Index.Columns.Count().ShouldEqual(1);
+            mapping.Collections.Single().Index.Columns.Count().ShouldEqual(1);
 
         It should_use_index_as_the_index_column_name = () =>
-            mapping.Collections.Single().As<ListMapping>().Index.Columns.Single().Name.ShouldEqual("Index");
+            mapping.Collections.Single().Index.Columns.Single().Name.ShouldEqual("Index");
     }
 
     [Behaviors]
     public class ClasslikeListWithCustomIndexBehaviour : ClasslikeListBehaviour
     {
         It should_create_an_index_for_the_collection_mapping = () =>
-            mapping.Collections.Single().As<ListMapping>().Index.ShouldNotBeNull();
+            mapping.Collections.Single().Index.ShouldNotBeNull();
 
         It should_create_a_single_column_for_the_index = () =>
-            mapping.Collections.Single().As<ListMapping>().Index.Columns.Count().ShouldEqual(1);
+            mapping.Collections.Single().Index.Columns.Count().ShouldEqual(1);
 
         It should_use_specified_column_name_as_the_index_column_name = () =>
-            mapping.Collections.Single().As<ListMapping>().Index.Columns.Single().Name.ShouldEqual("custom-column");
+            mapping.Collections.Single().Index.Columns.Single().Name.ShouldEqual("custom-column");
 
         It should_use_specified_type_as_the_index_type = () =>
-            mapping.Collections.Single().As<ListMapping>().Index.As<IndexMapping>().Type.ShouldEqual(new TypeReference(typeof(IndexTarget)));
+            mapping.Collections.Single().Index.As<IndexMapping>().Type.ShouldEqual(new TypeReference(typeof(IndexTarget)));
     }
 
     public abstract class ClasslikeListBehaviour
@@ -126,7 +126,7 @@ namespace FluentNHibernate.Specs.FluentInterface
             mapping.Collections.Count().ShouldEqual(1);
 
         It should_add_a_list_to_the_collections_of_the_mapping = () =>
-            mapping.Collections.Single().ShouldBeOfType<ListMapping>();
+            mapping.Collections.Single().Collection.ShouldEqual(Collection.List);
 
         It should_use_the_property_name_as_the_collection_name = () =>
             mapping.Collections.Single().Name.ShouldEqual("ListOfChildren");
@@ -150,7 +150,7 @@ namespace FluentNHibernate.Specs.FluentInterface
             mapping.Collections.Count().ShouldEqual(1);
 
         It should_add_an_array_to_the_collections_of_the_mapping = () =>
-            mapping.Collections.Single().ShouldBeOfType<ArrayMapping>();
+            mapping.Collections.Single().Collection.ShouldEqual(Collection.Array);
 
         It should_use_the_property_name_as_the_collection_name = () =>
             mapping.Collections.Single().Name.ShouldEqual("ArrayOfChildren");
@@ -165,13 +165,13 @@ namespace FluentNHibernate.Specs.FluentInterface
             mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("EntityWithCollections_id");
 
         It should_create_an_index_for_the_collection_mapping = () =>
-            mapping.Collections.Single().As<ArrayMapping>().Index.ShouldNotBeNull();
+            mapping.Collections.Single().Index.ShouldNotBeNull();
 
         It should_create_a_single_column_for_the_index = () =>
-            mapping.Collections.Single().As<ArrayMapping>().Index.Columns.Count().ShouldEqual(1);
+            mapping.Collections.Single().Index.Columns.Count().ShouldEqual(1);
 
         It should_use_specified_property_as_the_index_column_name = () =>
-            mapping.Collections.Single().As<ArrayMapping>().Index.Columns.Single().Name.ShouldEqual("Position");
+            mapping.Collections.Single().Index.Columns.Single().Name.ShouldEqual("Position");
 
         protected static ClassMappingBase mapping;
     }
@@ -194,6 +194,6 @@ namespace FluentNHibernate.Specs.FluentInterface
         It should_use_the_default_column_name_for_the_element = () =>
             collection.Element.Columns.Single().Name.ShouldEqual("value");
 
-        protected static ICollectionMapping collection;
+        protected static CollectionMapping collection;
     }
 }

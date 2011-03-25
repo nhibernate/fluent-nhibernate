@@ -11,26 +11,6 @@ namespace FluentNHibernate.Visitors
     {
         #region Collections
 
-        protected virtual void ProcessCollection(ICollectionMapping mapping)
-        {
-
-        }
-
-        public override void ProcessBag(BagMapping bagMapping)
-        {
-            ProcessCollection(bagMapping);
-        }
-
-        public override void ProcessSet(SetMapping setMapping)
-        {
-            ProcessCollection(setMapping);
-        }
-
-        public override void ProcessList(ListMapping listMapping)
-        {
-            ProcessCollection(listMapping);
-        }
-
         public override void ProcessIndex(IndexManyToManyMapping indexMapping)
         {
             ProcessIndex((IIndexMapping)indexMapping);
@@ -114,7 +94,7 @@ namespace FluentNHibernate.Visitors
             identityMapping.AcceptVisitor(this);
         }
 
-        public override void Visit(ICollectionMapping collectionMapping)
+        public override void Visit(CollectionMapping collectionMapping)
         {
             collectionMapping.AcceptVisitor(this);
         }

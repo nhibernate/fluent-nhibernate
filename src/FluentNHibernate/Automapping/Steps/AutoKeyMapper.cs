@@ -1,6 +1,7 @@
 ﻿using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
+using CollectionMapping = FluentNHibernate.MappingModel.Collections.CollectionMapping;
 
 namespace FluentNHibernate.Automapping.Steps
 {
@@ -13,7 +14,7 @@ namespace FluentNHibernate.Automapping.Steps
             this.cfg = cfg;
         }
 
-        public void SetKey(Member property, ClassMappingBase classMap, ICollectionMapping mapping)
+        public void SetKey(Member property, ClassMappingBase classMap, MappingModel.Collections.CollectionMapping mapping)
         {
             var columnName = property.DeclaringType.Name + "_id";
             var key = new KeyMapping();

@@ -58,7 +58,7 @@ namespace FluentNHibernate.Specs.Conventions
             mapping.Filters.Single().Name.ShouldEqual(FilterHasManyConvention.FilterName);
 
         static FluentNHibernate.PersistenceModel model;
-        static ICollectionMapping mapping;
+        static CollectionMapping mapping;
     }
 
     public class when_applying_a_filter_to_a_many_to_many_using_conventions
@@ -87,6 +87,6 @@ namespace FluentNHibernate.Specs.Conventions
             mapping.Filters.Single().Name.ShouldEqual(FilterHasManyConvention.FilterName);
 
         static FluentNHibernate.PersistenceModel model;
-        static ICollectionMapping mapping;
+        static CollectionMapping mapping;
     }
 }

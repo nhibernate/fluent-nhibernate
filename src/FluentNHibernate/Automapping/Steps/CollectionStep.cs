@@ -33,7 +33,8 @@ namespace FluentNHibernate.Automapping.Steps
             if (member.DeclaringType != classMap.Type)
                 return;
 
-            var mapping = collections.CreateCollectionMapping(member.PropertyType);
+            var collectionType = collections.DetermineCollectionType(member.PropertyType);
+            var mapping = CollectionMapping.For(collectionType);
 
             mapping.ContainingEntityType = classMap.Type;
             mapping.Member = member;
@@ -49,7 +50,7 @@ namespace FluentNHibernate.Automapping.Steps
             classMap.AddCollection(mapping);  
         }
 
-        private void SetRelationship(Member property, ClassMappingBase classMap, ICollectionMapping mapping)
+        private void SetRelationship(Member property, ClassMappingBase classMap, CollectionMapping mapping)
         {
             var relationship = new OneToManyMapping
             {

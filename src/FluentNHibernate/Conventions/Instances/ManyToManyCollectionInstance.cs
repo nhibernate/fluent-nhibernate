@@ -7,9 +7,9 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public class ManyToManyCollectionInstance : CollectionInstance, IManyToManyCollectionInstance
     {
-        private readonly ICollectionMapping mapping;
+        private readonly MappingModel.Collections.CollectionMapping mapping;
 
-        public ManyToManyCollectionInstance(ICollectionMapping mapping)
+        public ManyToManyCollectionInstance(MappingModel.Collections.CollectionMapping mapping)
             : base(mapping)
         {
             nextBool = true;
@@ -35,10 +35,10 @@ namespace FluentNHibernate.Conventions.Instances
         {
             get
             {
-                if (mapping.OtherSide == null || !(mapping.OtherSide is ICollectionMapping))
+                if (mapping.OtherSide == null || !(mapping.OtherSide is MappingModel.Collections.CollectionMapping))
                     return null;
 
-                return new ManyToManyCollectionInstance((ICollectionMapping)mapping.OtherSide);
+                return new ManyToManyCollectionInstance((MappingModel.Collections.CollectionMapping)mapping.OtherSide);
             }
         }
 

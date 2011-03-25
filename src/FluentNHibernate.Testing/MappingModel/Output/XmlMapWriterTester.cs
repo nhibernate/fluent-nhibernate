@@ -9,20 +9,20 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class XmlMapWriterTester
     {
-        private IXmlWriter<MapMapping> writer;
+        private IXmlWriter<CollectionMapping> writer;
 
         [SetUp]
         public void GetWriterFromContainer()
         {
             var container = new XmlWriterContainer();
-            writer = container.Resolve<IXmlWriter<MapMapping>>();
+            writer = container.Resolve<IXmlWriter<CollectionMapping>>();
         }
 
         [Test]
         public void ShouldWriteAccessAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.Access, "acc").MapsToAttribute("access");
 
             testHelper.VerifyAll(writer);
@@ -32,7 +32,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteBatchSizeAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.BatchSize, 10).MapsToAttribute("batch-size");
 
             testHelper.VerifyAll(writer);
@@ -42,7 +42,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteCascadeAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.Cascade, "all").MapsToAttribute("cascade");
 
             testHelper.VerifyAll(writer);
@@ -52,7 +52,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteCheckAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.Check, "ck").MapsToAttribute("check");
 
             testHelper.VerifyAll(writer);
@@ -62,7 +62,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteCollectionTypeAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.CollectionType, new TypeReference("type")).MapsToAttribute("collection-type");
 
             testHelper.VerifyAll(writer);
@@ -71,8 +71,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldNotWriteCollectionTypeWhenEmpty()
         {
-            var bagMapping = new MapMapping { CollectionType = TypeReference.Empty };
-            writer.VerifyXml(bagMapping)
+            var mapping = CollectionMapping.Map();
+            mapping.CollectionType = TypeReference.Empty;
+            writer.VerifyXml(mapping)
                 .DoesntHaveAttribute("collection-type");
         }
 
@@ -80,7 +81,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteFetchAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.Fetch, "fetch").MapsToAttribute("fetch");
 
             testHelper.VerifyAll(writer);
@@ -90,7 +91,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteGenericAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.Generic, true).MapsToAttribute("generic");
 
             testHelper.VerifyAll(writer);
@@ -100,7 +101,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteInverseAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.Inverse, true).MapsToAttribute("inverse");
 
             testHelper.VerifyAll(writer);
@@ -110,7 +111,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteLazyAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.Lazy, Lazy.True).MapsToAttribute("lazy");
 
             testHelper.VerifyAll(writer);
@@ -120,7 +121,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteNameAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
 
             testHelper.VerifyAll(writer);
@@ -130,7 +131,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteOptimisticLockAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.OptimisticLock, "lock").MapsToAttribute("optimistic-lock");
 
             testHelper.VerifyAll(writer);
@@ -140,7 +141,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteOrderByAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.OrderBy, "ord").MapsToAttribute("order-by");
 
             testHelper.VerifyAll(writer);
@@ -150,7 +151,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWritePersisterAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.Persister, new TypeReference(typeof(string))).MapsToAttribute("persister");
 
             testHelper.VerifyAll(writer);
@@ -160,7 +161,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteSchemaAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.Schema, "dbo").MapsToAttribute("schema");
 
             testHelper.VerifyAll(writer);
@@ -170,7 +171,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteTableAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.TableName, "table").MapsToAttribute("table");
 
             testHelper.VerifyAll(writer);
@@ -180,7 +181,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteWhereAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.Where, "x = 1").MapsToAttribute("where");
 
             testHelper.VerifyAll(writer);
@@ -190,7 +191,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteSortAttribute()
         {
 
-            var testHelper = new XmlWriterTestHelper<MapMapping>();
+            var testHelper = Helper();
             testHelper.Check(x => x.Sort, "asc").MapsToAttribute("sort");
 
             testHelper.VerifyAll(writer);
@@ -199,10 +200,8 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteKey()
         {
-            var mapping = new MapMapping
-            {
-                Key = new KeyMapping()
-            };
+            var mapping = CollectionMapping.Map();
+            mapping.Key = new KeyMapping();
 
             writer.VerifyXml(mapping)
                 .Element("key").Exists();
@@ -211,7 +210,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteRelationshipElement()
         {
-            var mapping = new MapMapping();
+            var mapping = CollectionMapping.Map();
 
             mapping.Relationship = new OneToManyMapping();
 
@@ -222,7 +221,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteIndexElement()
         {
-            var mapping = new MapMapping();
+            var mapping = CollectionMapping.Map();
 
             mapping.Index = new IndexMapping();
 
@@ -233,7 +232,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteCacheElement()
         {
-            var mapping = new MapMapping();
+            var mapping = CollectionMapping.Map();
 
             mapping.Cache = new CacheMapping();
 
@@ -244,12 +243,21 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteElement()
         {
-            var mapping = new MapMapping();
+            var mapping = CollectionMapping.Map();
 
             mapping.Element = new ElementMapping();
 
             writer.VerifyXml(mapping)
                 .Element("element").Exists();
+        }
+
+        static XmlWriterTestHelper<CollectionMapping> Helper()
+        {
+            var helper = new XmlWriterTestHelper<CollectionMapping>();
+
+            helper.CreateInstance(CollectionMapping.Map);
+
+            return helper;
         }
     }
 }

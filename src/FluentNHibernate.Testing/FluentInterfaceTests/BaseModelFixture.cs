@@ -95,24 +95,24 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             return new ModelTester<PropertyPart, PropertyMapping>(() => new PropertyPart(ReflectionHelper.GetMember(property), typeof(T)), x => ((IPropertyMappingProvider)x).GetPropertyMapping());
         }
 
-        protected ModelTester<OneToManyPart<T>, ICollectionMapping> OneToMany<T>(Expression<Func<OneToManyTarget, IEnumerable<T>>> property)
+        protected ModelTester<OneToManyPart<T>, CollectionMapping> OneToMany<T>(Expression<Func<OneToManyTarget, IEnumerable<T>>> property)
         {
-            return new ModelTester<OneToManyPart<T>, ICollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetMember(property)), x => ((ICollectionMappingProvider)x).GetCollectionMapping());
+            return new ModelTester<OneToManyPart<T>, CollectionMapping>(() => new OneToManyPart<T>(typeof(OneToManyTarget), ReflectionHelper.GetMember(property)), x => ((ICollectionMappingProvider)x).GetCollectionMapping());
         }
 
-        protected ModelTester<ManyToManyPart<T>, ICollectionMapping> ManyToMany<T>(Expression<Func<ManyToManyTarget, IList<T>>> property)
+        protected ModelTester<ManyToManyPart<T>, CollectionMapping> ManyToMany<T>(Expression<Func<ManyToManyTarget, IList<T>>> property)
         {
-            return new ModelTester<ManyToManyPart<T>, ICollectionMapping>(() => new ManyToManyPart<T>(typeof(ManyToManyTarget), ReflectionHelper.GetMember(property)), x => ((ICollectionMappingProvider)x).GetCollectionMapping());
+            return new ModelTester<ManyToManyPart<T>, CollectionMapping>(() => new ManyToManyPart<T>(typeof(ManyToManyTarget), ReflectionHelper.GetMember(property)), x => ((ICollectionMappingProvider)x).GetCollectionMapping());
         }
 
-        protected ModelTester<ManyToManyPart<IDictionary>, ICollectionMapping> ManyToMany(Expression<Func<ManyToManyTarget, IDictionary>> property)
+        protected ModelTester<ManyToManyPart<IDictionary>, CollectionMapping> ManyToMany(Expression<Func<ManyToManyTarget, IDictionary>> property)
         {
-            return new ModelTester<ManyToManyPart<IDictionary>, ICollectionMapping>(() => new ManyToManyPart<IDictionary>(typeof(ManyToManyTarget), ReflectionHelper.GetMember(property)), x => ((ICollectionMappingProvider)x).GetCollectionMapping());
+            return new ModelTester<ManyToManyPart<IDictionary>, CollectionMapping>(() => new ManyToManyPart<IDictionary>(typeof(ManyToManyTarget), ReflectionHelper.GetMember(property)), x => ((ICollectionMappingProvider)x).GetCollectionMapping());
         }
 
-        protected ModelTester<ManyToManyPart<IDictionary<TIndex, TValue>>, ICollectionMapping> ManyToMany<TIndex, TValue>(Expression<Func<ManyToManyTarget, IDictionary<TIndex, TValue>>> property)
+        protected ModelTester<ManyToManyPart<IDictionary<TIndex, TValue>>, CollectionMapping> ManyToMany<TIndex, TValue>(Expression<Func<ManyToManyTarget, IDictionary<TIndex, TValue>>> property)
         {
-            return new ModelTester<ManyToManyPart<IDictionary<TIndex, TValue>>, ICollectionMapping>(() => new ManyToManyPart<IDictionary<TIndex, TValue>>(typeof(ManyToManyTarget), ReflectionHelper.GetMember(property)), x => ((ICollectionMappingProvider)x).GetCollectionMapping());
+            return new ModelTester<ManyToManyPart<IDictionary<TIndex, TValue>>, CollectionMapping>(() => new ManyToManyPart<IDictionary<TIndex, TValue>>(typeof(ManyToManyTarget), ReflectionHelper.GetMember(property)), x => ((ICollectionMappingProvider)x).GetCollectionMapping());
         }
 
         protected ModelTester<ManyToOnePart<PropertyReferenceTarget>, ManyToOneMapping> ManyToOne()

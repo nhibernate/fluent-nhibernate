@@ -32,5 +32,6 @@ namespace FluentNHibernate.Conventions.Inspections
         string Schema { get; }
         string Where { get; }
         string OrderBy { get; }
+        Collection Collection { get; }
     }
 }

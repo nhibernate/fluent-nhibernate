@@ -22,11 +22,11 @@ namespace FluentNHibernate.Mapping
         protected ICompositeElementMappingProvider componentMapping;
         protected bool nextBool = true;
 
-        protected readonly AttributeStore<ICollectionMapping> collectionAttributes = new AttributeStore<ICollectionMapping>();
+        protected readonly AttributeStore<CollectionMapping> collectionAttributes = new AttributeStore<CollectionMapping>();
         protected readonly KeyMapping keyMapping = new KeyMapping();
         protected readonly AttributeStore<TRelationshipAttributes> relationshipAttributes = new AttributeStore<TRelationshipAttributes>();
         private readonly IList<FilterPart> filters = new List<FilterPart>();
-        private Func<AttributeStore, ICollectionMapping> collectionBuilder;
+        private Func<AttributeStore, CollectionMapping> collectionBuilder;
         private IndexMapping indexMapping;
         protected Member member;
         private Type entity;
@@ -110,7 +110,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public T AsSet()
         {
-            collectionBuilder = attrs => new SetMapping(attrs);
+            collectionBuilder = attrs => CollectionMapping.Set(attrs);
             return (T)this;
         }
 
@@ -120,7 +120,12 @@ namespace FluentNHibernate.Mapping
         /// <param name="sort">Sorting</param>
         public T AsSet(SortType sort)
         {
-            collectionBuilder = attrs => new SetMapping(attrs) { Sort = sort.ToString().ToLowerInvariant() };
+            collectionBuilder = attrs =>
+            {
+                var collection = CollectionMapping.Set(attrs);
+                collection.Sort = sort.ToLowerInvariantString();
+                return collection;
+            };
             return (T)this;
         }
 
@@ -130,7 +135,12 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="TComparer">Item comparer</typeparam>
         public T AsSet<TComparer>() where TComparer : IComparer<TChild>
         {
-            collectionBuilder = attrs => new SetMapping(attrs) { Sort = typeof(TComparer).AssemblyQualifiedName };
+            collectionBuilder = attrs =>
+            {
+                var collection = CollectionMapping.Set(attrs);
+                collection.Sort = typeof(TComparer).AssemblyQualifiedName;
+                return collection;
+            };
             return (T)this;
         }
 
@@ -139,7 +149,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public T AsBag()
         {
-            collectionBuilder = attrs => new BagMapping(attrs);
+            collectionBuilder = attrs => CollectionMapping.Bag(attrs);
             return (T)this;
         }
 
@@ -148,7 +158,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public T AsList()
         {
-            collectionBuilder = attrs => new ListMapping(attrs);
+            collectionBuilder = attrs => CollectionMapping.List(attrs);
             CreateIndexMapping(null);
 
             if (indexMapping.Columns.IsEmpty())
@@ -163,7 +173,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="customIndexMapping">Index mapping</param>
         public T AsList(Action<IndexPart> customIndexMapping)
         {
-            collectionBuilder = attrs => new ListMapping(attrs);
+            collectionBuilder = attrs => CollectionMapping.List(attrs);
             CreateIndexMapping(customIndexMapping);
 
             if (indexMapping.Columns.IsEmpty())
@@ -199,7 +209,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="indexColumnName">Index column name</param>
         public T AsMap(string indexColumnName)
         {
-            collectionBuilder = attrs => new MapMapping(attrs);
+            collectionBuilder = attrs => CollectionMapping.Map(attrs);
             AsIndexedCollection<Int32>(indexColumnName, null);
             return (T)this;
         }
@@ -211,7 +221,12 @@ namespace FluentNHibernate.Mapping
         /// <param name="sort">Sorting</param>
         public T AsMap(string indexColumnName, SortType sort)
         {
-            collectionBuilder = attrs => new MapMapping(attrs) { Sort = sort.ToString().ToLowerInvariant() };
+            collectionBuilder = attrs =>
+            {
+                var collection = CollectionMapping.Map(attrs);
+                collection.Sort = sort.ToString().ToLowerInvariant();
+                return collection;
+            };
             AsIndexedCollection<Int32>(indexColumnName, null);
             return (T)this;
         }
@@ -223,7 +238,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="indexColumnName">Index column name</param>
         public T AsMap<TIndex>(string indexColumnName)
         {
-            collectionBuilder = attrs => new MapMapping(attrs);
+            collectionBuilder = attrs => CollectionMapping.Map(attrs);
             AsIndexedCollection<TIndex>(indexColumnName, null);
             return (T)this;
         }
@@ -236,7 +251,12 @@ namespace FluentNHibernate.Mapping
         /// <param name="sort">Sorting</param>
         public T AsMap<TIndex>(string indexColumnName, SortType sort)
         {
-            collectionBuilder = attrs => new MapMapping(attrs) { Sort = sort.ToString().ToLowerInvariant() };
+            collectionBuilder = attrs =>
+            {
+                var collection = CollectionMapping.Map(attrs);
+                collection.Sort = sort.ToString().ToLowerInvariant();
+                return collection;
+            };
             AsIndexedCollection<TIndex>(indexColumnName, null);
             return (T)this;
         }
@@ -249,7 +269,12 @@ namespace FluentNHibernate.Mapping
         /// <param name="indexColumnName">Index column name</param>
         public T AsMap<TIndex, TComparer>(string indexColumnName) where TComparer : IComparer<TChild>
         {
-            collectionBuilder = attrs => new MapMapping(attrs) { Sort = typeof(TComparer).AssemblyQualifiedName };
+            collectionBuilder = attrs =>
+            {
+                var collection = CollectionMapping.Map(attrs);
+                collection.Sort = typeof(TComparer).AssemblyQualifiedName;
+                return collection;
+            };
             AsIndexedCollection<TIndex>(indexColumnName, null);
             return (T)this;
         }
@@ -262,7 +287,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="customIndexMapping">Index mapping</param>
         public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
         {
-            collectionBuilder = attrs => new MapMapping(attrs);
+            collectionBuilder = attrs => CollectionMapping.Map(attrs);
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 
@@ -275,7 +300,12 @@ namespace FluentNHibernate.Mapping
         /// <param name="sort">Sorting</param>
         public T AsMap<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping, SortType sort)
         {
-            collectionBuilder = attrs => new MapMapping(attrs) { Sort = sort.ToString().ToLowerInvariant() };
+            collectionBuilder = attrs =>
+            {
+                var collection = CollectionMapping.Map(attrs);
+                collection.Sort = sort.ToString().ToLowerInvariant();
+                return collection;
+            };
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 
@@ -289,7 +319,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="customElementMapping">Element mapping</param>
         public T AsMap<TIndex>(Action<IndexPart> customIndexMapping, Action<ElementPart> customElementMapping)
         {
-            collectionBuilder = attrs => new MapMapping(attrs);
+            collectionBuilder = attrs => CollectionMapping.Map(attrs);
             AsIndexedCollection<TIndex>(string.Empty, customIndexMapping);
             Element(string.Empty);
             customElementMapping(elementPart);
@@ -314,7 +344,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="customIndexMapping">Index mapping</param>
         public T AsArray<TIndex>(Expression<Func<TChild, TIndex>> indexSelector, Action<IndexPart> customIndexMapping)
         {
-            collectionBuilder = attrs => new ArrayMapping(attrs);
+            collectionBuilder = attrs => CollectionMapping.Array(attrs);
             return AsIndexedCollection(indexSelector, customIndexMapping);
         }
 
@@ -646,12 +676,12 @@ namespace FluentNHibernate.Mapping
             collectionAttributes.Set(x => x.CollectionType, new TypeReference(type));
         }
 
-        ICollectionMapping ICollectionMappingProvider.GetCollectionMapping()
+        CollectionMapping ICollectionMappingProvider.GetCollectionMapping()
         {
             return GetCollectionMapping();
         }
 
-        protected virtual ICollectionMapping GetCollectionMapping()
+        protected virtual CollectionMapping GetCollectionMapping()
         {
             var mapping = collectionBuilder(collectionAttributes.CloneInner());
 
@@ -675,8 +705,8 @@ namespace FluentNHibernate.Mapping
             }
 
             // HACK: Index only on list and map - shouldn't have to do this!
-            if (indexMapping != null && mapping is IIndexedCollectionMapping)
-                ((IIndexedCollectionMapping)mapping).Index = indexMapping;
+            if (mapping.Collection == Collection.Array || mapping.Collection == Collection.List || mapping.Collection == Collection.Map)
+                mapping.Index = indexMapping;
 
             if (elementPart != null)
             {

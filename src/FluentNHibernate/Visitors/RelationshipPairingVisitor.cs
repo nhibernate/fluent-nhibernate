@@ -6,13 +6,13 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Visitors
 {
-    public delegate void PairBiDirectionalManyToManySidesDelegate(ICollectionMapping current, IEnumerable<ICollectionMapping> possibles, bool wasResolved);
+    public delegate void PairBiDirectionalManyToManySidesDelegate(MappingModel.Collections.CollectionMapping current, IEnumerable<MappingModel.Collections.CollectionMapping> possibles, bool wasResolved);
 
     public class RelationshipPairingVisitor : DefaultMappingModelVisitor
     {
         readonly PairBiDirectionalManyToManySidesDelegate userControlledPair;
-        readonly List<ICollectionMapping> manyToManys = new List<ICollectionMapping>();
-        readonly List<ICollectionMapping> oneToManys = new List<ICollectionMapping>();
+        readonly List<MappingModel.Collections.CollectionMapping> manyToManys = new List<MappingModel.Collections.CollectionMapping>();
+        readonly List<MappingModel.Collections.CollectionMapping> oneToManys = new List<MappingModel.Collections.CollectionMapping>();
         readonly List<ManyToOneMapping> references = new List<ManyToOneMapping>();
 
         public RelationshipPairingVisitor(PairBiDirectionalManyToManySidesDelegate userControlledPair)
@@ -28,7 +28,7 @@ namespace FluentNHibernate.Visitors
             PairOneToManys(oneToManys, references);
         }
 
-        protected override void ProcessCollection(ICollectionMapping mapping)
+        public override void ProcessCollection(CollectionMapping mapping)
         {
             if (mapping.Relationship is ManyToManyMapping)
                 manyToManys.Add(mapping);
@@ -41,7 +41,7 @@ namespace FluentNHibernate.Visitors
             references.Add(manyToOneMapping);
         }
 
-        void PairOneToManys(IEnumerable<ICollectionMapping> collections, IEnumerable<ManyToOneMapping> refs)
+        static void PairOneToManys(IEnumerable<MappingModel.Collections.CollectionMapping> collections, IEnumerable<ManyToOneMapping> refs)
         {
             var orderedCollections = collections.OrderBy(x => x.Name).ToArray();
             var orderedRefs = refs.OrderBy(x => x.Name).ToArray();
@@ -58,7 +58,7 @@ namespace FluentNHibernate.Visitors
             }
         }
 
-        void PairManyToManys(IEnumerable<ICollectionMapping> rs)
+        void PairManyToManys(IEnumerable<MappingModel.Collections.CollectionMapping> rs)
         {
             if (!rs.Any()) return;
 
@@ -89,7 +89,7 @@ namespace FluentNHibernate.Visitors
 
             // both collections have been paired, so remove them
             // from the available collections
-            PairManyToManys(rs.Except(mapping, (ICollectionMapping)mapping.OtherSide));
+            PairManyToManys(rs.Except(mapping, (MappingModel.Collections.CollectionMapping)mapping.OtherSide));
         }
 
         static string GetMemberName(Member member)
@@ -100,7 +100,7 @@ namespace FluentNHibernate.Visitors
             return member.Name;
         }
 
-        static LikenessContainer GetLikeness(ICollectionMapping currentMapping, ICollectionMapping mapping)
+        static LikenessContainer GetLikeness(MappingModel.Collections.CollectionMapping currentMapping, MappingModel.Collections.CollectionMapping mapping)
         {
             var currentMemberName = GetMemberName(currentMapping.Member);
             var mappingMemberName = GetMemberName(mapping.Member);
@@ -114,7 +114,7 @@ namespace FluentNHibernate.Visitors
             };
         }
 
-        static bool both_collections_point_to_each_others_types(ICollectionMapping left, ICollectionMapping right)
+        static bool both_collections_point_to_each_others_types(MappingModel.Collections.CollectionMapping left, MappingModel.Collections.CollectionMapping right)
         {
             return left.ContainingEntityType == right.ChildType &&
                 left.ChildType == right.ContainingEntityType;
@@ -125,7 +125,7 @@ namespace FluentNHibernate.Visitors
             return current.Differences != current.CurrentMemberName.Length;
         }
 
-        static ICollectionMapping PairFuzzyMatches(IEnumerable<ICollectionMapping> rs, ICollectionMapping current, IEnumerable<ICollectionMapping> potentialOtherSides)
+        static MappingModel.Collections.CollectionMapping PairFuzzyMatches(IEnumerable<MappingModel.Collections.CollectionMapping> rs, MappingModel.Collections.CollectionMapping current, IEnumerable<MappingModel.Collections.CollectionMapping> potentialOtherSides)
         {
             // no exact matches found, drop down to a levenshtein distance
             var mapping = current;
@@ -157,7 +157,7 @@ namespace FluentNHibernate.Visitors
             return mapping;
         }
 
-        static ICollectionMapping PairExactMatches(IEnumerable<ICollectionMapping> rs, ICollectionMapping current, IEnumerable<ICollectionMapping> potentialOtherSides)
+        static MappingModel.Collections.CollectionMapping PairExactMatches(IEnumerable<MappingModel.Collections.CollectionMapping> rs, MappingModel.Collections.CollectionMapping current, IEnumerable<MappingModel.Collections.CollectionMapping> potentialOtherSides)
         {
             var otherSide = potentialOtherSides.Single();
                 
@@ -172,7 +172,7 @@ namespace FluentNHibernate.Visitors
             return mapping;
         }
 
-        static ICollectionMapping FindAlternative(IEnumerable<ICollectionMapping> rs, ICollectionMapping current, ICollectionMapping otherSide)
+        static MappingModel.Collections.CollectionMapping FindAlternative(IEnumerable<MappingModel.Collections.CollectionMapping> rs, MappingModel.Collections.CollectionMapping current, MappingModel.Collections.CollectionMapping otherSide)
         {
             var alternative = rs
                 .Where(x => x.ContainingEntityType == current.ContainingEntityType)
@@ -195,7 +195,7 @@ namespace FluentNHibernate.Visitors
 
         class LikenessContainer
         {
-            public ICollectionMapping Collection { get; set; }
+            public MappingModel.Collections.CollectionMapping Collection { get; set; }
             public string CurrentMemberName { get; set; }
             public string MappingMemberName { get; set; }
             public int Differences { get; set; }
