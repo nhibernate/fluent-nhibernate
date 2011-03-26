@@ -160,5 +160,12 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.CustomType<int>())
                 .ModelShouldMatch(x => x.Type.ShouldEqual(new TypeReference(typeof(int))));
         }
+
+        [Test]
+        public void ShouldSetSqlTypePropertyToSpecifiedType() {
+            DiscriminatorMap<SuperRecord>()
+                .Mapping(m => m.SqlType("nchar(2)"))
+                .ModelShouldMatch(x => x.Columns.First().SqlType.ShouldEqual("nchar(2)"));
+        }
     }
 }
