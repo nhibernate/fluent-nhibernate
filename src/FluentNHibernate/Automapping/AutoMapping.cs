@@ -67,6 +67,9 @@ namespace FluentNHibernate.Automapping
                 classMapping.Tuplizer = providers.TuplizerMapping;
             }
 
+            foreach (var subclassEntry in providers.Subclasses)
+                MergeSubclass(mapping, subclassEntry.Key, subclassEntry.Value);
+
             foreach (var property in providers.Properties)
                 mapping.AddOrReplaceProperty(property.GetPropertyMapping());
 
@@ -90,6 +93,19 @@ namespace FluentNHibernate.Automapping
 
             foreach (var filter in providers.Filters)
                 mapping.AddOrReplaceFilter(filter.GetFilterMapping());
+        }
+
+        private void MergeSubclass(ClassMappingBase mapping, Type subclassType, ISubclassMappingProvider subclass)
+        {
+            var subclassMapping = mapping.Subclasses.SingleOrDefault(s => s.Type == subclassType);
+            if (subclassMapping != null)
+            {
+                ((IAutoClasslike)subclass).AlterModel(subclassMapping);
+            }
+            else
+            {
+                mapping.AddSubclass(subclass.GetSubclassMapping());
+            }
         }
 
         [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
