@@ -588,12 +588,10 @@
     <Compile Include="MappingModel\ClassBased\ComponentMappingBase.cs" />
     <Compile Include="MappingModel\ClassBased\IComponentMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassMapping.cs" />
-    <Compile Include="MappingModel\Collections\ArrayMapping.cs" />
     <Compile Include="MappingModel\Collections\CompositeElementMapping.cs" />
     <Compile Include="MappingModel\Collections\ElementMapping.cs" />
     <Compile Include="MappingModel\Collections\IIndexMapping.cs" />
     <Compile Include="MappingModel\Collections\IndexManyToManyMapping.cs" />
-    <Compile Include="MappingModel\Collections\MapMapping.cs" />
     <Compile Include="MappingModel\Identity\KeyManyToOneMapping.cs" />
     <Compile Include="MappingModel\Identity\KeyPropertyMapping.cs" />
     <Compile Include="MappingModel\MetaValueMapping.cs" />
@@ -727,10 +725,7 @@
     <Compile Include="MappingModel\AttributeStore.cs" />
     <Compile Include="MappingModel\Collections\CollectionMapping.cs" />
     <Compile Include="MappingModel\Collections\IndexMapping.cs" />
-    <Compile Include="MappingModel\Collections\ListMapping.cs" />
     <Compile Include="MappingModel\Collections\ManyToManyMapping.cs" />
-    <Compile Include="MappingModel\Collections\SetMapping.cs" />
-    <Compile Include="MappingModel\Collections\BagMapping.cs" />
     <Compile Include="MappingModel\Collections\ICollectionRelationshipMapping.cs" />
     <Compile Include="MappingModel\ColumnMapping.cs" />
     <Compile Include="MappingModel\Conventions\ConventionException.cs" />

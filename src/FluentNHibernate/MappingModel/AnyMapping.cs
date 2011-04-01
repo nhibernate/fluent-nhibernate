@@ -20,11 +20,6 @@ namespace FluentNHibernate.MappingModel
         public AnyMapping(AttributeStore underlyingStore)
         {
             attributes = new AttributeStore<AnyMapping>(underlyingStore);
-
-            attributes.SetDefault(x => x.Insert, true);
-            attributes.SetDefault(x => x.Update, true);
-            attributes.SetDefault(x => x.OptimisticLock, true);
-            attributes.SetDefault(x => x.Lazy, false);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)

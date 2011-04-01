@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Visitors;
-using CollectionMapping = FluentNHibernate.MappingModel.Collections.CollectionMapping;
 
 namespace FluentNHibernate.MappingModel
 {

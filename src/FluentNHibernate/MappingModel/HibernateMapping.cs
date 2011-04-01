@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Visitors;
 
@@ -25,11 +24,6 @@ namespace FluentNHibernate.MappingModel
             classes = new List<ClassMapping>();
             filters = new List<FilterDefinitionMapping>();
             imports = new List<ImportMapping>();
-
-            attributes.SetDefault(x => x.DefaultCascade, "none");
-            attributes.SetDefault(x => x.DefaultAccess, "property");
-            attributes.SetDefault(x => x.DefaultLazy, true);
-            attributes.SetDefault(x => x.AutoImport, true);
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)

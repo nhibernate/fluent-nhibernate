@@ -19,7 +19,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         bool OptimisticLock { get; set; }
         bool Unique { get; }
         IEnumerable<ManyToOneMapping> References { get; }
-        IEnumerable<Collections.CollectionMapping> Collections { get; }
+        IEnumerable<CollectionMapping> Collections { get; }
         IEnumerable<PropertyMapping> Properties { get; }
         IEnumerable<IComponentMapping> Components { get; }
         IEnumerable<OneToOneMapping> OneToOnes { get; }
@@ -30,7 +30,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
         void AddProperty(PropertyMapping mapping);
         void AddComponent(IComponentMapping mapping);
         void AddOneToOne(OneToOneMapping mapping);
-        void AddCollection(Collections.CollectionMapping mapping);
+        void AddCollection(CollectionMapping mapping);
         void AddReference(ManyToOneMapping mapping);
         void AddAny(AnyMapping mapping);
         bool HasValue(string property);

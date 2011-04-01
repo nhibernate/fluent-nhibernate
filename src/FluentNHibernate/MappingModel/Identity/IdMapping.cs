@@ -1,6 +1,4 @@
 using System;
-using System.Reflection;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Identity

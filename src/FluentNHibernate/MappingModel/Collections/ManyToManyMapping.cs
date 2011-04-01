@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -15,10 +14,7 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public IList<FilterMapping> ChildFilters
         {
-            get
-            {
-                return childFilters;
-            }
+            get { return childFilters; }
         }
 
         public ManyToManyMapping()
