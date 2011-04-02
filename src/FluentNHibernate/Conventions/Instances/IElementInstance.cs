@@ -9,5 +9,6 @@ namespace FluentNHibernate.Conventions.Instances
         new void Type<T>();
         new void Type(string type);
         new void Type(Type type);
+        void Column(string name);
     }
 }

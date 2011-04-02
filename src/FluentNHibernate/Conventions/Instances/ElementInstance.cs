@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
@@ -13,6 +15,20 @@ namespace FluentNHibernate.Conventions.Instances
             : base(mapping)
         {
             this.mapping = mapping;
+        }
+
+        public void Column(string columnName)
+        {
+            if (mapping.Columns.UserDefined.Count() > 0)
+                return;
+
+            var originalColumn = mapping.Columns.FirstOrDefault();
+            var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
+
+            column.Name = columnName;
+
+            mapping.ClearColumns();
+            mapping.AddColumn(column);
         }
 
         public new void Type<T>()

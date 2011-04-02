@@ -105,6 +105,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         }
 
         [Test]
+        public void ShouldSetElementColumnNameProperty()
+        {
+            Convention(x => x.Element.Column("xxx"));
+
+            VerifyModel(x => x.Element.Columns.First().Name.ShouldEqual("xxx"));
+        }
+
+        [Test]
         public void ShouldSetElementTypePropertyUsingGeneric()
         {
             Convention(x => x.Element.Type<string>());

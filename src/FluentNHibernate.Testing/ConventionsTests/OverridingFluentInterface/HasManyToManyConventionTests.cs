@@ -127,6 +127,16 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         }
 
         [Test]
+        public void ElementColumnNameShouldntBeOverwritten()
+        {
+            Mapping(x => x.Children, x => x.Element("name"));
+
+            Convention(x => x.Element.Column("xxx"));
+
+            VerifyModel(x => x.Element.Columns.First().Name.ShouldEqual("name"));
+        }
+
+        [Test]
         public void ElementTypeShouldntBeOverwrittenUsingGeneric()
         {
             Mapping(x => x.Children, x => x.Element("xxx", e => e.Type<string>()));
