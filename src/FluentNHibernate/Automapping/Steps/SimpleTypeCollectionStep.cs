@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
@@ -11,13 +12,11 @@ namespace FluentNHibernate.Automapping.Steps
     {
         readonly IAutomappingConfiguration cfg;
         readonly AutoKeyMapper keys;
-        readonly AutoCollectionCreator collections;
 
         public SimpleTypeCollectionStep(IAutomappingConfiguration cfg)
         {
             this.cfg = cfg;
             keys = new AutoKeyMapper(cfg);
-            collections = new AutoCollectionCreator();
         }
 
         public bool ShouldMap(Member member)
@@ -38,20 +37,33 @@ namespace FluentNHibernate.Automapping.Steps
             if (member.DeclaringType != classMap.Type)
                 return;
 
-            var collectionType = collections.DetermineCollectionType(member.PropertyType);
+            var collectionType = CollectionTypeResolver.Resolve(member);
             var mapping = CollectionMapping.For(collectionType);
 
             mapping.ContainingEntityType = classMap.Type;
             mapping.Member = member;
             mapping.SetDefaultValue(x => x.Name, member.Name);
-
-            if (member.IsProperty && !member.CanWrite)
-                mapping.Access = cfg.GetAccessStrategyForReadOnlyProperty(member).ToString();
+            SetDefaultAccess(member, mapping);
 
             keys.SetKey(member, classMap, mapping);
             SetElement(member, classMap, mapping);
         
             classMap.AddCollection(mapping);
+        }
+
+        void SetDefaultAccess(Member member, CollectionMapping mapping)
+        {
+            var resolvedAccess = MemberAccessResolver.Resolve(member);
+
+            if (resolvedAccess != Access.Property && resolvedAccess != Access.Unset)
+            {
+                // if it's a property or unset then we'll just let NH deal with it, otherwise
+                // set the access to be whatever we determined it might be
+                mapping.SetDefaultValue(x => x.Access, resolvedAccess.ToString());
+            }
+
+            if (member.IsProperty && !member.CanWrite)
+                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
         }
 
         private void SetElement(Member property, ClassMappingBase classMap, CollectionMapping mapping)

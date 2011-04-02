@@ -31,7 +31,7 @@ namespace FluentNHibernate.Mapping
         {}
 
         internal ComponentMap(AttributeStore underlyingStore)
-            : base(underlyingStore, "")
+            : base(underlyingStore, null)
         {
             attributes = new AttributeStore<ComponentMapping>(underlyingStore);
         }

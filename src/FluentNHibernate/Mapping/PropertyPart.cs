@@ -10,7 +10,7 @@ namespace FluentNHibernate.Mapping
 {
     public class PropertyPart : IPropertyMappingProvider
     {
-        private readonly Member property;
+        private readonly Member member;
         private readonly Type parentType;
         private readonly AccessStrategyBuilder<PropertyPart> access;
         private readonly PropertyGeneratedBuilder generated;
@@ -20,14 +20,26 @@ namespace FluentNHibernate.Mapping
 
         private bool nextBool = true;
 
-        public PropertyPart(Member property, Type parentType)
+        public PropertyPart(Member member, Type parentType)
         {
             columns = new ColumnMappingCollection<PropertyPart>(this);
             access = new AccessStrategyBuilder<PropertyPart>(this, value => attributes.Set(x => x.Access, value));
             generated = new PropertyGeneratedBuilder(this, value => attributes.Set(x => x.Generated, value));
 
-            this.property = property;
+            this.member = member;
             this.parentType = parentType;
+
+            SetDefaultAccess();
+        }
+
+        void SetDefaultAccess()
+        {
+            var resolvedAccess = MemberAccessResolver.Resolve(member);
+
+            if (resolvedAccess == Mapping.Access.Property || resolvedAccess == Mapping.Access.Unset)
+                return; // property is the default so we don't need to specify it
+
+            attributes.SetDefault(x => x.Access, resolvedAccess.ToString());
         }
 
         /// <summary>
@@ -193,7 +205,7 @@ namespace FluentNHibernate.Mapping
         /// <returns>This property mapping to continue the method chain</returns>
         public PropertyPart CustomType(Func<Type, Type> typeFunc)
         {
-            var type = typeFunc.Invoke(this.property.PropertyType);
+            var type = typeFunc.Invoke(this.member.PropertyType);
 
             if (typeof(ICompositeUserType).IsAssignableFrom(type))
                 AddColumnsFromCompositeUserType(type);
@@ -309,18 +321,18 @@ namespace FluentNHibernate.Mapping
             var mapping = new PropertyMapping(attributes.CloneInner())
             {
                 ContainingEntityType = parentType,
-                Member = property
+                Member = member
             };
 
             if (columns.Count() == 0 && !mapping.IsSpecified("Formula"))
-                mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = property.Name });
+                mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = member.Name });
 
             foreach (var column in columns)
                 mapping.AddColumn(column);
 
             foreach (var column in mapping.Columns)
             {
-                if (!column.IsSpecified("NotNull") && property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
+                if (!column.IsSpecified("NotNull") && member.PropertyType.IsNullable() && member.PropertyType.IsEnum())
                     column.SetDefaultValue(x => x.NotNull, false);
 
                 column.MergeAttributes(columnAttributes);
@@ -337,13 +349,13 @@ namespace FluentNHibernate.Mapping
 
         TypeReference GetDefaultType()
         {
-            var type = new TypeReference(property.PropertyType);
+            var type = new TypeReference(member.PropertyType);
 
-            if (property.PropertyType.IsEnum())
-                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(property.PropertyType));
+            if (member.PropertyType.IsEnum())
+                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(member.PropertyType));
 
-            if (property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
-                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(property.PropertyType.GetGenericArguments()[0]));
+            if (member.PropertyType.IsNullable() && member.PropertyType.IsEnum())
+                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(member.PropertyType.GetGenericArguments()[0]));
 
             return type;
         }

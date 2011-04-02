@@ -10,20 +10,32 @@ namespace FluentNHibernate.Mapping
     public class OneToOnePart<TOther> : IOneToOneMappingProvider
     {
         private readonly Type entity;
-        private readonly Member property;
+        private readonly Member member;
         private readonly AccessStrategyBuilder<OneToOnePart<TOther>> access;
         private readonly FetchTypeExpression<OneToOnePart<TOther>> fetch;
         private readonly CascadeExpression<OneToOnePart<TOther>> cascade;
         private readonly AttributeStore<OneToOneMapping> attributes = new AttributeStore<OneToOneMapping>();
         private bool nextBool = true;
 
-        public OneToOnePart(Type entity, Member property)
+        public OneToOnePart(Type entity, Member member)
         {
             access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this, value => attributes.Set(x => x.Access, value));
             fetch = new FetchTypeExpression<OneToOnePart<TOther>>(this, value => attributes.Set(x => x.Fetch, value));
             cascade = new CascadeExpression<OneToOnePart<TOther>>(this, value => attributes.Set(x => x.Cascade, value));
             this.entity = entity;
-            this.property = property;
+            this.member = member;
+
+            SetDefaultAccess();
+        }
+
+        void SetDefaultAccess()
+        {
+            var resolvedAccess = MemberAccessResolver.Resolve(member);
+
+            if (resolvedAccess == Mapping.Access.Property || resolvedAccess == Mapping.Access.Unset)
+                return; // property is the default so we don't need to specify it
+
+            attributes.SetDefault(x => x.Access, resolvedAccess.ToString());
         }
 
         /// <summary>
@@ -62,7 +74,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public OneToOnePart<TOther> ForeignKey()
         {
-            return ForeignKey(string.Format("FK_{0}To{1}", property.DeclaringType.Name, property.Name));
+            return ForeignKey(string.Format("FK_{0}To{1}", member.DeclaringType.Name, member.Name));
         }
 
         /// <summary>
@@ -201,7 +213,7 @@ namespace FluentNHibernate.Mapping
                 mapping.SetDefaultValue(x => x.Class, new TypeReference(typeof(TOther)));
 
             if (!mapping.IsSpecified("Name"))
-                mapping.SetDefaultValue(x => x.Name, property.Name);
+                mapping.SetDefaultValue(x => x.Name, member.Name);
 
             return mapping;
         }

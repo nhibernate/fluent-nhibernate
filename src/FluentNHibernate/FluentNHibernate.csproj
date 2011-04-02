@@ -93,7 +93,6 @@
     <Compile Include="Automapping\Alterations\IAutoMappingAlteration.cs" />
     <Compile Include="Automapping\Alterations\IAutoMappingOverride.cs" />
     <Compile Include="AssemblyTypeSource.cs" />
-    <Compile Include="Automapping\AutoCollectionCreator.cs" />
     <Compile Include="Automapping\AutoCompositeIdentityPart.cs" />
     <Compile Include="Automapping\AutoJoinedSubClassPart.cs" />
     <Compile Include="Automapping\AutoJoinPart.cs" />
@@ -436,8 +435,12 @@
     <Compile Include="MappingModel\Output\XmlBagWriter.cs" />
     <Compile Include="MappingModel\Output\XmlNaturalIdWriter.cs" />
     <Compile Include="Mapping\Access.cs" />
+    <Compile Include="Mapping\CollectionTypeResolver.cs" />
     <Compile Include="Mapping\Laziness.cs" />
     <Compile Include="Mapping\MappingProviderStore.cs" />
+    <Compile Include="Mapping\MemberAccessResolver.cs" />
+    <Compile Include="Mapping\Naming.cs" />
+    <Compile Include="Mapping\NamingStrategy.cs" />
     <Compile Include="Mapping\NaturalIdPart.cs" />
     <Compile Include="Mapping\Providers\IElementMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />

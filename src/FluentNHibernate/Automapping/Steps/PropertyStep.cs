@@ -6,6 +6,7 @@ using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping.Steps
@@ -88,7 +89,24 @@ namespace FluentNHibernate.Automapping.Steps
             if (!mapping.IsSpecified("Type"))
                 mapping.SetDefaultValue("Type", GetDefaultType(property));
 
+            SetDefaultAccess(property, mapping);
+
             return mapping;
+        }
+
+        void SetDefaultAccess(Member member, PropertyMapping mapping)
+        {
+            var resolvedAccess = MemberAccessResolver.Resolve(member);
+
+            if (resolvedAccess != Access.Property && resolvedAccess != Access.Unset)
+            {
+                // if it's a property or unset then we'll just let NH deal with it, otherwise
+                // set the access to be whatever we determined it might be
+                mapping.SetDefaultValue("Access", resolvedAccess.ToString());
+            }
+
+            if (member.IsProperty && !member.CanWrite)
+                mapping.SetDefaultValue("Access", cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
         }
 
         private TypeReference GetDefaultType(Member property)

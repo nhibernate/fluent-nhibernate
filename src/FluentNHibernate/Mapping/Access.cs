@@ -20,7 +20,7 @@ namespace FluentNHibernate.Mapping
 
         public static Access CamelCaseField(CamelCasePrefix prefix)
         {
-            return new Access("field.camelcase" + prefix);
+            return new Access("field", NamingStrategy.FromString("camelcase" + prefix));
         }
 
         public static Access LowerCaseField()
@@ -30,12 +30,12 @@ namespace FluentNHibernate.Mapping
 
         public static Access LowerCaseField(LowerCasePrefix prefix)
         {
-            return new Access("field.lowercase" + prefix);
+            return new Access("field", NamingStrategy.FromString("lowercase" + prefix));
         }
 
         public static Access PascalCaseField(PascalCasePrefix prefix)
         {
-            return new Access("field.pascalcase" + prefix);
+            return new Access("field", NamingStrategy.FromString("pascalcase" + prefix));
         }
 
         public static Access ReadOnlyPropertyThroughCamelCaseField()
@@ -45,7 +45,7 @@ namespace FluentNHibernate.Mapping
 
         public static Access ReadOnlyPropertyThroughCamelCaseField(CamelCasePrefix prefix)
         {
-            return new Access("nosetter.camelcase" + prefix);
+            return new Access("nosetter", NamingStrategy.FromString("camelcase" + prefix));
         }
 
         public static Access ReadOnlyPropertyThroughLowerCaseField()
@@ -55,12 +55,17 @@ namespace FluentNHibernate.Mapping
 
         public static Access ReadOnlyPropertyThroughLowerCaseField(LowerCasePrefix prefix)
         {
-            return new Access("nosetter.lowercase" + prefix);
+            return new Access("nosetter", NamingStrategy.FromString("lowercase" + prefix));
         }
 
         public static Access ReadOnlyPropertyThroughPascalCaseField(PascalCasePrefix prefix)
         {
-            return new Access("nosetter.pascalcase" + prefix);
+            return new Access("nosetter", NamingStrategy.FromString("pascalcase" + prefix));
+        }
+
+        public static Access ReadOnlyPropertyWithField(NamingStrategy namingStrategy)
+        {
+            return new Access("nosetter." + namingStrategy);
         }
 
         public static Access Using(string value)
@@ -83,6 +88,11 @@ namespace FluentNHibernate.Mapping
         private Access(string value)
         {
             this.value = value;
+        }
+
+        private Access(string value, NamingStrategy strategy)
+        {
+            this.value = value + "." + strategy;
         }
 
         public override bool Equals(object obj)

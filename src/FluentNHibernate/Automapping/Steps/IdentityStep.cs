@@ -2,6 +2,7 @@
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Automapping.Steps
@@ -31,12 +32,26 @@ namespace FluentNHibernate.Automapping.Steps
             idMapping.Member = member;
             idMapping.SetDefaultValue("Generator", GetDefaultGenerator(member));
 
-            if (member.IsProperty && !member.CanWrite)
-                idMapping.SetDefaultValue("Access", cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());                
+            SetDefaultAccess(member, idMapping);
 
             ((ClassMapping)classMap).Id = idMapping;        
         }
 
+        void SetDefaultAccess(Member member, IdMapping mapping)
+        {
+            var resolvedAccess = MemberAccessResolver.Resolve(member);
+
+            if (resolvedAccess != Access.Property && resolvedAccess != Access.Unset)
+            {
+                // if it's a property or unset then we'll just let NH deal with it, otherwise
+                // set the access to be whatever we determined it might be
+                mapping.SetDefaultValue("Access", resolvedAccess.ToString());
+            }
+
+            if (member.IsProperty && !member.CanWrite)
+                mapping.SetDefaultValue("Access", cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
+        }
+        
         private GeneratorMapping GetDefaultGenerator(Member property)
         {
             var generatorMapping = new GeneratorMapping();

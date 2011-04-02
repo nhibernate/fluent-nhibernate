@@ -121,6 +121,9 @@
     <Compile Include="AutoMapping\Overrides\CompositeIdOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\HibernateMappingOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\ParentOverridesWithSubclasses.cs" />
+    <Compile Include="DomainModel\MemberAccessResolverTests.cs" />
+    <Compile Include="DomainModel\MemberBackingFieldTests.cs" />
+    <Compile Include="DomainModel\NamingTests.cs" />
     <Compile Include="StubTypeSource.cs" />
     <Compile Include="AutoMapping\TestFixtures.cs" />
     <Compile Include="Cfg\Db\DB2ConfigurationTester.cs" />

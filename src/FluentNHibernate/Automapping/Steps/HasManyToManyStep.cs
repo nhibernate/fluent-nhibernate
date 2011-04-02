@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
@@ -46,10 +47,9 @@ namespace FluentNHibernate.Automapping.Steps
 
         static CollectionMapping GetCollection(Member property)
         {
-            if (property.PropertyType.FullName.Contains("ISet"))
-                return CollectionMapping.Set();
+            var collectionType = CollectionTypeResolver.Resolve(property);
 
-            return CollectionMapping.Bag();
+            return CollectionMapping.For(collectionType);
         }
 
         private void ConfigureModel(Member member, CollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
@@ -61,13 +61,26 @@ namespace FluentNHibernate.Automapping.Steps
             mapping.ChildType = member.PropertyType.GetGenericArguments()[0];
             mapping.Member = member;
 
-            if (member.IsProperty && !member.CanWrite)
-                mapping.Access = cfg.GetAccessStrategyForReadOnlyProperty(member).ToString();
-
+            SetDefaultAccess(member, mapping);
             SetKey(member, classMap, mapping);
 
             if (parentSide != member.DeclaringType)
                 mapping.Inverse = true;
+        }
+
+        void SetDefaultAccess(Member member, CollectionMapping mapping)
+        {
+            var resolvedAccess = MemberAccessResolver.Resolve(member);
+
+            if (resolvedAccess != Access.Property && resolvedAccess != Access.Unset)
+            {
+                // if it's a property or unset then we'll just let NH deal with it, otherwise
+                // set the access to be whatever we determined it might be
+                mapping.SetDefaultValue(x => x.Access, resolvedAccess.ToString());
+            }
+
+            if (member.IsProperty && !member.CanWrite)
+                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
         }
 
         private ICollectionRelationshipMapping CreateManyToMany(Member property, Type child, Type parent)

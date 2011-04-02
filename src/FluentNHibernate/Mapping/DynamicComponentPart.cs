@@ -13,12 +13,12 @@ namespace FluentNHibernate.Mapping
         private readonly AccessStrategyBuilder<DynamicComponentPart<T>> access;
         private readonly AttributeStore<ComponentMapping> attributes;
 
-        public DynamicComponentPart(Type entity, Member property)
-            : this(entity, property.Name, new AttributeStore(), new MappingProviderStore())
+        public DynamicComponentPart(Type entity, Member member)
+            : this(entity, member, new AttributeStore(), new MappingProviderStore())
         {}
 
-        private DynamicComponentPart(Type entity, string propertyName, AttributeStore underlyingStore, MappingProviderStore providers)
-            : base(underlyingStore, propertyName, providers)
+        private DynamicComponentPart(Type entity, Member member, AttributeStore underlyingStore, MappingProviderStore providers)
+            : base(underlyingStore, member, providers)
         {
             this.entity = entity;
             this.providers = providers;

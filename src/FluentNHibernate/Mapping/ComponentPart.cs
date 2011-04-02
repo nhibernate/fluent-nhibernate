@@ -13,11 +13,11 @@ namespace FluentNHibernate.Mapping
         private readonly AttributeStore<ComponentMapping> attributes;
 
         public ComponentPart(Type entity, Member property)
-            : this(entity, property.Name, new AttributeStore())
+            : this(entity, property, new AttributeStore())
         {}
 
-        private ComponentPart(Type entity, string propertyName, AttributeStore underlyingStore)
-            : base(underlyingStore, propertyName)
+        private ComponentPart(Type entity, Member property, AttributeStore underlyingStore)
+            : base(underlyingStore, property)
         {
             attributes = new AttributeStore<ComponentMapping>(underlyingStore);
             this.entity = entity;

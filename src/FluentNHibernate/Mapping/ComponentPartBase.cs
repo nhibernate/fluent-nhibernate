@@ -10,23 +10,36 @@ namespace FluentNHibernate.Mapping
     public abstract class ComponentPartBase<TEntity, TBuilder> : ClasslikeMapBase<TEntity>
         where TBuilder : ComponentPartBase<TEntity, TBuilder>
     {
-        readonly string propertyName;
+        readonly Member member;
         private readonly MappingProviderStore providers;
         readonly AccessStrategyBuilder<TBuilder> access;
         readonly AttributeStore<ComponentMappingBase> attributes;
         protected bool nextBool = true;
 
-        protected ComponentPartBase(AttributeStore underlyingStore, string propertyName)
-            : this(underlyingStore, propertyName, new MappingProviderStore())
+        protected ComponentPartBase(AttributeStore underlyingStore, Member member)
+            : this(underlyingStore, member, new MappingProviderStore())
         {}
 
-        protected ComponentPartBase(AttributeStore underlyingStore, string propertyName, MappingProviderStore providers)
+        protected ComponentPartBase(AttributeStore underlyingStore, Member member, MappingProviderStore providers)
             : base(providers)
         {
             attributes = new AttributeStore<ComponentMappingBase>(underlyingStore);
             access = new AccessStrategyBuilder<TBuilder>((TBuilder)this, value => attributes.Set(x => x.Access, value));
-            this.propertyName = propertyName;
+            this.member = member;
             this.providers = providers;
+
+            if (member != null)
+                SetDefaultAccess();
+        }
+
+        void SetDefaultAccess()
+        {
+            var resolvedAccess = MemberAccessResolver.Resolve(member);
+
+            if (resolvedAccess == Mapping.Access.Property || resolvedAccess == Mapping.Access.Unset)
+                return; // property is the default so we don't need to specify it
+
+            attributes.SetDefault(x => x.Access, resolvedAccess.ToString());
         }
 
         /// <summary>
@@ -134,7 +147,8 @@ namespace FluentNHibernate.Mapping
         {
             var mapping = CreateComponentMappingRoot(attributes.CloneInner());
 
-            mapping.Name = propertyName;
+            if (member != null)
+                mapping.Name = member.Name;
 
             foreach (var property in providers.Properties)
                 mapping.AddProperty(property.GetPropertyMapping());
