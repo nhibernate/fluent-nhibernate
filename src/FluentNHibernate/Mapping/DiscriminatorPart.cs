@@ -217,6 +217,15 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specifies a custom SQL type for the discriminator.
+        /// </summary>
+        /// <param name="type">Custom SQL type.</param>
+        public DiscriminatorPart SqlType(string type) {
+            columnAttributes.Set(x => x.SqlType, type);
+            return this;
+        }
+
         DiscriminatorMapping IDiscriminatorMappingProvider.GetDiscriminatorMapping()
         {
             var mapping = new DiscriminatorMapping(attributes.CloneInner())
