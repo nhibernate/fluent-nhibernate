@@ -129,6 +129,8 @@
     <Compile Include="Conventions\Inspections\IKeyManyToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\IKeyPropertyInspector.cs" />
     <Compile Include="Conventions\Inspections\KeyPropertyInspector.cs" />
+    <Compile Include="Conventions\Instances\ElementInstance.cs" />
+    <Compile Include="Conventions\Instances\IElementInstance.cs" />
     <Compile Include="Conventions\Instances\IKeyPropertyInstance.cs" />
     <Compile Include="Conventions\Instances\KeyPropertyInstance.cs" />
     <Compile Include="Diagnostics\AutomappingType.cs" />

@@ -7,6 +7,7 @@ namespace FluentNHibernate.Conventions.Instances
     public interface ICollectionInstance : ICollectionInspector
     {
         new IKeyInstance Key { get; }
+        new IElementInstance Element { get; }
         new IRelationshipInstance Relationship { get; }
         void Table(string tableName);
         new void Name(string name);
