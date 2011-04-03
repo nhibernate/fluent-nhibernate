@@ -8,6 +8,7 @@ namespace FluentNHibernate.Conventions.Instances
     {
         new IKeyInstance Key { get; }
         new IIndexInstanceBase Index { get; }
+        new IElementInstance Element { get; }
         new IRelationshipInstance Relationship { get; }
         void Table(string tableName);
         new void Name(string name);

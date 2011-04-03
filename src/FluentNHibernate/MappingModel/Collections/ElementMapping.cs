@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
     [Serializable]
-    public class ElementMapping : MappingBase
+    public class ElementMapping : MappingBase, IHasColumnMappings
     {
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
         private readonly AttributeStore<ElementMapping> attributes;
@@ -56,7 +57,12 @@ namespace FluentNHibernate.MappingModel.Collections
             columns.AddDefault(mapping);
         }
 
-        public IEnumerable<ColumnMapping> Columns
+        public void ClearColumns()
+        {
+            columns.Clear();
+        }
+
+        public IDefaultableEnumerable<ColumnMapping> Columns
         {
             get { return columns; }
         }

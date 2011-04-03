@@ -272,6 +272,17 @@ namespace FluentNHibernate.Conventions.Instances
             get { return new KeyInstance(mapping.Key); }
         }
 
+        public new IElementInstance Element
+        {
+            get
+            {
+                if (!mapping.IsSpecified("Element"))
+                    mapping.Element = new ElementMapping();
+                
+                return new ElementInstance(mapping.Element);
+            }
+        }
+
         public void ApplyFilter(string name, string condition)
         {
             mapping.AddFilter(new FilterMapping

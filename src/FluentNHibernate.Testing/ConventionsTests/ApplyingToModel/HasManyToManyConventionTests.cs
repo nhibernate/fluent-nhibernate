@@ -105,6 +105,37 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         }
 
         [Test]
+        public void ShouldSetElementColumnNameProperty()
+        {
+            Convention(x => x.Element.Column("xxx"));
+
+            VerifyModel(x => x.Element.Columns.First().Name.ShouldEqual("xxx"));
+        }
+
+        [Test]
+        public void ShouldSetElementTypePropertyUsingGeneric()
+        {
+            Convention(x => x.Element.Type<string>());
+
+            VerifyModel(x => x.Element.Type.GetUnderlyingSystemType().ShouldEqual(typeof(string)));
+        }
+
+        [Test]
+        public void ShouldSetElementTypePropertyUsingTypeOf()
+        {
+            Convention(x => x.Element.Type(typeof(string)));
+
+            VerifyModel(x => x.Element.Type.GetUnderlyingSystemType().ShouldEqual(typeof(string)));
+        }
+
+        [Test]
+        public void ShouldSetElementTypePropertyUsingString() {
+            Convention(x => x.Element.Type(typeof(string).AssemblyQualifiedName));
+
+            VerifyModel(x => x.Element.Type.GetUnderlyingSystemType().ShouldEqual(typeof(string)));
+        }
+
+        [Test]
         public void ShouldSetChildKeyColumnNameProperty()
         {
             Convention(x => x.Relationship.Column("xxx"));
