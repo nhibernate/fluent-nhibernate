@@ -35,7 +35,10 @@ namespace FluentNHibernate.Conventions.Instances
         public new void Formula(string formula)
         {
             if (!mapping.IsSpecified("Formula"))
+            {
                 mapping.Formula = formula;
+                mapping.ClearColumns();
+            }
         }
 
         public void CustomClass<T>()

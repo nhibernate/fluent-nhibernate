@@ -50,7 +50,7 @@ namespace FluentNHibernate.MappingModel
 
         public void ClearColumns()
         {
-            columns.Clear();
+            columns.ClearAll();
         }
 
         public bool Equals(ColumnBasedMappingBase other)
