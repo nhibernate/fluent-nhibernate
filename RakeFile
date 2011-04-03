@@ -123,7 +123,8 @@ end
 
 namespace :package do
   task :prepare_dist_directory do
-    Dir.mkdir 'dist' unless File.exists? 'dist'
+    FileUtils.rm_rf 'dist'
+    Dir.mkdir 'dist'
   end
   
   desc 'Create zip of source-tree'
