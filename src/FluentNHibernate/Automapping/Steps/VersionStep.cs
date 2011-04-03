@@ -10,8 +10,6 @@ namespace FluentNHibernate.Automapping.Steps
 {
     public class VersionStep : IAutomappingStep
     {
-        private static readonly IList<string> ValidNames = new List<string> { "version", "timestamp" };
-        private static readonly IList<Type> ValidTypes = new List<Type> { typeof(int), typeof(long), typeof(TimeSpan), typeof(byte[]) };
         readonly IAutomappingConfiguration cfg;
 
         public VersionStep(IAutomappingConfiguration cfg)
@@ -21,7 +19,7 @@ namespace FluentNHibernate.Automapping.Steps
 
         public bool ShouldMap(Member member)
         {
-            return ValidNames.Contains(member.Name.ToLowerInvariant()) && ValidTypes.Contains(member.PropertyType);
+            return cfg.IsVersion(member);
         }
 
         public void Map(ClassMappingBase classMap, Member member)

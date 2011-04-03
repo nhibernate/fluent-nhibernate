@@ -79,6 +79,14 @@ namespace FluentNHibernate.Automapping
             return "Value";
         }
 
+        public virtual bool IsVersion(Member member)
+        {
+            var validNames = new List<string> { "version", "timestamp" };
+            var validTypes = new List<Type> { typeof(int), typeof(long), typeof(TimeSpan), typeof(byte[]) };
+
+            return validNames.Contains(member.Name.ToLowerInvariant()) && validTypes.Contains(member.PropertyType);
+        }
+
         public virtual IEnumerable<IAutomappingStep> GetMappingSteps(AutoMapper mapper, IConventionFinder conventionFinder)
         {
             return new IAutomappingStep[]

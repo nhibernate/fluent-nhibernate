@@ -137,6 +137,13 @@ namespace FluentNHibernate.Automapping
         string SimpleTypeCollectionValueColumn(Member member);
 
         /// <summary>
+        /// Specifies whether the current member is a version property
+        /// </summary>
+        /// <param name="member">Candidate member</param>
+        /// <returns>Is member a version</returns>
+        bool IsVersion(Member member);
+
+        /// <summary>
         /// Gets the steps that are executed to map a type.
         /// </summary>
         /// <returns>Collection of mapping steps</returns>
