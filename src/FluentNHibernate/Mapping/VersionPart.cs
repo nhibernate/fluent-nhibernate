@@ -10,7 +10,7 @@ namespace FluentNHibernate.Mapping
     public class VersionPart : IVersionMappingProvider
     {
         private readonly Type entity;
-        private readonly Member property;
+        private readonly Member member;
         private readonly AccessStrategyBuilder<VersionPart> access;
         private readonly VersionGeneratedBuilder<VersionPart> generated;
         private readonly AttributeStore<VersionMapping> attributes = new AttributeStore<VersionMapping>();
@@ -18,12 +18,24 @@ namespace FluentNHibernate.Mapping
         private readonly List<string> columns = new List<string>();
         private bool nextBool = true;
 
-        public VersionPart(Type entity, Member property)
+        public VersionPart(Type entity, Member member)
         {
             this.entity = entity;
-            this.property = property;
+            this.member = member;
             access = new AccessStrategyBuilder<VersionPart>(this, value => attributes.Set(x => x.Access, value));
             generated = new VersionGeneratedBuilder<VersionPart>(this, value => attributes.Set(x => x.Generated, value));
+
+            SetDefaultAccess();
+        }
+
+        void SetDefaultAccess()
+        {
+            var resolvedAccess = MemberAccessResolver.Resolve(member);
+
+            if (resolvedAccess == Mapping.Access.Property || resolvedAccess == Mapping.Access.Unset)
+                return; // property is the default so we don't need to specify it
+
+            attributes.SetDefault(x => x.Access, resolvedAccess.ToString());
         }
 
         /// <summary>
@@ -214,9 +226,9 @@ namespace FluentNHibernate.Mapping
 
             mapping.ContainingEntityType = entity;
 
-            mapping.SetDefaultValue("Name", property.Name);
-            mapping.SetDefaultValue("Type", property.PropertyType == typeof(DateTime) ? new TypeReference("timestamp") : new TypeReference(property.PropertyType));
-            mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = property.Name });
+            mapping.SetDefaultValue("Name", member.Name);
+            mapping.SetDefaultValue("Type", member.PropertyType == typeof(DateTime) ? new TypeReference("timestamp") : new TypeReference(member.PropertyType));
+            mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = member.Name });
 
             columns.ForEach(column => mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = column }));
 

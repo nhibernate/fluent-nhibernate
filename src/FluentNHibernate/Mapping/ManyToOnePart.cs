@@ -19,16 +19,28 @@ namespace FluentNHibernate.Mapping
         private readonly AttributeStore<ManyToOneMapping> attributes = new AttributeStore<ManyToOneMapping>();
         private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
         private readonly Type entity;
-        private readonly Member property;
+        private readonly Member member;
 
-        public ManyToOnePart(Type entity, Member property) 
+        public ManyToOnePart(Type entity, Member member) 
         {
             this.entity = entity;
-            this.property = property;
+            this.member = member;
             access = new AccessStrategyBuilder<ManyToOnePart<TOther>>(this, value => attributes.Set(x => x.Access, value));
             fetch = new FetchTypeExpression<ManyToOnePart<TOther>>(this, value => attributes.Set(x => x.Fetch, value));
             cascade = new CascadeExpression<ManyToOnePart<TOther>>(this, value => attributes.Set(x => x.Cascade, value));
             notFound = new NotFoundExpression<ManyToOnePart<TOther>>(this, value => attributes.Set(x => x.NotFound, value));
+
+            SetDefaultAccess();
+        }
+
+        void SetDefaultAccess()
+        {
+            var resolvedAccess = MemberAccessResolver.Resolve(member);
+
+            if (resolvedAccess == Mapping.Access.Property || resolvedAccess == Mapping.Access.Unset)
+                return; // property is the default so we don't need to specify it
+
+            attributes.SetDefault(x => x.Access, resolvedAccess.ToString());
         }
 
         /// <summary>
@@ -168,7 +180,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public ManyToOnePart<TOther> ForeignKey()
 		{
-			return ForeignKey(string.Format("FK_{0}To{1}", property.DeclaringType.Name, property.Name));
+			return ForeignKey(string.Format("FK_{0}To{1}", member.DeclaringType.Name, member.Name));
 		}
 
         /// <summary>
@@ -339,16 +351,16 @@ namespace FluentNHibernate.Mapping
             var mapping = new ManyToOneMapping(attributes.CloneInner());
 
             mapping.ContainingEntityType = entity;
-            mapping.Member = property;
+            mapping.Member = member;
 
             if (!mapping.IsSpecified("Name"))
-                mapping.Name = property.Name;
+                mapping.Name = member.Name;
 
             if (!mapping.IsSpecified("Class"))
                 mapping.SetDefaultValue(x => x.Class, new TypeReference(typeof(TOther)));
 
             if (columns.Count == 0)
-                mapping.AddDefaultColumn(CreateColumn(property.Name + "_id"));
+                mapping.AddDefaultColumn(CreateColumn(member.Name + "_id"));
 
             foreach (var column in columns)
             {

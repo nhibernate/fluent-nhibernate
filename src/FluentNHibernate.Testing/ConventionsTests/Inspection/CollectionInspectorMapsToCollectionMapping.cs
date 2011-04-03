@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
     public class CollectionInspectorMapsToCollectionMapping
     {
         private CollectionMapping mapping;
-        private IMapInspector inspector;
+        private ICollectionInspector inspector;
 
         [SetUp]
         public void CreateDsl()
@@ -88,7 +88,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection
 
         #region Helpers
 
-        private Member Prop(Expression<Func<IMapInspector, object>> propertyExpression)
+        static Member Prop(Expression<Func<ICollectionInspector, object>> propertyExpression)
         {
             return ReflectionHelper.GetMember(propertyExpression);
         }

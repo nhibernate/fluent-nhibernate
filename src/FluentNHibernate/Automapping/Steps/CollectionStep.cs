@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
@@ -11,13 +13,11 @@ namespace FluentNHibernate.Automapping.Steps
     {
         readonly IAutomappingConfiguration cfg;
         readonly AutoKeyMapper keys;
-        readonly AutoCollectionCreator collections;
 
         public CollectionStep(IAutomappingConfiguration cfg)
         {
             this.cfg = cfg;
             keys = new AutoKeyMapper(cfg);
-            collections = new AutoCollectionCreator();
         }
 
         public bool ShouldMap(Member member)
@@ -33,7 +33,7 @@ namespace FluentNHibernate.Automapping.Steps
             if (member.DeclaringType != classMap.Type)
                 return;
 
-            var collectionType = collections.DetermineCollectionType(member.PropertyType);
+            var collectionType = CollectionTypeResolver.Resolve(member);
             var mapping = CollectionMapping.For(collectionType);
 
             mapping.ContainingEntityType = classMap.Type;
@@ -41,16 +41,29 @@ namespace FluentNHibernate.Automapping.Steps
             mapping.SetDefaultValue(x => x.Name, member.Name);
             mapping.ChildType = member.PropertyType.GetGenericArguments()[0];
 
-            if (member.IsProperty && !member.CanWrite)
-                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
-
+            SetDefaultAccess(member, mapping);
             SetRelationship(member, classMap, mapping);
             keys.SetKey(member, classMap, mapping);
 
             classMap.AddCollection(mapping);  
         }
 
-        private void SetRelationship(Member property, ClassMappingBase classMap, CollectionMapping mapping)
+        void SetDefaultAccess(Member member, CollectionMapping mapping)
+        {
+            var resolvedAccess = MemberAccessResolver.Resolve(member);
+
+            if (resolvedAccess != Access.Property && resolvedAccess != Access.Unset)
+            {
+                // if it's a property or unset then we'll just let NH deal with it, otherwise
+                // set the access to be whatever we determined it might be
+                mapping.SetDefaultValue(x => x.Access, resolvedAccess.ToString());
+            }
+
+            if (member.IsProperty && !member.CanWrite)
+                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
+        }
+
+        static void SetRelationship(Member property, ClassMappingBase classMap, CollectionMapping mapping)
         {
             var relationship = new OneToManyMapping
             {

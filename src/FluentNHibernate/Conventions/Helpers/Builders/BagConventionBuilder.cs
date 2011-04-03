@@ -6,6 +6,7 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders
 {
+    [Obsolete("Use CollectionConventionBuilder")]
     internal class BagConventionBuilder : IConventionBuilder<IBagConvention, IBagInspector, IBagInstance>
     {
         public IBagConvention Always(Action<IBagInstance> convention)

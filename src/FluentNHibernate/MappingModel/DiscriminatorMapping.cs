@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 

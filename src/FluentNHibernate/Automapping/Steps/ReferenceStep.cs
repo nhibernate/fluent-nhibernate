@@ -1,6 +1,8 @@
 ﻿using System;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Automapping.Steps
 {
@@ -38,10 +40,25 @@ namespace FluentNHibernate.Automapping.Steps
             mapping.SetDefaultValue(x => x.Class, new TypeReference(member.PropertyType));
             mapping.AddDefaultColumn(new ColumnMapping { Name = member.Name + "_id" });
 
-            if (member.IsProperty && !member.CanWrite)
-                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
+            SetDefaultAccess(member, mapping);
 
             return mapping;
         }
+
+        void SetDefaultAccess(Member member, ManyToOneMapping mapping)
+        {
+            var resolvedAccess = MemberAccessResolver.Resolve(member);
+
+            if (resolvedAccess != Access.Property && resolvedAccess != Access.Unset)
+            {
+                // if it's a property or unset then we'll just let NH deal with it, otherwise
+                // set the access to be whatever we determined it might be
+                mapping.SetDefaultValue(x => x.Access, resolvedAccess.ToString());
+            }
+
+            if (member.IsProperty && !member.CanWrite)
+                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
+        }
+
     }
 }

@@ -30,10 +30,7 @@ namespace FluentNHibernate.Automapping
 
         public virtual Access GetAccessStrategyForReadOnlyProperty(Member member)
         {
-            if (member.IsAutoProperty)
-                return Access.BackField;
-
-            return Access.ReadOnlyPropertyThroughCamelCaseField();
+            return MemberAccessResolver.Resolve(member);
         }
 
         public virtual Type GetParentSideForManyToMany(Type left, Type right)

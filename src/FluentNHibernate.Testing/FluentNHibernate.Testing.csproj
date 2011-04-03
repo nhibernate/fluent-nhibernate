@@ -121,6 +121,9 @@
     <Compile Include="AutoMapping\Overrides\CompositeIdOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\HibernateMappingOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\ParentOverridesWithSubclasses.cs" />
+    <Compile Include="DomainModel\MemberAccessResolverTests.cs" />
+    <Compile Include="DomainModel\MemberBackingFieldTests.cs" />
+    <Compile Include="DomainModel\NamingTests.cs" />
     <Compile Include="StubTypeSource.cs" />
     <Compile Include="AutoMapping\TestFixtures.cs" />
     <Compile Include="Cfg\Db\DB2ConfigurationTester.cs" />
@@ -186,7 +189,6 @@
     <Compile Include="FluentInterfaceTests\StoredProcedurePartGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\WhereTests.cs" />
     <Compile Include="MappingModel\Equality\CollectionContentEqualitySpecs.cs" />
-    <Compile Include="MappingModel\Defaults\MutableDefaultsTester.cs" />
     <Compile Include="MappingModel\Equality\MappingEqualitySpecs.cs" />
     <Compile Include="MappingModel\Output\XmlDiscriminatorWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterDefinitionWriterTester.cs" />
@@ -366,9 +368,7 @@
     <Compile Include="FluentInterfaceTests\SubclassSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\VersionMutablePropertyModelGenerationTests.cs" />
     <Compile Include="Infrastructure\ContainerTester.cs" />
-    <Compile Include="MappingModel\Defaults\AnyMappingDefaultsTester.cs" />
     <Compile Include="MappingModel\Defaults\ComponentMappingDefaultsTester.cs" />
-    <Compile Include="MappingModel\Defaults\CompositeIdMappingDefaultsTester.cs" />
     <Compile Include="MappingModel\Defaults\PropertyColumnDefaultsTester.cs" />
     <Compile Include="MappingModel\Output\XmlArrayWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeIdWriterTester.cs" />

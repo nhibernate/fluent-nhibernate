@@ -9,6 +9,8 @@ namespace FluentNHibernate.Conventions.Inspections
     public interface ICollectionInspector : IInspector
     {
         IKeyInspector Key { get; }
+        IIndexInspectorBase Index { get; }
+        string Sort { get; }
         string TableName { get; }
         bool IsMethodAccess { get; }
         MemberInfo Member { get; }

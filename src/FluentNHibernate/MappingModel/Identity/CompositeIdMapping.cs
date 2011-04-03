@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Identity
@@ -19,8 +18,6 @@ namespace FluentNHibernate.MappingModel.Identity
         public CompositeIdMapping(AttributeStore underlyingStore)
         {
             attributes = new AttributeStore<CompositeIdMapping>(underlyingStore);
-            attributes.SetDefault(x => x.Mapped, !string.IsNullOrEmpty(Name));
-            attributes.SetDefault(x => x.UnsavedValue, "undefined");
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)

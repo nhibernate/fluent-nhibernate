@@ -57,12 +57,14 @@ namespace FluentNHibernate
 
         public abstract void SetValue(object target, object value);
         public abstract object GetValue(object target);
+        public abstract bool TryGetBackingField(out Member backingField);
     }
 
     [Serializable]
     internal class MethodMember : Member
     {
         private readonly MethodInfo member;
+        Member backingField;
 
         public override void SetValue(object target, object value)
         {
@@ -72,6 +74,33 @@ namespace FluentNHibernate
         public override object GetValue(object target)
         {
             return member.Invoke(target, null);
+        }
+
+        public override bool TryGetBackingField(out Member field)
+        {
+            if (backingField != null)
+            {
+                field = backingField;
+                return true;
+            }
+
+            var name = Name;
+
+            if (name.StartsWith("Get", StringComparison.InvariantCultureIgnoreCase))
+                name = name.Substring(3);
+
+            var reflectedField = DeclaringType.GetField(name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            reflectedField = reflectedField ?? DeclaringType.GetField("_" + name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            reflectedField = reflectedField ?? DeclaringType.GetField("m_" + name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (reflectedField == null)
+            {
+                field = null;
+                return false;
+            }
+
+            field = backingField = new FieldMember(reflectedField);
+            return true;
         }
 
         public MethodMember(MethodInfo member)
@@ -167,6 +196,12 @@ namespace FluentNHibernate
             return member.GetValue(target);
         }
 
+        public override bool TryGetBackingField(out Member backingField)
+        {
+            backingField = null;
+            return false;
+        }
+
         public FieldMember(FieldInfo member)
         {
             this.member = member;
@@ -246,6 +281,7 @@ namespace FluentNHibernate
         readonly PropertyInfo member;
         readonly MethodMember getMethod;
         readonly MethodMember setMethod;
+        Member backingField;
 
         public PropertyMember(PropertyInfo member)
         {
@@ -270,6 +306,28 @@ namespace FluentNHibernate
         public override object GetValue(object target)
         {
             return member.GetValue(target, null);
+        }
+
+        public override bool TryGetBackingField(out Member field)
+        {
+            if (backingField != null)
+            {
+                field = backingField;
+                return true;
+            }
+
+            var reflectedField = DeclaringType.GetField(Name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            reflectedField = reflectedField ?? DeclaringType.GetField("_" + Name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            reflectedField = reflectedField ?? DeclaringType.GetField("m_" + Name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (reflectedField == null)
+            {
+                field = null;
+                return false;
+            }
+
+            field = backingField = new FieldMember(reflectedField);
+            return true;
         }
 
         public override string Name
@@ -432,7 +490,7 @@ namespace FluentNHibernate
             type.GetInstanceFields().Each(x => members.Add(x));
             type.GetInstanceMethods().Each(x => members.Add(x));
 
-            if (type.BaseType != typeof(object))
+            if (type.BaseType != null && type.BaseType != typeof(object))
                 type.BaseType.GetInstanceMembers().Each(x => members.Add(x));
 
             return members;

@@ -107,6 +107,7 @@ namespace FluentNHibernate.Visitors
             collections[mapping.Collection](mapping);
         }
 
+#pragma warning disable 612,618
         void ProcessArray(CollectionMapping mapping)
         {
             var conventions = finder.Find<IArrayConvention>();
@@ -146,6 +147,7 @@ namespace FluentNHibernate.Visitors
             Apply<ISetInspector, ISetInstance>(conventions,
                 new CollectionInstance(mapping));
         }
+#pragma warning restore 612,618
 
         public override void ProcessManyToOne(ManyToOneMapping mapping)
         {

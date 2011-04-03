@@ -76,7 +76,7 @@ namespace FluentNHibernate
 
         public override Type DeclaringType
         {
-            get { throw new NotImplementedException(); }
+            get { return type; }
         }
 
         public override Type ReflectedType

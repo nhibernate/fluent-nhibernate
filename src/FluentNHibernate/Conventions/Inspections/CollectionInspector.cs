@@ -6,7 +6,10 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
-    public class CollectionInspector : IArrayInspector, IBagInspector, IListInspector, IMapInspector, ISetInspector
+#pragma warning disable 612,618
+    public class CollectionInspector : ICollectionInspector,
+        IArrayInspector, IBagInspector, IListInspector, IMapInspector, ISetInspector
+#pragma warning restore 612,618
     {
         InspectorModelMapper<ICollectionInspector, CollectionMapping> propertyMappings = new InspectorModelMapper<ICollectionInspector, CollectionMapping>();
         CollectionMapping mapping;

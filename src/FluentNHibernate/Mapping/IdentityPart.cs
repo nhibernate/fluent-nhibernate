@@ -30,6 +30,7 @@ namespace FluentNHibernate.Mapping
             GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, member.PropertyType, entityType);
             SetName(member.Name);
             SetDefaultGenerator();
+            SetDefaultAccess();
         }
 
         public IdentityPart(Type entity, Type identityType)
@@ -41,6 +42,16 @@ namespace FluentNHibernate.Mapping
             GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, this.identityType, entity);
 
             SetDefaultGenerator();
+        }
+
+        void SetDefaultAccess()
+        {
+            var resolvedAccess = MemberAccessResolver.Resolve(member);
+
+            if (resolvedAccess == Mapping.Access.Property || resolvedAccess == Mapping.Access.Unset)
+                return; // property is the default so we don't need to specify it
+
+            attributes.SetDefault(x => x.Access, resolvedAccess.ToString());
         }
 
         /// <summary>

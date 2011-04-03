@@ -1,11 +1,9 @@
-﻿using FluentNHibernate.Conventions.Inspections;
+﻿using System;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public interface ISetInstance : ISetInspector
-    {
-        new void OrderBy(string orderBy);
-        new void Sort(string sort);
-        new IAccessInstance Access { get; }
-    }
+    [Obsolete("Use ICollectionInstance")]
+    public interface ISetInstance : ISetInspector, ICollectionInstance
+    {}
 }

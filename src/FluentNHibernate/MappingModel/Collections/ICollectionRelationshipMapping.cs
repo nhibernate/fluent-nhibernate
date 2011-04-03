@@ -1,5 +1,4 @@
 using System;
-using System.Linq.Expressions;
 
 namespace FluentNHibernate.MappingModel.Collections
 {

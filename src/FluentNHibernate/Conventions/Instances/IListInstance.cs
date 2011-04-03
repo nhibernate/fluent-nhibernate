@@ -1,10 +1,9 @@
-﻿using FluentNHibernate.Conventions.Inspections;
+﻿using System;
+using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Instances
 {
-    public interface IListInstance : IListInspector
-    {
-        new IIndexInstanceBase Index { get; }
-        new IAccessInstance Access { get; }
-    }
+    [Obsolete("Use ICollectionInstance")]
+    public interface IListInstance : IListInspector, ICollectionInstance
+    {}
 }

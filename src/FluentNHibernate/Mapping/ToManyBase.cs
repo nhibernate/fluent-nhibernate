@@ -41,8 +41,9 @@ namespace FluentNHibernate.Mapping
             optimisticLock = new OptimisticLockBuilder<T>((T)this, value => collectionAttributes.Set(x => x.OptimisticLock, value));
             cascade = new CollectionCascadeExpression<T>((T)this, value => collectionAttributes.Set(x => x.Cascade, value));
 
-            SetDefaultCollectionType(type);
+            SetDefaultCollectionType();
             SetCustomCollectionType(type);
+            SetDefaultAccess();
             Cache = new CachePart(entity);
 
             collectionAttributes.SetDefault(x => x.Name, member.Name);
@@ -662,10 +663,29 @@ namespace FluentNHibernate.Mapping
             get { return filters; }
         }
 
-        void SetDefaultCollectionType(Type type)
+        void SetDefaultCollectionType()
         {
-            if (type.Namespace == "Iesi.Collections.Generic" || type.Closes(typeof(HashSet<>)))
-                AsSet();
+            var collection = CollectionTypeResolver.Resolve(member);
+
+            switch (collection)
+            {
+                case Collection.Bag:
+                    AsBag();
+                    break;
+                case Collection.Set:
+                    AsSet();
+                    break;
+            }
+        }
+
+        void SetDefaultAccess()
+        {
+            var resolvedAccess = MemberAccessResolver.Resolve(member);
+
+            if (resolvedAccess == Mapping.Access.Property || resolvedAccess == Mapping.Access.Unset)
+                return; // property is the default so we don't need to specify it
+
+            collectionAttributes.SetDefault(x => x.Access, resolvedAccess.ToString());
         }
 
         void SetCustomCollectionType(Type type)
@@ -724,6 +744,11 @@ namespace FluentNHibernate.Mapping
         {
             if (member.IsMethod)
             {
+                Member backingField;
+
+                if (member.TryGetBackingField(out backingField))
+                    return backingField.Name;
+
                 // try to guess the backing field name (GetSomething -> something)
                 if (member.Name.StartsWith("Get"))
                 {

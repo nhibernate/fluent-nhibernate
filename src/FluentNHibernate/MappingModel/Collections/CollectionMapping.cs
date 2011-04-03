@@ -18,7 +18,6 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             Collection = Collection.Bag;
             attributes = new AttributeStore<CollectionMapping>(underlyingStore);
-            attributes.SetDefault(x => x.Mutable, true);
         }
 
         public IEnumerable<FilterMapping> Filters
