@@ -169,10 +169,11 @@ namespace :package do
     nu.language = 'en-US'
     nu.licenseUrl = 'http://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE.txt'
     nu.projectUrl = 'http://fluentnhibernate.org'
-    nu.dependency 'NHibernate', '3.1.0.4000'
+    nu.dependency 'NHibernate.Castle', '3.1.0.4000'
     nu.working_directory = 'build'
     nu.output_file = 'fluentnhibernate.nuspec'
-    nu.file 'FluentNHibernate.dll'
+    nu.file 'FluentNHibernate.dll', 'lib'
+    nu.file 'FluentNHibernate.pdb', 'lib'
     nu.tags = 'orm dal nhibernate conventions'
   end
 
