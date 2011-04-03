@@ -1,6 +1,7 @@
 require 'fileutils'
 gem 'albacore', '=0.2.4'
 require 'albacore'
+require 'tools/albacore/nuspec_patch'
 
 def get_version
   ENV['BUILD_NUMBER'] || '1.2.0.0'
@@ -159,7 +160,32 @@ namespace :package do
     zip.output_path = 'dist'
   end
   
-  task :all => [:source, :binaries, :docs]
+  nuspec do |nu|
+    nu.id = 'FluentNHibernate'
+    nu.version = get_version()
+    nu.authors = 'James Gregory and contributors'
+    nu.description = 'Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate.'
+    nu.title = 'Fluent NHibernate'
+    nu.language = 'en-US'
+    nu.licenseUrl = 'http://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE.txt'
+    nu.projectUrl = 'http://fluentnhibernate.org'
+    nu.dependency 'NHibernate', '3.1.0.4000'
+    nu.working_directory = 'build'
+    nu.output_file = 'fluentnhibernate.nuspec'
+    nu.file 'FluentNHibernate.dll'
+    nu.tags = 'orm dal nhibernate conventions'
+  end
+
+  nugetpack do |nu|
+    nu.command = 'tools/nuget/NuGet.exe'
+    nu.nuspec = 'build/fluentnhibernate.nuspec'
+    nu.base_folder = 'build'
+    nu.output = 'dist'
+  end
+
+  task :nuget => [:nuspec, :nugetpack]
+ 
+  task :all => [:source, :binaries, :docs, :nuget]
 end
 
 task :sln do
