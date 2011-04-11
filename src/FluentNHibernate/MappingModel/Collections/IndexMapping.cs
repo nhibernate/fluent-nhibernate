@@ -50,6 +50,12 @@ namespace FluentNHibernate.MappingModel.Collections
             get { return attributes.Get(x => x.EntityName); }
             set { attributes.Set(x => x.EntityName, value); }
         }
+        
+        public int Offset
+        {
+            get { return attributes.Get(x => x.Offset); }
+            set { attributes.Set(x => x.Offset, value); }
+        }
 
         public bool IsManyToMany { get; set; }
         public Type ContainingEntityType { get; set; }

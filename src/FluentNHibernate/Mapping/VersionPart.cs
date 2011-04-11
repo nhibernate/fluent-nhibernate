@@ -29,7 +29,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specify if this version is database generated
         /// </summary>
-        public VersionGeneratedBuilder<IVersionMappingProvider> Generated
+        public VersionGeneratedBuilder<VersionPart> Generated
         {
             get { return generated; }
         }

@@ -284,11 +284,24 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(map => map.HasMany(x => x.ListOfChildren)
                     .AsList(index =>
                     {
-                        index.Base(1);
+                        index.Offset(1);
                         index.Column("ListIndex");
                     }))
                 .Element("class/list/list-index").HasAttribute("base", "1")
                 .Element("class/list/list-index/column").HasAttribute("name", "ListIndex");
+        }
+
+        [Test]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void SpecifyingIndexBaseOffsetAndTypeForListThrowsNotSupportedException()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(map => map.HasMany(x => x.ListOfChildren)
+                    .AsList(index =>
+                    {
+                        index.Offset(1);
+                        index.Type("ListIndex");
+                    }));
         }
 
         [Test]
