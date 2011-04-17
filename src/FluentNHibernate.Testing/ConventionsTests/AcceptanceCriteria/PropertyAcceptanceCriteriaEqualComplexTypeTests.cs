@@ -23,8 +23,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         {
             acceptance.Expect(x => x.Access == Access.Field);
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Access, Layer.Defaults, "field");
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping { Access = "field" }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeTrue();
         }
 
@@ -33,8 +35,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         {
             acceptance.Expect(x => x.Access == Access.Field);
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Access, Layer.Defaults, "property");
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = "property" }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeFalse();
         }
 
@@ -53,8 +57,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         {
             acceptance.Expect(x => x.Access != Access.Field);
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Access, Layer.Defaults, "property");
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = "property" }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeTrue();
         }
 
@@ -63,8 +69,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         {
             acceptance.Expect(x => x.Access != Access.Field);
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Access, Layer.Defaults, "field");
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = "field" }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeFalse();
         }
 

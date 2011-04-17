@@ -26,7 +26,7 @@ namespace FluentNHibernate.MappingModel.Output
         {
             document = new XmlDocument();
 
-            if (mapping.HasValue(x => x.Offset))
+            if (mapping.IsSpecified("Offset"))
                 WriteListIndex(mapping);
             else
                 WriteIndex(mapping);
@@ -36,7 +36,7 @@ namespace FluentNHibernate.MappingModel.Output
         {
             var element = document.AddElement("index");
 
-            if (mapping.HasValue(x => x.Type))
+            if (mapping.IsSpecified("Type"))
                 element.WithAtt("type", mapping.Type);
         }
 

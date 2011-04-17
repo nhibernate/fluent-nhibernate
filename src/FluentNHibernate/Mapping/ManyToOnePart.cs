@@ -10,25 +10,25 @@ namespace FluentNHibernate.Mapping
 {
     public class ManyToOnePart<TOther> : IManyToOneMappingProvider
     {
-        private readonly AccessStrategyBuilder<ManyToOnePart<TOther>> access;
-        private readonly FetchTypeExpression<ManyToOnePart<TOther>> fetch;
-        private readonly NotFoundExpression<ManyToOnePart<TOther>> notFound;
-        private readonly CascadeExpression<ManyToOnePart<TOther>> cascade;
-        private readonly IList<string> columns = new List<string>();
-        private bool nextBool = true;
-        private readonly AttributeStore<ManyToOneMapping> attributes = new AttributeStore<ManyToOneMapping>();
-        private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
-        private readonly Type entity;
-        private readonly Member member;
+        readonly AccessStrategyBuilder<ManyToOnePart<TOther>> access;
+        readonly FetchTypeExpression<ManyToOnePart<TOther>> fetch;
+        readonly NotFoundExpression<ManyToOnePart<TOther>> notFound;
+        readonly CascadeExpression<ManyToOnePart<TOther>> cascade;
+        readonly IList<string> columns = new List<string>();
+        bool nextBool = true;
+        readonly AttributeStore attributes = new AttributeStore();
+        readonly AttributeStore columnAttributes = new AttributeStore();
+        readonly Type entity;
+        readonly Member member;
 
         public ManyToOnePart(Type entity, Member member) 
         {
             this.entity = entity;
             this.member = member;
-            access = new AccessStrategyBuilder<ManyToOnePart<TOther>>(this, value => attributes.Set(x => x.Access, value));
-            fetch = new FetchTypeExpression<ManyToOnePart<TOther>>(this, value => attributes.Set(x => x.Fetch, value));
-            cascade = new CascadeExpression<ManyToOnePart<TOther>>(this, value => attributes.Set(x => x.Cascade, value));
-            notFound = new NotFoundExpression<ManyToOnePart<TOther>>(this, value => attributes.Set(x => x.NotFound, value));
+            access = new AccessStrategyBuilder<ManyToOnePart<TOther>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
+            fetch = new FetchTypeExpression<ManyToOnePart<TOther>>(this, value => attributes.Set("Fetch", Layer.UserSupplied, value));
+            cascade = new CascadeExpression<ManyToOnePart<TOther>>(this, value => attributes.Set("Cascade", Layer.UserSupplied, value));
+            notFound = new NotFoundExpression<ManyToOnePart<TOther>>(this, value => attributes.Set("NotFound", Layer.UserSupplied, value));
 
             SetDefaultAccess();
         }
@@ -40,7 +40,7 @@ namespace FluentNHibernate.Mapping
             if (resolvedAccess == Mapping.Access.Property || resolvedAccess == Mapping.Access.Unset)
                 return; // property is the default so we don't need to specify it
 
-            attributes.SetDefault(x => x.Access, resolvedAccess.ToString());
+            attributes.Set("Access", Layer.Defaults, resolvedAccess.ToString());
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public ManyToOnePart<TOther> Unique()
         {
-            columnAttributes.Set(x => x.Unique, nextBool);
+            columnAttributes.Set("Unique", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -85,7 +85,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="keyName">Name of constraint</param>
         public ManyToOnePart<TOther> UniqueKey(string keyName)
         {
-            columnAttributes.Set(x => x.UniqueKey, keyName);
+            columnAttributes.Set("UniqueKey", Layer.UserSupplied, keyName);
             return this;
         }
 
@@ -95,7 +95,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="indexName">Index name</param>
         public ManyToOnePart<TOther> Index(string indexName)
         {
-            columnAttributes.Set(x => x.Index, indexName);
+            columnAttributes.Set("Index", Layer.UserSupplied, indexName);
             return this;
         }
 
@@ -114,7 +114,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="type">Child</param>
         public ManyToOnePart<TOther> Class(Type type)
         {
-            attributes.Set(x => x.Class, new TypeReference(type));
+            attributes.Set("Class", Layer.UserSupplied, new TypeReference(type));
             return this;
         }
 
@@ -130,8 +130,8 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public ManyToOnePart<TOther> ReadOnly()
         {
-            attributes.Set(x => x.Insert, !nextBool);
-            attributes.Set(x => x.Update, !nextBool);
+            attributes.Set("Insert", Layer.UserSupplied, !nextBool);
+            attributes.Set("Update", Layer.UserSupplied, !nextBool);
             nextBool = true;
             return this;
         }
@@ -169,7 +169,7 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public ManyToOnePart<TOther> LazyLoad(Laziness laziness)
         {
-            attributes.Set(x => x.Lazy, laziness.ToString());
+            attributes.Set("Lazy", Layer.UserSupplied, laziness.ToString());
             nextBool = true;
             return this;
         }
@@ -189,7 +189,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="foreignKeyName">Constraint name</param>
         public ManyToOnePart<TOther> ForeignKey(string foreignKeyName)
 		{
-		    attributes.Set(x => x.ForeignKey, foreignKeyName);
+            attributes.Set("ForeignKey", Layer.UserSupplied, foreignKeyName);
 			return this;
 		}
 
@@ -198,7 +198,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public ManyToOnePart<TOther> Insert()
         {
-            attributes.Set(x => x.Insert, nextBool);
+            attributes.Set("Insert", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -208,7 +208,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public ManyToOnePart<TOther> Update()
         {
-            attributes.Set(x => x.Update, nextBool);
+            attributes.Set("Update", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -229,12 +229,12 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specifies the columns used in this relationship
         /// </summary>
-        /// <param name="columns">Columns</param>
-        public ManyToOnePart<TOther> Columns(params string[] columns)
+        /// <param name="newColumns">Columns</param>
+        public ManyToOnePart<TOther> Columns(params string[] newColumns)
         {
-            foreach (var column in columns)
+            foreach (var column in newColumns)
             {
-                this.columns.Add(column);
+                columns.Add(column);
             }
 
             return this;
@@ -243,14 +243,12 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specifies the columns used in this relationship
         /// </summary>
-        /// <param name="columns">Columns</param>
-        public ManyToOnePart<TOther> Columns(params Expression<Func<TOther, object>>[] columns)
+        /// <param name="newColumns">Columns</param>
+        public ManyToOnePart<TOther> Columns(params Expression<Func<TOther, object>>[] newColumns)
         {
-            foreach (var expression in columns)
+            foreach (var expression in newColumns)
             {
-                var member = expression.ToMember();
-
-                Columns(member.Name);
+                Columns(expression.ToMember().Name);
             }
 
             return this;
@@ -262,7 +260,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="formula">Formula</param>
         public ManyToOnePart<TOther> Formula(string formula)
         {
-            attributes.Set(x => x.Formula, formula);
+            attributes.Set("Formula", Layer.UserSupplied, formula);
             return this;
         }
 
@@ -283,9 +281,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="expression">Property</param>
         public ManyToOnePart<TOther> PropertyRef(Expression<Func<TOther, object>> expression)
         {
-            var member = expression.ToMember();
-
-            return PropertyRef(member.Name);
+            return PropertyRef(expression.ToMember().Name);
         }
 
         /// <summary>
@@ -294,7 +290,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="property">Property</param>
         public ManyToOnePart<TOther> PropertyRef(string property)
         {
-            attributes.Set(x => x.PropertyRef, property);
+            attributes.Set("PropertyRef", Layer.UserSupplied, property);
             return this;
         }
 
@@ -307,7 +303,7 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public ManyToOnePart<TOther> Nullable()
         {
-            columnAttributes.Set(x => x.NotNull, !nextBool);
+            columnAttributes.Set("NotNull", Layer.UserSupplied, !nextBool);
             nextBool = true;
             return this;
         }
@@ -318,7 +314,7 @@ namespace FluentNHibernate.Mapping
         /// <remarks>See http://nhforge.org/blogs/nhibernate/archive/2008/10/21/entity-name-in-action-a-strongly-typed-entity.aspx</remarks>
         public ManyToOnePart<TOther> EntityName(string entityName)
         {
-            attributes.Set(x => x.EntityName, entityName);
+            attributes.Set("EntityName", Layer.UserSupplied, entityName);
             return this;
         }
 
@@ -348,16 +344,14 @@ namespace FluentNHibernate.Mapping
 
         ManyToOneMapping IManyToOneMappingProvider.GetManyToOneMapping()
         {
-            var mapping = new ManyToOneMapping(attributes.CloneInner());
+            var mapping = new ManyToOneMapping(attributes.Clone())
+            {
+                ContainingEntityType = entity,
+                Member = member
+            };
 
-            mapping.ContainingEntityType = entity;
-            mapping.Member = member;
-
-            if (!mapping.IsSpecified("Name"))
-                mapping.Name = member.Name;
-
-            if (!mapping.IsSpecified("Class"))
-                mapping.SetDefaultValue(x => x.Class, new TypeReference(typeof(TOther)));
+            mapping.Set(x => x.Name, Layer.Defaults, member.Name);
+            mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(typeof(TOther)));
 
             if (columns.Count == 0)
                 mapping.AddDefaultColumn(CreateColumn(member.Name + "_id"));
@@ -374,12 +368,14 @@ namespace FluentNHibernate.Mapping
 
         ColumnMapping CreateColumn(string column)
         {
-            return new ColumnMapping(columnAttributes.CloneInner()) { Name = column };
+            var columnMapping = new ColumnMapping(columnAttributes.Clone());
+            columnMapping.Set(x => x.Name, Layer.Defaults, column);
+            return columnMapping;
         }
 
         public ManyToOnePart<TOther> OptimisticLock()
         {
-            attributes.Set(x => x.OptimisticLock, nextBool);
+            attributes.Set("OptimisticLock", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }

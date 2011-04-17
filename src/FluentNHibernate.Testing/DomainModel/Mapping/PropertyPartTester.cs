@@ -75,7 +75,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/property/column").HasAttribute("name", "column_name");
         }
 
-        private MappingTester<T> Model<T>(Action<ClassMap<T>> mapping)
+        static MappingTester<T> Model<T>(Action<ClassMap<T>> mapping)
         {
             return new MappingTester<T>()
                 .ForMapping(mapping);
@@ -300,9 +300,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m =>
                 {
                     m.Id(x => x.Id);
-                    m.Map(x => x.Data).CustomType<custom_type_for_testing>();
+                    m.Map(x => x.Data).CustomType<CustomTypeForTesting>();
                 })
-                .Element("class/property").HasAttribute("type", typeof(custom_type_for_testing).AssemblyQualifiedName);
+                .Element("class/property").HasAttribute("type", typeof(CustomTypeForTesting).AssemblyQualifiedName);
         }
 
         [Test]
@@ -312,9 +312,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m =>
                 {
                     m.Id(x => x.Id);
-                    m.Map(x => x.Data).CustomType(t => typeof(custom_generic_type_for_testing<>).MakeGenericType(t));
+                    m.Map(x => x.Data).CustomType(t => typeof(CustomGenericTypeForTesting<>).MakeGenericType(t));
                 })
-                .Element("class/property").HasAttribute("type", typeof(custom_generic_type_for_testing<byte[]>).AssemblyQualifiedName);
+                .Element("class/property").HasAttribute("type", typeof(CustomGenericTypeForTesting<byte[]>).AssemblyQualifiedName);
         }
 
         [Test]
@@ -324,9 +324,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m =>
                 {
                     m.Id(x => x.Id);
-                    m.Map(x => x.Data).CustomType(typeof(custom_type_for_testing));
+                    m.Map(x => x.Data).CustomType(typeof(CustomTypeForTesting));
                 })
-                .Element("class/property").HasAttribute("type", typeof(custom_type_for_testing).AssemblyQualifiedName);
+                .Element("class/property").HasAttribute("type", typeof(CustomTypeForTesting).AssemblyQualifiedName);
         }
 
         [Test]
@@ -346,7 +346,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             var classMap = new ClassMap<PropertyTarget>();
             classMap.Id(x => x.Id);
-            var propertyMap = classMap.Map(x => x.Data)
+            classMap.Map(x => x.Data)
                 .CustomSqlType("image");
 
             new MappingTester<PropertyTarget>()
@@ -442,119 +442,113 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         #region Custom IUserType impl for testing
-        public class custom_type_for_testing : IUserType
+        public class CustomTypeForTesting : IUserType
         {
-            public new bool Equals(object x, object y)
+            bool IUserType.Equals(object x, object y)
             {
-                throw new System.NotImplementedException();
+                return false;
             }
 
             public int GetHashCode(object x)
             {
-                throw new System.NotImplementedException();
+                return 0;
             }
 
             public object NullSafeGet(IDataReader rs, string[] names, object owner)
             {
-                throw new System.NotImplementedException();
+                return null;
             }
 
             public void NullSafeSet(IDbCommand cmd, object value, int index)
-            {
-                throw new System.NotImplementedException();
-            }
+            {}
 
             public object DeepCopy(object value)
             {
-                throw new System.NotImplementedException();
+                return value;
             }
 
             public object Replace(object original, object target, object owner)
             {
-                throw new System.NotImplementedException();
+                return original;
             }
 
             public object Assemble(object cached, object owner)
             {
-                throw new System.NotImplementedException();
+                return cached;
             }
 
             public object Disassemble(object value)
             {
-                throw new System.NotImplementedException();
+                return value;
             }
 
             public SqlType[] SqlTypes
             {
-                get { throw new System.NotImplementedException(); }
+                get { return null; }
             }
 
             public Type ReturnedType
             {
-                get { throw new System.NotImplementedException(); }
+                get { return null; }
             }
 
             public bool IsMutable
             {
-                get { throw new System.NotImplementedException(); }
+                get { return false; }
             }
         }
 
-        public class custom_generic_type_for_testing<T> : IUserType
+        public class CustomGenericTypeForTesting<T> : IUserType
         {
-            public new bool Equals(object x, object y)
+            bool IUserType.Equals(object x, object y)
             {
-                throw new System.NotImplementedException();
+                return false;
             }
 
             public int GetHashCode(object x)
             {
-                throw new System.NotImplementedException();
+                return 0;
             }
 
             public object NullSafeGet(IDataReader rs, string[] names, object owner)
             {
-                throw new System.NotImplementedException();
+                return null;
             }
 
             public void NullSafeSet(IDbCommand cmd, object value, int index)
-            {
-                throw new System.NotImplementedException();
-            }
+            {}
 
             public object DeepCopy(object value)
             {
-                throw new System.NotImplementedException();
+                return null;
             }
 
             public object Replace(object original, object target, object owner)
             {
-                throw new System.NotImplementedException();
+                return null;
             }
 
             public object Assemble(object cached, object owner)
             {
-                throw new System.NotImplementedException();
+                return null;
             }
 
             public object Disassemble(object value)
             {
-                throw new System.NotImplementedException();
+                return null;
             }
 
             public SqlType[] SqlTypes
             {
-                get { throw new System.NotImplementedException(); }
+                get { return new SqlType[] {}; }
             }
-
             public Type ReturnedType
             {
-                get { throw new System.NotImplementedException(); }
+                get { return null; }
             }
-
             public bool IsMutable
             {
-                get { throw new System.NotImplementedException(); }
+                get { return false; }
             }
         }
         #endregion
@@ -619,23 +613,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     {
         public IGetter GetGetter(Type theClass, string propertyName)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public ISetter GetSetter(Type theClass, string propertyName)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool CanAccessTroughReflectionOptimizer
-        {
-            get { throw new NotImplementedException(); }
+            return null;
         }
 
         public bool CanAccessThroughReflectionOptimizer
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
-
     }
 }

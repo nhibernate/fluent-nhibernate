@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -9,16 +8,16 @@ namespace FluentNHibernate.MappingModel.Collections
     [Serializable]
     public class ElementMapping : MappingBase, IHasColumnMappings
     {
-        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
-        private readonly AttributeStore<ElementMapping> attributes;
+        readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+        readonly AttributeStore attributes;
 
         public ElementMapping()
             : this(new AttributeStore())
         {}
 
-        public ElementMapping(AttributeStore underlyingStore)
+        public ElementMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<ElementMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -31,14 +30,12 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public TypeReference Type
         {
-            get { return attributes.Get(x => x.Type); }
-            set { attributes.Set(x => x.Type, value); }
+            get { return attributes.GetOrDefault<TypeReference>("Type"); }
         }
 
         public string Formula
         {
-            get { return attributes.Get(x => x.Formula); }
-            set { attributes.Set(x => x.Formula, value); }
+            get { return attributes.GetOrDefault<string>("Formula"); }
         }
 
         public void AddColumn(ColumnMapping mapping)
@@ -62,21 +59,6 @@ namespace FluentNHibernate.MappingModel.Collections
         }
 
         public Type ContainingEntityType { get; set; }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<ElementMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<ElementMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
-        }
 
         public bool Equals(ElementMapping other)
         {
@@ -104,6 +86,21 @@ namespace FluentNHibernate.MappingModel.Collections
                 result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        public void Set<T>(Expression<Func<ElementMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

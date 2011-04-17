@@ -34,83 +34,60 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new ICollectionCascadeInstance Cascade
         {
-            get
-            {
-                return new CollectionCascadeInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Cascade"))
-                        mapping.Cascade = value;
-                });
-            }
+            get { return new CollectionCascadeInstance(value => mapping.Set(x => x.Cascade, Layer.Conventions, value)); }
         }
 
         public new IFetchInstance Fetch
         {
-            get
-            {
-                return new FetchInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Fetch"))
-                        mapping.Fetch = value;
-                });
-            }
+            get { return new FetchInstance(value => mapping.Set(x => x.Fetch, Layer.Conventions, value)); }
         }
 
         public new void OptimisticLock()
         {
-            if (!mapping.IsSpecified("OptimisticLock"))
-                mapping.OptimisticLock = nextBool;
+            mapping.Set(x => x.OptimisticLock, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void Check(string constraint)
         {
-            if (!mapping.IsSpecified("Check"))
-                mapping.Check = constraint;
+            mapping.Set(x => x.Check, Layer.Conventions, constraint);
         }
 
         public new void CollectionType<T>()
         {
-            if (!mapping.IsSpecified("CollectionType"))
-                mapping.CollectionType = new TypeReference(typeof(T));
+            CollectionType(typeof(T));
         }
 
         public new void CollectionType(string type)
         {
-            if (!mapping.IsSpecified("CollectionType"))
-                mapping.CollectionType = new TypeReference(type);
+            mapping.Set(x => x.CollectionType, Layer.Conventions, new TypeReference(type));
         }
 
         public new void CollectionType(Type type)
         {
-            if (!mapping.IsSpecified("CollectionType"))
-                mapping.CollectionType = new TypeReference(type);
+            mapping.Set(x => x.CollectionType, Layer.Conventions, new TypeReference(type));
         }
 
         public new void Generic()
         {
-            if (!mapping.IsSpecified("Generic"))
-                mapping.Generic = nextBool;
+            mapping.Set(x => x.Generic, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void Inverse()
         {
-            if (!mapping.IsSpecified("Inverse"))
-                mapping.Inverse = nextBool;
+            mapping.Set(x => x.Inverse, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void Persister<T>()
         {
-            if (!mapping.IsSpecified("Persister"))
-                mapping.Persister = new TypeReference(typeof(T));
+            mapping.Set(x => x.Persister, Layer.Conventions, new TypeReference(typeof(T)));
         }
 
         public new void Where(string whereClause)
         {
-            if (!mapping.IsSpecified("Where"))
-                mapping.Where = whereClause;
+            mapping.Set(x => x.Where, Layer.Conventions, whereClause);
         }
 
         public new IIndexInstanceBase Index
@@ -132,66 +109,54 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void OrderBy(string orderBy)
         {
-            if (!mapping.IsSpecified("OrderBy"))
-                mapping.OrderBy = orderBy;
+            mapping.Set(x => x.OrderBy, Layer.Conventions, orderBy);
         }
 
         public new void Sort(string sort)
         {
-            if (mapping.IsSpecified("Sort"))
-                return;
-
-            mapping.Sort = sort;
+            mapping.Set(x => x.Sort, Layer.Conventions, sort);
         }
 
         public void Subselect(string subselect)
         {
-            if (!mapping.IsSpecified("Subselect"))
-                mapping.Subselect = subselect;
+            mapping.Set(x => x.Subselect, Layer.Conventions, subselect);
         }
 
         public void Table(string tableName)
         {
-            if (!mapping.IsSpecified("TableName"))
-                mapping.TableName = tableName;
+            mapping.Set(x => x.TableName, Layer.Conventions, tableName);
         }
 
         public new void Name(string name)
         {
-            if (!mapping.IsSpecified("Name"))
-                mapping.Name = name;
+            mapping.Set(x => x.Name, Layer.Conventions, name);
         }
 
         public new void Schema(string schema)
         {
-            if (!mapping.IsSpecified("Schema"))
-                mapping.Schema = schema;
+            mapping.Set(x => x.Schema, Layer.Conventions, schema);
         }
 
         public new void LazyLoad()
         {
-            if (!mapping.IsSpecified("Lazy"))
-                mapping.Lazy = nextBool ? Lazy.True : Lazy.False;
+            mapping.Set(x => x.Lazy, Layer.Conventions, nextBool ? Lazy.True : Lazy.False);
             nextBool = true;
         }
         
         public override void ExtraLazyLoad()
         {
-            if (!mapping.IsSpecified("Lazy"))
-                mapping.Lazy = nextBool ? Lazy.Extra : Lazy.True;
+            mapping.Set(x => x.Lazy, Layer.Conventions, nextBool ? Lazy.Extra : Lazy.True);
             nextBool = true;
         }
 
         public new void BatchSize(int batchSize)
         {
-            if (!mapping.IsSpecified("BatchSize"))
-                mapping.BatchSize = batchSize;
+            mapping.Set(x => x.BatchSize, Layer.Conventions, batchSize);
         }
 
         public void ReadOnly()
         {
-            if (!mapping.IsSpecified("Mutable"))
-                mapping.Mutable = !nextBool;
+            mapping.Set(x => x.Mutable, Layer.Conventions, !nextBool);
             nextBool = true;
         }
 
@@ -236,7 +201,7 @@ namespace FluentNHibernate.Conventions.Instances
             {
                 if (mapping.Cache == null)
                     // conventions are hitting it, user must want a cache
-                    mapping.Cache = new CacheMapping();
+                    mapping.Set(x => x.Cache, Layer.Conventions, new CacheMapping());
 
                 return new CacheInstance(mapping.Cache);
             }
@@ -244,22 +209,12 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void SetOrderBy(string orderBy)
         {
-            if (mapping.IsSpecified("OrderBy"))
-                return;
-
-            mapping.OrderBy = orderBy;
+            mapping.Set(x => x.OrderBy, Layer.Conventions, orderBy);
         }
 
         public new IAccessInstance Access
         {
-            get
-            {
-                return new AccessInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Access"))
-                        mapping.Access = value;
-                });
-            }
+            get { return new AccessInstance(value => mapping.Set(x => x.Access, Layer.Conventions, value)); }
         }
 
         public new IKeyInstance Key
@@ -271,8 +226,8 @@ namespace FluentNHibernate.Conventions.Instances
         {
             get
             {
-                if (!mapping.IsSpecified("Element"))
-                    mapping.Element = new ElementMapping();
+                if (mapping.Element == null)
+                    mapping.Set(x => x.Element, Layer.Conventions, new ElementMapping());
                 
                 return new ElementInstance(mapping.Element);
             }
@@ -280,11 +235,10 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void ApplyFilter(string name, string condition)
         {
-            mapping.AddFilter(new FilterMapping
-            {
-                Name = name,
-                Condition = condition
-            });
+            var filterMapping = new FilterMapping();
+            filterMapping.Set(x => x.Name, Layer.Conventions, name);
+            filterMapping.Set(x => x.Condition, Layer.Conventions, condition);
+            mapping.AddFilter(filterMapping);
         }
 
         public void ApplyFilter(string name)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Identity
@@ -8,7 +9,7 @@ namespace FluentNHibernate.MappingModel.Identity
     [Serializable]
     public class GeneratorMapping : MappingBase
     {
-        private readonly AttributeStore<GeneratorMapping> attributes = new AttributeStore<GeneratorMapping>();
+        readonly AttributeStore attributes = new AttributeStore();
 
         public GeneratorMapping()
         {
@@ -22,27 +23,11 @@ namespace FluentNHibernate.MappingModel.Identity
 
         public string Class
         {
-            get { return attributes.Get(x => x.Class); }
-            set { attributes.Set(x => x.Class, value); }
+            get { return attributes.GetOrDefault<string>("Class"); }
         }
 
         public IDictionary<string, string> Params { get; private set; }
         public Type ContainingEntityType { get; set; }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<GeneratorMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<GeneratorMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
-        }
 
         public bool Equals(GeneratorMapping other)
         {
@@ -70,6 +55,21 @@ namespace FluentNHibernate.MappingModel.Identity
                 result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        public void Set<T>(Expression<Func<GeneratorMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

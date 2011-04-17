@@ -22,23 +22,10 @@ namespace FluentNHibernate.Conventions
             else
             {
                 // bi-directional
-                if (instance.HasExplicitTable && instance.OtherSide.HasExplicitTable)
-                {
-                    // TODO: We could check if they're the same here and warn the user if they're not
-                    return;
-                }
+                var tableName = GetBiDirectionalTableName(instance.OtherSide, instance);
 
-                if (instance.HasExplicitTable && !instance.OtherSide.HasExplicitTable)
-                    instance.OtherSide.Table(instance.TableName);
-                else if (!instance.HasExplicitTable && instance.OtherSide.HasExplicitTable)
-                    instance.Table(instance.OtherSide.TableName);
-                else
-                {
-                    var tableName = GetBiDirectionalTableName(instance, instance.OtherSide);
-
-                    instance.Table(tableName);
-                    instance.OtherSide.Table(tableName);
-                }
+                instance.Table(tableName);
+                instance.OtherSide.Table(tableName);
             }
         }
 

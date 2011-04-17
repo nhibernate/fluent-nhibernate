@@ -6,8 +6,8 @@ namespace FluentNHibernate.Mapping
 {
     public class CachePart : ICacheMappingProvider
     {
-        private readonly Type entityType;
-        private readonly AttributeStore<CacheMapping> attributes = new AttributeStore<CacheMapping>();
+        readonly Type entityType;
+        readonly AttributeStore attributes = new AttributeStore();
 
         public CachePart(Type entityType)
         {
@@ -19,7 +19,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public CachePart ReadWrite()
         {
-            attributes.Set(x => x.Usage, "read-write");
+            attributes.Set("Usage", Layer.UserSupplied, "read-write");
             return this;
         }
 
@@ -28,7 +28,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public CachePart NonStrictReadWrite()
         {
-            attributes.Set(x => x.Usage, "nonstrict-read-write");
+            attributes.Set("Usage", Layer.UserSupplied, "nonstrict-read-write");
             return this;
         }
 
@@ -37,7 +37,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public CachePart ReadOnly()
         {
-            attributes.Set(x => x.Usage, "read-only");
+            attributes.Set("Usage", Layer.UserSupplied, "read-only");
             return this;
         }
 
@@ -46,7 +46,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public CachePart Transactional()
         {
-            attributes.Set(x => x.Usage, "transactional");
+            attributes.Set("Usage", Layer.UserSupplied, "transactional");
             return this;
         }
 
@@ -56,7 +56,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="custom">Custom behaviour</param>
         public CachePart CustomUsage(string custom)
         {
-            attributes.Set(x => x.Usage, custom);
+            attributes.Set("Usage", Layer.UserSupplied, custom);
             return this;
         }
 
@@ -66,7 +66,7 @@ namespace FluentNHibernate.Mapping
         /// <returns></returns>
         public CachePart Region(string name)
         {
-            attributes.Set(x => x.Region, name);
+            attributes.Set("Region", Layer.UserSupplied, name);
             return this;
         }
 
@@ -76,7 +76,7 @@ namespace FluentNHibernate.Mapping
         /// <returns></returns>
         public CachePart IncludeAll()
         {
-            attributes.Set(x => x.Include, "all");
+            attributes.Set("Include", Layer.UserSupplied, "all");
             return this;
         }
 
@@ -85,7 +85,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public CachePart IncludeNonLazy()
         {
-            attributes.Set(x => x.Include, "non-lazy");
+            attributes.Set("Include", Layer.UserSupplied, "non-lazy");
             return this;
         }
 
@@ -95,18 +95,18 @@ namespace FluentNHibernate.Mapping
         /// <param name="custom">Inclusion strategy</param>
         public CachePart CustomInclude(string custom)
         {
-            attributes.Set(x => x.Include, custom);
+            attributes.Set("Include", Layer.UserSupplied, custom);
             return this;
         }
 
         internal bool IsDirty
         {
-            get { return attributes.IsSpecified(x => x.Region) || attributes.IsSpecified(x => x.Usage) || attributes.IsSpecified(x => x.Include); }
+            get { return attributes.IsSpecified("Region") || attributes.IsSpecified("Usage") || attributes.IsSpecified("Include"); }
         }
 
         CacheMapping ICacheMappingProvider.GetCacheMapping()
         {
-            var mapping = new CacheMapping(attributes.CloneInner());
+            var mapping = new CacheMapping(attributes.Clone());
             mapping.ContainedEntityType = entityType;
 
             return mapping;

@@ -183,7 +183,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         {
             public object Generate(ISessionImplementor session, object obj)
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
     }

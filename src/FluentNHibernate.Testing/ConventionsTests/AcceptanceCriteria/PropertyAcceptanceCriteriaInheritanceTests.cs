@@ -35,11 +35,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance
                 .SameAs<AnotherConvention>();
 
-            acceptance.Matches(new PropertyInspector(new PropertyMapping
-            {
-                Insert = false,
-                Update = false
-            }))
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Insert, Layer.Defaults, false);
+            propertyMapping.Set(x => x.Update, Layer.Defaults, false);
+            acceptance.Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeTrue();
         }
 
@@ -59,11 +58,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance
                 .OppositeOf<AnotherConvention>();
 
-            acceptance.Matches(new PropertyInspector(new PropertyMapping
-            {
-                Insert = true,
-                Update = true
-            }))
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Insert, Layer.Defaults, true);
+            propertyMapping.Set(x => x.Update, Layer.Defaults, true);
+            acceptance.Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeTrue();
         }
 

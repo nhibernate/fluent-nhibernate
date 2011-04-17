@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using FluentNHibernate.MappingModel.Identity;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
@@ -8,69 +9,61 @@ namespace FluentNHibernate.MappingModel.ClassBased
     [Serializable]
     public class ClassMapping : ClassMappingBase
     {
-        private readonly AttributeStore<ClassMapping> attributes;
+        readonly AttributeStore attributes;
 
         public ClassMapping()
             : this(new AttributeStore())
         {}
 
-        public ClassMapping(AttributeStore store)
+        public ClassMapping(AttributeStore attributes)
+            : base(attributes)
         {
-            attributes = new AttributeStore<ClassMapping>(store);
+            this.attributes = attributes;
         }
 
         public IIdentityMapping Id
         {
-            get { return attributes.Get(x => x.Id); }
-            set { attributes.Set(x => x.Id, value); }
+            get { return attributes.GetOrDefault<IIdentityMapping>("Id"); }
         }
 
         public NaturalIdMapping NaturalId
         {
-            get { return attributes.Get(x => x.NaturalId); }
-            set { attributes.Set(x => x.NaturalId, value); }
+            get { return attributes.GetOrDefault<NaturalIdMapping>("NaturalId"); }
         }
 
         public override string Name
         {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            get { return attributes.GetOrDefault<string>("Name"); }
         }
 
         public override Type Type
         {
-            get { return attributes.Get(x => x.Type); }
-            set { attributes.Set(x => x.Type, value); }
+            get { return attributes.GetOrDefault<Type>("Type"); }
         }
 
         public CacheMapping Cache
         {
-            get { return attributes.Get(x => x.Cache); }
-            set { attributes.Set(x => x.Cache, value); }
+            get { return attributes.GetOrDefault<CacheMapping>("Cache"); }
         }
 
         public VersionMapping Version
         {
-            get { return attributes.Get(x => x.Version); }
-            set { attributes.Set(x => x.Version, value); }
+            get { return attributes.GetOrDefault<VersionMapping>("Version"); }
         }
 
         public DiscriminatorMapping Discriminator
         {
-            get { return attributes.Get(x => x.Discriminator); }
-            set { attributes.Set(x => x.Discriminator, value); }
+            get { return attributes.GetOrDefault<DiscriminatorMapping>("Discriminator"); }
         }
 
         public bool IsUnionSubclass
         {
-            get { return attributes.Get(x => x.IsUnionSubclass); }
-            set {attributes.Set(x => x.IsUnionSubclass, value);}
+            get { return attributes.GetOrDefault<bool>("IsUnionSubclass"); }
         }
 
         public TuplizerMapping Tuplizer
         {
-            get { return attributes.Get(x => x.Tuplizer); }
-            set { attributes.Set(x => x.Tuplizer, value); }
+            get { return attributes.GetOrDefault<TuplizerMapping>("Tuplizer"); }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -98,139 +91,100 @@ namespace FluentNHibernate.MappingModel.ClassBased
             base.AcceptVisitor(visitor);
         }
 
-        public override void MergeAttributes(AttributeStore store)
-        {
-            attributes.Merge(new AttributeStore<ClassMapping>(store));
-        }
-
         public string TableName
         {
-            get { return attributes.Get(x => x.TableName); }
-            set { attributes.Set(x => x.TableName, value); }
+            get { return attributes.GetOrDefault<string>("TableName"); }
         }
 
         public int BatchSize
         {
-            get { return attributes.Get(x => x.BatchSize); }
-            set { attributes.Set(x => x.BatchSize, value); }
+            get { return attributes.GetOrDefault<int>("BatchSize"); }
         }
 
         public object DiscriminatorValue
         {
-            get { return attributes.Get(x => x.DiscriminatorValue); }
-            set { attributes.Set(x => x.DiscriminatorValue, value); }
+            get { return attributes.GetOrDefault<object>("DiscriminatorValue"); }
         }
 
         public string Schema
         {
-            get { return attributes.Get(x => x.Schema); }
-            set { attributes.Set(x => x.Schema, value); }
+            get { return attributes.GetOrDefault<string>("Schema"); }
         }
 
         public bool Lazy
         {
-            get { return attributes.Get(x => x.Lazy); }
-            set { attributes.Set(x => x.Lazy, value); }
+            get { return attributes.GetOrDefault<bool>("Lazy"); }
         }
 
         public bool Mutable
         {
-            get { return attributes.Get(x => x.Mutable); }
-            set { attributes.Set(x => x.Mutable, value); }
+            get { return attributes.GetOrDefault<bool>("Mutable"); }
         }
 
         public bool DynamicUpdate
         {
-            get { return attributes.Get(x => x.DynamicUpdate); }
-            set { attributes.Set(x => x.DynamicUpdate, value); }
+            get { return attributes.GetOrDefault<bool>("DynamicUpdate"); }
         }
 
         public bool DynamicInsert
         {
-            get { return attributes.Get(x => x.DynamicInsert); }
-            set { attributes.Set(x => x.DynamicInsert, value); }
+            get { return attributes.GetOrDefault<bool>("DynamicInsert"); }
         }
 
         public string OptimisticLock
         {
-            get { return attributes.Get(x => x.OptimisticLock); }
-            set { attributes.Set(x => x.OptimisticLock, value); }
+            get { return attributes.GetOrDefault<string>("OptimisticLock"); }
         }
 
         public string Polymorphism
         {
-            get { return attributes.Get(x => x.Polymorphism); }
-            set { attributes.Set(x => x.Polymorphism, value); }
+            get { return attributes.GetOrDefault<string>("Polymorphism"); }
         }
 
         public string Persister
         {
-            get { return attributes.Get(x => x.Persister); }
-            set { attributes.Set(x => x.Persister, value); }
+            get { return attributes.GetOrDefault<string>("Persister"); }
         }
 
         public string Where
         {
-            get { return attributes.Get(x => x.Where); }
-            set { attributes.Set(x => x.Where, value); }
+            get { return attributes.GetOrDefault<string>("Where"); }
         }
 
         public string Check
         {
-            get { return attributes.Get(x => x.Check); }
-            set { attributes.Set(x => x.Check, value); }
+            get { return attributes.GetOrDefault<string>("Check"); }
         }
 
         public string Proxy
         {
-            get { return attributes.Get(x => x.Proxy); }
-            set { attributes.Set(x => x.Proxy, value); }
+            get { return attributes.GetOrDefault<string>("Proxy"); }
         }
 
         public bool SelectBeforeUpdate
         {
-            get { return attributes.Get(x => x.SelectBeforeUpdate); }
-            set { attributes.Set(x => x.SelectBeforeUpdate, value); }
+            get { return attributes.GetOrDefault<bool>("SelectBeforeUpdate"); }
         }
 
         public bool Abstract
         {
-            get { return attributes.Get(x => x.Abstract); }
-            set { attributes.Set(x => x.Abstract, value); }
+            get { return attributes.GetOrDefault<bool>("Abstract"); }
         }
 
         public string Subselect
         {
-            get { return attributes.Get(x => x.Subselect); }
-            set { attributes.Set(x => x.Subselect, value); }
+            get { return attributes.GetOrDefault<string>("Subselect"); }
         }
 
         public string SchemaAction
         {
-            get { return attributes.Get(x => x.SchemaAction); }
-            set { attributes.Set(x => x.SchemaAction, value); }
+            get { return attributes.GetOrDefault<string>("SchemaAction"); }
         }
 
         public string EntityName
         {
-            get { return attributes.Get(x => x.EntityName); }
-            set { attributes.Set(x => x.EntityName, value); }
+            get { return attributes.GetOrDefault<string>("EntityName"); }
         }       
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<ClassMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<ClassMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
-        }
 
         public bool Equals(ClassMapping other)
         {
@@ -251,6 +205,21 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public override int GetHashCode()
         {
             return (attributes != null ? attributes.GetHashCode() : 0);
+        }
+
+        public void Set<T>(Expression<Func<ClassMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

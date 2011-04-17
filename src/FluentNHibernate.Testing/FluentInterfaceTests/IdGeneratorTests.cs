@@ -42,7 +42,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ClassMap<IdentityExamples>()
                 .Mapping(m => m.Id(x => x.Guid))
-                .ModelShouldMatch(x => ((IdMapping)x.Id).IsSpecified(p => p.Generator).ShouldBeFalse());
+                .ModelShouldMatch(x => ((IdMapping)x.Id).IsSpecified("Generator").ShouldBeTrue());
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             ClassMap<IdentityExamples>()
                 .Mapping(m => m.Id(x => x.Int).GeneratedBy.Assigned())
-                .ModelShouldMatch(x => ((IdMapping)x.Id).IsSpecified(p => p.Generator).ShouldBeTrue());
+                .ModelShouldMatch(x => ((IdMapping)x.Id).IsSpecified("Generator").ShouldBeTrue());
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             public object Generate(ISessionImplementor session, object obj)
             {
-                throw new NotImplementedException();
+                return obj;
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -10,15 +11,15 @@ namespace FluentNHibernate.MappingModel.Collections
     {
         readonly MappedMembers mappedMembers;
         readonly List<NestedCompositeElementMapping> compositeElements = new List<NestedCompositeElementMapping>();
-        readonly AttributeStore<CompositeElementMapping> attributes;
+        readonly AttributeStore attributes;
 
         public CompositeElementMapping()
             : this(new AttributeStore())
         { }
 
-        public CompositeElementMapping(AttributeStore store)
+        public CompositeElementMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<CompositeElementMapping>(store);
+            this.attributes = attributes;
             mappedMembers = new MappedMembers();
         }
 
@@ -37,14 +38,12 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public TypeReference Class
         {
-            get { return attributes.Get(x => x.Class); }
-            set { attributes.Set(x => x.Class, value); }
+            get { return attributes.GetOrDefault<TypeReference>("Class"); }
         }
 
         public ParentMapping Parent
         {
-            get { return attributes.Get(x => x.Parent); }
-            set { attributes.Set(x => x.Parent, value); }
+            get { return attributes.GetOrDefault<ParentMapping>("Parent"); }
         }
 
         public IEnumerable<PropertyMapping> Properties
@@ -79,21 +78,6 @@ namespace FluentNHibernate.MappingModel.Collections
             compositeElements.Add(compositeElement);
         }
 
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<CompositeElementMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<CompositeElementMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
-        }
-
         public bool Equals(CompositeElementMapping other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -118,6 +102,21 @@ namespace FluentNHibernate.MappingModel.Collections
                 result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        public void Set<T>(Expression<Func<CompositeElementMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

@@ -95,7 +95,7 @@ namespace FluentNHibernate.Testing.Testing
 
         public class NameEqualityComparer : IEqualityComparer
         {
-            public new bool Equals(object x, object y)
+            bool IEqualityComparer.Equals(object x, object y)
             {
                 if ( x == null || y == null )
                     return false;
@@ -110,7 +110,7 @@ namespace FluentNHibernate.Testing.Testing
 
             public int GetHashCode(object obj)
             {
-                throw new NotImplementedException();
+                return 0;
             }
         }
 

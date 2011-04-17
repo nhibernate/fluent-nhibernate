@@ -76,7 +76,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteColumns()
         {
             var mapping = new KeyMapping();
-            mapping.AddColumn(new ColumnMapping { Name = "Column1" });
+            mapping.AddColumn(new ColumnMapping("Column1"));
 
             writer.VerifyXml(mapping)
                 .Element("column").Exists();

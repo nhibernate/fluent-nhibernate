@@ -163,8 +163,7 @@
     <Compile Include="ConventionsTests\ApplyingToModel\VersionConventionTests.cs" />
     <Compile Include="ConventionFinderTests\FindTests.cs" />
     <Compile Include="ConventionsTests\ForeignKeyConventionTests.cs" />
-    <Compile Include="ConventionsTests\Inspection\HibernateMappingInspectorMapsToHibernateMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\ValueTypes\SchemaActionTests.cs" />
+    <Compile Include="ConventionsTests\Inspection\SchemaActionTests.cs" />
     <Compile Include="DomainModel\InverseOneToManyTester.cs" />
     <Compile Include="DomainModel\Mapping\StoredProcedureTests.cs" />
     <Compile Include="FluentInterfaceTests\ColumnPartTests.cs" />
@@ -192,7 +191,6 @@
     <Compile Include="FluentInterfaceTests\StoredProcedurePartGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\WhereTests.cs" />
     <Compile Include="MappingModel\Equality\CollectionContentEqualitySpecs.cs" />
-    <Compile Include="MappingModel\Equality\MappingEqualitySpecs.cs" />
     <Compile Include="MappingModel\Output\XmlDiscriminatorWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterDefinitionWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlFilterWriterTester.cs" />
@@ -200,7 +198,6 @@
     <Compile Include="MappingModel\Output\XmlStoredProcedureWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlTuplizerWriterTester.cs" />
     <Compile Include="MappingModel\ReferenceComponentMappingSpecs.cs" />
-    <Compile Include="ModelTestExtensions.cs" />
     <Compile Include="ConventionsTests\MultipleHelperConventions.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\ArrayConventionTests.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\HibernateMappingConventionTests.cs" />
@@ -220,44 +217,15 @@
     <Compile Include="ConventionsTests\OverridingFluentInterface\HasManyConventionTests.cs" />
     <Compile Include="ConventionsTests\OverridingFluentInterface\PropertyConventionTests.cs" />
     <Compile Include="ConventionsTests\ForeignKeyHelperTests.cs" />
-    <Compile Include="ConventionsTests\Inspection\ColumnInspectorMapsToColumnMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\ClassInspectorMapsToClassMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\CacheInspectorMapsToCacheMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\AnyInspectorMapsToAnyMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\ComponentInspectorMapsToComponentMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\CompositeIdInspectorMapsToCompositeIdMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\CompositeElementInspectorMapsToCompositeElementMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\CollectionInspectorMapsToCollectionMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\IndexManyToManyInspectorMapsToIndexManyToManyMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\IndexInspectorMapsToIndexMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\ElementInspectorMapsToElementMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\ManyToManyInspectorMapsToManyToManyMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\OneToManyInspectorMapsToOneToManyMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\JoinedSubclassInspectorMapsToJoinedSubclassMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\SubclassInspectorMapsToSubclassMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\KeyPropertyInspectorMapsToKeyPropertyMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\KeyManyToOneInspectorMapsToKeyManyToOneMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\IdInspectorMapsToIdMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\ParentInspectorMapsToParentMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\DynamicComponentInspectorMapsToDynamicComponentMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\JoinInspectorMapsToJoinMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\MetaValueInspectorMapsToMetaValueMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\ManyToOneInspectorMapsToManyToOneMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\DiscriminatorInspectorMapsToDiscriminatorMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\GeneratorInspectorMapsToGeneratorMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\KeyInspectorMapsToKeyMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\OneToOneInspectorMapsToOneToOneMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\ValueTypes\AccessTests.cs" />
-    <Compile Include="ConventionsTests\Inspection\ValueTypes\CascadeTests.cs" />
-    <Compile Include="ConventionsTests\Inspection\ValueTypes\FetchTests.cs" />
-    <Compile Include="ConventionsTests\Inspection\ValueTypes\GeneratedTests.cs" />
-    <Compile Include="ConventionsTests\Inspection\ValueTypes\IncludeTests.cs" />
-    <Compile Include="ConventionsTests\Inspection\ValueTypes\NotFoundTests.cs" />
-    <Compile Include="ConventionsTests\Inspection\ValueTypes\OnDeleteTests.cs" />
-    <Compile Include="ConventionsTests\Inspection\ValueTypes\OptimisticLockTests.cs" />
-    <Compile Include="ConventionsTests\Inspection\ValueTypes\PolymorphismTests.cs" />
-    <Compile Include="ConventionsTests\Inspection\VersionInspectorMapsToVersionMapping.cs" />
-    <Compile Include="ConventionsTests\Inspection\PropertyInspectorMapsToPropertyMapping.cs" />
+    <Compile Include="ConventionsTests\Inspection\AccessTests.cs" />
+    <Compile Include="ConventionsTests\Inspection\CascadeTests.cs" />
+    <Compile Include="ConventionsTests\Inspection\FetchTests.cs" />
+    <Compile Include="ConventionsTests\Inspection\GeneratedTests.cs" />
+    <Compile Include="ConventionsTests\Inspection\IncludeTests.cs" />
+    <Compile Include="ConventionsTests\Inspection\NotFoundTests.cs" />
+    <Compile Include="ConventionsTests\Inspection\OnDeleteTests.cs" />
+    <Compile Include="ConventionsTests\Inspection\OptimisticLockTests.cs" />
+    <Compile Include="ConventionsTests\Inspection\PolymorphismTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaEqualSimpleTypeEvalTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaEqualComplexTypeTests.cs" />
     <Compile Include="ConventionsTests\AcceptanceCriteria\PropertyAcceptanceCriteriaEqualSimpleTypeTests.cs" />
@@ -371,7 +339,6 @@
     <Compile Include="FluentInterfaceTests\SubclassSubPartModelGenerationTests.cs" />
     <Compile Include="FluentInterfaceTests\VersionMutablePropertyModelGenerationTests.cs" />
     <Compile Include="Infrastructure\ContainerTester.cs" />
-    <Compile Include="MappingModel\Defaults\ComponentMappingDefaultsTester.cs" />
     <Compile Include="MappingModel\Defaults\PropertyColumnDefaultsTester.cs" />
     <Compile Include="MappingModel\Output\XmlArrayWriterTester.cs" />
     <Compile Include="MappingModel\Output\XmlCompositeIdWriterTester.cs" />
@@ -467,7 +434,6 @@
     <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.Inheritance.cs" />
     <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.Overrides.cs" />
     <Compile Include="AutoMapping\Steps\HasManyToManyStepTests.cs" />
-    <Compile Include="AutoMapping\Steps\IdentityStepTests.cs" />
     <Compile Include="AutoMapping\Steps\ReferenceStepTests.cs" />
     <Compile Include="AutoMapping\Steps\HasManyStepTests.cs" />
     <Compile Include="AutoMapping\Steps\VersionStepTests.cs" />
@@ -490,9 +456,6 @@
     <Compile Include="Utils\TypeReferenceEnumTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Fixtures\Conventions\" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -508,6 +471,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Fixtures\Conventions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

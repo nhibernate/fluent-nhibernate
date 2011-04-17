@@ -10,14 +10,14 @@ namespace FluentNHibernate.Mapping
 {
     public class IdentityPart : IIdentityMappingProvider
     {
-        private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
-        private readonly IList<string> columns = new List<string>();
-        private Member member;
-        private readonly Type entityType;
-        private readonly AccessStrategyBuilder<IdentityPart> access;
-        private readonly AttributeStore<IdMapping> attributes = new AttributeStore<IdMapping>();
-        private Type identityType;
-        private bool nextBool = true;
+        readonly AttributeStore columnAttributes = new AttributeStore();
+        readonly IList<string> columns = new List<string>();
+        Member member;
+        readonly Type entityType;
+        readonly AccessStrategyBuilder<IdentityPart> access;
+        readonly AttributeStore attributes = new AttributeStore();
+        Type identityType;
+        bool nextBool = true;
         string name;
 
         public IdentityPart(Type entity, Member member)
@@ -25,8 +25,8 @@ namespace FluentNHibernate.Mapping
             entityType = entity;
             this.member = member;
             identityType = member.PropertyType;
-            
-            access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set(x => x.Access, value));
+
+            access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
             GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, member.PropertyType, entityType);
             SetName(member.Name);
             SetDefaultGenerator();
@@ -38,7 +38,7 @@ namespace FluentNHibernate.Mapping
             this.entityType = entity;
             this.identityType = identityType;
 
-            access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set(x => x.Access, value));
+            access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
             GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, this.identityType, entity);
 
             SetDefaultGenerator();
@@ -51,14 +51,14 @@ namespace FluentNHibernate.Mapping
             if (resolvedAccess == Mapping.Access.Property || resolvedAccess == Mapping.Access.Unset)
                 return; // property is the default so we don't need to specify it
 
-            attributes.SetDefault(x => x.Access, resolvedAccess.ToString());
+            attributes.Set("Access", Layer.Defaults, resolvedAccess.ToString());
         }
 
         /// <summary>
         /// Specify the generator
         /// </summary>
         /// <example>
-        /// Id(x => x.PersonId)
+        /// Id("PersonId")
         ///   .GeneratedBy.Assigned();
         /// </example>
         public IdentityGenerationStrategyBuilder<IdentityPart> GeneratedBy { get; private set; }
@@ -90,7 +90,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="unsavedValue">Value that represents an unsaved value.</param>
         public IdentityPart UnsavedValue(object unsavedValue)
         {
-            attributes.Set(x => x.UnsavedValue, (unsavedValue ?? "null").ToString());
+            attributes.Set("UnsavedValue", Layer.UserSupplied, (unsavedValue ?? "null").ToString());
             return this;
         }
 
@@ -111,7 +111,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="length">Column length</param>
         public IdentityPart Length(int length)
         {
-            columnAttributes.Set(x => x.Length, length);
+            columnAttributes.Set("Length", Layer.UserSupplied, length);
             return this;
         }
 
@@ -121,7 +121,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="precision">Decimal precision</param>
         public IdentityPart Precision(int precision)
         {
-            columnAttributes.Set(x => x.Precision, precision);
+            columnAttributes.Set("Precision", Layer.UserSupplied, precision);
             return this;
         }
 
@@ -131,7 +131,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="scale">Decimal scale</param>
         public IdentityPart Scale(int scale)
         {
-            columnAttributes.Set(x => x.Scale, scale);
+            columnAttributes.Set("Scale", Layer.UserSupplied, scale);
             return this;
         }
 
@@ -140,7 +140,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public IdentityPart Nullable()
         {
-            columnAttributes.Set(x => x.NotNull, !nextBool);
+            columnAttributes.Set("NotNull", Layer.UserSupplied, !nextBool);
             nextBool = true;
             return this;
         }
@@ -150,7 +150,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public IdentityPart Unique()
         {
-            columnAttributes.Set(x => x.Unique, nextBool);
+            columnAttributes.Set("Unique", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -161,7 +161,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="keyColumns">Constraint columns</param>
         public IdentityPart UniqueKey(string keyColumns)
         {
-            columnAttributes.Set(x => x.UniqueKey, keyColumns);
+            columnAttributes.Set("UniqueKey", Layer.UserSupplied, keyColumns);
             return this;
         }
 
@@ -171,7 +171,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="sqlType">SQL type</param>
         public IdentityPart CustomSqlType(string sqlType)
         {
-            columnAttributes.Set(x => x.SqlType, sqlType);
+            columnAttributes.Set("SqlType", Layer.UserSupplied, sqlType);
             return this;
         }
 
@@ -181,7 +181,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="key">Index name</param>
         public IdentityPart Index(string key)
         {
-            columnAttributes.Set(x => x.Index, key);
+            columnAttributes.Set("Index", Layer.UserSupplied, key);
             return this;
         }
 
@@ -191,7 +191,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="constraint">Constraint name</param>
         public IdentityPart Check(string constraint)
         {
-            columnAttributes.Set(x => x.Check, constraint);
+            columnAttributes.Set("Check", Layer.UserSupplied, constraint);
             return this;
         }
 
@@ -201,7 +201,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="value">Default value</param>
         public IdentityPart Default(object value)
         {
-            columnAttributes.Set(x => x.Default, value.ToString());
+            columnAttributes.Set("Default", Layer.UserSupplied, value.ToString());
             return this;
         }
 
@@ -214,7 +214,7 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="T">Custom type</typeparam>
         public IdentityPart CustomType<T>()
         {
-            attributes.Set(x => x.Type, new TypeReference(typeof(T)));
+            attributes.Set("Type", Layer.UserSupplied, new TypeReference(typeof(T)));
             return this;
         }
 
@@ -227,7 +227,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="type">Custom type</param>
         public IdentityPart CustomType(Type type)
         {
-            attributes.Set(x => x.Type, new TypeReference(type));
+            attributes.Set("Type", Layer.UserSupplied, new TypeReference(type));
             return this;
         }
 
@@ -240,7 +240,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="type">Custom type</param>
         public IdentityPart CustomType(string type)
         {
-            attributes.Set(x => x.Type, new TypeReference(type));
+            attributes.Set("Type", Layer.UserSupplied, new TypeReference(type));
             return this;
         }
 
@@ -257,7 +257,7 @@ namespace FluentNHibernate.Mapping
         void SetDefaultGenerator()
         {
             var generatorMapping = new GeneratorMapping();
-            var defaultGenerator = new GeneratorBuilder(generatorMapping, identityType);
+            var defaultGenerator = new GeneratorBuilder(generatorMapping, identityType, Layer.UserSupplied);
 
             if (identityType == typeof(Guid))
                 defaultGenerator.GuidComb();
@@ -266,12 +266,12 @@ namespace FluentNHibernate.Mapping
             else
                 defaultGenerator.Assigned();
 
-            attributes.SetDefault(x => x.Generator, generatorMapping);
+            attributes.Set("Generator", Layer.Defaults, generatorMapping);
         }
 
         IdMapping IIdentityMappingProvider.GetIdentityMapping()
         {
-            var mapping = new IdMapping(attributes.CloneInner())
+            var mapping = new IdMapping(attributes.Clone())
             {
                 ContainingEntityType = entityType
             };
@@ -279,19 +279,26 @@ namespace FluentNHibernate.Mapping
             if (columns.Count > 0)
             {
                 foreach (var column in columns)
-                    mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = column });
+                {
+                    var columnMapping = new ColumnMapping(columnAttributes.Clone());
+                    columnMapping.Set(x => x.Name, Layer.Defaults, column);
+                    mapping.AddColumn(columnMapping);
+                }
             }
             else if (HasNameSpecified)
-                mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = name });
+            {
+                var columnMapping = new ColumnMapping(columnAttributes.Clone());
+                columnMapping.Set(x => x.Name, Layer.Defaults, name);
+                mapping.AddDefaultColumn(columnMapping);
+            }
 
             if (member != null)
-            {
-                mapping.Name = name;
-            }
-            mapping.SetDefaultValue("Type", new TypeReference(identityType));
+                mapping.Set(x => x.Name, Layer.Defaults, name);
+
+            mapping.Set(x => x.Type, Layer.Defaults, new TypeReference(identityType));
 
             if (GeneratedBy.IsDirty)
-                mapping.Generator = GeneratedBy.GetGeneratorMapping();
+                mapping.Set(x => x.Generator, Layer.UserSupplied, GeneratedBy.GetGeneratorMapping());
 
             return mapping;
         }

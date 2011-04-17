@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
@@ -7,7 +8,7 @@ namespace FluentNHibernate.MappingModel
     [Serializable]
     public class StoredProcedureMapping : MappingBase
     {
-        private readonly AttributeStore<StoredProcedureMapping> attributes;
+        private readonly AttributeStore attributes;
 
         public StoredProcedureMapping() : this("sql-insert", "")
         {
@@ -15,32 +16,30 @@ namespace FluentNHibernate.MappingModel
 
         public StoredProcedureMapping(AttributeStore attributes)
         {
-            this.attributes = new AttributeStore<StoredProcedureMapping>(attributes);
+            this.attributes = attributes;
         }
 
         public StoredProcedureMapping(string spType, string innerText): this(spType, innerText, new AttributeStore())
         {
         }
 
-        public StoredProcedureMapping(string spType, string innerText, AttributeStore underlyingStore)
+        public StoredProcedureMapping(string spType, string innerText, AttributeStore attributes)
         {
-            attributes = new AttributeStore<StoredProcedureMapping>(underlyingStore);
-            SPType = spType;
-            Query = innerText;
-            Check = "none";
+            this.attributes = attributes;
 
+            Set(x => x.SPType, Layer.Defaults, spType);
+            Set(x => x.Query, Layer.Defaults, innerText);
+            Set(x => x.Check, Layer.Defaults, "none");
         }
 
         public string Name
         {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            get { return attributes.GetOrDefault<string>("Name"); }
         }
 
         public Type Type
         {
-            get { return attributes.Get(x => x.Type); }
-            set { attributes.Set(x => x.Type, value); }
+            get { return attributes.GetOrDefault<Type>("Type"); }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -48,37 +47,24 @@ namespace FluentNHibernate.MappingModel
             visitor.ProcessStoredProcedure(this);
         }
 
-        public void MergeAttributes(AttributeStore store)
+        public override bool IsSpecified(string attribute)
         {
-            attributes.Merge(new AttributeStore<StoredProcedureMapping>(store));
-        }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
+            return attributes.IsSpecified(attribute);
         }
 
         public string Check
         {
-            get { return attributes.Get(x => x.Check); }
-            set { attributes.Set(x => x.Check, value); }
+            get { return attributes.GetOrDefault<string>("Check"); }
         }
 
         public string SPType
         {
-            get { return attributes.Get(x => x.SPType); }
-            set { attributes.Set(x => x.SPType, value); }
-        }     
-        
-        public string Query
-        {
-            get { return attributes.Get(x => x.Query); }
-            set { attributes.Set(x => x.Query, value); }
+            get { return attributes.GetOrDefault<string>("SPType"); }
         }
 
-        public void SetDefaultValue<TResult>(Expression<Func<StoredProcedureMapping, TResult>> property, TResult value)
+        public string Query
         {
-            attributes.SetDefault(property, value);
+            get { return attributes.GetOrDefault<string>("Query"); }
         }
 
         public bool Equals(StoredProcedureMapping other)
@@ -103,6 +89,16 @@ namespace FluentNHibernate.MappingModel
                     return (base.GetHashCode() * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
                 }
             }
+        }
+
+        public void Set<T>(Expression<Func<StoredProcedureMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
         }
     }
 }

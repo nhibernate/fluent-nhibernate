@@ -9,21 +9,21 @@ namespace FluentNHibernate.Mapping
 {
     public class VersionPart : IVersionMappingProvider
     {
-        private readonly Type entity;
-        private readonly Member member;
-        private readonly AccessStrategyBuilder<VersionPart> access;
-        private readonly VersionGeneratedBuilder<VersionPart> generated;
-        private readonly AttributeStore<VersionMapping> attributes = new AttributeStore<VersionMapping>();
-        private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
-        private readonly List<string> columns = new List<string>();
-        private bool nextBool = true;
+        readonly Type entity;
+        readonly Member member;
+        readonly AccessStrategyBuilder<VersionPart> access;
+        readonly VersionGeneratedBuilder<VersionPart> generated;
+        readonly AttributeStore attributes = new AttributeStore();
+        readonly AttributeStore columnAttributes = new AttributeStore();
+        readonly List<string> columns = new List<string>();
+        bool nextBool = true;
 
         public VersionPart(Type entity, Member member)
         {
             this.entity = entity;
             this.member = member;
-            access = new AccessStrategyBuilder<VersionPart>(this, value => attributes.Set(x => x.Access, value));
-            generated = new VersionGeneratedBuilder<VersionPart>(this, value => attributes.Set(x => x.Generated, value));
+            access = new AccessStrategyBuilder<VersionPart>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
+            generated = new VersionGeneratedBuilder<VersionPart>(this, value => attributes.Set("Generated", Layer.UserSupplied, value));
 
             SetDefaultAccess();
         }
@@ -35,7 +35,7 @@ namespace FluentNHibernate.Mapping
             if (resolvedAccess == Mapping.Access.Property || resolvedAccess == Mapping.Access.Unset)
                 return; // property is the default so we don't need to specify it
 
-            attributes.SetDefault(x => x.Access, resolvedAccess.ToString());
+            attributes.Set("Access", Layer.Defaults, resolvedAccess.ToString());
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="value">Unsaved value</param>
         public VersionPart UnsavedValue(string value)
         {
-            attributes.Set(x => x.UnsavedValue, value);
+            attributes.Set("UnsavedValue", Layer.UserSupplied, value);
             return this;
         }
 
@@ -93,7 +93,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="length">Column length</param>
         public VersionPart Length(int length)
         {
-            columnAttributes.Set(x => x.Length, length);
+            columnAttributes.Set("Length", Layer.UserSupplied, length);
             return this;
         }
 
@@ -103,7 +103,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="precision">Decimal precision</param>
         public VersionPart Precision(int precision)
         {
-            columnAttributes.Set(x => x.Precision, precision);
+            columnAttributes.Set("Precision", Layer.UserSupplied, precision);
             return this;
         }
 
@@ -113,7 +113,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="scale">Decimal scale</param>
         public VersionPart Scale(int scale)
         {
-            columnAttributes.Set(x => x.Scale, scale);
+            columnAttributes.Set("Scale", Layer.UserSupplied, scale);
             return this;
         }
 
@@ -122,7 +122,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public VersionPart Nullable()
         {
-            columnAttributes.Set(x => x.NotNull, !nextBool);
+            columnAttributes.Set("NotNull", Layer.UserSupplied, !nextBool);
             nextBool = true;
             return this;
         }
@@ -132,7 +132,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public VersionPart Unique()
         {
-            columnAttributes.Set(x => x.Unique, nextBool);
+            columnAttributes.Set("Unique", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -143,7 +143,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="keyColumns">Constraint columns</param>
         public VersionPart UniqueKey(string keyColumns)
         {
-            columnAttributes.Set(x => x.UniqueKey, keyColumns);
+            columnAttributes.Set("UniqueKey", Layer.UserSupplied, keyColumns);
             return this;
         }
 
@@ -153,7 +153,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="index">Index name</param>
         public VersionPart Index(string index)
         {
-            columnAttributes.Set(x => x.Index, index);
+            columnAttributes.Set("Index", Layer.UserSupplied, index);
             return this;
         }
 
@@ -163,7 +163,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="constraint">Constraint name</param>
         public VersionPart Check(string constraint)
         {
-            columnAttributes.Set(x => x.Check, constraint);
+            columnAttributes.Set("Check", Layer.UserSupplied, constraint);
             return this;
         }
 
@@ -173,7 +173,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="value">Default value</param>
         public VersionPart Default(object value)
         {
-            columnAttributes.Set(x => x.Default, value.ToString());
+            columnAttributes.Set("Default", Layer.UserSupplied, value.ToString());
             return this;
         }
 
@@ -184,7 +184,7 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="T">Custom type</typeparam>
         public VersionPart CustomType<T>()
         {
-            attributes.Set(x => x.Type, new TypeReference(typeof(T)));
+            attributes.Set("Type", Layer.UserSupplied, new TypeReference(typeof(T)));
             return this;
         }
 
@@ -195,7 +195,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="type">Custom type</param>
         public VersionPart CustomType(Type type)
         {
-            attributes.Set(x => x.Type, new TypeReference(type));
+            attributes.Set("Type", Layer.UserSupplied, new TypeReference(type));
             return this;
         }
 
@@ -206,7 +206,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="type">Custom type</param>
         public VersionPart CustomType(string type)
         {
-            attributes.Set(x => x.Type, new TypeReference(type));
+            attributes.Set("Type", Layer.UserSupplied, new TypeReference(type));
             return this;
         }
 
@@ -216,21 +216,30 @@ namespace FluentNHibernate.Mapping
         /// <param name="sqlType">SQL type</param>
         public VersionPart CustomSqlType(string sqlType)
         {
-            columnAttributes.Set(x => x.SqlType, sqlType);
+            columnAttributes.Set("SqlType", Layer.UserSupplied, sqlType);
             return this;
         }
 
         VersionMapping IVersionMappingProvider.GetVersionMapping()
         {
-            var mapping = new VersionMapping(attributes.CloneInner());
+            var mapping = new VersionMapping(attributes.Clone())
+            {
+                ContainingEntityType = entity
+            };
 
-            mapping.ContainingEntityType = entity;
+            mapping.Set(x => x.Name, Layer.Defaults, member.Name);
+            mapping.Set(x => x.Type, Layer.Defaults, member.PropertyType == typeof(DateTime) ? new TypeReference("timestamp") : new TypeReference(member.PropertyType));
 
-            mapping.SetDefaultValue("Name", member.Name);
-            mapping.SetDefaultValue("Type", member.PropertyType == typeof(DateTime) ? new TypeReference("timestamp") : new TypeReference(member.PropertyType));
-            mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = member.Name });
+            var defaultColumnMapping = new ColumnMapping(columnAttributes.Clone());
+            defaultColumnMapping.Set(x => x.Name, Layer.Defaults, member.Name);
+            mapping.AddDefaultColumn(defaultColumnMapping);
 
-            columns.ForEach(column => mapping.AddColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = column }));
+            columns.ForEach(column =>
+            {
+                var columnMapping = new ColumnMapping(columnAttributes.Clone());
+                columnMapping.Set(x => x.Name, Layer.Defaults, column);
+                mapping.AddColumn(columnMapping);
+            });
 
             return mapping;
         }

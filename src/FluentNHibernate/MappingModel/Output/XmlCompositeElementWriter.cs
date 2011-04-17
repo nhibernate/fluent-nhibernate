@@ -29,7 +29,7 @@ namespace FluentNHibernate.MappingModel.Output
             var name = mapping is NestedCompositeElementMapping ? "nested-composite-element" : "composite-element";
             var element = document.AddElement(name);
 
-            if (mapping.HasValue(x => x.Class))
+            if (mapping.IsSpecified("Class"))
                 element.WithAtt("class", mapping.Class);
 
             if (mapping is NestedCompositeElementMapping)

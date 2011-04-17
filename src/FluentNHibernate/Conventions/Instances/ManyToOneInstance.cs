@@ -26,7 +26,7 @@ namespace FluentNHibernate.Conventions.Instances
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
-            column.Name = columnName;
+            column.Set(x => x.Name, Layer.Conventions, columnName);
 
             mapping.ClearColumns();
             mapping.AddColumn(column);
@@ -34,59 +34,33 @@ namespace FluentNHibernate.Conventions.Instances
         
         public new void Formula(string formula)
         {
-            if (!mapping.IsSpecified("Formula"))
-            {
-                mapping.Formula = formula;
-                mapping.ClearColumns();
-            }
+            mapping.Set(x => x.Formula, Layer.Conventions, formula);
+            mapping.ClearColumns();
         }
 
         public void CustomClass<T>()
         {
-            if (!mapping.IsSpecified("Class"))
-                mapping.Class = new TypeReference(typeof(T));
+            CustomClass(typeof(T));
         }
 
         public void CustomClass(Type type)
         {
-            if (!mapping.IsSpecified("Class"))
-                mapping.Class = new TypeReference(type);
+            mapping.Set(x => x.Class, Layer.Conventions, new TypeReference(type));
         }
 
         public new IAccessInstance Access
         {
-            get
-            {
-                return new AccessInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Access"))
-                        mapping.Access = value;
-                });
-            }
+            get { return new AccessInstance(value => mapping.Set(x => x.Access, Layer.Conventions, value)); }
         }
 
         public new ICascadeInstance Cascade
         {
-            get
-            {
-                return new CascadeInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Cascade"))
-                        mapping.Cascade = value;
-                });
-            }
+            get { return new CascadeInstance(value => mapping.Set(x => x.Cascade, Layer.Conventions, value)); }
         }
 
         new public IFetchInstance Fetch
         {
-            get
-            {
-                return new FetchInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Fetch"))
-                        mapping.Fetch = value;
-                });
-            }
+            get { return new FetchInstance(value => mapping.Set(x => x.Fetch, Layer.Conventions, value)); }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -101,116 +75,90 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new INotFoundInstance NotFound
         {
-            get
-            {
-                return new NotFoundInstance(value =>
-                {
-                    if (!mapping.IsSpecified("NotFound"))
-                        mapping.NotFound = value;
-                });
-            }
+            get { return new NotFoundInstance(value => mapping.Set(x => x.NotFound, Layer.Conventions, value)); }
         }
 
         public void Index(string index)
         {
-            if (mapping.Columns.First().IsSpecified("Index"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Index = index;
+                column.Set(x => x.Index, Layer.Conventions, index);
         }
 
         public new void Insert()
         {
-            if (!mapping.IsSpecified("Insert"))
-                mapping.Insert = nextBool;
+            mapping.Set(x => x.Insert, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void OptimisticLock()
         {
-            if (!mapping.IsSpecified("OptimisticLock"))
-                mapping.OptimisticLock = nextBool;
+            mapping.Set(x => x.OptimisticLock, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void LazyLoad()
         {
-            if (!mapping.IsSpecified("Lazy"))
-            {
-                if (nextBool)
-                    LazyLoad(Laziness.Proxy);
-                else
-                    LazyLoad(Laziness.False);
-            }
+            if (nextBool)
+                LazyLoad(Laziness.Proxy);
+            else
+                LazyLoad(Laziness.False);
             nextBool = true;
         }
 
         public new void LazyLoad(Laziness laziness)
         {
-            mapping.Lazy = laziness.ToString();
+            mapping.Set(x => x.Lazy, Layer.Conventions, laziness.ToString());
             nextBool = true;
         }
 
         public new void Nullable()
         {
-            if (!mapping.Columns.First().IsSpecified("NotNull"))
-                foreach (var column in mapping.Columns)
-                    column.NotNull = !nextBool;
+            foreach (var column in mapping.Columns)
+                column.Set(x => x.NotNull, Layer.Conventions, !nextBool);
 
             nextBool = true;
         }
 
         public new void PropertyRef(string property)
         {
-            if (!mapping.IsSpecified("PropertyRef"))
-                mapping.PropertyRef = property;
+            mapping.Set(x => x.PropertyRef, Layer.Conventions, property);
         }
 
         public void ReadOnly()
         {
-            if (!mapping.IsSpecified("Insert") && !mapping.IsSpecified("Update"))
-            {
-                mapping.Insert = !nextBool;
-                mapping.Update = !nextBool;
-            }
+            mapping.Set(x => x.Insert, Layer.Conventions, !nextBool);
+            mapping.Set(x => x.Update, Layer.Conventions, !nextBool);
             nextBool = true;
         }
 
         public void Unique()
         {
-            if (!mapping.Columns.First().IsSpecified("Unique"))
-                foreach (var column in mapping.Columns)
-                    column.Unique = nextBool;
+            foreach (var column in mapping.Columns)
+                column.Set(x => x.Unique, Layer.Conventions, nextBool);
 
             nextBool = true;
         }
 
         public void UniqueKey(string key)
         {
-            if (mapping.Columns.First().IsSpecified("UniqueKey"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.UniqueKey = key;
+                column.Set(x => x.UniqueKey, Layer.Conventions, key);
         }
 
         public new void Update()
         {
-            if (!mapping.IsSpecified("Update"))
-                mapping.Update = nextBool;
+            mapping.Set(x => x.Update, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void ForeignKey(string key)
         {
-            if (!mapping.IsSpecified("ForeignKey"))
-                mapping.ForeignKey = key;
+            mapping.Set(x => x.ForeignKey, Layer.Conventions, key);
         }
 
         public void OverrideInferredClass(Type type)
         {
-            mapping.Class = new TypeReference(type);
+            mapping.Set(x => x.Class, Layer.Conventions, new TypeReference(type));
         }
     }
 }

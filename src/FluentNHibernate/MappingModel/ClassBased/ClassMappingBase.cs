@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
@@ -8,17 +7,19 @@ namespace FluentNHibernate.MappingModel.ClassBased
     [Serializable]
     public abstract class ClassMappingBase : MappingBase, IHasMappedMembers
     {
-        private readonly MappedMembers mappedMembers;
-        private readonly IList<SubclassMapping> subclasses;
+        readonly AttributeStore attributes;
+        readonly MappedMembers mappedMembers;
+        readonly IList<SubclassMapping> subclasses;
 
-        protected ClassMappingBase()
+        protected ClassMappingBase(AttributeStore attributes)
         {
+            this.attributes = attributes;
             mappedMembers = new MappedMembers();
             subclasses = new List<SubclassMapping>();
         }
 
-        public abstract string Name { get; set; }
-        public abstract Type Type { get; set;}
+        public abstract string Name { get; }
+        public abstract Type Type { get; }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
@@ -171,8 +172,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
             return string.Format("ClassMapping({0})", Type.Name);
         }
 
-        public abstract void MergeAttributes(AttributeStore store);
-
         public bool Equals(ClassMappingBase other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -197,5 +196,9 @@ namespace FluentNHibernate.MappingModel.ClassBased
             }
         }
 
+        public void MergeAttributes(AttributeStore clone)
+        {
+            clone.CopyTo(attributes);
+        }
     }
 }

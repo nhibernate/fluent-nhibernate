@@ -1,4 +1,5 @@
 using System;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using NHibernate.Id;
 
@@ -16,7 +17,7 @@ namespace FluentNHibernate.Mapping
             this.parent = parent;
             this.entity = entity;
 
-            builder = new GeneratorBuilder(mapping, identityType);
+            builder = new GeneratorBuilder(mapping, identityType, Layer.UserSupplied);
         }
 
         internal bool IsDirty { get; private set; }

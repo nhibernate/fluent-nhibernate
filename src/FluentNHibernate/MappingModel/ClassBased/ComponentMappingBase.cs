@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.ClassBased
@@ -7,19 +6,16 @@ namespace FluentNHibernate.MappingModel.ClassBased
     [Serializable]
     public abstract class ComponentMappingBase : ClassMappingBase
     {
-        private readonly AttributeStore<ComponentMappingBase> attributes;
+        private readonly AttributeStore attributes;
 
         protected ComponentMappingBase()
             : this(new AttributeStore())
         {}
 
-        protected ComponentMappingBase(AttributeStore store)
+        protected ComponentMappingBase(AttributeStore attributes)
+            : base(attributes)
         {
-            attributes = new AttributeStore<ComponentMappingBase>(store);
-            attributes.SetDefault(x => x.Unique, false);
-            attributes.SetDefault(x => x.Update, true);
-            attributes.SetDefault(x => x.Insert, true);
-            attributes.SetDefault(x => x.OptimisticLock, true);
+            this.attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -35,55 +31,32 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
         public ParentMapping Parent
         {
-            get { return attributes.Get(x => x.Parent); }
-            set { attributes.Set(x => x.Parent, value); }
+            get { return attributes.GetOrDefault<ParentMapping>("Parent"); }
         }
 
         public bool Unique
         {
-            get { return attributes.Get(x => x.Unique); }
-            set { attributes.Set(x => x.Unique, value); }
+            get { return attributes.GetOrDefault<bool>("Unique"); }
         }
 
         public bool Insert
         {
-            get { return attributes.Get(x => x.Insert); }
-            set { attributes.Set(x => x.Insert, value); }
+            get { return attributes.GetOrDefault<bool>("Insert"); }
         }
 
         public bool Update
         {
-            get { return attributes.Get(x => x.Update); }
-            set { attributes.Set(x => x.Update, value); }
+            get { return attributes.GetOrDefault<bool>("Update"); }
         }
 
         public string Access
         {
-            get { return attributes.Get(x => x.Access); }
-            set { attributes.Set(x => x.Access, value); }
+            get { return attributes.GetOrDefault<string>("Access"); }
         }
 
         public bool OptimisticLock
         {
-            get { return attributes.Get(x => x.OptimisticLock); }
-            set { attributes.Set(x => x.OptimisticLock, value); }
-        }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public abstract bool HasValue(string property);
-
-        public bool HasValue<TResult>(Expression<Func<ComponentMappingBase, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<ComponentMappingBase, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
+            get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
         }
 
         public bool Equals(ComponentMappingBase other)

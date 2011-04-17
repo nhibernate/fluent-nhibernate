@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
@@ -7,15 +8,15 @@ namespace FluentNHibernate.MappingModel
     [Serializable]
     public class TuplizerMapping : MappingBase
     {
-        private readonly AttributeStore<TuplizerMapping> attributes;
+        readonly AttributeStore attributes;
 
         public TuplizerMapping()
             : this(new AttributeStore())
         {}
 
-        public TuplizerMapping(AttributeStore underlyingStore)
+        public TuplizerMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<TuplizerMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -23,32 +24,24 @@ namespace FluentNHibernate.MappingModel
             visitor.ProcessTuplizer(this);
         }
 
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
+        }
+
         public TuplizerMode Mode
         {
-            get { return attributes.Get(x => x.Mode); }
-            set { attributes.Set(x => x.Mode, value); }
+            get { return attributes.GetOrDefault<TuplizerMode>("Mode"); }
         }
 
         public string EntityName
         {
-            get { return attributes.Get(x => x.EntityName); }
-            set { attributes.Set(x => x.EntityName, value); }
+            get { return attributes.GetOrDefault<string>("EntityName"); }
         }
 
         public TypeReference Type
         {
-            get { return attributes.Get(x => x.Type); }
-            set { attributes.Set(x => x.Type, value); }
-        }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);            
-        }
-
-        public bool HasValue<TResult>(Expression<Func<TuplizerMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
+            get { return attributes.GetOrDefault<TypeReference>("Type"); }
         }
 
         public bool Equals(TuplizerMapping other)
@@ -70,12 +63,15 @@ namespace FluentNHibernate.MappingModel
         {
             return (attributes != null ? attributes.GetHashCode() : 0);
         }
-    }
 
-    public enum TuplizerMode
-    {
-        Poco,
-        Xml,
-        DynamicMap
+        public void Set<T>(Expression<Func<TuplizerMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
     }
 }

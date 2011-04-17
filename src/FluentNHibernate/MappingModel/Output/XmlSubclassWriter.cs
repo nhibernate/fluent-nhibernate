@@ -29,58 +29,65 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement(mapping.SubclassType.GetElementName());
 
-            if (mapping.HasValue(x => x.Name))
+            if (mapping.IsSpecified("Name"))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.HasValue(x => x.Proxy))
+            if (mapping.IsSpecified("Proxy"))
                 element.WithAtt("proxy", mapping.Proxy);
 
-            if (mapping.HasValue(x => x.Lazy))
+            if (mapping.IsSpecified("Lazy"))
                 element.WithAtt("lazy", mapping.Lazy);
 
-            if (mapping.HasValue(x => x.DynamicUpdate))
+            if (mapping.IsSpecified("DynamicUpdate"))
                 element.WithAtt("dynamic-update", mapping.DynamicUpdate);
 
-            if (mapping.HasValue(x => x.DynamicInsert))
+            if (mapping.IsSpecified("DynamicInsert"))
                 element.WithAtt("dynamic-insert", mapping.DynamicInsert);
 
-            if (mapping.HasValue(x => x.SelectBeforeUpdate))
+            if (mapping.IsSpecified("SelectBeforeUpdate"))
                 element.WithAtt("select-before-update", mapping.SelectBeforeUpdate);
 
-            if (mapping.HasValue(x => x.Abstract))
+            if (mapping.IsSpecified("Abstract"))
                 element.WithAtt("abstract", mapping.Abstract);
 
-            if (mapping.HasValue(x => x.EntityName))
+            if (mapping.IsSpecified("EntityName"))
                 element.WithAtt("entity-name", mapping.EntityName);
 
             if (mapping.SubclassType == SubclassType.Subclass)
             {
-                if (mapping.HasValue(x => x.DiscriminatorValue))
+                if (mapping.IsSpecified("DiscriminatorValue"))
                     element.WithAtt("discriminator-value", mapping.DiscriminatorValue.ToString());
             }
             else
             {
-                if (mapping.HasValue(x => x.TableName))
+                if (mapping.IsSpecified("TableName"))
                     element.WithAtt("table", mapping.TableName);
 
-                if (mapping.HasValue(x => x.Schema))
+                if (mapping.IsSpecified("Schema"))
                     element.WithAtt("schema", mapping.Schema);
 
-                if (mapping.HasValue(x => x.Check))
+                if (mapping.IsSpecified("Check"))
                     element.WithAtt("check", mapping.Check);
 
-                if (mapping.HasValue(x => x.Subselect))
+                if (mapping.IsSpecified("Subselect"))
                     element.WithAtt("subselect", mapping.Subselect);
 
-                if (mapping.HasValue(x => x.Persister))
+                if (mapping.IsSpecified("Persister"))
                     element.WithAtt("persister", mapping.Persister);
 
-                if (mapping.HasValue(x => x.BatchSize))
+                if (mapping.IsSpecified("BatchSize"))
                     element.WithAtt("batch-size", mapping.BatchSize);
             }
         }
 
-        public override void Visit(KeyMapping keyMapping)        {            var writer = serviceLocator.GetWriter<KeyMapping>();            var keyXml = writer.Write(keyMapping);            document.ImportAndAppendChild(keyXml);        }
+        public override void Visit(KeyMapping keyMapping)
+        {
+            var writer = serviceLocator.GetWriter<KeyMapping>();
+            var keyXml = writer.Write(keyMapping);
+
+            document.ImportAndAppendChild(keyXml);
+        }
+
         public override void Visit(SubclassMapping subclassMapping)
         {
             var writer = serviceLocator.GetWriter<SubclassMapping>();

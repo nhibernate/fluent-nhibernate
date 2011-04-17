@@ -8,9 +8,9 @@ namespace FluentNHibernate.Mapping
 {
     public class IndexManyToManyPart
     {
-        private readonly Type entity;
-        private readonly IList<string> columns = new List<string>();
-        private readonly AttributeStore<IndexManyToManyMapping> attributes = new AttributeStore<IndexManyToManyMapping>();
+        readonly Type entity;
+        readonly IList<string> columns = new List<string>();
+        readonly AttributeStore attributes = new AttributeStore();
 
         public IndexManyToManyPart(Type entity)
         {
@@ -25,13 +25,13 @@ namespace FluentNHibernate.Mapping
 
         public IndexManyToManyPart Type<TIndex>()
         {
-            attributes.Set(x => x.Class, new TypeReference(typeof(TIndex)));
+            attributes.Set("Class", Layer.UserSupplied, new TypeReference(typeof(TIndex)));
             return this;
         }
 
         public IndexManyToManyPart Type(Type indexType)
         {
-            attributes.Set(x => x.Class, new TypeReference(indexType));
+            attributes.Set("Class", Layer.UserSupplied, new TypeReference(indexType));
             return this;
         }
 
@@ -41,18 +41,24 @@ namespace FluentNHibernate.Mapping
         /// <remarks>See http://nhforge.org/blogs/nhibernate/archive/2008/10/21/entity-name-in-action-a-strongly-typed-entity.aspx</remarks>
         public IndexManyToManyPart EntityName(string entityName)
         {
-            attributes.Set(x => x.EntityName, entityName);
+            attributes.Set("EntityName", Layer.UserSupplied, entityName);
             return this;
         }
 
         [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         public IndexManyToManyMapping GetIndexMapping()
         {
-            var mapping = new IndexManyToManyMapping(attributes.CloneInner());
+            var mapping = new IndexManyToManyMapping(attributes.Clone())
+            {
+                ContainingEntityType = entity
+            };
 
-            mapping.ContainingEntityType = entity;
-
-            columns.Each(x => mapping.AddColumn(new ColumnMapping { Name = x }));
+            columns.Each(name =>
+            {
+                var columnMapping = new ColumnMapping();
+                columnMapping.Set(x => x.Name, Layer.Defaults, name);
+                mapping.AddColumn(columnMapping);
+            });
 
             return mapping;
         }

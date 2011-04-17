@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -7,16 +8,16 @@ namespace FluentNHibernate.MappingModel.Collections
     [Serializable]
     public class IndexMapping : MappingBase, IIndexMapping, IHasColumnMappings
     {
-        private readonly AttributeStore<IndexMapping> attributes;
-        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+        readonly AttributeStore attributes;
+        readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
 
         public IndexMapping()
             : this(new AttributeStore())
         {}
 
-        public IndexMapping(AttributeStore underlyingStore)
+        public IndexMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<IndexMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -29,14 +30,12 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public TypeReference Type
         {
-            get { return attributes.Get(x => x.Type); }
-            set { attributes.Set(x => x.Type, value); }
+            get { return attributes.GetOrDefault<TypeReference>("Type"); }
         }
 
         public int Offset
         {
-            get { return attributes.Get(x => x.Offset); }
-            set { attributes.Set(x => x.Offset, value); }
+            get { return attributes.GetOrDefault<int>("Offset"); }
         }
 
         public Type ContainingEntityType { get; set; }
@@ -59,21 +58,6 @@ namespace FluentNHibernate.MappingModel.Collections
         public void ClearColumns()
         {
             columns.Clear();
-        }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<IndexMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<IndexMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
         }
 
         public bool Equals(IndexMapping other)
@@ -102,6 +86,21 @@ namespace FluentNHibernate.MappingModel.Collections
                 result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        public void Set<T>(Expression<Func<IndexMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

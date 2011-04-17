@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
@@ -9,18 +10,18 @@ namespace FluentNHibernate.MappingModel
     [Serializable]
     public class HibernateMapping : MappingBase
     {
-        private readonly IList<ClassMapping> classes;
-        private readonly IList<FilterDefinitionMapping> filters;
-        private readonly IList<ImportMapping> imports;
-        private readonly AttributeStore<HibernateMapping> attributes;
+        readonly IList<ClassMapping> classes;
+        readonly IList<FilterDefinitionMapping> filters;
+        readonly IList<ImportMapping> imports;
+        readonly AttributeStore attributes;
 
         public HibernateMapping()
             : this(new AttributeStore())
         {}
 
-        public HibernateMapping(AttributeStore underlyingStore)
+        public HibernateMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<HibernateMapping>(underlyingStore);
+            this.attributes = attributes;
             classes = new List<ClassMapping>();
             filters = new List<FilterDefinitionMapping>();
             imports = new List<ImportMapping>();
@@ -72,65 +73,42 @@ namespace FluentNHibernate.MappingModel
 
         public string Catalog
         {
-            get { return attributes.Get(x => x.Catalog); }
-            set { attributes.Set(x => x.Catalog, value); }
+            get { return attributes.GetOrDefault<string>("Catalog"); }
         }
 
         public string DefaultAccess
         {
-            get { return attributes.Get(x => x.DefaultAccess); }
-            set { attributes.Set(x => x.DefaultAccess, value); }
+            get { return attributes.GetOrDefault<string>("DefaultAccess"); }
         }
 
         public string DefaultCascade
         {
-            get { return attributes.Get(x => x.DefaultCascade); }
-            set { attributes.Set(x => x.DefaultCascade, value); }
+            get { return attributes.GetOrDefault<string>("DefaultCascade"); }
         }
 
         public bool AutoImport
         {
-            get { return attributes.Get(x => x.AutoImport); }
-            set { attributes.Set(x => x.AutoImport, value); }
+            get { return attributes.GetOrDefault<bool>("AutoImport"); }
         }
 
         public string Schema
         {
-            get { return attributes.Get(x => x.Schema); }
-            set { attributes.Set(x => x.Schema, value); }
+            get { return attributes.GetOrDefault<string>("Schema"); }
         }
 
         public bool DefaultLazy
         {
-            get { return attributes.Get(x => x.DefaultLazy); }
-            set { attributes.Set(x => x.DefaultLazy, value); }
+            get { return attributes.GetOrDefault<bool>("DefaultLazy"); }
         }
 
         public string Namespace
         {
-            get { return attributes.Get(x => x.Namespace); }
-            set { attributes.Set(x => x.Namespace, value); }
+            get { return attributes.GetOrDefault<string>("Namespace"); }
         }
 
         public string Assembly
         {
-            get { return attributes.Get(x => x.Assembly); }
-            set { attributes.Set(x => x.Assembly, value); }
-        }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<HibernateMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<HibernateMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
+            get { return attributes.GetOrDefault<string>("Assembly"); }
         }
 
         public bool Equals(HibernateMapping other)
@@ -161,6 +139,21 @@ namespace FluentNHibernate.MappingModel
                 result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        public void Set<T>(Expression<Func<HibernateMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

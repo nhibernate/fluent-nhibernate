@@ -209,57 +209,55 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             public new bool Equals(object x, object y)
             {
-                throw new System.NotImplementedException();
+                return false;
             }
 
             public int GetHashCode(object x)
             {
-                throw new System.NotImplementedException();
+                return 0;
             }
 
             public object NullSafeGet(IDataReader rs, string[] names, object owner)
             {
-                throw new System.NotImplementedException();
+                return null;
             }
 
             public void NullSafeSet(IDbCommand cmd, object value, int index)
-            {
-                throw new System.NotImplementedException();
-            }
+            {}
 
             public object DeepCopy(object value)
             {
-                throw new System.NotImplementedException();
+                return value;
             }
 
             public object Replace(object original, object target, object owner)
             {
-                throw new System.NotImplementedException();
+                return original;
             }
 
             public object Assemble(object cached, object owner)
             {
-                throw new System.NotImplementedException();
+                return cached;
             }
 
             public object Disassemble(object value)
             {
-                throw new System.NotImplementedException();
+                return value;
             }
 
             public SqlType[] SqlTypes
             {
-                get { throw new System.NotImplementedException(); }
+                get { return null; }
             }
 
             public Type ReturnedType
             {
-                get { throw new System.NotImplementedException(); }
+                get { return null; }
             }
 
             public bool IsMutable
             {
-                get { throw new System.NotImplementedException(); }
+                get { return false; }
             }
         }
         #endregion

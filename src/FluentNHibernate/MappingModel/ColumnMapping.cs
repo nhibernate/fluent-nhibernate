@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
@@ -7,15 +8,21 @@ namespace FluentNHibernate.MappingModel
     [Serializable]
     public class ColumnMapping : MappingBase
     {
-        private readonly AttributeStore<ColumnMapping> attributes;
+        readonly AttributeStore attributes;
 
         public ColumnMapping()
             : this(new AttributeStore())
         {}
 
-        public ColumnMapping(AttributeStore underlyingStore)
+        public ColumnMapping(string defaultColumnName)
+            : this()
         {
-            attributes = new AttributeStore<ColumnMapping>(underlyingStore);
+            Set(x => x.Name, Layer.Defaults, defaultColumnName);
+        }
+
+        public ColumnMapping(AttributeStore attributes)
+        {
+            this.attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -27,93 +34,62 @@ namespace FluentNHibernate.MappingModel
 
         public string Name
         {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            get { return attributes.GetOrDefault<string>("Name"); }
         }
 
         public int Length
         {
-            get { return attributes.Get(x => x.Length); }
-            set { attributes.Set(x => x.Length, value); }
+            get { return attributes.GetOrDefault<int>("Length"); }
         }
 
         public bool NotNull
         {
-            get { return attributes.Get(x => x.NotNull); }
-            set { attributes.Set(x => x.NotNull, value); }
+            get { return attributes.GetOrDefault<bool>("NotNull"); }
         }
 
         public bool Unique
         {
-            get { return attributes.Get(x => x.Unique); }
-            set { attributes.Set(x => x.Unique, value); }
+            get { return attributes.GetOrDefault<bool>("Unique"); }
         }
 
         public string UniqueKey
         {
-            get { return attributes.Get(x => x.UniqueKey); }
-            set { attributes.Set(x => x.UniqueKey, value); }
+            get { return attributes.GetOrDefault<string>("UniqueKey"); }
         }
 
         public string SqlType
         {
-            get { return attributes.Get(x => x.SqlType); }
-            set { attributes.Set(x => x.SqlType, value); }
+            get { return attributes.GetOrDefault<string>("SqlType"); }
         }
 
         public string Index
         {
-            get { return attributes.Get(x => x.Index); }
-            set { attributes.Set(x => x.Index, value); }
+            get { return attributes.GetOrDefault<string>("Index"); }
         }
 
         public string Check
         {
-            get { return attributes.Get(x => x.Check); }
-            set { attributes.Set(x => x.Check, value); }
+            get { return attributes.GetOrDefault<string>("Check"); }
         }
 
         public int Precision
         {
-            get { return attributes.Get(x => x.Precision); }
-            set { attributes.Set(x => x.Precision, value); }
+            get { return attributes.GetOrDefault<int>("Precision"); }
         }
 
         public int Scale
         {
-            get { return attributes.Get(x => x.Scale); }
-            set { attributes.Set(x => x.Scale, value); }
+            get { return attributes.GetOrDefault<int>("Scale"); }
         }
 
         public string Default
         {
-            get { return attributes.Get(x => x.Default); }
-            set { attributes.Set(x => x.Default, value); }
-        }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<ColumnMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<ColumnMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
-        }
-
-        internal void MergeAttributes(AttributeStore<ColumnMapping> store)
-        {
-            attributes.Merge(store);
+            get { return attributes.GetOrDefault<string>("Default"); }
         }
 
         public ColumnMapping Clone()
         {
-            return new ColumnMapping(attributes.CloneInner());
+            return new ColumnMapping(attributes.Clone());
         }
 
         public bool Equals(ColumnMapping other)
@@ -133,6 +109,26 @@ namespace FluentNHibernate.MappingModel
             {
                 return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^ (Member != null ? Member.GetHashCode() : 0);
             }
+        }
+
+        public void Set<T>(Expression<Func<ColumnMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
+        }
+
+        public void MergeAttributes(AttributeStore columnAttributes)
+        {
+            attributes.Merge(columnAttributes);
         }
     }
 }

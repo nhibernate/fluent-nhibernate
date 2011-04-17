@@ -1,21 +1,20 @@
-using System;
-using System.Linq.Expressions;
 using FluentNHibernate.Visitors;
+using System;
 
 namespace FluentNHibernate.MappingModel
 {
     [Serializable]
     public class ImportMapping : MappingBase
     {
-        private readonly AttributeStore<ImportMapping> attributes = new AttributeStore<ImportMapping>();
+        readonly AttributeStore attributes;
 
         public ImportMapping()
             : this(new AttributeStore())
         {}
 
-        public ImportMapping(AttributeStore underlyingStore)
+        public ImportMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<ImportMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -25,29 +24,12 @@ namespace FluentNHibernate.MappingModel
 
         public string Rename
         {
-            get { return attributes.Get(x => x.Rename); }
-            set { attributes.Set(x => x.Rename, value); }
+            get { return attributes.GetOrDefault<string>("Rename"); }
         }
 
         public TypeReference Class
         {
-            get { return attributes.Get(x => x.Class); }
-            set { attributes.Set(x => x.Class, value); }
-        }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<ImportMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<ImportMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
+            get { return attributes.GetOrDefault<TypeReference>("Class"); }
         }
 
         public bool Equals(ImportMapping other)
@@ -68,6 +50,16 @@ namespace FluentNHibernate.MappingModel
         public override int GetHashCode()
         {
             return (attributes != null ? attributes.GetHashCode() : 0);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
         }
     }
 }

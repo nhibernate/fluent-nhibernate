@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Mapping
 {
-    public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild, ManyToManyMapping>
+    public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
     {
-        private readonly IList<FilterPart> childFilters = new List<FilterPart>();
+        private readonly IList<IFilterMappingProvider> childFilters = new List<IFilterMappingProvider>();
         private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
         private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
         private IndexManyToManyPart manyToManyIndex;
@@ -29,8 +30,8 @@ namespace FluentNHibernate.Mapping
         {
             childType = collectionType;
 
-            fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Fetch, value));
-            notFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
+            fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set("Fetch", Layer.UserSupplied, value));
+            notFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set("NotFound", Layer.UserSupplied, value));
 
             childKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
             parentKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
@@ -68,14 +69,14 @@ namespace FluentNHibernate.Mapping
 
         public ManyToManyPart<TChild> ForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName)
         {
-            keyMapping.ForeignKey = parentForeignKeyName;
-            relationshipAttributes.Set(x => x.ForeignKey, childForeignKeyName);
+            keyMapping.Set(x => x.ForeignKey, Layer.UserSupplied, parentForeignKeyName);
+            relationshipAttributes.Set("ForeignKey", Layer.UserSupplied, childForeignKeyName);
             return this;
         }
 
         public ManyToManyPart<TChild> ChildPropertyRef(string childPropertyRef)
         {
-            relationshipAttributes.Set(x => x.ChildPropertyRef, childPropertyRef);
+            relationshipAttributes.Set("ChildPropertyRef", Layer.UserSupplied, childPropertyRef);
             return this;
         }
 
@@ -101,9 +102,9 @@ namespace FluentNHibernate.Mapping
             EnsureGenericDictionary();
 
             var indexType = typeof(TChild).GetGenericArguments()[0];
-            var valueType = typeof(TChild).GetGenericArguments()[1];
+            var typeOfValue = typeof(TChild).GetGenericArguments()[1];
 
-            return AsTernaryAssociation(indexType.Name + "_id", valueType.Name + "_id");
+            return AsTernaryAssociation(indexType.Name + "_id", typeOfValue.Name + "_id");
         }
 
         public ManyToManyPart<TChild> AsTernaryAssociation(string indexColumn, string valueColumn)
@@ -116,7 +117,7 @@ namespace FluentNHibernate.Mapping
             EnsureGenericDictionary();
 
             var indexType = typeof(TChild).GetGenericArguments()[0];
-            var valueType = typeof(TChild).GetGenericArguments()[1];
+            var typeOfValue = typeof(TChild).GetGenericArguments()[1];
 
             manyToManyIndex = new IndexManyToManyPart(typeof(ManyToManyPart<TChild>));
             manyToManyIndex.Column(indexColumn);
@@ -126,24 +127,24 @@ namespace FluentNHibernate.Mapping
                 indexAction(manyToManyIndex);
 
             ChildKeyColumn(valueColumn);
-            this.valueType = valueType;
+            valueType = typeOfValue;
 
             isTernary = true;
 
             return this;
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, Type valueType)
+        public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, Type typeOfValue)
         {
-            return AsTernaryAssociation(indexType, indexType.Name + "_id", valueType, valueType.Name + "_id");
+            return AsTernaryAssociation(indexType, indexType.Name + "_id", typeOfValue, typeOfValue.Name + "_id");
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, string indexColumn, Type valueType, string valueColumn)
+        public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, string indexColumn, Type typeOfValue, string valueColumn)
         {
-            return AsTernaryAssociation(indexType, indexColumn, valueType, valueColumn, x => {});
+            return AsTernaryAssociation(indexType, indexColumn, typeOfValue, valueColumn, x => {});
         }
 
-        public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, string indexColumn, Type valueType, string valueColumn, Action<IndexManyToManyPart> indexAction)
+        public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, string indexColumn, Type typeOfValue, string valueColumn, Action<IndexManyToManyPart> indexAction)
         {
             EnsureDictionary();
 
@@ -155,7 +156,7 @@ namespace FluentNHibernate.Mapping
                 indexAction(manyToManyIndex);
 
             ChildKeyColumn(valueColumn);
-            this.valueType = valueType;
+            valueType = typeOfValue;
 
             isTernary = true;
 
@@ -167,9 +168,9 @@ namespace FluentNHibernate.Mapping
             EnsureGenericDictionary();
 
             var indexType = typeof(TChild).GetGenericArguments()[0];
-            var valueType = typeof(TChild).GetGenericArguments()[1];
+            var typeOfValue = typeof(TChild).GetGenericArguments()[1];
 
-            return AsSimpleAssociation(indexType.Name + "_id", valueType.Name + "_id");
+            return AsSimpleAssociation(indexType.Name + "_id", typeOfValue.Name + "_id");
         }
 
         public ManyToManyPart<TChild> AsSimpleAssociation(string indexColumn, string valueColumn)
@@ -177,14 +178,14 @@ namespace FluentNHibernate.Mapping
             EnsureGenericDictionary();
 
             var indexType = typeof(TChild).GetGenericArguments()[0];
-            var valueType = typeof(TChild).GetGenericArguments()[1];
+            var typeOfValue = typeof(TChild).GetGenericArguments()[1];
 
             index = new IndexPart(indexType);
             index.Column(indexColumn);
             index.Type(indexType);
 
             ChildKeyColumn(valueColumn);
-            this.valueType = valueType;
+            valueType = typeOfValue;
 
             isTernary = true;
 
@@ -215,13 +216,13 @@ namespace FluentNHibernate.Mapping
 
         protected override ICollectionRelationshipMapping GetRelationship()
         {
-            var mapping = new ManyToManyMapping(relationshipAttributes.CloneInner())
+            var mapping = new ManyToManyMapping(relationshipAttributes.Clone())
             {
                 ContainingEntityType = EntityType,
             };
 
             if (isTernary && valueType != null)
-                mapping.Class = new TypeReference(valueType);
+                mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(valueType));
 
             foreach (var filterPart in childFilters)
                 mapping.ChildFilters.Add(filterPart.GetFilterMapping());
@@ -234,7 +235,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public ManyToManyPart<TChild> OrderBy(string orderBy)
         {
-            collectionAttributes.Set(x => x.OrderBy, orderBy);
+            collectionAttributes.Set("OrderBy", Layer.UserSupplied, orderBy);
             return this;
         }
 
@@ -243,20 +244,20 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public ManyToManyPart<TChild> ChildOrderBy(string orderBy)
         {
-            relationshipAttributes.Set(x => x.OrderBy, orderBy);
+            relationshipAttributes.Set("OrderBy", Layer.UserSupplied, orderBy);
             return this;
         }
 
         public ManyToManyPart<TChild> ReadOnly()
-        {            
-            collectionAttributes.Set(x => x.Mutable, !nextBool);
+        {
+            collectionAttributes.Set("Mutable", Layer.UserSupplied, !nextBool);
             nextBool = true;
             return this;
         }
 
         public ManyToManyPart<TChild> Subselect(string subselect)
         {
-            collectionAttributes.Set(x => x.Subselect, subselect);
+            collectionAttributes.Set("Subselect", Layer.UserSupplied, subselect);
             return this;
         }
 
@@ -284,7 +285,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="name">The filter's name</param>
         public ManyToManyPart<TChild> ApplyChildFilter(string name)
         {
-            return this.ApplyChildFilter(name, null);
+            return ApplyChildFilter(name, null);
         }
 
         /// <overloads>
@@ -322,7 +323,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public ManyToManyPart<TChild> ChildWhere(string where)
         {
-            relationshipAttributes.Set(x => x.Where, where);
+            relationshipAttributes.Set("Where", Layer.UserSupplied, where);
             return this;
         }
 
@@ -332,7 +333,7 @@ namespace FluentNHibernate.Mapping
 
             // key columns
             if (parentKeyColumns.Count == 0)
-                collection.Key.AddDefaultColumn(new ColumnMapping { Name = EntityType.Name + "_id" });
+                collection.Key.AddDefaultColumn(new ColumnMapping(EntityType.Name + "_id"));
 
             foreach (var column in parentKeyColumns)
                 collection.Key.AddColumn(column);
@@ -341,7 +342,7 @@ namespace FluentNHibernate.Mapping
             {
                 // child columns
                 if (childKeyColumns.Count == 0)
-                    ((ManyToManyMapping)collection.Relationship).AddDefaultColumn(new ColumnMapping {Name = typeof(TChild).Name + "_id"});
+                    ((ManyToManyMapping)collection.Relationship).AddDefaultColumn(new ColumnMapping(typeof(TChild).Name + "_id"));
 
                 foreach (var column in childKeyColumns)
                     ((ManyToManyMapping)collection.Relationship).AddColumn(column);
@@ -351,14 +352,14 @@ namespace FluentNHibernate.Mapping
             if (index != null)
             {
 #pragma warning disable 612,618
-                collection.Index = index.GetIndexMapping();
+                collection.Set(x => x.Index, Layer.Defaults, index.GetIndexMapping());
 #pragma warning restore 612,618
             }
 
             // HACK: shouldn't have to do this!
             if (manyToManyIndex != null && collection.Collection == Collection.Map)
 #pragma warning disable 612,618
-                collection.Index = manyToManyIndex.GetIndexMapping();
+                collection.Set(x => x.Index, Layer.Defaults, manyToManyIndex.GetIndexMapping());
 #pragma warning restore 612,618
 
             return collection;

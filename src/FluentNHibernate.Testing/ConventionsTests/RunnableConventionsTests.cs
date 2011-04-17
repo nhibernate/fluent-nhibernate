@@ -640,47 +640,45 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             public new bool Equals(object x, object y)
             {
-                throw new NotImplementedException();
+                return false;
             }
 
             public int GetHashCode(object x)
             {
-                throw new NotImplementedException();
+                return 0;
             }
 
             public object NullSafeGet(IDataReader rs, string[] names, object owner)
             {
-                throw new NotImplementedException();
+                return null;
             }
 
             public void NullSafeSet(IDbCommand cmd, object value, int index)
-            {
-                throw new NotImplementedException();
-            }
+            {}
 
             public object DeepCopy(object value)
             {
-                throw new NotImplementedException();
+                return value;
             }
 
             public object Replace(object original, object target, object owner)
             {
-                throw new NotImplementedException();
+                return original;
             }
 
             public object Assemble(object cached, object owner)
             {
-                throw new NotImplementedException();
+                return cached;
             }
 
             public object Disassemble(object value)
             {
-                throw new NotImplementedException();
+                return value;
             }
 
             public SqlType[] SqlTypes
             {
-                get { throw new NotImplementedException(); }
+                get { return null; }
             }
             public Type ReturnedType
             {
@@ -688,7 +686,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             }
             public bool IsMutable
             {
-                get { throw new NotImplementedException(); }
+                get { return false; }
             }
         }
 

@@ -30,6 +30,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             }, x => ((IDiscriminatorMappingProvider)x).GetDiscriminatorMapping());
         }
 
+        [Obsolete("Remove me")]
         protected ModelTester<SubClassPart<T>, SubclassMapping> Subclass<T>()
         {
             return new ModelTester<SubClassPart<T>, SubclassMapping>(() => new SubClassPart<T>(null, null), x => ((ISubclassMappingProvider)x).GetSubclassMapping());
@@ -40,6 +41,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             return new ModelTester<SubclassMap<T>, SubclassMapping>(() => new SubclassMap<T>(), x => ((IIndeterminateSubclassMappingProvider)x).GetSubclassMapping(SubclassType.Subclass));
         }
 
+        [Obsolete("Remove me")]
         protected ModelTester<JoinedSubClassPart<T>, SubclassMapping> JoinedSubclass<T>()
         {
             return new ModelTester<JoinedSubClassPart<T>, SubclassMapping>(() => new JoinedSubClassPart<T>("column"), x => ((ISubclassMappingProvider)x).GetSubclassMapping());
@@ -143,7 +145,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         protected ModelTester<StoredProcedurePart, StoredProcedureMapping> StoredProcedure()
         {
 #pragma warning disable 612,618
-            return new ModelTester<StoredProcedurePart, StoredProcedureMapping>(() => new StoredProcedurePart(null, null), x => x.GetStoredProcedureMapping());
+            return new ModelTester<StoredProcedurePart, StoredProcedureMapping>(() => new StoredProcedurePart(null, null), x => ((IStoredProcedureMappingProvider)x).GetStoredProcedureMapping());
 #pragma warning restore 612,618
         }
 

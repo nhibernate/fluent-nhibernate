@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
@@ -17,7 +16,7 @@ namespace FluentNHibernate.Automapping.Steps
         public CollectionStep(IAutomappingConfiguration cfg)
         {
             this.cfg = cfg;
-            keys = new AutoKeyMapper(cfg);
+            keys = new AutoKeyMapper();
         }
 
         public bool ShouldMap(Member member)
@@ -38,8 +37,8 @@ namespace FluentNHibernate.Automapping.Steps
 
             mapping.ContainingEntityType = classMap.Type;
             mapping.Member = member;
-            mapping.SetDefaultValue(x => x.Name, member.Name);
-            mapping.ChildType = member.PropertyType.GetGenericArguments()[0];
+            mapping.Set(x => x.Name, Layer.Defaults, member.Name);
+            mapping.Set(x => x.ChildType, Layer.Defaults, member.PropertyType.GetGenericArguments()[0]);
 
             SetDefaultAccess(member, mapping);
             SetRelationship(member, classMap, mapping);
@@ -56,22 +55,22 @@ namespace FluentNHibernate.Automapping.Steps
             {
                 // if it's a property or unset then we'll just let NH deal with it, otherwise
                 // set the access to be whatever we determined it might be
-                mapping.SetDefaultValue(x => x.Access, resolvedAccess.ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, resolvedAccess.ToString());
             }
 
             if (member.IsProperty && !member.CanWrite)
-                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
         }
 
         static void SetRelationship(Member property, ClassMappingBase classMap, CollectionMapping mapping)
         {
             var relationship = new OneToManyMapping
             {
-                Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]),
                 ContainingEntityType = classMap.Type
             };
+            relationship.Set(x => x.Class, Layer.Defaults, new TypeReference(property.PropertyType.GetGenericArguments()[0]));
 
-            mapping.SetDefaultValue(x => x.Relationship, relationship);
+            mapping.Set(x => x.Relationship, Layer.Defaults, relationship);
         }
     }
 }

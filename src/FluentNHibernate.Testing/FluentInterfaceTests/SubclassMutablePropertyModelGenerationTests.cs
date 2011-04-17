@@ -1,10 +1,10 @@
-using FluentNHibernate.MappingModel;
+using System;
 using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
-    [TestFixture]
+    [TestFixture, Obsolete("Remove me")]
     public class SubclassMutablePropertyModelGenerationTests : BaseModelFixture
     {
         [Test]

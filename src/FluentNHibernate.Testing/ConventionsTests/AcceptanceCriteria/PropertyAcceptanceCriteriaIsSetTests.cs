@@ -23,8 +23,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         {
             acceptance.Expect(x => x.Insert, Is.Set);
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Insert, Layer.Defaults, true);
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() {Insert = true}))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeTrue();
         }
 
@@ -45,8 +47,11 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
                 .Expect(x => x.Insert, Is.Set)
                 .Expect(x => x.Update, Is.Set);
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Insert, Layer.Defaults, true);
+            propertyMapping.Set(x => x.Update, Layer.Defaults, true);
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Insert = true, Update = true }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeTrue();
         }
 
@@ -57,8 +62,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
                 .Expect(x => x.Insert, Is.Set)
                 .Expect(x => x.Update, Is.Set);
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Insert, Layer.Defaults, true);
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Insert = true }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeFalse();
         }
 
@@ -89,8 +96,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         {
             acceptance.Expect(x => x.Insert, Is.Not.Set);
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Insert, Layer.Defaults, true);
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Insert = true }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeFalse();
         }
 
@@ -113,8 +122,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
                 .Expect(x => x.Insert, Is.Not.Set)
                 .Expect(x => x.Update, Is.Not.Set);
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Insert, Layer.Defaults, true);
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Insert = true }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeFalse();
         }
 
@@ -125,8 +136,11 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
                 .Expect(x => x.Insert, Is.Not.Set)
                 .Expect(x => x.Update, Is.Not.Set);
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Insert, Layer.Defaults, true);
+            propertyMapping.Set(x => x.Update, Layer.Defaults, true);
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Insert = true, Update = true }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeFalse();
         }
 
@@ -137,8 +151,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
                 .Expect(x => x.Insert, Is.Not.Set)
                 .Expect(x => x.Update, Is.Set);
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Update, Layer.Defaults, true);
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Update = true }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeTrue();
         }
 
@@ -161,8 +177,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
                 .Expect(x => x.Insert, Is.Not.Set)
                 .Expect(x => x.Update, Is.Set);
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Insert, Layer.Defaults, true);
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Insert = true }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeFalse();
         }
     }

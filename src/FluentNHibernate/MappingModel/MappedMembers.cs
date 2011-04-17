@@ -6,7 +6,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel
 {
     [Serializable]
-    internal class MappedMembers : IMappingBase, IHasMappedMembers
+    internal class MappedMembers : IMapping, IHasMappedMembers
     {
         private readonly List<PropertyMapping> properties;
         private readonly List<Collections.CollectionMapping> collections;
@@ -219,6 +219,9 @@ namespace FluentNHibernate.MappingModel
         {
             return false;
         }
+
+        public void Set(string attribute, int layer, object value)
+        {}
 
         public void AddStoredProcedure(StoredProcedureMapping mapping)
         {

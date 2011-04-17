@@ -103,7 +103,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new AnyMapping();
 
-            mapping.AddTypeColumn(new ColumnMapping { Name = "Column1" });
+            mapping.AddTypeColumn(new ColumnMapping("Column1"));
 
             writer.VerifyXml(mapping)
                 .Element("column").Exists();
@@ -114,7 +114,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new AnyMapping();
 
-            mapping.AddIdentifierColumn(new ColumnMapping { Name = "Column1" });
+            mapping.AddIdentifierColumn(new ColumnMapping("Column1"));
 
             writer.VerifyXml(mapping)
                 .Element("column").Exists();
@@ -125,8 +125,8 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new AnyMapping();
 
-            mapping.AddIdentifierColumn(new ColumnMapping { Name = "Column1" });
-            mapping.AddTypeColumn(new ColumnMapping { Name = "Column2" });
+            mapping.AddIdentifierColumn(new ColumnMapping("Column1"));
+            mapping.AddTypeColumn(new ColumnMapping("Column2"));
 
             writer.VerifyXml(mapping)
                 .Element("column[1]").HasAttribute("name", "Column2");

@@ -118,12 +118,12 @@ namespace FluentNHibernate.Automapping
 
         public ClassMapping GetClassMapping()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public HibernateMapping GetHibernateMapping()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public IEnumerable<Member> GetIgnoredProperties()

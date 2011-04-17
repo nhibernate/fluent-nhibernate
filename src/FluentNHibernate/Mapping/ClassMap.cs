@@ -28,29 +28,29 @@ namespace FluentNHibernate.Mapping
     /// <typeparam name="T">Entity type to map</typeparam>
     public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     {
-        readonly AttributeStore<ClassMapping> attributes;
-        private readonly MappingProviderStore providers;
+        protected readonly AttributeStore attributes;
+        readonly MappingProviderStore providers;
         readonly OptimisticLockBuilder<ClassMap<T>> optimisticLock;
 
         readonly IList<ImportPart> imports = new List<ImportPart>();
-        private bool nextBool = true;
+        bool nextBool = true;
 
         readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
         readonly PolymorphismBuilder<ClassMap<T>> polymorphism;
         readonly SchemaActionBuilder<ClassMap<T>> schemaAction;
 
         public ClassMap()
-            : this(new AttributeStore<ClassMapping>(), new MappingProviderStore())
+            : this(new AttributeStore(), new MappingProviderStore())
         {}
 
-        protected ClassMap(AttributeStore<ClassMapping> attributes, MappingProviderStore providers)
+        protected ClassMap(AttributeStore attributes, MappingProviderStore providers)
             : base(providers)
         {
             this.attributes = attributes;
             this.providers = providers;
-            optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => attributes.Set(x => x.OptimisticLock, value));
-            polymorphism = new PolymorphismBuilder<ClassMap<T>>(this, value => attributes.Set(x => x.Polymorphism, value));
-            schemaAction = new SchemaActionBuilder<ClassMap<T>>(this, value => attributes.Set(x => x.SchemaAction, value));
+            optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => attributes.Set("OptimisticLock", Layer.UserSupplied, value));
+            polymorphism = new PolymorphismBuilder<ClassMap<T>>(this, value => attributes.Set("Polymorphism", Layer.UserSupplied, value));
+            schemaAction = new SchemaActionBuilder<ClassMap<T>>(this, value => attributes.Set("SchemaAction", Layer.UserSupplied, value));
             Cache = new CachePart(typeof(T));
         }
 
@@ -250,7 +250,7 @@ namespace FluentNHibernate.Mapping
 
             providers.Discriminator = part;
 
-            attributes.Set(x => x.DiscriminatorValue, baseClassDiscriminator);
+            attributes.Set("DiscriminatorValue", Layer.UserSupplied, baseClassDiscriminator);
 
             return part;
         }
@@ -291,8 +291,8 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public virtual void UseUnionSubclassForInheritanceMapping()
         {
-            attributes.Set(x => x.Abstract, true);
-            attributes.Set(x => x.IsUnionSubclass, true);
+            attributes.Set("Abstract", Layer.UserSupplied, true);
+            attributes.Set("IsUnionSubclass", Layer.UserSupplied, true);
         }
 
         [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
@@ -311,7 +311,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="schema">Schema name</param>
         public void Schema(string schema)
         {
-            attributes.Set(x => x.Schema, schema);
+            attributes.Set("Schema", Layer.UserSupplied, schema);
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="tableName">Table name</param>
         public void Table(string tableName)
         {
-            attributes.Set(x => x.TableName, tableName);
+            attributes.Set("TableName", Layer.UserSupplied, tableName);
         }
 
         /// <summary>
@@ -341,7 +341,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void LazyLoad()
         {
-            attributes.Set(x => x.Lazy, nextBool);
+            attributes.Set("Lazy", Layer.UserSupplied, nextBool);
             nextBool = true;
         }
 
@@ -385,7 +385,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void ReadOnly()
         {
-            attributes.Set(x => x.Mutable, !nextBool);
+            attributes.Set("Mutable", Layer.UserSupplied, !nextBool);
             nextBool = true;
         }
 
@@ -394,7 +394,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void DynamicUpdate()
         {
-            attributes.Set(x => x.DynamicUpdate, nextBool);
+            attributes.Set("DynamicUpdate", Layer.UserSupplied, nextBool);
             nextBool = true;
         }
 
@@ -403,7 +403,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void DynamicInsert()
         {
-            attributes.Set(x => x.DynamicInsert, nextBool);
+            attributes.Set("DynamicInsert", Layer.UserSupplied, nextBool);
             nextBool = true;
         }
 
@@ -413,7 +413,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="size">Batch size</param>
         public ClassMap<T> BatchSize(int size)
         {
-            attributes.Set(x => x.BatchSize, size);
+            attributes.Set("BatchSize", Layer.UserSupplied, size);
             return this;
         }
 
@@ -447,7 +447,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="constraint">Constraint name</param>
         public void CheckConstraint(string constraint)
         {
-            attributes.Set(x => x.Check, constraint);
+            attributes.Set("Check", Layer.UserSupplied, constraint);
         }
 
         /// <summary>
@@ -474,7 +474,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="type">Persister type</param>
         public void Persister(string type)
         {
-            attributes.Set(x => x.Persister, type);
+            attributes.Set("Persister", Layer.UserSupplied, type);
         }
 
         /// <summary>
@@ -501,7 +501,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="type">Proxy type</param>
         public void Proxy(string type)
         {
-            attributes.Set(x => x.Proxy, type);
+            attributes.Set("Proxy", Layer.UserSupplied, type);
         }
 
         /// <summary>
@@ -510,7 +510,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public void SelectBeforeUpdate()
         {
-            attributes.Set(x => x.SelectBeforeUpdate, nextBool);
+            attributes.Set("SelectBeforeUpdate", Layer.UserSupplied, nextBool);
             nextBool = true;
         }
 
@@ -519,7 +519,7 @@ namespace FluentNHibernate.Mapping
 		/// </summary>
     	public void Where(string where)
     	{
-            attributes.Set(x => x.Where, where);
+            attributes.Set("Where", Layer.UserSupplied, where);
     	}
 
         /// <summary>
@@ -528,7 +528,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="subselectSql">Subselect SQL Query</param>
         public void Subselect(string subselectSql)
         {
-            attributes.Set(x => x.Subselect, subselectSql);
+            attributes.Set("Subselect", Layer.UserSupplied, subselectSql);
         }
 
         /// <summary>
@@ -537,7 +537,7 @@ namespace FluentNHibernate.Mapping
         /// <remarks>See http://nhforge.org/blogs/nhibernate/archive/2008/10/21/entity-name-in-action-a-strongly-typed-entity.aspx</remarks>
         public void EntityName(string entityName)
         {
-            attributes.Set(x => x.EntityName, entityName);
+            attributes.Set("EntityName", Layer.UserSupplied, entityName);
         }
 
         /// <summary>
@@ -558,7 +558,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="name">The filter's name</param>
         public ClassMap<T> ApplyFilter(string name)
         {
-            return this.ApplyFilter(name, null);
+            return ApplyFilter(name, null);
         }
 
         /// <summary>
@@ -596,8 +596,8 @@ namespace FluentNHibernate.Mapping
         public TuplizerPart Tuplizer(TuplizerMode mode, Type tuplizerType)
         {
             providers.TuplizerMapping = new TuplizerMapping();
-            providers.TuplizerMapping.Mode = mode;
-            providers.TuplizerMapping.Type = new TypeReference(tuplizerType);
+            providers.TuplizerMapping.Set(x => x.Mode, Layer.UserSupplied, mode);
+            providers.TuplizerMapping.Set(x => x.Type, Layer.UserSupplied, new TypeReference(tuplizerType));
 
             return new TuplizerPart(providers.TuplizerMapping)
                 .Type(tuplizerType)
@@ -606,10 +606,10 @@ namespace FluentNHibernate.Mapping
 
         ClassMapping IMappingProvider.GetClassMapping()
         {
-            var mapping = new ClassMapping(attributes.CloneInner());
+            var mapping = new ClassMapping(attributes.Clone());
 
-            mapping.Type = typeof(T);
-            mapping.Name = typeof(T).AssemblyQualifiedName;
+            mapping.Set(x => x.Type, Layer.Defaults, typeof(T));
+            mapping.Set(x => x.Name, Layer.Defaults, typeof(T).AssemblyQualifiedName);
 
             foreach (var property in providers.Properties)
                 mapping.AddProperty(property.GetPropertyMapping());
@@ -618,7 +618,7 @@ namespace FluentNHibernate.Mapping
                 mapping.AddComponent(component.GetComponentMapping());
 
             if (providers.Version != null)
-                mapping.Version = providers.Version.GetVersionMapping();
+                mapping.Set(x => x.Version, Layer.Defaults, providers.Version.GetVersionMapping());
 
             foreach (var oneToOne in providers.OneToOnes)
                 mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
@@ -639,22 +639,21 @@ namespace FluentNHibernate.Mapping
                 mapping.AddJoin(join.GetJoinMapping());
 
             if (providers.Discriminator != null)
-                mapping.Discriminator = providers.Discriminator.GetDiscriminatorMapping();
+                mapping.Set(x => x.Discriminator, Layer.Defaults, providers.Discriminator.GetDiscriminatorMapping());
 
             if (Cache.IsDirty)
-                mapping.Cache = ((ICacheMappingProvider)Cache).GetCacheMapping();
+                mapping.Set(x  => x.Cache, Layer.Defaults, ((ICacheMappingProvider)Cache).GetCacheMapping());
 
             if (providers.Id != null)
-                mapping.Id = providers.Id.GetIdentityMapping();
+                mapping.Set(x => x.Id, Layer.Defaults, providers.Id.GetIdentityMapping());
 
             if (providers.CompositeId != null)
-                mapping.Id = providers.CompositeId.GetCompositeIdMapping();
+                mapping.Set(x => x.Id, Layer.Defaults, providers.CompositeId.GetCompositeIdMapping());
 
             if (providers.NaturalId != null)
-                mapping.NaturalId = providers.NaturalId.GetNaturalIdMapping();
+                mapping.Set(x => x.NaturalId, Layer.Defaults, providers.NaturalId.GetNaturalIdMapping());
 
-            if (!mapping.IsSpecified("TableName"))
-                mapping.SetDefaultValue(x => x.TableName, GetDefaultTableName());
+            mapping.Set(x => x.TableName, Layer.Defaults, GetDefaultTableName());
 
             foreach (var filter in providers.Filters)
                 mapping.AddFilter(filter.GetFilterMapping());
@@ -662,7 +661,7 @@ namespace FluentNHibernate.Mapping
             foreach (var storedProcedure in providers.StoredProcedures)
                 mapping.AddStoredProcedure(storedProcedure.GetStoredProcedureMapping());
 
-            mapping.Tuplizer = providers.TuplizerMapping;
+            mapping.Set(x => x.Tuplizer, Layer.Defaults, providers.TuplizerMapping);
 
             return mapping;
         }

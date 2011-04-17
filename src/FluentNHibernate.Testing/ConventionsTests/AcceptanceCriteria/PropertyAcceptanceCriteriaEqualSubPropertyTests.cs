@@ -4,7 +4,6 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
-using Is=FluentNHibernate.Conventions.AcceptanceCriteria.Is;
 
 namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
 {
@@ -25,11 +24,12 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
             acceptance.Expect(x =>
                 x.Type.Name == typeof(Record).Name);
 
-            acceptance.Matches(new PropertyInspector(new PropertyMapping
+            var propertyMapping = new PropertyMapping
             {
                 Member = ReflectionHelper.GetMember<Record>(x => x.Age),
-                Type = new TypeReference(typeof(Record))
-            }))
+            };
+            propertyMapping.Set(x => x.Type, Layer.Defaults, new TypeReference(typeof(Record)));
+            acceptance.Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeTrue();
         }
     }

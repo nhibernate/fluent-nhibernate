@@ -28,16 +28,16 @@ namespace FluentNHibernate.MappingModel.Output
 
             var discriminatorElement = document.AddElement("discriminator");
 
-            if (discriminatorMapping.HasValue("Type"))
+            if (discriminatorMapping.IsSpecified("Type"))
                 discriminatorElement.WithAtt("type", TypeMapping.GetTypeString(discriminatorMapping.Type.GetUnderlyingSystemType()));
 
-            if (discriminatorMapping.HasValue("Force"))
+            if (discriminatorMapping.IsSpecified("Force"))
                 discriminatorElement.WithAtt("force", discriminatorMapping.Force);
 
-            if (discriminatorMapping.HasValue("Formula"))
+            if (discriminatorMapping.IsSpecified("Formula"))
                 discriminatorElement.WithAtt("formula", discriminatorMapping.Formula);
 
-            if (discriminatorMapping.HasValue("Insert"))
+            if (discriminatorMapping.IsSpecified("Insert"))
                 discriminatorElement.WithAtt("insert", discriminatorMapping.Insert);
         }
 

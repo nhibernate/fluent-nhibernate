@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Mapping;
@@ -210,8 +209,8 @@ namespace FluentNHibernate.Testing.Visitors
         {
             var any = new AnyMapping();
 
-            any.AddIdentifierDefaultColumn(new ColumnMapping { Name = column });
-            any.AddTypeDefaultColumn(new ColumnMapping { Name = column });
+            any.AddIdentifierDefaultColumn(new ColumnMapping(column));
+            any.AddTypeDefaultColumn(new ColumnMapping(column));
             
             return any;
         }
@@ -220,8 +219,8 @@ namespace FluentNHibernate.Testing.Visitors
         {
             var collection = CollectionMapping.Bag();
 
-            collection.Key = new KeyMapping();
-            collection.Key.AddDefaultColumn(new ColumnMapping { Name = column });
+            collection.Set(x => x.Key, Layer.Defaults, new KeyMapping());
+            collection.Key.AddDefaultColumn(new ColumnMapping(column));
 
             return collection;
         }
@@ -229,14 +228,14 @@ namespace FluentNHibernate.Testing.Visitors
         protected PropertyMapping property_with_column(string column)
         {
             var property = new PropertyMapping();
-            property.AddDefaultColumn(new ColumnMapping { Name = "propertyColumn" });
+            property.AddDefaultColumn(new ColumnMapping("propertyColumn"));
             return property;
         }
 
         protected ManyToOneMapping reference_with_column(string column)
         {
             var reference = new ManyToOneMapping();
-            reference.AddDefaultColumn(new ColumnMapping { Name = "propertyColumn" });
+            reference.AddDefaultColumn(new ColumnMapping("propertyColumn"));
             return reference;
         }
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using FluentNHibernate.Mapping.Providers;
@@ -13,11 +12,11 @@ namespace FluentNHibernate.Mapping
     /// <typeparam name="T"></typeparam>
     public class JoinPart<T> : ClasslikeMapBase<T>, IJoinMappingProvider
     {
-        private readonly MappingProviderStore providers;
-        private readonly IList<string> columns = new List<string>();
-        private readonly FetchTypeExpression<JoinPart<T>> fetch;
-        private readonly AttributeStore<JoinMapping> attributes = new AttributeStore<JoinMapping>();
-        private bool nextBool = true;
+        readonly MappingProviderStore providers;
+        readonly IList<string> columns = new List<string>();
+        readonly FetchTypeExpression<JoinPart<T>> fetch;
+        readonly AttributeStore attributes = new AttributeStore();
+        bool nextBool = true;
 
         public JoinPart(string tableName)
             : this(tableName, new MappingProviderStore())
@@ -27,10 +26,10 @@ namespace FluentNHibernate.Mapping
             : base(providers)
         {
             this.providers = providers;
-            fetch = new FetchTypeExpression<JoinPart<T>>(this, value => attributes.Set(x => x.Fetch, value));
+            fetch = new FetchTypeExpression<JoinPart<T>>(this, value => attributes.Set("Fetch", Layer.UserSupplied, value));
 
-            attributes.SetDefault(x => x.TableName, tableName);
-            attributes.Set(x => x.Key, new KeyMapping { ContainingEntityType = typeof(T) });
+            attributes.Set("TableName", Layer.Defaults, tableName);
+            attributes.Set("Key", Layer.Defaults, new KeyMapping { ContainingEntityType = typeof(T) });
         }
 
         /// <summary>
@@ -61,7 +60,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="schema">Schema name</param>
         public JoinPart<T> Schema(string schema)
         {
-            attributes.Set(x => x.Schema, schema);
+            attributes.Set("Schema", Layer.UserSupplied, schema);
             return this;
         }
 
@@ -78,7 +77,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public JoinPart<T> Inverse()
         {
-            attributes.Set(x => x.Inverse, nextBool);
+            attributes.Set("Inverse", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -88,7 +87,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public JoinPart<T> Optional()
         {
-            attributes.Set(x => x.Optional, nextBool);
+            attributes.Set("Optional", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -99,7 +98,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="catalog">Catalog</param>
         public JoinPart<T> Catalog(string catalog)
         {
-            attributes.Set(x => x.Catalog, catalog);
+            attributes.Set("Catalog", Layer.UserSupplied, catalog);
             return this;
         }
 
@@ -109,7 +108,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="subselect">Query</param>
         public JoinPart<T> Subselect(string subselect)
         {
-            attributes.Set(x => x.Subselect, subselect);
+            attributes.Set("Subselect", Layer.UserSupplied, subselect);
             return this;
         }
 
@@ -132,20 +131,29 @@ namespace FluentNHibernate.Mapping
         /// <param name="tableName">Table name</param>
         public void Table(string tableName)
         {
-            attributes.Set(x => x.TableName, tableName);
+            attributes.Set("TableName", Layer.UserSupplied, tableName);
         }
 
         JoinMapping IJoinMappingProvider.GetJoinMapping()
         {
-            var mapping = new JoinMapping(attributes.CloneInner());
-
-            mapping.ContainingEntityType = typeof(T);
+            var mapping = new JoinMapping(attributes.Clone())
+            {
+                ContainingEntityType = typeof(T)
+            };
 
             if (columns.Count == 0)
-                mapping.Key.AddDefaultColumn(new ColumnMapping { Name = typeof(T).Name + "_id" });
+            {
+                var columnMapping = new ColumnMapping();
+                columnMapping.Set(x => x.Name, Layer.Defaults, typeof(T).Name + "_id");
+                mapping.Key.AddDefaultColumn(columnMapping);
+            }
             else
                 foreach (var column in columns)
-                    mapping.Key.AddColumn(new ColumnMapping { Name = column });
+                {
+                    var columnMapping = new ColumnMapping();
+                    columnMapping.Set(x => x.Name, Layer.Defaults, column);
+                    mapping.Key.AddColumn(columnMapping);
+                }
 
             foreach (var property in providers.Properties)
                 mapping.AddProperty(property.GetPropertyMapping());

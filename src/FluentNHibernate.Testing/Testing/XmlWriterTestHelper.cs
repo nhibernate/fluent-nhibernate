@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Xml;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.MappingModel;
 using FluentNHibernate.Utils;
@@ -13,19 +12,20 @@ using NUnit.Framework;
 namespace FluentNHibernate.Testing.Testing
 {
     public class XmlWriterTestHelper<TMappingType>
+        where TMappingType : IMapping
     {
-        private readonly IList<XmlTest> _tests;
-        private Func<TMappingType> constructor;
+        readonly IList<XmlTest> tests;
+        Func<TMappingType> constructor;
 
         public XmlWriterTestHelper()
         {
-            _tests = new List<XmlTest>();
+            tests = new List<XmlTest>();
         }
 
         public XmlTest Check(Expression<Func<TMappingType, object>> sourceProperty, object value)
         {
             var test = new XmlTest(sourceProperty, value);
-            _tests.Add(test);
+            tests.Add(test);
             return test;
         }
 
@@ -36,7 +36,7 @@ namespace FluentNHibernate.Testing.Testing
 
         public void VerifyAll(IXmlWriter<TMappingType> writer)
         {
-            foreach (var test in _tests)
+            foreach (var test in tests)
             {
                 TMappingType mapping;
 
@@ -56,38 +56,40 @@ namespace FluentNHibernate.Testing.Testing
 
         public class XmlTest
         {
-            private readonly IDictionary<string, object> _checks;
-            private readonly Accessor _sourceProperty;
-            private readonly object _sourceValue;
+            readonly IDictionary<string, object> checks;
+            readonly Accessor sourceProperty;
+            readonly object sourceValue;
+            readonly Member member;
 
             public XmlTest(Expression<Func<TMappingType, object>> sourceProperty, object value)
             {
-                _checks = new Dictionary<string, object>();
-                _sourceProperty = ReflectionHelper.GetAccessor(sourceProperty);
-                _sourceValue = value;
+                checks = new Dictionary<string, object>();
+                member = sourceProperty.ToMember();
+                this.sourceProperty = ReflectionHelper.GetAccessor(sourceProperty);
+                sourceValue = value;
             }
 
             public XmlTest MapsToAttribute(string attributeName, object value)
             {
-                _checks[attributeName] = value;
+                checks[attributeName] = value;
                 return this;
             }
 
             public XmlTest MapsToAttribute(string attributeName)
             {
-                _checks[attributeName] = _sourceValue;
+                checks[attributeName] = sourceValue;
                 return this;
             }
 
             internal void ApplyToSource(TMappingType mapping)
             {
-                _sourceProperty.SetValue(mapping, _sourceValue);
+                mapping.Set(member.Name, Layer.Defaults, sourceValue);
             }
 
             internal void Check(XmlDocument document)
             {
                 var rootElement = document.DocumentElement;
-                foreach (var check in _checks)
+                foreach (var check in checks)
                 {
                     string attributeValue = rootElement.GetAttribute(check.Key);
                     bool areEqual = string.Equals(attributeValue, check.Value.ToString(),
@@ -98,8 +100,8 @@ namespace FluentNHibernate.Testing.Testing
 
                     Assert.That(areEqual,
                                     "Property '{0}' was set to '{1}' and was expected to be written to attribute '{2}' with value '{3}'. The value was instead '{4}'",
-                                    _sourceProperty.InnerMember.MemberInfo.ReflectedType.Name + "." + _sourceProperty.Name,
-                                    _sourceValue, check.Key, check.Value, attributeValue
+                                    sourceProperty.InnerMember.MemberInfo.ReflectedType.Name + "." + sourceProperty.Name,
+                                    sourceValue, check.Key, check.Value, attributeValue
                         );
                     //string.Equals()
                     //rootElement.AttributeShouldEqual(check.Key, check.Value.ToString());

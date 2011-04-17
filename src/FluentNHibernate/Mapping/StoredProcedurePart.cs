@@ -1,4 +1,3 @@
-using System;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 
@@ -6,37 +5,22 @@ namespace FluentNHibernate.Mapping
 {
     public class StoredProcedurePart : IStoredProcedureMappingProvider
     {
-        private readonly CheckTypeExpression<StoredProcedurePart> check;
-        private readonly string _element;
-        private readonly string _innerText;
-        private readonly AttributeStore<StoredProcedureMapping> attributes = new AttributeStore<StoredProcedureMapping>();
-
+        readonly StoredProcedureMapping mapping = new StoredProcedureMapping();
 
         public StoredProcedurePart(string element, string innerText)
         {
-            _element = element;
-            _innerText = innerText;
-
-            check = new CheckTypeExpression<StoredProcedurePart>(this, value => attributes.Set(x => x.Check, value));
+            mapping.Set(x => x.SPType, Layer.Defaults, element);
+            mapping.Set(x => x.Query, Layer.Defaults, innerText);
+            mapping.Set(x => x.Check, Layer.Defaults, "rowcount");
         }
-
 
         public CheckTypeExpression<StoredProcedurePart> Check
         {
-            get { return check; }
+            get { return new CheckTypeExpression<StoredProcedurePart>(this, value => mapping.Set(x => x.Check, Layer.UserSupplied, value)); }
         }
 
-        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
-        public StoredProcedureMapping GetStoredProcedureMapping()
+        StoredProcedureMapping IStoredProcedureMappingProvider.GetStoredProcedureMapping()
         {
-            var mapping = new StoredProcedureMapping(attributes.CloneInner());
-
-            mapping.SPType = _element;
-            mapping.Query = _innerText;
-
-            if (!mapping.IsSpecified("Check"))
-                mapping.SetDefaultValue(x => x.Check, "rowcount");
-
             return mapping;
         }
     }

@@ -31,27 +31,25 @@ namespace FluentNHibernate
 
         public override object[] GetCustomAttributes(bool inherit)
         {
-            throw new NotImplementedException();
+            return new object[0];
         }
 
         public override bool IsDefined(Type attributeType, bool inherit)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public override object GetValue(object obj, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return obj;
         }
 
         public override void SetValue(object obj, object value, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public override MethodInfo[] GetAccessors(bool nonPublic)
         {
-            throw new NotImplementedException();
+            return new MethodInfo[0];
         }
 
         public override MethodInfo GetGetMethod(bool nonPublic)
@@ -66,7 +64,7 @@ namespace FluentNHibernate
 
         public override ParameterInfo[] GetIndexParameters()
         {
-            throw new NotImplementedException();
+            return new ParameterInfo[0];
         }
 
         public override string Name
@@ -81,7 +79,7 @@ namespace FluentNHibernate
 
         public override Type ReflectedType
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
 
         public override Type PropertyType
@@ -91,22 +89,22 @@ namespace FluentNHibernate
 
         public override PropertyAttributes Attributes
         {
-            get { throw new NotImplementedException(); }
+            get { return PropertyAttributes.None; }
         }
 
         public override bool CanRead
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
 
         public override bool CanWrite
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
 
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
-            throw new NotImplementedException();
+            return new object[0];
         }
     }
 }

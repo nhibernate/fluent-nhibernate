@@ -55,17 +55,17 @@ namespace FluentNHibernate.Automapping.Steps
         private void ConfigureModel(Member member, CollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
         {
             // TODO: Make the child type safer
-            mapping.SetDefaultValue(x => x.Name, member.Name);
-            mapping.Relationship = CreateManyToMany(member, member.PropertyType.GetGenericArguments()[0], classMap.Type);
             mapping.ContainingEntityType = classMap.Type;
-            mapping.ChildType = member.PropertyType.GetGenericArguments()[0];
+            mapping.Set(x => x.Name, Layer.Defaults, member.Name);
+            mapping.Set(x => x.Relationship, Layer.Defaults, CreateManyToMany(member, member.PropertyType.GetGenericArguments()[0], classMap.Type));
+            mapping.Set(x => x.ChildType, Layer.Defaults, member.PropertyType.GetGenericArguments()[0]);
             mapping.Member = member;
 
             SetDefaultAccess(member, mapping);
             SetKey(member, classMap, mapping);
 
             if (parentSide != member.DeclaringType)
-                mapping.Inverse = true;
+                mapping.Set(x => x.Inverse, Layer.Defaults, true);
         }
 
         void SetDefaultAccess(Member member, CollectionMapping mapping)
@@ -76,35 +76,41 @@ namespace FluentNHibernate.Automapping.Steps
             {
                 // if it's a property or unset then we'll just let NH deal with it, otherwise
                 // set the access to be whatever we determined it might be
-                mapping.SetDefaultValue(x => x.Access, resolvedAccess.ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, resolvedAccess.ToString());
             }
 
             if (member.IsProperty && !member.CanWrite)
-                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
         }
 
-        private ICollectionRelationshipMapping CreateManyToMany(Member property, Type child, Type parent)
+        static ICollectionRelationshipMapping CreateManyToMany(Member property, Type child, Type parent)
         {
             var mapping = new ManyToManyMapping
             {
-                Class = new TypeReference(property.PropertyType.GetGenericArguments()[0]),
                 ContainingEntityType = parent
             };
+            mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(property.PropertyType.GetGenericArguments()[0]));
 
-            mapping.AddDefaultColumn(new ColumnMapping { Name = child.Name + "_id" });
+            var columnMapping = new ColumnMapping();
+            columnMapping.Set(x => x.Name, Layer.Defaults, child.Name + "_id");
+            mapping.AddDefaultColumn(columnMapping);
 
             return mapping;
         }
 
-        private void SetKey(Member property, ClassMappingBase classMap, CollectionMapping mapping)
+        static void SetKey(Member property, ClassMappingBase classMap, CollectionMapping mapping)
         {
             var columnName = property.DeclaringType.Name + "_id";
-            var key = new KeyMapping();
+            var key = new KeyMapping
+            {
+                ContainingEntityType = classMap.Type
+            };
 
-            key.ContainingEntityType = classMap.Type;
-            key.AddDefaultColumn(new ColumnMapping { Name = columnName });
+            var columnMapping = new ColumnMapping();
+            columnMapping.Set(x => x.Name, Layer.Defaults, columnName);
+            key.AddDefaultColumn(columnMapping);
 
-            mapping.SetDefaultValue(x => x.Key, key);
+            mapping.Set(x => x.Key, Layer.Defaults, key);
         }
 
         public void Map(ClassMappingBase classMap, Member member)

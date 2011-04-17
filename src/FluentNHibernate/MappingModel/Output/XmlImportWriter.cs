@@ -20,10 +20,10 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.CreateElement("import");
 
-            if (mapping.HasValue(x => x.Class))
+            if (mapping.IsSpecified("Class"))
                 element.WithAtt("class", mapping.Class);
 
-            if (mapping.HasValue(x => x.Rename))
+            if (mapping.IsSpecified("Rename"))
                 element.WithAtt("rename", mapping.Rename);
 
             document.AppendChild(element);

@@ -223,7 +223,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ClassMapping();
 
-            mapping.Cache = new CacheMapping();
+            mapping.Set(x => x.Cache, Layer.Defaults, new CacheMapping());
 
             writer.VerifyXml(mapping)
                 .Element("cache").Exists();
@@ -234,7 +234,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ClassMapping();
 
-            mapping.Id = new IdMapping();
+            mapping.Set(x => x.Id, Layer.Defaults, new IdMapping());
 
             writer.VerifyXml(mapping)
                 .Element("id").Exists();
@@ -245,7 +245,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ClassMapping();
 
-            mapping.NaturalId = new NaturalIdMapping();
+            mapping.Set(x => x.NaturalId, Layer.Defaults, new NaturalIdMapping());
 
             writer.VerifyXml(mapping)
                 .Element("natural-id").Exists();
@@ -256,7 +256,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ClassMapping();
 
-            mapping.Id = new CompositeIdMapping();
+            mapping.Set(x => x.Id, Layer.Defaults, new CompositeIdMapping());
 
             writer.VerifyXml(mapping)
                 .Element("composite-id").Exists();
@@ -267,7 +267,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ClassMapping();
 
-            mapping.Version = new VersionMapping();
+            mapping.Set(x => x.Version, Layer.Defaults, new VersionMapping());
 
             writer.VerifyXml(mapping)
                 .Element("version").Exists();
@@ -445,7 +445,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ClassMapping();
 
-            mapping.Discriminator = new DiscriminatorMapping();
+            mapping.Set(x => x.Discriminator, Layer.Defaults, new DiscriminatorMapping());
 
             writer.VerifyXml(mapping)
                 .Element("discriminator").Exists();

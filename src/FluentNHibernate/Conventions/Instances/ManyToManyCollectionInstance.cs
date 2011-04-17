@@ -7,9 +7,9 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public class ManyToManyCollectionInstance : CollectionInstance, IManyToManyCollectionInstance
     {
-        private readonly MappingModel.Collections.CollectionMapping mapping;
+        private readonly CollectionMapping mapping;
 
-        public ManyToManyCollectionInstance(MappingModel.Collections.CollectionMapping mapping)
+        public ManyToManyCollectionInstance(CollectionMapping mapping)
             : base(mapping)
         {
             nextBool = true;
@@ -35,10 +35,10 @@ namespace FluentNHibernate.Conventions.Instances
         {
             get
             {
-                if (mapping.OtherSide == null || !(mapping.OtherSide is MappingModel.Collections.CollectionMapping))
+                if (mapping.OtherSide == null || !(mapping.OtherSide is CollectionMapping))
                     return null;
 
-                return new ManyToManyCollectionInstance((MappingModel.Collections.CollectionMapping)mapping.OtherSide);
+                return new ManyToManyCollectionInstance((CollectionMapping)mapping.OtherSide);
             }
         }
 
@@ -49,11 +49,6 @@ namespace FluentNHibernate.Conventions.Instances
         public new Type ChildType
         {
             get { return mapping.ChildType; }
-        }
-
-        public bool HasExplicitTable
-        {
-            get { return mapping.IsSpecified("TableName"); }
         }
 
         IManyToManyCollectionInspector IManyToManyCollectionInspector.OtherSide

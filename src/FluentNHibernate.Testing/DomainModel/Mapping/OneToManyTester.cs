@@ -900,7 +900,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             public virtual IDictionary<ChildObject, ValueObject> EntityMapOfValueObjects { get; set; }
         }
 
-        //Note: Used to be my 'driver' for the bug that 'index-many-to-many' element was found before 'key' element in child elements of 'map' element.
         [Test]
         public void WhenEntityMapIsDefinedInValueObjectWeUsedToHaveBugBecauseXmlClasslikeNodeSorterDidntSortChildrenOfComponentButItsFixedNow()
         {

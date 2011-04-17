@@ -473,14 +473,14 @@ namespace FluentNHibernate.Automapping
             // this will only be called if there was no ComponentMap found
             var mapping = new ExternalComponentMapping(ComponentType.Component)
             {
-                Name = context.ComponentMember.Name,
                 Member = context.ComponentMember,
                 ContainingEntityType = context.EntityType,
-                Type = context.ComponentType
             };
+            mapping.Set(x => x.Name, Layer.Defaults, context.ComponentMember.Name);
+            mapping.Set(x => x.Type, Layer.Defaults, context.ComponentType);
 
             if (context.ComponentMember.IsProperty && !context.ComponentMember.CanWrite)
-                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(context.ComponentMember).ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, cfg.GetAccessStrategyForReadOnlyProperty(context.ComponentMember).ToString());
 
             mapper.FlagAsMapped(context.ComponentType);
             mapper.MergeMap(context.ComponentType, mapping, new List<Member>());

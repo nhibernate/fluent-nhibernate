@@ -19,26 +19,12 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new IAccessInstance Access
         {
-            get
-            {
-                return new AccessInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Access"))
-                        mapping.Access = value;
-                });
-            }
+            get { return new AccessInstance(value => mapping.Set(x => x.Access, Layer.Conventions, value)); }
         }
 
         public new ICascadeInstance Cascade
         {
-            get
-            {
-                return new CascadeInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Cascade"))
-                        mapping.Cascade = value;
-                });
-            }
+            get { return new CascadeInstance(value => mapping.Set(x => x.Cascade, Layer.Conventions, value)); }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -53,68 +39,53 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new IFetchInstance Fetch
         {
-            get
-            {
-                return new FetchInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Fetch"))
-                        mapping.Fetch = value;
-                });
-            }
+            get { return new FetchInstance(value => mapping.Set(x => x.Fetch, Layer.Conventions, value)); }
         }
 
         public new void Class<T>()
         {
-            if (!mapping.IsSpecified("Class"))
-                mapping.Class = new TypeReference(typeof(T));
+            Class(typeof(T));
         }
 
         public new void Class(Type type)
         {
-            if (!mapping.IsSpecified("Class"))
-                mapping.Class = new TypeReference(type);
+            mapping.Set(x => x.Class, Layer.Conventions, new TypeReference(type));
         }
 
         public new void Constrained()
         {
-            if (!mapping.IsSpecified("Constrained"))
-                mapping.Constrained = nextBool;
+            mapping.Set(x => x.Constrained, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void ForeignKey(string key)
         {
-            if (!mapping.IsSpecified("ForeignKey"))
-                mapping.ForeignKey = key;
+            mapping.Set(x => x.ForeignKey, Layer.Conventions, key);
         }
 
         public new void LazyLoad()
         {
-            if (!mapping.IsSpecified("Lazy"))
-            {
-                if (nextBool)
-                    LazyLoad(Laziness.Proxy);
-                else
-                    LazyLoad(Laziness.False);
-            }
+            if (nextBool)
+                LazyLoad(Laziness.Proxy);
+            else
+                LazyLoad(Laziness.False);
             nextBool = true;
         }
 
         public new void LazyLoad(Laziness laziness)
         {
-            mapping.Lazy = laziness.ToString();
+            mapping.Set(x => x.Lazy, Layer.Conventions, laziness.ToString());
             nextBool = true;
         }
 
         public new void PropertyRef(string propertyName)
         {
-            if (!mapping.IsSpecified("PropertyRef"))
-                mapping.PropertyRef = propertyName;
+            mapping.Set(x => x.PropertyRef, Layer.Conventions, propertyName);
         }
 
         public void OverrideInferredClass(Type type)
         {
-            mapping.Class = new TypeReference(type);
+            mapping.Set(x => x.Class, Layer.Conventions, new TypeReference(type));
         }
     }
 }

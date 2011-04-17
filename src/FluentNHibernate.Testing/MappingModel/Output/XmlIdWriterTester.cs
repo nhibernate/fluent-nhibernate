@@ -57,10 +57,11 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteTheGenerator()
         {
-            var mapping = new IdMapping
-            {
-                Generator = new GeneratorMapping { Class = "Class" }
-            };
+            var generatorMapping = new GeneratorMapping();
+            generatorMapping.Set(x => x.Class, Layer.Defaults, "Class");
+        
+            var mapping = new IdMapping();
+            mapping.Set(x => x.Generator, Layer.Defaults, generatorMapping);
 
             writer.VerifyXml(mapping)
                 .Element("generator").Exists();
@@ -70,7 +71,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteTheColumns()
         {
             var mapping = new IdMapping();
-            mapping.AddColumn(new ColumnMapping { Name = "Column1" });
+            mapping.AddColumn(new ColumnMapping("Column1"));
 
             writer.VerifyXml(mapping)
                 .Element("column").Exists();

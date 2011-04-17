@@ -78,7 +78,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ManyToOneMapping();
 
-            mapping.Lazy = Laziness.Proxy.ToString();
+            mapping.Set(x => x.Lazy, Layer.Defaults, Laziness.Proxy.ToString());
 
             writer.VerifyXml(mapping)
                 .HasAttribute("lazy", "proxy");

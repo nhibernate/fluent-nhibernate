@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
@@ -7,16 +8,16 @@ namespace FluentNHibernate.MappingModel
     [Serializable]
     public class ManyToOneMapping : MappingBase, IHasColumnMappings, IRelationship
     {
-        private readonly AttributeStore<ManyToOneMapping> attributes;
+        private readonly AttributeStore attributes;
         private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
 
         public ManyToOneMapping()
             : this(new AttributeStore())
         {}
 
-        public ManyToOneMapping(AttributeStore underlyingStore)
+        public ManyToOneMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<ManyToOneMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -32,86 +33,72 @@ namespace FluentNHibernate.MappingModel
 
         public string Name
         {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            get { return attributes.GetOrDefault<string>("Name"); }
         }
 
         public string Access
         {
-            get { return attributes.Get(x => x.Access); }
-            set { attributes.Set(x => x.Access, value); }
+            get { return attributes.GetOrDefault<string>("Access"); }
         }
 
         public TypeReference Class
         {
-            get { return attributes.Get(x => x.Class); }
-            set { attributes.Set(x => x.Class, value); }
+            get { return attributes.GetOrDefault<TypeReference>("Class"); }
         }
 
         public string Cascade
         {
-            get { return attributes.Get(x => x.Cascade); }
-            set { attributes.Set(x => x.Cascade, value); }
+            get { return attributes.GetOrDefault<string>("Cascade"); }
         }
 
         public string Fetch
         {
-            get { return attributes.Get(x => x.Fetch); }
-            set { attributes.Set(x => x.Fetch, value); }
+            get { return attributes.GetOrDefault<string>("Fetch"); }
         }
 
         public bool Update
         {
-            get { return attributes.Get(x => x.Update); }
-            set { attributes.Set(x => x.Update, value); }
+            get { return attributes.GetOrDefault<bool>("Update"); }
         }
 
         public bool Insert
         {
-            get { return attributes.Get(x => x.Insert); }
-            set { attributes.Set(x => x.Insert, value); }
+            get { return attributes.GetOrDefault<bool>("Insert"); }
         }
         
         public string Formula
         {
-            get { return attributes.Get(x => x.Formula); }
-            set { attributes.Set(x => x.Formula, value); }
+            get { return attributes.GetOrDefault<string>("Formula"); }
         }
 
         public string ForeignKey
         {
-            get { return attributes.Get(x => x.ForeignKey); }
-            set { attributes.Set(x => x.ForeignKey, value); }
+            get { return attributes.GetOrDefault<string>("ForeignKey"); }
         }
 
         public string PropertyRef
         {
-            get { return attributes.Get(x => x.PropertyRef); }
-            set { attributes.Set(x => x.PropertyRef, value); }
+            get { return attributes.GetOrDefault<string>("PropertyRef"); }
         }
 
         public string NotFound
         {
-            get { return attributes.Get(x => x.NotFound); }
-            set { attributes.Set(x => x.NotFound, value); }
+            get { return attributes.GetOrDefault<string>("NotFound"); }
         }
 
         public string Lazy
         {
-            get { return attributes.Get(x => x.Lazy); }
-            set { attributes.Set(x => x.Lazy, value); }
+            get { return attributes.GetOrDefault<string>("Lazy"); }
         }
 
         public string EntityName
         {
-            get { return attributes.Get(x => x.EntityName); }
-            set { attributes.Set(x => x.EntityName, value); }
+            get { return attributes.GetOrDefault<string>("EntityName"); }
         }
 
         public bool OptimisticLock
         {
-            get { return attributes.Get(x => x.OptimisticLock); }
-            set { attributes.Set(x => x.OptimisticLock, value); }
+            get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
         }
 
         public IDefaultableEnumerable<ColumnMapping> Columns
@@ -134,19 +121,14 @@ namespace FluentNHibernate.MappingModel
             columns.ClearAll();
         }
 
-        public override bool IsSpecified(string property)
+        public void Set<T>(Expression<Func<ManyToOneMapping, T>> expression, int layer, T value)
         {
-            return attributes.IsSpecified(property);
+            Set(expression.ToMember().Name, layer, value);
         }
 
-        public bool HasValue<TResult>(Expression<Func<ManyToOneMapping, TResult>> property)
+        protected override void Set(string attribute, int layer, object value)
         {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<ManyToOneMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
+            attributes.Set(attribute, layer, value);
         }
 
         public bool Equals(ManyToOneMapping other)
@@ -180,5 +162,10 @@ namespace FluentNHibernate.MappingModel
         }
 
         public IRelationship OtherSide { get; set; }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
+        }
     }
 }

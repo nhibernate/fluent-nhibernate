@@ -16,7 +16,7 @@ namespace FluentNHibernate.Automapping.Steps
         public SimpleTypeCollectionStep(IAutomappingConfiguration cfg)
         {
             this.cfg = cfg;
-            keys = new AutoKeyMapper(cfg);
+            keys = new AutoKeyMapper();
         }
 
         public bool ShouldMap(Member member)
@@ -42,7 +42,7 @@ namespace FluentNHibernate.Automapping.Steps
 
             mapping.ContainingEntityType = classMap.Type;
             mapping.Member = member;
-            mapping.SetDefaultValue(x => x.Name, member.Name);
+            mapping.Set(x => x.Name, Layer.Defaults, member.Name);
             SetDefaultAccess(member, mapping);
 
             keys.SetKey(member, classMap, mapping);
@@ -59,11 +59,11 @@ namespace FluentNHibernate.Automapping.Steps
             {
                 // if it's a property or unset then we'll just let NH deal with it, otherwise
                 // set the access to be whatever we determined it might be
-                mapping.SetDefaultValue(x => x.Access, resolvedAccess.ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, resolvedAccess.ToString());
             }
 
             if (member.IsProperty && !member.CanWrite)
-                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
         }
 
         private void SetElement(Member property, ClassMappingBase classMap, CollectionMapping mapping)
@@ -71,11 +71,13 @@ namespace FluentNHibernate.Automapping.Steps
             var element = new ElementMapping
             {
                 ContainingEntityType = classMap.Type,
-                Type = new TypeReference(property.PropertyType.GetGenericArguments()[0])
             };
+            element.Set(x => x.Type, Layer.Defaults, new TypeReference(property.PropertyType.GetGenericArguments()[0]));
 
-            element.AddDefaultColumn(new ColumnMapping { Name = cfg.SimpleTypeCollectionValueColumn(property) });
-            mapping.SetDefaultValue(x => x.Element, element);
+            var columnMapping = new ColumnMapping();
+            columnMapping.Set(x => x.Name, Layer.Defaults, cfg.SimpleTypeCollectionValueColumn(property));
+            element.AddDefaultColumn(columnMapping);
+            mapping.Set(x => x.Element, Layer.Defaults, element);
         }
     }
 }

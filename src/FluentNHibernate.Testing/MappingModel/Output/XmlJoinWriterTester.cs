@@ -2,7 +2,6 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Output;
-using FluentNHibernate.Testing.DomainModel.Mapping;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 
@@ -89,7 +88,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new JoinMapping();
 
-            mapping.Key = new KeyMapping();
+            mapping.Set(x => x.Key, Layer.Defaults, new KeyMapping());
 
             writer.VerifyXml(mapping)
                 .Element("key").Exists();

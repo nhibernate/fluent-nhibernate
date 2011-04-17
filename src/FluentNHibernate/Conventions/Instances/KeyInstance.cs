@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
@@ -24,7 +23,7 @@ namespace FluentNHibernate.Conventions.Instances
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
-            column.Name = columnName;
+            column.Set(x => x.Name, Layer.Conventions, columnName);
 
             mapping.ClearColumns();
             mapping.AddColumn(column);
@@ -32,14 +31,12 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void ForeignKey(string constraint)
         {
-            if (!mapping.IsSpecified("ForeignKey"))
-                mapping.ForeignKey = constraint;
+            mapping.Set(x => x.ForeignKey, Layer.Conventions, constraint);
         }
 
         public new void PropertyRef(string property)
         {
-            if (!mapping.IsSpecified("PropertyRef"))
-                mapping.PropertyRef = property;
+            mapping.Set(x => x.PropertyRef, Layer.Conventions, property);
         }
 
         public new IEnumerable<IColumnInstance> Columns
@@ -54,7 +51,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void CascadeOnDelete()
         {
-            mapping.OnDelete = "cascade";
+            mapping.Set(x => x.OnDelete, Layer.Conventions, "cascade");
         }
     }
 }

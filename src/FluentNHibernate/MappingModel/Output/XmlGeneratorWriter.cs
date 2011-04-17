@@ -22,7 +22,7 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("generator");
 
-            if (mapping.HasValue(x => x.Class))
+            if (mapping.IsSpecified("Class"))
                 element.WithAtt("class", mapping.Class);
 
             foreach (var param in mapping.Params)

@@ -26,13 +26,19 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         public void IsAnyMatchesAnyOfTheSuppliedValues()
         {
             acceptance.Expect(x => x.Access.IsAny(Access.Property, Access.Field));
-                
+
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Access, Layer.Defaults, Access.Field.ToString());
+
+            var propertyMapping2 = new PropertyMapping();
+            propertyMapping2.Set(x => x.Access, Layer.Defaults, Access.Property.ToString());
+
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.Field.ToString()}))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeTrue();
 
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.Property.ToString() }))
+                .Matches(new PropertyInspector(propertyMapping2))
                 .ShouldBeTrue();
         }
 
@@ -41,8 +47,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         {
             acceptance.Expect(x => x.Access.IsAny(Access.Property, Access.Field));
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Access, Layer.Defaults, Access.CamelCaseField().ToString());
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.CamelCaseField().ToString() }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeFalse();
         }
 
@@ -51,12 +59,18 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         {
             acceptance.Expect(x => x.Access.IsNotAny(Access.Property, Access.Field));
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Access, Layer.Defaults, Access.Field.ToString());
+
+            var propertyMapping2 = new PropertyMapping();
+            propertyMapping2.Set(x => x.Access, Layer.Defaults, Access.Property.ToString());
+
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.Field.ToString() }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeFalse();
 
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.Property.ToString() }))
+                .Matches(new PropertyInspector(propertyMapping2))
                 .ShouldBeFalse();
         }
 
@@ -65,8 +79,10 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria
         {
             acceptance.Expect(x => x.Access.IsNotAny(Access.Property, Access.Field));
 
+            var propertyMapping = new PropertyMapping();
+            propertyMapping.Set(x => x.Access, Layer.Defaults, Access.CamelCaseField().ToString());
             acceptance
-                .Matches(new PropertyInspector(new PropertyMapping() { Access = Access.CamelCaseField().ToString() }))
+                .Matches(new PropertyInspector(propertyMapping))
                 .ShouldBeTrue();
         }
     }

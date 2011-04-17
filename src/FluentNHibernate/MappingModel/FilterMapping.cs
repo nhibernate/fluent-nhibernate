@@ -1,32 +1,32 @@
 using System;
+using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
     [Serializable]
-    public class FilterMapping : IMappingBase
+    public class FilterMapping : IMapping
     {
-        private readonly AttributeStore<FilterMapping> attributes;
+        readonly AttributeStore attributes;
 
         public FilterMapping()
             : this(new AttributeStore())
         { }
 
-        public FilterMapping(AttributeStore underlyingStore)
+        public FilterMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<FilterMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         public string Name
         {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            get { return attributes.GetOrDefault<string>("Name"); }
         }
 
         public string Condition
         {
-            get { return attributes.Get(x => x.Condition); }
-            set { attributes.Set(x => x.Condition, value); }
+            get { return attributes.GetOrDefault<string>("Condition"); }
         }
 
         public void AcceptVisitor(IMappingModelVisitor visitor)
@@ -57,6 +57,16 @@ namespace FluentNHibernate.MappingModel
         public override int GetHashCode()
         {
             return (attributes != null ? attributes.GetHashCode() : 0);
+        }
+
+        public void Set<T>(Expression<Func<FilterMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        public void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
         }
     }
 }

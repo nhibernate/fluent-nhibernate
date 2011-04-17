@@ -32,7 +32,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new IndexManyToManyMapping();
 
-            mapping.ForeignKey = "FKTest";
+            mapping.Set(x => x.ForeignKey, Layer.Defaults, "FKTest");
 
             writer.VerifyXml(mapping)
                 .HasAttribute("foreign-key","FKTest");

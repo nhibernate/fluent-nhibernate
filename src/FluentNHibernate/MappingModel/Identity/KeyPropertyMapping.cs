@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Identity
@@ -8,8 +9,8 @@ namespace FluentNHibernate.MappingModel.Identity
     [Serializable]
     public class KeyPropertyMapping : MappingBase, ICompositeIdKeyMapping
     {
-        private readonly AttributeStore<KeyPropertyMapping> attributes = new AttributeStore<KeyPropertyMapping>();
-        private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
+        readonly AttributeStore attributes = new AttributeStore();
+        readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
         {
@@ -21,26 +22,22 @@ namespace FluentNHibernate.MappingModel.Identity
 
         public string Name
         {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            get { return attributes.GetOrDefault<string>("Name"); }
         }
 
         public string Access
         {
-            get { return attributes.Get(x => x.Access); }
-            set { attributes.Set(x => x.Access, value); }
+            get { return attributes.GetOrDefault<string>("Access"); }
         }
 
         public TypeReference Type
         {
-            get { return attributes.Get(x => x.Type); }
-            set { attributes.Set(x => x.Type, value); }
+            get { return attributes.GetOrDefault<TypeReference>("Type"); }
         }
 
         public int Length
         {
-            get { return attributes.Get(x => x.Length); }
-            set { attributes.Set(x => x.Length, value); }
+            get { return attributes.GetOrDefault<int>("Length"); }
         }
 
         public IEnumerable<ColumnMapping> Columns
@@ -53,21 +50,6 @@ namespace FluentNHibernate.MappingModel.Identity
         public void AddColumn(ColumnMapping mapping)
         {
             columns.Add(mapping);
-        }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<KeyPropertyMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<KeyPropertyMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
         }
 
         public bool Equals(KeyPropertyMapping other)
@@ -96,6 +78,21 @@ namespace FluentNHibernate.MappingModel.Identity
                 result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        public void Set<T>(Expression<Func<KeyPropertyMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

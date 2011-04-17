@@ -57,7 +57,7 @@ namespace FluentNHibernate.Conventions.Inspections
             {
                 if (mapping.Cache == null)
                     // conventions are hitting it, user must want a cache
-                    mapping.Cache = new CacheMapping();
+                    mapping.Set(x => x.Cache, Layer.Conventions, new CacheMapping());
 
                 return new CacheInstance(mapping.Cache);
             }

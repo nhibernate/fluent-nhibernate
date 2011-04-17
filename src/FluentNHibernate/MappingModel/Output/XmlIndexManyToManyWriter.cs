@@ -28,13 +28,13 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("index-many-to-many");
 
-            if (mapping.HasValue(x => x.Class))
+            if (mapping.IsSpecified("Class"))
                 element.WithAtt("class", mapping.Class);
 
-            if (mapping.HasValue(x => x.ForeignKey))
+            if (mapping.IsSpecified("ForeignKey"))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
-            if (mapping.HasValue(x => x.EntityName))
+            if (mapping.IsSpecified("EntityName"))
                 element.WithAtt("entity-name", mapping.EntityName);
         }
 

@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 
@@ -27,7 +26,7 @@ namespace FluentNHibernate.Conventions.Instances
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
-            column.Name = columnName;
+            column.Set(x => x.Name, Layer.Conventions, columnName);
 
             mapping.ClearColumns();
             mapping.AddColumn(column);
@@ -35,29 +34,23 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void UnsavedValue(string unsavedValue)
         {
-            if (!mapping.IsSpecified("UnsavedValue"))
-                mapping.UnsavedValue = unsavedValue;
+            mapping.Set(x => x.UnsavedValue, Layer.Conventions, unsavedValue);
         }
 
         public new void Length(int length)
         {
-            if (mapping.Columns.First().IsSpecified("Length"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Length = length;
+                column.Set(x => x.Length, Layer.Conventions, length);
         }
 
         public void CustomType(string type)
         {
-            if (!mapping.IsSpecified("Type"))
-                mapping.Type = new TypeReference(type);
+            mapping.Set(x => x.Type, Layer.Conventions, new TypeReference(type));
         }
 
         public void CustomType(Type type)
         {
-            if (!mapping.IsSpecified("Type"))
-                mapping.Type = new TypeReference(type);
+            mapping.Set(x => x.Type, Layer.Conventions, new TypeReference(type));
         }
 
         public void CustomType<T>()
@@ -67,22 +60,14 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new IAccessInstance Access
         {
-            get
-            {
-                return new AccessInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Access"))
-                        mapping.Access = value;
-                });
-            }
+            get { return new AccessInstance(value => mapping.Set(x => x.Access, Layer.Conventions, value)); }
         }
 
         public IGeneratorInstance GeneratedBy
         {
             get
             {
-                if (!mapping.IsSpecified("Generator"))
-                    mapping.Generator = new GeneratorMapping();
+                mapping.Set(x => x.Generator, Layer.Conventions, new GeneratorMapping());
                 
                 return new GeneratorInstance(mapping.Generator, mapping.Type.GetUnderlyingSystemType());
             }
@@ -100,83 +85,60 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Precision(int precision)
         {
-            if (mapping.Columns.First().IsSpecified("Precision"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Precision = precision;
+                column.Set(x => x.Precision, Layer.Conventions, precision);
         }
 
         public new void Scale(int scale)
         {
-            if (mapping.Columns.First().IsSpecified("Scale"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Scale = scale;
+                column.Set(x => x.Scale, Layer.Conventions, scale);
         }
 
         public new void Nullable()
         {
-            if (!mapping.Columns.First().IsSpecified("NotNull"))
-                foreach (var column in mapping.Columns)
-                    column.NotNull = !nextBool;
+            foreach (var column in mapping.Columns)
+                column.Set(x => x.NotNull, Layer.Conventions, !nextBool);
 
             nextBool = true;
         }
 
         public new void Unique()
         {
-            if (!mapping.Columns.First().IsSpecified("Unique"))
-                foreach (var column in mapping.Columns)
-                    column.Unique = nextBool;
+            foreach (var column in mapping.Columns)
+                column.Set(x => x.Unique, Layer.Conventions, nextBool);
 
             nextBool = true;
         }
 
         public new void UniqueKey(string columns)
         {
-            if (mapping.Columns.First().IsSpecified("UniqueKey"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.UniqueKey = columns;
+                column.Set(x => x.UniqueKey, Layer.Conventions, columns);
         }
 
         public void CustomSqlType(string sqlType)
         {
-            if (mapping.Columns.First().IsSpecified("SqlType"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.SqlType = sqlType;
+                column.Set(x => x.SqlType, Layer.Conventions, sqlType);
         }
 
         public new void Index(string index)
         {
-            if (mapping.Columns.First().IsSpecified("Index"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Index = index;
+                column.Set(x => x.Index, Layer.Conventions, index);
         }
 
         public new void Check(string constraint)
         {
-            if (mapping.Columns.First().IsSpecified("Check"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Check = constraint;
+                column.Set(x => x.Check, Layer.Conventions, constraint);
         }
 
         public new void Default(object value)
         {
-            if (mapping.Columns.First().IsSpecified("Default"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Default = value.ToString();
+                column.Set(x => x.Default, Layer.Conventions, value.ToString());
         }
     }
 }

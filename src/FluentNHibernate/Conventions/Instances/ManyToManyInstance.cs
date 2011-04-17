@@ -1,8 +1,6 @@
 using System;
 using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
@@ -26,7 +24,7 @@ namespace FluentNHibernate.Conventions.Instances
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
-            column.Name = columnName;
+            column.Set(x => x.Name, Layer.Conventions, columnName);
 
             mapping.ClearColumns();
             mapping.AddColumn(column);
@@ -45,30 +43,27 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void CustomClass<T>()
         {
-            mapping.Class = new TypeReference(typeof(T));
+            CustomClass(typeof(T));
         }
 
         public void CustomClass(Type type)
         {
-            mapping.Class = new TypeReference(type);
+            mapping.Set(x => x.Class, Layer.Conventions, new TypeReference(type));
         }
 
         public new void ForeignKey(string constraint)
         {
-            if (!mapping.IsSpecified(x => x.ForeignKey))
-                mapping.ForeignKey = constraint;
+            mapping.Set(x => x.ForeignKey, Layer.Conventions, constraint);
         }
 
         public new void Where(string where)
         {
-            if (!mapping.IsSpecified(x => x.Where))
-                mapping.Where = where;
+            mapping.Set(x => x.Where, Layer.Conventions, where);
         }
 
         public new void OrderBy(string orderBy)
         {
-            if (!mapping.IsSpecified(x => x.OrderBy))
-                mapping.OrderBy = orderBy;
+            mapping.Set(x => x.OrderBy, Layer.Conventions, orderBy);
         }
     }
 }

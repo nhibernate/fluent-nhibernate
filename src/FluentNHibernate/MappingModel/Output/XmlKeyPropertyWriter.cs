@@ -29,16 +29,16 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("key-property");
 
-            if (mapping.HasValue(x => x.Name))
+            if (mapping.IsSpecified("Name"))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.HasValue(x => x.Access))
+            if (mapping.IsSpecified("Access"))
                 element.WithAtt("access", mapping.Access);
 
-            if (mapping.HasValue(x => x.Type))
+            if (mapping.IsSpecified("Type"))
                 element.WithAtt("type", mapping.Type);
 
-            if (mapping.HasValue(x => x.Length))
+            if (mapping.IsSpecified("Length"))
                 element.WithAtt("length", mapping.Length);
         }
 

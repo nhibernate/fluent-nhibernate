@@ -64,55 +64,55 @@ namespace FluentNHibernate.MappingModel.Output
 
         protected void WriteBaseCollectionAttributes(XmlElement element, CollectionMapping mapping)
         {
-            if (mapping.HasValue(x => x.Access))
+            if (mapping.IsSpecified("Access"))
                 element.WithAtt("access", mapping.Access);
 
-            if (mapping.HasValue(x => x.BatchSize))
+            if (mapping.IsSpecified("BatchSize"))
                 element.WithAtt("batch-size", mapping.BatchSize);
 
-            if (mapping.HasValue(x => x.Cascade))
+            if (mapping.IsSpecified("Cascade"))
                 element.WithAtt("cascade", mapping.Cascade);
 
-            if (mapping.HasValue(x => x.Check))
+            if (mapping.IsSpecified("Check"))
                 element.WithAtt("check", mapping.Check);
 
-            if (mapping.HasValue(x => x.CollectionType) && mapping.CollectionType != TypeReference.Empty)
+            if (mapping.IsSpecified("CollectionType") && mapping.CollectionType != TypeReference.Empty)
                 element.WithAtt("collection-type", mapping.CollectionType);
 
-            if (mapping.HasValue(x => x.Fetch))
+            if (mapping.IsSpecified("Fetch"))
                 element.WithAtt("fetch", mapping.Fetch);
 
-            if (mapping.HasValue(x => x.Generic))
+            if (mapping.IsSpecified("Generic"))
                 element.WithAtt("generic", mapping.Generic);
 
-            if (mapping.HasValue(x => x.Inverse))
+            if (mapping.IsSpecified("Inverse"))
                 element.WithAtt("inverse", mapping.Inverse);
 
-            if (mapping.HasValue(x => x.Lazy))
+            if (mapping.IsSpecified("Lazy"))
                 element.WithAtt("lazy", mapping.Lazy.ToString().ToLowerInvariant());
 
-            if (mapping.HasValue(x => x.Name))
+            if (mapping.IsSpecified("Name"))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.HasValue(x => x.OptimisticLock))
+            if (mapping.IsSpecified("OptimisticLock"))
                 element.WithAtt("optimistic-lock", mapping.OptimisticLock);
 
-            if (mapping.HasValue(x => x.Persister))
+            if (mapping.IsSpecified("Persister"))
                 element.WithAtt("persister", mapping.Persister);
 
-            if (mapping.HasValue(x => x.Schema))
+            if (mapping.IsSpecified("Schema"))
                 element.WithAtt("schema", mapping.Schema);
 
-            if (mapping.HasValue(x => x.TableName))
+            if (mapping.IsSpecified("TableName"))
                 element.WithAtt("table", mapping.TableName);
 
-            if (mapping.HasValue(x => x.Where))
+            if (mapping.IsSpecified("Where"))
                 element.WithAtt("where", mapping.Where);
 
-            if (mapping.HasValue(x => x.Subselect))
+            if (mapping.IsSpecified("Subselect"))
                 element.WithAtt("subselect", mapping.Subselect);
 
-            if (mapping.HasValue(x => x.Mutable))
+            if (mapping.IsSpecified("Mutable"))
                 element.WithAtt("mutable", mapping.Mutable);
         }
     }

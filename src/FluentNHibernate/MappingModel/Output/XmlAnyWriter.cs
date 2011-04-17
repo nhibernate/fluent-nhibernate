@@ -27,31 +27,31 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("any");
 
-            if (mapping.HasValue(x => x.Access))
+            if (mapping.IsSpecified("Access"))
                 element.WithAtt("access", mapping.Access);
 
-            if (mapping.HasValue(x => x.Cascade))
+            if (mapping.IsSpecified("Cascade"))
                 element.WithAtt("cascade", mapping.Cascade);
 
-            if (mapping.HasValue(x => x.IdType))
+            if (mapping.IsSpecified("IdType"))
                 element.WithAtt("id-type", mapping.IdType);
 
-            if (mapping.HasValue(x => x.Insert))
+            if (mapping.IsSpecified("Insert"))
                 element.WithAtt("insert", mapping.Insert);
 
-            if (mapping.HasValue(x => x.MetaType))
+            if (mapping.IsSpecified("MetaType"))
                 element.WithAtt("meta-type", mapping.MetaType);
 
-            if (mapping.HasValue(x => x.Name))
+            if (mapping.IsSpecified("Name"))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.HasValue(x => x.Update))
+            if (mapping.IsSpecified("Update"))
                 element.WithAtt("update", mapping.Update);
 
-            if (mapping.HasValue(x => x.Lazy))
+            if (mapping.IsSpecified("Lazy"))
                 element.WithAtt("lazy", mapping.Lazy);
 
-            if (mapping.HasValue(x => x.OptimisticLock))
+            if (mapping.IsSpecified("OptimisticLock"))
                 element.WithAtt("optimistic-lock", mapping.OptimisticLock);
         }
 

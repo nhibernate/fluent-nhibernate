@@ -1,4 +1,5 @@
 ﻿using FluentNHibernate.Mapping.Providers;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Testing.Utils;
 using FluentNHibernate.Visitors;
@@ -12,27 +13,28 @@ namespace FluentNHibernate.Testing.Visitors
     {
         public override void establish_context()
         {
-            external_component_mapping = new ExternalComponentMapping(ComponentType.Component) { Type = typeof(ComponentTarget) };
-            var external_component = Stub<IExternalComponentMappingProvider>.Create(cfg =>
-                cfg.Stub(x => x.GetComponentMapping()).Return(external_component_mapping));
+            externalComponentMapping = new ExternalComponentMapping(ComponentType.Component);
+            externalComponentMapping.Set(x => x.Type, Layer.Defaults, typeof(ComponentTarget));
+            var externalComponent = Stub<IExternalComponentMappingProvider>.Create(cfg =>
+                cfg.Stub(x => x.GetComponentMapping()).Return(externalComponentMapping));
 
-            visitor = new ComponentReferenceResolutionVisitor(new [] { new ComponentMapComponentReferenceResolver() }, new[] { external_component });
-            reference_component_mapping = new ReferenceComponentMapping(ComponentType.Component, null, null, null, null);
+            visitor = new ComponentReferenceResolutionVisitor(new [] { new ComponentMapComponentReferenceResolver() }, new[] { externalComponent });
+            referenceComponentMapping = new ReferenceComponentMapping(ComponentType.Component, null, null, null, null);
         }
 
         public override void because()
         {
-            visitor.ProcessComponent(reference_component_mapping);
+            visitor.ProcessComponent(referenceComponentMapping);
         }
 
         [Test]
         public void should_associate_external_mapping_with_reference_mapping()
         {
-            reference_component_mapping.IsAssociated.ShouldBeTrue();
+            referenceComponentMapping.IsAssociated.ShouldBeTrue();
         }
 
-        private ReferenceComponentMapping reference_component_mapping;
-        private ExternalComponentMapping external_component_mapping;
+        private ReferenceComponentMapping referenceComponentMapping;
+        private ExternalComponentMapping externalComponentMapping;
     }
 
     [TestFixture]
@@ -41,12 +43,12 @@ namespace FluentNHibernate.Testing.Visitors
         public override void establish_context()
         {
             visitor = new ComponentReferenceResolutionVisitor(new[] { new ComponentMapComponentReferenceResolver() }, new IExternalComponentMappingProvider[0]);
-            member_property = new DummyPropertyInfo("Component", typeof(ComponentTarget)).ToMember();
+            memberProperty = new DummyPropertyInfo("Component", typeof(ComponentTarget)).ToMember();
         }
 
         public override void because()
         {
-            visitor.ProcessComponent(new ReferenceComponentMapping(ComponentType.Component, member_property, typeof(ComponentTarget), typeof(Target), null));
+            visitor.ProcessComponent(new ReferenceComponentMapping(ComponentType.Component, memberProperty, typeof(ComponentTarget), typeof(Target), null));
         }
 
         [Test]
@@ -65,19 +67,19 @@ namespace FluentNHibernate.Testing.Visitors
         [Test]
         public void should_have_type_for_missing_component_in_exception()
         {
-            (thrown_exception as MissingExternalComponentException).ReferencedComponentType.ShouldEqual(typeof(ComponentTarget));
+            ((MissingExternalComponentException)thrown_exception).ReferencedComponentType.ShouldEqual(typeof(ComponentTarget));
         }
 
         [Test]
         public void should_have_type_for_the_reference_in_exception()
         {
-            (thrown_exception as MissingExternalComponentException).SourceType.ShouldEqual(typeof(Target));
+            ((MissingExternalComponentException)thrown_exception).SourceType.ShouldEqual(typeof(Target));
         }
 
         [Test]
         public void should_have_property_from_the_reference_in_exception()
         {
-            (thrown_exception as MissingExternalComponentException).SourceMember.ShouldEqual(member_property);
+            ((MissingExternalComponentException)thrown_exception).SourceMember.ShouldEqual(memberProperty);
         }
     }
 
@@ -86,24 +88,28 @@ namespace FluentNHibernate.Testing.Visitors
     {
         public override void establish_context()
         {
-            var external_component_one = Stub<IExternalComponentMappingProvider>.Create(cfg =>
+            var externalComponentOne = Stub<IExternalComponentMappingProvider>.Create(cfg =>
             {
-                cfg.Stub(x => x.GetComponentMapping()).Return(new ExternalComponentMapping(ComponentType.Component) { Type = typeof(ComponentTarget) });
+                var externalComponentMapping = new ExternalComponentMapping(ComponentType.Component);
+                externalComponentMapping.Set(x => x.Type, Layer.Defaults, typeof(ComponentTarget));
+                cfg.Stub(x => x.GetComponentMapping()).Return(externalComponentMapping);
                 cfg.Stub(x => x.Type).Return(typeof(ComponentTarget));
             });
-            var external_component_two = Stub<IExternalComponentMappingProvider>.Create(cfg =>
+            var externalComponentTwo = Stub<IExternalComponentMappingProvider>.Create(cfg =>
             {
-                cfg.Stub(x => x.GetComponentMapping()).Return(new ExternalComponentMapping(ComponentType.Component) { Type = typeof(ComponentTarget) });
+                var externalComponentMapping = new ExternalComponentMapping(ComponentType.Component);
+                externalComponentMapping.Set(x => x.Type, Layer.Defaults, typeof(ComponentTarget));
+                cfg.Stub(x => x.GetComponentMapping()).Return(externalComponentMapping);
                 cfg.Stub(x => x.Type).Return(typeof(ComponentTarget));
             });
 
-            visitor = new ComponentReferenceResolutionVisitor(new[] { new ComponentMapComponentReferenceResolver() }, new[] { external_component_one, external_component_two });
-            member_property = new DummyPropertyInfo("Component", typeof(ComponentTarget)).ToMember();
+            visitor = new ComponentReferenceResolutionVisitor(new[] { new ComponentMapComponentReferenceResolver() }, new[] { externalComponentOne, externalComponentTwo });
+            memberProperty = new DummyPropertyInfo("Component", typeof(ComponentTarget)).ToMember();
         }
 
         public override void because()
         {
-            visitor.ProcessComponent(new ReferenceComponentMapping(ComponentType.Component, member_property, typeof(ComponentTarget), typeof(Target), null));
+            visitor.ProcessComponent(new ReferenceComponentMapping(ComponentType.Component, memberProperty, typeof(ComponentTarget), typeof(Target), null));
         }
 
         [Test]
@@ -122,26 +128,26 @@ namespace FluentNHibernate.Testing.Visitors
         [Test]
         public void should_have_type_for_missing_component_in_exception()
         {
-            (thrown_exception as AmbiguousComponentReferenceException).ReferencedComponentType.ShouldEqual(typeof(ComponentTarget));
+            ((AmbiguousComponentReferenceException)thrown_exception).ReferencedComponentType.ShouldEqual(typeof(ComponentTarget));
         }
 
         [Test]
         public void should_have_type_for_the_reference_in_exception()
         {
-            (thrown_exception as AmbiguousComponentReferenceException).SourceType.ShouldEqual(typeof(Target));
+            ((AmbiguousComponentReferenceException)thrown_exception).SourceType.ShouldEqual(typeof(Target));
         }
 
         [Test]
         public void should_have_property_from_the_reference_in_exception()
         {
-            (thrown_exception as AmbiguousComponentReferenceException).SourceMember.ShouldEqual(member_property);
+            ((AmbiguousComponentReferenceException)thrown_exception).SourceMember.ShouldEqual(memberProperty);
         }
     }
 
     public abstract class ComponentReferenceResolutionVisitorSpec : Specification
     {
         protected ComponentReferenceResolutionVisitor visitor;
-        protected Member member_property;
+        protected Member memberProperty;
 
         protected class ComponentTarget
         { }

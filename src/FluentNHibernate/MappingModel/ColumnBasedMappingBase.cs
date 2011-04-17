@@ -1,36 +1,16 @@
 using System;
-using System.Linq;
 
 namespace FluentNHibernate.MappingModel
 {
     [Serializable]
     public abstract class ColumnBasedMappingBase : MappingBase, IHasColumnMappings
     {
-        readonly string[] columnAttributes = new[] { "Length", "Precision", "Scale", "NotNull", "Unique", "UniqueKey", "SqlType", "Index", "Check", "Default" };
         readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
         protected readonly AttributeStore attributes;
 
         protected ColumnBasedMappingBase(AttributeStore underlyingStore)
         {
             attributes = underlyingStore.Clone();
-        }
-
-        public override bool IsSpecified(string property)
-        {
-            if (columnAttributes.Contains(property))
-                return columns.Any(x => x.IsSpecified(property));
-
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue(string property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(string property, TResult value)
-        {
-            attributes.SetDefault(property, value);
         }
 
         public IDefaultableEnumerable<ColumnMapping> Columns

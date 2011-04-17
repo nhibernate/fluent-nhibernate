@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel;
@@ -28,20 +27,12 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public new IFetchInstance Fetch
         {
-            get
-            {
-                return new FetchInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Fetch"))
-                        mapping.Fetch = value;
-                });
-            }
+            get { return new FetchInstance(value => mapping.Set(x => x.Fetch, Layer.Conventions, value)); }
         }
 
         public new void Inverse()
         {
-            if (!mapping.IsSpecified("Inverse"))
-                mapping.Inverse = nextBool;
+            mapping.Set(x => x.Inverse, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
@@ -52,33 +43,28 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public new void Optional()
         {
-            if (!mapping.IsSpecified("Optional"))
-                mapping.Optional = nextBool;
+            mapping.Set(x => x.Optional, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void Schema(string schema)
         {
-            if (!mapping.IsSpecified("Schema"))
-                mapping.Schema = schema;
+            mapping.Set(x => x.Schema, Layer.Conventions, schema);
         }
 
         public void Table(string table)
         {
-            if (!mapping.IsSpecified("TableName"))
-                mapping.TableName = table;
+            mapping.Set(x => x.TableName, Layer.Conventions, table);
         }
 
         public new void Catalog(string catalog)
         {
-            if (!mapping.IsSpecified("Catalog"))
-                mapping.Catalog = catalog;
+            mapping.Set(x => x.Catalog, Layer.Conventions, catalog);
         }
 
         public new void Subselect(string subselect)
         {
-            if (!mapping.IsSpecified("Subselect"))
-                mapping.Subselect = subselect;
+            mapping.Set(x => x.Subselect, Layer.Conventions, subselect);
         }
     }
 }

@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
 {
     [Serializable]
-    public class JoinMapping : IMappingBase
+    public class JoinMapping : IMapping
     {
-        private readonly AttributeStore<JoinMapping> attributes;
+        private readonly AttributeStore attributes;
 
         private readonly MappedMembers mappedMembers;
 
@@ -18,16 +19,15 @@ namespace FluentNHibernate.MappingModel
             : this(new AttributeStore())
         {}
 
-        public JoinMapping(AttributeStore underlyingStore)
+        public JoinMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<JoinMapping>(underlyingStore);
+            this.attributes = attributes;
             mappedMembers = new MappedMembers();
         }
 
         public KeyMapping Key
         {
-            get { return attributes.Get(x => x.Key); }
-            set { attributes.Set(x => x.Key, value); }
+            get { return attributes.GetOrDefault<KeyMapping>("Key"); }
         }
 
         public IEnumerable<PropertyMapping> Properties
@@ -82,44 +82,37 @@ namespace FluentNHibernate.MappingModel
 
         public string TableName
         {
-            get { return attributes.Get(x => x.TableName); }
-            set { attributes.Set(x => x.TableName, value); }
+            get { return attributes.GetOrDefault<string>("TableName"); }
         }
 
         public string Schema
         {
-            get { return attributes.Get(x => x.Schema); }
-            set { attributes.Set(x => x.Schema, value); }
+            get { return attributes.GetOrDefault<string>("Schema"); }
         }
 
         public string Catalog
         {
-            get { return attributes.Get(x => x.Catalog); }
-            set { attributes.Set(x => x.Catalog, value); }
+            get { return attributes.GetOrDefault<string>("Catalog"); }
         }
 
         public string Subselect
         {
-            get { return attributes.Get(x => x.Subselect); }
-            set { attributes.Set(x => x.Subselect, value); }
+            get { return attributes.GetOrDefault<string>("Subselect"); }
         }
 
         public string Fetch
         {
-            get { return attributes.Get(x => x.Fetch); }
-            set { attributes.Set(x => x.Fetch, value); }
+            get { return attributes.GetOrDefault<string>("Fetch"); }
         }
 
         public bool Inverse
         {
-            get { return attributes.Get(x => x.Inverse); }
-            set { attributes.Set(x => x.Inverse, value); }
+            get { return attributes.GetOrDefault<bool>("Inverse"); }
         }
 
         public bool Optional
         {
-            get { return attributes.Get(x => x.Optional); }
-            set { attributes.Set(x => x.Optional, value); }
+            get { return attributes.GetOrDefault<bool>("Optional"); }
         }
 
         public Type ContainingEntityType { get; set; }
@@ -132,21 +125,6 @@ namespace FluentNHibernate.MappingModel
                 visitor.Visit(Key);
 
             mappedMembers.AcceptVisitor(visitor);
-        }
-
-        public bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<JoinMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<JoinMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
         }
 
         public bool Equals(JoinMapping other)
@@ -175,6 +153,21 @@ namespace FluentNHibernate.MappingModel
                 result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        public void Set<T>(Expression<Func<JoinMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        public void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

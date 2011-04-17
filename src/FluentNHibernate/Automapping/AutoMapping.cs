@@ -12,19 +12,17 @@ namespace FluentNHibernate.Automapping
 {
     public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
     {
-        private readonly AttributeStore<ClassMapping> attributes;
-        private readonly MappingProviderStore providers;
+        readonly MappingProviderStore providers;
         readonly IList<Member> mappedMembers;
 
         public AutoMapping(IList<Member> mappedMembers)
-            : this(mappedMembers, new AttributeStore<ClassMapping>(), new MappingProviderStore())
+            : this(mappedMembers, new AttributeStore(), new MappingProviderStore())
         {}
 
-        AutoMapping(IList<Member> mappedMembers, AttributeStore<ClassMapping> attributes, MappingProviderStore providers)
+        AutoMapping(IList<Member> mappedMembers, AttributeStore attributes, MappingProviderStore providers)
             : base(attributes, providers)
         {
             this.mappedMembers = mappedMembers;
-            this.attributes = attributes;
             this.providers = providers;
         }
 
@@ -40,34 +38,34 @@ namespace FluentNHibernate.Automapping
 
         void IAutoClasslike.AlterModel(ClassMappingBase mapping)
         {
-            mapping.MergeAttributes(attributes.CloneInner());
+            mapping.MergeAttributes(attributes.Clone());
 
             if (mapping is ClassMapping)
             {
                 var classMapping = (ClassMapping)mapping;
 
                 if (providers.Id != null)
-                    classMapping.Id = providers.Id.GetIdentityMapping();
+                    classMapping.Set(x => x.Id, Layer.Defaults, providers.Id.GetIdentityMapping());
 
                 if (providers.NaturalId != null)
-                    classMapping.NaturalId = providers.NaturalId.GetNaturalIdMapping();
+                    classMapping.Set(x => x.NaturalId, Layer.Defaults, providers.NaturalId.GetNaturalIdMapping());
 
                 if (providers.CompositeId != null)
-                    classMapping.Id = providers.CompositeId.GetCompositeIdMapping();
+                    classMapping.Set(x => x.Id, Layer.Defaults, providers.CompositeId.GetCompositeIdMapping());
 
                 if (providers.Version != null)
-                    classMapping.Version = providers.Version.GetVersionMapping();
+                    classMapping.Set(x => x.Version, Layer.Defaults, providers.Version.GetVersionMapping());
 
                 if (providers.Discriminator != null)
-                    classMapping.Discriminator = providers.Discriminator.GetDiscriminatorMapping();
+                    classMapping.Set(x => x.Discriminator, Layer.Defaults, providers.Discriminator.GetDiscriminatorMapping());
 
                 if (Cache.IsDirty)
-                    classMapping.Cache = ((ICacheMappingProvider)Cache).GetCacheMapping();
+                    classMapping.Set(x => x.Cache, Layer.Defaults, ((ICacheMappingProvider)Cache).GetCacheMapping());
 
                 foreach (var join in providers.Joins)
                     classMapping.AddJoin(join.GetJoinMapping());
 
-                classMapping.Tuplizer = providers.TuplizerMapping;
+                classMapping.Set(x => x.Tuplizer, Layer.Defaults, providers.TuplizerMapping);
             }
 
             foreach (var property in providers.Properties)

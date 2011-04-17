@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Visitors;
 using NUnit.Framework;
@@ -141,7 +142,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         public void Should_choose_UnionSubclass_when_the_class_mapping_IsUnionSubclass_is_true()
         {
             fooMapping = ((IMappingProvider)new BaseMap()).GetClassMapping();
-            fooMapping.IsUnionSubclass = true;
+            fooMapping.Set(x => x.IsUnionSubclass, Layer.Defaults, true);
 
             providers.Add(new StringFooMap());
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -8,16 +9,16 @@ namespace FluentNHibernate.MappingModel.Collections
     [Serializable]
     public class CollectionMapping : MappingBase, IRelationship
     {
-        readonly AttributeStore<CollectionMapping> attributes;
+        readonly AttributeStore attributes;
         readonly IList<FilterMapping> filters = new List<FilterMapping>();
 
         public Type ContainingEntityType { get; set; }
         public Member Member { get; set; }
 
-        CollectionMapping(AttributeStore underlyingStore)
+        CollectionMapping(AttributeStore attributes)
         {
             Collection = Collection.Bag;
-            attributes = new AttributeStore<CollectionMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         public IEnumerable<FilterMapping> Filters
@@ -58,177 +59,136 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public Type ChildType
         {
-            get { return attributes.Get(x => x.ChildType); }
-            set { attributes.Set(x => x.ChildType, value); }
+            get { return attributes.GetOrDefault<Type>("ChildType"); }
         }
 
         public IRelationship OtherSide { get; set; }
 
         public KeyMapping Key
         {
-            get { return attributes.Get(x => x.Key); }
-            set { attributes.Set(x => x.Key, value); }
+            get { return attributes.GetOrDefault<KeyMapping>("Key"); }
         }
 
         public ElementMapping Element
         {
-            get { return attributes.Get(x => x.Element); }
-            set { attributes.Set(x => x.Element, value); }
+            get { return attributes.GetOrDefault<ElementMapping>("Element"); }
         }
 
         public CompositeElementMapping CompositeElement
         {
-            get { return attributes.Get(x => x.CompositeElement); }
-            set { attributes.Set(x => x.CompositeElement, value); }
+            get { return attributes.GetOrDefault<CompositeElementMapping>("CompositeElement"); }
         }
 
         public CacheMapping Cache
         {
-            get { return attributes.Get(x => x.Cache); }
-            set { attributes.Set(x => x.Cache, value); }
+            get { return attributes.GetOrDefault<CacheMapping>("Cache"); }
         }
 
         public ICollectionRelationshipMapping Relationship
         {
-            get { return attributes.Get(x => x.Relationship); }
-            set { attributes.Set(x => x.Relationship, value); }
+            get { return attributes.GetOrDefault<ICollectionRelationshipMapping>("Relationship"); }
         }
 
         public bool Generic
         {
-            get { return attributes.Get(x => x.Generic); }
-            set { attributes.Set(x => x.Generic, value); }
+            get { return attributes.GetOrDefault<bool>("Generic"); }
         }
 
         public Lazy Lazy
         {
-            get { return attributes.Get(x => x.Lazy); }
-            set { attributes.Set(x => x.Lazy, value); }
+            get { return attributes.GetOrDefault<Lazy>("Lazy"); }
         }
 
         public bool Inverse
         {
-            get { return attributes.Get(x => x.Inverse); }
-            set { attributes.Set(x => x.Inverse, value); }
+            get { return attributes.GetOrDefault<bool>("Inverse"); }
         }
 
         public string Name
         {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            get { return attributes.GetOrDefault<string>("Name"); }
         }
 
         public string Access
         {
-            get { return attributes.Get(x => x.Access); }
-            set { attributes.Set(x => x.Access, value); }
+            get { return attributes.GetOrDefault<string>("Access"); }
         }
 
         public string TableName
         {
-            get { return attributes.Get(x => x.TableName); }
-            set { attributes.Set(x => x.TableName, value); }
+            get { return attributes.GetOrDefault<string>("TableName"); }
         }
 
         public string Schema
         {
-            get { return attributes.Get(x => x.Schema); }
-            set { attributes.Set(x => x.Schema, value); }
+            get { return attributes.GetOrDefault<string>("Schema"); }
         }
 
         public string Fetch
         {
-            get { return attributes.Get(x => x.Fetch); }
-            set { attributes.Set(x => x.Fetch, value); }
+            get { return attributes.GetOrDefault<string>("Fetch"); }
         }
 
         public string Cascade
         {
-            get { return attributes.Get(x => x.Cascade); }
-            set { attributes.Set(x => x.Cascade, value); }
+            get { return attributes.GetOrDefault<string>("Cascade"); }
         }
 
         public string Where
         {
-            get { return attributes.Get(x => x.Where); }
-            set { attributes.Set(x => x.Where, value); }
+            get { return attributes.GetOrDefault<string>("Where"); }
         }
 
         public bool Mutable
         {
-            get { return attributes.Get(x => x.Mutable); }
-            set { attributes.Set(x => x.Mutable, value); }
+            get { return attributes.GetOrDefault<bool>("Mutable"); }
         }
 
         public string Subselect
         {
-            get { return attributes.Get(x => x.Subselect); }
-            set { attributes.Set(x => x.Subselect, value); }
+            get { return attributes.GetOrDefault<string>("Subselect"); }
         }
 
     	public TypeReference Persister
         {
-            get { return attributes.Get(x => x.Persister); }
-            set { attributes.Set(x => x.Persister, value); }
+            get { return attributes.GetOrDefault<TypeReference>("Persister"); }
         }
 
         public int BatchSize
         {
-            get { return attributes.Get(x => x.BatchSize); }
-            set { attributes.Set(x => x.BatchSize, value); }
+            get { return attributes.GetOrDefault<int>("BatchSize"); }
         }
 
         public string Check
         {
-            get { return attributes.Get(x => x.Check); }
-            set { attributes.Set(x => x.Check, value); }
+            get { return attributes.GetOrDefault<string>("Check"); }
         }
 
         public TypeReference CollectionType
         {
-            get { return attributes.Get(x => x.CollectionType); }
-            set { attributes.Set(x => x.CollectionType, value); }
+            get { return attributes.GetOrDefault<TypeReference>("CollectionType"); }
         }
 
         public bool OptimisticLock
         {
-            get { return attributes.Get(x => x.OptimisticLock); }
-            set { attributes.Set(x => x.OptimisticLock, value); }
-        }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<CollectionMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<CollectionMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
+            get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
         }
 
         public string OrderBy
         {
-            get { return attributes.Get(x => x.OrderBy); }
-            set { attributes.Set(x => x.OrderBy, value); }
+            get { return attributes.GetOrDefault<string>("OrderBy"); }
         }
 
         public Collection Collection { get; set; }
         
         public string Sort
         {
-            get { return attributes.Get(x => x.Sort); }
-            set { attributes.Set(x => x.Sort, value); }
+            get { return attributes.GetOrDefault<string>("Sort"); }
         }
 
         public IIndexMapping Index
         {
-            get { return attributes.Get(x => x.Index); }
-            set { attributes.Set(x => x.Index, value); }
+            get { return attributes.GetOrDefault<IIndexMapping>("Index"); }
         }
 
         public bool Equals(CollectionMapping other)
@@ -259,6 +219,21 @@ namespace FluentNHibernate.MappingModel.Collections
                 result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        public void Set<T>(Expression<Func<CollectionMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
 
         public static CollectionMapping Array()

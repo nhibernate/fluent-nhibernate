@@ -21,9 +21,10 @@ namespace FluentNHibernate.Mapping
         /// <param name="offset">offset</param>
         public void Offset(int offset)
         {
-            if (mapping.HasValue(x => x.Type))
+            if (mapping.IsSpecified("Type"))
                 throw new NotSupportedException("Offset is mutual exclusive with Type()");
-            mapping.Offset = offset;
+
+            mapping.Set(x => x.Offset, Layer.UserSupplied, offset);
         }
         
         /// <summary>
@@ -32,9 +33,11 @@ namespace FluentNHibernate.Mapping
         /// <param name="indexColumnName">Column name</param>
         public void Column(string indexColumnName)
         {
-            mapping.AddColumn(new ColumnMapping(sharedColumnAttributes) { Name = indexColumnName });
+            var column = new ColumnMapping(sharedColumnAttributes);
+            column.Set(x => x.Name, Layer.UserSupplied, indexColumnName);
+            mapping.AddColumn(column);
         }
-        
+
         /// <summary>
         /// Specifies the type of the index/key column
         /// </summary>
@@ -42,9 +45,10 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="TIndex">Index type</typeparam>
         public void Type<TIndex>()
         {
-            if (mapping.HasValue(x => x.Offset))
+            if (mapping.IsSpecified("Offset"))
                 throw new NotSupportedException("Type() is mutual exclusive with Offset()");
-            mapping.Type = new TypeReference(typeof(TIndex));
+
+            mapping.Set(x => x.Type, Layer.UserSupplied, new TypeReference(typeof(TIndex)));
         }
 
         /// <summary>
@@ -54,9 +58,10 @@ namespace FluentNHibernate.Mapping
         /// <param name="type">Type</param>
         public void Type(Type type)
         {
-            if (mapping.HasValue(x => x.Offset))
+            if (mapping.IsSpecified("Offset"))
                 throw new NotSupportedException("Type() is mutual exclusive with Offset()");
-            mapping.Type = new TypeReference(type);
+         
+            mapping.Set(x => x.Type, Layer.UserSupplied, new TypeReference(type));
         }
 
         /// <summary>
@@ -66,9 +71,10 @@ namespace FluentNHibernate.Mapping
         /// <param name="type">Type</param>
         public void Type(string type)
         {
-            if (mapping.HasValue(x => x.Offset))
+            if (mapping.IsSpecified("Offset"))
                 throw new NotSupportedException("Type() is mutual exclusive with Offset()");
-            mapping.Type = new TypeReference(type);
+
+            mapping.Set(x => x.Type, Layer.UserSupplied, new TypeReference(type));
         }
     }
 }

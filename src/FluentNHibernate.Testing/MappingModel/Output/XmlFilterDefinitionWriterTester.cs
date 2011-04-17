@@ -12,9 +12,10 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteTheFilterDefinitions()
         {
             var filterDefinition = new FilterDefinitionMapping();
-            filterDefinition.Name = "sid";
+            filterDefinition.Set(x => x.Name, Layer.Defaults, "sid");
             filterDefinition.Parameters.Add("george", NHibernateUtil.Int32);
-            XmlFilterDefinitionWriter writer = new XmlFilterDefinitionWriter();
+            
+            var writer = new XmlFilterDefinitionWriter();
             writer.VerifyXml(filterDefinition)
                 .RootElement.HasName("filter-def")
                 .HasAttribute("name", "sid")

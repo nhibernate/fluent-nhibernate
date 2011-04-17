@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Steps;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils.Reflection;
@@ -51,10 +52,8 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps
         [Test]
         public void ShouldMapListAsBag()
         {
-            var classMapping = new ClassMapping()
-            {
-                Type = typeof(PropertyTarget)
-            };
+            var classMapping = new ClassMapping();
+            classMapping.Set(x => x.Type, Layer.Defaults, typeof(PropertyTarget));
 
             mapper.Map(classMapping, typeof(PropertyTarget).GetProperty("List").ToMember());
 
@@ -65,10 +64,8 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps
         [Test]
         public void ShouldMapSetAsSet()
         {
-            var classMapping = new ClassMapping()
-            {
-                Type = typeof(PropertyTarget)
-            };
+            var classMapping = new ClassMapping();
+            classMapping.Set(x => x.Type, Layer.Defaults, typeof(PropertyTarget));
 
             mapper.Map(classMapping, typeof(PropertyTarget).GetProperty("Set").ToMember());
 
@@ -79,10 +76,8 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps
         [Test]
         public void ShouldMapHashSetAsSet()
         {
-            var classMapping = new ClassMapping()
-            {
-                Type = typeof(PropertyTarget)
-            };
+            var classMapping = new ClassMapping();
+            classMapping.Set(x => x.Type, Layer.Defaults, typeof(PropertyTarget));
 
             mapper.Map(classMapping, typeof(PropertyTarget).GetProperty("HashSet").ToMember());
 

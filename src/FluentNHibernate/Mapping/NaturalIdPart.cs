@@ -10,12 +10,10 @@ namespace FluentNHibernate.Mapping
 {
     public class NaturalIdPart<T> : INaturalIdMappingProvider
     {
-        private readonly AttributeStore<NaturalIdMapping> attributes = new AttributeStore<NaturalIdMapping>();
-        private readonly IList<PropertyMapping> properties = new List<PropertyMapping>();
-        private readonly IList<ManyToOneMapping> manyToOnes = new List<ManyToOneMapping>();
-        private bool nextBool = true;
-
-        public NaturalIdPart() { }
+        readonly AttributeStore attributes = new AttributeStore();
+        readonly IList<PropertyMapping> properties = new List<PropertyMapping>();
+        readonly IList<ManyToOneMapping> manyToOnes = new List<ManyToOneMapping>();
+        bool nextBool = true;
 
         /// <summary>
         /// Defines a property to be used for this natural-id.
@@ -42,12 +40,12 @@ namespace FluentNHibernate.Mapping
 
         protected virtual NaturalIdPart<T> Property(Member member, string columnName)
         {
-            var key = new PropertyMapping
-            {
-                Name = member.Name,
-                Type = new TypeReference(member.PropertyType)
-            };
-            key.AddColumn(new ColumnMapping { Name = columnName });
+            var key = new PropertyMapping();
+            key.Set(x => x.Name, Layer.Defaults, member.Name);
+            key.Set(x => x.Type, Layer.Defaults, new TypeReference(member.PropertyType));
+            var columnMapping = new ColumnMapping();
+            columnMapping.Set(x => x.Name, Layer.Defaults, columnName);
+            key.AddColumn(columnMapping);
 
             properties.Add(key);
 
@@ -81,11 +79,13 @@ namespace FluentNHibernate.Mapping
         {
             var key = new ManyToOneMapping
             {
-                Name = member.Name,
-                Class = new TypeReference(member.PropertyType),
                 ContainingEntityType = typeof(T)
             };
-            key.AddColumn(new ColumnMapping { Name = columnName });
+            key.Set(x => x.Name, Layer.Defaults, member.Name);
+            key.Set(x => x.Class, Layer.Defaults, new TypeReference(member.PropertyType));
+            var columnMapping = new ColumnMapping();
+            columnMapping.Set(x => x.Name, Layer.Defaults, columnName);
+            key.AddColumn(columnMapping);
 
             manyToOnes.Add(key);
 
@@ -98,7 +98,7 @@ namespace FluentNHibernate.Mapping
         /// <remarks>This is the same as setting the mutable attribute to false</remarks>
         public NaturalIdPart<T> ReadOnly()
         {
-            attributes.Set(x => x.Mutable, !nextBool);
+            attributes.Set("Mutable", Layer.UserSupplied, !nextBool);
             nextBool = true;
             return this;
         }
@@ -118,7 +118,7 @@ namespace FluentNHibernate.Mapping
 
         NaturalIdMapping INaturalIdMappingProvider.GetNaturalIdMapping()
         {
-            var mapping = new NaturalIdMapping(attributes.CloneInner());
+            var mapping = new NaturalIdMapping(attributes.Clone());
 
             properties.Each(mapping.AddProperty);
             manyToOnes.Each(mapping.AddReference);

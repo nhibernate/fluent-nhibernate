@@ -93,7 +93,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             public int Id { get; set; }
             public IUserLoginInfo LoginInfo
             {
-                get { throw new System.NotImplementedException(); }
+                get { return null; }
             }
         }
 

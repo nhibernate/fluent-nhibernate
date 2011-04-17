@@ -29,31 +29,31 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("many-to-many");
 
-            if (mapping.HasValue(x => x.Class))
+            if (mapping.IsSpecified("Class"))
                 element.WithAtt("class", mapping.Class);
 
-            if (mapping.HasValue(x => x.Fetch))
+            if (mapping.IsSpecified("Fetch"))
                 element.WithAtt("fetch", mapping.Fetch);
 
-            if (mapping.HasValue(x => x.ForeignKey))
+            if (mapping.IsSpecified("ForeignKey"))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
-            if (mapping.HasValue(x => x.ChildPropertyRef))
+            if (mapping.IsSpecified("ChildPropertyRef"))
                 element.WithAtt("property-ref", mapping.ChildPropertyRef);
 
-            if (mapping.HasValue(x => x.Lazy))
+            if (mapping.IsSpecified("Lazy"))
                 element.WithAtt("lazy", mapping.Lazy);
 
-            if (mapping.HasValue(x => x.NotFound))
+            if (mapping.IsSpecified("NotFound"))
                 element.WithAtt("not-found", mapping.NotFound);
 
-            if (mapping.HasValue(x => x.Where))
+            if (mapping.IsSpecified("Where"))
                 element.WithAtt("where", mapping.Where);
 
-            if (mapping.HasValue(x => x.EntityName))
+            if (mapping.IsSpecified("EntityName"))
                 element.WithAtt("entity-name", mapping.EntityName);
 
-            if (mapping.HasValue(x => x.OrderBy))
+            if (mapping.IsSpecified("OrderBy"))
                 element.WithAtt("order-by", mapping.OrderBy);
 
         }

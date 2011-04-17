@@ -28,26 +28,27 @@ namespace FluentNHibernate.Automapping.Steps
 
             var version = new VersionMapping
             {
-                Name = member.Name,
                 ContainingEntityType = classMap.Type,
             };
-
-            version.SetDefaultValue("Type", GetDefaultType(member));
-            version.AddDefaultColumn(new ColumnMapping { Name = member.Name });
+            version.Set(x => x.Name, Layer.Defaults, member.Name);
+            version.Set(x => x.Type, Layer.Defaults, GetDefaultType(member));
+            var columnMapping = new ColumnMapping();
+            columnMapping.Set(x => x.Name, Layer.Defaults, member.Name);
+            version.AddDefaultColumn(columnMapping);
 
             SetDefaultAccess(member, version);
 
             if (IsSqlTimestamp(member))
             {
-                version.Columns.Each(x =>
+                version.Columns.Each(column =>
                 {
-                    x.SqlType = "timestamp";
-                    x.NotNull = true;
+                    column.Set(x => x.SqlType, Layer.Defaults, "timestamp");
+                    column.Set(x => x.NotNull, Layer.Defaults, true);
                 });
-                version.UnsavedValue = null;
+                version.Set(x => x.UnsavedValue, Layer.Defaults, null);
             }
 
-            ((ClassMapping)classMap).Version = version;
+            ((ClassMapping)classMap).Set(x => x.Version, Layer.Defaults, version);
         }
 
         void SetDefaultAccess(Member member, VersionMapping mapping)
@@ -58,19 +59,19 @@ namespace FluentNHibernate.Automapping.Steps
             {
                 // if it's a property or unset then we'll just let NH deal with it, otherwise
                 // set the access to be whatever we determined it might be
-                mapping.SetDefaultValue("Access", resolvedAccess.ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, resolvedAccess.ToString());
             }
 
             if (member.IsProperty && !member.CanWrite)
-                mapping.SetDefaultValue("Access", cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
         }
 
-        private bool IsSqlTimestamp(Member property)
+        static bool IsSqlTimestamp(Member property)
         {
             return property.PropertyType == typeof(byte[]);
         }
 
-        private TypeReference GetDefaultType(Member property)
+        static TypeReference GetDefaultType(Member property)
         {
             if (IsSqlTimestamp(property))
                 return new TypeReference("BinaryBlob");

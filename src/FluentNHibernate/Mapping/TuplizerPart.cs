@@ -18,7 +18,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="type">Type</param>
         public TuplizerPart Type(Type type)
         {
-            mapping.Type = new TypeReference(type);
+            mapping.Set(x => x.Type, Layer.UserSupplied, new TypeReference(type));
             return this;
         }
 
@@ -28,7 +28,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="type">Type</param>
         public TuplizerPart Type(string type)
         {
-            mapping.Type = new TypeReference(type);
+            mapping.Set(x => x.Type, Layer.UserSupplied, new TypeReference(type));
             return this;
         }
 
@@ -47,7 +47,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="mode">Mode</param>
         public TuplizerPart Mode(TuplizerMode mode)
         {
-            mapping.Mode = mode;
+            mapping.Set(x => x.Mode, Layer.UserSupplied, mode);
             return this;
         }
 
@@ -57,7 +57,7 @@ namespace FluentNHibernate.Mapping
         /// <remarks>See http://nhforge.org/blogs/nhibernate/archive/2008/10/21/entity-name-in-action-a-strongly-typed-entity.aspx</remarks>
         public TuplizerPart EntityName(string entityName)
         {
-            mapping.EntityName = entityName;
+            mapping.Set(x => x.EntityName, Layer.UserSupplied, entityName);
             return this;
         }
     }

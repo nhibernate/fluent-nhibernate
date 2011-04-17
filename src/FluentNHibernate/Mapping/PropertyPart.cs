@@ -10,21 +10,21 @@ namespace FluentNHibernate.Mapping
 {
     public class PropertyPart : IPropertyMappingProvider
     {
-        private readonly Member member;
-        private readonly Type parentType;
-        private readonly AccessStrategyBuilder<PropertyPart> access;
-        private readonly PropertyGeneratedBuilder generated;
-        private readonly ColumnMappingCollection<PropertyPart> columns;
-        private readonly AttributeStore<PropertyMapping> attributes = new AttributeStore<PropertyMapping>();
-        private readonly AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
+        readonly Member member;
+        readonly Type parentType;
+        readonly AccessStrategyBuilder<PropertyPart> access;
+        readonly PropertyGeneratedBuilder generated;
+        readonly ColumnMappingCollection<PropertyPart> columns;
+        readonly AttributeStore attributes = new AttributeStore();
+        readonly AttributeStore columnAttributes = new AttributeStore();
 
         private bool nextBool = true;
 
         public PropertyPart(Member member, Type parentType)
         {
             columns = new ColumnMappingCollection<PropertyPart>(this);
-            access = new AccessStrategyBuilder<PropertyPart>(this, value => attributes.Set(x => x.Access, value));
-            generated = new PropertyGeneratedBuilder(this, value => attributes.Set(x => x.Generated, value));
+            access = new AccessStrategyBuilder<PropertyPart>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
+            generated = new PropertyGeneratedBuilder(this, value => attributes.Set("Generated", Layer.UserSupplied, value));
 
             this.member = member;
             this.parentType = parentType;
@@ -39,7 +39,7 @@ namespace FluentNHibernate.Mapping
             if (resolvedAccess == Mapping.Access.Property || resolvedAccess == Mapping.Access.Unset)
                 return; // property is the default so we don't need to specify it
 
-            attributes.SetDefault(x => x.Access, resolvedAccess.ToString());
+            attributes.Set("Access", Layer.Defaults, resolvedAccess.ToString());
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public PropertyPart Insert()
         {
-            attributes.Set(x => x.Insert, nextBool);
+            attributes.Set("Insert", Layer.UserSupplied, nextBool);
             nextBool = true;
 
             return this;
@@ -96,7 +96,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public PropertyPart Update()
         {
-            attributes.Set(x => x.Update, nextBool);
+            attributes.Set("Update", Layer.UserSupplied, nextBool);
             nextBool = true;
 
             return this;
@@ -108,7 +108,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="length">Column length</param>
         public PropertyPart Length(int length)
         {
-            columnAttributes.Set(x => x.Length, length);
+            columnAttributes.Set("Length", Layer.UserSupplied, length);
             return this;
         }
 
@@ -117,7 +117,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public PropertyPart Nullable()
         {
-            columnAttributes.Set(x => x.NotNull, !nextBool);
+            columnAttributes.Set("NotNull", Layer.UserSupplied, !nextBool);
             nextBool = true;
             return this;
         }
@@ -127,8 +127,8 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public PropertyPart ReadOnly()
         {
-            attributes.Set(x => x.Insert, !nextBool);
-            attributes.Set(x => x.Update, !nextBool);
+            attributes.Set("Insert", Layer.UserSupplied, !nextBool);
+            attributes.Set("Update", Layer.UserSupplied, !nextBool);
             nextBool = true;
             return this;
         }
@@ -139,7 +139,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="formula">Formula</param>
         public PropertyPart Formula(string formula)
         {
-            attributes.Set(x => x.Formula, formula);
+            attributes.Set("Formula", Layer.UserSupplied, formula);
             return this;
         }
 
@@ -148,7 +148,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public PropertyPart LazyLoad()
         {
-            attributes.Set(x => x.Lazy, nextBool);
+            attributes.Set("Lazy", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -159,7 +159,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="index">Index name</param>
         public PropertyPart Index(string index)
         {
-            columnAttributes.Set(x => x.Index, index);
+            columnAttributes.Set("Index", Layer.UserSupplied, index);
             return this;
         }
 
@@ -193,7 +193,7 @@ namespace FluentNHibernate.Mapping
         /// <returns>This property mapping to continue the method chain</returns>
         public PropertyPart CustomType(string type)
         {
-            attributes.Set(x => x.Type, new TypeReference(type));
+            attributes.Set("Type", Layer.UserSupplied, new TypeReference(type));
 
             return this;
         }
@@ -205,7 +205,7 @@ namespace FluentNHibernate.Mapping
         /// <returns>This property mapping to continue the method chain</returns>
         public PropertyPart CustomType(Func<Type, Type> typeFunc)
         {
-            var type = typeFunc.Invoke(this.member.PropertyType);
+            var type = typeFunc.Invoke(member.PropertyType);
 
             if (typeof(ICompositeUserType).IsAssignableFrom(type))
                 AddColumnsFromCompositeUserType(type);
@@ -229,7 +229,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="sqlType">SQL type</param>
         public PropertyPart CustomSqlType(string sqlType)
         {
-            columnAttributes.Set(x => x.SqlType, sqlType);
+            columnAttributes.Set("SqlType", Layer.UserSupplied, sqlType);
             return this;
         }
 
@@ -238,7 +238,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public PropertyPart Unique()
         {
-            columnAttributes.Set(x => x.Unique, nextBool);
+            columnAttributes.Set("Unique", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -249,7 +249,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="precision">Decimal precision</param>
         public PropertyPart Precision(int precision)
         {
-            columnAttributes.Set(x => x.Precision, precision);
+            columnAttributes.Set("Precision", Layer.UserSupplied, precision);
             return this;
         }
 
@@ -259,7 +259,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="scale">Decimal scale</param>
         public PropertyPart Scale(int scale)
         {
-            columnAttributes.Set(x => x.Scale, scale);
+            columnAttributes.Set("Scale", Layer.UserSupplied, scale);
             return this;
         }
 
@@ -269,7 +269,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="value">Default value</param>
         public PropertyPart Default(string value)
         {
-            columnAttributes.Set(x => x.Default, value);
+            columnAttributes.Set("Default", Layer.UserSupplied, value);
             return this;
         }
 
@@ -279,7 +279,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="keyName">Name of constraint</param>
         public PropertyPart UniqueKey(string keyName)
         {
-            columnAttributes.Set(x => x.UniqueKey, keyName);
+            columnAttributes.Set("UniqueKey", Layer.UserSupplied, keyName);
             return this;
         }
 
@@ -288,7 +288,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public PropertyPart OptimisticLock()
         {
-            attributes.Set(x => x.OptimisticLock, nextBool);
+            attributes.Set("OptimisticLock", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -312,37 +312,38 @@ namespace FluentNHibernate.Mapping
         /// <param name="constraint">Constraint name</param>
         public PropertyPart Check(string constraint)
         {
-            columnAttributes.Set(x => x.Check, constraint);
+            columnAttributes.Set("Check", Layer.UserSupplied, constraint);
             return this;
         }
 
         PropertyMapping IPropertyMappingProvider.GetPropertyMapping()
         {
-            var mapping = new PropertyMapping(attributes.CloneInner())
+            var mapping = new PropertyMapping(attributes.Clone())
             {
                 ContainingEntityType = parentType,
                 Member = member
             };
 
             if (columns.Count() == 0 && !mapping.IsSpecified("Formula"))
-                mapping.AddDefaultColumn(new ColumnMapping(columnAttributes.CloneInner()) { Name = member.Name });
+            {
+                var columnMapping = new ColumnMapping(columnAttributes.Clone());
+                columnMapping.Set(x => x.Name, Layer.Defaults, member.Name);
+                mapping.AddDefaultColumn(columnMapping);
+            }
 
             foreach (var column in columns)
                 mapping.AddColumn(column);
 
             foreach (var column in mapping.Columns)
             {
-                if (!column.IsSpecified("NotNull") && member.PropertyType.IsNullable() && member.PropertyType.IsEnum())
-                    column.SetDefaultValue(x => x.NotNull, false);
+                if (member.PropertyType.IsNullable() && member.PropertyType.IsEnum())
+                    column.Set(x => x.NotNull, Layer.Defaults, false);
 
                 column.MergeAttributes(columnAttributes);
             }
 
-            if (!mapping.IsSpecified("Name"))
-                mapping.Name = mapping.Member.Name;
-
-            if (!mapping.IsSpecified("Type"))
-                mapping.SetDefaultValue("Type", GetDefaultType());
+            mapping.Set(x => x.Name, Layer.Defaults, mapping.Member.Name);
+            mapping.Set(x => x.Type, Layer.Defaults, GetDefaultType());
 
             return mapping;
         }

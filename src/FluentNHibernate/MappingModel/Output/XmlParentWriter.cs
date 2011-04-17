@@ -21,7 +21,7 @@ namespace FluentNHibernate.MappingModel.Output
 
             var parentElement = document.AddElement("parent");
 
-            if (parentMapping.HasValue(x => x.Name))
+            if (parentMapping.IsSpecified("Name"))
                 parentElement.WithAtt("name", parentMapping.Name);
         }
     }

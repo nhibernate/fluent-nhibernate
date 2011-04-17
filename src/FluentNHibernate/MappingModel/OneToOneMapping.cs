@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
@@ -7,15 +8,15 @@ namespace FluentNHibernate.MappingModel
     [Serializable]
     public class OneToOneMapping : MappingBase
     {
-        private readonly AttributeStore<OneToOneMapping> attributes;
+        private readonly AttributeStore attributes;
 
         public OneToOneMapping()
             : this(new AttributeStore())
         {}
 
-        public OneToOneMapping(AttributeStore underlyingStore)
+        public OneToOneMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<OneToOneMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -25,79 +26,54 @@ namespace FluentNHibernate.MappingModel
 
         public string Name
         {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            get { return attributes.GetOrDefault<string>("Name"); }
         }
 
         public string Access
         {
-            get { return attributes.Get(x => x.Access); }
-            set { attributes.Set(x => x.Access, value); }
+            get { return attributes.GetOrDefault<string>("Access"); }
         }
 
         public TypeReference Class
         {
-            get { return attributes.Get(x => x.Class); }
-            set { attributes.Set(x => x.Class, value); }
+            get { return attributes.GetOrDefault<TypeReference>("Class"); }
         }
 
         public string Cascade
         {
-            get { return attributes.Get(x => x.Cascade); }
-            set { attributes.Set(x => x.Cascade, value); }
+            get { return attributes.GetOrDefault<string>("Cascade"); }
         }
         public bool Constrained
         {
-            get { return attributes.Get(x => x.Constrained); }
-            set { attributes.Set(x => x.Constrained, value); }
+            get { return attributes.GetOrDefault<bool>("Constrained"); }
         }
 
         public string Fetch
         {
-            get { return attributes.Get(x => x.Fetch); }
-            set { attributes.Set(x => x.Fetch, value); }
+            get { return attributes.GetOrDefault<string>("Fetch"); }
         }
 
         public string ForeignKey
         {
-            get { return attributes.Get(x => x.ForeignKey); }
-            set { attributes.Set(x => x.ForeignKey, value); }
+            get { return attributes.GetOrDefault<string>("ForeignKey"); }
         }
 
         public string PropertyRef
         {
-            get { return attributes.Get(x => x.PropertyRef); }
-            set { attributes.Set(x => x.PropertyRef, value); }
+            get { return attributes.GetOrDefault<string>("PropertyRef"); }
         }
 
         public string Lazy
         {
-            get { return attributes.Get(x => x.Lazy); }
-            set { attributes.Set(x => x.Lazy, value); }
+            get { return attributes.GetOrDefault<string>("Lazy"); }
         }
 
         public string EntityName
         {
-            get { return attributes.Get(x => x.EntityName); }
-            set { attributes.Set(x => x.EntityName, value); }
+            get { return attributes.GetOrDefault<string>("EntityName"); }
         }
 
         public Type ContainingEntityType { get; set; }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<OneToOneMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<OneToOneMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
-        }
 
         public bool Equals(OneToOneMapping other)
         {
@@ -120,6 +96,21 @@ namespace FluentNHibernate.MappingModel
             {
                 return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
             }
+        }
+
+        public void Set<T>(Expression<Func<OneToOneMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

@@ -27,22 +27,22 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("key");
 
-            if (mapping.HasValue(x => x.ForeignKey))
+            if (mapping.IsSpecified("ForeignKey"))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
-            if (mapping.HasValue(x => x.OnDelete))
+            if (mapping.IsSpecified("OnDelete"))
                 element.WithAtt("on-delete", mapping.OnDelete);
 
-            if (mapping.HasValue(x => x.PropertyRef))
+            if (mapping.IsSpecified("PropertyRef"))
                 element.WithAtt("property-ref", mapping.PropertyRef);
 
-            if (mapping.HasValue(x => x.NotNull))
+            if (mapping.IsSpecified("NotNull"))
                 element.WithAtt("not-null", mapping.NotNull);
 
-            if (mapping.HasValue(x => x.Update))
+            if (mapping.IsSpecified("Update"))
                 element.WithAtt("update", mapping.Update);
 
-            if (mapping.HasValue(x => x.Unique))
+            if (mapping.IsSpecified("Unique"))
                 element.WithAtt("unique", mapping.Unique);
 
         }

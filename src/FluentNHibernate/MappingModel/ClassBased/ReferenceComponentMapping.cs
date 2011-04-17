@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Visitors;
 
@@ -45,13 +43,18 @@ namespace FluentNHibernate.MappingModel.ClassBased
             return mergedComponent.IsSpecified(name);
         }
 
+        public void Set(string attribute, int layer, object value)
+        {
+            ((IMapping)mergedComponent).Set(attribute, layer, value);
+        }
+
         public virtual void AssociateExternalMapping(ExternalComponentMapping mapping)
         {
             mergedComponent = mapping;
             mergedComponent.Member = property;
-            mergedComponent.Name = property.Name;
-            mergedComponent.Class = new TypeReference(componentType);
-            mergedComponent.Type = componentType;
+            mergedComponent.Set(x => x.Name, Layer.Defaults, property.Name);
+            mergedComponent.Set(x => x.Class, Layer.Defaults, new TypeReference(componentType));
+            mergedComponent.Set(x => x.Type, Layer.Defaults, componentType);
         }
 
         public IEnumerable<ManyToOneMapping> References
@@ -59,7 +62,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             get { return mergedComponent.References; }
         }
 
-        public IEnumerable<Collections.CollectionMapping> Collections
+        public IEnumerable<CollectionMapping> Collections
         {
             get { return mergedComponent.Collections; }
         }
@@ -89,7 +92,7 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mergedComponent.AddProperty(property);
         }
 
-        public void AddCollection(Collections.CollectionMapping collection)
+        public void AddCollection(CollectionMapping collection)
         {
             mergedComponent.AddCollection(collection);
         }
@@ -128,13 +131,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public ParentMapping Parent
         {
             get { return mergedComponent.Parent; }
-            set { mergedComponent.Parent = value; }
         }
 
         public bool Unique
         {
             get { return mergedComponent.Unique; }
-            set { mergedComponent.Unique = value; }
         }
 
         public bool HasColumnPrefix
@@ -147,31 +148,26 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public bool Insert
         {
             get { return mergedComponent.Insert; }
-            set { mergedComponent.Insert = value; }
         }
 
         public bool Update
         {
             get { return mergedComponent.Update; }
-            set { mergedComponent.Update = value; }
         }
 
         public string Access
         {
             get { return mergedComponent.Access; }
-            set { mergedComponent.Access = value; }
         }
 
         public bool OptimisticLock
         {
             get { return mergedComponent.OptimisticLock; }
-            set { mergedComponent.OptimisticLock = value; }
         }
 
         public string Name
         {
             get { return (mergedComponent == null) ? property.Name : mergedComponent.Name; }
-            set { mergedComponent.Name = value; }
         }
 
         public Type Type
@@ -182,13 +178,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public TypeReference Class
         {
             get { return mergedComponent.Class; }
-            set { mergedComponent.Class = value; }
         }
 
         public bool Lazy
         {
             get { return mergedComponent.Lazy; }
-            set { mergedComponent.Lazy = value; }
         }
 
         public bool IsAssociated
@@ -199,14 +193,6 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public ComponentMapping MergedModel
         {
             get { return mergedComponent; }
-        }
-
-        public bool HasValue(string property)
-        {
-            if (!IsAssociated)
-                return false;
-
-            return mergedComponent.HasValue(property);
         }
 
         public bool Equals(ReferenceComponentMapping other)

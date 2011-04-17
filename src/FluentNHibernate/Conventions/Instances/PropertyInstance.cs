@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
-using NHibernate.Type;
 using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -12,6 +11,7 @@ namespace FluentNHibernate.Conventions.Instances
     {
         private readonly PropertyMapping mapping;
         private bool nextBool = true;
+        const int layer = Layer.Conventions;
 
         public PropertyInstance(PropertyMapping mapping)
             : base(mapping)
@@ -21,44 +21,34 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Insert()
         {
-            if (!mapping.IsSpecified("Insert"))
-                mapping.Insert = nextBool;
+            mapping.Set(x => x.Insert, layer, nextBool);
             nextBool = true;
         }
 
         public new void Update()
         {
-            if (!mapping.IsSpecified("Update"))
-                mapping.Update = nextBool;
+            mapping.Set(x => x.Update, layer, nextBool);
             nextBool = true;
         }
 
         public new void ReadOnly()
         {
-            if (!mapping.IsSpecified("Insert") && !mapping.IsSpecified("Update"))
-                mapping.Insert = mapping.Update = !nextBool;
+            mapping.Set(x => x.Insert, layer, !nextBool);
+            mapping.Set(x => x.Update, layer, !nextBool);
             nextBool = true;
         }
 
         public new void Nullable()
         {
-            if (!mapping.Columns.First().IsSpecified("NotNull"))
-                foreach (var column in mapping.Columns)
-                    column.NotNull = !nextBool;
+            foreach (var column in mapping.Columns)
+                column.Set(x => x.NotNull, layer, !nextBool);
 
             nextBool = true;
         }
 
         public new IAccessInstance Access
         {
-            get
-            {
-                return new AccessInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Access"))
-                        mapping.Access = value;
-                });
-            }
+            get { return new AccessInstance(value => mapping.Set(x => x.Access, layer, value)); }
         }
 
         public void CustomType(TypeReference type)
@@ -69,13 +59,10 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void CustomType(TypeReference type, string columnPrefix)
         {
-            if (!mapping.IsSpecified("Type"))
-            {
-                mapping.Type = type;
+            mapping.Set(x => x.Type, layer, type);
 
-                if (typeof(ICompositeUserType).IsAssignableFrom(mapping.Type.GetUnderlyingSystemType()))
-                    AddColumnsForCompositeUserType(columnPrefix);
-            }
+            if (typeof(ICompositeUserType).IsAssignableFrom(mapping.Type.GetUnderlyingSystemType()))
+                AddColumnsForCompositeUserType(columnPrefix);
         }
 
         public void CustomType<T>(string columnPrefix)
@@ -110,56 +97,40 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void CustomSqlType(string sqlType)
         {
-            if (mapping.Columns.First().IsSpecified("SqlType"))
-                return;
-         
             foreach (var column in mapping.Columns)
-                column.SqlType = sqlType;
+                column.Set(x => x.SqlType, layer, sqlType);
         }
 
         public new void Precision(int precision)
         {
-            if (mapping.Columns.First().IsSpecified("Precision"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Precision = precision;
+                column.Set(x => x.Precision, layer, precision);
         }
 
         public new void Scale(int scale)
         {
-            if (mapping.Columns.First().IsSpecified("Scale"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Scale = scale;
+                column.Set(x => x.Scale, layer, scale);
         }
 
         public new void Default(string value)
         {
-            if (mapping.Columns.First().IsSpecified("Default"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Default = value;
+                column.Set(x => x.Default, layer, value);
         }
 
         public new void Unique()
         {
-            if (!mapping.Columns.First().IsSpecified("Unique"))
-                foreach (var column in mapping.Columns)
-                    column.Unique = nextBool;
+            foreach (var column in mapping.Columns)
+                column.Set(x => x.Unique, layer, nextBool);
 
             nextBool = true;
         }
 
         public new void UniqueKey(string keyName)
         {
-            if (mapping.Columns.First().IsSpecified("UniqueKey"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.UniqueKey = keyName;
+                column.Set(x => x.UniqueKey, layer, keyName);
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -174,13 +145,14 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void Column(string columnName)
         {
+            // TODO: Fix this
             if (mapping.Columns.UserDefined.Count() > 0)
                 return;
 
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
-            column.Name = columnName;
+            column.Set(x => x.Name, layer, columnName);
 
             mapping.ClearColumns();
             mapping.AddColumn(column);
@@ -188,64 +160,43 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Formula(string formula)
         {
-            if (!mapping.IsSpecified("Formula"))
-            {
-                mapping.Formula = formula;
-                mapping.ClearColumns();
-            }
+            mapping.Set(x => x.Formula, layer, formula);
+            mapping.ClearColumns();
         }
 
         public new IGeneratedInstance Generated
         {
-            get
-            {
-                return new GeneratedInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Generated"))
-                        mapping.Generated = value;
-                });
-            }
+            get { return new GeneratedInstance(value => mapping.Set(x => x.Generated, layer, value)); }
         }
 
         public new void OptimisticLock()
         {
-            if (!mapping.IsSpecified("OptimisticLock"))
-                mapping.OptimisticLock = nextBool;
+            mapping.Set(x => x.OptimisticLock, layer, nextBool);
             nextBool = true;
         }
 
         public new void Length(int length)
         {
-            if (mapping.Columns.First().IsSpecified("Length"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Length = length;
+                column.Set(x => x.Length, layer, length);
         }
 
         public new void LazyLoad()
         {
-            if (!mapping.IsSpecified("Lazy"))
-                mapping.Lazy = nextBool;
+            mapping.Set(x => x.Lazy, layer, nextBool);
             nextBool = true;
         }
 
         public new void Index(string value)
         {
-            if (mapping.Columns.First().IsSpecified("Index"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Index = value;
+                column.Set(x => x.Index, layer, value);
         }
 
         public new void Check(string constraint)
         {
-            if (mapping.Columns.First().IsSpecified("Check"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Check = constraint;
+                column.Set(x => x.Check, layer, constraint);
         }
 
         private void AddColumnsForCompositeUserType(string columnPrefix)
@@ -260,7 +211,7 @@ namespace FluentNHibernate.Conventions.Instances
                 foreach (var propertyName in inst.PropertyNames)
                 {
                     var column = existingColumn.Clone();
-                    column.Name = columnPrefix + propertyName;
+                    column.Set(x => x.Name, layer, columnPrefix + propertyName);
                     mapping.AddColumn(column);
                 }
             }

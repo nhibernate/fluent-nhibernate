@@ -23,7 +23,7 @@ namespace FluentNHibernate.Conventions.Instances
             get
             {
                 if (mapping.Key == null)
-                    mapping.Key = new KeyMapping();
+                    mapping.Set(x => x.Key, Layer.Conventions, new KeyMapping());
 
                 return new KeyInstance(mapping.Key);
             }
@@ -41,97 +41,82 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Abstract()
         {
-            if (!mapping.IsSpecified("Abstract"))
-                mapping.Abstract = nextBool;
+            mapping.Set(x => x.Abstract, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void Check(string constraint)
         {
-            if (!mapping.IsSpecified("Check"))
-                mapping.Check = constraint;
+            mapping.Set(x => x.Check, Layer.Conventions, constraint);
         }
 
         public new void DynamicInsert()
         {
-            if (!mapping.IsSpecified("DynamicInsert"))
-                mapping.DynamicInsert = nextBool;
+            mapping.Set(x => x.DynamicInsert, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void DynamicUpdate()
         {
-            if (!mapping.IsSpecified("DynamicUpdate"))
-                mapping.DynamicUpdate = nextBool;
+            mapping.Set(x => x.DynamicUpdate, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void LazyLoad()
         {
-            if (!mapping.IsSpecified("Lazy"))
-                mapping.Lazy = nextBool;
+            mapping.Set(x => x.Lazy, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void Proxy(Type type)
         {
-            if (!mapping.IsSpecified("Proxy"))
-                mapping.Proxy = type.AssemblyQualifiedName;
+            mapping.Set(x => x.Proxy, Layer.Conventions, type.AssemblyQualifiedName);
         }
 
         public new void Proxy<T>()
         {
-            if (!mapping.IsSpecified("Proxy"))
-                mapping.Proxy = typeof(T).AssemblyQualifiedName;
+            Proxy(typeof(T));
         }
 
         public void Schema(string schema)
         {
-            if (!mapping.IsSpecified("Schema"))
-                mapping.Schema = schema;
+            mapping.Set(x => x.Schema, Layer.Conventions, schema);
         }
 
         public new void SelectBeforeUpdate()
         {
-            if (!mapping.IsSpecified("SelectBeforeUpdate"))
-                mapping.SelectBeforeUpdate = nextBool;
+            mapping.Set(x => x.SelectBeforeUpdate, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public void Table(string tableName)
         {
-            if (!mapping.IsSpecified("TableName"))
-                mapping.TableName = tableName;
+            mapping.Set(x => x.TableName, Layer.Conventions, tableName);
         }
 
         public void Subselect(string subselect)
         {
-            if (!mapping.IsSpecified("Subselect"))
-                mapping.Subselect = subselect;
+            mapping.Set(x => x.Subselect, Layer.Conventions, subselect);
         }
 
         public void Persister<T>() where T : IEntityPersister
         {
-            if (!mapping.IsSpecified("Persister"))
-                mapping.Persister = new TypeReference(typeof(T));
+            Persister(typeof(T));
         }
 
         public void Persister(Type type)
         {
-            if (!mapping.IsSpecified("Persister"))
-                mapping.Persister = new TypeReference(type);
+            mapping.Set(x => x.Persister, Layer.Conventions, new TypeReference(type));
         }
 
         public void Persister(string type)
         {
-            if (!mapping.IsSpecified("Persister"))
-                mapping.Persister = new TypeReference(type);
+            mapping.Set(x => x.Persister, Layer.Conventions, new TypeReference(type));
         }
 
         public void BatchSize(int batchSize)
         {
-            if (!mapping.IsSpecified("BatchSize"))
-                mapping.BatchSize = batchSize;
+            mapping.Set(x => x.BatchSize, Layer.Conventions, batchSize);
         }
     }
 }

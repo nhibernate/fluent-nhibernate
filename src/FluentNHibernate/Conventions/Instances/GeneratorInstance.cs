@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using NHibernate.Id;
 
@@ -9,14 +9,12 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public class GeneratorInstance : GeneratorInspector, IGeneratorInstance
     {
-        private readonly GeneratorMapping mapping;
         private readonly GeneratorBuilder builder;
 
         public GeneratorInstance(GeneratorMapping mapping, Type type)
             : base(mapping)
         {
-            this.mapping = mapping;
-            builder = new GeneratorBuilder(mapping, type);
+            builder = new GeneratorBuilder(mapping, type, Layer.Conventions);
         }
 
 		/// <summary>
@@ -26,8 +24,7 @@ namespace FluentNHibernate.Conventions.Instances
 		/// <returns></returns>
         public void Increment()
 		{
-            if (!mapping.IsSpecified("Class"))
-			    builder.Increment();
+			builder.Increment();
 		}
 
         /// <summary>
@@ -37,8 +34,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Params configuration</param>
         public void Increment(Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.Increment(paramValues);
+            builder.Increment(paramValues);
         }
 
 		/// <summary>
@@ -49,8 +45,7 @@ namespace FluentNHibernate.Conventions.Instances
 		/// <returns></returns>
         public void Identity()
 		{
-            if (!mapping.IsSpecified("Class"))
-                builder.Identity();
+            builder.Identity();
 		}
 
         /// <summary>
@@ -61,8 +56,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Params configuration</param>
         public void Identity(Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.Identity(paramValues);
+            builder.Identity(paramValues);
         }
 
 		/// <summary>
@@ -74,8 +68,7 @@ namespace FluentNHibernate.Conventions.Instances
 		/// <returns></returns>
         public void Sequence(string sequenceName)
 		{
-            if (!mapping.IsSpecified("Class"))
-                builder.Sequence(sequenceName);
+            builder.Sequence(sequenceName);
 		}
 
         /// <summary>
@@ -87,8 +80,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Params configuration</param>
         public void Sequence(string sequenceName, Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.Sequence(sequenceName, paramValues);
+            builder.Sequence(sequenceName, paramValues);
         }
 
         /// <summary>
@@ -104,8 +96,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="where">The where.</param>
         public void HiLo(string table, string column, string maxLo, string where)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.HiLo(table, column, maxLo, where);
+            builder.HiLo(table, column, maxLo, where);
         }
 
         /// <summary>
@@ -121,8 +112,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <returns></returns>
         public void HiLo(string table, string column, string maxLo)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.HiLo(table, column, maxLo);
+            builder.HiLo(table, column, maxLo);
         }
 
         /// <summary>
@@ -138,8 +128,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Params configuration</param>
         public void HiLo(string table, string column, string maxLo, Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.HiLo(table, column, maxLo, paramValues);
+            builder.HiLo(table, column, maxLo, paramValues);
         }
 
 		/// <summary>
@@ -153,8 +142,7 @@ namespace FluentNHibernate.Conventions.Instances
 		/// <returns></returns>
         public void HiLo(string maxLo)
 		{
-            if (!mapping.IsSpecified("Class"))
-                builder.HiLo(maxLo);
+            builder.HiLo(maxLo);
 		}
 
         /// <summary>
@@ -168,8 +156,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Params configuration</param>
         public void HiLo(string maxLo, Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.HiLo(maxLo, paramValues);
+            builder.HiLo(maxLo, paramValues);
         }
 
 		/// <summary>
@@ -180,8 +167,7 @@ namespace FluentNHibernate.Conventions.Instances
 		/// <returns></returns>
         public void SeqHiLo(string sequence, string maxLo)
 		{
-            if (!mapping.IsSpecified("Class"))
-                builder.SeqHiLo(sequence, maxLo);
+            builder.SeqHiLo(sequence, maxLo);
 		}
 
         /// <summary>
@@ -192,8 +178,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Params configuration</param>
         public void SeqHiLo(string sequence, string maxLo, Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.SeqHiLo(sequence, maxLo, paramValues);
+            builder.SeqHiLo(sequence, maxLo, paramValues);
         }
 
 		/// <summary>
@@ -204,8 +189,7 @@ namespace FluentNHibernate.Conventions.Instances
 		/// <returns></returns>
         public void UuidHex(string format)
 		{
-            if (!mapping.IsSpecified("Class"))
-                builder.UuidHex(format);
+            builder.UuidHex(format);
 		}
 
         /// <summary>
@@ -216,8 +200,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Params configuration</param>
         public void UuidHex(string format, Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.UuidHex(format, paramValues);
+            builder.UuidHex(format, paramValues);
         }
 
 		/// <summary>
@@ -226,8 +209,7 @@ namespace FluentNHibernate.Conventions.Instances
 		/// <returns></returns>
         public void UuidString()
 		{
-            if (!mapping.IsSpecified("Class"))
-                builder.UuidString();
+            builder.UuidString();
 		}
 
         /// <summary>
@@ -236,8 +218,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Params configuration</param>
         public void UuidString(Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.UuidString(paramValues);
+            builder.UuidString(paramValues);
         }
 
 		/// <summary>
@@ -246,8 +227,7 @@ namespace FluentNHibernate.Conventions.Instances
 		/// <returns></returns>
         public void Guid()
 		{
-            if (!mapping.IsSpecified("Class"))
-                builder.Guid();
+            builder.Guid();
 		}
 
         /// <summary>
@@ -256,8 +236,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Params configuration</param>
         public void Guid(Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.Guid(paramValues);
+            builder.Guid(paramValues);
         }
 
 		/// <summary>
@@ -268,8 +247,7 @@ namespace FluentNHibernate.Conventions.Instances
 		/// <returns></returns>
         public void GuidComb()
 		{
-            if (!mapping.IsSpecified("Class"))
-                builder.GuidComb();
+            builder.GuidComb();
 		}
 
         /// <summary>
@@ -280,8 +258,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Params configuration</param>
         public void GuidComb(Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.GuidComb(paramValues);
+            builder.GuidComb(paramValues);
         }
 
         /// <summary>
@@ -295,8 +272,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// </summary>
         public void GuidNative()
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.GuidNative();
+            builder.GuidNative();
         }
 
         /// <summary>
@@ -317,8 +293,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Parameter builder closure</param>
         public void GuidNative(Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.GuidNative(paramValues);
+            builder.GuidNative(paramValues);
         }
 
         /// <summary>
@@ -329,8 +304,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// </summary>
         public void Select()
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.Select();
+            builder.Select();
         }
 
         /// <summary>
@@ -348,8 +322,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Parameter builder closure</param>
         public void Select(Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.Select(paramValues);
+            builder.Select(paramValues);
         }
 
         /// <summary>
@@ -361,8 +334,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// </summary>
         public void SequenceIdentity()
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.SequenceIdentity();
+            builder.SequenceIdentity();
         }
 
         /// <summary>
@@ -375,8 +347,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="sequence">Custom sequence name</param>
         public void SequenceIdentity(string sequence)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.SequenceIdentity(sequence);
+            builder.SequenceIdentity(sequence);
         }
 
         /// <summary>
@@ -389,8 +360,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Parameter builder closure</param>
         public void SequenceIdentity(Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.SequenceIdentity(paramValues);
+            builder.SequenceIdentity(paramValues);
         }
 
         /// <summary>
@@ -404,8 +374,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Parameter builder closure</param>
         public void SequenceIdentity(string sequence, Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.SequenceIdentity(sequence, paramValues);
+            builder.SequenceIdentity(sequence, paramValues);
         }
 
 
@@ -417,8 +386,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// </summary>
         public void TriggerIdentity()
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.TriggerIdentity();
+            builder.TriggerIdentity();
         }
 
         /// <summary>
@@ -430,8 +398,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Parameter builder closure</param>
         public void TriggerIdentity(Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.TriggerIdentity(paramValues);
+            builder.TriggerIdentity(paramValues);
         }
 
 		/// <summary>
@@ -440,8 +407,7 @@ namespace FluentNHibernate.Conventions.Instances
 		/// <returns></returns>
         public void Assigned()
 		{
-            if (!mapping.IsSpecified("Class"))
-                builder.Assigned();
+            builder.Assigned();
 		}
 
         /// <summary>
@@ -450,8 +416,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Params configuration</param>
         public void Assigned(Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.Assigned(paramValues);
+            builder.Assigned(paramValues);
         }
 
 		/// <summary>
@@ -460,8 +425,7 @@ namespace FluentNHibernate.Conventions.Instances
 		/// <returns></returns>
         public void Native()
 		{
-            if (!mapping.IsSpecified("Class"))
-                builder.Native();
+            builder.Native();
 		}
 
         /// <summary>
@@ -470,8 +434,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Params configuration</param>
         public void Native(Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.Native(paramValues);
+            builder.Native(paramValues);
         }
 
         /// <summary>
@@ -479,8 +442,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// </summary>
         public void Native(string sequenceName)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.Native(sequenceName);
+            builder.Native(sequenceName);
         }
 
         /// <summary>
@@ -488,8 +450,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// </summary>
         public void Native(string sequenceName, Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.Native(sequenceName, paramValues);
+            builder.Native(sequenceName, paramValues);
         }
 
 		/// <summary>
@@ -499,8 +460,7 @@ namespace FluentNHibernate.Conventions.Instances
 		/// <returns></returns>
         public void Foreign(string property)
 		{
-            if (!mapping.IsSpecified("Class"))
-                builder.Foreign(property);
+            builder.Foreign(property);
 		}
 
         /// <summary>
@@ -510,8 +470,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="paramValues">Params configuration</param>
         public void Foreign(string property, Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.Foreign(property, paramValues);
+            builder.Foreign(property, paramValues);
         }
 
         public void Custom<T>() where T : IIdentifierGenerator
@@ -526,8 +485,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void Custom(string generator)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.Custom(generator);
+            builder.Custom(generator);
         }
 
         public void Custom<T>(Action<ParamBuilder> paramValues) where T : IIdentifierGenerator
@@ -542,8 +500,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void Custom(string generator, Action<ParamBuilder> paramValues)
         {
-            if (!mapping.IsSpecified("Class"))
-                builder.Custom(generator, paramValues);
+            builder.Custom(generator, paramValues);
         }
     }
 }

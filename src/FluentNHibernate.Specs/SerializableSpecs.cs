@@ -11,9 +11,9 @@ namespace FluentNHibernate.Specs
     public class for_serialization_to_occur
     {
         Establish context = () =>
-            mapping_types = typeof(IMappingBase).Assembly
+            mapping_types = typeof(IMapping).Assembly
                 .GetTypes()
-                .Where(x => x.HasInterface(typeof(IMappingBase)) && !x.IsInterface);
+                .Where(x => x.HasInterface(typeof(IMapping)) && !x.IsInterface);
 
         Because of = () =>
             unserializable_types = mapping_types

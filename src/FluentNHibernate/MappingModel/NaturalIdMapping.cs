@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
@@ -8,23 +7,21 @@ namespace FluentNHibernate.MappingModel
     [Serializable]
     public class NaturalIdMapping : MappingBase
     {
-        private readonly AttributeStore<NaturalIdMapping> attributes;
+        private readonly AttributeStore attributes;
         private readonly IList<PropertyMapping> properties = new List<PropertyMapping>();
         private readonly IList<ManyToOneMapping> manyToOnes = new List<ManyToOneMapping>();
 
         public NaturalIdMapping()
             : this(new AttributeStore()) { }
 
-        public NaturalIdMapping(AttributeStore underlyingStore)
+        public NaturalIdMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<NaturalIdMapping>(underlyingStore);
-            attributes.SetDefault(x => x.Mutable, false);
+            this.attributes = attributes;
         }
 
         public bool Mutable
         {
-            get { return attributes.Get(x => x.Mutable); }
-            set { attributes.Set(x => x.Mutable, value); }
+            get { return attributes.GetOrDefault<bool>("Mutable"); }
         }
 
         public IEnumerable<PropertyMapping> Properties
@@ -58,19 +55,14 @@ namespace FluentNHibernate.MappingModel
                 visitor.Visit(key);
         }
 
-        public override bool IsSpecified(string property)
+        public override bool IsSpecified(string attribute)
         {
-            return attributes.IsSpecified(property);
+            return attributes.IsSpecified(attribute);
         }
 
-        public bool HasValue<TResult>(Expression<Func<NaturalIdMapping, TResult>> property)
+        protected override void Set(string attribute, int layer, object value)
         {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<NaturalIdMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
+            attributes.Set(attribute, layer, value);
         }
     }
 }

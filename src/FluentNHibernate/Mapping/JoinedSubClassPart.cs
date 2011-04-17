@@ -7,25 +7,28 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Mapping
 {
+    [Obsolete("REMOVE ME")]
     public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclassMappingProvider
     {
-        private readonly MappingProviderStore providers;
-        private readonly ColumnMappingCollection<JoinedSubClassPart<TSubclass>> columns;
-        private readonly List<SubclassMapping> subclassMappings = new List<SubclassMapping>();
-        private readonly AttributeStore<SubclassMapping> attributes;
-        private bool nextBool = true;
+        readonly MappingProviderStore providers;
+        readonly ColumnMappingCollection<JoinedSubClassPart<TSubclass>> columns;
+        readonly List<SubclassMapping> subclassMappings = new List<SubclassMapping>();
+        readonly AttributeStore attributes;
+        bool nextBool = true;
 
         public JoinedSubClassPart(string keyColumn)
             : this(keyColumn, new AttributeStore(), new MappingProviderStore())
         {}
 
-        protected JoinedSubClassPart(string keyColumn, AttributeStore underlyingStore, MappingProviderStore providers)
+        protected JoinedSubClassPart(string keyColumn, AttributeStore attributes, MappingProviderStore providers)
             : base(providers)
         {
             this.providers = providers;
-            attributes = new AttributeStore<SubclassMapping>(underlyingStore);
-            columns = new ColumnMappingCollection<JoinedSubClassPart<TSubclass>>(this);
-            columns.Add(keyColumn);
+            this.attributes = attributes;
+            columns = new ColumnMappingCollection<JoinedSubClassPart<TSubclass>>(this)
+            {
+                keyColumn
+            };
         }
 
         public virtual void JoinedSubClass<TNextSubclass>(string keyColumn, Action<JoinedSubClassPart<TNextSubclass>> action)
@@ -46,25 +49,25 @@ namespace FluentNHibernate.Mapping
 
         public JoinedSubClassPart<TSubclass> Table(string tableName)
         {
-            attributes.Set(x => x.TableName, tableName);
+            attributes.Set("TableName", Layer.UserSupplied, tableName);
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> Schema(string schema)
         {
-            attributes.Set(x => x.Schema, schema);
+            attributes.Set("Schema", Layer.UserSupplied, schema);
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> CheckConstraint(string constraintName)
         {
-            attributes.Set(x => x.Check, constraintName);
+            attributes.Set("Check", Layer.UserSupplied, constraintName);
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> Proxy(Type type)
         {
-            attributes.Set(x => x.Proxy, type.AssemblyQualifiedName);
+            attributes.Set("Proxy", Layer.UserSupplied, type.AssemblyQualifiedName);
             return this;
         }
 
@@ -75,35 +78,35 @@ namespace FluentNHibernate.Mapping
 
         public JoinedSubClassPart<TSubclass> LazyLoad()
         {
-            attributes.Set(x => x.Lazy, nextBool);
+            attributes.Set("Lazy", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> DynamicUpdate()
         {
-            attributes.Set(x => x.DynamicUpdate, nextBool);
+            attributes.Set("DynamicUpdate", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> DynamicInsert()
         {
-            attributes.Set(x => x.DynamicInsert, nextBool);
+            attributes.Set("DynamicInsert", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> SelectBeforeUpdate()
         {
-            attributes.Set(x => x.SelectBeforeUpdate, nextBool);
+            attributes.Set("SelectBeforeUpdate", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
 
         public JoinedSubClassPart<TSubclass> Abstract()
         {
-            attributes.Set(x => x.Abstract, nextBool);
+            attributes.Set("Abstract", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -114,7 +117,7 @@ namespace FluentNHibernate.Mapping
         /// <remarks>See http://nhforge.org/blogs/nhibernate/archive/2008/10/21/entity-name-in-action-a-strongly-typed-entity.aspx</remarks>
         public JoinedSubClassPart<TSubclass> EntityName(string entityName)
         {
-            attributes.Set(x => x.EntityName, entityName);
+            attributes.Set("EntityName", Layer.UserSupplied, entityName);
             return this;
         }
 
@@ -133,11 +136,11 @@ namespace FluentNHibernate.Mapping
 
         SubclassMapping ISubclassMappingProvider.GetSubclassMapping()
         {
-            var mapping = new SubclassMapping(SubclassType.JoinedSubclass, attributes.CloneInner());
+            var mapping = new SubclassMapping(SubclassType.JoinedSubclass, attributes.Clone());
 
-            mapping.Key = new KeyMapping { ContainingEntityType = typeof(TSubclass) };
-            mapping.Name = typeof(TSubclass).AssemblyQualifiedName;
-            mapping.Type = typeof(TSubclass);
+            mapping.Set(x => x.Key, Layer.Defaults, new KeyMapping { ContainingEntityType = typeof(TSubclass) });
+            mapping.Set(x => x.Name, Layer.Defaults, typeof(TSubclass).AssemblyQualifiedName);
+            mapping.Set(x => x.Type, Layer.Defaults, typeof(TSubclass));
 
             foreach (var column in columns)
                 mapping.Key.AddColumn(column);

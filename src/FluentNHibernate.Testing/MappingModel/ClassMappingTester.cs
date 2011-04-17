@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Visitors;
 using NUnit.Framework;
@@ -12,55 +11,58 @@ namespace FluentNHibernate.Testing.MappingModel
     [TestFixture]
     public class ClassMappingTester
     {
-        private ClassMapping _classMapping;
+        private ClassMapping mapping;
 
         [SetUp]
         public void SetUp()
         {
-            _classMapping = new ClassMapping();
+            mapping = new ClassMapping();
         }
 
         [Test]
         public void CanSetIdToBeStandardIdMapping()
         {
             var idMapping = new IdMapping();
-            _classMapping.Id = idMapping;
+            mapping.Set(x => x.Id, Layer.Defaults, idMapping);
 
-            _classMapping.Id.ShouldEqual(idMapping);
+            mapping.Id.ShouldEqual(idMapping);
         }
 
         [Test]
         public void CanSetIdToBeCompositeIdMapping()
         {
             var idMapping = new CompositeIdMapping();
-            _classMapping.Id = idMapping;
+            mapping.Set(x => x.Id, Layer.Defaults, idMapping);
 
-            _classMapping.Id.ShouldEqual(idMapping);
+            mapping.Id.ShouldEqual(idMapping);
         }
 
         [Test]
         public void CanAddProperty()
         {
-            var property = new PropertyMapping() { Name = "Property1" };
-            _classMapping.AddProperty(property);
+            var property = new PropertyMapping();
+            property.Set(x => x.Name, Layer.Defaults, "Property1");
+            mapping.AddProperty(property);
 
-            _classMapping.Properties.ShouldContain(property);
+            mapping.Properties.ShouldContain(property);
         }
 
         [Test]
         public void CanAddReference()
         {
-            var reference = new ManyToOneMapping { Name = "parent" };
-            _classMapping.AddReference(reference);
+            var reference = new ManyToOneMapping();
+            reference.Set(x => x.Name, Layer.Defaults, "parent");
+            mapping.AddReference(reference);
 
-            _classMapping.References.ShouldContain(reference);
+            mapping.References.ShouldContain(reference);
         }
 
         [Test]
         public void Should_pass_id_to_the_visitor()
         {
-            var classMap = new ClassMapping {Name = "class1" };
-            classMap.Id = new IdMapping();
+            var classMap = new ClassMapping();
+            classMap.Set(x => x.Name, Layer.Defaults, "class1");
+            classMap.Set(x => x.Id, Layer.Defaults, new IdMapping());
 
             var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
             visitor.Expect(x => x.Visit(classMap.Id));
@@ -73,8 +75,9 @@ namespace FluentNHibernate.Testing.MappingModel
         [Test]
         public void Should_not_pass_null_id_to_the_visitor()
         {
-            var classMap = new ClassMapping {Name = "class1" };
-            classMap.Id = null;
+            var classMap = new ClassMapping();
+            classMap.Set(x => x.Name, Layer.Defaults, "class1");
+            classMap.Set(x => x.Id, Layer.Defaults, null);
 
             var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();            
             visitor.Expect(x => x.Visit(classMap.Id)).Repeat.Never();            
@@ -88,14 +91,15 @@ namespace FluentNHibernate.Testing.MappingModel
         public void Can_add_subclass()
         {
             var joinedSubclass = new SubclassMapping(SubclassType.JoinedSubclass);
-            _classMapping.AddSubclass(joinedSubclass);
-            _classMapping.Subclasses.ShouldContain(joinedSubclass);
+            mapping.AddSubclass(joinedSubclass);
+            mapping.Subclasses.ShouldContain(joinedSubclass);
         }
 
         [Test]
         public void Should_pass_subclasses_to_the_visitor()
         {
-            var classMap = new ClassMapping {Name = "class1" };
+            var classMap = new ClassMapping();
+            classMap.Set(x => x.Name, Layer.Defaults, "class1");
             classMap.AddSubclass(new SubclassMapping(SubclassType.JoinedSubclass));
 
             var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
@@ -110,14 +114,15 @@ namespace FluentNHibernate.Testing.MappingModel
         public void Can_add_stored_procedure()
         {
             var storedProcedure = new StoredProcedureMapping();
-            _classMapping.AddStoredProcedure(storedProcedure);
-            _classMapping.StoredProcedures.ShouldContain(storedProcedure);
+            mapping.AddStoredProcedure(storedProcedure);
+            mapping.StoredProcedures.ShouldContain(storedProcedure);
         }
 
         [Test]
         public void Should_pass_stored_procedure_to_the_visitor()
         {
-            var classMap = new ClassMapping { Name = "class1" };
+            var classMap = new ClassMapping();
+            classMap.Set(x => x.Name, Layer.Defaults, "class1");
             classMap.AddStoredProcedure(new StoredProcedureMapping());
 
             var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
@@ -131,8 +136,9 @@ namespace FluentNHibernate.Testing.MappingModel
         [Test]
         public void Should_pass_the_discriminator_to_the_visitor()
         {
-            var classMap = new ClassMapping {Name = "class1" };
-            classMap.Discriminator = new DiscriminatorMapping();
+            var classMap = new ClassMapping();
+            classMap.Set(x => x.Name, Layer.Defaults, "class1");
+            classMap.Set(x => x.Discriminator, Layer.Defaults, new DiscriminatorMapping());
 
             var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
             visitor.Expect(x => x.Visit(classMap.Discriminator));

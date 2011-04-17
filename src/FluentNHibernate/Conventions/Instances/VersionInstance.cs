@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 
@@ -9,8 +8,9 @@ namespace FluentNHibernate.Conventions.Instances
 {
     public class VersionInstance : VersionInspector, IVersionInstance
     {
-        private readonly VersionMapping mapping;
-        private bool nextBool = true;
+        readonly VersionMapping mapping;
+        bool nextBool = true;
+        const int layer = Layer.Conventions;
 
         public VersionInstance(VersionMapping mapping)
             : base(mapping)
@@ -20,26 +20,12 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new IAccessInstance Access
         {
-            get
-            {
-                return new AccessInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Access"))
-                        mapping.Access = value;
-                });
-            }
+            get { return new AccessInstance(value => mapping.Set(x => x.Access, layer, value)); }
         }
 
         public new IGeneratedInstance Generated
         {
-            get
-            {
-                return new GeneratedInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Generated"))
-                        mapping.Generated = value;
-                });
-            }
+            get { return new GeneratedInstance(value => mapping.Set(x => x.Generated, layer, value)); }
         }
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -60,7 +46,7 @@ namespace FluentNHibernate.Conventions.Instances
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
-            column.Name = columnName;
+            column.Set(x => x.Name, layer, columnName);
 
             mapping.ClearColumns();
             mapping.AddColumn(column);
@@ -68,110 +54,81 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void UnsavedValue(string unsavedValue)
         {
-            if (!mapping.IsSpecified("UnsavedValue"))
-                mapping.UnsavedValue = unsavedValue;
+            mapping.Set(x => x.UnsavedValue, layer, unsavedValue);
         }
 
         public new void Length(int length)
         {
-            if (mapping.Columns.First().IsSpecified("Length"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Length = length;
+                column.Set(x => x.Length, layer, length);
         }
 
         public new void Precision(int precision)
         {
-            if (mapping.Columns.First().IsSpecified("Precision"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Precision = precision;
+                column.Set(x => x.Precision, layer, precision);
         }
 
         public new void Scale(int scale)
         {
-            if (mapping.Columns.First().IsSpecified("Scale"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Scale = scale;
+                column.Set(x => x.Scale, layer, scale);
         }
 
         public new void Nullable()
         {
-            if (!mapping.Columns.First().IsSpecified("NotNull"))
-                foreach (var column in mapping.Columns)
-                    column.NotNull = !nextBool;
+            foreach (var column in mapping.Columns)
+                column.Set(x => x.NotNull, layer, !nextBool);
 
             nextBool = true;
         }
 
         public new void Unique()
         {
-            if (!mapping.Columns.First().IsSpecified("Unique"))
-                foreach (var column in mapping.Columns)
-                    column.Unique = nextBool;
+            foreach (var column in mapping.Columns)
+                column.Set(x => x.Unique, layer, nextBool);
 
             nextBool = true;
         }
 
         public new void UniqueKey(string columns)
         {
-            if (mapping.Columns.First().IsSpecified("UniqueKey"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.UniqueKey = columns;
+                column.Set(x => x.UniqueKey, layer, columns);
         }
 
         public void CustomSqlType(string sqlType)
         {
-            if (mapping.Columns.First().IsSpecified("SqlType"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.SqlType = sqlType;
+                column.Set(x => x.SqlType, layer, sqlType);
         }
 
         public new void Index(string index)
         {
-            if (mapping.Columns.First().IsSpecified("Index"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Index = index;
+                column.Set(x => x.Index, layer, index);
         }
 
         public new void Check(string constraint)
         {
-            if (mapping.Columns.First().IsSpecified("Check"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Check = constraint;
+                column.Set(x => x.Check, layer, constraint);
         }
 
         public new void Default(object value)
         {
-            if (mapping.Columns.First().IsSpecified("Default"))
-                return;
-
             foreach (var column in mapping.Columns)
-                column.Default = value.ToString();
+                column.Set(x => x.Default, layer, value.ToString());
         }
 
         public void CustomType(string type)
         {
-            if (!mapping.IsSpecified("Type"))
-                mapping.Type = new TypeReference(type);
+            mapping.Set(x => x.Type, layer, new TypeReference(type));
         }
 
         public void CustomType(Type type)
         {
-            if (!mapping.IsSpecified("Type"))
-                mapping.Type = new TypeReference(type);
+            mapping.Set(x => x.Type, layer, new TypeReference(type));
         }
 
         public void CustomType<T>()

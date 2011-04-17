@@ -46,11 +46,11 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
-        public FilterDefinitionMapping GetFilterMapping()
+        FilterDefinitionMapping IFilterDefinition.GetFilterMapping()
         {
             var mapping = new FilterDefinitionMapping();
-            mapping.Name = filterName;
-            mapping.Condition = filterCondition;
+            mapping.Set(x => x.Name, Layer.Defaults, filterName);
+            mapping.Set(x => x.Condition, Layer.Defaults, filterCondition);
             foreach (var pair in Parameters)
             {
                 mapping.Parameters.Add(pair);
@@ -58,8 +58,7 @@ namespace FluentNHibernate.Mapping
             return mapping;
         }
 
-        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
-        public HibernateMapping GetHibernateMapping()
+        HibernateMapping IFilterDefinition.GetHibernateMapping()
         {
             return new HibernateMapping();
         }

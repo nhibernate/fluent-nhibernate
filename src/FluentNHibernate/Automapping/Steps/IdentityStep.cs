@@ -26,15 +26,17 @@ namespace FluentNHibernate.Automapping.Steps
             if (!(classMap is ClassMapping)) return;
 
             var idMapping = new IdMapping { ContainingEntityType = classMap.Type };
-            idMapping.AddDefaultColumn(new ColumnMapping() { Name = member.Name });
-            idMapping.Name = member.Name;
-            idMapping.Type = new TypeReference(member.PropertyType);
+            var columnMapping = new ColumnMapping();
+            columnMapping.Set(x => x.Name, Layer.Defaults, member.Name);
+            idMapping.AddDefaultColumn(columnMapping);
+            idMapping.Set(x => x.Name, Layer.Defaults, member.Name);
+            idMapping.Set(x => x.Type, Layer.Defaults, new TypeReference(member.PropertyType));
             idMapping.Member = member;
-            idMapping.SetDefaultValue("Generator", GetDefaultGenerator(member));
+            idMapping.Set(x => x.Generator, Layer.Defaults, GetDefaultGenerator(member));
 
             SetDefaultAccess(member, idMapping);
 
-            ((ClassMapping)classMap).Id = idMapping;        
+            ((ClassMapping)classMap).Set(x => x.Id, Layer.Defaults, idMapping);        
         }
 
         void SetDefaultAccess(Member member, IdMapping mapping)
@@ -45,17 +47,17 @@ namespace FluentNHibernate.Automapping.Steps
             {
                 // if it's a property or unset then we'll just let NH deal with it, otherwise
                 // set the access to be whatever we determined it might be
-                mapping.SetDefaultValue("Access", resolvedAccess.ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, resolvedAccess.ToString());
             }
 
             if (member.IsProperty && !member.CanWrite)
-                mapping.SetDefaultValue("Access", cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
         }
         
-        private GeneratorMapping GetDefaultGenerator(Member property)
+        static GeneratorMapping GetDefaultGenerator(Member property)
         {
             var generatorMapping = new GeneratorMapping();
-            var defaultGenerator = new GeneratorBuilder(generatorMapping, property.PropertyType);
+            var defaultGenerator = new GeneratorBuilder(generatorMapping, property.PropertyType, Layer.Defaults);
 
             if (property.PropertyType == typeof(Guid))
                 defaultGenerator.GuidComb();

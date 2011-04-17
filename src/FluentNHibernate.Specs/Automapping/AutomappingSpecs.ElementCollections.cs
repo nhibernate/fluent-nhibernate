@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Steps;
 using FluentNHibernate.MappingModel;
@@ -161,10 +160,8 @@ namespace FluentNHibernate.Specs.Automapping
         {
             cfg = new TestConfiguration();
             step = new HasManyStep(cfg);
-            container = new ClassMapping
-            {
-                Type = FakeMembers.Type
-            };
+            container = new ClassMapping();
+            container.Set(x => x.Type, Layer.Defaults, FakeMembers.Type);
         };
 
         protected static HasManyStep step;

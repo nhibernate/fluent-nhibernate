@@ -419,10 +419,13 @@
     <Compile Include="Conventions\ManyToManyTableNameConvention.cs" />
     <Compile Include="Conventions\ObjectExtensionsForConventions.cs" />
     <Compile Include="Conventions\ProxyConvention.cs" />
+    <Compile Include="MappingModel\Layer.cs" />
     <Compile Include="MappingModel\ClassBased\ComponentType.cs" />
     <Compile Include="MappingModel\ClassBased\ExternalComponentMapping.cs" />
     <Compile Include="MappingModel\ClassBased\SubclassType.cs" />
+    <Compile Include="MappingModel\Collections\AttributeLayeredValues.cs" />
     <Compile Include="MappingModel\Collections\Collection.cs" />
+    <Compile Include="MappingModel\Collections\LayeredValues.cs" />
     <Compile Include="MappingModel\Collections\Lazy.cs" />
     <Compile Include="MappingModel\Collections\NestedCompositeElementMapping.cs" />
     <Compile Include="MappingModel\EqualityExtensions.cs" />
@@ -432,6 +435,7 @@
     <Compile Include="MappingModel\Output\CollectionAttributeWriter.cs" />
     <Compile Include="MappingModel\Output\XmlBagWriter.cs" />
     <Compile Include="MappingModel\Output\XmlNaturalIdWriter.cs" />
+    <Compile Include="MappingModel\TuplizerMode.cs" />
     <Compile Include="Mapping\Access.cs" />
     <Compile Include="Mapping\CollectionTypeResolver.cs" />
     <Compile Include="Mapping\ListIndexPart.cs" />
@@ -747,7 +751,7 @@
     <Compile Include="MappingModel\HibernateMapping.cs" />
     <Compile Include="MappingModel\Identity\IdMapping.cs" />
     <Compile Include="MappingModel\Identity\IIdentityMapping.cs" />
-    <Compile Include="MappingModel\IMappingBase.cs" />
+    <Compile Include="MappingModel\IMapping.cs" />
     <Compile Include="MappingModel\ManyToOneMapping.cs" />
     <Compile Include="MappingModel\MappingBase.cs" />
     <Compile Include="MappingModel\Collections\OneToManyMapping.cs" />

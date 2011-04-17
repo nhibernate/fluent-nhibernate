@@ -28,10 +28,10 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("element");
 
-            if (mapping.HasValue(x => x.Type))
+            if (mapping.IsSpecified("Type"))
                 element.WithAtt("type", mapping.Type);
 
-            if (mapping.HasValue(x => x.Formula))
+            if (mapping.IsSpecified("Formula"))
                 element.WithAtt("formula", mapping.Formula);
         }
 

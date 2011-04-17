@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq.Expressions;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -10,20 +8,17 @@ namespace FluentNHibernate.Mapping
     public class ComponentPart<T> : ComponentPartBase<T, ComponentPart<T>>, IComponentMappingProvider
     {
         private readonly Type entity;
-        private readonly AttributeStore<ComponentMapping> attributes;
+        private readonly AttributeStore attributes;
 
         public ComponentPart(Type entity, Member property)
             : this(entity, property, new AttributeStore())
         {}
 
-        private ComponentPart(Type entity, Member property, AttributeStore underlyingStore)
-            : base(underlyingStore, property)
+        private ComponentPart(Type entity, Member property, AttributeStore attributes)
+            : base(attributes, property)
         {
-            attributes = new AttributeStore<ComponentMapping>(underlyingStore);
+            this.attributes = attributes;
             this.entity = entity;
-
-            Insert();
-            Update();
         }
 
         /// <summary>
@@ -31,7 +26,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public ComponentPart<T> LazyLoad()
         {
-            attributes.Set(x => x.Lazy, nextBool);
+            attributes.Set("Lazy", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -43,11 +38,12 @@ namespace FluentNHibernate.Mapping
 
         protected override ComponentMapping CreateComponentMappingRoot(AttributeStore store)
         {
-            return new ComponentMapping(ComponentType.Component, store)
+            var componentMappingRoot = new ComponentMapping(ComponentType.Component, store)
             {
                 ContainingEntityType = entity,
-                Class = new TypeReference(typeof(T))
             };
+            componentMappingRoot.Set(x => x.Class, Layer.Defaults, new TypeReference(typeof(T)));
+            return componentMappingRoot;
         }
     }
 }

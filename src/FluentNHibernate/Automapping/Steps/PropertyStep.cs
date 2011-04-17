@@ -51,11 +51,12 @@ namespace FluentNHibernate.Automapping.Steps
                     if (acceptance != null)
                         acceptance.Accept(criteria);
 
-                    return criteria.Matches(new PropertyInspector(new PropertyMapping
+                    var propertyMapping = new PropertyMapping
                     {
-                        Type = new TypeReference(property.PropertyType),
                         Member = property
-                    }));
+                    };
+                    propertyMapping.Set(x => x.Type, Layer.Defaults, new TypeReference(property.PropertyType));
+                    return criteria.Matches(new PropertyInspector(propertyMapping));
                 });
 
             return conventions.FirstOrDefault() != null;
@@ -81,13 +82,12 @@ namespace FluentNHibernate.Automapping.Steps
                 Member = property
             };
 
-            mapping.AddDefaultColumn(new ColumnMapping { Name = property.Name });
+            var columnMapping = new ColumnMapping();
+            columnMapping.Set(x => x.Name, Layer.Defaults, property.Name);
+            mapping.AddDefaultColumn(columnMapping);
 
-            if (!mapping.IsSpecified("Name"))
-                mapping.Name = mapping.Member.Name;
-
-            if (!mapping.IsSpecified("Type"))
-                mapping.SetDefaultValue("Type", GetDefaultType(property));
+            mapping.Set(x => x.Name, Layer.Defaults, mapping.Member.Name);
+            mapping.Set(x => x.Type, Layer.Defaults, GetDefaultType(property));
 
             SetDefaultAccess(property, mapping);
 
@@ -102,14 +102,16 @@ namespace FluentNHibernate.Automapping.Steps
             {
                 // if it's a property or unset then we'll just let NH deal with it, otherwise
                 // set the access to be whatever we determined it might be
-                mapping.SetDefaultValue("Access", resolvedAccess.ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, resolvedAccess.ToString());
             }
 
             if (member.IsProperty && !member.CanWrite)
-                mapping.SetDefaultValue("Access", cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
+            {
+                mapping.Set(x => x.Access, Layer.Defaults, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
+            }
         }
 
-        private TypeReference GetDefaultType(Member property)
+        static TypeReference GetDefaultType(Member property)
         {
             var type = new TypeReference(property.PropertyType);
 

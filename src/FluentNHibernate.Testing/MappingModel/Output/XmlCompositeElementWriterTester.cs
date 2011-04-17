@@ -65,7 +65,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteNestedCompositeElementName()
         {
             var mapping = new CompositeElementMapping();
-            mapping.AddCompositeElement(new NestedCompositeElementMapping { Name = "testName"});
+            var nestedCompositeElementMapping = new NestedCompositeElementMapping();
+            nestedCompositeElementMapping.Set(x => x.Name, Layer.Defaults, "testName");
+            mapping.AddCompositeElement(nestedCompositeElementMapping);
 
             writer.VerifyXml(mapping)
                 .Element("nested-composite-element")
@@ -77,7 +79,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteParent()
         {
             var mapping = new CompositeElementMapping();
-            mapping.Parent = new ParentMapping();
+            mapping.Set(x => x.Parent, Layer.Defaults, new ParentMapping());
 
             writer.VerifyXml(mapping)
                 .Element("parent").Exists();
@@ -87,7 +89,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteParentAsFirstElement()
         {
             var mapping = new CompositeElementMapping();
-            mapping.Parent = new ParentMapping();
+            mapping.Set(x => x.Parent, Layer.Defaults, new ParentMapping());
             mapping.AddProperty(new PropertyMapping());
 
             writer.VerifyXml(mapping)

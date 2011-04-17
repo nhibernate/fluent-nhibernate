@@ -27,31 +27,31 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.CreateElement("property");
 
-            if (propertyMapping.HasValue("Access"))
+            if (propertyMapping.IsSpecified("Access"))
                 element.WithAtt("access", propertyMapping.Access);
 
-            if (propertyMapping.HasValue("Generated"))
+            if (propertyMapping.IsSpecified("Generated"))
                 element.WithAtt("generated", propertyMapping.Generated);
 
-            if (propertyMapping.HasValue("Name"))
+            if (propertyMapping.IsSpecified("Name"))
                 element.WithAtt("name", propertyMapping.Name);
 
-            if (propertyMapping.HasValue("OptimisticLock"))
+            if (propertyMapping.IsSpecified("OptimisticLock"))
                 element.WithAtt("optimistic-lock", propertyMapping.OptimisticLock);
 
-            if (propertyMapping.HasValue("Insert"))
+            if (propertyMapping.IsSpecified("Insert"))
                 element.WithAtt("insert", propertyMapping.Insert);
 
-            if (propertyMapping.HasValue("Update"))
+            if (propertyMapping.IsSpecified("Update"))
                 element.WithAtt("update", propertyMapping.Update);
 
-            if (propertyMapping.HasValue("Formula"))
+            if (propertyMapping.IsSpecified("Formula"))
                 element.WithAtt("formula", propertyMapping.Formula);
 
-            if (propertyMapping.HasValue("Type"))
+            if (propertyMapping.IsSpecified("Type"))
                 element.WithAtt("type", propertyMapping.Type);
 
-            if (propertyMapping.HasValue("Lazy"))
+            if (propertyMapping.IsSpecified("Lazy"))
                 element.WithAtt("lazy", propertyMapping.Lazy);
 
             document.AppendChild(element);

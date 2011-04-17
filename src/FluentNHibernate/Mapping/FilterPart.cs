@@ -18,9 +18,9 @@ namespace FluentNHibernate.Mapping
     /// </summary>
     public class FilterPart : IFilter
     {
-        private readonly string filterName;
-        private readonly string condition;
-        private readonly AttributeStore<FilterMapping> attributes = new AttributeStore<FilterMapping>();
+        readonly string filterName;
+        readonly string condition;
+        readonly AttributeStore attributes = new AttributeStore();
 
         public FilterPart(string name) : this(name, null) { }
 
@@ -58,11 +58,11 @@ namespace FluentNHibernate.Mapping
             return Equals((FilterPart)obj);
         }
 
-        public FilterMapping GetFilterMapping()
+        FilterMapping IFilterMappingProvider.GetFilterMapping()
         {
             var mapping = new FilterMapping();
-            mapping.Name = Name;
-            mapping.Condition = Condition;
+            mapping.Set(x => x.Name, Layer.Defaults, Name);
+            mapping.Set(x => x.Condition, Layer.Defaults, Condition);
             return mapping;
         }
 

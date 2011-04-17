@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
@@ -31,85 +30,61 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new ISchemaActionInstance SchemaAction
         {
-            get
-            {
-                return new SchemaActionInstance(value =>
-                {
-                    if (!mapping.IsSpecified("SchemaAction"))
-                        mapping.SchemaAction = value;
-                });
-            }
+            get { return new SchemaActionInstance(value => mapping.Set(x => x.SchemaAction, Layer.Conventions, value)); }
         }
 
         public void Table(string tableName)
         {
-            if (!mapping.IsSpecified("TableName"))
-                mapping.TableName = tableName;
+            mapping.Set(x => x.TableName, Layer.Conventions, tableName);
         }
 
         public new void DynamicInsert()
         {
-            if (!mapping.IsSpecified("DynamicInsert"))
-                mapping.DynamicInsert = nextBool;
+            mapping.Set(x => x.DynamicInsert, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void DynamicUpdate()
         {
-            if (!mapping.IsSpecified("DynamicUpdate"))
-                mapping.DynamicUpdate = nextBool;
+            mapping.Set(x => x.DynamicUpdate, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new IOptimisticLockInstance OptimisticLock
         {
-            get
-            {
-                return new OptimisticLockInstance(value =>
-                {
-                    if (!mapping.IsSpecified("OptimisticLock"))
-                        mapping.OptimisticLock = value;
-                });
-            }
+            get { return new OptimisticLockInstance(value => mapping.Set(x => x.OptimisticLock, Layer.Conventions, value)); }
         }
 
         public new void BatchSize(int size)
         {
-            if (!mapping.IsSpecified("BatchSize"))
-                mapping.BatchSize = size;
+            mapping.Set(x => x.BatchSize, Layer.Conventions, size);
         }
 
         public new void LazyLoad()
         {
-            if (!mapping.IsSpecified("Lazy"))
-                mapping.Lazy = nextBool;
+            mapping.Set(x => x.Lazy, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
-
         public new void ReadOnly()
         {
-            if (!mapping.IsSpecified("Mutable"))
-                mapping.Mutable = !nextBool;
+            mapping.Set(x => x.Mutable, Layer.Conventions, !nextBool);
             nextBool = true;
         }
 
         public new void Schema(string schema)
         {
-            if (!mapping.IsSpecified("Schema"))
-                mapping.Schema = schema;
+            mapping.Set(x => x.Schema, Layer.Conventions, schema);
         }
 
         public new void Where(string where)
         {
-            if (!mapping.IsSpecified("Where"))
-                mapping.Where = where;
+            mapping.Set(x => x.Where, Layer.Conventions, where);
         }
 
         public new void Subselect(string subselectSql)
         {
-            if (!mapping.IsSpecified("Subselect"))
-                mapping.Subselect = subselectSql;
+            mapping.Set(x => x.Subselect, Layer.Conventions, subselectSql);
         }
 
         public new void Proxy<T>()
@@ -119,23 +94,20 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Proxy(Type type)
         {
-            if (!mapping.IsSpecified("Proxy"))
-                mapping.Proxy = type.AssemblyQualifiedName;
+            Proxy(type.AssemblyQualifiedName);
         }
 
         public new void Proxy(string type)
         {
-            if (!mapping.IsSpecified("Proxy"))
-                mapping.Proxy = type;
+            mapping.Set(x => x.Proxy, Layer.Conventions, type);
         }
 
         public void ApplyFilter(string name, string condition)
         {
-            mapping.AddFilter(new FilterMapping
-            {
-                Name = name,
-                Condition = condition
-            });
+            var filterMapping = new FilterMapping();
+            filterMapping.Set(x => x.Name, Layer.Conventions, name);
+            filterMapping.Set(x => x.Condition, Layer.Conventions, name);
+            mapping.AddFilter(filterMapping);
         }
 
         public void ApplyFilter(string name)

@@ -19,7 +19,7 @@ namespace FluentNHibernate.Visitors
         public override void ProcessColumn(ColumnMapping columnMapping)
         {
             if (prefixes.Any())
-                columnMapping.Name = GetPrefix() + columnMapping.Name;
+                columnMapping.Set(x => x.Name, Layer.UserSupplied, GetPrefix() + columnMapping.Name);
         }
 
         private string GetPrefix()

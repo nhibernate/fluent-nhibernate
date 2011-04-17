@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -30,54 +29,46 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void DiscriminatorValue(object value)
         {
-            if (!mapping.IsSpecified("DiscriminatorValue"))
-                mapping.DiscriminatorValue = value;
+            mapping.Set(x => x.DiscriminatorValue, Layer.Conventions, value);
         }
 
         public new void Abstract()
         {
-            if (!mapping.IsSpecified("Abstract"))
-                mapping.Abstract = nextBool;
+            mapping.Set(x => x.Abstract, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void DynamicInsert()
         {
-            if (!mapping.IsSpecified("DynamicInsert"))
-                mapping.DynamicInsert = nextBool;
+            mapping.Set(x => x.DynamicInsert, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void DynamicUpdate()
         {
-            if (!mapping.IsSpecified("DynamicUpdate"))
-                mapping.DynamicUpdate = nextBool;
+            mapping.Set(x => x.DynamicUpdate, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void LazyLoad()
         {
-            if (!mapping.IsSpecified("Lazy"))
-                mapping.Lazy = nextBool;
+            mapping.Set(x => x.Lazy, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void Proxy(Type type)
         {
-            if (!mapping.IsSpecified("Proxy"))
-                mapping.Proxy = type.AssemblyQualifiedName;
+            mapping.Set(x => x.Proxy, Layer.Conventions, type.AssemblyQualifiedName);
         }
 
         public new void Proxy<T>()
         {
-            if (!mapping.IsSpecified("Proxy"))
-                mapping.Proxy = typeof(T).AssemblyQualifiedName;
+            Proxy(typeof(T));
         }
 
         public new void SelectBeforeUpdate()
         {
-            if (!mapping.IsSpecified("SelectBeforeUpdate"))
-                mapping.SelectBeforeUpdate = nextBool;
+            mapping.Set(x => x.SelectBeforeUpdate, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
@@ -96,8 +87,7 @@ namespace FluentNHibernate.Conventions.Instances
         /// <param name="type">Type of the entity to extend</param>
         public new void Extends(Type type)
         {
-            if (!mapping.IsSpecified("Extends"))
-                mapping.Extends = type;
+            mapping.Set(x => x.Extends, Layer.Conventions, type);
         }
     }
 }

@@ -18,7 +18,9 @@ namespace FluentNHibernate.Mapping
 
         public TParent Add(string name)
         {
-            columns.Add(new ColumnMapping { Name = name });
+            var mapping = new ColumnMapping();
+            mapping.Set(x => x.Name, Layer.UserSupplied, name);
+            columns.Add(mapping);
             return parent;
         }
 
@@ -33,7 +35,8 @@ namespace FluentNHibernate.Mapping
 
         public TParent Add(string columnName, Action<ColumnPart> customColumnMapping)
         {
-            var mapping = new ColumnMapping { Name = columnName };
+            var mapping = new ColumnMapping();
+            mapping.Set(x => x.Name, Layer.UserSupplied, columnName);
             var part = new ColumnPart(mapping);
             customColumnMapping(part);
             columns.Add(mapping);

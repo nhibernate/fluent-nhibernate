@@ -39,52 +39,52 @@ namespace FluentNHibernate.Testing.Testing
 
         public class TestComparer : IEqualityComparer
         {
-            public new bool Equals(object x, object y)
+            bool IEqualityComparer.Equals(object x, object y)
             {
                 if (x is Cat && y is Cat)
                     return ((Cat)x).Id == ((Cat)y).Id;
-                else if (x is Kitten && y is Kitten)
+                if (x is Kitten && y is Kitten)
                     return ((Kitten)x).Id == ((Kitten)y).Id;
-                throw new System.NotImplementedException();
+
+                return false;
             }
 
             public int GetHashCode(object obj)
             {
                 if (obj is Cat)
                     return (int)((Cat)obj).Id;
-                else if (obj is Kitten)
+                if (obj is Kitten)
                     return (int)((Kitten)obj).Id;
-                throw new NotImplementedException();
+
+                return 0;
             }
         }
 
         public class DummyBitmapComparer : IEqualityComparer
         {
-            public new bool Equals(object x, object y)
+            bool IEqualityComparer.Equals(object x, object y)
             {
-                if (x is Bitmap && y is Bitmap)
-                    return true;
-                throw new NotImplementedException();
+                return x is Bitmap && y is Bitmap;
             }
 
             public int GetHashCode(object obj)
             {
-                return ((Bitmap)obj).GetHashCode();
+                return obj.GetHashCode();
             }
         }
 
-        private PersistenceSpecification<Cat> _spec;
-        private ISession _session;
-        private ITransaction _transaction;
-        private Cat _cat;
-        private Cat _identicalCat;
-        private ISessionSource _sessionSource;
+        private PersistenceSpecification<Cat> spec;
+        private ISession session;
+        private ITransaction transaction;
+        private Cat cat;
+        private Cat identicalCat;
+        private ISessionSource sessionSource;
 
         [SetUp]
         public void Setup()
         {
             var firstKitten = new Kitten { Id = 1, Name = "Kitten" };
-            _cat = new Cat
+            cat = new Cat
             {
                 Id = 100,
                 Name = "Cat",
@@ -98,7 +98,7 @@ namespace FluentNHibernate.Testing.Testing
             };
 
             firstKitten = new Kitten { Id = 1, Name = "IdenticalKitten" };
-            _identicalCat = new Cat
+            identicalCat = new Cat
             {
                 Id = 100,
                 Name = "IdenticalCat",
@@ -111,47 +111,47 @@ namespace FluentNHibernate.Testing.Testing
                 }
             };
 
-            _transaction = MockRepository.GenerateStub<ITransaction>();
+            transaction = MockRepository.GenerateStub<ITransaction>();
 
-            _session = MockRepository.GenerateStub<ISession>();
-            _session.Stub(s => s.BeginTransaction()).Return(_transaction);
-            _session.Stub(s => s.Get<Cat>(null)).IgnoreArguments().Return(_identicalCat);
-            _session.Stub(s => s.GetIdentifier(_cat)).Return(_cat.Id);
+            session = MockRepository.GenerateStub<ISession>();
+            session.Stub(s => s.BeginTransaction()).Return(transaction);
+            session.Stub(s => s.Get<Cat>(null)).IgnoreArguments().Return(identicalCat);
+            session.Stub(s => s.GetIdentifier(cat)).Return(cat.Id);
 
-            _sessionSource = MockRepository.GenerateStub<ISessionSource>();
-            _sessionSource.Stub(ss => ss.CreateSession()).Return(_session);
+            sessionSource = MockRepository.GenerateStub<ISessionSource>();
+            sessionSource.Stub(ss => ss.CreateSession()).Return(session);
 
-            _spec = new PersistenceSpecification<Cat>(_sessionSource, new TestComparer());
+            spec = new PersistenceSpecification<Cat>(sessionSource, new TestComparer());
         }
 
         [Test]
         public void Comparing_two_properties_should_use_the_specified_IEqualityComparer()
         {
-            _spec.CheckProperty(x => x.FirstKitten, _cat.FirstKitten).VerifyTheMappings();
+            spec.CheckProperty(x => x.FirstKitten, cat.FirstKitten).VerifyTheMappings();
         }
 
         [Test]
         public void Comparing_objects_in_two_lists_should_use_the_specified_IEqualityComparer()
         {
-            _spec.CheckList(x => x.AllKittens, _cat.AllKittens).VerifyTheMappings();
+            spec.CheckList(x => x.AllKittens, cat.AllKittens).VerifyTheMappings();
         }
 
         [Test]
         public void should_not_be_equal_without_the_equality_comparer()
         {
-            _spec = new PersistenceSpecification<Cat>(_sessionSource);
+            spec = new PersistenceSpecification<Cat>(sessionSource);
 
             typeof(ApplicationException).ShouldBeThrownBy(() =>
-                _spec.CheckList(x => x.AllKittens, _cat.AllKittens).VerifyTheMappings());
+                spec.CheckList(x => x.AllKittens, cat.AllKittens).VerifyTheMappings());
         }
 
         [Test]
         public void Comparing_objects_in_two_lists_should_use_the_specified_comparisons()
         {
-            _spec.CheckList(x => x.AllKittens, _cat.AllKittens, kitten => kitten.Id).VerifyTheMappings();
+            spec.CheckList(x => x.AllKittens, cat.AllKittens, kitten => kitten.Id).VerifyTheMappings();
 
             // Should fail because the names don't match.
-            Assert.Throws<ApplicationException>(() => _spec.CheckList(x => x.AllKittens, _cat.AllKittens, kitten => kitten.Id, kitten => kitten.Name)
+            Assert.Throws<ApplicationException>(() => spec.CheckList(x => x.AllKittens, cat.AllKittens, kitten => kitten.Id, kitten => kitten.Name)
                 .VerifyTheMappings());
         }
 
@@ -160,32 +160,32 @@ namespace FluentNHibernate.Testing.Testing
         {
             var kittens = new[] {new Kitten {Id = 3, Name = "kitten3"}, new Kitten {Id = 4, Name = "kitten4"}};
 #pragma warning disable 618,612
-            _spec.CheckEnumerable(x => x.EnumerableOfKittens, (cat, kitten) => cat.AddKitten(kitten), kittens);
+            spec.CheckEnumerable(x => x.EnumerableOfKittens, (cat, kitten) => cat.AddKitten(kitten), kittens);
 #pragma warning restore 618,612
 
-            typeof(ApplicationException).ShouldBeThrownBy(() => _spec.VerifyTheMappings());
+            typeof(ApplicationException).ShouldBeThrownBy(() => spec.VerifyTheMappings());
         }
 
         [Test]
         public void Comparing_two_properties_should_use_the_specified_property_IEqualityComparer()
         {
-            _spec.CheckProperty(cat => cat.Picture, _cat.Picture, new DummyBitmapComparer()).VerifyTheMappings ();
+            spec.CheckProperty(x => x.Picture, cat.Picture, new DummyBitmapComparer()).VerifyTheMappings ();
         }
 
     	[Test]
     	public void VerifyTheMappings_returns_instance()
     	{
-			var cat = _spec.CheckProperty(x => x.FirstKitten, _cat.FirstKitten).VerifyTheMappings();
+			var cat = spec.CheckProperty(x => x.FirstKitten, this.cat.FirstKitten).VerifyTheMappings();
 			cat.ShouldNotBeNull();
     	}
 
         [Test]
         public void Comparing_reference_should_use_the_specified_property_comparisons()
         {
-            _spec.CheckReference(cat => cat.FirstKitten, _cat.FirstKitten, x => x.Id).VerifyTheMappings();
+            spec.CheckReference(x => x.FirstKitten, cat.FirstKitten, x => x.Id).VerifyTheMappings();
 
             // Should fail because the names don't match.
-            Assert.Throws<ApplicationException>(() => _spec.CheckReference(cat => cat.FirstKitten, _cat.FirstKitten, x => x.Id, x => x.Name)
+            Assert.Throws<ApplicationException>(() => spec.CheckReference(x => x.FirstKitten, cat.FirstKitten, x => x.Id, x => x.Name)
                 .VerifyTheMappings());
         }
     }

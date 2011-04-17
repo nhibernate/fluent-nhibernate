@@ -26,7 +26,7 @@ namespace FluentNHibernate.Conventions.Instances
 
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
-            column.Name = columnName;
+            column.Set(x => x.Name, Layer.Conventions, columnName);
 
             mapping.ClearColumns();
             mapping.AddColumn(column);

@@ -1,4 +1,6 @@
 using System;
+using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Identity
@@ -18,8 +20,7 @@ namespace FluentNHibernate.MappingModel.Identity
 
         public GeneratorMapping Generator
         {
-            get { return attributes.Get<GeneratorMapping>("Generator"); }
-            set { attributes.Set("Generator", value); }
+            get { return attributes.GetOrDefault<GeneratorMapping>("Generator"); }
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -35,29 +36,35 @@ namespace FluentNHibernate.MappingModel.Identity
 
         public string Name
         {
-            get { return attributes.Get("Name"); }
-            set { attributes.Set("Name", value); }
+            get { return attributes.GetOrDefault<string>("Name"); }
         }
 
         public string Access
         {
-            get { return attributes.Get("Access"); }
-            set { attributes.Set("Access", value); }
+            get { return attributes.GetOrDefault<string>("Access"); }
         }
 
         public TypeReference Type
         {
-            get { return attributes.Get<TypeReference>("Type"); }
-            set { attributes.Set("Type", value); }
+            get { return attributes.GetOrDefault<TypeReference>("Type"); }
         }
 
         public string UnsavedValue
         {
-            get { return attributes.Get("UnsavedValue"); }
-            set { attributes.Set("UnsavedValue", value); }
+            get { return attributes.GetOrDefault<string>("UnsavedValue"); }
         }
 
         public Type ContainingEntityType { get; set; }
+
+        public void Set(Expression<Func<IdMapping, object>> expression, int layer, object value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
 
         public bool Equals(IdMapping other)
         {
@@ -82,6 +89,11 @@ namespace FluentNHibernate.MappingModel.Identity
                 result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

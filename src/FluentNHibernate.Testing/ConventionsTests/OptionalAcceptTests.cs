@@ -31,7 +31,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             
             visitor.ProcessClass(mapping);
 
-            mapping.IsSpecified(x => x.TableName).ShouldBeFalse();
+            mapping.IsSpecified("TableName").ShouldBeFalse();
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
             visitor.ProcessClass(mapping);
 
-            mapping.IsSpecified(x => x.TableName).ShouldBeTrue();
+            mapping.IsSpecified("TableName").ShouldBeTrue();
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
             visitor.ProcessClass(mapping);
 
-            mapping.IsSpecified(x => x.TableName).ShouldBeTrue();
+            mapping.IsSpecified("TableName").ShouldBeTrue();
         }
 
         private class ConventionWithFailingAccept : IClassConvention, IConventionAcceptance<IClassInspector>

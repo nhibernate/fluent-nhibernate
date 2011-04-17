@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
@@ -7,15 +8,15 @@ namespace FluentNHibernate.MappingModel
     [Serializable]
     public class CacheMapping : MappingBase
     {
-        private readonly AttributeStore<CacheMapping> attributes;
+        readonly AttributeStore attributes;
 
         public CacheMapping()
             : this(new AttributeStore())
         {}
 
-        public CacheMapping(AttributeStore underlyingStore)
+        public CacheMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<CacheMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -25,38 +26,20 @@ namespace FluentNHibernate.MappingModel
 
         public string Region
         {
-            get { return attributes.Get(x => x.Region); }
-            set { attributes.Set(x => x.Region, value); }
+            get { return attributes.GetOrDefault<string>("Region"); }
         }
 
         public string Usage
         {
-            get { return attributes.Get(x => x.Usage); }
-            set { attributes.Set(x => x.Usage, value); }
+            get { return attributes.GetOrDefault<string>("Usage"); }
         }
 
         public string Include
         {
-            get { return attributes.Get(x => x.Include); }
-            set { attributes.Set(x => x.Include, value); }
+            get { return attributes.GetOrDefault<string>("Include"); }
         }
 
         public Type ContainedEntityType { get; set; }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<CacheMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<CacheMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
-        }
 
         public bool Equals(CacheMapping other)
         {
@@ -79,6 +62,21 @@ namespace FluentNHibernate.MappingModel
             {
                 return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^ (ContainedEntityType != null ? ContainedEntityType.GetHashCode() : 0);
             }
+        }
+
+        public void Set<T>(Expression<Func<CacheMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

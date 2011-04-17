@@ -173,8 +173,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                  }))
                 .Element("class/component")
                     .HasAttribute("name", "Component")
-                    .HasAttribute("insert", "true")
-                    .HasAttribute("update", "true")
                 .Element("class/component/property[@name='Name']").Exists()
                 .Element("class/component/property[@name='Age']").Exists();
         }

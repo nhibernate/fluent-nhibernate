@@ -27,19 +27,19 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("version");
 
-            if (mapping.HasValue("Access"))
+            if (mapping.IsSpecified("Access"))
                 element.WithAtt("access", mapping.Access);
 
-            if (mapping.HasValue("Generated"))
+            if (mapping.IsSpecified("Generated"))
                 element.WithAtt("generated", mapping.Generated);
 
-            if (mapping.HasValue("Name"))
+            if (mapping.IsSpecified("Name"))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.HasValue("Type"))
+            if (mapping.IsSpecified("Type"))
                 element.WithAtt("type", mapping.Type);
 
-            if (mapping.HasValue("UnsavedValue"))
+            if (mapping.IsSpecified("UnsavedValue"))
                 element.WithAtt("unsaved-value", mapping.UnsavedValue);
         }
 

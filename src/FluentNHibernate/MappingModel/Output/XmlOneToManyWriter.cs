@@ -22,13 +22,13 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("one-to-many");
 
-            if (mapping.HasValue(x => x.Class))
+            if (mapping.IsSpecified("Class"))
                 element.WithAtt("class", mapping.Class);
 
-            if (mapping.HasValue(x => x.NotFound))
+            if (mapping.IsSpecified("NotFound"))
                 element.WithAtt("not-found", mapping.NotFound);
 
-            if (mapping.HasValue(x => x.EntityName))
+            if (mapping.IsSpecified("EntityName"))
                 element.WithAtt("entity-name", mapping.EntityName);
         }
     }

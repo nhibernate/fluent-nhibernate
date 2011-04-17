@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
@@ -25,7 +24,7 @@ namespace FluentNHibernate.Conventions.Instances
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
-            column.Name = columnName;
+            column.Set(x => x.Name, Layer.Conventions, columnName);
 
             mapping.ClearColumns();
             mapping.AddColumn(column);
@@ -33,20 +32,17 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Type<T>()
         {
-            if (!mapping.IsSpecified("Type"))
-                mapping.Type = new TypeReference(typeof(T));
+            Type(typeof(T));
         }
 
         public new void Type(string type)
         {
-            if (!mapping.IsSpecified("Type"))
-                mapping.Type = new TypeReference(type);
+            mapping.Set(x => x.Type, Layer.Conventions, new TypeReference(type));
         }
 
         public new void Type(Type type)
         {
-            if (!mapping.IsSpecified("Type"))
-                mapping.Type = new TypeReference(type);
+            mapping.Set(x => x.Type, Layer.Conventions, new TypeReference(type));
         }
     }
 }

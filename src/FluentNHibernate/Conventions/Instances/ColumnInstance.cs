@@ -1,6 +1,5 @@
 using System;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -17,8 +16,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void Length(int length)
         {
-            if (!mapping.IsSpecified("Length"))
-                mapping.Length = length;
+            mapping.Set(x => x.Length, Layer.Conventions, length);
         }
     }
 }

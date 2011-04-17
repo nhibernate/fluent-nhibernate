@@ -36,7 +36,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="columnName">Column name</param>
         public ColumnPart Name(string columnName)
         {
-            columnMapping.Name = columnName;
+            columnMapping.Set(x => x.Name, Layer.UserSupplied, columnName);
             return this;
         }
 
@@ -46,7 +46,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="length">Column length</param>
         public ColumnPart Length(int length)
         {
-            columnMapping.Length = length;
+            columnMapping.Set(x => x.Length, Layer.UserSupplied, length);
             return this;
         }
 
@@ -55,7 +55,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public ColumnPart Nullable()
         {
-            columnMapping.NotNull = !nextBool;
+            columnMapping.Set(x => x.NotNull, Layer.UserSupplied, !nextBool);
             nextBool = true;
             return this;
         }
@@ -65,7 +65,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public ColumnPart Unique()
         {
-            columnMapping.Unique = nextBool;
+            columnMapping.Set(x => x.Unique, Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -76,7 +76,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="key">Constraint name</param>
         public ColumnPart UniqueKey(string key)
         {
-            columnMapping.UniqueKey = key;
+            columnMapping.Set(x => x.UniqueKey, Layer.UserSupplied, key);
             return this;
         }
 
@@ -86,7 +86,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="sqlType">SQL type</param>
         public ColumnPart SqlType(string sqlType)
         {
-            columnMapping.SqlType = sqlType;
+            columnMapping.Set(x => x.SqlType, Layer.UserSupplied, sqlType);
             return this;
         }
 
@@ -96,7 +96,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="index">Index name</param>
         public ColumnPart Index(string index)
         {
-            columnMapping.Index = index;
+            columnMapping.Set(x => x.Index, Layer.UserSupplied, index);
             return this;
         }
     }

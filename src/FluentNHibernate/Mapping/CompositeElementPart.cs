@@ -20,7 +20,7 @@ namespace FluentNHibernate.Mapping
         readonly List<IPropertyMappingProvider> properties = new List<IPropertyMappingProvider>();
         readonly List<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
         readonly List<INestedCompositeElementMappingProvider> components = new List<INestedCompositeElementMappingProvider>();
-        readonly AttributeStore<CompositeElementMapping> attributes = new AttributeStore<CompositeElementMapping>();
+        readonly AttributeStore attributes = new AttributeStore();
 
         public CompositeElementPart(Type entity)
         {
@@ -118,12 +118,12 @@ namespace FluentNHibernate.Mapping
         /// <returns>Component being mapped</returns>
         public void ParentReference(Expression<Func<T, object>> expression)
         {
-            var member = expression.ToMember();
-            attributes.Set(x => x.Parent, new ParentMapping
+            var parentMapping = new ParentMapping
             {
-                Name = member.Name,
                 ContainingEntityType = entity
-            });
+            };
+            parentMapping.Set(x => x.Name, Layer.Defaults, expression.ToMember().Name);
+            attributes.Set("Parent", Layer.Defaults, parentMapping);
         }
 
         /// <summary>
@@ -155,9 +155,7 @@ namespace FluentNHibernate.Mapping
         void PopulateMapping(CompositeElementMapping mapping)
         {
             mapping.ContainingEntityType = entity;
-
-            if (!mapping.IsSpecified("Class"))
-                mapping.Class = new TypeReference(typeof(T));
+            mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(typeof(T)));
 
             foreach (var property in properties)
                 mapping.AddProperty(property.GetPropertyMapping());
@@ -171,7 +169,7 @@ namespace FluentNHibernate.Mapping
 
         CompositeElementMapping ICompositeElementMappingProvider.GetCompositeElementMapping()
         {
-            var mapping = new CompositeElementMapping(attributes.CloneInner());
+            var mapping = new CompositeElementMapping(attributes.Clone());
 
             PopulateMapping(mapping);
 
@@ -180,8 +178,8 @@ namespace FluentNHibernate.Mapping
 
         NestedCompositeElementMapping INestedCompositeElementMappingProvider.GetCompositeElementMapping()
         {
-            var mapping = new NestedCompositeElementMapping(attributes.CloneInner());
-            mapping.Name = member.Name;
+            var mapping = new NestedCompositeElementMapping(attributes.Clone());
+            mapping.Set(x => x.Name, Layer.Defaults, member.Name);
 
             PopulateMapping(mapping);
 

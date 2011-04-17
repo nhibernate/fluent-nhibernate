@@ -1,6 +1,5 @@
 using System;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
@@ -18,24 +17,17 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new INotFoundInstance NotFound
         {
-            get
-            {
-                return new NotFoundInstance(value =>
-                {
-                    if (!mapping.IsSpecified("NotFound"))
-                        mapping.NotFound = value;
-                });
-            }
+            get { return new NotFoundInstance(value => mapping.Set(x => x.NotFound, Layer.Conventions, value)); }
         }
 
         public void CustomClass<T>()
         {
-            mapping.Class = new TypeReference(typeof(T));
+            CustomClass(typeof(T));
         }
 
         public void CustomClass(Type type)
         {
-            mapping.Class = new TypeReference(type);
+            mapping.Set(x => x.Class, Layer.Conventions, new TypeReference(type));
         }
     }
 }

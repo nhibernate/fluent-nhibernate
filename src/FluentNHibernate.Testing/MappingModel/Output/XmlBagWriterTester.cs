@@ -67,7 +67,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotWriteCollectionTypeWhenEmpty()
         {
             var mapping = CollectionMapping.Bag();
-            mapping.CollectionType = TypeReference.Empty;
+            mapping.Set(x => x.CollectionType, Layer.Defaults, TypeReference.Empty);
             writer.VerifyXml(mapping)
                 .DoesntHaveAttribute("collection-type");
         }
@@ -175,7 +175,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteKey()
         {
             var mapping = CollectionMapping.Bag();
-            mapping.Key = new KeyMapping();
+            mapping.Set(x => x.Key, Layer.Defaults, new KeyMapping());
 
             writer.VerifyXml(mapping)
                 .Element("key").Exists();
@@ -186,7 +186,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = CollectionMapping.Bag();
 
-            mapping.Relationship = new OneToManyMapping();
+            mapping.Set(x => x.Relationship, Layer.Defaults, new OneToManyMapping());
 
             writer.VerifyXml(mapping)
                 .Element("one-to-many").Exists();
@@ -197,7 +197,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = CollectionMapping.Bag();
 
-            mapping.Cache = new CacheMapping();
+            mapping.Set(x => x.Cache, Layer.Defaults, new CacheMapping());
 
             writer.VerifyXml(mapping)
                 .Element("cache").Exists();
@@ -208,7 +208,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = CollectionMapping.Bag();
 
-            mapping.CompositeElement = new CompositeElementMapping();
+            mapping.Set(x => x.CompositeElement, Layer.Defaults, new CompositeElementMapping());
 
             writer.VerifyXml(mapping)
                 .Element("composite-element").Exists();
@@ -219,7 +219,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = CollectionMapping.Bag();
 
-            mapping.Element = new ElementMapping();
+            mapping.Set(x => x.Element, Layer.Defaults, new ElementMapping());
 
             writer.VerifyXml(mapping)
                 .Element("element").Exists();

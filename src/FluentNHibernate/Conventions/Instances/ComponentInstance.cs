@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -32,48 +31,36 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void LazyLoad()
         {
-            if (!mapping.IsSpecified("Lazy"))
-                mapping.Lazy = nextBool;
+            mapping.Set(x => x.Lazy, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new IAccessInstance Access
         {
-            get
-            {
-                return new AccessInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Access"))
-                        mapping.Access = value;
-                });
-            }
+            get { return new AccessInstance(value => mapping.Set(x => x.Access, Layer.Conventions, value)); }
         }
 
         public new void Update()
         {
-            if (!mapping.IsSpecified("Update"))
-                mapping.Update = nextBool;
+            mapping.Set(x => x.Update, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void Insert()
         {
-            if (!mapping.IsSpecified("Insert"))
-                mapping.Insert = nextBool;
+            mapping.Set(x => x.Insert, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void Unique()
         {
-            if (!mapping.IsSpecified("Unique"))
-                mapping.Unique = nextBool;
+            mapping.Set(x => x.Unique, Layer.Conventions, nextBool);
             nextBool = true;
         }
 
         public new void OptimisticLock()
         {
-            if (!mapping.IsSpecified("OptimisticLock"))
-                mapping.OptimisticLock = nextBool;
+            mapping.Set(x => x.OptimisticLock, Layer.Conventions, nextBool);
             nextBool = true;
         }
 

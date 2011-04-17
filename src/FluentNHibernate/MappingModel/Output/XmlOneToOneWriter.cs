@@ -21,34 +21,34 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("one-to-one");
 
-            if (mapping.HasValue(x => x.Access))
+            if (mapping.IsSpecified("Access"))
                 element.WithAtt("access", mapping.Access);
 
-            if (mapping.HasValue(x => x.Cascade))
+            if (mapping.IsSpecified("Cascade"))
                 element.WithAtt("cascade", mapping.Cascade);
 
-            if (mapping.HasValue(x => x.Class))
+            if (mapping.IsSpecified("Class"))
                 element.WithAtt("class", mapping.Class);
 
-            if (mapping.HasValue(x => x.Constrained))
+            if (mapping.IsSpecified("Constrained"))
                 element.WithAtt("constrained", mapping.Constrained);
 
-            if (mapping.HasValue(x => x.Fetch))
+            if (mapping.IsSpecified("Fetch"))
                 element.WithAtt("fetch", mapping.Fetch);
 
-            if (mapping.HasValue(x => x.ForeignKey))
+            if (mapping.IsSpecified("ForeignKey"))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
-            if (mapping.HasValue(x => x.Lazy))
+            if (mapping.IsSpecified("Lazy"))
                 element.WithAtt("lazy", mapping.Lazy);
 
-            if (mapping.HasValue(x => x.Name))
+            if (mapping.IsSpecified("Name"))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.HasValue(x => x.PropertyRef))
+            if (mapping.IsSpecified("PropertyRef"))
                 element.WithAtt("property-ref", mapping.PropertyRef);
 
-            if (mapping.HasValue(x => x.EntityName))
+            if (mapping.IsSpecified("EntityName"))
                 element.WithAtt("entity-name", mapping.EntityName);
         }
     }

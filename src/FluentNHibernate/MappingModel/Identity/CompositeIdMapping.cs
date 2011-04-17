@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Identity
@@ -8,16 +9,16 @@ namespace FluentNHibernate.MappingModel.Identity
     [Serializable]
     public class CompositeIdMapping : MappingBase, IIdentityMapping
     {
-        private readonly AttributeStore<CompositeIdMapping> attributes;
+        private readonly AttributeStore attributes;
         private readonly IList<ICompositeIdKeyMapping> keys = new List<ICompositeIdKeyMapping>();
 
         public CompositeIdMapping()
             : this(new AttributeStore())
         {}
 
-        public CompositeIdMapping(AttributeStore underlyingStore)
+        public CompositeIdMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<CompositeIdMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -35,36 +36,27 @@ namespace FluentNHibernate.MappingModel.Identity
 
         public string Name
         {
-            get { return attributes.Get(x => x.Name); }
-            set
-            {
-            	attributes.Set(x => x.Name, value);
-				Mapped = !string.IsNullOrEmpty(value);
-            }
+            get { return attributes.GetOrDefault<string>("Name"); }
         }
 
         public string Access
         {
-            get { return attributes.Get(x => x.Access); }
-            set { attributes.Set(x => x.Access, value); }
+            get { return attributes.GetOrDefault<string>("Access"); }
         }
 
         public bool Mapped
         {
-            get { return attributes.Get(x => x.Mapped); }
-            set { attributes.Set(x => x.Mapped, value); }
+            get { return attributes.GetOrDefault<bool>("Mapped") || !string.IsNullOrEmpty(Name); }
         }
 
         public TypeReference Class
         {
-            get { return attributes.Get(x => x.Class); }
-            set { attributes.Set(x => x.Class, value); }
+            get { return attributes.GetOrDefault<TypeReference>("Class"); }
         }
 
         public string UnsavedValue
         {
-            get { return attributes.Get(x => x.UnsavedValue); }
-            set { attributes.Set(x => x.UnsavedValue, value); }
+            get { return attributes.GetOrDefault<string>("UnsavedValue"); }
         }
 
         public IEnumerable<ICompositeIdKeyMapping> Keys
@@ -77,21 +69,6 @@ namespace FluentNHibernate.MappingModel.Identity
         public void AddKey(ICompositeIdKeyMapping mapping)
         {
             keys.Add(mapping);
-        }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<CompositeIdMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<CompositeIdMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
         }
 
         public bool Equals(CompositeIdMapping other)
@@ -120,6 +97,21 @@ namespace FluentNHibernate.MappingModel.Identity
                 result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        public void Set<T>(Expression<Func<CompositeIdMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

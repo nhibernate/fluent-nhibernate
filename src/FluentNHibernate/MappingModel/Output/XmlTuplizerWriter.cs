@@ -22,19 +22,19 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.CreateElement("tuplizer");
 
-            if (tuplizerMapping.HasValue(x => x.Mode))
+            if (tuplizerMapping.IsSpecified("Mode"))
                 element.WithAtt("entity-mode", GetModeString(tuplizerMapping.Mode));
 
-            if (tuplizerMapping.HasValue(x => x.Type))
+            if (tuplizerMapping.IsSpecified("Type"))
                 element.WithAtt("class", tuplizerMapping.Type);
 
-            if (tuplizerMapping.HasValue(x => x.EntityName))
+            if (tuplizerMapping.IsSpecified("EntityName"))
                 element.WithAtt("entity-name", tuplizerMapping.EntityName);
 
             document.AppendChild(element);
         }
 
-        private string GetModeString(TuplizerMode mode)
+        static string GetModeString(TuplizerMode mode)
         {
             switch(mode)
             {

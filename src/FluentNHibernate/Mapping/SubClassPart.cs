@@ -8,12 +8,13 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
+    [Obsolete("REMOVE ME")]
     public class SubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclassMappingProvider
     {
         private readonly DiscriminatorPart parent;
         private readonly object discriminatorValue;
         private readonly MappingProviderStore providers;
-        private readonly AttributeStore<SubclassMapping> attributes = new AttributeStore<SubclassMapping>();
+        private readonly AttributeStore attributes = new AttributeStore();
         private readonly List<SubclassMapping> subclassMappings = new List<SubclassMapping>();
         private bool nextBool = true;
 
@@ -31,13 +32,13 @@ namespace FluentNHibernate.Mapping
 
         SubclassMapping ISubclassMappingProvider.GetSubclassMapping()
         {
-            var mapping = new SubclassMapping(SubclassType.Subclass, attributes.CloneInner());
+            var mapping = new SubclassMapping(SubclassType.Subclass, attributes.Clone());
 
             if (discriminatorValue != null)
-                mapping.DiscriminatorValue = discriminatorValue;
+                mapping.Set(x => x.DiscriminatorValue, Layer.Defaults, discriminatorValue);
 
-            mapping.SetDefaultValue(x => x.Type, typeof(TSubclass));
-            mapping.SetDefaultValue(x => x.Name, typeof(TSubclass).AssemblyQualifiedName);
+            mapping.Set(x => x.Type, Layer.Defaults, typeof(TSubclass));
+            mapping.Set(x => x.Name, Layer.Defaults, typeof(TSubclass).AssemblyQualifiedName);
             
             foreach (var property in providers.Properties)
                 mapping.AddProperty(property.GetPropertyMapping());
@@ -62,9 +63,9 @@ namespace FluentNHibernate.Mapping
             return mapping;
         }
 
-        public DiscriminatorPart SubClass<TChild>(object discriminatorValue, Action<SubClassPart<TChild>> action)
+        public DiscriminatorPart SubClass<TChild>(object value, Action<SubClassPart<TChild>> action)
         {
-            var subclass = new SubClassPart<TChild>(parent, discriminatorValue);
+            var subclass = new SubClassPart<TChild>(parent, value);
 
             action(subclass);
 
@@ -84,14 +85,14 @@ namespace FluentNHibernate.Mapping
         /// <returns></returns>
         public SubClassPart<TSubclass> LazyLoad()
         {
-            attributes.Set(x => x.Lazy, nextBool);
+            attributes.Set("Lazy", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
 
         public SubClassPart<TSubclass> Proxy(Type type)
         {
-            attributes.Set(x => x.Proxy, type.AssemblyQualifiedName);
+            attributes.Set("Proxy", Layer.UserSupplied, type.AssemblyQualifiedName);
             return this;
         }
 
@@ -102,28 +103,28 @@ namespace FluentNHibernate.Mapping
 
         public SubClassPart<TSubclass> DynamicUpdate()
         {
-            attributes.Set(x => x.DynamicUpdate, nextBool);
+            attributes.Set("DynamicUpdate", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
 
         public SubClassPart<TSubclass> DynamicInsert()
         {
-            attributes.Set(x => x.DynamicInsert, nextBool);
+            attributes.Set("DynamicInsert", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
 
         public SubClassPart<TSubclass> SelectBeforeUpdate()
         {
-            attributes.Set(x => x.SelectBeforeUpdate, nextBool);
+            attributes.Set("SelectBeforeUpdate", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
 
         public SubClassPart<TSubclass> Abstract()
         {
-            attributes.Set(x => x.Abstract, nextBool);
+            attributes.Set("Abstract", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -134,7 +135,7 @@ namespace FluentNHibernate.Mapping
         /// <remarks>See http://nhforge.org/blogs/nhibernate/archive/2008/10/21/entity-name-in-action-a-strongly-typed-entity.aspx</remarks>
         public void EntityName(string entityName)
         {
-            attributes.Set(x => x.EntityName, entityName);
+            attributes.Set("EntityName", Layer.UserSupplied, entityName);
         }
 
         /// <summary>

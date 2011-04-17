@@ -1,6 +1,6 @@
 namespace FluentNHibernate.MappingModel.Identity
 {
-    public interface IIdentityMapping : IMappingBase
+    public interface IIdentityMapping : IMapping
     {
     }
 }

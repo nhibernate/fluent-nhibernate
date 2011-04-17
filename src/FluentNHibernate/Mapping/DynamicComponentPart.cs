@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -10,8 +9,6 @@ namespace FluentNHibernate.Mapping
     {
         private readonly Type entity;
         private readonly MappingProviderStore providers;
-        private readonly AccessStrategyBuilder<DynamicComponentPart<T>> access;
-        private readonly AttributeStore<ComponentMapping> attributes;
 
         public DynamicComponentPart(Type entity, Member member)
             : this(entity, member, new AttributeStore(), new MappingProviderStore())
@@ -22,8 +19,6 @@ namespace FluentNHibernate.Mapping
         {
             this.entity = entity;
             this.providers = providers;
-            attributes = new AttributeStore<ComponentMapping>(underlyingStore);
-            access = new AccessStrategyBuilder<DynamicComponentPart<T>>(this, value => attributes.Set(x => x.Access, value));
         }
 
         protected override ComponentMapping CreateComponentMappingRoot(AttributeStore store)

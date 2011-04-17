@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.MappingModel;
+using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Instances
 {
@@ -23,26 +21,17 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void UnsavedValue(string unsavedValue)
         {
-            if (!mapping.IsSpecified("UnsavedValue"))
-                mapping.UnsavedValue = unsavedValue;
+            mapping.Set(x => x.UnsavedValue, Layer.Conventions, unsavedValue);
         }
 
         public new IAccessInstance Access
         {
-            get
-            {
-                return new AccessInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Access"))
-                        mapping.Access = value;
-                });
-            }
+            get { return new AccessInstance(value => mapping.Set(x => x.Access, Layer.Conventions, value)); }
         }
 
         public new void Mapped()
         {
-            if (!mapping.IsSpecified("Mapped"))
-                mapping.Mapped = nextBool;
+            mapping.Set(x => x.Mapped, Layer.Conventions, nextBool);
             nextBool = true;
         }
 

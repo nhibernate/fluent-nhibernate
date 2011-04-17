@@ -28,7 +28,8 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps
         [Test]
         public void ShouldMapByteArrayAsBinaryBlob()
         {
-            var mapping = new ClassMapping { Type = typeof(Target) };
+            var mapping = new ClassMapping();
+            mapping.Set(x => x.Type, Layer.Defaults, typeof(Target));
 
             mapper.Map(mapping, typeof(Target).GetProperty("Version").ToMember());
 
@@ -38,27 +39,30 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps
         [Test]
         public void ShouldMapByteArrayAsTimestampSqlType()
         {
-            var mapping = new ClassMapping { Type = typeof(Target) };
+            var mapping = new ClassMapping();
+            mapping.Set(x => x.Type, Layer.Defaults, typeof(Target));
 
             mapper.Map(mapping, typeof(Target).GetProperty("Version").ToMember());
 
-            SpecificationExtensions.ShouldBeTrue(mapping.Version.Columns.All(x => x.SqlType == "timestamp"));
+            mapping.Version.Columns.All(x => x.SqlType == "timestamp").ShouldBeTrue();
         }
 
         [Test]
         public void ShouldMapByteArrayAsNotNull()
         {
-            var mapping = new ClassMapping { Type = typeof(Target) };
+            var mapping = new ClassMapping();
+            mapping.Set(x => x.Type, Layer.Defaults, typeof(Target));
 
             mapper.Map(mapping, typeof(Target).GetProperty("Version").ToMember());
 
-            SpecificationExtensions.ShouldBeTrue(mapping.Version.Columns.All(x => x.NotNull == true));
+            mapping.Version.Columns.All(x => x.NotNull).ShouldBeTrue();
         }
 
         [Test]
         public void ShouldMapByteArrayWithUnsavedValueOfNull()
         {
-            var mapping = new ClassMapping { Type = typeof(Target) };
+            var mapping = new ClassMapping();
+            mapping.Set(x => x.Type, Layer.Defaults, typeof(Target));
 
             mapper.Map(mapping, typeof(Target).GetProperty("Version").ToMember());
 
@@ -68,7 +72,8 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps
         [Test]
         public void ShouldMapInheritedByteArray()
         {
-            var mapping = new ClassMapping { Type = typeof(SubTarget) };
+            var mapping = new ClassMapping();
+            mapping.Set(x => x.Type, Layer.Defaults, typeof(SubTarget));
 
             mapper.Map(mapping, typeof(SubTarget).GetProperty("Version").ToMember());
 
@@ -78,7 +83,8 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps
         [Test]
         public void ShouldSetContainingEntityType()
         {
-            var mapping = new ClassMapping { Type = typeof(Target) };
+            var mapping = new ClassMapping();
+            mapping.Set(x => x.Type, Layer.Defaults, typeof(Target));
 
             mapper.Map(mapping, typeof(Target).GetProperty("Version").ToMember());
 
@@ -114,7 +120,8 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps
         [Test]
         public void ShouldMapByteArrayAsBinaryBlob()
         {
-            var mapping = new ClassMapping { Type = typeof(Target) };
+            var mapping = new ClassMapping();
+            mapping.Set(x => x.Type, Layer.Defaults, typeof(Target));
 
             mapper.Map(mapping, ReflectionHelper.GetMember<BaseEntityClass>(x => x.Version));
 
@@ -124,7 +131,8 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps
         [Test]
         public void ShouldMapByteArrayAsTimestampSqlType()
         {
-            var mapping = new ClassMapping { Type = typeof(Target) };
+            var mapping = new ClassMapping();
+            mapping.Set(x => x.Type, Layer.Defaults, typeof(Target));
 
             mapper.Map(mapping, ReflectionHelper.GetMember<BaseEntityClass>(x => x.Version));
 
@@ -134,17 +142,19 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps
         [Test]
         public void ShouldMapByteArrayAsNotNull()
         {
-            var mapping = new ClassMapping { Type = typeof(Target) };
+            var mapping = new ClassMapping();
+            mapping.Set(x => x.Type, Layer.Defaults, typeof(Target));
 
             mapper.Map(mapping, ReflectionHelper.GetMember<BaseEntityClass>(x => x.Version));
 
-            mapping.Version.Columns.All(x => x.NotNull == true).ShouldBeTrue();
+            mapping.Version.Columns.All(x => x.NotNull).ShouldBeTrue();
         }
 
         [Test]
         public void ShouldMapByteArrayWithUnsavedValueOfNull()
         {
-            var mapping = new ClassMapping { Type = typeof(Target) };
+            var mapping = new ClassMapping();
+            mapping.Set(x => x.Type, Layer.Defaults, typeof(Target));
 
             mapper.Map(mapping, ReflectionHelper.GetMember<BaseEntityClass>(x => x.Version));
 

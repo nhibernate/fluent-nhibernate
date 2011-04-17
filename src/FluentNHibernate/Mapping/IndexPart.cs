@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
@@ -9,9 +8,9 @@ namespace FluentNHibernate.Mapping
 {
     public class IndexPart
     {
-        private readonly Type entity;
-        private readonly List<string> columns = new List<string>();
-        private readonly AttributeStore<IndexMapping> attributes = new AttributeStore<IndexMapping>();
+        readonly Type entity;
+        readonly List<string> columns = new List<string>();
+        readonly AttributeStore attributes = new AttributeStore();
 
         public IndexPart(Type entity)
         {
@@ -26,24 +25,29 @@ namespace FluentNHibernate.Mapping
 
         public IndexPart Type<TIndex>()
         {
-            attributes.Set(x => x.Type, new TypeReference(typeof(TIndex)));
+            attributes.Set("Type", Layer.UserSupplied, new TypeReference(typeof(TIndex)));
             return this;
         }
 
         public IndexPart Type(Type type)
         {
-            attributes.Set(x => x.Type, new TypeReference(type));
+            attributes.Set("Type", Layer.UserSupplied, new TypeReference(type));
             return this;
         }
 
         [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
         public IndexMapping GetIndexMapping()
         {
-            var mapping = new IndexMapping(attributes.CloneInner());
+            var mapping = new IndexMapping(attributes.Clone());
 
             mapping.ContainingEntityType = entity;
 
-            columns.Each(x => mapping.AddColumn(new ColumnMapping { Name = x }));
+            columns.Each(name =>
+            {
+                var columnMapping = new ColumnMapping();
+                columnMapping.Set(x => x.Name, Layer.Defaults, name);
+                mapping.AddColumn(columnMapping);
+            });
 
             return mapping;
         }

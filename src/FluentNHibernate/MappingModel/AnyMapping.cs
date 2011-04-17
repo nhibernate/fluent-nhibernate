@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
@@ -8,18 +9,18 @@ namespace FluentNHibernate.MappingModel
     [Serializable]
     public class AnyMapping : MappingBase
     {
-        private readonly AttributeStore<AnyMapping> attributes;
-        private readonly IDefaultableList<ColumnMapping> typeColumns = new DefaultableList<ColumnMapping>();
-        private readonly IDefaultableList<ColumnMapping> identifierColumns = new DefaultableList<ColumnMapping>();
-        private readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
+        readonly AttributeStore attributes;
+        readonly IDefaultableList<ColumnMapping> typeColumns = new DefaultableList<ColumnMapping>();
+        readonly IDefaultableList<ColumnMapping> identifierColumns = new DefaultableList<ColumnMapping>();
+        readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
 
         public AnyMapping()
             : this(new AttributeStore())
         {}
 
-        public AnyMapping(AttributeStore underlyingStore)
+        public AnyMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<AnyMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -38,56 +39,47 @@ namespace FluentNHibernate.MappingModel
 
         public string Name
         {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            get { return attributes.GetOrDefault<string>("Name"); }
         }
 
         public string IdType
         {
-            get { return attributes.Get(x => x.IdType); }
-            set { attributes.Set(x => x.IdType, value); }
+            get { return attributes.GetOrDefault<string>("IdType"); }
         }
 
         public TypeReference MetaType
         {
-            get { return attributes.Get(x => x.MetaType); }
-            set { attributes.Set(x => x.MetaType, value); }
+            get { return attributes.GetOrDefault<TypeReference>("MetaType"); }
         }
 
         public string Access
         {
-            get { return attributes.Get(x => x.Access); }
-            set { attributes.Set(x => x.Access, value); }
+            get { return attributes.GetOrDefault<string>("Access"); }
         }
 
         public bool Insert
         {
-            get { return attributes.Get(x => x.Insert); }
-            set { attributes.Set(x => x.Insert, value); }
+            get { return attributes.GetOrDefault<bool>("Insert"); }
         }
 
         public bool Update
         {
-            get { return attributes.Get(x => x.Update); }
-            set { attributes.Set(x => x.Update, value); }
+            get { return attributes.GetOrDefault<bool>("Update"); }
         }
 
         public string Cascade
         {
-            get { return attributes.Get(x => x.Cascade); }
-            set { attributes.Set(x => x.Cascade, value); }
+            get { return attributes.GetOrDefault<string>("Cascade"); }
         }
 
         public bool Lazy
         {
-            get { return attributes.Get(x => x.Lazy); }
-            set { attributes.Set(x => x.Lazy, value); }
+            get { return attributes.GetOrDefault<bool>("Lazy"); }
         }
 
         public bool OptimisticLock
         {
-            get { return attributes.Get(x => x.OptimisticLock); }
-            set { attributes.Set(x => x.OptimisticLock, value); }
+            get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
         }
 
         public IDefaultableEnumerable<ColumnMapping> TypeColumns
@@ -132,21 +124,6 @@ namespace FluentNHibernate.MappingModel
             metaValues.Add(metaValue);
         }
 
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<AnyMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<AnyMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
-        }
-
         public bool Equals(AnyMapping other)
         {
             return Equals(other.attributes, attributes) &&
@@ -173,6 +150,21 @@ namespace FluentNHibernate.MappingModel
                 result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        public void Set<T>(Expression<Func<AnyMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

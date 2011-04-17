@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
@@ -7,15 +8,15 @@ namespace FluentNHibernate.MappingModel
     [Serializable]
     public class ParentMapping : MappingBase
     {
-        private readonly AttributeStore<ParentMapping> attributes;
+        private readonly AttributeStore attributes;
 
         public ParentMapping()
             : this(new AttributeStore())
         {}
 
-        protected ParentMapping(AttributeStore underlyingStore)
+        protected ParentMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<ParentMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -25,26 +26,10 @@ namespace FluentNHibernate.MappingModel
 
         public string Name
         {
-            get { return attributes.Get(x => x.Name); }
-            set { attributes.Set(x => x.Name, value); }
+            get { return attributes.GetOrDefault<string>("Name"); }
         }
 
         public Type ContainingEntityType { get; set; }
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<ParentMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<ParentMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
-        }
 
         public override bool Equals(object obj)
         {
@@ -65,6 +50,21 @@ namespace FluentNHibernate.MappingModel
                 return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^
                     (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
             }
+        }
+
+        public void Set<T>(Expression<Func<ParentMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

@@ -76,7 +76,7 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get
             {
-                if (mapping.IsSpecified("Access"))
+                if (mapping.Access != null)
                     return Access.FromString(mapping.Access);
 
                 return Access.Unset;

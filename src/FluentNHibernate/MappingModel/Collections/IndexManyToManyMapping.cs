@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -7,16 +8,16 @@ namespace FluentNHibernate.MappingModel.Collections
     [Serializable]
     public class IndexManyToManyMapping : MappingBase, IIndexMapping, IHasColumnMappings
     {
-        private readonly AttributeStore<IndexManyToManyMapping> attributes;
-        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+        readonly AttributeStore attributes;
+        readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
 
         public IndexManyToManyMapping()
             : this(new AttributeStore())
         {}
 
-        public IndexManyToManyMapping(AttributeStore underlyingStore)
+        public IndexManyToManyMapping(AttributeStore attributes)
         {
-            attributes = new AttributeStore<IndexManyToManyMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -31,8 +32,7 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public TypeReference Class
         {
-            get { return attributes.Get(x => x.Class); }
-            set { attributes.Set(x => x.Class, value); }
+            get { return attributes.GetOrDefault<TypeReference>("Class"); }
         }
 
         public IDefaultableEnumerable<ColumnMapping> Columns
@@ -57,30 +57,13 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public string ForeignKey
         {
-            get { return attributes.Get(x => x.ForeignKey); }
-            set { attributes.Set(x => x.ForeignKey, value); }
+            get { return attributes.GetOrDefault<string>("ForeignKey"); }
         }
 
         public string EntityName
         {
-            get { return attributes.Get(x => x.EntityName); }
-            set { attributes.Set(x => x.EntityName, value); }
+            get { return attributes.GetOrDefault<string>("EntityName"); }
         }     
-
-        public override bool IsSpecified(string property)
-        {
-            return attributes.IsSpecified(property);
-        }
-
-        public bool HasValue<TResult>(Expression<Func<IndexManyToManyMapping, TResult>> property)
-        {
-            return attributes.HasValue(property);
-        }
-
-        public void SetDefaultValue<TResult>(Expression<Func<IndexManyToManyMapping, TResult>> property, TResult value)
-        {
-            attributes.SetDefault(property, value);
-        }
 
         public bool Equals(IndexManyToManyMapping other)
         {
@@ -108,6 +91,21 @@ namespace FluentNHibernate.MappingModel.Collections
                 result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        public void Set<T>(Expression<Func<IndexManyToManyMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
+        }
+
+        protected override void Set(string attribute, int layer, object value)
+        {
+            attributes.Set(attribute, layer, value);
+        }
+
+        public override bool IsSpecified(string attribute)
+        {
+            return attributes.IsSpecified(attribute);
         }
     }
 }

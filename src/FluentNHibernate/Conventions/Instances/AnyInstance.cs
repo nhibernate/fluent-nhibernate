@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 
@@ -16,14 +14,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new IAccessInstance Access
         {
-            get
-            {
-                return new AccessInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Access"))
-                        mapping.Access = value;
-                });
-            }
+            get { return new AccessInstance(value => mapping.Set(x => x.Access, Layer.Conventions, value)); }
         }
     }
 }

@@ -29,64 +29,64 @@ namespace FluentNHibernate.MappingModel.Output
             var classElement = document.AddElement("class")
                 .WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
 
-            if (classMapping.HasValue(x => x.BatchSize))
+            if (classMapping.IsSpecified("BatchSize"))
                 classElement.WithAtt("batch-size", classMapping.BatchSize);
 
-            if (classMapping.HasValue(x => x.DiscriminatorValue))
+            if (classMapping.IsSpecified("DiscriminatorValue"))
                 classElement.WithAtt("discriminator-value", classMapping.DiscriminatorValue.ToString());
 
-            if (classMapping.HasValue(x => x.DynamicInsert))
+            if (classMapping.IsSpecified("DynamicInsert"))
                 classElement.WithAtt("dynamic-insert", classMapping.DynamicInsert);
 
-            if (classMapping.HasValue(x => x.DynamicUpdate))
+            if (classMapping.IsSpecified("DynamicUpdate"))
                 classElement.WithAtt("dynamic-update", classMapping.DynamicUpdate);
 
-            if (classMapping.HasValue(x => x.Lazy))
+            if (classMapping.IsSpecified("Lazy"))
                 classElement.WithAtt("lazy", classMapping.Lazy);
 
-            if (classMapping.HasValue(x => x.Schema))
+            if (classMapping.IsSpecified("Schema"))
                 classElement.WithAtt("schema", classMapping.Schema);
 
-            if (classMapping.HasValue(x => x.Mutable))
+            if (classMapping.IsSpecified("Mutable"))
                 classElement.WithAtt("mutable", classMapping.Mutable);
 
-            if (classMapping.HasValue(x => x.Polymorphism))
+            if (classMapping.IsSpecified("Polymorphism"))
                 classElement.WithAtt("polymorphism", classMapping.Polymorphism);
 
-            if (classMapping.HasValue(x => x.Persister))
+            if (classMapping.IsSpecified("Persister"))
                 classElement.WithAtt("persister", classMapping.Persister);
 
-            if (classMapping.HasValue(x => x.Where))
+            if (classMapping.IsSpecified("Where"))
                 classElement.WithAtt("where", classMapping.Where);
 
-            if (classMapping.HasValue(x => x.OptimisticLock))
+            if (classMapping.IsSpecified("OptimisticLock"))
                 classElement.WithAtt("optimistic-lock", classMapping.OptimisticLock);
 
-            if (classMapping.HasValue(x => x.Check))
+            if (classMapping.IsSpecified("Check"))
                 classElement.WithAtt("check", classMapping.Check);
 
-            if (classMapping.HasValue(x => x.Name))
+            if (classMapping.IsSpecified("Name"))
                 classElement.WithAtt("name", classMapping.Name);
 
-            if (classMapping.HasValue(x => x.TableName))
+            if (classMapping.IsSpecified("TableName"))
                 classElement.WithAtt("table", classMapping.TableName);
 
-            if (classMapping.HasValue(x => x.Proxy))
+            if (classMapping.IsSpecified("Proxy"))
                 classElement.WithAtt("proxy", classMapping.Proxy);
 
-            if (classMapping.HasValue(x => x.SelectBeforeUpdate))
+            if (classMapping.IsSpecified("SelectBeforeUpdate"))
                 classElement.WithAtt("select-before-update", classMapping.SelectBeforeUpdate);
 
-            if (classMapping.HasValue(x => x.Abstract))
+            if (classMapping.IsSpecified("Abstract"))
                 classElement.WithAtt("abstract", classMapping.Abstract);
 
-            if (classMapping.HasValue(x => x.Subselect))
+            if (classMapping.IsSpecified("Subselect"))
                 classElement.WithAtt("subselect", classMapping.Subselect);
 
-            if (classMapping.HasValue(x => x.SchemaAction))
+            if (classMapping.IsSpecified("SchemaAction"))
                 classElement.WithAtt("schema-action", classMapping.SchemaAction);
 
-            if (classMapping.HasValue(x => x.EntityName))
+            if (classMapping.IsSpecified("EntityName"))
                 classElement.WithAtt("entity-name", classMapping.EntityName);
         }
 

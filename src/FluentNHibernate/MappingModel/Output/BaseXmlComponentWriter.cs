@@ -22,19 +22,19 @@ namespace FluentNHibernate.MappingModel.Output
             var doc = new XmlDocument();
             var componentElement = doc.AddElement(element);
 
-            if (mapping.HasValue("Name"))
+            if (mapping.IsSpecified("Name"))
                 componentElement.WithAtt("name", mapping.Name);
 
-            if (mapping.HasValue("Insert"))
+            if (mapping.IsSpecified("Insert"))
                 componentElement.WithAtt("insert", mapping.Insert);
 
-            if (mapping.HasValue("Update"))
+            if (mapping.IsSpecified("Update"))
                 componentElement.WithAtt("update", mapping.Update);
 
-            if (mapping.HasValue("Access"))
+            if (mapping.IsSpecified("Access"))
                 componentElement.WithAtt("access", mapping.Access);
 
-            if (mapping.HasValue("OptimisticLock"))
+            if (mapping.IsSpecified("OptimisticLock"))
                 componentElement.WithAtt("optimistic-lock", mapping.OptimisticLock);
 
             return doc;

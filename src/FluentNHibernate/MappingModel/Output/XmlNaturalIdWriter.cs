@@ -27,7 +27,7 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("natural-id");
 
-            if (mapping.HasValue(x => x.Mutable))
+            if (mapping.IsSpecified("Mutable"))
                 element.WithAtt("mutable", mapping.Mutable);
         }
 

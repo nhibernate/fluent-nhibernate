@@ -1,5 +1,5 @@
-using System;
 using System.Diagnostics;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Mapping
@@ -12,8 +12,8 @@ namespace FluentNHibernate.Mapping
         public KeyManyToOnePart(KeyManyToOneMapping mapping)
         {
             this.mapping = mapping;
-            Access = new AccessStrategyBuilder<KeyManyToOnePart>(this, value => mapping.Access = value);
-            NotFound = new NotFoundExpression<KeyManyToOnePart>(this, value => mapping.NotFound = value);
+            Access = new AccessStrategyBuilder<KeyManyToOnePart>(this, value => mapping.Set(x => x.Access, Layer.UserSupplied, value));
+            NotFound = new NotFoundExpression<KeyManyToOnePart>(this, value => mapping.Set(x => x.NotFound, Layer.UserSupplied, value));
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace FluentNHibernate.Mapping
 
         public KeyManyToOnePart ForeignKey(string foreignKey)
         {
-            mapping.ForeignKey = foreignKey;
+            mapping.Set(x => x.ForeignKey, Layer.UserSupplied, foreignKey);
             return this;
         }
 
@@ -44,14 +44,14 @@ namespace FluentNHibernate.Mapping
 
         public KeyManyToOnePart Lazy()
         {
-            mapping.Lazy = nextBool;
+            mapping.Set(x => x.Lazy, Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
 
         public KeyManyToOnePart Name(string name)
         {
-            mapping.Name = name;
+            mapping.Set(x => x.Name, Layer.UserSupplied, name);
             return this;
         }
 
@@ -61,7 +61,7 @@ namespace FluentNHibernate.Mapping
         /// <remarks>See http://nhforge.org/blogs/nhibernate/archive/2008/10/21/entity-name-in-action-a-strongly-typed-entity.aspx</remarks>
         public KeyManyToOnePart EntityName(string entityName)
         {
-            mapping.EntityName = entityName;
+            mapping.Set(x => x.EntityName, Layer.UserSupplied, entityName);
             return this;
         }
     }

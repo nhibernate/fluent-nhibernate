@@ -24,16 +24,16 @@ namespace FluentNHibernate.Mapping
     /// <typeparam name="T">Component type to map</typeparam>
     public class ComponentMap<T> : ComponentPartBase<T, ComponentMap<T>>, IExternalComponentMappingProvider
     {
-        private readonly AttributeStore<ComponentMapping> attributes;
+        readonly AttributeStore attributes;
 
         public ComponentMap()
             : this(new AttributeStore())
         {}
 
-        internal ComponentMap(AttributeStore underlyingStore)
-            : base(underlyingStore, null)
+        internal ComponentMap(AttributeStore attributes)
+            : base(attributes, null)
         {
-            attributes = new AttributeStore<ComponentMapping>(underlyingStore);
+            this.attributes = attributes;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace FluentNHibernate.Mapping
 
         protected override ComponentMapping CreateComponentMappingRoot(AttributeStore store)
         {
-            return new ExternalComponentMapping(ComponentType.Component, attributes.CloneInner());
+            return new ExternalComponentMapping(ComponentType.Component, attributes.Clone());
         }
 
         ExternalComponentMapping IExternalComponentMappingProvider.GetComponentMapping()

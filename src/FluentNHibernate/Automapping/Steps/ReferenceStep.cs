@@ -36,9 +36,11 @@ namespace FluentNHibernate.Automapping.Steps
         {
             var mapping = new ManyToOneMapping { Member = member };
 
-            mapping.SetDefaultValue(x => x.Name, member.Name);
-            mapping.SetDefaultValue(x => x.Class, new TypeReference(member.PropertyType));
-            mapping.AddDefaultColumn(new ColumnMapping { Name = member.Name + "_id" });
+            mapping.Set(x => x.Name, Layer.Defaults, member.Name);
+            mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(member.PropertyType));
+            var columnMapping = new ColumnMapping();
+            columnMapping.Set(x => x.Name, Layer.Defaults, member.Name + "_id");
+            mapping.AddDefaultColumn(columnMapping);
 
             SetDefaultAccess(member, mapping);
 
@@ -53,11 +55,11 @@ namespace FluentNHibernate.Automapping.Steps
             {
                 // if it's a property or unset then we'll just let NH deal with it, otherwise
                 // set the access to be whatever we determined it might be
-                mapping.SetDefaultValue(x => x.Access, resolvedAccess.ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, resolvedAccess.ToString());
             }
 
             if (member.IsProperty && !member.CanWrite)
-                mapping.SetDefaultValue(x => x.Access, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
+                mapping.Set(x => x.Access, Layer.Defaults, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
         }
 
     }

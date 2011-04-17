@@ -6,7 +6,7 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Mapping
 {
-    public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild, OneToManyMapping>
+    public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild>
     {
         private readonly Type entity;
         private readonly ColumnMappingCollection<OneToManyPart<TChild>> keyColumns;
@@ -29,10 +29,10 @@ namespace FluentNHibernate.Mapping
             childType = collectionType;
 
             keyColumns = new ColumnMappingCollection<OneToManyPart<TChild>>(this);
-            cascade = new CollectionCascadeExpression<OneToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Cascade, value));
-            notFound = new NotFoundExpression<OneToManyPart<TChild>>(this, value => relationshipAttributes.Set(x => x.NotFound, value));
+            cascade = new CollectionCascadeExpression<OneToManyPart<TChild>>(this, value => collectionAttributes.Set("Cascade", Layer.UserSupplied, value));
+            notFound = new NotFoundExpression<OneToManyPart<TChild>>(this, value => relationshipAttributes.Set("NotFound", Layer.UserSupplied, value));
 
-            collectionAttributes.SetDefault(x => x.Name, member.Name);
+            collectionAttributes.Set("Name", Layer.Defaults, member.Name);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="foreignKeyName">Constraint name</param>
         public OneToManyPart<TChild> ForeignKeyConstraintName(string foreignKeyName)
         {
-            keyMapping.ForeignKey = foreignKeyName;
+            keyMapping.Set(x => x.ForeignKey, Layer.UserSupplied, foreignKeyName);
             return this;
         }
 
@@ -134,7 +134,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public OneToManyPart<TChild> OrderBy(string orderBy)
         {
-            collectionAttributes.Set(x => x.OrderBy, orderBy);
+            collectionAttributes.Set("OrderBy", Layer.UserSupplied, orderBy);
             return this;
         }
 
@@ -143,7 +143,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public OneToManyPart<TChild> ReadOnly()
         {
-            collectionAttributes.Set(x => x.Mutable, !nextBool);
+            collectionAttributes.Set("Mutable", Layer.UserSupplied, !nextBool);
             nextBool = true;
             return this;
         }
@@ -154,7 +154,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="subselect">Query</param>
         public OneToManyPart<TChild> Subselect(string subselect)
         {
-            collectionAttributes.Set(x => x.Subselect, subselect);
+            collectionAttributes.Set("Subselect", Layer.UserSupplied, subselect);
             return this;
         }
 
@@ -163,7 +163,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public OneToManyPart<TChild> KeyUpdate()
         {
-            keyMapping.Update = nextBool;
+            keyMapping.Set(x => x.Update, Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -173,7 +173,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public OneToManyPart<TChild> KeyNullable()
         {
-            keyMapping.NotNull = !nextBool;
+            keyMapping.Set(x => x.NotNull, Layer.UserSupplied, !nextBool);
             nextBool = true;
             return this;
         }
@@ -183,7 +183,7 @@ namespace FluentNHibernate.Mapping
             var collection = base.GetCollectionMapping();
 
             if (keyColumns.Count() == 0)
-                collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
+                collection.Key.AddDefaultColumn(new ColumnMapping(entity.Name + "_id"));
 
             foreach (var column in keyColumns)
             {
@@ -193,7 +193,7 @@ namespace FluentNHibernate.Mapping
             // HACK: shouldn't have to do this!
             if (manyToManyIndex != null && collection.Collection == Collection.Map)
 #pragma warning disable 612,618
-                collection.Index = manyToManyIndex.GetIndexMapping();
+                collection.Set(x => x.Index, Layer.Defaults, manyToManyIndex.GetIndexMapping());
 #pragma warning restore 612,618
 
             return collection;
@@ -201,13 +201,13 @@ namespace FluentNHibernate.Mapping
 
         protected override ICollectionRelationshipMapping GetRelationship()
         {
-            var mapping = new OneToManyMapping(relationshipAttributes.CloneInner())
+            var mapping = new OneToManyMapping(relationshipAttributes.Clone())
             {
                 ContainingEntityType = entity
             };
 
             if (isTernary && valueType != null)
-                mapping.Class = new TypeReference(valueType);
+                mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(valueType));
 
             return mapping;
         }

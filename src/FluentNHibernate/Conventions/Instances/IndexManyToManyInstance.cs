@@ -26,7 +26,7 @@ namespace FluentNHibernate.Conventions.Instances
 
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
-            column.Name = columnName;
+            column.Set(x => x.Name, Layer.Conventions, columnName);
 
             mapping.ClearColumns();
             mapping.AddColumn(column);
@@ -34,10 +34,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void ForeignKey(string foreignKey)
         {
-            if (mapping.IsSpecified("ForeignKey"))
-                return;
-
-            mapping.ForeignKey = foreignKey;
+            mapping.Set(x => x.ForeignKey, Layer.Conventions, foreignKey);
         }
     }
 }

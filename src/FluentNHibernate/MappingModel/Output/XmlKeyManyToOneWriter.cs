@@ -28,25 +28,25 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("key-many-to-one");
 
-            if (mapping.HasValue(x => x.Access))
+            if (mapping.IsSpecified("Access"))
                 element.WithAtt("access", mapping.Access);
 
-            if (mapping.HasValue(x => x.Name))
+            if (mapping.IsSpecified("Name"))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.HasValue(x => x.Class))
+            if (mapping.IsSpecified("Class"))
                 element.WithAtt("class", mapping.Class);
 
-            if (mapping.HasValue(x => x.ForeignKey))
+            if (mapping.IsSpecified("ForeignKey"))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
-            if (mapping.HasValue(x => x.Lazy))
+            if (mapping.IsSpecified("Lazy"))
                 element.WithAtt("lazy", mapping.Lazy ? "proxy" : "false");
 
-            if (mapping.HasValue(x => x.NotFound))
+            if (mapping.IsSpecified("NotFound"))
                 element.WithAtt("not-found", mapping.NotFound);
 
-            if (mapping.HasValue(x => x.EntityName))
+            if (mapping.IsSpecified("EntityName"))
                 element.WithAtt("entity-name", mapping.EntityName);
         }
 

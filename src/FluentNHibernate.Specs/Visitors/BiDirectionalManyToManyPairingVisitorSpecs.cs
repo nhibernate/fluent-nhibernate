@@ -21,7 +21,7 @@ namespace FluentNHibernate.Specs.Visitors
         };
 
         Because of = () =>
-            visit(members_in_queue, supervisors_in_queue, membership_queues_in_user, supervised_queues_in_user);
+            Visit(members_in_queue, supervisors_in_queue, membership_queues_in_user, supervised_queues_in_user);
 
         It should_call_the_user_defined_func = () =>
             udf_was_called.ShouldBeTrue();
@@ -68,7 +68,7 @@ namespace FluentNHibernate.Specs.Visitors
         };
 
         Because of = () =>
-            ex = Catch.Exception(() => visit(fish_in_queue, chips_in_queue, bacon_in_queue, eggs_in_queue));
+            ex = Catch.Exception(() => Visit(fish_in_queue, chips_in_queue, bacon_in_queue, eggs_in_queue));
 
         It should_not_fail = () =>
             ex.ShouldBeNull();
@@ -115,7 +115,7 @@ namespace FluentNHibernate.Specs.Visitors
         };
 
         Because of = () =>
-            ex = Catch.Exception(() => visit(dsers_in_queue, fsers_in_queue, wueues_in_user, eueues_in_user));
+            ex = Catch.Exception(() => Visit(dsers_in_queue, fsers_in_queue, wueues_in_user, eueues_in_user));
 
         It should_not_fail = () =>
             ex.ShouldBeNull();
@@ -161,7 +161,7 @@ namespace FluentNHibernate.Specs.Visitors
         };
 
         Because of = () =>
-            visit(queues_in_user, users2_in_queue, users_in_queue);
+            Visit(queues_in_user, users2_in_queue, users_in_queue);
 
         It should_call_the_user_defined_func = () =>
             udf_was_called.ShouldBeTrue();
@@ -200,7 +200,7 @@ namespace FluentNHibernate.Specs.Visitors
         };
 
         Because of = () =>
-            visit(users_in_queue, queues_in_user);
+            Visit(users_in_queue, queues_in_user);
 
         It should_call_the_user_defined_func = () =>
             udf_was_called.ShouldBeTrue();
@@ -243,13 +243,13 @@ namespace FluentNHibernate.Specs.Visitors
             
             bag.ContainingEntityType = typeof(T);
             bag.Member = member;
-            bag.Relationship = new ManyToManyMapping();
-            bag.ChildType = member.PropertyType.GetGenericArguments()[0];
+            bag.Set(x => x.Relationship, Layer.Defaults, new ManyToManyMapping());
+            bag.Set(x => x.ChildType, Layer.Defaults, member.PropertyType.GetGenericArguments()[0]);
             
             return bag;
         }
 
-        protected static void visit(params CollectionMapping[] mappings)
+        protected static void Visit(params CollectionMapping[] mappings)
         {
             mappings.Each(visitor.Visit);
             visitor.Visit(new HibernateMapping[0]); // simulate end of visit

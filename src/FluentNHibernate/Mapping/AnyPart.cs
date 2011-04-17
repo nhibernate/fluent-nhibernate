@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
@@ -16,7 +15,7 @@ namespace FluentNHibernate.Mapping
     /// </summary>
     public class AnyPart<T> : IAnyMappingProvider
     {
-        private readonly AttributeStore<AnyMapping> attributes = new AttributeStore<AnyMapping>();
+        private readonly AttributeStore attributes = new AttributeStore();
         private readonly Type entity;
         private readonly Member member;
         private readonly AccessStrategyBuilder<AnyPart<T>> access;
@@ -25,13 +24,14 @@ namespace FluentNHibernate.Mapping
         private readonly IList<string> identifierColumns = new List<string>();
         private readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
         private bool nextBool = true;
+        bool idTypeSet;
 
         public AnyPart(Type entity, Member member)
         {
             this.entity = entity;
             this.member = member;
-            access = new AccessStrategyBuilder<AnyPart<T>>(this, value => attributes.Set(x => x.Access, value));
-            cascade = new CascadeExpression<AnyPart<T>>(this, value => attributes.Set(x => x.Cascade, value));
+            access = new AccessStrategyBuilder<AnyPart<T>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
+            cascade = new CascadeExpression<AnyPart<T>>(this, value => attributes.Set("Cascade", Layer.UserSupplied, value));
 
             SetDefaultAccess();
         }
@@ -43,7 +43,7 @@ namespace FluentNHibernate.Mapping
             if (resolvedAccess == Mapping.Access.Property || resolvedAccess == Mapping.Access.Unset)
                 return; // property is the default so we don't need to specify it
 
-            attributes.SetDefault(x => x.Access, resolvedAccess.ToString());
+            attributes.Set("Access", Layer.Defaults, resolvedAccess.ToString());
         }
 
         /// <summary>
@@ -74,7 +74,8 @@ namespace FluentNHibernate.Mapping
 
         public AnyPart<T> IdentityType(Type type)
         {
-            attributes.Set(x => x.IdType, type.AssemblyQualifiedName);
+            attributes.Set("IdType", Layer.UserSupplied, type.AssemblyQualifiedName);
+            idTypeSet = true;
             return this;
         }
 
@@ -97,47 +98,48 @@ namespace FluentNHibernate.Mapping
 
         public AnyPart<T> AddMetaValue(Type @class, string valueMap)
         {
-            metaValues.Add(new MetaValueMapping
+            var metaValueMapping = new MetaValueMapping
             {
-                Class = new TypeReference(@class),
-                Value = valueMap,
                 ContainingEntityType = entity
-            });
+            };
+            metaValueMapping.Set(x => x.Class, Layer.Defaults, new TypeReference(@class));
+            metaValueMapping.Set(x => x.Value, Layer.Defaults, valueMap);
+            metaValues.Add(metaValueMapping);
             return this;
         }
 
         public AnyPart<T> Insert()
         {
-            attributes.Set(x => x.Insert, nextBool);
+            attributes.Set("Insert", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
 
         public AnyPart<T> Update()
         {
-            attributes.Set(x => x.Update, nextBool);
+            attributes.Set("Update", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
 
         public AnyPart<T> ReadOnly()
         {
-            attributes.Set(x => x.Insert, !nextBool);
-            attributes.Set(x => x.Update, !nextBool);
+            attributes.Set("Insert", Layer.UserSupplied, !nextBool);
+            attributes.Set("Update", Layer.UserSupplied, !nextBool);
             nextBool = true;
             return this;
         }
 
         public AnyPart<T> LazyLoad()
         {
-            attributes.Set(x => x.Lazy, nextBool);
+            attributes.Set("Lazy", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
 
         public AnyPart<T> OptimisticLock()
         {
-            attributes.Set(x => x.OptimisticLock, nextBool);
+            attributes.Set("OptimisticLock", Layer.UserSupplied, nextBool);
             nextBool = true;
             return this;
         }
@@ -154,31 +156,43 @@ namespace FluentNHibernate.Mapping
 
         AnyMapping IAnyMappingProvider.GetAnyMapping()
         {
-            var mapping = new AnyMapping(attributes.CloneInner());
+            var mapping = new AnyMapping(attributes.Clone());
 
             if (typeColumns.Count() == 0)
                 throw new InvalidOperationException("<any> mapping is not valid without specifying an Entity Type Column");
             if (identifierColumns.Count() == 0)
                 throw new InvalidOperationException("<any> mapping is not valid without specifying an Entity Identifier Column");
-            if (!mapping.IsSpecified("IdType"))
+            if (!idTypeSet)
                 throw new InvalidOperationException("<any> mapping is not valid without specifying an IdType");
 
             mapping.ContainingEntityType = entity;
 
-            if (!mapping.IsSpecified("Name"))
-                mapping.Name = member.Name;
+            mapping.Set(x => x.Name, Layer.Defaults, member.Name);
 
-            metaValues.Each(mapping.AddMetaValue);
             if (!mapping.IsSpecified("MetaType"))
             {
-                mapping.MetaType = metaValues.Count() > 0 ? new TypeReference(typeof(string)) : new TypeReference(member.PropertyType);
+                mapping.Set(x => x.MetaType, Layer.Defaults, new TypeReference(member.PropertyType));
+            }
+
+            if (metaValues.Count() > 0)
+            {
+                metaValues.Each(mapping.AddMetaValue);
+                mapping.Set(x => x.MetaType, Layer.Defaults, new TypeReference(typeof(string)));
             }
 
             foreach (var column in typeColumns)
-                mapping.AddTypeColumn(new ColumnMapping { Name = column });
+            {
+                var columnMapping = new ColumnMapping();
+                columnMapping.Set(x => x.Name, Layer.Defaults, column);
+                mapping.AddTypeColumn(columnMapping);
+            }
 
             foreach (var column in identifierColumns)
-                mapping.AddIdentifierColumn(new ColumnMapping { Name = column });
+            {
+                var columnMapping = new ColumnMapping();
+                columnMapping.Set(x => x.Name, Layer.Defaults, column);
+                mapping.AddIdentifierColumn(columnMapping);
+            }
 
             return mapping;
         }
@@ -189,7 +203,7 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="TMetaType">Meta type</typeparam>
         public AnyPart<T> MetaType<TMetaType>()
         {
-            attributes.Set(x => x.MetaType, new TypeReference(typeof(TMetaType)));
+            attributes.Set("MetaType", Layer.UserSupplied, new TypeReference(typeof(TMetaType)));
             return this;
         }
 
@@ -199,7 +213,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="metaType">Meta type</param>
         public AnyPart<T> MetaType(string metaType)
         {
-            attributes.Set(x => x.MetaType, new TypeReference(metaType));
+            attributes.Set("MetaType", Layer.UserSupplied, new TypeReference(metaType));
             return this;
         }
 
@@ -209,7 +223,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="metaType">Meta type</param>
         public AnyPart<T> MetaType(Type metaType)
         {
-            attributes.Set(x => x.MetaType, new TypeReference(metaType));
+            attributes.Set("MetaType", Layer.UserSupplied, new TypeReference(metaType));
             return this;
         }
     }

@@ -27,46 +27,46 @@ namespace FluentNHibernate.MappingModel.Output
 
             var element = document.AddElement("many-to-one");
 
-            if (mapping.HasValue(x => x.Access))
+            if (mapping.IsSpecified("Access"))
                 element.WithAtt("access", mapping.Access);
 
-            if (mapping.HasValue(x => x.Cascade))
+            if (mapping.IsSpecified("Cascade"))
                 element.WithAtt("cascade", mapping.Cascade);
 
-            if (mapping.HasValue(x => x.Class))
+            if (mapping.IsSpecified("Class"))
                 element.WithAtt("class", mapping.Class);
 
-            if (mapping.HasValue(x => x.Fetch))
+            if (mapping.IsSpecified("Fetch"))
                 element.WithAtt("fetch", mapping.Fetch);
 
-            if (mapping.HasValue(x => x.ForeignKey))
+            if (mapping.IsSpecified("ForeignKey"))
                 element.WithAtt("foreign-key", mapping.ForeignKey);
 
-            if (mapping.HasValue(x => x.Insert))
+            if (mapping.IsSpecified("Insert"))
                 element.WithAtt("insert", mapping.Insert);
 
-            if (mapping.HasValue(x => x.Lazy))
+            if (mapping.IsSpecified("Lazy"))
                 element.WithAtt("lazy", mapping.Lazy);
 
-            if (mapping.HasValue(x => x.Name))
+            if (mapping.IsSpecified("Name"))
                 element.WithAtt("name", mapping.Name);
 
-            if (mapping.HasValue(x => x.NotFound))
+            if (mapping.IsSpecified("NotFound"))
                 element.WithAtt("not-found", mapping.NotFound);
 
-            if (mapping.HasValue(x => x.Formula))
+            if (mapping.IsSpecified("Formula"))
                 element.WithAtt("formula", mapping.Formula);
 
-            if (mapping.HasValue(x => x.PropertyRef))
+            if (mapping.IsSpecified("PropertyRef"))
                 element.WithAtt("property-ref", mapping.PropertyRef);
 
-            if (mapping.HasValue(x => x.Update))
+            if (mapping.IsSpecified("Update"))
                 element.WithAtt("update", mapping.Update);
 
-            if (mapping.HasValue(x => x.EntityName))
+            if (mapping.IsSpecified("EntityName"))
                 element.WithAtt("entity-name", mapping.EntityName);
 
-            if (mapping.HasValue(x => x.OptimisticLock))
+            if (mapping.IsSpecified("OptimisticLock"))
                 element.WithAtt("optimistic-lock", mapping.OptimisticLock);
         }
 

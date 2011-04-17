@@ -1,5 +1,5 @@
-﻿using System;
-using FluentNHibernate.Conventions.Inspections;
+﻿using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -16,19 +16,12 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new IAccessInstance Access
         {
-            get
-            {
-                return new AccessInstance(value =>
-                {
-                    if (!mapping.IsSpecified("Access"))
-                        mapping.Access = value;
-                });
-            }
+            get { return new AccessInstance(value => mapping.Set(x => x.Access, Layer.Conventions, value)); }
         }
+
         public new void Length(int length)
         {
-            if (!mapping.IsSpecified("Length"))
-                mapping.Length = length;
+            mapping.Set(x => x.Length, Layer.Conventions, length);
         }
     }
 }

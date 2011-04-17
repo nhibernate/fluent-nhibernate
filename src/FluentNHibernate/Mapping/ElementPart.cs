@@ -7,14 +7,15 @@ namespace FluentNHibernate.Mapping
 {
     public class ElementPart : IElementMappingProvider
     {
-        Type entity;
-        AttributeStore<ElementMapping> attributes = new AttributeStore<ElementMapping>();
-        AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
+        readonly Type entity;
+        readonly AttributeStore attributes = new AttributeStore();
+        readonly AttributeStore columnAttributes = new AttributeStore();
+        readonly ColumnMappingCollection<ElementPart> columns;
 
         public ElementPart(Type entity)
         {
             this.entity = entity;
-            Columns = new ColumnMappingCollection<ElementPart>(this);            
+            columns = new ColumnMappingCollection<ElementPart>(this);            
         }
 
         /// <summary>
@@ -30,7 +31,10 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Modify the columns for this element
         /// </summary>
-        public ColumnMappingCollection<ElementPart> Columns { get; private set; }
+        public ColumnMappingCollection<ElementPart> Columns
+        {
+            get { return columns; }
+        }
 
         /// <summary>
         /// Specify the element type
@@ -38,7 +42,7 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="TElement">Element type</typeparam>
         public ElementPart Type<TElement>()
         {
-            attributes.Set(x => x.Type, new TypeReference(typeof(TElement)));
+            attributes.Set("Type", Layer.UserSupplied, new TypeReference(typeof(TElement)));
             return this;
         }
 
@@ -48,7 +52,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="length">Column length</param>
         public ElementPart Length(int length)
         {
-            columnAttributes.Set(x => x.Length, length);
+            columnAttributes.Set("Length", Layer.UserSupplied, length);
             return this;
         }
 
@@ -58,13 +62,13 @@ namespace FluentNHibernate.Mapping
         /// <param name="formula">Formula</param>
         public ElementPart Formula(string formula)
         {
-            attributes.Set(x => x.Formula, formula);
+            attributes.Set("Formula", Layer.UserSupplied, formula);
             return this;
         }
 
         ElementMapping IElementMappingProvider.GetElementMapping()
         {
-            var mapping = new ElementMapping(attributes.CloneInner());
+            var mapping = new ElementMapping(attributes.Clone());
             mapping.ContainingEntityType = entity;
 
             foreach (var column in Columns)

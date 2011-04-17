@@ -1,29 +1,21 @@
-using FluentNHibernate.MappingModel.Collections;
 using NUnit.Framework;
 using FluentNHibernate.MappingModel;
-using System.Collections.Generic;
 
 namespace FluentNHibernate.Testing.MappingModel
 {
     [TestFixture]
     public class AttributeStoreTester
     {
-        private sealed class TestStore : AttributeStore<TestStore>
+        private sealed class TestStore : AttributeStore
         {
-            public TestStore() : base(new AttributeStore())
-            {
-            }
-
             public bool IsSomething
             {
-                get { return Get(x => x.IsSomething); }
-                set { Set(x => x.IsSomething, value); }
+                get { return this.GetOrDefault<bool>("IsSomething"); }
             }
 
             public string Name
             {
-                get { return Get(x => x.Name); }
-                set { Set(x => x.Name, value); }
+                get { return this.GetOrDefault<string>("Name"); }
             }
         }
 
@@ -38,7 +30,7 @@ namespace FluentNHibernate.Testing.MappingModel
         public void CanGetAndSetAttribute()
         {
             var store = new TestStore();
-            store.IsSomething = true;
+            store.Set("IsSomething", Layer.Defaults, true);
             store.IsSomething.ShouldBeTrue();            
         }
 
@@ -47,16 +39,16 @@ namespace FluentNHibernate.Testing.MappingModel
         {
 
             var store = new TestStore();            
-            store.IsSpecified(x => x.IsSomething).ShouldBeFalse();
-            store.IsSomething = true;
-            store.IsSpecified(x => x.IsSomething).ShouldBeTrue();
+            store.IsSpecified("IsSomething").ShouldBeFalse();
+            store.Set("IsSomething", Layer.Defaults, true);
+            store.IsSpecified("IsSomething").ShouldBeTrue();
         }
 
         [Test]
         public void CanCopyAttributes()
         {
             var source = new TestStore();
-            source.IsSomething = true;
+            source.Set("IsSomething", Layer.Defaults, true);
 
             var target = new TestStore();
             source.CopyTo(target);
@@ -68,10 +60,10 @@ namespace FluentNHibernate.Testing.MappingModel
         public void CopyingAttributesReplacesOldValues()
         {
             var source = new TestStore();
-            source.IsSomething = false;
+            source.Set("IsSomething", Layer.Defaults, false);
 
             var target = new TestStore();
-            target.IsSomething = true;
+            target.Set("IsSomething", Layer.Defaults, true);
             source.CopyTo(target);
 
             target.IsSomething.ShouldBeFalse();
@@ -81,9 +73,8 @@ namespace FluentNHibernate.Testing.MappingModel
         public void UnsetValuesAreNotCopied()
         {
             var source = new TestStore();
-
             var target = new TestStore();
-            target.IsSomething = true;
+            target.Set("IsSomething", Layer.Defaults, true);
             source.CopyTo(target);
 
             target.IsSomething.ShouldBeTrue();
@@ -93,22 +84,9 @@ namespace FluentNHibernate.Testing.MappingModel
         public void CanSetDefaultValue()
         {
             var source = new TestStore();
-            source.SetDefault(x => x.IsSomething, true);
+            source.Set("IsSomething", Layer.Defaults, true);
             
             source.IsSomething.ShouldBeTrue();
-        }
-
-        [Test]
-        public void DefaultValuesAreNotCopied()
-        {
-            var source = new TestStore();
-            source.SetDefault(x => x.IsSomething, true);
-
-            var target = new TestStore();
-            target.IsSomething = false;
-            source.CopyTo(target);
-
-            target.IsSomething.ShouldBeFalse();
         }
     }
 }

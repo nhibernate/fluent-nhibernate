@@ -18,250 +18,224 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
     internal class CustomPersister : IEntityPersister
     {
         public void PostInstantiate()
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public bool IsSubclassEntityName(string entityName)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public IType GetPropertyType(string propertyName)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public int[] FindDirty(object[] currentState, object[] previousState, object entity, ISessionImplementor session)
         {
-            throw new NotImplementedException();
+            return new int[] {};
         }
 
         public int[] FindModified(object[] old, object[] current, object entity, ISessionImplementor session)
         {
-            throw new NotImplementedException();
+            return new int[] {};
         }
 
         public object[] GetNaturalIdentifierSnapshot(object id, ISessionImplementor session)
         {
-            throw new NotImplementedException();
+            return new object[] {};
         }
 
         public object Load(object id, object optionalObject, LockMode lockMode, ISessionImplementor session)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public void Lock(object id, object version, object obj, LockMode lockMode, ISessionImplementor session)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public void Insert(object id, object[] fields, object obj, ISessionImplementor session)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public object Insert(object[] fields, object obj, ISessionImplementor session)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public void Delete(object id, object version, object obj, ISessionImplementor session)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public void Update(object id, object[] fields, int[] dirtyFields, bool hasDirtyCollection, object[] oldFields, object oldVersion, object obj, object rowId, ISessionImplementor session)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public object[] GetDatabaseSnapshot(object id, ISessionImplementor session)
         {
-            throw new NotImplementedException();
+            return new object[] {};
         }
 
         public object GetCurrentVersion(object id, ISessionImplementor session)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object ForceVersionIncrement(object id, object currentVersion, ISessionImplementor session)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public EntityMode? GuessEntityMode(object obj)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public bool IsInstrumented(EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public void AfterInitialize(object entity, bool lazyPropertiesAreUnfetched, ISessionImplementor session)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public void AfterReassociate(object entity, ISessionImplementor session)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public object CreateProxy(object id, ISessionImplementor session)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public bool? IsTransient(object obj, ISessionImplementor session)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object[] GetPropertyValuesToInsert(object obj, IDictionary mergeMap, ISessionImplementor session)
         {
-            throw new NotImplementedException();
+            return new object[] {};
         }
 
         public void ProcessInsertGeneratedProperties(object id, object entity, object[] state, ISessionImplementor session)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public void ProcessUpdateGeneratedProperties(object id, object entity, object[] state, ISessionImplementor session)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public Type GetMappedClass(EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public bool ImplementsLifecycle(EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool ImplementsValidatable(EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public Type GetConcreteProxyClass(EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public void SetPropertyValues(object obj, object[] values, EntityMode entityMode)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public void SetPropertyValue(object obj, int i, object value, EntityMode entityMode)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public object[] GetPropertyValues(object obj, EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return new object[] {};
         }
 
         public object GetPropertyValue(object obj, int i, EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object GetPropertyValue(object obj, string name, EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object GetIdentifier(object obj, EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public void SetIdentifier(object obj, object id, EntityMode entityMode)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public object GetVersion(object obj, EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public object Instantiate(object id, EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public bool IsInstance(object entity, EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool HasUninitializedLazyProperties(object obj, EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public void ResetIdentifier(object entity, object currentId, object currentVersion, EntityMode entityMode)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public IEntityPersister GetSubclassEntityPersister(object instance, ISessionFactoryImplementor factory, EntityMode entityMode)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public bool? IsUnsavedVersion(object version)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public ISessionFactoryImplementor Factory
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
         public string RootEntityName
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
         public string EntityName
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
         public EntityMetamodel EntityMetamodel
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
         public string[] PropertySpaces
         {
-            get { throw new NotImplementedException(); }
+            get { return new string[] {}; }
         }
         public string[] QuerySpaces
         {
-            get { throw new NotImplementedException(); }
+            get { return new string[] {}; }
         }
         public bool IsMutable
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool IsInherited
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool IsIdentifierAssignedByInsert
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         bool IEntityPersister.IsVersioned
         {
@@ -269,151 +243,151 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
         public IVersionType VersionType
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
         public int VersionProperty
         {
-            get { throw new NotImplementedException(); }
+            get { return 0; }
         }
         public int[] NaturalIdentifierProperties
         {
-            get { throw new NotImplementedException(); }
+            get { return new int[] {}; }
         }
         public IIdentifierGenerator IdentifierGenerator
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
         public IType[] PropertyTypes
         {
-            get { throw new NotImplementedException(); }
+            get { return new IType[] {}; }
         }
         public string[] PropertyNames
         {
-            get { throw new NotImplementedException(); }
+            get { return new string[] {}; }
         }
         public bool[] PropertyInsertability
         {
-            get { throw new NotImplementedException(); }
+            get { return new bool[] {}; }
         }
         public ValueInclusion[] PropertyInsertGenerationInclusions
         {
-            get { throw new NotImplementedException(); }
+            get { return new ValueInclusion[] {}; }
         }
         public ValueInclusion[] PropertyUpdateGenerationInclusions
         {
-            get { throw new NotImplementedException(); }
+            get { return new ValueInclusion[] {}; }
         }
         public bool[] PropertyCheckability
         {
-            get { throw new NotImplementedException(); }
+            get { return new bool[] {}; }
         }
         public bool[] PropertyNullability
         {
-            get { throw new NotImplementedException(); }
+            get { return new bool[] {}; }
         }
         public bool[] PropertyVersionability
         {
-            get { throw new NotImplementedException(); }
+            get { return new bool[] {}; }
         }
         public bool[] PropertyLaziness
         {
-            get { throw new NotImplementedException(); }
+            get { return new bool[] {}; }
         }
         public CascadeStyle[] PropertyCascadeStyles
         {
-            get { throw new NotImplementedException(); }
+            get { return new CascadeStyle[] {}; }
         }
         public IType IdentifierType
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
         public string IdentifierPropertyName
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
         public bool IsCacheInvalidationRequired
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool IsLazyPropertiesCacheable
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public ICacheConcurrencyStrategy Cache
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
         public ICacheEntryStructure CacheEntryStructure
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
         public IClassMetadata ClassMetadata
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
         public bool IsBatchLoadable
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool IsSelectBeforeUpdateRequired
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool IsVersionPropertyGenerated
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool HasProxy
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool HasCollections
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool HasMutableProperties
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool HasSubselectLoadableCollections
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool HasCascades
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool HasIdentifierProperty
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool CanExtractIdOutOfEntity
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool HasNaturalIdentifier
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool HasLazyProperties
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool[] PropertyUpdateability
         {
-            get { throw new NotImplementedException(); }
+            get { return new bool[] {}; }
         }
         public bool HasCache
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool HasInsertGeneratedProperties
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         public bool HasUpdateGeneratedProperties
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
         bool IOptimisticCacheSource.IsVersioned
         {
@@ -421,7 +395,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
         public IComparer VersionComparator
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
     }
 }
