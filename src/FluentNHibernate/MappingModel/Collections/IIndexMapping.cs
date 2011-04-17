@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Collections
@@ -5,6 +6,6 @@ namespace FluentNHibernate.MappingModel.Collections
     public interface IIndexMapping
     {
         void AcceptVisitor(IMappingModelVisitor visitor);
-        IDefaultableEnumerable<ColumnMapping> Columns { get; }
+        IEnumerable<ColumnMapping> Columns { get; }
     }
 }

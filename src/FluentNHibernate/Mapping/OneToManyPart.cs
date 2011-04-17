@@ -183,11 +183,11 @@ namespace FluentNHibernate.Mapping
             var collection = base.GetCollectionMapping();
 
             if (keyColumns.Count() == 0)
-                collection.Key.AddDefaultColumn(new ColumnMapping(entity.Name + "_id"));
+                collection.Key.AddColumn(Layer.Defaults, new ColumnMapping(entity.Name + "_id"));
 
             foreach (var column in keyColumns)
             {
-                collection.Key.AddColumn(column);
+                collection.Key.AddColumn(Layer.UserSupplied, column);
             }
 
             // HACK: shouldn't have to do this!

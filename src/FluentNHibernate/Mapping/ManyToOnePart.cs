@@ -354,13 +354,13 @@ namespace FluentNHibernate.Mapping
             mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(typeof(TOther)));
 
             if (columns.Count == 0)
-                mapping.AddDefaultColumn(CreateColumn(member.Name + "_id"));
+                mapping.AddColumn(Layer.Defaults, CreateColumn(member.Name + "_id"));
 
             foreach (var column in columns)
             {
                 var columnMapping = CreateColumn(column);
 
-                mapping.AddColumn(columnMapping);
+                mapping.AddColumn(Layer.UserSupplied, columnMapping);
             }
 
             return mapping;

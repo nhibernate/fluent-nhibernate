@@ -10,7 +10,7 @@ namespace FluentNHibernate.MappingModel.Collections
     public class ManyToManyMapping : MappingBase, ICollectionRelationshipMapping, IHasColumnMappings
     {
         readonly AttributeStore attributes;
-        readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+        readonly LayeredColumns columns = new LayeredColumns();
         readonly IList<FilterMapping> childFilters = new List<FilterMapping>();
 
         public IList<FilterMapping> ChildFilters
@@ -31,7 +31,7 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             visitor.ProcessManyToMany(this);
 
-            foreach (var column in columns)
+            foreach (var column in Columns)
                 visitor.Visit(column);
 
             foreach (var filter in ChildFilters)
@@ -93,26 +93,21 @@ namespace FluentNHibernate.MappingModel.Collections
             get { return attributes.GetOrDefault<string>("ChildPropertyRef"); }
         }
 
-        public IDefaultableEnumerable<ColumnMapping> Columns
-        {
-            get { return columns; }
-        }
-
         public Type ContainingEntityType { get; set; }
 
-        public void AddColumn(ColumnMapping column)
+        public IEnumerable<ColumnMapping> Columns
         {
-            columns.Add(column);
+            get { return columns.Columns; }
         }
 
-        public void AddDefaultColumn(ColumnMapping column)
+        public void AddColumn(int layer, ColumnMapping mapping)
         {
-            columns.AddDefault(column);
+            columns.AddColumn(layer, mapping);
         }
 
-        public void ClearColumns()
+        public void MakeColumnsEmpty(int layer)
         {
-            columns.Clear();
+            columns.MakeColumnsEmpty(layer);
         }
 
         public bool Equals(ManyToManyMapping other)

@@ -282,14 +282,14 @@ namespace FluentNHibernate.Mapping
                 {
                     var columnMapping = new ColumnMapping(columnAttributes.Clone());
                     columnMapping.Set(x => x.Name, Layer.Defaults, column);
-                    mapping.AddColumn(columnMapping);
+                    mapping.AddColumn(Layer.UserSupplied, columnMapping);
                 }
             }
             else if (HasNameSpecified)
             {
                 var columnMapping = new ColumnMapping(columnAttributes.Clone());
                 columnMapping.Set(x => x.Name, Layer.Defaults, name);
-                mapping.AddDefaultColumn(columnMapping);
+                mapping.AddColumn(Layer.Defaults, columnMapping);
             }
 
             if (member != null)

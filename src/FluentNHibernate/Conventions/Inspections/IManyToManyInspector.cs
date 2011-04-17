@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
 {
     public interface IManyToManyInspector : IRelationshipInspector
     {
-        IDefaultableEnumerable<IColumnInspector> Columns { get; }
+        IEnumerable<IColumnInspector> Columns { get; }
         Type ChildType { get; }
         Fetch Fetch { get; }
         string ForeignKey { get; }

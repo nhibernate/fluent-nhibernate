@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
@@ -8,12 +10,12 @@ namespace FluentNHibernate.MappingModel.Collections
     [Serializable]
     public class ElementMapping : MappingBase, IHasColumnMappings
     {
-        readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+        readonly LayeredColumns columns = new LayeredColumns();
         readonly AttributeStore attributes;
 
         public ElementMapping()
             : this(new AttributeStore())
-        {}
+        { }
 
         public ElementMapping(AttributeStore attributes)
         {
@@ -24,7 +26,7 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             visitor.ProcessElement(this);
 
-            foreach (var column in columns)
+            foreach (var column in Columns)
                 visitor.Visit(column);
         }
 
@@ -38,24 +40,19 @@ namespace FluentNHibernate.MappingModel.Collections
             get { return attributes.GetOrDefault<string>("Formula"); }
         }
 
-        public void AddColumn(ColumnMapping mapping)
+        public IEnumerable<ColumnMapping> Columns
         {
-            columns.Add(mapping);
+            get { return columns.Columns; }
         }
 
-        public void AddDefaultColumn(ColumnMapping mapping)
+        public void AddColumn(int layer, ColumnMapping mapping)
         {
-            columns.AddDefault(mapping);
+            columns.AddColumn(layer, mapping);
         }
 
-        public void ClearColumns()
+        public void MakeColumnsEmpty(int layer)
         {
-            columns.Clear();
-        }
-
-        public IDefaultableEnumerable<ColumnMapping> Columns
-        {
-            get { return columns; }
+            columns.MakeColumnsEmpty(layer);
         }
 
         public Type ContainingEntityType { get; set; }

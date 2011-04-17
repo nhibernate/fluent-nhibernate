@@ -84,7 +84,7 @@ namespace FluentNHibernate.Automapping.Steps
 
             var columnMapping = new ColumnMapping();
             columnMapping.Set(x => x.Name, Layer.Defaults, property.Name);
-            mapping.AddDefaultColumn(columnMapping);
+            mapping.AddColumn(Layer.Defaults, columnMapping);
 
             mapping.Set(x => x.Name, Layer.Defaults, mapping.Member.Name);
             mapping.Set(x => x.Type, Layer.Defaults, GetDefaultType(property));

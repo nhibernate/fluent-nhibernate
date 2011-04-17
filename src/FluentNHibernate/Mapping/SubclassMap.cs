@@ -181,7 +181,7 @@ namespace FluentNHibernate.Mapping
             else
                 key = new KeyMapping();
 
-            key.AddColumn(new ColumnMapping(column));
+            key.AddColumn(Layer.UserSupplied, new ColumnMapping(column));
 
             attributes.Set("Key", Layer.UserSupplied, key);
         }
@@ -293,7 +293,7 @@ namespace FluentNHibernate.Mapping
 
             // TODO: un-hardcode this
             var key = new KeyMapping();
-            key.AddDefaultColumn(new ColumnMapping(typeof(T).BaseType.Name + "_id"));
+            key.AddColumn(Layer.Defaults, new ColumnMapping(typeof(T).BaseType.Name + "_id"));
 
             attributes.Set("TableName", Layer.Defaults, GetDefaultTableName());
             attributes.Set("Key", Layer.Defaults, key);

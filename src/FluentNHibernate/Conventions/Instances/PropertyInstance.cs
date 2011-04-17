@@ -145,23 +145,18 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void Column(string columnName)
         {
-            // TODO: Fix this
-            if (mapping.Columns.UserDefined.Count() > 0)
-                return;
-
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
             column.Set(x => x.Name, layer, columnName);
 
-            mapping.ClearColumns();
-            mapping.AddColumn(column);
+            mapping.AddColumn(Layer.Conventions, column);
         }
 
         public new void Formula(string formula)
         {
             mapping.Set(x => x.Formula, layer, formula);
-            mapping.ClearColumns();
+            mapping.MakeColumnsEmpty(Layer.UserSupplied);
         }
 
         public new IGeneratedInstance Generated
@@ -206,13 +201,13 @@ namespace FluentNHibernate.Conventions.Instances
             if (inst.PropertyNames.Length > 1)
             {
                 var existingColumn = mapping.Columns.Single();
-                mapping.ClearColumns();
+                mapping.MakeColumnsEmpty(Layer.Conventions);
 
                 foreach (var propertyName in inst.PropertyNames)
                 {
                     var column = existingColumn.Clone();
                     column.Set(x => x.Name, layer, columnPrefix + propertyName);
-                    mapping.AddColumn(column);
+                    mapping.AddColumn(Layer.Conventions, column);
                 }
             }
         }

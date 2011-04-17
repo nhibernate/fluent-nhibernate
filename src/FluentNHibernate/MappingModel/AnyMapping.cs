@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
@@ -10,8 +11,8 @@ namespace FluentNHibernate.MappingModel
     public class AnyMapping : MappingBase
     {
         readonly AttributeStore attributes;
-        readonly IDefaultableList<ColumnMapping> typeColumns = new DefaultableList<ColumnMapping>();
-        readonly IDefaultableList<ColumnMapping> identifierColumns = new DefaultableList<ColumnMapping>();
+        readonly LayeredColumns typeColumns = new LayeredColumns();
+        readonly LayeredColumns identifierColumns = new LayeredColumns();
         readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
 
         public AnyMapping()
@@ -30,10 +31,10 @@ namespace FluentNHibernate.MappingModel
             foreach (var metaValue in metaValues)
                 visitor.Visit(metaValue);
 
-            foreach (var column in typeColumns)
+            foreach (var column in TypeColumns)
                 visitor.Visit(column);
 
-            foreach (var column in identifierColumns)
+            foreach (var column in IdentifierColumns)
                 visitor.Visit(column);
         }
 
@@ -82,14 +83,14 @@ namespace FluentNHibernate.MappingModel
             get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
         }
 
-        public IDefaultableEnumerable<ColumnMapping> TypeColumns
+        public IEnumerable<ColumnMapping> TypeColumns
         {
-            get { return typeColumns; }
+            get { return typeColumns.Columns; }
         }
 
-        public IDefaultableEnumerable<ColumnMapping> IdentifierColumns
+        public IEnumerable<ColumnMapping> IdentifierColumns
         {
-            get { return identifierColumns; }
+            get { return identifierColumns.Columns; }
         }
 
         public IEnumerable<MetaValueMapping> MetaValues
@@ -99,24 +100,14 @@ namespace FluentNHibernate.MappingModel
 
         public Type ContainingEntityType { get; set; }
 
-        public void AddTypeDefaultColumn(ColumnMapping column)
+        public void AddTypeColumn(int layer, ColumnMapping column)
         {
-            typeColumns.AddDefault(column);
+            typeColumns.AddColumn(layer, column);
         }
 
-        public void AddTypeColumn(ColumnMapping column)
+        public void AddIdentifierColumn(int layer, ColumnMapping column)
         {
-            typeColumns.Add(column);
-        }
-
-        public void AddIdentifierDefaultColumn(ColumnMapping column)
-        {
-            identifierColumns.AddDefault(column);
-        }
-
-        public void AddIdentifierColumn(ColumnMapping column)
-        {
-            identifierColumns.Add(column);
+            identifierColumns.AddColumn(layer, column);
         }
 
         public void AddMetaValue(MetaValueMapping metaValue)

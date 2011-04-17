@@ -145,14 +145,14 @@ namespace FluentNHibernate.Mapping
             {
                 var columnMapping = new ColumnMapping();
                 columnMapping.Set(x => x.Name, Layer.Defaults, typeof(T).Name + "_id");
-                mapping.Key.AddDefaultColumn(columnMapping);
+                mapping.Key.AddColumn(Layer.Defaults, columnMapping);
             }
             else
                 foreach (var column in columns)
                 {
                     var columnMapping = new ColumnMapping();
                     columnMapping.Set(x => x.Name, Layer.Defaults, column);
-                    mapping.Key.AddColumn(columnMapping);
+                    mapping.Key.AddColumn(Layer.UserSupplied, columnMapping);
                 }
 
             foreach (var property in providers.Properties)

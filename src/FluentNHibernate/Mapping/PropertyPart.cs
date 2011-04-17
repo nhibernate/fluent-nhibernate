@@ -328,11 +328,11 @@ namespace FluentNHibernate.Mapping
             {
                 var columnMapping = new ColumnMapping(columnAttributes.Clone());
                 columnMapping.Set(x => x.Name, Layer.Defaults, member.Name);
-                mapping.AddDefaultColumn(columnMapping);
+                mapping.AddColumn(Layer.Defaults, columnMapping);
             }
 
             foreach (var column in columns)
-                mapping.AddColumn(column);
+                mapping.AddColumn(Layer.UserSupplied, column);
 
             foreach (var column in mapping.Columns)
             {

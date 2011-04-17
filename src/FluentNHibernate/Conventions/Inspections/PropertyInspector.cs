@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
@@ -54,16 +56,14 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return Generated.FromString(mapping.Generated); }
         }
 
-        public IDefaultableEnumerable<IColumnInspector> Columns
+        public IEnumerable<IColumnInspector> Columns
         {
             get
             {
-                var items = new DefaultableList<IColumnInspector>();
-
-                foreach (var column in mapping.Columns.UserDefined)
-                    items.Add(new ColumnInspector(mapping.ContainingEntityType, column));
-
-                return items;
+                return mapping.Columns
+                    .Select(x => new ColumnInspector(mapping.ContainingEntityType, x))
+                    .Cast<IColumnInspector>()
+                    .ToList();
             }
         }
 

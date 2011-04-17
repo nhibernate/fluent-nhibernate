@@ -28,7 +28,7 @@ namespace FluentNHibernate.Automapping.Steps
             var idMapping = new IdMapping { ContainingEntityType = classMap.Type };
             var columnMapping = new ColumnMapping();
             columnMapping.Set(x => x.Name, Layer.Defaults, member.Name);
-            idMapping.AddDefaultColumn(columnMapping);
+            idMapping.AddColumn(Layer.Defaults, columnMapping);
             idMapping.Set(x => x.Name, Layer.Defaults, member.Name);
             idMapping.Set(x => x.Type, Layer.Defaults, new TypeReference(member.PropertyType));
             idMapping.Member = member;

@@ -232,13 +232,13 @@ namespace FluentNHibernate.Mapping
 
             var defaultColumnMapping = new ColumnMapping(columnAttributes.Clone());
             defaultColumnMapping.Set(x => x.Name, Layer.Defaults, member.Name);
-            mapping.AddDefaultColumn(defaultColumnMapping);
+            mapping.AddColumn(Layer.Defaults, defaultColumnMapping);
 
             columns.ForEach(column =>
             {
                 var columnMapping = new ColumnMapping(columnAttributes.Clone());
                 columnMapping.Set(x => x.Name, Layer.Defaults, column);
-                mapping.AddColumn(columnMapping);
+                mapping.AddColumn(Layer.UserSupplied, columnMapping);
             });
 
             return mapping;

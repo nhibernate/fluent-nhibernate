@@ -333,19 +333,19 @@ namespace FluentNHibernate.Mapping
 
             // key columns
             if (parentKeyColumns.Count == 0)
-                collection.Key.AddDefaultColumn(new ColumnMapping(EntityType.Name + "_id"));
+                collection.Key.AddColumn(Layer.Defaults, new ColumnMapping(EntityType.Name + "_id"));
 
             foreach (var column in parentKeyColumns)
-                collection.Key.AddColumn(column);
+                collection.Key.AddColumn(Layer.UserSupplied, column);
 
             if (collection.Relationship != null)
             {
                 // child columns
                 if (childKeyColumns.Count == 0)
-                    ((ManyToManyMapping)collection.Relationship).AddDefaultColumn(new ColumnMapping(typeof(TChild).Name + "_id"));
+                    ((ManyToManyMapping)collection.Relationship).AddColumn(Layer.Defaults, new ColumnMapping(typeof(TChild).Name + "_id"));
 
                 foreach (var column in childKeyColumns)
-                    ((ManyToManyMapping)collection.Relationship).AddColumn(column);
+                    ((ManyToManyMapping)collection.Relationship).AddColumn(Layer.UserSupplied, column);
             }
 
             // HACK: Index only on list and map - shouldn't have to do this!

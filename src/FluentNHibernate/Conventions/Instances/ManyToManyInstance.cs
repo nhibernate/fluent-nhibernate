@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
@@ -18,26 +19,21 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void Column(string columnName)
         {
-            if (mapping.Columns.UserDefined.Count() > 0)
-                return;
-
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
             column.Set(x => x.Name, Layer.Conventions, columnName);
 
-            mapping.ClearColumns();
-            mapping.AddColumn(column);
+            mapping.AddColumn(Layer.Conventions, column);
         }
 
-        public new IDefaultableEnumerable<IColumnInstance> Columns
+        public new IEnumerable<IColumnInstance> Columns
         {
             get
             {
-                return mapping.Columns.UserDefined
+                return mapping.Columns
                     .Select(x => new ColumnInstance(mapping.ContainingEntityType, x))
-                    .Cast<IColumnInstance>()
-                    .ToDefaultableList();
+                    .Cast<IColumnInstance>();
             }
         }
 

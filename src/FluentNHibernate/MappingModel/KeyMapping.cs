@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
@@ -8,8 +10,8 @@ namespace FluentNHibernate.MappingModel
     [Serializable]
     public class KeyMapping : MappingBase, IHasColumnMappings
     {
-        private readonly AttributeStore attributes;
-        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+        readonly AttributeStore attributes;
+        readonly LayeredColumns columns = new LayeredColumns();
         public Type ContainingEntityType { get; set; }
 
         public KeyMapping()
@@ -25,7 +27,7 @@ namespace FluentNHibernate.MappingModel
         {
             visitor.ProcessKey(this);
 
-            foreach (var column in columns)
+            foreach (var column in Columns)
                 visitor.Visit(column);
         }
 
@@ -59,30 +61,19 @@ namespace FluentNHibernate.MappingModel
             get { return attributes.GetOrDefault<bool>("Unique"); }
         }
 
-        public IDefaultableEnumerable<ColumnMapping> Columns
+        public IEnumerable<ColumnMapping> Columns
         {
-            get { return columns; }
+            get { return columns.Columns; }
         }
 
-        public void AddColumn(ColumnMapping mapping)
+        public void AddColumn(int layer, ColumnMapping mapping)
         {
-            if (columns.Contains(mapping))
-                return;
-
-            columns.Add(mapping);
+            columns.AddColumn(layer, mapping);
         }
 
-        public void AddDefaultColumn(ColumnMapping mapping)
+        public void MakeColumnsEmpty(int layer)
         {
-            if (columns.Contains(mapping))
-                return;
-
-            columns.AddDefault(mapping);
-        }
-
-        public void ClearColumns()
-        {
-            columns.ClearAll();
+            columns.MakeColumnsEmpty(layer);
         }
 
         public bool Equals(KeyMapping other)

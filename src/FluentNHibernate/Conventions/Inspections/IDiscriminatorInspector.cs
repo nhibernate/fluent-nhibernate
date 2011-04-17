@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
@@ -5,7 +6,7 @@ namespace FluentNHibernate.Conventions.Inspections
     public interface IDiscriminatorInspector : IInspector
     {
         bool Insert { get; }
-        IDefaultableEnumerable<IColumnInspector> Columns { get; }
+        IEnumerable<IColumnInspector> Columns { get; }
         bool Force { get; }
         string Formula { get; }
         TypeReference Type { get; }

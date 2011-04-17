@@ -78,7 +78,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var container = new XmlWriterContainer();
             var mapping = new ManyToManyMapping();
 
-            mapping.AddColumn(new ColumnMapping("Column1"));
+            mapping.AddColumn(Layer.Defaults, new ColumnMapping("Column1"));
 
             writer = container.Resolve<IXmlWriter<ManyToManyMapping>>();
             writer.VerifyXml(mapping)

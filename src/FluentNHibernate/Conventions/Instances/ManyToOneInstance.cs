@@ -20,22 +20,18 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void Column(string columnName)
         {
-            if (mapping.Columns.UserDefined.Count() > 0)
-                return;
-
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
             column.Set(x => x.Name, Layer.Conventions, columnName);
 
-            mapping.ClearColumns();
-            mapping.AddColumn(column);
+            mapping.AddColumn(Layer.Conventions, column);
         }
         
         public new void Formula(string formula)
         {
             mapping.Set(x => x.Formula, Layer.Conventions, formula);
-            mapping.ClearColumns();
+            mapping.MakeColumnsEmpty(Layer.UserSupplied);
         }
 
         public void CustomClass<T>()
@@ -98,10 +94,7 @@ namespace FluentNHibernate.Conventions.Instances
 
         public new void LazyLoad()
         {
-            if (nextBool)
-                LazyLoad(Laziness.Proxy);
-            else
-                LazyLoad(Laziness.False);
+            LazyLoad(nextBool ? Laziness.Proxy : Laziness.False);
             nextBool = true;
         }
 

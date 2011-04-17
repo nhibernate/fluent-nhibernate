@@ -18,16 +18,12 @@ namespace FluentNHibernate.Conventions.Instances
 
         public void Column(string columnName)
         {
-            if (mapping.Columns.UserDefined.Count() > 0)
-                return;
-
             var originalColumn = mapping.Columns.FirstOrDefault();
             var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
 
             column.Set(x => x.Name, Layer.Conventions, columnName);
 
-            mapping.ClearColumns();
-            mapping.AddColumn(column);
+            mapping.AddColumn(Layer.Conventions, column);
         }
 
         public new void Type<T>()

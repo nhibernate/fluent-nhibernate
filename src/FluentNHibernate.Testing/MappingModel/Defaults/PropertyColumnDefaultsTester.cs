@@ -18,8 +18,7 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
             var mapping = ((IPropertyMappingProvider)new PropertyPart(Prop(x => x.Name), typeof(PropertyTarget)))
                 .GetPropertyMapping();
 
-            mapping.Columns.Defaults.Count().ShouldEqual(1);
-            mapping.Columns.UserDefined.Count().ShouldEqual(0);
+            mapping.Columns.Count().ShouldEqual(1);
             mapping.Columns.Count().ShouldEqual(1);
         }
 
@@ -30,8 +29,7 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
                 .Column("explicit"))
                 .GetPropertyMapping();
 
-            mapping.Columns.Defaults.Count().ShouldEqual(0);
-            mapping.Columns.UserDefined.Count().ShouldEqual(1);
+            mapping.Columns.Count().ShouldEqual(1);
             mapping.Columns.Count().ShouldEqual(1);
         }
 
@@ -42,7 +40,7 @@ namespace FluentNHibernate.Testing.MappingModel.Defaults
                 .Not.Nullable())
                 .GetPropertyMapping();
 
-            mapping.Columns.Defaults.First().NotNull.ShouldBeTrue();
+            mapping.Columns.First().NotNull.ShouldBeTrue();
             mapping.Columns.First().NotNull.ShouldBeTrue();
         }
 

@@ -86,7 +86,7 @@ namespace FluentNHibernate.Conventions.Inspections
         {
             get
             {
-                return mapping.Columns.UserDefined
+                return mapping.Columns
                     .Select(x => new ColumnInspector(mapping.ContainingEntityType, x))
                     .Cast<IColumnInspector>();
             }

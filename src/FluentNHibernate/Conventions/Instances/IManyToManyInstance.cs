@@ -1,13 +1,12 @@
+using System.Collections.Generic;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances
 {
     public interface IManyToManyInstance : IManyToManyInspector, IRelationshipInstance
     {
         void Column(string columnName);
-        new IDefaultableEnumerable<IColumnInstance> Columns { get; }
+        new IEnumerable<IColumnInstance> Columns { get; }
         new void ForeignKey(string constraint);
 
         /// <summary>

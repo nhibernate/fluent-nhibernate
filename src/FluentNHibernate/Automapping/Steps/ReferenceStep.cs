@@ -40,7 +40,7 @@ namespace FluentNHibernate.Automapping.Steps
             mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(member.PropertyType));
             var columnMapping = new ColumnMapping();
             columnMapping.Set(x => x.Name, Layer.Defaults, member.Name + "_id");
-            mapping.AddDefaultColumn(columnMapping);
+            mapping.AddColumn(Layer.Defaults, columnMapping);
 
             SetDefaultAccess(member, mapping);
 

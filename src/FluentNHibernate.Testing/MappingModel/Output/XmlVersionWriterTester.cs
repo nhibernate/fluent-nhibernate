@@ -67,7 +67,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new VersionMapping();
 
-            mapping.AddColumn(new ColumnMapping("Column1"));
+            mapping.AddColumn(Layer.Defaults, new ColumnMapping("Column1"));
 
             writer.VerifyXml(mapping)
                 .Element("column").Exists();

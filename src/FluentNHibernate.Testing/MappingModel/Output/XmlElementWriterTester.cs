@@ -32,7 +32,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var mapping = new ElementMapping();
 
-            mapping.AddColumn(new ColumnMapping());
+            mapping.AddColumn(Layer.Defaults, new ColumnMapping());
 
             writer.VerifyXml(mapping)
                 .Element("column").Exists();

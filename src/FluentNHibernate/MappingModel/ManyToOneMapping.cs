@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
+using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
@@ -8,8 +10,8 @@ namespace FluentNHibernate.MappingModel
     [Serializable]
     public class ManyToOneMapping : MappingBase, IHasColumnMappings, IRelationship
     {
-        private readonly AttributeStore attributes;
-        private readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+        readonly AttributeStore attributes;
+        readonly LayeredColumns columns = new LayeredColumns();
 
         public ManyToOneMapping()
             : this(new AttributeStore())
@@ -24,7 +26,7 @@ namespace FluentNHibernate.MappingModel
         {
             visitor.ProcessManyToOne(this);
 
-            foreach (var column in columns)
+            foreach (var column in Columns)
                 visitor.Visit(column);
         }
 
@@ -101,24 +103,19 @@ namespace FluentNHibernate.MappingModel
             get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
         }
 
-        public IDefaultableEnumerable<ColumnMapping> Columns
+        public IEnumerable<ColumnMapping> Columns
         {
-            get { return columns; }
+            get { return columns.Columns; }
         }
 
-        public void AddColumn(ColumnMapping column)
+        public void AddColumn(int layer, ColumnMapping mapping)
         {
-            columns.Add(column);
+            columns.AddColumn(layer, mapping);
         }
 
-        public void AddDefaultColumn(ColumnMapping column)
+        public void MakeColumnsEmpty(int layer)
         {
-            columns.AddDefault(column);
-        }
-
-        public void ClearColumns()
-        {
-            columns.ClearAll();
+            columns.MakeColumnsEmpty(layer);
         }
 
         public void Set<T>(Expression<Func<ManyToOneMapping, T>> expression, int layer, T value)

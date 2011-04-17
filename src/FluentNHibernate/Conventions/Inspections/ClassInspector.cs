@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel;
@@ -109,14 +110,13 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
-        public IDefaultableEnumerable<IAnyInspector> Anys
+        public IEnumerable<IAnyInspector> Anys
         {
             get
             {
                 return mapping.Anys
                     .Select(x => new AnyInspector(x))
-                    .Cast<IAnyInspector>()
-                    .ToDefaultableList();
+                    .Cast<IAnyInspector>();
             }
         }
 
@@ -125,18 +125,17 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Check; }
         }
 
-        public IDefaultableEnumerable<ICollectionInspector> Collections
+        public IEnumerable<ICollectionInspector> Collections
         {
             get
             {
                 return mapping.Collections
                     .Select(x => new CollectionInspector(x))
-                    .Cast<ICollectionInspector>()
-                    .ToDefaultableList();
+                    .Cast<ICollectionInspector>();
             }
         }
 
-        public IDefaultableEnumerable<IComponentBaseInspector> Components
+        public IEnumerable<IComponentBaseInspector> Components
         {
             get
             {
@@ -147,63 +146,56 @@ namespace FluentNHibernate.Conventions.Inspections
                             return (IComponentBaseInspector)new ComponentInspector((ComponentMapping)x);
 
                         return (IComponentBaseInspector)new DynamicComponentInspector((ComponentMapping)x);
-                    })
-                    .ToDefaultableList();
+                    });
             }
         }
 
-        public IDefaultableEnumerable<IJoinInspector> Joins
+        public IEnumerable<IJoinInspector> Joins
         {
             get
             {
                 return mapping.Joins
                     .Select(x => new JoinInspector(x))
-                    .Cast<IJoinInspector>()
-                    .ToDefaultableList();
+                    .Cast<IJoinInspector>();
             }
         }
 
-        public IDefaultableEnumerable<IOneToOneInspector> OneToOnes
+        public IEnumerable<IOneToOneInspector> OneToOnes
         {
             get
             {
                 return mapping.OneToOnes
                     .Select(x => new OneToOneInspector(x))
-                    .Cast<IOneToOneInspector>()
-                    .ToDefaultableList();
+                    .Cast<IOneToOneInspector>();
             }
         }
 
-        public IDefaultableEnumerable<IPropertyInspector> Properties
+        public IEnumerable<IPropertyInspector> Properties
         {
             get
             {
                 return mapping.Properties
                     .Select(x => new PropertyInspector(x))
-                    .Cast<IPropertyInspector>()
-                    .ToDefaultableList();
+                    .Cast<IPropertyInspector>();
             }
         }
-        public IDefaultableEnumerable<IManyToOneInspector> References
+        public IEnumerable<IManyToOneInspector> References
         {
             get
             {
                 return mapping.References
                     .Select(x => new ManyToOneInspector(x))
-                    .Cast<IManyToOneInspector>()
-                    .ToDefaultableList();
+                    .Cast<IManyToOneInspector>();
             }
         }
 
-        public IDefaultableEnumerable<ISubclassInspectorBase> Subclasses
+        public IEnumerable<ISubclassInspectorBase> Subclasses
         {
             get
             {
                 return mapping.Subclasses
                     .Where(x => x.SubclassType == SubclassType.Subclass)
-                    .Select(x => (ISubclassInspectorBase)new SubclassInspector(x))
-                    .Cast<ISubclassInspectorBase>()
-                    .ToDefaultableList();
+                    .Select(x => (ISubclassInspectorBase)new SubclassInspector(x));
             }
         }
 

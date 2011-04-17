@@ -45,7 +45,7 @@ namespace FluentNHibernate.Mapping
             key.Set(x => x.Type, Layer.Defaults, new TypeReference(member.PropertyType));
             var columnMapping = new ColumnMapping();
             columnMapping.Set(x => x.Name, Layer.Defaults, columnName);
-            key.AddColumn(columnMapping);
+            key.AddColumn(Layer.UserSupplied, columnMapping);
 
             properties.Add(key);
 
@@ -85,7 +85,7 @@ namespace FluentNHibernate.Mapping
             key.Set(x => x.Class, Layer.Defaults, new TypeReference(member.PropertyType));
             var columnMapping = new ColumnMapping();
             columnMapping.Set(x => x.Name, Layer.Defaults, columnName);
-            key.AddColumn(columnMapping);
+            key.AddColumn(Layer.Defaults, columnMapping);
 
             manyToOnes.Add(key);
 

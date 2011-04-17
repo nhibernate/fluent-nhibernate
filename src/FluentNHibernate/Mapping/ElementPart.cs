@@ -74,7 +74,7 @@ namespace FluentNHibernate.Mapping
             foreach (var column in Columns)
             {
                 column.MergeAttributes(columnAttributes);
-                mapping.AddColumn(column);
+                mapping.AddColumn(Layer.Defaults, column);
             }
 
             return mapping;

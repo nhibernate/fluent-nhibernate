@@ -278,7 +278,6 @@
     <Compile Include="Conventions\Inspections\IManyToManyCollectionInspector.cs" />
     <Compile Include="Conventions\Inspections\IMetaValueInspector.cs" />
     <Compile Include="Conventions\Inspections\IndexInspector.cs" />
-    <Compile Include="Conventions\Inspections\InternalExtensions.cs" />
     <Compile Include="Conventions\Inspections\IOneToManyCollectionInspector.cs" />
     <Compile Include="Conventions\Inspections\IOneToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\IParentInspector.cs" />
@@ -419,6 +418,7 @@
     <Compile Include="Conventions\ManyToManyTableNameConvention.cs" />
     <Compile Include="Conventions\ObjectExtensionsForConventions.cs" />
     <Compile Include="Conventions\ProxyConvention.cs" />
+    <Compile Include="MappingModel\Collections\LayeredColumns.cs" />
     <Compile Include="MappingModel\Layer.cs" />
     <Compile Include="MappingModel\ClassBased\ComponentType.cs" />
     <Compile Include="MappingModel\ClassBased\ExternalComponentMapping.cs" />
@@ -488,9 +488,6 @@
     <Compile Include="Visitors\MissingExternalComponentException.cs" />
     <Compile Include="Visitors\SeparateSubclassVisitor.cs" />
     <Compile Include="MappingModel\Collections\SortType.cs" />
-    <Compile Include="MappingModel\DefaultableList.cs" />
-    <Compile Include="MappingModel\IDefaultableEnumerable.cs" />
-    <Compile Include="MappingModel\IDefaultableList.cs" />
     <Compile Include="MappingModel\IHasColumnMappings.cs" />
     <Compile Include="MappingModel\Output\Sorting\BaseXmlNodeSorter.cs" />
     <Compile Include="MappingModel\Output\Sorting\SortValue.cs" />

@@ -19,10 +19,7 @@ namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs
             Id.Member.ShouldBeNull();
 
         It should_not_specify_any_columns_for_the_id = () =>
-        {
-            Id.Columns.Defaults.ShouldBeEmpty();
-            Id.Columns.UserDefined.ShouldBeEmpty();
-        };
+            Id.Columns.ShouldBeEmpty();
 
         It should_specify_the_default_generator_for_the_id = () =>
             Id.Generator.Class.ShouldEqual("increment");

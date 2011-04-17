@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluentNHibernate.MappingModel;
@@ -32,14 +33,13 @@ namespace FluentNHibernate.Conventions.Inspections
             return mapping.IsSpecified(mappedProperties.Get(property));
         }
 
-        public IDefaultableEnumerable<IColumnInspector> Columns
+        public IEnumerable<IColumnInspector> Columns
         {
             get
             {
-                return mapping.Columns.UserDefined
+                return mapping.Columns
                     .Select(x => new ColumnInspector(mapping.ContainingEntityType, x))
-                    .Cast<IColumnInspector>()
-                    .ToDefaultableList();
+                    .Cast<IColumnInspector>();
             }
         }
 

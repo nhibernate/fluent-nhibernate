@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 
@@ -18,7 +17,7 @@ namespace FluentNHibernate.Conventions.Inspections
         string Name { get; }
         bool OptimisticLock { get; }
         Generated Generated { get; }
-        IDefaultableEnumerable<IColumnInspector> Columns { get; }
+        IEnumerable<IColumnInspector> Columns { get; }
         string Index { get; }
         bool LazyLoad { get; }
         string Check { get; }

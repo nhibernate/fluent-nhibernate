@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 
@@ -7,7 +8,7 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         string Name { get; }
         Access Access { get; }
-        IDefaultableEnumerable<IColumnInspector> Columns { get; }
+        IEnumerable<IColumnInspector> Columns { get; }
         Generated Generated { get; }
         string UnsavedValue { get; }
         TypeReference Type { get; }

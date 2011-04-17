@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
+using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.MappingModel
 {
     [Serializable]
     public abstract class ColumnBasedMappingBase : MappingBase, IHasColumnMappings
     {
-        readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+        readonly LayeredColumns columns = new LayeredColumns();
         protected readonly AttributeStore attributes;
 
         protected ColumnBasedMappingBase(AttributeStore underlyingStore)
@@ -13,24 +15,19 @@ namespace FluentNHibernate.MappingModel
             attributes = underlyingStore.Clone();
         }
 
-        public IDefaultableEnumerable<ColumnMapping> Columns
+        public IEnumerable<ColumnMapping> Columns
         {
-            get { return columns; }
+            get { return columns.Columns; }
         }
 
-        public void AddColumn(ColumnMapping mapping)
+        public void AddColumn(int layer, ColumnMapping mapping)
         {
-            columns.Add(mapping);
+            columns.AddColumn(layer, mapping);
         }
 
-        public void AddDefaultColumn(ColumnMapping mapping)
+        public void MakeColumnsEmpty(int layer)
         {
-            columns.AddDefault(mapping);
-        }
-
-        public void ClearColumns()
-        {
-            columns.ClearAll();
+            columns.MakeColumnsEmpty(layer);
         }
 
         public bool Equals(ColumnBasedMappingBase other)

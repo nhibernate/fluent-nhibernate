@@ -236,7 +236,7 @@ namespace FluentNHibernate.Mapping
 
             var columnMapping = new ColumnMapping(columnAttributes.Clone());
             columnMapping.Set(x => x.Name, Layer.Defaults, columnName);
-            mapping.AddColumn(columnMapping);
+            mapping.AddColumn(Layer.Defaults, columnMapping);
 
             return mapping;
         }

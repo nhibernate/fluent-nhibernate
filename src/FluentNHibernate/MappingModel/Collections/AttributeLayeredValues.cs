@@ -9,9 +9,6 @@ namespace FluentNHibernate.MappingModel.Collections
     {
         readonly Dictionary<string, LayeredValues> inner = new Dictionary<string, LayeredValues>();
 
-        public AttributeLayeredValues()
-        {}
-
         public LayeredValues this[string attribute]
         {
             get
@@ -58,6 +55,40 @@ namespace FluentNHibernate.MappingModel.Collections
             }
 
             return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is AttributeLayeredValues)
+                return Equals((AttributeLayeredValues)obj);
+            return base.Equals(obj);
+        }
+
+        public bool Equals(AttributeLayeredValues other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return other.inner.ContentEquals(inner);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 0;
+
+            unchecked
+            {
+                foreach (var pair in inner)
+                {
+                    var pairCode = 0;
+                
+                    pairCode += pair.Key.GetHashCode();
+                    pairCode += pair.Value.GetHashCode();
+
+                    hashCode += pairCode ^ 367;
+                }
+            }
+
+            return hashCode;
         }
     }
 }

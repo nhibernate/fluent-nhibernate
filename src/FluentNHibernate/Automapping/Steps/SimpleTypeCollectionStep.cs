@@ -76,7 +76,7 @@ namespace FluentNHibernate.Automapping.Steps
 
             var columnMapping = new ColumnMapping();
             columnMapping.Set(x => x.Name, Layer.Defaults, cfg.SimpleTypeCollectionValueColumn(property));
-            element.AddDefaultColumn(columnMapping);
+            element.AddColumn(Layer.Defaults, columnMapping);
             mapping.Set(x => x.Element, Layer.Defaults, element);
         }
     }

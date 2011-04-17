@@ -17,11 +17,8 @@ namespace FluentNHibernate.Visitors
             if (thisSide.ContainingEntityType == otherSide.ContainingEntityType)
             {
                 // special case for self-referential relationships
-                if (thisSide.Columns.HasUserDefined() || otherSide.Key.Columns.HasUserDefined())
-                    return; // leave alone if user defined
-
-                otherSide.Key.ClearColumns();
-                thisSide.Columns.Each(x => otherSide.Key.AddDefaultColumn(x.Clone()));
+                otherSide.Key.MakeColumnsEmpty(Layer.Defaults);
+                thisSide.Columns.Each(x => otherSide.Key.AddColumn(Layer.Defaults, x.Clone()));
             }
         }
     }

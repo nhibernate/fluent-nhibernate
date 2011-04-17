@@ -43,14 +43,13 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return Cascade.FromString(mapping.Cascade); }
         }
 
-        public IDefaultableEnumerable<IColumnInspector> IdentifierColumns
+        public IEnumerable<IColumnInspector> IdentifierColumns
         {
             get
             {
-                return mapping.IdentifierColumns.UserDefined
+                return mapping.IdentifierColumns
                     .Select(x => new ColumnInspector(mapping.ContainingEntityType, x))
-                    .Cast<IColumnInspector>()
-                    .ToDefaultableList();
+                    .Cast<IColumnInspector>();
             }
         }
 
@@ -84,14 +83,13 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Name; }
         }
 
-        public IDefaultableEnumerable<IColumnInspector> TypeColumns
+        public IEnumerable<IColumnInspector> TypeColumns
         {
             get
             {
-                return mapping.TypeColumns.UserDefined
+                return mapping.TypeColumns
                     .Select(x => new ColumnInspector(mapping.ContainingEntityType, x))
-                    .Cast<IColumnInspector>()
-                    .ToDefaultableList();
+                    .Cast<IColumnInspector>();
             }
         }
 

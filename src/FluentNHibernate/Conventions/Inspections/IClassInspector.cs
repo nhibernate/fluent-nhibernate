@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel;
 
@@ -27,13 +28,13 @@ namespace FluentNHibernate.Conventions.Inspections
         ICacheInspector Cache { get; }
         IDiscriminatorInspector Discriminator { get; }
         IVersionInspector Version { get; }
-        IDefaultableEnumerable<IAnyInspector> Anys { get; }
-        IDefaultableEnumerable<ICollectionInspector> Collections { get; }
-        IDefaultableEnumerable<IComponentBaseInspector> Components { get; }
-        IDefaultableEnumerable<IJoinInspector> Joins { get; }
-        IDefaultableEnumerable<IOneToOneInspector> OneToOnes { get; }
-        IDefaultableEnumerable<IPropertyInspector> Properties { get; }
-        IDefaultableEnumerable<IManyToOneInspector> References { get; }
-        IDefaultableEnumerable<ISubclassInspectorBase> Subclasses { get; }
+        IEnumerable<IAnyInspector> Anys { get; }
+        IEnumerable<ICollectionInspector> Collections { get; }
+        IEnumerable<IComponentBaseInspector> Components { get; }
+        IEnumerable<IJoinInspector> Joins { get; }
+        IEnumerable<IOneToOneInspector> OneToOnes { get; }
+        IEnumerable<IPropertyInspector> Properties { get; }
+        IEnumerable<IManyToOneInspector> References { get; }
+        IEnumerable<ISubclassInspectorBase> Subclasses { get; }
     }
 }

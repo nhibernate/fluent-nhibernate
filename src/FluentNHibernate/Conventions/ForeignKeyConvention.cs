@@ -20,11 +20,8 @@ namespace FluentNHibernate.Conventions
             var keyColumn = GetKeyName(null, instance.EntityType);
             var childColumn = GetKeyName(null, instance.ChildType);
 
-            if (instance.Key.Columns.IsEmpty())
-                instance.Key.Column(keyColumn);
-
-            if (instance.Relationship.Columns.IsEmpty())
-                instance.Relationship.Column(childColumn);
+            instance.Key.Column(keyColumn);
+            instance.Relationship.Column(childColumn);
         }
 
         public void Apply(IJoinedSubclassInstance instance)

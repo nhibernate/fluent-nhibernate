@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
@@ -9,7 +10,7 @@ namespace FluentNHibernate.MappingModel.Collections
     public class IndexMapping : MappingBase, IIndexMapping, IHasColumnMappings
     {
         readonly AttributeStore attributes;
-        readonly IDefaultableList<ColumnMapping> columns = new DefaultableList<ColumnMapping>();
+        readonly LayeredColumns columns = new LayeredColumns();
 
         public IndexMapping()
             : this(new AttributeStore())
@@ -24,7 +25,7 @@ namespace FluentNHibernate.MappingModel.Collections
         {
             visitor.ProcessIndex(this);
 
-            foreach (var column in columns)
+            foreach (var column in Columns)
                 visitor.Visit(column);
         }
 
@@ -40,24 +41,19 @@ namespace FluentNHibernate.MappingModel.Collections
 
         public Type ContainingEntityType { get; set; }
 
-        public IDefaultableEnumerable<ColumnMapping> Columns
+        public IEnumerable<ColumnMapping> Columns
         {
-            get { return columns; }
+            get { return columns.Columns; }
         }
 
-        public void AddColumn(ColumnMapping mapping)
+        public void AddColumn(int layer, ColumnMapping mapping)
         {
-            columns.Add(mapping);
+            columns.AddColumn(layer, mapping);
         }
 
-        public void AddDefaultColumn(ColumnMapping mapping)
+        public void MakeColumnsEmpty(int layer)
         {
-            columns.AddDefault(mapping);
-        }
-
-        public void ClearColumns()
-        {
-            columns.Clear();
+            columns.MakeColumnsEmpty(layer);
         }
 
         public bool Equals(IndexMapping other)

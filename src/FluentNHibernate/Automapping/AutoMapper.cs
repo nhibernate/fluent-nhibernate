@@ -70,7 +70,7 @@ namespace FluentNHibernate.Automapping
                     discriminator.Set(x => x.Type, Layer.Defaults, new TypeReference(typeof(string)));
                     var columnMapping = new ColumnMapping();
                     columnMapping.Set(x => x.Name, Layer.Defaults, discriminatorColumn);
-                    discriminator.AddDefaultColumn(columnMapping);
+                    discriminator.AddColumn(Layer.Defaults, columnMapping);
 
                     tempMapping.Set(x => x.Discriminator, Layer.Defaults, discriminator);
                     discriminatorSet = true;
@@ -90,7 +90,7 @@ namespace FluentNHibernate.Automapping
                     subclassMapping.Set(x => x.Key, Layer.Defaults, new KeyMapping());
                     var columnMapping = new ColumnMapping();
                     columnMapping.Set(x => x.Name, Layer.Defaults, mapping.Type.Name + "_id");
-                    subclassMapping.Key.AddDefaultColumn(columnMapping);
+                    subclassMapping.Key.AddColumn(Layer.Defaults, columnMapping);
                 }
                 else
                 {

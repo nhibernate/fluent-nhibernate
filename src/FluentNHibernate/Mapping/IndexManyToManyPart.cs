@@ -57,7 +57,7 @@ namespace FluentNHibernate.Mapping
             {
                 var columnMapping = new ColumnMapping();
                 columnMapping.Set(x => x.Name, Layer.Defaults, name);
-                mapping.AddColumn(columnMapping);
+                mapping.AddColumn(Layer.UserSupplied, columnMapping);
             });
 
             return mapping;
