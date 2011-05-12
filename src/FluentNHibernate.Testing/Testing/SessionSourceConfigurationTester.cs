@@ -57,7 +57,9 @@ namespace FluentNHibernate.Testing.Testing
         {
             FluentConfiguration config = Fluently.Configure()
                 .Database(() => new SQLiteConfiguration().InMemory().UseOuterJoin().ShowSql())
-                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<TestPersistenceModel>());
+                .Mappings(m => m.FluentMappings
+                    .Add<RecordMap>()
+                    .Add<RecordFilter>());
 
             return new SingleConnectionSessionSourceForSQLiteInMemoryTesting(config);
         }

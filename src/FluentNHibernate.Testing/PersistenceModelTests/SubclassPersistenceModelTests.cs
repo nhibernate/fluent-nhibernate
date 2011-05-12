@@ -120,7 +120,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         {
             var model = new PersistenceModel();
 
-            model.AddMappingsFromAssembly(typeof(TablePerSubclass.TPS_Parent).Assembly);
+            model.AddMappingsFromSource(new StubTypeSource(typeof(TablePerSubclass.TPS_ParentMap), typeof(TablePerSubclass.TPS_ChildMap)));
 
             var classMapping = model.BuildMappings()
                 .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(TablePerSubclass.TPS_Parent)) != null)

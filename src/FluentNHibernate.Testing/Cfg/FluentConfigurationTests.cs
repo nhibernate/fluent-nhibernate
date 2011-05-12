@@ -8,6 +8,7 @@ using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures.Basic;
 using FluentNHibernate.Testing.Fixtures.MixedMappingsInSameLocation;
+using FluentNHibernate.Testing.Fixtures.MixedMappingsInSameLocation.Mappings;
 using NHibernate.Cfg;
 using NUnit.Framework;
 
@@ -93,7 +94,7 @@ namespace FluentNHibernate.Testing.Cfg
                 .Database(SQLiteConfiguration.Standard.InMemory)
                 .Mappings(m =>
                 {
-                    m.FluentMappings.AddFromAssemblyOf<Foo>();
+                    m.FluentMappings.Add<FooMap>();
                     m.AutoMappings.Add(AutoMap.AssemblyOf<Bar>()
                         .Where(t => t.Namespace == typeof(Bar).Namespace));
                 })
@@ -108,7 +109,7 @@ namespace FluentNHibernate.Testing.Cfg
             var sessionFactory = Fluently.Configure()
                 .Database(SQLiteConfiguration.Standard.InMemory)
                 .Mappings(m =>
-                    m.FluentMappings.AddFromAssemblyOf<Record>())
+                    m.FluentMappings.Add<BinaryRecordMap>())
                 .BuildSessionFactory();
 
             sessionFactory.ShouldNotBeNull();
@@ -120,19 +121,31 @@ namespace FluentNHibernate.Testing.Cfg
 			var configuration = Fluently.Configure()
 				.Database(SQLiteConfiguration.Standard.InMemory)
 				.Mappings(m =>
-					m.FluentMappings.AddFromAssemblyOf<Record>())
+					m.FluentMappings.Add<BinaryRecordMap>())
 				.BuildConfiguration();
 
 			configuration.ShouldNotBeNull();
 		}
 
         [Test]
-        public void ShouldSetCurrentSessionContext()     	{ 			var configuration = Fluently.Configure()                .CurrentSessionContext("thread_static") 				.BuildConfiguration();
- 			configuration.Properties["current_session_context_class"].ShouldEqual("thread_static");     	}
+        public void ShouldSetCurrentSessionContext()
+     	{
+ 			var configuration = Fluently.Configure()
+                .CurrentSessionContext("thread_static")
+ 				.BuildConfiguration();
+
+ 			configuration.Properties["current_session_context_class"].ShouldEqual("thread_static");
+     	}
 
         [Test]
-        public void ShouldSetCurrentSessionContextUsingGeneric()     	{ 			var configuration = Fluently.Configure()				.CurrentSessionContext<NHibernate.Context.ThreadStaticSessionContext>() 				.BuildConfiguration();
- 			configuration.Properties["current_session_context_class"].ShouldEqual(typeof(NHibernate.Context.ThreadStaticSessionContext).AssemblyQualifiedName);     	}
+        public void ShouldSetCurrentSessionContextUsingGeneric()
+     	{
+ 			var configuration = Fluently.Configure()
+				.CurrentSessionContext<NHibernate.Context.ThreadStaticSessionContext>()
+ 				.BuildConfiguration();
+
+ 			configuration.Properties["current_session_context_class"].ShouldEqual(typeof(NHibernate.Context.ThreadStaticSessionContext).AssemblyQualifiedName);
+     	}
 
 #pragma warning disable 612,618
         [Test]
@@ -166,7 +179,54 @@ namespace FluentNHibernate.Testing.Cfg
             configuration.Properties["connection.isolation"].ShouldEqual("ReadUncommitted");
         }
 
-        [Test]        public void Use_Minimal_Puts_should_set_value_to_const_true()        {            var configuration = Fluently.Configure()                .Cache(x => x.UseMinimalPuts())                .BuildConfiguration();            configuration.Properties.ShouldContain("cache.use_minimal_puts", "true");        }        [Test]        public void Use_Query_Cache_should_set_value_to_const_true()        {            var configuration = Fluently.Configure()                .Cache(x => x.UseQueryCache())                .BuildConfiguration();            configuration.Properties.ShouldContain("cache.use_query_cache", "true");        }        [Test]        public void Query_Cache_Factory_should_set_property_value()        {            var configuration = Fluently.Configure()                .Cache(x => x.QueryCacheFactory("foo"))                .BuildConfiguration();            configuration.Properties.ShouldContain("cache.query_cache_factory", "foo");        }        [Test]        public void Region_Prefix_should_set_property_value()        {            var configuration = Fluently.Configure()                .Cache(x => x.RegionPrefix("foo"))                .BuildConfiguration();            configuration.Properties.ShouldContain("cache.region_prefix", "foo");        }        [Test]        public void Provider_Class_should_set_property_value()        {            var configuration = Fluently.Configure()                .Cache(x => x.ProviderClass("foo"))                .BuildConfiguration();        }    }
+        [Test]
+        public void Use_Minimal_Puts_should_set_value_to_const_true()
+        {
+            var configuration = Fluently.Configure()
+                .Cache(x => x.UseMinimalPuts())
+                .BuildConfiguration();
+
+            configuration.Properties.ShouldContain("cache.use_minimal_puts", "true");
+        }
+
+        [Test]
+        public void Use_Query_Cache_should_set_value_to_const_true()
+        {
+            var configuration = Fluently.Configure()
+                .Cache(x => x.UseQueryCache())
+                .BuildConfiguration();
+
+            configuration.Properties.ShouldContain("cache.use_query_cache", "true");
+        }
+
+        [Test]
+        public void Query_Cache_Factory_should_set_property_value()
+        {
+            var configuration = Fluently.Configure()
+                .Cache(x => x.QueryCacheFactory("foo"))
+                .BuildConfiguration();
+
+            configuration.Properties.ShouldContain("cache.query_cache_factory", "foo");
+        }
+
+        [Test]
+        public void Region_Prefix_should_set_property_value()
+        {
+            var configuration = Fluently.Configure()
+                .Cache(x => x.RegionPrefix("foo"))
+                .BuildConfiguration();
+
+            configuration.Properties.ShouldContain("cache.region_prefix", "foo");
+        }
+
+        [Test]
+        public void Provider_Class_should_set_property_value()
+        {
+            var configuration = Fluently.Configure()
+                .Cache(x => x.ProviderClass("foo"))
+                .BuildConfiguration();
+        }
+    }
 
     [TestFixture]
     public class InvalidFluentConfigurationTests
@@ -271,12 +331,12 @@ namespace FluentNHibernate.Testing.Cfg
                 .Database(SQLiteConfiguration.Standard.InMemory)
                 .Mappings(m =>
                     m.FluentMappings
-                        .AddFromAssemblyOf<Record>()
+                        .Add<BinaryRecordMap>()
                         .ExportTo(ExportPath))
                 .BuildConfiguration();
 
             Directory.GetFiles(ExportPath)
-                .ShouldContain(HbmFor<Record>);
+                .ShouldContain(HbmFor<BinaryRecord>);
         }
 
         [Test]
@@ -288,7 +348,7 @@ namespace FluentNHibernate.Testing.Cfg
                 .Database(SQLiteConfiguration.Standard.InMemory)
                 .Mappings(m =>
                     m.FluentMappings
-                        .AddFromAssemblyOf<Record>()
+                        .Add<BinaryRecordMap>()
                         .ExportTo(stringWriter))
                 .BuildConfiguration();
 
@@ -304,7 +364,7 @@ namespace FluentNHibernate.Testing.Cfg
                 .Mappings(m =>
                     m.MergeMappings()
                      .FluentMappings
-                         .AddFromAssemblyOf<Record>()
+                         .Add<BinaryRecordMap>()
                          .ExportTo(ExportPath))
                 .BuildConfiguration();
 
@@ -351,10 +411,10 @@ namespace FluentNHibernate.Testing.Cfg
                 .Mappings(m =>
                 {
                     m.FluentMappings
-                        .AddFromAssemblyOf<Record>()
+                        .Add<BinaryRecordMap>()
                         .ExportTo(ExportPath);
 
-                    m.AutoMappings.Add(AutoMap.AssemblyOf<Person>()
+                    m.AutoMappings.Add(AutoMap.Source(new StubTypeSource(typeof(Person)))
                                         .Where(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
                         .ExportTo(ExportPath);
                 })
@@ -362,7 +422,7 @@ namespace FluentNHibernate.Testing.Cfg
 
             var files = Directory.GetFiles(ExportPath);
             
-            files.ShouldContain(HbmFor<Record>);
+            files.ShouldContain(HbmFor<BinaryRecord>);
             files.ShouldContain(HbmFor<Person>);
         }
 
@@ -374,7 +434,7 @@ namespace FluentNHibernate.Testing.Cfg
                 .Database(SQLiteConfiguration.Standard.InMemory)
                 .Mappings(m =>
                     m.FluentMappings
-                        .AddFromAssemblyOf<CachedRecord>()
+                        .Add<CachedRecordMap>()
                         .ExportTo(ExportPath))
                 .BuildConfiguration();
         }

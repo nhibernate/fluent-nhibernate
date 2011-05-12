@@ -10,34 +10,24 @@ namespace FluentNHibernate.Testing.DomainModel
     [TestFixture]
     public class ConnectedTester
     {
-        private ISessionSource _source;
+        private ISessionSource source;
 
         [SetUp]
         public void SetUp()
         {
             var properties = new SQLiteConfiguration()
                 .UseOuterJoin()
-                //.ShowSql()
                 .InMemory()
                 .ToProperties();
 
-            //var properties = MsSqlConfiguration
-            //    .MsSql2005
-            //    .ConnectionString
-            //    .Server(".")
-            //    .Database("FluentNHibernate")
-            //    .TrustedConnection
-            //    .CreateProperties
-            //    .ToProperties();
-
-            _source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new TestPersistenceModel());
-            _source.BuildSchema();
+            source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new TestPersistenceModel());
+            source.BuildSchema();
         }
 
         [Test]
         public void MappingTest1()
         {
-            new PersistenceSpecification<Record>(_source)
+            new PersistenceSpecification<Record>(source)
                 .CheckProperty(r => r.Age, 22)
                 .CheckProperty(r => r.Name, "somebody")
                 .CheckProperty(r => r.Location, "somewhere")
@@ -47,14 +37,14 @@ namespace FluentNHibernate.Testing.DomainModel
         [Test]
         public void Mapping_test_with_arrays()
         {
-            new PersistenceSpecification<BinaryRecord>(_source)
+            new PersistenceSpecification<BinaryRecord>(source)
                 .CheckProperty(r => r.BinaryValue, new byte[] { 1, 2, 3 })
                 .VerifyTheMappings();
         }
         [Test]
         public void CanWorkWithNestedSubClasses()
         {
-            new PersistenceSpecification<Child2Record>(_source)
+            new PersistenceSpecification<Child2Record>(source)
                 .CheckProperty(r => r.Name, "Foxy")
                 .CheckProperty(r => r.Another, "Lady")
                 .CheckProperty(r => r.Third, "Yeah")
@@ -64,7 +54,7 @@ namespace FluentNHibernate.Testing.DomainModel
         [Test]
         public void MappingTest2_NullableProperty()
         {
-            new PersistenceSpecification<RecordWithNullableProperty>(_source)
+            new PersistenceSpecification<RecordWithNullableProperty>(source)
                 .CheckProperty(x => x.Age, null)
                 .CheckProperty(x => x.Name, "somebody")
                 .CheckProperty(x => x.Location, "somewhere")
@@ -140,18 +130,12 @@ namespace FluentNHibernate.Testing.DomainModel
         public virtual byte[] BinaryValue { get; set; }
     }
 
-    public class CachedRecordMap 
+    public class CachedRecordMap : ClassMap<CachedRecord>
     {
-        private readonly ClassMap<CachedRecord> classMap = new ClassMap<CachedRecord>();
-        public ClassMap<CachedRecord> ClassMap
+        CachedRecordMap()
         {
-            get { return classMap; }
-        }
-
-        public CachedRecordMap()
-        {
-            classMap.Cache.ReadWrite();
-            classMap.Id(x => x.Id, "id");
+            Cache.ReadWrite();
+            Id(x => x.Id, "id");
         }
     }
     public class CachedRecord : Entity

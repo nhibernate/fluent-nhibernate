@@ -33,37 +33,6 @@ namespace FluentNHibernate.Testing.Cfg
         }
 
         [Test]
-        public void AddFromAssemblyOfAddsAnyClassMapMappingsToCfg()
-        {
-            mapping.FluentMappings.AddFromAssemblyOf<Record>();
-            mapping.Apply(cfg);
-
-            cfg.ClassMappings.Count.ShouldBeGreaterThan(0);
-            cfg.ClassMappings.ShouldContain(c => c.MappedClass == typeof(Record));
-        }
-
-        [Test]
-        public void AddFromAssemblyAddsAnyClassMapMappingsToCfg()
-        {
-            mapping.FluentMappings.AddFromAssembly(typeof(Record).Assembly);
-            mapping.Apply(cfg);
-
-            cfg.ClassMappings.Count.ShouldBeGreaterThan(0);
-            cfg.ClassMappings.ShouldContain(c => c.MappedClass == typeof(Record));
-        }
-
-        [Test]
-        public void AddFromAssemblyAddsAnyClassMapMappingsToCfgWhenMerged()
-        {
-            mapping.MergeMappings();
-            mapping.FluentMappings.AddFromAssembly(typeof(Record).Assembly);
-            mapping.Apply(cfg);
-
-            cfg.ClassMappings.Count.ShouldBeGreaterThan(0);
-            cfg.ClassMappings.ShouldContain(c => c.MappedClass == typeof(Record));
-        }
-
-        [Test]
         public void AddAutoMappingAddsAnyAutoMappedMappingsToCfg()
         {
             mapping.AutoMappings.Add(AutoMap.Source(new StubTypeSource(typeof(Record))));
@@ -121,27 +90,27 @@ namespace FluentNHibernate.Testing.Cfg
         public void AlteringConventionsShouldAffectProducedClasses()
         {
             mapping.FluentMappings
-                .AddFromAssemblyOf<Record>()
+                .Add<BinaryRecordMap>()
                 .Conventions.Add(
                     ConventionBuilder.Class.Always(x => x.Table(x.EntityType.Name + "Table"))
                 );
             mapping.Apply(cfg);
 
-            cfg.ClassMappings.ShouldContain(c => c.Table.Name == "RecordTable");
+            cfg.ClassMappings.ShouldContain(c => c.Table.Name == "BinaryRecordTable");
         }
 
         [Test]
         public void CanAddMultipleConventions()
         {
             mapping.FluentMappings
-                .AddFromAssemblyOf<Record>()
+                .Add<BinaryRecordMap>()
                 .Conventions.Add(
                     ConventionBuilder.Class.Always(x => x.Table(x.EntityType.Name + "Table")),
                     ConventionBuilder.Class.Always(x => x.DynamicInsert())
                 );
             mapping.Apply(cfg);
 
-            cfg.ClassMappings.ShouldContain(c => c.Table.Name == "RecordTable" && c.DynamicInsert == true);
+            cfg.ClassMappings.ShouldContain(c => c.Table.Name == "BinaryRecordTable" && c.DynamicInsert == true);
         }
 
         [Test]
