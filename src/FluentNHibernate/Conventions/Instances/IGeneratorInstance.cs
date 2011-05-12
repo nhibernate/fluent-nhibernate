@@ -39,5 +39,7 @@ namespace FluentNHibernate.Conventions.Instances
         void Custom<T>(Action<ParamBuilder> paramValues) where T : IIdentifierGenerator;
         void Custom(Type generator, Action<ParamBuilder> paramValues);
         void Custom(string generator, Action<ParamBuilder> paramValues);
+        void Native(string sequenceName);
+        void Native(string sequenceName, Action<ParamBuilder> paramValues);
     }
 }
