@@ -20,7 +20,7 @@ namespace FluentNHibernate
 
         public IEnumerable<Type> GetTypes()
         {
-            return source.GetExportedTypes().OrderBy(x => x.FullName);
+            return source.GetTypes().OrderBy(x => x.FullName);
         }
 
         public void LogSource(IDiagnosticLogger logger)
