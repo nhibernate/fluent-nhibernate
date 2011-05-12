@@ -49,6 +49,9 @@ namespace FluentNHibernate.Automapping
                 if (providers.Id != null)
                     classMapping.Id = providers.Id.GetIdentityMapping();
 
+                if (providers.NaturalId != null)
+                    classMapping.NaturalId = providers.NaturalId.GetNaturalIdMapping();
+
                 if (providers.CompositeId != null)
                     classMapping.Id = providers.CompositeId.GetCompositeIdMapping();
 

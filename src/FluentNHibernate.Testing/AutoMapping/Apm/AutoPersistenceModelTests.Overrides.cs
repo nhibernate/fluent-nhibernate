@@ -9,7 +9,19 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
     [TestFixture]
     public partial class AutoPersistenceModelTests : BaseAutoPersistenceTests
     {
-        #region overrides
+        [Test]
+        public void NaturalIdOverrideShouldOverrideExistingProperty() 
+        { 
+            var autoMapper = AutoMap.AssemblyOf<ExampleClass>() 
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures") 
+                .Override<ExampleClass>(c => c.NaturalId().Property(x => x.LineOne, "test")); 
+
+            new AutoMappingTester<ExampleClass>(autoMapper) 
+                .Element("//natural-id/property[@name='LineOne']") 
+                .Exists() 
+                .HasThisManyChildNodes(1) 
+                .Element("//natural-id/property[@name='LineOne']/column").HasAttribute("name", "test"); 
+        } 
 
         [Test]
         public void OverrideShouldOverrideExistingProperty()
@@ -340,7 +352,5 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Element("//subclass/any[@name='DictionaryChild']").Exists()
                 .Element("//subclass/map[@name='DictionaryChild']").DoesntExist();
         }
-
-        #endregion
     }
 }
