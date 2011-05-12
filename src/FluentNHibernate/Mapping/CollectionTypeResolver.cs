@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
-using Iesi.Collections;
-using Iesi.Collections.Generic;
 
 namespace FluentNHibernate.Mapping
 {
@@ -24,7 +22,7 @@ namespace FluentNHibernate.Mapping
 
         static bool IsSet(Member member)
         {
-            return member.PropertyType == typeof(ISet) || member.PropertyType.Closes(typeof(ISet<>)) || member.PropertyType.Closes(typeof(HashSet<>));
+            return member.PropertyType.Name.In("ISet", "ISet`1", "HashSet`1");
         }
 
         static bool IsEnumerable(Member member)
