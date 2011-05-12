@@ -30,8 +30,8 @@ namespace FluentNHibernate.Conventions.Instances
         new ICacheInstance Cache { get; }
         new ICollectionCascadeInstance Cascade { get; }
         new IFetchInstance Fetch { get; }
-        new IOptimisticLockInstance OptimisticLock { get; }
-        
+
+        new void OptimisticLock();
         new void Check(string constraint);
         new void CollectionType<T>();
         new void CollectionType(string type);

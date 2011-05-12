@@ -130,9 +130,8 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         [Test]
         public void ShouldWriteOptimisticLockAttribute()
         {
-
             var testHelper = Helper();
-            testHelper.Check(x => x.OptimisticLock, "lock").MapsToAttribute("optimistic-lock");
+            testHelper.Check(x => x.OptimisticLock, true).MapsToAttribute("optimistic-lock");
 
             testHelper.VerifyAll(writer);
         }

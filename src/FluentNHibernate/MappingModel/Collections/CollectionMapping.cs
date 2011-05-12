@@ -190,7 +190,7 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.CollectionType, value); }
         }
 
-        public string OptimisticLock
+        public bool OptimisticLock
         {
             get { return attributes.Get(x => x.OptimisticLock); }
             set { attributes.Set(x => x.OptimisticLock, value); }

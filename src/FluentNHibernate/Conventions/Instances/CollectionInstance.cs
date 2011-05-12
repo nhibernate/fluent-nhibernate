@@ -56,16 +56,11 @@ namespace FluentNHibernate.Conventions.Instances
             }
         }
 
-        public new IOptimisticLockInstance OptimisticLock
+        public new void OptimisticLock()
         {
-            get
-            {
-                return new OptimisticLockInstance(value =>
-                {
-                    if (!mapping.IsSpecified("OptimisticLock"))
-                        mapping.OptimisticLock = value;
-                });
-            }
+            if (!mapping.IsSpecified("OptimisticLock"))
+                mapping.OptimisticLock = nextBool;
+            nextBool = true;
         }
 
         public new void Check(string constraint)

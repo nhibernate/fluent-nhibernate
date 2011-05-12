@@ -17,7 +17,7 @@ namespace FluentNHibernate.Conventions.Inspections
         IRelationshipInspector Relationship { get; }
         Cascade Cascade { get; }
         Fetch Fetch { get; }
-        OptimisticLock OptimisticLock { get; }
+        bool OptimisticLock { get; }
         bool Generic { get; }
         bool Inverse { get; }
         Access Access { get; }

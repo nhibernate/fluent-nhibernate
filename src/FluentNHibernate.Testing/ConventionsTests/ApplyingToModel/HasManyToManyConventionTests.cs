@@ -154,9 +154,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         [Test]
         public void ShouldSetOptimisticLockProperty()
         {
-            Convention(x => x.OptimisticLock.Dirty());
+            Convention(x => x.OptimisticLock());
 
-            VerifyModel(x => x.OptimisticLock.ShouldEqual("dirty"));
+            VerifyModel(x => x.OptimisticLock.ShouldEqual(true));
         }
 
         [Test]

@@ -189,11 +189,11 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void OptimisticLockShouldntBeOverwritten()
         {
-            Mapping(x => x.Children, x => x.OptimisticLock.All());
+            Mapping(x => x.Children, x => x.OptimisticLock());
 
-            Convention(x => x.OptimisticLock.Dirty());
+            Convention(x => x.Not.OptimisticLock());
 
-            VerifyModel(x => x.OptimisticLock.ShouldEqual("all"));
+            VerifyModel(x => x.OptimisticLock.ShouldEqual(true));
         }
 
         [Test]

@@ -16,7 +16,6 @@ namespace FluentNHibernate.Mapping
     {
         private readonly AccessStrategyBuilder<T> access;
         private readonly FetchTypeExpression<T> fetch;
-        private readonly OptimisticLockBuilder<T> optimisticLock;
         private readonly CollectionCascadeExpression<T> cascade;
         protected ElementPart elementPart;
         protected ICompositeElementMappingProvider componentMapping;
@@ -38,7 +37,6 @@ namespace FluentNHibernate.Mapping
             AsBag();
             access = new AccessStrategyBuilder<T>((T)this, value => collectionAttributes.Set(x => x.Access, value));
             fetch = new FetchTypeExpression<T>((T)this, value => collectionAttributes.Set(x => x.Fetch, value));
-            optimisticLock = new OptimisticLockBuilder<T>((T)this, value => collectionAttributes.Set(x => x.OptimisticLock, value));
             cascade = new CollectionCascadeExpression<T>((T)this, value => collectionAttributes.Set(x => x.Cascade, value));
 
             SetDefaultCollectionType();
@@ -470,11 +468,13 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Specify the optimistic locking behaviour
+        /// Specifies whether this collection should be optimistically locked.
         /// </summary>
-        public OptimisticLockBuilder<T> OptimisticLock
+        public T OptimisticLock()
         {
-            get { return optimisticLock; }
+            collectionAttributes.Set(x => x.OptimisticLock, nextBool);
+            nextBool = true;
+            return (T)this;
         }
 
         /// <summary>

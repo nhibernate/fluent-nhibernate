@@ -56,7 +56,7 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             mapping.ContainingEntityType = typeof(Target);
             mapping.Lazy = Lazy.True;
             mapping.Name = "name";
-            mapping.OptimisticLock = "lock";
+            mapping.OptimisticLock = true;
             mapping.BatchSize = 1;
             mapping.Cache = new CacheMapping();
             mapping.Check = "check";

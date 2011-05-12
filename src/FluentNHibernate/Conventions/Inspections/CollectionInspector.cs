@@ -94,9 +94,9 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return Fetch.FromString(mapping.Fetch); }
         }
 
-        public OptimisticLock OptimisticLock
+        public bool OptimisticLock
         {
-            get { return OptimisticLock.FromString(mapping.OptimisticLock); }
+            get { return mapping.OptimisticLock; }
         }
 
         public bool Generic

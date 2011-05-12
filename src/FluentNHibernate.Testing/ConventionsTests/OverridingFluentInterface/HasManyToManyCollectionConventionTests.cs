@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using FluentNHibernate.Automapping.TestFixtures;
-using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Testing.FluentInterfaceTests;
 using NUnit.Framework;
@@ -180,11 +178,11 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
         [Test]
         public void OptimisticLockShouldntBeOverwritten()
         {
-            Mapping(x => x.Children, x => x.OptimisticLock.All());
+            Mapping(x => x.Children, x => x.OptimisticLock());
 
-            Convention(x => x.OptimisticLock.Dirty());
+            Convention(x => x.Not.OptimisticLock());
 
-            VerifyModel(x => x.OptimisticLock.ShouldEqual("all"));
+            VerifyModel(x => x.OptimisticLock.ShouldEqual(true));
         }
 
         [Test]
