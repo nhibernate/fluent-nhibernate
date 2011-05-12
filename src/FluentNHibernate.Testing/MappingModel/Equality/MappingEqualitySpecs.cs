@@ -351,7 +351,6 @@ namespace FluentNHibernate.Testing.MappingModel.Equality
             {
                 ContainingEntityType = typeof(Target),
                 Formula = "formula",
-                Length = 1,
                 Type = new TypeReference(typeof(Target))
             };
 

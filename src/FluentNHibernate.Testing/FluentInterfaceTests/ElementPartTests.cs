@@ -17,10 +17,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void CanSetLength()
         {
             var part = new ElementPart(typeof(MappedObject));
+            part.Column("test");
             part.Length(50);
 
             ElementMapping elementMapping = ((IElementMappingProvider)part).GetElementMapping();
-            elementMapping.Length.ShouldEqual(50);
+            elementMapping.Columns.First().Length.ShouldEqual(50);
         }
 
         [Test]

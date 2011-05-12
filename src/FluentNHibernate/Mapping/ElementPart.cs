@@ -7,14 +7,14 @@ namespace FluentNHibernate.Mapping
 {
     public class ElementPart : IElementMappingProvider
     {
-        private readonly Type entity;
-        private readonly AttributeStore<ElementMapping> attributes = new AttributeStore<ElementMapping>();
-        private readonly ColumnMappingCollection<ElementPart> columns;
+        Type entity;
+        AttributeStore<ElementMapping> attributes = new AttributeStore<ElementMapping>();
+        AttributeStore<ColumnMapping> columnAttributes = new AttributeStore<ColumnMapping>();
 
         public ElementPart(Type entity)
         {
             this.entity = entity;
-            columns = new ColumnMappingCollection<ElementPart>(this);            
+            Columns = new ColumnMappingCollection<ElementPart>(this);            
         }
 
         /// <summary>
@@ -23,17 +23,14 @@ namespace FluentNHibernate.Mapping
         /// <param name="elementColumnName">Column name</param>
         public ElementPart Column(string elementColumnName)
         {
-            columns.Add(elementColumnName);
+            Columns.Add(elementColumnName);
             return this;
         }
 
         /// <summary>
         /// Modify the columns for this element
         /// </summary>
-        public ColumnMappingCollection<ElementPart> Columns
-        {
-            get { return columns; }
-        }
+        public ColumnMappingCollection<ElementPart> Columns { get; private set; }
 
         /// <summary>
         /// Specify the element type
@@ -51,7 +48,7 @@ namespace FluentNHibernate.Mapping
         /// <param name="length">Column length</param>
         public ElementPart Length(int length)
         {
-            attributes.Set(x => x.Length, length);
+            columnAttributes.Set(x => x.Length, length);
             return this;
         }
 
@@ -71,7 +68,10 @@ namespace FluentNHibernate.Mapping
             mapping.ContainingEntityType = entity;
 
             foreach (var column in Columns)
+            {
+                column.MergeAttributes(columnAttributes);
                 mapping.AddColumn(column);
+            }
 
             return mapping;
         }

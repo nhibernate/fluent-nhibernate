@@ -54,7 +54,7 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public int Length
         {
-            get { return mapping.Length;  }
+            get { return mapping.Columns.Select(x => x.Length).FirstOrDefault();  }
         }
     }
 }
