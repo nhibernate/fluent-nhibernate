@@ -130,6 +130,23 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         }
 
         [Test]
+        public void ShouldAllowMixedTablePerSubclassWithTablePerClassHierarchy()
+        {
+            var model = new PersistenceModel();
+
+            model.Add(new MixedTablePerSubclassWithTablePerClassHierarchy.Mixed_ParentMap());
+            model.Add(new MixedTablePerSubclassWithTablePerClassHierarchy.Mixed_TPCH_ChildMap());
+            model.Add(new MixedTablePerSubclassWithTablePerClassHierarchy.Mixed_TPS_ChildMap());
+
+            var classMapping = model.BuildMappings()
+                .First()
+                .Classes.First();
+
+            classMapping.Subclasses.Count().ShouldEqual(2);
+            classMapping.Subclasses.First().Type.ShouldEqual(typeof(MixedTablePerSubclassWithTablePerClassHierarchy.Mixed_TPCH_Child));
+        }
+
+        [Test]
         public void ShouldPickupSubclassMapsWithIntermediaryClasses()
         {
             var model = new PersistenceModel();
@@ -329,6 +346,44 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
 
         public class TPCH_ChildChildMap : SubclassMap<TPCH_ChildChild>
         { }
+    }
+
+    namespace MixedTablePerSubclassWithTablePerClassHierarchy
+    {
+        public class Mixed_Parent
+        {
+            public virtual int Id { get; set; }
+        }
+
+        public class Mixed_TPCH_Child
+        {
+            
+        }
+
+        public class Mixed_TPS_Child
+        {
+            public virtual string Description { get; set; }
+        }
+
+        public class Mixed_ParentMap : ClassMap<Mixed_Parent>
+        {
+            public Mixed_ParentMap()
+            {
+                Id(x => x.Id);
+                DiscriminateSubClassesOnColumn("discriminator");
+            }
+        }
+
+        public class Mixed_TPCH_ChildMap : SubclassMap<Mixed_TPCH_Child>
+        { }
+
+        public class Mixed_TPS_ChildMap : SubclassMap<Mixed_TPS_Child>
+        {
+            public Mixed_TPS_ChildMap()
+            {
+                Map(x => x.Description);
+            }
+        }
     }
 
     namespace Intermediaries
