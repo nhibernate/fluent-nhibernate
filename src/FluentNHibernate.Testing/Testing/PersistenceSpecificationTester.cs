@@ -168,6 +168,15 @@ namespace FluentNHibernate.Testing.Testing
 			var cat = _spec.CheckProperty(x => x.FirstKitten, _cat.FirstKitten).VerifyTheMappings();
 			cat.ShouldNotBeNull();
     	}
+
+        [Test]
+        public void Comparing_reference_should_use_the_specified_property_comparisons()
+        {
+            _spec.CheckReference(cat => cat.FirstKitten, _cat.FirstKitten, x => x.Id).VerifyTheMappings();
+
+            Assert.Throws<ApplicationException>(() => _spec.CheckReference(cat => cat.FirstKitten, _cat.FirstKitten, x => x.Id, x => x.Name)
+                .VerifyTheMappings());
+        }
     }
 
     [TestFixture]
