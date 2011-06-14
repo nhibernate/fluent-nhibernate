@@ -146,6 +146,16 @@ namespace FluentNHibernate.Testing.Testing
         }
 
         [Test]
+        public void Comparing_objects_in_two_lists_should_use_the_specified_comparisons()
+        {
+            _spec.CheckList(x => x.AllKittens, _cat.AllKittens, kitten => kitten.Id).VerifyTheMappings();
+
+            // Should fail because the names don't match.
+            Assert.Throws<ApplicationException>(() => _spec.CheckList(x => x.AllKittens, _cat.AllKittens, kitten => kitten.Id, kitten => kitten.Name)
+                .VerifyTheMappings());
+        }
+
+        [Test]
         public void Can_test_enumerable()
         {
             var kittens = new[] {new Kitten {Id = 3, Name = "kitten3"}, new Kitten {Id = 4, Name = "kitten4"}};
@@ -168,6 +178,16 @@ namespace FluentNHibernate.Testing.Testing
 			var cat = _spec.CheckProperty(x => x.FirstKitten, _cat.FirstKitten).VerifyTheMappings();
 			cat.ShouldNotBeNull();
     	}
+
+        [Test]
+        public void Comparing_reference_should_use_the_specified_property_comparisons()
+        {
+            _spec.CheckReference(cat => cat.FirstKitten, _cat.FirstKitten, x => x.Id).VerifyTheMappings();
+
+            // Should fail because the names don't match.
+            Assert.Throws<ApplicationException>(() => _spec.CheckReference(cat => cat.FirstKitten, _cat.FirstKitten, x => x.Id, x => x.Name)
+                .VerifyTheMappings());
+        }
     }
 
     [TestFixture]
