@@ -124,6 +124,8 @@
     <Compile Include="DomainModel\MemberAccessResolverTests.cs" />
     <Compile Include="DomainModel\MemberBackingFieldTests.cs" />
     <Compile Include="DomainModel\NamingTests.cs" />
+    <Compile Include="AutoMapping\UnionSubclassConventionTests.cs" />
+    <Compile Include="AutoMapping\UnionSubclassTests.cs" />
     <Compile Include="StubTypeSource.cs" />
     <Compile Include="AutoMapping\TestFixtures.cs" />
     <Compile Include="Cfg\Db\DB2ConfigurationTester.cs" />

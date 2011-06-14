@@ -58,7 +58,9 @@ namespace FluentNHibernate.Automapping
                 .Where(x => x.Value != null && x.Value.Type == classType)
                 .Select(x => x.Key))
             {
-                if (isDiscriminated && !discriminatorSet && mapping is ClassMapping)
+                var tempMapping = mapping as ClassMapping;
+                var tempIsNull = tempMapping == null;
+                if (isDiscriminated && !discriminatorSet && !tempIsNull)
                 {
                     var discriminatorColumn = cfg.GetDiscriminatorColumn(classType);
                     var discriminator = new DiscriminatorMapping
@@ -68,13 +70,20 @@ namespace FluentNHibernate.Automapping
                     };
                     discriminator.AddDefaultColumn(new ColumnMapping { Name = discriminatorColumn });
 
-                    ((ClassMapping)mapping).Discriminator = discriminator;
+                    tempMapping.Discriminator = discriminator;
                     discriminatorSet = true;
                 }
 
                 SubclassMapping subclassMapping;
 
-                if (!isDiscriminated)
+                if(!tempIsNull && tempMapping.IsUnionSubclass)
+                {
+                    subclassMapping = new SubclassMapping(SubclassType.UnionSubclass)
+                    {
+                        Type = inheritedClass.Type
+                    };
+                }
+                else if(!isDiscriminated)
                 {
                     subclassMapping = new SubclassMapping(SubclassType.JoinedSubclass)
                     {
