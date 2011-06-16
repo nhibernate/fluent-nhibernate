@@ -56,7 +56,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
                     .Database("tables")
                     .Username("toni tester")
                     .Password("secret"))
-                .ToProperties().ShouldContain("connection.connection_string", "Data Source=db-srv;Initial Catalog=tables;Integrated Security=False;User ID=\"toni tester\";Password=secret");
+                .ToProperties().ShouldContain("connection.connection_string", "Data Source=db-srv;Initial Catalog=tables;Integrated Security=False;User ID=\"toni tester\";Password=secret;MultipleActiveResultSets=False");
         }
 
         [Test]
@@ -67,7 +67,20 @@ namespace FluentNHibernate.Testing.Cfg.Db
                     .Server("db-srv")
                     .Database("tables")
                     .TrustedConnection())
-                .ToProperties().ShouldContain("connection.connection_string" ,"Data Source=db-srv;Initial Catalog=tables;Integrated Security=True");
+                .ToProperties().ShouldContain("connection.connection_string" ,"Data Source=db-srv;Initial Catalog=tables;Integrated Security=True;MultipleActiveResultSets=False");
+        }
+
+        [Test]
+        public void ConnectionString_for_mars_is_set_in_the_configuration()
+        {
+            MsSqlConfiguration.MsSql2005
+                .ConnectionString(c => c
+                    .Server("db-srv")
+                    .Database("tables")
+                    .Username("toni tester")
+                    .Password("secret")
+                    .MultipleActiveResultSets())
+                .ToProperties().ShouldContain("connection.connection_string" , "Data Source=db-srv;Initial Catalog=tables;Integrated Security=False;User ID=\"toni tester\";Password=secret;MultipleActiveResultSets=True");
         }
 
         [Test]

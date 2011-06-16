@@ -9,6 +9,7 @@ namespace FluentNHibernate.Cfg.Db
         private string username;
         private string password;
         private bool trustedConnection;
+        private bool mars;
 
         public MsSqlConnectionStringBuilder Server(string server)
         {
@@ -45,6 +46,13 @@ namespace FluentNHibernate.Cfg.Db
             return this;
         }
 
+        public MsSqlConnectionStringBuilder MultipleActiveResultSets()
+        {
+            mars = true;
+            IsDirty = true;
+            return this;
+        }
+
         protected internal override string Create()
         {
             var connectionString = base.Create();
@@ -56,7 +64,8 @@ namespace FluentNHibernate.Cfg.Db
             {
                 DataSource = server,
                 InitialCatalog = database,
-                IntegratedSecurity = trustedConnection
+                IntegratedSecurity = trustedConnection,
+                MultipleActiveResultSets = mars
             };
 
             if (!trustedConnection)
