@@ -123,6 +123,9 @@
     <Compile Include="AutoMapping\Overrides\ParentOverridesWithSubclasses.cs" />
     <Compile Include="AutoMapping\UnionSubclassConventionTests.cs" />
     <Compile Include="AutoMapping\UnionSubclassTests.cs" />
+    <Compile Include="Fixtures\AutoMappingAlterations\AbstractOverride.cs" />
+    <Compile Include="Fixtures\AutoMappingAlterations\AbstractOverrideImplementation.cs" />
+    <Compile Include="Fixtures\AutoMappingAlterations\Model\Qux.cs" />
     <Compile Include="StubTypeSource.cs" />
     <Compile Include="AutoMapping\TestFixtures.cs" />
     <Compile Include="Cfg\Db\DB2ConfigurationTester.cs" />
