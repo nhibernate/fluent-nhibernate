@@ -40,5 +40,17 @@ namespace FluentNHibernate.Testing.AutoMapping.Overrides
             new AutoMappingTester<Baz>(model)
                 .Element("class/property[@name='Name']").Exists();
         }
+
+		[Test]
+		public void OverridesCanBeAbstract()
+		{
+			var model = AutoMap.AssemblyOf<Qux>()
+				.Where(t => t.Namespace == typeof(Qux).Namespace);
+
+			alteration.Alter(model);
+
+			new AutoMappingTester<Qux>(model)
+				.Element("class").HasAttribute("batch-size", "10");
+		}
     }
 }

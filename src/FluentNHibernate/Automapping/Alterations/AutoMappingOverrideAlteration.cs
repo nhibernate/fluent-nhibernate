@@ -34,6 +34,7 @@ namespace FluentNHibernate.Automapping.Alterations
         {
             // find all types deriving from IAutoMappingOverride<T>
             var types = from type in assembly.GetExportedTypes()
+						where !type.IsAbstract
                         let entity = (from interfaceType in type.GetInterfaces()
                                       where interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IAutoMappingOverride<>)
                                       select interfaceType.GetGenericArguments()[0]).FirstOrDefault()
