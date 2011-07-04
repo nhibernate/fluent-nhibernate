@@ -293,6 +293,12 @@ namespace FluentNHibernate.Automapping
             return this;
         }
 
+		public AutoPersistenceModel AddFilter<TFilter>() where TFilter : IFilterDefinition
+		{
+    		Add(typeof(TFilter));
+			return this;
+		}
+
         internal void AddOverride(Type type, Action<object> action)
         {
             inlineOverrides.Add(new InlineOverride(type, action));
