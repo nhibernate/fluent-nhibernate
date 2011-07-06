@@ -123,6 +123,8 @@
     <Compile Include="Automapping\Steps\HasManyToManyStep.cs" />
     <Compile Include="Automapping\Steps\CollectionStep.cs" />
     <Compile Include="Automapping\Steps\IAutomappingStep.cs" />
+    <Compile Include="Cfg\Db\IngresConfiguration.cs" />
+    <Compile Include="Cfg\Db\IngresConnectionStringBuilder.cs" />
     <Compile Include="CombinedAssemblyTypeSource.cs" />
     <Compile Include="Conventions\Inspections\IKeyManyToOneInspector.cs" />
     <Compile Include="Conventions\Inspections\IKeyPropertyInspector.cs" />
