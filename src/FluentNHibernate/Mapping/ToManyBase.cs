@@ -58,7 +58,7 @@ namespace FluentNHibernate.Mapping
 		/// <returns>Type</returns>
     	public Type EntityType
     	{
-			get { return entity.GetType(); }
+			get { return entity; }
     	}
 
         /// <summary>
