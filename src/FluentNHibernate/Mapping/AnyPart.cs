@@ -156,15 +156,10 @@ namespace FluentNHibernate.Mapping
             if (!mapping.IsSpecified("Name"))
                 mapping.Name = property.Name;
 
+            metaValues.Each(mapping.AddMetaValue);
             if (!mapping.IsSpecified("MetaType"))
             {
-                if (metaValues.Count() > 0)
-                {
-                    metaValues.Each(mapping.AddMetaValue);
-                    mapping.MetaType = new TypeReference(typeof(string));
-                }
-                else
-                    mapping.MetaType = new TypeReference(property.PropertyType);
+                mapping.MetaType = metaValues.Count() > 0 ? new TypeReference(typeof(string)) : new TypeReference(property.PropertyType);
             }
 
             foreach (var column in typeColumns)

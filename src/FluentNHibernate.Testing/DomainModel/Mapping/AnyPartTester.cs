@@ -173,5 +173,27 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             mapTest.Element("class/id").ShouldBeInParentAtPosition(0);
         }
+
+
+        [Test]
+        public void SpecificMetaTypeShouldNotClearMetaValues()
+        {
+            var mapTest = new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                {
+                    map.Id(x => x.Id);
+                    map.ReferencesAny(x => x.Parent)
+                        .EntityIdentifierColumn("AnyId")
+                        .EntityTypeColumn("AnyType")
+                        .IdentityType(x => x.Id)
+                        .MetaType<int>()
+                        .AddMetaValue<SecondMappedObject>("1");
+                });
+
+            mapTest
+                .Element("class/any/meta-value")
+                .HasAttribute("value", "1")
+                .HasAttribute("class", typeof(SecondMappedObject).AssemblyQualifiedName);
+        }
     }
 }

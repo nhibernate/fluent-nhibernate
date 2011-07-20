@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using FluentNHibernate.Testing.Values;
 using FluentNHibernate.Utils;
@@ -81,6 +82,19 @@ namespace FluentNHibernate.Testing
             return spec.RegisterCheckedProperty(new ReferenceProperty<T, object>(property, propertyValue), propertyComparer);
         }
 
+        public static PersistenceSpecification<T> CheckReference<T, TReference>(this PersistenceSpecification<T> spec,
+                                                                   Expression<Func<T, object>> expression,
+                                                                   TReference propertyValue,
+                                                                   params Func<TReference, object>[] propertiesToCompare)
+        {
+            // Because of the params keyword, the compiler will select this overload
+            // instead of the one above, even when no funcs are supplied in the method call.
+            if (propertiesToCompare == null || propertiesToCompare.Length == 0)
+                return spec.CheckReference(expression, propertyValue, (IEqualityComparer)null);
+
+            return spec.CheckReference(expression, propertyValue, new FuncEqualityComparer<TReference>(propertiesToCompare));
+        }
+
         public static PersistenceSpecification<T> CheckReference<T, TProperty>(this PersistenceSpecification<T> spec,
                                                                                 Expression<Func<T, TProperty>> expression,
                                                                                 TProperty propertyValue,
@@ -119,6 +133,19 @@ namespace FluentNHibernate.Testing
             Accessor property = ReflectionHelper.GetAccessor(expression);
 
             return spec.RegisterCheckedProperty(new ReferenceList<T, TListElement>(property, propertyValue), elementComparer);
+        }
+
+        public static PersistenceSpecification<T> CheckList<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                            Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                            IEnumerable<TListElement> propertyValue,
+                                                                            params Func<TListElement, object>[] propertiesToCompare)
+        {
+            // Because of the params keyword, the compiler can select this overload
+            // instead of the one above, even when no funcs are supplied in the method call.
+            if (propertiesToCompare == null || propertiesToCompare.Length == 0)
+                return spec.CheckList(expression, propertyValue, (IEqualityComparer)null);
+
+            return spec.CheckList(expression, propertyValue, new FuncEqualityComparer<TListElement>(propertiesToCompare));
         }
 
         public static PersistenceSpecification<T> CheckList<T, TListElement>(this PersistenceSpecification<T> spec,
@@ -253,6 +280,26 @@ namespace FluentNHibernate.Testing
                                                                             IEnumerable<TItem> itemsToAdd)
         {
             return spec.CheckList(expression, itemsToAdd, addAction);
+        }
+
+        private class FuncEqualityComparer<T> : EqualityComparer<T>
+        {
+            readonly IEnumerable<Func<T, object>> comparisons;
+
+            public FuncEqualityComparer(IEnumerable<Func<T, object>> comparisons)
+            {
+                this.comparisons = comparisons;
+            }
+
+            public override bool Equals(T x, T y)
+            {
+                return comparisons.All(func => object.Equals(func(x), func(y)));
+            }
+
+            public override int GetHashCode(T obj)
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 }

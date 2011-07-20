@@ -56,6 +56,38 @@ namespace FluentNHibernate.Testing
         }
 
         [Test]
+        public void ConvertEqualsPropertyAndTrue()
+        {
+            var sql = ExpressionToSql.Convert<ChildObject>(x => x.Active == true);
+
+            sql.ShouldEqual("Active = 1");
+        }
+
+        [Test]
+        public void ConvertEqualsPropertyAndFalse()
+        {
+            var sql = ExpressionToSql.Convert<ChildObject>(x => x.Active == false);
+
+            sql.ShouldEqual("Active = 0");
+        }
+
+        [Test]
+        public void ConvertBooleanPropertyImplicitTrue()
+        {
+            var sql = ExpressionToSql.Convert<ChildObject>(x => x.Active);
+
+            sql.ShouldEqual("Active = 1");
+        }
+
+        [Test]
+        public void ConvertBooleanPropertyImplicitFalse()
+        {
+            var sql = ExpressionToSql.Convert<ChildObject>(x => !x.Active);
+
+            sql.ShouldEqual("Active = 0");
+        }
+
+        [Test]
         public void ConvertGreater()
         {
             var sql = ExpressionToSql.Convert<ChildObject>(x => x.Position > 1);

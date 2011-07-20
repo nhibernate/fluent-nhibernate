@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using FluentNHibernate.Diagnostics;
 
 namespace FluentNHibernate.Conventions
 {
@@ -9,6 +10,12 @@ namespace FluentNHibernate.Conventions
     /// </summary>
     public interface IConventionFinder
     {
+        /// <summary>
+        /// Add a source to be queried.
+        /// </summary>
+        /// <param name="source">Source to query</param>
+        void AddSource(ITypeSource source);
+
         /// <summary>
         /// Add an assembly to be queried.
         /// </summary>
@@ -62,5 +69,7 @@ namespace FluentNHibernate.Conventions
         /// <typeparam name="T">Convention interface type</typeparam>
         /// <returns>IEnumerable of T</returns>
         IEnumerable<T> Find<T>() where T : IConvention;
+
+        void SetLogger(IDiagnosticLogger logger);
     }
 }

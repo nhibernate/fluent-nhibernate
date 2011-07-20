@@ -57,5 +57,9 @@ namespace FluentNHibernate.Conventions.Inspections
                     .Cast<IColumnInspector>();
             }
         }
+        public int Length
+        {
+            get { return mapping.Length; }
+        }
     }
 }

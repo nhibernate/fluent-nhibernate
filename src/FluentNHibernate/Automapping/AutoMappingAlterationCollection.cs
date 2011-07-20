@@ -37,7 +37,7 @@ namespace FluentNHibernate.Automapping
         /// <returns>Container</returns>
         public AutoMappingAlterationCollection Add(IAutoMappingAlteration alteration)
         {
-            if (!alterations.Exists(a => a.GetType() == alteration.GetType()))
+            if (!alterations.Exists(a => a.GetType() == alteration.GetType() && alteration.GetType() != typeof(AutoMappingOverrideAlteration)))
                 alterations.Add(alteration);
             return this;
         }

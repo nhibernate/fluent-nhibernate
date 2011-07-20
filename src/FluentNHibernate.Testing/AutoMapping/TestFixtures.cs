@@ -359,8 +359,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
             return (first == null && second == null) ? null : new string[] { first, second };
         }
 
-
-        public void NullSafeSet(IDbCommand st, Object value, int index, ISessionImplementor session)
+        public void NullSafeSet(IDbCommand st, Object value, int index, bool[] unknown, ISessionImplementor session)
         {
             DoubleString ds = value as DoubleString ?? new DoubleString();
 

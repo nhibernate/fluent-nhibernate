@@ -1,9 +1,10 @@
 require 'fileutils'
+gem 'albacore', '=0.1.5'
 require 'albacore'
 require 'tools/albacore/zipdirectory_patch.rb'
 
 def get_version
-  ENV['BUILD_NUMBER'] || '1.1.0.0'
+  ENV['BUILD_NUMBER'] || '2.0.0.0'
 end
 
 task :default => 'build:all'
@@ -17,11 +18,12 @@ namespace :setup do
     end
   end
   
-  task :install_mspec, :version do |t, args|
-    version = args[:version] || '4.5'
+  task :install_mspec, :resharper_version, :vs_version do |t, args|
+    resharper_version = args[:resharper_version] || '5.1'
+    vs_version = args[:vs_version] || 10.0
     puts 'Installing MSpec ReSharper runner'
-    plugins = "#{ENV['APPDATA']}/JetBrains/ReSharper/v#{version}/vs9.0/Plugins"
-    to_copy = ['Machine.Specifications', "Machine.Specifications.ReSharperRunner.#{version}"]
+    plugins = "#{ENV['APPDATA']}/JetBrains/ReSharper/v#{resharper_version}/vs#{vs_version}/Plugins"
+    to_copy = ['Machine.Specifications', "Machine.Specifications.ReSharperRunner.#{resharper_version}"]
 
     FileUtils.mkdir plugins unless File.exists? plugins
     to_copy.each do |f|
@@ -47,16 +49,36 @@ namespace :source do
     asm.version = get_version
     asm.company_name = 'http://fluentnhibernate.org'
     asm.product_name = 'FluentNHibernate'
-    asm.copyright = 'Copyright 2008-2009 James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved.'
+    asm.copyright = 'Copyright 2008-2010 James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved.'
     asm.namespaces = ['System.Security']
     asm.custom_attributes :AllowPartiallyTrustedCallers => nil
     
     puts "The build number is #{asm.version}"
   end
   
+  task :nhibernate_version, :nhibernate_version do |t,args|
+	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || '3.0'
+	
+	raise "Unknown NHibernate version #{args.nhibernate_version} (check your tools/NHibernate folder)" unless File.directory? "tools/NHibernate/#{args.nhibernate_version}"
+	
+	# clear out existing selected nh version
+	files_to_delete = Dir["tools/NHibernate/*.*"].reject {|f| File.directory? f }
+	files_to_delete.each {|f| File.delete f }
+	
+	# copy specific nh version files to the main directory
+	files_to_copy = Dir["tools/NHibernate/#{args.nhibernate_version}/*.*"]
+	files_to_copy.each {|f| FileUtils.copy f, "tools/NHibernate/" }
+  end
+  
   desc 'Compile the source'
-  msbuild :compile do |msb|
-    msb.properties = { :configuration => :Release }
+  msbuild :compile, [:nhibernate_version] => :nhibernate_version do |msb,args|
+	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || '3.0'
+	
+	nh_version_precompiler_switch = 'NH' +  args.nhibernate_version.gsub('.', '')
+	
+	puts nh_version_precompiler_switch
+	
+    msb.properties = { :configuration => :Release, :DefineConstants => nh_version_precompiler_switch }
     msb.targets [:Clean, :Build]
     msb.solution = 'src/FluentNHibernate.sln'
   end
@@ -107,8 +129,9 @@ namespace :package do
   
   desc 'Create zip of source-tree'
   zip :source => :prepare_dist_directory do |zip|
+    file_prefix = ENV['SourceDistFilename'] || 'fluentnhibernate-source'
     zip.directories_to_zip = ['./']
-    zip.output_file = "fluentnhibernate-source-#{get_version}.zip"
+    zip.output_file = "#{file_prefix}-#{get_version}.zip"
     zip.output_path = 'dist'
     zip.exclusions = get_exclusions
   end
@@ -123,8 +146,9 @@ namespace :package do
   
   desc 'Create zip of binaries'
   zip :binaries => :prepare_dist_directory do |zip|
+    file_prefix = ENV['BinaryDistFilename'] || 'fluentnhibernate-binary'
     zip.directories_to_zip = ['build']
-    zip.output_file = "fluentnhibernate-binary-#{get_version}.zip"
+    zip.output_file = "#{file_prefix}-#{get_version}.zip"
     zip.output_path = 'dist'
   end
   

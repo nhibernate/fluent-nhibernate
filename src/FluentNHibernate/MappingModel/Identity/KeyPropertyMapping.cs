@@ -38,6 +38,12 @@ namespace FluentNHibernate.MappingModel.Identity
             set { attributes.Set(x => x.Type, value); }
         }
 
+        public int Length
+        {
+            get { return attributes.Get(x => x.Length); }
+            set { attributes.Set(x => x.Length, value); }
+        }
+
         public IEnumerable<ColumnMapping> Columns
         {
             get { return columns; }

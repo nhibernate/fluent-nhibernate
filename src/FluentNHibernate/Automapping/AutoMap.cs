@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace FluentNHibernate.Automapping
@@ -53,7 +54,7 @@ namespace FluentNHibernate.Automapping
         /// <param name="assemblies">Assemblies containing classes to map</param>
         public static AutoPersistenceModel Assemblies(params Assembly[] assemblies)
         {
-            return Source(new CombinedAssemblyTypeSource(assemblies));
+            return Source(new CombinedAssemblyTypeSource(assemblies.Select(x => new AssemblyTypeSource(x))));
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace FluentNHibernate.Automapping
         /// <param name="assemblies">Assemblies containing classes to map</param>
         public static AutoPersistenceModel Assemblies(IAutomappingConfiguration cfg, params Assembly[] assemblies)
         {
-            return Source(new CombinedAssemblyTypeSource(assemblies), cfg);
+            return Source(new CombinedAssemblyTypeSource(assemblies.Select(x => new AssemblyTypeSource(x))), cfg);
         }
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace FluentNHibernate.Automapping
         /// <param name="assemblies">Assemblies containing classes to map</param>
         public static AutoPersistenceModel Assemblies(IAutomappingConfiguration cfg, IEnumerable<Assembly> assemblies)
         {
-            return Source(new CombinedAssemblyTypeSource(assemblies), cfg);
+            return Source(new CombinedAssemblyTypeSource(assemblies.Select(x => new AssemblyTypeSource(x))), cfg);
         }
 
         /// <summary>

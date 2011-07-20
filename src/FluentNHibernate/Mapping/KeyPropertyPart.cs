@@ -25,6 +25,18 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        public KeyPropertyPart Type(string type)
+        {
+            mapping.Type = new TypeReference(type);
+            return this;
+        }
+
+        public KeyPropertyPart Length(int length)
+        {
+            mapping.Length = length;
+            return this;
+        }
+
         public AccessStrategyBuilder<KeyPropertyPart> Access { get; private set; }
     }
 }

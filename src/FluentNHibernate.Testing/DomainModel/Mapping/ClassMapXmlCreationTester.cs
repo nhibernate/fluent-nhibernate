@@ -582,6 +582,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
         public virtual int Position { get; set; }
+        public virtual bool Active { get; set; }
     }
 
     public class MappedGenericObject<T>

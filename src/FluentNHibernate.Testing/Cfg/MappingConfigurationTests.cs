@@ -3,8 +3,10 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Conventions.Helpers;
+using FluentNHibernate.Diagnostics;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures;
+using FluentNHibernate.Testing.Utils;
 using NHibernate.Cfg;
 using NUnit.Framework;
 
@@ -15,17 +17,19 @@ namespace FluentNHibernate.Testing.Cfg
     {
         private Configuration cfg;
         private MappingConfiguration mapping;
+        IDiagnosticLogger logger;
 
         [SetUp]
         public void CreateMappingConfiguration()
         {
+            logger = Stub<IDiagnosticLogger>.Create();
             cfg = new Configuration();
 
             SQLiteConfiguration.Standard
                 .InMemory()
                 .ConfigureProperties(cfg);
 
-            mapping = new MappingConfiguration();
+            mapping = new MappingConfiguration(logger);
         }
 
         [Test]

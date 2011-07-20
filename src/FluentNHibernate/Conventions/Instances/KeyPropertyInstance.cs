@@ -1,4 +1,5 @@
-﻿using FluentNHibernate.Conventions.Inspections;
+﻿using System;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -23,6 +24,11 @@ namespace FluentNHibernate.Conventions.Instances
                         mapping.Access = value;
                 });
             }
+        }
+        public new void Length(int length)
+        {
+            if (!mapping.IsSpecified("Length"))
+                mapping.Length = length;
         }
     }
 }

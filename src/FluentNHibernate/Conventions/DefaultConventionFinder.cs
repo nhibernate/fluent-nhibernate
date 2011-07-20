@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using FluentNHibernate.Diagnostics;
 
 namespace FluentNHibernate.Conventions
 {
@@ -10,12 +11,8 @@ namespace FluentNHibernate.Conventions
     /// </summary>
     public class DefaultConventionFinder : IConventionFinder
     {
-        private readonly ConventionsCollection conventions = new ConventionsCollection();
-
-        public DefaultConventionFinder()
-        {
-            
-        }
+        IDiagnosticLogger log = new NullDiagnosticsLogger();
+        readonly ConventionsCollection conventions = new ConventionsCollection();
 
         /// <summary>
         /// Find any conventions implementing T.
@@ -33,6 +30,23 @@ namespace FluentNHibernate.Conventions
             }
         }
 
+        public void SetLogger(IDiagnosticLogger logger)
+        {
+            log = logger;
+        }
+
+        public void AddSource(ITypeSource source)
+        {
+            foreach (var type in source.GetTypes())
+            {
+                if (type.IsAbstract || type.IsGenericType || !typeof(IConvention).IsAssignableFrom(type)) continue;
+
+                Add(type, MissingConstructor.Ignore);
+            }
+
+            log.LoadedConventionsFromSource(source);
+        }
+
         /// <summary>
         /// Add an assembly to be queried.
         /// </summary>
@@ -42,12 +56,7 @@ namespace FluentNHibernate.Conventions
         /// <param name="assembly">Assembly instance to query</param>
         public void AddAssembly(Assembly assembly)
         {
-            foreach (var type in assembly.GetExportedTypes())
-            {
-                if (type.IsAbstract || type.IsGenericType || !typeof(IConvention).IsAssignableFrom(type)) continue;
-
-                Add(type, MissingConstructor.Ignore);
-            }
+            AddSource(new AssemblyTypeSource(assembly));
         }
 
         /// <summary>
@@ -117,6 +126,7 @@ namespace FluentNHibernate.Conventions
             if (conventions.Contains(type) && !AllowMultiplesOf(type)) return;
 
             conventions.Add(type, Instantiate(type));
+            log.ConventionDiscovered(type);
         }
 
         private bool AllowMultiplesOf(Type type)

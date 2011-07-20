@@ -19,5 +19,6 @@ namespace FluentNHibernate.Conventions.Inspections
         string PropertyRef { get; }
         bool Update { get; }
         bool Nullable { get; }
+        bool OptimisticLock { get; }
     }
 }
