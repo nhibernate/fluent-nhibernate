@@ -30,7 +30,10 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.IsManyToMany)
                 WriteManyToManyIndex(mapping);
             else
-                WriteIndex(mapping);
+                if (mapping.HasValue(x => x.Offset))
+                    WriteListIndex(mapping);
+                else
+                    WriteIndex(mapping);
         }
 
         void WriteIndex(IndexMapping mapping)
@@ -39,6 +42,13 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (mapping.HasValue(x => x.Type))
                 element.WithAtt("type", mapping.Type);
+        }
+
+        void WriteListIndex(IndexMapping mapping)
+        {
+            var element = document.AddElement("list-index");
+
+            element.WithAtt("base", mapping.Offset);
         }
 
         void WriteManyToManyIndex(IndexMapping mapping)

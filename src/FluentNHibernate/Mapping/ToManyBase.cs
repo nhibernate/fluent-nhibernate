@@ -181,10 +181,10 @@ namespace FluentNHibernate.Mapping
         /// Use a list collection with an index
         /// </summary>
         /// <param name="customIndexMapping">Index mapping</param>
-        public T AsList(Action<IndexBuilder> customIndexMapping)
+        public T AsList(Action<ListIndexBuilder> customIndexMapping)
         {
             collectionBuilder = attrs => new ListMapping(attrs);
-            CreateIndexMapping(customIndexMapping);
+            CreateListIndexMapping(customIndexMapping);
 
             if (indexMapping.Columns.IsEmpty())
                 indexMapping.AddDefaultColumn(new ColumnMapping { Name = "Index" });
@@ -249,6 +249,15 @@ namespace FluentNHibernate.Mapping
         {
             indexMapping = new IndexMapping();
             var builder = new IndexBuilder(indexMapping);
+
+            if (customIndex != null)
+                customIndex(builder);
+        }
+
+        private void CreateListIndexMapping(Action<ListIndexBuilder> customIndex)
+        {
+            indexMapping = new IndexMapping();
+            var builder = new ListIndexBuilder(indexMapping);
 
             if (customIndex != null)
                 customIndex(builder);
