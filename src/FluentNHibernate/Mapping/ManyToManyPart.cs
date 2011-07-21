@@ -1,38 +1,27 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Xml;
 using FluentNHibernate.Mapping.Builders;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
-using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Mapping
 {
     public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild, ManyToManyMapping>
     {
         private readonly IList<FilterMapping> childFilters = new List<FilterMapping>();
-        private readonly Type entity;
         private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
         private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
-        private readonly Type childType;
         readonly AttributeStore sharedColumnAttributes = new AttributeStore();
 
         public ManyToManyPart(Type entity, Member property)
             : this(entity, property, property.PropertyType)
         {
-            childType = property.PropertyType;
         }
 
         protected ManyToManyPart(Type entity, Member member, Type collectionType)
             : base(entity, member, collectionType)
         {
-            this.entity = entity;
-            childType = collectionType;
-
             fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Fetch, value));
             notFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipMapping.NotFound = value);
 

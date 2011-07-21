@@ -29,7 +29,7 @@ namespace FluentNHibernate.Mapping
         private Func<AttributeStore, ICollectionMapping> collectionBuilder;
         protected IndexMapping indexMapping;
         protected Member member;
-        private Type entity;
+        private readonly Type entity;
         ElementMapping elementMapping;
         CacheMapping cache;
 
@@ -51,6 +51,15 @@ namespace FluentNHibernate.Mapping
             keyMapping = new KeyMapping();
             keyMapping.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
         }
+
+		/// <summary>
+		/// Return the type of the owning entity
+		/// </summary>
+		/// <returns>Type</returns>
+    	public Type EntityType
+    	{
+			get { return entity; }
+    	}
 
         /// <summary>
         /// Specify how the foreign key is configured.
