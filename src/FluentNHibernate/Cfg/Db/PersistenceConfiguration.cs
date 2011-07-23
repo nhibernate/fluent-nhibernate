@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using NHibernate.Bytecode;
 using NHibernate.Connection;
 using NHibernate.Dialect;
@@ -66,12 +67,34 @@ namespace FluentNHibernate.Cfg.Db
 
             return values;
         }
+        
+        static IEnumerable<string> OverridenDefaults(IDictionary<string,string> settings)
+        {
+            if (settings[ConnectionProviderKey] != DefaultConnectionProviderClassName)
+                yield return ConnectionProviderKey;
+
+            if (settings[ProxyFactoryFactoryClassKey] != DefaultProxyFactoryFactoryClassName)
+                yield return ProxyFactoryFactoryClassKey;
+        }
+
+        private static IEnumerable<string> KeysToPreserve(NHibConfiguration nhibernateConfig, IDictionary<string, string> settings)
+        {
+            var @default = new NHibConfiguration();
+            return nhibernateConfig.Properties
+                .Except(@default.Properties)
+                    .Select(k => k.Key)
+                    .Except(OverridenDefaults(settings));
+        }
 
         public NHibConfiguration ConfigureProperties(NHibConfiguration nhibernateConfig)
         {
             var settings = CreateProperties();
+            var keepers = KeysToPreserve(nhibernateConfig, settings);
 
-            nhibernateConfig.SetProperties(settings);
+            foreach (var kv in settings.Where(s => !keepers.Contains(s.Key)))
+            {
+                nhibernateConfig.SetProperty(kv.Key, kv.Value);
+            }
 
             return nhibernateConfig;
         }

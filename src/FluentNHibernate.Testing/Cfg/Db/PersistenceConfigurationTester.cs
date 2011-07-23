@@ -31,6 +31,25 @@ namespace FluentNHibernate.Testing.Cfg.Db
         #endregion
 
         [Test]
+        public void ConfigureProperties_should_not_override_values_already_set()
+        {
+            _nhibConfig = new Configuration();
+            _nhibConfig.Properties["proxyfactory.factory_class"] = "foo";
+            ValueOf("proxyfactory.factory_class").ShouldEqual("foo");
+           
+        }
+
+        [Test]
+        public void ConfigureProperties_should_override_values_already_set_with_values_set_in_code()
+        {
+            _nhibConfig = new Configuration();
+            _nhibConfig.Properties["proxyfactory.factory_class"] = "foo";
+            _config.ProxyFactoryFactory("bar").ConfigureProperties(_nhibConfig);
+            ValueOf("proxyfactory.factory_class").ShouldEqual("bar");
+
+        }
+
+        [Test]
         public void Setting_raw_values_should_populate_dictionary()
         {
             _config.Raw("TESTKEY", "TESTVALUE");
