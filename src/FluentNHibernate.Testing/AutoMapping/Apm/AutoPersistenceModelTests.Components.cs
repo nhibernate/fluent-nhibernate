@@ -3,6 +3,8 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Automapping.TestFixtures.ComponentTypes;
 using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
+using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Testing.Automapping;
 using NUnit.Framework;
 
@@ -123,6 +125,16 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         }
 
         [Test]
+        public void ComponentPropertiesAssumeComponentColumnPrefixWithPropertyConvention()
+        {
+            var autoMapper = AutoMap.Source(source, addressCfg)
+                .Conventions.Add<CustomColumnNameConvention>();
+
+            new AutoMappingTester<Customer>(autoMapper)
+                .Element("class/component[@name='WorkAddress']/property[@name='Number']/column").HasAttribute("name", "WorkAddress_Number1");
+        }
+
+        [Test]
         public void ComponentColumnConventionReceivesProperty()
         {
             var autoMapper = AutoMap.Source(source, addressCfg)
@@ -157,6 +169,14 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             public override string GetComponentColumnPrefix(Member member)
             {
                 return member.Name + "_";
+            }
+        }
+
+        class CustomColumnNameConvention : IPropertyConvention
+        {
+            public void Apply(IPropertyInstance instance)
+            {
+                instance.Column(instance.Name + "1");
             }
         }
     }
