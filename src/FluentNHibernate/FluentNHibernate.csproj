@@ -120,6 +120,8 @@
     <Compile Include="Automapping\Steps\IAutomappingStep.cs" />
     <Compile Include="Cfg\Db\SybaseSQLAnywhere.cs" />
     <Compile Include="Cfg\Db\SybaseSQLAnywhereConnectionStringBuilder.cs" />
+    <Compile Include="Cfg\Db\IngresConfiguration.cs" />
+    <Compile Include="Cfg\Db\IngresConnectionStringBuilder.cs" />
     <Compile Include="CombinedAssemblyTypeSource.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltArrayConvention.cs" />
     <Compile Include="Conventions\Helpers\Prebuilt\BuiltBagConvention.cs" />
