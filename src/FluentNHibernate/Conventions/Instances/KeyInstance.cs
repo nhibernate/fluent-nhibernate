@@ -51,5 +51,10 @@ namespace FluentNHibernate.Conventions.Instances
                     .Cast<IColumnInstance>();
             }
         }
+
+        public void CascadeOnDelete()
+        {
+            mapping.OnDelete = "cascade";
+        }
     }
 }
