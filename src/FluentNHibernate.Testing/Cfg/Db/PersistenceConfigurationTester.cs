@@ -39,6 +39,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
            
         }
 
+#pragma warning disable 612,618
         [Test]
         public void ConfigureProperties_should_override_values_already_set_with_values_set_in_code()
         {
@@ -46,8 +47,8 @@ namespace FluentNHibernate.Testing.Cfg.Db
             _nhibConfig.Properties["proxyfactory.factory_class"] = "foo";
             _config.ProxyFactoryFactory("bar").ConfigureProperties(_nhibConfig);
             ValueOf("proxyfactory.factory_class").ShouldEqual("bar");
-
         }
+#pragma warning restore 612,618
 
         [Test]
         public void Setting_raw_values_should_populate_dictionary()
