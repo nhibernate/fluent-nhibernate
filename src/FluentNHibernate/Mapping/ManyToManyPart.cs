@@ -9,7 +9,6 @@ namespace FluentNHibernate.Mapping
     public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild, ManyToManyMapping>
     {
         private readonly IList<FilterPart> childFilters = new List<FilterPart>();
-        private readonly Type entity;
         private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
         private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
         private IndexManyToManyPart manyToManyIndex;
@@ -23,13 +22,11 @@ namespace FluentNHibernate.Mapping
         public ManyToManyPart(Type entity, Member property)
             : this(entity, property, property.PropertyType)
         {
-            childType = property.PropertyType;
         }
 
         protected ManyToManyPart(Type entity, Member member, Type collectionType)
             : base(entity, member, collectionType)
         {
-            this.entity = entity;
             childType = collectionType;
 
             fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set(x => x.Fetch, value));
@@ -220,8 +217,7 @@ namespace FluentNHibernate.Mapping
         {
             var mapping = new ManyToManyMapping(relationshipAttributes.CloneInner())
             {
-                ContainingEntityType = entity,
-
+                ContainingEntityType = EntityType,
             };
 
             if (isTernary && valueType != null)
@@ -336,7 +332,7 @@ namespace FluentNHibernate.Mapping
 
             // key columns
             if (parentKeyColumns.Count == 0)
-                collection.Key.AddDefaultColumn(new ColumnMapping { Name = entity.Name + "_id" });
+                collection.Key.AddDefaultColumn(new ColumnMapping { Name = EntityType.Name + "_id" });
 
             foreach (var column in parentKeyColumns)
                 collection.Key.AddColumn(column);

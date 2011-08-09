@@ -28,7 +28,7 @@ namespace FluentNHibernate.Mapping
         private Func<AttributeStore, CollectionMapping> collectionBuilder;
         private IndexMapping indexMapping;
         protected Member member;
-        private Type entity;
+        private readonly Type entity;
 
         protected ToManyBase(Type entity, Member member, Type type)
         {
@@ -47,6 +47,15 @@ namespace FluentNHibernate.Mapping
             collectionAttributes.SetDefault(x => x.Name, member.Name);
             relationshipAttributes.SetDefault(x => x.Class, new TypeReference(typeof(TChild)));
         }
+
+		/// <summary>
+		/// Return the type of the owning entity
+		/// </summary>
+		/// <returns>Type</returns>
+    	public Type EntityType
+    	{
+			get { return entity; }
+    	}
 
         /// <summary>
         /// This method is used to set a different key column in this table to be used for joins.
