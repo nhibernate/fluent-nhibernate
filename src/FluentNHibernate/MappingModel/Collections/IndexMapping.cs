@@ -33,6 +33,12 @@ namespace FluentNHibernate.MappingModel.Collections
             set { attributes.Set(x => x.Type, value); }
         }
 
+        public int Offset
+        {
+            get { return attributes.Get(x => x.Offset); }
+            set { attributes.Set(x => x.Offset, value); }
+        }
+
         public Type ContainingEntityType { get; set; }
 
         public IDefaultableEnumerable<ColumnMapping> Columns

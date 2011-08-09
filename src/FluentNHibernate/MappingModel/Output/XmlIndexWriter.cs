@@ -26,10 +26,25 @@ namespace FluentNHibernate.MappingModel.Output
         {
             document = new XmlDocument();
 
+            if (mapping.HasValue(x => x.Offset))
+                WriteListIndex(mapping);
+            else
+                WriteIndex(mapping);
+        }
+
+        void WriteIndex(IndexMapping mapping)
+        {
             var element = document.AddElement("index");
 
             if (mapping.HasValue(x => x.Type))
                 element.WithAtt("type", mapping.Type);
+        }
+
+        void WriteListIndex(IndexMapping mapping)
+        {
+            var element = document.AddElement("list-index");
+
+            element.WithAtt("base", mapping.Offset);
         }
 
         public override void Visit(ColumnMapping columnMapping)
