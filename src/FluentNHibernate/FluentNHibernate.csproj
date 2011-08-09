@@ -44,11 +44,8 @@
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-<<<<<<< HEAD
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-=======
     <DocumentationFile>bin\Debug\FluentNHibernate.XML</DocumentationFile>
->>>>>>> bebb9da
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
