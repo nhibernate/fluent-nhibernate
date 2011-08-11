@@ -34,37 +34,17 @@ namespace FluentNHibernate.Automapping.Alterations
         {
             // find all types deriving from IAutoMappingOverride<T>
             var types = from type in assembly.GetExportedTypes()
-						where !type.IsAbstract
+                        where !type.IsAbstract
                         let entity = (from interfaceType in type.GetInterfaces()
                                       where interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IAutoMappingOverride<>)
                                       select interfaceType.GetGenericArguments()[0]).FirstOrDefault()
                         where entity != null
-                        select new { OverrideType = type, EntityType = entity };
+                        select type;
 
-            foreach (var typeMatch in types)
+            foreach (var type in types)
             {
-                var mappingOverride = Activator.CreateInstance(typeMatch.OverrideType);
-                var autoMapType = typeof(AutoMapping<>).MakeGenericType(typeMatch.EntityType);
-                var mapping = (IMappingProvider)Activator.CreateInstance(autoMapType, new List<Member>());
-
-                // HACK: call the Override method with the generic AutoMapping<T>
-                var overrideMethod = typeMatch.OverrideType
-                    .GetMethod("Override");
-
-                GetType()
-                    .GetMethod("AddOverride", BindingFlags.Instance | BindingFlags.NonPublic)
-                    .MakeGenericMethod(typeMatch.EntityType)
-                    .Invoke(this, new[] { model, typeMatch.EntityType, mappingOverride });
+            	model.Override(type);
             }
-        }
-
-        private void AddOverride<T>(AutoPersistenceModel model, Type entity, IAutoMappingOverride<T> mappingOverride)
-        {
-            model.AddOverride(entity, x =>
-            {
-                if (x is AutoMapping<T>)
-                    mappingOverride.Override((AutoMapping<T>)x);
-            });
         }
     }
 }

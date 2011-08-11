@@ -345,6 +345,39 @@ namespace FluentNHibernate.Automapping
             return this;
         }
 
+		/// <summary>
+		/// Adds an IAutoMappingOverride reflectively
+		/// </summary>
+		/// <param name="overrideType">Override type, expected to be an IAutoMappingOverride</param>
+		public void Override(Type overrideType)
+		{
+			Type overrideInterface = overrideType.GetInterfaces()
+				.Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IAutoMappingOverride<>) && x.GetGenericArguments().Length > 0)
+				.FirstOrDefault();
+			if (overrideInterface != null)
+			{
+				Type entityType = overrideInterface.GetGenericArguments().First();
+				Type autoMappingType = typeof(AutoMapping<>).MakeGenericType(entityType);
+				AddOverride(entityType, x =>
+				{
+					if (x.GetType().IsAssignableFrom(autoMappingType))
+					{
+						var overrideInstance = Activator.CreateInstance(overrideType);
+						GetType()
+							.GetMethod("OverrideHelper", BindingFlags.NonPublic | BindingFlags.Instance)
+							.MakeGenericMethod(entityType)
+							.Invoke(this, new [] {x, overrideInstance});
+					}
+				});
+			}
+		}
+
+		//called reflectively from method above
+		private void OverrideHelper<T>(AutoMapping<T> x, IAutoMappingOverride<T> mappingOverride)
+		{
+			mappingOverride.Override(x);
+		}
+
         /// <summary>
         /// Override all mappings.
         /// </summary>
