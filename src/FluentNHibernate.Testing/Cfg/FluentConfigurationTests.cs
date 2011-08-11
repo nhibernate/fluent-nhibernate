@@ -147,28 +147,6 @@ namespace FluentNHibernate.Testing.Cfg
  			configuration.Properties["current_session_context_class"].ShouldEqual(typeof(NHibernate.Context.ThreadStaticSessionContext).AssemblyQualifiedName);
      	}
 
-#pragma warning disable 612,618
-        [Test]
-    	public void ShouldSetCurrentSessionContext_Obsolete()
-    	{
-			var configuration = Fluently.Configure()
-				.Database(SQLiteConfiguration.Standard.CurrentSessionContext("thread_static").InMemory)
-				.BuildConfiguration();
-
-			configuration.Properties["current_session_context_class"].ShouldEqual("thread_static");
-    	}
-
-    	[Test]
-    	public void ShouldSetCurrentSessionContextUsingGeneric_Obsolete()
-    	{
-			var configuration = Fluently.Configure()
-				.Database(SQLiteConfiguration.Standard.CurrentSessionContext<NHibernate.Context.ThreadStaticSessionContext>())
-				.BuildConfiguration();
-
-			configuration.Properties["current_session_context_class"].ShouldEqual(typeof(NHibernate.Context.ThreadStaticSessionContext).AssemblyQualifiedName);
-    	}
-#pragma warning restore 612,618
-
         [Test]
         public void ShouldSetConnectionIsolationLevel()
         {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using NHibernate.Bytecode;
 using NHibernate.Connection;
 using NHibernate.Dialect;
 using NHibernate.Driver;
@@ -35,8 +34,6 @@ namespace FluentNHibernate.Cfg.Db
         protected const string DriverClassKey = NHibEnvironment.ConnectionDriver;
         protected const string ConnectionStringKey = NHibEnvironment.ConnectionString;
         protected const string IsolationLevelKey = NHibEnvironment.Isolation;
-        protected const string ProxyFactoryFactoryClassKey = "proxyfactory.factory_class";
-        protected const string DefaultProxyFactoryFactoryClassName = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
         protected const string AdoNetBatchSizeKey = NHibEnvironment.BatchSize;
         protected const string CurrentSessionContextClassKey = "current_session_context_class";
 
@@ -49,7 +46,6 @@ namespace FluentNHibernate.Cfg.Db
         protected PersistenceConfiguration()
         {
             values[ConnectionProviderKey] = DefaultConnectionProviderClassName;
-            values[ProxyFactoryFactoryClassKey] =  DefaultProxyFactoryFactoryClassName;
             connectionString = new TConnectionString();
         }
 
@@ -73,9 +69,6 @@ namespace FluentNHibernate.Cfg.Db
         {
             if (settings[ConnectionProviderKey] != DefaultConnectionProviderClassName)
                 yield return ConnectionProviderKey;
-
-            if (settings[ProxyFactoryFactoryClassKey] != DefaultProxyFactoryFactoryClassName)
-                yield return ProxyFactoryFactoryClassKey;
         }
 
         private static IEnumerable<string> KeysToPreserve(NHibConfiguration nhibernateConfig, IDictionary<string, string> settings)
@@ -301,25 +294,6 @@ namespace FluentNHibernate.Cfg.Db
         }
 
         /// <summary>
-        /// Configure caching.
-        /// </summary>
-        /// <example>
-        ///     Cache(x =>
-        ///     {
-        ///       x.UseQueryCache();
-        ///       x.UseMinimalPuts();
-        ///     });
-        /// </example>
-        /// <param name="cacheExpression">Closure for configuring caching</param>
-        /// <returns>Configuration builder</returns>
-        [Obsolete("Moved to FluentConfiguration (Fluently.Configure().Cache(...))")]
-        public TThisConfiguration Cache(Action<CacheSettingsBuilder> cacheExpression)
-        {
-            cacheExpression(cache);
-            return (TThisConfiguration)this;
-        }
-
-        /// <summary>
         /// Sets a raw property on the NHibernate configuration. Use this method
         /// if there isn't a specific option available in the API.
         /// </summary>
@@ -332,82 +306,6 @@ namespace FluentNHibernate.Cfg.Db
             return (TThisConfiguration) this;
         }
 
-		/// <summary>
-		/// Sets the collectiontype.factory_class property.
-		/// NOTE: NHibernate 2.1 only
-		/// </summary>
-		/// <param name="collectionTypeFactoryClass">factory class</param>
-		/// <returns>Configuration</returns>
-		[Obsolete("Moved to FluentConfiguration (Fluently.Configure().CollectionTypeFactory(...))")]
-		public TThisConfiguration CollectionTypeFactory(string collectionTypeFactoryClass)
-		{
-			values[CollectionTypeFactoryClassKey] = collectionTypeFactoryClass;
-			return (TThisConfiguration)this;
-		}
-
-		/// <summary>
-		/// Sets the collectiontype.factory_class property.
-		/// NOTE: NHibernate 2.1 only
-		/// </summary>
-		/// <param name="collectionTypeFactoryClass">factory class</param>
-		/// <returns>Configuration</returns>
-        [Obsolete("Moved to FluentConfiguration (Fluently.Configure().CollectionTypeFactory(...))")]
-        public TThisConfiguration CollectionTypeFactory(Type collectionTypeFactoryClass)
-		{
-			values[CollectionTypeFactoryClassKey] = collectionTypeFactoryClass.AssemblyQualifiedName;
-			return (TThisConfiguration)this;
-		}
-
-		/// <summary>
-		/// Sets the collectiontype.factory_class property.
-		/// NOTE: NHibernate 2.1 only
-		/// </summary>
-		/// <typeparam name="TCollectionTypeFactory">factory class</typeparam>
-		/// <returns>Configuration</returns>
-        [Obsolete("Moved to FluentConfiguration (Fluently.Configure().CollectionTypeFactory(...))")]
-        public TThisConfiguration CollectionTypeFactory<TCollectionTypeFactory>() where TCollectionTypeFactory : ICollectionTypeFactory
-		{
-			return CollectionTypeFactory(typeof(TCollectionTypeFactory));
-		}
-
-        /// <summary>
-        /// Sets the proxyfactory.factory_class property.
-        /// NOTE: NHibernate 2.1 only
-        /// </summary>
-        /// <param name="proxyFactoryFactoryClass">factory class</param>
-        /// <returns>Configuration</returns>
-        [Obsolete("Moved to FluentConfiguration (Fluently.Configure().ProxyFactoryFactory(...))")]
-        public TThisConfiguration ProxyFactoryFactory(string proxyFactoryFactoryClass)
-        {
-            values[ProxyFactoryFactoryClassKey] = proxyFactoryFactoryClass;
-            return (TThisConfiguration)this;
-        }
-
-        /// <summary>
-        /// Sets the proxyfactory.factory_class property.
-        /// NOTE: NHibernate 2.1 only
-        /// </summary>
-        /// <param name="proxyFactoryFactory">factory class</param>
-        /// <returns>Configuration</returns>
-        [Obsolete("Moved to FluentConfiguration (Fluently.Configure().ProxyFactoryFactory(...))")]
-        public TThisConfiguration ProxyFactoryFactory(Type proxyFactoryFactory)
-        {
-            values[ProxyFactoryFactoryClassKey] = proxyFactoryFactory.AssemblyQualifiedName;
-            return (TThisConfiguration)this;
-        }
-
-        /// <summary>
-        /// Sets the proxyfactory.factory_class property.
-        /// NOTE: NHibernate 2.1 only
-        /// </summary>
-        /// <typeparam name="TProxyFactoryFactory">factory class</typeparam>
-        /// <returns>Configuration</returns>
-        [Obsolete("Moved to FluentConfiguration (Fluently.Configure().ProxyFactoryFactory(...))")]
-        public TThisConfiguration ProxyFactoryFactory<TProxyFactoryFactory>() where TProxyFactoryFactory : IProxyFactoryFactory
-        {
-            return ProxyFactoryFactory(typeof(TProxyFactoryFactory));
-        }
-
         /// <summary>
         /// Sets the adonet.batch_size property.
         /// </summary>
@@ -417,29 +315,6 @@ namespace FluentNHibernate.Cfg.Db
         {
             values[AdoNetBatchSizeKey] = size.ToString();
             return (TThisConfiguration)this;
-        }
-
-        /// <summary>
-        /// Sets the current_session_context_class property.
-        /// </summary>
-        /// <param name="currentSessionContextClass">current session context class</param>
-        /// <returns>Configuration</returns>
-        [Obsolete("Moved to FluentConfiguration (Fluently.Configure().CurrentSessionContext(...))")]
-        public TThisConfiguration CurrentSessionContext(string currentSessionContextClass)
-        {
-            values[CurrentSessionContextClassKey] = currentSessionContextClass;
-            return (TThisConfiguration)this;
-        }
-
-        /// <summary>
-        /// Sets the current_session_context_class property.
-        /// </summary>
-        /// <typeparam name="TSessionContext">Implementation of ICurrentSessionContext to use</typeparam>
-        /// <returns>Configuration</returns>
-        [Obsolete("Moved to FluentConfiguration (Fluently.Configure().CurrentSessionContext(...))")]
-        public TThisConfiguration CurrentSessionContext<TSessionContext>() where TSessionContext : NHibernate.Context.ICurrentSessionContext
-        {
-            return CurrentSessionContext(typeof(TSessionContext).AssemblyQualifiedName);
         }
 
         /// <summary>

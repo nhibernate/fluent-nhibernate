@@ -39,17 +39,6 @@ namespace FluentNHibernate.Testing.Cfg.Db
            
         }
 
-#pragma warning disable 612,618
-        [Test]
-        public void ConfigureProperties_should_override_values_already_set_with_values_set_in_code()
-        {
-            _nhibConfig = new Configuration();
-            _nhibConfig.Properties["proxyfactory.factory_class"] = "foo";
-            _config.ProxyFactoryFactory("bar").ConfigureProperties(_nhibConfig);
-            ValueOf("proxyfactory.factory_class").ShouldEqual("bar");
-        }
-#pragma warning restore 612,618
-
         [Test]
         public void Setting_raw_values_should_populate_dictionary()
         {
@@ -95,50 +84,6 @@ namespace FluentNHibernate.Testing.Cfg.Db
             ValueOf("use_reflection_optimizer").ShouldEqual("true");
 
         }
-
-#pragma warning disable 612,618
-
-        [Test]
-        public void Provider_Class_should_set_property_value()
-        {
-            _config.Cache(c => c
-                .ProviderClass("foo"));
-            ValueOf("cache.provider_class").ShouldEqual("foo");
-
-        }
-
-        [Test]
-        public void Use_Minimal_Puts_should_set_value_to_const_true()
-        {
-            _config.Cache(c => c
-                .UseMinimalPuts());
-            ValueOf("cache.use_minimal_puts").ShouldEqual("true");
-        }
-
-        [Test]
-        public void Use_Query_Cache_should_set_value_to_const_true()
-        {
-            _config.Cache(c => c
-                .UseQueryCache());
-            ValueOf("cache.use_query_cache").ShouldEqual("true");
-        }
-
-        [Test]
-        public void Query_Cache_Factory_should_set_property_value()
-        {
-            _config.Cache(c => c
-                .QueryCacheFactory("foo"));
-            ValueOf("cache.query_cache_factory").ShouldEqual("foo");
-        }
-
-        [Test]
-        public void Region_Prefix_should_set_property_value()
-        {
-            _config.Cache(c => c
-                .RegionPrefix("foo"));
-            ValueOf("cache.region_prefix").ShouldEqual("foo");
-        }
-#pragma warning restore 612,618
 
         [Test]
         public void Query_Substitutions_should_set_property_value()
