@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing
         protected readonly List<Property<T>> allProperties = new List<Property<T>>();
         private readonly ISession currentSession;
         private readonly IEqualityComparer entityEqualityComparer;
-        private readonly bool hasExistingSession;
+        private readonly bool hasExistingTransaction;
 
         public PersistenceSpecification(ISessionSource source)
             : this(source.CreateSession())
@@ -31,7 +31,7 @@ namespace FluentNHibernate.Testing
         public PersistenceSpecification(ISession session, IEqualityComparer entityEqualityComparer)
         {
             currentSession = session;
-            hasExistingSession = currentSession.Transaction != null && currentSession.Transaction.IsActive;
+            hasExistingTransaction = currentSession.Transaction != null && currentSession.Transaction.IsActive || System.Transactions.Transaction.Current != null;
             this.entityEqualityComparer = entityEqualityComparer;
         }
 
@@ -68,7 +68,7 @@ namespace FluentNHibernate.Testing
 
         public void TransactionalSave(object propertyValue)
         {
-            if (hasExistingSession)
+            if (hasExistingTransaction)
             {
                 currentSession.Save(propertyValue);
             }
