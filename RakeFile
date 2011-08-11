@@ -3,6 +3,8 @@ gem 'albacore', '=0.2.4'
 require 'albacore'
 require 'tools/albacore/nuspec_patch'
 
+NH_VERSION = '3.x'
+
 def get_version
   ENV['BUILD_NUMBER'] || '1.3.0.0'
 end
@@ -57,7 +59,7 @@ namespace :source do
   end
   
   task :nhibernate_version, :nhibernate_version do |t,args|
-	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || '2.1'
+	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || NH_VERSION
 	
 	raise "Unknown NHibernate version #{args.nhibernate_version} (check your tools/NHibernate folder)" unless File.directory? "tools/NHibernate/#{args.nhibernate_version}"
 	
@@ -72,7 +74,7 @@ namespace :source do
   
   desc 'Compile the source'
   msbuild :compile, [:nhibernate_version] => :nhibernate_version do |msb,args|
-	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || '2.1'
+	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || NH_VERSION
 	
 	nh_version_precompiler_switch = 'NH' +  args.nhibernate_version.gsub('.', '')
 	

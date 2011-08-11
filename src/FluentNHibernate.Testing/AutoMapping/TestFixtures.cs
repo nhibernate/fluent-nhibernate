@@ -359,8 +359,8 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
             return (first == null && second == null) ? null : new string[] { first, second };
         }
 
-#if NH3x
-        public void NullSafeSet(IDbCommand st, Object value, int index, bool[] unknown, ISessionImplementor session)
+#if NH21
+        public void NullSafeSet(IDbCommand st, Object value, int index, ISessionImplementor session)
         {
             DoubleString ds = value as DoubleString ?? new DoubleString();
 
@@ -368,7 +368,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
             NHibernateUtil.String.NullSafeSet(st, ds.s2, index + 1, session);
         }
 #else
-        public void NullSafeSet(IDbCommand st, Object value, int index, ISessionImplementor session)
+        public void NullSafeSet(IDbCommand st, Object value, int index, bool[] unknown, ISessionImplementor session)
         {
             DoubleString ds = value as DoubleString ?? new DoubleString();
 

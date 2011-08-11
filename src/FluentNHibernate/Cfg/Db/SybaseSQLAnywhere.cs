@@ -7,7 +7,11 @@ namespace FluentNHibernate.Cfg.Db
     {
         protected SQLAnywhereConfiguration()
         {
+#if NH21
             Driver<ASA10ClientDriver>();
+#else
+            Driver<SybaseSQLAnywhereDriver>();
+#endif
         }
 
         public static SQLAnywhereConfiguration SQLAnywhere9
@@ -15,7 +19,7 @@ namespace FluentNHibernate.Cfg.Db
             get { return new SQLAnywhereConfiguration().Dialect<SybaseASA9Dialect>(); }
         }
 
-#if NH3x
+#if !NH21
         public static SQLAnywhereConfiguration SQLAnywhere10
         {
             get { return new SQLAnywhereConfiguration().Dialect<SybaseSQLAnywhere10Dialect>(); }
