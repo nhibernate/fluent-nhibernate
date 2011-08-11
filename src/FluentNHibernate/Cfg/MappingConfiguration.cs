@@ -66,7 +66,6 @@ namespace FluentNHibernate.Cfg
         /// <summary>
         /// Applies any mappings to the NHibernate Configuration
         /// </summary>
-        /// <param name="logger">Diagnostics logger</param>
         /// <param name="cfg">NHibernate Configuration instance</param>
         public void Apply(Configuration cfg)
         {
