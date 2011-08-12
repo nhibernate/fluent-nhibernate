@@ -59,27 +59,27 @@ namespace :source do
   end
   
   task :nhibernate_version, :nhibernate_version do |t,args|
-	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || NH_VERSION
-	
-	raise "Unknown NHibernate version #{args.nhibernate_version} (check your tools/NHibernate folder)" unless File.directory? "tools/NHibernate/#{args.nhibernate_version}"
-	
-	# clear out existing selected nh version
-	files_to_delete = Dir["tools/NHibernate/*.*"].reject {|f| File.directory? f }
-	files_to_delete.each {|f| File.delete f }
-	
-	# copy specific nh version files to the main directory
-	files_to_copy = Dir["tools/NHibernate/#{args.nhibernate_version}/*.*"]
-	files_to_copy.each {|f| FileUtils.copy f, "tools/NHibernate/" }
+    args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || NH_VERSION
+    
+    raise "Unknown NHibernate version #{args.nhibernate_version} (check your tools/NHibernate folder)" unless File.directory? "tools/NHibernate/#{args.nhibernate_version}"
+    
+    # clear out existing selected nh version
+    files_to_delete = Dir["tools/NHibernate/*.*"].reject {|f| File.directory? f }
+    files_to_delete.each {|f| File.delete f }
+    
+    # copy specific nh version files to the main directory
+    files_to_copy = Dir["tools/NHibernate/#{args.nhibernate_version}/*.*"]
+    files_to_copy.each {|f| FileUtils.copy f, "tools/NHibernate/" }
   end
   
   desc 'Compile the source'
   msbuild :compile, [:nhibernate_version] => :nhibernate_version do |msb,args|
-	args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || NH_VERSION
-	
-	nh_version_precompiler_switch = 'NH' +  args.nhibernate_version.gsub('.', '')
-	
-	puts nh_version_precompiler_switch
-	
+    args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || NH_VERSION
+    
+    nh_version_precompiler_switch = 'NH' +  args.nhibernate_version.gsub('.', '')
+    
+    puts nh_version_precompiler_switch
+    
     msb.properties = { :configuration => :Release, :DefineConstants => nh_version_precompiler_switch }
     msb.targets [:Clean, :Build]
     msb.solution = 'src/FluentNHibernate.sln'
@@ -171,7 +171,7 @@ namespace :package do
     nu.language = 'en-US'
     nu.licenseUrl = 'http://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE.txt'
     nu.projectUrl = 'http://fluentnhibernate.org'
-    nu.dependency 'NHibernate.Castle', '3.1.0.4000'
+    nu.dependency 'NHibernate', '3.2.0.4000'
     nu.working_directory = 'build'
     nu.output_file = 'fluentnhibernate.nuspec'
     nu.file 'FluentNHibernate.dll', 'lib'
@@ -186,8 +186,10 @@ namespace :package do
     nu.output = 'dist'
   end
 
+  desc 'Create nuget spec and package'
   task :nuget => [:nuspec, :nugetpack]
  
+  desc 'Package everything (src, bin, docs, nuget)'
   task :all => [:source, :binaries, :docs, :nuget]
 end
 
