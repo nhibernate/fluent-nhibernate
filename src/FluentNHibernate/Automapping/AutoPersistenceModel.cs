@@ -363,10 +363,16 @@ namespace FluentNHibernate.Automapping
 					if (x.GetType().IsAssignableFrom(autoMappingType))
 					{
 						var overrideInstance = Activator.CreateInstance(overrideType);
-						GetType()
-							.GetMethod("OverrideHelper", BindingFlags.NonPublic | BindingFlags.Instance)
-							.MakeGenericMethod(entityType)
-							.Invoke(this, new [] {x, overrideInstance});
+
+						MethodInfo overrideHelperMethod = typeof(AutoPersistenceModel)
+							.GetMethod("OverrideHelper", BindingFlags.NonPublic | BindingFlags.Instance);
+						
+						if (overrideHelperMethod != null)
+						{
+							overrideHelperMethod
+								.MakeGenericMethod(entityType)
+								.Invoke(this, new[] {x, overrideInstance});
+						}
 					}
 				});
 			}
