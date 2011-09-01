@@ -117,6 +117,7 @@
     <Compile Include="AutoMapping\Overrides\ClassMappingOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\CompositeIdOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\HibernateMappingOverrides.cs" />
+    <Compile Include="DomainModel\Mapping\ManyToManySelfReferencedInverseIntegrationTester.cs" />
     <Compile Include="DomainModel\MemberAccessResolverTests.cs" />
     <Compile Include="DomainModel\MemberBackingFieldTests.cs" />
     <Compile Include="DomainModel\NamingTests.cs" />
