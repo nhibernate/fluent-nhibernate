@@ -25,7 +25,7 @@ namespace FluentNHibernate.Cfg
 
         readonly Configuration cfg;
         readonly IList<Action<Configuration>> configAlterations = new List<Action<Configuration>>();
-        readonly IDiagnosticMessageDespatcher despatcher = new DefaultDiagnosticMessageDespatcher();
+        readonly IDiagnosticMessageDispatcher dispatcher = new DefaultDiagnosticMessageDispatcher();
         readonly List<Action<MappingConfiguration>> mappingsBuilders = new List<Action<MappingConfiguration>>();
 
         bool dbSet;
@@ -58,7 +58,7 @@ namespace FluentNHibernate.Cfg
         /// <param name="diagnosticsSetup">Diagnostic configuration</param>
         public FluentConfiguration Diagnostics(Action<DiagnosticsConfiguration> diagnosticsSetup)
         {
-            var diagnosticsCfg = new DiagnosticsConfiguration(despatcher, new_logger => logger = new_logger);
+            var diagnosticsCfg = new DiagnosticsConfiguration(dispatcher, new_logger => logger = new_logger);
 
             diagnosticsSetup(diagnosticsCfg);
 

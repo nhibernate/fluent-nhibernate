@@ -7,12 +7,12 @@ namespace FluentNHibernate.Diagnostics
     /// </summary>
     public class DiagnosticsConfiguration
     {
-        readonly IDiagnosticMessageDespatcher despatcher;
+        readonly IDiagnosticMessageDispatcher dispatcher;
         readonly Action<IDiagnosticLogger> setLogger;
 
-        public DiagnosticsConfiguration(IDiagnosticMessageDespatcher despatcher, Action<IDiagnosticLogger> setLogger)
+        public DiagnosticsConfiguration(IDiagnosticMessageDispatcher dispatcher, Action<IDiagnosticLogger> setLogger)
         {
-            this.despatcher = despatcher;
+            this.dispatcher = dispatcher;
             this.setLogger = setLogger;
         }
 
@@ -35,7 +35,7 @@ namespace FluentNHibernate.Diagnostics
         /// </summary>
         public DiagnosticsConfiguration Enable()
         {
-            setLogger(new DefaultDiagnosticLogger(despatcher));
+            setLogger(new DefaultDiagnosticLogger(dispatcher));
             return this;
         }
 
@@ -54,7 +54,7 @@ namespace FluentNHibernate.Diagnostics
         /// <param name="listener">Listener</param>
         public DiagnosticsConfiguration RegisterListener(IDiagnosticListener listener)
         {
-            despatcher.RegisterListener(listener);
+            dispatcher.RegisterListener(listener);
             return this;
         }
 
