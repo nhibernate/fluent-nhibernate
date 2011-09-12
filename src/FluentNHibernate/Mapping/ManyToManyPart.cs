@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
@@ -325,6 +327,17 @@ namespace FluentNHibernate.Mapping
         {
             relationshipAttributes.Set("Where", Layer.UserSupplied, where);
             return this;
+        }
+
+        /// <summary>
+        /// Sets the where clause for this relationship, on the many-to-many element.
+        /// Note: This only supports simple cases, use the string overload for more complex clauses.
+        /// </summary>
+        public ManyToManyPart<TChild> ChildWhere(Expression<Func<TChild, bool>> where)
+        {
+            var sql = ExpressionToSql.Convert(where);
+
+            return ChildWhere(sql);
         }
 
         protected override CollectionMapping GetCollectionMapping()

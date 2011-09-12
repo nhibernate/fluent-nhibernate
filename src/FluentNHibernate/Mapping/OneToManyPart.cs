@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping
 {
@@ -216,6 +218,17 @@ namespace FluentNHibernate.Mapping
         {
             if (!(childType.IsGenericType && childType.GetGenericTypeDefinition() == typeof(IDictionary<,>)))
                 throw new ArgumentException(member.Name + " must be of type IDictionary<> to be used in a ternary assocation. Type was: " + childType);
+        }
+
+        /// <summary>
+        /// Sets the where clause for this one-to-many relationship.
+        /// Note: This only supports simple cases, use the string overload for more complex clauses.
+        /// </summary>
+        public OneToManyPart<TChild> Where(Expression<Func<TChild, bool>> where)
+        {
+            var sql = ExpressionToSql.Convert(where);
+
+            return Where(sql);
         }
     }
 }
