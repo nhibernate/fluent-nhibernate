@@ -87,7 +87,7 @@ namespace FluentNHibernate.Testing.Values
         {
             string message;
 
-            string actualToPrint = actual.ToString();
+            string actualToPrint = actual != null ? actual.ToString() : "(null)";
             string actualTypeToPrint = PropertyAccessor.PropertyType.FullName;
 
             string valueToPrint = Value != null ? Value.ToString() : "(null)";
