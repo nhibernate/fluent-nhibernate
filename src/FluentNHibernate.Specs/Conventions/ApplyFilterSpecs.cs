@@ -26,7 +26,7 @@ namespace FluentNHibernate.Specs.Conventions
             mapping.Filters.Single().Name.ShouldEqual(FilterClassConvention.FilterName);
 
         It should_set_the_condition_of_the_added_filter_correctly = () =>
-            mapping.Filters.Single().Name.ShouldEqual(FilterClassConvention.FilterName);
+            mapping.Filters.Single().Condition.ShouldEqual(FilterClassConvention.FilterCondition);
 
         static FluentNHibernate.PersistenceModel model;
         static ClassMapping mapping;
