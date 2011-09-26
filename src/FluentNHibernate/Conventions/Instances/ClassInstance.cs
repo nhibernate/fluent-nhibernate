@@ -106,7 +106,7 @@ namespace FluentNHibernate.Conventions.Instances
         {
             var filterMapping = new FilterMapping();
             filterMapping.Set(x => x.Name, Layer.Conventions, name);
-            filterMapping.Set(x => x.Condition, Layer.Conventions, name);
+            filterMapping.Set(x => x.Condition, Layer.Conventions, condition);
             mapping.AddFilter(filterMapping);
         }
 
