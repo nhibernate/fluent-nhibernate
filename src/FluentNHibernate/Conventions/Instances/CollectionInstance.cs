@@ -122,6 +122,12 @@ namespace FluentNHibernate.Conventions.Instances
             mapping.Set(x => x.Subselect, Layer.Conventions, subselect);
         }
 
+        public void KeyNullable()
+        {
+            mapping.Key.Set(x => x.NotNull, Layer.Conventions, !nextBool);
+            nextBool = true;
+        }
+
         public void Table(string tableName)
         {
             mapping.Set(x => x.TableName, Layer.Conventions, tableName);
