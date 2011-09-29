@@ -162,5 +162,18 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         .Not.LazyLoad().Not.Nullable())
                 .Element("class/many-to-one/column").HasAttribute("not-null", "true");
         }
+
+        [Test]
+        public void ManyToOneFormulaShouldSetFormulaAndNotRenderColumn()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(map =>
+                {
+                    map.References(x => x.Parent)
+                        .Formula("foo(bar)");
+                })
+                .Element("class/many-to-one").HasAttribute("formula", "foo(bar)")
+                .Element("class/many-to-one/column").DoesntExist();
+        }
     }
 }
