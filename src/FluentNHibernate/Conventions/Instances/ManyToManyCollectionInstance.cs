@@ -35,10 +35,11 @@ namespace FluentNHibernate.Conventions.Instances
         {
             get
             {
-                if (mapping.OtherSide == null || !(mapping.OtherSide is CollectionMapping))
+                var otherSide = mapping.OtherSide as CollectionMapping;
+                if (otherSide == null)
                     return null;
 
-                return new ManyToManyCollectionInstance((CollectionMapping)mapping.OtherSide);
+                return new ManyToManyCollectionInstance(otherSide);
             }
         }
 
@@ -46,6 +47,7 @@ namespace FluentNHibernate.Conventions.Instances
         {
             get { return new ManyToManyInstance((ManyToManyMapping)mapping.Relationship); }
         }
+
         public new Type ChildType
         {
             get { return mapping.ChildType; }
