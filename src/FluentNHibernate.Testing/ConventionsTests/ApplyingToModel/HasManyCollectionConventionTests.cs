@@ -199,7 +199,19 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
 
             VerifyModel(x => x.TableName.ShouldEqual("xxx"));
         }
+        
+        [Test]
+        public void ShouldChangeCollectionTypeToList()
+        {
+            Convention(x => { x.AsList(); x.Index.Column("position"); } );
 
+            VerifyModel(x =>
+            {
+                x.Collection.ShouldEqual(Collection.List);
+                x.Index.ShouldNotBeNull();  // a list without index will result in wrong xml
+            });
+        }
+        
         #region Helpers
 
         private void Convention(Action<ICollectionInstance> convention)
