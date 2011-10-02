@@ -539,17 +539,6 @@ namespace FluentNHibernate.Mapping
 
         /// <summary>
         /// Sets the where clause for this one-to-many relationship.
-        /// Note: This only supports simple cases, use the string overload for more complex clauses.
-        /// </summary>
-        public T Where(Expression<Func<TChild, bool>> where)
-        {
-            var sql = ExpressionToSql.Convert(where);
-
-            return Where(sql);
-        }
-
-        /// <summary>
-        /// Sets the where clause for this one-to-many relationship.
         /// </summary>
         public T Where(string where)
         {
