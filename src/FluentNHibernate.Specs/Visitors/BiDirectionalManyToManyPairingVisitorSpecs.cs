@@ -191,6 +191,36 @@ namespace FluentNHibernate.Specs.Visitors
         }
     }
 
+    public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_a_self_referential_many_to_many_relationship_when_has_two_possible_collections : BiDirectionalManyToManyPairingVisitorSpec
+    {
+        Establish context = () =>
+        {
+            ancestors = collection<TreeNode>(x => x.Ancestors);
+            descendants = collection<TreeNode>(x => x.Descendants);
+        };
+
+        Because of = () =>
+            Visit(descendants, ancestors);
+
+        It should_call_the_user_defined_func = () =>
+            udf_was_called.ShouldBeTrue();
+
+        It should_link_ancestors_to_descendants = () =>
+            ancestors.OtherSide.ShouldEqual(descendants);
+
+        It should_link_descendants_to_ancestors = () =>
+            descendants.OtherSide.ShouldEqual(ancestors);
+
+        static CollectionMapping ancestors;
+        static CollectionMapping descendants;
+
+        private class TreeNode
+        {
+            public IEnumerable<TreeNode> Ancestors { get; set; }
+            public IEnumerable<TreeNode> Descendants { get; set; }
+        }
+    }
+
     public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_two_collections_that_are_exposed_through_methods : BiDirectionalManyToManyPairingVisitorSpec
     {
         Establish context = () =>
