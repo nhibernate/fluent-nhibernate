@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances
@@ -18,6 +19,23 @@ namespace FluentNHibernate.Conventions.Instances
         IOneToManyInspector IOneToManyCollectionInspector.Relationship
         {
             get { return Relationship; }
+        }
+
+        IManyToOneInspector IOneToManyCollectionInspector.OtherSide
+        {
+            get { return OtherSide; }
+        }
+
+        public IManyToOneInstance OtherSide
+        {
+            get
+            {
+                var otherSide = mapping.OtherSide as ManyToOneMapping;
+                if (otherSide == null)
+                    return null;
+
+                return new ManyToOneInstance(otherSide);
+            }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
