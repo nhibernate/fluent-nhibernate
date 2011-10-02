@@ -14,11 +14,11 @@ namespace FluentNHibernate.Specs.Diagnostics
     {
         Establish context = () =>
         {
-            var despatcher = new DefaultDiagnosticMessageDespatcher();
-            despatcher.RegisterListener(new StubListener(x => results = x));
+            var dispatcher = new DefaultDiagnosticMessageDispatcher();
+            dispatcher.RegisterListener(new StubListener(x => results = x));
 
             model = new FluentNHibernate.PersistenceModel();
-            model.SetLogger(new DefaultDiagnosticLogger(despatcher));
+            model.SetLogger(new DefaultDiagnosticLogger(dispatcher));
         };
 
         Because of = () =>
@@ -56,11 +56,11 @@ namespace FluentNHibernate.Specs.Diagnostics
     {
         Establish context = () =>
         {
-            var despatcher = new DefaultDiagnosticMessageDespatcher();
-            despatcher.RegisterListener(new StubListener(x => results = x));
+            var dispatcher = new DefaultDiagnosticMessageDispatcher();
+            dispatcher.RegisterListener(new StubListener(x => results = x));
 
             model = new FluentNHibernate.PersistenceModel();
-            model.SetLogger(new DefaultDiagnosticLogger(despatcher));
+            model.SetLogger(new DefaultDiagnosticLogger(dispatcher));
         };
 
         Because of = () =>
@@ -92,12 +92,12 @@ namespace FluentNHibernate.Specs.Diagnostics
     {
         Establish context = () =>
         {
-            var despatcher = new DefaultDiagnosticMessageDespatcher();
-            despatcher.RegisterListener(new StubListener(x => results = x));
+            var dispatcher = new DefaultDiagnosticMessageDispatcher();
+            dispatcher.RegisterListener(new StubListener(x => results = x));
 
             model = AutoMap.Source(new StubTypeSource(typeof(First), typeof(Second), typeof(Third)), new TestAutomappingConfiguration());
 
-            model.SetLogger(new DefaultDiagnosticLogger(despatcher));
+            model.SetLogger(new DefaultDiagnosticLogger(dispatcher));
         };
 
         Because of = () =>
@@ -137,13 +137,13 @@ namespace FluentNHibernate.Specs.Diagnostics
     {
         Establish context = () =>
         {
-            var despatcher = new DefaultDiagnosticMessageDespatcher();
-            despatcher.RegisterListener(new StubListener(x => results = x));
+            var dispatcher = new DefaultDiagnosticMessageDispatcher();
+            dispatcher.RegisterListener(new StubListener(x => results = x));
 
             model = AutoMap.Source(new StubTypeSource(typeof(First), typeof(Second), typeof(Third)))
                 .Where(x => x != typeof(First));
             
-            model.SetLogger(new DefaultDiagnosticLogger(despatcher));
+            model.SetLogger(new DefaultDiagnosticLogger(dispatcher));
         };
 
         Because of = () =>
@@ -175,13 +175,13 @@ namespace FluentNHibernate.Specs.Diagnostics
     {
         Establish context = () =>
         {
-            var despatcher = new DefaultDiagnosticMessageDespatcher();
-            despatcher.RegisterListener(new StubListener(x => results = x));
+            var dispatcher = new DefaultDiagnosticMessageDispatcher();
+            dispatcher.RegisterListener(new StubListener(x => results = x));
 
             model = AutoMap.Source(new StubTypeSource(typeof(First), typeof(Second), typeof(Third)))
                 .IgnoreBase<First>();
 
-            model.SetLogger(new DefaultDiagnosticLogger(despatcher));
+            model.SetLogger(new DefaultDiagnosticLogger(dispatcher));
         };
 
         Because of = () =>
@@ -213,13 +213,13 @@ namespace FluentNHibernate.Specs.Diagnostics
     {
         Establish context = () =>
         {
-            var despatcher = new DefaultDiagnosticMessageDespatcher();
-            despatcher.RegisterListener(new StubListener(x => results = x));
+            var dispatcher = new DefaultDiagnosticMessageDispatcher();
+            dispatcher.RegisterListener(new StubListener(x => results = x));
 
             model = AutoMap.Source(new StubTypeSource(typeof(Something<First>), typeof(Second), typeof(Third)))
                 .IgnoreBase(typeof(Something<>));
 
-            model.SetLogger(new DefaultDiagnosticLogger(despatcher));
+            model.SetLogger(new DefaultDiagnosticLogger(dispatcher));
         };
 
         Because of = () =>
@@ -251,12 +251,12 @@ namespace FluentNHibernate.Specs.Diagnostics
     {
         Establish context = () =>
         {
-            var despatcher = new DefaultDiagnosticMessageDespatcher();
-            despatcher.RegisterListener(new StubListener(x => results = x));
+            var dispatcher = new DefaultDiagnosticMessageDispatcher();
+            dispatcher.RegisterListener(new StubListener(x => results = x));
 
             model = AutoMap.Source(new StubTypeSource(typeof(Abstract), typeof(Second), typeof(Third)), new TestAutomappingConfiguration());
 
-            model.SetLogger(new DefaultDiagnosticLogger(despatcher));
+            model.SetLogger(new DefaultDiagnosticLogger(dispatcher));
         };
 
         Because of = () =>
@@ -296,12 +296,12 @@ namespace FluentNHibernate.Specs.Diagnostics
     {
         Establish context = () =>
         {
-            var despatcher = new DefaultDiagnosticMessageDespatcher();
-            despatcher.RegisterListener(new StubListener(x => results = x));
+            var dispatcher = new DefaultDiagnosticMessageDispatcher();
+            dispatcher.RegisterListener(new StubListener(x => results = x));
 
             model = AutoMap.Source(new StubTypeSource(typeof(Component), typeof(Second), typeof(Third)), new TestAutomappingConfiguration());
 
-            model.SetLogger(new DefaultDiagnosticLogger(despatcher));
+            model.SetLogger(new DefaultDiagnosticLogger(dispatcher));
         };
 
         Because of = () =>

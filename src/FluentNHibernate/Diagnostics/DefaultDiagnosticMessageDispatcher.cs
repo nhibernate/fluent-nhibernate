@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FluentNHibernate.Diagnostics
 {
-    public class DefaultDiagnosticMessageDespatcher : IDiagnosticMessageDespatcher
+    public class DefaultDiagnosticMessageDispatcher : IDiagnosticMessageDispatcher
     {
         readonly List<IDiagnosticListener> listeners = new List<IDiagnosticListener>();
 

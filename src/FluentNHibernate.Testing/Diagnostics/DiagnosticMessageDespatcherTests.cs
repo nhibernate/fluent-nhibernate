@@ -7,14 +7,14 @@ using Rhino.Mocks;
 namespace FluentNHibernate.Testing.Diagnostics
 {
     [TestFixture]
-    public class DiagnosticMessageDespatcherTests
+    public class DiagnosticMessageDispatcherTests
     {
-        IDiagnosticMessageDespatcher despatcher;
+        IDiagnosticMessageDispatcher dispatcher;
 
         [SetUp]
-        public void CreateDespatcher()
+        public void CreateDispatcher()
         {
-            despatcher = new DefaultDiagnosticMessageDespatcher();
+            dispatcher = new DefaultDiagnosticMessageDispatcher();
         }
 
         [Test]
@@ -24,9 +24,9 @@ namespace FluentNHibernate.Testing.Diagnostics
             var secondListener = Mock<IDiagnosticListener>.Create();
             var results = new DiagnosticResults(new ScannedSource[0], new Type[0], new Type[0], new SkippedAutomappingType[0], new Type[0], new AutomappingType[0]);
 
-            despatcher.RegisterListener(firstListener);
-            despatcher.RegisterListener(secondListener);
-            despatcher.Publish(results);
+            dispatcher.RegisterListener(firstListener);
+            dispatcher.RegisterListener(secondListener);
+            dispatcher.Publish(results);
 
             firstListener.AssertWasCalled(x => x.Receive(results));
             secondListener.AssertWasCalled(x => x.Receive(results));
