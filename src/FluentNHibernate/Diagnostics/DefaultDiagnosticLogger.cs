@@ -5,7 +5,7 @@ namespace FluentNHibernate.Diagnostics
 {
     public class DefaultDiagnosticLogger : IDiagnosticLogger
     {
-        readonly IDiagnosticMessageDespatcher despatcher;
+        readonly IDiagnosticMessageDispatcher dispatcher;
         readonly List<ScannedSource> scannedSources = new List<ScannedSource>();
         readonly List<Type> classMaps = new List<Type>();
         readonly List<Type> conventions = new List<Type>();
@@ -14,9 +14,9 @@ namespace FluentNHibernate.Diagnostics
         readonly List<AutomappingType> automappingTypes = new List<AutomappingType>();
         bool isDirty;
 
-        public DefaultDiagnosticLogger(IDiagnosticMessageDespatcher despatcher)
+        public DefaultDiagnosticLogger(IDiagnosticMessageDispatcher dispatcher)
         {
-            this.despatcher = despatcher;
+            this.dispatcher = dispatcher;
         }
 
         public void Flush()
@@ -25,7 +25,7 @@ namespace FluentNHibernate.Diagnostics
 
             var results = BuildResults();
 
-            despatcher.Publish(results);
+            dispatcher.Publish(results);
         }
 
         DiagnosticResults BuildResults()

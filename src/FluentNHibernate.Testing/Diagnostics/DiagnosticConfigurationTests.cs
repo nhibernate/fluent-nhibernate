@@ -31,37 +31,37 @@ namespace FluentNHibernate.Testing.Diagnostics
         }
 
         [Test]
-        public void adding_listener_should_add_listener_to_underlying_despatcher()
+        public void adding_listener_should_add_listener_to_underlying_dispatcher()
         {
-            var despatcher = Mock<IDiagnosticMessageDespatcher>.Create();
+            var dispatcher = Mock<IDiagnosticMessageDispatcher>.Create();
             var listener = Stub<IDiagnosticListener>.Create();
 
-            new DiagnosticsConfiguration(despatcher, l => { })
+            new DiagnosticsConfiguration(dispatcher, l => { })
                 .RegisterListener(listener);
 
-            despatcher.AssertWasCalled(x => x.RegisterListener(listener));
+            dispatcher.AssertWasCalled(x => x.RegisterListener(listener));
         }
 
         [Test]
         public void output_to_console_should_register_console_listener()
         {
-            var despatcher = Mock<IDiagnosticMessageDespatcher>.Create();
+            var dispatcher = Mock<IDiagnosticMessageDispatcher>.Create();
 
-            new DiagnosticsConfiguration(despatcher, l => { })
+            new DiagnosticsConfiguration(dispatcher, l => { })
                 .OutputToConsole();
 
-            despatcher.AssertWasCalled(x => x.RegisterListener(Arg<ConsoleOutputListener>.Is.TypeOf));
+            dispatcher.AssertWasCalled(x => x.RegisterListener(Arg<ConsoleOutputListener>.Is.TypeOf));
         }
 
         [Test]
         public void output_to_file_should_register_console_listener()
         {
-            var despatcher = Mock<IDiagnosticMessageDespatcher>.Create();
+            var dispatcher = Mock<IDiagnosticMessageDispatcher>.Create();
 
-            new DiagnosticsConfiguration(despatcher, l => { })
+            new DiagnosticsConfiguration(dispatcher, l => { })
                 .OutputToFile("path");
 
-            despatcher.AssertWasCalled(x => x.RegisterListener(Arg<FileOutputListener>.Is.TypeOf));
+            dispatcher.AssertWasCalled(x => x.RegisterListener(Arg<FileOutputListener>.Is.TypeOf));
         }
     }
 }

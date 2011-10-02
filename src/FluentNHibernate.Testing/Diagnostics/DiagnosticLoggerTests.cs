@@ -12,39 +12,39 @@ namespace FluentNHibernate.Testing.Diagnostics
     public class DiagnosticLoggerTests
     {
         [Test]
-        public void should_not_flush_messages_to_despatcher_when_no_messages_logged()
+        public void should_not_flush_messages_to_dispatcher_when_no_messages_logged()
         {
-            var despatcher = Mock<IDiagnosticMessageDespatcher>.Create();
-            var logger = new DefaultDiagnosticLogger(despatcher);
+            var dispatcher = Mock<IDiagnosticMessageDispatcher>.Create();
+            var logger = new DefaultDiagnosticLogger(dispatcher);
 
             logger.Flush();
 
-            despatcher.AssertWasNotCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything));
+            dispatcher.AssertWasNotCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything));
         }
 
         [Test]
-        public void should_flush_messages_to_despatcher()
+        public void should_flush_messages_to_dispatcher()
         {
-            var despatcher = Mock<IDiagnosticMessageDespatcher>.Create();
-            var logger = new DefaultDiagnosticLogger(despatcher);
+            var dispatcher = Mock<IDiagnosticMessageDispatcher>.Create();
+            var logger = new DefaultDiagnosticLogger(dispatcher);
 
             logger.FluentMappingDiscovered(typeof(SomeClassMap));
             logger.Flush();
 
-            despatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything));
+            dispatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything));
         }
 
         [Test]
         public void should_add_class_maps_to_result()
         {
-            var despatcher = Mock<IDiagnosticMessageDespatcher>.Create();
-            var logger = new DefaultDiagnosticLogger(despatcher);
+            var dispatcher = Mock<IDiagnosticMessageDispatcher>.Create();
+            var logger = new DefaultDiagnosticLogger(dispatcher);
 
             logger.FluentMappingDiscovered(typeof(SomeClassMap));
             logger.Flush();
 
             DiagnosticResults result = null;
-            despatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
+            dispatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
                 c => c.Callback<DiagnosticResults>(x =>
                 {
                     result = x;
@@ -57,14 +57,14 @@ namespace FluentNHibernate.Testing.Diagnostics
         [Test]
         public void should_add_conventions_to_result()
         {
-            var despatcher = Mock<IDiagnosticMessageDespatcher>.Create();
-            var logger = new DefaultDiagnosticLogger(despatcher);
+            var dispatcher = Mock<IDiagnosticMessageDispatcher>.Create();
+            var logger = new DefaultDiagnosticLogger(dispatcher);
 
             logger.ConventionDiscovered(typeof(SomeConvention));
             logger.Flush();
 
             DiagnosticResults result = null;
-            despatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
+            dispatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
                 c => c.Callback<DiagnosticResults>(x =>
                 {
                     result = x;
@@ -77,14 +77,14 @@ namespace FluentNHibernate.Testing.Diagnostics
         [Test]
         public void should_add_scanned_fluent_mapping_sources_to_result()
         {
-            var despatcher = Mock<IDiagnosticMessageDespatcher>.Create();
-            var logger = new DefaultDiagnosticLogger(despatcher);
+            var dispatcher = Mock<IDiagnosticMessageDispatcher>.Create();
+            var logger = new DefaultDiagnosticLogger(dispatcher);
 
             logger.LoadedFluentMappingsFromSource(new StubTypeSource());
             logger.Flush();
 
             DiagnosticResults result = null;
-            despatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
+            dispatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
                 c => c.Callback<DiagnosticResults>(x =>
                 {
                     result = x;
@@ -100,14 +100,14 @@ namespace FluentNHibernate.Testing.Diagnostics
         [Test]
         public void should_add_scanned_convention_sources_to_result()
         {
-            var despatcher = Mock<IDiagnosticMessageDespatcher>.Create();
-            var logger = new DefaultDiagnosticLogger(despatcher);
+            var dispatcher = Mock<IDiagnosticMessageDispatcher>.Create();
+            var logger = new DefaultDiagnosticLogger(dispatcher);
 
             logger.LoadedConventionsFromSource(new StubTypeSource());
             logger.Flush();
 
             DiagnosticResults result = null;
-            despatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
+            dispatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
                 c => c.Callback<DiagnosticResults>(x =>
                 {
                     result = x;
@@ -123,14 +123,14 @@ namespace FluentNHibernate.Testing.Diagnostics
         [Test]
         public void should_add_skipped_automap_types_to_result()
         {
-            var despatcher = Mock<IDiagnosticMessageDespatcher>.Create();
-            var logger = new DefaultDiagnosticLogger(despatcher);
+            var dispatcher = Mock<IDiagnosticMessageDispatcher>.Create();
+            var logger = new DefaultDiagnosticLogger(dispatcher);
 
             logger.AutomappingSkippedType(typeof(object), "reason");
             logger.Flush();
 
             DiagnosticResults result = null;
-            despatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
+            dispatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
                 c => c.Callback<DiagnosticResults>(x =>
                 {
                     result = x;
@@ -148,14 +148,14 @@ namespace FluentNHibernate.Testing.Diagnostics
         [Test]
         public void should_add_automapping_candidates()
         {
-            var despatcher = Mock<IDiagnosticMessageDespatcher>.Create();
-            var logger = new DefaultDiagnosticLogger(despatcher);
+            var dispatcher = Mock<IDiagnosticMessageDispatcher>.Create();
+            var logger = new DefaultDiagnosticLogger(dispatcher);
 
             logger.AutomappingCandidateTypes(new[] { typeof(object) });
             logger.Flush();
 
             DiagnosticResults result = null;
-            despatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
+            dispatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
                 c => c.Callback<DiagnosticResults>(x =>
                 {
                     result = x;
@@ -169,14 +169,14 @@ namespace FluentNHibernate.Testing.Diagnostics
         [Test]
         public void should_add_automapping_type_with_begin()
         {
-            var despatcher = Mock<IDiagnosticMessageDespatcher>.Create();
-            var logger = new DefaultDiagnosticLogger(despatcher);
+            var dispatcher = Mock<IDiagnosticMessageDispatcher>.Create();
+            var logger = new DefaultDiagnosticLogger(dispatcher);
 
             logger.BeginAutomappingType(typeof(object));
             logger.Flush();
 
             DiagnosticResults result = null;
-            despatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
+            dispatcher.AssertWasCalled(x => x.Publish(Arg<DiagnosticResults>.Is.Anything),
                 c => c.Callback<DiagnosticResults>(x =>
                 {
                     result = x;

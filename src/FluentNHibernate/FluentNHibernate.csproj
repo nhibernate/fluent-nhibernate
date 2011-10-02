@@ -135,14 +135,14 @@
     <Compile Include="Conventions\Instances\KeyPropertyInstance.cs" />
     <Compile Include="Diagnostics\AutomappingType.cs" />
     <Compile Include="Diagnostics\ConsoleOutputListener.cs" />
-    <Compile Include="Diagnostics\DefaultDiagnosticMessageDespatcher.cs" />
+    <Compile Include="Diagnostics\DefaultDiagnosticMessageDispatcher.cs" />
     <Compile Include="Diagnostics\DefaultOutputFormatter.cs" />
     <Compile Include="Diagnostics\DiagnosticResults.cs" />
     <Compile Include="Diagnostics\DiagnosticsConfiguration.cs" />
     <Compile Include="Diagnostics\DefaultDiagnosticLogger.cs" />
     <Compile Include="Diagnostics\IDiagnosticListener.cs" />
     <Compile Include="Diagnostics\IDiagnosticLogger.cs" />
-    <Compile Include="Diagnostics\IDiagnosticMessageDespatcher.cs" />
+    <Compile Include="Diagnostics\IDiagnosticMessageDispatcher.cs" />
     <Compile Include="Diagnostics\IDiagnosticResultsFormatter.cs" />
     <Compile Include="Diagnostics\NullDiagnosticsLogger.cs" />
     <Compile Include="Diagnostics\ScannedSource.cs" />
