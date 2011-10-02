@@ -173,6 +173,14 @@ namespace FluentNHibernate.Conventions.Instances
         void ICollectionInstance.AsList()
         {
             mapping.Collection = Collection.List;
+            if (mapping.Index == null)
+            {
+                var indexMapping = new IndexMapping();
+                var columnMapping = new ColumnMapping();
+                columnMapping.Set(x => x.Name, Layer.Defaults, "Index");
+                indexMapping.AddColumn(Layer.Defaults, columnMapping);
+                mapping.Set(x => x.Index, Layer.Defaults, indexMapping);
+            };
         }
 
         void ICollectionInstance.AsMap()
