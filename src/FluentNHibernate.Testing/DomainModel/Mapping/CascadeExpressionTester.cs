@@ -58,5 +58,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 		{
 			A_call_to(_cascade.Delete).should_set_the_cascade_value_to("delete");
 		}
+
+        [Test]
+        public void Merge_should_add_the_correct_cascade_attribute_to_the_parent_part()
+        {
+            A_call_to(_cascade.Merge).should_set_the_cascade_value_to("merge");
+        }
 	}
 }

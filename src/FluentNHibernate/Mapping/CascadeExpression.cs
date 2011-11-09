@@ -48,5 +48,16 @@ namespace FluentNHibernate.Mapping
 			setter("delete");
             return parent;
 		}
+
+        /// <summary>
+        /// Cascade deletes
+        /// </summary>
+        public TParent Merge()
+        {
+            setter("merge");
+            return parent;
+        }
+
+
 	}
 }

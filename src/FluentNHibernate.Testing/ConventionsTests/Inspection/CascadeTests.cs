@@ -47,5 +47,12 @@ namespace FluentNHibernate.Testing.ConventionsTests.Inspection.ValueTypes
         {
             Cascade.SaveUpdate.ToString().ShouldEqual("save-update");
         }
+
+        [Test]
+        public void MergeShouldHaveCorrectValue()
+        {
+            Cascade.All.ToString().ShouldEqual("merge");
+        }
+
     }
 }

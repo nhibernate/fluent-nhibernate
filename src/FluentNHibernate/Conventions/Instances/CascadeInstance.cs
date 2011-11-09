@@ -30,5 +30,10 @@ namespace FluentNHibernate.Conventions.Instances
         {
             setter("delete");
         }
+
+        public void Merge()
+        {
+            setter("merge");
+        }
     }
 }
