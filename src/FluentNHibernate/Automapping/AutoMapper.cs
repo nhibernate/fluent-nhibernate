@@ -121,22 +121,22 @@ namespace FluentNHibernate.Automapping
             var excludedTypes = mappingTypes
                 .Where(x => cfg.IsConcreteBaseType(x.Type.BaseType))
                 .ToArray();
-            var availableTypes = mappingTypes.Except(excludedTypes);
+            var availableTypes = mappingTypes.Except(excludedTypes).ToDictionary(x => x.Type);
             var mappingTypesWithLogicalParents = new Dictionary<AutoMapType, AutoMapType>();
 
             foreach (var type in availableTypes)
-                mappingTypesWithLogicalParents.Add(type, GetLogicalParent(type.Type, availableTypes));
+                mappingTypesWithLogicalParents.Add(type.Value, GetLogicalParent(type.Key, availableTypes));
             return mappingTypesWithLogicalParents;
         }
 
-        static AutoMapType GetLogicalParent(Type type, IEnumerable<AutoMapType> availableTypes)
+        static AutoMapType GetLogicalParent(Type type, IDictionary<Type, AutoMapType> availableTypes)
         {
             if (type.BaseType == typeof(object) || type.BaseType == null)
                 return null;
 
-            var baseType = availableTypes.FirstOrDefault(x => x.Type == type.BaseType);
+            AutoMapType baseType;
 
-            if (baseType != null)
+            if (availableTypes.TryGetValue(type.BaseType, out baseType))
                 return baseType;
 
             return GetLogicalParent(type.BaseType, availableTypes);

@@ -122,6 +122,12 @@ namespace FluentNHibernate.Conventions.Instances
             mapping.Set(x => x.Subselect, Layer.Conventions, subselect);
         }
 
+        public void KeyNullable()
+        {
+            mapping.Key.Set(x => x.NotNull, Layer.Conventions, !nextBool);
+            nextBool = true;
+        }
+
         public void Table(string tableName)
         {
             mapping.Set(x => x.TableName, Layer.Conventions, tableName);
@@ -173,6 +179,14 @@ namespace FluentNHibernate.Conventions.Instances
         void ICollectionInstance.AsList()
         {
             mapping.Collection = Collection.List;
+            if (mapping.Index == null)
+            {
+                var indexMapping = new IndexMapping();
+                var columnMapping = new ColumnMapping();
+                columnMapping.Set(x => x.Name, Layer.Defaults, "Index");
+                indexMapping.AddColumn(Layer.Defaults, columnMapping);
+                mapping.Set(x => x.Index, Layer.Defaults, indexMapping);
+            };
         }
 
         void ICollectionInstance.AsMap()

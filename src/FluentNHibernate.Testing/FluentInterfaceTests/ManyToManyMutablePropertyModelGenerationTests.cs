@@ -273,6 +273,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
+        public void GenericChildWhereShouldSetAttributeOnRelationshipModel()
+        {
+            ManyToMany(x => x.BagOfChildren)
+                .Mapping(m => m.ChildWhere(x => x.Name == "Name"))
+                .ModelShouldMatch(x => ((ManyToManyMapping)x.Relationship).Where.ShouldEqual("Name = 'Name'"));
+        }
+
+        [Test]
         public void EntityNameShouldSetModelValue()
         {
             ManyToMany(x => x.BagOfChildren)

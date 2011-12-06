@@ -11,6 +11,8 @@ namespace FluentNHibernate.Conventions.Instances
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         new IOneToManyCollectionInstance Not { get; }
 
+        new IManyToOneInstance OtherSide { get; }
+
         /// <summary>
         /// Applies a filter to this relationship given its name.
         /// </summary>

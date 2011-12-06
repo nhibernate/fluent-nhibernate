@@ -6,13 +6,13 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Visitors
 {
-    public delegate void PairBiDirectionalManyToManySidesDelegate(MappingModel.Collections.CollectionMapping current, IEnumerable<MappingModel.Collections.CollectionMapping> possibles, bool wasResolved);
+    public delegate void PairBiDirectionalManyToManySidesDelegate(CollectionMapping current, IEnumerable<CollectionMapping> possibles, bool wasResolved);
 
     public class RelationshipPairingVisitor : DefaultMappingModelVisitor
     {
         readonly PairBiDirectionalManyToManySidesDelegate userControlledPair;
-        readonly List<MappingModel.Collections.CollectionMapping> manyToManys = new List<MappingModel.Collections.CollectionMapping>();
-        readonly List<MappingModel.Collections.CollectionMapping> oneToManys = new List<MappingModel.Collections.CollectionMapping>();
+        readonly List<CollectionMapping> manyToManys = new List<CollectionMapping>();
+        readonly List<CollectionMapping> oneToManys = new List<CollectionMapping>();
         readonly List<ManyToOneMapping> references = new List<ManyToOneMapping>();
 
         public RelationshipPairingVisitor(PairBiDirectionalManyToManySidesDelegate userControlledPair)
@@ -41,7 +41,7 @@ namespace FluentNHibernate.Visitors
             references.Add(manyToOneMapping);
         }
 
-        static void PairOneToManys(IEnumerable<MappingModel.Collections.CollectionMapping> collections, IEnumerable<ManyToOneMapping> refs)
+        static void PairOneToManys(IEnumerable<CollectionMapping> collections, IEnumerable<ManyToOneMapping> refs)
         {
             var orderedCollections = collections.OrderBy(x => x.Name).ToArray();
             var orderedRefs = refs.OrderBy(x => x.Name).ToArray();
@@ -58,7 +58,7 @@ namespace FluentNHibernate.Visitors
             }
         }
 
-        void PairManyToManys(IEnumerable<MappingModel.Collections.CollectionMapping> rs)
+        void PairManyToManys(IEnumerable<CollectionMapping> rs)
         {
             if (!rs.Any()) return;
 
@@ -72,9 +72,10 @@ namespace FluentNHibernate.Visitors
             // try to pair the current side with the potential other sides
             var mapping = current;
 
-            if (candidates.Count() == 1)
+            var candidatesCount = candidates.Count();
+            if (candidatesCount == 1)
                 mapping = PairExactMatches(rs, current, candidates);
-            else if (candidates.Count() > 1)
+            else if (candidatesCount > 1)
                 mapping = PairFuzzyMatches(rs, current, candidates);
 
             if (mapping == null)
@@ -89,7 +90,7 @@ namespace FluentNHibernate.Visitors
 
             // both collections have been paired, so remove them
             // from the available collections
-            PairManyToManys(rs.Except(mapping, (MappingModel.Collections.CollectionMapping)mapping.OtherSide));
+            PairManyToManys(rs.Except(mapping, (CollectionMapping)mapping.OtherSide));
         }
 
         static string GetMemberName(Member member)
@@ -100,7 +101,7 @@ namespace FluentNHibernate.Visitors
             return member.Name;
         }
 
-        static LikenessContainer GetLikeness(MappingModel.Collections.CollectionMapping currentMapping, MappingModel.Collections.CollectionMapping mapping)
+        static LikenessContainer GetLikeness(CollectionMapping currentMapping, CollectionMapping mapping)
         {
             var currentMemberName = GetMemberName(currentMapping.Member);
             var mappingMemberName = GetMemberName(mapping.Member);
@@ -114,10 +115,15 @@ namespace FluentNHibernate.Visitors
             };
         }
 
-        static bool both_collections_point_to_each_others_types(MappingModel.Collections.CollectionMapping left, MappingModel.Collections.CollectionMapping right)
+        static bool both_collections_point_to_each_others_types(CollectionMapping left, CollectionMapping right)
         {
             return left.ContainingEntityType == right.ChildType &&
                 left.ChildType == right.ContainingEntityType;
+        }
+
+        static bool self_referenced_relation_does_not_point_to_itself(CollectionMapping left, CollectionMapping right)
+        {
+            return left.ChildType == left.ContainingEntityType && right.ChildType == right.ContainingEntityType && left != right;
         }
 
         static bool likeness_within_threshold(LikenessContainer current)
@@ -125,7 +131,7 @@ namespace FluentNHibernate.Visitors
             return current.Differences != current.CurrentMemberName.Length;
         }
 
-        static MappingModel.Collections.CollectionMapping PairFuzzyMatches(IEnumerable<MappingModel.Collections.CollectionMapping> rs, MappingModel.Collections.CollectionMapping current, IEnumerable<MappingModel.Collections.CollectionMapping> potentialOtherSides)
+        static CollectionMapping PairFuzzyMatches(IEnumerable<CollectionMapping> rs, CollectionMapping current, IEnumerable<CollectionMapping> potentialOtherSides)
         {
             // no exact matches found, drop down to a levenshtein distance
             var mapping = current;
@@ -157,7 +163,7 @@ namespace FluentNHibernate.Visitors
             return mapping;
         }
 
-        static MappingModel.Collections.CollectionMapping PairExactMatches(IEnumerable<MappingModel.Collections.CollectionMapping> rs, MappingModel.Collections.CollectionMapping current, IEnumerable<MappingModel.Collections.CollectionMapping> potentialOtherSides)
+        static CollectionMapping PairExactMatches(IEnumerable<CollectionMapping> rs, CollectionMapping current, IEnumerable<CollectionMapping> potentialOtherSides)
         {
             var otherSide = potentialOtherSides.Single();
                 
@@ -172,9 +178,10 @@ namespace FluentNHibernate.Visitors
             return mapping;
         }
 
-        static MappingModel.Collections.CollectionMapping FindAlternative(IEnumerable<MappingModel.Collections.CollectionMapping> rs, MappingModel.Collections.CollectionMapping current, MappingModel.Collections.CollectionMapping otherSide)
+        static CollectionMapping FindAlternative(IEnumerable<CollectionMapping> rs, CollectionMapping current, CollectionMapping otherSide)
         {
             var alternative = rs
+                .Where(x => self_referenced_relation_does_not_point_to_itself(x, current))
                 .Where(x => x.ContainingEntityType == current.ContainingEntityType)
                 .Select(x => GetLikeness(x, otherSide))
                 .OrderBy(x => x.Differences)
@@ -195,7 +202,7 @@ namespace FluentNHibernate.Visitors
 
         class LikenessContainer
         {
-            public MappingModel.Collections.CollectionMapping Collection { get; set; }
+            public CollectionMapping Collection { get; set; }
             public string CurrentMemberName { get; set; }
             public string MappingMemberName { get; set; }
             public int Differences { get; set; }

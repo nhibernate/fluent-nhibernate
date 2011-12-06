@@ -127,6 +127,8 @@ namespace FluentNHibernate.Cfg
                 model.Add(type);
             }
 
+			model.Conventions.Merge(conventionFinder);
+
             if (!string.IsNullOrEmpty(exportPath))
                 model.WriteMappingsTo(exportPath);
 
@@ -135,8 +137,6 @@ namespace FluentNHibernate.Cfg
 
             if (biDirectionalManyToManyPairer != null)
                 model.BiDirectionalManyToManyPairer = biDirectionalManyToManyPairer;
-
-            model.Conventions.Merge(conventionFinder);
         }
     }
 }

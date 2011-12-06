@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
@@ -160,6 +161,16 @@ namespace FluentNHibernate.Mapping
 
             return this;
         }
+
+		public virtual CompositeIdentityPart<T> CustomType<CType>()
+		{
+			var key = keys.Where(x => x is KeyPropertyMapping).Cast<KeyPropertyMapping>().LastOrDefault();
+			if (key != null)
+			{
+				key.Set(x => x.Type, Layer.Defaults, new TypeReference(typeof(CType)));
+			}
+			return this;
+		}
 
 		/// <summary>
 		/// Set the access and naming strategy for this identity.
