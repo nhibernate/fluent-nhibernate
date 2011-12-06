@@ -1,20 +1,20 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Output;
-using NHibernate.Cfg;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
     public class MappingTester<T>
     {
+        readonly PersistenceModel model;
         protected XmlElement currentElement;
+        string currentPath;
         protected XmlDocument document;
-        private readonly PersistenceModel model;
-        private string currentPath;
 
         public MappingTester()
             : this(new PersistenceModel())
@@ -46,7 +46,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             var map = new SubclassMap<TSubClass>();
             action(map);
 
-            this.model.Add(map);
+            model.Add(map);
 
             return this;
         }
@@ -61,7 +61,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public virtual MappingTester<T> ForMapping(ClassMap<T> classMap)
         {
-            if (classMap  != null)
+            if (classMap != null)
                 model.Add(classMap);
 
             var mappings = model.BuildMappings();
@@ -147,17 +147,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public virtual void OutputToConsole()
         {
-        	Console.WriteLine(string.Empty);
-        	Console.WriteLine(this.ToString());
-        	Console.WriteLine(string.Empty);
+            Console.WriteLine(string.Empty);
+            Console.WriteLine(ToString());
+            Console.WriteLine(string.Empty);
         }
 
         public override string ToString()
         {
-            var stringWriter = new System.IO.StringWriter();
+            var stringWriter = new StringWriter();
             var xmlWriter = new XmlTextWriter(stringWriter);
             xmlWriter.Formatting = Formatting.Indented;
-            this.document.WriteContentTo(xmlWriter);
+            document.WriteContentTo(xmlWriter);
             return stringWriter.ToString();
         }
 
@@ -180,7 +180,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             return this;
         }
 
-         /// <summary>
+        /// <summary>
         /// Determines if the CurrentElement is located at a specified element position in it's parent
         /// </summary>
         /// <param name="elementPosition">Zero based index of elements on the parent</param>

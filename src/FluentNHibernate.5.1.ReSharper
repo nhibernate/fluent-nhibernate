@@ -241,10 +241,6 @@
         <ElementKinds>
           <Kind Name="TEST_TYPE" />
           <Kind Name="TEST_MEMBER" />
-          <Kind Name="Machine.Specifications_Behavior" />
-          <Kind Name="Machine.Specifications_Context" />
-          <Kind Name="Machine.Specifications_Specification" />
-          <Kind Name="Machine.Specifications_SupportingField" />
         </ElementKinds>
         <ExtraRule Prefix="" Suffix="" Style="Aa_bb" />
       </UserRule>

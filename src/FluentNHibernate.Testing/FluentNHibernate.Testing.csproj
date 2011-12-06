@@ -109,7 +109,6 @@
     <Compile Include="AutoMapping\Apm\Conventions\ReferencesConventionTests.cs" />
     <Compile Include="AutoMapping\Apm\GenericBaseClassTests.cs" />
     <Compile Include="AutoMapping\Apm\IgnoreBaseAutoPersistenceModelTests.cs" />
-    <Compile Include="AutoMapping\AutoMappingTester.cs" />
     <Compile Include="AutoMapping\AutoMapTests.cs" />
     <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.cs" />
     <Compile Include="AutoMapping\BaseAutoMapFixture.cs" />
@@ -294,7 +293,6 @@
     <Compile Include="DomainModel\Mapping\OneToManyIntegrationTester.cs" />
     <Compile Include="DomainModel\Mapping\OneToManyTester.cs" />
     <Compile Include="DomainModel\Mapping\AccessStrategyManyToOnePartTester.cs" />
-    <Compile Include="DomainModel\Mapping\MappingTester.cs" />
     <Compile Include="DomainModel\Mapping\PropertyPartTester.cs" />
     <Compile Include="DomainModel\Mapping\SubClassTester.cs" />
     <Compile Include="DomainModel\Mapping\VersionTester.cs" />
@@ -391,7 +389,6 @@
     <Compile Include="Testing\PersistenceSpecificationTransactionTest.cs" />
     <Compile Include="Testing\SessionSourceConfigurationTester.cs" />
     <Compile Include="Specification.cs" />
-    <Compile Include="SpecificationExtensions.cs" />
     <Compile Include="Debugging.cs" />
     <Compile Include="DomainModel\Employees.cs" />
     <Compile Include="DomainModel\Music.cs" />
@@ -415,6 +412,10 @@
     <Compile Include="Xml\MappingXmlTestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FluentNHibernate.Testing.Core\FluentNHibernate.Testing.Core.csproj">
+      <Project>{BBDD22FD-0CC3-472C-B394-A103FB92A430}</Project>
+      <Name>FluentNHibernate.Testing.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
       <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>
       <Name>FluentNHibernate</Name>
