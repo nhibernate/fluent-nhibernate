@@ -4,7 +4,7 @@ namespace Examples.FirstProject.Entities
 {
     public class Product
     {
-        public virtual int Id { get; private set; }
+        public virtual int Id { get; protected set; }
         public virtual string Name { get; set; }
         public virtual double Price { get; set; }
         public virtual Location Location { get; set; }
