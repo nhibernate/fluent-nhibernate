@@ -8,6 +8,7 @@ namespace FluentNHibernate.Conventions.Inspections
         public static readonly Cascade None = new Cascade("none");
         public static readonly Cascade SaveUpdate = new Cascade("save-update");
         public static readonly Cascade Delete = new Cascade("delete");
+        public static readonly Cascade Merge = new Cascade("merge");
         
         private readonly string value;
 
