@@ -203,9 +203,20 @@ namespace FluentNHibernate.Automapping
 
         private void AddMapping(Type type)
         {
-            log.BeginAutomappingType(type);
-
             Type typeToMap = GetTypeToMap(type);
+
+            // Fixes https://github.com/jagregory/fluent-nhibernate/issues/113,
+            // where 'type' would not be mapped if 'GetTypeToMap' returned the
+            // base type
+            if (typeToMap != type)
+            {
+                log.BeginAutomappingType(type);
+                var derivedMapping = autoMapper.Map(type, mappingTypes);
+
+                Add(new PassThroughMappingProvider(derivedMapping));
+            }
+
+            log.BeginAutomappingType(typeToMap);
             var mapping = autoMapper.Map(typeToMap, mappingTypes);
 
             Add(new PassThroughMappingProvider(mapping));
