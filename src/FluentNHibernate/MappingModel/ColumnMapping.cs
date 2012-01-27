@@ -94,13 +94,14 @@ namespace FluentNHibernate.MappingModel
 
         public bool Equals(ColumnMapping other)
         {
-            return Equals(other.attributes, attributes) && Equals(other.Member, Member);
+            return (other != null) &&
+                Equals(other.attributes, attributes) &&
+                Equals(other.Member, Member);
         }
 
         public override bool Equals(object obj)
         {
-            if (obj.GetType() != typeof(ColumnMapping)) return false;
-            return Equals((ColumnMapping)obj);
+            return Equals(obj as ColumnMapping);
         }
 
         public override int GetHashCode()
