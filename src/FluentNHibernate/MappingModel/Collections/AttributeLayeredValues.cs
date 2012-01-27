@@ -1,27 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
     [Serializable]
-    public class AttributeLayeredValues : ISerializable
+    public class AttributeLayeredValues
     {
-        readonly Dictionary<string, LayeredValues> inner;
+        readonly Dictionary<string, LayeredValues> inner = new Dictionary<string, LayeredValues>();
 
-        public AttributeLayeredValues()
-        {
-            inner = new Dictionary<string, LayeredValues>();
-        }
-
-        public AttributeLayeredValues(SerializationInfo info, StreamingContext context)
-        {
-            inner = (Dictionary<string, LayeredValues>)info
-                .GetValue("inner", typeof(Dictionary<string, LayeredValues>));
-            inner.OnDeserialization(this);
-        }
-        
         public LayeredValues this[string attribute]
         {
             get
@@ -102,11 +89,6 @@ namespace FluentNHibernate.MappingModel.Collections
             }
 
             return hashCode;
-        }
-        
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("inner", inner);
         }
     }
 }

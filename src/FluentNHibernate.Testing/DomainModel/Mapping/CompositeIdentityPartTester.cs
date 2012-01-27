@@ -159,26 +159,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .RootElement.Element("class/composite-id/*[2]")
                     .HasName("key-property");
         }
-        
-        [Test]
-        public void CompositeIdWithSubclass()
-        {
-            new MappingTester<CompIdTarget>()
-                .SubClassMapping<ComIdSubclass>(s =>
-                {
-                    s.Table("subclasstable");
-                    s.KeyColumn("subclass_longId");
-                    s.KeyColumn("subclass_nullablelongId");
-                })
-                .ForMapping(c => c.CompositeId()
-                    .KeyProperty(x => x.LongId)
-                    .KeyProperty(x => x.NullableLongId))
-                .Element("class/joined-subclass/key/*[1]")
-                    .Exists().HasName("column").HasAttribute("name", "subclass_longId")
-                .RootElement.Element("class/joined-subclass/key/*[2]")
-                    .Exists().HasName("column").HasAttribute("name", "subclass_nullablelongId")
-                ;
-        }
 
         public class CompIdTarget
         {
@@ -202,11 +182,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             public virtual int KeyCol1 { get; set; }
             public virtual int KeyCol2 { get; set; }
-        }
-        
-        public class ComIdSubclass : CompIdTarget
-        {
-            
         }
     }
 }
