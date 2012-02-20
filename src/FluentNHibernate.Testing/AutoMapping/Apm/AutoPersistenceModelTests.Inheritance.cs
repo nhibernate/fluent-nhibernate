@@ -189,6 +189,18 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         }
 
         [Test]
+        public void TestInheritanceSubclassSpecifyingDiscriminatorValue()
+        {
+            var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
+                .Setup(x => x.IsDiscriminated = type => true)
+                .Override<ExampleClass>(t => t.SubClass<ExampleInheritedClass>("example"))
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("class/subclass").HasAttribute("discriminator-value", "example");
+        }
+
+        [Test]
         public void TestInheritanceSubclassOverridingMappingProperties()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
@@ -197,8 +209,9 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
-                .Element("class/subclass")
-                .ChildrenDontContainAttribute("name", "LineOne");
+                .Element("class/subclass/property[@name='ExampleProperty']/column")
+                .Exists()
+                .HasAttribute("name", "columnName");
         }
 
         [Test]
