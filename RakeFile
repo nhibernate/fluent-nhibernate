@@ -175,7 +175,7 @@ namespace :package do
     nu.working_directory = 'build'
     nu.output_file = 'fluentnhibernate.nuspec'
     nu.file 'FluentNHibernate.dll', 'lib'
-    nu.file 'FluentNHibernate.pdb', 'lib'
+    nu.file 'FluentNHibernate.xml', 'lib'
     nu.tags = 'orm dal nhibernate conventions'
   end
 
