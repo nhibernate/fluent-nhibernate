@@ -79,7 +79,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         protected ModelTester<CompositeIdentityPart<T>, CompositeIdMapping> CompositeId<T>()
         {
-            return new ModelTester<CompositeIdentityPart<T>, CompositeIdMapping>(() => new CompositeIdentityPart<T>(), x => ((ICompositeIdMappingProvider)x).GetCompositeIdMapping());
+            return new ModelTester<CompositeIdentityPart<T>, CompositeIdMapping>(() => new CompositeIdentityPart<T>(member => {}), x => ((ICompositeIdMappingProvider)x).GetCompositeIdMapping());
         }
 
         protected ModelTester<OneToOnePart<PropertyReferenceTarget>, OneToOneMapping> OneToOne()

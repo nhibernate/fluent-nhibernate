@@ -83,7 +83,7 @@ namespace FluentNHibernate.Mapping
         /// <example>
         /// Id(x => x.PersonId);
         /// </example>
-        public virtual IdentityPart Id(Expression<Func<T, object>> memberExpression)
+        public IdentityPart Id(Expression<Func<T, object>> memberExpression)
         {
             return Id(memberExpression, null);
         }
@@ -96,12 +96,13 @@ namespace FluentNHibernate.Mapping
         /// <example>
         /// Id(x => x.PersonId, "id");
         /// </example>
-        public virtual IdentityPart Id(Expression<Func<T, object>> memberExpression, string column)
+        public IdentityPart Id(Expression<Func<T, object>> memberExpression, string column)
         {
             var member = memberExpression.ToMember();
-#pragma warning disable 612,618
+
+            OnMemberMapped(member);
+
             var part = new IdentityPart(EntityType, member);
-#pragma warning restore 612,618
 
             if (column != null)
                 part.Column(column);
@@ -163,7 +164,7 @@ namespace FluentNHibernate.Mapping
         /// NaturalId()
         ///   .Property(x => x.Name);
         /// </example>
-        public virtual NaturalIdPart<T> NaturalId()
+        public NaturalIdPart<T> NaturalId()
         {
             var part = new NaturalIdPart<T>();
 
@@ -182,9 +183,9 @@ namespace FluentNHibernate.Mapping
         ///   .KeyProperty(x => x.FirstName)
         ///   .KeyProperty(x => x.LastName);
         /// </example>
-        public virtual CompositeIdentityPart<T> CompositeId()
+        public CompositeIdentityPart<T> CompositeId()
         {
-            var part = new CompositeIdentityPart<T>();
+            var part = new CompositeIdentityPart<T>(OnMemberMapped);
 
             providers.CompositeId = part;
 
@@ -202,9 +203,13 @@ namespace FluentNHibernate.Mapping
         ///   .KeyProperty(x => x.FirstName)
         ///   .KeyProperty(x => x.LastName);
         /// </example>
-        public virtual CompositeIdentityPart<TId> CompositeId<TId>(Expression<Func<T, TId>> memberExpression)
+        public CompositeIdentityPart<TId> CompositeId<TId>(Expression<Func<T, TId>> memberExpression)
         {
-            var part = new CompositeIdentityPart<TId>(memberExpression.ToMember().Name);
+            var member = memberExpression.ToMember();
+
+            OnMemberMapped(member);
+
+            var part = new CompositeIdentityPart<TId>(member.Name, OnMemberMapped);
 
             providers.CompositeId = part;
 
@@ -226,9 +231,11 @@ namespace FluentNHibernate.Mapping
             return Version(memberExpression.ToMember());
         }
 
-        protected virtual VersionPart Version(Member property)
+        VersionPart Version(Member member)
         {
-            var versionPart = new VersionPart(typeof(T), property);
+            OnMemberMapped(member);
+
+            var versionPart = new VersionPart(typeof(T), member);
 
             providers.Version = versionPart;
 
@@ -244,7 +251,7 @@ namespace FluentNHibernate.Mapping
         /// <typeparam name="TDiscriminator">Type of the discriminator column</typeparam>
         /// <param name="columnName">Discriminator column name</param>
         /// <param name="baseClassDiscriminator">Default discriminator value</param>
-        public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
+        public DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName, TDiscriminator baseClassDiscriminator)
         {
             var part = new DiscriminatorPart(columnName, typeof(T), providers.Subclasses.Add, new TypeReference(typeof(TDiscriminator)));
 
@@ -263,7 +270,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         /// <typeparam name="TDiscriminator">Type of the discriminator column</typeparam>
         /// <param name="columnName">Discriminator column name</param>
-        public virtual DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
+        public DiscriminatorPart DiscriminateSubClassesOnColumn<TDiscriminator>(string columnName)
         {
             var part = new DiscriminatorPart(columnName, typeof(T), providers.Subclasses.Add, new TypeReference(typeof(TDiscriminator)));
 
@@ -279,7 +286,7 @@ namespace FluentNHibernate.Mapping
         /// column value.
         /// </summary>
         /// <param name="columnName">Discriminator column name</param>
-        public virtual DiscriminatorPart DiscriminateSubClassesOnColumn(string columnName)
+        public DiscriminatorPart DiscriminateSubClassesOnColumn(string columnName)
         {
             return DiscriminateSubClassesOnColumn<string>(columnName);
         }
@@ -289,14 +296,14 @@ namespace FluentNHibernate.Mapping
         /// mappings. Don't use this in combination with a discriminator, as they are mutually
         /// exclusive.
         /// </summary>
-        public virtual void UseUnionSubclassForInheritanceMapping()
+        public void UseUnionSubclassForInheritanceMapping()
         {
             attributes.Set("Abstract", Layer.UserSupplied, true);
             attributes.Set("IsUnionSubclass", Layer.UserSupplied, true);
         }
 
         [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
-        public virtual void JoinedSubClass<TSubclass>(string keyColumn, Action<JoinedSubClassPart<TSubclass>> action) where TSubclass : T
+        public void JoinedSubClass<TSubclass>(string keyColumn, Action<JoinedSubClassPart<TSubclass>> action) where TSubclass : T
         {
             var subclass = new JoinedSubClassPart<TSubclass>(keyColumn);
 
@@ -358,7 +365,7 @@ namespace FluentNHibernate.Mapping
         ///   join.Map(x => x.Age);
         /// });
         /// </example>
-        public virtual void Join(string tableName, Action<JoinPart<T>> action)
+        public void Join(string tableName, Action<JoinPart<T>> action)
         {
             var join = new JoinPart<T>(tableName);
 
@@ -371,7 +378,7 @@ namespace FluentNHibernate.Mapping
         /// Imports an existing type for use in the mapping.
         /// </summary>
         /// <typeparam name="TImport">Type to import.</typeparam>
-        public virtual ImportPart ImportType<TImport>()
+        public ImportPart ImportType<TImport>()
         {
             var part = new ImportPart(typeof(TImport));
             

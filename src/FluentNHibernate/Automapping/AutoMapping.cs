@@ -93,11 +93,9 @@ namespace FluentNHibernate.Automapping
                 mapping.AddOrReplaceFilter(filter.GetFilterMapping());
         }
 
-        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
-        protected override OneToManyPart<TChild> HasMany<TChild>(Member property)
+        internal override void OnMemberMapped(Member member)
         {
-            mappedMembers.Add(property);
-            return base.HasMany<TChild>(property);
+            mappedMembers.Add(member);
         }
 
         public void IgnoreProperty(Expression<Func<T, object>> expression)
@@ -129,72 +127,6 @@ namespace FluentNHibernate.Automapping
                 .Each(mappedMembers.Add);
 
             return this;
-        }
-
-        public override IdentityPart Id(Expression<Func<T, object>> memberExpression)
-        {
-            mappedMembers.Add(memberExpression.ToMember());
-            return base.Id(memberExpression);
-        }
-
-        public override CompositeIdentityPart<T> CompositeId()
-        {
-            var part = new AutoCompositeIdentityPart<T>(mappedMembers);
-
-            providers.CompositeId = part;
-
-            return part;
-        }
-
-        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
-        protected override PropertyPart Map(Member property, string columnName)
-        {
-            mappedMembers.Add(property);
-            return base.Map(property, columnName);
-        }
-
-        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
-        protected override ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
-        {
-            mappedMembers.Add(property);
-            return base.References<TOther>(property, columnName);
-        }
-
-        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
-        protected override ManyToManyPart<TChild> HasManyToMany<TChild>(Member property)
-        {
-            mappedMembers.Add(property);
-            return base.HasManyToMany<TChild>(property);
-        }
-
-        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
-        protected override ComponentPart<TComponent> Component<TComponent>(Member property, Action<ComponentPart<TComponent>> action)
-        {
-            mappedMembers.Add(property);
-
-            if (action == null)
-                action = c => { };
-
-            return base.Component(property, action);
-        }
-
-        public override IdentityPart Id(Expression<Func<T, object>> memberExpression, string column)
-        {
-            mappedMembers.Add(memberExpression.ToMember());
-            return base.Id(memberExpression, column);
-        }
-
-        [Obsolete("Do not call this method. Implementation detail mistakenly made public. Will be made private in next version.")]
-        protected override OneToOnePart<TOther> HasOne<TOther>(Member property)
-        {
-            mappedMembers.Add(property);
-            return base.HasOne<TOther>(property);
-        }
-
-        protected override VersionPart Version(Member property)
-        {
-            mappedMembers.Add(property);
-            return base.Version(property);
         }
 
 		public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
@@ -276,7 +208,7 @@ namespace FluentNHibernate.Automapping
 #pragma warning disable 809
         // hide this - imports aren't supported in overrides
         [Obsolete("Imports aren't supported in overrides.", true)]
-        public override ImportPart ImportType<TImport>()
+        public new ImportPart ImportType<TImport>()
         {
             return null;
         }

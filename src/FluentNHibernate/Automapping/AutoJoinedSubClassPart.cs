@@ -7,11 +7,12 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Automapping
 {
-#pragma warning disable 612,618,672
+#pragma warning disable 612,618
     public class AutoJoinedSubClassPart<T> : JoinedSubClassPart<T>, IAutoClasslike
+#pragma warning restore 612,618
     {
         private readonly MappingProviderStore providers;
-        private readonly IList<Member> membersMapped = new List<Member>();
+        private readonly IList<Member> mappedMembers = new List<Member>();
 
         public AutoJoinedSubClassPart(string keyColumn)
             : this(keyColumn, new MappingProviderStore())
@@ -36,44 +37,9 @@ namespace FluentNHibernate.Automapping
         void IAutoClasslike.AlterModel(ClassMappingBase mapping)
         {}
 
-        protected override OneToManyPart<TChild> HasMany<TChild>(Member property)
+        internal override void OnMemberMapped(Member member)
         {
-            membersMapped.Add(property);
-            return base.HasMany<TChild>(property);
-        }
-
-        protected override PropertyPart Map(Member property, string columnName)
-        {
-            membersMapped.Add(property);
-            return base.Map(property, columnName);
-        }
-
-        protected override ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
-        {
-            membersMapped.Add(property);
-            return base.References<TOther>(property, columnName);
-        }
-
-        protected override ManyToManyPart<TChild> HasManyToMany<TChild>(Member property)
-        {
-            membersMapped.Add(property);
-            return base.HasManyToMany<TChild>(property);
-        }
-
-        protected override ComponentPart<TComponent> Component<TComponent>(Member property, Action<ComponentPart<TComponent>> action)
-        {
-            membersMapped.Add(property);
-
-            if (action == null)
-                action = c => { };
-
-            return base.Component(property, action);
-        }
-
-        protected override OneToOnePart<TOther> HasOne<TOther>(Member property)
-        {
-            membersMapped.Add(property);
-            return base.HasOne<TOther>(property);
+            mappedMembers.Add(member);
         }
 
         public void JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
@@ -128,8 +94,7 @@ namespace FluentNHibernate.Automapping
 
         public IEnumerable<Member> GetIgnoredProperties()
         {
-            return membersMapped;
+            return mappedMembers;
         }
     }
-#pragma warning restore 612,618,672
 }

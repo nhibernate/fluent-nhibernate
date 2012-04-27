@@ -87,7 +87,6 @@
     <Compile Include="Automapping\Alterations\IAutoMappingAlteration.cs" />
     <Compile Include="Automapping\Alterations\IAutoMappingOverride.cs" />
     <Compile Include="AssemblyTypeSource.cs" />
-    <Compile Include="Automapping\AutoCompositeIdentityPart.cs" />
     <Compile Include="Automapping\AutoJoinedSubClassPart.cs" />
     <Compile Include="Automapping\AutoJoinPart.cs" />
     <Compile Include="Automapping\AutoMap.cs" />
@@ -101,7 +100,6 @@
     <Compile Include="Automapping\AutoSubClassPart.cs" />
     <Compile Include="Automapping\DefaultAutomappingConfiguration.cs" />
     <Compile Include="Automapping\IAutoClasslike.cs" />
-    <Compile Include="Automapping\IAutoMappingAlteration.cs" />
     <Compile Include="Automapping\IAutomappingConfiguration.cs" />
     <Compile Include="Automapping\InlineOverride.cs" />
     <Compile Include="Automapping\IPropertyIgnorer.cs" />

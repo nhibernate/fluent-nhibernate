@@ -325,6 +325,11 @@ namespace FluentNHibernate.Mapping
             return mapping.DeepClone();
         }
 
+        Type IIndeterminateSubclassMappingProvider.EntityType
+        {
+            get { return EntityType; }
+        }
+
         Type IIndeterminateSubclassMappingProvider.Extends
         {
             get { return attributes.GetOrDefault<Type>("Extends"); }

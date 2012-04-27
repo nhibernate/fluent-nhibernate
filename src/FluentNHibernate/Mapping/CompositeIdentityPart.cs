@@ -12,17 +12,20 @@ namespace FluentNHibernate.Mapping
 {
     public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
 	{
+        readonly Action<Member> onMemberMapped;
         readonly AccessStrategyBuilder<CompositeIdentityPart<T>> access;
         readonly AttributeStore attributes = new AttributeStore();
         readonly IList<ICompositeIdKeyMapping> keys = new List<ICompositeIdKeyMapping>();
         bool nextBool = true;
 
-        public CompositeIdentityPart()
+        public CompositeIdentityPart(Action<Member> onMemberMapped)
         {
+            this.onMemberMapped = onMemberMapped;
             access = new AccessStrategyBuilder<CompositeIdentityPart<T>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
         }
 
-        public CompositeIdentityPart(string name) : this()
+        public CompositeIdentityPart(string name, Action<Member> onMemberMapped)
+            : this(onMemberMapped)
         {
             attributes.Set("Name", Layer.Defaults, name);
         }
@@ -66,6 +69,8 @@ namespace FluentNHibernate.Mapping
 
         protected virtual CompositeIdentityPart<T> KeyProperty(Member member, string columnName, Action<KeyPropertyPart> customMapping)
         {
+            onMemberMapped(member);
+
             var type = member.PropertyType;
 
             if (type.IsEnum)
@@ -136,14 +141,16 @@ namespace FluentNHibernate.Mapping
             return KeyReference(member, columnNames, customMapping);
         }
 
-        protected virtual CompositeIdentityPart<T> KeyReference(Member property, IEnumerable<string> columnNames, Action<KeyManyToOnePart> customMapping)
+        protected virtual CompositeIdentityPart<T> KeyReference(Member member, IEnumerable<string> columnNames, Action<KeyManyToOnePart> customMapping)
         {
+            onMemberMapped(member);
+
             var key = new KeyManyToOneMapping
             {
                 ContainingEntityType = typeof(T)
             };
-            key.Set(x => x.Name, Layer.Defaults, property.Name);
-            key.Set(x => x.Class, Layer.Defaults, new TypeReference(property.PropertyType));
+            key.Set(x => x.Name, Layer.Defaults, member.Name);
+            key.Set(x => x.Class, Layer.Defaults, new TypeReference(member.PropertyType));
 
             foreach (var column in columnNames)
             {
