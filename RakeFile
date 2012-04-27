@@ -10,22 +10,6 @@ end
 
 task :default => 'build:all'
 
-namespace :setup do
-  task :install_mspec, :resharper_version, :vs_version do |t, args|
-    resharper_version = args[:resharper_version] || '5.1'
-    vs_version = args[:vs_version] || 10.0
-    puts 'Installing MSpec ReSharper runner'
-    plugins = "#{ENV['APPDATA']}/JetBrains/ReSharper/v#{resharper_version}/vs#{vs_version}/Plugins"
-    to_copy = ['Machine.Specifications', "Machine.Specifications.ReSharperRunner.#{resharper_version}"]
-
-    FileUtils.mkdir plugins unless File.exists? plugins
-    to_copy.each do |f|
-      FileUtils.cp "tools/mspec/#{f}.dll", plugins
-      FileUtils.cp "tools/mspec/#{f}.pdb", plugins
-    end
-  end
-end
-
 namespace :ci do
   task :run_ci_build => [
     'build:all',
