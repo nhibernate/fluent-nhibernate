@@ -67,7 +67,7 @@ namespace :specs do
   
   desc 'Run MSpec specs'
   mspec :mspec do |mspec|
-    mspec.command = 'tools/mspec/mspec.exe'
+    mspec.command = 'src/packages/Machine.Specifications.0.5.6.0/tools/mspec.exe'
     mspec.assemblies 'src/FluentNHibernate.Specs/bin/Release/FluentNHibernate.Specs.dll'
   end
 
