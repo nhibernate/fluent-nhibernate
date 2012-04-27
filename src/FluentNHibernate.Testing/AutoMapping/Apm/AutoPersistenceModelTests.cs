@@ -10,7 +10,7 @@ using ExampleClass=FluentNHibernate.Automapping.TestFixtures.ExampleClass;
 namespace FluentNHibernate.Testing.AutoMapping.Apm
 {
     [TestFixture]
-    public partial class AutoPersistenceModelTests : BaseAutoPersistenceTests
+    public partial class AutoPersistenceModelTests
     {
         [Test]
         public void CanSearchForOpenGenericTypes()
