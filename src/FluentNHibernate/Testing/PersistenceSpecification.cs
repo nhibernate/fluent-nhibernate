@@ -87,6 +87,13 @@ namespace FluentNHibernate.Testing
             return RegisterCheckedProperty(property, null);
         }
 
+        public PersistenceSpecification<T> RegisterCheckedPropertyWithoutTransactionalSave(Property<T> property, IEqualityComparer equalityComparer)
+        {
+            property.EntityEqualityComparer = equalityComparer ?? entityEqualityComparer;
+            allProperties.Add(property);
+
+            return this;
+        }
         public PersistenceSpecification<T> RegisterCheckedProperty(Property<T> property, IEqualityComparer equalityComparer)
         {
             property.EntityEqualityComparer = equalityComparer ?? entityEqualityComparer;

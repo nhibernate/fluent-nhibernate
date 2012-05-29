@@ -148,12 +148,63 @@ namespace FluentNHibernate.Testing
             return spec.CheckList(expression, propertyValue, new FuncEqualityComparer<TListElement>(propertiesToCompare));
         }
 
+        public static PersistenceSpecification<T> CheckInverseList<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                              Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                              IEnumerable<TListElement> propertyValue,
+                                                                              IEqualityComparer elementComparer)
+        {
+            Accessor property = ReflectionHelper.GetAccessor(expression);
+
+            return spec.RegisterCheckedPropertyWithoutTransactionalSave(new ReferenceList<T, TListElement>(property, propertyValue), elementComparer);
+        }
+
+        public static PersistenceSpecification<T> CheckInverseList<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                                    Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                                    IEnumerable<TListElement> propertyValue,
+                                                                                    params Func<TListElement, object>[] propertiesToCompare)
+        {
+            // Because of the params keyword, the compiler can select this overload
+            // instead of the one above, even when no funcs are supplied in the method call.
+            if (propertiesToCompare == null || propertiesToCompare.Length == 0)
+                return spec.CheckList(expression, propertyValue, (IEqualityComparer)null);
+
+            return spec.CheckInverseList(expression, propertyValue, new FuncEqualityComparer<TListElement>(propertiesToCompare));
+        }
+
         public static PersistenceSpecification<T> CheckList<T, TListElement>(this PersistenceSpecification<T> spec,
                                                                               Expression<Func<T, IEnumerable<TListElement>>> expression,
                                                                               IEnumerable<TListElement> propertyValue,
                                                                               Action<T, TListElement> listItemSetter)
         {
             return spec.CheckList(expression, propertyValue, null, listItemSetter);
+        }
+
+        public static PersistenceSpecification<T> CheckInverseList<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                              Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                              IEnumerable<TListElement> propertyValue,
+                                                                              Action<T, TListElement> listItemSetter)
+        {
+            return spec.CheckInverseList(expression, propertyValue, null, listItemSetter);
+        }
+
+        public static PersistenceSpecification<T> CheckInverseList<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                             Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                             IEnumerable<TListElement> propertyValue,
+                                                                             IEqualityComparer elementComparer,
+                                                                             Action<T, TListElement> listItemSetter)
+        {
+            Accessor property = ReflectionHelper.GetAccessor(expression);
+
+            var list = new ReferenceList<T, TListElement>(property, propertyValue);
+            list.ValueSetter = (target, propertyInfo, value) =>
+            {
+                foreach (var item in value)
+                {
+                    listItemSetter(target, item);
+                }
+            };
+
+            return spec.RegisterCheckedPropertyWithoutTransactionalSave(list, elementComparer);
         }
 
         public static PersistenceSpecification<T> CheckList<T, TListElement>(this PersistenceSpecification<T> spec,
