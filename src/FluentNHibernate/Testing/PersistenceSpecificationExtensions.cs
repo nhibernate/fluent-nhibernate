@@ -250,6 +250,167 @@ namespace FluentNHibernate.Testing
             return spec.RegisterCheckedProperty(list, elementComparer);
         }
 
+
+        public static PersistenceSpecification<T> CheckInverseBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                              Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                              IEnumerable<TListElement> propertyValue)
+        {
+            return spec.CheckInverseBag(expression, propertyValue, (IEqualityComparer)null);
+        }
+
+        public static PersistenceSpecification<T> CheckInverseBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                              Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                              IEnumerable<TListElement> propertyValue,
+                                                                              IEqualityComparer elementComparer)
+        {
+            Accessor property = ReflectionHelper.GetAccessor(expression);
+
+            return spec.RegisterCheckedPropertyWithoutTransactionalSave(new ReferenceBag<T, TListElement>(property, propertyValue), elementComparer);
+        }
+
+        public static PersistenceSpecification<T> CheckInverseBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                            Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                            IEnumerable<TListElement> propertyValue,
+                                                                            params Func<TListElement, object>[] propertiesToCompare)
+        {
+            // Because of the params keyword, the compiler can select this overload
+            // instead of the one above, even when no funcs are supplied in the method call.
+            if (propertiesToCompare == null || propertiesToCompare.Length == 0)
+                return spec.CheckInverseBag(expression, propertyValue, (IEqualityComparer)null);
+
+            return spec.CheckInverseBag(expression, propertyValue, new FuncEqualityComparer<TListElement>(propertiesToCompare));
+        }
+
+        public static PersistenceSpecification<T> CheckInverseBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                             Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                             IEnumerable<TListElement> propertyValue,
+                                                                             Action<T, TListElement> listItemSetter)
+        {
+            return spec.CheckInverseBag(expression, propertyValue, null, listItemSetter);
+        }
+
+        public static PersistenceSpecification<T> CheckInverseBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                            Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                            IEnumerable<TListElement> propertyValue,
+                                                                            Action<T, IEnumerable<TListElement>> listSetter)
+        {
+            return spec.CheckInverseBag(expression, propertyValue, null, listSetter);
+        }
+
+        public static PersistenceSpecification<T> CheckInverseBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                             Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                             IEnumerable<TListElement> propertyValue,
+                                                                             IEqualityComparer elementComparer,
+                                                                             Action<T, TListElement> listItemSetter)
+        {
+            Accessor property = ReflectionHelper.GetAccessor(expression);
+
+            var list = new ReferenceBag<T, TListElement>(property, propertyValue);
+            list.ValueSetter = (target, propertyInfo, value) =>
+            {
+                foreach (var item in value)
+                {
+                    listItemSetter(target, item);
+                }
+            };
+
+            return spec.RegisterCheckedPropertyWithoutTransactionalSave(list, elementComparer);
+        }
+
+        public static PersistenceSpecification<T> CheckInverseBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                             Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                             IEnumerable<TListElement> propertyValue,
+                                                                             IEqualityComparer elementComparer,
+                                                                             Action<T, IEnumerable<TListElement>> listSetter)
+        {
+            Accessor property = ReflectionHelper.GetAccessor(expression);
+
+            var list = new ReferenceBag<T, TListElement>(property, propertyValue);
+            list.ValueSetter = (target, propertyInfo, value) => listSetter(target, value);
+
+            return spec.RegisterCheckedPropertyWithoutTransactionalSave(list, elementComparer);
+        }
+
+        public static PersistenceSpecification<T> CheckBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                              Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                              IEnumerable<TListElement> propertyValue)
+        {
+            return spec.CheckBag(expression, propertyValue, (IEqualityComparer)null);
+        }
+
+        public static PersistenceSpecification<T> CheckBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                              Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                              IEnumerable<TListElement> propertyValue,
+                                                                              IEqualityComparer elementComparer)
+        {
+            Accessor property = ReflectionHelper.GetAccessor(expression);
+
+            return spec.RegisterCheckedProperty(new ReferenceBag<T, TListElement>(property, propertyValue), elementComparer);
+        }
+
+        public static PersistenceSpecification<T> CheckBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                            Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                            IEnumerable<TListElement> propertyValue,
+                                                                            params Func<TListElement, object>[] propertiesToCompare)
+        {
+            // Because of the params keyword, the compiler can select this overload
+            // instead of the one above, even when no funcs are supplied in the method call.
+            if (propertiesToCompare == null || propertiesToCompare.Length == 0)
+                return spec.CheckBag(expression, propertyValue, (IEqualityComparer)null);
+
+            return spec.CheckBag(expression, propertyValue, new FuncEqualityComparer<TListElement>(propertiesToCompare));
+        }
+
+        public static PersistenceSpecification<T> CheckBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                             Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                             IEnumerable<TListElement> propertyValue,
+                                                                             Action<T, TListElement> listItemSetter)
+        {
+            return spec.CheckBag(expression, propertyValue, null, listItemSetter);
+        }
+
+        public static PersistenceSpecification<T> CheckBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                            Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                            IEnumerable<TListElement> propertyValue,
+                                                                            Action<T, IEnumerable<TListElement>> listSetter)
+        {
+            return spec.CheckBag(expression, propertyValue, null, listSetter);
+        }
+
+        public static PersistenceSpecification<T> CheckBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                             Expression<Func<T, IEnumerable<TListElement>>> expression,
+                                                                             IEnumerable<TListElement> propertyValue,
+                                                                             IEqualityComparer elementComparer,
+                                                                             Action<T, TListElement> listItemSetter)
+        {
+            Accessor property = ReflectionHelper.GetAccessor(expression);
+
+            var list = new ReferenceBag<T, TListElement>(property, propertyValue);
+            list.ValueSetter = (target, propertyInfo, value) =>
+            {
+                foreach (var item in value)
+                {
+                    listItemSetter(target, item);
+                }
+            };
+
+            return spec.RegisterCheckedProperty(list, elementComparer);
+        }
+
+        public static PersistenceSpecification<T> CheckBag<T, TListElement>(this PersistenceSpecification<T> spec,
+                                                                             Expression<Func<T,IEnumerable<TListElement>>> expression,
+                                                                             IEnumerable<TListElement> propertyValue,
+                                                                             IEqualityComparer elementComparer,
+                                                                             Action<T, IEnumerable<TListElement>> listSetter)
+        {
+            Accessor property = ReflectionHelper.GetAccessor(expression);
+
+            var list = new ReferenceBag<T, TListElement>(property, propertyValue);
+            list.ValueSetter = (target, propertyInfo, value) => listSetter(target, value);
+
+            return spec.RegisterCheckedProperty(list, elementComparer);
+        }
+
         public static PersistenceSpecification<T> CheckComponentList<T, TListElement>(this PersistenceSpecification<T> spec,
                                                                                       Expression<Func<T, object>> expression,
                                                                                       IEnumerable<TListElement> propertyValue)
