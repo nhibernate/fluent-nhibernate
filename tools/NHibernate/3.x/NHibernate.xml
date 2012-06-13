@@ -29089,6 +29089,17 @@
             then emit the correct HQL join.
             </summary>
         </member>
+        <member name="T:NHibernate.Linq.ExpressionTransformers.RemoveCharToIntConversion">
+            <summary>
+            Remove unwanted char-to-int conversions in binary expressions
+            </summary>
+            <remarks>
+            The LINQ expression tree may contain unwanted type conversions that were not in the original expression written by the user. For example,
+            <c>list.Where(someChar => someChar == 'A')</c> becomes the equivalent of <c>list.Where(someChar => (int)someChar == 55)</c> in the expression
+            tree. Converting this directly to a HQL/SQL statement would yield <code>CAST(x AS INT)</code> which does not work in MSSQLSERVER, and possibly
+            other databases.
+            </remarks> 
+        </member>
         <member name="T:NHibernate.Linq.GroupBy.AggregatingGroupByRewriter">
             <summary>
             An AggregatingGroupBy is a query such as:
