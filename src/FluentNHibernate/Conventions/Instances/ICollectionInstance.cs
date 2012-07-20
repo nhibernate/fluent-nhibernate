@@ -44,5 +44,6 @@ namespace FluentNHibernate.Conventions.Instances
         new void Sort(string sort);
         void Subselect(string subselect);
         void KeyNullable();
+        void KeyUpdate();
     }
 }
