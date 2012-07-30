@@ -7,14 +7,14 @@ Fluent, XML-less, compile safe, automated, convention-based mappings for NHibern
 Getting started
 ---------------------------------------------
 
-* Read the [introduction](http://wiki.fluentnhibernate.org/Getting_started).
-* Create your [first project](http://wiki.fluentnhibernate.org/Getting_started#Your_first_project).
+* Read the [introduction](https://github.com/jagregory/fluent-nhibernate/wiki/Getting-started).
+* Create your [first project](https://github.com/jagregory/fluent-nhibernate/wiki/Getting-started#wiki-yourfirstproject).
 
 
 Further reading
 ---------------------------------------------
 
-Once you've followed the above, you can compare our [auto mapping](http://wiki.fluentnhibernate.org/Auto_mapping) to our <a [fluent interface](http://wiki.fluentnhibernate.org/Fluent_mapping) to see which suits your application, read through our [API documentation](http://fluentnhibernate.org/api/index.htm), or just see what's available for reading in our [wiki](http://wiki.fluentnhibernate.org).
+Once you've followed the above, you can compare our [auto mapping](https://github.com/jagregory/fluent-nhibernate/wiki/Auto-mapping) to our [fluent interface](https://github.com/jagregory/fluent-nhibernate/wiki/Fluent-mapping) to see which suits your application, read through our [API documentation](https://github.com/jagregory/fluent-nhibernate/wiki/Fluent-configuration), or just see what's available for reading in our [wiki](https://github.com/jagregory/fluent-nhibernate/wiki).
 
 
 Contributors
