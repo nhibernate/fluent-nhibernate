@@ -29,5 +29,10 @@ namespace FluentNHibernate.Cfg.Db
         {
             get { return new MsSqlConfiguration().Dialect<MsSql2008Dialect>(); }
         }
+
+        public static MsSqlConfiguration MsSql2012
+        {
+            get { return new MsSqlConfiguration().Dialect<MsSql2012Dialect>(); }
+        }
     }
 }
