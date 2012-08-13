@@ -40,6 +40,14 @@ namespace FluentNHibernate.Testing.Cfg.Db
         }
 
         [Test]
+        public void MsSql2012_should_default_to_thee_Sql2012_dialect()
+        {
+            MsSqlConfiguration.MsSql2012
+                .ToProperties()
+                .ShouldContain("dialect", "NHibernate.Dialect.MsSql2012Dialect, " + typeof(ISession).Assembly.FullName);
+        }
+
+        [Test]
         public void MsSql_driver_should_default_to_the_SqlClientDriver()
         {
             MsSqlConfiguration.MsSql2000
