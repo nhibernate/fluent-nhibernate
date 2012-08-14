@@ -4,11 +4,17 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 using FluentNHibernate;
+using FluentNHibernate.Automapping;
 
 namespace FluentNHibernate.Utils.Reflection
 {
     public static class ReflectionHelper
     {
+        public static Type AutomappingTypeForEntityType(Type entityType)
+        {
+            return typeof(AutoMapping<>).MakeGenericType(entityType);
+        }
+
         public static Member GetMember<TModel, TReturn>(Expression<Func<TModel, TReturn>> expression)
         {
             return GetMember(expression.Body);

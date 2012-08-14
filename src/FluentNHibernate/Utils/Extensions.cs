@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using FluentNHibernate.Automapping.Alterations;
 using NHibernate.Util;
 
 namespace FluentNHibernate.Utils
@@ -74,6 +75,11 @@ namespace FluentNHibernate.Utils
 
                 return (T)formatter.Deserialize(stream);
             }
+        }
+
+        public static bool IsAutoMappingOverrideType(this Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IAutoMappingOverride<>) && type.GetGenericArguments().Length > 0;
         }
     }
 }
