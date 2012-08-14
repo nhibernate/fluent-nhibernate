@@ -46,7 +46,7 @@ namespace :source do
     files_to_copy = Dir["tools/NHibernate/#{args.nhibernate_version}/*.*"]
     files_to_copy.each {|f| FileUtils.copy f, "tools/NHibernate/" }
   end
-  
+
   desc 'Compile the source'
   msbuild :compile, [:nhibernate_version] => :nhibernate_version do |msb,args|
     args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || NH_VERSION
@@ -55,7 +55,11 @@ namespace :source do
     
     puts nh_version_precompiler_switch
     
-    msb.properties = { :configuration => :Release, :DefineConstants => nh_version_precompiler_switch }
+    msb.properties = {
+      configuration: :Release,
+      DefineConstants: nh_version_precompiler_switch,
+      WarningLevel: 0,
+    }
     msb.targets [:Clean, :Build]
     msb.solution = 'src/FluentNHibernate.sln'
   end
