@@ -9,6 +9,7 @@ namespace FluentNHibernate.Mapping
     {
         private readonly Type entity;
         private readonly AttributeStore attributes;
+        private string columnPrefix;
 
         public ComponentPart(Type entity, Member property)
             : this(entity, property, new AttributeStore())
@@ -19,6 +20,11 @@ namespace FluentNHibernate.Mapping
         {
             this.attributes = attributes;
             this.entity = entity;
+        }
+
+        public void ColumnPrefix(string prefix)
+        {
+            columnPrefix = prefix;
         }
 
         /// <summary>
@@ -40,9 +46,10 @@ namespace FluentNHibernate.Mapping
         {
             var componentMappingRoot = new ComponentMapping(ComponentType.Component, store)
             {
-                ContainingEntityType = entity,
+                ContainingEntityType = entity
             };
             componentMappingRoot.Set(x => x.Class, Layer.Defaults, new TypeReference(typeof(T)));
+            componentMappingRoot.ColumnPrefix = columnPrefix;
             return componentMappingRoot;
         }
     }
