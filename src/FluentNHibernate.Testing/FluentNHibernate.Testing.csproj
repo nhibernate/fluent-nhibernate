@@ -42,7 +42,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <NoWarn>169</NoWarn>
+    <NoWarn>169,1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Debug\FluentNHibernate.Testing.xml</DocumentationFile>
   </PropertyGroup>
