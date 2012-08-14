@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using FluentNHibernate.Testing.Testing.Values;
 using FluentNHibernate.Testing.Values;
@@ -244,6 +245,36 @@ namespace FluentNHibernate.Testing.Testing
         public void should_invoke_the_custom_setter()
         {
             propertySetter.AssertWasCalled(x => x.Invoke(entity, referenced));
+        }
+    }
+
+    [TestFixture]
+    public class when_a_unordered_bag_is_added :With_persistence_specification<ReferenceEntity>
+    {
+        OtherEntity entity1 = new OtherEntity();
+        OtherEntity entity2 = new OtherEntity();
+
+        public override void because()
+        {
+            sut.CheckBag(x => x.ReferenceList, new[] {entity1, entity2});
+        }
+
+        [Test]
+        public void should_add_a_reference_bag_check()
+        {
+            sut.AllProperties.FirstOrDefault().ShouldBeOfType(typeof(ReferenceBag<ReferenceEntity, OtherEntity>));
+        }
+
+        [Test]
+        public void should_add_only_one_check_to_the_specification()
+        {
+            sut.AllProperties.ShouldHaveCount(1);
+        }
+
+        [Test]
+        public void should_set_the_custom_equality_comparer()
+        {
+            sut.AllProperties.FirstOrDefault().EntityEqualityComparer.ShouldEqual(comparer);
         }
     }
 

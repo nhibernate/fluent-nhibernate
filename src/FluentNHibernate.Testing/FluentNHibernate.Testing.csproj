@@ -402,6 +402,7 @@
     <Compile Include="MappingModel\HibernateMappingTester.cs" />
     <Compile Include="MappingModel\MappingTestingExtensions.cs" />
     <Compile Include="Testing\Values\ListSpecs.cs" />
+    <Compile Include="Testing\Values\ReferenceBagSpec.cs" />
     <Compile Include="Testing\Values\ReferenceListSpecs.cs" />
     <Compile Include="Testing\Values\ReferencePropertySpecs.cs" />
     <Compile Include="Testing\Values\PropertySpecs.cs" />
