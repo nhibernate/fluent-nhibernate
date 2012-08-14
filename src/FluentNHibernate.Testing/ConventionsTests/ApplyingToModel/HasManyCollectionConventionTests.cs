@@ -209,6 +209,22 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         }
 
         [Test]
+        public void KeyUpdateShouldSetModelValue()
+        {
+            Convention(x => x.KeyUpdate());
+
+            VerifyModel(x => x.Key.Update.ShouldBeTrue());
+        }
+
+        [Test]
+        public void KeyNotUpdateShouldSetModelValue()
+        {
+            Convention(x => x.Not.KeyUpdate());
+
+            VerifyModel(x => x.Key.Update.ShouldBeFalse());
+        }
+
+        [Test]
         public void ShouldSetTableNameProperty()
         {
             Convention(x => x.Table("xxx"));

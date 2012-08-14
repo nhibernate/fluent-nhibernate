@@ -128,6 +128,12 @@ namespace FluentNHibernate.Conventions.Instances
             nextBool = true;
         }
 
+        public void KeyUpdate()
+        {
+            mapping.Key.Set(x => x.Update, Layer.Conventions, nextBool);
+            nextBool = true;
+        }
+
         public void Table(string tableName)
         {
             mapping.Set(x => x.TableName, Layer.Conventions, tableName);
