@@ -450,6 +450,7 @@
     <Compile Include="Mapping\Providers\IPropertyMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IReferenceComponentMappingProvider.cs" />
     <Compile Include="Mapping\TuplizerPart.cs" />
+    <Compile Include="Testing\Values\ReferenceBag.cs" />
     <Compile Include="Utils\StringLikeness.cs" />
     <Compile Include="Visitors\AmbiguousComponentReferenceException.cs" />
     <Compile Include="Visitors\RelationshipKeyPairingVisitor.cs" />
