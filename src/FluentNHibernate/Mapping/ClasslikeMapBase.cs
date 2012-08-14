@@ -238,7 +238,14 @@ namespace FluentNHibernate.Mapping
         /// <returns>Component reference builder</returns>
         public virtual ReferenceComponentPart<TComponent> Component<TComponent>(Expression<Func<T, TComponent>> member)
         {
-            var part = new ReferenceComponentPart<TComponent>(member.ToMember(), typeof(T));
+            return Component<TComponent>(member.ToMember());
+        }
+
+        ReferenceComponentPart<TComponent> Component<TComponent>(Member member)
+        {
+            OnMemberMapped(member);
+
+            var part = new ReferenceComponentPart<TComponent>(member, typeof(T));
 
             providers.Components.Add(part);
 
@@ -287,7 +294,7 @@ namespace FluentNHibernate.Mapping
 
             var part = new ComponentPart<TComponent>(typeof(T), member);
 
-            action(part);
+            if (action != null) action(part);
 
             providers.Components.Add(part);
 

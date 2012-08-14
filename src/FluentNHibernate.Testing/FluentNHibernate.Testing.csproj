@@ -101,6 +101,7 @@
     <Compile Include="AutoMapping\Apm\AlterationTests.cs" />
     <Compile Include="AutoMapping\Apm\ConcreteBaseClassTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\VersionConventionTests.cs" />
+    <Compile Include="AutoMapping\Overrides\ReferenceComponentOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\AutoMappingOverrideAlterationTests.cs" />
     <Compile Include="AutoMapping\Apm\CacheOverrideTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\HasManyConventionTests.cs" />

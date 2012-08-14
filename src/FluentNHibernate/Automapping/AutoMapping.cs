@@ -40,10 +40,9 @@ namespace FluentNHibernate.Automapping
         {
             mapping.MergeAttributes(attributes.Clone());
 
-            if (mapping is ClassMapping)
+            var classMapping = mapping as ClassMapping;
+            if (classMapping != null)
             {
-                var classMapping = (ClassMapping)mapping;
-
                 if (providers.Id != null)
                     classMapping.Set(x => x.Id, Layer.Defaults, providers.Id.GetIdentityMapping());
 
@@ -129,8 +128,8 @@ namespace FluentNHibernate.Automapping
             return this;
         }
 
-		public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
-			where TSubclass : T
+        public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
+            where TSubclass : T
         {
             var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(typeof(TSubclass));
             var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn);
@@ -140,7 +139,7 @@ namespace FluentNHibernate.Automapping
 
             providers.Subclasses[typeof(TSubclass)] = joinedclass;
 
-		    return joinedclass;
+            return joinedclass;
         }
 
         public IAutoClasslike JoinedSubClass(Type type, string keyColumn)
@@ -155,31 +154,31 @@ namespace FluentNHibernate.Automapping
         }
 
         public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn)
-			where TSubclass : T
-		{
-			return JoinedSubClass<TSubclass>(keyColumn, null);
-		}
+            where TSubclass : T
+        {
+            return JoinedSubClass<TSubclass>(keyColumn, null);
+        }
 
-		public AutoSubClassPart<TSubclass> SubClass<TSubclass>(object discriminatorValue, Action<AutoSubClassPart<TSubclass>> action)
-			where TSubclass : T
+        public AutoSubClassPart<TSubclass> SubClass<TSubclass>(object discriminatorValue, Action<AutoSubClassPart<TSubclass>> action)
+            where TSubclass : T
         {
             var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
             var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, null, discriminatorValue);
-            
+
             if (action != null)
                 action(subclass);
 
             // remove any mappings for the same type, then re-add
             providers.Subclasses[typeof(TSubclass)] = subclass;
 
-		    return subclass;
+            return subclass;
         }
 
         public AutoSubClassPart<TSubclass> SubClass<TSubclass>(object discriminatorValue)
-			where TSubclass : T
-		{
-			return SubClass<TSubclass>(discriminatorValue, null);
-		}
+            where TSubclass : T
+        {
+            return SubClass<TSubclass>(discriminatorValue, null);
+        }
 
         public IAutoClasslike SubClass(Type type, string discriminatorValue)
         {
@@ -191,10 +190,10 @@ namespace FluentNHibernate.Automapping
 
             return (IAutoClasslike)subclass;
         }
-        
+
         // hide the base one D:
-        private new void Join(string table, Action<JoinPart<T>> action)
-        { }
+        new void Join(string table, Action<JoinPart<T>> action)
+        {}
 
         public void Join(string table, Action<AutoJoinPart<T>> action)
         {
