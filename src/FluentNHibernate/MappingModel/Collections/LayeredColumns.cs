@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,9 +17,8 @@ namespace FluentNHibernate.MappingModel.Collections
                     yield break;
 
                 var maxLayer = layeredValues.Keys.Max();
-                var values = ((HashSet<ColumnMapping>)layeredValues[maxLayer]);
-
-                foreach (var value in values)
+                var values = ((Dictionary<int,ColumnMapping>)layeredValues[maxLayer]);
+                foreach (var value in values.Values)
                 {
                     yield return value;
                 }
@@ -27,16 +26,15 @@ namespace FluentNHibernate.MappingModel.Collections
         }
 
         public void AddColumn(int layer, ColumnMapping mapping)
-        {
+        {           
             if (!layeredValues.ContainsKey(layer))
-                layeredValues[layer] = new HashSet<ColumnMapping>(new ColumnMappingComparer());
-
-            ((HashSet<ColumnMapping>)layeredValues[layer]).Add(mapping);
+                layeredValues[layer] = new Dictionary<int, ColumnMapping>();
+            ((Dictionary<int,ColumnMapping>)layeredValues[layer]).Add(mapping.GetHashCode(), mapping);
         }
 
         public void MakeColumnsEmpty(int layer)
         {
-            layeredValues[layer] = new HashSet<ColumnMapping>();
+            layeredValues[layer] = new Dictionary<int, ColumnMapping>();
         }
 
         public bool ContentEquals(LayeredColumns columns)
