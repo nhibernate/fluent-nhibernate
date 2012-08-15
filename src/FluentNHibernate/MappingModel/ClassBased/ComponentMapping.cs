@@ -11,15 +11,14 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public ComponentType ComponentType { get; set; }
         readonly AttributeStore attributes;
 
-        public ComponentMapping(ComponentType componentType)
-            : this(componentType, new AttributeStore())
+        public ComponentMapping(ComponentType componentType): this(componentType, new AttributeStore(), null)
         {}
 
-        public ComponentMapping(ComponentType componentType, AttributeStore attributes)
-            : base(attributes)
+        public ComponentMapping(ComponentType componentType, AttributeStore attributes, Member member): base(attributes)
         {
             ComponentType = componentType;
             this.attributes = attributes;
+            Member = member;
         }
 
         public override void AcceptVisitor(IMappingModelVisitor visitor)

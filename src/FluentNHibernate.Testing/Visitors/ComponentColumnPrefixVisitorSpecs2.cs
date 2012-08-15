@@ -43,10 +43,9 @@ namespace FluentNHibernate.Testing.Visitors
         [Test]
         public void should_prefix_field_columns()
         {
-            var t = targetMapping.Components.Single();
-            Console.Write("fdkgndfgkndfgkjn");
-                //.Properties.SelectMany(x => x.Columns)
-                //.Each(c => c.Name.ShouldStartWith("component"));
+            targetMapping.Components.Single()
+                .Properties.SelectMany(x => x.Columns)
+                .Each(c => c.Name.ShouldStartWith("component"));
         }
     }
 

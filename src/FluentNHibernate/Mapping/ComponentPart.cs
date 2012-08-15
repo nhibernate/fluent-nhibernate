@@ -49,7 +49,7 @@ namespace FluentNHibernate.Mapping
 
         protected override ComponentMapping CreateComponentMappingRoot(AttributeStore store)
         {
-            var componentMappingRoot = new ComponentMapping(ComponentType.Component, store)
+            var componentMappingRoot = new ComponentMapping(ComponentType.Component, store, member)
             {
                 ContainingEntityType = entity
             };
