@@ -64,17 +64,21 @@ namespace FluentNHibernate.Utils
             return type.GetInterfaces().Contains(interfaceType);
         }
 
+        private readonly static object FormatterLock = new object();
         public static T DeepClone<T>(this T obj)
         {
-            using (var stream = new MemoryStream())
-            {
-                var formatter = new BinaryFormatter();
-                
-                formatter.Serialize(stream, obj);
-                stream.Position = 0;
-
-                return (T)formatter.Deserialize(stream);
-            }
+           lock (FormatterLock)
+           {
+                using (var stream = new MemoryStream())
+                {
+                    var formatter = new BinaryFormatter();
+                    
+                    formatter.Serialize(stream, obj);
+                    stream.Position = 0;
+    
+                    return (T)formatter.Deserialize(stream);
+                }
+           }
         }
 
         public static bool IsAutoMappingOverrideType(this Type type)
