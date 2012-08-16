@@ -10,7 +10,7 @@ namespace FluentNHibernate.Mapping
     public abstract class ComponentPartBase<TEntity, TBuilder> : ClasslikeMapBase<TEntity>
         where TBuilder : ComponentPartBase<TEntity, TBuilder>
     {
-        readonly Member member;
+        protected readonly Member member;
         readonly MappingProviderStore providers;
         readonly AccessStrategyBuilder<TBuilder> access;
         readonly AttributeStore attributes;
