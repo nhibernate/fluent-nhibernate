@@ -7,3 +7,6 @@ gem install bundler
 
 echo Bundle Installing gems
 bundle install
+
+echo Installing albacore
+gem install albacore
