@@ -22,6 +22,11 @@ namespace FluentNHibernate.Mapping
             this.entity = entity;
         }
 
+        /// <summary>
+        /// Sets the prefix for every column defined within the component. To refer to the name of a member that exposes
+        /// the component use {property}
+        /// </summary>
+        /// <param name="prefix"></param>
         public void ColumnPrefix(string prefix)
         {
             columnPrefix = prefix;
@@ -44,7 +49,7 @@ namespace FluentNHibernate.Mapping
 
         protected override ComponentMapping CreateComponentMappingRoot(AttributeStore store)
         {
-            var componentMappingRoot = new ComponentMapping(ComponentType.Component, store)
+            var componentMappingRoot = new ComponentMapping(ComponentType.Component, store, member)
             {
                 ContainingEntityType = entity
             };

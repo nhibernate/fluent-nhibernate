@@ -23,7 +23,7 @@ namespace FluentNHibernate.Mapping
 
         protected override ComponentMapping CreateComponentMappingRoot(AttributeStore store)
         {
-            return new ComponentMapping(ComponentType.DynamicComponent, store)
+            return new ComponentMapping(ComponentType.DynamicComponent, store, member)
             {
                 ContainingEntityType = entity
             };
