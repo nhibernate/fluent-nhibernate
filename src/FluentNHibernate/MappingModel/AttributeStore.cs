@@ -59,8 +59,9 @@ namespace FluentNHibernate.MappingModel
 
         public override bool Equals(object obj)
         {
-            if (obj.GetType() != typeof(AttributeStore)) return false;
-            return Equals((AttributeStore)obj);
+           var typed = obj as AttributeStore;
+           if (null == typed) return false;
+           return Equals(typed);
         }
 
         public override int GetHashCode()
