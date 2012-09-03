@@ -62,13 +62,13 @@ namespace FluentNHibernate.Specs.Automapping
         Establish context = () =>
         {
             nonPublicNestedType = typeof(PersonCard).GetNestedTypes(BindingFlags.NonPublic).Single();
-            model = AutoMap.Source(new StubTypeSource(typeof(PersonCard), typeof(PersonCard.PublicAddress), nonPublicNestedType),
-                new DefaultAutomappingConfiguration());
+            model = AutoMap.Source(new StubTypeSource(typeof(PersonCard), typeof(PersonCard.PublicAddress), nonPublicNestedType));
         };
 
         Because of = () => mappings = model.BuildMappings().SelectMany(m => m.Classes);
+        It should_map_the_main_class = () => mappings.ShouldContain(m => m.Type == typeof(PersonCard));
         It should_map_public_nested_class = () => mappings.ShouldContain(m => m.Type == typeof(PersonCard.PublicAddress));
-        It should_not_map_not_public_nested_class = () => mappings.ShouldNotContain(m => m.Type == nonPublicNestedType);
+        It should_not_map_non_public_nested_class = () => mappings.ShouldNotContain(m => m.Type == nonPublicNestedType);
 
         static AutoPersistenceModel model;
         static DefaultAutomappingConfiguration configuration;
