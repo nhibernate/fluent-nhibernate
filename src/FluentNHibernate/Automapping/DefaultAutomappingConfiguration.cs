@@ -19,7 +19,7 @@ namespace FluentNHibernate.Automapping
         {
             return !type.ClosesInterface(typeof(IAutoMappingOverride<>)) &&
                 !type.HasInterface(typeof(IMappingProvider)) &&
-                !type.IsNested &&
+                (type.IsPublic || (type.IsNotPublic && !type.IsNested)) &&
                 type.IsClass;
         }
 
