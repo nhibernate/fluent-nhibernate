@@ -22,8 +22,8 @@ namespace FluentNHibernate.Specs.Automapping
         It should_map_the_entity = () =>
             mappings.ShouldContain(x => x.Type == typeof(Order));
 
-        It should_not_automap_the_nested_entity_per_default = () =>
-            mappings.ShouldNotContain(x => x.Type == typeof(Order.OrderLine));
+        It should_automap_the_nested_entity_per_default = () =>
+            mappings.ShouldContain(x => x.Type == typeof(Order.OrderLine));
 
         static AutoPersistenceModel mapper;
         static IEnumerable<ClassMapping> mappings;
