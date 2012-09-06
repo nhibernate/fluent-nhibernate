@@ -21,7 +21,11 @@ namespace FluentNHibernate.MappingModel.Collections
 
                 foreach (var value in values)
                 {
-                    yield return value;
+                    //value will be null on MONO 2.10.8 or earlier version
+                    //HashSet<T> on MONO was not work well.
+                    //issue:https://github.com/codesharp/infrastructure/issues/18
+                    if (value != null)
+                        yield return value;
                 }
             }
         }
