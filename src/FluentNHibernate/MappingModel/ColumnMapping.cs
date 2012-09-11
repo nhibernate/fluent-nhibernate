@@ -47,6 +47,11 @@ namespace FluentNHibernate.MappingModel
             get { return attributes.GetOrDefault<bool>("NotNull"); }
         }
 
+        public bool Nullable
+        {
+            get { return !NotNull; }
+        }
+
         public bool Unique
         {
             get { return attributes.GetOrDefault<bool>("Unique"); }
