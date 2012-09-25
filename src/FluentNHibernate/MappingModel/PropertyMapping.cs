@@ -20,8 +20,11 @@ namespace FluentNHibernate.MappingModel
         {
             visitor.ProcessProperty(this);
 
-            foreach (var column in Columns)
-                visitor.Visit(column);
+            if (String.IsNullOrEmpty(this.Formula))
+            {
+                foreach (var column in Columns)
+                    visitor.Visit(column);
+            }
         }
 
         public Type ContainingEntityType { get; set; }
