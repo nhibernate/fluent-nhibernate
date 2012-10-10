@@ -76,4 +76,52 @@ namespace FluentNHibernate.Specs.Automapping
         static AutoPersistenceModel model;
         static ClassMapping mapping;
     }
+
+    [Subject(typeof(IAutoMappingOverride<>))]
+    public class when_multiple_overrides_present_in_one_class
+    {
+        Establish context = () =>
+        {
+            model = AutoMap.Source(new StubTypeSource(typeof(Entity), typeof(Parent), typeof(B_Parent)));
+            model.Override(typeof(MultipleOverrides));
+        };
+
+        Because of = () =>
+        {
+            entityMapping = model.BuildMappingFor<Entity>();
+            parentMapping = model.BuildMappingFor<Parent>();
+            bParentMapping = model.BuildMappingFor<B_Parent>();
+        };
+
+        It should_apply_overrides_to_every_class_for_which_such_were_provided = () =>
+        {
+            entityMapping.EntityName.ShouldEqual("customEntityName");
+            parentMapping.TableName.ShouldEqual("fancyTableName_Parent");
+            bParentMapping.BatchSize.ShouldEqual(50);
+        };
+            
+
+        static AutoPersistenceModel model;
+        static ClassMapping entityMapping;
+        static ClassMapping parentMapping;
+        static ClassMapping bParentMapping;
+    }
+
+    public class MultipleOverrides: IAutoMappingOverride<Entity>, IAutoMappingOverride<Parent>, IAutoMappingOverride<B_Parent>
+    {
+        public void Override(AutoMapping<Entity> mapping)
+        {
+            mapping.EntityName("customEntityName");
+        }
+
+        public void Override(AutoMapping<Parent> mapping)
+        {
+            mapping.Table("fancyTableName_Parent");
+        }
+
+        public void Override(AutoMapping<B_Parent> mapping)
+        {
+            mapping.BatchSize(50);
+        }
+    }
 }
