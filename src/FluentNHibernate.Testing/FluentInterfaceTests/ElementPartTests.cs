@@ -33,5 +33,18 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             ElementMapping elementMapping = ((IElementMappingProvider)part).GetElementMapping();
             elementMapping.Formula.ShouldEqual("formula");
         }
+
+        [Test]
+      	public void CanDeclareColumnNullable()
+        {
+      	    var part = new ElementPart(typeof(MappedObject));
+            part.Column("nullabilityCheck");
+      	    part.Nullable();
+
+            ElementMapping elementMapping = ((IElementMappingProvider)part).GetElementMapping();
+            var columnMappings = elementMapping.Columns.ToList();
+            columnMappings.First().Nullable.ShouldEqual(true);
+      	
+        }
     }
 }
