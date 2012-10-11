@@ -360,27 +360,28 @@ namespace FluentNHibernate.Automapping
 		/// <param name="overrideType">Override type, expected to be an IAutoMappingOverride</param>
 		public void Override(Type overrideType)
 		{
-			var overrideInterface = overrideType.GetInterfaces().FirstOrDefault(x => x.IsAutoMappingOverrideType());
+			var overrideInterfaces = overrideType.GetInterfaces().Where(x => x.IsAutoMappingOverrideType()).ToList();
 
-		    if (overrideInterface == null) return;
-		    
-            var entityType = overrideInterface.GetGenericArguments().First();
-
-		    AddOverride(entityType, instance =>
+		    foreach (var overrideInterface in overrideInterfaces)
 		    {
-		        if (!IsAutomappingForType(instance, entityType)) return;
+                var entityType = overrideInterface.GetGenericArguments().First();
 
-		        var overrideInstance = Activator.CreateInstance(overrideType);
+                AddOverride(entityType, instance =>
+                {
+                    if (!IsAutomappingForType(instance, entityType)) return;
 
-		        MethodInfo overrideHelperMethod = typeof(AutoPersistenceModel)
-		            .GetMethod("OverrideHelper", BindingFlags.NonPublic | BindingFlags.Instance);
+                    var overrideInstance = Activator.CreateInstance(overrideType);
 
-		        if (overrideHelperMethod == null) return;
+                    MethodInfo overrideHelperMethod = typeof(AutoPersistenceModel)
+                        .GetMethod("OverrideHelper", BindingFlags.NonPublic | BindingFlags.Instance);
 
-		        overrideHelperMethod
-		            .MakeGenericMethod(entityType)
-		            .Invoke(this, new[] {instance, overrideInstance});
-		    });
+                    if (overrideHelperMethod == null) return;
+
+                    overrideHelperMethod
+                        .MakeGenericMethod(entityType)
+                        .Invoke(this, new[] { instance, overrideInstance });
+                });
+		    }
 		}
 
 		//called reflectively from method above
