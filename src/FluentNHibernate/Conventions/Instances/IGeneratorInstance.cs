@@ -41,5 +41,6 @@ namespace FluentNHibernate.Conventions.Instances
         void Custom(string generator, Action<ParamBuilder> paramValues);
         void Native(string sequenceName);
         void Native(string sequenceName, Action<ParamBuilder> paramValues);
+        void TriggerIdentity();
     }
 }
