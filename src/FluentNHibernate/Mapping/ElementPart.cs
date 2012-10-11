@@ -66,6 +66,15 @@ namespace FluentNHibernate.Mapping
             return this;
         }
 
+        /// <summary>
+        /// Specify the nullability of the column
+        /// </summary>
+        public ElementPart Nullable()
+        {
+            columnAttributes.Set("NotNull", Layer.UserSupplied, false);
+            return this;
+        }
+
         ElementMapping IElementMappingProvider.GetElementMapping()
         {
             var mapping = new ElementMapping(attributes.Clone());
