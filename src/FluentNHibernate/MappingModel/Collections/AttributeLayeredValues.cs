@@ -15,7 +15,6 @@ namespace FluentNHibernate.MappingModel.Collections
             inner = new Dictionary<string, LayeredValues>();
         }
         
-        
         public AttributeLayeredValues(SerializationInfo info, StreamingContext context)
         {
             inner = (Dictionary<string, LayeredValues>)info
@@ -28,7 +27,6 @@ namespace FluentNHibernate.MappingModel.Collections
             get
             {
                 EnsureValueExists(attribute);
-
                 return inner[attribute];
             }
         }
