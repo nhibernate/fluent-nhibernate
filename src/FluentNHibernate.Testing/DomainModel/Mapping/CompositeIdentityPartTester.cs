@@ -1,5 +1,8 @@
 using System;
+using System.Linq;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Providers;
+using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
@@ -206,6 +209,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             public virtual int KeyCol1 { get; set; }
             public virtual int KeyCol2 { get; set; }
+        }
+
+        [Test]
+        public void Can_Have_Multiple_key_Columns()
+        {
+            var provider = (IIndeterminateSubclassMappingProvider)new MultipleKeyColumnsTester.TestMap();
+            provider.GetSubclassMapping(SubclassType.JoinedSubclass).Key.Columns.Count().ShouldEqual(2);
         }
     }
 }
