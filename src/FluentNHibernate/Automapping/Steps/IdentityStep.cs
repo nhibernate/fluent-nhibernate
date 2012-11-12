@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Automapping.Steps
@@ -10,6 +10,7 @@ namespace FluentNHibernate.Automapping.Steps
     public class IdentityStep : IAutomappingStep
     {
         private readonly IAutomappingConfiguration cfg;
+        readonly List<Type> identityCompatibleTypes = new List<Type> { typeof(long), typeof(int), typeof(short), typeof(byte) };
 
         public IdentityStep(IAutomappingConfiguration cfg)
         {
@@ -54,14 +55,14 @@ namespace FluentNHibernate.Automapping.Steps
                 mapping.Set(x => x.Access, Layer.Defaults, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
         }
         
-        static GeneratorMapping GetDefaultGenerator(Member property)
+        GeneratorMapping GetDefaultGenerator(Member property)
         {
             var generatorMapping = new GeneratorMapping();
             var defaultGenerator = new GeneratorBuilder(generatorMapping, property.PropertyType, Layer.Defaults);
 
             if (property.PropertyType == typeof(Guid))
                 defaultGenerator.GuidComb();
-            else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(long))
+            else if (identityCompatibleTypes.Contains(property.PropertyType))
                 defaultGenerator.Identity();
             else
                 defaultGenerator.Assigned();
