@@ -14,5 +14,10 @@ namespace FluentNHibernate.Cfg.Db
         {
             get { return new DB2Configuration().Dialect<DB2Dialect>(); }
         }
+        
+        public static DB2Configuration Informix1150
+        {
+             get { return new DB2Configuration().Dialect<InformixDialect1000>(); }
+        }
     }
 }
