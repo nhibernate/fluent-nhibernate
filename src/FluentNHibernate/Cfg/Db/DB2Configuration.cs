@@ -15,6 +15,9 @@ namespace FluentNHibernate.Cfg.Db
             get { return new DB2Configuration().Dialect<DB2Dialect>(); }
         }
         
+        /// <summary>
+        /// DB2 Data Server/Client supports Informix 11.50+ with Informix syntax
+        /// </summary>
         public static DB2Configuration Informix1150
         {
              get { return new DB2Configuration().Dialect<InformixDialect1000>(); }
