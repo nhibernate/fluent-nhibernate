@@ -153,6 +153,13 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             VerifyModel(x => x.Generator.Class.ShouldEqual(typeof(CustomGenerator).AssemblyQualifiedName));
         }
 
+        [Test]
+        public void ShouldSetTriggerIdentityGenerator()
+        {
+            Convention(x => x.GeneratedBy.TriggerIdentity());
+
+            VerifyModel(x => x.Generator.Class.ShouldEqual("trigger-identity"));
+        }
 
         #region Helpers
 
