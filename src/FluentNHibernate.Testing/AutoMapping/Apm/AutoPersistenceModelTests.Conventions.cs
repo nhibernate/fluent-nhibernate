@@ -2,7 +2,10 @@
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Automapping.TestFixtures.ComponentTypes;
 using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
+using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Helpers;
+using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Testing.Automapping;
 using NUnit.Framework;
 
@@ -77,6 +80,12 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
 
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("class").HasAttribute("table", "test");
+        }
+
+        [Test]
+        public void UserTypeConventionAppliesToNullableType()
+        {
+            new ValueTypeConvention().Accept(new ConcreteAcceptanceCriteria<IPropertyInspector>());
         }
 
         [Test]
