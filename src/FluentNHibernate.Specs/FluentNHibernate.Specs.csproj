@@ -93,6 +93,7 @@
     <Compile Include="Automapping\Fixtures\FakeMembers.cs" />
     <Compile Include="Automapping\Fixtures\Overrides\EntityTableOverride.cs" />
     <Compile Include="Automapping\Fixtures\StubTypeSource.cs" />
+    <Compile Include="Automapping\Fixtures\UserTypes.cs" />
     <Compile Include="Automapping\Fixtures\VersionedEntity.cs" />
     <Compile Include="Automapping\PrivateAutomapperSpecs.cs" />
     <Compile Include="Automapping\PrivateFieldsSpecs.cs" />

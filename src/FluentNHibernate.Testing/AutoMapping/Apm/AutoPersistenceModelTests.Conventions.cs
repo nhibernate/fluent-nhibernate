@@ -83,12 +83,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         }
 
         [Test]
-        public void UserTypeConventionAppliesToNullableType()
-        {
-            new ValueTypeConvention().Accept(new ConcreteAcceptanceCriteria<IPropertyInspector>());
-        }
-
-        [Test]
         public void TypeConventionShouldForcePropertyToBeMapped()
         {
             var autoMapper = AutoMap.AssemblyOf<ClassWithUserType>()

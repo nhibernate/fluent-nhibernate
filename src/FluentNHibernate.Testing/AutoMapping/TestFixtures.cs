@@ -156,61 +156,7 @@ namespace FluentNHibernate.Automapping.TestFixtures
         public Custom Custom { get; set; }
     }
 
-    public class ContainingUserValueType
-    {
-        public int Id { get; set; }
-        public UserValueType UserValueType { get; set; }
-    }
-
-    public struct UserValueType: IUserType
-    {
-        public string AddressLine1 { get; set; }
-        public string AddressLine2 { get; set; }
-
-        public bool Equals(object x, object y)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetHashCode(object x)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object NullSafeGet(IDataReader rs, string[] names, object owner)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void NullSafeSet(IDbCommand cmd, object value, int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object DeepCopy(object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object Replace(object original, object target, object owner)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object Assemble(object cached, object owner)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object Disassemble(object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SqlType[] SqlTypes { get; private set; }
-        public Type ReturnedType { get { return typeof(Double); } }
-        public bool IsMutable { get; private set; }
-    }
+    
 
     public class ClassWithCompositeUserType
     {
@@ -278,16 +224,6 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomTypes
 
     public class CustomTypeConvention : UserTypeConvention<CustomUserType>
     {}
-
-    public class ValueTypeConvention: UserTypeConvention<UserValueType>
-    {
-        public override void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
-        {
-            base.Accept(criteria);
-            criteria.Expect(x => x.Length > 15);
-        }
-
-    }
 
     public class CustomCompositeTypeConvention : IUserTypeConvention
     {
