@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
@@ -11,6 +12,7 @@ namespace FluentNHibernate.Mapping
         readonly AttributeStore attributes = new AttributeStore();
         readonly AttributeStore columnAttributes = new AttributeStore();
         readonly ColumnMappingCollection<ElementPart> columns;
+        bool nextBool = true;
 
         public ElementPart(Type entity)
         {
@@ -71,14 +73,30 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public ElementPart Nullable()
         {
-            columnAttributes.Set("NotNull", Layer.UserSupplied, false);
+            columnAttributes.Set("NotNull", Layer.UserSupplied, !nextBool);
+            nextBool = true;
             return this;
+        }
+
+        /// <summary>
+        /// Inverts the next boolean operation
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public ElementPart Not
+        {
+            get
+            {
+                nextBool = !nextBool;
+                return this;
+            }
         }
 
         ElementMapping IElementMappingProvider.GetElementMapping()
         {
-            var mapping = new ElementMapping(attributes.Clone());
-            mapping.ContainingEntityType = entity;
+            var mapping = new ElementMapping(attributes.Clone())
+            {
+                ContainingEntityType = entity
+            };
 
             foreach (var column in Columns)
             {
