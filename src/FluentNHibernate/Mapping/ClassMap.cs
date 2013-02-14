@@ -691,7 +691,11 @@ namespace FluentNHibernate.Mapping
             if (EntityType.IsGenericType)
             {
                 // special case for generics: GenericType_GenericParameterType
-                tableName = EntityType.Name.Substring(0, EntityType.Name.IndexOf('`'));
+                var genericQuoteIndex = EntityType.Name.IndexOf('`');
+                if (genericQuoteIndex >= 0)
+                {
+                    tableName = EntityType.Name.Substring(0, genericQuoteIndex);
+                } // else generic declaration not directly in this class
 
                 foreach (var argument in EntityType.GetGenericArguments())
                 {
