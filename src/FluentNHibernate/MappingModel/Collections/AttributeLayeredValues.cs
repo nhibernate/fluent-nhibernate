@@ -1,20 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace FluentNHibernate.MappingModel.Collections
 {
     [Serializable]
-    public class AttributeLayeredValues
+    public class AttributeLayeredValues: ISerializable
     {
-        readonly Dictionary<string, LayeredValues> inner = new Dictionary<string, LayeredValues>();
+        readonly Dictionary<string, LayeredValues> inner;
+
+        public AttributeLayeredValues()
+        {
+            inner = new Dictionary<string, LayeredValues>();
+        }
+        
+        public AttributeLayeredValues(SerializationInfo info, StreamingContext context)
+        {
+            inner = (Dictionary<string, LayeredValues>)info
+                .GetValue("inner", typeof(Dictionary<string, LayeredValues>));
+            inner.OnDeserialization(this);
+        }
 
         public LayeredValues this[string attribute]
         {
             get
             {
                 EnsureValueExists(attribute);
-
                 return inner[attribute];
             }
         }
@@ -83,12 +95,16 @@ namespace FluentNHibernate.MappingModel.Collections
                 
                     pairCode += pair.Key.GetHashCode();
                     pairCode += pair.Value.GetHashCode();
-
                     hashCode += pairCode ^ 367;
                 }
             }
 
             return hashCode;
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("inner", inner);
         }
     }
 }
