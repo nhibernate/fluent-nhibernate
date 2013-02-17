@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentNHibernate.Infrastructure;
+using Machine.Specifications;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Infrastructure
