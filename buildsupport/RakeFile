@@ -1,0 +1,5 @@
+Dir["#{File.dirname(__FILE__)}/*.rb"].each { |ext| load ext }
+
+task :default do
+  puts "This RakeFile exists solely for testing imported tasks. Run rake -T to see imported tasks."
+end
