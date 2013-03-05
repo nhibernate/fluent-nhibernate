@@ -205,6 +205,18 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         }
 
         [Test]
+        public void CanBuildConfigurationForTablePerType()
+        {
+            var model = new PersistenceModel();
+            model.Add(new TablePerType.TPT_TopMap());
+            model.Add(new TablePerType.TPT_TopSubclassMap());
+            model.Add(new TablePerType.TPT_MiddleMap());
+            model.Add(new TablePerType.TPT_MiddleSubclassMap());
+
+            model.BuildMappings();
+        }
+
+        [Test]
         public void CanBuildConfigurationForTablePerTypeWithInterfaces()
         {
             var model = new PersistenceModel();
@@ -377,6 +389,62 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         { }
     }
 
+    namespace TablePerType
+    {
+        public class TPT_Top
+        {
+            public virtual int Id { get; protected set; }
+        }
+        public class TPT_Middle
+            : TPT_Top
+        {
+            public virtual string MiddleProperty { get; set; }
+        }
+        public class TPT_TopSubclass
+            : TPT_Top
+        {
+        }
+        public class TPT_MiddleSubclass
+            : TPT_Middle
+        {
+            public virtual string OwnProperty { get; set; }
+        }
+
+        public class TPT_TopMap
+            : ClassMap<TPT_Top>
+        {
+            public TPT_TopMap()
+            {
+                Id(x => x.Id);
+            }
+        }
+        public class TPT_TopSubclassMap
+            : SubclassMap<TPT_TopSubclass>
+        {
+            public TPT_TopSubclassMap()
+            {
+                KeyColumn("Id");
+            }
+        }
+        public class TPT_MiddleMap
+            : SubclassMap<TPT_Middle>
+        {
+            public TPT_MiddleMap()
+            {
+                KeyColumn("Id");
+                Map(x => x.MiddleProperty);
+            }
+        }
+        public class TPT_MiddleSubclassMap
+            : SubclassMap<TPT_MiddleSubclass>
+        {
+            public TPT_MiddleSubclassMap()
+            {
+                KeyColumn("Id");
+                Map(x => x.OwnProperty);
+            }
+        }
+    }
 
     namespace TablePerTypeWithInterfaces
     {
@@ -437,6 +505,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             }
         }
     }
+
     namespace Branching
     {
         public class B_Top
