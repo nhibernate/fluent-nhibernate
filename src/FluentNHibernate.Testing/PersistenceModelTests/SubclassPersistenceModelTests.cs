@@ -203,6 +203,18 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             colorSource.Subclasses.ShouldContain(x => x.Type == typeof(Sauces.ReallyHotSauce));
             colorSource.Subclasses.Count().ShouldEqual(2);
         }
+
+        [Test]
+        public void CanBuildConfigurationForTablePerTypeWithInterfaces()
+        {
+            var model = new PersistenceModel();
+            model.Add(new TablePerTypeWithInterfaces.TPTWI_ITopMap());
+            model.Add(new TablePerTypeWithInterfaces.TPTWI_TopSubclassMap());
+            model.Add(new TablePerTypeWithInterfaces.TPTWI_IMiddleMap());
+            model.Add(new TablePerTypeWithInterfaces.TPTWI_MiddleSubclassMap());
+
+            model.BuildMappings();
+        }
     }
 
     namespace Thoughts
@@ -365,6 +377,66 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         { }
     }
 
+
+    namespace TablePerTypeWithInterfaces
+    {
+        public interface TPTWI_ITop
+        {
+            int Id { get; }
+        }
+        public interface TPTWI_IMiddle
+            : TPTWI_ITop
+        {
+            string MiddleProperty { get; set; }
+        }
+
+        public class TPTWI_TopSubclass
+            : TPTWI_ITop
+        {
+            public virtual int Id { get; protected set; }
+        }
+        public class TPTWI_MiddleSubclass
+            : TPTWI_TopSubclass, TPTWI_IMiddle
+        {
+            public virtual string MiddleProperty { get; set; }
+            public virtual string OwnProperty { get; set; }
+        }
+
+        public class TPTWI_ITopMap
+            : ClassMap<TPTWI_ITop>
+        {
+            public TPTWI_ITopMap()
+            {
+                Id(x => x.Id);
+            }
+        }
+        public class TPTWI_TopSubclassMap
+            : SubclassMap<TPTWI_TopSubclass>
+        {
+            public TPTWI_TopSubclassMap()
+            {
+                KeyColumn("Id");
+            }
+        }
+        public class TPTWI_IMiddleMap
+            : SubclassMap<TPTWI_IMiddle>
+        {
+            public TPTWI_IMiddleMap()
+            {
+                KeyColumn("Id");
+                Map(x => x.MiddleProperty);
+            }
+        }
+        public class TPTWI_MiddleSubclassMap
+            : SubclassMap<TPTWI_MiddleSubclass>
+        {
+            public TPTWI_MiddleSubclassMap()
+            {
+                KeyColumn("Id");
+                Map(x => x.OwnProperty);
+            }
+        }
+    }
     namespace Branching
     {
         public class B_Top
