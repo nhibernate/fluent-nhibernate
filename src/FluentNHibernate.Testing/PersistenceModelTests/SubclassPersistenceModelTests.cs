@@ -483,6 +483,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         {
             public TPTWI_TopSubclassMap()
             {
+                Extends<TPTWI_ITop>();
                 KeyColumn("Id");
             }
         }
