@@ -91,7 +91,7 @@ namespace FluentNHibernate.Visitors
                 var subclassType = subclassProvider.EntityType;
                 var level = 0;
 
-                bool implOfParent = parentType.IsInterface
+                bool implOfParent = (parentType.IsInterface || subclassType.IsInterface)
                     ? DistanceFromParentInterface(parentType, subclassType, ref level)
                     : DistanceFromParentBase(parentType, subclassType.BaseType, ref level);
 
