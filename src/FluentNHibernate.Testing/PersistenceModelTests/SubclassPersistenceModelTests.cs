@@ -213,7 +213,15 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             model.Add(new TablePerType.TPT_MiddleMap());
             model.Add(new TablePerType.TPT_MiddleSubclassMap());
 
-            model.BuildMappings();
+            var classMapping = model.BuildMappings();
+            classMapping.Count().ShouldEqual(1);
+
+            var top = classMapping.First().Classes.First();
+            top.Subclasses.Count().ShouldEqual(2);
+
+            var middle = top.Subclasses.SingleOrDefault(sc => sc.Type == typeof(TablePerType.TPT_Middle));
+            middle.ShouldNotBeNull();
+            middle.Subclasses.Count().ShouldEqual(1);
         }
 
         [Test]
@@ -225,7 +233,15 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             model.Add(new TablePerTypeWithInterfaces.TPTWI_IMiddleMap());
             model.Add(new TablePerTypeWithInterfaces.TPTWI_MiddleSubclassMap());
 
-            model.BuildMappings();
+            var classMapping = model.BuildMappings();
+            classMapping.Count().ShouldEqual(1);
+
+            var top = classMapping.First().Classes.First();
+            top.Subclasses.Count().ShouldEqual(2);
+
+            var middle = top.Subclasses.SingleOrDefault(sc => sc.Type == typeof(TablePerTypeWithInterfaces.TPTWI_IMiddle));
+            middle.ShouldNotBeNull();
+            middle.Subclasses.Count().ShouldEqual(1);
         }
     }
 
