@@ -21,6 +21,7 @@ build
 *.cache
 
 *~
-
+src/packages
+*.ncrunchsolution
 *.swp
 TestResult.xml
