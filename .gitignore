@@ -25,4 +25,5 @@ build
 *.swp
 TestResult.xml
 *.ncrunchsolution
+*.ncrunchproject
 packages/
