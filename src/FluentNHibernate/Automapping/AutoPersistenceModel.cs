@@ -207,9 +207,6 @@ namespace FluentNHibernate.Automapping
         {
             Type typeToMap = GetTypeToMap(type);
 
-            // Fixes https://github.com/jagregory/fluent-nhibernate/issues/113,
-            // where 'type' would not be mapped if 'GetTypeToMap' returned the
-            // base type
             if (typeToMap != type)
             {
                 log.BeginAutomappingType(type);
@@ -264,7 +261,7 @@ namespace FluentNHibernate.Automapping
                 return false; // skipped because we don't want to map components as entities
             }
             if (type == typeof(object))
-                return false; // object!
+                return false;
 
             return true;
         }

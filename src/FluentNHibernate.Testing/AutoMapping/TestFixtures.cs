@@ -470,5 +470,60 @@ namespace FluentNHibernate.Automapping.TestFixtures.SuperTypes
         public virtual IList<ExampleClass> Examples {get; set;}
     }
 
+    public abstract class Base1
+    {
+        public virtual int Id { get; protected set; }
+        public abstract void Foo(int x);
+    }
 
+    public class Derived1 : Base1
+    {
+        public virtual Decimal Rate { get; set; }
+        public override void Foo(int x)
+        {
+        }
+
+        public string GetSomething()
+        {
+            return Environment.NewLine;
+        }
+    }
+
+    public class SecondLevel : Derived1
+    {
+        public virtual Double SecondRate { get; set; }
+    }
+
+    public class ThirdLevel : SecondLevel
+    {
+        public virtual Boolean Flag { get; set; }
+        public virtual TimeSpan Version { get; set; }
+    }
+
+    public class FourthLevel: ThirdLevel
+    {
+        public PublisherType publisherType { get; set; }
+        public ToOne One { get; set; }
+        public IList<ManyToMany> Many { get; set; }
+    }
+
+    public class ToOne
+    {
+        public virtual int Id { get; protected set; }
+        public virtual string Name { get; set; }
+    }
+
+    public class ManyToMany
+    {
+        public virtual int Id { get; protected set; }
+        public virtual Decimal Value { get; set; }
+        public IList<FourthLevel> Levels { get; set; }
+    }
+
+    public enum PublisherType
+    {
+        Online, 
+        Offline,
+        Mixed
+    }
 }
