@@ -39,12 +39,12 @@ namespace FluentNHibernate.Specs.PersistenceModel
             model.Add(new SpecialProductMap());
             model.Add(new OptionMap());
 
-            cfg = new Configuration();
-            SQLiteConfiguration.Standard.InMemory()
-                .ConfigureProperties(cfg);
-            model.Configure(cfg);
+            //cfg = new Configuration();
+            //SQLiteConfiguration.Standard.InMemory()
+            //    .ConfigureProperties(cfg);
+            //model.Configure(cfg);
 
-            new SchemaExport(cfg).Create(true, false);
+            //new SchemaExport(cfg).Create(true, false);
         };
 
         Because of = () =>

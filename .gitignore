@@ -26,6 +26,12 @@ src/packages
 *.ncrunchproject
 *.swp
 TestResult.xml
+<<<<<<< HEAD
 src/packages/
 TestResult.xml
 build/
+=======
+*.ncrunchsolution
+*.ncrunchproject
+packages/
+>>>>>>> master
