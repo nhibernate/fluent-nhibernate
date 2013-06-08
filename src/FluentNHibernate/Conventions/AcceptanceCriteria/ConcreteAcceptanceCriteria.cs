@@ -52,7 +52,7 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
             return this;
         }
 
-        public IAcceptanceCriteria<TInspector> Expect(Expression<Func<TInspector, bool>> evaluation)
+        public IAcceptanceCriteria<TInspector> Expect(Func<TInspector, bool> evaluation)
         {
             var expectation = CreateEvalExpectation(evaluation);
 
@@ -113,7 +113,7 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
             return new Expectation<TInspector>(expression, value);
         }
 
-        protected virtual IExpectation CreateEvalExpectation(Expression<Func<TInspector, bool>> expression)
+        protected virtual IExpectation CreateEvalExpectation(Func<TInspector, bool> expression)
         {
             return new EvalExpectation<TInspector>(expression);
         }

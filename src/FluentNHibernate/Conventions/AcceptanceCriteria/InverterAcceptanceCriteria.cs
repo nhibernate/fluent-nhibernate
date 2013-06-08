@@ -15,7 +15,7 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
             return new InvertedExpectation(expectation);
         }
 
-        protected override IExpectation CreateEvalExpectation(Expression<Func<TInspector, bool>> expression)
+        protected override IExpectation CreateEvalExpectation(Func<TInspector, bool> expression)
         {
             var expectation = base.CreateEvalExpectation(expression);
 
