@@ -16,8 +16,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         private readonly PersistenceModel model;
         private string currentPath;
 
-        public MappingTester()
-            : this(new PersistenceModel())
+        public MappingTester(): this(new PersistenceModel())
         {}
 
         public MappingTester(PersistenceModel model)
@@ -65,9 +64,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 model.Add(classMap);
 
             var mappings = model.BuildMappings();
-            var foundMapping = mappings
-                .Where(x => x.Classes.FirstOrDefault(c => c.Type == typeof(T)) != null)
-                .FirstOrDefault();
+            var foundMapping = mappings.FirstOrDefault(x => x.Classes.FirstOrDefault(c => c.Type == typeof(T)) != null);
 
             if (foundMapping == null)
                 throw new InvalidOperationException("Could not find mapping for class '" + typeof(T).Name + "'");
