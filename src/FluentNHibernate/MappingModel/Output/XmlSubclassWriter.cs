@@ -53,6 +53,9 @@ namespace FluentNHibernate.MappingModel.Output
             if (mapping.IsSpecified("EntityName"))
                 element.WithAtt("entity-name", mapping.EntityName);
 
+            //if (mapping.IsSpecified("BatchSize"))
+            //    element.WithAtt("batch-size", mapping.BatchSize);
+
             if (mapping.SubclassType == SubclassType.Subclass)
             {
                 if (mapping.IsSpecified("DiscriminatorValue"))
