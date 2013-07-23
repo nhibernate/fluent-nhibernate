@@ -57,7 +57,7 @@ namespace FluentNHibernate.MappingModel.Output
                 element.WithAtt("batch-size", mapping.BatchSize);
 
             if (mapping.SubclassType == SubclassType.Subclass)
-        {
+            {
                 if (mapping.IsSpecified("DiscriminatorValue"))
                     element.WithAtt("discriminator-value", mapping.DiscriminatorValue.ToString());
             }
