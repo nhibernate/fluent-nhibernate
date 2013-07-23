@@ -15,8 +15,7 @@ namespace FluentNHibernate.MappingModel
         readonly IList<ImportMapping> imports;
         readonly AttributeStore attributes;
 
-        public HibernateMapping()
-            : this(new AttributeStore())
+        public HibernateMapping(): this(new AttributeStore())
         {}
 
         public HibernateMapping(AttributeStore attributes)
