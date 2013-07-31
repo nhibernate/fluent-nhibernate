@@ -182,7 +182,8 @@ namespace FluentNHibernate.Visitors
         {
             var alternative = rs
                 .Where(x => self_referenced_relation_does_not_point_to_itself(x, current))
-                .Where(x => x.ContainingEntityType == current.ContainingEntityType)
+                .Where(x => x.ContainingEntityType == current.ContainingEntityType &&
+                        x.ChildType == current.ChildType)
                 .Select(x => GetLikeness(x, otherSide))
                 .OrderBy(x => x.Differences)
                 .FirstOrDefault();
