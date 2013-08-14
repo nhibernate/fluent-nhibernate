@@ -38,12 +38,12 @@ namespace FluentNHibernate.Testing.Values
                     // infallible.
                     if (propertyAccessor.PropertyType.IsAssignableFrom(typeof(ISet<TListElement>)))
                     {
-                        collection = new HashedSet<TListElement>(Expected.ToList());
+                        collection = new LinkedHashSet<TListElement>(Expected.ToList());
                     }
-                    else if (propertyAccessor.PropertyType.IsAssignableFrom(typeof(ISet)))
-                    {
-                        collection = new HashedSet((ICollection)Expected);
-                    }
+                    //else if (propertyAccessor.PropertyType.IsAssignableFrom(typeof(ISet)))
+                    //{
+                    //    collection = new HashedSet((ICollection)Expected);
+                    //}
                     else if (propertyAccessor.PropertyType.IsArray)
                     {
                         collection = Array.CreateInstance(typeof(TListElement), Expected.Count());
