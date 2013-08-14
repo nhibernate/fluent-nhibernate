@@ -11,7 +11,8 @@ build
 
 *.DotSettings.user
 *.csproj.user
-
+src/packages
+src/packages/*
 *.resharper.user
 
 *.resharper
