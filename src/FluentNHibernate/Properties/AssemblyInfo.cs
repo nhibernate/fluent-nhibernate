@@ -9,3 +9,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDescription("")]
 [assembly: CLSCompliant(true)]
 [assembly: AssemblyVersionAttribute("1.4.0.0")]
+[assembly: System.Security.SecurityRules(System.Security.SecurityRuleSet.Level1)]
