@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using FluentNHibernate.Mapping;
-using Iesi.Collections.Generic;
 
 namespace FluentNHibernate.Specs.Conventions.Fixtures
 {

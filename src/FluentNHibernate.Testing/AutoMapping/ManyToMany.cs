@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Iesi.Collections.Generic;
 
 namespace FluentNHibernate.Testing.Automapping
 {
