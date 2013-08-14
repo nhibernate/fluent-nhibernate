@@ -114,24 +114,6 @@ namespace FluentNHibernate.Testing.Testing.Values
     }
 
     [TestFixture]
-    public class When_a_set_property_with_a_public_setter_is_set : When_a_list_property_with_is_set_successfully
-    {
-        protected override Expression<Func<ListEntity, IEnumerable>> GetPropertyExpression()
-        {
-            return x => x.Set;
-        }
-
-        [Test]
-        public override void should_set_the_list_items()
-        {
-            foreach (var listItem in listItems)
-            {
-                target.Set.Contains(listItem).ShouldBeTrue();
-            }
-        }
-    }
-
-    [TestFixture]
     public class When_a_typed_set_property_with_a_public_setter_is_set : When_a_list_property_with_is_set_successfully
     {
         protected override Expression<Func<ListEntity, IEnumerable>> GetPropertyExpression()
@@ -493,56 +475,6 @@ namespace FluentNHibernate.Testing.Testing.Values
         public void should_fail_with_the_exception_from_the_equality_comparer()
         {
             thrown_exception.ShouldBeTheSameAs(exception);
-        }
-    }
-
-    [TestFixture]
-    public class When_the_checked_typed_set_is_equal_to_the_expected_list : With_initialized_list
-    {
-        public override void establish_context()
-        {
-            property = ReflectionHelper.GetAccessor((Expression<Func<ListEntity, IEnumerable<string>>>)(x => x.TypedSet));
-            target = new ListEntity();
-
-            sut = new List<ListEntity, string>(property, new[] {"foo", "bar", "baz"});
-
-            target.TypedSet.AddAll(new[] {"foo", "bar", "baz"});
-        }
-
-        public override void because()
-        {
-            sut.CheckValue(target);
-        }
-
-        [Test]
-        public void should_succeed()
-        {
-            thrown_exception.ShouldBeNull();
-        }
-    }
-
-    [TestFixture]
-    public class When_the_checked_set_is_equal_to_the_expected_list : With_initialized_list
-    {
-        public override void establish_context()
-        {
-            property = ReflectionHelper.GetAccessor((Expression<Func<ListEntity, IEnumerable>>)(x => x.Set));
-            target = new ListEntity();
-
-            sut = new List<ListEntity, string>(property, new[] {"foo", "bar", "baz"});
-
-            target.Set.AddAll(new[] {"foo", "bar", "baz"});
-        }
-
-        public override void because()
-        {
-            sut.CheckValue(target);
-        }
-
-        [Test]
-        public void should_succeed()
-        {
-            thrown_exception.ShouldBeNull();
         }
     }
 
