@@ -8,3 +8,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("FluentNHibernate")]
 [assembly: AssemblyDescription("")]
 [assembly: CLSCompliant(true)]
+[assembly: System.Security.SecurityRules(System.Security.SecurityRuleSet.Level1)]
