@@ -2,11 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel.Collections;
-using Iesi.Collections.Generic;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
