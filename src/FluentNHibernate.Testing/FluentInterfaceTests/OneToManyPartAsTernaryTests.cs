@@ -80,5 +80,21 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                     x.Index.Columns.Single().Name.ShouldEqual(indexName);
                 });
         }
+
+        [Test,Ignore]
+        public void AsEntityMapShouldSetProvidedColumnNameIndexTypeValueType()
+        {
+            
+            const string indexName = "index-name";
+            //I do not know how to test
+            OneToMany(x => x.EntityMapOfChildren)
+                .Mapping(m => m.AsEntityMap(typeof(SomeEntity), indexName, typeof(SomeOtherEntity)))
+                .ModelShouldMatch(x =>
+                {
+                    x.Collection.ShouldEqual(Collection.Map);
+                    x.Index.ShouldBeOfType(typeof(IndexManyToManyMapping));
+                    x.Index.Columns.Single().Name.ShouldEqual(indexName);
+                });
+        }
     }
 }
