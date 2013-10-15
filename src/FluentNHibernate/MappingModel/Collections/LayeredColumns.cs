@@ -21,6 +21,9 @@ namespace FluentNHibernate.MappingModel.Collections
 
                 foreach (var value in values)
                 {
+					if (value == null)
+						yield break;
+
                     yield return value;
                 }
             }
