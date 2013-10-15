@@ -234,7 +234,7 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
-        /// Specify that this property has a unique constranit
+        /// Specify that this property has a unique constraint
         /// </summary>
         public PropertyPart Unique()
         {
