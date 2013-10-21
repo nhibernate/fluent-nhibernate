@@ -47,7 +47,7 @@ namespace FluentNHibernate.Utils
             // TODO: should really do something about conventions and overridden names here
             var member = body.Member;
 
-            if (member.DeclaringType == typeof(T))
+            if (member.DeclaringType.IsAssignableFrom(typeof(T)))
                 return member.Name;
                 
             // try get value of lambda, hoping it's just a direct value return or local reference

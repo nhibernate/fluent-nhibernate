@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.FluentInterface.Fixtures;
 using Machine.Specifications;

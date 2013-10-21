@@ -13,7 +13,7 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria
         IAcceptanceCriteria<TInspector> OppositeOf<T>()
             where T : IConventionAcceptance<TInspector>, new();
 
-        IAcceptanceCriteria<TInspector> Expect(Expression<Func<TInspector, bool>> evaluation);
+        IAcceptanceCriteria<TInspector> Expect(Func<TInspector, bool> evaluation);
         IAcceptanceCriteria<TInspector> Expect(Expression<Func<TInspector, object>> propertyExpression, IAcceptanceCriterion value);
 
         // special case for string, because it's actually an IEnumerable<char>, which makes it fall through

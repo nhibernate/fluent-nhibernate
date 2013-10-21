@@ -103,6 +103,12 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ShouldEqual("some where clause");
         }
 
+        [Test]
+        public void ShouldAllowInheritedProperty()
+        {
+            WhereSubChild(x => x.String == SomeValue)
+                .ShouldEqual("String = 'SomeValue'");
+        }
         #region helpers
 
         private string Where(Expression<Func<Child, bool>> where)
@@ -110,6 +116,24 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             var classMap = new ClassMap<Target>();
             classMap.Id(x => x.Id);
             classMap.HasMany(x => x.Children)
+                .Where(where);
+
+            var model = new PersistenceModel();
+
+            model.Add(classMap);
+
+            return model.BuildMappings()
+                .First()
+                .Classes.First()
+                .Collections.First()
+                .Where;
+        }
+
+        private string WhereSubChild(Expression<Func<SubChild, bool>> where)
+        {
+            var classMap = new ClassMap<Target>();
+            classMap.Id(x => x.Id);
+            classMap.HasMany(x => x.SubChildren)
                 .Where(where);
 
             var model = new PersistenceModel();
@@ -147,6 +171,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             public int Id { get; set; }
             public IList<Child> Children { get; set;}
+            public IList<SubChild> SubChildren { get; set; }
         }
 
         private class Child
@@ -154,6 +179,10 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             public string String { get; set; }
             public int Int { get; set; }
             public Enum Enum { get; set; }
+        }
+
+        private class SubChild : Child
+        {
         }
 
         private enum Enum
