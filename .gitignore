@@ -11,9 +11,9 @@ build
 
 *.DotSettings.user
 *.csproj.user
-
+*ncrunch*
 *.resharper.user
-
+src/packages
 *.resharper
 
 *.suo
