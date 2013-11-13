@@ -14,7 +14,8 @@
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\FluentKey.snk</AssemblyOriginatorKeyFile>
-    <FileUpgradeFlags></FileUpgradeFlags>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <PublishUrl>publish\</PublishUrl>
@@ -111,7 +112,7 @@
     <Compile Include="Automapping\Steps\HasManyToManyStep.cs" />
     <Compile Include="Automapping\Steps\CollectionStep.cs" />
     <Compile Include="Automapping\Steps\IAutomappingStep.cs" />
-    <Compile Include="Cfg\Db\SybaseSQLAnywhere.cs" />
+    <Compile Include="Cfg\Db\SQLAnywhereConfiguration.cs" />
     <Compile Include="Cfg\Db\SybaseSQLAnywhereConnectionStringBuilder.cs" />
     <Compile Include="Cfg\Db\IngresConfiguration.cs" />
     <Compile Include="Cfg\Db\IngresConnectionStringBuilder.cs" />
