@@ -10,9 +10,9 @@ output
 build
 
 *.csproj.user
-
+*ncrunch*
 *.resharper.user
-
+src/packages
 *.resharper
 
 *.suo
