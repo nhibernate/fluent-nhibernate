@@ -137,7 +137,6 @@
     <Compile Include="Fixtures\AutoMappingAlterations\Model\Qux.cs" />
     <Compile Include="Cfg\Db\IngresConfigurationTester.cs" />
     <Compile Include="FluentInterfaceTests\SubclassMapWithUserTypeTests.cs" />
-    <Compile Include="FluentInterfaceTests\TablePerHierarchyTests.cs" />
     <Compile Include="StubTypeSource.cs" />
     <Compile Include="AutoMapping\TestFixtures.cs" />
     <Compile Include="Cfg\Db\DB2ConfigurationTester.cs" />
