@@ -14,6 +14,12 @@ namespace FluentNHibernate.Testing.Cfg
         }
 
         [Test]
+        public void DB2_should_include_informix_dialect()
+        {
+            DB2Configuration.Informix1150.ToProperties()["dialect"].ShouldEqual("NHibernate.Dialect.InformixDialect1000, " + typeof(ISession).Assembly.FullName);
+        }
+
+        [Test]
         public void DB2_driver_should_default_to_the_DB2_ClientDriver()
         {
             DB2Configuration.Standard.ToProperties()["connection.driver_class"].ShouldEqual("NHibernate.Driver.DB2Driver, " + typeof(ISession).Assembly.FullName);
