@@ -55,8 +55,7 @@ namespace FluentNHibernate
             visitors.Add((validationVisitor = new ValidationVisitor()));
         }
 
-        public PersistenceModel()
-            : this(new DefaultConventionFinder())
+        public PersistenceModel(): this(new DefaultConventionFinder())
         {}
 
         public void SetLogger(IDiagnosticLogger logger)
@@ -183,6 +182,7 @@ namespace FluentNHibernate
 
                 add(hbm);
             }
+
             foreach (var filterDefinition in filterDefinitions)
             {
                 var hbm = filterDefinition.GetHibernateMapping();
@@ -204,7 +204,7 @@ namespace FluentNHibernate
                 hbm.AddFilter(filterDefinition.GetFilterMapping());
             }
 
-            if (hbm.Classes.Count() > 0)
+            if (hbm.Classes.Any())
                 add(hbm);
         }
 
@@ -231,7 +231,7 @@ namespace FluentNHibernate
             if (MergeMappings)
                 return GetMappingFileName();
 
-            if (mapping.Classes.Count() > 0)
+            if (mapping.Classes.Any())
                 return mapping.Classes.First().Type.FullName + ".hbm.xml";
 
             return "filter-def." + mapping.Filters.First().Name + ".hbm.xml";
@@ -251,7 +251,7 @@ namespace FluentNHibernate
         {
             EnsureMappingsBuilt();
 
-            foreach (HibernateMapping mapping in compiledMappings)
+            foreach (var mapping in compiledMappings)
             {
                 var serializer = new MappingXmlSerializer();
                 var document = serializer.Serialize(mapping);
@@ -276,14 +276,14 @@ namespace FluentNHibernate
         {
             EnsureMappingsBuilt();
 
-            foreach (var mapping in compiledMappings.Where(m => m.Classes.Count() == 0))
+            foreach (var mapping in compiledMappings.Where(m => !m.Classes.Any()))
             {
                 var serializer = new MappingXmlSerializer();
                 XmlDocument document = serializer.Serialize(mapping);
                 cfg.AddDocument(document);
             }
 
-            foreach (var mapping in compiledMappings.Where(m => m.Classes.Count() > 0))
+            foreach (var mapping in compiledMappings.Where(m => m.Classes.Any()))
             {
                 var serializer = new MappingXmlSerializer();
                 XmlDocument document = serializer.Serialize(mapping);

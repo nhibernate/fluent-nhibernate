@@ -58,6 +58,13 @@ namespace FluentNHibernate.Mapping
             return parent;
         }
 
-
+        /// <summary>
+        /// Cascade on replication
+        /// </summary>
+        public TParent Replicate()
+        {
+            setter("replicate");
+            return parent;
+        }
 	}
 }

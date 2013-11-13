@@ -14,5 +14,10 @@ namespace FluentNHibernate.Cfg.Db
         {
             get { return new MsSqlCeConfiguration().Dialect<MsSqlCeDialect>(); }
         }
+
+        public static MsSqlCeConfiguration MsSqlCe40
+        {
+            get { return new MsSqlCeConfiguration().Dialect<MsSqlCe40Dialect>(); }
+        }
     }
 }

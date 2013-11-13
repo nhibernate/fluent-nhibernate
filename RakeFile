@@ -4,6 +4,28 @@ require './tools/albacore/nuspec_patch'
 
 NH_VERSION = '3.x'
 
+module Platform
+
+  def self.is_nix
+    !RUBY_PLATFORM.match("linux|darwin").nil?
+  end
+
+  def self.runtime(cmd)
+    command = cmd
+    if self.is_nix
+      runtime = (CLR_TOOLS_VERSION || "v4.0.30319")
+      command = "mono --runtime=#{runtime} #{cmd}"
+    end
+    command
+  end
+
+  def self.switch(arg)
+    sw = self.is_nix ? " -" : " /"
+    sw + arg
+  end
+
+end 
+
 def get_version
   ENV['BUILD_NUMBER'] || '1.3.0.0'
 end
@@ -12,11 +34,19 @@ task :default => 'build:all'
 
 namespace :ci do
   task :run_ci_build => [
+	'ripple',
     'build:all',
     'docs:build',
     'package:all',
   ]
 end
+
+namespace :ripple do
+	desc 'using ripple. yay!'
+    ripple = Platform.runtime("buildsupport/ripple.exe") 
+	args = "restore"
+	sh "#{ripple} #{args}"
+ end
 
 namespace :source do
   desc 'Update assembly info with latest version number'
@@ -26,7 +56,7 @@ namespace :source do
     asm.version = get_version
     asm.company_name = 'http://fluentnhibernate.org'
     asm.product_name = 'FluentNHibernate'
-    asm.copyright = 'Copyright 2008-2011 James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved.'
+    asm.copyright = 'Copyright 2008-2013 James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved.'
     asm.namespaces = ['System.Security']
     asm.custom_attributes :AllowPartiallyTrustedCallers => nil
     
@@ -35,16 +65,6 @@ namespace :source do
   
   task :nhibernate_version, :nhibernate_version do |t,args|
     args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || NH_VERSION
-    
-    raise "Unknown NHibernate version #{args.nhibernate_version} (check your tools/NHibernate folder)" unless File.directory? "tools/NHibernate/#{args.nhibernate_version}"
-    
-    # clear out existing selected nh version
-    files_to_delete = Dir["tools/NHibernate/*.*"].reject {|f| File.directory? f }
-    files_to_delete.each {|f| File.delete f }
-    
-    # copy specific nh version files to the main directory
-    files_to_copy = Dir["tools/NHibernate/#{args.nhibernate_version}/*.*"]
-    files_to_copy.each {|f| FileUtils.copy f, "tools/NHibernate/" }
   end
 
   desc 'Compile the source'
@@ -71,13 +91,13 @@ namespace :specs do
   
   desc 'Run MSpec specs'
   mspec :mspec do |mspec|
-    mspec.command = 'src/packages/Machine.Specifications.0.5.6.0/tools/mspec.exe'
+    mspec.command = 'src/packages/Machine.Specifications.0.5.15/tools/mspec.exe'
     mspec.assemblies 'src/FluentNHibernate.Specs/bin/Release/FluentNHibernate.Specs.dll'
   end
 
   desc 'Run NUnit tests'
   nunit :nunit do |nunit|
-    nunit.command = 'tools/nunit/nunit-console-x86.exe'
+    nunit.command = 'src/packages/NUnit.2.5.7.10213/Tools/nunit-console-x86.exe'
     nunit.assemblies 'src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll'
   end
 end
