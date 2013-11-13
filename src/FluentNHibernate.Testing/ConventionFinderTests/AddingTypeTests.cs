@@ -4,6 +4,7 @@ using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
+using Machine.Specifications;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionFinderTests
