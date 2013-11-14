@@ -1,4 +1,3 @@
-
 **/*.suo
 **/*.user
 **/*.sln*
@@ -11,19 +10,19 @@ build
 
 *.DotSettings.user
 *.csproj.user
+src/packages
 
 *.resharper.user
-
 *.resharper
 
 *.suo
-
 *.cache
-
 *~
-
-*.swp
-TestResult.xml
+*ncrunch*
 *.ncrunchsolution
 *.ncrunchproject
-packages/
+*.swp
+TestResult.xml
+
+TestResult.xml
+build/

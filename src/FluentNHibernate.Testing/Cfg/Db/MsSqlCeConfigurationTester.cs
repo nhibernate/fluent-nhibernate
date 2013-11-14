@@ -21,5 +21,12 @@ namespace FluentNHibernate.Testing.Cfg.Db
                 .ConnectionString("conn")
                 .ToProperties().ShouldContain("connection.connection_string", "conn");
         }
+
+        [Test]
+        public void MsSqlCe_should_include_40dialect()
+        {
+            MsSqlCeConfiguration.MsSqlCe40.ToProperties()["dialect"].ShouldEqual("NHibernate.Dialect.MsSqlCe40Dialect, " +
+                typeof(ISession).Assembly.FullName);
+        }
     }
 }

@@ -1,4 +1,4 @@
-<img src="http://fluentnhibernate.org/images/logo.png" alt="Fluent NHibernate - Fluent mapping for your model" />
+<img src="https://github.com/jagregory/fluent-nhibernate/blob/master/docs/logo.png" alt="Fluent NHibernate - Fluent mapping for your model" />
 =============================================
 
 Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate. *Get your fluent on.*
@@ -26,4 +26,4 @@ Fluent NHibernate wouldn't be possible without the time and effort of its contri
 
 Thanks goes to [Jeremy Miller](http://codebetter.com/blogs/jeremy.miller) for the original idea and implementation.
     
-Fluent NHibernate is &copy; 2008-2011 [James Gregory](http://jagregory.com) and contributors under the [BSD license](fluent-nhibernate/blob/master/LICENSE.txt)
+Fluent NHibernate is &copy; 2008-2013 [James Gregory](http://jagregory.com) and contributors under the [BSD license](fluent-nhibernate/blob/master/LICENSE.txt)
