@@ -27,3 +27,5 @@ Fluent NHibernate wouldn't be possible without the time and effort of its contri
 Thanks goes to [Jeremy Miller](http://codebetter.com/blogs/jeremy.miller) for the original idea and implementation.
     
 Fluent NHibernate is &copy; 2008-2013 [James Gregory](http://jagregory.com) and contributors under the [BSD license](fluent-nhibernate/blob/master/LICENSE.txt)
+
+<img src="?ui=2&amp;ik=05512bc358&amp;view=att&amp;th=142b413ffd80df11&amp;attid=0.1&amp;disp=emb&amp;realattid=ii_142b41302da0ffcd&amp;zw&amp;atsh=1" alt="Powered by NDepend">
