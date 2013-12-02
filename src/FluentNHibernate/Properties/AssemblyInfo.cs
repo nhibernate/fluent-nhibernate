@@ -8,3 +8,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("FluentNHibernate")]
 [assembly: AssemblyDescription("")]
 [assembly: CLSCompliant(true)]
+[assembly: AssemblyVersionAttribute("1.4.0.0")]

@@ -26,3 +26,4 @@ TestResult.xml
 
 TestResult.xml
 build/
+*.nupkg
