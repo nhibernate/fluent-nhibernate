@@ -1,4 +1,4 @@
-<img src="https://github.com/jagregory/fluent-nhibernate/blob/master/docs/logo.png" alt="Fluent NHibernate - Fluent mapping for your model" />
+<img src="http://i43.tinypic.com/2610uf8.png" border="0" alt="Fluent NHibernate - Fluent mapping for your model">
 =============================================
 
 Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate. *Get your fluent on.*
