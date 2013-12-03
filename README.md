@@ -28,4 +28,4 @@ Thanks goes to [Jeremy Miller](http://codebetter.com/blogs/jeremy.miller) for th
     
 Fluent NHibernate is &copy; 2008-2013 [James Gregory](http://jagregory.com) and contributors under the [BSD license](fluent-nhibernate/blob/master/LICENSE.txt)
 
-<a href="http://tinypic.com?ref=295tpq8"><img src="http://i43.tinypic.com/295tpq8.png" border="0" alt="Powered by NDepend"></a>
+<a href="http://ndepend.com"><img src="http://i43.tinypic.com/295tpq8.png" alt="Powered by NDepend"></a>
