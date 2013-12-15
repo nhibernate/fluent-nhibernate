@@ -6,7 +6,6 @@ using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.MappingModel.Output
 {

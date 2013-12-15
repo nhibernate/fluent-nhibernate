@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
+using FakeItEasy;
 using NHibernate;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.Testing
 {
@@ -25,55 +25,49 @@ namespace FluentNHibernate.Testing.Testing
         public void Should_Not_Open_A_New_Transaction_If_One_Is_Passed()
         {
 
-            var transaction = MockRepository.GenerateMock<ITransaction>();
-            transaction.Expect(x => x.IsActive).Return(true);
+            var transaction = A.Fake<ITransaction>();
+            A.CallTo(() => transaction.IsActive).Returns(true);
 
-            var session = MockRepository.GenerateMock<ISession>();
-            session.Expect(x => x.Transaction).Return(transaction).Repeat.Twice();
-            session.Expect(x => x.BeginTransaction()).Repeat.Never();
+            var session = A.Fake<ISession>();
+            A.CallTo(() => session.Transaction).Returns(transaction);
 
             var spec = new PersistenceSpecification<Cat>(session);
             spec.VerifyTheMappings();
 
-            session.VerifyAllExpectations();
-
-
+            A.CallTo(() => session.BeginTransaction()).MustNotHaveHappened();
+            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Twice);
         }
 
         [Test]
         public void Should_Open_A_New_Transaction_If_None_Is_Passed()
         {
 
-            var transaction = MockRepository.GenerateMock<ITransaction>();
-            transaction.Expect(x => x.IsActive).Return(false);
+            var transaction = A.Fake<ITransaction>();
+            A.CallTo(() => transaction.IsActive).Returns(false);
 
-            var session = MockRepository.GenerateMock<ISession>();
-            session.Expect(x => x.Transaction).Return(transaction).Repeat.Twice();
-
-            session.Expect(x => x.BeginTransaction()).Return(transaction).Repeat.Once();
+            var session = A.Fake<ISession>();
+            A.CallTo(() => session.Transaction).Returns(transaction);
+            A.CallTo(() => session.BeginTransaction()).Returns(transaction);
 
             var spec = new PersistenceSpecification<Cat>(session);
             spec.VerifyTheMappings();
 
-            session.VerifyAllExpectations();
-
+            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Twice);
         }
 
         [Test]
         public void Passed_Transaction_Should_Apply_For_Reference_Saving()
         {
-            var transaction = MockRepository.GenerateMock<ITransaction>();
-            transaction.Expect(x => x.IsActive).Return(true);
+            var transaction = A.Fake<ITransaction>();
+            A.CallTo(() => transaction.IsActive).Returns(true);
 
-
-            var session = MockRepository.GenerateMock<ISession>();
-            session.Expect(x => x.Transaction).Return(transaction).Repeat.Twice();
-
-            session.Expect(x => x.BeginTransaction()).Repeat.Never();
-            session.Expect(s => s.Get<Cat>(null)).IgnoreArguments().Return(
+            var session = A.Fake<ISession>();
+            A.CallTo(() => session.Transaction).Returns(transaction);
+            A.CallTo(() => session.Get<Cat>(null)).WithAnyArguments()
+                .Returns(
                 new Cat
                 {
-                    Name = "Fluffy", 
+                    Name = "Fluffy",
                     CatType = new CatType
                     {
                         Name = "Persian"
@@ -83,24 +77,22 @@ namespace FluentNHibernate.Testing.Testing
 
             var spec = new PersistenceSpecification<Cat>(session, new NameEqualityComparer());
             spec.CheckProperty(x => x.Name, "Fluffy");
-            spec.CheckReference(x => x.CatType, new CatType {Name = "Persian"});
-            
+            spec.CheckReference(x => x.CatType, new CatType { Name = "Persian" });
+
             spec.VerifyTheMappings();
 
-            session.VerifyAllExpectations();
-            
+            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Twice);
+            A.CallTo(() => session.BeginTransaction()).MustNotHaveHappened();
         }
-
-
 
         public class NameEqualityComparer : IEqualityComparer
         {
             bool IEqualityComparer.Equals(object x, object y)
             {
-                if ( x == null || y == null )
+                if (x == null || y == null)
                     return false;
 
-                if ( x.GetType().GetProperty("Name") != null && y.GetType().GetProperty("Name") != null )
+                if (x.GetType().GetProperty("Name") != null && y.GetType().GetProperty("Name") != null)
                 {
                     return x.GetType().GetProperty("Name").GetValue(x, null) == y.GetType().GetProperty("Name").GetValue(x, null);
                 }

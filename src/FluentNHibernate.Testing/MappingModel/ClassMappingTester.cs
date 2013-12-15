@@ -3,8 +3,8 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Visitors;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.MappingModel
 {
@@ -64,12 +64,11 @@ namespace FluentNHibernate.Testing.MappingModel
             classMap.Set(x => x.Name, Layer.Defaults, "class1");
             classMap.Set(x => x.Id, Layer.Defaults, new IdMapping());
 
-            var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
-            visitor.Expect(x => x.Visit(classMap.Id));
+            var visitor = A.Fake<IMappingModelVisitor>();
 
             classMap.AcceptVisitor(visitor);
 
-            visitor.VerifyAllExpectations();
+            A.CallTo(() => visitor.Visit(classMap.Id)).MustHaveHappened();
         }
 
         [Test]
@@ -79,12 +78,11 @@ namespace FluentNHibernate.Testing.MappingModel
             classMap.Set(x => x.Name, Layer.Defaults, "class1");
             classMap.Set(x => x.Id, Layer.Defaults, null);
 
-            var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();            
-            visitor.Expect(x => x.Visit(classMap.Id)).Repeat.Never();            
-            
+            var visitor = A.Fake<IMappingModelVisitor>();
+
             classMap.AcceptVisitor(visitor);
-            
-            visitor.VerifyAllExpectations();
+
+            A.CallTo(() => visitor.Visit(classMap.Id)).MustNotHaveHappened();
         }
 
         [Test]
@@ -98,16 +96,20 @@ namespace FluentNHibernate.Testing.MappingModel
         [Test]
         public void Should_pass_subclasses_to_the_visitor()
         {
+            // FakeItEasy ;for some reason; calls ToString method on SubClassMapping
+            // which ended in NullPointerException if AttributeStore didn't contain Type attribute.
+            var attributeStore = new AttributeStore();
+            attributeStore.Set("Type", 0, typeof(object));
+
             var classMap = new ClassMapping();
             classMap.Set(x => x.Name, Layer.Defaults, "class1");
-            classMap.AddSubclass(new SubclassMapping(SubclassType.JoinedSubclass));
+            classMap.AddSubclass(new SubclassMapping(SubclassType.JoinedSubclass, attributeStore));
 
-            var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
-            visitor.Expect(x => x.Visit(classMap.Subclasses.First()));
+            var visitor = A.Fake<IMappingModelVisitor>();
 
             classMap.AcceptVisitor(visitor);
 
-            visitor.VerifyAllExpectations();           
+            A.CallTo(() => visitor.Visit(classMap.Subclasses.First())).MustHaveHappened();
         }
 
         [Test]
@@ -125,12 +127,11 @@ namespace FluentNHibernate.Testing.MappingModel
             classMap.Set(x => x.Name, Layer.Defaults, "class1");
             classMap.AddStoredProcedure(new StoredProcedureMapping());
 
-            var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
-            visitor.Expect(x => x.Visit(classMap.StoredProcedures.First()));
+            var visitor = A.Fake<IMappingModelVisitor>();
 
             classMap.AcceptVisitor(visitor);
 
-            visitor.VerifyAllExpectations();
+            A.CallTo(() => visitor.Visit(classMap.StoredProcedures.First())).MustHaveHappened();
         }
 
         [Test]
@@ -140,14 +141,11 @@ namespace FluentNHibernate.Testing.MappingModel
             classMap.Set(x => x.Name, Layer.Defaults, "class1");
             classMap.Set(x => x.Discriminator, Layer.Defaults, new DiscriminatorMapping());
 
-            var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
-            visitor.Expect(x => x.Visit(classMap.Discriminator));
+            var visitor = A.Fake<IMappingModelVisitor>();
 
             classMap.AcceptVisitor(visitor);
 
-            visitor.VerifyAllExpectations();     
+            A.CallTo(() => visitor.Visit(classMap.Discriminator)).MustHaveHappened();
         }
-
- 
     }
 }

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FakeItEasy;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.ConventionsTests
 {
@@ -20,13 +20,13 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             ProxyConvention convention = GetConvention();
 
-            var classInstance = MockRepository.GenerateMock<IClassInstance>();
-            classInstance.Expect(x => x.EntityType)
-                .Return(typeof(ProxiedObject));
-            
+            var classInstance = A.Fake<IClassInstance>();
+            A.CallTo(() => classInstance.EntityType).Returns(typeof(ProxiedObject));
+
             convention.Apply(classInstance);
 
-            classInstance.AssertWasCalled(x => x.Proxy(typeof(IProxiedObject)));
+            A.CallTo(() => classInstance.Proxy(typeof(IProxiedObject)))
+                .MustHaveHappened();
         }
 
         [Test]
@@ -34,13 +34,13 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             ProxyConvention convention = GetConvention();
 
-            var classInstance = MockRepository.GenerateMock<ISubclassInstance>();
-            classInstance.Expect(x => x.EntityType)
-                .Return(typeof(ProxiedObject));
+            var classInstance = A.Fake<ISubclassInstance>();
+            A.CallTo(() => classInstance.EntityType).Returns(typeof(ProxiedObject));
 
             convention.Apply(classInstance);
 
-            classInstance.AssertWasCalled(x => x.Proxy(typeof(IProxiedObject)));
+            A.CallTo(() => classInstance.Proxy(typeof(IProxiedObject)))
+                .MustHaveHappened();
         }
 
         [Test]
@@ -48,13 +48,12 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             ProxyConvention convention = GetConvention();
 
-            var classInstance = MockRepository.GenerateMock<IClassInstance>();
-            classInstance.Stub(x => x.EntityType)
-                .Return(typeof(NotProxied));
+            var classInstance = A.Fake<IClassInstance>();
+            A.CallTo(() => classInstance.EntityType).Returns(typeof(NotProxied));
 
             convention.Apply(classInstance);
 
-            classInstance.AssertWasNotCalled(x => x.Proxy(Arg<Type>.Is.Anything));
+            A.CallTo(() => classInstance.Proxy(A<Type>._)).MustNotHaveHappened();
         }
 
         [Test]
@@ -62,13 +61,12 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             ProxyConvention convention = GetConvention();
 
-            var classInstance = MockRepository.GenerateMock<ISubclassInstance>();
-            classInstance.Stub(x => x.EntityType)
-                .Return(typeof(NotProxied));
+            var classInstance = A.Fake<ISubclassInstance>();
+            A.CallTo(() => classInstance.EntityType).Returns(typeof(NotProxied));
 
             convention.Apply(classInstance);
 
-            classInstance.AssertWasNotCalled(x => x.Proxy(Arg<Type>.Is.Anything));
+            A.CallTo(() => classInstance.Proxy(A<Type>._)).MustNotHaveHappened();
         }
 
         [Test]
@@ -76,17 +74,16 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             ProxyConvention convention = GetConvention();
 
-            var collectionInstance = MockRepository.GenerateMock<ICollectionInstance>();
-            var relationship = MockRepository.GenerateMock<IRelationshipInstance>();
+            var collectionInstance = A.Fake<ICollectionInstance>();
+            var relationship = A.Fake<IRelationshipInstance>();
 
-            collectionInstance.Stub(x => x.Relationship)
-                .Return(relationship);
-            relationship.Stub(x => x.Class)
-                .Return(new TypeReference(typeof(IProxiedObject)));
+            A.CallTo(() => collectionInstance.Relationship).Returns(relationship);
+            A.CallTo(() => relationship.Class).Returns(new TypeReference(typeof(IProxiedObject)));
 
             convention.Apply(collectionInstance);
 
-            relationship.AssertWasCalled(x => x.CustomClass(typeof(ProxiedObject)));
+            A.CallTo(() => relationship.CustomClass(typeof(ProxiedObject)))
+                .MustHaveHappened();
         }
 
         [Test]
@@ -94,17 +91,16 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             ProxyConvention convention = GetConvention();
 
-            var collectionInstance = MockRepository.GenerateMock<ICollectionInstance>();
-            var relationship = MockRepository.GenerateMock<IRelationshipInstance>();
+            var collectionInstance = A.Fake<ICollectionInstance>();
+            var relationship = A.Fake<IRelationshipInstance>();
 
-            collectionInstance.Stub(x => x.Relationship)
-                .Return(relationship);
-            relationship.Stub(x => x.Class)
-                .Return(new TypeReference(typeof(NotProxied)));
+            A.CallTo(() => collectionInstance.Relationship).Returns(relationship);
+            A.CallTo(() => relationship.Class).Returns(new TypeReference(typeof(NotProxied)));
 
             convention.Apply(collectionInstance);
 
-            relationship.AssertWasNotCalled(x => x.CustomClass(Arg<Type>.Is.Anything));
+            A.CallTo(() => relationship.CustomClass(A<Type>._))
+                .MustNotHaveHappened();
         }
 
         [Test]
@@ -112,13 +108,13 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             ProxyConvention convention = GetConvention();
 
-            var manyToOneInstance = MockRepository.GenerateMock<IManyToOneInstance>();
-            manyToOneInstance.Stub(x => x.Class)
-                .Return(new TypeReference(typeof(IProxiedObject)));
+            var manyToOneInstance = A.Fake<IManyToOneInstance>();
+            A.CallTo(() => manyToOneInstance.Class).Returns(new TypeReference(typeof(IProxiedObject)));
 
             convention.Apply(manyToOneInstance);
 
-            manyToOneInstance.AssertWasCalled(x => x.OverrideInferredClass(typeof(ProxiedObject)));
+            A.CallTo(() => manyToOneInstance.OverrideInferredClass(typeof(ProxiedObject)))
+                .MustHaveHappened();
         }
 
         [Test]
@@ -126,13 +122,13 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             ProxyConvention convention = GetConvention();
 
-            var manyToOneInstance = MockRepository.GenerateMock<IManyToOneInstance>();
-            manyToOneInstance.Stub(x => x.Class)
-                .Return(new TypeReference(typeof(NotProxied)));
+            var manyToOneInstance = A.Fake<IManyToOneInstance>();
+            A.CallTo(() => manyToOneInstance.Class).Returns(new TypeReference(typeof(NotProxied)));
 
             convention.Apply(manyToOneInstance);
 
-            manyToOneInstance.AssertWasNotCalled(x => x.OverrideInferredClass(typeof(ProxiedObject)));
+            A.CallTo(() => manyToOneInstance.OverrideInferredClass(typeof(ProxiedObject)))
+                .MustNotHaveHappened();
         }
 
         [Test]
@@ -140,13 +136,14 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             ProxyConvention convention = GetConvention();
 
-            var oneToOneInstance = MockRepository.GenerateMock<IOneToOneInstance>();
-            oneToOneInstance.Stub(x => ((IOneToOneInspector)x).Class)
-                .Return(new TypeReference(typeof(IProxiedObject)));
+            var oneToOneInstance = A.Fake<IOneToOneInstance>();
+            A.CallTo(() => ((IOneToOneInspector)oneToOneInstance).Class)
+                .Returns(new TypeReference(typeof(IProxiedObject)));
 
             convention.Apply(oneToOneInstance);
 
-            oneToOneInstance.AssertWasCalled(x => x.OverrideInferredClass(typeof(ProxiedObject)));
+            A.CallTo(() => oneToOneInstance.OverrideInferredClass(typeof(ProxiedObject)))
+                .MustHaveHappened();
         }
 
         [Test]
@@ -154,13 +151,14 @@ namespace FluentNHibernate.Testing.ConventionsTests
         {
             ProxyConvention convention = GetConvention();
 
-            var oneToOneInstance = MockRepository.GenerateMock<IOneToOneInstance>();
-            oneToOneInstance.Stub(x => ((IOneToOneInspector)x).Class)
-                .Return(new TypeReference(typeof(NotProxied)));
+            var oneToOneInstance = A.Fake<IOneToOneInstance>();
+            A.CallTo(() => ((IOneToOneInspector)oneToOneInstance).Class)
+                .Returns(new TypeReference(typeof(NotProxied)));
 
             convention.Apply(oneToOneInstance);
 
-            oneToOneInstance.AssertWasNotCalled(x => x.OverrideInferredClass(typeof(ProxiedObject)));
+            A.CallTo(() => oneToOneInstance.OverrideInferredClass(typeof(ProxiedObject)))
+                .MustNotHaveHappened();
         }
 
         private static ProxyConvention GetConvention()

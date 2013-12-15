@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using FakeItEasy;
 using FluentNHibernate.Testing.Values;
 using FluentNHibernate.Utils.Reflection;
 using NHibernate;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.Testing.Values
 {
@@ -21,10 +21,10 @@ namespace FluentNHibernate.Testing.Testing.Values
         {
             var property = ReflectionHelper.GetAccessor((Expression<Func<ReferenceEntity, object>>)(x => x.ReferenceList));
 
-            referencedEntities = new List<OtherEntity> {new OtherEntity(), new OtherEntity()};
+            referencedEntities = new List<OtherEntity> { new OtherEntity(), new OtherEntity() };
 
-            session = MockRepository.GenerateStub<ISession>();
-            session.Stub(x => x.BeginTransaction()).Return(MockRepository.GenerateStub<ITransaction>());
+            session = A.Fake<ISession>();
+            A.CallTo(() => session.BeginTransaction()).Returns(A.Dummy<ITransaction>());
             specification = new PersistenceSpecification<PropertyEntity>(session);
 
             sut = new ReferenceList<PropertyEntity, OtherEntity>(property, referencedEntities);
@@ -41,7 +41,8 @@ namespace FluentNHibernate.Testing.Testing.Values
             foreach (var reference in referencedEntities)
             {
                 OtherEntity entity = reference;
-                session.AssertWasCalled(x => x.Save(entity));
+                A.CallTo(() => session.Save(entity))
+                    .MustHaveHappened();
             }
         }
     }
