@@ -1,8 +1,8 @@
-﻿using FluentNHibernate.Automapping;
+﻿using FakeItEasy;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Automapping.TestFixtures;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.Automapping.Apm
 {
@@ -21,13 +21,13 @@ namespace FluentNHibernate.Testing.Automapping.Apm
         [Test]
         public void ShouldApplyAlterationsToModel()
         {
-            var alteration = MockRepository.GenerateMock<IAutoMappingAlteration>();
+            var alteration = A.Fake<IAutoMappingAlteration>();
 
             model
                 .Alterations(alterations => alterations.Add(alteration))
                 .BuildMappings();
 
-            alteration.AssertWasCalled(x => x.Alter(model));
+            A.CallTo(() => alteration.Alter(model)).MustHaveHappened();
         }
 
         [Test]

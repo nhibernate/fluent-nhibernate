@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
+using FakeItEasy;
 using FluentNHibernate.Testing.Values;
 using FluentNHibernate.Utils.Reflection;
 using NHibernate;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.Testing.Values
 {
@@ -22,8 +22,8 @@ namespace FluentNHibernate.Testing.Testing.Values
 
             referencedEntity = new OtherEntity();
 
-            session = MockRepository.GenerateStub<ISession>();
-            session.Stub(x => x.BeginTransaction()).Return(MockRepository.GenerateStub<ITransaction>());
+            session = A.Fake<ISession>();
+            A.CallTo(() => session.BeginTransaction()).Returns(A.Dummy<ITransaction>());
             specification = new PersistenceSpecification<PropertyEntity>(session);
 
             sut = new ReferenceProperty<PropertyEntity, OtherEntity>(property, referencedEntity);
@@ -37,7 +37,8 @@ namespace FluentNHibernate.Testing.Testing.Values
         [Test]
         public void should_save_the_referenced_entity()
         {
-            session.AssertWasCalled(x => x.Save(referencedEntity));
+            A.CallTo(() => session.Save(referencedEntity))
+                .MustHaveHappened();
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using FluentNHibernate.MappingModel;
+﻿using FakeItEasy;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Visitors;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.MappingModel
 {
@@ -26,16 +26,20 @@ namespace FluentNHibernate.Testing.MappingModel
         [Test]
         public void ShouldPassClassmappingsToTheVisitor()
         {
+            // FakeItEasy calls ToString methods, which ends up in NullPointer
+            // if Type attribute is not the AttributeStore
+            var attributeStore = new AttributeStore();
+            attributeStore.Set("Type", 0, typeof(object));
+
             var hibMap = new HibernateMapping();
-            var classMap = new ClassMapping();
+            var classMap = new ClassMapping(attributeStore);
             hibMap.AddClass(classMap);
 
-            var visitor = MockRepository.GenerateMock<IMappingModelVisitor>();
-            visitor.Expect(x => x.Visit(classMap));
+            var visitor = A.Fake<IMappingModelVisitor>();
 
             hibMap.AcceptVisitor(visitor);
 
-            visitor.VerifyAllExpectations();
+            A.CallTo(() => visitor.Visit(classMap)).MustHaveHappened();
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using FluentNHibernate.Mapping.Providers;
+﻿using FakeItEasy;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Testing.Utils;
 using FluentNHibernate.Visitors;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.Visitors
 {
@@ -15,10 +15,12 @@ namespace FluentNHibernate.Testing.Visitors
         {
             externalComponentMapping = new ExternalComponentMapping(ComponentType.Component);
             externalComponentMapping.Set(x => x.Type, Layer.Defaults, typeof(ComponentTarget));
-            var externalComponent = Stub<IExternalComponentMappingProvider>.Create(cfg =>
-                cfg.Stub(x => x.GetComponentMapping()).Return(externalComponentMapping));
 
-            visitor = new ComponentReferenceResolutionVisitor(new [] { new ComponentMapComponentReferenceResolver() }, new[] { externalComponent });
+            var externalComponent = A.Fake<IExternalComponentMappingProvider>();
+            A.CallTo(() => externalComponent.GetComponentMapping()).Returns(externalComponentMapping);
+            A.CallTo(() => externalComponent.Type).Returns(null);
+
+            visitor = new ComponentReferenceResolutionVisitor(new[] { new ComponentMapComponentReferenceResolver() }, new[] { externalComponent });
             referenceComponentMapping = new ReferenceComponentMapping(ComponentType.Component, null, null, null, null);
         }
 
@@ -88,20 +90,20 @@ namespace FluentNHibernate.Testing.Visitors
     {
         public override void establish_context()
         {
-            var externalComponentOne = Stub<IExternalComponentMappingProvider>.Create(cfg =>
+            var externalComponentOne = A.Fake<IExternalComponentMappingProvider>();
             {
                 var externalComponentMapping = new ExternalComponentMapping(ComponentType.Component);
                 externalComponentMapping.Set(x => x.Type, Layer.Defaults, typeof(ComponentTarget));
-                cfg.Stub(x => x.GetComponentMapping()).Return(externalComponentMapping);
-                cfg.Stub(x => x.Type).Return(typeof(ComponentTarget));
-            });
-            var externalComponentTwo = Stub<IExternalComponentMappingProvider>.Create(cfg =>
+                A.CallTo(() => externalComponentOne.GetComponentMapping()).Returns(externalComponentMapping);
+                A.CallTo(() => externalComponentOne.Type).Returns(typeof(ComponentTarget));
+            }
+            var externalComponentTwo = A.Fake<IExternalComponentMappingProvider>();
             {
                 var externalComponentMapping = new ExternalComponentMapping(ComponentType.Component);
                 externalComponentMapping.Set(x => x.Type, Layer.Defaults, typeof(ComponentTarget));
-                cfg.Stub(x => x.GetComponentMapping()).Return(externalComponentMapping);
-                cfg.Stub(x => x.Type).Return(typeof(ComponentTarget));
-            });
+                A.CallTo(() => externalComponentTwo.GetComponentMapping()).Returns(externalComponentMapping);
+                A.CallTo(() => externalComponentTwo.Type).Returns(typeof(ComponentTarget));
+            }
 
             visitor = new ComponentReferenceResolutionVisitor(new[] { new ComponentMapComponentReferenceResolver() }, new[] { externalComponentOne, externalComponentTwo });
             memberProperty = new DummyPropertyInfo("Component", typeof(ComponentTarget)).ToMember();
