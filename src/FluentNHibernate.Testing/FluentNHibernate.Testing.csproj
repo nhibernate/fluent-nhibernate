@@ -126,6 +126,7 @@
     <Compile Include="AutoMapping\Overrides\CompositeIdOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\HibernateMappingOverrides.cs" />
     <Compile Include="Cfg\Db\SqlAnywhereConfigurationTester.cs" />
+    <Compile Include="Cfg\DuplicateMappingTests.cs" />
     <Compile Include="DomainModel\Mapping\ManyToManySelfReferencedInverseIntegrationTester.cs" />
     <Compile Include="DomainModel\Mapping\MultipleKeyColumnsTester.cs" />
     <Compile Include="DomainModel\MemberAccessResolverTests.cs" />
@@ -416,10 +417,8 @@
     <Compile Include="Testing\Values\ReferencePropertySpecs.cs" />
     <Compile Include="Testing\Values\PropertySpecs.cs" />
     <Compile Include="Testing\Values\Entities.cs" />
-
     <Compile Include="Utils\ReflectionHelperTests.cs" />
     <Compile Include="Testing\XmlWriterTestHelper.cs" />
-
     <Compile Include="Utils\TypeReferenceEqualityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Visitors\ComponentColumnPrefixVisitorSpecs.cs" />
