@@ -17,7 +17,6 @@
     <language>en-US</language>
   </metadata>
   <files>
-        <file src="..\src\FluentNHibernate\bin\Release\FluentNHibernate.dll" target="lib\net35" />
-        <file src="..\src\FluentNHibernate\bin\Release\FluentNHibernate.xml" target="lib\net35" />
+        <file src="..\src\FluentNHibernate\bin\Release\FluentNHibernate.*" target="lib\net35" />        
   </files>
 </package>
