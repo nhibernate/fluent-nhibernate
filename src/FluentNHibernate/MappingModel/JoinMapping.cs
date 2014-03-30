@@ -80,6 +80,11 @@ namespace FluentNHibernate.MappingModel
             mappedMembers.AddCollection(collectionMapping);
         }
 
+        public void AddStoredProcedure(StoredProcedureMapping storedProcedureMapping)
+        {
+            mappedMembers.AddStoredProcedure(storedProcedureMapping);
+        }
+
         public string TableName
         {
             get { return attributes.GetOrDefault<string>("TableName"); }

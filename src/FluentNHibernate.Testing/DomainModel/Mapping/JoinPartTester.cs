@@ -101,6 +101,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/*[last()]").HasName("join");
         }
 
+        [Test]
+        public void JoinContainsAnSqlInsertElement()
+        {
+            new MappingTester<JoinTarget>()
+                .ForMapping(m => m.Join("myTable", t => t.SqlInsert("INSERT INTO myTable VALUES(?)")))
+                .Element("class/join/sql-insert").Exists();
+        }
+
         private class JoinTarget
         {
             public string Name { get; set; }

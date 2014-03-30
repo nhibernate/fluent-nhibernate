@@ -171,6 +171,9 @@ namespace FluentNHibernate.Mapping
             foreach (var collection in providers.Collections)
                 mapping.AddCollection(collection.GetCollectionMapping());
 
+            foreach (var storedProcedure in providers.StoredProcedures)
+                mapping.AddStoredProcedure(storedProcedure.GetStoredProcedureMapping());
+
             return mapping;
         }
     }
