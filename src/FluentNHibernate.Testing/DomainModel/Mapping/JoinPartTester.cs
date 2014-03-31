@@ -105,8 +105,24 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void JoinContainsAnSqlInsertElement()
         {
             new MappingTester<JoinTarget>()
-                .ForMapping(m => m.Join("myTable", t => t.SqlInsert("INSERT INTO myTable VALUES(?)")))
+                .ForMapping(m => m.Join("myTable", t => t.SqlInsert("INSERT INTO myTable VALUES(?)"))) // Now it's not important whether statement is correct or not.
                 .Element("class/join/sql-insert").Exists();
+        }
+
+        [Test]
+        public void JoinContainsAnSqlUpdateElement()
+        {
+            new MappingTester<JoinTarget>()
+                .ForMapping(m => m.Join("myTable", t => t.SqlUpdate("UPDATE myTable SET Name = ? WHERE Id = ?"))) // Now it's not important whether statement is correct or not.
+                .Element("class/join/sql-update").Exists();
+        }
+
+        [Test]
+        public void JoinContainsAnSqlDeleteElement()
+        {
+            new MappingTester<JoinTarget>()
+                .ForMapping(m => m.Join("myTable", t => t.SqlDelete("DELETE FROM myTable WHERE Id = ?"))) // Now it's not important whether statement is correct or not.
+                .Element("class/join/sql-delete").Exists();
         }
 
         private class JoinTarget
