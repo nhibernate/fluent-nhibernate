@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Xml;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils;
@@ -39,7 +40,19 @@ namespace FluentNHibernate.MappingModel.Output
                 element.WithAtt("type", mapping.Type);
 
             if (mapping.IsSpecified("Length"))
-                element.WithAtt("length", mapping.Length);
+            {
+                if (mapping.Columns.Any())
+                {
+                    foreach (var columnMapping in mapping.Columns.Where(column => !column.IsSpecified("Length")))
+                    {
+                        columnMapping.Set(map => map.Length, Layer.Defaults, mapping.Length);
+                    }   
+                }
+                else
+                {
+                    element.WithAtt("length", mapping.Length);
+                }
+            }
         }
 
         public override void Visit(ColumnMapping columnMapping)
