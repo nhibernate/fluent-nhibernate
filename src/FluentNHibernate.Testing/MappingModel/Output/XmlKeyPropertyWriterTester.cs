@@ -64,5 +64,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             testHelper.VerifyAll(writer);
         }
+
+        [Test(Description = "Bug #231 :: Bug when trying to change varchar length for CompositeId")]
+        public void WhenKeyPropertyMappingContainsLengthAndCustomColumnLengthAttributeIsRenderedIntoColumnElement()
+        {
+            var keyPropertyMapping = new KeyPropertyMapping();
+            keyPropertyMapping.Set(propertyMapping => propertyMapping.Length, Layer.Defaults, 2);
+            keyPropertyMapping.AddColumn(new ColumnMapping());
+            writer.VerifyXml(keyPropertyMapping).DoesntHaveAttribute("length").Element("column").HasAttribute("length", "2");
+        }
     }
 }
