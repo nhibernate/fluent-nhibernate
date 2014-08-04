@@ -8475,11 +8475,6 @@
             A single-column projection that may be aliased
             </summary>
         </member>
-        <member name="T:NHibernate.Criterion.IEnhancedProjection">
-            <summary>
-            An "enhanced" Projection for a <see cref="T:NHibernate.ICriteria"/> query.
-            </summary>
-        </member>
         <member name="M:NHibernate.Criterion.IProjection.ToSqlString(NHibernate.ICriteria,System.Int32,NHibernate.Criterion.ICriteriaQuery,System.Collections.Generic.IDictionary{System.String,NHibernate.IFilter})">
             <summary>
             Render the SQL Fragment.
@@ -8516,21 +8511,6 @@
             <param name="criteriaQuery"></param>
             <returns></returns>
         </member>
-        <member name="M:NHibernate.Criterion.IProjection.GetColumnAliases(System.Int32)">
-            <summary>
-            Get the SQL select clause column aliases for a particular user-visible alias
-            </summary>
-            <param name="loc"></param>
-            <returns></returns>
-        </member>
-        <member name="M:NHibernate.Criterion.IProjection.GetColumnAliases(System.String,System.Int32)">
-            <summary>
-            Get the SQL select clause column aliases for a particular user-visible alias
-            </summary>
-            <param name="alias"></param>
-            <param name="loc"></param>
-            <returns></returns>
-        </member>
         <member name="M:NHibernate.Criterion.IProjection.GetTypedValues(NHibernate.ICriteria,NHibernate.Criterion.ICriteriaQuery)">
             <summary>
             Gets the typed values for parameters in this projection
@@ -8538,6 +8518,29 @@
             <param name="criteria">The criteria.</param>
             <param name="criteriaQuery">The criteria query.</param>
             <returns></returns>
+        </member>
+        <member name="M:NHibernate.Criterion.IProjection.GetColumnAliases(System.Int32,NHibernate.ICriteria,NHibernate.Criterion.ICriteriaQuery)">
+            <summary>
+            Get the SQL column aliases used by this projection for the columns it writes for inclusion into the
+            <code>SELECT</code> clause <see cref="M:NHibernate.Criterion.IProjection.ToSqlString(NHibernate.ICriteria,System.Int32,NHibernate.Criterion.ICriteriaQuery,System.Collections.Generic.IDictionary{System.String,NHibernate.IFilter})"/>.  NHibernate always uses column aliases 
+            to extract data from the <see cref="T:System.Data.IDataReader"/>, so it is important that these be implemented 
+            correctly in order for NHibernate to be able to extract these values correctly.
+            </summary>
+            <param name="position">Just as in <see cref="M:NHibernate.Criterion.IProjection.ToSqlString(NHibernate.ICriteria,System.Int32,NHibernate.Criterion.ICriteriaQuery,System.Collections.Generic.IDictionary{System.String,NHibernate.IFilter})"/>, represents the number of columns rendered prior to this projection.</param>
+            <param name="criteria">The local criteria to which this project is attached (for resolution).</param>
+            <param name="criteriaQuery">The overall criteria query instance.</param>
+            <returns>The columns aliases.</returns>
+        </member>
+        <member name="M:NHibernate.Criterion.IProjection.GetColumnAliases(System.String,System.Int32,NHibernate.ICriteria,NHibernate.Criterion.ICriteriaQuery)">
+            <summary>
+            Get the SQL column aliases used by this projection for the columns it writes for inclusion into the
+            <code>SELECT</code> clause (<see cref="M:NHibernate.Criterion.IProjection.ToSqlString(NHibernate.ICriteria,System.Int32,NHibernate.Criterion.ICriteriaQuery,System.Collections.Generic.IDictionary{System.String,NHibernate.IFilter})"/>) for a particular criteria-level alias.
+            </summary>
+            <param name="alias">The criteria-level alias.</param>
+            <param name="position">Just as in <see cref="M:NHibernate.Criterion.IProjection.ToSqlString(NHibernate.ICriteria,System.Int32,NHibernate.Criterion.ICriteriaQuery,System.Collections.Generic.IDictionary{System.String,NHibernate.IFilter})"/>, represents the number of columns rendered prior to this projection.</param>
+            <param name="criteria">The local criteria to which this project is attached (for resolution).</param>
+            <param name="criteriaQuery">The overall criteria query instance.</param>
+            <returns>The columns aliases.</returns>
         </member>
         <member name="P:NHibernate.Criterion.IProjection.Aliases">
             <summary>
@@ -8553,29 +8556,6 @@
             <summary>
             Does this projection specify aggregate attributes?
             </summary>
-        </member>
-        <member name="M:NHibernate.Criterion.IEnhancedProjection.GetColumnAliases(System.Int32,NHibernate.ICriteria,NHibernate.Criterion.ICriteriaQuery)">
-            <summary>
-            Get the SQL column aliases used by this projection for the columns it writes for inclusion into the
-            <code>SELECT</code> clause <see cref="M:NHibernate.Criterion.IProjection.ToSqlString(NHibernate.ICriteria,System.Int32,NHibernate.Criterion.ICriteriaQuery,System.Collections.Generic.IDictionary{System.String,NHibernate.IFilter})"/>.  NHibernate always uses column aliases 
-            to extract data from the <see cref="T:System.Data.IDataReader"/>, so it is important that these be implemented 
-            correctly in order for NHibernate to be able to extract these values correctly.
-            </summary>
-            <param name="position">Just as in <see cref="M:NHibernate.Criterion.IProjection.ToSqlString(NHibernate.ICriteria,System.Int32,NHibernate.Criterion.ICriteriaQuery,System.Collections.Generic.IDictionary{System.String,NHibernate.IFilter})"/>, represents the number of columns rendered prior to this projection.</param>
-            <param name="criteria">The local criteria to which this project is attached (for resolution).</param>
-            <param name="criteriaQuery">The overall criteria query instance.</param>
-            <returns>The columns aliases.</returns>
-        </member>
-        <member name="M:NHibernate.Criterion.IEnhancedProjection.GetColumnAliases(System.String,System.Int32,NHibernate.ICriteria,NHibernate.Criterion.ICriteriaQuery)">
-            <summary>
-            Get the SQL column aliases used by this projection for the columns it writes for inclusion into the
-            <code>SELECT</code> clause (<see cref="M:NHibernate.Criterion.IProjection.ToSqlString(NHibernate.ICriteria,System.Int32,NHibernate.Criterion.ICriteriaQuery,System.Collections.Generic.IDictionary{System.String,NHibernate.IFilter})"/>) for a particular criteria-level alias.
-            </summary>
-            <param name="alias">The criteria-level alias.</param>
-            <param name="position">Just as in <see cref="M:NHibernate.Criterion.IProjection.ToSqlString(NHibernate.ICriteria,System.Int32,NHibernate.Criterion.ICriteriaQuery,System.Collections.Generic.IDictionary{System.String,NHibernate.IFilter})"/>, represents the number of columns rendered prior to this projection.</param>
-            <param name="criteria">The local criteria to which this project is attached (for resolution).</param>
-            <param name="criteriaQuery">The overall criteria query instance.</param>
-            <returns>The columns aliases.</returns>
         </member>
         <member name="M:NHibernate.Criterion.SimpleProjection.GetTypedValues(NHibernate.ICriteria,NHibernate.Criterion.ICriteriaQuery)">
             <summary>
@@ -18900,6 +18880,7 @@
             <item> <description>Deletes, in the order they were performed</description> </item>
             </list>
             </summary>
+            <param name="session">The session being flushed</param>
         </member>
         <member name="M:NHibernate.Event.Default.AbstractFlushingEventListener.PostFlush(NHibernate.Engine.ISessionImplementor)">
             <summary> 
@@ -22719,11 +22700,6 @@
         <member name="P:NHibernate.Hql.Ast.ANTLR.HqlToken.PossibleId">
             <summary>
             Indicates if the token could be an identifier.
-            </summary>
-        </member>
-        <member name="P:NHibernate.Hql.Ast.ANTLR.HqlToken.Type">
-            <summary>
-            Gets or Sets the type of the token, remembering the previous type on Sets.
             </summary>
         </member>
         <member name="P:NHibernate.Hql.Ast.ANTLR.HqlToken.PreviousType">
