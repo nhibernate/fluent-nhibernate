@@ -8,11 +8,11 @@
     <licenseUrl>http://github.com/jagregory/fluent-nhibernate/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>http://github.com/jagregory/fluent-nhibernate/</projectUrl>
 	<dependencies>
-		<dependency id="NHibernate" version="[3.3.1.4000,)" />
+		<dependency id="NHibernate" version="[3.3.1.4000,4)" />
 	</dependencies>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate.</description>
-    <summary>Fluent NHibernate provides a conventient way to configure NHibernate - no XML involved.</summary>
+    <summary>Fluent NHibernate provides a convenient way to configure NHibernate - no XML involved.</summary>
 	<tags>orm dal nhibernate conventions</tags>
     <language>en-US</language>
   </metadata>
