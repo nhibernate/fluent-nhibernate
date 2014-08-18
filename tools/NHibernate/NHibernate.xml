@@ -29669,6 +29669,11 @@
             Util extensions to use in your test or where you need to see the XML mappings
             </summary>
         </member>
+        <member name="T:NHibernate.Mapping.ByCode.PropertyPath">
+            <summary>
+            Immutable value class. By-value equality.
+            </summary>
+        </member>
         <member name="M:NHibernate.Mapping.ByCode.PropertyPathExtensions.InverseProgressivePath(NHibernate.Mapping.ByCode.PropertyPath)">
             <summary>
             Provide the list of progressive-paths
@@ -37140,8 +37145,30 @@
             <summary>
             Run the schema creation script
             </summary>
-            <param name="script"><see langword="true"/> if the ddl should be outputted in the Console.</param>
-            <param name="export"><see langword="true"/> if the ddl should be executed against the Database.</param>
+            <param name="useStdOut"><see langword="true"/> if the ddl should be outputted in the Console.</param>
+            <param name="execute"><see langword="true"/> if the ddl should be executed against the Database.</param>
+            <remarks>
+            This is a convenience method that calls <see cref="M:NHibernate.Tool.hbm2ddl.SchemaExport.Execute(System.Boolean,System.Boolean,System.Boolean)"/> and sets
+            the justDrop parameter to false.
+            </remarks>
+        </member>
+        <member name="M:NHibernate.Tool.hbm2ddl.SchemaExport.Create(System.Action{System.String},System.Boolean)">
+            <summary>
+            Run the schema creation script
+            </summary>
+            <param name="scriptAction"> an action that will be called for each line of the generated ddl.</param>
+            <param name="execute"><see langword="true"/> if the ddl should be executed against the Database.</param>
+            <remarks>
+            This is a convenience method that calls <see cref="M:NHibernate.Tool.hbm2ddl.SchemaExport.Execute(System.Boolean,System.Boolean,System.Boolean)"/> and sets
+            the justDrop parameter to false.
+            </remarks>
+        </member>
+        <member name="M:NHibernate.Tool.hbm2ddl.SchemaExport.Create(System.IO.TextWriter,System.Boolean)">
+            <summary>
+            Run the schema creation script
+            </summary>
+            <param name="exportOutput"> if non-null, the ddl will be written to this TextWriter.</param>
+            <param name="execute"><see langword="true"/> if the ddl should be executed against the Database.</param>
             <remarks>
             This is a convenience method that calls <see cref="M:NHibernate.Tool.hbm2ddl.SchemaExport.Execute(System.Boolean,System.Boolean,System.Boolean)"/> and sets
             the justDrop parameter to false.
@@ -37151,10 +37178,21 @@
             <summary>
             Run the drop schema script
             </summary>
-            <param name="script"><see langword="true"/> if the ddl should be outputted in the Console.</param>
-            <param name="export"><see langword="true"/> if the ddl should be executed against the Database.</param>
+            <param name="useStdOut"><see langword="true"/> if the ddl should be outputted in the Console.</param>
+            <param name="execute"><see langword="true"/> if the ddl should be executed against the Database.</param>
             <remarks>
             This is a convenience method that calls <see cref="M:NHibernate.Tool.hbm2ddl.SchemaExport.Execute(System.Boolean,System.Boolean,System.Boolean)"/> and sets
+            the justDrop parameter to true.
+            </remarks>
+        </member>
+        <member name="M:NHibernate.Tool.hbm2ddl.SchemaExport.Drop(System.IO.TextWriter,System.Boolean)">
+            <summary>
+            Run the drop schema script
+            </summary>
+            <param name="exportOutput"> if non-null, the ddl will be written to this TextWriter.</param>
+            <param name="execute"><see langword="true"/> if the ddl should be executed against the Database.</param>
+            <remarks>
+            This is a convenience method that calls <see cref="M:NHibernate.Tool.hbm2ddl.SchemaExport.Execute(System.Action{System.String},System.Boolean,System.Boolean,System.IO.TextWriter)"/> and sets
             the justDrop parameter to true.
             </remarks>
         </member>
@@ -37162,8 +37200,8 @@
             <summary>
             Executes the Export of the Schema in the given connection
             </summary>
-            <param name="script"><see langword="true" /> if the ddl should be outputted in the Console.</param>
-            <param name="export"><see langword="true" /> if the ddl should be executed against the Database.</param>
+            <param name="useStdOut"><see langword="true" /> if the ddl should be outputted in the Console.</param>
+            <param name="execute"><see langword="true" /> if the ddl should be executed against the Database.</param>
             <param name="justDrop"><see langword="true" /> if only the ddl to drop the Database objects should be executed.</param>
             <param name="connection">
             The connection to use when executing the commands when export is <see langword="true" />.
@@ -37180,8 +37218,8 @@
             <summary>
             Executes the Export of the Schema.
             </summary>
-            <param name="script"><see langword="true" /> if the ddl should be outputted in the Console.</param>
-            <param name="export"><see langword="true" /> if the ddl should be executed against the Database.</param>
+            <param name="useStdOut"><see langword="true" /> if the ddl should be outputted in the Console.</param>
+            <param name="execute"><see langword="true" /> if the ddl should be executed against the Database.</param>
             <param name="justDrop"><see langword="true" /> if only the ddl to drop the Database objects should be executed.</param>
             <remarks>
             This method allows for both the drop and create ddl script to be executed.
