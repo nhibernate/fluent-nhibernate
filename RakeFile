@@ -34,7 +34,6 @@ task :default => 'build:all'
 
 namespace :ci do
   task :run_ci_build => [
-	'ripple',
     'build:all',
     'docs:build',
     'package:all',
@@ -42,11 +41,10 @@ namespace :ci do
 end
 
 namespace :ripple do
-	desc 'using ripple. yay!'
-    ripple = Platform.runtime("buildsupport/ripple.exe") 
-	args = "restore"
-	sh "#{ripple} #{args}"
- end
+  ripple = Platform.runtime("buildsupport/ripple.exe") 
+  args = "restore"
+  sh "#{ripple} #{args}"
+end
 
 namespace :source do
   desc 'Update assembly info with latest version number'
@@ -170,7 +168,7 @@ namespace :package do
     nu.language = 'en-US'
     nu.licenseUrl = 'http://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE.txt'
     nu.projectUrl = 'http://fluentnhibernate.org'
-    nu.dependency 'NHibernate', '[3.3.1.4000,4)'
+    nu.dependency 'NHibernate', '[3.3.1.4000,4.0)'
     nu.working_directory = 'build'
     nu.output_file = 'fluentnhibernate.nuspec'
     nu.file 'FluentNHibernate.dll', 'lib'
