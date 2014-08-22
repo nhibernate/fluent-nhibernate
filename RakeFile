@@ -54,7 +54,7 @@ namespace :source do
     asm.version = get_version
     asm.company_name = 'http://fluentnhibernate.org'
     asm.product_name = 'FluentNHibernate'
-    asm.copyright = 'Copyright 2008-2013 James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved.'
+    asm.copyright = "Copyright 2008-#{Time.new.year} James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved."
     asm.namespaces = ['System.Security']
     asm.custom_attributes :AllowPartiallyTrustedCallers => nil
     
