@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Iesi.Collections;
-using Iesi.Collections.Generic;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Testing.Values
@@ -38,11 +36,7 @@ namespace FluentNHibernate.Testing.Values
                     // infallible.
                     if (propertyAccessor.PropertyType.IsAssignableFrom(typeof(ISet<TListElement>)))
                     {
-                        collection = new HashedSet<TListElement>(Expected.ToList());
-                    }
-                    else if (propertyAccessor.PropertyType.IsAssignableFrom(typeof(ISet)))
-                    {
-                        collection = new HashedSet((ICollection)Expected);
+                        collection = new HashSet<TListElement>(Expected.ToList());
                     }
                     else if (propertyAccessor.PropertyType.IsArray)
                     {
@@ -97,9 +91,7 @@ namespace FluentNHibernate.Testing.Values
                 throw new ApplicationException(String.Format("Actual count ({0}) does not equal expected count ({1})", actualList.Count, expectedList.Count));
             }
 
-            var equalsFunc = (EntityEqualityComparer != null)
-                ? new Func<object, object, bool>((a, b) => EntityEqualityComparer.Equals(a, b))
-                : new Func<object, object, bool>(Equals);
+            var equalsFunc = (EntityEqualityComparer != null) ? ((a, b) => EntityEqualityComparer.Equals(a, b)): new Func<object, object, bool>(Equals);
 
             for (var i = 0; i < actualList.Count; i++)
             {
