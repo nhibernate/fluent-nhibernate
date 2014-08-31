@@ -33,7 +33,7 @@ def get_version
   ENV['BUILD_NUMBER'] || '1.4.0.0'
 end
 
-task :default => ['ripple:update', 'source:update_version', 'build:all']
+task :default => ['ripple:restore', 'source:update_version', 'build:all']
 
 namespace :ci do
   task :run_ci_build => [
@@ -45,7 +45,7 @@ end
 
 namespace :ripple do
 	desc 'Restores NuGet package binaries'
-	task :update do |cmd|
+	task :restore do |cmd|
 	  ripple = Platform.runtime("buildsupport/ripple.exe") 
 	  args = "restore"
 	  sh "#{ripple} #{args}"
