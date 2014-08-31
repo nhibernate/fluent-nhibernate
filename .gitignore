@@ -1,17 +1,10 @@
 **/*.suo
 **/*.user
 **/*.sln*
-bin
-obj
 _ReSharper*
-dist
-output
-build
 
 *.DotSettings.user
 *.csproj.user
-src/packages
-
 *.resharper.user
 *.resharper
 
@@ -24,6 +17,12 @@ src/packages
 *.swp
 TestResult.xml
 
-TestResult.xml
-build/
+src/packages
+bin
+obj
+dist
+output
+build
 *.nupkg
+logs/
+src/CommonAssemblyInfo.cs
