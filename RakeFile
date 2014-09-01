@@ -60,12 +60,12 @@ namespace :source do
   assemblyinfo :update_version do |info|
     info.output_file = 'src/CommonAssemblyInfo.cs'
 	
-	commit_hash = `git log -1 --format="%H%"`
+    commit_hash = `git log -1 --format="%H%"`
     
     info.version = info.file_version = get_version
     info.company_name = 'http://fluentnhibernate.org'
     info.product_name = 'FluentNHibernate'
-	info.description = commit_hash[0..(commit_hash.length - 3)]
+    info.description = commit_hash[0..(commit_hash.length - 3)]
     info.copyright = "Copyright 2008-#{Time.new.year} James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved."
     info.namespaces = ['System.Security']
     
@@ -77,22 +77,22 @@ namespace :source do
   end
 
   desc 'Compile the source'
-  msbuild :compile, [:nhibernate_version] => :nhibernate_version do |msb,args|
+  msbuild :compile, [:nhibernate_version] => :nhibernate_version do |msbuild, args|
     args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || NH_VERSION
     
     nh_version_precompiler_switch = 'NH' +  args.nhibernate_version.gsub('.', '')
     
     puts 'Precompiler switch: ' + nh_version_precompiler_switch
     
-    msb.properties = {
+    msbuild.properties = {
       configuration: :Release,
       DefineConstants: nh_version_precompiler_switch,
       WarningLevel: 0
     }
-    msb.targets [:Clean, :Build]
-    msb.solution = SLN_PATH
-	msb.verbosity = :minimal
-	msb.parameters = ["/p:TargetFrameworkVersion=v4.0"]
+    msbuild.targets [:Clean, :Build]
+    msbuild.solution = SLN_PATH
+    msbuild.verbosity = :minimal
+    msbuild.parameters = ["/p:TargetFrameworkVersion=v4.0"]
   end
 end
 
@@ -175,22 +175,22 @@ namespace :package do
   
   task :nuspec do |nu|
       puts "Updating #{NUSPEC_PATH}"
-          update_xml NUSPEC_PATH do |xml|
-              # Override the version number in the nuspec file with the one from this rake file (set above)
-              xml.root.elements["metadata/version"].text = get_version
-              
-              xml.root.elements["metadata/dependencies/dependency[@id='NHibernate']"].attributes['version'] = '4.0'
-        
-              xml.root.elements["metadata/authors"].text = "James Gregory and contributors"
-              xml.root.elements["metadata/owners"].text = "jagregory, chester89"
-              xml.root.elements["metadata/language"].text = "en-US"
-              xml.root.elements["metadata/description"].text = "Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate."
-              xml.root.elements["metadata/licenseUrl"].text = "http://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE.txt"
-              xml.root.elements["metadata/projectUrl"].text = "http://fluentnhibernate.org"
-              xml.root.elements["metadata/tags"].text = "orm dal nhibernate conventions"
+      update_xml NUSPEC_PATH do |xml|
+          # Override the version number in the nuspec file with the one from this rake file (set above)
+          xml.root.elements["metadata/version"].text = get_version
+          
+          xml.root.elements["metadata/dependencies/dependency[@id='NHibernate']"].attributes['version'] = '4.0'
+    
+          xml.root.elements["metadata/authors"].text = "James Gregory and contributors"
+          xml.root.elements["metadata/owners"].text = "jagregory, chester89"
+          xml.root.elements["metadata/language"].text = "en-US"
+          xml.root.elements["metadata/description"].text = "Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate."
+          xml.root.elements["metadata/licenseUrl"].text = "http://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE.txt"
+          xml.root.elements["metadata/projectUrl"].text = "http://fluentnhibernate.org"
+          xml.root.elements["metadata/tags"].text = "orm dal nhibernate conventions"
 
-              xml.root.elements["files/file[contains(@src, 'bin\\Release\\FluentNHibernate.*')]"].attributes['target'] = 'lib\net40'
-          end  
+          xml.root.elements["files/file[contains(@src, 'bin\\Release\\FluentNHibernate.*')]"].attributes['target'] = 'lib\net40'
+      end  
   end
   
   nugetpack :nupack do |nu|

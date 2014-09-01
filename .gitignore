@@ -16,6 +16,7 @@ _ReSharper*
 *.ncrunchproject
 *.swp
 TestResult.xml
+Gemfile.lock
 
 src/packages
 bin
