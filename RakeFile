@@ -67,10 +67,10 @@ namespace :source do
   desc 'Update assembly info with latest version number'
   assemblyinfo :update_version do |info|
     info.output_file = PROPS
-	
     commit_hash = `git log -1 --format="%H%"`
     
     info.version = info.file_version = get_version
+    info.informational_version = Platform.config['version']
     info.company_name = 'http://fluentnhibernate.org'
     info.product_name = 'FluentNHibernate'
     info.description = commit_hash[0..(commit_hash.length - 3)]
@@ -188,7 +188,7 @@ namespace :package do
       update_xml NUSPEC do |xml|
           xml.root.elements["metadata/id"].text = config['id']
           xml.root.elements["metadata/title"].text = config['title']
-          xml.root.elements["metadata/version"].text = get_version
+          xml.root.elements["metadata/version"].text = config['version']
           
           xml.root.elements["metadata/dependencies/dependency[@id='NHibernate']"].attributes['version'] = config['nhibernate_version_interval']
     
