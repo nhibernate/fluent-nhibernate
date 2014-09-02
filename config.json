@@ -13,7 +13,8 @@
 	},
 	"nuspec":
 	{
-		"filename": "FluentNHibernate.Net35.nuspec",
+		"id": "FluentNHibernate.Net35",
+		"title": "FluentNHibernate for .Net 3.5",
 		"nhibernate_version_interval": "[3.3.1.4000,4.0)",
 		"binaries_folder": "net35"
 	}
