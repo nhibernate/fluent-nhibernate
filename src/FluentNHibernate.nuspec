@@ -3,14 +3,14 @@
   <metadata xmlns='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd'>
     <id>FluentNHibernate</id>
     <title>FluentNHibernate</title>
-    <version>2.0.0.1</version>
+    <version>2.0.1-alpha</version>
     <authors>James Gregory and contributors</authors>
     <owners>jagregory, chester89</owners>
     <licenseUrl>http://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE.txt</licenseUrl>
     <projectUrl>http://fluentnhibernate.org</projectUrl>
-	<dependencies>
-		<dependency id='NHibernate' version='4.0' />
-	</dependencies>
+  	<dependencies>
+  		<dependency id='NHibernate' version='4.0' />
+  	</dependencies>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate.</description>
     <tags>orm dal nhibernate conventions</tags>
