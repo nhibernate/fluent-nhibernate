@@ -6,6 +6,7 @@ require 'albacore'
 PROPS = 'src/CommonAssemblyInfo.cs'
 SLN = 'src/FluentNHibernate.sln'
 CONFIG = 'config.json'
+NUSPEC = 'src/FluentNHibernate.nuspec'
 
 module Platform
 
@@ -34,7 +35,6 @@ module Platform
 end 
 
 NH_VERSION = Platform.config['build']['nh_precompiler_switch']
-NUSPEC = Platform.config['nuspec']['filename']
 
 # Albacore.configure do |config|
   # config.log_level = :verbose
@@ -187,6 +187,8 @@ namespace :package do
       puts "Updating #{NUSPEC}"
       update_xml NUSPEC do |xml|
           # Override the version number in the nuspec file with the one from this rake file (set above)
+          xml.root.elements["metadata/id"].text = config['id']
+          xml.root.elements["metadata/title"].text = config['title']
           xml.root.elements["metadata/version"].text = get_version
           
           xml.root.elements["metadata/dependencies/dependency[@id='NHibernate']"].attributes['version'] = config['nhibernate_version_interval']

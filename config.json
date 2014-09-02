@@ -13,7 +13,8 @@
 	},
 	"nuspec":
 	{
-		"filename": "FluentNHibernate.nuspec",
+		"id": "FluentNHibernate",
+		"title": "FluentNHibernate",
 		"nhibernate_version_interval": "4.0",
 		"binaries_folder": "net40"
 	}
