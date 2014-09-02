@@ -1,0 +1,20 @@
+{
+	"framework_version": 4.0,
+	"default_version_number": "2.0.0.1",
+	"build": 
+	{
+		"nh_precompiler_switch": "4.x",
+		"msbuild_runtime": "v4.0"
+	},
+	"tests": 
+	{
+		"nunit_framework_runtime": "net-4.0",
+		"mspec_exec_suffix": "-clr4"
+	},
+	"nuspec":
+	{
+		"filename": "FluentNHibernate.nuspec",
+		"nhibernate_version_interval": "4.0",
+		"binaries_folder": "net40"
+	}
+}

@@ -1,14 +1,11 @@
 require 'fileutils'
 require 'rexml/document'
+require 'json'
 require 'albacore'
 
-NH_VERSION = '4.x'
-NUSPEC_PATH = 'src/FluentNHibernate.nuspec'
-SLN_PATH = 'src/FluentNHibernate.sln'
-
-# Albacore.configure do |config|
-  # config.log_level = :verbose
-# end
+PROPS = 'src/CommonAssemblyInfo.cs'
+SLN = 'src/FluentNHibernate.sln'
+CONFIG = 'config.json'
 
 module Platform
 
@@ -30,10 +27,21 @@ module Platform
     sw + arg
   end
 
+  def self.config
+    JSON.parse(File.read(CONFIG))
+  end
+
 end 
 
+NH_VERSION = Platform.config['build']['nh_precompiler_switch']
+NUSPEC = Platform.config['nuspec']['filename']
+
+# Albacore.configure do |config|
+  # config.log_level = :verbose
+# end
+
 def get_version
-  ENV['BUILD_NUMBER'] || '2.0.0.1'
+  ENV['BUILD_NUMBER'] || Platform.config['default_version_number']
 end
 
 task :default => ['ripple:restore', 'source:update_version', 'build:all']
@@ -58,7 +66,7 @@ end
 namespace :source do
   desc 'Update assembly info with latest version number'
   assemblyinfo :update_version do |info|
-    info.output_file = 'src/CommonAssemblyInfo.cs'
+    info.output_file = PROPS
 	
     commit_hash = `git log -1 --format="%H%"`
     
@@ -90,9 +98,9 @@ namespace :source do
       WarningLevel: 0
     }
     msbuild.targets [:Clean, :Build]
-    msbuild.solution = SLN_PATH
+    msbuild.solution = SLN
     msbuild.verbosity = :minimal
-    msbuild.parameters = ["/p:TargetFrameworkVersion=v4.0"]
+    msbuild.parameters = ["/p:TargetFrameworkVersion=#{Platform.config['build']['msbuild_runtime']}"]
   end
 end
 
@@ -102,15 +110,15 @@ namespace :specs do
   
   desc 'Run MSpec specs'
   mspec :mspec do |mspec|
-    mspec.command = 'src/packages/Machine.Specifications.0.5.15/tools/mspec-clr4.exe'
-    mspec.assemblies 'src/FluentNHibernate.Specs/bin/Release/FluentNHibernate.Specs.dll'
+    mspec.command = "src/packages/Machine.Specifications.0.5.15/tools/mspec#{Platform.config['tests']['mspec_exec_suffix']}.exe"
+    mspec.assemblies = [ 'src/FluentNHibernate.Specs/bin/Release/FluentNHibernate.Specs.dll' ]
   end
 
   desc 'Run NUnit tests'
   nunit :nunit do |nunit|
     nunit.command = 'src/packages/NUnit.2.5.7.10213/Tools/nunit-console-x86.exe'
-    nunit.assemblies 'src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll'
-    nunit.parameters = [ "/framework:net-4.0" ]
+    nunit.assemblies = [ 'src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll' ]
+    nunit.parameters = [ "/framework:#{Platform.config['tests']['nunit_framework_runtime']}" ]
   end
 end
 
@@ -131,7 +139,7 @@ namespace :docs do
   desc 'Create API docs'
   docu :build do |d|
     d.command = 'tools/docu/docu.exe'
-    d.assemblies 'build/FluentNHibernate.dll'
+    d.assemblies = [ 'build/FluentNHibernate.dll' ]
   end
 end
 
@@ -174,12 +182,14 @@ namespace :package do
   end
   
   task :nuspec do |nu|
-      puts "Updating #{NUSPEC_PATH}"
-      update_xml NUSPEC_PATH do |xml|
+      config = Platform.config['nuspec']
+
+      puts "Updating #{NUSPEC}"
+      update_xml NUSPEC do |xml|
           # Override the version number in the nuspec file with the one from this rake file (set above)
           xml.root.elements["metadata/version"].text = get_version
           
-          xml.root.elements["metadata/dependencies/dependency[@id='NHibernate']"].attributes['version'] = '4.0'
+          xml.root.elements["metadata/dependencies/dependency[@id='NHibernate']"].attributes['version'] = config['nhibernate_version_interval']
     
           xml.root.elements["metadata/authors"].text = "James Gregory and contributors"
           xml.root.elements["metadata/owners"].text = "jagregory, chester89"
@@ -189,13 +199,13 @@ namespace :package do
           xml.root.elements["metadata/projectUrl"].text = "http://fluentnhibernate.org"
           xml.root.elements["metadata/tags"].text = "orm dal nhibernate conventions"
 
-          xml.root.elements["files/file[contains(@src, 'bin\\Release\\FluentNHibernate.*')]"].attributes['target'] = 'lib\net40'
+          xml.root.elements["files/file[contains(@src, 'bin\\Release\\FluentNHibernate.*')]"].attributes['target'] = "lib\\#{config['binaries_folder']}"
       end  
   end
   
   nugetpack :nupack do |nu|
     nu.command = 'tools/nuget/NuGet.exe'
-    nu.nuspec = NUSPEC_PATH
+    nu.nuspec = NUSPEC
     nu.base_folder = 'Release'
     nu.output = 'dist'
   end
@@ -226,6 +236,6 @@ end
 
 task :sln do
   Thread.new do
-    system "devenv #{SLN_PATH}"
+    system "devenv #{SLN}"
   end
 end
