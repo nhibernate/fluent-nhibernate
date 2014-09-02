@@ -2,19 +2,19 @@
 <package xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <metadata xmlns='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd'>
     <id>FluentNHibernate.Net35</id>
-	<title>FluentNHibernate for .Net 3.5</title>
-    <version>1.4.1.0</version>
+    <title>FluentNHibernate for .Net 3.5</title>
+    <version>1.4.1-alpha</version>
     <authors>James Gregory and contributors</authors>
     <owners>jagregory, chester89</owners>
     <licenseUrl>http://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE.txt</licenseUrl>
     <projectUrl>http://fluentnhibernate.org</projectUrl>
-	<dependencies>
-		<dependency id='NHibernate' version='[3.3.1.4000,4.0)' />
-	</dependencies>
+  	<dependencies>
+  		<dependency id='NHibernate' version='[3.3.1.4000,4.0)' />
+  	</dependencies>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate.</description>
     <summary>Fluent NHibernate provides a convenient way to configure NHibernate - no XML involved.</summary>
-	<tags>orm dal nhibernate conventions</tags>
+    <tags>orm dal nhibernate conventions</tags>
     <language>en-US</language>
   </metadata>
   <files>

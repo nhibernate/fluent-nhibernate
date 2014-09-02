@@ -1,6 +1,7 @@
 {
 	"framework_version": 3.5,
 	"default_version_number": "1.4.1.0",
+	"version": "1.4.1-alpha",
 	"build": 
 	{
 		"nh_precompiler_switch": "3.x",
@@ -14,6 +15,7 @@
 	"nuspec":
 	{
 		"id": "FluentNHibernate.Net35",
+		"version": "1.4.1-alpha",
 		"title": "FluentNHibernate for .Net 3.5",
 		"nhibernate_version_interval": "[3.3.1.4000,4.0)",
 		"binaries_folder": "net35"
