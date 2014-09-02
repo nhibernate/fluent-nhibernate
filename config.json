@@ -1,0 +1,20 @@
+{
+	"framework_version": 3.5,
+	"default_version_number": "1.4.1.0",
+	"build": 
+	{
+		"nh_precompiler_switch": "3.x",
+		"msbuild_runtime": "v3.5"
+	},
+	"tests": 
+	{
+		"nunit_framework_runtime": "net-3.5",
+		"mspec_exec_suffix": ""
+	},
+	"nuspec":
+	{
+		"filename": "FluentNHibernate.Net35.nuspec",
+		"nhibernate_version_interval": "[3.3.1.4000,4.0)",
+		"binaries_folder": "net35"
+	}
+}
