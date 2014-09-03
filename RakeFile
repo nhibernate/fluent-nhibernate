@@ -69,15 +69,16 @@ namespace :source do
     info.output_file = PROPS
     commit_hash = `git log -1 --format="%H%"`
     
-    info.version = info.file_version = get_version
-    info.informational_version = Platform.config['version']
+    info.title = Platform.config['assembly_info']['title']
+    info.version = get_version
+    info.informational_version = Platform.config['assembly_info']['version']
     info.company_name = 'http://fluentnhibernate.org'
     info.product_name = 'FluentNHibernate'
     info.description = commit_hash[0..(commit_hash.length - 3)]
     info.copyright = "Copyright 2008-#{Time.new.year} James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved."
     info.namespaces = ['System.Security']
     
-    puts "The new build number is #{info.version}"
+    puts "The new version is #{info.version}"
   end
   
   task :nhibernate_version, :nhibernate_version do |t,args|
@@ -140,6 +141,27 @@ namespace :docs do
   docu :build do |d|
     d.command = 'tools/docu/docu.exe'
     d.assemblies = [ 'build/FluentNHibernate.dll' ]
+  end
+end
+
+namespace :git do
+  desc "Tags the current release"
+  task :tag, :assembly_info do |asm, args|
+      args.with_defaults(:assembly_info => Platform.config['assembly_info']['version'])
+
+      sh "git tag \"v#{args.version}\""
+  end
+
+  desc "Updates the version and tags the release"
+  task :prep_release, :assembly_info do |task, args|
+    if !args.version.nil?
+      task(:update_version).invoke(args.version)
+
+      sh "git add #{CONFIG} #{NUSPEC}"
+      sh "git commit -m \"Updated version to #{args.version}\""
+
+      task(:tag).invoke(args.version)
+    end
   end
 end
 
