@@ -32,13 +32,15 @@ module Platform
     JSON.parse(File.read(CONFIG))
   end
 
+  def self.update_config_version(arg)
+    current = self.config
+    current['assembly_info']['version'] = current['nuspec']['version'] = arg
+    File.write(CONFIG, JSON.pretty_generate(current.to_json))
+  end
+
 end 
 
 NH_VERSION = Platform.config['build']['nh_precompiler_switch']
-
-# Albacore.configure do |config|
-  # config.log_level = :verbose
-# end
 
 def get_version
   ENV['BUILD_NUMBER'] || Platform.config['default_version_number']
@@ -47,11 +49,7 @@ end
 task :default => ['ripple:restore', 'source:update_version', 'build:all']
 
 namespace :ci do
-  task :run_ci_build => [
-    'build:all',
-    'docs:build',
-    'package:all',
-  ]
+  task :run_ci_build => [ 'build:all', 'docs:build', 'package:all' ]
 end
 
 namespace :ripple do
@@ -70,6 +68,7 @@ namespace :source do
   
     commit_hash = `git log -1 --format="%H%"`
     
+    info.title = Platform.config['assembly_info']['title']
     info.version = info.file_version = get_version
     info.informational_version = Platform.config['version']
     info.company_name = 'http://fluentnhibernate.org'
@@ -78,7 +77,7 @@ namespace :source do
     info.copyright = "Copyright 2008-#{Time.new.year} James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved."
     info.namespaces = ['System.Security']
     
-    puts "The new build number is #{info.version}"
+    puts "The new version is #{info.version}"
   end
   
   task :nhibernate_version, :nhibernate_version do |t,args|
@@ -141,6 +140,16 @@ namespace :docs do
   docu :build do |d|
     d.command = 'tools/docu/docu.exe'
     d.assemblies = [ 'build/FluentNHibernate.dll' ]
+  end
+end
+
+namespace :git do
+  desc "Updates the version and tags the release"
+  task :prep_release do |task|
+    current_version = Platform.config['assembly_info']['version']
+    sh "git add -A"
+    sh "git commit -m \"Updated version to #{current_version}\""
+    sh "git tag \"v#{current_version}\""
   end
 end
 
@@ -212,13 +221,29 @@ namespace :package do
     nu.output = 'dist'
   end
 
+  task :new_version, :version do |cmd, args|
+    version_parts = /(\d{1,2}\.)(\d{1,2}\.)(\d{1,2})(\-*[a-zA-Z0-9]*)/.match(args[:version])
+    is_valid_version = version_parts.captures.count{|p| p.length > 0} == (args[:version].split(//).count{|c| ['.', '-'].include?(c)} + 1)
+    if !args[:version].to_s.empty? and is_valid_version
+      #Platform.update_config_version(args[:version])
+      ['ripple:restore', 'build:all', 'package:nuget', 'git:prep_release']
+          .each {|tk| 
+            puts tk
+            #Rake.task[tk].reenable
+            #Rake.task[tk].reinvoke
+          }
+    else
+      puts "Please provide valid version number"
+    end
+  end
+
   desc 'Create nuget spec and package'
   task :nuget => [:nuspec, :nupack]
  
   desc 'Package everything (src, bin, docs, nuget)'
   task :all => [:source, :binaries, :docs, :nuget]
 end
-
+ 
 def update_xml(xml_path)
     #Open up the xml file
     xml_file = File.new(xml_path)
