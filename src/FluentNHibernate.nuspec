@@ -2,8 +2,8 @@
 <package xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <metadata xmlns='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd'>
     <id>FluentNHibernate.Net35</id>
-    <title>FluentNHibernate for .Net 3.5</title>
-    <version>1.4.1-alpha</version>
+    <title>FluentNHibernate for .NET 3.5</title>
+    <version>1.5.1-alpha</version>
     <authors>James Gregory and contributors</authors>
     <owners>jagregory, chester89</owners>
     <licenseUrl>http://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE.txt</licenseUrl>
