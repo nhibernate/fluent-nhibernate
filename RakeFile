@@ -49,7 +49,7 @@ end
 task :default => ['ripple:restore', 'source:update_version', 'build:all']
 
 namespace :ci do
-  task :run_ci_build => [ 'ripple:restore', build:all', 'docs:build', 'package:all' ]
+  task :run_ci_build => [ 'ripple:restore', 'build:all', 'docs:build', 'package:all' ]
 end
 
 namespace :ripple do
