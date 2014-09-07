@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using Iesi.Collections;
-using Iesi.Collections.Generic;
 
 namespace FluentNHibernate.Testing.Testing.Values
 {
@@ -16,8 +14,8 @@ namespace FluentNHibernate.Testing.Testing.Values
             GetterAndSetter = new List<string>();
             GetterAndPrivateSetter = new List<string>();
 
-            TypedSet = new HashedSet<string>();
-            Set = new HashedSet();
+            TypedSet = new HashSet<string>();
+            //Set = new HashedSet();
             Collection = new StringCollection();
             List = new List<string>();
         }
@@ -30,7 +28,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         }
 
         public ISet<string> TypedSet { get; set; }
-        public ISet Set { get; set; }
+        //public ISet Set { get; set; }
         public ICollection Collection { get; set; }
         public string[] Array { get; set; }
         public IList<string> List { get; set; }

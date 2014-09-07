@@ -1,4 +1,4 @@
-﻿using Iesi.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace FluentNHibernate.Specs.Conventions.Fixtures
 {
