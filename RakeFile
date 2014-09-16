@@ -98,8 +98,8 @@ namespace :source do
   xbuild :xbuild do |xb, args|
     xb.solution = SLN
     xb.targets = [:Clean, :Build]
+    xb.verbosity = :minimal
     xb.properties = {
-      :verbosity => :minimal,
       :Configuration => "Release", 
       :DefineConstants => args[:nhibernate_version],
       :TargetFrameworkVersion => Platform.config['build']['target_framework']
