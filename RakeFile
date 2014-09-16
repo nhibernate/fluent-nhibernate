@@ -7,6 +7,7 @@ PROPS = 'src/CommonAssemblyInfo.cs'
 SLN = 'src/FluentNHibernate.sln'
 CONFIG = 'config.json'
 NUSPEC = 'src/FluentNHibernate.nuspec'
+CLR_TOOLS_VERSION = "v4.0.30319"
 
 module Platform
 
@@ -17,7 +18,7 @@ module Platform
   def self.runtime(cmd)
     command = cmd
     if self.is_nix
-      runtime = "v4.0.30319"
+      runtime = CLR_TOOLS_VERSION
       command = "mono --runtime=#{runtime} #{cmd}"
     end
     command
