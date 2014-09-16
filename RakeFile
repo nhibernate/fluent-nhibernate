@@ -86,7 +86,7 @@ namespace :source do
   end
 
   task :choose_build_runner do |cmd, args|
-    task_name = 'source:' + (Platform.is_nix()? 'ms': 'x') + 'build'
+    task_name = 'source:' + (Platform.is_nix()? 'x': 'ms') + 'build'
 
     Rake::Task[task_name].reenable
     Rake::Task[task_name].invoke(args)
