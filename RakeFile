@@ -17,7 +17,7 @@ module Platform
   def self.runtime(cmd)
     command = cmd
     if self.is_nix
-      runtime = (CLR_TOOLS_VERSION || "v4.0.30319")
+      runtime = "v4.0.30319"
       command = "mono --runtime=#{runtime} #{cmd}"
     end
     command
