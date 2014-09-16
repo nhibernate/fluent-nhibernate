@@ -95,7 +95,7 @@ namespace :source do
     Rake::Task[task_name].invoke(args)
   end
 
-  xbuild :xbuild do |xb|
+  xbuild :xbuild do |xb, args|
     xb.solution = SLN
     xb.targets = [:Clean, :Build]
     xb.properties = {
