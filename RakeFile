@@ -85,9 +85,21 @@ namespace :source do
     args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || NH_VERSION
   end
 
-  desc 'Compile the source'
-  msbuild :compile, [:nhibernate_version] => :nhibernate_version do |msbuild, args|
-    args.with_defaults :nhibernate_version => ENV['nhibernate_version'] || NH_VERSION
+  task :choose_build_runner do |cmd, args|
+    task_name = 'source:' + (Platform.is_nix? 'ms': 'x') + 'build'
+
+    Rake::Task[task_name].reenable
+    Rake::Task[task_name].invoke(args)
+  end
+
+  xbuild :xbuild do |xb|
+    xb.solution = SLN
+    xb.targets = [:Clean, :Build]
+    xb.properties = {:Configuration => "Release"}
+  end
+
+  msbuild :msbuild, [:nhibernate_version] => :nhibernate_version do |msbuild, args|
+    args.with_defaults :nhibernate_version => NH_VERSION
     
     nh_version_precompiler_switch = 'NH' +  args.nhibernate_version.gsub('.', '')
     
@@ -125,7 +137,7 @@ end
 
 namespace :build do
   desc 'Run full build including tests'
-  task :all => ['source:update_version', 'source:compile', 'specs:all'] do
+  task :all => ['source:update_version', 'source:choose_build_runner', 'specs:all'] do
     puts 'Copying output to build directory'
       Dir.mkdir 'build' unless File.exist? 'build'
       Dir.glob 'src/FluentNHibernate/bin/Release/*.{dll,pdb,xml}' do |path|
