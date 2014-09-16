@@ -7,7 +7,7 @@ PROPS = 'src/CommonAssemblyInfo.cs'
 SLN = 'src/FluentNHibernate.sln'
 CONFIG = 'config.json'
 NUSPEC = 'src/FluentNHibernate.nuspec'
-CLR_TOOLS_VERSION = "v3.5"
+CLR_TOOLS_VERSION = "v4.0.30319"
 
 module Platform
 
