@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AnalyseParams>
+  <TargetExecutable>src\packages\Machine.Specifications.0.5.15\tools\mspec-clr4.exe</TargetExecutable>
+  <TargetArguments>FluentNHibernate.Specs.dll</TargetArguments>
+  <TargetWorkingDir>src\FluentNHibernate.Specs\bin\Release</TargetWorkingDir>
+  <TempDir><!-- Directory for the auxiliary files. Set to system temp by default. --></TempDir>
+  <Output>coverage\results\MSpecOutput.xml</Output>
+  <ReportType><!-- [HTML|JSON|XML|NDependXML]. A type of the report. XML by default. --></ReportType>
+  <InheritConsole><!-- [True|False] Lets the application being analysed to inherit dotCover console. True by default. --> </InheritConsole>
+</AnalyseParams>
