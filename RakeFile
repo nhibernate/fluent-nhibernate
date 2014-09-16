@@ -88,6 +88,9 @@ namespace :source do
   task :choose_build_runner do |cmd, args|
     task_name = 'source:' + (Platform.is_nix()? 'x': 'ms') + 'build'
 
+    args.with_defaults :nhibernate_version => ('NH' + NH_VERSION.gsub('.', ''))
+    puts 'Precompiler switch: ' + args[:nhibernate_version]
+
     Rake::Task[task_name].reenable
     Rake::Task[task_name].invoke(args)
   end
@@ -95,16 +98,15 @@ namespace :source do
   xbuild :xbuild do |xb|
     xb.solution = SLN
     xb.targets = [:Clean, :Build]
-    xb.properties = {:Configuration => "Release"}
+    xb.properties = {
+      :verbosity => :minimal,
+      :Configuration => "Release", 
+      :DefineConstants => args[:nhibernate_version],
+      :TargetFrameworkVersion => Platform.config['build']['target_framework']
+    }
   end
 
-  msbuild :msbuild, [:nhibernate_version] => :nhibernate_version do |msbuild, args|
-    args.with_defaults :nhibernate_version => NH_VERSION
-    
-    nh_version_precompiler_switch = 'NH' +  args.nhibernate_version.gsub('.', '')
-    
-    puts 'Precompiler switch: ' + nh_version_precompiler_switch
-    
+  msbuild :msbuild, [:nhibernate_version] => :nhibernate_version do |msbuild, args|   
     msbuild.properties = {
       configuration: :Release,
       DefineConstants: nh_version_precompiler_switch,
@@ -113,7 +115,7 @@ namespace :source do
     msbuild.targets [:Clean, :Build]
     msbuild.solution = SLN
     msbuild.verbosity = :minimal
-    msbuild.parameters = ["/p:TargetFrameworkVersion=#{Platform.config['build']['msbuild_runtime']}"]
+    msbuild.parameters = ["/p:TargetFrameworkVersion=#{Platform.config['build']['target_framework']}"]
   end
 end
 

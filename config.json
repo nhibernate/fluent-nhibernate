@@ -9,7 +9,7 @@
 	"build": 
 	{
 		"nh_precompiler_switch": "3.x",
-		"msbuild_runtime": "v3.5"
+		"target_framework": "v3.5"
 	},
 	"tests": 
 	{
