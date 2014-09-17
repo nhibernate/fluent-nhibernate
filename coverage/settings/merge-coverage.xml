@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?> 
 <MergeParams> 
   <Source> 
-    <string>coverage\results\NUnitOutput.xml</string> 
-    <string>coverage\results\MSpecOutput.xml</string> 
+    <string>..\results\NUnitOutput.xml</string> 
+    <string>..\results\MSpecOutput.xml</string> 
   </Source> 
-  <Output>coverage\results\erged.xml</Output> 
+  <Output>..\results\merged.xml</Output> 
 </MergeParams>

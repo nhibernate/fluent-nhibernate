@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AnalyseParams>
-  <TargetExecutable>src\packages\NUnit.2.5.7.10213\tools\nunit-console-x86.exe</TargetExecutable>
+  <TargetExecutable>..\..\src\packages\NUnit.2.5.7.10213\tools\nunit-console-x86.exe</TargetExecutable>
   <TargetArguments>FluentNHibernate.Testing.dll /framework:net-4.0</TargetArguments>
-  <TargetWorkingDir>src\FluentNHibernate.Testing\bin\Release</TargetWorkingDir>
+  <TargetWorkingDir>..\..\src\FluentNHibernate.Testing\bin\Release</TargetWorkingDir>
   <TempDir></TempDir>
-  <Output>coverage\results\NUnitOutput.xml</Output>
+  <Output>..\results\NUnitOutput.xml</Output>
   <ReportType><!-- [HTML|JSON|XML|NDependXML]. A type of the report. XML by default. --></ReportType>
   <InheritConsole><!-- [True|False] Lets the application being analysed to inherit dotCover console. True by default. --> </InheritConsole>
 </AnalyseParams>
