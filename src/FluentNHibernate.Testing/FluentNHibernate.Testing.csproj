@@ -11,12 +11,6 @@
     <AssemblyName>FluentNHibernate.Testing</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\FluentKey.snk</AssemblyOriginatorKeyFile>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -77,6 +71,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
+      <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>
+      <Name>FluentNHibernate</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
@@ -408,20 +406,11 @@
     <Compile Include="Xml\MappingXmlTestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
-      <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>
-      <Name>FluentNHibernate</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Cfg\hibernate.cfg.xml" />
     <EmbeddedResource Include="Fixtures\HbmOne.hbm.xml" />
     <EmbeddedResource Include="Fixtures\HbmTwo.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\FluentKey.snk">
-      <Link>FluentKey.snk</Link>
-    </None>
     <None Include="App.config" />
     <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.Components.cs" />
     <Compile Include="AutoMapping\Apm\AutoPersistenceModelTests.Conventions.cs" />

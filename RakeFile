@@ -109,7 +109,7 @@ namespace :source do
   msbuild :msbuild, [:nhibernate_version] => :nhibernate_version do |msbuild, args|   
     msbuild.properties = {
       configuration: :Release,
-      DefineConstants: nh_version_precompiler_switch,
+      DefineConstants: args[:nhibernate_version],
       WarningLevel: 0
     }
     msbuild.targets [:Clean, :Build]
