@@ -16,4 +16,6 @@ echo Producing xml report...
 ${TC_DOTCOVER_PATH} merge merge-coverage.xml
 ${TC_DOTCOVER_PATH} report reporting.xml
 
-echo Done.
+echo Done, reporting to TeamCity...
+
+##teamcity[importData type='dotNetCoverage' tool='dotcover' path='src/coverage/results/report.xml']
