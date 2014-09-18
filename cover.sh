@@ -21,4 +21,4 @@ ${TC_DOTCOVER_PATH} report reporting.xml
 
 echo Done, reporting to TeamCity...
 
-echo '##teamcity[importData type='dotNetCoverage' tool='dotcover' path='src/coverage/results/report.xml']'
+echo '##teamcity[importData type='dotNetCoverage' tool='dotcover' path='coverage/results/report.xml']'
