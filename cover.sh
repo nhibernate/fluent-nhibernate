@@ -1,6 +1,6 @@
 #!/bin/bash
 
-##teamcity[dotNetCoverage]
+echo '##teamcity[dotNetCoverage]'
 
 cd coverage/settings
 echo Now in $PWD
@@ -21,4 +21,4 @@ ${TC_DOTCOVER_PATH} report reporting.xml
 
 echo Done, reporting to TeamCity...
 
-##teamcity[importData type='dotNetCoverage' tool='dotcover' path='src/coverage/results/report.xml']
+echo '##teamcity[importData type='dotNetCoverage' tool='dotcover' path='src/coverage/results/report.xml']'
