@@ -7,6 +7,7 @@ PROPS = 'src/CommonAssemblyInfo.cs'
 SLN = 'src/FluentNHibernate.sln'
 CONFIG = 'config.json'
 NUSPEC = 'src/FluentNHibernate.nuspec'
+COVERAGE_SCRIPT = 'cover.sh'
 
 module Platform
 
@@ -48,6 +49,7 @@ task :default => ['ripple:restore', 'source:update_version', 'build:all']
 
 namespace :ci do
   task :run_ci_build => ['ripple:restore', 'build:all', 'docs:build', 'package:all' ]
+  task :run_with_coverage => ['source:update_version', 'source:compile', 'cover']
 end
 
 namespace :ripple do
@@ -251,6 +253,10 @@ def update_xml(xml_path)
     formatter = REXML::Formatters::Default.new(5)
     formatter.write(xml, xml_file)
     xml_file.close 
+end
+
+task :cover do
+  sh "#{COVERAGE_SCRIPT}"
 end
 
 task :sln do

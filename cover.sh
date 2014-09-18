@@ -1,6 +1,9 @@
 #!/bin/bash
 cd coverage/settings
 
+echo Running unit tests with coverage
+echo Searching for dotCover executable...
+
 TC_DOTCOVER_PATH=${1:-"/c/TeamCity/buildAgent/tools/dotCover/dotCover.exe"}
 echo Using dotCover from ${TC_DOTCOVER_PATH}
 
