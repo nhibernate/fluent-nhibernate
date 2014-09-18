@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?> 
-<MergeParams> 
-  <Source> 
-    <string>..\results\NUnitOutput.xml</string> 
-    <string>..\results\MSpecOutput.xml</string> 
-  </Source> 
-  <Output>..\results\merged.xml</Output> 
-</MergeParams>

@@ -6,5 +6,21 @@
   <TempDir><!-- Directory for the auxiliary files. Set to system temp by default. --></TempDir>
   <Output>..\results\MSpecOutput.xml</Output>
   <ReportType><!-- [HTML|JSON|XML|NDependXML]. A type of the report. XML by default. --></ReportType>
-  <InheritConsole><!-- [True|False] Lets the application being analysed to inherit dotCover console. True by default. --> </InheritConsole>
+  <InheritConsole></InheritConsole>
+	<Filters> 
+	  <IncludeFilters> 
+	    <FilterEntry> 
+	      <ModuleMask>FluentNHibernate</ModuleMask> 
+	      <ClassMask>*</ClassMask> 
+	      <FunctionMask>*</FunctionMask> 
+	    </FilterEntry> 
+	  </IncludeFilters> 
+	  <ExcludeFilters> 
+	    <FilterEntry> 
+	      <ModuleMask>FluentNHibernate.Specs</ModuleMask> 
+	      <ClassMask>*</ClassMask> 
+	      <FunctionMask>*</FunctionMask> 
+	    </FilterEntry> 
+	  </ExcludeFilters>
+	</Filters>
 </AnalyseParams>
