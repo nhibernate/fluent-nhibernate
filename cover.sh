@@ -3,7 +3,6 @@
 echo '##teamcity[dotNetCoverage]'
 
 cd coverage/settings
-echo Now in $PWD
 
 echo Running unit tests with coverage
 echo Searching for dotCover executable...
@@ -21,4 +20,4 @@ ${TC_DOTCOVER_PATH} report reporting.xml
 
 echo Done, reporting to TeamCity...
 
-echo '##teamcity[importData type='dotNetCoverage' tool='dotcover' path='coverage/results/report.xml']'
+echo "##teamcity[importData type='dotNetCoverage' tool='dotcover' path='coverage/results/report.xml']"
