@@ -16,4 +16,5 @@ ${TC_DOTCOVER_PATH} cover mspec-coverage.xml
 
 echo Done, reporting to TeamCity...
 
-echo "##teamcity[importData type='dotNetCoverage' tool='dotcover' path='coverage/results/*Output.xml']"
+echo "##teamcity[importData type='dotNetCoverage' tool='dotcover' path='coverage/results/NUnitOutput.xml']"
+echo "##teamcity[importData type='dotNetCoverage' tool='dotcover' path='coverage/results/MSpecOutput.xml']"
