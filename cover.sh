@@ -1,4 +1,7 @@
 #!/bin/bash
+
+##teamcity[dotNetCoverage]
+
 cd coverage/settings
 echo Now in $PWD
 
