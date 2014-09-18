@@ -14,10 +14,13 @@ echo Running coverage...
 ${TC_DOTCOVER_PATH} cover nunit-coverage.xml
 ${TC_DOTCOVER_PATH} cover mspec-coverage.xml
 
-echo Producing xml report...
-${TC_DOTCOVER_PATH} merge merge-coverage.xml
-${TC_DOTCOVER_PATH} report reporting.xml
+#echo Producing xml report...
+#${TC_DOTCOVER_PATH} merge merge-coverage.xml
+#${TC_DOTCOVER_PATH} report reporting.xml
+
+cd -
+print $PWD
 
 echo Done, reporting to TeamCity...
 
-echo "##teamcity[importData type='dotNetCoverage' tool='dotcover' path='coverage/results/report.xml']"
+echo "##teamcity[importData type='dotNetCoverage' tool='dotcover' path='coverage/results/NUnitOutput.xml']"
