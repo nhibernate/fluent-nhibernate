@@ -1,5 +1,6 @@
 #!/bin/bash
 cd coverage/settings
+echo Now in $PWD
 
 echo Running unit tests with coverage
 echo Searching for dotCover executable...
