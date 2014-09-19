@@ -255,10 +255,6 @@ def update_xml(xml_path)
     xml_file.close 
 end
 
-task :cover do
-  sh "#{COVERAGE_SCRIPT}"
-end
-
 task :sln do
   Thread.new do
     system "devenv #{SLN}"
