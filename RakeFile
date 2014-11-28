@@ -8,7 +8,7 @@ SLN = 'src/FluentNHibernate.sln'
 CONFIG = 'config.json'
 NUSPEC = 'src/FluentNHibernate.nuspec'
 COVERAGE_SCRIPT = 'cover.sh'
-DOTCOVER_PATH = '/c/TeamCity/buildAgent/tools/dotCover/dotCover.exe'
+DEFAULT_DOTCOVER_PATH = '/c/TeamCity/buildAgent/tools/dotCover/dotCover.exe'
 
 module Platform
 
@@ -257,7 +257,7 @@ def update_xml(xml_path)
 end
 
 task :cover do
-  sh "#{COVERAGE_SCRIPT} #{DOTCOVER_PATH} #{Platform.config['tests']['mspec_exec_suffix']} #{Platform.config['tests']['nunit_framework_runtime']}"
+	sh "#{COVERAGE_SCRIPT} #{DEFAULT_DOTCOVER_PATH} #{Platform.config['tests']['mspec_exec_suffix']} #{Platform.config['tests']['nunit_framework_runtime']}"
 end
 
 task :sln do

@@ -17,8 +17,10 @@ DOTCOVER_PATH=${1:-"/c/TeamCity/buildAgent/tools/dotCover/dotCover.exe"}
 echo Using dotCover from ${DOTCOVER_PATH}
 
 echo Running coverage...
-${DOTCOVER_PATH} cover nunit-coverage.xml //TargetExecutable=${NUNIT_PATH} //TargetArguments="FluentNHibernate.Testing.dll /framework:${3} /xml:../results/NUnitResult.xml"
+${DOTCOVER_PATH} cover nunit-coverage.xml //TargetExecutable=${NUNIT_PATH} //TargetArguments="${PWD}/../../src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll /framework:${3} /xml:../results/NUnitResult.xml"
 ${DOTCOVER_PATH} cover mspec-coverage.xml //TargetExecutable=${MSPEC_PATH} //TargetArguments="FluentNHibernate.Specs.dll"
+echo Merging reports...
+${DOTCOVER_PATH} merge //Source="..\\results\\NUnitOutput.xml;..\\results\\MSpecOutput.xml" //Output="..\\results\\merged.xml" 
 
 echo Done, reporting to TeamCity...
 
