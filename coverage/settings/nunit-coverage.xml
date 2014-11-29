@@ -2,7 +2,7 @@
 <AnalyseParams>
   <TargetWorkingDir>..\..\src\FluentNHibernate.Testing\bin\Release</TargetWorkingDir>
   <TempDir></TempDir>
-  <Output>..\results\NUnitOutput.xml</Output>
+  <Output>..\results\NUnitOutput.dcvr</Output>
   <ReportType></ReportType>
   <InheritConsole></InheritConsole>
   <Filters> 

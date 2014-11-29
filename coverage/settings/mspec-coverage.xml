@@ -2,7 +2,7 @@
 <AnalyseParams>
   <TargetWorkingDir>..\..\src\FluentNHibernate.Specs\bin\Release</TargetWorkingDir>
   <TempDir></TempDir>
-  <Output>..\results\MSpecOutput.xml</Output>
+  <Output>..\results\MSpecOutput.dcvr</Output>
   <ReportType></ReportType>
   <InheritConsole></InheritConsole>
 	<Filters> 

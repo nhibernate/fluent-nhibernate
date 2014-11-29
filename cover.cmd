@@ -22,16 +22,16 @@ echo Using dotCover from %dotcover_path%
 IF exist ..\results/nul ( echo Coverage results folder exists) ELSE ( mkdir ..\results && echo Coverage results folder created)
 
 echo Running tests with coverage...
-call "%dotcover_path%" cover nunit-coverage.xml /TargetExecutable=%nunit_path% /TargetArguments="%CD%/../../src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll /framework:%runtime_version% /xml:../results/NUnitOutput.xml"
-call "%dotcover_path%" cover mspec-coverage.xml /TargetExecutable=%mspec_path% /TargetArguments="FluentNHibernate.Specs.dll"
+call "%dotcover_path%" cover nunit-coverage.xml /TargetExecutable=%nunit_path% /TargetArguments="%CD%/../../src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll /framework:%runtime_version% /xml:../results/NUnitResult.xml"
+call "%dotcover_path%" cover mspec-coverage.xml /TargetExecutable=%mspec_path% /TargetArguments="FluentNHibernate.Specs.dll --xml=..\results\MSpecResult.xml"
 echo Merging coverage snapshots...
-call "%dotcover_path%" merge /Source="..\results\NUnitOutput.xml;..\results\MSpecOutput.xml" /Output="..\results\merged.xml"
+call "%dotcover_path%" merge /Source="..\results\NUnitOutput.dcvr;..\results\MSpecOutput.dcvr" /Output="..\results\merged.dcvr"
 echo Creating readable report...
-call "%dotcover_path%" report /Source="..\results\merged.xml" /Output="..\results\report.xml" /ReportType=XML
+call "%dotcover_path%" report /Source="..\results\merged.dcvr" /Output="..\results\report.xml" /ReportType=XML
 
 echo Reporting coverage results to TeamCity...
 
-echo ##teamcity[importData type='dotNetCoverage' tool='dotcover' path='coverage/results/NUnitOutput.xml']
-echo ##teamcity[importData type='dotNetCoverage' tool='dotcover' path='coverage/results/MSpecOutput.xml']
+echo ##teamcity[importData type='dotNetCoverage' tool='dotcover' path='coverage/results/NUnitOutput.dcvr']
+echo ##teamcity[importData type='dotNetCoverage' tool='dotcover' path='coverage/results/MSpecOutput.dcvr']
 
 cd %initial_path%
