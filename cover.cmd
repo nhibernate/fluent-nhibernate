@@ -1,5 +1,5 @@
 @echo off
-
+REM this script runs tests withing dotCover and reports coverage to TeamCity
 echo ##teamcity[dotNetCoverage]
 
 set initial_path=%CD%
@@ -9,6 +9,7 @@ echo Searching for dotCover executable...
 
 set mspec_path=..\..\src\packages\Machine.Specifications.0.5.15\tools\mspec%2.exe
 set nunit_path=..\..\src\packages\NUnit.2.5.7.10213\Tools\nunit-console-x86.exe
+set relative_result_path=..\results
 
 echo Using MSpec from "%mspec_path%"
 echo Using NUnit from "%nunit_path%"
@@ -19,15 +20,15 @@ echo Running NUnit tests with %runtime_version%
 set dotcover_path=%1
 echo Using dotCover from %dotcover_path%
 
-IF exist ..\results/nul ( echo Coverage results folder exists) ELSE ( mkdir ..\results && echo Coverage results folder created)
+if exist %relative_result_path%/nul ( echo Coverage results folder exists) ELSE ( mkdir relative_result_path && echo Coverage results folder created)
 
 echo Running tests with coverage...
 call "%dotcover_path%" cover nunit-coverage.xml /TargetExecutable=%nunit_path% /TargetArguments="%CD%/../../src/FluentNHibernate.Testing/bin/Release/FluentNHibernate.Testing.dll /framework:%runtime_version% /xml:../results/NUnitResult.xml"
-call "%dotcover_path%" cover mspec-coverage.xml /TargetExecutable=%mspec_path% /TargetArguments="FluentNHibernate.Specs.dll --xml=..\results\MSpecResult.xml"
+call "%dotcover_path%" cover mspec-coverage.xml /TargetExecutable=%mspec_path% /TargetArguments="FluentNHibernate.Specs.dll --xml=%relative_result_path%\MSpecResult.xml"
 echo Merging coverage snapshots...
-call "%dotcover_path%" merge /Source="..\results\NUnitOutput.dcvr;..\results\MSpecOutput.dcvr" /Output="..\results\merged.dcvr"
+call "%dotcover_path%" merge /Source="%relative_result_path%\NUnitOutput.dcvr;%relative_result_path%\MSpecOutput.dcvr" /Output="%relative_result_path%\merged.dcvr"
 echo Creating readable report...
-call "%dotcover_path%" report /Source="..\results\merged.dcvr" /Output="..\results\report.xml" /ReportType=XML
+call "%dotcover_path%" report /Source="%relative_result_path%\merged.dcvr" /Output="%relative_result_path%\report.xml" /ReportType=XML
 
 echo Reporting coverage results to TeamCity...
 
