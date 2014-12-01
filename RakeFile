@@ -7,8 +7,6 @@ PROPS = 'src/CommonAssemblyInfo.cs'
 SLN = 'src/FluentNHibernate.sln'
 CONFIG = 'config.json'
 NUSPEC = 'src/FluentNHibernate.nuspec'
-COVERAGE_SCRIPT = 'cover.cmd'
-DEFAULT_DOTCOVER_PATH = '/c/TeamCity/buildAgent/tools/dotCover/dotCover.exe'
 
 module Platform
 
@@ -254,14 +252,4 @@ def update_xml(xml_path)
     formatter = REXML::Formatters::Default.new(5)
     formatter.write(xml, xml_file)
     xml_file.close 
-end
-
-task :cover do
-    #{COVERAGE_SCRIPT} #{DEFAULT_DOTCOVER_PATH} #{Platform.config['tests']['mspec_exec_suffix']} #{Platform.config['tests']['nunit_framework_runtime']}
-end
-
-task :sln do
-  Thread.new do
-    system "devenv #{SLN}"
-  end
 end
