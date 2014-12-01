@@ -49,8 +49,8 @@ task :default => ['ripple:restore', 'source:update_version', 'build:all']
 namespace :ci do
   task :set_build_parameters do |cmd|
     puts 'Setting build parameters...'
-	puts "##teamcity[setParameter name='CLR_VERSION' value='%#{Platform.config['tests']['mspec_exec_suffix']}%']"
-	puts "##teamcity[setParameter name='RUNTIME_VERSION' value='%#{Platform.config['tests']['nunit_framework_runtime']}%']"
+	puts "##teamcity[setParameter name='%CLR_VERSION%' value='#{Platform.config['tests']['mspec_exec_suffix']}']"
+	puts "##teamcity[setParameter name='%RUNTIME_VERSION%' value='#{Platform.config['tests']['nunit_framework_runtime']}']"
 	puts 'Done.'
   end
   
