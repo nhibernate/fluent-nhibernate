@@ -54,7 +54,7 @@ namespace :ci do
 	puts 'Done.'
   end
   
-  task :run_ci_build => ['ripple:restore', 'source:compile', 'set_build_parameters']
+  task :run_ci_build => ['ripple:restore', 'source:update_version', 'source:compile', 'set_build_parameters']
 end
 
 namespace :ripple do
