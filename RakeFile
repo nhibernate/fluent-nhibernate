@@ -47,8 +47,14 @@ end
 task :default => ['ripple:restore', 'source:update_version', 'build:all']
 
 namespace :ci do
-  task :run_ci_build => ['ripple:restore', 'source:compile', 'cover', 'docs:build' ]
-  task :run_with_coverage => ['ripple:restore', 'source:update_version', 'source:compile']
+  task :set_build_parameters do |cmd|
+    puts 'Setting build parameters...'
+	puts "##teamcity[setParameter name='CLR_VERSION' value='%#{Platform.config['tests']['mspec_exec_suffix']}%']"
+	puts "##teamcity[setParameter name='RUNTIME_VERSION' value='%#{Platform.config['tests']['nunit_framework_runtime']}%']"
+	puts 'Done.'
+  end
+  
+  task :run_ci_build => ['ripple:restore', 'source:compile', 'set_build_parameters']
 end
 
 namespace :ripple do
