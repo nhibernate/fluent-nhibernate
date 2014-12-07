@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AnalyseParams>
+  <TargetWorkingDir>..\..\src\FluentNHibernate.Specs\bin\Release</TargetWorkingDir>
+  <TempDir></TempDir>
+  <Output>..\results\MSpecOutput.dcvr</Output>
+  <ReportType></ReportType>
+  <InheritConsole></InheritConsole>
+	<Filters> 
+	  <IncludeFilters> 
+	    <FilterEntry> 
+	      <ModuleMask>FluentNHibernate</ModuleMask> 
+	      <ClassMask>*</ClassMask> 
+	      <FunctionMask>*</FunctionMask> 
+	    </FilterEntry> 
+	  </IncludeFilters> 
+	  <ExcludeFilters> 
+	    <FilterEntry> 
+	      <ModuleMask>FluentNHibernate.Specs</ModuleMask> 
+	      <ClassMask>*</ClassMask> 
+	      <FunctionMask>*</FunctionMask> 
+	    </FilterEntry> 
+	  </ExcludeFilters>
+	</Filters>
+</AnalyseParams>

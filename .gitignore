@@ -27,3 +27,4 @@ build
 *.nupkg
 logs/
 src/CommonAssemblyInfo.cs
+coverage/results
