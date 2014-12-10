@@ -97,6 +97,7 @@
     <Compile Include="AutoMapping\Overrides\ClassMappingOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\CompositeIdOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\HibernateMappingOverrides.cs" />
+    <Compile Include="Cfg\Db\OracleManagedDataClientConfigurationTester.cs" />
     <Compile Include="Cfg\Db\SqlAnywhereConfigurationTester.cs" />
     <Compile Include="DomainModel\Mapping\ManyToManySelfReferencedInverseIntegrationTester.cs" />
     <Compile Include="DomainModel\Mapping\MultipleKeyColumnsTester.cs" />
