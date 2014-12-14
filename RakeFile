@@ -7,7 +7,6 @@ PROPS = 'src/CommonAssemblyInfo.cs'
 SLN = 'src/FluentNHibernate.sln'
 CONFIG = 'config.json'
 NUSPEC = 'src/FluentNHibernate.nuspec'
-CLR_TOOLS_VERSION = "v4.0.30319"
 
 module Platform
 
@@ -33,15 +32,13 @@ module Platform
     JSON.parse(File.read(CONFIG))
   end
 
-  def self.update_config_version(arg)
-    current = self.config
-    current['assembly_info']['version'] = current['nuspec']['version'] = arg
-    File.write(CONFIG, JSON.pretty_generate(current.to_json))
-  end
-
 end 
 
 NH_VERSION = Platform.config['build']['nh_precompiler_switch']
+
+# Albacore.configure do |config|
+  # config.log_level = :verbose
+# end
 
 def get_version
   ENV['BUILD_NUMBER'] || Platform.config['default_version_number']
@@ -60,18 +57,17 @@ namespace :ripple do
     args = "restore"
     sh "#{ripple} #{args}"
   end
+  task :run_ci_build => ['ripple:restore', 'build:all', 'docs:build', 'package:all' ]
 end
 
 namespace :source do
   desc 'Update assembly info with latest version number'
   assemblyinfo :update_version do |info|
     info.output_file = PROPS
-  
-    commit_hash = `git log -1 --format="%H%"`
     
     info.title = Platform.config['assembly_info']['title']
-    info.version = info.file_version = get_version
-    info.informational_version = Platform.config['version']
+    info.version = get_version
+    info.informational_version = Platform.config['assembly_info']['version']
     info.company_name = 'http://fluentnhibernate.org'
     info.product_name = 'FluentNHibernate'
     info.description = commit_hash[0..(commit_hash.length - 3)]
@@ -109,7 +105,7 @@ namespace :source do
   msbuild :msbuild, [:nhibernate_version] => :nhibernate_version do |msbuild, args|   
     msbuild.properties = {
       configuration: :Release,
-      DefineConstants: args[:nhibernate_version],
+      DefineConstants: nh_version_precompiler_switch,
       WarningLevel: 0
     }
     msbuild.targets [:Clean, :Build]
@@ -159,12 +155,23 @@ namespace :docs do
 end
 
 namespace :git do
+  desc "Tags the current release"
+  task :tag, :assembly_info do |asm, args|
+      args.with_defaults(:assembly_info => Platform.config['assembly_info']['version'])
+
+      sh "git tag \"v#{args.version}\""
+  end
+
   desc "Updates the version and tags the release"
-  task :prep_release do |task|
-    current_version = Platform.config['assembly_info']['version']
-    sh "git add -A"
-    sh "git commit -m \"Updated version to #{current_version}\""
-    sh "git tag \"v#{current_version}\""
+  task :prep_release, :assembly_info do |task, args|
+    if !args.version.nil?
+      task(:update_version).invoke(args.version)
+
+      sh "git add #{CONFIG} #{NUSPEC}"
+      sh "git commit -m \"Updated version to #{args.version}\""
+
+      task(:tag).invoke(args.version)
+    end
   end
 end
 
@@ -258,7 +265,7 @@ namespace :package do
   desc 'Package everything (src, bin, docs, nuget)'
   task :all => [:source, :binaries, :docs, :nuget]
 end
- 
+
 def update_xml(xml_path)
     #Open up the xml file
     xml_file = File.new(xml_path)

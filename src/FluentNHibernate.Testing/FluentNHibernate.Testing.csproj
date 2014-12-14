@@ -53,20 +53,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.5.7.10213\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.mocks, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NUnit.2.5.7.10213\lib\nunit.mocks.dll</HintPath>
-    </Reference>
-    <Reference Include="pnunit.framework, Version=1.0.3865.21394, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NUnit.2.5.7.10213\lib\pnunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.SQLite">
-      <HintPath>..\packages\System.Data.SQLite.1.0.66.1\lib\System.Data.SQLite.DLL</HintPath>
+      <HintPath>..\packages\System.Data.SQLite.1.0.66.1\lib\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Data" />
