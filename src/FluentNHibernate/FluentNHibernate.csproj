@@ -91,6 +91,7 @@
     <Compile Include="Automapping\Steps\HasManyToManyStep.cs" />
     <Compile Include="Automapping\Steps\CollectionStep.cs" />
     <Compile Include="Automapping\Steps\IAutomappingStep.cs" />
+    <Compile Include="Cfg\Db\OracleManagedDataClientConfiguration.cs" />
     <Compile Include="Cfg\Db\SQLAnywhereConfiguration.cs" />
     <Compile Include="Cfg\Db\SybaseSQLAnywhereConnectionStringBuilder.cs" />
     <Compile Include="Cfg\Db\IngresConfiguration.cs" />
