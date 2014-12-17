@@ -27,7 +27,11 @@ namespace FluentNHibernate.Mapping
             this.member = member;
             access = new AccessStrategyBuilder<ManyToOnePart<TOther>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
             fetch = new FetchTypeExpression<ManyToOnePart<TOther>>(this, value => attributes.Set("Fetch", Layer.UserSupplied, value));
-            cascade = new CascadeExpression<ManyToOnePart<TOther>>(this, value => attributes.Set("Cascade", Layer.UserSupplied, value));
+            cascade = new CascadeExpression<ManyToOnePart<TOther>>(this, value =>
+            {
+                var current = attributes.Get("Cascade") as string;
+                attributes.Set("Cascade", Layer.UserSupplied, current == null ? value : string.Format("{0},{1}", current, value));
+            });
             notFound = new NotFoundExpression<ManyToOnePart<TOther>>(this, value => attributes.Set("NotFound", Layer.UserSupplied, value));
 
             SetDefaultAccess();
