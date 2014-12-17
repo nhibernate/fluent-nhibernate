@@ -64,6 +64,7 @@ namespace :source do
   desc 'Update assembly info with latest version number'
   assemblyinfo :update_version do |info|
     info.output_file = PROPS
+	commit_hash = `git log -1 --format="%H%"`
     
     info.title = Platform.config['assembly_info']['title']
     info.version = get_version
@@ -104,9 +105,9 @@ namespace :source do
 
   msbuild :msbuild, [:nhibernate_version] => :nhibernate_version do |msbuild, args|   
     msbuild.properties = {
-      configuration: :Release,
-      DefineConstants: nh_version_precompiler_switch,
-      WarningLevel: 0
+      :Configuration => "Release",
+      :DefineConstants => args[:nhibernate_version],
+      :WarningLevel => 0
     }
     msbuild.targets [:Clean, :Build]
     msbuild.solution = SLN
