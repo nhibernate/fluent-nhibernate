@@ -26,6 +26,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
+        public void CascadeShouldAppendModelCascadePropertyToValue()
+        {
+            ManyToOne()
+                .Mapping(m => { m.Cascade.SaveUpdate(); m.Cascade.Merge(); })
+                .ModelShouldMatch(x => x.Cascade.ShouldEqual("save-update,merge"));
+        }
+
+        [Test]
         public void ShouldSetModelClassPropertyToPropertyType()
         {
             ManyToOne()

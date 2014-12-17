@@ -63,5 +63,35 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             A_call_to(_cascade.Merge).should_set_the_cascade_value_to("merge");
         }
-	}
+
+        [Test]
+        public void Refresh_should_add_the_correct_cascade_attribute_to_the_parent_part()
+        {
+            A_call_to(_cascade.Refresh).should_set_the_cascade_value_to("refresh");
+        }
+
+        [Test]
+        public void DeleteOrphans_should_add_the_correct_cascade_attribute_to_the_parent_part()
+        {
+            A_call_to(_cascade.DeleteOrphans).should_set_the_cascade_value_to("delete-orphans");
+        }
+
+        [Test]
+        public void Evict_should_add_the_correct_cascade_attribute_to_the_parent_part()
+        {
+            A_call_to(_cascade.Evict).should_set_the_cascade_value_to("evict");
+        }
+
+        [Test]
+        public void Lock_should_add_the_correct_cascade_attribute_to_the_parent_part()
+        {
+            A_call_to(_cascade.Lock).should_set_the_cascade_value_to("lock");
+        }
+
+        [Test]
+        public void Persist_should_add_the_correct_cascade_attribute_to_the_parent_part()
+        {
+            A_call_to(_cascade.Persist).should_set_the_cascade_value_to("save-update, persist");
+        }
+    }
 }
