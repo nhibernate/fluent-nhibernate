@@ -8,7 +8,7 @@ Getting started
 ---------------------------------------------
 
 * Read the [introduction](https://github.com/jagregory/fluent-nhibernate/wiki/Getting-started).
-* Get latest binaries from NuGet (we support both [.NET 4.0 with NHibernate 4.x](https://www.nuget.org/packages/FluentNHibernate) and [.NET 3.5 with NHibernate < 4.0 if you like it vintage] (https://www.nuget.org/packages/FluentNHibernate.Net35))
+* Get latest binaries from NuGet (we support both [.NET 4.0 with NHibernate 4.x](https://www.nuget.org/packages/FluentNHibernate) and [.NET 3.5 with NHibernate 3 if you like it vintage] (https://www.nuget.org/packages/FluentNHibernate.Net35))
 * Create your [first project](https://github.com/jagregory/fluent-nhibernate/wiki/Getting-started#wiki-yourfirstproject).
 
 
@@ -27,6 +27,6 @@ Fluent NHibernate wouldn't be possible without the time and effort of its contri
 
 Thanks goes to [Jeremy Miller](http://codebetter.com/blogs/jeremy.miller) for the original idea and implementation.
     
-Fluent NHibernate is &copy; 2008-2014 [James Gregory](http://jagregory.com) and contributors under the [BSD license](fluent-nhibernate/blob/master/LICENSE.txt)
+Fluent NHibernate is &copy; 2008-2015 [James Gregory](http://jagregory.com) and contributors under the [BSD license](fluent-nhibernate/blob/master/LICENSE.txt)
 
 <a href="http://ndepend.com"><img src="http://i43.tinypic.com/295tpq8.png" alt="Powered by NDepend"></a>
