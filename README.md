@@ -8,6 +8,7 @@ Getting started
 ---------------------------------------------
 
 * Read the [introduction](https://github.com/jagregory/fluent-nhibernate/wiki/Getting-started).
+* Get latest binaries from NuGet (we support both [.NET 4.0 with NHibernate 4.x](https://www.nuget.org/packages/FluentNHibernate) and [.NET 3.5 with NHibernate < 4.0 if you like it vintage] (https://www.nuget.org/packages/FluentNHibernate.Net35))
 * Create your [first project](https://github.com/jagregory/fluent-nhibernate/wiki/Getting-started#wiki-yourfirstproject).
 
 
