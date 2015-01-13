@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
@@ -13,13 +11,13 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
     [TestFixture]
     public class SeparateSubclassVisitorFixture
     {
-        private IList<IIndeterminateSubclassMappingProvider> providers;
+        private IIndeterminateSubclassMappingProviderCollection providers;
         private ClassMapping fooMapping;
 
         [SetUp]
         public void SetUp()
         {
-            providers = new List<IIndeterminateSubclassMappingProvider>();
+            providers = new IndeterminateSubclassMappingProviderCollection();
         }
 
         [Test]

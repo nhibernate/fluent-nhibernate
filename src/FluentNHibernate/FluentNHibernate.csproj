@@ -422,7 +422,9 @@
     <Compile Include="Mapping\NaturalIdPart.cs" />
     <Compile Include="Mapping\Providers\IElementMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />
+    <Compile Include="Mapping\Providers\IIndeterminateSubclassMappingProviderCollection.cs" />
     <Compile Include="Mapping\Providers\INaturalIdMappingProvider.cs" />
+    <Compile Include="Mapping\Providers\IndeterminateSubclassMappingProviderCollection.cs" />
     <Compile Include="Mapping\Providers\INestedCompositeElementMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IPropertyMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IReferenceComponentMappingProvider.cs" />
