@@ -75,7 +75,11 @@ namespace :source do
     info.product_name = 'FluentNHibernate'
     info.description = commit_hash[0..(commit_hash.length - 3)]
     info.copyright = "Copyright 2008-#{Time.new.year} James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved."
-    info.namespaces = ['System.Security']
+    info.namespaces = ['System', 'System.Security']
+
+    info.custom_attributes = {
+      :CLSCompliant => true 
+    }
     
     puts "The new version is #{info.version}"
   end
