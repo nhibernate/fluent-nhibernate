@@ -6,8 +6,13 @@
 		<div class="content">
       <comment content="method.Summary" />
       <remarks content="method.Remarks" />
+      <if condition="method.IsObsolete">
+        <div id="warning">
+          <b>Obsolete:</b> ${method.ObsoleteReason}
+        </div>
+      </if>
 
-      <var hasReturn="method.ReturnType.PrettyName != 'void'" />
+      <var hasReturn="method.ReturnType != null && method.ReturnType.PrettyName != 'void'" />
       <var hasParams="method.Parameters.Any(x => x.HasDocumentation)" />
 
       <div class="parameters" if="hasParams">
@@ -26,6 +31,7 @@
       </div>
       
       <value content="method.Value" />
-		</div>
+      <example content="method.Example" />
+    </div>
 	</div>
 </if>
