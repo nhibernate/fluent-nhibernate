@@ -49,7 +49,12 @@ namespace FluentNHibernate.Visitors
             foreach (var collection in orderedCollections)
             {
                 var type = collection.ContainingEntityType;
-                var reference = orderedRefs.FirstOrDefault(x => x.OtherSide == null && x.Class.GetUnderlyingSystemType() == type);
+                var childType = collection.ChildType;
+                var reference = orderedRefs
+                    .FirstOrDefault(x => 
+                        x.OtherSide == null && 
+                        x.Class.GetUnderlyingSystemType() == type &&
+                        x.ContainingEntityType == childType);
 
                 if (reference == null) continue;
 
