@@ -6,6 +6,11 @@
     <div class="content">
       <comment content="property.Summary" />
       <remarks content="property.Remarks" />
+      <if condition="property.IsObsolete">
+        <div id="warning">
+          <b>Obsolete:</b> ${property.ObsoleteReason}
+        </div>
+      </if>
       
       <div class="return" if="property.ReturnType.HasDocumentation">
         <h5>Property type</h5>
@@ -13,6 +18,7 @@
         <p><comment content="property.ReturnType.Summary" /></p>
       </div>
       <value content="property.Value" />
+      <example content="property.Example" />
     </div>
   </div>
 </if>
