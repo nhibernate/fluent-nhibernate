@@ -746,16 +746,7 @@
     <Compile Include="Visitors\ValidationVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\tools\NHibernate\nhibernate-mapping.xsd">
-      <Link>nhibernate-mapping.xsd</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\FluentKey.snk">
-      <Link>FluentKey.snk</Link>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

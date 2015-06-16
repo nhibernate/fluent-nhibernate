@@ -1,1 +1,0 @@
-src\ripple\bin\debug\ripple.exe %*
