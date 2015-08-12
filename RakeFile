@@ -110,7 +110,7 @@ namespace :source do
 		DefineConstants: 'NH' + NH_VERSION.gsub('.', ''),
 		WarningLevel: 0
     }
-    msbuild.targets [:Clean, :Build]
+    msbuild.targets [:Build]
     msbuild.solution = SLN
     msbuild.verbosity = :minimal
     msbuild.parameters = ["/p:TargetFrameworkVersion=#{Platform.config['build']['target_framework']}"]
