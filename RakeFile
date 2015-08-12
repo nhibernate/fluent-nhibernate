@@ -99,7 +99,7 @@ namespace :source do
       DefineConstants: nh_version_precompiler_switch,
       WarningLevel: 0
     }
-    msbuild.targets [:Clean, :Build]
+    msbuild.targets [:Build]
     msbuild.solution = SLN
     msbuild.verbosity = :minimal
     msbuild.parameters = ["/p:TargetFrameworkVersion=#{Platform.config['build']['msbuild_runtime']}"]
