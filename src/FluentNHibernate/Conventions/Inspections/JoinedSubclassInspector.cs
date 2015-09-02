@@ -104,6 +104,11 @@ namespace FluentNHibernate.Conventions.Inspections
             get { return mapping.Lazy; }
         }
 
+        public string Schema
+        {
+            get { return mapping.Schema; }
+        }
+
         public string Name
         {
             get { return mapping.Name; }
