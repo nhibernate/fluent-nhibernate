@@ -171,7 +171,7 @@ namespace FluentNHibernate.Visitors
         static CollectionMapping PairExactMatches(IEnumerable<CollectionMapping> rs, CollectionMapping current, IEnumerable<CollectionMapping> potentialOtherSides)
         {
             var otherSide = potentialOtherSides.Single();
-                
+
             // got the other side of the relationship
             // lets make sure that the side that we're on now (mapping!)
             // is actually the relationship we want
