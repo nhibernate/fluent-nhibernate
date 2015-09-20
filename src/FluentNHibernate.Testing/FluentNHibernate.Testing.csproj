@@ -396,6 +396,7 @@
     <Compile Include="Visitors\ComponentReferenceResolutionVisitorSpecs.cs" />
     <Compile Include="Visitors\RelationshipPairingVisitorSpec.cs" />
     <Compile Include="Visitors\RelationshipPairingVisitorSpecSupportClasses.cs" />
+    <Compile Include="Visitors\RelationshipPairingSpec.cs" />
     <Compile Include="Xml\MappingXmlTestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
