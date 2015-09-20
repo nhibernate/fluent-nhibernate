@@ -49,7 +49,7 @@ namespace FluentNHibernate.Visitors
             foreach (var collection in orderedCollections)
             {
                 var type = collection.ContainingEntityType;
-                var reference = orderedRefs.FirstOrDefault(x => x.OtherSide == null && x.Class.GetUnderlyingSystemType() == type);
+                var reference = orderedRefs.FirstOrDefault(x => x.OtherSide == null && x.Class.GetUnderlyingSystemType() == type && x.ContainingEntityType == collection.ChildType);
 
                 if (reference == null) continue;
 
@@ -166,7 +166,7 @@ namespace FluentNHibernate.Visitors
         static CollectionMapping PairExactMatches(IEnumerable<CollectionMapping> rs, CollectionMapping current, IEnumerable<CollectionMapping> potentialOtherSides)
         {
             var otherSide = potentialOtherSides.Single();
-                
+
             // got the other side of the relationship
             // lets make sure that the side that we're on now (mapping!)
             // is actually the relationship we want
