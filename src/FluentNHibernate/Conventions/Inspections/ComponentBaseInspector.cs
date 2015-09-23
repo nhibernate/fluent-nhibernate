@@ -10,9 +10,9 @@ namespace FluentNHibernate.Conventions.Inspections
 {
     public abstract class ComponentBaseInspector : IComponentBaseInspector
     {
-        private readonly ComponentMapping mapping;
+        private readonly IComponentMapping mapping;
 
-        public ComponentBaseInspector(ComponentMapping mapping)
+        public ComponentBaseInspector(IComponentMapping mapping)
         {
             this.mapping = mapping;
         }
@@ -88,9 +88,9 @@ namespace FluentNHibernate.Conventions.Inspections
                     .Select(x =>
                     {
                         if (x.ComponentType == ComponentType.Component)
-                            return (IComponentBaseInspector)new ComponentInspector((ComponentMapping)x);
+                            return (IComponentBaseInspector)new ComponentInspector(x);
 
-                        return (IComponentBaseInspector)new DynamicComponentInspector((ComponentMapping)x);
+                        return (IComponentBaseInspector)new DynamicComponentInspector(x);
                     });
             }
         }
