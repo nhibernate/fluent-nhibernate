@@ -274,4 +274,66 @@ namespace FluentNHibernate.Specs.FluentInterface
             public string Property { get; set; }
         }
     }
+
+    public class when_compiling_the_mappings_with_multiple_nested_component_mappings
+    {
+        Establish context = () => {
+            var component_map = new ComponentMap<Component>();
+            component_map.Component(x => x.NestedComponent1,
+                c => c.Map(y => y.Property, "PROP1"));
+            component_map.Component(x => x.NestedComponent2,
+                c => c.Map(y => y.Property, "PROP2"));
+
+            var class_map = new ClassMap<Target>();
+            class_map.Id(x => x.Id);
+            class_map.Component(x => x.Component)
+                .ColumnPrefix("A_");
+
+            persistence_model = new FluentNHibernate.PersistenceModel();
+            persistence_model.Add(class_map);
+            persistence_model.Add(component_map);
+        };
+
+        Because of = () => {
+            mappings = persistence_model.BuildMappings();
+            class_mapping = mappings.SelectMany(x => x.Classes).First();
+        };
+
+        It should_use_the_column_prefix_for_all_nested_component_columns = () => {
+            var root_component = class_mapping.Components.First(x => x.Name == "Component");
+
+            root_component
+                .Components.First(x => x.Name == "NestedComponent1")
+                .Properties.SelectMany(x => x.Columns)
+                .Select(x => x.Name)
+                .ShouldContain("A_PROP1");
+
+            root_component
+                .Components.First(x => x.Name == "NestedComponent2")
+                .Properties.SelectMany(x => x.Columns)
+                .Select(x => x.Name)
+                .ShouldContain("A_PROP2");
+        };
+
+        private static FluentNHibernate.PersistenceModel persistence_model;
+        private static IEnumerable<HibernateMapping> mappings;
+        private static ClassMapping class_mapping;
+
+        private class Target
+        {
+            public int Id { get; set; }
+            public Component Component { get; set; }
+        }
+
+        private class Component
+        {
+            public NestedComponent NestedComponent1 { get; set; }
+            public NestedComponent NestedComponent2 { get; set; }
+        }
+
+        private class NestedComponent
+        {
+            public string Property { get; set; }
+        }
+    }
 }

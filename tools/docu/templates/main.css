@@ -6,8 +6,8 @@
 }
 
 .header {
-	background: #900;
-	border-bottom: 3px solid #600;
+	background: #048;
+	border-bottom: 3px solid #006;
 	margin: 0;
 	color: #FFF;
 	padding: 10px;
@@ -141,6 +141,14 @@ div.parameters p, div.return p {
 	margin-left: -1px;
 }
 
+#warning {
+    color: red ;
+    background: rgb(255, 218, 0);
+	border: 1px solid red;
+	margin: 20px 10px 20px 10px;
+	padding: 5px 10px;
+}
+
 h2.fixed {
 	background: #CCC;
 	color: #000;
@@ -169,18 +177,18 @@ div.scroll {
 }
 
 a {
-	background: #EFEEE4;
-	color: #900;
+	background: #eef;
+	color: #039;
 	text-decoration: none;
 }
 
 a:hover {
 	color: #FFF;
-	background: #900;
+	background: #039;
 }
 
 #namespaces a.current, #types a.current {
-	background: #900;
+	background: #039;
 	color: #FFF;
 	text-decoration: none;
 }
@@ -207,6 +215,19 @@ blockquote {
 	font-size: 90%;
 }
 
-#index p {
-  padding: 10px;
+.example {
+	margin: 10px 0;
+}
+
+.example pre {
+	background: #DDD;
+	color: #000;
+	font-size: 14px;
+	font-family: Monaco, Consolas, Courier New, Monospace;
+	padding: 4px 10px;
+	border: 3px solid #AAA;
+}
+
+code {
+	font-family: Monaco, Consolas, Courier New, Monospace;
 }

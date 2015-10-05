@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version='1.0' encoding='UTF-8'?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -44,7 +44,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NHibernate">
-      <HintPath>..\packages\NHibernate.4.0.2.4000\lib\net40\NHibernate.dll</HintPath>
+      <HintPath>..\packages\NHibernate.4.0.0.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -425,7 +425,9 @@
     <Compile Include="Mapping\NaturalIdPart.cs" />
     <Compile Include="Mapping\Providers\IElementMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IExternalComponentMappingProvider.cs" />
+    <Compile Include="Mapping\Providers\IIndeterminateSubclassMappingProviderCollection.cs" />
     <Compile Include="Mapping\Providers\INaturalIdMappingProvider.cs" />
+    <Compile Include="Mapping\Providers\IndeterminateSubclassMappingProviderCollection.cs" />
     <Compile Include="Mapping\Providers\INestedCompositeElementMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IPropertyMappingProvider.cs" />
     <Compile Include="Mapping\Providers\IReferenceComponentMappingProvider.cs" />
@@ -744,16 +746,7 @@
     <Compile Include="Visitors\ValidationVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\tools\NHibernate\nhibernate-mapping.xsd">
-      <Link>nhibernate-mapping.xsd</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\FluentKey.snk">
-      <Link>FluentKey.snk</Link>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

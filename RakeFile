@@ -72,7 +72,12 @@ namespace :source do
     info.product_name = 'FluentNHibernate'
     info.description = commit_hash[0..(commit_hash.length - 3)]
     info.copyright = "Copyright 2008-#{Time.new.year} James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved."
-    info.namespaces = ['System.Security']
+    info.namespaces = ['System', 'System.Security', 'System.Runtime.CompilerServices']
+
+    info.custom_attributes = {
+      :CLSCompliant => true, 
+	  :InternalsVisibleTo => "FluentNHibernate.Testing"
+    }
     
     puts "The new version is #{info.version}"
   end
@@ -94,7 +99,7 @@ namespace :source do
       DefineConstants: nh_version_precompiler_switch,
       WarningLevel: 0
     }
-    msbuild.targets [:Clean, :Build]
+    msbuild.targets [:Build]
     msbuild.solution = SLN
     msbuild.verbosity = :minimal
     msbuild.parameters = ["/p:TargetFrameworkVersion=#{Platform.config['build']['msbuild_runtime']}"]
@@ -222,6 +227,31 @@ namespace :package do
       end  
   end
   
+  task :upgradeNhVersion, :version do |cmd, args|
+	  fail "Please provide version number to work with" if not args.has_key?(:version) 
+      puts "Updating NH version to #{args[:version]}"
+	  puts "Editing packages.config files..."
+	  packages_configs = Rake::FileList['**/packages.config']
+	  packages_configs.each do |pc|
+		  update_xml pc do |xml|
+			xml.root.elements["package[@id='NHibernate']"].attributes['version'] = args[:version]	  
+		  end  
+		  puts "Upgraded #{pc}"
+	  end
+	  
+	  puts "Editing .csproj files..."
+	  project_files = Rake::FileList['**/*.csproj']
+	  project_files.each do |pf|
+	      update_xml pf do |xml|
+		    old_value = xml.root.elements["ItemGroup[1]/Reference[contains(@Include, 'NHibernate')]/HintPath"].text
+			new_value = old_value.gsub(/(\d+).(\d+).(\d+).(\d+)/, args[:version])
+			xml.root.elements["ItemGroup[1]/Reference[contains(@Include, 'NHibernate')]/HintPath"].text = new_value
+		  end  
+		  puts "Upgraded #{pf}"
+	  end
+	  puts "Done."
+  end
+  
   nugetpack :nupack do |nu|
     nu.command = 'tools/nuget/NuGet.exe'
     nu.nuspec = NUSPEC
@@ -240,6 +270,7 @@ def update_xml(xml_path)
     #Open up the xml file
     xml_file = File.new(xml_path)
     xml = REXML::Document.new xml_file
+	xml.context[:attribute_quote] = :quote
  
     #Allow caller to make the changes
     yield xml
