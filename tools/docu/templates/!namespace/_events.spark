@@ -6,6 +6,7 @@
     <div class="content">
       <comment content="ev.Summary" />
       <remarks content="ev.Remarks" />
+      <example content="ev.Example" />
     </div>
   </div>
 </if>

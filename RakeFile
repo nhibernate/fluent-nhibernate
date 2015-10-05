@@ -75,7 +75,12 @@ namespace :source do
     info.product_name = 'FluentNHibernate'
     info.description = commit_hash[0..(commit_hash.length - 3)]
     info.copyright = "Copyright 2008-#{Time.new.year} James Gregory and contributors (Paul Batum, Hudson Akridge et al). All rights reserved."
-    info.namespaces = ['System.Security']
+    info.namespaces = ['System', 'System.Security', 'System.Runtime.CompilerServices']
+
+    info.custom_attributes = {
+      :CLSCompliant => true, 
+	  :InternalsVisibleTo => "FluentNHibernate.Testing"
+    }
     
     puts "The new version is #{info.version}"
   end
@@ -105,7 +110,7 @@ namespace :source do
 		DefineConstants: 'NH' + NH_VERSION.gsub('.', ''),
 		WarningLevel: 0
     }
-    msbuild.targets [:Clean, :Build]
+    msbuild.targets [:Build]
     msbuild.solution = SLN
     msbuild.verbosity = :minimal
     msbuild.parameters = ["/p:TargetFrameworkVersion=#{Platform.config['build']['target_framework']}"]

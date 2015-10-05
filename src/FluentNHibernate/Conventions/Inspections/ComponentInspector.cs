@@ -7,9 +7,9 @@ namespace FluentNHibernate.Conventions.Inspections
     public class ComponentInspector : ComponentBaseInspector, IComponentInspector
     {
         private readonly InspectorModelMapper<IComponentInspector, ComponentMapping> mappedProperties = new InspectorModelMapper<IComponentInspector, ComponentMapping>();
-        private readonly ComponentMapping mapping;
+        private readonly IComponentMapping mapping;
 
-        public ComponentInspector(ComponentMapping mapping)
+        public ComponentInspector(IComponentMapping mapping)
             : base(mapping)
         {
             this.mapping = mapping;

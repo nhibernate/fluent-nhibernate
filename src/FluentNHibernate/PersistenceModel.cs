@@ -24,7 +24,7 @@ namespace FluentNHibernate
     {
         protected readonly IList<IMappingProvider> classProviders = new List<IMappingProvider>();
         protected readonly IList<IFilterDefinition> filterDefinitions = new List<IFilterDefinition>();
-        protected readonly IList<IIndeterminateSubclassMappingProvider> subclassProviders = new List<IIndeterminateSubclassMappingProvider>();
+        protected readonly IIndeterminateSubclassMappingProviderCollection subclassProviders = new IndeterminateSubclassMappingProviderCollection();
         protected readonly IList<IExternalComponentMappingProvider> componentProviders = new List<IExternalComponentMappingProvider>();
         protected readonly IList<IComponentReferenceResolver> componentResolvers = new List<IComponentReferenceResolver>
         {

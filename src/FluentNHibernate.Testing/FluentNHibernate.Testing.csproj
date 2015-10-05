@@ -47,7 +47,7 @@
     </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NHibernate.3.4.0.4000\lib\Net35\NHibernate.dll</HintPath>
+      <HintPath>..\packages\NHibernate.3.3.1.4000\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -395,6 +395,9 @@
     <Compile Include="Utils\TypeReferenceEqualityTests.cs" />
     <Compile Include="Visitors\ComponentColumnPrefixVisitorSpecs.cs" />
     <Compile Include="Visitors\ComponentReferenceResolutionVisitorSpecs.cs" />
+    <Compile Include="Visitors\RelationshipPairingVisitorSpec.cs" />
+    <Compile Include="Visitors\RelationshipPairingVisitorSpecSupportClasses.cs" />
+    <Compile Include="Visitors\RelationshipPairingSpec.cs" />
     <Compile Include="Xml\MappingXmlTestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
