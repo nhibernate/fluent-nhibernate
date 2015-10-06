@@ -3,7 +3,7 @@
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>FluentNHibernate.Net35</id>
     <title>FluentNHibernate for .NET 3.5</title>
-    <version>1.5.2.0</version>
+    <version>1.5.3.0</version>
     <authors>James Gregory and contributors</authors>
     <owners>jagregory, chester89</owners>
     <licenseUrl>http://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE.txt</licenseUrl>
