@@ -1,9 +1,9 @@
 {
 	"framework_version": 4.0,
-	"default_version_number": "2.0.2.0",
+	"default_version_number": "2.0.3.0",
 	"assembly_info": 
 	{
-		"version": "2.0.2.0",
+		"version": "2.0.3.0",
 		"title": "FluentNHibernate"
 	},
 	"build": 
@@ -19,7 +19,7 @@
 	"nuspec":
 	{
 		"id": "FluentNHibernate",
-		"version": "2.0.2.0",
+		"version": "2.0.3.0",
 		"title": "FluentNHibernate",
 		"nhibernate_version_interval": "4.0",
 		"binaries_folder": "net40"
