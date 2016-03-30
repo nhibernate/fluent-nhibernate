@@ -143,9 +143,9 @@ namespace FluentNHibernate.Conventions.Inspections
                     .Select(x =>
                     {
                         if (x.ComponentType == ComponentType.Component)
-                            return (IComponentBaseInspector)new ComponentInspector((ComponentMapping)x);
+                            return (IComponentBaseInspector)new ComponentInspector(x);
 
-                        return (IComponentBaseInspector)new DynamicComponentInspector((ComponentMapping)x);
+                        return (IComponentBaseInspector)new DynamicComponentInspector(x);
                     });
             }
         }
