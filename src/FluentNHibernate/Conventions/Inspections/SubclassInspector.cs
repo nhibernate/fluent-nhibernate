@@ -58,6 +58,21 @@ namespace FluentNHibernate.Conventions.Inspections
             }
         }
 
+        public IEnumerable<IComponentBaseInspector> Components
+        {
+            get
+            {
+                return mapping.Components
+                    .Select(x =>
+                    {
+                        if (x.ComponentType == ComponentType.Component)
+                            return (IComponentBaseInspector)new ComponentInspector(x);
+
+                        return (IComponentBaseInspector)new DynamicComponentInspector(x);
+                    });
+            }
+        }
+
         public object DiscriminatorValue
         {
             get { return mapping.DiscriminatorValue; }
