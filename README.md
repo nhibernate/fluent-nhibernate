@@ -18,6 +18,11 @@ Further reading
 Once you've followed the above, you can compare our [auto mapping](https://github.com/jagregory/fluent-nhibernate/wiki/Auto-mapping) to our [fluent interface](https://github.com/jagregory/fluent-nhibernate/wiki/Fluent-mapping) to see which suits your application, read through our [API documentation](https://github.com/jagregory/fluent-nhibernate/wiki/Fluent-configuration), or just see what's available for reading in our [wiki](https://github.com/jagregory/fluent-nhibernate/wiki).
 
 
+Building
+---------------------------------------------
+Follow the instructions from the [wiki page](https://github.com/jagregory/fluent-nhibernate/wiki/Building) to build the project.
+
+
 Contributors
 ---------------------------------------------
 
