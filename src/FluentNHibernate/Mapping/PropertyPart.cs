@@ -183,7 +183,9 @@ namespace FluentNHibernate.Mapping
             if (typeof(ICompositeUserType).IsAssignableFrom(type))
                 AddColumnsFromCompositeUserType(type);
 
-            return CustomType(TypeMapping.GetTypeString(type));
+            attributes.Set("Type", Layer.UserSupplied, new TypeReference(type));
+
+            return this;
         }
 
         /// <summary>
@@ -206,11 +208,7 @@ namespace FluentNHibernate.Mapping
         public PropertyPart CustomType(Func<Type, Type> typeFunc)
         {
             var type = typeFunc.Invoke(member.PropertyType);
-
-            if (typeof(ICompositeUserType).IsAssignableFrom(type))
-                AddColumnsFromCompositeUserType(type);
-
-            return CustomType(TypeMapping.GetTypeString(type));
+            return CustomType(type);
         }
 
         private void AddColumnsFromCompositeUserType(Type compositeUserType)
