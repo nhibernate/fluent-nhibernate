@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using FluentNHibernate.Specs.Automapping.Fixtures.Overrides;
