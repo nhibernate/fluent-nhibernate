@@ -67,6 +67,16 @@ namespace FluentNHibernate.Automapping
                 classMapping.Set(x => x.Tuplizer, Layer.Defaults, providers.TuplizerMapping);
             }
 
+            foreach (var join in providers.Joins)
+            {
+                var joinMapping = join.GetJoinMapping();
+
+                if(mapping.Joins.All(x => x.TableName != joinMapping.TableName))
+                {
+                    mapping.AddJoin(joinMapping);
+                }
+            }
+
             foreach (var property in providers.Properties)
                 mapping.AddOrReplaceProperty(property.GetPropertyMapping());
 
