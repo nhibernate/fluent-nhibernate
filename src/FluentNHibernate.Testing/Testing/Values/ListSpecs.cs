@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using FakeItEasy;
 using FluentNHibernate.Testing.Values;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.Testing.Values
 {
@@ -19,10 +19,10 @@ namespace FluentNHibernate.Testing.Testing.Values
 
         public override void establish_context()
         {
-            property = ReflectionHelper.GetAccessor (GetPropertyExpression ());
+            property = ReflectionHelper.GetAccessor(GetPropertyExpression());
             target = new ListEntity();
 
-            listItems = new[] {"foo", "bar", "baz"};
+            listItems = new[] { "foo", "bar", "baz" };
             sut = new List<ListEntity, string>(property, listItems);
         }
 
@@ -109,24 +109,6 @@ namespace FluentNHibernate.Testing.Testing.Values
             foreach (var listItem in listItems)
             {
                 target.BackingField.ShouldContain(listItem);
-            }
-        }
-    }
-
-    [TestFixture]
-    public class When_a_set_property_with_a_public_setter_is_set : When_a_list_property_with_is_set_successfully
-    {
-        protected override Expression<Func<ListEntity, IEnumerable>> GetPropertyExpression()
-        {
-            return x => x.Set;
-        }
-
-        [Test]
-        public override void should_set_the_list_items()
-        {
-            foreach (var listItem in listItems)
-            {
-                target.Set.Contains(listItem).ShouldBeTrue();
             }
         }
     }
@@ -278,7 +260,7 @@ namespace FluentNHibernate.Testing.Testing.Values
             property = ReflectionHelper.GetAccessor((Expression<Func<ListEntity, IEnumerable<string>>>)(x => x.GetterAndSetter));
             target = new ListEntity();
 
-            sut = new List<ListEntity, string>(property, new[] {"foo", "bar", "baz"});
+            sut = new List<ListEntity, string>(property, new[] { "foo", "bar", "baz" });
         }
     }
 
@@ -288,7 +270,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         public override void establish_context()
         {
             base.establish_context();
-            target.GetterAndSetter = new[] {"foo", "bar", "baz"};
+            target.GetterAndSetter = new[] { "foo", "bar", "baz" };
         }
 
         public override void because()
@@ -309,7 +291,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         public override void establish_context()
         {
             base.establish_context();
-            target.GetterAndSetter = new[] {"baz", "bar", "foo"};
+            target.GetterAndSetter = new[] { "baz", "bar", "foo" };
         }
 
         public override void because()
@@ -337,7 +319,7 @@ namespace FluentNHibernate.Testing.Testing.Values
         public override void establish_context()
         {
             base.establish_context();
-            target.GetterAndSetter = new[] {"foo"};
+            target.GetterAndSetter = new[] { "foo" };
         }
 
         public override void because()
@@ -421,11 +403,9 @@ namespace FluentNHibernate.Testing.Testing.Values
         {
             base.establish_context();
 
-            sut.EntityEqualityComparer = MockRepository.GenerateStub<IEqualityComparer>();
-            sut.EntityEqualityComparer
-                .Stub(x => x.Equals(null, null))
-                .IgnoreArguments()
-                .Return(true);
+            sut.EntityEqualityComparer = A.Fake<IEqualityComparer>();
+            A.CallTo(() => sut.EntityEqualityComparer.Equals(null, null))
+                .WithAnyArguments().Returns(true);
         }
 
         public override void because()
@@ -436,8 +416,8 @@ namespace FluentNHibernate.Testing.Testing.Values
         [Test]
         public void should_perform_the_check_with_the_custom_equality_comparer()
         {
-            sut.EntityEqualityComparer.AssertWasCalled(x => x.Equals(null, null),
-                o => o.IgnoreArguments().Repeat.Times(3));
+            A.CallTo(() => sut.EntityEqualityComparer.Equals(null, null))
+                .WithAnyArguments().MustHaveHappened(Repeated.Exactly.Times(3));
         }
     }
 
@@ -447,11 +427,10 @@ namespace FluentNHibernate.Testing.Testing.Values
         {
             base.establish_context();
 
-            sut.EntityEqualityComparer = MockRepository.GenerateStub<IEqualityComparer>();
-            sut.EntityEqualityComparer
-                .Stub(x => x.Equals(null, null))
-                .IgnoreArguments()
-                .Return(false);
+            sut.EntityEqualityComparer = A.Fake<IEqualityComparer>();
+            A.CallTo(() => sut.EntityEqualityComparer.Equals(null, null))
+                .WithAnyArguments()
+                .Returns(false);
         }
 
         public override void because()
@@ -462,8 +441,9 @@ namespace FluentNHibernate.Testing.Testing.Values
         [Test]
         public void should_perform_the_check_with_the_custom_equality_comparer()
         {
-            sut.EntityEqualityComparer.AssertWasCalled(x => x.Equals(null, null),
-                o => o.IgnoreArguments().Repeat.Once());
+            A.CallTo(() => sut.EntityEqualityComparer.Equals(null, null))
+                .WithAnyArguments()
+                .MustHaveHappened(Repeated.Exactly.Once);
         }
     }
 
@@ -479,11 +459,11 @@ namespace FluentNHibernate.Testing.Testing.Values
 
             exception = new InvalidOperationException();
 
-            sut.EntityEqualityComparer = MockRepository.GenerateStub<IEqualityComparer>();
-            sut.EntityEqualityComparer
-                .Stub(x => x.Equals(null, null))
-                .IgnoreArguments()
-                .Throw(exception);
+            var entityEqualityComparer = A.Fake<IEqualityComparer>();
+            sut.EntityEqualityComparer = entityEqualityComparer;
+            A.CallTo(() => entityEqualityComparer.Equals(null, null))
+                .WithAnyArguments()
+                .Throws(exception);
         }
 
         public override void because()
@@ -495,56 +475,6 @@ namespace FluentNHibernate.Testing.Testing.Values
         public void should_fail_with_the_exception_from_the_equality_comparer()
         {
             thrown_exception.ShouldBeTheSameAs(exception);
-        }
-    }
-
-    [TestFixture]
-    public class When_the_checked_typed_set_is_equal_to_the_expected_list : With_initialized_list
-    {
-        public override void establish_context()
-        {
-            property = ReflectionHelper.GetAccessor((Expression<Func<ListEntity, IEnumerable<string>>>)(x => x.TypedSet));
-            target = new ListEntity();
-
-            sut = new List<ListEntity, string>(property, new[] {"foo", "bar", "baz"});
-
-            target.TypedSet.AddAll(new[] {"foo", "bar", "baz"});
-        }
-
-        public override void because()
-        {
-            sut.CheckValue(target);
-        }
-
-        [Test]
-        public void should_succeed()
-        {
-            thrown_exception.ShouldBeNull();
-        }
-    }
-
-    [TestFixture]
-    public class When_the_checked_set_is_equal_to_the_expected_list : With_initialized_list
-    {
-        public override void establish_context()
-        {
-            property = ReflectionHelper.GetAccessor((Expression<Func<ListEntity, IEnumerable>>)(x => x.Set));
-            target = new ListEntity();
-
-            sut = new List<ListEntity, string>(property, new[] {"foo", "bar", "baz"});
-
-            target.Set.AddAll(new[] {"foo", "bar", "baz"});
-        }
-
-        public override void because()
-        {
-            sut.CheckValue(target);
-        }
-
-        [Test]
-        public void should_succeed()
-        {
-            thrown_exception.ShouldBeNull();
         }
     }
 

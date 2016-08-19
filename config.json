@@ -1,0 +1,27 @@
+{
+	"framework_version": 4.0,
+	"default_version_number": "2.0.3.0",
+	"assembly_info": 
+	{
+		"version": "2.0.3.0",
+		"title": "FluentNHibernate"
+	},
+	"build": 
+	{
+		"nh_precompiler_switch": "4.x",
+		"msbuild_runtime": "v4.0"
+	},
+	"tests": 
+	{
+		"nunit_framework_runtime": "net-4.0",
+		"mspec_exec_suffix": "-clr4"
+	},
+	"nuspec":
+	{
+		"id": "FluentNHibernate",
+		"version": "2.0.3.0",
+		"title": "FluentNHibernate",
+		"nhibernate_version_interval": "4.0",
+		"binaries_folder": "net40"
+	}
+}

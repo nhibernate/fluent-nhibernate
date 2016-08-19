@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using FluentNHibernate.Data;
-using Iesi.Collections.Generic;
 
 namespace FluentNHibernate.Testing.DomainModel
 {
@@ -12,7 +11,7 @@ namespace FluentNHibernate.Testing.DomainModel
 
         public Artist()
         {
-            Albums = new HashedSet<Album>();
+            Albums = new HashSet<Album>();
         }
     }
 
@@ -43,8 +42,8 @@ namespace FluentNHibernate.Testing.DomainModel
 
         public Album()
         {
-            Tracks = new HashedSet<Track>();
-            Tags = new HashedSet<Tag>();
+            Tracks = new HashSet<Track>();
+            Tags =   new HashSet<Tag>();
         }
     }
 

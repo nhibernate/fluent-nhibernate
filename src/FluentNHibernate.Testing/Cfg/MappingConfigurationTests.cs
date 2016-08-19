@@ -1,4 +1,5 @@
 using System.Linq;
+using FakeItEasy;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
@@ -22,7 +23,7 @@ namespace FluentNHibernate.Testing.Cfg
         [SetUp]
         public void CreateMappingConfiguration()
         {
-            logger = Stub<IDiagnosticLogger>.Create();
+            logger = A.Fake<IDiagnosticLogger>();
             cfg = new Configuration();
 
             SQLiteConfiguration.Standard

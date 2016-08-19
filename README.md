@@ -1,4 +1,4 @@
-<img src="http://fluentnhibernate.org/images/logo.png" alt="Fluent NHibernate - Fluent mapping for your model" />
+<img src="http://i43.tinypic.com/2610uf8.png" border="0" alt="Fluent NHibernate - Fluent mapping for your model">
 =============================================
 
 Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate. *Get your fluent on.*
@@ -8,6 +8,7 @@ Getting started
 ---------------------------------------------
 
 * Read the [introduction](https://github.com/jagregory/fluent-nhibernate/wiki/Getting-started).
+* Get latest binaries from NuGet (we support both [.NET 4.0 with NHibernate 4.x](https://www.nuget.org/packages/FluentNHibernate) and [.NET 3.5 with NHibernate 3 if you like it vintage] (https://www.nuget.org/packages/FluentNHibernate.Net35))
 * Create your [first project](https://github.com/jagregory/fluent-nhibernate/wiki/Getting-started#wiki-yourfirstproject).
 
 
@@ -15,6 +16,11 @@ Further reading
 ---------------------------------------------
 
 Once you've followed the above, you can compare our [auto mapping](https://github.com/jagregory/fluent-nhibernate/wiki/Auto-mapping) to our [fluent interface](https://github.com/jagregory/fluent-nhibernate/wiki/Fluent-mapping) to see which suits your application, read through our [API documentation](https://github.com/jagregory/fluent-nhibernate/wiki/Fluent-configuration), or just see what's available for reading in our [wiki](https://github.com/jagregory/fluent-nhibernate/wiki).
+
+
+Building
+---------------------------------------------
+Follow the instructions from the [wiki page](https://github.com/jagregory/fluent-nhibernate/wiki/Building) to build the project.
 
 
 Contributors
@@ -26,4 +32,6 @@ Fluent NHibernate wouldn't be possible without the time and effort of its contri
 
 Thanks goes to [Jeremy Miller](http://codebetter.com/blogs/jeremy.miller) for the original idea and implementation.
     
-Fluent NHibernate is &copy; 2008-2011 [James Gregory](http://jagregory.com) and contributors under the [BSD license](fluent-nhibernate/blob/master/LICENSE.txt)
+Fluent NHibernate is &copy; 2008-2015 [James Gregory](http://jagregory.com) and contributors under the [BSD license](fluent-nhibernate/blob/master/LICENSE.txt)
+
+<a href="http://ndepend.com"><img src="http://i43.tinypic.com/295tpq8.png" alt="Powered by NDepend"></a>

@@ -8,13 +8,14 @@ namespace FluentNHibernate.Conventions.Instances
     public interface IGeneratorInstance : IGeneratorInspector
     {
         void Increment();
-        void Increment(Action<ParamBuilder> paramValue);
+        void Increment(Action<ParamBuilder> paramValues);
         void Identity();
-        void Identity(Action<ParamBuilder> paramValue);
+        void Identity(Action<ParamBuilder> paramValues);
         void Sequence(string sequenceName);
         void Sequence(string sequenceName, Action<ParamBuilder> paramValues);
-        void HiLo(string talbe, string column, string maxLo);
-        void HiLo(string talbe, string column, string maxLo, Action<ParamBuilder> paramValues);
+        void HiLo(string table, string column, string maxLo, string where);
+        void HiLo(string table, string column, string maxLo);
+        void HiLo(string table, string column, string maxLo, Action<ParamBuilder> paramValues);
         void HiLo(string maxLo);
         void HiLo(string maxLo, Action<ParamBuilder> paramValues);
         void SeqHiLo(string sequence, string maxLo);
@@ -31,6 +32,8 @@ namespace FluentNHibernate.Conventions.Instances
         void Assigned(Action<ParamBuilder> paramValues);
         void Native();
         void Native(Action<ParamBuilder> paramValues);
+        void Native(string sequenceName);
+        void Native(string sequenceName, Action<ParamBuilder> paramValues);
         void Foreign(string property);
         void Foreign(string property, Action<ParamBuilder> paramValues);
         void Custom<T>() where T : IIdentifierGenerator;
@@ -39,7 +42,15 @@ namespace FluentNHibernate.Conventions.Instances
         void Custom<T>(Action<ParamBuilder> paramValues) where T : IIdentifierGenerator;
         void Custom(Type generator, Action<ParamBuilder> paramValues);
         void Custom(string generator, Action<ParamBuilder> paramValues);
-        void Native(string sequenceName);
-        void Native(string sequenceName, Action<ParamBuilder> paramValues);
+        void GuidNative();
+        void GuidNative(Action<ParamBuilder> paramValues);
+        void Select();
+        void Select(Action<ParamBuilder> paramValues);
+        void SequenceIdentity();
+        void SequenceIdentity(string sequence);
+        void SequenceIdentity(Action<ParamBuilder> paramValues);
+        void SequenceIdentity(string sequence, Action<ParamBuilder> paramValues);
+        void TriggerIdentity();
+        void TriggerIdentity(Action<ParamBuilder> paramValues);
     }
 }

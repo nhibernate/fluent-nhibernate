@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Automapping.Steps;
 using FluentNHibernate.Conventions;
@@ -20,7 +21,8 @@ namespace FluentNHibernate.Automapping
             return !type.ClosesInterface(typeof(IAutoMappingOverride<>)) &&
                 !type.HasInterface(typeof(IMappingProvider)) &&
                 !type.IsNestedPrivate && 
-                type.IsClass;
+            	!type.IsDefined(typeof(CompilerGeneratedAttribute), false)
+                && type.IsClass;
         }
 
         public virtual bool IsId(Member member)

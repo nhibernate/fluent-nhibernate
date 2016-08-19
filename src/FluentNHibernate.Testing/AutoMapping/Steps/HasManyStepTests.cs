@@ -7,7 +7,6 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils.Reflection;
-using Iesi.Collections.Generic;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.AutoMapping.Steps

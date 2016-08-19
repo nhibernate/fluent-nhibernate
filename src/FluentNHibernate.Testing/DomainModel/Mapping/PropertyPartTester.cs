@@ -441,6 +441,18 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/property").HasAttribute("update", "false");
         }
 
+        [Test]
+        public void MapNestedGeneric()
+        {
+            new MappingTester<OuterTarget<String>.NestedTarget>()
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.Map(x => x.Value);
+                })
+                .Element("class").HasAttribute("table", "`NestedTarget_String`");
+        }
+
         #region Custom IUserType impl for testing
         public class CustomTypeForTesting : IUserType
         {
@@ -607,6 +619,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
     {
         public PropertyTarget MyParent { get; set; }
         public object Name { get; set; }
+    }
+
+    class OuterTarget<T>
+    {
+        public class NestedTarget
+        {
+            public virtual int Id { get; set; }
+            public virtual T Value { get; set; }
+        }
     }
 
     public class FakePropertyAccessor : IPropertyAccessor

@@ -205,9 +205,17 @@ namespace FluentNHibernate.Automapping
 
         private void AddMapping(Type type)
         {
-            log.BeginAutomappingType(type);
-
             Type typeToMap = GetTypeToMap(type);
+
+            if (typeToMap != type)
+            {
+                log.BeginAutomappingType(type);
+                var derivedMapping = autoMapper.Map(type, mappingTypes);
+
+                Add(new PassThroughMappingProvider(derivedMapping));
+            }
+
+            log.BeginAutomappingType(typeToMap);
             var mapping = autoMapper.Map(typeToMap, mappingTypes);
 
             Add(new PassThroughMappingProvider(mapping));
@@ -253,7 +261,7 @@ namespace FluentNHibernate.Automapping
                 return false; // skipped because we don't want to map components as entities
             }
             if (type == typeof(object))
-                return false; // object!
+                return false;
 
             return true;
         }

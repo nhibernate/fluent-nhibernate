@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Linq.Expressions;
+using FakeItEasy;
 using FluentNHibernate.Testing.Values;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.Testing.Values
 {
@@ -200,14 +200,15 @@ namespace FluentNHibernate.Testing.Testing.Values
             base.establish_context();
             target.GetterAndSetter = "expected";
 
-            sut.EntityEqualityComparer = MockRepository.GenerateStub<IEqualityComparer>();
-            sut.EntityEqualityComparer.Stub(x => x.Equals("expected", "expected")).Return(true);
+            sut.EntityEqualityComparer = A.Fake<IEqualityComparer>();
+            A.CallTo(() => sut.EntityEqualityComparer.Equals("expected", "expected")).Returns(true);
         }
 
         [Test]
         public void should_perform_the_check_with_the_custom_equality_comparer()
         {
-            sut.EntityEqualityComparer.AssertWasCalled(x => x.Equals("expected", "expected"));
+            A.CallTo(() => sut.EntityEqualityComparer.Equals("expected", "expected"))
+                .MustHaveHappened();
         }
     }
 
@@ -246,15 +247,16 @@ namespace FluentNHibernate.Testing.Testing.Values
         public override void establish_context()
         {
             base.establish_context();
-            sut.EntityEqualityComparer = MockRepository.GenerateStub<IEqualityComparer>();
-
-            sut.EntityEqualityComparer.Stub(x => x.Equals("expected", "actual")).Return(false);
+            sut.EntityEqualityComparer = A.Fake<IEqualityComparer>();
+            A.CallTo(() => sut.EntityEqualityComparer.Equals("expected", "actual"))
+                .Returns(false);
         }
 
         [Test]
         public void should_perform_the_check_with_the_custom_equality_comparer()
         {
-            sut.EntityEqualityComparer.AssertWasCalled(x => x.Equals("expected", "actual"));
+            A.CallTo(() => sut.EntityEqualityComparer.Equals("expected", "actual"))
+                .MustHaveHappened();
         }
     }
 
@@ -269,11 +271,10 @@ namespace FluentNHibernate.Testing.Testing.Values
 
             exception = new InvalidOperationException();
 
-            sut.EntityEqualityComparer = MockRepository.GenerateStub<IEqualityComparer>();
-            sut.EntityEqualityComparer
-                .Stub(x => x.Equals(null, null))
-                .IgnoreArguments()
-                .Throw(exception);
+			sut.EntityEqualityComparer = A.Fake<IEqualityComparer>();
+			A.CallTo (() => sut.EntityEqualityComparer.Equals (null, null))
+                .WithAnyArguments()
+				.Throws (exception);
         }
 
         public override void because()

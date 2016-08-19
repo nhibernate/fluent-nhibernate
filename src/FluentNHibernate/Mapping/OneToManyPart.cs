@@ -31,7 +31,11 @@ namespace FluentNHibernate.Mapping
             childType = collectionType;
 
             keyColumns = new ColumnMappingCollection<OneToManyPart<TChild>>(this);
-            cascade = new CollectionCascadeExpression<OneToManyPart<TChild>>(this, value => collectionAttributes.Set("Cascade", Layer.UserSupplied, value));
+            cascade = new CollectionCascadeExpression<OneToManyPart<TChild>>(this, value =>
+            {
+                var current = collectionAttributes.Get("Cascade") as string;
+                collectionAttributes.Set("Cascade", Layer.UserSupplied, current == null ? value : string.Format("{0},{1}", current, value));
+            });
             notFound = new NotFoundExpression<OneToManyPart<TChild>>(this, value => relationshipAttributes.Set("NotFound", Layer.UserSupplied, value));
 
             collectionAttributes.Set("Name", Layer.Defaults, member.Name);

@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>FluentNHibernate</id>
+    <title>FluentNHibernate</title>
+    <version>2.0.3.0</version>
+    <authors>James Gregory and contributors</authors>
+    <owners>jagregory, chester89</owners>
+    <licenseUrl>http://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE.txt</licenseUrl>
+    <projectUrl>http://fluentnhibernate.org</projectUrl>
+  	<dependencies>
+  		<dependency id="NHibernate" version="4.0" />
+  	</dependencies>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate.</description>
+    <tags>orm dal nhibernate conventions</tags>
+    <language>en-US</language>
+  </metadata>
+  <files>
+		<file src="..\src\FluentNHibernate\bin\Release\FluentNHibernate.*" target="lib\net40" />          
+  </files>
+</package>

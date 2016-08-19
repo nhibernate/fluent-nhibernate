@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using FluentNHibernate.Automapping.TestFixtures.ComponentTypes;
 using FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes;
 using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.Conventions;
-using Iesi.Collections.Generic;
 using NHibernate;
 using NHibernate.Engine;
 using NHibernate.SqlTypes;
@@ -154,6 +153,8 @@ namespace FluentNHibernate.Automapping.TestFixtures
         public int Id { get; set; }
         public Custom Custom { get; set; }
     }
+
+    
 
     public class ClassWithCompositeUserType
     {
@@ -467,5 +468,60 @@ namespace FluentNHibernate.Automapping.TestFixtures.SuperTypes
         public virtual IList<ExampleClass> Examples {get; set;}
     }
 
+    public abstract class Base1
+    {
+        public virtual int Id { get; protected set; }
+        public abstract void Foo(int x);
+    }
 
+    public class Derived1 : Base1
+    {
+        public virtual Decimal Rate { get; set; }
+        public override void Foo(int x)
+        {
+        }
+
+        public string GetSomething()
+        {
+            return Environment.NewLine;
+        }
+    }
+
+    public class SecondLevel : Derived1
+    {
+        public virtual Double SecondRate { get; set; }
+    }
+
+    public class ThirdLevel : SecondLevel
+    {
+        public virtual Boolean Flag { get; set; }
+        public virtual TimeSpan Version { get; set; }
+    }
+
+    public class FourthLevel: ThirdLevel
+    {
+        public PublisherType publisherType { get; set; }
+        public ToOne One { get; set; }
+        public IList<ManyToMany> Many { get; set; }
+    }
+
+    public class ToOne
+    {
+        public virtual int Id { get; protected set; }
+        public virtual string Name { get; set; }
+    }
+
+    public class ManyToMany
+    {
+        public virtual int Id { get; protected set; }
+        public virtual Decimal Value { get; set; }
+        public IList<FourthLevel> Levels { get; set; }
+    }
+
+    public enum PublisherType
+    {
+        Online, 
+        Offline,
+        Mixed
+    }
 }

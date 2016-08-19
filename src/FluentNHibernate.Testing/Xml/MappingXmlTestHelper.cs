@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using NUnit.Framework;
-using System.Xml.Linq;
 
 namespace FluentNHibernate.Testing.Xml
 {

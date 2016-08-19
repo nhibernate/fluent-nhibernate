@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using FakeItEasy;
 using FluentNHibernate.Testing.Testing.Values;
 using FluentNHibernate.Testing.Values;
 using NHibernate;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentNHibernate.Testing.Testing
 {
@@ -39,10 +39,10 @@ namespace FluentNHibernate.Testing.Testing
 
         public override void establish_context()
         {
-            session = MockRepository.GenerateStub<ISession>();
-            session.Stub(x => x.BeginTransaction()).Return(MockRepository.GenerateStub<ITransaction>());
+            session = A.Fake<ISession>();
+            A.CallTo(() => session.BeginTransaction()).Returns(A.Fake<ITransaction>());
 
-            comparer = MockRepository.GenerateStub<IEqualityComparer>();
+            comparer = A.Fake<IEqualityComparer>();
             sut = new InspectablePersistenceSpecification<T>(session, comparer);
         }
     }
@@ -109,7 +109,7 @@ namespace FluentNHibernate.Testing.Testing
         public override void establish_context()
         {
             base.establish_context();
-            propertySetter = MockRepository.GenerateStub<Action<PropertyEntity, string>>();
+            propertySetter = A.Fake<Action<PropertyEntity, string>>();
         }
 
         public override void because()
@@ -156,7 +156,7 @@ namespace FluentNHibernate.Testing.Testing
         [Test]
         public void should_invoke_the_custom_setter()
         {
-            propertySetter.AssertWasCalled(x => x.Invoke(entity, "expected"));
+            A.CallTo(() => propertySetter.Invoke(entity, "expected")).MustHaveHappened();
         }
     }
 
@@ -195,7 +195,7 @@ namespace FluentNHibernate.Testing.Testing
         public override void establish_context()
         {
             base.establish_context();
-            propertySetter = MockRepository.GenerateStub<Action<ReferenceEntity, OtherEntity>>();
+            propertySetter = A.Fake<Action<ReferenceEntity, OtherEntity>>();
         }
 
         public override void because()
@@ -244,7 +244,7 @@ namespace FluentNHibernate.Testing.Testing
         [Test]
         public void should_invoke_the_custom_setter()
         {
-            propertySetter.AssertWasCalled(x => x.Invoke(entity, referenced));
+            A.CallTo(() => propertySetter.Invoke(entity, referenced)).MustHaveHappened();
         }
     }
 
@@ -313,7 +313,7 @@ namespace FluentNHibernate.Testing.Testing
         public override void establish_context()
         {
             base.establish_context();
-            listSetter = MockRepository.GenerateStub<Action<ReferenceEntity, OtherEntity>>();
+            listSetter = A.Fake<Action<ReferenceEntity, OtherEntity>>();
         }
 
         public override void because()
@@ -350,7 +350,7 @@ namespace FluentNHibernate.Testing.Testing
         public override void establish_context()
         {
             base.establish_context();
-            listSetter = MockRepository.GenerateStub<Action<ReferenceEntity, IEnumerable<OtherEntity>>>();
+            listSetter = A.Fake<Action<ReferenceEntity, IEnumerable<OtherEntity>>>();
         }
 
         public override void because()
@@ -399,7 +399,7 @@ namespace FluentNHibernate.Testing.Testing
         [Test]
         public void should_invoke_the_custom_setter()
         {
-            listSetter.AssertWasCalled(x => x.Invoke(entity, referenced));
+            A.CallTo(() => listSetter.Invoke(entity, referenced)).MustHaveHappened();
         }
     }
 
@@ -411,7 +411,7 @@ namespace FluentNHibernate.Testing.Testing
         public override void establish_context()
         {
             base.establish_context();
-            listItemSetter = MockRepository.GenerateStub<Action<ReferenceEntity, OtherEntity>>();
+            listItemSetter = A.Fake<Action<ReferenceEntity, OtherEntity>>();
         }
 
         public override void because()
@@ -460,8 +460,8 @@ namespace FluentNHibernate.Testing.Testing
         [Test]
         public void should_invoke_the_custom_setter_for_each_item()
         {
-            listItemSetter.AssertWasCalled(x => x.Invoke(entity, referenced[0]));
-            listItemSetter.AssertWasCalled(x => x.Invoke(entity, referenced[1]));
+            A.CallTo(() => listItemSetter.Invoke(entity, referenced[0])).MustHaveHappened();
+            A.CallTo(() => listItemSetter.Invoke(entity, referenced[1])).MustHaveHappened();
         }
     }
 
@@ -500,7 +500,7 @@ namespace FluentNHibernate.Testing.Testing
         public override void establish_context()
         {
             base.establish_context();
-            listSetter = MockRepository.GenerateStub<Action<ReferenceEntity, IEnumerable<OtherEntity>>>();
+            listSetter = A.Fake<Action<ReferenceEntity, IEnumerable<OtherEntity>>>();
         }
 
         public override void because()
@@ -549,7 +549,7 @@ namespace FluentNHibernate.Testing.Testing
         [Test]
         public void should_invoke_the_custom_setter()
         {
-            listSetter.AssertWasCalled(x => x.Invoke(entity, referenced));
+            A.CallTo(() => listSetter.Invoke(entity, referenced)).MustHaveHappened();
         }
     }
 
@@ -561,7 +561,7 @@ namespace FluentNHibernate.Testing.Testing
         public override void establish_context()
         {
             base.establish_context();
-            listItemSetter = MockRepository.GenerateStub<Action<ReferenceEntity, OtherEntity>>();
+            listItemSetter = A.Fake<Action<ReferenceEntity, OtherEntity>>();
         }
 
         public override void because()
@@ -610,8 +610,8 @@ namespace FluentNHibernate.Testing.Testing
         [Test]
         public void should_invoke_the_custom_setter_for_each_item()
         {
-            listItemSetter.AssertWasCalled(x => x.Invoke(entity, referenced[0]));
-            listItemSetter.AssertWasCalled(x => x.Invoke(entity, referenced[1]));
+            A.CallTo(() => listItemSetter.Invoke(entity, referenced[0])).MustHaveHappened();
+            A.CallTo(() => listItemSetter.Invoke(entity, referenced[1])).MustHaveHappened();
         }
     }
 }

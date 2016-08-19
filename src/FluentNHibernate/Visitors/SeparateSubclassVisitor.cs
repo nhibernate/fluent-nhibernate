@@ -9,9 +9,9 @@ namespace FluentNHibernate.Visitors
 {
     public class SeparateSubclassVisitor : DefaultMappingModelVisitor
     {
-        private readonly IList<IIndeterminateSubclassMappingProvider> subclassProviders;
+        private readonly IIndeterminateSubclassMappingProviderCollection subclassProviders;
 
-        public SeparateSubclassVisitor(IList<IIndeterminateSubclassMappingProvider> subclassProviders)
+        public SeparateSubclassVisitor(IIndeterminateSubclassMappingProviderCollection subclassProviders)
         {
             this.subclassProviders = subclassProviders;
         }
@@ -65,9 +65,9 @@ namespace FluentNHibernate.Visitors
             return SubclassType.Subclass;
         }
 
-        private bool IsMapped(Type type, IEnumerable<IIndeterminateSubclassMappingProvider> providers)
+        private bool IsMapped(Type type, IIndeterminateSubclassMappingProviderCollection providers)
         {
-            return providers.Any(x => x.EntityType == type);
+            return providers.IsTypeMapped(type);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace FluentNHibernate.Visitors
                 var subclassType = subclassProvider.EntityType;
                 var level = 0;
 
-                bool implOfParent = parentType.IsInterface
+                bool implOfParent = (parentType.IsInterface || subclassType.IsInterface)
                     ? DistanceFromParentInterface(parentType, subclassType, ref level)
                     : DistanceFromParentBase(parentType, subclassType.BaseType, ref level);
 

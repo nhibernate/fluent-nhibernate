@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
 using NHibernate;
 using System.Collections;
 using System.Drawing;
@@ -111,15 +111,15 @@ namespace FluentNHibernate.Testing.Testing
                 }
             };
 
-            transaction = MockRepository.GenerateStub<ITransaction>();
+            transaction = A.Fake<ITransaction>();
 
-            session = MockRepository.GenerateStub<ISession>();
-            session.Stub(s => s.BeginTransaction()).Return(transaction);
-            session.Stub(s => s.Get<Cat>(null)).IgnoreArguments().Return(identicalCat);
-            session.Stub(s => s.GetIdentifier(cat)).Return(cat.Id);
+            session = A.Fake<ISession>();
+            A.CallTo(() => session.BeginTransaction()).Returns(transaction);
+            A.CallTo(() => session.Get<Cat>(null)).WithAnyArguments().Returns(identicalCat);
+            A.CallTo(() => session.GetIdentifier(cat)).Returns(cat.Id);
 
-            sessionSource = MockRepository.GenerateStub<ISessionSource>();
-            sessionSource.Stub(ss => ss.CreateSession()).Return(session);
+            sessionSource = A.Fake<ISessionSource>();
+            A.CallTo(() => sessionSource.CreateSession()).Returns(session);
 
             spec = new PersistenceSpecification<Cat>(sessionSource, new TestComparer());
         }
@@ -169,15 +169,15 @@ namespace FluentNHibernate.Testing.Testing
         [Test]
         public void Comparing_two_properties_should_use_the_specified_property_IEqualityComparer()
         {
-            spec.CheckProperty(x => x.Picture, cat.Picture, new DummyBitmapComparer()).VerifyTheMappings ();
+            spec.CheckProperty(x => x.Picture, cat.Picture, new DummyBitmapComparer()).VerifyTheMappings();
         }
 
-    	[Test]
-    	public void VerifyTheMappings_returns_instance()
-    	{
-			var cat = spec.CheckProperty(x => x.FirstKitten, this.cat.FirstKitten).VerifyTheMappings();
-			cat.ShouldNotBeNull();
-    	}
+        [Test]
+        public void VerifyTheMappings_returns_instance()
+        {
+            var cat = spec.CheckProperty(x => x.FirstKitten, this.cat.FirstKitten).VerifyTheMappings();
+            cat.ShouldNotBeNull();
+        }
 
         [Test]
         public void Comparing_reference_should_use_the_specified_property_comparisons()
@@ -198,12 +198,12 @@ namespace FluentNHibernate.Testing.Testing
         [SetUp]
         public void Setup()
         {
-            var transaction = MockRepository.GenerateStub<ITransaction>();
-            var session = MockRepository.GenerateStub<ISession>();
-            session.Stub(s => s.BeginTransaction()).Return(transaction);
+            var transaction = A.Fake<ITransaction>();
+            var session = A.Fake<ISession>();
+            A.CallTo(() => session.BeginTransaction()).Returns(transaction);
 
-            sessionSource = MockRepository.GenerateStub<ISessionSource>();
-            sessionSource.Stub(ss => ss.CreateSession()).Return(session);
+            sessionSource = A.Fake<ISessionSource>();
+            A.CallTo(() => sessionSource.CreateSession()).Returns(session);
         }
 
         [Test]

@@ -292,11 +292,16 @@ namespace FluentNHibernate.Mapping
             attributes.Set("DiscriminatorValue", Layer.Defaults, typeof(T).Name);
 
             // TODO: un-hardcode this
-            var key = new KeyMapping();
-            key.AddColumn(Layer.Defaults, new ColumnMapping(typeof(T).BaseType.Name + "_id"));
+            Type baseType = typeof(T).BaseType
+                ?? attributes.Get("Extends") as Type;
+            if (baseType != null)
+            {
+                var key = new KeyMapping();
+                key.AddColumn(Layer.Defaults, new ColumnMapping(baseType.Name + "_id"));
+                attributes.Set("Key", Layer.Defaults, key);
+            }
 
             attributes.Set("TableName", Layer.Defaults, GetDefaultTableName());
-            attributes.Set("Key", Layer.Defaults, key);
 
             // TODO: this is nasty, we should find a better way
             mapping.OverrideAttributes(attributes.Clone());

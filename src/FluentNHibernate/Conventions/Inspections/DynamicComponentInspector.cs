@@ -7,9 +7,9 @@ namespace FluentNHibernate.Conventions.Inspections
     public class DynamicComponentInspector : ComponentBaseInspector, IDynamicComponentInspector
     {
         private readonly InspectorModelMapper<IDynamicComponentInspector, ComponentMapping> mappedProperties = new InspectorModelMapper<IDynamicComponentInspector, ComponentMapping>();
-        private readonly ComponentMapping mapping;
+        private readonly IComponentMapping mapping;
 
-        public DynamicComponentInspector(ComponentMapping mapping)
+        public DynamicComponentInspector(IComponentMapping mapping)
             : base(mapping)
         {
             this.mapping = mapping;

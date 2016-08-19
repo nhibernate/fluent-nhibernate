@@ -13,6 +13,7 @@
           </td>
         </tr>
       </table>
+      <example content="field.Example" />
     </div>
   </div>
 </if>

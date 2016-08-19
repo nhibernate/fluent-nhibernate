@@ -18,8 +18,14 @@ namespace FluentNHibernate.Conventions
         public virtual void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
         {
             var userType = Activator.CreateInstance<TUserType>();
-
-            criteria.Expect(x => x.Type == userType.ReturnedType);
+            var returnedType = userType.ReturnedType;
+            if (returnedType.IsValueType)
+            {
+                var nullableReturnedType = typeof(Nullable<>).MakeGenericType(returnedType);
+                criteria.Expect(x => x.Type == returnedType || x.Type == nullableReturnedType);
+            }
+            else
+                criteria.Expect(x => x.Type == returnedType);
         }
 
         public virtual void Apply(IPropertyInstance instance)

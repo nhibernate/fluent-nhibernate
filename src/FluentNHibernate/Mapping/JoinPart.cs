@@ -129,9 +129,10 @@ namespace FluentNHibernate.Mapping
         /// Specify the table name
         /// </summary>
         /// <param name="tableName">Table name</param>
-        public void Table(string tableName)
+        public JoinPart<T> Table(string tableName)
         {
             attributes.Set("TableName", Layer.UserSupplied, tableName);
+            return this;
         }
 
         JoinMapping IJoinMappingProvider.GetJoinMapping()
@@ -169,6 +170,9 @@ namespace FluentNHibernate.Mapping
 
             foreach (var collection in providers.Collections)
                 mapping.AddCollection(collection.GetCollectionMapping());
+
+            foreach (var storedProcedure in providers.StoredProcedures)
+                mapping.AddStoredProcedure(storedProcedure.GetStoredProcedureMapping());
 
             return mapping;
         }

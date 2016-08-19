@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version='1.0' encoding='UTF-8'?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -7,32 +7,16 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F5DC3221-827E-4CB4-B61C-5F50EB4D32EA}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FluentNHibernate.Testing</RootNamespace>
     <AssemblyName>FluentNHibernate.Testing</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\FluentKey.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,41 +38,31 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Release\FluentNHibernate.Testing.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Iesi.Collections, Version=1.0.0.3, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\NHibernate\Iesi.Collections.dll</HintPath>
+    <Reference Include="FakeItEasy">
+      <HintPath>..\packages\FakeItEasy.1.15.0\lib\net40\FakeItEasy.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=2.0.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\NHibernate\NHibernate.dll</HintPath>
+    <Reference Include="Machine.Specifications">
+      <HintPath>..\packages\Machine.Specifications.0.5.15\lib\net40\Machine.Specifications.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\nunit\nunit.framework.dll</HintPath>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.4.0.0.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.5.0.1, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\rhino\Rhino.Mocks.dll</HintPath>
+      <HintPath>..\packages\NUnit.2.5.7.10213\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.SQLite, Version=1.0.51.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\sqlite\System.Data.SQLite.dll</HintPath>
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\packages\System.Data.SQLite.1.0.66.1\lib\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web.Extensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -101,6 +75,9 @@
     <Compile Include="AutoMapping\Apm\AlterationTests.cs" />
     <Compile Include="AutoMapping\Apm\ConcreteBaseClassTests.cs" />
     <Compile Include="AutoMapping\Apm\Conventions\VersionConventionTests.cs" />
+    <Compile Include="AutoMapping\DefaultAutoMappingConfigurationTests.cs" />
+    <Compile Include="AutoMapping\Apm\IdentityTests.cs" />
+    <Compile Include="AutoMapping\InheritanceTests.cs" />
     <Compile Include="AutoMapping\Overrides\ReferenceComponentOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\AutoMappingOverrideAlterationTests.cs" />
     <Compile Include="AutoMapping\Apm\CacheOverrideTests.cs" />
@@ -120,7 +97,10 @@
     <Compile Include="AutoMapping\Overrides\ClassMappingOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\CompositeIdOverrides.cs" />
     <Compile Include="AutoMapping\Overrides\HibernateMappingOverrides.cs" />
+    <Compile Include="Cfg\Db\OracleManagedDataClientConfigurationTester.cs" />
+    <Compile Include="Cfg\Db\SqlAnywhereConfigurationTester.cs" />
     <Compile Include="DomainModel\Mapping\ManyToManySelfReferencedInverseIntegrationTester.cs" />
+    <Compile Include="DomainModel\Mapping\MultipleKeyColumnsTester.cs" />
     <Compile Include="DomainModel\MemberAccessResolverTests.cs" />
     <Compile Include="DomainModel\MemberBackingFieldTests.cs" />
     <Compile Include="DomainModel\NamingTests.cs" />
@@ -131,6 +111,8 @@
     <Compile Include="Fixtures\AutoMappingAlterations\AbstractOverrideImplementation.cs" />
     <Compile Include="Fixtures\AutoMappingAlterations\Model\Qux.cs" />
     <Compile Include="Cfg\Db\IngresConfigurationTester.cs" />
+    <Compile Include="FluentInterfaceTests\SubclassMapWithUserTypeTests.cs" />
+    <Compile Include="FluentInterfaceTests\TablePerHierarchyTests.cs" />
     <Compile Include="StubTypeSource.cs" />
     <Compile Include="AutoMapping\TestFixtures.cs" />
     <Compile Include="Cfg\Db\DB2ConfigurationTester.cs" />
@@ -407,14 +389,14 @@
     <Compile Include="Testing\Values\ReferencePropertySpecs.cs" />
     <Compile Include="Testing\Values\PropertySpecs.cs" />
     <Compile Include="Testing\Values\Entities.cs" />
-    <Compile Include="Utils\Mock.cs" />
     <Compile Include="Utils\ReflectionHelperTests.cs" />
     <Compile Include="Testing\XmlWriterTestHelper.cs" />
-    <Compile Include="Utils\Stub.cs" />
     <Compile Include="Utils\TypeReferenceEqualityTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Visitors\ComponentColumnPrefixVisitorSpecs.cs" />
     <Compile Include="Visitors\ComponentReferenceResolutionVisitorSpecs.cs" />
+    <Compile Include="Visitors\RelationshipPairingVisitorSpec.cs" />
+    <Compile Include="Visitors\RelationshipPairingVisitorSpecSupportClasses.cs" />
+    <Compile Include="Visitors\RelationshipPairingSpec.cs" />
     <Compile Include="Xml\MappingXmlTestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -459,6 +441,7 @@
     <Compile Include="MappingModel\Output\XmlNaturalIdWriterTester.cs" />
     <Compile Include="MappingModel\SortingTests.cs" />
     <Compile Include="Utils\TypeReferenceEnumTests.cs" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
