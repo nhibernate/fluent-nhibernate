@@ -294,8 +294,7 @@ namespace FluentNHibernate.Mapping
             // TODO: un-hardcode this
             Type baseType = typeof(T).BaseType
                 ?? attributes.Get("Extends") as Type;
-            if (baseType != null)
-            {
+            if (baseType != null) {
                 var key = new KeyMapping();
                 key.AddColumn(Layer.Defaults, new ColumnMapping(baseType.Name + "_id"));
                 attributes.Set("Key", Layer.Defaults, key);
@@ -309,24 +308,17 @@ namespace FluentNHibernate.Mapping
             foreach (var join in joins)
                 mapping.AddJoin(join);
 
-            foreach (var property in providers.Properties)
-                mapping.AddProperty(property.GetPropertyMapping());
 
-            foreach (var component in providers.Components)
-                mapping.AddComponent(component.GetComponentMapping());
-
-            foreach (var oneToOne in providers.OneToOnes)
-                mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
-
-            foreach (var collection in providers.Collections)
-                mapping.AddCollection(collection.GetCollectionMapping());
-
-            foreach (var reference in providers.References)
-                mapping.AddReference(reference.GetManyToOneMapping());
-
-            foreach (var any in providers.Anys)
-                mapping.AddAny(any.GetAnyMapping());
-
+            foreach (var provider in providers.SequencedMappingProviders) {
+                TypeSwitch.Do(provider,
+                    TypeSwitch.Case<IPropertyMappingProvider>(x => mapping.AddProperty(x.GetPropertyMapping())),
+                    TypeSwitch.Case<IComponentMappingProvider>(x => mapping.AddComponent(x.GetComponentMapping())),
+                    TypeSwitch.Case<IOneToOneMappingProvider>(x => mapping.AddOneToOne(x.GetOneToOneMapping())),
+                    TypeSwitch.Case<ICollectionMappingProvider>(x => mapping.AddCollection(x.GetCollectionMapping())),
+                    TypeSwitch.Case<IManyToOneMappingProvider>(x => mapping.AddReference(x.GetManyToOneMapping())),
+                    TypeSwitch.Case<IAnyMappingProvider>(x => mapping.AddAny(x.GetAnyMapping()))
+               );
+            }
             return mapping.DeepClone();
         }
 

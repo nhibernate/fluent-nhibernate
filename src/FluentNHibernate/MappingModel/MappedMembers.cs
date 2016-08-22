@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel
@@ -17,6 +18,7 @@ namespace FluentNHibernate.MappingModel
         private readonly List<JoinMapping> joins;
         private readonly List<FilterMapping> filters;
         private readonly List<StoredProcedureMapping> storedProcedures;
+        private readonly List<IMapping> sequencedMappingObject;
 
         public MappedMembers()
         {
@@ -29,6 +31,7 @@ namespace FluentNHibernate.MappingModel
             joins = new List<JoinMapping>();
             filters = new List<FilterMapping>();
             storedProcedures = new List<StoredProcedureMapping>();
+            sequencedMappingObject = new List<IMapping>();
         }
 
         public IEnumerable<PropertyMapping> Properties
@@ -91,12 +94,15 @@ namespace FluentNHibernate.MappingModel
                 throw new InvalidOperationException("Tried to add property '" + property.Name + "' when already added.");
 
             properties.Add(property);
+            sequencedMappingObject.Add(property);
         }
 
         public void AddOrReplaceProperty(PropertyMapping mapping)
         {
             properties.RemoveAll(x => x.Name == mapping.Name);
+            sequencedMappingObject.RemoveAll(x => x is PropertyMapping && ((PropertyMapping) x).Name == mapping.Name);
             properties.Add(mapping);
+            sequencedMappingObject.Add(mapping);
         }
 
         public void AddCollection(Collections.CollectionMapping collection)
@@ -105,12 +111,15 @@ namespace FluentNHibernate.MappingModel
                 throw new InvalidOperationException("Tried to add collection '" + collection.Name + "' when already added.");
 
             collections.Add(collection);
+            sequencedMappingObject.Add(collection);
         }
 
         public void AddOrReplaceCollection(Collections.CollectionMapping mapping)
         {
             collections.RemoveAll(x => x.Name == mapping.Name);
+            sequencedMappingObject.RemoveAll(x => x is Collections.CollectionMapping && ((Collections.CollectionMapping) x).Name == mapping.Name);
             collections.Add(mapping);
+            sequencedMappingObject.Add(mapping);
         }
 
         public void AddReference(ManyToOneMapping manyToOne)
@@ -119,12 +128,15 @@ namespace FluentNHibernate.MappingModel
                 throw new InvalidOperationException("Tried to add many-to-one '" + manyToOne.Name + "' when already added.");
 
             references.Add(manyToOne);
+            sequencedMappingObject.Add(manyToOne);
         }
 
         public void AddOrReplaceReference(ManyToOneMapping manyToOne)
         {
             references.RemoveAll(x => x.Name == manyToOne.Name);
+            sequencedMappingObject.RemoveAll(x => x is ManyToOneMapping && ((ManyToOneMapping) x).Name == manyToOne.Name);
             references.Add(manyToOne);
+            sequencedMappingObject.Add(manyToOne);
         }
 
         public void AddComponent(IComponentMapping componentMapping)
@@ -133,12 +145,15 @@ namespace FluentNHibernate.MappingModel
                 throw new InvalidOperationException("Tried to add component '" + componentMapping.Name + "' when already added.");
 
             components.Add(componentMapping);
+            sequencedMappingObject.Add(componentMapping);
         }
 
         public void AddOrReplaceComponent(IComponentMapping componentMapping)
         {
             components.RemoveAll(x => x.Name == componentMapping.Name);
+            sequencedMappingObject.RemoveAll(x => x is IComponentMapping && ((IComponentMapping) x).Name == componentMapping.Name);
             components.Add(componentMapping);
+            sequencedMappingObject.Add(componentMapping);
         }
 
         public void AddOneToOne(OneToOneMapping mapping)
@@ -147,12 +162,15 @@ namespace FluentNHibernate.MappingModel
                 throw new InvalidOperationException("Tried to add one-to-one '" + mapping.Name + "' when already added.");
 
             oneToOnes.Add(mapping);
+            sequencedMappingObject.Add(mapping);
         }
 
         public void AddOrReplaceOneToOne(OneToOneMapping mapping)
         {
             oneToOnes.RemoveAll(x => x.Name == mapping.Name);
+            sequencedMappingObject.RemoveAll(x => x is OneToOneMapping && ((OneToOneMapping) x).Name == mapping.Name);
             oneToOnes.Add(mapping);
+            sequencedMappingObject.Add(mapping);
         }
 
         public void AddAny(AnyMapping mapping)
@@ -161,12 +179,15 @@ namespace FluentNHibernate.MappingModel
                 throw new InvalidOperationException("Tried to add any '" + mapping.Name + "' when already added.");
 
             anys.Add(mapping);
+            sequencedMappingObject.Add(mapping);
         }
 
         public void AddOrReplaceAny(AnyMapping mapping)
         {
             anys.RemoveAll(x => x.Name == mapping.Name);
+            sequencedMappingObject.RemoveAll(x => x is AnyMapping && ((AnyMapping)x).Name == mapping.Name);
             anys.Add(mapping);
+            sequencedMappingObject.Add(mapping);
         }
 
         public void AddJoin(JoinMapping mapping)
@@ -175,6 +196,7 @@ namespace FluentNHibernate.MappingModel
                 throw new InvalidOperationException("Tried to add join to table '" + mapping.TableName + "' when already added.");
 
             joins.Add(mapping);
+            sequencedMappingObject.Add(mapping);
         }
 
         public void AddFilter(FilterMapping mapping)
@@ -183,36 +205,49 @@ namespace FluentNHibernate.MappingModel
                 throw new InvalidOperationException("Tried to add filter with name '" + mapping.Name + "' when already added.");
 
             filters.Add(mapping);
+            sequencedMappingObject.Add(mapping);
         }
 
         public virtual void AcceptVisitor(IMappingModelVisitor visitor)
         {
-            foreach (var collection in Collections)
-                visitor.Visit(collection);
+            foreach(var mapping in sequencedMappingObject)
+                TypeSwitch.Do(mapping,
+                    TypeSwitch.Case<Collections.CollectionMapping>(visitor.Visit),
+                    TypeSwitch.Case<PropertyMapping>(visitor.Visit),
+                    TypeSwitch.Case<ManyToOneMapping>(visitor.Visit),
+                    TypeSwitch.Case<IComponentMapping>(visitor.Visit),
+                    TypeSwitch.Case<OneToOneMapping>(visitor.Visit),
+                    TypeSwitch.Case<AnyMapping>(visitor.Visit),
+                    TypeSwitch.Case<JoinMapping>(visitor.Visit),
+                    TypeSwitch.Case<FilterMapping>(visitor.Visit),
+                    TypeSwitch.Case<StoredProcedureMapping>(visitor.Visit)
+                );
+            //foreach (var collection in Collections)
+            //    visitor.Visit(collection);
 
-            foreach (var property in Properties)
-                visitor.Visit(property);
+            //foreach (var property in Properties)
+            //    visitor.Visit(property);
 
-            foreach (var reference in References)
-                visitor.Visit(reference);
+            //foreach (var reference in References)
+            //    visitor.Visit(reference);
 
-            foreach (var component in Components)
-                visitor.Visit(component);
+            //foreach (var component in Components)
+            //    visitor.Visit(component);
 
-            foreach (var oneToOne in oneToOnes)
-                visitor.Visit(oneToOne);
+            //foreach (var oneToOne in oneToOnes)
+            //    visitor.Visit(oneToOne);
 
-            foreach (var any in anys)
-                visitor.Visit(any);
+            //foreach (var any in anys)
+            //    visitor.Visit(any);
 
-            foreach (var join in joins)
-                visitor.Visit(join);
+            //foreach (var join in joins)
+            //    visitor.Visit(join);
 
-            foreach (var filter in filters)
-                visitor.Visit(filter);
+            //foreach (var filter in filters)
+            //    visitor.Visit(filter);
 
-            foreach (var storedProcedure in storedProcedures)
-                visitor.Visit(storedProcedure);
+            //foreach (var storedProcedure in storedProcedures)
+            //    visitor.Visit(storedProcedure);
         }
 
         public bool IsSpecified(string property)
@@ -226,6 +261,7 @@ namespace FluentNHibernate.MappingModel
         public void AddStoredProcedure(StoredProcedureMapping mapping)
         {
             storedProcedures.Add(mapping);
+            sequencedMappingObject.Add(mapping);
         }
 
         public bool Equals(MappedMembers other)
@@ -270,3 +306,4 @@ namespace FluentNHibernate.MappingModel
 
     }
 }
+
