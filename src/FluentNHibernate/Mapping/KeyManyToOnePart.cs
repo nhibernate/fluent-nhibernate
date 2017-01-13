@@ -4,6 +4,8 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Mapping
 {
+    using System;
+
     public class KeyManyToOnePart
     {
         private readonly KeyManyToOneMapping mapping;
@@ -62,6 +64,23 @@ namespace FluentNHibernate.Mapping
         public KeyManyToOnePart EntityName(string entityName)
         {
             mapping.Set(x => x.EntityName, Layer.UserSupplied, entityName);
+            return this;
+        }
+
+        /// <summary>
+        /// Specifies the child class of this key/relationship
+        /// </summary>
+        /// <typeparam name="T">Child</typeparam>
+        public KeyManyToOnePart Class<T>() {
+            return Class(typeof(T));
+        }
+
+        /// <summary>
+        /// Specifies the child class of this key/relationship
+        /// </summary>
+        /// <param name="type">Child</param>
+        public KeyManyToOnePart Class(Type type) {
+            mapping.Set(x => x.Class, Layer.UserSupplied, new TypeReference(type));
             return this;
         }
     }
