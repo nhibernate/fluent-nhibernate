@@ -312,6 +312,8 @@ namespace FluentNHibernate
 
         internal void ImportProviders(PersistenceModel model)
         {
+            EnsureMappingsBuilt();
+
             model.classProviders.Each(x =>
             {
                 if (!classProviders.Contains(x))
