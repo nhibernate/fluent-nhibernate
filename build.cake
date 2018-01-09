@@ -182,6 +182,18 @@ Task("Create-Release-Notes")
         );
     });
 
+Task("Update-AppVeyor-BuildNumber")
+    .WithCriteria(() => parameters.IsRunningOnAppVeyor)
+    .Does(() =>
+    {
+        AppVeyor.UpdateBuildVersion(parameters.Version.SemVersion);
+    })
+    .ReportError(exception =>
+    {
+        // Via: See https://github.com/reactiveui/ReactiveUI/issues/1262
+        Warning("Build with version {0} already exists.", parameters.Version.SemVersion);
+    });    
+
 Task("Upload-AppVeyor-Artifacts")        
     .WithCriteria(() => parameters.IsRunningOnAppVeyor)
     .Does(() =>
@@ -196,8 +208,14 @@ Task("Upload-AppVeyor-Artifacts")
 Task("Release-Notes")
   .IsDependentOn("Create-Release-Notes");
 
+Task("Package")
+    .IsDependentOn("Zip-Files")
+    .IsDependentOn("Create-NuGet-Packages");  
+
 Task("AppVeyor")
-    .IsDependentOn("Upload-AppVeyor-Artifacts")        
+    .IsDependentOn("Update-AppVeyor-BuildNumber")
+    .IsDependentOn("Package")
+    .IsDependentOn("Upload-AppVeyor-Artifacts")     
     .IsDependentOn("Publish-NuGet")
     .IsDependentOn("Publish-GitHub-Release")
     .Finally(() =>
@@ -207,10 +225,6 @@ Task("AppVeyor")
             throw new Exception("An error occurred during the publishing of Cake.  All publishing tasks have been attempted.");
         }
     });
-
-Task("Package")
-    .IsDependentOn("Zip-Files")
-    .IsDependentOn("Create-NuGet-Packages");
     
 Task("Default")
     .IsDependentOn("Package");
