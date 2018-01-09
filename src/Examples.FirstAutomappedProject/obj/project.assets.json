@@ -1,0 +1,459 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.6.1": {
+      "Antlr3.Runtime/3.5.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40-client/Antlr3.Runtime.dll": {}
+        },
+        "runtime": {
+          "lib/net40-client/Antlr3.Runtime.dll": {}
+        }
+      },
+      "EntityFramework/6.2.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.ComponentModel.DataAnnotations"
+        ],
+        "compile": {
+          "lib/net45/EntityFramework.SqlServer.dll": {},
+          "lib/net45/EntityFramework.dll": {}
+        },
+        "runtime": {
+          "lib/net45/EntityFramework.SqlServer.dll": {},
+          "lib/net45/EntityFramework.dll": {}
+        }
+      },
+      "Iesi.Collections/4.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/net461/Iesi.Collections.dll": {}
+        },
+        "runtime": {
+          "lib/net461/Iesi.Collections.dll": {}
+        }
+      },
+      "NHibernate/5.0.3": {
+        "type": "package",
+        "dependencies": {
+          "Antlr3.Runtime": "[3.5.1, 4.0.0)",
+          "Iesi.Collections": "[4.0.2, 5.0.0)",
+          "Remotion.Linq": "[2.1.2, 3.0.0)",
+          "Remotion.Linq.EagerFetching": "[2.1.0, 3.0.0)"
+        },
+        "frameworkAssemblies": [
+          "System.Configuration",
+          "System.ServiceModel",
+          "System.Transactions"
+        ],
+        "compile": {
+          "lib/net461/NHibernate.dll": {}
+        },
+        "runtime": {
+          "lib/net461/NHibernate.dll": {}
+        }
+      },
+      "Remotion.Linq/2.1.2": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Remotion.Linq.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Remotion.Linq.dll": {}
+        }
+      },
+      "Remotion.Linq.EagerFetching/2.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Remotion.Linq": "2.1.2"
+        },
+        "compile": {
+          "lib/net45/Remotion.Linq.EagerFetching.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Remotion.Linq.EagerFetching.dll": {}
+        }
+      },
+      "System.Data.SQLite/1.0.106": {
+        "type": "package",
+        "dependencies": {
+          "System.Data.SQLite.Core": "1.0.106",
+          "System.Data.SQLite.EF6": "1.0.106",
+          "System.Data.SQLite.Linq": "1.0.106"
+        }
+      },
+      "System.Data.SQLite.Core/1.0.106": {
+        "type": "package",
+        "compile": {
+          "lib/net46/System.Data.SQLite.dll": {}
+        },
+        "runtime": {
+          "lib/net46/System.Data.SQLite.dll": {}
+        },
+        "build": {
+          "build/net46/System.Data.SQLite.Core.targets": {}
+        }
+      },
+      "System.Data.SQLite.EF6/1.0.106": {
+        "type": "package",
+        "dependencies": {
+          "EntityFramework": "6.0.0"
+        },
+        "compile": {
+          "lib/net46/System.Data.SQLite.EF6.dll": {}
+        },
+        "runtime": {
+          "lib/net46/System.Data.SQLite.EF6.dll": {}
+        }
+      },
+      "System.Data.SQLite.Linq/1.0.106": {
+        "type": "package",
+        "compile": {
+          "lib/net46/System.Data.SQLite.Linq.dll": {}
+        },
+        "runtime": {
+          "lib/net46/System.Data.SQLite.Linq.dll": {}
+        }
+      },
+      "FluentNHibernate/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6.1",
+        "dependencies": {
+          "NHibernate": "5.0.3"
+        },
+        "compile": {
+          "bin/placeholder/FluentNHibernate.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FluentNHibernate.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Antlr3.Runtime/3.5.1": {
+      "sha512": "ZwCEpLCLZXkjzf1lYEixp9hgVlYYk33ACHn6xjFyVhGRi2BpoYQez0qtatbetdylASWYTG+cGz0CGR4z66JM4w==",
+      "type": "package",
+      "path": "antlr3.runtime/3.5.1",
+      "files": [
+        "antlr3.runtime.3.5.1.nupkg.sha512",
+        "antlr3.runtime.nuspec",
+        "lib/net20/Antlr3.Runtime.dll",
+        "lib/net20/Antlr3.Runtime.xml",
+        "lib/net40-client/Antlr3.Runtime.dll",
+        "lib/net40-client/Antlr3.Runtime.xml",
+        "lib/netstandard1.1/Antlr3.Runtime.dll",
+        "lib/netstandard1.1/Antlr3.Runtime.xml",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Antlr3.Runtime.dll",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Antlr3.Runtime.xml"
+      ]
+    },
+    "EntityFramework/6.2.0": {
+      "sha512": "ptGyXOf26qLrtn+2doAmylIlCxOnBJANwlyyLrXDmqIk9O18IzLWHyxDwwAyhgXkxmbiaA0WNpRy67WRReInBw==",
+      "type": "package",
+      "path": "entityframework/6.2.0",
+      "files": [
+        "content/net40/App.config.transform",
+        "content/net40/Web.config.transform",
+        "entityframework.6.2.0.nupkg.sha512",
+        "entityframework.nuspec",
+        "lib/net40/EntityFramework.SqlServer.dll",
+        "lib/net40/EntityFramework.SqlServer.xml",
+        "lib/net40/EntityFramework.dll",
+        "lib/net40/EntityFramework.xml",
+        "lib/net45/EntityFramework.SqlServer.dll",
+        "lib/net45/EntityFramework.SqlServer.xml",
+        "lib/net45/EntityFramework.dll",
+        "lib/net45/EntityFramework.xml",
+        "tools/EntityFramework.PowerShell.Utility.dll",
+        "tools/EntityFramework.PowerShell.dll",
+        "tools/EntityFramework.psd1",
+        "tools/EntityFramework.psm1",
+        "tools/about_EntityFramework.help.txt",
+        "tools/init.ps1",
+        "tools/install.ps1",
+        "tools/migrate.exe"
+      ]
+    },
+    "Iesi.Collections/4.0.2": {
+      "sha512": "Yhgym/O5z/auL4A272UZkxlhXwQbUIBITJBqZS1U25ztziG5BYLylmrxXwz968y7TJXWJvfaL1L4PxUbGRKGwg==",
+      "type": "package",
+      "path": "iesi.collections/4.0.2",
+      "files": [
+        "iesi.collections.4.0.2.nupkg.sha512",
+        "iesi.collections.nuspec",
+        "lib/net40/Iesi.Collections.dll",
+        "lib/net40/Iesi.Collections.xml",
+        "lib/net461/Iesi.Collections.dll",
+        "lib/net461/Iesi.Collections.xml",
+        "lib/netstandard1.0/Iesi.Collections.dll",
+        "lib/netstandard1.0/Iesi.Collections.xml",
+        "lib/netstandard1.3/Iesi.Collections.dll",
+        "lib/netstandard1.3/Iesi.Collections.xml"
+      ]
+    },
+    "NHibernate/5.0.3": {
+      "sha512": "XHzEJEoN9wrxfnqxsRSziPo3N82a67dOGsV95JdacelaHqgytlNpxf+qwDSEtqqhlfAz6zsbYh+jyeAb16NT2g==",
+      "type": "package",
+      "path": "nhibernate/5.0.3",
+      "files": [
+        "ConfigurationTemplates/FireBird.cfg.xml",
+        "ConfigurationTemplates/MSSQL.cfg.xml",
+        "ConfigurationTemplates/MySql.cfg.xml",
+        "ConfigurationTemplates/Oracle-Managed.cfg.xml",
+        "ConfigurationTemplates/Oracle.cfg.xml",
+        "ConfigurationTemplates/PostgreSQL.cfg.xml",
+        "ConfigurationTemplates/SQLite.cfg.xml",
+        "ConfigurationTemplates/SqlServerCe.cfg.xml",
+        "ConfigurationTemplates/SybaseASE.cfg.xml",
+        "ConfigurationTemplates/SybaseSQLAnywhere.cfg.xml",
+        "NHibernate.license.txt",
+        "NHibernate.readme.md",
+        "NHibernate.releasenotes.txt",
+        "lib/net461/NHibernate.dll",
+        "lib/net461/NHibernate.xml",
+        "nhibernate-configuration.xsd",
+        "nhibernate-mapping.xsd",
+        "nhibernate.5.0.3.nupkg.sha512",
+        "nhibernate.nuspec"
+      ]
+    },
+    "Remotion.Linq/2.1.2": {
+      "sha512": "iEHT2fNOuTxhchbaOks+9Ea4YKvp454T/2mZm7CiUqIbUFl7ruK+2SVSvogkBODdxyk7eCpOAQSsowNxO8kKaw==",
+      "type": "package",
+      "path": "remotion.linq/2.1.2",
+      "files": [
+        "lib/net35/Remotion.Linq.XML",
+        "lib/net35/Remotion.Linq.dll",
+        "lib/net40/Remotion.Linq.XML",
+        "lib/net40/Remotion.Linq.dll",
+        "lib/net45/Remotion.Linq.XML",
+        "lib/net45/Remotion.Linq.dll",
+        "lib/netstandard1.0/Remotion.Linq.dll",
+        "lib/netstandard1.0/Remotion.Linq.xml",
+        "lib/portable-net45+win+wpa81+wp80/Remotion.Linq.dll",
+        "lib/portable-net45+win+wpa81+wp80/Remotion.Linq.xml",
+        "remotion.linq.2.1.2.nupkg.sha512",
+        "remotion.linq.nuspec"
+      ]
+    },
+    "Remotion.Linq.EagerFetching/2.1.0": {
+      "sha512": "6tVDAvNF34Vow8lU54bVArNrMoSeP21+DVyQ10ogEZocYnv34ZTcLqyQxLI8oeOl9y/kbF1jmmztMQL7FxgSTQ==",
+      "type": "package",
+      "path": "remotion.linq.eagerfetching/2.1.0",
+      "files": [
+        "lib/net35/Remotion.Linq.EagerFetching.XML",
+        "lib/net35/Remotion.Linq.EagerFetching.dll",
+        "lib/net40/Remotion.Linq.EagerFetching.XML",
+        "lib/net40/Remotion.Linq.EagerFetching.dll",
+        "lib/net45/Remotion.Linq.EagerFetching.XML",
+        "lib/net45/Remotion.Linq.EagerFetching.dll",
+        "lib/netstandard1.0/Remotion.Linq.EagerFetching.dll",
+        "lib/netstandard1.0/Remotion.Linq.EagerFetching.xml",
+        "lib/portable-net45+win+wpa81+wp80/Remotion.Linq.EagerFetching.dll",
+        "lib/portable-net45+win+wpa81+wp80/Remotion.Linq.EagerFetching.xml",
+        "remotion.linq.eagerfetching.2.1.0.nupkg.sha512",
+        "remotion.linq.eagerfetching.nuspec"
+      ]
+    },
+    "System.Data.SQLite/1.0.106": {
+      "sha512": "7BLZMo2NrV01kJIEdDAgCdDs3f0DPkd1gmAjURo0ziN00q+KWWX2S5RoqTQm0LbbBUe2ycUSiiDYIIPip56+kw==",
+      "type": "package",
+      "path": "system.data.sqlite/1.0.106",
+      "files": [
+        "system.data.sqlite.1.0.106.nupkg.sha512",
+        "system.data.sqlite.nuspec"
+      ]
+    },
+    "System.Data.SQLite.Core/1.0.106": {
+      "sha512": "em8AP6Sm96brGCwP5Y1aYzzmuemqO02jfc2BrASGoafSqElOBDfIxR5UTvVgt8Ic65o1zB9hctT/zOQxMgI5TA==",
+      "type": "package",
+      "path": "system.data.sqlite.core/1.0.106",
+      "files": [
+        "build/net20/System.Data.SQLite.Core.targets",
+        "build/net20/x64/SQLite.Interop.dll",
+        "build/net20/x86/SQLite.Interop.dll",
+        "build/net40/System.Data.SQLite.Core.targets",
+        "build/net40/x64/SQLite.Interop.dll",
+        "build/net40/x86/SQLite.Interop.dll",
+        "build/net45/System.Data.SQLite.Core.targets",
+        "build/net45/x64/SQLite.Interop.dll",
+        "build/net45/x86/SQLite.Interop.dll",
+        "build/net451/System.Data.SQLite.Core.targets",
+        "build/net451/x64/SQLite.Interop.dll",
+        "build/net451/x86/SQLite.Interop.dll",
+        "build/net46/System.Data.SQLite.Core.targets",
+        "build/net46/x64/SQLite.Interop.dll",
+        "build/net46/x86/SQLite.Interop.dll",
+        "lib/net20/System.Data.SQLite.dll",
+        "lib/net20/System.Data.SQLite.dll.config",
+        "lib/net20/System.Data.SQLite.xml",
+        "lib/net40/System.Data.SQLite.dll",
+        "lib/net40/System.Data.SQLite.dll.config",
+        "lib/net40/System.Data.SQLite.xml",
+        "lib/net45/System.Data.SQLite.dll",
+        "lib/net45/System.Data.SQLite.dll.config",
+        "lib/net45/System.Data.SQLite.xml",
+        "lib/net451/System.Data.SQLite.dll",
+        "lib/net451/System.Data.SQLite.dll.config",
+        "lib/net451/System.Data.SQLite.xml",
+        "lib/net46/System.Data.SQLite.dll",
+        "lib/net46/System.Data.SQLite.dll.config",
+        "lib/net46/System.Data.SQLite.xml",
+        "system.data.sqlite.core.1.0.106.nupkg.sha512",
+        "system.data.sqlite.core.nuspec"
+      ]
+    },
+    "System.Data.SQLite.EF6/1.0.106": {
+      "sha512": "uYPnoAIsvt5YF+RN/ZRnZ/3+/OV7P8tTvJdSqYNTnY9GVbeRBDxwdSP3UjWsauRizgt4QIwxcdBkrj7VRYSSSA==",
+      "type": "package",
+      "path": "system.data.sqlite.ef6/1.0.106",
+      "files": [
+        "content/net40/app.config.install.xdt",
+        "content/net40/app.config.transform",
+        "content/net40/web.config.install.xdt",
+        "content/net40/web.config.transform",
+        "content/net45/app.config.install.xdt",
+        "content/net45/app.config.transform",
+        "content/net45/web.config.install.xdt",
+        "content/net45/web.config.transform",
+        "content/net451/app.config.install.xdt",
+        "content/net451/app.config.transform",
+        "content/net451/web.config.install.xdt",
+        "content/net451/web.config.transform",
+        "content/net46/app.config.install.xdt",
+        "content/net46/app.config.transform",
+        "content/net46/web.config.install.xdt",
+        "content/net46/web.config.transform",
+        "lib/net40/System.Data.SQLite.EF6.dll",
+        "lib/net45/System.Data.SQLite.EF6.dll",
+        "lib/net451/System.Data.SQLite.EF6.dll",
+        "lib/net46/System.Data.SQLite.EF6.dll",
+        "system.data.sqlite.ef6.1.0.106.nupkg.sha512",
+        "system.data.sqlite.ef6.nuspec",
+        "tools/net40/install.ps1",
+        "tools/net45/install.ps1",
+        "tools/net451/install.ps1",
+        "tools/net46/install.ps1"
+      ]
+    },
+    "System.Data.SQLite.Linq/1.0.106": {
+      "sha512": "fQD313lIXfNM1CsPmXFc3Re9XxQ51gqRnEwkg3bDbblpeajztFT4Wu7RH/EDJytux1tm4rjXHU4hxPXqDwGE9A==",
+      "type": "package",
+      "path": "system.data.sqlite.linq/1.0.106",
+      "files": [
+        "content/net20/app.config.transform",
+        "content/net20/web.config.transform",
+        "content/net40/app.config.transform",
+        "content/net40/web.config.transform",
+        "content/net45/app.config.transform",
+        "content/net45/web.config.transform",
+        "content/net451/app.config.transform",
+        "content/net451/web.config.transform",
+        "content/net46/app.config.transform",
+        "content/net46/web.config.transform",
+        "lib/net20/System.Data.SQLite.Linq.dll",
+        "lib/net40/System.Data.SQLite.Linq.dll",
+        "lib/net45/System.Data.SQLite.Linq.dll",
+        "lib/net451/System.Data.SQLite.Linq.dll",
+        "lib/net46/System.Data.SQLite.Linq.dll",
+        "system.data.sqlite.linq.1.0.106.nupkg.sha512",
+        "system.data.sqlite.linq.nuspec"
+      ]
+    },
+    "FluentNHibernate/1.0.0": {
+      "type": "project",
+      "path": "../FluentNHibernate/FluentNHibernate.csproj",
+      "msbuildProject": "../FluentNHibernate/FluentNHibernate.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.6.1": [
+      "EntityFramework >= 6.2.0",
+      "FluentNHibernate >= 1.0.0",
+      "NHibernate >= 5.0.3",
+      "System.Data.SQLite >= 1.0.106",
+      "System.Data.SQLite.Core >= 1.0.106",
+      "System.Data.SQLite.EF6 >= 1.0.106",
+      "System.Data.SQLite.Linq >= 1.0.106"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\j.rodriguez.WINHOTELSOLUTIO\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restoreSettings": {
+      "hideWarningsAndErrors": true
+    },
+    "restore": {
+      "projectUniqueName": "C:\\dev\\Projects\\opensource\\fluent-nhibernate\\src\\Examples.FirstAutomappedProject\\Examples.FirstAutomappedProject.csproj",
+      "projectName": "Examples.FirstAutomappedProject",
+      "projectPath": "C:\\dev\\Projects\\opensource\\fluent-nhibernate\\src\\Examples.FirstAutomappedProject\\Examples.FirstAutomappedProject.csproj",
+      "packagesPath": "C:\\Users\\j.rodriguez.WINHOTELSOLUTIO\\.nuget\\packages\\",
+      "outputPath": "C:\\dev\\Projects\\opensource\\fluent-nhibernate\\src\\Examples.FirstAutomappedProject\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\j.rodriguez.WINHOTELSOLUTIO\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net461"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "\\\\appserver2012r2\\KANT\\RELEASES\\Nuget": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net461": {
+          "projectReferences": {
+            "C:\\dev\\Projects\\opensource\\fluent-nhibernate\\src\\FluentNHibernate\\FluentNHibernate.csproj": {
+              "projectPath": "C:\\dev\\Projects\\opensource\\fluent-nhibernate\\src\\FluentNHibernate\\FluentNHibernate.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net461": {
+        "dependencies": {
+          "System.Data.SQLite.EF6": {
+            "target": "Package",
+            "version": "1.0.106.0"
+          },
+          "NHibernate": {
+            "target": "Package",
+            "version": "5.0.3"
+          },
+          "System.Data.SQLite": {
+            "target": "Package",
+            "version": "1.0.106.0"
+          },
+          "System.Data.SQLite.Linq": {
+            "target": "Package",
+            "version": "1.0.106.0"
+          },
+          "System.Data.SQLite.Core": {
+            "target": "Package",
+            "version": "1.0.106.0"
+          },
+          "EntityFramework": {
+            "target": "Package",
+            "version": "6.2.0"
+          }
+        }
+      }
+    }
+  }
+}

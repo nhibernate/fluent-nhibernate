@@ -210,13 +210,13 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Element("list").Exists();
         }
 
-        [Test, Ignore]
+        [Test, Ignore("Ignore ShouldWriteArrays")]
         public void ShouldWriteArrays()
         {
             Assert.Fail();
         }
 
-        [Test, Ignore]
+        [Test, Ignore("Ignore ShouldWritePrimitiveArrays")]
         public void ShouldWritePrimitiveArrays()
         {
             Assert.Fail();

@@ -1,6 +1,5 @@
-using System;
-using FluentNHibernate.Mapping;
 using NUnit.Framework;
+using System;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
@@ -95,26 +94,28 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void WriteThrowsIfEntityIdColumnIsNotSet()
         {
-            new MappingTester<MappedObject>()
-                .ForMapping(map => map.ReferencesAny(x => x.Parent)
-                                       .EntityTypeColumn("AnyType")
-                                       .IdentityType(x => x.Id)
-                                       .AddMetaValue<SecondMappedObject>("SMO"));
+            Assert.That(() =>
+                new MappingTester<MappedObject>()
+                    .ForMapping(map => map.ReferencesAny(x => x.Parent)
+                                           .EntityTypeColumn("AnyType")
+                                           .IdentityType(x => x.Id)
+                                           .AddMetaValue<SecondMappedObject>("SMO")),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void WriteThrowsIfEntityTypeColumnIsNotSet()
         {
-            new MappingTester<MappedObject>()
-                .ForMapping(map => map.ReferencesAny(x => x.Parent)
-                                       .EntityIdentifierColumn("AnyId")
-                                       .IdentityType(x => x.Id)
-                                       .AddMetaValue<SecondMappedObject>("SMO"));
-
+            Assert.That(() =>
+                new MappingTester<MappedObject>()
+                        .ForMapping(map => map.ReferencesAny(x => x.Parent)
+                                               .EntityIdentifierColumn("AnyId")
+                                               .IdentityType(x => x.Id)
+                                               .AddMetaValue<SecondMappedObject>("SMO")),
+             Throws.TypeOf<InvalidOperationException>());
+         ;
         }
 
         [Test]
@@ -173,7 +174,6 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
             mapTest.Element("class/id").ShouldBeInParentAtPosition(0);
         }
-
 
         [Test]
         public void SpecificMetaTypeShouldNotClearMetaValues()

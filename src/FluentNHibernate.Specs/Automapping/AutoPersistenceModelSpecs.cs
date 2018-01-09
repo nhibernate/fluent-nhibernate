@@ -10,6 +10,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using FluentNHibernate.Specs.ExternalFixtures;
 using Machine.Specifications;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Automapping
 {
@@ -55,7 +56,7 @@ namespace FluentNHibernate.Specs.Automapping
             ex = Catch.Exception(() => setup.BuildConfiguration());
 
         It should_generate_xml_that_is_accepted_by_the_nhibernate_schema_validation = () =>
-            ex.ShouldBeNull();
+            ex.Should().BeNull();
 
         static FluentConfiguration setup;
         static Exception ex;
@@ -75,8 +76,8 @@ namespace FluentNHibernate.Specs.Automapping
         // that were already mapped in the child. Needed to change the
         // ordering so parents are always mapped before their children
         It should_map_the_top_most_class_first = () =>
-            ex.ShouldBeNull();
-        
+            ex.Should().BeNull();
+
         static Exception ex;
     }
 
@@ -91,11 +92,11 @@ namespace FluentNHibernate.Specs.Automapping
                 .SelectMany(x => x.Classes);
 
         It should_map_the_parent = () =>
-            mappings.Count().ShouldEqual(1);
+            mappings.Count().Should().Be(1);
 
         It should_map_the_child_child_as_a_subclass_of_parent = () =>
             mappings.Single()
-                .Subclasses.Single().Type.ShouldEqual(typeof(ChildChild));
+                .Subclasses.Single().Type.Should().Be(typeof(ChildChild));
 
         static AutoPersistenceModel mapper;
         static IEnumerable<ClassMapping> mappings;

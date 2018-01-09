@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
@@ -10,6 +11,7 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
+using NHibernate.Engine;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
 using NUnit.Framework;
@@ -615,7 +617,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         class OtherObjectUserTypeConvention : UserTypeConvention<OtherObjectUserType>
         {
-            
+
         }
 
         class VersionConvention : IVersionConvention
@@ -638,6 +640,10 @@ namespace FluentNHibernate.Testing.ConventionsTests
 
         private class OtherObjectUserType : IUserType
         {
+            public OtherObjectUserType()
+            {
+            }
+
             public new bool Equals(object x, object y)
             {
                 return false;
@@ -674,6 +680,16 @@ namespace FluentNHibernate.Testing.ConventionsTests
             public object Disassemble(object value)
             {
                 return value;
+            }
+
+            public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
+            {
+                throw new NotImplementedException();
             }
 
             public SqlType[] SqlTypes

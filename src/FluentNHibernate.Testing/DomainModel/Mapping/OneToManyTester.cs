@@ -115,7 +115,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<OneToManyTarget>()
                 .ForMapping(map => map.HasMany(x => x.SetOfChildren).AsSet())
-                .Element("class/set").Exists();                
+                .Element("class/set").Exists();
         }
 
         [Test]
@@ -255,7 +255,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public void CanSpecifyForeignKeyName()
         {
             new MappingTester<OneToManyTarget>()
-                .ForMapping(map => map.HasMany(x => x.ListOfChildren).ForeignKeyConstraintName("FK_TEST"))                    
+                .ForMapping(map => map.HasMany(x => x.ListOfChildren).ForeignKeyConstraintName("FK_TEST"))
                 .Element("class/bag/key")
                 .HasAttribute("foreign-key", "FK_TEST");
         }
@@ -289,16 +289,17 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        [ExpectedException(typeof(NotSupportedException))]
         public void SpecifyingIndexBaseOffsetAndTypeForListThrowsNotSupportedException()
         {
-            new MappingTester<OneToManyTarget>()
-                .ForMapping(map => map.HasMany(x => x.ListOfChildren)
-                    .AsList(index =>
-                    {
-                        index.Offset(1);
-                        index.Type("ListIndex");
-                    }));
+            Assert.That(() =>
+                new MappingTester<OneToManyTarget>()
+                    .ForMapping(map => map.HasMany(x => x.ListOfChildren)
+                        .AsList(index =>
+                        {
+                            index.Offset(1);
+                            index.Type("ListIndex");
+                        })),
+                Throws.TypeOf<NotSupportedException>());
         }
 
         [Test]
@@ -407,28 +408,28 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/set").DoesntHaveAttribute("cascade");
         }
 
-        [Test] 
-        public void CanSetAsElement() 
-        { 
-            new MappingTester<OneToManyTarget>() 
-                .ForMapping(m => m.HasMany(x => x.ListOfSimpleChildren).Element("columnName")) 
-                .Element("class/bag/element").Exists(); 
-        } 
- 
-        [Test] 
-        public void ElementHasCorrectType() 
-        { 
-            new MappingTester<OneToManyTarget>() 
-                .ForMapping(m => m.HasMany(x => x.ListOfSimpleChildren).Element("columnName")) 
-                .Element("class/bag/element").HasAttribute("type", typeof(string).AssemblyQualifiedName); 
-        } 
- 
-        [Test] 
-        public void ElementHasCorrectColumnName() 
-        { 
-            new MappingTester<OneToManyTarget>() 
-                .ForMapping(m => m.HasMany(x => x.ListOfSimpleChildren).Element("columnName")) 
-                .Element("class/bag/element/column").HasAttribute("name", "columnName"); 
+        [Test]
+        public void CanSetAsElement()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m => m.HasMany(x => x.ListOfSimpleChildren).Element("columnName"))
+                .Element("class/bag/element").Exists();
+        }
+
+        [Test]
+        public void ElementHasCorrectType()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m => m.HasMany(x => x.ListOfSimpleChildren).Element("columnName"))
+                .Element("class/bag/element").HasAttribute("type", typeof(string).AssemblyQualifiedName);
+        }
+
+        [Test]
+        public void ElementHasCorrectColumnName()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m => m.HasMany(x => x.ListOfSimpleChildren).Element("columnName"))
+                .Element("class/bag/element/column").HasAttribute("name", "columnName");
         }
 
         [Test]
@@ -916,7 +917,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .Element("class/component/map/composite-element").ShouldBeInParentAtPosition(2);
         }
 
-        [Test] 
+        [Test]
         public void WhenEntityMapIsDefinedInEntityEverythingWorks()
         {
             new MappingTester<Containee>()
@@ -956,7 +957,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<OneToManyTarget>()
                 .ForMapping(m => m.HasMany(x => x.MapOfChildren).KeyColumns.Add("key_col", c => c.Unique()))
-                .Element("class/bag/key/column").HasAttribute("unique", "true");                
+                .Element("class/bag/key/column").HasAttribute("unique", "true");
         }
 
 
@@ -976,9 +977,9 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             new MappingTester<OneToManyTarget>()
                 .ForMapping(m => m.HasMany(x => x.MapOfChildren)
-                    .Element("colName", e => e.Columns.Add("additionalColumn", c => c.SqlType("ntext"))))                
+                    .Element("colName", e => e.Columns.Add("additionalColumn", c => c.SqlType("ntext"))))
                 .Element("class/bag/element/column[@name='colName']").DoesntHaveAttribute("sql-type")
-                .Element("class/bag/element/column[@name='additionalColumn']").HasAttribute("sql-type", "ntext");                       
+                .Element("class/bag/element/column[@name='additionalColumn']").HasAttribute("sql-type", "ntext");
         }
 
     }

@@ -8,6 +8,7 @@ using FluentNHibernate.Specs.PersistenceModel.Fixtures;
 using Machine.Specifications;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs.PersistenceModel
 {
@@ -24,7 +25,7 @@ namespace FluentNHibernate.Specs.PersistenceModel
             mapping = model.BuildMappingFor<UnionEntity>();
 
         It should_map_the_subclass_as_a_union_subclass = () =>
-            mapping.Subclasses.Single().SubclassType.ShouldEqual(SubclassType.UnionSubclass);
+            mapping.Subclasses.Single().SubclassType.Should().Be(SubclassType.UnionSubclass);
 
         static FluentNHibernate.PersistenceModel model;
         static ClassMapping mapping;
@@ -56,7 +57,7 @@ namespace FluentNHibernate.Specs.PersistenceModel
                 .Subclasses.Single()
                 .Collections.Single()
                 .Key.Columns.Select(x => x.Name)
-                .ShouldContainOnly("SpecialProduct_id");
+                .Should().ContainSingle(name => name == "SpecialProduct_id");
 
         static FluentNHibernate.PersistenceModel model;
         static IEnumerable<ClassMapping> mappings;

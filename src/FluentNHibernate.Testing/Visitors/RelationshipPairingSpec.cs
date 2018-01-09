@@ -15,7 +15,7 @@ namespace FluentNHibernate.Testing.Visitors
         CollectionMapping collectionWithoutBackrefAndAlphabeticallyFirst;
         CollectionMapping collectionWithoutBackrefAndAlphabeticallyLast;
         CollectionMapping collectionWithCorrespondingBackref;
-        ManyToOneMapping referenceFromChildSecondTypeToParent;
+        // ManyToOneMapping referenceFromChildSecondTypeToParent;
 
         public override void establish_context()
         {
@@ -45,7 +45,7 @@ namespace FluentNHibernate.Testing.Visitors
     public class when_relation_has_two_ends : RelationshipPairingSpec
     {
         CollectionMapping collectionWithCorrespondingBackref;
-        ManyToOneMapping referenceFromChildSecondTypeToParent;
+        // ManyToOneMapping referenceFromChildSecondTypeToParent;
 
         public override void establish_context()
         {

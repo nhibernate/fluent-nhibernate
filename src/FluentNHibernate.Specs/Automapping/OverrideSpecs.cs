@@ -7,6 +7,7 @@ using FluentNHibernate.Specs.Automapping.Fixtures.Overrides;
 using FluentNHibernate.Specs.ExternalFixtures;
 using FluentNHibernate.Specs.ExternalFixtures.Overrides;
 using Machine.Specifications;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Automapping
 {
@@ -21,14 +22,14 @@ namespace FluentNHibernate.Specs.Automapping
             mapping = model.BuildMappingFor<Entity>();
 
         It should_create_the_join_mapping = () =>
-            mapping.Joins.ShouldNotBeEmpty();
+            mapping.Joins.Should().NotBeEmpty();
 
         It should_have_a_property_in_the_join = () =>
-            mapping.Joins.Single().Properties.Select(x => x.Name).ShouldContain("One");
+            mapping.Joins.Single().Properties.Select(x => x.Name).Should().Contain("One");
 
         It should_exclude_the_join_mapped_property_from_the_main_automapping = () =>
-            mapping.Properties.Select(x => x.Name).ShouldNotContain("One");
-        
+            mapping.Properties.Select(x => x.Name).Should().NotContain("One");
+
         static AutoPersistenceModel model;
         static ClassMapping mapping;
     }
@@ -44,14 +45,14 @@ namespace FluentNHibernate.Specs.Automapping
             mapping = model.BuildMappingFor<Parent>();
 
         It should_map_the_discriminator = () =>
-            mapping.Discriminator.ShouldNotBeNull();
+            mapping.Discriminator.Should().NotBeNull();
 
         It should_map_subclasses_as_subclass_instead_of_joined_subclass = () =>
         {
-            mapping.Subclasses.Count().ShouldEqual(1);
-            mapping.Subclasses.ShouldEachConformTo(x => x.SubclassType == SubclassType.Subclass);
+            mapping.Subclasses.Count().Should().Be(1);
+            mapping.Subclasses.Should().OnlyContain(subclass => subclass.SubclassType == SubclassType.Subclass);
         };
-        
+
         static AutoPersistenceModel model;
         static ClassMapping mapping;
     }
@@ -68,10 +69,10 @@ namespace FluentNHibernate.Specs.Automapping
             mapping = model.BuildMappingFor<Entity>();
 
         It should_apply_override_from_the_first_assembly = () =>
-            mapping.BatchSize.ShouldEqual(1234);
+            mapping.BatchSize.Should().Be(1234);
 
         It should_apply_override_from_the_second_assembly = () =>
-            mapping.TableName.ShouldEqual("OverriddenTableName");
+            mapping.TableName.Should().Be("OverriddenTableName");
 
         static AutoPersistenceModel model;
         static ClassMapping mapping;
@@ -95,11 +96,11 @@ namespace FluentNHibernate.Specs.Automapping
 
         It should_apply_overrides_to_every_class_for_which_such_were_provided = () =>
         {
-            entityMapping.EntityName.ShouldEqual("customEntityName");
-            parentMapping.TableName.ShouldEqual("fancyTableName_Parent");
-            bParentMapping.BatchSize.ShouldEqual(50);
+            entityMapping.EntityName.Should().Be("customEntityName");
+            parentMapping.TableName.Should().Be("fancyTableName_Parent");
+            bParentMapping.BatchSize.Should().Be(50);
         };
-            
+
 
         static AutoPersistenceModel model;
         static ClassMapping entityMapping;
