@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Data;
+using System.Data.Common;
 using System.Drawing;
 using System.IO;
 using FluentNHibernate.Automapping.TestFixtures.ComponentTypes;
@@ -261,15 +262,15 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomTypes
             return x.GetHashCode();
         }
 
-        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
         {
             return null;
         }
 
-        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
         {
-            
         }
+        
 
         public object DeepCopy(object value)
         {
@@ -337,6 +338,17 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
             }
         }
 
+        public object NullSafeGet(DbDataReader dr, string[] names, ISessionImplementor session, object owner)
+        {
+
+            var first = (string)NHibernateUtil.String.NullSafeGet(dr, names[0], session, owner);
+            var second = (string)NHibernateUtil.String.NullSafeGet(dr, names[1], session, owner);
+
+            return (first == null && second == null) ? null : new string[] { first, second };
+        }
+
+   
+
         public Object DeepCopy(Object x)
         {
             if (x == null) return null;
@@ -351,14 +363,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
         {
             get { return true; }
         }
-
-        public Object NullSafeGet(IDataReader rs, string[] names, ISessionImplementor session, Object owner)
-        {
-            string first = (string)NHibernateUtil.String.NullSafeGet(rs, names[0], session, owner);
-            string second = (string)NHibernateUtil.String.NullSafeGet(rs, names[1], session, owner);
-
-            return (first == null && second == null) ? null : new string[] { first, second };
-        }
+        
 
 #if NH21
         public void NullSafeSet(IDbCommand st, Object value, int index, ISessionImplementor session)
@@ -372,9 +377,19 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
         public void NullSafeSet(IDbCommand st, Object value, int index, bool[] unknown, ISessionImplementor session)
         {
             DoubleString ds = value as DoubleString ?? new DoubleString();
+            
 
-            NHibernateUtil.String.NullSafeSet(st, ds.s1, index, session);
-            NHibernateUtil.String.NullSafeSet(st, ds.s2, index + 1, session);
+            NHibernateUtil.String.NullSafeSet(st as DbCommand, ds.s1, index, session);
+            NHibernateUtil.String.NullSafeSet(st as DbCommand, ds.s2, index + 1, session);
+        }
+
+        public void NullSafeSet(DbCommand cmd, object value, int index, bool[] settable, ISessionImplementor session)
+        {
+            DoubleString ds = value as DoubleString ?? new DoubleString();
+
+
+            NHibernateUtil.String.NullSafeSet(cmd, ds.s1, index, session);
+            NHibernateUtil.String.NullSafeSet(cmd, ds.s2, index + 1, session);
         }
 #endif
 

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Text;
 using FluentNHibernate.Mapping;
 using NHibernate;
+using NHibernate.Engine;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
 using NUnit.Framework;
@@ -96,30 +98,34 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             throw new NotImplementedException();
         }
 
-        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
         {
+
             IList<string> contexts = new List<string>();
 
-            if ((bool)NHibernateUtil.Boolean.NullSafeGet(rs, names[0])) contexts.Add("Icon");
-            if ((bool)NHibernateUtil.Boolean.NullSafeGet(rs, names[1])) contexts.Add("Promo");
-            if ((bool)NHibernateUtil.Boolean.NullSafeGet(rs, names[2])) contexts.Add("Wallpaper");
-            if ((bool)NHibernateUtil.Boolean.NullSafeGet(rs, names[3])) contexts.Add("Placeholder");
+            if ((bool)NHibernateUtil.Boolean.NullSafeGet(rs, names[0],session, owner)) contexts.Add("Icon");
+            if ((bool)NHibernateUtil.Boolean.NullSafeGet(rs, names[1], session, owner)) contexts.Add("Promo");
+            if ((bool)NHibernateUtil.Boolean.NullSafeGet(rs, names[2], session, owner)) contexts.Add("Wallpaper");
+            if ((bool)NHibernateUtil.Boolean.NullSafeGet(rs, names[3], session, owner)) contexts.Add("Placeholder");
 
             return contexts;
+
         }
 
-        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
         {
             IList<string> contexts = value as IList<string>;
 
             if (contexts != null)
             {
-                NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Icon"), index);
-                NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Promo"), index + 1);
-                NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Wallpaper"), index + 2);
-                NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Placeholder"), index + 3);
+                NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Icon"), index,session);
+                NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Promo"), index + 1, session);
+                NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Wallpaper"), index + 2, session);
+                NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Placeholder"), index + 3, session);
             }
         }
+
+
 
         public object DeepCopy(object value)
         {

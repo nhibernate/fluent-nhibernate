@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
+using NHibernate.Engine;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
 
@@ -58,16 +60,14 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
             return x.GetHashCode();
         }
 
-        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
         {
             return null;
         }
 
-        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
         {
-
         }
-
         public object DeepCopy(object value)
         {
             return value;
@@ -119,15 +119,16 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
             throw new NotImplementedException();
         }
 
-        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
         {
             throw new NotImplementedException();
         }
 
-        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
         {
             throw new NotImplementedException();
         }
+        
 
         public object DeepCopy(object value)
         {

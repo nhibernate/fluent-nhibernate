@@ -1,6 +1,8 @@
 using System;
 using System.Data;
+using System.Data.Common;
 using FluentNHibernate.Mapping;
+using NHibernate.Engine;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
 using NUnit.Framework;
@@ -217,14 +219,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 return 0;
             }
 
-            public object NullSafeGet(IDataReader rs, string[] names, object owner)
+            public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
             {
                 return null;
             }
 
-            public void NullSafeSet(IDbCommand cmd, object value, int index)
-            {}
+            public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
+            {
+            }
 
+           
             public object DeepCopy(object value)
             {
                 return value;
