@@ -1,6 +1,6 @@
 ![FluentNHibernate logo](https://raw.githubusercontent.com/jagregory/fluent-nhibernate/master/docs/logo.png)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/ndu1w4fjm8094qfm/branch/master?svg=true)](https://ci.appveyor.com/project/jagregory/fluent-nhibernate/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/v5x1wst2l9ltdyq8/branch/master?svg=true)](https://ci.appveyor.com/project/jrogalan/fluent-nhibernate-alinb/branch/master)
 [![NuGet](https://img.shields.io/nuget/v/FluentNHibernate.svg)](https://www.nuget.org/packages/FluentNHibernate)
 
 Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate. *Get your fluent on.*
@@ -39,4 +39,3 @@ Thanks goes to [Jeremy Miller](http://codebetter.com/blogs/jeremy.miller) for th
     
 Fluent NHibernate is &copy; 2008-2018 [James Gregory](http://jagregory.com) and contributors under the [BSD license](fluent-nhibernate/blob/master/LICENSE)
 
-<a href="http://ndepend.com"><img src="http://i43.tinypic.com/295tpq8.png" alt="Powered by NDepend"></a>
