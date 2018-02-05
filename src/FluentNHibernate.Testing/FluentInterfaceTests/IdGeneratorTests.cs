@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
@@ -96,6 +98,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
         private class CustomGenerator : IIdentifierGenerator
         {
+            public Task<object> GenerateAsync(ISessionImplementor session, object obj, CancellationToken cancellationToken)
+            {
+                return Task.FromResult(obj);
+            }
+
             public object Generate(ISessionImplementor session, object obj)
             {
                 return obj;

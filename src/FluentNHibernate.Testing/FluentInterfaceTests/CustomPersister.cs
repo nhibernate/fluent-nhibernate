@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Threading;
+using System.Threading.Tasks;
 using NHibernate;
 using NHibernate.Cache;
 using NHibernate.Cache.Entry;
@@ -17,6 +19,91 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
     internal class CustomPersister : IEntityPersister
     {
+        public Task<int[]> FindDirtyAsync(object[] currentState, object[] previousState, object entity, ISessionImplementor session,
+            CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int[]> FindModifiedAsync(object[] old, object[] current, object entity, ISessionImplementor session,
+            CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object[]> GetNaturalIdentifierSnapshotAsync(object id, ISessionImplementor session, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object> LoadAsync(object id, object optionalObject, LockMode lockMode, ISessionImplementor session,
+            CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task LockAsync(object id, object version, object obj, LockMode lockMode, ISessionImplementor session,
+            CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task InsertAsync(object id, object[] fields, object obj, ISessionImplementor session,
+            CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object> InsertAsync(object[] fields, object obj, ISessionImplementor session, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(object id, object version, object obj, ISessionImplementor session,
+            CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAsync(object id, object[] fields, int[] dirtyFields, bool hasDirtyCollection, object[] oldFields,
+            object oldVersion, object obj, object rowId, ISessionImplementor session, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object[]> GetDatabaseSnapshotAsync(object id, ISessionImplementor session, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object> GetCurrentVersionAsync(object id, ISessionImplementor session, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object> ForceVersionIncrementAsync(object id, object currentVersion, ISessionImplementor session,
+            CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool?> IsTransientAsync(object obj, ISessionImplementor session, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ProcessInsertGeneratedPropertiesAsync(object id, object entity, object[] state, ISessionImplementor session,
+            CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ProcessUpdateGeneratedPropertiesAsync(object id, object entity, object[] state, ISessionImplementor session,
+            CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
         public void PostInstantiate()
         {}
 
@@ -81,16 +168,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             return null;
         }
-
-        public EntityMode? GuessEntityMode(object obj)
-        {
-            return null;
-        }
-
-        public bool IsInstrumented(EntityMode entityMode)
-        {
-            return false;
-        }
+        
 
         public void AfterInitialize(object entity, bool lazyPropertiesAreUnfetched, ISessionImplementor session)
         {}
@@ -119,21 +197,76 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         public void ProcessUpdateGeneratedProperties(object id, object entity, object[] state, ISessionImplementor session)
         {}
 
+        public void SetPropertyValues(object obj, object[] values)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetPropertyValue(object obj, int i, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object[] GetPropertyValues(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetPropertyValue(object obj, int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetPropertyValue(object obj, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetIdentifier(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetIdentifier(object obj, object id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetVersion(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Instantiate(object id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsInstance(object entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool HasUninitializedLazyProperties(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ResetIdentifier(object entity, object currentId, object currentVersion)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEntityPersister GetSubclassEntityPersister(object instance, ISessionFactoryImplementor factory)
+        {
+            throw new NotImplementedException();
+        }
+
         public Type GetMappedClass(EntityMode entityMode)
         {
             return null;
         }
-
-        public bool ImplementsLifecycle(EntityMode entityMode)
-        {
-            return false;
-        }
-
-        public bool ImplementsValidatable(EntityMode entityMode)
-        {
-            return false;
-        }
-
+        
         public Type GetConcreteProxyClass(EntityMode entityMode)
         {
             return null;
@@ -381,6 +514,9 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             get { return false; }
         }
+
+        public bool IsInstrumented { get; }
+
         public bool HasInsertGeneratedProperties
         {
             get { return false; }
@@ -389,6 +525,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         {
             get { return false; }
         }
+
+        public Type MappedClass { get; }
+        public bool ImplementsLifecycle { get; }
+        public bool ImplementsValidatable { get; }
+        public Type ConcreteProxyClass { get; }
+        public EntityMode EntityMode { get; }
+        public IEntityTuplizer EntityTuplizer { get; }
+
         bool IOptimisticCacheSource.IsVersioned
         {
             get { return false; }
