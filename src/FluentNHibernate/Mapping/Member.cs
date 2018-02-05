@@ -61,7 +61,7 @@ namespace FluentNHibernate
     }
 
     [Serializable]
-    internal class MethodMember : Member
+    public class MethodMember : Member
     {
         private readonly MethodInfo member;
         Member backingField;
@@ -276,7 +276,7 @@ namespace FluentNHibernate
     }
 
     [Serializable]
-    internal class PropertyMember : Member
+    public class PropertyMember : Member
     {
         readonly PropertyInfo member;
         readonly MethodMember getMethod;
