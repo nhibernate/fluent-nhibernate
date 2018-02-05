@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using FluentNHibernate.MappingModel.ClassBased;
 using Machine.Specifications;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs
 {
@@ -17,12 +18,12 @@ namespace FluentNHibernate.Specs
 
         public static void ShouldContain<T>(this IEnumerable<T> collection, Func<T, bool> predicate)
         {
-            collection.Any(predicate).ShouldBeTrue();
+            collection.Any(predicate).Should().BeTrue();
         }
 
         public static void ShouldNotContain<T>(this IEnumerable<T> collection, Func<T, bool> predicate)
         {
-            collection.Any(predicate).ShouldBeFalse();
+            collection.Any(predicate).Should().BeFalse();
         }
 
         public static ClassMapping BuildMappingFor<T>(this FluentNHibernate.PersistenceModel model)

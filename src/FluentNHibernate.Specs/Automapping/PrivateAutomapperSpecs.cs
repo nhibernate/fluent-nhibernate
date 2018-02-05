@@ -3,6 +3,7 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Automapping
 {
@@ -21,13 +22,13 @@ namespace FluentNHibernate.Specs.Automapping
             mapping = model.BuildMappingFor<EntityUsingPrivateFields>();
 
         It should_map_fields_matching_the_convention = () =>
-            mapping.Properties.Select(x => x.Name).ShouldContain("_one");
+            mapping.Properties.Select(x => x.Name).Should().Contain("_one");
 
         It should_map_private_collections = () =>
-            mapping.Collections.Select(x => x.Name).ShouldContain("_children");
+            mapping.Collections.Select(x => x.Name).Should().Contain("_children");
 
         It should_not_map_fields_that_dont_match_the_convention = () =>
-            mapping.Properties.Select(x => x.Name).ShouldNotContain("one");
+            mapping.Properties.Select(x => x.Name).Should().NotContain("one");
 
         static ClassMapping mapping;
         static AutoPersistenceModel model;

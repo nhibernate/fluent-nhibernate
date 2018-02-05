@@ -262,7 +262,7 @@ namespace FluentNHibernate.Testing.Visitors
 
             any.AddIdentifierColumn(Layer.Defaults, new ColumnMapping(column));
             any.AddTypeColumn(Layer.Defaults, new ColumnMapping(column));
-            
+
             return any;
         }
 

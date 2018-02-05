@@ -79,7 +79,7 @@ namespace FluentNHibernate.Testing.Utils
             new TypeReference(typeof(int)).Equals(new TypeReference(typeof(string))).ShouldBeFalse();
         }
 
-        [Test, Ignore]
+        [Test, Ignore("EqualsTypeOnLeftReferenceBasedOnSameTypeOnRightShouldBeEqual")]
         public void EqualsTypeOnLeftReferenceBasedOnSameTypeOnRightShouldBeEqual()
         {
             // Wish we could do this :(

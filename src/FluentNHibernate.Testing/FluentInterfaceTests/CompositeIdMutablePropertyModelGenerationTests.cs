@@ -55,7 +55,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ModelShouldMatch(x => x.UnsavedValue.ShouldEqual("unsaved"));
         }
 
-        [Test, Ignore]
+        [Test, Ignore("ShouldAllowSeparateClassRepresentingCompositeId")]
         public void ShouldAllowSeparateClassRepresentingCompositeId()
         {
             Assert.Fail();
