@@ -52,7 +52,7 @@ public class BuildParameters
             IsRunningOnWindows = context.IsRunningOnWindows(),
             IsRunningOnAppVeyor = buildSystem.AppVeyor.IsRunningOnAppVeyor,
             IsPullRequest = buildSystem.AppVeyor.Environment.PullRequest.IsPullRequest,
-            IsMainRepo = StringComparer.OrdinalIgnoreCase.Equals("FluentNHibernate/fluent-hibernate", buildSystem.AppVeyor.Environment.Repository.Name),
+            IsMainRepo = StringComparer.OrdinalIgnoreCase.Equals("FluentNHibernate/fluent-nhibernate", buildSystem.AppVeyor.Environment.Repository.Name),
             IsMainBranch = StringComparer.OrdinalIgnoreCase.Equals("master", buildSystem.AppVeyor.Environment.Repository.Branch),            
             IsTagged = IsBuildTagged(buildSystem),            
             GitHub = BuildGitHub.GetWithCredentials(context, "FluentNHibernate", "fluent-nhibernate"),
