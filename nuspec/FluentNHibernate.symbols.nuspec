@@ -7,7 +7,7 @@
     <description>Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate.</description>
     <summary>Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate.</summary>
     <authors>James Gregory and contributors (Paul Batum, Hudson Akridge, Gleb Chermennov, Jorge Rodríguez Galán).</authors>
-    <owners>jagregory, chester89, jagregory</owners>
+    <owners>jagregory, chester89, jrgcubano</owners>
     <licenseUrl>https://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/jagregory/fluent-nhibernate</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/jagregory/fluent-nhibernate/master/docs/logo-nuget.png</iconUrl>
