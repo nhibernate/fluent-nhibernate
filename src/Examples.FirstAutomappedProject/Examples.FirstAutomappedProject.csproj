@@ -15,7 +15,7 @@
   
   <ItemGroup>    
     <PackageReference Include="EntityFramework" Version="6.2.0" />    
-    <PackageReference Include="NHibernate" Version="5.0.3" />    
+    <PackageReference Include="NHibernate" Version="5.1.0" />    
     <PackageReference Include="System.Data.SQLite" Version="1.0.106.0" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.106.0" />
     <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.106.0" />
