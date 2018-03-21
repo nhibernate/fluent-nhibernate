@@ -186,7 +186,7 @@ Task("Update-AppVeyor-BuildNumber")
     .WithCriteria(() => parameters.IsRunningOnAppVeyor)
     .Does(() =>
     {
-        AppVeyor.UpdateBuildVersion(parameters.Version.SemVersion);
+        // AppVeyor.UpdateBuildVersion(parameters.Version.SemVersion);
     })
     .ReportError(exception =>
     {
