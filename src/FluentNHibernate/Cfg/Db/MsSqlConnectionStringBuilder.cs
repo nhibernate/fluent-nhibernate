@@ -54,10 +54,30 @@ namespace FluentNHibernate.Cfg.Db
 
             var sb = new StringBuilder();
 
-            sb.AppendFormat("Data Source={0};Initial Catalog={1};Integrated Security={2}", server, database, trustedConnection);
+            if (server.Contains(" "))
+                sb.AppendFormat("Data Source=\"{0}\"", server);
+            else
+                sb.AppendFormat("Data Source={0}", server);
+
+            if (database.Contains(" "))
+                sb.AppendFormat(";Initial Catalog=\"{0}\"", database);
+            else
+                sb.AppendFormat(";Initial Catalog={0}", database);
+
+            sb.AppendFormat(";Integrated Security={0}", trustedConnection);
 
             if (!trustedConnection)
-                sb.AppendFormat(";User Id={0};Password={1}", username, password);
+            {
+                if (username.Contains(" "))
+                    sb.AppendFormat(";User Id=\"{0}\"", username);
+                else
+                    sb.AppendFormat(";User Id={0}", username);
+
+                if (password.Contains(" "))
+                    sb.AppendFormat(";Password=\"{0}\"", password);
+                else
+                    sb.AppendFormat(";Password={0}", password);
+            }
 
             return sb.ToString();
         }
