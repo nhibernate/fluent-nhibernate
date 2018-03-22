@@ -100,6 +100,20 @@ Task("Copy-Files")
             parameters.Configuration, 
             msBuildSettings
         );
+        PublishProjects(
+            SrcProjects, "netstandard2.0",
+            parameters.Paths.Directories.ArtifactsBinNetStandard20.FullPath, 
+            parameters.Version.DotNetAsterix, 
+            parameters.Configuration, 
+            msBuildSettings
+        );
+        PublishProjects(
+            SrcProjects, "netcoreapp2",
+            parameters.Paths.Directories.ArtifactsBinNetCoreApp2.FullPath, 
+            parameters.Version.DotNetAsterix, 
+            parameters.Configuration, 
+            msBuildSettings
+        );
         
         CopyFileToDirectory("./LICENSE", parameters.Paths.Directories.ArtifactsBinFullFx);            
     });
@@ -111,7 +125,7 @@ Task("Zip-Files")
         Zip(parameters.Paths.Directories.ArtifactsBinFullFx, parameters.Paths.Files.ZipArtifactPathDesktop, 
             GetFiles($"{parameters.Paths.Directories.ArtifactsBinFullFx.FullPath}/**/*"));
     });
-        
+  
 Task("Create-NuGet-Packages")
     .IsDependentOn("Copy-Files")
     .Does(() =>
@@ -120,7 +134,7 @@ Task("Create-NuGet-Packages")
             SrcProjects, 
             parameters.Paths.Directories.NuspecRoot.FullPath, 
             parameters.Paths.Directories.NugetRoot.FullPath, 
-            parameters.Paths.Directories.ArtifactsBinFullFx.FullPath, 
+            parameters.Paths.Directories.ArtifactsBin.FullPath, 
             parameters.Version.SemVersion);
     });
 
