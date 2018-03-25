@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461;netcoreapp2</TargetFrameworks>    
+    <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>    
     <NoWarn>1591</NoWarn>
     <PlatformTarget>AnyCpu</PlatformTarget>
   </PropertyGroup>
@@ -19,11 +19,7 @@
     <PackageReference Include="NHibernate" Version="5.1.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="NHibernate" Version="5.1.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
     <PackageReference Include="NHibernate" Version="5.1.0" />
   </ItemGroup>
 

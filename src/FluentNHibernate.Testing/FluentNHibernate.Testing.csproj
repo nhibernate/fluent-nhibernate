@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461;netcoreapp2</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>
     <NoWarn>1591</NoWarn>
     <PlatformTarget>AnyCpu</PlatformTarget>
     <DebugType Condition="'$(TargetFramework)' != '' AND '$(TargetFramework)' != 'netcoreapp1.0'">Full</DebugType>
@@ -22,18 +22,6 @@
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FakeItEasy" Version="4.3.0" />    
-    <PackageReference Include="Machine.Specifications" Version="0.12.0" />
-    <PackageReference Include="NHibernate" Version="5.1.0" />
-    <PackageReference Include="NUnit" Version="3.9.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.106" />
-    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.106" />
-    <PackageReference Include="System.Data.SQLite.Linq" Version="1.0.106" />
-    <PackageReference Include="System.Drawing.Common" Version="4.5.0-preview1-26216-02" />
-  </ItemGroup>
- 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -44,23 +32,24 @@
     <PackageReference Include="FakeItEasy" Version="4.3.0" />
     <PackageReference Include="Machine.Specifications" Version="0.12.0" />
     <PackageReference Include="NHibernate" Version="5.1.0" />
-    <PackageReference Include="NUnit" Version="3.9.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.106" />
     <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.106" />
     <PackageReference Include="System.Data.SQLite.Linq" Version="1.0.106" />
 
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
     <PackageReference Include="FakeItEasy" Version="4.3.0" />
     <PackageReference Include="Machine.Specifications" Version="0.12.0" />
     <PackageReference Include="NHibernate" Version="5.1.0" />
-    <PackageReference Include="NUnit" Version="3.9.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.106" />
     <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.106" />
     <PackageReference Include="System.Data.SQLite.Linq" Version="1.0.106" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.0-preview1-26216-02" />
   </ItemGroup>
 
 
