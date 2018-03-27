@@ -25,7 +25,7 @@ public class BuildPaths
         var artifactsBinDir = artifactsDir.Combine("bin");
         var artifactsBinFullFx = artifactsBinDir.Combine("net461");        
         var artifactsBinNetStandard20 = artifactsBinDir.Combine("netstandard2.0");        
-        var artifactsBinNetCoreapp2 = artifactsBinDir.Combine("netcoreapp2");        
+        var artifactsBinNetCoreapp2 = artifactsBinDir.Combine("netcoreapp2.0");        
         var testResultsDir = artifactsDir.Combine("test-results");
         var nuspecRoot = (DirectoryPath)"nuspec";
         var nugetRoot = artifactsDir.Combine("nuget");

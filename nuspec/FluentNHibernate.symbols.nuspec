@@ -25,8 +25,8 @@
       <file src="netstandard2.0/FluentNHibernate.dll" target="lib/netstandard2.0" />    
       <file src="netstandard2.0/FluentNHibernate.xml" target="lib/netstandard2.0" />
       <file src="netstandard2.0/FluentNHibernate.pdb" target="lib/netstandard2.0" />
-      <file src="netcoreapp2/FluentNHibernate.dll" target="lib/netcoreapp2" />    
-      <file src="netcoreapp2/FluentNHibernate.xml" target="lib/netcoreapp2" />
-      <file src="netcoreapp2/FluentNHibernate.pdb" target="lib/netcoreapp2" />
+      <file src="netcoreapp2.0/FluentNHibernate.dll" target="lib/netcoreapp2.0" />    
+      <file src="netcoreapp2.0/FluentNHibernate.xml" target="lib/netcoreapp2.0" />
+      <file src="netcoreapp2.0/FluentNHibernate.pdb" target="lib/netcoreapp2.0" />
   </files>
 </package>

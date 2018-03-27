@@ -89,7 +89,7 @@ Task("Test")
               Silent = true
             });
         }   
-        /*
+        /* Tests not working in netcoreapp2.0
         foreach(var project in TestProjects) 
         {
           var projectPath = File($"./src/{project}/{project}.csproj");
@@ -123,7 +123,7 @@ Task("Copy-Files")
             msBuildSettings
         );
         PublishProjects(
-            SrcProjects, "netcoreapp2",
+            SrcProjects, "netcoreapp2.0",
             parameters.Paths.Directories.ArtifactsBinNetCoreApp2.FullPath, 
             parameters.Version.DotNetAsterix, 
             parameters.Configuration, 
