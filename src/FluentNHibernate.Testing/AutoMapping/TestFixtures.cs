@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System;
 using System.Data;
 using System.Drawing;
-using System.IO;
 using FluentNHibernate.Automapping.TestFixtures.ComponentTypes;
 using FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes;
 using FluentNHibernate.Automapping.TestFixtures.CustomTypes;

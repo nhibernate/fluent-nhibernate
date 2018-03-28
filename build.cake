@@ -1,5 +1,5 @@
 #addin "Cake.FileHelpers"
-#tool "nuget:?package=NUnit.ConsoleRunner&version=3.7.0"
+#tool "nuget:?package=NUnit.ConsoleRunner&version=3.8.0"
 #tool "nuget:?package=Machine.Specifications.Runner.Console&version=0.9.3"
 #tool "nuget:?package=GitReleaseManager&version=0.5.0"
 #tool "nuget:?package=GitVersion.CommandLine&version=3.6.2"
@@ -41,7 +41,7 @@ Teardown((context) =>
 });
 
 Task("Clean")
-	.Does(() =>
+  .Does(() =>
     {
         CleanDirectories(parameters.Paths.Directories.ToClean);        
         CleanProjects("src", SrcProjects);
@@ -51,7 +51,7 @@ Task("Clean")
         EnsureDirectoryExists(parameters.Paths.Directories.ArtifactsBinFullFx);
         EnsureDirectoryExists(parameters.Paths.Directories.TestResults);
         EnsureDirectoryExists(parameters.Paths.Directories.NugetRoot);
-	});
+  });
 
 Task("Restore")
     .IsDependentOn("Clean")
@@ -75,19 +75,34 @@ Task("Build")
 Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
-    {          
-        var runtime = "net461";
-        var testAssemblies = $"./src/**/bin/{parameters.Configuration}/{runtime}/*.Testing.dll";  
-        NUnit3(testAssemblies, new NUnit3Settings {
-            NoResults = true
-        });
+    {    
+        var frameworks = new [] { "net461"};
+        foreach (var framework in frameworks)
+        {
+            var testAssemblies = $"./src/**/bin/{parameters.Configuration}/{framework}/*.Testing.dll";  
+            NUnit3(testAssemblies, new NUnit3Settings {
+              NoResults = true
+            });
 
-        testAssemblies = $"./src/**/bin/{parameters.Configuration}/{runtime}/*.Specs.dll";  
-        MSpec(testAssemblies, new MSpecSettings {
-            Silent = true
-        });
+            testAssemblies = $"./src/**/bin/{parameters.Configuration}/{framework}/*.Specs.dll";  
+            MSpec(testAssemblies, new MSpecSettings {
+              Silent = true
+            });
+        }   
+        /* Tests not working in netcoreapp2.0
+        foreach(var project in TestProjects) 
+        {
+          var projectPath = File($"./src/{project}/{project}.csproj");
+          DotNetCoreTest(projectPath, new DotNetCoreTestSettings
+          {
+            Framework = "netcoreapp2.0",
+            NoBuild = true,
+            NoRestore = true,
+            Configuration = parameters.Configuration
+          });          
+        }
+        */
     });
-
 
 Task("Copy-Files")
     .IsDependentOn("Test")
@@ -96,6 +111,20 @@ Task("Copy-Files")
         PublishProjects(
             SrcProjects, "net461",
             parameters.Paths.Directories.ArtifactsBinFullFx.FullPath, 
+            parameters.Version.DotNetAsterix, 
+            parameters.Configuration, 
+            msBuildSettings
+        );
+        PublishProjects(
+            SrcProjects, "netstandard2.0",
+            parameters.Paths.Directories.ArtifactsBinNetStandard20.FullPath, 
+            parameters.Version.DotNetAsterix, 
+            parameters.Configuration, 
+            msBuildSettings
+        );
+        PublishProjects(
+            SrcProjects, "netcoreapp2.0",
+            parameters.Paths.Directories.ArtifactsBinNetCoreApp2.FullPath, 
             parameters.Version.DotNetAsterix, 
             parameters.Configuration, 
             msBuildSettings
@@ -111,7 +140,7 @@ Task("Zip-Files")
         Zip(parameters.Paths.Directories.ArtifactsBinFullFx, parameters.Paths.Files.ZipArtifactPathDesktop, 
             GetFiles($"{parameters.Paths.Directories.ArtifactsBinFullFx.FullPath}/**/*"));
     });
-        
+  
 Task("Create-NuGet-Packages")
     .IsDependentOn("Copy-Files")
     .Does(() =>
@@ -120,7 +149,7 @@ Task("Create-NuGet-Packages")
             SrcProjects, 
             parameters.Paths.Directories.NuspecRoot.FullPath, 
             parameters.Paths.Directories.NugetRoot.FullPath, 
-            parameters.Paths.Directories.ArtifactsBinFullFx.FullPath, 
+            parameters.Paths.Directories.ArtifactsBin.FullPath, 
             parameters.Version.SemVersion);
     });
 
@@ -186,7 +215,7 @@ Task("Update-AppVeyor-BuildNumber")
     .WithCriteria(() => parameters.IsRunningOnAppVeyor)
     .Does(() =>
     {
-        AppVeyor.UpdateBuildVersion(parameters.Version.SemVersion);
+        // AppVeyor.UpdateBuildVersion(parameters.Version.SemVersion);
     })
     .ReportError(exception =>
     {
@@ -249,7 +278,7 @@ private void BuildProjects(
     foreach(var project in projectNames)
     {
         var projectPath = File($"./{projectKind}/{project}/{project}.csproj");
-        DotNetCoreBuild(projectPath, new DotNetCoreBuildSettings()
+        DotNetCoreBuild(projectPath.ToString(), new DotNetCoreBuildSettings
         {
             Configuration = configuration,
             MSBuildSettings = msBuildSettings

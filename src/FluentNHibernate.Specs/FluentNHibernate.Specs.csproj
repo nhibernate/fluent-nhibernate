@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>    
+    <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>    
     <NoWarn>1591</NoWarn>
     <PlatformTarget>AnyCpu</PlatformTarget>
-    <DebugType Condition="'$(TargetFramework)' != '' AND '$(TargetFramework)' != 'netcoreapp1.0'">Full</DebugType>
+    <DebugType Condition="'$(TargetFramework)' != '' AND '$(TargetFramework)' != 'netcoreapp2.0'">Full</DebugType>
   </PropertyGroup>  
 
   <Import Project="$(MSBuildThisFileDirectory)..\Shared.msbuild" />
@@ -14,23 +14,30 @@
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj" />
   </ItemGroup>
 
-  <ItemGroup>    
-    <PackageReference Include="FluentAssertions" Version="4.19.4" />    
-    <PackageReference Include="Machine.Specifications" Version="0.12.0" />
-    <PackageReference Include="Machine.Specifications.Runner.Console" Version="0.9.3" />
-    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.5.2" />
-    <PackageReference Include="Mono.Cecil" Version="0.9.6.1" />
-    <PackageReference Include="NHibernate" Version="5.0.3" />    
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <Reference Include="System.Configuration" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml.Serialization" />
+    <PackageReference Include="NHibernate" Version="5.1.0" />
+    <PackageReference Include="FluentAssertions" Version="4.19.4" />
+    <PackageReference Include="Machine.Specifications" Version="0.12.0" />
+    <PackageReference Include="Machine.Specifications.Runner.Console" Version="0.9.3" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.5.2" />
+    <PackageReference Include="Mono.Cecil" Version="0.9.6.1" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+    <PackageReference Include="NHibernate" Version="5.1.0" />
+    <PackageReference Include="FluentAssertions" Version="4.19.4" />
+    <PackageReference Include="Machine.Specifications" Version="0.12.0" />
+    <PackageReference Include="Machine.Specifications.Runner.Console" Version="0.9.3" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.5.2" />
+  </ItemGroup>
+
+
   
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
