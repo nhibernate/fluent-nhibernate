@@ -1,4 +1,3 @@
-assembly-versioning-scheme: None
 branches:
   master:
     mode: ContinuousDelivery
