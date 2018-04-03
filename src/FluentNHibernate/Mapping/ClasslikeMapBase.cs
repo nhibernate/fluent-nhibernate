@@ -48,7 +48,7 @@ namespace FluentNHibernate.Mapping
             return Map(memberExpression.ToMember(), columnName);
         }
 
-        PropertyPart Map(Member member, string columnName)
+        protected PropertyPart Map(Member member, string columnName)
         {
             OnMemberMapped(member);
 
@@ -120,7 +120,7 @@ namespace FluentNHibernate.Mapping
             return References<TOther>(memberExpression.ToMember(), columnName);
         }
 
-        ManyToOnePart<TOther> References<TOther>(Member member, string columnName)
+        protected ManyToOnePart<TOther> References<TOther>(Member member, string columnName)
         {
             OnMemberMapped(member);
 
@@ -144,7 +144,7 @@ namespace FluentNHibernate.Mapping
             return ReferencesAny<TOther>(memberExpression.ToMember());
         }
 
-        AnyPart<TOther> ReferencesAny<TOther>(Member member)
+        protected AnyPart<TOther> ReferencesAny<TOther>(Member member)
         {
             OnMemberMapped(member);
 
@@ -187,7 +187,7 @@ namespace FluentNHibernate.Mapping
             return HasOne<TOther>(memberExpression.ToMember());
         }
 
-        OneToOnePart<TOther> HasOne<TOther>(Member member)
+        protected OneToOnePart<TOther> HasOne<TOther>(Member member)
         {
             OnMemberMapped(member);
 
@@ -215,7 +215,7 @@ namespace FluentNHibernate.Mapping
             return DynamicComponent(memberExpression.ToMember(), dynamicComponentAction);
         }
 
-        DynamicComponentPart<IDictionary> DynamicComponent(Member member, Action<DynamicComponentPart<IDictionary>> dynamicComponentAction)
+        protected DynamicComponentPart<IDictionary> DynamicComponent(Member member, Action<DynamicComponentPart<IDictionary>> dynamicComponentAction)
         {
             OnMemberMapped(member);
 
@@ -241,7 +241,7 @@ namespace FluentNHibernate.Mapping
             return Component<TComponent>(member.ToMember());
         }
 
-        ReferenceComponentPart<TComponent> Component<TComponent>(Member member)
+        protected ReferenceComponentPart<TComponent> Component<TComponent>(Member member)
         {
             OnMemberMapped(member);
 
@@ -288,7 +288,7 @@ namespace FluentNHibernate.Mapping
             return Component(expression.ToMember(), action);
         }
 
-        ComponentPart<TComponent> Component<TComponent>(Member member, Action<ComponentPart<TComponent>> action)
+        protected ComponentPart<TComponent> Component<TComponent>(Member member, Action<ComponentPart<TComponent>> action)
         {
             OnMemberMapped(member);
 
@@ -319,7 +319,7 @@ namespace FluentNHibernate.Mapping
             return HasMany<TChild>(expression.ToMember());
         }
 
-        OneToManyPart<TChild> HasMany<TChild>(Member member)
+        protected OneToManyPart<TChild> HasMany<TChild>(Member member)
         {
             OnMemberMapped(member);
 
@@ -366,7 +366,7 @@ namespace FluentNHibernate.Mapping
             return HasManyToMany<TChild>(expression.ToMember());
         }
 
-        ManyToManyPart<TChild> HasManyToMany<TChild>(Member member)
+        protected ManyToManyPart<TChild> HasManyToMany<TChild>(Member member)
         {
             OnMemberMapped(member);
 
