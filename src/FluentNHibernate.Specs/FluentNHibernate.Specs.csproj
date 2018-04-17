@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
-    <PackageReference Include="NHibernate" Version="5.1.0" />
+    <PackageReference Include="NHibernate" Version="5.1.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
     <PackageReference Include="Machine.Specifications" Version="0.12.0" />
