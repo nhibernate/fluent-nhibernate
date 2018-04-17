@@ -21,7 +21,7 @@
   <Import Project="$(MSBuildThisFileDirectory)..\Shared.msbuild" />
 
   <ItemGroup>
-    <PackageReference Include="NHibernate" Version="5.1.0" />
+    <PackageReference Include="NHibernate" Version="5.1.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
   </ItemGroup>
 
