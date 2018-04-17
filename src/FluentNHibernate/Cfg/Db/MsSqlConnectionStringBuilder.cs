@@ -1,4 +1,4 @@
-using System.Data.SqlClient;
+using System.Text;
 
 namespace FluentNHibernate.Cfg.Db
 {
@@ -52,20 +52,34 @@ namespace FluentNHibernate.Cfg.Db
             if (!string.IsNullOrEmpty(connectionString))
                 return connectionString;
 
-            var builder = new SqlConnectionStringBuilder(connectionString)
-            {
-                DataSource = server,
-                InitialCatalog = database,
-                IntegratedSecurity = trustedConnection
-            };
+            var sb = new StringBuilder();
+
+            if (server.Contains(" "))
+                sb.AppendFormat("Data Source=\"{0}\"", server);
+            else
+                sb.AppendFormat("Data Source={0}", server);
+
+            if (database.Contains(" "))
+                sb.AppendFormat(";Initial Catalog=\"{0}\"", database);
+            else
+                sb.AppendFormat(";Initial Catalog={0}", database);
+
+            sb.AppendFormat(";Integrated Security={0}", trustedConnection);
 
             if (!trustedConnection)
             {
-                builder.UserID = username;
-                builder.Password = password;
+                if (username.Contains(" "))
+                    sb.AppendFormat(";User Id=\"{0}\"", username);
+                else
+                    sb.AppendFormat(";User Id={0}", username);
+
+                if (password.Contains(" "))
+                    sb.AppendFormat(";Password=\"{0}\"", password);
+                else
+                    sb.AppendFormat(";Password={0}", password);
             }
 
-            return builder.ToString();
+            return sb.ToString();
         }
     }
 }
