@@ -1,11 +1,11 @@
 <Project>
-   
+
   <PropertyGroup>
     <PackageId>$(AssemblyName)</PackageId>
     <Copyright>Copyright (c) James Gregory and contributors (Paul Batum, Hudson Akridge et al, Jorge Rodríguez Galán).</Copyright>
     <Authors>James Gregory and contributors (Paul Batum, Hudson Akridge, Gleb Chermennov, Jorge Rodríguez Galán).</Authors>
     <Company>James Gregory and contributors (Paul Batum, Hudson Akridge, Gleb Chermennov, Jorge Rodríguez Galán).</Company>
-    <PackageLicenseUrl>https://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE</PackageLicenseUrl>    
+    <PackageLicenseUrl>https://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE</PackageLicenseUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/jagregory/fluent-nhibernate/master/docs/logo-nuget.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/jagregory/fluent-nhibernate</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -13,7 +13,24 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>    
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">2.0.0</NetStandardImplicitPackageVersion>
+  </PropertyGroup>
+
+  <!-- Framework constants -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <DefineConstants>$(DefineConstants);NETFX</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
+    <DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -23,18 +40,4 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">2.0.0</NetStandardImplicitPackageVersion>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
-    <DebugType>portable</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
-    <DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
-    <DebugType>portable</DebugType>
-  </PropertyGroup>
-  
 </Project>
