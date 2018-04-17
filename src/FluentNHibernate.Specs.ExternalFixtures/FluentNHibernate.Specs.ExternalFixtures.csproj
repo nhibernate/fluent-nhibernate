@@ -2,7 +2,6 @@
   <PropertyGroup>
     <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>    
     <NoWarn>1591</NoWarn>
-    <PlatformTarget>AnyCpu</PlatformTarget>
   </PropertyGroup>
 
   <Import Project="..\Shared.msbuild" />
@@ -15,12 +14,8 @@
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+  <ItemGroup>
     <PackageReference Include="NHibernate" Version="5.1.0" />
   </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
-    <PackageReference Include="NHibernate" Version="5.1.0" />
-  </ItemGroup>
-
+  
 </Project>

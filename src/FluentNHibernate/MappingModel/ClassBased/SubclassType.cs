@@ -28,7 +28,9 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
         public override bool Equals(object obj)
         {
-            if (obj.GetType() != typeof(SubclassType)) return false;
+            if (obj.GetType() != typeof(SubclassType))
+                return false;
+
             return Equals((SubclassType)obj);
         }
 

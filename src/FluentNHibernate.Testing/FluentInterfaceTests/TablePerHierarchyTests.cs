@@ -10,6 +10,7 @@ using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NHibernate.Cfg;
 using NUnit.Framework;
+using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
@@ -79,8 +80,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             cfg = new Configuration();
             model = new PersistenceModel();
 
-            SQLiteConfiguration.Standard
-                .InMemory()
+            CreateStandardInMemoryConfiguration()
                 .ConfigureProperties(cfg);
         }
 

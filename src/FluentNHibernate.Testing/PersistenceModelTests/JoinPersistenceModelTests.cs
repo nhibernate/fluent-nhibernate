@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using System.Linq;
-using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
 using NHibernate.Cfg;
 using NUnit.Framework;
+using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
 namespace FluentNHibernate.Testing.PersistenceModelTests
 {
@@ -17,9 +16,8 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
         {
             cfg = new Configuration();
 
-            SQLiteConfiguration.Standard.InMemory()
+            CreateStandardInMemoryConfiguration()
                 .ConfigureProperties(cfg);
-
         }
 
         [Test]

@@ -3,30 +3,30 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/3uk49dtw8u4hdt7w/branch/master?svg=true)](https://ci.appveyor.com/project/jrogalan/fluent-nhibernate/branch/master)
 [![NuGet](https://img.shields.io/nuget/v/FluentNHibernate.svg)](https://www.nuget.org/packages/FluentNHibernate)
 
+## What is FluentNHibernate?
 Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate. *Get your fluent on.*
 
+## Where can I get it?
 
-Getting started
----------------------------------------------
+Install using the [FluentNHibernate NuGet package](https://www.nuget.org/packages/FluentNHibernate):
+
+```
+dotnet add package FluentNHibernate
+```
+
+## How do I use it?
 
 * Read the [introduction](https://github.com/FluentNHibernate/fluent-nhibernate/wiki/Getting-started).
 * Get latest version from NuGet
-    - [.NET 4.6.1 with NHibernate 5.x](https://www.nuget.org/packages/FluentNHibernate)
+    - [.NETCore2.0, NETStandard2.0 or NET 4.6.1 with NHibernate 5.x](https://www.nuget.org/packages/FluentNHibernate)
     - [.NET 4.0 with NHibernate 4.x](https://www.nuget.org/packages/FluentNHibernate/2.0.3)
     - [.NET 3.5 with NHibernate 3 if you like it vintage](https://www.nuget.org/packages/FluentNHibernate.Net35)
 
 * Create your [first project](https://github.com/FluentNHibernate/fluent-nhibernate/wiki/Getting-started#wiki-yourfirstproject).
 
-Further reading
----------------------------------------------
+## Further reading
 
 Once you've followed the above, you can compare our [auto mapping](https://github.com/FluentNHibernate/fluent-nhibernate/wiki/Auto-mapping) to our [fluent interface](https://github.com/FluentNHibernate/fluent-nhibernate/wiki/Fluent-mapping) to see which suits your application, read through our [API documentation](https://github.com/FluentNHibernate/fluent-nhibernate/wiki/Fluent-configuration), or just see what's available for reading in our [wiki](https://github.com/FluentNHibernate/fluent-nhibernate/wiki).
-
-
-Building
----------------------------------------------
-
-Follow the instructions from the [wiki page](https://github.com/FluentNHibernate/fluent-nhibernate/wiki/Building) to build the project.
 
 Contributors
 ---------------------------------------------

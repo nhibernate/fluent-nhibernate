@@ -75,33 +75,41 @@ Task("Build")
 Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
-    {    
-        var frameworks = new [] { "net461"};
-        foreach (var framework in frameworks)
-        {
-            var testAssemblies = $"./src/**/bin/{parameters.Configuration}/{framework}/*.Testing.dll";  
-            NUnit3(testAssemblies, new NUnit3Settings {
-              NoResults = true
-            });
+    {       
+        var unitProjects = GetFiles("./src/**/*.Testing.csproj");
+        var specProjects = GetFiles("./src/**/*.Specs.csproj");
+        var testProjects = unitProjects.Union(specProjects).ToArray();
 
-            testAssemblies = $"./src/**/bin/{parameters.Configuration}/{framework}/*.Specs.dll";  
-            MSpec(testAssemblies, new MSpecSettings {
-              Silent = true
-            });
-        }   
-        /* Tests not working in netcoreapp2.0
-        foreach(var project in TestProjects) 
-        {
-          var projectPath = File($"./src/{project}/{project}.csproj");
-          DotNetCoreTest(projectPath, new DotNetCoreTestSettings
-          {
-            Framework = "netcoreapp2.0",
-            NoBuild = true,
-            NoRestore = true,
-            Configuration = parameters.Configuration
-          });          
+        // foreach (var framework in frameworks)
+        // {
+        //     var testAssemblies = $"./src/**/bin/{parameters.Configuration}/{framework}/*.Testing.dll";  
+        //     NUnit3(testAssemblies, new NUnit3Settings {
+        //       NoResults = true
+        //     });
+
+        //     testAssemblies = $"./src/**/bin/{parameters.Configuration}/{framework}/*.Specs.dll";  
+        //     MSpec(testAssemblies, new MSpecSettings {
+        //       Silent = true
+        //     });
+        // }           
+        foreach(var project in testProjects) 
+        {                      
+            DotNetCoreTest(project.ToString(), new DotNetCoreTestSettings
+            {
+                Framework = "net461",
+                NoBuild = true,
+                NoRestore = true,
+                Configuration = parameters.Configuration
+            });          
+
+            DotNetCoreTest(project.ToString(), new DotNetCoreTestSettings
+            {
+                Framework = "netcoreapp2.0",
+                NoBuild = true,
+                NoRestore = true,
+                Configuration = parameters.Configuration
+            });          
         }
-        */
     });
 
 Task("Copy-Files")

@@ -97,7 +97,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
                 .ToProperties().ShouldContain("connection.connection_string",
                                               "User Id=test;Password=secret;Pooling=False;Statement Cache Size=50;Min Pool Size=10;Incr Pool Size=5;Decr Pool Size=2;Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=db-srv)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=mydatabase)))");
         }
-        
+
         [Test]
         public void ConnectionString_set_explicitly()
         {
@@ -107,6 +107,8 @@ namespace FluentNHibernate.Testing.Cfg.Db
                 .ToProperties().ShouldContain("connection.connection_string", "value");
         }
 
+#if NETFX
+
         [Test]
         public void ConnectionString_set_fromAppSetting()
         {
@@ -115,7 +117,9 @@ namespace FluentNHibernate.Testing.Cfg.Db
                     .FromAppSetting("connectionString"))
                 .ToProperties().ShouldContain("connection.connection_string", "a-connection-string");
         }
+#endif
 
+#if NETFX
         [Test]
         public void ConnectionString_set_fromConnectionStrings()
         {
@@ -124,6 +128,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
                     .FromConnectionStringWithKey("main"))
                 .ToProperties().ShouldContain("connection.connection_string", "connection string");
         }
+#endif
 
         [Test]
         public void ShouldBeAbleToSpecifyConnectionStringDirectly()

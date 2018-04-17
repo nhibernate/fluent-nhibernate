@@ -46,6 +46,7 @@ namespace FluentNHibernate.Testing.Cfg
                 .ToProperties().ShouldContain("connection.connection_string", "value");
         }
 
+#if NETFX
         [Test]
         public void ConnectionStringSetFromAppSetting()
         {
@@ -54,7 +55,9 @@ namespace FluentNHibernate.Testing.Cfg
                     .FromAppSetting("connectionString"))
                 .ToProperties().ShouldContain("connection.connection_string", "a-connection-string");
         }
+#endif
 
+#if NETFX
         [Test]
         public void ConnectionStringSetFromConnectionStrings()
         {
@@ -63,6 +66,7 @@ namespace FluentNHibernate.Testing.Cfg
                     .FromConnectionStringWithKey("main"))
                 .ToProperties().ShouldContain("connection.connection_string", "connection string");
         }
+#endif
 
         [Test]
         public void ShouldBeAbleToSpecifyConnectionStringDirectly()
