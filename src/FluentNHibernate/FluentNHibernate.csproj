@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <PackageReference Include="NHibernate" Version="5.1.1" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">

@@ -69,9 +69,9 @@ namespace FluentNHibernate.Cfg.Db
             if (!trustedConnection)
             {
                 if (username.Contains(" "))
-                    sb.AppendFormat(";User Id=\"{0}\"", username);
+                    sb.AppendFormat(";User ID=\"{0}\"", username);
                 else
-                    sb.AppendFormat(";User Id={0}", username);
+                    sb.AppendFormat(";User ID={0}", username);
 
                 if (password.Contains(" "))
                     sb.AppendFormat(";Password=\"{0}\"", password);
