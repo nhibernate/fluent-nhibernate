@@ -5,6 +5,7 @@ using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Collections;
 using NHibernate.Cfg;
 using NUnit.Framework;
+using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
@@ -141,7 +142,8 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             var model = new PersistenceModel();
             var classMap = new ClassMap<OneToManyTarget>();
 
-            SQLiteConfiguration.Standard.InMemory().ConfigureProperties(cfg);
+            CreateStandardInMemoryConfiguration()
+                .ConfigureProperties(cfg);
 
             classMap.Id(x => x.Id);
             classMap.HasMany(x => x.SetOfChildren).AsSet<SortComparer>();

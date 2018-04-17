@@ -1,9 +1,9 @@
-﻿using FluentNHibernate.Cfg.Db;
-using FluentNHibernate.Data;
+﻿using FluentNHibernate.Data;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.Fixtures;
 using NHibernate;
 using NUnit.Framework;
+using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
 namespace FluentNHibernate.Testing.DomainModel
 {
@@ -15,7 +15,7 @@ namespace FluentNHibernate.Testing.DomainModel
         [SetUp]
         public void SetUp()
         {
-            var properties = new SQLiteConfiguration()
+            var properties = CreateStandardConfiguration()
                 .UseOuterJoin()
                 .InMemory()
                 .ToProperties();
@@ -25,7 +25,7 @@ namespace FluentNHibernate.Testing.DomainModel
         }
 
         [Test]
-        public void MappingTest1()
+        public void Mapping_simple_properties()
         {
             new PersistenceSpecification<Record>(source)
                 .CheckProperty(r => r.Age, 22)
@@ -34,6 +34,7 @@ namespace FluentNHibernate.Testing.DomainModel
                 .VerifyTheMappings();
         }
 
+#if NETFX
         [Test]
         public void Mapping_test_with_arrays()
         {
@@ -41,6 +42,18 @@ namespace FluentNHibernate.Testing.DomainModel
                 .CheckProperty(r => r.BinaryValue, new byte[] { 1, 2, 3 })
                 .VerifyTheMappings();
         }
+#endif
+
+#if NETCORE
+        [Test, Ignore("Currently not supported by Msqlite with NETStandard")]
+        public void Mapping_test_with_arrays()
+        {
+            new PersistenceSpecification<BinaryRecord>(source)
+                .CheckProperty(r => r.BinaryValue, new byte[] { 1, 2, 3 })
+                .VerifyTheMappings();
+        }
+#endif
+
         [Test]
         public void CanWorkWithNestedSubClasses()
         {
@@ -75,7 +88,7 @@ namespace FluentNHibernate.Testing.DomainModel
     }
 
 // ignored warning for obsolete SubClass
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 
     public sealed class NestedSubClassMap : ClassMap<SuperRecord>
     {
@@ -93,7 +106,7 @@ namespace FluentNHibernate.Testing.DomainModel
         }
     }
 
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 
     public class SuperRecord  : Entity
     {

@@ -11,12 +11,14 @@ using FluentNHibernate.Testing.Fixtures.MixedMappingsInSameLocation;
 using FluentNHibernate.Testing.Fixtures.MixedMappingsInSameLocation.Mappings;
 using NHibernate.Cfg;
 using NUnit.Framework;
+using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
 namespace FluentNHibernate.Testing.Cfg
 {
     [TestFixture]
     public class ValidFluentConfigurationTests
     {
+
         [Test]
         public void ExposeConfigurationPassesCfgInstanceIntoAction()
         {
@@ -43,7 +45,8 @@ namespace FluentNHibernate.Testing.Cfg
             var calls = new List<string>();
 
             Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Database(
+                    CreateStandardInMemoryConfiguration())
                 .ExposeConfiguration(cfg => calls.Add("One"))
                 .ExposeConfiguration(cfg => calls.Add("Two"))
                 .BuildSessionFactory();
@@ -56,7 +59,8 @@ namespace FluentNHibernate.Testing.Cfg
         public void DatabaseSetsPropertiesOnCfg()
         {
             Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard)
+                .Database(
+                    CreateStandardConfiguration())
                 .ExposeConfiguration(cfg =>
                 {
                     cfg.Properties.ContainsKey("connection.provider").ShouldBeTrue();
@@ -67,7 +71,8 @@ namespace FluentNHibernate.Testing.Cfg
         public void ExposeConfigurationGetsConfigAfterMappingsHaveBeenApplied()
         {
             Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Database(
+                    CreateStandardInMemoryConfiguration())
                 .Mappings(m =>
                     m.FluentMappings.AddFromAssemblyOf<Record>())
                 .ExposeConfiguration(cfg =>
@@ -91,7 +96,8 @@ namespace FluentNHibernate.Testing.Cfg
         public void MappingsCanBeMixedAndDontConflict()
         {
             var sessionFactory = Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Database(
+                    CreateStandardInMemoryConfiguration())
                 .Mappings(m =>
                 {
                     m.FluentMappings.Add<FooMap>();
@@ -107,7 +113,8 @@ namespace FluentNHibernate.Testing.Cfg
         public void ShouldGetASessionFactoryIfEverythingIsOK()
         {
             var sessionFactory = Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Database(
+                    CreateStandardInMemoryConfiguration())
                 .Mappings(m =>
                     m.FluentMappings.Add<BinaryRecordMap>())
                 .BuildSessionFactory();
@@ -119,8 +126,9 @@ namespace FluentNHibernate.Testing.Cfg
 		public void ShouldGetAConfigurationIfEverythingIsOK()
 		{
 			var configuration = Fluently.Configure()
-				.Database(SQLiteConfiguration.Standard.InMemory)
-				.Mappings(m =>
+				.Database(
+                    CreateStandardInMemoryConfiguration())
+                .Mappings(m =>
 					m.FluentMappings.Add<BinaryRecordMap>())
 				.BuildConfiguration();
 
@@ -147,11 +155,14 @@ namespace FluentNHibernate.Testing.Cfg
  			configuration.Properties["current_session_context_class"].ShouldEqual(typeof(NHibernate.Context.ThreadStaticSessionContext).AssemblyQualifiedName);
      	}
 
+
+
         [Test]
         public void ShouldSetConnectionIsolationLevel()
         {
             var configuration = Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.IsolationLevel(IsolationLevel.ReadUncommitted))
+                .Database(
+                    CreateStandardConfiguration(IsolationLevel.ReadUncommitted))
                 .BuildConfiguration();
 
             configuration.Properties["connection.isolation"].ShouldEqual("ReadUncommitted");
@@ -238,7 +249,8 @@ namespace FluentNHibernate.Testing.Cfg
         {
             var ex = Assert.Throws<FluentConfigurationException>(() =>
                 Fluently.Configure()
-                    .Database(SQLiteConfiguration.Standard)
+                    .Database(
+                        CreateStandardConfiguration())
                     .BuildSessionFactory());
 
             ex.PotentialReasons.Contains(ExceptionDatabaseMessage)
@@ -250,7 +262,8 @@ namespace FluentNHibernate.Testing.Cfg
         {
             var ex = Assert.Throws<FluentConfigurationException>(() =>
                 Fluently.Configure()
-                    .Database(SQLiteConfiguration.Standard)
+                    .Database(
+                        CreateStandardConfiguration())
                     .BuildSessionFactory());
 
             ex.PotentialReasons.ShouldContain(ExceptionMappingMessage);
@@ -261,7 +274,8 @@ namespace FluentNHibernate.Testing.Cfg
         {
             var ex = Assert.Throws<FluentConfigurationException>(() =>
                 Fluently.Configure()
-                    .Database(SQLiteConfiguration.Standard)
+                    .Database(
+                        CreateStandardConfiguration())
                     .Mappings(m =>
                         m.FluentMappings.AddFromAssemblyOf<Record>())
                     .BuildSessionFactory());
@@ -275,7 +289,8 @@ namespace FluentNHibernate.Testing.Cfg
         {
             var ex = Assert.Throws<FluentConfigurationException>(() =>
                 Fluently.Configure()
-                    .Database(SQLiteConfiguration.Standard)
+                    .Database(
+                        CreateStandardConfiguration())
                     .Mappings(m =>
                         m.FluentMappings.AddFromAssemblyOf<Record>())
                     .BuildSessionFactory());
@@ -306,7 +321,8 @@ namespace FluentNHibernate.Testing.Cfg
         public void WritesFluentMappingsOut()
         {
             Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Database(
+                    CreateStandardInMemoryConfiguration())
                 .Mappings(m =>
                     m.FluentMappings
                         .Add<BinaryRecordMap>()
@@ -320,10 +336,11 @@ namespace FluentNHibernate.Testing.Cfg
         [Test]
         public void WritesFluentMappingsOutToTextWriter()
         {
-            var stringWriter = new StringWriter();            
+            var stringWriter = new StringWriter();
 
             Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Database(
+                    CreateStandardInMemoryConfiguration())
                 .Mappings(m =>
                     m.FluentMappings
                         .Add<BinaryRecordMap>()
@@ -338,7 +355,8 @@ namespace FluentNHibernate.Testing.Cfg
         public void WritesFluentMappingsOutMergedWhenFlagSet()
         {
             Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Database(
+                    CreateStandardInMemoryConfiguration())
                 .Mappings(m =>
                     m.MergeMappings()
                      .FluentMappings
@@ -354,7 +372,8 @@ namespace FluentNHibernate.Testing.Cfg
         public void WritesAutoMappingsOut()
         {
             Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Database(
+                    CreateStandardInMemoryConfiguration())
                 .Mappings(m =>
                     m.AutoMappings.Add(AutoMap.AssemblyOf<Person>()
                                         .Where(type => type.Namespace == "FluentNHibernate.Testing.Fixtures.Basic"))
@@ -369,7 +388,8 @@ namespace FluentNHibernate.Testing.Cfg
         public void WritesAutoMappingsOutMergedWhenFlagSet()
         {
             Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Database(
+                    CreateStandardInMemoryConfiguration())
                 .Mappings(m =>
                     m.MergeMappings()
                      .AutoMappings.Add(AutoMap.AssemblyOf<Person>()
@@ -385,7 +405,8 @@ namespace FluentNHibernate.Testing.Cfg
         public void WritesBothOut()
         {
             Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory())
+                .Database(
+                    CreateStandardInMemoryConfiguration())
                 .Mappings(m =>
                 {
                     m.FluentMappings
@@ -399,7 +420,7 @@ namespace FluentNHibernate.Testing.Cfg
                 .BuildSessionFactory();
 
             var files = Directory.GetFiles(ExportPath);
-            
+
             files.ShouldContain(HbmFor<BinaryRecord>);
             files.ShouldContain(HbmFor<Person>);
         }
@@ -409,7 +430,8 @@ namespace FluentNHibernate.Testing.Cfg
         {
             //Regression test for isue 131
             Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Database(
+                    CreateStandardInMemoryConfiguration())
                 .Mappings(m =>
                     m.FluentMappings
                         .Add<CachedRecordMap>()

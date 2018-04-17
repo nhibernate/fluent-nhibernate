@@ -2,6 +2,7 @@
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
 using NHibernate.Cfg;
+using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
@@ -42,8 +43,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void NHibernateCanLoadOneToManyTargetMapping()
         {
-            var cfg = new SQLiteConfiguration()
-                .InMemory()
+            var cfg = CreateStandardInMemoryConfiguration()
                 .ConfigureProperties(new Configuration());
 
             var model = new OneToManyPersistenceModel();

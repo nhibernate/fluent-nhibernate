@@ -1,10 +1,10 @@
-﻿using System.Linq;
+﻿using FluentAssertions;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using Machine.Specifications;
-using FluentAssertions;
+using System.Linq;
 
 namespace FluentNHibernate.Specs.Conventions
 {
@@ -14,26 +14,25 @@ namespace FluentNHibernate.Specs.Conventions
         {
             model = new FluentNHibernate.PersistenceModel();
             model.Conventions.Add<ComponentConvention>();
-            model.Add(new EntityWithComponentMap());
             model.Add(new AddressMap());
+            model.Add(new EntityWithComponentMap());
         };
 
         Because of = () =>
         {
-            mapping = model.BuildMappingFor<EntityWithComponent>();
+             mapping = model.BuildMappingFor<EntityWithComponent>();
         };
 
         It should_be_able_to_specify_column_name = () =>
         {
-            mapping.Components.First()
-                .Properties.Single(x => x.Name == "Count")
-                .Columns.FirstOrDefault().Name.Should().Be("Count");
-                // TODO (we need to fix this test, is not working as expected)
-                // .Columns.FirstOrDefault().Name.Should().Be("different");
+            var property = mapping.Components.First()
+                .Properties.Single(x => x.Name == "Count");
+
+            property.Columns.FirstOrDefault().Name.Should().Be("different");
         };
 
-        static FluentNHibernate.PersistenceModel model;
-        static ClassMapping mapping;
+        private static FluentNHibernate.PersistenceModel model;
+        private static ClassMapping mapping;
     }
 
     public class EntityWithComponent
@@ -50,7 +49,7 @@ namespace FluentNHibernate.Specs.Conventions
         public string Line2 { get; set; }
     }
 
-    class AddressMap: ComponentMap<Address>
+    internal class AddressMap : ComponentMap<Address>
     {
         public AddressMap()
         {
@@ -60,20 +59,19 @@ namespace FluentNHibernate.Specs.Conventions
         }
     }
 
-    public class ComponentConvention: IComponentConvention
+    public class ComponentConvention : IComponentConvention
     {
-
         public void Apply(IComponentInstance instance)
         {
             if (instance.Type == typeof(Address))
             {
-                instance.Properties.First(p => p.Type.GetType() == typeof(int))
-                    .Column("different");
+                var type = instance.Properties.First(p => p.Type == typeof(int));
+                type.Column("different");
             }
         }
     }
 
-    public class EntityWithComponentMap: ClassMap<EntityWithComponent>
+    public class EntityWithComponentMap : ClassMap<EntityWithComponent>
     {
         public EntityWithComponentMap()
         {

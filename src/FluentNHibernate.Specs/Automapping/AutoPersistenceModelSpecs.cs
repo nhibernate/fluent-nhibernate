@@ -5,7 +5,6 @@ using System.Xml;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using FluentNHibernate.Specs.ExternalFixtures;
@@ -48,8 +47,10 @@ namespace FluentNHibernate.Specs.Automapping
     public class when_the_automapper_is_ran_to_completion
     {
         Establish context = () =>
+
             setup = Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Database(
+                    CreateStandardInMemoryConfiguration())
                 .Mappings(x => x.AutoMappings.Add(AutoMap.Source(new StubTypeSource(typeof(Entity)))));
 
         Because of = () =>
@@ -60,6 +61,18 @@ namespace FluentNHibernate.Specs.Automapping
 
         static FluentConfiguration setup;
         static Exception ex;
+
+        private static IPersistenceConfigurer CreateStandardInMemoryConfiguration()
+        {
+#if NETFX
+            var configuration = SQLiteConfiguration.Standard.InMemory();
+#endif
+
+#if NETCORE
+            var configuration = MsSqliteConfiguration.Standard.InMemory();
+#endif
+            return configuration;
+        }
     }
 
     public class when_the_automapper_is_told_to_map_an_inheritance_hierarchy
