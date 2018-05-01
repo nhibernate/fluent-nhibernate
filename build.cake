@@ -241,12 +241,22 @@ Task("Upload-AppVeyor-Artifacts")
             AppVeyor.UploadArtifact(package);
         }
     });
-
+	
+Task("Update-Nuspec-Files")
+    .Does(() =>
+    {                
+        UpdateNuspecs(
+            SrcProjects, 
+            parameters.Paths.Directories.NuspecRoot.FullPath,
+            parameters.Version.SemVersion);
+    });
+	
 Task("Release-Notes")
   .IsDependentOn("Create-Release-Notes");
 
 Task("Package")
     .IsDependentOn("Zip-Files")
+	.IsDependentOn("Update-Nuspec-Files")
     .IsDependentOn("Create-NuGet-Packages");  
 
 Task("AppVeyor")
@@ -361,3 +371,25 @@ private void PackProjects(
         });
     }
 }
+
+private void UpdateNuspecs(
+    IEnumerable<string> projectNames, 
+    string nuspecDir,
+    string semVersion)
+{
+    foreach(var project in projectNames)
+    {
+        // symbols
+		XmlPoke($"{nuspecDir}/{project}.symbols.nuspec", "/package/metadata:metadata/metadata:version", semVersion,
+			new XmlPokeSettings {
+				Namespaces = new Dictionary<string, string> {{ "metadata", "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd" }}
+			});
+        
+        // normal
+		XmlPoke($"{nuspecDir}/{project}.nuspec", "/package/metadata:metadata/metadata:version", semVersion,
+			new XmlPokeSettings {
+				Namespaces = new Dictionary<string, string> {{ "metadata", "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd" }}
+			});
+    }
+}
+	
