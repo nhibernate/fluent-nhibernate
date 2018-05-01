@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentNHibernate.Infrastructure;
-using Machine.Specifications;
 using NUnit.Framework;
+using FluentAssertions;
 
 namespace FluentNHibernate.Testing.Infrastructure
 {
@@ -29,14 +29,10 @@ namespace FluentNHibernate.Testing.Infrastructure
         [Test]
         public void ShouldThrowExceptionWhenResolvingUnregisteredType()
         {
-            var ex = Catch.Exception(() => container.Resolve<IExample>());
+            Action act = () => container.Resolve<IExample>();
 
-            ex
-                .ShouldNotBeNull()
-                .ShouldBeOfType<ResolveException>();
-
-            ex.Message
-                .ShouldEqual("Unable to resolve dependency: '" + typeof(IExample).FullName + "'");
+            act.ShouldThrow<ResolveException>()
+                .WithMessage("Unable to resolve dependency: '" + typeof(IExample).FullName + "'");
         }
 
         private interface IExample
