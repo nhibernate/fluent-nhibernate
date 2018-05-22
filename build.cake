@@ -24,7 +24,7 @@ Setup((context) =>
 
     Information("FluentNHibernate");
     Information($"SemVersion: {parameters.Version.SemVersion}");
-	Information($"NHibernateVersion: {parameters.MsBuildShared.NHibernatePackageVersion}");
+    Information($"NHibernateVersion: {parameters.MsBuildShared.NHibernatePackageVersion}");
     Information($"IsLocalBuild: {parameters.IsLocalBuild}");    
     Information($"IsTagged: {parameters.IsTagged}");
     Information($"IsPullRequest: {parameters.IsPullRequest}");
@@ -260,7 +260,7 @@ Task("Release-Notes")
 
 Task("Package")
     .IsDependentOn("Zip-Files")
-	.IsDependentOn("Update-Nuspec-Files")
+    .IsDependentOn("Update-Nuspec-Files")
     .IsDependentOn("Create-NuGet-Packages");  
 
 Task("AppVeyor")
