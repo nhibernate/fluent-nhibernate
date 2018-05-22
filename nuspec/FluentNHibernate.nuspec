@@ -1,4 +1,4 @@
-<?xml version='1.0'?>
+﻿<?xml version='1.0'?>
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>FluentNHibernate</id>
@@ -15,8 +15,16 @@
     <tags>ORM DAL NHibernate DataBase ADO.Net Mappings Conventions</tags>
     <copyright>Copyright (c) James Gregory and contributors (Paul Batum, Hudson Akridge, Gleb Chermennov, Jorge Rodríguez Galán).</copyright>
     <dependencies>
-  		<dependency id="NHibernate" version="5.1.1" />      
-  	</dependencies>
+      <group targetFramework="net461" >
+        <dependency id="NHibernate" version="5.1.1" />
+      </group>
+      <group targetFramework="netstandard2.0">
+        <dependency id="NHibernate" version="5.1.1" />
+      </group>
+      <group targetFramework="netcoreapp2.0">
+        <dependency id="NHibernate" version="5.1.1" />
+      </group>
+    </dependencies>
   </metadata>
     <files>
       <file src="net461/FluentNHibernate.dll" target="lib/net461" />    
