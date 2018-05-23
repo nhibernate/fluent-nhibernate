@@ -15,16 +15,20 @@ var SrcProjects = new [] { "FluentNHibernate" };
 var TestProjects = new [] { "FluentNHibernate.Testing" };
 var SpecProjects = new [] { "FluentNHibernate.Specs" };
 
+var NHibernateNuspecXPath = "/package/meta:metadata/meta:dependencies/meta:dependency[@id='NHibernate']/@version";
+var NHibernateNuspecXPathWithGroup = "/package/meta:metadata/meta:dependencies/meta:group/meta:dependency[@id='NHibernate']/@version";
+
 Setup((context) =>
 {    
     parameters.Initialize(context);
 
     Information("FluentNHibernate");
     Information($"SemVersion: {parameters.Version.SemVersion}");
+    Information($"NHibernateVersion: {parameters.MsBuildShared.NHibernatePackageVersion}");
     Information($"IsLocalBuild: {parameters.IsLocalBuild}");    
     Information($"IsTagged: {parameters.IsTagged}");
     Information($"IsPullRequest: {parameters.IsPullRequest}");
-    Information($"Target: {parameters.Target}");        
+    Information($"Target: {parameters.Target}");   
 
     var releaseNotes = string.Join("\n", 
         parameters.ReleaseNotes.Notes.ToArray()).Replace("\"", "\"\"");
@@ -241,12 +245,22 @@ Task("Upload-AppVeyor-Artifacts")
             AppVeyor.UploadArtifact(package);
         }
     });
-
+	
+Task("Update-Nuspec-Files")
+    .Does(() =>
+    {                
+        UpdateNuspecs(
+            SrcProjects, 
+            parameters.Paths.Directories.NuspecRoot.FullPath,
+            parameters.MsBuildShared.NHibernatePackageVersion);
+    });
+	
 Task("Release-Notes")
   .IsDependentOn("Create-Release-Notes");
 
 Task("Package")
     .IsDependentOn("Zip-Files")
+    .IsDependentOn("Update-Nuspec-Files")
     .IsDependentOn("Create-NuGet-Packages");  
 
 Task("AppVeyor")
@@ -361,3 +375,25 @@ private void PackProjects(
         });
     }
 }
+
+private void UpdateNuspecs(
+    IEnumerable<string> projectNames, 
+    string nuspecDir,
+    string nHibernateVersion)
+{
+    foreach(var project in projectNames)
+    {
+        // symbols
+		XmlPoke($"{nuspecDir}/{project}.symbols.nuspec", $"({NHibernateNuspecXPathWithGroup}|{NHibernateNuspecXPath})", nHibernateVersion,
+			new XmlPokeSettings {
+				Namespaces = new Dictionary<string, string> {{ "meta", "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd" }}
+			});
+        
+        // normal
+		XmlPoke($"{nuspecDir}/{project}.nuspec", $"({NHibernateNuspecXPathWithGroup}|{NHibernateNuspecXPath})", nHibernateVersion,
+			new XmlPokeSettings {
+				Namespaces = new Dictionary<string, string> {{ "meta", "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd" }}
+			});
+    }
+}
+	
