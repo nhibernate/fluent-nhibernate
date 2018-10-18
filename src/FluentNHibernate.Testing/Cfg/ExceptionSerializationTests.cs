@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using FluentNHibernate.Cfg;
+using FluentNHibernate.Utils;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Cfg
@@ -34,19 +35,20 @@ namespace FluentNHibernate.Testing.Cfg
         public void ShouldSerializeUnknownPropertyExceptionCorrectly()
         {
             var original = new UnknownPropertyException(typeof(string), "Property1");
-            var formatter = new BinaryFormatter();
+            UnknownPropertyException result;
 
             using (var stream = new MemoryStream())
             {
+                var formatter = new BinaryFormatter();
                 formatter.Serialize(stream, original);
                 stream.Position = 0;
 
-                var result = formatter.Deserialize(stream) as UnknownPropertyException;
-
-                original.Message.ShouldEqual(result.Message);
-                original.Property.ShouldEqual(result.Property);
-                original.Type.ShouldEqual(result.Type);
+                result = formatter.Deserialize(stream) as UnknownPropertyException;
             }
+
+            result.Message.ShouldEqual(original.Message);
+            result.Property.ShouldEqual(original.Property);
+            result.Type.ShouldEqual(original.Type);
         }
     }
 }

@@ -8,6 +8,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Automapping
 {
@@ -20,10 +21,10 @@ namespace FluentNHibernate.Specs.Automapping
 	        mapping = mapper.BuildMappingFor<VersionedEntity>();
 
 	    It should_have_a_version = () =>
-	        mapping.Version.ShouldNotBeNull();
+	        mapping.Version.Should().NotBeNull();
 
 	    It should_have_picked_the_right_property_to_be_the_version = () =>
-	        mapping.Version.Name.ShouldEqual("Timestamp");
+	        mapping.Version.Name.Should().Be("Timestamp");
 
         static AutoPersistenceModel mapper;
         static ClassMapping mapping;
@@ -38,10 +39,10 @@ namespace FluentNHibernate.Specs.Automapping
             mapping = mapper.BuildMappingFor<VersionedEntity>();
 
         It should_have_a_version = () =>
-            mapping.Version.ShouldNotBeNull();
+            mapping.Version.Should().NotBeNull();
 
         It should_have_picked_the_right_property_to_be_the_version = () =>
-            mapping.Version.Name.ShouldEqual("AnUnobviousVersion");
+            mapping.Version.Name.Should().Be("AnUnobviousVersion");
 
         static AutoPersistenceModel mapper;
         static ClassMapping mapping;

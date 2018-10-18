@@ -10,7 +10,7 @@ namespace FluentNHibernate.Testing
     {
         public Exception thrown_exception { get; private set; }
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void Setup()
         {
             establish_context();
@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing
 
         /// <summary>
         /// An optional method you can use after <see cref="establish_context"/> to exercise the
-        /// system under test. Also, any exception raised during the <see cref="because"/> will be 
+        /// system under test. Also, any exception raised during the <see cref="because"/> will be
         /// captured and available for inspection via the <see cref="thrown_exception"/> property.
         /// </summary>
         public virtual void because()

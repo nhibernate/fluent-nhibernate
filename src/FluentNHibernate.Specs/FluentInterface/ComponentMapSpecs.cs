@@ -6,6 +6,7 @@ using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using Machine.Specifications;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs.FluentInterface
 {
@@ -26,7 +27,7 @@ namespace FluentNHibernate.Specs.FluentInterface
             mapping = (component as IExternalComponentMappingProvider).GetComponentMapping();
 
         It should_create_an_external_component_mapping = () =>
-            mapping.ShouldBeOfType<ExternalComponentMapping>();
+            mapping.Should().BeOfType<ExternalComponentMapping>();
 
         It should_add_properties_to_the_properties_collection = () =>
             mapping.Properties.ShouldContain(x => x.Name == "a_property");
@@ -45,7 +46,7 @@ namespace FluentNHibernate.Specs.FluentInterface
 
         It should_add_references_to_the_references_collection = () =>
             mapping.References.ShouldContain(x => x.Name == "a_reference");
-        
+
         private static ComponentMap<Target> component;
         private static ComponentMapping mapping;
 
@@ -77,10 +78,10 @@ namespace FluentNHibernate.Specs.FluentInterface
                 .Components.First();
 
         It should_create_a_reference_component_mapping = () =>
-            mapping.ShouldBeOfType<ReferenceComponentMapping>();
+            mapping.Should().BeOfType<ReferenceComponentMapping>();
 
         It should_store_the_property_in_the_reference_component_mapping = () =>
-            (mapping as ReferenceComponentMapping).Member.Name.ShouldBeEqualIgnoringCase("Component");
+            (mapping as ReferenceComponentMapping).Member.Name.Should().Be("Component");
 
         private static ClassMap<Target> classmap;
         private static IComponentMapping mapping;
@@ -120,13 +121,13 @@ namespace FluentNHibernate.Specs.FluentInterface
         };
 
         It should_add_the_subclass_to_the_class = () =>
-            class_mapping.Subclasses.Count().ShouldEqual(1);
+            class_mapping.Subclasses.Count().Should().Be(1);
 
         It should_merge_the_delegated_component_mapping_with_the_unassociated_component_mapping_from_the_component_map = () =>
         {
             var component_mapping = class_mapping.Subclasses.Single().Components.First();
 
-            component_mapping.Member.Name.ShouldBeEqualIgnoringCase("Component");
+            component_mapping.Member.Name.Should().Be("Component");
             component_mapping.Properties.ShouldContain(x => x.Name == "Property");
         };
 
@@ -161,7 +162,7 @@ namespace FluentNHibernate.Specs.FluentInterface
             ex = Catch.Exception(() => component_map.Component(x => x.Compo));
 
         It should_throw_a_not_supported_exception = () =>
-            ex.ShouldBeOfType<NotSupportedException>();
+            ex.Should().BeOfType<NotSupportedException>();
 
         static ComponentMap<Component> component_map;
         static Exception ex;
@@ -198,7 +199,7 @@ namespace FluentNHibernate.Specs.FluentInterface
         {
             var component_mapping = class_mapping.Components.First();
 
-            component_mapping.Member.Name.ShouldBeEqualIgnoringCase("Component");
+            component_mapping.Member.Name.Should().Be("Component");
             component_mapping.Properties.ShouldContain(x => x.Name == "Property");
         };
 
@@ -244,18 +245,18 @@ namespace FluentNHibernate.Specs.FluentInterface
         };
 
         It should_merge_the_component_mappings_with_the_mapping_from_the_component_map = () =>
-            class_mapping.Components.Select(x => x.Name).ShouldContain("ComponentA", "ComponentB");
+            class_mapping.Components.Select(x => x.Name).Should().Contain("ComponentA", "ComponentB");
 
         It should_use_the_column_prefixes_for_the_columns = () =>
         {
             class_mapping.Components.First(x => x.Name == "ComponentA")
                 .Properties.SelectMany(x => x.Columns)
                 .Select(x => x.Name)
-                .ShouldContain("A_PROP");
+                .Should().Contain("A_PROP");
             class_mapping.Components.First(x => x.Name == "ComponentB")
                 .Properties.SelectMany(x => x.Columns)
                 .Select(x => x.Name)
-                .ShouldContain("B_PROP");
+                .Should().Contain("B_PROP");
         };
 
         private static FluentNHibernate.PersistenceModel persistence_model;
@@ -270,6 +271,68 @@ namespace FluentNHibernate.Specs.FluentInterface
         }
 
         private class Component
+        {
+            public string Property { get; set; }
+        }
+    }
+
+    public class when_compiling_the_mappings_with_multiple_nested_component_mappings
+    {
+        Establish context = () => {
+            var component_map = new ComponentMap<Component>();
+            component_map.Component(x => x.NestedComponent1,
+                c => c.Map(y => y.Property, "PROP1"));
+            component_map.Component(x => x.NestedComponent2,
+                c => c.Map(y => y.Property, "PROP2"));
+
+            var class_map = new ClassMap<Target>();
+            class_map.Id(x => x.Id);
+            class_map.Component(x => x.Component)
+                .ColumnPrefix("A_");
+
+            persistence_model = new FluentNHibernate.PersistenceModel();
+            persistence_model.Add(class_map);
+            persistence_model.Add(component_map);
+        };
+
+        Because of = () => {
+            mappings = persistence_model.BuildMappings();
+            class_mapping = mappings.SelectMany(x => x.Classes).First();
+        };
+
+        It should_use_the_column_prefix_for_all_nested_component_columns = () => {
+            var root_component = class_mapping.Components.First(x => x.Name == "Component");
+
+            root_component
+                .Components.First(x => x.Name == "NestedComponent1")
+                .Properties.SelectMany(x => x.Columns)
+                .Select(x => x.Name)
+                .Should().Contain("A_PROP1");
+
+            root_component
+                .Components.First(x => x.Name == "NestedComponent2")
+                .Properties.SelectMany(x => x.Columns)
+                .Select(x => x.Name)
+                .Should().Contain("A_PROP2");
+        };
+
+        private static FluentNHibernate.PersistenceModel persistence_model;
+        private static IEnumerable<HibernateMapping> mappings;
+        private static ClassMapping class_mapping;
+
+        private class Target
+        {
+            public int Id { get; set; }
+            public Component Component { get; set; }
+        }
+
+        private class Component
+        {
+            public NestedComponent NestedComponent1 { get; set; }
+            public NestedComponent NestedComponent2 { get; set; }
+        }
+
+        private class NestedComponent
         {
             public string Property { get; set; }
         }

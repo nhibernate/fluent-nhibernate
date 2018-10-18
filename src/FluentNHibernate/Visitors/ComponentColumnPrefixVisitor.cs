@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.MappingModel;
@@ -18,7 +19,7 @@ namespace FluentNHibernate.Visitors
 
         public override void ProcessColumn(ColumnMapping columnMapping)
         {
-            if (prefixes.Any())
+            if (prefixes.Any(x => x != String.Empty))
                 columnMapping.Set(x => x.Name, Layer.UserSupplied, GetPrefix() + columnMapping.Name);
         }
 
@@ -29,8 +30,11 @@ namespace FluentNHibernate.Visitors
 
         private void StorePrefix(IComponentMapping mapping)
         {
-            if (mapping.HasColumnPrefix)
-                prefixes.Push(mapping.ColumnPrefix.Replace("{property}", mapping.Member.Name));
+            var prefix = mapping.HasColumnPrefix 
+                ? mapping.ColumnPrefix.Replace("{property}", mapping.Member.Name) 
+                : String.Empty;
+
+            prefixes.Push(prefix);
         }
 
         private void ResetPrefix()

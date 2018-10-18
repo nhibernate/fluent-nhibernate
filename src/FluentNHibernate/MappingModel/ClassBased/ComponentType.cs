@@ -22,9 +22,15 @@ namespace FluentNHibernate.MappingModel.ClassBased
 
         public override bool Equals(object obj)
         {
-            if (obj is ComponentType)
-                return Equals(obj as ComponentType);
-            return false;
+            if (obj.GetType() != typeof(ComponentType))
+                return false;
+
+            return Equals(obj as ComponentType);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("ElementName: {0}", elementName);
         }
 
         public bool Equals(ComponentType other)
@@ -35,6 +41,16 @@ namespace FluentNHibernate.MappingModel.ClassBased
         public override int GetHashCode()
         {
             return (elementName != null ? elementName.GetHashCode() : 0);
+        }
+
+        public static bool operator ==(ComponentType left, ComponentType right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(ComponentType left, ComponentType right)
+        {
+            return !(left == right);
         }
     }
 }

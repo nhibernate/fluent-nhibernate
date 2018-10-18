@@ -3,6 +3,7 @@ using FluentNHibernate.Conventions;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Conventions.Fixtures;
 using Machine.Specifications;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Conventions
 {
@@ -20,11 +21,11 @@ namespace FluentNHibernate.Specs.Conventions
             mapping = model.BuildMappingFor<FormulaTarget>();
 
         It should_remove_all_columns_from_the_property = () =>
-            mapping.Properties.Single().Columns.ShouldBeEmpty();
+            mapping.Properties.Single().Columns.Should().BeEmpty();
 
         It should_add_the_formula_to_the_property = () =>
-            mapping.Properties.Single().Formula.ShouldEqual(FormulaConvention.FormulaValue);
-        
+            mapping.Properties.Single().Formula.Should().Be(FormulaConvention.FormulaValue);
+
         static FluentNHibernate.PersistenceModel model;
         static ClassMapping mapping;
     }
@@ -43,10 +44,10 @@ namespace FluentNHibernate.Specs.Conventions
             mapping = model.BuildMappingFor<FormulaTarget>();
 
         It should_remove_all_columns_from_the_property = () =>
-            mapping.References.Single().Columns.ShouldBeEmpty();
+            mapping.References.Single().Columns.Should().BeEmpty();
 
         It should_add_the_formula_to_the_property = () =>
-            mapping.References.Single().Formula.ShouldEqual(FormulaConvention.FormulaValue);
+            mapping.References.Single().Formula.Should().Be(FormulaConvention.FormulaValue);
 
         static FluentNHibernate.PersistenceModel model;
         static ClassMapping mapping;

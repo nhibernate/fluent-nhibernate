@@ -24,7 +24,7 @@ namespace FluentNHibernate
     {
         protected readonly IList<IMappingProvider> classProviders = new List<IMappingProvider>();
         protected readonly IList<IFilterDefinition> filterDefinitions = new List<IFilterDefinition>();
-        protected readonly IList<IIndeterminateSubclassMappingProvider> subclassProviders = new List<IIndeterminateSubclassMappingProvider>();
+        protected readonly IIndeterminateSubclassMappingProviderCollection subclassProviders = new IndeterminateSubclassMappingProviderCollection();
         protected readonly IList<IExternalComponentMappingProvider> componentProviders = new List<IExternalComponentMappingProvider>();
         protected readonly IList<IComponentReferenceResolver> componentResolvers = new List<IComponentReferenceResolver>
         {
@@ -89,7 +89,7 @@ namespace FluentNHibernate
 
         private static Assembly FindTheCallingAssembly()
         {
-            StackTrace trace = new StackTrace(Thread.CurrentThread, false);
+            StackTrace trace = new StackTrace(false);
 
             Assembly thisAssembly = Assembly.GetExecutingAssembly();
             Assembly callingAssembly = null;
@@ -243,7 +243,7 @@ namespace FluentNHibernate
         }
 
         public void WriteMappingsTo(TextWriter writer)
-        {            
+        {
             WriteMappingsTo( _ => new XmlTextWriter(writer), false);
         }
 
@@ -302,7 +302,7 @@ namespace FluentNHibernate
         }
 
         /// <summary>
-        /// Gets or sets whether validation of mappings is performed. 
+        /// Gets or sets whether validation of mappings is performed.
         /// </summary>
         public bool ValidationEnabled
         {
