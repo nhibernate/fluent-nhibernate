@@ -309,23 +309,41 @@ namespace FluentNHibernate.Mapping
             foreach (var join in joins)
                 mapping.AddJoin(join);
 
-            foreach (var property in providers.Properties)
-                mapping.AddProperty(property.GetPropertyMapping());
-
-            foreach (var component in providers.Components)
-                mapping.AddComponent(component.GetComponentMapping());
-
-            foreach (var oneToOne in providers.OneToOnes)
-                mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
-
-            foreach (var collection in providers.Collections)
-                mapping.AddCollection(collection.GetCollectionMapping());
-
-            foreach (var reference in providers.References)
-                mapping.AddReference(reference.GetManyToOneMapping());
-
-            foreach (var any in providers.Anys)
-                mapping.AddAny(any.GetAnyMapping());
+            foreach (var provider in providers.OrderedProviders) {
+                var x = provider.Item2;
+                switch (provider.Item1) {
+                    case MappingProviderStore.ProviderType.Property:
+                        mapping.AddProperty(((IPropertyMappingProvider)x).GetPropertyMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Component:
+                        mapping.AddComponent(((IComponentMappingProvider)x).GetComponentMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.OneToOne:
+                        mapping.AddOneToOne(((IOneToOneMappingProvider)x).GetOneToOneMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Collection:
+                        mapping.AddCollection(((ICollectionMappingProvider)x).GetCollectionMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.ManyToOne:
+                        mapping.AddReference(((IManyToOneMappingProvider)x).GetManyToOneMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Any:
+                        mapping.AddAny(((IAnyMappingProvider)x).GetAnyMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Subclass:
+                    case MappingProviderStore.ProviderType.Filter:
+                    case MappingProviderStore.ProviderType.StoredProcedure:
+                    case MappingProviderStore.ProviderType.Join:
+                    case MappingProviderStore.ProviderType.Identity:
+                    case MappingProviderStore.ProviderType.CompositeId:
+                    case MappingProviderStore.ProviderType.NaturalId:
+                    case MappingProviderStore.ProviderType.Version:
+                    case MappingProviderStore.ProviderType.Discriminator:
+                    case MappingProviderStore.ProviderType.Tupilizer:
+                    default:
+                        throw new Exception("Internal Error");
+                }
+            }
 
             return mapping.DeepClone();
         }
