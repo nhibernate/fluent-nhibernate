@@ -15,9 +15,7 @@ namespace FluentNHibernate.Utils {
 
         private IDictionary<TKey, TValue> _dictionary;
 
-        protected IDictionary<TKey, TValue> Dictionary {
-            get { return _dictionary; }
-        }
+        protected IDictionary<TKey, TValue> Dictionary => _dictionary;
 
         #region Constructors
 
@@ -57,9 +55,7 @@ namespace FluentNHibernate.Utils {
             return Dictionary.ContainsKey(key);
         }
 
-        public ICollection<TKey> Keys {
-            get { return Dictionary.Keys; }
-        }
+        public ICollection<TKey> Keys => Dictionary.Keys;
 
         public bool Remove(TKey key) {
             if (key == null) throw new ArgumentNullException("key");
@@ -68,8 +64,7 @@ namespace FluentNHibernate.Utils {
             Dictionary.TryGetValue(key, out value);
             var removed = Dictionary.Remove(key);
             if (removed)
-                //OnCollectionChanged(NotifyCollectionChangedAction.Remove, new KeyValuePair<TKey, TValue>(key, value));
-                OnCollectionChanged();
+                OnCollectionChanged(NotifyCollectionChangedAction.Remove, new KeyValuePair<TKey, TValue>(key, value));
             return removed;
         }
 
@@ -77,16 +72,11 @@ namespace FluentNHibernate.Utils {
             return Dictionary.TryGetValue(key, out value);
         }
 
-        public ICollection<TValue> Values {
-            get { return Dictionary.Values; }
-        }
+        public ICollection<TValue> Values => Dictionary.Values;
 
         public TValue this[TKey key] {
-            get {
-                TValue value;
-                return TryGetValue(key, out value) ? value : default(TValue);
-            }
-            set { Insert(key, value, false); }
+            get => TryGetValue(key, out var value) ? value : default(TValue);
+            set => Insert(key, value, false);
         }
 
         #endregion
@@ -112,13 +102,9 @@ namespace FluentNHibernate.Utils {
             Dictionary.CopyTo(array, arrayIndex);
         }
 
-        public int Count {
-            get { return Dictionary.Count; }
-        }
+        public int Count => Dictionary.Count;
 
-        public bool IsReadOnly {
-            get { return Dictionary.IsReadOnly; }
-        }
+        public bool IsReadOnly => Dictionary.IsReadOnly;
 
         public bool Remove(KeyValuePair<TKey, TValue> item) {
             return Remove(item.Key);
@@ -198,27 +184,27 @@ namespace FluentNHibernate.Utils {
         }
 
         protected virtual void OnPropertyChanged(string propertyName) {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void OnCollectionChanged() {
             OnPropertyChanged();
-            if (CollectionChanged != null) CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         private void OnCollectionChanged(NotifyCollectionChangedAction action, KeyValuePair<TKey, TValue> changedItem) {
             OnPropertyChanged();
-            if (CollectionChanged != null) CollectionChanged(this, new NotifyCollectionChangedEventArgs(action, changedItem, 0));
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(action, changedItem, 0));
         }
 
         private void OnCollectionChanged(NotifyCollectionChangedAction action, KeyValuePair<TKey, TValue> newItem, KeyValuePair<TKey, TValue> oldItem) {
             OnPropertyChanged();
-            if (CollectionChanged != null) CollectionChanged(this, new NotifyCollectionChangedEventArgs(action, newItem, oldItem, 0));
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(action, newItem, oldItem, 0));
         }
 
         private void OnCollectionChanged(NotifyCollectionChangedAction action, IList newItems) {
             OnPropertyChanged();
-            if (CollectionChanged != null) CollectionChanged(this, new NotifyCollectionChangedEventArgs(action, newItems, 0));
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(action, newItems, 0));
         }
 
     }
