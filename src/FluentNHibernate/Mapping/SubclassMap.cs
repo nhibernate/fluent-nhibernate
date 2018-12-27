@@ -310,25 +310,25 @@ namespace FluentNHibernate.Mapping
                 mapping.AddJoin(join);
 
             foreach (var provider in providers.OrderedProviders) {
-                var x = provider.Item2;
+                var mappingProviderObj = provider.Item2;
                 switch (provider.Item1) {
                     case MappingProviderStore.ProviderType.Property:
-                        mapping.AddProperty(((IPropertyMappingProvider)x).GetPropertyMapping());
+                        mapping.AddProperty(((IPropertyMappingProvider)mappingProviderObj).GetPropertyMapping());
                         break;
                     case MappingProviderStore.ProviderType.Component:
-                        mapping.AddComponent(((IComponentMappingProvider)x).GetComponentMapping());
+                        mapping.AddComponent(((IComponentMappingProvider)mappingProviderObj).GetComponentMapping());
                         break;
                     case MappingProviderStore.ProviderType.OneToOne:
-                        mapping.AddOneToOne(((IOneToOneMappingProvider)x).GetOneToOneMapping());
+                        mapping.AddOneToOne(((IOneToOneMappingProvider)mappingProviderObj).GetOneToOneMapping());
                         break;
                     case MappingProviderStore.ProviderType.Collection:
-                        mapping.AddCollection(((ICollectionMappingProvider)x).GetCollectionMapping());
+                        mapping.AddCollection(((ICollectionMappingProvider)mappingProviderObj).GetCollectionMapping());
                         break;
                     case MappingProviderStore.ProviderType.ManyToOne:
-                        mapping.AddReference(((IManyToOneMappingProvider)x).GetManyToOneMapping());
+                        mapping.AddReference(((IManyToOneMappingProvider)mappingProviderObj).GetManyToOneMapping());
                         break;
                     case MappingProviderStore.ProviderType.Any:
-                        mapping.AddAny(((IAnyMappingProvider)x).GetAnyMapping());
+                        mapping.AddAny(((IAnyMappingProvider)mappingProviderObj).GetAnyMapping());
                         break;
                     case MappingProviderStore.ProviderType.Subclass:
                     case MappingProviderStore.ProviderType.Filter:

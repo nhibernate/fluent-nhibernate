@@ -45,14 +45,12 @@ namespace FluentNHibernate.Mapping
         private INaturalIdMappingProvider _naturalId;
         private IVersionMappingProvider _version;
         private IDiscriminatorMappingProvider _discriminator;
-        private TuplizerMapping _tuplizerMapping;
-        private IList<Tuple<ProviderType, object>> orderedProviders;
+        private TuplizerMapping _tupilizerMapping;
+        private readonly IList<Tuple<ProviderType, object>> _orderedProviders;
 
 
         public IIdentityMappingProvider Id {
-            get {
-                return _id;
-            }
+            get => _id;
             set {
                 ReplaceOrAddProvider(ProviderType.Identity, _id, value);
                 _id = value;
@@ -60,9 +58,7 @@ namespace FluentNHibernate.Mapping
         }
 
         public ICompositeIdMappingProvider CompositeId {
-            get {
-                return _compositeId;
-            }
+            get => _compositeId;
             set {
                 ReplaceOrAddProvider(ProviderType.CompositeId, _compositeId, value);
                 _compositeId = value;
@@ -70,9 +66,7 @@ namespace FluentNHibernate.Mapping
         }
 
         public INaturalIdMappingProvider NaturalId {
-            get {
-                return _naturalId;
-            }
+            get => _naturalId;
             set {
                 ReplaceOrAddProvider(ProviderType.NaturalId, _naturalId, value);
                 _naturalId = value;
@@ -80,9 +74,7 @@ namespace FluentNHibernate.Mapping
         }
 
         public IVersionMappingProvider Version {
-            get {
-                return _version;
-            }
+            get => _version;
             set {
                 ReplaceOrAddProvider(ProviderType.Version, _version, value);
                 _version = value;
@@ -90,9 +82,7 @@ namespace FluentNHibernate.Mapping
         }
 
         public IDiscriminatorMappingProvider Discriminator {
-            get {
-                return _discriminator;
-            }
+            get => _discriminator;
             set {
                 ReplaceOrAddProvider(ProviderType.Discriminator, _discriminator, value);
                 _discriminator = value;
@@ -100,12 +90,10 @@ namespace FluentNHibernate.Mapping
         }
 
         public TuplizerMapping TuplizerMapping {
-            get {
-                return _tuplizerMapping;
-            }
+            get => _tupilizerMapping;
             set {
-                ReplaceOrAddProvider(ProviderType.Tupilizer, _tuplizerMapping, value);
-                _tuplizerMapping = value;
+                ReplaceOrAddProvider(ProviderType.Tupilizer, _tupilizerMapping, value);
+                _tupilizerMapping = value;
             }
         }
 
@@ -121,34 +109,34 @@ namespace FluentNHibernate.Mapping
             Filters = NewObservedList<IFilterMappingProvider>();
             StoredProcedures = NewObservedList<IStoredProcedureMappingProvider>();
             Joins = NewObservedList<IJoinMappingProvider>();
-            orderedProviders = new List<Tuple<ProviderType, object>>();
+            _orderedProviders = new List<Tuple<ProviderType, object>>();
         }
 
         public IEnumerable<Tuple<ProviderType, object>> OrderedProviders {
-            get { return orderedProviders.Select(x => x); }
+            get { return _orderedProviders.Select(x => x); }
         }
 
         private IList<T> NewObservedList<T>() {
 
-            ProviderType TypeSelector(object o) 
+            ProviderType TypeSelector(object mappingStoreCollection) 
             {
-                if (ReferenceEquals(o, Properties)) {
+                if (ReferenceEquals(mappingStoreCollection, Properties)) {
                     return ProviderType.Property;
-                } else if (ReferenceEquals(o, Components)) {
+                } else if (ReferenceEquals(mappingStoreCollection, Components)) {
                     return ProviderType.Component;
-                } else if (ReferenceEquals(o, OneToOnes)) {
+                } else if (ReferenceEquals(mappingStoreCollection, OneToOnes)) {
                     return ProviderType.OneToOne;
-                } else if (ReferenceEquals(o, Collections)) {
+                } else if (ReferenceEquals(mappingStoreCollection, Collections)) {
                     return ProviderType.Collection;
-                } else if (ReferenceEquals(o, References)) {
+                } else if (ReferenceEquals(mappingStoreCollection, References)) {
                     return ProviderType.ManyToOne;
-                } else if (ReferenceEquals(o, Anys)) {
+                } else if (ReferenceEquals(mappingStoreCollection, Anys)) {
                     return ProviderType.Any;
-                } else if (ReferenceEquals(o, Filters)) {
+                } else if (ReferenceEquals(mappingStoreCollection, Filters)) {
                     return ProviderType.Filter;
-                } else if (ReferenceEquals(o, StoredProcedures)) {
+                } else if (ReferenceEquals(mappingStoreCollection, StoredProcedures)) {
                     return ProviderType.StoredProcedure;
-                } else if (ReferenceEquals(o, Joins)) {
+                } else if (ReferenceEquals(mappingStoreCollection, Joins)) {
                     return ProviderType.Join;
                 }
                 throw new Exception("Internal Error");
@@ -160,20 +148,20 @@ namespace FluentNHibernate.Mapping
                 switch (args.Action) {
                     case NotifyCollectionChangedAction.Add:
                         foreach (var newItem in args.NewItems)
-                            orderedProviders.Add(Tuple.Create(type, newItem));
+                            _orderedProviders.Add(Tuple.Create(type, newItem));
                         break;
                     case NotifyCollectionChangedAction.Move:
                         throw new NotSupportedException();
 
                     case NotifyCollectionChangedAction.Remove:
                         foreach (var oldItem in args.OldItems)
-                            orderedProviders.Remove(Tuple.Create(type, oldItem));
+                            _orderedProviders.Remove(Tuple.Create(type, oldItem));
                         break;
                     case NotifyCollectionChangedAction.Replace:
                         throw new NotSupportedException();
                     case NotifyCollectionChangedAction.Reset:
                         foreach (var oldItem in args.OldItems)
-                            orderedProviders.Remove(Tuple.Create(type, oldItem));
+                            _orderedProviders.Remove(Tuple.Create(type, oldItem));
                         break;
                 }
             };
@@ -189,12 +177,12 @@ namespace FluentNHibernate.Mapping
                             //Inserting
                             for (var i = 0; i < args.NewItems.Count; i++) {
                                 var newValue = (KeyValuePair<TKey, TVal>)args.NewItems[i];
-                                orderedProviders.Insert(args.NewStartingIndex + i, Tuple.Create(ProviderType.Subclass, (object)newValue.Value));
+                                _orderedProviders.Insert(args.NewStartingIndex + i, Tuple.Create(ProviderType.Subclass, (object)newValue.Value));
                             }
                         } else {
                             //Appending
                             foreach (KeyValuePair<TKey, TVal> newItem in args.NewItems) {
-                                orderedProviders.Add(Tuple.Create(ProviderType.Subclass, (object)newItem.Value));
+                                _orderedProviders.Add(Tuple.Create(ProviderType.Subclass, (object)newItem.Value));
                             }
                         }
                         break;
@@ -202,13 +190,13 @@ namespace FluentNHibernate.Mapping
                         throw new NotSupportedException();
                     case NotifyCollectionChangedAction.Remove:
                         foreach (KeyValuePair<TKey, TVal> oldItem in args.OldItems)
-                            orderedProviders.Remove(Tuple.Create(ProviderType.Subclass, (object)oldItem.Value));
+                            _orderedProviders.Remove(Tuple.Create(ProviderType.Subclass, (object)oldItem.Value));
                         break;
                     case NotifyCollectionChangedAction.Replace:
                         throw new NotSupportedException();                        
                     case NotifyCollectionChangedAction.Reset:
                         foreach (KeyValuePair<TKey, TVal> oldItem in args.OldItems)
-                            orderedProviders.Remove(Tuple.Create(ProviderType.Subclass, (object)oldItem.Value));
+                            _orderedProviders.Remove(Tuple.Create(ProviderType.Subclass, (object)oldItem.Value));
                         break;
                 }
             };
@@ -216,12 +204,12 @@ namespace FluentNHibernate.Mapping
         }
 
         private void ReplaceOrAddProvider(ProviderType type, object oldObj, object newObj) {
-            var index = orderedProviders.IndexOf(Tuple.Create(type, oldObj));
+            var index = _orderedProviders.IndexOf(Tuple.Create(type, oldObj));
             var newObjTuple = Tuple.Create(type, newObj);
             if (index > 0)
-                orderedProviders[index] = newObjTuple;
+                _orderedProviders[index] = newObjTuple;
             else
-                orderedProviders.Add(newObjTuple);
+                _orderedProviders.Add(newObjTuple);
         }        
     }
 }
