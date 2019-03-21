@@ -15,7 +15,7 @@
     <tags>ORM DAL NHibernate DataBase ADO.Net Mappings Conventions</tags>
     <copyright>Copyright (c) James Gregory and contributors (Paul Batum, Hudson Akridge, Gleb Chermennov, Jorge Rodríguez Galán).</copyright>
     <dependencies>
-  		<dependency id="NHibernate" version="5.1.1" />
+  		<dependency id="NHibernate" version="5.2.4" />
   	</dependencies>
   </metadata>
   <files>

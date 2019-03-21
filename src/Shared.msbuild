@@ -41,7 +41,7 @@
   </PropertyGroup>
   
   <PropertyGroup Label="Package Versions">
-    <NHibernatePackageVersion>5.1.1</NHibernatePackageVersion>
+    <NHibernatePackageVersion>5.2.4</NHibernatePackageVersion>
   </PropertyGroup>
 
 </Project>
