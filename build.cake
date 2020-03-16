@@ -11,7 +11,7 @@ DotNetCoreMSBuildSettings msBuildSettings = null;
 bool publishingError = false;
 
 var SolutionPath = "./src/FluentNHibernate.sln";
-var SrcProjects = new [] { "FluentNHibernate" };
+var SrcProjects = new [] { "FluentNHibernate", "FluentNHibernate.StrongName" };
 var TestProjects = new [] { "FluentNHibernate.Testing" };
 var SpecProjects = new [] { "FluentNHibernate.Specs" };
 
