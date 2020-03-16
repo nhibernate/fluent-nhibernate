@@ -35,7 +35,7 @@ namespace FluentNHibernate.Testing.Testing
             spec.VerifyTheMappings();
 
             A.CallTo(() => session.BeginTransaction()).MustNotHaveHappened();
-            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Twice);
+            A.CallTo(() => session.Transaction).MustHaveHappened(2, Times.Exactly);
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace FluentNHibernate.Testing.Testing
             var spec = new PersistenceSpecification<Cat>(session);
             spec.VerifyTheMappings();
 
-            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Twice);
+            A.CallTo(() => session.Transaction).MustHaveHappened(2, Times.Exactly);
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace FluentNHibernate.Testing.Testing
 
             spec.VerifyTheMappings();
 
-            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Twice);
+            A.CallTo(() => session.Transaction).MustHaveHappened(2, Times.Exactly);
             A.CallTo(() => session.BeginTransaction()).MustNotHaveHappened();
         }
 
