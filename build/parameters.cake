@@ -72,7 +72,7 @@ public class BuildParameters
 
     private static bool IsReleasing(string target)
     {
-        var targets = new [] { "Publish", "Publish-NuGet", "Publish-GitHub-Release" };
+        var targets = new [] { "Publish", "Publish-Manual", "Publish-NuGet", "Publish-GitHub-Release" };
         return targets.Any(t => StringComparer.OrdinalIgnoreCase.Equals(t, target));
     }
 

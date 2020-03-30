@@ -279,7 +279,10 @@ Task("AppVeyor")
     
 Task("Default")
     .IsDependentOn("Package");
-    
+
+Task("Publish-Manual")
+    .IsDependentOn("Package");
+
 RunTarget(parameters.Target);
 
 private void CleanProjects(string projectKind, IEnumerable<string> projectNames)
