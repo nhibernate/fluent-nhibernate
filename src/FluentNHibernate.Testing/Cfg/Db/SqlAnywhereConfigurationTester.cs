@@ -39,5 +39,13 @@ namespace FluentNHibernate.Testing.Cfg.Db
             properties["dialect"].ShouldEqual("NHibernate.Dialect.SybaseSQLAnywhere12Dialect, " + typeof(ISession).Assembly.FullName);
             properties["connection.driver_class"].ShouldEqual("NHibernate.Driver.SybaseSQLAnywhereDotNet4Driver, " + typeof(ISession).Assembly.FullName);
         }
+
+        [Test]
+        public void SqlAnywhere17_should_specify_SQLAnywhere17_dialect()
+        {
+            var properties = SQLAnywhereConfiguration.SQLAnywhere17.ToProperties();
+            properties["dialect"].ShouldEqual("NHibernate.Dialect.SapSQLAnywhere17Dialect, " + typeof(ISession).Assembly.FullName);
+            properties["connection.driver_class"].ShouldEqual("NHibernate.Driver.SapSQLAnywhere17Driver, " + typeof(ISession).Assembly.FullName);
+        }
     }
 }
