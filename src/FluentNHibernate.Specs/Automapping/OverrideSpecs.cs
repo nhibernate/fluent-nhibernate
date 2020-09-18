@@ -34,7 +34,6 @@ namespace FluentNHibernate.Specs.Automapping
         static ClassMapping mapping;
     }
 
-
     public class when_using_an_automapping_override_to_specify_a_discriminators_and_join_on_subclass
     {
         private Establish context = () =>
@@ -45,17 +44,15 @@ namespace FluentNHibernate.Specs.Automapping
 
         private Because of = () => 
             mapping = model.BuildMappingFor<Parent>();
-           
-
 
         It should_not_create_the_join_mapping = () =>
-            mapping.Joins.ShouldBeEmpty();
+            mapping.Joins.Should().BeEmpty();
 
         It should_map_the_discriminator = () =>
-            mapping.Discriminator.ShouldNotBeNull();
+            mapping.Discriminator.Should().NotBeNull();
 
         It should_map_subclasses_as_joined_subclasses = () =>
-            mapping.Subclasses.ShouldEachConformTo(x => x.Joins.Any());
+            mapping.Subclasses.Should().OnlyContain(x => x.Joins.Any());
 
         static AutoPersistenceModel model;
         static ClassMapping mapping;
