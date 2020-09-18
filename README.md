@@ -31,7 +31,7 @@ Once you've followed the above, you can compare our [auto mapping](https://githu
 Contributors
 ---------------------------------------------
 
-Fluent NHibernate wouldn't be possible without the time and effort of its contributors. The team comprises of [James Gregory](http://jagregory.com), [Paul Batum](http://www.paulbatum.com), Andrew Stewart, [Hudson Akridge](http://www.bestguesstheory.com), [Gleb Chermennov](https://github.com/chester89) and [Jorge Rodríguez Galán](https://github.com/jrgcubano).
+Fluent NHibernate wouldn't be possible without the time and effort of its contributors. The team comprises of [James Gregory](http://jagregory.com), [Paul Batum](http://www.paulbatum.com), Andrew Stewart, [Hudson Akridge](https://github.com/HudsonAkridge), [Gleb Chermennov](https://github.com/chester89) and [Jorge Rodríguez Galán](https://github.com/jrgcubano).
 
 **Our valued committers are:** Aaron Jensen, Alexander Gross, Andrew Stewart, Barry Dahlberg, Bobby Johnson, Brian Donahue, Cameron Harris, Chad Myers, Chris Chilvers, Craig Neuwirt, Dan Malcolm, Daniel Mirapalheta, David Archer, David Longnecker, David R. Longnecker, Derick Bailey, Erik Ojebo, Firo, Hudson Akridge, Ivan Zlatev, James Freiwirth, James Gregory, James Kovacs, Jeremy Skinner, Lee Henson, Louis DeJardin, Patric Forsgard, Paul Batum, Roelof Blom, Stuart Childs, Tom Janssens, Tuna Toksoz, U-BSOD\pruiz, di97mni, dschilling, felixg, jeremydmiller, kevm, leebrandt, maxild, robsosno, [Jorge Rodríguez Galán](https://github.com/jrgcubano) and many more.</p>
 

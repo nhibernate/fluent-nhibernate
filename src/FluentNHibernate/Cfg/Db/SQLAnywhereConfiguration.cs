@@ -38,5 +38,13 @@ namespace FluentNHibernate.Cfg.Db
                 return new SQLAnywhereConfiguration().Dialect<SybaseSQLAnywhere12Dialect>().Driver<SybaseSQLAnywhereDotNet4Driver>();
             }
         }
+
+        public static SQLAnywhereConfiguration SQLAnywhere17
+        {
+            get
+            {
+                return new SQLAnywhereConfiguration().Dialect<SapSQLAnywhere17Dialect>().Driver<SapSQLAnywhere17Driver>();
+            }
+        }
     }
 }
