@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.Automapping
     {
         IAutomappingConfiguration configuration;
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void FixtureSetUp()
         {
             configuration = new DefaultAutomappingConfiguration();

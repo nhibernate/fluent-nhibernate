@@ -38,6 +38,11 @@ namespace FluentNHibernate.Conventions.Instances
             mapping.Set(x => x.TableName, Layer.Conventions, tableName);
         }
 
+        public new void DiscriminatorValue(object value)
+        {
+            mapping.Set(x => x.DiscriminatorValue, Layer.Conventions, value);
+        }
+
         public new void DynamicInsert()
         {
             mapping.Set(x => x.DynamicInsert, Layer.Conventions, nextBool);

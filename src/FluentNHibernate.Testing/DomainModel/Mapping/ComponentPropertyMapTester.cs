@@ -1,6 +1,8 @@
 using System;
 using System.Data;
+using System.Data.Common;
 using FluentNHibernate.Mapping;
+using NHibernate.Engine;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
 using NUnit.Framework;
@@ -243,6 +245,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             public object Disassemble(object value)
             {
                 return value;
+            }
+
+            public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
+            {
+                throw new NotImplementedException();
             }
 
             public SqlType[] SqlTypes

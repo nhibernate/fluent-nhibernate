@@ -31,7 +31,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteNameAttribute()
         {
             var testHelper = create_helper();
-            
+
             testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
             testHelper.VerifyAll(writer);
         }
@@ -173,13 +173,13 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Element("list").Exists();
         }
 
-        [Test, Ignore]
+        [Test, Ignore("ShouldWriteArrays")]
         public void ShouldWriteArrays()
         {
             Assert.Fail();
         }
 
-        [Test, Ignore]
+        [Test, Ignore("ShouldWritePrimitiveArrays")]
         public void ShouldWritePrimitiveArrays()
         {
             Assert.Fail();

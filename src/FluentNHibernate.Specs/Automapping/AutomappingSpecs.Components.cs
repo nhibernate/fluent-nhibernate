@@ -8,6 +8,7 @@ using FluentNHibernate.Specs.Automapping.Fixtures;
 using FluentNHibernate.Specs.ExternalFixtures;
 using FluentNHibernate.Utils;
 using Machine.Specifications;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Automapping
 {
@@ -67,7 +68,7 @@ namespace FluentNHibernate.Specs.Automapping
                 .Components.ShouldContain(x => x.Type == typeof(Component));
 
         It should_use_the_component_map_for_mapping = () =>
-            mappings.Single().Components.Single().Access.ShouldEqual("none");
+            mappings.Single().Components.Single().Access.Should().Be("none");
 
         static AutoPersistenceModel mapper;
         static IEnumerable<ClassMapping> mappings;
@@ -104,7 +105,7 @@ namespace FluentNHibernate.Specs.Automapping
                 .SelectMany(x => x.Properties)
                 .SelectMany(x => x.Columns)
                 .Select(x => x.Name)
-                .ShouldContain("LeftLocationProperty", "RightLocationProperty");
+                .Should().Contain(new string[] { "LeftLocationProperty", "RightLocationProperty" });
 
         It should_prefix_the_components_in_the_components = () =>
             mapping.Components
@@ -112,7 +113,7 @@ namespace FluentNHibernate.Specs.Automapping
                 .SelectMany(x => x.Properties)
                 .SelectMany(x => x.Columns)
                 .Select(x => x.Name)
-                .ShouldContain("LeftAPropertyA", "LeftBPropertyB", "RightAPropertyA", "RightBPropertyB");
+                .Should().Contain(new string[] { "LeftAPropertyA", "LeftBPropertyB", "RightAPropertyA", "RightBPropertyB" });
 
         static AutoPersistenceModel mapper;
         static ClassMapping mapping;
@@ -129,8 +130,8 @@ namespace FluentNHibernate.Specs.Automapping
     public class Entity1
     {
         public int Id { get; set; }
-        public Location Left { get; set; } 
-        public Location Right { get; set; } 
+        public Location Left { get; set; }
+        public Location Right { get; set; }
     }
 
     public class Location

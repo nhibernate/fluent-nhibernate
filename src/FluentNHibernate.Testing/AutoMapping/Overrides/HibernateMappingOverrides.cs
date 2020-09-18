@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Overrides
     [TestFixture]
     public class HibernateMappingOverrides
     {
-        [Test, Ignore]
+        [Test, Ignore("CanOverrideDefaultLazy")]
         public void CanOverrideDefaultLazy()
         {
             var model = AutoMap.Source(new StubTypeSource(new[] { typeof(Parent) }))

@@ -9,6 +9,7 @@ namespace FluentNHibernate.Conventions.Inspections
         bool Abstract { get; }
         IEnumerable<IAnyInspector> Anys { get; }
         IEnumerable<ICollectionInspector> Collections { get; }
+        IEnumerable<IComponentBaseInspector> Components { get; }
         IEnumerable<IJoinInspector> Joins { get; }
         IEnumerable<IOneToOneInspector> OneToOnes { get; }
         IEnumerable<IPropertyInspector> Properties { get; }

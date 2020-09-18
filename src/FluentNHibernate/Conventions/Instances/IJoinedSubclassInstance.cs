@@ -17,7 +17,7 @@ namespace FluentNHibernate.Conventions.Instances
         new void LazyLoad();
         new void Proxy(Type type);
         new void Proxy<T>();
-        void Schema(string schema);
+        new void Schema(string schema);
         new void SelectBeforeUpdate();
         void Table(string tableName);
         void Subselect(string subselect);

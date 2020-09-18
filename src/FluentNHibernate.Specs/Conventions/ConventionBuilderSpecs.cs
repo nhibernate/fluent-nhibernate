@@ -4,6 +4,7 @@ using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Conventions.Fixtures;
 using Machine.Specifications;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Conventions
 {
@@ -23,10 +24,10 @@ namespace FluentNHibernate.Specs.Conventions
             mapping = model.BuildMappingFor<TwoPropertyEntity>();
 
         It shouldnt_apply_the_convention_to_any_properties_that_dont_match_the_acceptance_criteria = () =>
-            mapping.Properties.Single(x => x.Name == "OtherProperty").Columns.Single().SqlType.ShouldNotEqual("EXAMPLE");
+            mapping.Properties.Single(x => x.Name == "OtherProperty").Columns.Single().SqlType.Should().NotBe("EXAMPLE");
 
         It should_apply_the_convention_to_any_properties_that_match_the_acceptance_criteria = () =>
-            mapping.Properties.Single(x => x.Name == "TargetProperty").Columns.Single().SqlType.ShouldEqual("EXAMPLE");
+            mapping.Properties.Single(x => x.Name == "TargetProperty").Columns.Single().SqlType.Should().Be("EXAMPLE");
 
         static IPropertyConvention conventions;
         static FluentNHibernate.PersistenceModel model;

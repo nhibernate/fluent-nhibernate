@@ -1,199 +1,37 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D6C908E5-2B12-43DB-A8AB-2B6849D9CB7B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FluentNHibernate.Specs</RootNamespace>
-    <AssemblyName>FluentNHibernate.Specs</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+    <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>
+    <NoWarn>1591</NoWarn>
+    <DebugType Condition="'$(TargetFramework)' != '' AND '$(TargetFramework)' != 'netcoreapp2.0'">Full</DebugType>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>169,649</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Machine.Specifications, Version=0.5.15.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Machine.Specifications.0.5.15\lib\net40\Machine.Specifications.dll</HintPath>
-    </Reference>
-	<Reference Include="NHibernate">
-      <HintPath>..\packages\NHibernate.4.0.0.4000\lib\net40\NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\FluentNHibernate.Specs.ExternalFixtures\FluentNHibernate.Specs.ExternalFixtures.csproj" />
+    <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Automapping\AutoMapBackwardsCompatibilitySpecs.cs" />
-    <Compile Include="Automapping\AutomappingSpecs.Components.cs" />
-    <Compile Include="Automapping\AutomappingSpecs.Properties.Enum.cs" />
-    <Compile Include="Automapping\AutomappingSpecs.ElementCollections.cs" />
-    <Compile Include="Automapping\AutoPersistenceModelSpecs.cs" />
-    <Compile Include="Automapping\AutoPersistenceModelSpecs.Conventions.cs" />
-    <Compile Include="Automapping\AutomappingSpecs.Version.cs" />
-    <Compile Include="Automapping\Fixtures\AutomappingSpecExtensions.cs" />
-    <Compile Include="Automapping\Fixtures\EntityWithStaticProperties.cs" />
-    <Compile Include="Automapping\Fixtures\EntityUsingPrivateFields.cs" />
-    <Compile Include="Automapping\Fixtures\FakeMembers.cs" />
-    <Compile Include="Automapping\Fixtures\Overrides\EntityTableOverride.cs" />
-    <Compile Include="Automapping\Fixtures\StubTypeSource.cs" />
-    <Compile Include="Automapping\Fixtures\UserTypes.cs" />
-    <Compile Include="Automapping\Fixtures\VersionedEntity.cs" />
-    <Compile Include="Automapping\PrivateAutomapperSpecs.cs" />
-    <Compile Include="Automapping\PrivateFieldsSpecs.cs" />
-    <Compile Include="Conventions\ApplyFilterSpecs.cs" />
-    <Compile Include="Conventions\CollectionTypeChangeSpecs.cs" />
-    <Compile Include="Conventions\ConventionBuilderSpecs.cs" />
-    <Compile Include="Conventions\Fixtures\Child.cs" />
-    <Compile Include="Conventions\Fixtures\CollectionTarget.cs" />
-    <Compile Include="Conventions\Fixtures\CollectionConvention.cs" />
-    <Compile Include="Conventions\Fixtures\FilterClassConvention.cs" />
-    <Compile Include="Conventions\Fixtures\FilterTarget.cs" />
-    <Compile Include="Conventions\Fixtures\FormulaConvention.cs" />
-    <Compile Include="Conventions\Fixtures\FormulaTarget.cs" />
-    <Compile Include="Conventions\Fixtures\SetCollectionEntity.cs" />
-    <Compile Include="Conventions\Fixtures\SetCollectionEntityMap.cs" />
-    <Compile Include="Conventions\Fixtures\SetCompositeElementCollectionEntity.cs" />
-    <Compile Include="Conventions\Fixtures\SetCompositeElementCollectionEntityMap.cs" />
-    <Compile Include="Conventions\Fixtures\SetElementCollectionEntity.cs" />
-    <Compile Include="Conventions\Fixtures\SetElementCollectionEntityMap.cs" />
-    <Compile Include="Conventions\Fixtures\TwoPropertyEntity.cs" />
-    <Compile Include="Conventions\Fixtures\TwoPropertyEntityMap.cs" />
-    <Compile Include="Conventions\Fixtures\Value.cs" />
-    <Compile Include="Conventions\ForeignKeyConventionSpecs.cs" />
-    <Compile Include="Conventions\FormulaConventionSpecs.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="FluentInterface\ClasslikeBehaviors.cs" />
-    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Cache.cs" />
-    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Component.cs" />
-    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Discriminator.cs" />
-    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.HasMany.cs" />
-    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.HasOne.cs" />
-    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Property.cs" />
-    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Subclass.cs" />
-    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Version.cs" />
-    <Compile Include="FluentInterface\ClassMapSpecs\ClassMapSpecs.Id.cs" />
-    <Compile Include="FluentInterface\ComponentMapSpecs.cs" />
-    <Compile Include="FluentInterface\Fixtures\EntityWithComponent.cs" />
-    <Compile Include="FluentInterface\Fixtures\EntityWithFields.cs" />
-    <Compile Include="FluentInterface\Fixtures\EntityWithReferences.cs" />
-    <Compile Include="FluentInterface\Fixtures\EntityWithVersion.cs" />
-    <Compile Include="FluentInterface\Fixtures\IndexTarget.cs" />
-    <Compile Include="FluentInterface\Fixtures\EntityWithCollections.cs" />
-    <Compile Include="FluentInterface\Fixtures\EntityWithProperties.cs" />
-    <Compile Include="FluentInterface\Fixtures\SuperTarget.cs" />
-    <Compile Include="FluentInterface\ProviderSpec.cs" />
-    <Compile Include="FluentInterface\SubclassMapSpecs\SubclassMapSpecs.Component.cs" />
-    <Compile Include="FluentInterface\SubclassMapSpecs\SubclassMapSpecs.HasMany.cs" />
-    <Compile Include="FluentInterface\SubclassMapSpecs\SubclassMapSpecs.HasOne.cs" />
-    <Compile Include="FluentInterface\SubclassMapSpecs\SubclassMapSpecs.Property.cs" />
-    <Compile Include="PersistenceModel\PersistenceModelSpecs.AddingProviders.cs" />
-    <Compile Include="PersistenceModel\PersistenceModelSpecs.Validation.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\Fixtures\Target.cs" />
-    <Compile Include="Utilities\Fixtures\TargetParent.cs" />
-    <Compile Include="Utilities\MemberReflectionSpecs.cs" />
-    <Compile Include="Utilities\RevealSpecs.cs" />
-    <Compile Include="Visitors\BiDirectionalManyToManyPairingVisitorSpecs.cs" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="NHibernate" Version="$(NHibernatePackageVersion)" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
+    <PackageReference Include="FluentAssertions" Version="4.19.4" />
+    <PackageReference Include="Machine.Specifications" Version="0.12.0" />
+    <PackageReference Include="Machine.Specifications.Runner.Console" Version="0.9.3" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.6.1" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Serialization" />
+    <PackageReference Include="Mono.Cecil" Version="0.9.6.1" />
+  </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\FluentNHibernate.Specs.ExternalFixtures\FluentNHibernate.Specs.ExternalFixtures.csproj">
-      <Project>{28BF853D-5B20-4091-A059-1CB0A028F981}</Project>
-      <Name>FluentNHibernate.Specs.ExternalFixtures</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj">
-      <Project>{529145D5-6CC3-4016-89B5-826563024AF1}</Project>
-      <Name>FluentNHibernate</Name>
-    </ProjectReference>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Automapping\AutomappingSpecs.Relationships.cs" />
-    <Compile Include="Automapping\Fixtures\DictionaryEntity.cs" />
-    <Compile Include="Automapping\Fixtures\ParentChildSelfReferenceEntity.cs" />
-    <Compile Include="Automapping\Fixtures\ReadOnlyEnumerableEntity.cs" />
-    <Compile Include="Automapping\Fixtures\SelfReferenceEntity.cs" />
-    <Compile Include="Automapping\Fixtures\SelfReferencingCollectionEntity.cs" />
-    <Compile Include="Automapping\OverrideSpecs.cs" />
-    <Compile Include="Conventions\BiDirectionalKeysSpecs.cs" />
-    <Compile Include="Conventions\Fixtures\Parent.cs" />
-    <Compile Include="PersistenceModel\Fixtures\UnionChildEntity.cs" />
-    <Compile Include="PersistenceModel\Fixtures\UnionChildEntityMap.cs" />
-    <Compile Include="PersistenceModel\Fixtures\UnionEntity.cs" />
-    <Compile Include="PersistenceModel\Fixtures\UnionEntityMap.cs" />
-    <Compile Include="PersistenceModel\SubclassSpecs.cs" />
-    <Compile Include="SerializableSpecs.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Automapping\AutomappingSpecs.NestedClasses.cs" />
-    <Compile Include="Diagnostics\Registration_diagnostics_specs.cs" />
-    <Compile Include="FluentInterface\BiDirectionalKeyIssueSpecs.cs" />
-    <Compile Include="FluentInterface\ExternalComponentOutputSpecs.cs" />
-    <Compile Include="FluentInterface\Fixtures\BiDirectionalKeyIssue.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

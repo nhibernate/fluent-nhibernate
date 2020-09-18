@@ -309,23 +309,41 @@ namespace FluentNHibernate.Mapping
             foreach (var join in joins)
                 mapping.AddJoin(join);
 
-            foreach (var property in providers.Properties)
-                mapping.AddProperty(property.GetPropertyMapping());
-
-            foreach (var component in providers.Components)
-                mapping.AddComponent(component.GetComponentMapping());
-
-            foreach (var oneToOne in providers.OneToOnes)
-                mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
-
-            foreach (var collection in providers.Collections)
-                mapping.AddCollection(collection.GetCollectionMapping());
-
-            foreach (var reference in providers.References)
-                mapping.AddReference(reference.GetManyToOneMapping());
-
-            foreach (var any in providers.Anys)
-                mapping.AddAny(any.GetAnyMapping());
+            foreach (var provider in providers.OrderedProviders) {
+                var mappingProviderObj = provider.Item2;
+                switch (provider.Item1) {
+                    case MappingProviderStore.ProviderType.Property:
+                        mapping.AddProperty(((IPropertyMappingProvider)mappingProviderObj).GetPropertyMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Component:
+                        mapping.AddComponent(((IComponentMappingProvider)mappingProviderObj).GetComponentMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.OneToOne:
+                        mapping.AddOneToOne(((IOneToOneMappingProvider)mappingProviderObj).GetOneToOneMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Collection:
+                        mapping.AddCollection(((ICollectionMappingProvider)mappingProviderObj).GetCollectionMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.ManyToOne:
+                        mapping.AddReference(((IManyToOneMappingProvider)mappingProviderObj).GetManyToOneMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Any:
+                        mapping.AddAny(((IAnyMappingProvider)mappingProviderObj).GetAnyMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Subclass:
+                    case MappingProviderStore.ProviderType.Filter:
+                    case MappingProviderStore.ProviderType.StoredProcedure:
+                    case MappingProviderStore.ProviderType.Join:
+                    case MappingProviderStore.ProviderType.Identity:
+                    case MappingProviderStore.ProviderType.CompositeId:
+                    case MappingProviderStore.ProviderType.NaturalId:
+                    case MappingProviderStore.ProviderType.Version:
+                    case MappingProviderStore.ProviderType.Discriminator:
+                    case MappingProviderStore.ProviderType.Tupilizer:
+                    default:
+                        throw new Exception("Internal Error");
+                }
+            }
 
             return mapping.DeepClone();
         }
@@ -352,7 +370,7 @@ namespace FluentNHibernate.Mapping
 
         string GetDefaultTableName()
         {
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
             var tableName = EntityType.Name;
 
             if (EntityType.IsGenericType)
@@ -366,7 +384,7 @@ namespace FluentNHibernate.Mapping
                     tableName += argument.Name;
                 }
             }
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 
             return "`" + tableName + "`";
         }

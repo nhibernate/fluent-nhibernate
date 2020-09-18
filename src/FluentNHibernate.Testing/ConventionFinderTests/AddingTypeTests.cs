@@ -1,11 +1,8 @@
 using System;
 using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Mapping;
-using Machine.Specifications;
 using NUnit.Framework;
+using FluentAssertions;
 
 namespace FluentNHibernate.Testing.ConventionFinderTests
 {
@@ -23,43 +20,42 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         [Test]
         public void AddingSingleShouldntThrowIfHasParameterlessConstructor()
         {
-            var ex = Catch.Exception(() => finder.Add<ConventionWithParameterlessConstructor>());
+            Action act = () => finder.Add<ConventionWithParameterlessConstructor>();
 
-            ex.ShouldBeNull();
+            act.ShouldNotThrow();
         }
 
         [Test]
         public void AddingSingleShouldntThrowIfHasIConventionFinderConstructor()
         {
-            var ex = Catch.Exception(() => finder.Add<ConventionWithIConventionFinderConstructor>());
+            Action act = () => finder.Add<ConventionWithIConventionFinderConstructor>();
 
-            ex.ShouldBeNull();
+            act.ShouldNotThrow();
+
         }
 
         [Test]
         public void AddingSingleShouldThrowIfNoParameterlessConstructor()
         {
-            var ex = Catch.Exception(() => finder.Add<ConventionWithoutValidConstructor>());
+            Action act = () => finder.Add<ConventionWithoutValidConstructor>();
 
-            ex.ShouldBeOfType<MissingConstructorException>();
-            ex.ShouldNotBeNull();
+            act.ShouldThrow<MissingConstructorException>();
         }
 
         [Test]
         public void AddingSingleShouldThrowIfNoIConventionFinderConstructor()
         {
-            var ex = Catch.Exception(() => finder.Add<ConventionWithoutValidConstructor>());
+            Action act = () => finder.Add<ConventionWithoutValidConstructor>();
 
-            ex.ShouldBeOfType<MissingConstructorException>();
-            ex.ShouldNotBeNull();
+            act.ShouldThrow<MissingConstructorException>();
         }
 
         [Test]
         public void AddingAssemblyShouldntThrowIfNoIConventionFinderConstructor()
         {
-            var ex = Catch.Exception(() => finder.AddAssembly(typeof(ConventionWithoutValidConstructor).Assembly));
+            Action act = () => finder.AddAssembly(typeof(ConventionWithoutValidConstructor).Assembly);
 
-            ex.ShouldBeNull();
+            act.ShouldNotThrow();
         }
     }
 

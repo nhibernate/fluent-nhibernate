@@ -152,7 +152,9 @@ namespace FluentNHibernate.MappingModel.ClassBased
             unchecked
             {
                 {
-                    return (base.GetHashCode() * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+                    return (base.GetHashCode() * 397) ^ (attributes != null
+                        ? attributes.GetHashCode()
+                        : 0);
                 }
             }
         }

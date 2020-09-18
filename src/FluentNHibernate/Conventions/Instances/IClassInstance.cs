@@ -13,6 +13,7 @@ namespace FluentNHibernate.Conventions.Instances
         new ICacheInstance Cache { get; }
         new ISchemaActionInstance SchemaAction { get; }
         void Table(string tableName);
+        new void DiscriminatorValue(object value);
         new void DynamicInsert();
         new void DynamicUpdate();
         new void BatchSize(int size);
@@ -56,5 +57,6 @@ namespace FluentNHibernate.Conventions.Instances
         /// defining the filter to apply.
         /// </typeparam>
         void ApplyFilter<TFilter>() where TFilter : FilterDefinition, new();
+
     }
 }

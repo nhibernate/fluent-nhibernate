@@ -8,7 +8,6 @@ namespace FluentNHibernate.Utils
     public static class StringLikeness
     {
         /// <SUMMARY>Computes the Levenshtein Edit Distance between two enumerables.</SUMMARY>
-        /// <TYPEPARAM name="T">The type of the items in the enumerables.</TYPEPARAM>
         /// <PARAM name="x">The first enumerable.</PARAM>
         /// <PARAM name="y">The second enumerable.</PARAM>
         /// <RETURNS>The edit distance.</RETURNS>
