@@ -270,8 +270,8 @@ private void CleanProjects(string projectKind, IEnumerable<string> projectNames)
 {
     foreach(var project in projectNames)
     {
-        CleanDirectories($"./{projectKind}/{project}/bin/**");
-        CleanDirectories($"./{projectKind}/{project}/obj/**");
+        var projectPath = File($"./{projectKind}/{project}/{project}.csproj");
+        DotNetCoreClean(projectPath.ToString());
     }
 }
 
