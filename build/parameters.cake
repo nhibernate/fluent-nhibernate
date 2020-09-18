@@ -1,7 +1,6 @@
 #load "./paths.cake"
 #load "./version.cake"
 #load "./credentials.cake"
-#load "./shared.cake"
 
 public class BuildParameters
 {
