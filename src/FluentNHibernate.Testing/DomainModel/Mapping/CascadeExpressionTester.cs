@@ -93,5 +93,11 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         {
             A_call_to(_cascade.Persist).should_set_the_cascade_value_to("save-update, persist");
         }
+
+        [Test]
+        public void AllDeleteOrphan_should_add_the_correct_cascade_attribute_to_the_parent_part()
+        {
+            A_call_to(_cascade.AllDeleteOrphan).should_set_the_cascade_value_to("all-delete-orphan");
+        }
     }
 }
