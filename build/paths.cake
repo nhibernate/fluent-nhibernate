@@ -27,7 +27,6 @@ public class BuildPaths
         var artifactsBinNetStandard20 = artifactsBinDir.Combine("netstandard2.0");        
         var artifactsBinNetCoreapp2 = artifactsBinDir.Combine("netcoreapp2.0");        
         var testResultsDir = artifactsDir.Combine("test-results");
-        var nuspecRoot = (DirectoryPath)"nuspec";
         var nugetRoot = artifactsDir.Combine("nuget");
         
         var zipArtifactPathDesktop = artifactsDir.CombineWithFilePath($"FluentHibernate-net461-v{semVersion}.zip");        
@@ -36,7 +35,6 @@ public class BuildPaths
         var buildDirectories = new BuildDirectories(
             artifactsDir,
             testResultsDir,
-            nuspecRoot,
             nugetRoot,
             artifactsBinDir,
             artifactsBinFullFx,
@@ -72,7 +70,6 @@ public class BuildDirectories
 {
     public DirectoryPath Artifacts { get; private set; }
     public DirectoryPath TestResults { get; private set; }
-    public DirectoryPath NuspecRoot { get; private set; }
     public DirectoryPath NugetRoot { get; private set; }
     public DirectoryPath ArtifactsBin { get; private set; }
     public DirectoryPath ArtifactsBinFullFx { get; private set; }    
@@ -83,7 +80,6 @@ public class BuildDirectories
     public BuildDirectories(        
         DirectoryPath artifactsDir,
         DirectoryPath testResultsDir,
-        DirectoryPath nuspecRoot,
         DirectoryPath nugetRoot,
         DirectoryPath artifactsBinDir,
         DirectoryPath artifactsBinFullFx,
@@ -93,7 +89,6 @@ public class BuildDirectories
     {
         Artifacts = artifactsDir;
         TestResults = testResultsDir;
-        NuspecRoot = nuspecRoot;
         NugetRoot = nugetRoot;
         ArtifactsBin = artifactsBinDir;
         ArtifactsBinFullFx = artifactsBinFullFx;        

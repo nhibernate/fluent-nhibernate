@@ -5,8 +5,6 @@
     <DebugType Condition="'$(TargetFramework)' != '' AND '$(TargetFramework)' != 'netcoreapp2.0'">Full</DebugType>
   </PropertyGroup>
 
-  <Import Project="..\Shared.msbuild" />
-
   <ItemGroup>
     <Compile Remove="ConventionsTests\Defaults\**" />
     <EmbeddedResource Remove="ConventionsTests\Defaults\**" />
@@ -46,9 +44,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
     <None Include="..\FluentKey.snk">
       <Link>FluentKey.snk</Link>
     </None>

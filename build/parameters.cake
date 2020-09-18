@@ -1,7 +1,6 @@
 #load "./paths.cake"
 #load "./version.cake"
 #load "./credentials.cake"
-#load "./shared.cake"
 
 public class BuildParameters
 {
@@ -21,7 +20,6 @@ public class BuildParameters
     public BuildNuGet NuGet { get; private set; }            
     public BuildVersion Version { get; private set; }
     public BuildPaths Paths { get; private set; }  
-    public MsBuildShared MsBuildShared { get; private set; }
 
     public bool ShouldPublish =>
         !IsLocalBuild && 
@@ -35,7 +33,6 @@ public class BuildParameters
         Version = BuildVersion.Calculate(context, this);
 
         Paths = BuildPaths.GetPaths(context, Configuration, Version.SemVersion);  
-        MsBuildShared = MsBuildShared.GetShared(context, "./src/Shared.msbuild");
     }
 
     public static BuildParameters GetParameters(ICakeContext context)

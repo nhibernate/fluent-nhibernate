@@ -5,21 +5,16 @@
     <NoWarn>1591</NoWarn>
     <OutputType>Exe</OutputType>
     <PlatformTarget>AnyCpu</PlatformTarget>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
-  
-  <Import Project="..\Shared.msbuild" />
 
   <ItemGroup>
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj" />
   </ItemGroup>
   
   <ItemGroup>    
-    <PackageReference Include="EntityFramework" Version="6.2.0" />    
     <PackageReference Include="NHibernate" Version="$(NHibernatePackageVersion)" />    
-    <PackageReference Include="System.Data.SQLite" Version="1.0.106.0" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.106.0" />
-    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.106.0" />
-    <PackageReference Include="System.Data.SQLite.Linq" Version="1.0.106.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
@@ -28,13 +23,7 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />  
   </ItemGroup>
-  
-  <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>  
-  </ItemGroup>
-  
+
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
