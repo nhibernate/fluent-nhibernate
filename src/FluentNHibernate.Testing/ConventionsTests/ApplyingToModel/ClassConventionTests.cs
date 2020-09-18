@@ -37,6 +37,14 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
         }
 
         [Test]
+        public void ShouldSetDiscriminatorValueProperty()
+        {
+            Convention(x => x.DiscriminatorValue("0"));
+
+            VerifyModel(x => x.DiscriminatorValue.ShouldEqual("0"));
+        }
+
+        [Test]
         public void ShouldSetDynamicInsertProperty()
         {
             Convention(x => x.DynamicInsert());
