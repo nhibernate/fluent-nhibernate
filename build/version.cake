@@ -23,8 +23,7 @@ public class BuildVersion
             if (!parameters.IsLocalBuild || parameters.IsPublishBuild || parameters.IsReleaseBuild)
             {
                 context.GitVersion(new GitVersionSettings{
-                    UpdateAssemblyInfoFilePath = "./src/CommonAssemblyInfo.cs",
-                    UpdateAssemblyInfo = true,
+                    UpdateAssemblyInfo = false,
                     OutputType = GitVersionOutput.BuildServer
                 });
 
@@ -45,14 +44,6 @@ public class BuildVersion
             context.Information("Calculated Semantic Version: {0}", semVersion);
         }
 
-        if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(semVersion))
-        {
-            context.Information("Fetching version from first CommonAssemblyInfo...");
-            version = ReadCommonAssemblyInfoVersion(context);
-            semVersion = version;
-            milestone = string.Concat("v", version);
-        }
-
         var appVersion = typeof(ICakeContext).Assembly.GetName().Version.ToString();
 
         return new BuildVersion
@@ -63,15 +54,5 @@ public class BuildVersion
             Milestone = milestone,
             AppVersion = appVersion
         };
-    }
-
-    public static string ReadCommonAssemblyInfoVersion(ICakeContext context)
-    {
-        var solutionInfo = context.ParseAssemblyInfo("./src/CommonAssemblyInfo.cs");
-        if (!string.IsNullOrEmpty(solutionInfo.AssemblyVersion))
-        {
-            return solutionInfo.AssemblyVersion;
-        }
-        throw new CakeException("Could not parse version.");
     }
 }

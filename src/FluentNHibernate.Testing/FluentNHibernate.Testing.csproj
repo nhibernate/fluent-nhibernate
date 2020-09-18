@@ -44,9 +44,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
     <None Include="..\FluentKey.snk">
       <Link>FluentKey.snk</Link>
     </None>

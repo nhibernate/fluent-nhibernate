@@ -12,6 +12,7 @@
     <RepositoryUrl>https://github.com/nhibernate/fluent-nhibernate.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>ORM;DAL;NHibernate;Fluent;Conventions;DataBase;ADO.Net;Mappings</PackageTags>
+    <AssembyDescription></AssembyDescription>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -31,17 +32,6 @@
     <DebugType>portable</DebugType>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-  </PropertyGroup>
-  
   <PropertyGroup Label="Package Versions">
     <NHibernatePackageVersion>5.1.1</NHibernatePackageVersion>
   </PropertyGroup>

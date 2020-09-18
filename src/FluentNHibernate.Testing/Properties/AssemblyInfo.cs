@@ -1,8 +1,3 @@
-﻿using System;
-using System.Reflection;
-using System.Runtime.InteropServices;
-
-[assembly: AssemblyTitle("FluentNHibernate.Testing")]
-[assembly: AssemblyDescription("")]
+﻿using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
