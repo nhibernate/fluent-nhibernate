@@ -332,7 +332,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldWriteAny()
         {
             var mapping = new ClassMapping();
-            
+
             mapping.AddAny(new AnyMapping());
 
             writer.VerifyXml(mapping)
@@ -383,19 +383,19 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Element("bag").Exists();
         }
 
-        [Test, Ignore]
+        [Test, Ignore("ShouldWriteIdBag")]
         public void ShouldWriteIdBag()
         {
             Assert.Fail();
         }
 
-        [Test, Ignore]
+        [Test, Ignore("ShouldWriteArray")]
         public void ShouldWriteArray()
         {
             Assert.Fail();
         }
 
-        [Test, Ignore]
+        [Test, Ignore("ShouldWritePrimitiveArray")]
         public void ShouldWritePrimitiveArray()
         {
             Assert.Fail();
@@ -434,7 +434,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 .Element("joined-subclass").Exists();
         }
 
-        [Test, Ignore]
+        [Test, Ignore("ShouldWriteUnionSubclass")]
         public void ShouldWriteUnionSubclass()
         {
             Assert.Fail();

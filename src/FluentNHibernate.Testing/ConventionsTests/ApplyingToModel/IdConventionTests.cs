@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
@@ -191,6 +193,11 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
             public object Generate(ISessionImplementor session, object obj)
             {
                 return null;
+            }
+
+            public Task<object> GenerateAsync(ISessionImplementor session, object obj, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
             }
         }
     }

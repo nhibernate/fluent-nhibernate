@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
+using NHibernate.Engine;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
 
@@ -88,6 +90,16 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
             return value;
         }
 
+        public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
+        {
+            throw new NotImplementedException();
+        }
+
         public SqlType[] SqlTypes
         {
             get { return new[] { new SqlType(DbType.String) }; }
@@ -109,7 +121,7 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
 
-        public bool Equals(object x, object y)
+        public new bool Equals(object x, object y)
         {
             throw new NotImplementedException();
         }
@@ -145,6 +157,16 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
         }
 
         public object Disassemble(object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
         {
             throw new NotImplementedException();
         }

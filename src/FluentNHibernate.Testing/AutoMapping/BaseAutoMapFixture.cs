@@ -1,8 +1,8 @@
 using System;
 using FluentNHibernate.Automapping;
-using FluentNHibernate.Cfg.Db;
 using NHibernate.Cfg;
 using NUnit.Framework;
+using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
 namespace FluentNHibernate.Testing.Automapping
 {
@@ -16,8 +16,7 @@ namespace FluentNHibernate.Testing.Automapping
         {
             cfg = new Configuration();
 
-            SQLiteConfiguration.Standard
-                .InMemory()
+            CreateStandardInMemoryConfiguration()
                 .ConfigureProperties(cfg);
         }
 

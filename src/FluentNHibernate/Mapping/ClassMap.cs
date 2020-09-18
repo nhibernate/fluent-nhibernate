@@ -618,55 +618,69 @@ namespace FluentNHibernate.Mapping
             mapping.Set(x => x.Type, Layer.Defaults, typeof(T));
             mapping.Set(x => x.Name, Layer.Defaults, typeof(T).AssemblyQualifiedName);
 
-            foreach (var property in providers.Properties)
-                mapping.AddProperty(property.GetPropertyMapping());
-
-            foreach (var component in providers.Components)
-                mapping.AddComponent(component.GetComponentMapping());
-
             if (providers.Version != null)
-                mapping.Set(x => x.Version, Layer.Defaults, providers.Version.GetVersionMapping());
+              mapping.Set(x => x.Version, Layer.Defaults, providers.Version.GetVersionMapping());
 
-            foreach (var oneToOne in providers.OneToOnes)
-                mapping.AddOneToOne(oneToOne.GetOneToOneMapping());
-
-            foreach (var collection in providers.Collections)
-                mapping.AddCollection(collection.GetCollectionMapping());
-
-            foreach (var reference in providers.References)
-                mapping.AddReference(reference.GetManyToOneMapping());
-
-            foreach (var any in providers.Anys)
-                mapping.AddAny(any.GetAnyMapping());
-
-            foreach (var subclass in providers.Subclasses.Values)
-                mapping.AddSubclass(subclass.GetSubclassMapping());
-
-            foreach (var join in providers.Joins)
-                mapping.AddJoin(join.GetJoinMapping());
-
-            if (providers.Discriminator != null)
-                mapping.Set(x => x.Discriminator, Layer.Defaults, providers.Discriminator.GetDiscriminatorMapping());
+            foreach (var provider in providers.OrderedProviders) {
+                var x = provider.Item2;
+                switch (provider.Item1) {
+                    case MappingProviderStore.ProviderType.Property:
+                        mapping.AddProperty(((IPropertyMappingProvider) x).GetPropertyMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Component:
+                        mapping.AddComponent(((IComponentMappingProvider) x).GetComponentMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.OneToOne:
+                        mapping.AddOneToOne(((IOneToOneMappingProvider) x).GetOneToOneMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Subclass:
+                        mapping.AddSubclass(((ISubclassMappingProvider) x).GetSubclassMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Collection:
+                        mapping.AddCollection(((ICollectionMappingProvider) x).GetCollectionMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.ManyToOne:
+                        mapping.AddReference(((IManyToOneMappingProvider) x).GetManyToOneMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Any:
+                        mapping.AddAny(((IAnyMappingProvider) x).GetAnyMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Filter:
+                        mapping.AddFilter(((IFilterMappingProvider) x).GetFilterMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.StoredProcedure:
+                        mapping.AddStoredProcedure(((IStoredProcedureMappingProvider) x).GetStoredProcedureMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Join:
+                        mapping.AddJoin(((IJoinMappingProvider) x).GetJoinMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Identity:
+                        mapping.Set(y => y.Id, Layer.Defaults, ((IIdentityMappingProvider) x).GetIdentityMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.CompositeId:
+                        mapping.Set(y => y.Id, Layer.Defaults, ((ICompositeIdMappingProvider) x).GetCompositeIdMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.NaturalId:
+                        mapping.Set(y => y.NaturalId, Layer.Defaults, ((INaturalIdMappingProvider) x).GetNaturalIdMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Version:
+                        mapping.Set(y => y.Version, Layer.Defaults, ((IVersionMappingProvider) x).GetVersionMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Discriminator:
+                        mapping.Set(y => y.Discriminator, Layer.Defaults, ((IDiscriminatorMappingProvider) x).GetDiscriminatorMapping());
+                        break;
+                    case MappingProviderStore.ProviderType.Tupilizer:
+                        mapping.Set(y => y.Tuplizer, Layer.Defaults, (TuplizerMapping)x);
+                        break;
+                    default:
+                        throw new Exception("Internal Error");
+                }
+            }
 
             if (Cache.IsDirty)
                 mapping.Set(x  => x.Cache, Layer.Defaults, ((ICacheMappingProvider)Cache).GetCacheMapping());
 
-            if (providers.Id != null)
-                mapping.Set(x => x.Id, Layer.Defaults, providers.Id.GetIdentityMapping());
-
-            if (providers.CompositeId != null)
-                mapping.Set(x => x.Id, Layer.Defaults, providers.CompositeId.GetCompositeIdMapping());
-
-            if (providers.NaturalId != null)
-                mapping.Set(x => x.NaturalId, Layer.Defaults, providers.NaturalId.GetNaturalIdMapping());
-
             mapping.Set(x => x.TableName, Layer.Defaults, GetDefaultTableName());
-
-            foreach (var filter in providers.Filters)
-                mapping.AddFilter(filter.GetFilterMapping());
-
-            foreach (var storedProcedure in providers.StoredProcedures)
-                mapping.AddStoredProcedure(storedProcedure.GetStoredProcedureMapping());
 
             mapping.Set(x => x.Tuplizer, Layer.Defaults, providers.TuplizerMapping);
 
