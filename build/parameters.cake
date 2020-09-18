@@ -35,7 +35,7 @@ public class BuildParameters
         Version = BuildVersion.Calculate(context, this);
 
         Paths = BuildPaths.GetPaths(context, Configuration, Version.SemVersion);  
-        MsBuildShared = MsBuildShared.GetShared(context, "./src/Shared.msbuild");
+        MsBuildShared = MsBuildShared.GetShared(context, "./src/Directory.Build.props");
     }
 
     public static BuildParameters GetParameters(ICakeContext context)

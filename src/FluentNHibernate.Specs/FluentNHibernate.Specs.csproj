@@ -6,8 +6,6 @@
     <DebugType Condition="'$(TargetFramework)' != '' AND '$(TargetFramework)' != 'netcoreapp2.0'">Full</DebugType>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)..\Shared.msbuild" />
-
   <ItemGroup>
     <ProjectReference Include="..\FluentNHibernate.Specs.ExternalFixtures\FluentNHibernate.Specs.ExternalFixtures.csproj" />
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj" />

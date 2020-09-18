@@ -7,8 +7,6 @@
     <PlatformTarget>AnyCpu</PlatformTarget>
   </PropertyGroup>
 
-  <Import Project="..\Shared.msbuild" />
-
   <ItemGroup>
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj" />
   </ItemGroup>

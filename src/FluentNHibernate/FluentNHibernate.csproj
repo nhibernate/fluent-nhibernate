@@ -18,8 +18,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)..\Shared.msbuild" />
-
   <ItemGroup>
     <PackageReference Include="NHibernate" Version="$(NHibernatePackageVersion)" />
   </ItemGroup>

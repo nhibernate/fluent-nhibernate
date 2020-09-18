@@ -4,8 +4,6 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
 
-  <Import Project="..\Shared.msbuild" />
-
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
   </ItemGroup>
