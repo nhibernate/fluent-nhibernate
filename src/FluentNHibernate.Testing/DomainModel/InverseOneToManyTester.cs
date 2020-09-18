@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
+using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
 namespace FluentNHibernate.Testing.DomainModel
 {
@@ -11,12 +12,12 @@ namespace FluentNHibernate.Testing.DomainModel
         [SetUp]
         public void SetUp()
         {
-            var properties = new SQLiteConfiguration()
+            var properties = CreateStandardConfiguration()
                 .UseOuterJoin()
                 .ShowSql()
                 .InMemory()
                 .ToProperties();
-
+                
             _source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new MusicPersistenceModel());
             _source.BuildSchema();
         }

@@ -5,6 +5,7 @@ using System.Text;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 using Machine.Specifications;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs
 {
@@ -20,7 +21,7 @@ namespace FluentNHibernate.Specs
                 .Where(x => x.GetCustomAttributes(typeof(SerializableAttribute), false).Length == 0);
 
         It should_have_all_mapping_types_marked_as_serializable = () =>
-            unserializable_types.ShouldBeEmpty();
+            unserializable_types.Should().BeEmpty();
 
         static IEnumerable<Type> mapping_types;
         static IEnumerable<Type> unserializable_types;

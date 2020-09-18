@@ -1,8 +1,7 @@
 using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Testing.DomainModel;
-using FluentNHibernate.Testing.Fixtures;
 using NUnit.Framework;
+using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
 namespace FluentNHibernate.Testing.Testing
 {
@@ -55,8 +54,13 @@ namespace FluentNHibernate.Testing.Testing
     {
         public SessionSource build_session_source()
         {
+
+            var configuration = CreateStandardInMemoryConfiguration()
+                    .UseOuterJoin()
+                    .ShowSql();
+
             FluentConfiguration config = Fluently.Configure()
-                .Database(() => new SQLiteConfiguration().InMemory().UseOuterJoin().ShowSql())
+                .Database(() => configuration)
                 .Mappings(m => m.FluentMappings
                     .Add<RecordMap>()
                     .Add<RecordFilter>());

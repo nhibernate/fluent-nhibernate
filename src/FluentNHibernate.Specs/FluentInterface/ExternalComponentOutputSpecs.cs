@@ -5,6 +5,7 @@ using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Output;
 using Machine.Specifications;
 using Machine.Specifications.Model;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs.FluentInterface
 {
@@ -37,7 +38,7 @@ namespace FluentNHibernate.Specs.FluentInterface
         };
 
         It should_be_rendered_the_same_as_an_inline_component = () =>
-            referenced_xml.ShouldEqual(inline_xml);
+            referenced_xml.Should().Be(inline_xml);
 
 
         private static string render_xml(Action<FluentNHibernate.PersistenceModel> addMappings)
@@ -48,7 +49,7 @@ namespace FluentNHibernate.Specs.FluentInterface
 
             var mappings = model.BuildMappings();
             var doc = new MappingXmlSerializer().Serialize(mappings.First());
-            
+
             return doc.OuterXml;
         }
 

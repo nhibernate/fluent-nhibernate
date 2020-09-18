@@ -31,7 +31,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .ModelShouldMatch(x => x.Collection.ShouldEqual(Collection.Set));
         }
 
-        [Test, Ignore]
+        [Test, Ignore("ShouldPredictArrayUsage")]
         public void ShouldPredictArrayUsage()
         {
             OneToMany(x => x.ArrayOfChildren)

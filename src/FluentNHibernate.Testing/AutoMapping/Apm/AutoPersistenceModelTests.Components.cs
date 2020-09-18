@@ -148,9 +148,9 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         [Test]
         public void JoinedSubclassOverrideShouldOverrideExistingComponent()
         {
+#pragma warning disable 612,618
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
-#pragma warning disable 612,618
                 .Setup(x => x.IsComponentType = type => type == typeof(ExampleParentClass))
 #pragma warning restore 612,618
                 .Override<ExampleInheritedClass>(m => m.Component(x => x.Component, c => c.Map(x => x.ExampleParentClassId).Column("test")));

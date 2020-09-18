@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
@@ -20,7 +22,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 .Mapping(m => m.Id(x => x.String))
                 .ModelShouldMatch(x => ((IdMapping)x.Id).Generator.Class.ShouldEqual("assigned"));
         }
-        
+
         [Test]
         public void ShouldDefaultToIdentityForInt()
         {
@@ -99,6 +101,11 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             public object Generate(ISessionImplementor session, object obj)
             {
                 return obj;
+            }
+
+            public Task<object> GenerateAsync(ISessionImplementor session, object obj, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
             }
         }
     }
