@@ -15,9 +15,6 @@ var SrcProjects = new [] { "FluentNHibernate" };
 var TestProjects = new [] { "FluentNHibernate.Testing" };
 var SpecProjects = new [] { "FluentNHibernate.Specs" };
 
-var NHibernateNuspecXPath = "/package/meta:metadata/meta:dependencies/meta:dependency[@id='NHibernate']/@version";
-var NHibernateNuspecXPathWithGroup = "/package/meta:metadata/meta:dependencies/meta:group/meta:dependency[@id='NHibernate']/@version";
-
 Setup((context) =>
 {    
     parameters.Initialize(context);
@@ -156,13 +153,11 @@ Task("Zip-Files")
 Task("Create-NuGet-Packages")
     .IsDependentOn("Copy-Files")
     .Does(() =>
-    {                
+    {    
         PackProjects(
             SrcProjects, 
-            parameters.Paths.Directories.NuspecRoot.FullPath, 
-            parameters.Paths.Directories.NugetRoot.FullPath, 
-            parameters.Paths.Directories.ArtifactsBin.FullPath, 
-            parameters.Version.SemVersion);
+            parameters.Configuration,
+            parameters.Paths.Directories.NugetRoot.FullPath);
     });
 
 Task("Publish-Nuget")
@@ -246,21 +241,11 @@ Task("Upload-AppVeyor-Artifacts")
         }
     });
 	
-Task("Update-Nuspec-Files")
-    .Does(() =>
-    {                
-        UpdateNuspecs(
-            SrcProjects, 
-            parameters.Paths.Directories.NuspecRoot.FullPath,
-            parameters.MsBuildShared.NHibernatePackageVersion);
-    });
-	
 Task("Release-Notes")
   .IsDependentOn("Create-Release-Notes");
 
 Task("Package")
     .IsDependentOn("Zip-Files")
-    .IsDependentOn("Update-Nuspec-Files")
     .IsDependentOn("Create-NuGet-Packages");  
 
 Task("AppVeyor")
@@ -334,66 +319,17 @@ private void PublishProjects(
 
 private void PackProjects(
     IEnumerable<string> projectNames, 
-    string nuspecDir,
-    string nugetDir,
-    string basePath,
-    string semVersion)
+    string configuration,
+    string nugetDir)
 {
-    foreach(var project in projectNames)
-    {
-        // symbols
-        NuGetPack($"{nuspecDir}/{project}.symbols.nuspec", new NuGetPackSettings {
-            Version = semVersion,
-            // ReleaseNotes = releaseNotes.Notes.ToArray(),
-            BasePath = basePath,
+    foreach(var project in projectNames) {
+        var projectPath = File($"./src/{project}/{project}.csproj");
+        DotNetCorePack(projectPath.ToString(), new DotNetCorePackSettings
+        {
+            Configuration = configuration,
+            MSBuildSettings = msBuildSettings,
             OutputDirectory = nugetDir,
-            Symbols = true,
-            NoPackageAnalysis = true
-        });
-
-        var fullBasePath = MakeAbsolute((FilePath)basePath).FullPath;
-        var fullBasePathLength = fullBasePath.Length + 1;
-        
-        // normal
-        NuGetPack($"{nuspecDir}/{project}.nuspec", new NuGetPackSettings {
-            Version = semVersion,
-            // ReleaseNotes = releaseNotes.Notes.ToArray(),
-            BasePath = fullBasePath,
-            OutputDirectory = nugetDir,
-            Symbols = false,
-            NoPackageAnalysis = true
-            // Files = GetFiles(fullBasePath + "/**/*")
-            //     .Where(file => file.FullPath.IndexOf("/runtimes/", StringComparison.OrdinalIgnoreCase) < 0)
-            //     .Select(file => file.FullPath.Substring(fullBasePathLength))
-            //     .Select(file => 
-            //         new NuSpecContent 
-            //         { 
-            //             Source = file, 
-            //             Target = file 
-            //         })
-            //     .ToArray()
+            IncludeSymbols = true
         });
     }
 }
-
-private void UpdateNuspecs(
-    IEnumerable<string> projectNames, 
-    string nuspecDir,
-    string nHibernateVersion)
-{
-    foreach(var project in projectNames)
-    {
-        // symbols
-		XmlPoke($"{nuspecDir}/{project}.symbols.nuspec", $"({NHibernateNuspecXPathWithGroup}|{NHibernateNuspecXPath})", nHibernateVersion,
-			new XmlPokeSettings {
-				Namespaces = new Dictionary<string, string> {{ "meta", "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd" }}
-			});
-        
-        // normal
-		XmlPoke($"{nuspecDir}/{project}.nuspec", $"({NHibernateNuspecXPathWithGroup}|{NHibernateNuspecXPath})", nHibernateVersion,
-			new XmlPokeSettings {
-				Namespaces = new Dictionary<string, string> {{ "meta", "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd" }}
-			});
-    }
-}
-	

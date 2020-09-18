@@ -1,15 +1,17 @@
 <Project>
 
   <PropertyGroup>
-    <PackageId>$(AssemblyName)</PackageId>
-    <Copyright>Copyright (c) James Gregory and contributors (Paul Batum, Hudson Akridge et al, Jorge Rodríguez Galán).</Copyright>
+    <Copyright>Copyright (c) James Gregory and contributors (Paul Batum, Hudson Akridge, Gleb Chermennov, Jorge Rodríguez Galán).</Copyright>
     <Authors>James Gregory and contributors (Paul Batum, Hudson Akridge, Gleb Chermennov, Jorge Rodríguez Galán).</Authors>
-    <Company>James Gregory and contributors (Paul Batum, Hudson Akridge, Gleb Chermennov, Jorge Rodríguez Galán).</Company>
-    <PackageLicenseUrl>https://github.com/jagregory/fluent-nhibernate/raw/master/LICENSE</PackageLicenseUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/jagregory/fluent-nhibernate/master/docs/logo-nuget.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/jagregory/fluent-nhibernate</RepositoryUrl>
+    <Company>NHibernate.info</Company>
+    <PackageDescription>Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate.</PackageDescription>
+    <PackageLicenseUrl>https://github.com/nhibernate/fluent-nhibernate/raw/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/nhibernate/fluent-nhibernate/master/docs/logo-nuget.png</PackageIconUrl>
+    <PackageIcon>logo-nuget.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/nhibernate/fluent-nhibernate</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nhibernate/fluent-nhibernate.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>ORM;DAL;NHibernate;Fluent;Conventions</PackageTags>
+    <PackageTags>ORM;DAL;NHibernate;Fluent;Conventions;DataBase;ADO.Net;Mappings</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -43,5 +45,9 @@
   <PropertyGroup Label="Package Versions">
     <NHibernatePackageVersion>5.1.1</NHibernatePackageVersion>
   </PropertyGroup>
+  
+  <ItemGroup Condition="'$(IsPackable)' == 'true'">
+    <None Include="$(MSBuildThisFileDirectory)../docs/logo-nuget.png" Pack="true" PackagePath="/"/>
+  </ItemGroup>
 
 </Project>
