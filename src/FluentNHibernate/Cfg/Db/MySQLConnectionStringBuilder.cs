@@ -5,7 +5,7 @@ namespace FluentNHibernate.Cfg.Db
     public class MySQLConnectionStringBuilder : ConnectionStringBuilder
     {
         private string server;
-        private ushort? port;
+        private int? port;
         private string database;
         private string username;
         private string password;
@@ -24,7 +24,7 @@ namespace FluentNHibernate.Cfg.Db
             return this;
         }
 
-        public MySQLConnectionStringBuilder Port(ushort port)
+        public MySQLConnectionStringBuilder Port(int port)
         {
             this.port = port;
             IsDirty = true;
