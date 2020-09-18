@@ -132,6 +132,11 @@ namespace FluentNHibernate.MappingModel
             AddMapping(mapping, MappingType.Join);
         }
 
+        public void AddOrReplaceJoin(JoinMapping mapping)
+        {
+            AddOrReplaceMapping(mapping, MappingType.Join, x => x.TableName == mapping.TableName);
+        }
+
         public void AddFilter(FilterMapping mapping)
         {
             if (Filters.Any(x => x.Name == mapping.Name))

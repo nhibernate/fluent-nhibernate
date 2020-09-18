@@ -61,11 +61,11 @@ namespace FluentNHibernate.Automapping
                 if (Cache.IsDirty)
                     classMapping.Set(x => x.Cache, Layer.Defaults, ((ICacheMappingProvider)Cache).GetCacheMapping());
 
-                foreach (var join in providers.Joins)
-                    classMapping.AddJoin(join.GetJoinMapping());
-
                 classMapping.Set(x => x.Tuplizer, Layer.Defaults, providers.TuplizerMapping);
             }
+
+            foreach (var join in providers.Joins)
+                mapping.AddOrReplaceJoin(join.GetJoinMapping());
 
             foreach (var property in providers.Properties)
                 mapping.AddOrReplaceProperty(property.GetPropertyMapping());

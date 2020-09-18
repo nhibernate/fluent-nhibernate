@@ -146,6 +146,11 @@ namespace FluentNHibernate.MappingModel.ClassBased
             mappedMembers.AddJoin(mapping);
         }
 
+        public void AddOrReplaceJoin(JoinMapping mapping)
+        {
+            mappedMembers.AddOrReplaceJoin(mapping);
+        }
+
         public void AddFilter(FilterMapping mapping)
         {
             mappedMembers.AddFilter(mapping);
