@@ -17,7 +17,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Cascade all actions, deleting any orphaned records
         /// </summary>
-        public TParent AllDeleteOrphan()
+        public new TParent AllDeleteOrphan()
 		{
 			setter("all-delete-orphan");
 			return parent;
