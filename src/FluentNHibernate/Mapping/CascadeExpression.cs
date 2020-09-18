@@ -50,6 +50,15 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
+        /// Cascade all actions, deleting any orphaned records
+        /// </summary>
+        public TParent AllDeleteOrphan()
+        {
+            setter("all-delete-orphan");
+            return parent;
+        }
+
+        /// <summary>
         /// Cascade merges
         /// </summary>
         public TParent Merge()

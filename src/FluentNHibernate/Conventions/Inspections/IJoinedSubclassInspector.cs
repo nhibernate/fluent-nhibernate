@@ -6,6 +6,7 @@ namespace FluentNHibernate.Conventions.Inspections
     {
         IKeyInspector Key { get; }
         string Check { get; }
+        string Schema { get; }
         string TableName { get; }
         new IEnumerable<IJoinedSubclassInspector> Subclasses { get; }
     }

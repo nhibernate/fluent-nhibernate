@@ -78,7 +78,7 @@ namespace FluentNHibernate.Conventions.Instances
             Proxy(typeof(T));
         }
 
-        public void Schema(string schema)
+        public new void Schema(string schema)
         {
             mapping.Set(x => x.Schema, Layer.Conventions, schema);
         }

@@ -54,6 +54,13 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
+        public void ShouldSetClass()
+        {
+            keyPart.Class<KeyManyToOnePartTests>();
+            mapping.Class.GetUnderlyingSystemType().ShouldEqual(typeof(KeyManyToOnePartTests));
+        }
+
+        [Test]
         public void ShouldSetNotFound()
         {
             keyPart.NotFound.Ignore();

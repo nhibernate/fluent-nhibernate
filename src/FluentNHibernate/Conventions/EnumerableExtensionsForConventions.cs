@@ -37,12 +37,12 @@ namespace FluentNHibernate.Conventions
 
         public static bool IsEmpty<T>(this IEnumerable<T> collection)
         {
-            return collection.Count() == 0;
+            return !collection.Any();
         }
 
         public static bool IsNotEmpty<T>(this IEnumerable<T> collection)
         {
-            return !IsEmpty(collection);
+            return collection.Any();
         }
     }
 }
