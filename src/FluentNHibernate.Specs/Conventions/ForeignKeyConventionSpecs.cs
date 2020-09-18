@@ -4,6 +4,7 @@ using FluentNHibernate.Conventions;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Conventions.Fixtures;
 using Machine.Specifications;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Conventions
 {
@@ -36,7 +37,7 @@ namespace FluentNHibernate.Specs.Conventions
             mapping = model.BuildMappingFor<SetCollectionEntity>();
 
         It should_override_the_key_column_name = () =>
-            mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("KEY_NAME");
+            mapping.Collections.Single().Key.Columns.Single().Name.Should().Be("KEY_NAME");
     }
 
     public class when_a_foreign_key_convention_is_being_applied_to_a_set_mapping_with_an_element : ForeignKeyConventionSpec
@@ -48,7 +49,7 @@ namespace FluentNHibernate.Specs.Conventions
             mapping = model.BuildMappingFor<SetElementCollectionEntity>();
 
         It should_override_the_key_column_name = () =>
-            mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("KEY_NAME");
+            mapping.Collections.Single().Key.Columns.Single().Name.Should().Be("KEY_NAME");
     }
 
     public class when_a_foreign_key_convention_is_being_applied_to_a_set_mapping_with_a_composite_element : ForeignKeyConventionSpec
@@ -60,6 +61,6 @@ namespace FluentNHibernate.Specs.Conventions
             mapping = model.BuildMappingFor<SetCompositeElementCollectionEntity>();
 
         It should_override_the_key_column_name = () =>
-            mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("KEY_NAME");
+            mapping.Collections.Single().Key.Columns.Single().Name.Should().Be("KEY_NAME");
     }
 }

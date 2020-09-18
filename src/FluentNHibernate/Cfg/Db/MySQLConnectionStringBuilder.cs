@@ -5,6 +5,7 @@ namespace FluentNHibernate.Cfg.Db
     public class MySQLConnectionStringBuilder : ConnectionStringBuilder
     {
         private string server;
+        private int? port;
         private string database;
         private string username;
         private string password;
@@ -12,6 +13,20 @@ namespace FluentNHibernate.Cfg.Db
         public MySQLConnectionStringBuilder Server(string server)
         {
             this.server = server;
+            IsDirty = true;
+            return this;
+        }
+
+        public MySQLConnectionStringBuilder Server(string[] servers)
+        {
+            this.server = string.Join(", ", servers);
+            IsDirty = true;
+            return this;
+        }
+
+        public MySQLConnectionStringBuilder Port(int port)
+        {
+            this.port = port;
             IsDirty = true;
             return this;
         }
@@ -47,6 +62,8 @@ namespace FluentNHibernate.Cfg.Db
             var sb = new StringBuilder();
 
             sb.AppendFormat("Server={0};Database={1};User ID={2};Password={3}", server, database, username, password);
+            if (port.HasValue)
+                sb.AppendFormat(";Port={0}", port);
 
             return sb.ToString();
         }

@@ -1,9 +1,11 @@
+using FluentNHibernate.Automapping.Alterations;
+using FluentNHibernate.Infrastructure;
+using NHibernate.Util;
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using FluentNHibernate.Automapping.Alterations;
-using NHibernate.Util;
 
 namespace FluentNHibernate.Utils
 {
@@ -11,7 +13,7 @@ namespace FluentNHibernate.Utils
     {
         public static bool In<T>(this T instance, params T[] expected)
         {
-            if(ReferenceEquals(instance, null))
+            if (ReferenceEquals(instance, null))
                 return false;
             return expected.Any(x => instance.Equals(x));
         }
@@ -43,7 +45,7 @@ namespace FluentNHibernate.Utils
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
-    
+
         public static T InstantiateUsingParameterlessConstructor<T>(this Type type)
         {
             return (T)type.InstantiateUsingParameterlessConstructor();
@@ -68,10 +70,17 @@ namespace FluentNHibernate.Utils
         {
             using (var stream = new MemoryStream())
             {
+
+#if NETFX
                 var formatter = new BinaryFormatter();
-                
+#endif
+
+#if NETCORE
+                var formatter = new BinaryFormatter(new NetStandardSerialization.SurrogateSelector(), new StreamingContext());
+#endif
+
                 formatter.Serialize(stream, obj);
-                stream.Position = 0;
+                stream.Seek(0, SeekOrigin.Begin);
 
                 return (T)formatter.Deserialize(stream);
             }

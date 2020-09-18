@@ -5,6 +5,7 @@ using System.Text;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Automapping
 {
@@ -17,7 +18,7 @@ namespace FluentNHibernate.Specs.Automapping
                 .BuildMappings();
 
         It should_use_the_where_clause_provided = () =>
-            was_called.ShouldBeTrue();
+            was_called.Should().BeTrue();
     }
 
     public class when_using_automap_obsolete_where_method_for_an_assembly : AutoMapObsoleteSpec
@@ -27,7 +28,7 @@ namespace FluentNHibernate.Specs.Automapping
                 .BuildMappings();
 
         It should_use_the_where_clause_provided = () =>
-            was_called.ShouldBeTrue();
+            was_called.Should().BeTrue();
     }
 
     public class when_using_automap_obsolete_where_method_for_a_source : AutoMapObsoleteSpec
@@ -37,7 +38,7 @@ namespace FluentNHibernate.Specs.Automapping
                 .BuildMappings();
 
         It should_use_the_where_clause_provided = () =>
-            was_called.ShouldBeTrue();
+            was_called.Should().BeTrue();
     }
 
     public abstract class AutoMapObsoleteSpec

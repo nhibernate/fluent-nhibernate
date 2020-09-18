@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using FluentNHibernate.Mapping;
+using NHibernate.Engine;
 using NHibernate.Properties;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
@@ -494,6 +496,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 return value;
             }
 
+            public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
+            {
+                throw new NotImplementedException();
+            }
+
             public SqlType[] SqlTypes
             {
                 get { return null; }
@@ -548,6 +560,16 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
             public object Disassemble(object value)
             {
                 return null;
+            }
+
+            public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
+            {
+                throw new NotImplementedException();
             }
 
             public SqlType[] SqlTypes
