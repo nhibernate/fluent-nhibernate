@@ -13,22 +13,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
-    <PackageReference Include="NHibernate" Version="$(NHibernatePackageVersion)" />
     <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
     <PackageReference Include="Machine.Specifications" Version="0.12.0" />
     <PackageReference Include="Machine.Specifications.Runner.Console" Version="0.9.3" />
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.6.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Serialization" />
-    <PackageReference Include="Mono.Cecil" Version="0.9.6.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -22,12 +22,6 @@
     <PackageReference Include="NHibernate" Version="$(NHibernatePackageVersion)" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <Reference Include="System.configuration" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
-  </ItemGroup>
-
   <ItemGroup>
     <None Include="..\FluentKey.snk">
       <Link>FluentKey.snk</Link>

@@ -8,9 +8,5 @@
   <ItemGroup>
     <ProjectReference Include="..\FluentNHibernate\FluentNHibernate.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="NHibernate" Version="$(NHibernatePackageVersion)" />
-  </ItemGroup>
   
 </Project>
