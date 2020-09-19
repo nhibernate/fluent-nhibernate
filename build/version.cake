@@ -5,6 +5,8 @@ public class BuildVersion
     public string DotNetAsterix { get; private set; }
     public string Milestone { get; private set; }
     public string AppVersion { get; private set; }
+    public string AssemblyVersion { get; private set; }
+    public string InformationalVersion {get; private set; }
 
     public static BuildVersion Calculate(ICakeContext context, BuildParameters parameters)
     {
@@ -15,6 +17,8 @@ public class BuildVersion
 
         string version = null;
         string semVersion = null;
+        string assemblyVersion = null;
+        string informationalVersion = null;
         string milestone = null;
 
         if (context.IsRunningOnWindows())
@@ -29,6 +33,8 @@ public class BuildVersion
 
                 version = context.EnvironmentVariable("GitVersion_MajorMinorPatch");
                 semVersion = context.EnvironmentVariable("GitVersion_LegacySemVerPadded");
+                assemblyVersion = context.EnvironmentVariable("GitVersion_AssemblySemVer");
+                informationalVersion = context.EnvironmentVariable("GitVersion_InformationalVersion");
                 milestone = string.Concat("v", version);
             }
 
@@ -39,6 +45,8 @@ public class BuildVersion
 
             version = assertedVersions.MajorMinorPatch;
             semVersion = assertedVersions.LegacySemVerPadded;
+            assemblyVersion = assertedVersions.AssemblySemVer;
+            informationalVersion = assertedVersions.InformationalVersion;
             milestone = string.Concat("v", version);
 
             context.Information("Calculated Semantic Version: {0}", semVersion);
@@ -52,7 +60,9 @@ public class BuildVersion
             SemVersion = semVersion,
             DotNetAsterix = semVersion.Substring(version.Length).TrimStart('-'),
             Milestone = milestone,
-            AppVersion = appVersion
+            AppVersion = appVersion,
+            AssemblyVersion = assemblyVersion,
+            InformationalVersion = informationalVersion,
         };
     }
 }
