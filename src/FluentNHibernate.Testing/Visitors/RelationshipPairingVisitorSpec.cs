@@ -21,13 +21,13 @@ namespace FluentNHibernate.Testing.Visitors
             manyToOneARankedFirstToHolder.Set(x => x.Class, Layer.Defaults, new TypeReference(typeof(Holder)));
             manyToOneARankedFirstToHolder.Set(x => x.Name, Layer.Defaults, "ARankedFirstProperty");
             manyToOneARankedFirstToHolder.ContainingEntityType = typeof(ARankedFirst);
-            manyToOneARankedFirstToHolder.Member = new PropertyMember(typeof(ARankedFirst).GetProperty("ARankedFirstProperty"));
+            manyToOneARankedFirstToHolder.Member = typeof(ARankedFirst).GetProperty("ARankedFirstProperty").ToMember();
 
             manyToOneBRankedSecondToHolder = new ManyToOneMapping();
             manyToOneBRankedSecondToHolder.Set(x => x.Class, Layer.Defaults, new TypeReference(typeof(Holder)));
             manyToOneBRankedSecondToHolder.Set(x => x.Name, Layer.Defaults, "BRankedSecondProperty");
             manyToOneBRankedSecondToHolder.ContainingEntityType = typeof(BRankedSecond);
-            manyToOneBRankedSecondToHolder.Member = new PropertyMember(typeof(BRankedSecond).GetProperty("BRankedSecondProperty"));
+            manyToOneBRankedSecondToHolder.Member = typeof(BRankedSecond).GetProperty("BRankedSecondProperty").ToMember();
 
             var relationship = new OneToManyMapping();
             relationship.Set(x => x.Class, Layer.Defaults, new TypeReference(typeof(BRankedSecond)));
