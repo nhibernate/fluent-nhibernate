@@ -128,6 +128,7 @@ namespace FluentNHibernate.Automapping
             return this;
         }
 
+        [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
         public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
             where TSubclass : T
         {
@@ -142,6 +143,7 @@ namespace FluentNHibernate.Automapping
             return joinedclass;
         }
 
+        [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
         public IAutoClasslike JoinedSubClass(Type type, string keyColumn)
         {
             var genericType = typeof (AutoJoinedSubClassPart<>).MakeGenericType(type);
@@ -153,12 +155,14 @@ namespace FluentNHibernate.Automapping
             return (IAutoClasslike)joinedclass;
         }
 
+        [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
         public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn)
             where TSubclass : T
         {
             return JoinedSubClass<TSubclass>(keyColumn, null);
         }
 
+        [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
         public AutoSubClassPart<TSubclass> SubClass<TSubclass>(object discriminatorValue, Action<AutoSubClassPart<TSubclass>> action)
             where TSubclass : T
         {
@@ -174,12 +178,14 @@ namespace FluentNHibernate.Automapping
             return subclass;
         }
 
+        [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
         public AutoSubClassPart<TSubclass> SubClass<TSubclass>(object discriminatorValue)
             where TSubclass : T
         {
             return SubClass<TSubclass>(discriminatorValue, null);
         }
 
+        [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
         public IAutoClasslike SubClass(Type type, string discriminatorValue)
         {
             var genericType = typeof(AutoSubClassPart<>).MakeGenericType(type);
@@ -212,5 +218,24 @@ namespace FluentNHibernate.Automapping
             return null;
         }
 #pragma warning restore 809
+
+        /// <summary>
+        /// Adds a column to the key for this subclass, if used
+        /// in a table-per-subclass strategy.
+        /// </summary>
+        /// <param name="column">Column name</param>
+        public void KeyColumn(string column)
+        {
+            KeyMapping key;
+
+            if (attributes.IsSpecified("Key"))
+                key = attributes.GetOrDefault<KeyMapping>("Key");
+            else
+                key = new KeyMapping();
+
+            key.AddColumn(Layer.UserSupplied, new ColumnMapping(column));
+
+            attributes.Set("Key", Layer.UserSupplied, key);
+        }
     }
 }

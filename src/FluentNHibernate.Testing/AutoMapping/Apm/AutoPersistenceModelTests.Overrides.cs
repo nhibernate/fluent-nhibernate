@@ -203,6 +203,17 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         }
 
         [Test]
+        public void JoinedSubclassOverrideShouldOverrideKeyColumn()
+        {
+            var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
+                .Override<ExampleInheritedClass>(m => m.KeyColumn("MyKey"));
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("//joined-subclass/key/column").HasAttribute("name", "MyKey");
+        }
+
+        [Test]
         public void JoinedSubclassOverrideShouldOverrideExistingHasOne()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
