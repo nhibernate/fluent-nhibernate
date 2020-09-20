@@ -43,10 +43,8 @@ Teardown((context) =>
 Task("Clean")
   .Does(() =>
     {
-        CleanDirectories(parameters.Paths.Directories.ToClean);        
-        CleanProjects("src", SrcProjects);
-        CleanProjects("src", TestProjects);
-        CleanProjects("src", SpecProjects);         
+        CleanDirectories(parameters.Paths.Directories.ToClean);
+        DotNetCoreClean(SolutionPath);
         EnsureDirectoryExists(parameters.Paths.Directories.Artifacts);
         EnsureDirectoryExists(parameters.Paths.Directories.ArtifactsBinFullFx);
         EnsureDirectoryExists(parameters.Paths.Directories.TestResults);
@@ -67,9 +65,11 @@ Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
     {
-        BuildProjects("src", SrcProjects, parameters.Configuration, msBuildSettings);
-        BuildProjects("src", TestProjects, parameters.Configuration, msBuildSettings); 
-        BuildProjects("src", SpecProjects, parameters.Configuration, msBuildSettings); 
+        DotNetCoreBuild(SolutionPath, new DotNetCoreBuildSettings
+        {
+            Configuration = parameters.Configuration,
+            MSBuildSettings = msBuildSettings
+        });
     });
 
 Task("Test")
@@ -265,32 +265,6 @@ Task("Default")
     .IsDependentOn("Package");
     
 RunTarget(parameters.Target);
-
-private void CleanProjects(string projectKind, IEnumerable<string> projectNames)
-{
-    foreach(var project in projectNames)
-    {
-        var projectPath = File($"./{projectKind}/{project}/{project}.csproj");
-        DotNetCoreClean(projectPath.ToString());
-    }
-}
-
-private void BuildProjects(
-    string projectKind, 
-    IEnumerable<string> projectNames,
-    string configuration, 
-    DotNetCoreMSBuildSettings msBuildSettings)
-{
-    foreach(var project in projectNames)
-    {
-        var projectPath = File($"./{projectKind}/{project}/{project}.csproj");
-        DotNetCoreBuild(projectPath.ToString(), new DotNetCoreBuildSettings
-        {
-            Configuration = configuration,
-            MSBuildSettings = msBuildSettings
-        });
-    }
-}
 
 private void PublishProjects(
     IEnumerable<string> projectNames,
