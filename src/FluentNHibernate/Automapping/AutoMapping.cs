@@ -237,5 +237,15 @@ namespace FluentNHibernate.Automapping
 
             attributes.Set("Key", Layer.UserSupplied, key);
         }
+
+        /// <summary>
+        /// Set the discriminator value, if this entity is in a table-per-class-hierarchy
+        /// mapping strategy.
+        /// </summary>
+        /// <param name="discriminatorValue">Discriminator value</param>
+        public void DiscriminatorValue(object discriminatorValue)
+        {
+            attributes.Set("DiscriminatorValue", Layer.UserSupplied, discriminatorValue);
+        }
     }
 }

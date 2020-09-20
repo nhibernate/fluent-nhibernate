@@ -255,11 +255,9 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         [Test]
         public void SubclassOverrideShouldOverrideExistingProperty()
         {
-#pragma warning disable 612,618
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
-                .Setup(x => x.IsDiscriminated = type => true)
-#pragma warning restore 612,618
+                .Override<ExampleClass>(t => t.DiscriminateSubClassesOnColumn("Discriminator"))
                 .Override<ExampleInheritedClass>(c => c.Map(x => x.ExampleProperty).Column("test"));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -290,11 +288,9 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         [Test]
         public void SubclassOverrideShouldOverrideExistingHasMany()
         {
-#pragma warning disable 612,618
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
-                .Setup(x => x.IsDiscriminated = type => true)
-#pragma warning restore 612,618
+                .Override<ExampleClass>(t => t.DiscriminateSubClassesOnColumn("Discriminator"))
                 .Override<ExampleInheritedClass>(m => m.HasMany(x => x.Children).Inverse());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -304,11 +300,9 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         [Test]
         public void SubclassOverrideShouldOverrideExistingHasManyToMany()
         {
-#pragma warning disable 612,618
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
-                .Setup(x => x.IsDiscriminated = type => true)
-#pragma warning restore 612,618
+                .Override<ExampleClass>(t => t.DiscriminateSubClassesOnColumn("Discriminator"))
                 .Override<ExampleInheritedClass>(m => m.HasManyToMany(x => x.Children).Inverse());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -319,11 +313,9 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         [Test]
         public void SubclassOverrideShouldOverrideExistingHasOne()
         {
-#pragma warning disable 612,618
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
-                .Setup(x => x.IsDiscriminated = type => true)
-#pragma warning restore 612,618
+                .Override<ExampleClass>(t => t.DiscriminateSubClassesOnColumn("Discriminator"))
                 .Override<ExampleInheritedClass>(m => m.HasOne(x => x.Parent));
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -334,11 +326,9 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         [Test]
         public void SubclassOverrideShouldOverrideExistingReferences()
         {
-#pragma warning disable 612, 618
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
-                .Setup(x => x.IsDiscriminated = type => true)
-#pragma warning restore 612,618
+                .Override<ExampleClass>(t => t.DiscriminateSubClassesOnColumn("Discriminator"))
                 .Override<ExampleInheritedClass>(m => m.References(x => x.Parent).Access.Field());
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -348,11 +338,9 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         [Test]
         public void SubclassOverrideShouldOverrideExistingReferencesAny()
         {
-#pragma warning disable 612, 618
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
-                .Setup(x => x.IsDiscriminated = type => true)
-#pragma warning restore 612,618
+                .Override<ExampleClass>(t => t.DiscriminateSubClassesOnColumn("Discriminator"))
                 .Override<ExampleInheritedClass>(m =>
                     m.ReferencesAny(x => x.DictionaryChild)
                         .EntityIdentifierColumn("one")
@@ -362,6 +350,19 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
             new AutoMappingTester<ExampleClass>(autoMapper)
                 .Element("//subclass/any[@name='DictionaryChild']").Exists()
                 .Element("//subclass/map[@name='DictionaryChild']").DoesntExist();
+        }
+
+        
+        [Test]
+        public void SubclassOverrideShouldOverrideDiscriminatorValue()
+        {
+            var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
+                .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
+                .Override<ExampleClass>(t => t.DiscriminateSubClassesOnColumn("Discriminator"))
+                .Override<ExampleInheritedClass>(m => m.DiscriminatorValue(1));
+
+            new AutoMappingTester<ExampleClass>(autoMapper)
+                .Element("//subclass").HasAttribute("discriminator-value", "1");
         }
     }
 }
