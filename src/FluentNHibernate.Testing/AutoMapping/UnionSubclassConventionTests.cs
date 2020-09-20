@@ -1,6 +1,5 @@
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.TestFixtures.SuperTypes;
-using FluentNHibernate.Automapping.TestFixtures.UnionChain;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Automapping
@@ -23,25 +22,24 @@ namespace FluentNHibernate.Testing.Automapping
         [Test]
         public void UnionSubtypePropagatesThroughHierarchy()
         {
-            new AutoMappingTester<BaseUnionType>(
-                AutoMap.AssemblyOf<BaseUnionType>()
-                    .Where(x => x.Namespace == typeof(BaseUnionType).Namespace)
-                    .Override<BaseUnionType>(m => m.UseUnionSubclassForInheritanceMapping()))
-                .Element("class[@name = '" + typeof(BaseUnionType).AssemblyQualifiedName + "']")
+            var model = AutoMap.AssemblyOf<Derived1>()
+                .Where(x => x.Namespace == typeof(Derived1).Namespace)
+                .Override<Derived1>(m => m.UseUnionSubclassForInheritanceMapping());
+
+            new AutoMappingTester<Derived1>(model)
+                .Element("class[@name = '" + typeof(Derived1).AssemblyQualifiedName + "']")
                 .Exists()
-                .Element("class/union-subclass[@name='" + typeof(ChildUnionType).AssemblyQualifiedName + "']")
+                .Element("class/union-subclass[@name='" + typeof(SecondLevel).AssemblyQualifiedName + "']")
                 .Exists()
                 .Element("class/union-subclass/joined-subclass")
                 .DoesntExist()
-                .Element("class/union-subclass[@name='" + typeof(ChildUnionType).AssemblyQualifiedName + "']/" +
-                          "union-subclass[@name='" + typeof(GrandChildUnionType).AssemblyQualifiedName + "']")
+                .Element("class/union-subclass[@name='" + typeof(SecondLevel).AssemblyQualifiedName + "']/" +
+                          "union-subclass[@name='" + typeof(ThirdLevel).AssemblyQualifiedName + "']")
                 .Exists()
-                .Element("class/union-subclass[@name='" + typeof(ChildUnionType).AssemblyQualifiedName + "']/" +
-                          "union-subclass[@name='" + typeof(GrandChildUnionType).AssemblyQualifiedName + "']/" +
-                          "union-subclass[@name='" + typeof(GreatGrandChildUnionType).AssemblyQualifiedName + "']")
-                .Exists()
-                ;
+                .Element("class/union-subclass[@name='" + typeof(SecondLevel).AssemblyQualifiedName + "']/" +
+                          "union-subclass[@name='" + typeof(ThirdLevel).AssemblyQualifiedName + "']/" +
+                          "union-subclass[@name='" + typeof(FourthLevel).AssemblyQualifiedName + "']")
+                .Exists();
         }
-
     }
 }

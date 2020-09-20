@@ -446,7 +446,6 @@ namespace FluentNHibernate.Automapping.TestFixtures.SuperTypes
         public int SomeNumber{ get; set; }
     }
 
-
     public class ExampleClass : SuperType
     {
         public virtual int ExampleClassId { get; set; }
@@ -525,26 +524,3 @@ namespace FluentNHibernate.Automapping.TestFixtures.SuperTypes
         Mixed
     }
 }
-
-namespace FluentNHibernate.Automapping.TestFixtures.UnionChain
-{
-    public class BaseUnionType
-    {
-        public int Id { get; set; }
-    }
-
-    public class ChildUnionType : BaseUnionType
-    {
-        public int Value { get; set; }
-    }
-
-    public class GrandChildUnionType : ChildUnionType
-    {
-        public string Name { get; set; }
-    }
-
-    public class GreatGrandChildUnionType : GrandChildUnionType
-    {
-    }
-}
-

@@ -79,17 +79,17 @@ namespace FluentNHibernate.Automapping
 
                 SubclassMapping subclassMapping;
                 var tempSubClassMap = mapping as SubclassMapping;
-                if(!tempIsNull && tempMapping.IsUnionSubclass)
+                if(!tempIsNull && tempMapping.IsUnionSubclass || tempSubClassMap != null && tempSubClassMap.SubclassType == SubclassType.UnionSubclass)
                 {
                     subclassMapping = new SubclassMapping(SubclassType.UnionSubclass);
                     subclassMapping.Set(x => x.Type, Layer.Defaults, inheritedClass.Type);
                 }
-                else if (tempSubClassMap != null && tempSubClassMap.SubclassType == SubclassType.UnionSubclass)
+                else if (isDiscriminated || tempSubClassMap != null && tempSubClassMap.SubclassType == SubclassType.Subclass)
                 {
-                    subclassMapping = new SubclassMapping(SubclassType.UnionSubclass);
+                    subclassMapping = new SubclassMapping(SubclassType.Subclass);
                     subclassMapping.Set(x => x.Type, Layer.Defaults, inheritedClass.Type);
                 }
-                else if(!isDiscriminated)
+                else
                 {
                     subclassMapping = new SubclassMapping(SubclassType.JoinedSubclass);
                     subclassMapping.Set(x => x.Type, Layer.Defaults, inheritedClass.Type);
@@ -97,11 +97,6 @@ namespace FluentNHibernate.Automapping
                     var columnMapping = new ColumnMapping();
                     columnMapping.Set(x => x.Name, Layer.Defaults, mapping.Type.Name + "_id");
                     subclassMapping.Key.AddColumn(Layer.Defaults, columnMapping);
-                }
-                else
-                {
-                    subclassMapping = new SubclassMapping(SubclassType.Subclass);
-                    subclassMapping.Set(x => x.Type, Layer.Defaults, inheritedClass.Type);
                 }
 
                 // track separate set of properties for each sub-tree within inheritance hierarchy
@@ -116,7 +111,7 @@ namespace FluentNHibernate.Automapping
 
         static bool HasDiscriminator(ClassMappingBase mapping)
         {
-            if (mapping is ClassMapping && ((ClassMapping)mapping).Discriminator != null)
+            if (mapping is ClassMapping && ((ClassMapping) mapping).Discriminator != null)
                 return true;
 
             return false;
