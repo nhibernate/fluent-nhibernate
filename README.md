@@ -1,6 +1,6 @@
 ![FluentNHibernate logo](https://raw.githubusercontent.com/jagregory/fluent-nhibernate/master/docs/logo.png)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/3uk49dtw8u4hdt7w/branch/master?svg=true)](https://ci.appveyor.com/project/jrogalan/fluent-nhibernate/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/684r2ot07i2lrcij/branch/master?svg=true)](https://ci.appveyor.com/project/nhibernate/fluent-nhibernate/branch/master)
 [![NuGet](https://img.shields.io/nuget/v/FluentNHibernate.svg)](https://www.nuget.org/packages/FluentNHibernate)
 
 ## What is FluentNHibernate?
