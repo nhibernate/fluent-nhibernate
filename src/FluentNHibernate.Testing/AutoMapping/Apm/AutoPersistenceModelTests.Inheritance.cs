@@ -182,7 +182,6 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestInheritanceOverridingMappingProperties()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Override<ExampleClass>(t => t.JoinedSubClass<ExampleInheritedClass>("OverridenKey", p => p.Map(c => c.ExampleProperty, "columnName")))
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)
@@ -194,8 +193,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Apm
         public void TestInheritanceSubclassOverridingMappingProperties()
         {
             var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
-                .Setup(x => x.IsDiscriminated = type => true)
-                .Override<ExampleClass>(t => t.SubClass<ExampleInheritedClass>("discriminator", p => p.Map(c => c.ExampleProperty, "columnName")))
+                .Override<ExampleClass>(t => t.DiscriminateSubClassesOnColumn("discriminator"))
                 .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures");
 
             new AutoMappingTester<ExampleClass>(autoMapper)

@@ -212,5 +212,24 @@ namespace FluentNHibernate.Automapping
             return null;
         }
 #pragma warning restore 809
+
+        /// <summary>
+        /// Adds a column to the key for this subclass, if used
+        /// in a table-per-subclass strategy.
+        /// </summary>
+        /// <param name="column">Column name</param>
+        public void KeyColumn(string column)
+        {
+            KeyMapping key;
+
+            if (attributes.IsSpecified("Key"))
+                key = attributes.GetOrDefault<KeyMapping>("Key");
+            else
+                key = new KeyMapping();
+
+            key.AddColumn(Layer.UserSupplied, new ColumnMapping(column));
+
+            attributes.Set("Key", Layer.UserSupplied, key);
+        }
     }
 }
