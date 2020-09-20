@@ -18,7 +18,11 @@ namespace FluentNHibernate.Automapping
             : this(parent, discriminatorValue, new MappingProviderStore())
         {}
 
-        AutoSubClassPart(DiscriminatorPart parent, string discriminatorValue, MappingProviderStore providers)
+        public AutoSubClassPart(DiscriminatorPart parent, object discriminatorValue)
+            : this(parent, discriminatorValue, new MappingProviderStore())
+        {}
+
+        AutoSubClassPart(DiscriminatorPart parent, object discriminatorValue, MappingProviderStore providers)
             : base(parent, discriminatorValue, providers)
         {
             this.providers = providers;
@@ -67,7 +71,7 @@ namespace FluentNHibernate.Automapping
             var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
             var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, discriminatorValue);
 
-            action(subclass);
+            if (action != null) action(subclass);
 
             providers.Subclasses[typeof(TSubclass)] = subclass;
         }
