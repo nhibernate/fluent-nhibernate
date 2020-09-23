@@ -7,6 +7,11 @@ namespace FluentNHibernate.Conventions.Instances
     public interface IVersionInstance : IVersionInspector
     {
         new IAccessInstance Access { get; }
+        /// <summary>
+        /// Instructs NHibernate to immediately issues a SELECT after INSERT or UPDATE to retrieve the generated values.
+        /// <para> See https://nhibernate.info/doc/nhibernate-reference/mapping.html#mapping-generated for more information. </para>
+        /// </summary>
+        /// <remarks> It is user's responsibility to specify how the columns are generated. </remarks>
         new IGeneratedInstance Generated { get; }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IVersionInstance Not { get; }

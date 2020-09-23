@@ -19,18 +19,21 @@ namespace FluentNHibernate.Conventions.Instances
             this.mapping = mapping;
         }
 
+        /// <inheritdoc />
         public new void Insert()
         {
             mapping.Set(x => x.Insert, layer, nextBool);
             nextBool = true;
         }
 
+        /// <inheritdoc />
         public new void Update()
         {
             mapping.Set(x => x.Update, layer, nextBool);
             nextBool = true;
         }
 
+        /// <inheritdoc />
         public new void ReadOnly()
         {
             mapping.Set(x => x.Insert, layer, !nextBool);
@@ -159,6 +162,7 @@ namespace FluentNHibernate.Conventions.Instances
             mapping.MakeColumnsEmpty(Layer.UserSupplied);
         }
 
+        /// <inheritdoc />
         public new IGeneratedInstance Generated
         {
             get { return new GeneratedInstance(value => mapping.Set(x => x.Generated, layer, value)); }

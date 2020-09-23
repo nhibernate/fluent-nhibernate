@@ -2,6 +2,7 @@ using System;
 
 namespace FluentNHibernate.Conventions.Instances
 {
+    /// <inheritdoc cref="IGeneratedInstance"/>
     public class GeneratedInstance : IGeneratedInstance
     {
         private readonly Action<string> setter;
@@ -11,16 +12,19 @@ namespace FluentNHibernate.Conventions.Instances
             this.setter = setter;
         }
 
+        /// <inheritdoc />
         public void Never()
         {
             setter("never");
         }
 
+        /// <inheritdoc />
         public void Insert()
         {
             setter("insert");
         }
 
+        /// <inheritdoc />
         public void Always()
         {
             setter("always");
