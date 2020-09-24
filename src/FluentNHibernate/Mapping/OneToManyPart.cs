@@ -145,6 +145,17 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
+        /// Sets the order-by clause for this one-to-many relationship.
+        /// </summary>
+        /// <remarks>
+        /// Note: This only supports simple cases, use the string overload for more complex clauses.
+        /// </remarks>
+        public OneToManyPart<TChild> OrderBy(Expression<Func<TChild, object>> orderBy)
+        {
+            return OrderBy(ExpressionToSql.Convert(orderBy));
+        }
+
+        /// <summary>
         /// Specify that this collection is read-only
         /// </summary>
         public OneToManyPart<TChild> ReadOnly()
@@ -226,13 +237,13 @@ namespace FluentNHibernate.Mapping
 
         /// <summary>
         /// Sets the where clause for this one-to-many relationship.
-        /// Note: This only supports simple cases, use the string overload for more complex clauses.
         /// </summary>
+        /// <remarks>
+        /// Note: This only supports simple cases, use the string overload for more complex clauses.
+        /// </remarks>
         public OneToManyPart<TChild> Where(Expression<Func<TChild, bool>> where)
         {
-            var sql = ExpressionToSql.Convert(where);
-
-            return Where(sql);
+            return Where(ExpressionToSql.Convert(where));
         }
     }
 }
