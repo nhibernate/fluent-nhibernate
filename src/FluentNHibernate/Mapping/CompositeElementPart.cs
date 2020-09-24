@@ -118,11 +118,32 @@ namespace FluentNHibernate.Mapping
         /// <returns>Component being mapped</returns>
         public void ParentReference(Expression<Func<T, object>> expression)
         {
+            var property = expression.ToMember();
+            ParentReference(property, MemberAccessResolver.Resolve(property));
+        }
+
+        /// <summary>
+        /// Maps a property of the component class as a reference back to the containing entity
+        /// </summary>
+        /// <param name="expression">Parent reference property</param>
+        /// <param name="access">Access to parent reference property</param>
+        /// <returns>Component being mapped</returns>
+        public void ParentReference(Expression<Func<T, object>> expression, Access access)
+        {
+            ParentReference(expression.ToMember(), access);
+        }
+
+        void ParentReference(Member property, Access access)
+        {
             var parentMapping = new ParentMapping
             {
                 ContainingEntityType = entity
             };
-            parentMapping.Set(x => x.Name, Layer.Defaults, expression.ToMember().Name);
+            parentMapping.Set(x => x.Name, Layer.Defaults, property.Name);
+
+            if (access != Access.Property && access != Access.Unset)
+                parentMapping.Set(x => x.Access, Layer.Defaults, access.ToString());
+
             attributes.Set("Parent", Layer.Defaults, parentMapping);
         }
 

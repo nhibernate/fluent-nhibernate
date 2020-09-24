@@ -23,6 +23,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             if (parentMapping.IsSpecified("Name"))
                 parentElement.WithAtt("name", parentMapping.Name);
+            
+            if (parentMapping.IsSpecified("Access"))
+                parentElement.WithAtt("access", parentMapping.Access);
         }
     }
 }

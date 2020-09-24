@@ -24,12 +24,17 @@ namespace FluentNHibernate.MappingModel
             visitor.ProcessParent(this);
         }
 
+        public Type ContainingEntityType { get; set; }
+
         public string Name
         {
             get { return attributes.GetOrDefault<string>("Name"); }
         }
 
-        public Type ContainingEntityType { get; set; }
+        public string Access
+        {
+            get { return attributes.GetOrDefault<string>("Access"); }
+        }
 
         public override bool Equals(object obj)
         {

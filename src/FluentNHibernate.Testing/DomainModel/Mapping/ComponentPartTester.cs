@@ -20,6 +20,21 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void ComponentCanSetParentReferenceAccessStrategy()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m =>
+                    m.Component(x => x.Component, c =>
+                    {
+                        c.Map(x => x.Name);
+                        c.ParentReference(x => x.MyParent, FluentNHibernate.Mapping.Access.BackField);
+                    }))
+                .Element("class/component/parent").ShouldBeInParentAtPosition(0)
+                .HasAttribute("name", "MyParent")
+                .HasAttribute("access", "backfield");
+        }
+
+        [Test]
         public void ComponentDoesntHaveUniqueAttributeByDefault()
         {
             new MappingTester<PropertyTarget>()

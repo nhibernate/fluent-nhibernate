@@ -22,6 +22,22 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void CanSetParentReferenceAccess()
+        {
+            new MappingTester<PropertyTarget>()
+                .ForMapping(m =>
+                    m.HasMany(x => x.Components)
+                        .Component(c =>
+                        {
+                            c.Map(x => x.Name);
+                            c.ParentReference(x => x.MyParent, FluentNHibernate.Mapping.Access.BackField);
+                        }))
+                .Element("class/bag/composite-element/parent").Exists()
+                .HasAttribute("name", "MyParent")
+                .HasAttribute("access", "backfield");
+        }
+
+        [Test]
         public void CanCreateNestedCompositeElement()
         {
             new MappingTester<TopLevel>()
