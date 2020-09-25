@@ -36,7 +36,13 @@ namespace FluentNHibernate.Conventions.Inspections
 
         public Access Access
         {
-            get { return Access.FromString(mapping.Access); }
+            get
+            {
+                if (mapping.Access != null)
+                    return Access.FromString(mapping.Access);
+             
+                return null;
+            }
         }
     }
 }
