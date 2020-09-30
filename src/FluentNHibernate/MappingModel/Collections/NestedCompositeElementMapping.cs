@@ -24,6 +24,11 @@ namespace FluentNHibernate.MappingModel.Collections
             get { return attributes.GetOrDefault<string>("Name"); }
         }
 
+        public string Access
+        {
+            get { return attributes.GetOrDefault<string>("Access"); }
+        }
+
         public void Set<T>(Expression<Func<NestedCompositeElementMapping, T>> expression, int layer, T value)
         {
             Set(expression.ToMember().Name, layer, value);

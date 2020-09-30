@@ -16,11 +16,11 @@ namespace FluentNHibernate.Mapping
     public class CompositeElementPart<T> : ICompositeElementMappingProvider, INestedCompositeElementMappingProvider
     {
         readonly Type entity;
-        readonly Member member;
+        private protected readonly Member member;
         readonly List<IPropertyMappingProvider> properties = new List<IPropertyMappingProvider>();
         readonly List<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
         readonly List<INestedCompositeElementMappingProvider> components = new List<INestedCompositeElementMappingProvider>();
-        readonly AttributeStore attributes = new AttributeStore();
+        private protected readonly AttributeStore attributes = new AttributeStore();
 
         public CompositeElementPart(Type entity)
         {
@@ -164,9 +164,9 @@ namespace FluentNHibernate.Mapping
         ///     });
         ///   });
         /// </example>
-        public void Component<TChild>(Expression<Func<T, TChild>> property, Action<CompositeElementPart<TChild>> nestedCompositeElementAction)
+        public void Component<TChild>(Expression<Func<T, TChild>> property, Action<NestedCompositeElementPart<TChild>> nestedCompositeElementAction)
         {
-            var nestedCompositeElement = new CompositeElementPart<TChild>(entity, property.ToMember());
+            var nestedCompositeElement = new NestedCompositeElementPart<TChild>(entity, property.ToMember());
 
             nestedCompositeElementAction(nestedCompositeElement);
 
