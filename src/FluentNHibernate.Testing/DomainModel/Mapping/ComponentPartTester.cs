@@ -27,7 +27,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     m.Component(x => x.Component, c =>
                     {
                         c.Map(x => x.Name);
-                        c.ParentReference(x => x.MyParent, FluentNHibernate.Mapping.Access.BackField);
+                        c.ParentReference(x => x.MyParent, x => x.Access.BackingField());
                     }))
                 .Element("class/component/parent").ShouldBeInParentAtPosition(0)
                 .HasAttribute("name", "MyParent")

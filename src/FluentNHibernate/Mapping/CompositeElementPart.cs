@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
@@ -118,22 +117,21 @@ namespace FluentNHibernate.Mapping
         /// <returns>Component being mapped</returns>
         public void ParentReference(Expression<Func<T, object>> expression)
         {
-            var property = expression.ToMember();
-            ParentReference(property, MemberAccessResolver.Resolve(property));
+            ParentReference(expression, null);
         }
 
         /// <summary>
         /// Maps a property of the component class as a reference back to the containing entity
         /// </summary>
         /// <param name="expression">Parent reference property</param>
-        /// <param name="access">Access to parent reference property</param>
+        /// <param name="customMapping">Additional settings for the parent reference property</param>
         /// <returns>Component being mapped</returns>
-        public void ParentReference(Expression<Func<T, object>> expression, Access access)
+        public void ParentReference(Expression<Func<T, object>> expression, Action<ParentPropertyPart> customMapping)
         {
-            ParentReference(expression.ToMember(), access);
+            ParentReference(expression.ToMember(), customMapping);
         }
 
-        void ParentReference(Member property, Access access)
+        void ParentReference(Member property, Action<ParentPropertyPart> customMapping)
         {
             var parentMapping = new ParentMapping
             {
@@ -141,8 +139,11 @@ namespace FluentNHibernate.Mapping
             };
             parentMapping.Set(x => x.Name, Layer.Defaults, property.Name);
 
+            var access = MemberAccessResolver.Resolve(property);
             if (access != Access.Property && access != Access.Unset)
                 parentMapping.Set(x => x.Access, Layer.Defaults, access.ToString());
+
+            customMapping?.Invoke(new ParentPropertyPart(parentMapping));
 
             attributes.Set("Parent", Layer.Defaults, parentMapping);
         }

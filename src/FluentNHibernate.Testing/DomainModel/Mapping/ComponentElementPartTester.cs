@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                         .Component(c =>
                         {
                             c.Map(x => x.Name);
-                            c.ParentReference(x => x.MyParent, FluentNHibernate.Mapping.Access.BackField);
+                            c.ParentReference(x => x.MyParent, x => x.Access.BackingField());
                         }))
                 .Element("class/bag/composite-element/parent").Exists()
                 .HasAttribute("name", "MyParent")

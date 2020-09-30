@@ -59,24 +59,23 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public TBuilder ParentReference(Expression<Func<TEntity, object>> expression)
         {
-            var property = expression.ToMember();
-            return ParentReference(property, MemberAccessResolver.Resolve(property));
+            return ParentReference(expression, null);
         }
 
         /// <summary>
         /// Specify a parent reference for this component
         /// </summary>
         /// <param name="expression">Parent property</param>
-        /// <param name="access">Access to parent property</param>
+        /// <param name="customMapping">Additional settings for the parent reference property</param>
         /// <example>
         /// ParentReference(x => x.Parent, Access.Backfield);
         /// </example>
-        public TBuilder ParentReference(Expression<Func<TEntity, object>> expression, Access access)
+        public TBuilder ParentReference(Expression<Func<TEntity, object>> expression, Action<ParentPropertyPart> customMapping)
         {
-            return ParentReference(expression.ToMember(), access);
+            return ParentReference(expression.ToMember(), customMapping);
         }
 
-        TBuilder ParentReference(Member property, Access access)
+        TBuilder ParentReference(Member property, Action<ParentPropertyPart> customMapping)
         {
             var parentMapping = new ParentMapping
             {
@@ -84,9 +83,12 @@ namespace FluentNHibernate.Mapping
             };
             parentMapping.Set(x => x.Name, Layer.Defaults, property.Name);
 
-            if (access != Mapping.Access.Property && access != Mapping.Access.Unset)
-                parentMapping.Set(x => x.Access, Layer.Defaults, access.ToString());
-            
+            var defaultAccess = MemberAccessResolver.Resolve(property);
+            if (defaultAccess != Mapping.Access.Property && defaultAccess != Mapping.Access.Unset)
+                parentMapping.Set(x => x.Access, Layer.Defaults, defaultAccess.ToString());
+
+            customMapping?.Invoke(new ParentPropertyPart(parentMapping));
+
             attributes.Set("Parent", Layer.Defaults, parentMapping);
 
             return (TBuilder)this;
