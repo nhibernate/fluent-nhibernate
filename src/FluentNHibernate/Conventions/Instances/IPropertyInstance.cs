@@ -30,6 +30,11 @@ namespace FluentNHibernate.Conventions.Instances
         new void UniqueKey(string keyName);
         void Column(string columnName);
         new void Formula(string formula);
+        /// <summary>
+        /// Instructs NHibernate to immediately issues a SELECT after INSERT or UPDATE to retrieve the generated values.
+        /// <para> See https://nhibernate.info/doc/nhibernate-reference/mapping.html#mapping-generated for more information. </para>
+        /// </summary>
+        /// <remarks> It is user's responsibility to specify how the columns are generated. </remarks>
         new IGeneratedInstance Generated { get; }
         new void OptimisticLock();
         new void Length(int length);

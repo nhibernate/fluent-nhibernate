@@ -947,6 +947,14 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void CanSpecifyOrderByClauseExpression()
+        {
+            new MappingTester<OneToManyTarget>()
+                .ForMapping(m => m.HasMany(x => x.BagOfChildren).OrderBy(c => c.Name))
+                .Element("class/bag").HasAttribute("order-by", "Name");
+        }
+
+        [Test]
         public void OrderByClauseIgnoredForUnorderableCollections()
         {
             new MappingTester<OneToManyTarget>()

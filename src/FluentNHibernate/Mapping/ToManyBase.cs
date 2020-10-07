@@ -15,7 +15,6 @@ namespace FluentNHibernate.Mapping
     {
         readonly AccessStrategyBuilder<T> access;
         readonly FetchTypeExpression<T> fetch;
-        readonly OptimisticLockBuilder<T> optimisticLock;
         readonly CollectionCascadeExpression<T> cascade;
         protected ElementPart elementPart;
         protected ICompositeElementMappingProvider componentMapping;
@@ -37,7 +36,6 @@ namespace FluentNHibernate.Mapping
             AsBag();
             access = new AccessStrategyBuilder<T>((T)this, value => collectionAttributes.Set("Access", Layer.UserSupplied, value));
             fetch = new FetchTypeExpression<T>((T)this, value => collectionAttributes.Set("Fetch", Layer.UserSupplied, value));
-            optimisticLock = new OptimisticLockBuilder<T>((T)this, value => collectionAttributes.Set("OptimisticLock", Layer.UserSupplied, value));
             cascade = new CollectionCascadeExpression<T>((T)this, value => collectionAttributes.Set("Cascade", Layer.UserSupplied, value));
 
             SetDefaultCollectionType();
@@ -615,7 +613,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Specifies an entity-name.
         /// </summary>
-        /// <remarks>See http://nhforge.org/blogs/nhibernate/archive/2008/10/21/entity-name-in-action-a-strongly-typed-entity.aspx</remarks>
+        /// <remarks>See https://nhibernate.info/blog/2008/10/21/entity-name-in-action-a-strongly-typed-entity.html </remarks>
         public T EntityName(string entityName)
         {
             relationshipAttributes.Set("EntityName", Layer.UserSupplied, entityName);

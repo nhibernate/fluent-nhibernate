@@ -1,5 +1,5 @@
 using System;
-using System.Reflection;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections
@@ -32,6 +32,17 @@ namespace FluentNHibernate.Conventions.Inspections
         public string Name
         {
             get { return mapping.Name; }
+        }
+
+        public Access Access
+        {
+            get
+            {
+                if (mapping.Access != null)
+                    return Access.FromString(mapping.Access);
+             
+                return null;
+            }
         }
     }
 }

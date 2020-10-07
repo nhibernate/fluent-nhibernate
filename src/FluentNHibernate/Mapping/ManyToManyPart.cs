@@ -6,6 +6,7 @@ using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
+using NHibernate.Criterion;
 
 namespace FluentNHibernate.Mapping
 {
@@ -235,6 +236,17 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the order-by clause on the collection element.
         /// </summary>
+        public ManyToManyPart<TChild> OrderBy(Expression<Func<TChild, object>> orderBy)
+        {
+            return OrderBy(ExpressionToSql.Convert(orderBy));
+        }
+
+        /// <summary>
+        /// Sets the order-by clause on the collection element.
+        /// </summary>
+        /// <remarks>
+        /// Note: This only supports simple cases, use the string overload for more complex clauses.
+        /// </remarks>
         public ManyToManyPart<TChild> OrderBy(string orderBy)
         {
             collectionAttributes.Set("OrderBy", Layer.UserSupplied, orderBy);
@@ -244,6 +256,17 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Sets the order-by clause on the many-to-many element.
         /// </summary>
+        public ManyToManyPart<TChild> ChildOrderBy(Expression<Func<TChild, object>> orderBy)
+        {
+            return ChildOrderBy(ExpressionToSql.Convert(orderBy));
+        }
+
+        /// <summary>
+        /// Sets the order-by clause on the many-to-many element.
+        /// </summary>
+        /// <remarks>
+        /// Note: This only supports simple cases, use the string overload for more complex clauses.
+        /// </remarks>
         public ManyToManyPart<TChild> ChildOrderBy(string orderBy)
         {
             relationshipAttributes.Set("OrderBy", Layer.UserSupplied, orderBy);
@@ -335,9 +358,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public ManyToManyPart<TChild> ChildWhere(Expression<Func<TChild, bool>> where)
         {
-            var sql = ExpressionToSql.Convert(where);
-
-            return ChildWhere(sql);
+            return ChildWhere(ExpressionToSql.Convert(@where));
         }
 
         protected override CollectionMapping GetCollectionMapping()

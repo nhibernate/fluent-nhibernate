@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
@@ -16,11 +15,11 @@ namespace FluentNHibernate.Mapping
     public class CompositeElementPart<T> : ICompositeElementMappingProvider, INestedCompositeElementMappingProvider
     {
         readonly Type entity;
-        readonly Member member;
+        private protected readonly Member member;
         readonly List<IPropertyMappingProvider> properties = new List<IPropertyMappingProvider>();
         readonly List<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
         readonly List<INestedCompositeElementMappingProvider> components = new List<INestedCompositeElementMappingProvider>();
-        readonly AttributeStore attributes = new AttributeStore();
+        private protected readonly AttributeStore attributes = new AttributeStore();
 
         public CompositeElementPart(Type entity)
         {
@@ -118,11 +117,34 @@ namespace FluentNHibernate.Mapping
         /// <returns>Component being mapped</returns>
         public void ParentReference(Expression<Func<T, object>> expression)
         {
+            ParentReference(expression, null);
+        }
+
+        /// <summary>
+        /// Maps a property of the component class as a reference back to the containing entity
+        /// </summary>
+        /// <param name="expression">Parent reference property</param>
+        /// <param name="customMapping">Additional settings for the parent reference property</param>
+        /// <returns>Component being mapped</returns>
+        public void ParentReference(Expression<Func<T, object>> expression, Action<ParentPropertyPart> customMapping)
+        {
+            ParentReference(expression.ToMember(), customMapping);
+        }
+
+        void ParentReference(Member property, Action<ParentPropertyPart> customMapping)
+        {
             var parentMapping = new ParentMapping
             {
                 ContainingEntityType = entity
             };
-            parentMapping.Set(x => x.Name, Layer.Defaults, expression.ToMember().Name);
+            parentMapping.Set(x => x.Name, Layer.Defaults, property.Name);
+
+            var access = MemberAccessResolver.Resolve(property);
+            if (access != Access.Property && access != Access.Unset)
+                parentMapping.Set(x => x.Access, Layer.Defaults, access.ToString());
+
+            customMapping?.Invoke(new ParentPropertyPart(parentMapping));
+
             attributes.Set("Parent", Layer.Defaults, parentMapping);
         }
 
@@ -143,9 +165,9 @@ namespace FluentNHibernate.Mapping
         ///     });
         ///   });
         /// </example>
-        public void Component<TChild>(Expression<Func<T, TChild>> property, Action<CompositeElementPart<TChild>> nestedCompositeElementAction)
+        public void Component<TChild>(Expression<Func<T, TChild>> property, Action<NestedCompositeElementPart<TChild>> nestedCompositeElementAction)
         {
-            var nestedCompositeElement = new CompositeElementPart<TChild>(entity, property.ToMember());
+            var nestedCompositeElement = new NestedCompositeElementPart<TChild>(entity, property.ToMember());
 
             nestedCompositeElementAction(nestedCompositeElement);
 

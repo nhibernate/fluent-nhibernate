@@ -23,6 +23,7 @@ namespace FluentNHibernate.Conventions.Instances
             get { return new AccessInstance(value => mapping.Set(x => x.Access, layer, value)); }
         }
 
+        /// <inheritdoc />
         public new IGeneratedInstance Generated
         {
             get { return new GeneratedInstance(value => mapping.Set(x => x.Generated, layer, value)); }

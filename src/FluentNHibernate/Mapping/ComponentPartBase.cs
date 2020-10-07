@@ -59,16 +59,36 @@ namespace FluentNHibernate.Mapping
         /// </example>
         public TBuilder ParentReference(Expression<Func<TEntity, object>> expression)
         {
-            return ParentReference(expression.ToMember());
+            return ParentReference(expression, null);
         }
 
-        private TBuilder ParentReference(Member property)
+        /// <summary>
+        /// Specify a parent reference for this component
+        /// </summary>
+        /// <param name="expression">Parent property</param>
+        /// <param name="customMapping">Additional settings for the parent reference property</param>
+        /// <example>
+        /// ParentReference(x => x.Parent, Access.Backfield);
+        /// </example>
+        public TBuilder ParentReference(Expression<Func<TEntity, object>> expression, Action<ParentPropertyPart> customMapping)
+        {
+            return ParentReference(expression.ToMember(), customMapping);
+        }
+
+        TBuilder ParentReference(Member property, Action<ParentPropertyPart> customMapping)
         {
             var parentMapping = new ParentMapping
             {
                 ContainingEntityType = typeof(TEntity)
             };
             parentMapping.Set(x => x.Name, Layer.Defaults, property.Name);
+
+            var defaultAccess = MemberAccessResolver.Resolve(property);
+            if (defaultAccess != Mapping.Access.Property && defaultAccess != Mapping.Access.Unset)
+                parentMapping.Set(x => x.Access, Layer.Defaults, defaultAccess.ToString());
+
+            customMapping?.Invoke(new ParentPropertyPart(parentMapping));
+
             attributes.Set("Parent", Layer.Defaults, parentMapping);
 
             return (TBuilder)this;
