@@ -1,7 +1,7 @@
 #addin "Cake.FileHelpers"
 #tool "nuget:?package=NUnit.ConsoleRunner&version=3.8.0"
 #tool "nuget:?package=Machine.Specifications.Runner.Console&version=0.9.3"
-#tool "nuget:?package=GitReleaseManager&version=0.5.0"
+#tool "nuget:?package=GitReleaseManager&version=0.11.0"
 #tool "nuget:?package=GitVersion.CommandLine&version=3.6.2"
 
 #load "./build/parameters.cake"
