@@ -21,6 +21,8 @@ Setup((context) =>
 
     Information("FluentNHibernate");
     Information($"SemVersion: {parameters.Version.SemVersion}");
+    Information($"AssemblyVersion: {parameters.Version.AssemblyVersion}");
+    Information($"Version: {parameters.Version.Version}");
     Information($"IsLocalBuild: {parameters.IsLocalBuild}");    
     Information($"IsTagged: {parameters.IsTagged}");
     Information($"IsPullRequest: {parameters.IsPullRequest}");
@@ -31,8 +33,9 @@ Setup((context) =>
 
     msBuildSettings = new DotNetCoreMSBuildSettings()
         .WithProperty("Version", parameters.Version.SemVersion)
-        .WithProperty("AssemblyVersion", parameters.Version.Version)
+        .WithProperty("AssemblyVersion", parameters.Version.AssemblyVersion)
         .WithProperty("FileVersion", parameters.Version.Version)
+        .WithProperty("InformationalVersion", parameters.Version.InformationalVersion)
         .WithProperty("PackageReleaseNotes", string.Concat("\"", releaseNotes, "\""));
 });
 

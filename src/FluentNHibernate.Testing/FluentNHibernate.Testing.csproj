@@ -34,9 +34,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\FluentKey.snk">
-      <Link>FluentKey.snk</Link>
-    </None>
     <None Include="App.config" />
     <Content Include="Cfg\hibernate.cfg.xml" />
   </ItemGroup>
