@@ -1,6 +1,4 @@
 #addin "Cake.FileHelpers"
-#tool "nuget:?package=NUnit.ConsoleRunner&version=3.8.0"
-#tool "nuget:?package=Machine.Specifications.Runner.Console&version=0.9.3"
 #tool "nuget:?package=GitReleaseManager&version=0.11.0"
 #tool "nuget:?package=GitVersion.CommandLine&version=3.6.2"
 
@@ -83,18 +81,6 @@ Task("Test")
         var specProjects = GetFiles("./src/**/*.Specs.csproj");
         var testProjects = unitProjects.Union(specProjects).ToArray();
 
-        // foreach (var framework in frameworks)
-        // {
-        //     var testAssemblies = $"./src/**/bin/{parameters.Configuration}/{framework}/*.Testing.dll";  
-        //     NUnit3(testAssemblies, new NUnit3Settings {
-        //       NoResults = true
-        //     });
-
-        //     testAssemblies = $"./src/**/bin/{parameters.Configuration}/{framework}/*.Specs.dll";  
-        //     MSpec(testAssemblies, new MSpecSettings {
-        //       Silent = true
-        //     });
-        // }           
         foreach(var project in testProjects) 
         {                      
             DotNetCoreTest(project.ToString(), new DotNetCoreTestSettings
