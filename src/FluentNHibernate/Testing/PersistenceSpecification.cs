@@ -31,7 +31,7 @@ namespace FluentNHibernate.Testing
         public PersistenceSpecification(ISession session, IEqualityComparer entityEqualityComparer)
         {
             currentSession = session;
-            hasExistingTransaction = currentSession.Transaction != null && currentSession.Transaction.IsActive || System.Transactions.Transaction.Current != null;
+            hasExistingTransaction = currentSession.GetSessionImplementation().ConnectionManager.IsInActiveTransaction;
             this.entityEqualityComparer = entityEqualityComparer;
         }
 

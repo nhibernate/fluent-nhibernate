@@ -46,7 +46,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
       [Test]
       public void ConnectionString_leaving_out_the_StatementCacheSize_removes_from_string()
       {
-         OracleClientConfiguration.Oracle9
+          OracleManagedDataClientConfiguration.Oracle9
             .ConnectionString(c => c
                .Server("db-srv")
                .Instance("mydatabase")
@@ -59,7 +59,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
       [Test]
       public void ConnectionString_pooling_defaults_to_false_when_not_set()
       {
-         OracleClientConfiguration.Oracle9
+          OracleManagedDataClientConfiguration.Oracle9
             .ConnectionString(c => c
                .Server("db-srv")
                .Instance("mydatabase")

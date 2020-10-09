@@ -1,12 +1,12 @@
+using System;
 using FluentNHibernate.Cfg.Db;
-using NHibernate;
 using NHibernate.Dialect;
 using NHibernate.Driver;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Cfg.Db
 {
-    [TestFixture]
+    [TestFixture, Obsolete]
     public class OracleClientConfigurationTester
     {
         [Test]

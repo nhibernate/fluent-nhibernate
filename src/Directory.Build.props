@@ -39,7 +39,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package Versions">
-    <NHibernatePackageVersion>5.2.7</NHibernatePackageVersion>
+    <NHibernatePackageVersion>5.3.3</NHibernatePackageVersion>
   </PropertyGroup>
   
   <ItemGroup Condition="'$(IsPackable)' == 'true'">
