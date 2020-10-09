@@ -26,7 +26,7 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Cascade deletes, deleting any orphaned records
         /// </summary>
-        public TParent DeleteOrphan()
+        public new TParent DeleteOrphan()
         {
             setter("delete-orphan");
             return parent;

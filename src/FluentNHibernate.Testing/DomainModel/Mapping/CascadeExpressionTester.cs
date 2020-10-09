@@ -73,7 +73,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         [Test]
         public void DeleteOrphans_should_add_the_correct_cascade_attribute_to_the_parent_part()
         {
-            A_call_to(_cascade.DeleteOrphans).should_set_the_cascade_value_to("delete-orphans");
+            A_call_to(_cascade.DeleteOrphan).should_set_the_cascade_value_to("delete-orphan");
         }
 
         [Test]
