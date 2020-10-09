@@ -36,7 +36,11 @@ namespace FluentNHibernate.Mapping
             AsBag();
             access = new AccessStrategyBuilder<T>((T)this, value => collectionAttributes.Set("Access", Layer.UserSupplied, value));
             fetch = new FetchTypeExpression<T>((T)this, value => collectionAttributes.Set("Fetch", Layer.UserSupplied, value));
-            cascade = new CollectionCascadeExpression<T>((T)this, value => collectionAttributes.Set("Cascade", Layer.UserSupplied, value));
+            cascade = new CollectionCascadeExpression<T>((T)this, value =>
+            {
+                var current = collectionAttributes.Get("Cascade") as string;
+                collectionAttributes.Set("Cascade", Layer.UserSupplied, current == null ? value : string.Format("{0},{1}", current, value));
+            });
 
             SetDefaultCollectionType();
             SetCustomCollectionType(type);

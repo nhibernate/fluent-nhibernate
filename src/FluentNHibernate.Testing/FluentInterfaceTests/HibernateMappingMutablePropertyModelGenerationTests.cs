@@ -38,6 +38,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
+        public void DefaultCascadeShouldAppendModelDefaultCascadePropertyToValue()
+        {
+            HibernateMapping()
+                .Mapping(m => { m.DefaultCascade.Merge(); m.DefaultCascade.SaveUpdate(); })
+                .ModelShouldMatch(x => x.DefaultCascade.ShouldEqual("merge,save-update"));
+        }
+
+        [Test]
         public void DefaultLazyShouldSetModelDefaultLazyPropertyToTrue()
         {
             HibernateMapping()

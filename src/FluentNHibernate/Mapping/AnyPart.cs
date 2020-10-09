@@ -31,7 +31,11 @@ namespace FluentNHibernate.Mapping
             this.entity = entity;
             this.member = member;
             access = new AccessStrategyBuilder<AnyPart<T>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
-            cascade = new CascadeExpression<AnyPart<T>>(this, value => attributes.Set("Cascade", Layer.UserSupplied, value));
+            cascade = new CascadeExpression<AnyPart<T>>(this, value =>
+            {
+                var current = attributes.Get("Cascade") as string;
+                attributes.Set("Cascade", Layer.UserSupplied, current == null ? value : string.Format("{0},{1}", current, value));
+            });
 
             SetDefaultAccess();
         }

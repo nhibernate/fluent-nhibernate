@@ -34,6 +34,18 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
+        public void CascadeAppendModelCascadePropertyToValue()
+        {
+            Any<SecondMappedObject>()
+                .Mapping(m => m
+                    .IdentityType<int>()
+                    .EntityIdentifierColumn("col")
+                    .EntityTypeColumn("col2")
+                    .Cascade.Merge().Cascade.SaveUpdate())
+                .ModelShouldMatch(x => x.Cascade.ShouldEqual("merge,save-update"));
+        }
+
+        [Test]
         public void IdentityTypeSetsModelIdTypePropertyToPropertyTypeName()
         {
             Any<SecondMappedObject>()

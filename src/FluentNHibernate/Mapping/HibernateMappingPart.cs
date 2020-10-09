@@ -13,7 +13,11 @@ namespace FluentNHibernate.Mapping
 
         public HibernateMappingPart()
         {
-            defaultCascade = new CascadeExpression<HibernateMappingPart>(this, value => attributes.Set("DefaultCascade", Layer.UserSupplied, value));
+            defaultCascade = new CascadeExpression<HibernateMappingPart>(this, value =>
+            {
+                var current = attributes.Get("DefaultCascade") as string;
+                attributes.Set("DefaultCascade", Layer.UserSupplied, current == null ? value : string.Format("{0},{1}", current, value));
+            });
             defaultAccess = new AccessStrategyBuilder<HibernateMappingPart>(this, value => attributes.Set("DefaultAccess", Layer.UserSupplied, value));
         }
 

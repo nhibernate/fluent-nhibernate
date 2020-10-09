@@ -33,7 +33,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
-        public void CascadeShouldSetModelCascadePropertyToTrue()
+        public void ConstrainedShouldSetModelConstrainedPropertyToTrue()
         {
             OneToOne()
                 .Mapping(m => m.Constrained())
@@ -41,11 +41,27 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
-        public void NotCascadeShouldSetModelCascadePropertyToFalse()
+        public void NotConstrainedShouldSetModelConstrainedPropertyToFalse()
         {
             OneToOne()
                 .Mapping(m => m.Not.Constrained())
                 .ModelShouldMatch(x => x.Constrained.ShouldBeFalse());
+        }
+
+        [Test]
+        public void CascadeSetsModelCascadePropertyToValue()
+        {
+            OneToOne()
+                .Mapping(m => m.Cascade.All())
+                .ModelShouldMatch(x => x.Cascade.ShouldEqual("all"));
+        }
+
+        [Test]
+        public void CascadeAppendModelCascadePropertyToValue()
+        {
+            OneToOne()
+                .Mapping(m => { m.Cascade.Merge(); m.Cascade.SaveUpdate(); })
+                .ModelShouldMatch(x => x.Cascade.ShouldEqual("merge,save-update"));
         }
 
         [Test]

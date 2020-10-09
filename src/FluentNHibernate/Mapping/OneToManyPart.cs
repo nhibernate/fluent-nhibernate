@@ -12,7 +12,6 @@ namespace FluentNHibernate.Mapping
     {
         private readonly Type entity;
         private readonly ColumnMappingCollection<OneToManyPart<TChild>> keyColumns;
-        private readonly CollectionCascadeExpression<OneToManyPart<TChild>> cascade;
         private readonly NotFoundExpression<OneToManyPart<TChild>> notFound;
         private IndexManyToManyPart manyToManyIndex;
         private readonly Type childType;
@@ -31,11 +30,6 @@ namespace FluentNHibernate.Mapping
             childType = collectionType;
 
             keyColumns = new ColumnMappingCollection<OneToManyPart<TChild>>(this);
-            cascade = new CollectionCascadeExpression<OneToManyPart<TChild>>(this, value =>
-            {
-                var current = collectionAttributes.Get("Cascade") as string;
-                collectionAttributes.Set("Cascade", Layer.UserSupplied, current == null ? value : string.Format("{0},{1}", current, value));
-            });
             notFound = new NotFoundExpression<OneToManyPart<TChild>>(this, value => relationshipAttributes.Set("NotFound", Layer.UserSupplied, value));
 
             collectionAttributes.Set("Name", Layer.Defaults, member.Name);
@@ -54,7 +48,7 @@ namespace FluentNHibernate.Mapping
         /// </summary>
         public new CollectionCascadeExpression<OneToManyPart<TChild>> Cascade
         {
-            get { return cascade; }
+            get { return base.Cascade; }
         }
 
         /// <summary>
