@@ -88,9 +88,18 @@ namespace FluentNHibernate.Mapping
         /// <summary>
         /// Cascade deletes orphans
         /// </summary>
+        [Obsolete("Please use DeleteOrphan instead")]
         public TParent DeleteOrphans()
         {
-            setter("delete-orphans");
+            return DeleteOrphan();
+        }
+
+        /// <summary>
+        /// Cascade deletes orphans
+        /// </summary>
+        public TParent DeleteOrphan()
+        {
+            setter("delete-orphan");
             return parent;
         }
 
