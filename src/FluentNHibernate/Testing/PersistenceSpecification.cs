@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using FluentNHibernate.Testing.Values;
 using FluentNHibernate.Utils;
 using NHibernate;
+using NHibernate.Impl;
 
 namespace FluentNHibernate.Testing
 {
@@ -31,8 +33,20 @@ namespace FluentNHibernate.Testing
         public PersistenceSpecification(ISession session, IEqualityComparer entityEqualityComparer)
         {
             currentSession = session;
-            hasExistingTransaction = currentSession.GetCurrentTransaction() != null || System.Transactions.Transaction.Current != null;
+            hasExistingTransaction = HasExistingTransaction(currentSession) || System.Transactions.Transaction.Current != null;
             this.entityEqualityComparer = entityEqualityComparer;
+        }
+
+        //Only to make fake sessions possible in testing
+        private bool HasExistingTransaction(ISession currentSession)
+        {
+            if (currentSession is SessionImpl)
+            {
+                return currentSession.GetCurrentTransaction() != null;
+            }
+#pragma warning disable CS0618 // Type or member is obsolete
+            return currentSession.Transaction?.IsActive == true;
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         public T VerifyTheMappings()
@@ -63,7 +77,7 @@ namespace FluentNHibernate.Testing
             // It's a bit naive right now because it fails on the first failure
             allProperties.ForEach(p => p.CheckValue(second));
 
-			return second;
+            return second;
         }
 
         public void TransactionalSave(object propertyValue)

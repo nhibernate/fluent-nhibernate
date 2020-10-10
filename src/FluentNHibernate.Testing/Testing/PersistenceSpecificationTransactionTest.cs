@@ -29,13 +29,17 @@ namespace FluentNHibernate.Testing.Testing
             A.CallTo(() => transaction.IsActive).Returns(true);
 
             var session = A.Fake<ISession>();
+#pragma warning disable CS0618 // Type or member is obsolete
             A.CallTo(() => session.Transaction).Returns(transaction);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             var spec = new PersistenceSpecification<Cat>(session);
             spec.VerifyTheMappings();
 
             A.CallTo(() => session.BeginTransaction()).MustNotHaveHappened();
-            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Twice);
+#pragma warning disable CS0618 // Type or member is obsolete
+            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Once);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         [Test]
@@ -46,13 +50,17 @@ namespace FluentNHibernate.Testing.Testing
             A.CallTo(() => transaction.IsActive).Returns(false);
 
             var session = A.Fake<ISession>();
+#pragma warning disable CS0618 // Type or member is obsolete
             A.CallTo(() => session.Transaction).Returns(transaction);
+#pragma warning restore CS0618 // Type or member is obsolete
             A.CallTo(() => session.BeginTransaction()).Returns(transaction);
 
             var spec = new PersistenceSpecification<Cat>(session);
             spec.VerifyTheMappings();
 
-            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Twice);
+#pragma warning disable CS0618 // Type or member is obsolete
+            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Once);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         [Test]
@@ -62,7 +70,9 @@ namespace FluentNHibernate.Testing.Testing
             A.CallTo(() => transaction.IsActive).Returns(true);
 
             var session = A.Fake<ISession>();
+#pragma warning disable CS0618 // Type or member is obsolete
             A.CallTo(() => session.Transaction).Returns(transaction);
+#pragma warning restore CS0618 // Type or member is obsolete
             A.CallTo(() => session.Get<Cat>(null)).WithAnyArguments()
                 .Returns(
                 new Cat
@@ -81,7 +91,9 @@ namespace FluentNHibernate.Testing.Testing
 
             spec.VerifyTheMappings();
 
-            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Twice);
+#pragma warning disable CS0618 // Type or member is obsolete
+            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Once);
+#pragma warning restore CS0618 // Type or member is obsolete
             A.CallTo(() => session.BeginTransaction()).MustNotHaveHappened();
         }
 

@@ -201,7 +201,7 @@ namespace FluentNHibernate.Testing.Testing
             var transaction = A.Fake<ITransaction>();
             var session = A.Fake<ISession>();
             A.CallTo(() => session.BeginTransaction()).Returns(transaction);
-
+            A.CallTo(() => session.Transaction).Returns(transaction);
             sessionSource = A.Fake<ISessionSource>();
             A.CallTo(() => sessionSource.CreateSession()).Returns(session);
         }
