@@ -22,7 +22,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         {
             Action act = () => finder.Add<ConventionWithParameterlessConstructor>();
 
-            act.ShouldNotThrow();
+            act.Should().NotThrow();
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         {
             Action act = () => finder.Add<ConventionWithIConventionFinderConstructor>();
 
-            act.ShouldNotThrow();
+            act.Should().NotThrow();
 
         }
 
@@ -39,7 +39,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         {
             Action act = () => finder.Add<ConventionWithoutValidConstructor>();
 
-            act.ShouldThrow<MissingConstructorException>();
+            act.Should().Throw<MissingConstructorException>();
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         {
             Action act = () => finder.Add<ConventionWithoutValidConstructor>();
 
-            act.ShouldThrow<MissingConstructorException>();
+            act.Should().Throw<MissingConstructorException>();
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
         {
             Action act = () => finder.AddAssembly(typeof(ConventionWithoutValidConstructor).Assembly);
 
-            act.ShouldNotThrow();
+            act.Should().NotThrow();
         }
     }
 

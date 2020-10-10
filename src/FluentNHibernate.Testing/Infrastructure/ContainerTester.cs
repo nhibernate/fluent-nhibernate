@@ -31,7 +31,7 @@ namespace FluentNHibernate.Testing.Infrastructure
         {
             Action act = () => container.Resolve<IExample>();
 
-            act.ShouldThrow<ResolveException>()
+            act.Should().Throw<ResolveException>()
                 .WithMessage("Unable to resolve dependency: '" + typeof(IExample).FullName + "'");
         }
 

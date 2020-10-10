@@ -38,7 +38,7 @@ namespace FluentNHibernate.Testing.Testing
 
             A.CallTo(() => session.BeginTransaction()).MustNotHaveHappened();
 #pragma warning disable CS0618 // Type or member is obsolete
-            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => session.Transaction).MustHaveHappened(1, Times.Exactly);
 #pragma warning restore CS0618 // Type or member is obsolete
         }
 
@@ -59,7 +59,7 @@ namespace FluentNHibernate.Testing.Testing
             spec.VerifyTheMappings();
 
 #pragma warning disable CS0618 // Type or member is obsolete
-            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => session.Transaction).MustHaveHappened(1, Times.Exactly);
 #pragma warning restore CS0618 // Type or member is obsolete
         }
 
@@ -92,7 +92,7 @@ namespace FluentNHibernate.Testing.Testing
             spec.VerifyTheMappings();
 
 #pragma warning disable CS0618 // Type or member is obsolete
-            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => session.Transaction).MustHaveHappened(1, Times.Exactly);
 #pragma warning restore CS0618 // Type or member is obsolete
             A.CallTo(() => session.BeginTransaction()).MustNotHaveHappened();
         }
