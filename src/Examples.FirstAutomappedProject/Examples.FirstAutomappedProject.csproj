@@ -13,7 +13,6 @@
   </ItemGroup>
   
   <ItemGroup>    
-    <PackageReference Include="NHibernate" Version="$(NHibernatePackageVersion)" />    
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.106.0" />
   </ItemGroup>
 

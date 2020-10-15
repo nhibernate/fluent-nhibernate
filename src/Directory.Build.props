@@ -38,10 +38,6 @@
     <DebugType>portable</DebugType>
   </PropertyGroup>
 
-  <PropertyGroup Label="Package Versions">
-    <NHibernatePackageVersion>5.3.3</NHibernatePackageVersion>
-  </PropertyGroup>
-  
   <ItemGroup Condition="'$(IsPackable)' == 'true'">
     <None Include="$(MSBuildThisFileDirectory)../docs/logo-nuget.png" Pack="true" PackagePath="/"/>
   </ItemGroup>
