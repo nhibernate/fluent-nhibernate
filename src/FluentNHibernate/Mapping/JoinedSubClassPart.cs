@@ -143,7 +143,7 @@ namespace FluentNHibernate.Mapping
             mapping.Set(x => x.Type, Layer.Defaults, typeof(TSubclass));
 
             foreach (var column in columns)
-                mapping.Key.AddColumn(Layer.Defaults, column);
+                mapping.Key.AddColumn(Layer.Defaults, column.Clone());
 
             foreach (var property in providers.Properties)
                 mapping.AddProperty(property.GetPropertyMapping());

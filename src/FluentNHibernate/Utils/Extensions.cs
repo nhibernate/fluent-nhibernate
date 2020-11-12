@@ -66,6 +66,7 @@ namespace FluentNHibernate.Utils
             return type.GetInterfaces().Contains(interfaceType);
         }
 
+        [Obsolete("Please do not use this method. It will be removed in a future version.")]
         public static T DeepClone<T>(this T obj)
         {
             using (var stream = new MemoryStream())

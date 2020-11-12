@@ -345,7 +345,7 @@ namespace FluentNHibernate.Mapping
                 }
             }
 
-            return mapping.DeepClone();
+            return mapping;
         }
 
         Type IIndeterminateSubclassMappingProvider.EntityType

@@ -332,7 +332,7 @@ namespace FluentNHibernate.Mapping
             }
 
             foreach (var column in columns)
-                mapping.AddColumn(Layer.UserSupplied, column);
+                mapping.AddColumn(Layer.UserSupplied, column.Clone());
 
             foreach (var column in mapping.Columns)
             {

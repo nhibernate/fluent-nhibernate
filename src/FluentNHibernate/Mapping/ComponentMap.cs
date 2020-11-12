@@ -59,9 +59,7 @@ namespace FluentNHibernate.Mapping
 
         ExternalComponentMapping IExternalComponentMappingProvider.GetComponentMapping()
         {
-            var mapping = (ExternalComponentMapping)CreateComponentMapping();
-
-            return mapping.DeepClone();
+            return (ExternalComponentMapping) CreateComponentMapping();
         }
 
         Type IExternalComponentMappingProvider.Type

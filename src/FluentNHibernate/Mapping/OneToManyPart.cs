@@ -198,7 +198,7 @@ namespace FluentNHibernate.Mapping
 
             foreach (var column in keyColumns)
             {
-                collection.Key.AddColumn(Layer.UserSupplied, column);
+                collection.Key.AddColumn(Layer.UserSupplied, column.Clone());
             }
 
             // HACK: shouldn't have to do this!
