@@ -78,19 +78,20 @@ namespace FluentNHibernate.Automapping
         /// </summary>
         /// <typeparam name="T">Type to get assembly from</typeparam>
         /// <returns>AutoPersistenceModel</returns>
-        public AutoPersistenceModel UseOverridesFromAssemblyOf<T>()
+        public AutoPersistenceModel UseOverridesFromAssemblyOf<T>(bool includeInternal = false)
         {
-            return UseOverridesFromAssembly(typeof(T).Assembly);
+            return UseOverridesFromAssembly(typeof(T).Assembly, includeInternal);
         }
 
         /// <summary>
         /// Use auto mapping overrides defined in the assembly of T.
         /// </summary>
         /// <param name="assembly">Assembly to scan</param>
+        /// <param name="includeInternal">Should internal IAutoMappingOverrides be included.</param>
         /// <returns>AutoPersistenceModel</returns>
-        public AutoPersistenceModel UseOverridesFromAssembly(Assembly assembly)
+        public AutoPersistenceModel UseOverridesFromAssembly(Assembly assembly, bool includeInternal = false)
         {
-            alterations.Add(new AutoMappingOverrideAlteration(assembly));
+            alterations.Add(new AutoMappingOverrideAlteration(assembly, includeInternal));
             return this;
         }
 
