@@ -36,6 +36,13 @@ namespace FluentNHibernate.Testing.Cfg.Db
         }
 
         [Test]
+        public void PostgreSQL_83_should_set_the_correct_dialect()
+        {
+            PostgreSQLConfiguration.PostgreSQL83.ToProperties()["dialect"].ShouldEqual(
+                "NHibernate.Dialect.PostgreSQL83Dialect, " + typeof(ISession).Assembly.FullName);
+        }
+
+        [Test]
         public void ConnectionString_is_added_to_the_configuration()
         {
             PostgreSQLConfiguration.PostgreSQL82
