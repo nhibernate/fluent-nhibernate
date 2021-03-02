@@ -1,5 +1,4 @@
 assembly-versioning-scheme: MajorMinor
-tag-prefix: 'v'
 branches:
   master:
     mode: ContinuousDelivery
