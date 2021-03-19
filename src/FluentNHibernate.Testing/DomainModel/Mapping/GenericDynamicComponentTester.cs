@@ -25,6 +25,45 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void CanGenerateDynamicComponentsWithPropertyFromLocalVariable()
+        {
+            var propertyName = "Profession";
+            new MappingTester<PropertyTarget>()
+                .ForMapping(c =>
+                    c.DynamicComponent(x => x.GenericExtensionData, m =>
+                    {
+                        m.Map(x => (string) x[propertyName]);
+                    }))
+                .Element("//class/dynamic-component/property[@name='Profession']").Exists();
+        }
+
+        [Test]
+        public void CanGenerateDynamicComponentsWithPropertyFromClass()
+        {
+            var property = new {Name = "Profession" };
+            new MappingTester<PropertyTarget>()
+                .ForMapping(c =>
+                    c.DynamicComponent(x => x.GenericExtensionData, m =>
+                    {
+                        m.Map(x => (string)x[property.Name]);
+                    }))
+                .Element("//class/dynamic-component/property[@name='Profession']").Exists();
+        }
+
+        [Test]
+        public void CanGenerateDynamicComponentsWithPropertyFromClass2()
+        {
+            var property = new {Info = new {Name = "Profession"}};
+            new MappingTester<PropertyTarget>()
+                .ForMapping(c =>
+                    c.DynamicComponent(x => x.GenericExtensionData, m =>
+                    {
+                        m.Map(x => (string)x[property.Info.Name]);
+                    }))
+                .Element("//class/dynamic-component/property[@name='Profession']").Exists();
+        }
+
+        [Test]
         public void DynamicComponentIsGeneratedWithOnlyOnePropertyReference()
         {
             //Regression test for issue 223
