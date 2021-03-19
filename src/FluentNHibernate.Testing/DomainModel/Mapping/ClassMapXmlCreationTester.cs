@@ -552,7 +552,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
 
         public IList<ChildObject> Children { get; set; }
         public IDictionary Dictionary { get; set; }
-
+        public IDictionary<string, object> GenericDictionary { get; set; }
         public long Id { get; set; }
 
         public int Version { get; set; }

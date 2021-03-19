@@ -18,7 +18,7 @@ namespace FluentNHibernate.Testing.DomainModel.Access
         public virtual OneToOneModel One { get; private set; }
         public virtual object Any { get; private set; }
         public virtual IDictionary Dynamic { get; private set; }
-
+        public virtual IDictionary<string, object> GenericDynamic { get; private set; }
         public virtual IDictionary<char, ManyToOneModel> MapOne { get; private set; }
         public virtual ISet<ManyToOneModel> SetOne { get; private set; }
         public virtual IList<ManyToOneModel> ListOne { get; private set; }

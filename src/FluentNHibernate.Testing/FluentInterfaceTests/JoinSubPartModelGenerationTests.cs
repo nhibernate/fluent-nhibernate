@@ -25,6 +25,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
+        public void GenericDynamicComponentShouldAddToModelComponentsCollection()
+        {
+            Join<PropertyTarget>("table")
+                .Mapping(m => m.DynamicComponent(x => x.GenericExtensionData, c => { }))
+                .ModelShouldMatch(x => x.Components.Count().ShouldEqual(1));
+        }
+
+        [Test]
         public void MapShouldAddToModelPropertiesCollection()
         {
             Join<PropertyTarget>("table")

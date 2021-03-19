@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -80,6 +81,36 @@ namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs
     {
         Because of = () =>
             mapping = map_as_class<EntityWithComponent>(m => m.DynamicComponent(Reveal.Member<EntityWithComponent, IDictionary>("DynamicComponent"), c => { }));
+
+        Behaves_like<ClasslikeComponentBehaviour> a_component_in_a_classlike;
+
+        protected static ClassMapping mapping;
+    }
+
+    public class when_class_map_is_told_to_map_a_generic_dynamic_component : ProviderSpec
+    {
+        Because of = () =>
+            mapping = map_as_class<EntityWithComponent>(m => m.DynamicComponent(x => x.GenericDynamicComponent, c => { }));
+
+        Behaves_like<ClasslikeComponentBehaviour> a_component_in_a_classlike;
+
+        protected static ClassMapping mapping;
+    }
+
+    public class when_class_map_is_told_to_map_a_generic_dynamic_component_from_a_field : ProviderSpec
+    {
+        Because of = () =>
+            mapping = map_as_class<EntityWithFieldComponent>(m => m.DynamicComponent(x => x.GenericDynamicComponent, c => { }));
+
+        Behaves_like<ClasslikeComponentBehaviour> a_component_in_a_classlike;
+
+        protected static ClassMapping mapping;
+    }
+
+    public class when_class_map_is_told_to_map_a_generic_dynamic_component_using_reveal : ProviderSpec
+    {
+        Because of = () =>
+            mapping = map_as_class<EntityWithComponent>(m => m.DynamicComponent(Reveal.Member<EntityWithComponent, IDictionary<string, object>>("GenericDynamicComponent"), c => { }));
 
         Behaves_like<ClasslikeComponentBehaviour> a_component_in_a_classlike;
 

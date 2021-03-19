@@ -221,6 +221,19 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
+        public void MapsGenericDynamicComponent()
+        {
+            new MappingTester<MappedObject>()
+                .ForMapping(m =>
+                {
+                    m.Id(x => x.Id);
+                    m.DiscriminateSubClassesOnColumn<string>("Type")
+                        .SubClass<MappedObject>(sc => sc.DynamicComponent(x => x.GenericDictionary, c => { }));
+                })
+                .Element("//subclass/dynamic-component").Exists();
+        }
+
+        [Test]
         public void MapsHasMany()
         {
             new MappingTester<MappedObject>()

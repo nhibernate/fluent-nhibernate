@@ -33,6 +33,7 @@ namespace FluentNHibernate.Testing.DomainModel.Access.Mappings
                 .IdentityType(typeof(int));
 
             DynamicComponent(x => x.Dynamic, x => { });
+            DynamicComponent(x => x.GenericDynamic, x => { });
 
             HasMany(x => x.MapOne).AsMap("type");
             HasMany(x => x.SetOne).AsSet();
