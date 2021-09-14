@@ -59,7 +59,7 @@ namespace FluentNHibernate.MappingModel.Output.Sorting
 
         protected override void SortChildren(XmlNode node)
         {
-            if (node.Name == "subclass" || node.Name == "joined-subclass" || node.Name == "union-subclass" || node.Name == "component")
+            if (node.Name == "subclass" || node.Name == "joined-subclass" || node.Name == "union-subclass" || node.Name == "component" || node.Name == "dynamic-component")
                 Sort(node);
             else if (node.Name == "id")
                 new XmlIdNodeSorter().Sort(node);
