@@ -276,20 +276,15 @@ namespace FluentNHibernate
         {
             EnsureMappingsBuilt();
 
-            foreach (var mapping in compiledMappings.Where(m => !m.Classes.Any()))
+            foreach (var document in compiledMappings.Where(m => !m.Classes.Any()).AsParallel().Select(m=>new MappingXmlSerializer().Serialize(m)))
             {
-                var serializer = new MappingXmlSerializer();
-                XmlDocument document = serializer.Serialize(mapping);
                 cfg.AddDocument(document);
             }
 
-            foreach (var mapping in compiledMappings.Where(m => m.Classes.Any()))
+            foreach (var t in compiledMappings.Where(m => m.Classes.Any()).AsParallel().Select(m=>Tuple.Create(m, new MappingXmlSerializer().Serialize(m))))
             {
-                var serializer = new MappingXmlSerializer();
-                XmlDocument document = serializer.Serialize(mapping);
-
-                if (cfg.GetClassMapping(mapping.Classes.First().Type) == null)
-                    cfg.AddDocument(document);
+                if (cfg.GetClassMapping(t.Item1.Classes.First().Type) == null)
+                    cfg.AddDocument(t.Item2);
             }
         }
 
