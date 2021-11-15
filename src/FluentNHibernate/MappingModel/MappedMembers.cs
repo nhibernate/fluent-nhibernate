@@ -55,8 +55,9 @@ namespace FluentNHibernate.MappingModel
 
         public void AddProperty(PropertyMapping property)
         {
-            if (Properties.Any(x => x.Name == property.Name))
-                throw new InvalidOperationException("Tried to add property '" + property.Name + "' when already added.");
+            string propertyName = property.Name;
+            if (Properties.Any(x => x.Name == propertyName))
+                throw new InvalidOperationException("Tried to add property '" + propertyName + "' when already added.");
             AddMapping(property, MappingType.Property);
         }
 
