@@ -77,12 +77,15 @@ namespace FluentNHibernate
 
         public void AddMappingsFromSource(ITypeSource source)
         {
-            source.GetTypes()
+            foreach (object o in source.GetTypes()
                 .Where(x => IsMappingOf<IMappingProvider>(x) ||
                             IsMappingOf<IIndeterminateSubclassMappingProvider>(x) ||
                             IsMappingOf<IExternalComponentMappingProvider>(x) ||
                             IsMappingOf<IFilterDefinition>(x))
-                .Each(Add);
+                .AsParallel().Select(t => t.InstantiateUsingParameterlessConstructor()))
+            {
+                AddObject(o);
+            }
 
             log.LoadedFluentMappingsFromSource(source);
         }
@@ -129,7 +132,11 @@ namespace FluentNHibernate
         public void Add(Type type)
         {
             var mapping = type.InstantiateUsingParameterlessConstructor();
-
+            AddObject(mapping);
+        }
+        public void AddObject(object mapping)
+        {
+            Type type = mapping.GetType();
             if (mapping is IMappingProvider)
             {
                 log.FluentMappingDiscovered(type);
