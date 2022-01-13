@@ -82,7 +82,7 @@ namespace FluentNHibernate
                             IsMappingOf<IIndeterminateSubclassMappingProvider>(x) ||
                             IsMappingOf<IExternalComponentMappingProvider>(x) ||
                             IsMappingOf<IFilterDefinition>(x))
-                .AsParallel().Select(t => t.InstantiateUsingParameterlessConstructor()))
+                .AsParallel().AsOrdered().Select(t => t.InstantiateUsingParameterlessConstructor()).ToList())
             {
                 AddObject(o);
             }
@@ -283,12 +283,12 @@ namespace FluentNHibernate
         {
             EnsureMappingsBuilt();
 
-            foreach (var document in compiledMappings.Where(m => !m.Classes.Any()).AsParallel().Select(m=>new MappingXmlSerializer().Serialize(m)))
+            foreach (var document in compiledMappings.Where(m => !m.Classes.Any()).AsParallel().AsOrdered().Select(m=>new MappingXmlSerializer().Serialize(m)))
             {
                 cfg.AddDocument(document);
             }
 
-            foreach (var t in compiledMappings.Where(m => m.Classes.Any()).AsParallel().Select(m=>Tuple.Create(m, new MappingXmlSerializer().Serialize(m))))
+            foreach (var t in compiledMappings.Where(m => m.Classes.Any()).AsParallel().AsOrdered().Select(m=>Tuple.Create(m, new MappingXmlSerializer().Serialize(m))))
             {
                 if (cfg.GetClassMapping(t.Item1.Classes.First().Type) == null)
                     cfg.AddDocument(t.Item2);
