@@ -242,6 +242,14 @@ namespace FluentNHibernate.Cfg
         /// <returns>NHibernate Configuration instance</returns>
         public Configuration BuildConfiguration()
         {
+            return BuildConfiguration(1);
+        }
+        /// <summary>
+        /// Verifies the configuration and populates the NHibernate Configuration instance.
+        /// </summary>
+        /// <returns>NHibernate Configuration instance</returns>
+        public Configuration BuildConfiguration(int degreeOfParallelism)
+        {
             try
             {
                 var mappingCfg = new MappingConfiguration(logger);
@@ -249,7 +257,7 @@ namespace FluentNHibernate.Cfg
 			    foreach (var builder in mappingsBuilders)
 			        builder(mappingCfg);
 
-                mappingCfg.Apply(Configuration);
+                mappingCfg.Apply(Configuration, degreeOfParallelism);
 
                 if (cache.IsDirty)
                     Configuration.AddProperties(cache.Create());

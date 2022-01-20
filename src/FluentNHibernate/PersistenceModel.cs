@@ -35,6 +35,7 @@ namespace FluentNHibernate
         public bool MergeMappings { get; set; }
         private IEnumerable<HibernateMapping> compiledMappings;
         private ValidationVisitor validationVisitor;
+        public int DegreeOfParallelism { get; set; } = 1;
         public PairBiDirectionalManyToManySidesDelegate BiDirectionalManyToManyPairer { get; set; }
 
         IDiagnosticMessageDispatcher diagnosticDispatcher = new DefaultDiagnosticMessageDispatcher();
@@ -82,7 +83,7 @@ namespace FluentNHibernate
                             IsMappingOf<IIndeterminateSubclassMappingProvider>(x) ||
                             IsMappingOf<IExternalComponentMappingProvider>(x) ||
                             IsMappingOf<IFilterDefinition>(x))
-                .AsParallel().AsOrdered().Select(t => t.InstantiateUsingParameterlessConstructor()).ToList())
+                .AsParallel().AsOrdered().WithDegreeOfParallelism(DegreeOfParallelism).Select(t => t.InstantiateUsingParameterlessConstructor()).ToList())
             {
                 AddObject(o);
             }
@@ -283,12 +284,12 @@ namespace FluentNHibernate
         {
             EnsureMappingsBuilt();
 
-            foreach (var document in compiledMappings.Where(m => !m.Classes.Any()).AsParallel().AsOrdered().Select(m=>new MappingXmlSerializer().Serialize(m)))
+            foreach (var document in compiledMappings.Where(m => !m.Classes.Any()).AsParallel().AsOrdered().WithDegreeOfParallelism(DegreeOfParallelism).Select(m=>new MappingXmlSerializer().Serialize(m)))
             {
                 cfg.AddDocument(document);
             }
 
-            foreach (var t in compiledMappings.Where(m => m.Classes.Any()).AsParallel().AsOrdered().Select(m=>Tuple.Create(m, new MappingXmlSerializer().Serialize(m))))
+            foreach (var t in compiledMappings.Where(m => m.Classes.Any()).AsParallel().AsOrdered().WithDegreeOfParallelism(DegreeOfParallelism).Select(m=>Tuple.Create(m, new MappingXmlSerializer().Serialize(m))))
             {
                 if (cfg.GetClassMapping(t.Item1.Classes.First().Type) == null)
                     cfg.AddDocument(t.Item2);

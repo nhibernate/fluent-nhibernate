@@ -69,6 +69,15 @@ namespace FluentNHibernate.Cfg
         /// <param name="cfg">NHibernate Configuration instance</param>
         public void Apply(Configuration cfg)
         {
+            Apply(cfg, 1);
+        }
+        /// <summary>
+        /// Applies any mappings to the NHibernate Configuration
+        /// </summary>
+        /// <param name="cfg">NHibernate Configuration instance</param>
+        /// <param name="degreeOfParallelism">the number of threads to use to perform startup</param>
+        public void Apply(Configuration cfg, int degreeOfParallelism)
+        {
             foreach (var autoMapping in AutoMappings)
                 autoMapping.SetLogger(logger);
 
@@ -83,7 +92,7 @@ namespace FluentNHibernate.Cfg
             HbmMappings.Apply(cfg);
             FluentMappings.Apply(model);
             AutoMappings.Apply(cfg, model);
-
+            model.DegreeOfParallelism = degreeOfParallelism;
             model.Configure(cfg);
         }
 
