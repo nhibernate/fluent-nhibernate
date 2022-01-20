@@ -220,7 +220,7 @@ namespace FluentNHibernate.Cfg
         }
 
         /// <summary>
-        /// Verify's the configuration and instructs NHibernate to build a SessionFactory.
+        /// Verifies the configuration and instructs NHibernate to build a SessionFactory.
         /// </summary>
         /// <returns>ISessionFactory from supplied settings.</returns>
         public ISessionFactory BuildSessionFactory()
