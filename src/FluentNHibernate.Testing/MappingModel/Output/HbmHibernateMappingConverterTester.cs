@@ -22,7 +22,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldConvertSchemaAttributeIfPopulated()
+        public void ShouldConvertSchemaIfPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             hibernateMapping.Set(fluent => fluent.Schema, Layer.Conventions, "dbo");
@@ -31,7 +31,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldNotConvertSchemaAttributeIfNotPopulated()
+        public void ShouldNotConvertSchemaIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             // Don't set the schema on the original mapping
@@ -41,7 +41,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldConvertDefaultCascadeAttributeIfPopulated()
+        public void ShouldConvertDefaultCascadeIfPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             hibernateMapping.Set(fluent => fluent.DefaultCascade, Layer.Conventions, "cas");
@@ -50,7 +50,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldNotConvertDefaultCascadeAttributeIfNotPopulated()
+        public void ShouldNotConvertDefaultCascadeIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             // Don't set the schema on the original mapping
@@ -60,7 +60,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldConvertDefaultAccessAttributeIfPopulated()
+        public void ShouldConvertDefaultAccessIfPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             hibernateMapping.Set(fluent => fluent.DefaultAccess, Layer.Conventions, "acc");
@@ -69,7 +69,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldNotConvertDefaultAccessAttributeIfNotPopulated()
+        public void ShouldNotConvertDefaultAccessIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             // Don't set the schema on the original mapping
@@ -79,7 +79,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldConvertAutoImportAttributeIfPopulated()
+        public void ShouldConvertAutoImportIfPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             hibernateMapping.Set(fluent => fluent.AutoImport, Layer.Conventions, false); // Defaults to true, so specify false in order to ensure that we can tell if it was set
@@ -88,7 +88,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldNotConvertAutoImportAttributeIfNotPopulated()
+        public void ShouldNotConvertAutoImportIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             // Don't set the schema on the original mapping
@@ -98,7 +98,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldConvertDefaultLazyAttributeIfPopulated()
+        public void ShouldConvertDefaultLazyIfPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             hibernateMapping.Set(fluent => fluent.DefaultLazy, Layer.Conventions, false); // Defaults to true, so specify false in order to ensure that we can tell if it was set
@@ -107,7 +107,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldNotConvertDefaultLazyAttributeIfNotPopulated()
+        public void ShouldNotConvertDefaultLazyIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             // Don't set the schema on the original mapping
@@ -117,7 +117,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldConvertCatalogAttributeIfPopulated()
+        public void ShouldConvertCatalogIfPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             hibernateMapping.Set(fluent => fluent.Catalog, Layer.Conventions, "catalog");
@@ -126,7 +126,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldNotConvertCatalogAttributeIfNotPopulated()
+        public void ShouldNotConvertCatalogIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             // Don't set the schema on the original mapping
@@ -136,7 +136,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldConvertNamespaceAttributeIfPopulated()
+        public void ShouldConvertNamespaceIfPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             hibernateMapping.Set(fluent => fluent.Namespace, Layer.Conventions, "namespace");
@@ -145,7 +145,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldNotConvertNamespaceAttributeIfNotPopulated()
+        public void ShouldNotConvertNamespaceIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             // Don't set the schema on the original mapping
@@ -155,7 +155,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldConvertAssemblyAttributeIfPopulated()
+        public void ShouldConvertAssemblyIfPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             hibernateMapping.Set(fluent => fluent.Assembly, Layer.Conventions, "assembly");
@@ -164,7 +164,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldNotConvertAssemblyAttributeIfNotPopulated()
+        public void ShouldNotConvertAssemblyIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
             // Don't set the schema on the original mapping
