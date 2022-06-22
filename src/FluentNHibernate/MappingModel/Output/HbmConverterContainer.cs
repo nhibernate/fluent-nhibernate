@@ -157,9 +157,10 @@ namespace FluentNHibernate.MappingModel.Output
             */
         }
 
-        private void RegisterConverter<T, H>(Func<Container, object> instantiate)
+        private void RegisterConverter<F, H>(Func<Container, object> instantiate)
+            where F : IMapping
         {
-            Register<IHbmConverter<T, H>>(instantiate);
+            Register<IHbmConverter<F, H>>(instantiate);
         }
     }
 }

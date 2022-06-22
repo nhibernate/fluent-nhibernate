@@ -2,6 +2,6 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public interface IHbmConverterServiceLocator
     {
-        IHbmConverter<T, H> GetConverter<T, H>();
+        IHbmConverter<F, H> GetConverter<F, H>() where F : IMapping;
     }
 }

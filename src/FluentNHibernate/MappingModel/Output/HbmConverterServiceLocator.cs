@@ -11,9 +11,10 @@ namespace FluentNHibernate.MappingModel.Output
             this.container = container;
         }
 
-        public IHbmConverter<T, H> GetConverter<T, H>()
+        public IHbmConverter<F, H> GetConverter<F, H>()
+            where F : IMapping
         {
-            return container.Resolve<IHbmConverter<T, H>>();
+            return container.Resolve<IHbmConverter<F, H>>();
         }
     }
 }

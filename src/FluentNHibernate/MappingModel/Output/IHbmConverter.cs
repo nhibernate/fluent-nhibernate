@@ -1,7 +1,8 @@
 namespace FluentNHibernate.MappingModel.Output
 {
-    public interface IHbmConverter<T, H>
+    public interface IHbmConverter<F, H>
+        where F: IMapping
     {
-        H Convert(T mappingModel);        
+        H Convert(F fluentMapping);
     }
 }
