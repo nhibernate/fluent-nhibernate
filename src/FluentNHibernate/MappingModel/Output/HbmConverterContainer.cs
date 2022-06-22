@@ -14,10 +14,10 @@ namespace FluentNHibernate.MappingModel.Output
             Register<IHbmConverterServiceLocator>(c =>
                 new HbmConverterServiceLocator(this));
 
-            /*
             RegisterConverter<HibernateMapping, HbmMapping>(c =>
                 new HbmHibernateMappingConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
+            /*
             RegisterConverter<ClassMapping, HbmClass>(c =>
                 new HbmClassConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
