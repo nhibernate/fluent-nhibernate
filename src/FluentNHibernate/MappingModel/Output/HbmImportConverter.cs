@@ -2,7 +2,7 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmImportConverter : BaseHbmConverter<ImportMapping, HbmImport>
+    public class HbmImportConverter : HbmConverterBase<ImportMapping, HbmImport>
     {
         private HbmImport hbmImport;
 

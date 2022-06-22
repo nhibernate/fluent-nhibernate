@@ -3,12 +3,12 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public abstract class BaseHbmConverter<F, H> : NullMappingModelVisitor, IHbmConverter<F, H>
+    public abstract class HbmConverterBase<F, H> : NullMappingModelVisitor, IHbmConverter<F, H>
         where F: IMapping
     {
         private readonly IHbmConverterServiceLocator serviceLocator;
 
-        protected BaseHbmConverter(IHbmConverterServiceLocator serviceLocator)
+        protected HbmConverterBase(IHbmConverterServiceLocator serviceLocator)
         {
             this.serviceLocator = serviceLocator;
         }

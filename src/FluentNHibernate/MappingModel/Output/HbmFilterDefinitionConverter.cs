@@ -7,7 +7,7 @@ using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
 {
-    public class HbmFilterDefinitionConverter : BaseHbmConverter<FilterDefinitionMapping, HbmFilterDef>
+    public class HbmFilterDefinitionConverter : HbmConverterBase<FilterDefinitionMapping, HbmFilterDef>
     {
         private HbmFilterDef hbmFilterDef;
 
