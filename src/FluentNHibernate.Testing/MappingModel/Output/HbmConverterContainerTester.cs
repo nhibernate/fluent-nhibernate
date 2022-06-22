@@ -16,14 +16,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldResolveAllWriters()
+        public void ShouldResolveAllConverters()
         {
-            var writers = from type in typeof(IHbmConverter<,>).Assembly.GetTypes()
+            var converters = from type in typeof(IHbmConverter<,>).Assembly.GetTypes()
                           from interfaceType in type.GetInterfaces()
                           where interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IHbmConverter<,>)
                           select interfaceType;
 
-            foreach (var type in writers)
+            foreach (var type in converters)
             {
                 container.Resolve(type);
             }
