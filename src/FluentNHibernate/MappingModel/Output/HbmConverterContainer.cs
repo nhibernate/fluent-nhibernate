@@ -20,10 +20,12 @@ namespace FluentNHibernate.MappingModel.Output
             /*
             RegisterConverter<ClassMapping, HbmClass>(c =>
                 new HbmClassConverter(c.Resolve<IHbmConverterServiceLocator>()));
+            */
 
             RegisterConverter<ImportMapping, HbmImport>(c =>
                 new HbmImportConverter());
 
+            /*
             RegisterConverter<PropertyMapping, HbmProperty>(c =>
                 new HbmPropertyConverter(c.Resolve<IHbmConverterServiceLocator>()));
             */
