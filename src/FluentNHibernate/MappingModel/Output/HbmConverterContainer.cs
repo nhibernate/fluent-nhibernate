@@ -108,10 +108,12 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterConverter<FilterMapping, HbmFilter>(c =>
                 new HbmFilterConverter());
+            */
 
             RegisterConverter<FilterDefinitionMapping, HbmFilterDef>(c =>
                 new HbmFilterDefinitionConverter());
 
+            /*
             // FIXME: What does this need to convert as?
             RegisterConverter<StoredProcedureMapping>(c =>
                 new HbmStoredProcedureConverter(c.Resolve<IHbmConverterServiceLocator>()));
