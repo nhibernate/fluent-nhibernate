@@ -21,7 +21,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         {
             var converters = from type in typeof(IHbmConverter<,>).Assembly.GetTypes()
                           from interfaceType in type.GetInterfaces()
-                          where interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IHbmConverter<,>)
+                          where !type.IsAbstract && interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IHbmConverter<,>)
                           select interfaceType;
 
             foreach (var type in converters)
