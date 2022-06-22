@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using FluentNHibernate.Infrastructure;
 using FluentNHibernate.MappingModel.Output;
 using NUnit.Framework;
 
@@ -25,7 +26,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
 
             foreach (var type in converters)
             {
-                container.Resolve(type);
+                try
+                {
+                    container.Resolve(type);
+                }
+                catch (ResolveException resolveEx)
+                {
+                    throw new AssertionException(string.Format("Unable to resolve converter {0}", type), resolveEx);
+                }
             }
         }
     }
