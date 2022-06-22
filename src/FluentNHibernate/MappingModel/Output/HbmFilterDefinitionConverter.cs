@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using FluentNHibernate.Utils;
-using FluentNHibernate.Visitors;
 using NHibernate.Type;
 using NHibernate.Cfg.MappingSchema;
 
