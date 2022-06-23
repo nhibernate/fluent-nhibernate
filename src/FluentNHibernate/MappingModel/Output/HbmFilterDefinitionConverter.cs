@@ -31,6 +31,7 @@ namespace FluentNHibernate.MappingModel.Output
             if (filterDefinitionMapping.Parameters.Any())
                 hbmFilterDef.Items = filterDefinitionMapping.Parameters.Select(ToHbmFilterParam).ToArray();
         }
+
         public static HbmFilterParam ToHbmFilterParam(KeyValuePair<string, IType> parameterPair)
         {
             return new HbmFilterParam()
