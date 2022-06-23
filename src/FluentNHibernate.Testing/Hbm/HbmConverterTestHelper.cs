@@ -43,7 +43,7 @@ namespace FluentNHibernate.Testing.Hbm
         /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
         /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
         /// <typeparam name="HSubSuper">the type of the array which stores the translated subobjects</typeparam>
-        /// <param name="addFSubToFMain">A handler which will add an fluent subobject to a fluent main object</param>
+        /// <param name="addFSubToFMain">A handler which will add a fluent subobject to a fluent main object</param>
         /// <param name="getHSubSuperFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
         public static void ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(Action<FMain, FSub> addFSubToFMain,
                 Func<HMain, HSubSuper[]> getHSubSuperFromHMain)
@@ -74,7 +74,7 @@ namespace FluentNHibernate.Testing.Hbm
             var convertedHMain = converter.Convert(fMain);
 
             // Finally, check that the array on the converted HMain instance which we expect to contain our converted HSub
-            // // instances actually does, and that the converter was called the correct number of times
+            // instances actually does, and that the converter was called the correct number of times
             getHSubSuperFromHMain(convertedHMain).ShouldEqual(generatedHSubs.ToArray());
             A.CallTo(() => fakeConverter.Convert(A<FSub>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
         }
@@ -109,7 +109,7 @@ namespace FluentNHibernate.Testing.Hbm
         /// <typeparam name="FSub">the fluent subobject type under test</typeparam>
         /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
         /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
-        /// <param name="addFSubToFMain">A handler which will add an fluent subobject to a fluent main object</param>
+        /// <param name="addFSubToFMain">A handler which will add a fluent subobject to a fluent main object</param>
         /// <param name="getHSubFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
         public static void ShouldConvertSubobjectsAsStrictlyTypedArray<FMain, FSub, HMain, HSub>(Action<FMain, FSub> addFSubToFMain, Func<HMain, HSub[]> getHSubFromHMain)
             where FMain : IMapping, new()
