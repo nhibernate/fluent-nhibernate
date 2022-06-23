@@ -247,7 +247,7 @@ namespace FluentNHibernate
             WriteMappingsTo( _ => new XmlTextWriter(writer), false);
         }
 
-        private void WriteMappingsTo(Func<HibernateMapping, XmlTextWriter> writerBuilder, bool shouldDispose)
+        public void WriteMappingsTo(Func<HibernateMapping, XmlTextWriter> writerBuilder, bool shouldDispose)
         {
             EnsureMappingsBuilt();
 
