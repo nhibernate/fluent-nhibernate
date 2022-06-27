@@ -1,11 +1,12 @@
-﻿using FluentNHibernate.MappingModel;
+﻿using System;
+using FakeItEasy;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.MappingModel.Output;
 using NHibernate.Cfg.MappingSchema;
 using NUnit.Framework;
-
 using static FluentNHibernate.Testing.Hbm.HbmConverterTestHelper;
 using IComponentMapping = FluentNHibernate.MappingModel.ClassBased.IComponentMapping;
 
@@ -623,9 +624,73 @@ namespace FluentNHibernate.Testing.MappingModel.Output
                 hbmClass => hbmClass.discriminator);
         }
 
-        // FIXME: Add a test for Filter conversion
-        // FIXME: Add a test for Tuplizer conversion
-        // FIXME: Add a test for StoredProcedure conversion
+        [Test]
+        public void ShouldConvertFilters()
+        {
+            ShouldConvertSubobjectsAsStrictlyTypedArray<ClassMapping, FilterMapping, HbmClass, HbmFilter>(
+                (classMapping, filterMapping) => classMapping.AddFilter(filterMapping),
+                hbmClass => hbmClass.filter);
+        }
+
+        [Test]
+        public void ShouldConvertTuplizers()
+        {
+            // Note that this is singular on the source but plural on the target
+            ShouldConvertSubobjectsAsStrictlyTypedArray<ClassMapping, TuplizerMapping, HbmClass, HbmTuplizer>(
+                (classMapping, tuplizerMapping) => classMapping.Set(fluent => fluent.Tuplizer, Layer.Conventions, tuplizerMapping),
+                hbmClass => hbmClass.tuplizer);
+        }
+
+        [Test]
+        public void ShouldConvertStoredProcedure_SqlInsert()
+        {
+            ShouldConvertSubobjectAsStrictlyTypedField<ClassMapping, StoredProcedureMapping, HbmClass, HbmCustomSQL>(
+                () => new StoredProcedureMapping("sql-insert", ""),
+                (classMapping, storedProcedureMapping) => classMapping.AddStoredProcedure(storedProcedureMapping),
+                hbmClass => hbmClass.sqlinsert);
+        }
+
+        [Test]
+        public void ShouldConvertStoredProcedure_SqlUpdate()
+        {
+            ShouldConvertSubobjectAsStrictlyTypedField<ClassMapping, StoredProcedureMapping, HbmClass, HbmCustomSQL>(
+                () => new StoredProcedureMapping("sql-update", ""),
+                (classMapping, storedProcedureMapping) => classMapping.AddStoredProcedure(storedProcedureMapping),
+                hbmClass => hbmClass.sqlupdate);
+        }
+
+        [Test]
+        public void ShouldConvertStoredProcedure_SqlDelete()
+        {
+            ShouldConvertSubobjectAsStrictlyTypedField<ClassMapping, StoredProcedureMapping, HbmClass, HbmCustomSQL>(
+                () => new StoredProcedureMapping("sql-delete", ""),
+                (classMapping, storedProcedureMapping) => classMapping.AddStoredProcedure(storedProcedureMapping),
+                hbmClass => hbmClass.sqldelete);
+        }
+
+        [Test]
+        public void ShouldConvertStoredProcedure_Unsupported()
+        {
+            var unsupportedSPType = "invalid";
+
+            // Set up a fake converter
+            var fakeConverter = A.Fake<IHbmConverter<StoredProcedureMapping, HbmCustomSQL>>();
+
+            // Set up a custom container with the fake FSub->HSub converter registered, and obtain our main converter from it (so that it will use the fake implementation)
+            var container = new HbmConverterContainer();
+            container.Register<IHbmConverter<StoredProcedureMapping, HbmCustomSQL>>(cnvrt => fakeConverter);
+            converter = container.Resolve<IHbmConverter<ClassMapping, HbmClass>>();
+
+            // Allocate the class mapping and a stored procedure submapping with an unsupported sptype
+            var classMapping = new ClassMapping();
+            classMapping.AddStoredProcedure(new StoredProcedureMapping(unsupportedSPType, ""));
+
+            // This should throw
+            Assert.Throws<NotSupportedException>(() => converter.Convert(classMapping));
+
+            // We don't care if it made a call to the subobject conversion logic or not (it is low enough cost that it doesn't
+            // really matter in the case of failure, and some implementation approaches that uses this may be simpler).
+        }
 
         #endregion Converter-based subobject tests
     }

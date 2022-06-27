@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
@@ -147,24 +148,12 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void Visit(FilterMapping filterMapping)
         {
-            /*
-            var writer = serviceLocator.GetWriter<FilterMapping>();
-            var filterXml = writer.Write(filterMapping);
-
-            document.ImportAndAppendChild(filterXml);
-            */
-            // FIXME: No test for this?
+            AddToNullableArray(ref hbmClass.filter, ConvertFluentSubobjectToHibernateNative<FilterMapping, HbmFilter>(filterMapping));
         }
 
         public override void Visit(TuplizerMapping tuplizerMapping)
         {
-            /*
-            var writer = serviceLocator.GetWriter<TuplizerMapping>();
-            var filterXml = writer.Write(mapping);
-
-            document.ImportAndAppendChild(filterXml);
-            */
-            // FIXME: No test for this?
+            AddToNullableArray(ref hbmClass.tuplizer, ConvertFluentSubobjectToHibernateNative<TuplizerMapping, HbmTuplizer>(tuplizerMapping));
         }
 
         #endregion Methods paralleling XmlClassWriter
@@ -204,15 +193,24 @@ namespace FluentNHibernate.MappingModel.Output
             AddToNullableArray(ref hbmClass.Items, ConvertFluentSubobjectToHibernateNative<CollectionMapping, object>(collectionMapping));
         }
 
-        public override void Visit(StoredProcedureMapping mapping)
+        public override void Visit(StoredProcedureMapping storedProcedureMapping)
         {
-            /*
-            var writer = serviceLocator.GetWriter<StoredProcedureMapping>();
-            var xml = writer.Write(mapping);
-
-            document.ImportAndAppendChild(xml);
-            */
-            // FIXME: No test for this?
+            var spType = storedProcedureMapping.SPType;
+            var sprocSql = ConvertFluentSubobjectToHibernateNative<StoredProcedureMapping, HbmCustomSQL>(storedProcedureMapping);
+            switch (spType)
+            {
+                case "sql-insert":
+                    hbmClass.sqlinsert = sprocSql;
+                    break;
+                case "sql-update":
+                    hbmClass.sqlupdate = sprocSql;
+                    break;
+                case "sql-delete":
+                    hbmClass.sqldelete = sprocSql;
+                    break;
+                default:
+                    throw new NotSupportedException(string.Format("Stored procedure type {0} is not supported", spType));
+            }
         }
 
         #endregion Methods paralleling XmlClassWriterBase
