@@ -1,8 +1,13 @@
 ﻿using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.MappingModel.Output;
 using NHibernate.Cfg.MappingSchema;
 using NUnit.Framework;
+
+using static FluentNHibernate.Testing.Hbm.HbmConverterTestHelper;
+using IComponentMapping = FluentNHibernate.MappingModel.ClassBased.IComponentMapping;
 
 namespace FluentNHibernate.Testing.MappingModel.Output
 {
@@ -423,5 +428,205 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         #endregion Non-converter-based subobject tests
+
+        #region Converter-based subobject tests
+
+        [Test]
+        public void ShouldConvertCache()
+        {
+            ShouldConvertSubobjectAsStrictlyTypedField<ClassMapping, CacheMapping, HbmClass, HbmCache>(
+                (classMapping, cacheMapping) => classMapping.Set(fluent => fluent.Cache, Layer.Conventions, cacheMapping),
+                hbmClass => hbmClass.cache);
+        }
+
+        [Test]
+        public void ShouldConvertIIdentity_Id()
+        {
+            ShouldConvertSubobjectAsLooselyTypedField<ClassMapping, IIdentityMapping, HbmClass, object, object>(
+                () => new IdMapping(),
+                (classMapping, iidMapping) => classMapping.Set(fluent => fluent.Id, Layer.Conventions, iidMapping),
+                hbmClass => hbmClass.Item);
+        }
+
+        [Test]
+        public void ShouldConvertIIdentity_CompositeId()
+        {
+            ShouldConvertSubobjectAsLooselyTypedField<ClassMapping, IIdentityMapping, HbmClass, object, object>(
+                () => new CompositeIdMapping(),
+                (classMapping, iidMapping) => classMapping.Set(fluent => fluent.Id, Layer.Conventions, iidMapping),
+                hbmClass => hbmClass.Item);
+        }
+
+        [Test]
+        public void ShouldConvertNaturalId()
+        {
+            ShouldConvertSubobjectAsStrictlyTypedField<ClassMapping, NaturalIdMapping, HbmClass, HbmNaturalId>(
+                (classMapping, naturalIdMapping) => classMapping.Set(fluent => fluent.NaturalId, Layer.Conventions, naturalIdMapping),
+                hbmClass => hbmClass.naturalid);
+        }
+
+        [Test]
+        public void ShouldConvertVersion()
+        {
+            ShouldConvertSubobjectAsLooselyTypedField<ClassMapping, VersionMapping, HbmClass, HbmVersion, object>(
+                (classMapping, versionMapping) => classMapping.Set(fluent => fluent.Version, Layer.Conventions, versionMapping),
+                hbmClass => hbmClass.Item1);
+        }
+
+        [Test]
+        public void ShouldConvertProperties()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, PropertyMapping, HbmClass, HbmProperty, object>(
+                (classMapping, propertyMapping) => classMapping.AddProperty(propertyMapping),
+                hbmClass => hbmClass.Items);
+        }
+
+        [Test]
+        public void ShouldConvertManyToOnes()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, ManyToOneMapping, HbmClass, HbmManyToOne, object>(
+                (classMapping, manyToOneMapping) => classMapping.AddReference(manyToOneMapping),
+                hbmClass => hbmClass.Items);
+        }
+
+        [Test]
+        public void ShouldConvertOneToOnes()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, OneToOneMapping, HbmClass, HbmOneToOne, object>(
+                (classMapping, oneToOneMapping) => classMapping.AddOneToOne(oneToOneMapping),
+                hbmClass => hbmClass.Items);
+        }
+
+        [Test]
+        public void ShouldConvertComponents_Component()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, IComponentMapping, HbmClass, object, object>(
+                () => new ComponentMapping(ComponentType.Component),
+                (classMapping, componentMapping) => classMapping.AddComponent(componentMapping),
+                hbmClass => hbmClass.Items);
+        }
+
+        [Test]
+        public void ShouldConvertComponents_DynamicComponent()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, IComponentMapping, HbmClass, object, object>(
+                () => new ComponentMapping(ComponentType.DynamicComponent),
+                (classMapping, componentMapping) => classMapping.AddComponent(componentMapping),
+                hbmClass => hbmClass.Items);
+        }
+
+        [Test]
+        public void ShouldConvertAnys()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, AnyMapping, HbmClass, HbmAny, object>(
+                (classMapping, anyMapping) => classMapping.AddAny(anyMapping),
+                hbmClass => hbmClass.Items);
+        }
+
+        [Test]
+        public void ShouldConvertCollections_Map()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, CollectionMapping, HbmClass, object, object>(
+                () => CollectionMapping.Map(),
+                (classMapping, mapMapping) => classMapping.AddCollection(mapMapping),
+                hbmClass => hbmClass.Items);
+        }
+
+        [Test]
+        public void ShouldConvertCollections_Set()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, CollectionMapping, HbmClass, object, object>(
+                () => CollectionMapping.Set(),
+                (classMapping, setMapping) => classMapping.AddCollection(setMapping),
+                hbmClass => hbmClass.Items);
+        }
+
+        [Test]
+        public void ShouldConvertCollections_List()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, CollectionMapping, HbmClass, object, object>(
+                () => CollectionMapping.List(),
+                (classMapping, listMapping) => classMapping.AddCollection(listMapping),
+                hbmClass => hbmClass.Items);
+        }
+
+        [Test]
+        public void ShouldConvertCollections_Bag()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, CollectionMapping, HbmClass, object, object>(
+                () => CollectionMapping.Bag(),
+                (classMapping, bagMapping) => classMapping.AddCollection(bagMapping),
+                hbmClass => hbmClass.Items);
+        }
+
+        [Test, Ignore("ShouldConvertCollections_IdBag")]
+        public void ShouldConvertCollections_IdBag()
+        {
+            Assert.Fail("Target logic not yet available");
+        }
+
+        [Test]
+        public void ShouldConvertCollections_Array()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, CollectionMapping, HbmClass, object, object>(
+                () => CollectionMapping.Array(),
+                (classMapping, bagMapping) => classMapping.AddCollection(bagMapping),
+                hbmClass => hbmClass.Items);
+        }
+
+        [Test, Ignore("ShouldConvertCollections_PrimitiveArray")]
+        public void ShouldConvertCollections_PrimitiveArray()
+        {
+            Assert.Fail("Target logic not yet available");
+        }
+
+        [Test]
+        public void ShouldConvertJoins()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, JoinMapping, HbmClass, HbmJoin, object>(
+                (classMapping, joinMapping) => classMapping.AddJoin(joinMapping),
+                hbmClass => hbmClass.Items1);
+        }
+
+        [Test]
+        public void ShouldConvertSubclasses_Subclass()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, SubclassMapping, HbmClass, object, object>(
+                () => new SubclassMapping(SubclassType.Subclass),
+                (classMapping, subclassMapping) => classMapping.AddSubclass(subclassMapping),
+                hbmClass => hbmClass.Items1);
+        }
+
+        [Test]
+        public void ShouldConvertSubclasses_JoinedSubclass()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, SubclassMapping, HbmClass, object, object>(
+                () => new SubclassMapping(SubclassType.JoinedSubclass),
+                (classMapping, joinedSubclassMapping) => classMapping.AddSubclass(joinedSubclassMapping),
+                hbmClass => hbmClass.Items1);
+        }
+
+        [Test]
+        public void ShouldConvertSubclasses_UnionSubclass()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<ClassMapping, SubclassMapping, HbmClass, object, object>(
+                () => new SubclassMapping(SubclassType.UnionSubclass),
+                (classMapping, unionSubclassMapping) => classMapping.AddSubclass(unionSubclassMapping),
+                hbmClass => hbmClass.Items1);
+        }
+
+        [Test]
+        public void ShouldConvertDiscriminator()
+        {
+            ShouldConvertSubobjectAsStrictlyTypedField<ClassMapping, DiscriminatorMapping, HbmClass, HbmDiscriminator>(
+                (classMapping, discriminatorMapping) => classMapping.Set(fluent => fluent.Discriminator, Layer.Conventions, discriminatorMapping),
+                hbmClass => hbmClass.discriminator);
+        }
+
+        // FIXME: Add a test for Filter conversion
+        // FIXME: Add a test for Tuplizer conversion
+        // FIXME: Add a test for StoredProcedure conversion
+
+        #endregion Converter-based subobject tests
     }
 }
