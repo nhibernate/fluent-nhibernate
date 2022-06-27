@@ -284,5 +284,27 @@ namespace FluentNHibernate.Testing.Hbm
             // Strongly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
             ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSub>(setFSubOnFMain, getHSubFromHMain);
         }
+
+        /// <summary>
+        /// Variant of <see cref="ShouldConvertSubobjectAsStrictlyTypedField{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub})"/>
+        /// which supports custom construction of <c>FSub</c>.
+        /// </summary>
+        /// <seealso cref="ShouldConvertSubobjectAsStrictlyTypedField{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub})"/>
+        /// <typeparam name="FMain">the fluent type under test</typeparam>
+        /// <typeparam name="FSub">the fluent subobject type under test</typeparam>
+        /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
+        /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
+        /// <param name="newFSub">is used to construct a new instance of <c>FSub</c></typeparam>
+        /// <param name="setFSubOnFMain">A handler which will set a fluent subobject on a fluent main object</param>
+        /// <param name="getHSubFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
+        public static void ShouldConvertSubobjectAsStrictlyTypedField<FMain, FSub, HMain, HSub>(Func<FSub> newFSub, Action<FMain, FSub> setFSubOnFMain,
+                Func<HMain, HSub> getHSubFromHMain)
+            where FMain : IMapping, new()
+            where FSub : IMapping
+            where HSub : new()
+        {
+            // Strongly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
+            ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSub>(newFSub, setFSubOnFMain, getHSubFromHMain);
+        }
     }
 }
