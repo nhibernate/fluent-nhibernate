@@ -123,11 +123,10 @@ namespace FluentNHibernate.MappingModel.Output
 
         private void RegisterIdConverters()
         {
-            /*
-            // FIXME: Figure out what this needs to be
-            RegisterConverter<IIdentityMapping>(c =>
+            RegisterConverter<IIdentityMapping, object>(c =>
                 new HbmIdentityBasedConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
+            /*
             RegisterConverter<IdMapping, HbmId>(c =>
                 new HbmIdConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
