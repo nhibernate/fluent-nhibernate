@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FakeItEasy;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
+using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.MappingModel.Output;
 using NHibernate.Cfg.MappingSchema;
 
@@ -309,6 +310,55 @@ namespace FluentNHibernate.Testing.Hbm
         {
             // Strongly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
             ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSub>(newFSub, setFSubOnFMain, getHSubFromHMain);
+        }
+
+        /// <summary>
+        /// Test that a converter which handles a fluent type with children correctly converts a particular input type to the expected output type.
+        /// </summary>
+        /// <example>
+        /// <para>
+        /// <see cref="HbmIdentityBasedConverter"/> converts from <see cref="IIdentityMapping"/> to <see cref="object"/>. The
+        /// following calls check that the descendants <see cref="IdMapping"/> and <see cref="CompositeIdMapping"/> are converted
+        /// to <see cref="HbmId"/> and <see cref="HbmCompositeId"/>, respectively.
+        /// </para>
+        /// <code>
+        /// ShouldConvertSpecificHbmForMappingChild<IIdentityMapping, IdMapping, object, HbmId>();
+        /// ShouldConvertSpecificHbmForMappingChild<IIdentityMapping, CompositeIdMapping, object, HbmCompositeId>();
+        /// </code>
+        /// </example>
+        /// <typeparam name="FSuper"></typeparam>
+        /// <typeparam name="F"></typeparam>
+        /// <typeparam name="HSuper"></typeparam>
+        /// <typeparam name="H"></typeparam>
+        public static void ShouldConvertSpecificHbmForMappingChild<FSuper, F, HSuper, H>()
+            where FSuper : IMapping
+            where F : FSuper, new()
+            where H : HSuper, new()
+        {
+            // Set up a fake converter that registers any HSub instances it generates and returns in a list
+            var generatedHbms = new List<H>();
+            var fakeConverter = A.Fake<IHbmConverter<F, H>>();
+            A.CallTo(() => fakeConverter.Convert(A<F>.Ignored)).ReturnsLazily(fSub =>
+            {
+                var hbm = new H();
+                generatedHbms.Add(hbm);
+                return hbm;
+            });
+
+            // Set up a custom container with the fake FSub->HSub converter registered, and obtain our main converter from it (so that it will use the fake implementation)
+            var container = new HbmConverterContainer();
+            container.Register<IHbmConverter<F, H>>(cnvrt => fakeConverter);
+            IHbmConverter<FSuper, HSuper> converter = container.Resolve<IHbmConverter<FSuper, HSuper>>();
+
+            // Allocate an instance of the descendant type, but explicitly label it as the ancestor type to ensure that we pass it correctly
+            FSuper mapping = new F();
+
+            // Now try to convert it
+            var convertedHbm = converter.Convert(mapping);
+
+            // Check that the converter for the specific descendant was invoked the correct number of times and that the returned value is the converted instance.
+            A.CallTo(() => fakeConverter.Convert(A<F>.Ignored)).MustHaveHappened(Repeated.Exactly.Once); // Do this first since it guarantees the list should have exactly one item
+            convertedHbm.ShouldEqual(generatedHbms[0]);
         }
     }
 }
