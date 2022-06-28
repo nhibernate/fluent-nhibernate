@@ -106,10 +106,14 @@ namespace FluentNHibernate.Testing.Hbm
         /// Test that a converter correctly handles the translation of a group of subobjects as an array which is narrowly typed to hold those subobjects.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// If the array of translated subobjects is broadly typed for the subobjects (that is, the type stored in the array is
         /// an ancestor of the subobject type, rather than an exact match) then the
         /// <see cref="ShouldConvertSubobjectsAsLooselyTypedArray{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper[]})"/>
         /// method must be used, rather than this one.
+        /// </para>
+        /// </remarks>
+        /// <example>
         /// <para>
         /// <see cref="HbmHibernateMappingConverter"/> converts from <see cref="HibernateMapping"/> to <see cref="HbmMapping"/>. The following test checks that the 
         /// <see cref="HibernateMapping.Imports">import subobjects</see> are converted to <see cref="HbmMapping.import"/> correctly:
@@ -124,8 +128,6 @@ namespace FluentNHibernate.Testing.Hbm
         /// Specifically, because the conversion target is typed as <c>HbmImport[]</c> rather than some broader type (for example, <c>object[]</c>), this method should
         /// be used in preference to <see cref="ShouldConvertSubobjectsAsLooselyTypedArray{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper[]})"/>.
         /// </para>
-        /// </remarks>
-        /// <example>
         /// </example>
         /// <seealso cref="ShouldConvertSubobjectsAsLooselyTypedArray{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper[]})"/>
         /// <typeparam name="FMain">the fluent type under test</typeparam>
@@ -247,10 +249,14 @@ namespace FluentNHibernate.Testing.Hbm
         /// Test that a converter correctly handles the translation of a single subobject as a field which is narrowly typed to hold the subobject.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// If the translated subobject field is broadly typed for the subobject (that is, the type stored in the field is exactly
         /// the subobject type, not an ancestor of it) then the
         /// <see cref="ShouldConvertSubobjectAsLooselyTypedField{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper})"/>
         /// method must be used, rather than this one.
+        /// </para>
+        /// </remarks>
+        /// <example>
         /// <para>
         /// <see cref="HbmClassConverter"/> converts from <see cref="ClassMapping"/> to <see cref="HbmClass"/>. The following test
         /// checks that the <see cref="ClassMapping.Cache">cache subobject</see> is converted to <see cref="HbmClass.cache"/> correctly:
@@ -266,8 +272,6 @@ namespace FluentNHibernate.Testing.Hbm
         /// be used in preference to
         /// <see cref="ShouldConvertSubobjectAsLooselyTypedField{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper})"/>.
         /// </para>
-        /// </remarks>
-        /// <example>
         /// </example>
         /// <seealso cref="ShouldConvertSubobjectAsLooselyTypedField{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper})"/>
         /// <typeparam name="FMain">the fluent type under test</typeparam>
