@@ -128,10 +128,8 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterConverter<IIdentityMapping, object>(c =>
                 new HbmIdentityBasedConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
-            /*
             RegisterConverter<IdMapping, HbmId>(c =>
                 new HbmIdConverter(c.Resolve<IHbmConverterServiceLocator>()));
-            */
 
             RegisterConverter<CompositeIdMapping, HbmCompositeId>(c =>
                 new HbmCompositeIdConverter(c.Resolve<IHbmConverterServiceLocator>()));
