@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output
@@ -28,6 +29,19 @@ namespace FluentNHibernate.MappingModel.Output
                 nullableArray = new T[0];
             Array.Resize(ref nullableArray, nullableArray.Length + 1);
             nullableArray[nullableArray.Length - 1] = item;
+        }
+
+        protected E LookupEnumValueIn<E>(XmlLinkedEnumBiDictionary<E> enumDict, String key)
+                where E : System.Enum
+        {
+            try
+            {
+                return enumDict[key];
+            }
+            catch (KeyNotFoundException keyEx)
+            {
+                throw new NotSupportedException(String.Format("{0} is not a recognized value for {1}", key, typeof(E).Name), keyEx);
+            }
         }
     }
 }
