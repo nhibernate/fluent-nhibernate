@@ -1,5 +1,6 @@
 using System.Linq;
 using FluentNHibernate.MappingModel.Identity;
+using FluentNHibernate.Utils;
 using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
@@ -30,7 +31,7 @@ namespace FluentNHibernate.MappingModel.Output
                 hbmKeyProperty.access = keyPropertyMapping.Access;
 
             if (keyPropertyMapping.IsSpecified("Type"))
-                hbmKeyProperty.type = ToHbmType(keyPropertyMapping.Type);
+                hbmKeyProperty.type = keyPropertyMapping.Type.ToHbmType();
 
             if (keyPropertyMapping.IsSpecified("Length"))
             {
@@ -50,14 +51,6 @@ namespace FluentNHibernate.MappingModel.Output
         public override void Visit(ColumnMapping columnMapping)
         {
             AddToNullableArray(ref hbmKeyProperty.column, ConvertFluentSubobjectToHibernateNative<ColumnMapping, HbmColumn>(columnMapping));
-        }
-
-        private static HbmType ToHbmType(TypeReference typeReference)
-        {
-            return new HbmType()
-            {
-                name = typeReference.Name,
-            };
         }
     }
 }
