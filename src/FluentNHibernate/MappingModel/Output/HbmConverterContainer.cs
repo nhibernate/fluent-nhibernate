@@ -144,10 +144,8 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterConverter<KeyPropertyMapping, HbmKeyProperty>(c =>
                 new HbmKeyPropertyConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
-            /*
             RegisterConverter<KeyManyToOneMapping, HbmKeyManyToOne>(c =>
                 new HbmKeyManyToOneConverter(c.Resolve<IHbmConverterServiceLocator>()));
-            */
         }
 
         private void RegisterComponentConverters()
