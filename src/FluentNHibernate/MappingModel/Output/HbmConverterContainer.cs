@@ -139,10 +139,12 @@ namespace FluentNHibernate.MappingModel.Output
             /*
             RegisterConverter<GeneratorMapping, HbmGenerator>(c =>
                 new HbmGeneratorConverter());
+            */
 
             RegisterConverter<KeyPropertyMapping, HbmKeyProperty>(c =>
                 new HbmKeyPropertyConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
+            /*
             RegisterConverter<KeyManyToOneMapping, HbmKeyManyToOne>(c =>
                 new HbmKeyManyToOneConverter(c.Resolve<IHbmConverterServiceLocator>()));
             */
