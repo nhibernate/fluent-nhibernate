@@ -28,7 +28,9 @@ namespace FluentNHibernate.MappingModel.Output
         {
             hbmClass = new HbmClass();
 
-            if (classMapping.IsSpecified("BatchSize"))
+            bool batchSizeSpecified = classMapping.IsSpecified("BatchSize");
+            hbmClass.batchsizeSpecified = batchSizeSpecified;
+            if (batchSizeSpecified)
                 hbmClass.batchsize = classMapping.BatchSize;
 
             if (classMapping.IsSpecified("DiscriminatorValue"))
@@ -76,7 +78,9 @@ namespace FluentNHibernate.MappingModel.Output
             if (classMapping.IsSpecified("SelectBeforeUpdate"))
                 hbmClass.selectbeforeupdate = classMapping.SelectBeforeUpdate;
 
-            if (classMapping.IsSpecified("Abstract"))
+            bool abstractSpecified = classMapping.IsSpecified("Abstract");
+            hbmClass.abstractSpecified = abstractSpecified;
+            if (abstractSpecified)
                 hbmClass.@abstract = classMapping.Abstract;
 
             if (classMapping.IsSpecified("Subselect"))

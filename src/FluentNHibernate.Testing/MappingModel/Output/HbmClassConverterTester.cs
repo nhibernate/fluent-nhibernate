@@ -177,6 +177,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             classMapping.Set(fluent => fluent.BatchSize, Layer.Conventions, 10);
             var convertedHbmClass = converter.Convert(classMapping);
             convertedHbmClass.batchsize.ShouldEqual(classMapping.BatchSize);
+            Assert.That(convertedHbmClass.batchsizeSpecified.Equals(true), "Batch size was not marked as specified");
         }
 
         [Test]
@@ -187,6 +188,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.batchsize.ShouldEqual(blankHbmClass.batchsize);
+            Assert.That(convertedHbmClass.batchsizeSpecified.Equals(false), "Batch size was marked as specified");
         }
 
         [Test]
@@ -359,6 +361,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             classMapping.Set(fluent => fluent.Abstract, Layer.Conventions, true); // Defaults to false, so we have to set it true here in order to tell if it actually changed
             var convertedHbmClass = converter.Convert(classMapping);
             convertedHbmClass.@abstract.ShouldEqual(classMapping.Abstract);
+            Assert.That(convertedHbmClass.abstractSpecified.Equals(true), "Abstract was not marked as specified");
         }
 
         [Test]
@@ -369,6 +372,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.@abstract.ShouldEqual(blankHbmClass.@abstract);
+            Assert.That(convertedHbmClass.abstractSpecified.Equals(false), "Abstract was marked as specified");
         }
 
         [Test]
