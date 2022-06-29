@@ -34,10 +34,12 @@ namespace FluentNHibernate.MappingModel.Output
             /*
             RegisterConverter<NaturalIdMapping, HbmNaturalId>(c =>
                 new HbmNaturalIdConverter(c.Resolve<IHbmConverterServiceLocator>()));
+            */
 
             RegisterConverter<ColumnMapping, HbmColumn>(c =>
                 new HbmColumnConverter());
-                
+            
+            /*
             RegisterConverter<JoinMapping, HbmJoin>(c =>
                 new HbmJoinConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
