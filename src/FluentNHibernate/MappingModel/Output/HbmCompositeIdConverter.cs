@@ -36,7 +36,7 @@ namespace FluentNHibernate.MappingModel.Output
                 hbmCompositeId.mapped = compositeIdMapping.Mapped;
 
             if (compositeIdMapping.IsSpecified("UnsavedValue"))
-                hbmCompositeId.unsavedvalue = unsavedDict[compositeIdMapping.UnsavedValue];
+                hbmCompositeId.unsavedvalue = LookupEnumValueIn(unsavedDict, compositeIdMapping.UnsavedValue);
         }
 
         public override void Visit(KeyPropertyMapping keyPropertyMapping)

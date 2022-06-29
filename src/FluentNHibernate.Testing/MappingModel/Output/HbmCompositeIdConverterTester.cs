@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.MappingModel.Output;
@@ -96,7 +97,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldConvertUnsavedValueIfPopulated()
+        public void ShouldConvertUnsavedValueIfPopulatedWithValidValue()
         {
             var unsavedValue = HbmUnsavedValueType.Any; // Defaults to Undefined, so use something else to properly detect that it changes
 
@@ -105,6 +106,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             compositeIdMapping.Set(fluent => fluent.UnsavedValue, Layer.Conventions, unsavedDict[unsavedValue]);
             var convertedHbmCompositeId = converter.Convert(compositeIdMapping);
             convertedHbmCompositeId.unsavedvalue.ShouldEqual(unsavedValue);
+        }
+
+        [Test]
+        public void ShouldFailToConvertUnsavedValueIfPopulatedWithInvalidValue()
+        {
+            var compositeIdMapping = new CompositeIdMapping();
+            compositeIdMapping.Set(fluent => fluent.UnsavedValue, Layer.Conventions, "invalid_value");
+            Assert.Throws<NotSupportedException>(() => converter.Convert(compositeIdMapping));
         }
 
         [Test]

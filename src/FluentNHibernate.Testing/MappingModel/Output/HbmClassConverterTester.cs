@@ -103,7 +103,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldConvertPolymorphismIfPopulated()
+        public void ShouldConvertPolymorphismIfPopulatedWithValidValue()
         {
             var polymorphism = HbmPolymorphismType.Explicit; // Defaults to Implicit, so use something else to properly detect that it changes
 
@@ -112,6 +112,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             classMapping.Set(fluent => fluent.Polymorphism, Layer.Conventions, polyDict[polymorphism]);
             var convertedHbmClass = converter.Convert(classMapping);
             convertedHbmClass.polymorphism.ShouldEqual(polymorphism);
+        }
+
+        [Test]
+        public void ShouldFailToConvertPolymorphismIfPopulatedWithInvalidValue()
+        {
+            var classMapping = new ClassMapping();
+            classMapping.Set(fluent => fluent.Polymorphism, Layer.Conventions, "invalid_value");
+            Assert.Throws<NotSupportedException>(() => converter.Convert(classMapping));
         }
 
         [Test]
@@ -182,7 +190,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
 
         [Test]
-        public void ShouldConvertOptimisticLockIfPopulated()
+        public void ShouldConvertOptimisticLockIfPopulatedWithValidValue()
         {
             var optimisticlock = HbmOptimisticLockMode.Dirty; // Defaults to Version, so use something else to properly detect that it changes
 
@@ -191,6 +199,14 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             classMapping.Set(fluent => fluent.OptimisticLock, Layer.Conventions, polyDict[optimisticlock]);
             var convertedHbmClass = converter.Convert(classMapping);
             convertedHbmClass.optimisticlock.ShouldEqual(optimisticlock);
+        }
+
+        [Test]
+        public void ShouldFailToConvertOptimisticLockIfPopulatedWithInvalidValue()
+        {
+            var classMapping = new ClassMapping();
+            classMapping.Set(fluent => fluent.Polymorphism, Layer.Conventions, "invalid_value");
+            Assert.Throws<NotSupportedException>(() => converter.Convert(classMapping));
         }
 
         [Test]

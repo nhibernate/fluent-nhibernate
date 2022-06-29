@@ -50,7 +50,7 @@ namespace FluentNHibernate.MappingModel.Output
                 hbmClass.mutable = classMapping.Mutable;
 
             if (classMapping.IsSpecified("Polymorphism"))
-                hbmClass.polymorphism = polyDict[classMapping.Polymorphism];
+                hbmClass.polymorphism = LookupEnumValueIn(polyDict, classMapping.Polymorphism);
 
             if (classMapping.IsSpecified("Persister"))
                 hbmClass.persister = classMapping.Persister;
@@ -59,7 +59,7 @@ namespace FluentNHibernate.MappingModel.Output
                 hbmClass.where = classMapping.Where;
 
             if (classMapping.IsSpecified("OptimisticLock"))
-                hbmClass.optimisticlock = optLockDict[classMapping.OptimisticLock];
+                hbmClass.optimisticlock = LookupEnumValueIn(optLockDict, classMapping.OptimisticLock);
 
             if (classMapping.IsSpecified("Check"))
                 hbmClass.check = classMapping.Check;
