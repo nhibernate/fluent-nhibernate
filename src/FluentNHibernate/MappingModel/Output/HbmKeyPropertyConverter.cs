@@ -6,10 +6,6 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class HbmKeyPropertyConverter : HbmConverterBase<KeyPropertyMapping, HbmKeyProperty>
     {
-        /*
-        private static readonly XmlLinkedEnumBiDictionary<HbmUnsavedValueType> unsavedDict = new XmlLinkedEnumBiDictionary<HbmUnsavedValueType>();
-        */
-
         private HbmKeyProperty hbmKeyProperty;
 
         public HbmKeyPropertyConverter(IHbmConverterServiceLocator serviceLocator) : base(serviceLocator)
