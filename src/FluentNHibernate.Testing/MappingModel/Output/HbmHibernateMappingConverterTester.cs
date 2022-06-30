@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertSchemaIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmMapping = converter.Convert(hibernateMapping);
             var blankHbmMapping = new HbmMapping();
             convertedHbmMapping.schema.ShouldEqual(blankHbmMapping.schema);
@@ -53,7 +53,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertDefaultCascadeIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmMapping = converter.Convert(hibernateMapping);
             var blankHbmMapping = new HbmMapping();
             convertedHbmMapping.defaultcascade.ShouldEqual(blankHbmMapping.defaultcascade);
@@ -72,7 +72,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertDefaultAccessIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmMapping = converter.Convert(hibernateMapping);
             var blankHbmMapping = new HbmMapping();
             convertedHbmMapping.defaultaccess.ShouldEqual(blankHbmMapping.defaultaccess);
@@ -91,7 +91,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertAutoImportIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmMapping = converter.Convert(hibernateMapping);
             var blankHbmMapping = new HbmMapping();
             convertedHbmMapping.autoimport.ShouldEqual(blankHbmMapping.autoimport);
@@ -110,7 +110,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertDefaultLazyIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmMapping = converter.Convert(hibernateMapping);
             var blankHbmMapping = new HbmMapping();
             convertedHbmMapping.defaultlazy.ShouldEqual(blankHbmMapping.defaultlazy);
@@ -129,7 +129,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertCatalogIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmMapping = converter.Convert(hibernateMapping);
             var blankHbmMapping = new HbmMapping();
             convertedHbmMapping.catalog.ShouldEqual(blankHbmMapping.catalog);
@@ -148,7 +148,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertNamespaceIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmMapping = converter.Convert(hibernateMapping);
             var blankHbmMapping = new HbmMapping();
             convertedHbmMapping.@namespace.ShouldEqual(blankHbmMapping.@namespace);
@@ -167,7 +167,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertAssemblyIfNotPopulated()
         {
             var hibernateMapping = new HibernateMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmMapping = converter.Convert(hibernateMapping);
             var blankHbmMapping = new HbmMapping();
             convertedHbmMapping.assembly.ShouldEqual(blankHbmMapping.assembly);

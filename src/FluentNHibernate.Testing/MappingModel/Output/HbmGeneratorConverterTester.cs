@@ -32,7 +32,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertConditionIfNotPopulated()
         {
             var generatorMapping = new GeneratorMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmGenerator = converter.Convert(generatorMapping);
             var blankHbmGenerator = new HbmGenerator();
             convertedHbmGenerator.@class.ShouldEqual(blankHbmGenerator.@class);

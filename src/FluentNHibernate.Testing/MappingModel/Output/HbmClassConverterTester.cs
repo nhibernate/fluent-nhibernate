@@ -39,7 +39,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertTableNameIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.table.ShouldEqual(blankHbmClass.table);
@@ -58,7 +58,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertSchemaIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.schema.ShouldEqual(blankHbmClass.schema);
@@ -77,7 +77,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertDiscriminatorValueIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.discriminatorvalue.ShouldEqual(blankHbmClass.discriminatorvalue);
@@ -96,7 +96,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertMutableIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.mutable.ShouldEqual(blankHbmClass.mutable);
@@ -126,7 +126,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertPolymorphismIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.polymorphism.ShouldEqual(blankHbmClass.polymorphism);
@@ -145,7 +145,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertPersisterIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.persister.ShouldEqual(blankHbmClass.persister);
@@ -164,7 +164,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertWhereIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.where.ShouldEqual(blankHbmClass.where);
@@ -184,7 +184,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertBatchSizeIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.batchsize.ShouldEqual(blankHbmClass.batchsize);
@@ -215,7 +215,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertOptimisticLockIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.optimisticlock.ShouldEqual(blankHbmClass.optimisticlock);
@@ -234,7 +234,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertCheckIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.check.ShouldEqual(blankHbmClass.check);
@@ -253,7 +253,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertNameIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.name.ShouldEqual(blankHbmClass.name);
@@ -272,7 +272,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertProxyIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.proxy.ShouldEqual(blankHbmClass.proxy);
@@ -291,7 +291,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertLazyIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.lazy.ShouldEqual(blankHbmClass.lazy);
@@ -310,7 +310,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertDynamicUpdateIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.dynamicupdate.ShouldEqual(blankHbmClass.dynamicupdate);
@@ -329,7 +329,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertDynamicInsertIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.dynamicinsert.ShouldEqual(blankHbmClass.dynamicinsert);
@@ -348,7 +348,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertSelectBeforeUpdateIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.selectbeforeupdate.ShouldEqual(blankHbmClass.selectbeforeupdate);
@@ -368,7 +368,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertAbstractIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.@abstract.ShouldEqual(blankHbmClass.@abstract);
@@ -388,7 +388,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertSchemaActionIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.schemaaction.ShouldEqual(blankHbmClass.schemaaction);
@@ -407,7 +407,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertEntityNameIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.entityname.ShouldEqual(blankHbmClass.entityname);
@@ -442,7 +442,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertSubselectIfNotPopulated()
         {
             var classMapping = new ClassMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmClass = converter.Convert(classMapping);
             var blankHbmClass = new HbmClass();
             convertedHbmClass.subselect.ShouldEqual(blankHbmClass.subselect);

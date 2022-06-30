@@ -36,7 +36,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldConvertNameIfNotPopulated()
         {
             var filterDefinitionMapping = new FilterDefinitionMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmFilterDef = converter.Convert(filterDefinitionMapping);
             convertedHbmFilterDef.name.ShouldEqual(filterDefinitionMapping.Name);
         }
@@ -54,7 +54,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldNotConvertConditionIfNotPopulated()
         {
             var filterDefinitionMapping = new FilterDefinitionMapping();
-            // Don't set the schema on the original mapping
+            // Don't set anything on the original mapping
             var convertedHbmFilterDef = converter.Convert(filterDefinitionMapping);
             var blankHbmFilterDef = new HbmFilterDef();
             convertedHbmFilterDef.condition.ShouldEqual(blankHbmFilterDef.condition);
