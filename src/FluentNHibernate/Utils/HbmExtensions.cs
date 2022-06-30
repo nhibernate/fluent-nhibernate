@@ -15,6 +15,15 @@ namespace FluentNHibernate.Utils
             };
         }
 
+        public static HbmParam ToHbmParam(this KeyValuePair<string, string> parameterPair)
+        {
+            return new HbmParam()
+            {
+                name = parameterPair.Key,
+                Text = new string[] { parameterPair.Value }
+            };
+        }
+
         public static HbmFilterParam ToHbmFilterParam(this KeyValuePair<string, IType> parameterPair)
         {
             return new HbmFilterParam()
