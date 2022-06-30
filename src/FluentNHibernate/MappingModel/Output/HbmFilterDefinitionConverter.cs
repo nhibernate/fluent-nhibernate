@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 using System.Linq;
-using NHibernate.Type;
+using FluentNHibernate.Utils;
 using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
@@ -29,16 +28,7 @@ namespace FluentNHibernate.MappingModel.Output
                 hbmFilterDef.condition = filterDefinitionMapping.Condition;
 
             if (filterDefinitionMapping.Parameters.Any())
-                hbmFilterDef.Items = filterDefinitionMapping.Parameters.Select(ToHbmFilterParam).ToArray();
-        }
-
-        public static HbmFilterParam ToHbmFilterParam(KeyValuePair<string, IType> parameterPair)
-        {
-            return new HbmFilterParam()
-            {
-                name = parameterPair.Key,
-                type = parameterPair.Value.Name
-            };
+                hbmFilterDef.Items = filterDefinitionMapping.Parameters.Select(paramPair => paramPair.ToHbmFilterParam()).ToArray();
         }
     }
 }

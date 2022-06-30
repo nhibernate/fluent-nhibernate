@@ -71,18 +71,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         }
         
         [Test]
-        public void ShouldConvertHbmFilterParam()
-        {
-            var parameter = SAMPLE_FILTER_PARAM_1;
-
-            var convertedParameter = HbmFilterDefinitionConverter.ToHbmFilterParam(parameter);
-
-            convertedParameter.ShouldNotBeNull();
-            convertedParameter.name.ShouldEqual(parameter.Key);
-            convertedParameter.type.ShouldEqual(parameter.Value.Name);
-        }
-
-        [Test]
         public void ShouldConvertParameters()
         {
             IDictionary<string, IType> parameters = new Dictionary<string, IType>();
