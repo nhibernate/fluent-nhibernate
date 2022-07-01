@@ -23,10 +23,8 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterConverter<ImportMapping, HbmImport>(c =>
                 new HbmImportConverter());
 
-            /*
             RegisterConverter<PropertyMapping, HbmProperty>(c =>
                 new HbmPropertyConverter(c.Resolve<IHbmConverterServiceLocator>()));
-            */
 
             RegisterIdConverters();
             RegisterComponentConverters();
