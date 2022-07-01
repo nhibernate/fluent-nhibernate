@@ -105,10 +105,10 @@ namespace FluentNHibernate.MappingModel.Output
             // subclasses
             RegisterConverter<SubclassMapping, HbmSubclass>(c =>
                 new HbmSubclassConverter(c.Resolve<IHbmConverterServiceLocator>()));
+            */
 
             RegisterConverter<FilterMapping, HbmFilter>(c =>
                 new HbmFilterConverter());
-            */
 
             RegisterConverter<FilterDefinitionMapping, HbmFilterDef>(c =>
                 new HbmFilterDefinitionConverter());
