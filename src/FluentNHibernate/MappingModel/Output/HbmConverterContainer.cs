@@ -57,10 +57,12 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterConverter<VersionMapping, HbmVersion>(c =>
                 new HbmVersionConverter(c.Resolve<IHbmConverterServiceLocator>()));
+            */
 
             RegisterConverter<CacheMapping, HbmCache>(c =>
                 new HbmCacheConverter());
 
+            /*
             RegisterConverter<OneToOneMapping, HbmOneToOne>(c =>
                 new HbmOneToOneConverter());
 
