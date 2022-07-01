@@ -1,6 +1,5 @@
 using System.Linq;
 using FluentNHibernate.MappingModel.Identity;
-using FluentNHibernate.Utils;
 using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
@@ -31,7 +30,7 @@ namespace FluentNHibernate.MappingModel.Output
                 hbmKeyProperty.access = keyPropertyMapping.Access;
 
             if (keyPropertyMapping.IsSpecified("Type"))
-                hbmKeyProperty.type = keyPropertyMapping.Type.ToHbmType();
+                hbmKeyProperty.type1 = keyPropertyMapping.Type.ToString();
 
             if (keyPropertyMapping.IsSpecified("Length"))
             {

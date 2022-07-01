@@ -1,4 +1,3 @@
-using System;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.MappingModel.Output;
@@ -64,8 +63,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var idMapping = new IdMapping();
             idMapping.Set(fluent => fluent.Type, Layer.Conventions, new TypeReference(typeof(HbmIdConverterTester))); // Can be any class, this one is just guaranteed to exist
             var convertedHbmId = converter.Convert(idMapping);
-            var expectedType = new HbmType() { name = "HbmIdConverterTester" };
-            convertedHbmId.type.name.ShouldEqual(expectedType.name); // Can't just compare them directly, HbmType has no defined equality
+            convertedHbmId.type1.ShouldEqual(idMapping.Type.ToString());
         }
 
         [Test]
@@ -75,7 +73,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             // Don't set anything on the original mapping
             var convertedHbmId = converter.Convert(idMapping);
             var blankHbmId = new HbmId();
-            convertedHbmId.name.ShouldEqual(blankHbmId.type);
+            convertedHbmId.type1.ShouldEqual(blankHbmId.type1);
         }
 
         [Test]

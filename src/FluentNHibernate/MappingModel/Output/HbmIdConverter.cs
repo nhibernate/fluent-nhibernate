@@ -1,5 +1,4 @@
 using FluentNHibernate.MappingModel.Identity;
-using FluentNHibernate.Utils;
 using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
@@ -29,7 +28,7 @@ namespace FluentNHibernate.MappingModel.Output
                 hbmId.name = idMapping.Name;
 
             if (idMapping.IsSpecified("Type"))
-                hbmId.type = idMapping.Type.ToHbmType();
+                hbmId.type1 = idMapping.Type.ToString();
 
             if (idMapping.IsSpecified("UnsavedValue"))
                 hbmId.unsavedvalue = idMapping.UnsavedValue;

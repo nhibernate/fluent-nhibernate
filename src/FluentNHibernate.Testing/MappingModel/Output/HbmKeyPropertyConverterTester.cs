@@ -1,4 +1,3 @@
-using FakeItEasy;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.MappingModel.Output;
@@ -64,8 +63,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var keyPropertyMapping = new KeyPropertyMapping();
             keyPropertyMapping.Set(fluent => fluent.Type, Layer.Conventions, new TypeReference(typeof(HbmKeyPropertyConverterTester))); // Can be any class, this one is just guaranteed to exist
             var convertedHbmKeyProperty = converter.Convert(keyPropertyMapping);
-            var expectedType = new HbmType() { name = "HbmKeyPropertyConverterTester" };
-            convertedHbmKeyProperty.type.name.ShouldEqual(expectedType.name); // Can't just compare them directly, HbmType has no defined equality
+            convertedHbmKeyProperty.type1.ShouldEqual(keyPropertyMapping.Type.ToString());
         }
 
         [Test]
@@ -75,7 +73,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             // Don't set anything on the original mapping
             var convertedHbmKeyProperty = converter.Convert(keyPropertyMapping);
             var blankHbmKeyProperty = new HbmKeyProperty();
-            convertedHbmKeyProperty.type.ShouldEqual(blankHbmKeyProperty.type);
+            convertedHbmKeyProperty.type1.ShouldEqual(blankHbmKeyProperty.type1);
         }
 
         // If the length attribute is set, but no columns are present, convert it normally
