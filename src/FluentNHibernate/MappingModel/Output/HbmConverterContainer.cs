@@ -95,10 +95,12 @@ namespace FluentNHibernate.MappingModel.Output
             // FIXME: What does this need to convert as?
             RegisterConverter<ICollectionRelationshipMapping>(c =>
                 new HbmCollectionRelationshipConverter(c.Resolve<IHbmConverterServiceLocator>()));
+            */
 
             RegisterConverter<ManyToOneMapping, HbmManyToOne>(c =>
                 new HbmManyToOneConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
+            /*
             RegisterConverter<ManyToManyMapping, HbmManyToMany>(c =>
                 new HbmManyToManyConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
