@@ -37,10 +37,8 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterConverter<ColumnMapping, HbmColumn>(c =>
                 new HbmColumnConverter());
             
-            /*
             RegisterConverter<JoinMapping, HbmJoin>(c =>
                 new HbmJoinConverter(c.Resolve<IHbmConverterServiceLocator>()));
-            */
 
             RegisterConverter<DiscriminatorMapping, HbmDiscriminator>(c =>
                 new HbmDiscriminatorConverter(c.Resolve<IHbmConverterServiceLocator>()));
