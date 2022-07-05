@@ -1,6 +1,3 @@
-using System.Linq;
-using FluentNHibernate.MappingModel.Identity;
-using FluentNHibernate.Utils;
 using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
