@@ -2,6 +2,7 @@ using System;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
+using FluentNHibernate.Utils;
 using NHibernate.Cfg.MappingSchema;
 using IComponentMapping = FluentNHibernate.MappingModel.ClassBased.IComponentMapping;
 
@@ -84,21 +85,13 @@ namespace FluentNHibernate.MappingModel.Output
                 hbmClass.@abstract = classMapping.Abstract;
 
             if (classMapping.IsSpecified("Subselect"))
-                hbmClass.subselect = ToHbmSubselect(classMapping.Subselect);
+                hbmClass.subselect = classMapping.Subselect.ToHbmSubselect();
 
             if (classMapping.IsSpecified("SchemaAction"))
                 hbmClass.schemaaction = classMapping.SchemaAction;
 
             if (classMapping.IsSpecified("EntityName"))
                 hbmClass.entityname = classMapping.EntityName;
-        }
-
-        public static HbmSubselect ToHbmSubselect(params string[] text)
-        {
-            return new HbmSubselect()
-            {
-                Text = text
-            };
         }
 
         #region Methods paralleling XmlClassWriter

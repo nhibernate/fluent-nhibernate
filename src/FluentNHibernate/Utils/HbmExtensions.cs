@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FluentNHibernate.MappingModel;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Type;
@@ -30,6 +31,19 @@ namespace FluentNHibernate.Utils
             {
                 name = parameterPair.Key,
                 type = parameterPair.Value.Name
+            };
+        }
+
+        public static HbmSubselect ToHbmSubselect(this string content)
+        {
+            return new string[] { content }.ToHbmSubselect();
+        }
+
+        public static HbmSubselect ToHbmSubselect(this string[] content)
+        {
+            return new HbmSubselect()
+            {
+                Text = content.ToArray() // Simple way to get a typesafe defensive copy of the input array
             };
         }
     }

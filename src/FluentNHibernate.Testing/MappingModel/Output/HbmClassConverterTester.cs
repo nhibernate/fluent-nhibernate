@@ -418,15 +418,6 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         #region Non-converter-based subobject tests
 
         [Test]
-        public void ShouldConvertHbmSubselect()
-        {
-            var subselect = new string[] { "val" };
-            var convertedSubselect = HbmClassConverter.ToHbmSubselect(subselect);
-            convertedSubselect.ShouldNotBeNull();
-            convertedSubselect.Text.ShouldEqual(subselect);
-        }
-
-        [Test]
         public void ShouldConvertSubselectIfPopulated()
         {
             var classMapping = new ClassMapping();
