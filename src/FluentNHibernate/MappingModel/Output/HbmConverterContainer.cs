@@ -103,11 +103,9 @@ namespace FluentNHibernate.MappingModel.Output
             /*
             RegisterConverter<ManyToManyMapping, HbmManyToMany>(c =>
                 new HbmManyToManyConverter(c.Resolve<IHbmConverterServiceLocator>()));
-
-            // subclasses
-            RegisterConverter<SubclassMapping, HbmSubclass>(c =>
-                new HbmSubclassConverter(c.Resolve<IHbmConverterServiceLocator>()));
             */
+
+            RegisterSubclassConverters();
 
             RegisterConverter<FilterMapping, HbmFilter>(c =>
                 new HbmFilterConverter());
@@ -143,6 +141,12 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterConverter<KeyManyToOneMapping, HbmKeyManyToOne>(c =>
                 new HbmKeyManyToOneConverter(c.Resolve<IHbmConverterServiceLocator>()));
+        }
+
+        private void RegisterSubclassConverters()
+        {
+            RegisterConverter<SubclassMapping, object>(c =>
+                new HbmSubclassConverter(c.Resolve<IHbmConverterServiceLocator>()));
         }
 
         private void RegisterComponentConverters()
