@@ -43,10 +43,10 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterConverter<DiscriminatorMapping, HbmDiscriminator>(c =>
                 new HbmDiscriminatorConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
-            /*
             RegisterConverter<KeyMapping, HbmKey>(c =>
                 new HbmKeyConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
+            /*
             RegisterConverter<ParentMapping, HbmParent>(c =>
                 new HbmParentConverter());
 
