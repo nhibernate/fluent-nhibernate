@@ -40,10 +40,13 @@ namespace FluentNHibernate.Testing.Hbm
                 return hSub;
             });
 
-            // Set up a custom container with the fake FSub->HSub converter registered, and obtain our main converter from it (so that it will use the fake implementation)
+            // Set up a custom container with the fake FSub->HSub converter registered, and obtain our main converter from it (so
+            // that it will use the fake implementation). Note that we do the resolution _before_ we register the fake, so that
+            // in cases where we are doing recursive types and FMain == FSub + HMain == HSub (e.g., subclasses-of-subclasses) we
+            // get the real converter for the "outer" call but the fake for any "inner" calls.
             var container = new HbmConverterContainer();
-            container.Register<IHbmConverter<FSub, HSub>>(cnvrt => fakeConverter);
             IHbmConverter<FMain, HMain> converter = container.Resolve<IHbmConverter<FMain, HMain>>();
+            container.Register<IHbmConverter<FSub, HSub>>(cnvrt => fakeConverter);
 
             // Allocate a new fluent main object instance, and add a subobject instance to it
             var fMain = new FMain();
@@ -175,10 +178,13 @@ namespace FluentNHibernate.Testing.Hbm
                 return hSub;
             });
 
-            // Set up a custom container with the fake FSub->HSub converter registered, and obtain our main converter from it (so that it will use the fake implementation)
+            // Set up a custom container with the fake FSub->HSub converter registered, and obtain our main converter from it (so
+            // that it will use the fake implementation). Note that we do the resolution _before_ we register the fake, so that
+            // in cases where we are doing recursive types and FMain == FSub + HMain == HSub (e.g., subclasses-of-subclasses) we
+            // get the real converter for the "outer" call but the fake for any "inner" calls.
             var container = new HbmConverterContainer();
-            container.Register<IHbmConverter<FSub, HSub>>(cnvrt => fakeConverter);
             IHbmConverter<FMain, HMain> converter = container.Resolve<IHbmConverter<FMain, HMain>>();
+            container.Register<IHbmConverter<FSub, HSub>>(cnvrt => fakeConverter);
 
             // Allocate a new fluent main object instance, and add a subobject instance to it
             var fMain = new FMain();
@@ -345,10 +351,13 @@ namespace FluentNHibernate.Testing.Hbm
                 return hbm;
             });
 
-            // Set up a custom container with the fake FSub->HSub converter registered, and obtain our main converter from it (so that it will use the fake implementation)
+            // Set up a custom container with the fake FSub->HSub converter registered, and obtain our main converter from it (so
+            // that it will use the fake implementation). Note that we do the resolution _before_ we register the fake, so that
+            // in cases where we are doing recursive types and FMain == FSub + HMain == HSub (e.g., subclasses-of-subclasses) we
+            // get the real converter for the "outer" call but the fake for any "inner" calls.
             var container = new HbmConverterContainer();
-            container.Register<IHbmConverter<F, H>>(cnvrt => fakeConverter);
             IHbmConverter<FSuper, HSuper> converter = container.Resolve<IHbmConverter<FSuper, HSuper>>();
+            container.Register<IHbmConverter<F, H>>(cnvrt => fakeConverter);
 
             // Allocate an instance of the descendant type, but explicitly label it as the ancestor type to ensure that we pass it correctly
             FSuper mapping = new F();
