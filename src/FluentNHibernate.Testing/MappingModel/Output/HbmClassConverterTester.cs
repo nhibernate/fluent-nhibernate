@@ -423,10 +423,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             var classMapping = new ClassMapping();
             classMapping.Set(fluent => fluent.Subselect, Layer.Conventions, "val");
             var convertedHbmClass = converter.Convert(classMapping);
-
-            // Since we check the actual conversion to an HbmSubselect value elsewhere, the only thing we can usefully check here
-            // is that the field got populated.
-            convertedHbmClass.subselect.ShouldNotBeNull();
+            convertedHbmClass.subselect.Text.ShouldEqual(new string[] { classMapping.Subselect });
         }
 
         [Test]
