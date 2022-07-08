@@ -13,7 +13,7 @@ namespace FluentNHibernate.Testing.Hbm
     {
         /// <summary>
         /// Variant of <see cref="ShouldConvertSubobjectsAsLooselyTypedArray{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper[]})"/>
-        /// which supports custom construction of <c>FSub</c>.
+        /// which supports custom construction of both <c>FMain</c> and <c>FSub</c>.
         /// </summary>
         /// <seealso cref="ShouldConvertSubobjectsAsLooselyTypedArray{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper[]})"/>
         /// <typeparam name="FMain">the fluent type under test</typeparam>
@@ -21,12 +21,13 @@ namespace FluentNHibernate.Testing.Hbm
         /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
         /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
         /// <typeparam name="HSubSuper">the type of the array which stores the translated subobjects</typeparam>
+        /// <param name="newFMain">is used to construct a new instance of <c>FMain</c></param>
         /// <param name="newFSub">is used to construct a new instance of <c>FSub</c></param>
         /// <param name="addFSubToFMain">A handler which will add a fluent subobject to a fluent main object</param>
         /// <param name="getHSubSuperFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
-        public static void ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(Func<FSub> newFSub, Action<FMain, FSub> addFSubToFMain,
-                Func<HMain, HSubSuper[]> getHSubSuperFromHMain)
-            where FMain : IMapping, new()
+        public static void ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(Func<FMain> newFMain,
+                Func<FSub> newFSub, Action<FMain, FSub> addFSubToFMain, Func<HMain, HSubSuper[]> getHSubSuperFromHMain)
+            where FMain : IMapping
             where FSub : IMapping
             where HSub : HSubSuper, new()
         {
@@ -49,7 +50,7 @@ namespace FluentNHibernate.Testing.Hbm
             container.Register<IHbmConverter<FSub, HSub>>(cnvrt => fakeConverter);
 
             // Allocate a new fluent main object instance, and add a subobject instance to it
-            var fMain = new FMain();
+            var fMain = newFMain();
             addFSubToFMain(fMain, newFSub());
 
             // Now try to convert it
@@ -59,6 +60,52 @@ namespace FluentNHibernate.Testing.Hbm
             // instances actually does, and that the converter was called the correct number of times
             getHSubSuperFromHMain(convertedHMain).ShouldEqual(generatedHSubs.ToArray());
             A.CallTo(() => fakeConverter.Convert(A<FSub>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        /// <summary>
+        /// Variant of <see cref="ShouldConvertSubobjectsAsLooselyTypedArray{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper[]})"/>
+        /// which supports custom construction of <c>FMain</c>.
+        /// </summary>
+        /// <seealso cref="ShouldConvertSubobjectsAsLooselyTypedArray{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper[]})"/>
+        /// <typeparam name="FMain">the fluent type under test</typeparam>
+        /// <typeparam name="FSub">the fluent subobject type under test</typeparam>
+        /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
+        /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
+        /// <typeparam name="HSubSuper">the type of the array which stores the translated subobjects</typeparam>
+        /// <param name="newFMain">is used to construct a new instance of <c>FMain</c></param>
+        /// <param name="addFSubToFMain">A handler which will add a fluent subobject to a fluent main object</param>
+        /// <param name="getHSubSuperFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
+        public static void ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(Func<FMain> newFMain, Action<FMain, FSub> addFSubToFMain,
+                Func<HMain, HSubSuper[]> getHSubSuperFromHMain)
+            where FMain : IMapping
+            where FSub : IMapping, new()
+            where HSub : HSubSuper, new()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(newFMain, () => new FSub(),
+                addFSubToFMain, getHSubSuperFromHMain);
+        }
+
+        /// <summary>
+        /// Variant of <see cref="ShouldConvertSubobjectsAsLooselyTypedArray{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper[]})"/>
+        /// which supports custom construction of <c>FSub</c>.
+        /// </summary>
+        /// <seealso cref="ShouldConvertSubobjectsAsLooselyTypedArray{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper[]})"/>
+        /// <typeparam name="FMain">the fluent type under test</typeparam>
+        /// <typeparam name="FSub">the fluent subobject type under test</typeparam>
+        /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
+        /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
+        /// <typeparam name="HSubSuper">the type of the array which stores the translated subobjects</typeparam>
+        /// <param name="newFSub">is used to construct a new instance of <c>FSub</c></param>
+        /// <param name="addFSubToFMain">A handler which will add a fluent subobject to a fluent main object</param>
+        /// <param name="getHSubSuperFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
+        public static void ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(Func<FSub> newFSub, Action<FMain, FSub> addFSubToFMain,
+                Func<HMain, HSubSuper[]> getHSubSuperFromHMain)
+            where FMain : IMapping, new()
+            where FSub : IMapping
+            where HSub : HSubSuper, new()
+        {
+            ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(() => new FMain(), newFSub,
+                addFSubToFMain, getHSubSuperFromHMain);
         }
 
         /// <summary>
@@ -150,8 +197,75 @@ namespace FluentNHibernate.Testing.Hbm
         }
 
         /// <summary>
-        /// Variant of <see cref="ShouldConvertSubobjectAsLooselyTypedField{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper})"/>
+        /// Variant of <see cref="ShouldConvertSubobjectsAsStrictlyTypedArray{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub[]})"/>
+        /// which supports custom construction of <c>FMain</c>.
+        /// </summary>
+        /// <seealso cref="ShouldConvertSubobjectsAsStrictlyTypedArray{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub[]})"/>
+        /// <typeparam name="FMain">the fluent type under test</typeparam>
+        /// <typeparam name="FSub">the fluent subobject type under test</typeparam>
+        /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
+        /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
+        /// <param name="newFMain">is used to construct a new instance of <c>FMain</c></param>
+        /// <param name="addFSubToFMain">A handler which will add a fluent subobject to a fluent main object</param>
+        /// <param name="getHSubFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
+        public static void ShouldConvertSubobjectsAsStrictlyTypedArray<FMain, FSub, HMain, HSub>(Func<FMain> newFMain,
+                Action<FMain, FSub> addFSubToFMain, Func<HMain, HSub[]> getHSubFromHMain)
+            where FMain : IMapping
+            where FSub : IMapping, new()
+            where HSub : new()
+        {
+            // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
+            ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSub>(newFMain, addFSubToFMain, getHSubFromHMain);
+        }
+
+        /// <summary>
+        /// Variant of <see cref="ShouldConvertSubobjectsAsStrictlyTypedArray{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub[]})"/>
         /// which supports custom construction of <c>FSub</c>.
+        /// </summary>
+        /// <seealso cref="ShouldConvertSubobjectsAsStrictlyTypedArray{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub[]})"/>
+        /// <typeparam name="FMain">the fluent type under test</typeparam>
+        /// <typeparam name="FSub">the fluent subobject type under test</typeparam>
+        /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
+        /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
+        /// <param name="newFSub">is used to construct a new instance of <c>FSub</c></param>
+        /// <param name="addFSubToFMain">A handler which will add a fluent subobject to a fluent main object</param>
+        /// <param name="getHSubFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
+        public static void ShouldConvertSubobjectsAsStrictlyTypedArray<FMain, FSub, HMain, HSub>(Func<FSub> newFSub,
+                Action<FMain, FSub> addFSubToFMain, Func<HMain, HSub[]> getHSubFromHMain)
+            where FMain : IMapping, new()
+            where FSub : IMapping
+            where HSub : new()
+        {
+            // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
+            ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSub>(newFSub, addFSubToFMain, getHSubFromHMain);
+        }
+
+        /// <summary>
+        /// Variant of <see cref="ShouldConvertSubobjectsAsStrictlyTypedArray{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub[]})"/>
+        /// which supports custom construction of both <c>FMain</c> and <c>FSub</c>.
+        /// </summary>
+        /// <seealso cref="ShouldConvertSubobjectsAsStrictlyTypedArray{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub[]})"/>
+        /// <typeparam name="FMain">the fluent type under test</typeparam>
+        /// <typeparam name="FSub">the fluent subobject type under test</typeparam>
+        /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
+        /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
+        /// <param name="newFMain">is used to construct a new instance of <c>FMain</c></param>
+        /// <param name="newFSub">is used to construct a new instance of <c>FSub</c></param>
+        /// <param name="addFSubToFMain">A handler which will add a fluent subobject to a fluent main object</param>
+        /// <param name="getHSubFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
+        public static void ShouldConvertSubobjectsAsStrictlyTypedArray<FMain, FSub, HMain, HSub>(Func<FMain> newFMain, Func<FSub> newFSub,
+                Action<FMain, FSub> addFSubToFMain, Func<HMain, HSub[]> getHSubFromHMain)
+            where FMain : IMapping
+            where FSub : IMapping
+            where HSub : new()
+        {
+            // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
+            ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSub>(newFMain, newFSub, addFSubToFMain, getHSubFromHMain);
+        }
+
+        /// <summary>
+        /// Variant of <see cref="ShouldConvertSubobjectAsLooselyTypedField{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper})"/>
+        /// which supports custom construction of both <c>FMain</c> and <c>FSub</c>.
         /// </summary>
         /// <seealso cref="ShouldConvertSubobjectAsLooselyTypedField{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper})"/>
         /// <typeparam name="FMain">the fluent type under test</typeparam>
@@ -159,12 +273,13 @@ namespace FluentNHibernate.Testing.Hbm
         /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
         /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
         /// <typeparam name="HSubSuper">the type of the field which stores the translated subobject</typeparam>
+        /// <param name="newFMain">is used to construct a new instance of <c>FMain</c></typeparam>
         /// <param name="newFSub">is used to construct a new instance of <c>FSub</c></typeparam>
         /// <param name="setFSubOnFMain">A handler which will set a fluent subobject on a fluent main object</param>
         /// <param name="getHSubSuperFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
-        public static void ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSubSuper>(Func<FSub> newFSub, Action<FMain, FSub> setFSubOnFMain,
-                Func<HMain, HSubSuper> getHSubSuperFromHMain)
-            where FMain : IMapping, new()
+        public static void ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSubSuper>(Func<FMain> newFMain, Func<FSub> newFSub,
+                Action<FMain, FSub> setFSubOnFMain, Func<HMain, HSubSuper> getHSubSuperFromHMain)
+            where FMain : IMapping
             where FSub : IMapping
             where HSub : HSubSuper, new()
         {
@@ -187,7 +302,7 @@ namespace FluentNHibernate.Testing.Hbm
             container.Register<IHbmConverter<FSub, HSub>>(cnvrt => fakeConverter);
 
             // Allocate a new fluent main object instance, and add a subobject instance to it
-            var fMain = new FMain();
+            var fMain = newFMain();
             setFSubOnFMain(fMain, newFSub());
 
             // Now try to convert it
@@ -197,6 +312,50 @@ namespace FluentNHibernate.Testing.Hbm
             // instances actually does, and that the converter was called the correct number of times
             A.CallTo(() => fakeConverter.Convert(A<FSub>.Ignored)).MustHaveHappened(Repeated.Exactly.Once); // Do this first since it guarantees the list should have exactly one item
             getHSubSuperFromHMain(convertedHMain).ShouldEqual(generatedHSubs[0]);
+        }
+
+        /// <summary>
+        /// Variant of <see cref="ShouldConvertSubobjectAsLooselyTypedField{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper})"/>
+        /// which supports custom construction of <c>FMain</c>.
+        /// </summary>
+        /// <seealso cref="ShouldConvertSubobjectAsLooselyTypedField{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper})"/>
+        /// <typeparam name="FMain">the fluent type under test</typeparam>
+        /// <typeparam name="FSub">the fluent subobject type under test</typeparam>
+        /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
+        /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
+        /// <typeparam name="HSubSuper">the type of the field which stores the translated subobject</typeparam>
+        /// <param name="newFMain">is used to construct a new instance of <c>FMain</c></typeparam>
+        /// <param name="setFSubOnFMain">A handler which will set a fluent subobject on a fluent main object</param>
+        /// <param name="getHSubSuperFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
+        public static void ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSubSuper>(Func<FMain> newFMain, Action<FMain, FSub> setFSubOnFMain,
+                Func<HMain, HSubSuper> getHSubSuperFromHMain)
+            where FMain : IMapping
+            where FSub : IMapping, new()
+            where HSub : HSubSuper, new()
+        {
+            ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSubSuper>(newFMain, () => new FSub(), setFSubOnFMain, getHSubSuperFromHMain);
+        }
+
+        /// <summary>
+        /// Variant of <see cref="ShouldConvertSubobjectAsLooselyTypedField{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper})"/>
+        /// which supports custom construction of <c>FSub</c>.
+        /// </summary>
+        /// <seealso cref="ShouldConvertSubobjectAsLooselyTypedField{FMain, FSub, HMain, HSub, HSubSuper}(Action{FMain, FSub}, Func{HMain, HSubSuper})"/>
+        /// <typeparam name="FMain">the fluent type under test</typeparam>
+        /// <typeparam name="FSub">the fluent subobject type under test</typeparam>
+        /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
+        /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
+        /// <typeparam name="HSubSuper">the type of the field which stores the translated subobject</typeparam>
+        /// <param name="newFSub">is used to construct a new instance of <c>FSub</c></typeparam>
+        /// <param name="setFSubOnFMain">A handler which will set a fluent subobject on a fluent main object</param>
+        /// <param name="getHSubSuperFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
+        public static void ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSubSuper>(Func<FSub> newFSub, Action<FMain, FSub> setFSubOnFMain,
+                Func<HMain, HSubSuper> getHSubSuperFromHMain)
+            where FMain : IMapping, new()
+            where FSub : IMapping
+            where HSub : HSubSuper, new()
+        {
+            ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSubSuper>(() => new FMain(), newFSub, setFSubOnFMain, getHSubSuperFromHMain);
         }
 
         /// <summary>
@@ -298,6 +457,28 @@ namespace FluentNHibernate.Testing.Hbm
 
         /// <summary>
         /// Variant of <see cref="ShouldConvertSubobjectAsStrictlyTypedField{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub})"/>
+        /// which supports custom construction of <c>FMain</c>.
+        /// </summary>
+        /// <seealso cref="ShouldConvertSubobjectAsStrictlyTypedField{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub})"/>
+        /// <typeparam name="FMain">the fluent type under test</typeparam>
+        /// <typeparam name="FSub">the fluent subobject type under test</typeparam>
+        /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
+        /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
+        /// <param name="newFMain">is used to construct a new instance of <c>FMain</c></typeparam>
+        /// <param name="setFSubOnFMain">A handler which will set a fluent subobject on a fluent main object</param>
+        /// <param name="getHSubFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
+        public static void ShouldConvertSubobjectAsStrictlyTypedField<FMain, FSub, HMain, HSub>(Func<FMain> newFMain, Action<FMain, FSub> setFSubOnFMain,
+                Func<HMain, HSub> getHSubFromHMain)
+            where FMain : IMapping
+            where FSub : IMapping, new()
+            where HSub : new()
+        {
+            // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
+            ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSub>(newFMain, setFSubOnFMain, getHSubFromHMain);
+        }
+
+        /// <summary>
+        /// Variant of <see cref="ShouldConvertSubobjectAsStrictlyTypedField{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub})"/>
         /// which supports custom construction of <c>FSub</c>.
         /// </summary>
         /// <seealso cref="ShouldConvertSubobjectAsStrictlyTypedField{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub})"/>
@@ -316,6 +497,29 @@ namespace FluentNHibernate.Testing.Hbm
         {
             // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
             ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSub>(newFSub, setFSubOnFMain, getHSubFromHMain);
+        }
+
+        /// <summary>
+        /// Variant of <see cref="ShouldConvertSubobjectAsStrictlyTypedField{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub})"/>
+        /// which supports custom construction of both <c>FMain</c> and <c>FSub</c>.
+        /// </summary>
+        /// <seealso cref="ShouldConvertSubobjectAsStrictlyTypedField{FMain, FSub, HMain, HSub}(Action{FMain, FSub}, Func{HMain, HSub})"/>
+        /// <typeparam name="FMain">the fluent type under test</typeparam>
+        /// <typeparam name="FSub">the fluent subobject type under test</typeparam>
+        /// <typeparam name="HMain">the translated (Hibernate) type</typeparam>
+        /// <typeparam name="HSub">the translated (Hibernate) subobject type</typeparam>
+        /// <param name="newFMain">is used to construct a new instance of <c>FMain</c></typeparam>
+        /// <param name="newFSub">is used to construct a new instance of <c>FSub</c></typeparam>
+        /// <param name="setFSubOnFMain">A handler which will set a fluent subobject on a fluent main object</param>
+        /// <param name="getHSubFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
+        public static void ShouldConvertSubobjectAsStrictlyTypedField<FMain, FSub, HMain, HSub>(Func<FMain> newFMain, Func<FSub> newFSub,
+                Action<FMain, FSub> setFSubOnFMain, Func<HMain, HSub> getHSubFromHMain)
+            where FMain : IMapping
+            where FSub : IMapping
+            where HSub : new()
+        {
+            // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
+            ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSub>(newFMain, newFSub, setFSubOnFMain, getHSubFromHMain);
         }
 
         /// <summary>
