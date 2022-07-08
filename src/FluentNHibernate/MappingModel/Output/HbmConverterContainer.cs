@@ -147,6 +147,15 @@ namespace FluentNHibernate.MappingModel.Output
         {
             RegisterConverter<SubclassMapping, object>(c =>
                 new HbmSubclassConverter(c.Resolve<IHbmConverterServiceLocator>()));
+
+            RegisterConverter<SubclassMapping, HbmSubclass>(c =>
+                new HbmBasicSubclassConverter(c.Resolve<IHbmConverterServiceLocator>()));
+
+            RegisterConverter<SubclassMapping, HbmJoinedSubclass>(c =>
+                new HbmJoinedSubclassConverter(c.Resolve<IHbmConverterServiceLocator>()));
+
+            RegisterConverter<SubclassMapping, HbmUnionSubclass>(c =>
+                new HbmUnionSubclassConverter(c.Resolve<IHbmConverterServiceLocator>()));
         }
 
         private void RegisterComponentConverters()
