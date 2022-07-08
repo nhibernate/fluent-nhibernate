@@ -145,7 +145,7 @@ namespace FluentNHibernate.Testing.Hbm
             where FSub : IMapping, new()
             where HSub : new()
         {
-            // Strongly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
+            // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
             ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSub>(addFSubToFMain, getHSubFromHMain);
         }
 
@@ -292,7 +292,7 @@ namespace FluentNHibernate.Testing.Hbm
             where FSub : IMapping, new()
             where HSub : new()
         {
-            // Strongly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
+            // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
             ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSub>(setFSubOnFMain, getHSubFromHMain);
         }
 
@@ -314,7 +314,7 @@ namespace FluentNHibernate.Testing.Hbm
             where FSub : IMapping
             where HSub : new()
         {
-            // Strongly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
+            // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
             ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSub>(newFSub, setFSubOnFMain, getHSubFromHMain);
         }
 
