@@ -525,6 +525,13 @@ namespace FluentNHibernate.Testing.Hbm
         /// <summary>
         /// Test that a converter which handles a fluent type with children correctly converts a particular input type to the expected output type.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If the translated object type is determined by an aspect of the mapping object, rather than by inheritance-based logic,
+        /// then <see cref="ShouldConvertSpecificHbmForMappingSubtype{F, HSuper, H}(Func{F})"/> should be used instead of this
+        /// method.
+        /// </para>
+        /// </remarks>
         /// <example>
         /// <para>
         /// <see cref="HbmIdentityBasedConverter"/> converts from <see cref="IIdentityMapping"/> to <see cref="object"/>. The
@@ -536,6 +543,7 @@ namespace FluentNHibernate.Testing.Hbm
         /// ShouldConvertSpecificHbmForMappingChild<IIdentityMapping, CompositeIdMapping, object, HbmCompositeId>();
         /// </code>
         /// </example>
+        /// <seealso cref="ShouldConvertSpecificHbmForMappingSubtype{F, HSuper, H}(Func{F})"/>
         /// <typeparam name="FSuper">the shared ancestor type under test</typeparam>
         /// <typeparam name="F">the specific fluent type under test</typeparam>
         /// <typeparam name="HSuper">the translated (Hibernate) shared ancestor type</typeparam>
@@ -565,6 +573,81 @@ namespace FluentNHibernate.Testing.Hbm
 
             // Allocate an instance of the descendant type, but explicitly label it as the ancestor type to ensure that we pass it correctly
             FSuper mapping = new F();
+
+            // Now try to convert it
+            var convertedHbm = converter.Convert(mapping);
+
+            // Check that the converter for the specific descendant was invoked the correct number of times and that the returned value is the converted instance.
+            A.CallTo(() => fakeConverter.Convert(A<F>.Ignored)).MustHaveHappened(Repeated.Exactly.Once); // Do this first since it guarantees the list should have exactly one item
+            convertedHbm.ShouldEqual(generatedHbms[0]);
+        }
+
+        /// <summary>
+        /// Test that a converter which handles a fluent type with subtypes correctly converts a particular input subtype to the expected output type.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If the translated object type is determined by inheritance-based logic rather than by an aspect of the mapping
+        /// object itself, then <see cref="ShouldConvertSpecificHbmForMappingChild{FSuper, F, HSuper, H}"/> should be used
+        /// instead of this method.
+        /// </para>
+        /// </remarks>
+        /// <example>
+        /// <para>
+        /// <see cref="HbmSubclassConverter"/> converts from <see cref="SubclassMapping"/> to <see cref="object"/>, based on the
+        /// value of <see cref="SubclassMapping.SubclassType"/>. The following calls check that the subtypes <see
+        /// cref="SubclassType.Subclass"/>, <see cref="SubclassType.JoinedSubclass"/>, and <see cref="SubclassType.UnionSubclass"/>
+        /// are converted to <see cref="HbmSubclass"/>, <see cref="HbmJoinedSubclass"/>, and <see cref="HbmUnionSubclass"/>,
+        /// respectively.
+        /// </para>
+        /// <code>
+        /// ShouldConvertSpecificHbmForMappingSubtype<SubclassMapping, object, HbmSubclass>(
+        ///     () => new SubclassMapping(SubclassType.Subclass)
+        /// );
+        /// ShouldConvertSpecificHbmForMappingSubtype<SubclassMapping, object, HbmJoinedSubclass>(
+        ///     () => new SubclassMapping(SubclassType.JoinedSubclass)
+        /// );
+        /// ShouldConvertSpecificHbmForMappingSubtype<SubclassMapping, object, HbmUnionSubclass>(
+        ///     () => new SubclassMapping(SubclassType.UnionSubclass)
+        /// );
+        /// </code>
+        /// </example>
+        /// <seealso cref="ShouldConvertSpecificHbmForMappingChild{FSuper, F, HSuper, H}"/>
+        /// <typeparam name="F">the specific fluent type under test</typeparam>
+        /// <typeparam name="HSuper">the translated (Hibernate) shared ancestor type</typeparam>
+        /// <typeparam name="H">the translated (Hibernate) target type</typeparam>
+        /// <param name="newF">is used to construct a new instance of <c>F</c> (which is generally expected to select the specific
+        /// subtype for the test)</typeparam>
+        public static void ShouldConvertSpecificHbmForMappingSubtype<F, HSuper, H>(Func<F> newF)
+            where F : IMapping
+            where H : HSuper, new()
+        {
+            /* NOTE: Ideally, this test would register additional converters for all of the other targets and ensure that they
+             * were not called. However, while it is possible to detect all such converters, C#'s generic model combined with
+             * the limitations of FakeItEasy do not provide any straightforward way to register fakes for types that would have
+             * to be dynamically detected at runtime. So at least for now, we don't do that.
+             */
+
+            // Set up a fake converter that registers any HSub instances it generates and returns in a list
+            var generatedHbms = new List<H>();
+            var fakeConverter = A.Fake<IHbmConverter<F, H>>();
+            A.CallTo(() => fakeConverter.Convert(A<F>.Ignored)).ReturnsLazily(fSub =>
+            {
+                var hbm = new H();
+                generatedHbms.Add(hbm);
+                return hbm;
+            });
+
+            // Set up a custom container with the fake F->H converter registered, and obtain our main converter from it (so
+            // that it will use the fake implementation). Note that we do the resolution _before_ we register the fake, so that
+            // in cases where we are doing recursive types and HSuper == H we get the real converter for the "outer" call but the
+            // fake for any "inner" calls.
+            var container = new HbmConverterContainer();
+            IHbmConverter<F, HSuper> converter = container.Resolve<IHbmConverter<F, HSuper>>();
+            container.Register<IHbmConverter<F, H>>(cnvrt => fakeConverter);
+
+            // Allocate an instance of the descendant type, but explicitly label it as the ancestor type to ensure that we pass it correctly
+            F mapping = newF();
 
             // Now try to convert it
             var convertedHbm = converter.Convert(mapping);
