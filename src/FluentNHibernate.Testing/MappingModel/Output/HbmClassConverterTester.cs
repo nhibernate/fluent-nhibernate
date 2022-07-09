@@ -207,7 +207,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output
         public void ShouldFailToConvertOptimisticLockIfPopulatedWithInvalidValue()
         {
             var classMapping = new ClassMapping();
-            classMapping.Set(fluent => fluent.Polymorphism, Layer.Conventions, "invalid_value");
+            classMapping.Set(fluent => fluent.OptimisticLock, Layer.Conventions, "invalid_value");
             Assert.Throws<NotSupportedException>(() => converter.Convert(classMapping));
         }
 
