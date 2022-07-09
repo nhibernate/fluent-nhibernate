@@ -536,10 +536,10 @@ namespace FluentNHibernate.Testing.Hbm
         /// ShouldConvertSpecificHbmForMappingChild<IIdentityMapping, CompositeIdMapping, object, HbmCompositeId>();
         /// </code>
         /// </example>
-        /// <typeparam name="FSuper"></typeparam>
-        /// <typeparam name="F"></typeparam>
-        /// <typeparam name="HSuper"></typeparam>
-        /// <typeparam name="H"></typeparam>
+        /// <typeparam name="FSuper">the shared ancestor type under test</typeparam>
+        /// <typeparam name="F">the specific fluent type under test</typeparam>
+        /// <typeparam name="HSuper">the translated (Hibernate) shared ancestor type</typeparam>
+        /// <typeparam name="H">the translated (Hibernate) target type</typeparam>
         public static void ShouldConvertSpecificHbmForMappingChild<FSuper, F, HSuper, H>()
             where FSuper : IMapping
             where F : FSuper, new()
@@ -555,10 +555,10 @@ namespace FluentNHibernate.Testing.Hbm
                 return hbm;
             });
 
-            // Set up a custom container with the fake FSub->HSub converter registered, and obtain our main converter from it (so
+            // Set up a custom container with the fake F->H converter registered, and obtain our main converter from it (so
             // that it will use the fake implementation). Note that we do the resolution _before_ we register the fake, so that
-            // in cases where we are doing recursive types and FMain == FSub + HMain == HSub (e.g., subclasses-of-subclasses) we
-            // get the real converter for the "outer" call but the fake for any "inner" calls.
+            // in cases where we are doing recursive types and FSuper == F + HSuper == H we get the real converter for the "outer"
+            // call but the fake for any "inner" calls.
             var container = new HbmConverterContainer();
             IHbmConverter<FSuper, HSuper> converter = container.Resolve<IHbmConverter<FSuper, HSuper>>();
             container.Register<IHbmConverter<F, H>>(cnvrt => fakeConverter);
