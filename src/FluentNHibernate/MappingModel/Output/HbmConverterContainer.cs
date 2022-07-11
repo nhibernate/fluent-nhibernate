@@ -63,12 +63,11 @@ namespace FluentNHibernate.MappingModel.Output
             /*
             RegisterConverter<OneToOneMapping, HbmOneToOne>(c =>
                 new HbmOneToOneConverter());
+            */
 
-            // collections
-            // FIXME: What does this need to convert as?
-            RegisterConverter<CollectionMapping>(c =>
-                new HbmCollectionConverter(c.Resolve<IHbmConverterServiceLocator>()));
+            RegisterCollectionConverters();
 
+            /*
             // FIXME: What does this need to convert as?
             RegisterConverter<IIndexMapping>(c =>
                 new HbmIIndexConverter(c.Resolve<IHbmConverterServiceLocator>()));
@@ -141,6 +140,29 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterConverter<KeyManyToOneMapping, HbmKeyManyToOne>(c =>
                 new HbmKeyManyToOneConverter(c.Resolve<IHbmConverterServiceLocator>()));
+        }
+
+        private void RegisterCollectionConverters()
+        {
+            RegisterConverter<CollectionMapping, object>(c =>
+                new HbmCollectionConverter(c.Resolve<IHbmConverterServiceLocator>()));
+
+            /*
+            RegisterConverter<CollectionMapping, HbmArray>(c =>
+                new HbmArrayConverter(c.Resolve<IHbmConverterServiceLocator>()));
+
+            RegisterConverter<CollectionMapping, HbmBag>(c =>
+                new HbmBagConverter(c.Resolve<IHbmConverterServiceLocator>()));
+
+            RegisterConverter<CollectionMapping, HbmList>(c =>
+                new HbmListConverter(c.Resolve<IHbmConverterServiceLocator>()));
+
+            RegisterConverter<CollectionMapping, HbmMap>(c =>
+                new HbmMapConverter(c.Resolve<IHbmConverterServiceLocator>()));
+
+            RegisterConverter<CollectionMapping, HbmSet>(c =>
+                new HbmSetConverter(c.Resolve<IHbmConverterServiceLocator>()));
+            */
         }
 
         private void RegisterSubclassConverters()
