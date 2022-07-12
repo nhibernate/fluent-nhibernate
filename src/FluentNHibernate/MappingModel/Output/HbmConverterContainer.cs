@@ -150,10 +150,12 @@ namespace FluentNHibernate.MappingModel.Output
             /*
             RegisterConverter<CollectionMapping, HbmArray>(c =>
                 new HbmArrayConverter(c.Resolve<IHbmConverterServiceLocator>()));
+            */
 
             RegisterConverter<CollectionMapping, HbmBag>(c =>
                 new HbmBagConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
+            /*
             RegisterConverter<CollectionMapping, HbmList>(c =>
                 new HbmListConverter(c.Resolve<IHbmConverterServiceLocator>()));
 

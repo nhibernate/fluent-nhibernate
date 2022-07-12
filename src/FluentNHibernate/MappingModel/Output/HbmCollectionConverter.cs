@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel.Collections;
 using NHibernate.Cfg.MappingSchema;
 
@@ -6,6 +7,14 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class HbmCollectionConverter : HbmConverterBase<CollectionMapping, object>
     {
+        public static readonly EnumBiDictionary<Lazy, HbmCollectionLazy> FluentHbmLazyBiDict = new EnumBiDictionary<Lazy, HbmCollectionLazy>(
+            new Dictionary<Lazy, HbmCollectionLazy>() {
+                { Lazy.True, HbmCollectionLazy.True },
+                { Lazy.False, HbmCollectionLazy.False },
+                { Lazy.Extra, HbmCollectionLazy.Extra },
+            }
+        );
+
         private object hbmCollection;
 
         public HbmCollectionConverter(IHbmConverterServiceLocator serviceLocator) : base(serviceLocator)
