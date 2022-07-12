@@ -98,10 +98,8 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterConverter<ManyToOneMapping, HbmManyToOne>(c =>
                 new HbmManyToOneConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
-            /*
             RegisterConverter<ManyToManyMapping, HbmManyToMany>(c =>
                 new HbmManyToManyConverter(c.Resolve<IHbmConverterServiceLocator>()));
-            */
 
             RegisterSubclassConverters();
 
