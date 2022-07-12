@@ -5,7 +5,6 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Output
 {
     public abstract class HbmConverterBase<F, H> : NullMappingModelVisitor, IHbmConverter<F, H>
-        where F: IMapping
     {
         private readonly IHbmConverterServiceLocator serviceLocator;
 
@@ -17,7 +16,6 @@ namespace FluentNHibernate.MappingModel.Output
         public abstract H Convert(F mapping);
 
         protected HSub ConvertFluentSubobjectToHibernateNative<FSub, HSub>(FSub fluentMapping)
-            where FSub : IMapping
         {
             var converter = serviceLocator.GetConverter<FSub, HSub>();
             return converter.Convert(fluentMapping);

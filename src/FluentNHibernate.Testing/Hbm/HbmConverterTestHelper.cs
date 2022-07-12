@@ -27,8 +27,6 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubSuperFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
         public static void ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(Func<FMain> newFMain,
                 Func<FSub> newFSub, Action<FMain, FSub> addFSubToFMain, Func<HMain, HSubSuper[]> getHSubSuperFromHMain)
-            where FMain : IMapping
-            where FSub : IMapping
             where HSub : HSubSuper, new()
         {
             // Set up a fake converter that registers any HSub instances it generates and returns in a list
@@ -77,8 +75,7 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubSuperFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
         public static void ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(Func<FMain> newFMain, Action<FMain, FSub> addFSubToFMain,
                 Func<HMain, HSubSuper[]> getHSubSuperFromHMain)
-            where FMain : IMapping
-            where FSub : IMapping, new()
+            where FSub : new()
             where HSub : HSubSuper, new()
         {
             ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(newFMain, () => new FSub(),
@@ -100,8 +97,7 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubSuperFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
         public static void ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(Func<FSub> newFSub, Action<FMain, FSub> addFSubToFMain,
                 Func<HMain, HSubSuper[]> getHSubSuperFromHMain)
-            where FMain : IMapping, new()
-            where FSub : IMapping
+            where FMain : new()
             where HSub : HSubSuper, new()
         {
             ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(() => new FMain(), newFSub,
@@ -146,8 +142,8 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubSuperFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
         public static void ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(Action<FMain, FSub> addFSubToFMain,
                 Func<HMain, HSubSuper[]> getHSubSuperFromHMain)
-            where FMain : IMapping, new()
-            where FSub : IMapping, new()
+            where FMain : new()
+            where FSub : new()
             where HSub : HSubSuper, new()
         {
             ShouldConvertSubobjectsAsLooselyTypedArray<FMain, FSub, HMain, HSub, HSubSuper>(() => new FSub(), addFSubToFMain, getHSubSuperFromHMain);
@@ -188,8 +184,8 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="addFSubToFMain">A handler which will add a fluent subobject to a fluent main object</param>
         /// <param name="getHSubFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
         public static void ShouldConvertSubobjectsAsStrictlyTypedArray<FMain, FSub, HMain, HSub>(Action<FMain, FSub> addFSubToFMain, Func<HMain, HSub[]> getHSubFromHMain)
-            where FMain : IMapping, new()
-            where FSub : IMapping, new()
+            where FMain : new()
+            where FSub : new()
             where HSub : new()
         {
             // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
@@ -210,8 +206,7 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
         public static void ShouldConvertSubobjectsAsStrictlyTypedArray<FMain, FSub, HMain, HSub>(Func<FMain> newFMain,
                 Action<FMain, FSub> addFSubToFMain, Func<HMain, HSub[]> getHSubFromHMain)
-            where FMain : IMapping
-            where FSub : IMapping, new()
+            where FSub : new()
             where HSub : new()
         {
             // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
@@ -232,8 +227,7 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
         public static void ShouldConvertSubobjectsAsStrictlyTypedArray<FMain, FSub, HMain, HSub>(Func<FSub> newFSub,
                 Action<FMain, FSub> addFSubToFMain, Func<HMain, HSub[]> getHSubFromHMain)
-            where FMain : IMapping, new()
-            where FSub : IMapping
+            where FMain : new()
             where HSub : new()
         {
             // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
@@ -255,8 +249,6 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubFromHMain">A handler which will retrieve an array of translated subobjects from the translated main object</param>
         public static void ShouldConvertSubobjectsAsStrictlyTypedArray<FMain, FSub, HMain, HSub>(Func<FMain> newFMain, Func<FSub> newFSub,
                 Action<FMain, FSub> addFSubToFMain, Func<HMain, HSub[]> getHSubFromHMain)
-            where FMain : IMapping
-            where FSub : IMapping
             where HSub : new()
         {
             // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
@@ -279,8 +271,6 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubSuperFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
         public static void ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSubSuper>(Func<FMain> newFMain, Func<FSub> newFSub,
                 Action<FMain, FSub> setFSubOnFMain, Func<HMain, HSubSuper> getHSubSuperFromHMain)
-            where FMain : IMapping
-            where FSub : IMapping
             where HSub : HSubSuper, new()
         {
             // Set up a fake converter that registers any HSub instances it generates and returns in a list
@@ -329,8 +319,7 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubSuperFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
         public static void ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSubSuper>(Func<FMain> newFMain, Action<FMain, FSub> setFSubOnFMain,
                 Func<HMain, HSubSuper> getHSubSuperFromHMain)
-            where FMain : IMapping
-            where FSub : IMapping, new()
+            where FSub : new()
             where HSub : HSubSuper, new()
         {
             ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSubSuper>(newFMain, () => new FSub(), setFSubOnFMain, getHSubSuperFromHMain);
@@ -351,8 +340,7 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubSuperFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
         public static void ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSubSuper>(Func<FSub> newFSub, Action<FMain, FSub> setFSubOnFMain,
                 Func<HMain, HSubSuper> getHSubSuperFromHMain)
-            where FMain : IMapping, new()
-            where FSub : IMapping
+            where FMain : new()
             where HSub : HSubSuper, new()
         {
             ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSubSuper>(() => new FMain(), newFSub, setFSubOnFMain, getHSubSuperFromHMain);
@@ -404,8 +392,8 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubSuperFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
         public static void ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSubSuper>(Action<FMain, FSub> setFSubOnFMain,
                 Func<HMain, HSubSuper> getHSubSuperFromHMain)
-            where FMain : IMapping, new()
-            where FSub : IMapping, new()
+            where FMain : new()
+            where FSub : new()
             where HSub : HSubSuper, new()
         {
             ShouldConvertSubobjectAsLooselyTypedField<FMain, FSub, HMain, HSub, HSubSuper>(() => new FSub(), setFSubOnFMain, getHSubSuperFromHMain);
@@ -447,8 +435,8 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="setFSubOnFMain">A handler which will set a fluent subobject on a fluent main object</param>
         /// <param name="getHSubFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
         public static void ShouldConvertSubobjectAsStrictlyTypedField<FMain, FSub, HMain, HSub>(Action<FMain, FSub> setFSubOnFMain, Func<HMain, HSub> getHSubFromHMain)
-            where FMain : IMapping, new()
-            where FSub : IMapping, new()
+            where FMain : new()
+            where FSub : new()
             where HSub : new()
         {
             // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
@@ -469,8 +457,7 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
         public static void ShouldConvertSubobjectAsStrictlyTypedField<FMain, FSub, HMain, HSub>(Func<FMain> newFMain, Action<FMain, FSub> setFSubOnFMain,
                 Func<HMain, HSub> getHSubFromHMain)
-            where FMain : IMapping
-            where FSub : IMapping, new()
+            where FSub : new()
             where HSub : new()
         {
             // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
@@ -491,8 +478,7 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
         public static void ShouldConvertSubobjectAsStrictlyTypedField<FMain, FSub, HMain, HSub>(Func<FSub> newFSub, Action<FMain, FSub> setFSubOnFMain,
                 Func<HMain, HSub> getHSubFromHMain)
-            where FMain : IMapping, new()
-            where FSub : IMapping
+            where FMain : new()
             where HSub : new()
         {
             // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
@@ -514,8 +500,6 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="getHSubFromHMain">A handler which will retrieve a translated subobject from the translated main object</param>
         public static void ShouldConvertSubobjectAsStrictlyTypedField<FMain, FSub, HMain, HSub>(Func<FMain> newFMain, Func<FSub> newFSub,
                 Action<FMain, FSub> setFSubOnFMain, Func<HMain, HSub> getHSubFromHMain)
-            where FMain : IMapping
-            where FSub : IMapping
             where HSub : new()
         {
             // Strictly typed is just loosely typed with HSubSuper == HSub to restrict it to being exactly HSub
@@ -549,7 +533,6 @@ namespace FluentNHibernate.Testing.Hbm
         /// <typeparam name="HSuper">the translated (Hibernate) shared ancestor type</typeparam>
         /// <typeparam name="H">the translated (Hibernate) target type</typeparam>
         public static void ShouldConvertSpecificHbmForMappingChild<FSuper, F, HSuper, H>()
-            where FSuper : IMapping
             where F : FSuper, new()
             where H : HSuper, new()
         {
@@ -619,7 +602,6 @@ namespace FluentNHibernate.Testing.Hbm
         /// <param name="newF">is used to construct a new instance of <c>F</c> (which is generally expected to select the specific
         /// subtype for the test)</typeparam>
         public static void ShouldConvertSpecificHbmForMappingSubtype<F, HSuper, H>(Func<F> newF)
-            where F : IMapping
             where H : HSuper, new()
         {
             /* NOTE: Ideally, this test would register additional converters for all of the other targets and ensure that they
