@@ -73,10 +73,12 @@ namespace FluentNHibernate.MappingModel.Output
             /*
             RegisterConverter<IndexMapping, HbmIndex>(c =>
                 new HbmIndexConverter(c.Resolve<IHbmConverterServiceLocator>()));
+            */
 
             RegisterConverter<IndexManyToManyMapping, HbmIndexManyToMany>(c =>
                 new HbmIndexManyToManyConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
+            /*
             RegisterConverter<ElementMapping, HbmElement>(c =>
                 new HbmElementConverter(c.Resolve<IHbmConverterServiceLocator>()));
             */
