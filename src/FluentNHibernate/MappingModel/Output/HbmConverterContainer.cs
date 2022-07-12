@@ -89,12 +89,11 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterConverter<MetaValueMapping, HbmMetaValue>(c =>
                 new HbmMetaValueConverter());
+            */
 
             // collection relationships
-            // FIXME: What does this need to convert as?
-            RegisterConverter<ICollectionRelationshipMapping>(c =>
+            RegisterConverter<ICollectionRelationshipMapping, object>(c =>
                 new HbmCollectionRelationshipConverter(c.Resolve<IHbmConverterServiceLocator>()));
-            */
 
             RegisterConverter<ManyToOneMapping, HbmManyToOne>(c =>
                 new HbmManyToOneConverter(c.Resolve<IHbmConverterServiceLocator>()));
