@@ -161,10 +161,10 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterConverter<CollectionMapping, HbmMap>(c =>
                 new HbmMapConverter(c.Resolve<IHbmConverterServiceLocator>()));
+            */
 
             RegisterConverter<CollectionMapping, HbmSet>(c =>
                 new HbmSetConverter(c.Resolve<IHbmConverterServiceLocator>()));
-            */
         }
 
         private void RegisterSubclassConverters()
