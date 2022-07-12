@@ -67,11 +67,10 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterCollectionConverters();
 
-            /*
-            // FIXME: What does this need to convert as?
-            RegisterConverter<IIndexMapping>(c =>
-                new HbmIIndexConverter(c.Resolve<IHbmConverterServiceLocator>()));
+            RegisterConverter<IIndexMapping, object>(c =>
+                new HbmIndexBasedConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
+            /*
             RegisterConverter<IndexMapping, HbmIndex>(c =>
                 new HbmIndexConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
