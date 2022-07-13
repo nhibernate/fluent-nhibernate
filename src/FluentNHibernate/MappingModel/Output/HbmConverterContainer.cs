@@ -75,6 +75,9 @@ namespace FluentNHibernate.MappingModel.Output
                 new HbmIndexConverter(c.Resolve<IHbmConverterServiceLocator>()));
             */
 
+            RegisterConverter<IndexMapping, HbmListIndex>(c =>
+                new HbmListIndexConverter(c.Resolve<IHbmConverterServiceLocator>()));
+
             RegisterConverter<IndexManyToManyMapping, HbmIndexManyToMany>(c =>
                 new HbmIndexManyToManyConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
