@@ -1,6 +1,5 @@
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
-using FluentNHibernate.MappingModel.Output;
 using NHibernate.Cfg.MappingSchema;
 using NUnit.Framework;
 using static FluentNHibernate.Testing.Hbm.HbmConverterTestHelper;
