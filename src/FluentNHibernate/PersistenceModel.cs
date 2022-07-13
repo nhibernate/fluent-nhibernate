@@ -36,6 +36,7 @@ namespace FluentNHibernate
         private IEnumerable<HibernateMapping> compiledMappings;
         private ValidationVisitor validationVisitor;
         public int DegreeOfParallelism { get; set; } = 1;
+        public IMappingApplicationStrategy MappingApplicationStrategy { get; set; } = new XmlMappingApplicationStrategy();
         public PairBiDirectionalManyToManySidesDelegate BiDirectionalManyToManyPairer { get; set; }
 
         IDiagnosticMessageDispatcher diagnosticDispatcher = new DefaultDiagnosticMessageDispatcher();
@@ -284,16 +285,7 @@ namespace FluentNHibernate
         {
             EnsureMappingsBuilt();
 
-            foreach (var document in compiledMappings.Where(m => !m.Classes.Any()).AsParallel().AsOrdered().WithDegreeOfParallelism(DegreeOfParallelism).Select(m=>new MappingXmlSerializer().Serialize(m)))
-            {
-                cfg.AddDocument(document);
-            }
-
-            foreach (var t in compiledMappings.Where(m => m.Classes.Any()).AsParallel().AsOrdered().WithDegreeOfParallelism(DegreeOfParallelism).Select(m=>Tuple.Create(m, new MappingXmlSerializer().Serialize(m))))
-            {
-                if (cfg.GetClassMapping(t.Item1.Classes.First().Type) == null)
-                    cfg.AddDocument(t.Item2);
-            }
+            MappingApplicationStrategy.ApplyMappingsToConfiguration(compiledMappings, cfg, DegreeOfParallelism);
         }
 
         public bool ContainsMapping(Type type)
@@ -366,5 +358,10 @@ namespace FluentNHibernate
         {
             return new Member[0];
         }
+    }
+
+    public interface IMappingApplicationStrategy
+    {
+        void ApplyMappingsToConfiguration(IEnumerable<HibernateMapping> mappings, Configuration cfg, int degreeOfParallelism);
     }
 }
