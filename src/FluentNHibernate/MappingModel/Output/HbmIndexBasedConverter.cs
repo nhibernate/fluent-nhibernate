@@ -1,5 +1,4 @@
 using FluentNHibernate.MappingModel.Collections;
-using FluentNHibernate.Visitors;
 using NHibernate.Cfg.MappingSchema;
 
 namespace FluentNHibernate.MappingModel.Output
@@ -20,7 +19,14 @@ namespace FluentNHibernate.MappingModel.Output
 
         public override void ProcessIndex(IndexMapping indexMapping)
         {
-            hbm = ConvertFluentSubobjectToHibernateNative<IndexMapping, HbmIndex>(indexMapping);
+            if (indexMapping.IsSpecified("Offset"))
+            {
+                hbm = ConvertFluentSubobjectToHibernateNative<IndexMapping, HbmListIndex>(indexMapping);
+            }
+            else
+            {
+                hbm = ConvertFluentSubobjectToHibernateNative<IndexMapping, HbmIndex>(indexMapping);
+            }
         }
 
         public override void ProcessIndex(IndexManyToManyMapping indexMapping)

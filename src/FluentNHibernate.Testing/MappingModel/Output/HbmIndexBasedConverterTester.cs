@@ -1,3 +1,4 @@
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Output;
 using NHibernate.Cfg.MappingSchema;
@@ -9,19 +10,34 @@ namespace FluentNHibernate.Testing.MappingModel.Output
     [TestFixture]
     public class HbmIndexBasedConverterTester
     {
-        private IHbmConverter<IIndexMapping, object> converter;
-
-        [SetUp]
-        public void GetConverterFromContainer()
+        [Test]
+        public void ShouldConvertIndexForIndexMappingWithNoOffset()
         {
-            var container = new HbmConverterContainer();
-            converter = container.Resolve<IHbmConverter<IIndexMapping, object>>();
+            ShouldConvertSpecificHbmForMapping<IIndexMapping, IndexMapping, object, HbmIndex>(
+                () => NewIndexMappingWithNoOffset()
+            );
+        }
+
+        private static IndexMapping NewIndexMappingWithNoOffset()
+        {
+            var indexMapping = new IndexMapping();
+            // Don't apply a value to IndexMapping.Offset
+            return indexMapping;
         }
 
         [Test]
-        public void ShouldConvertIndexForIndexMapping()
+        public void ShouldConvertListIndexForIndexMappingWithOffset()
         {
-            ShouldConvertSpecificHbmForMappingChild<IIndexMapping, IndexMapping, object, HbmIndex>();
+            ShouldConvertSpecificHbmForMapping<IIndexMapping, IndexMapping, object, HbmListIndex>(
+                () => NewIndexMappingWithOffset()
+            );
+        }
+
+        private static IndexMapping NewIndexMappingWithOffset()
+        {
+            var indexMapping = new IndexMapping();
+            indexMapping.Set(fluent => fluent.Offset, Layer.Conventions, 31);
+            return indexMapping;
         }
 
         [Test]
