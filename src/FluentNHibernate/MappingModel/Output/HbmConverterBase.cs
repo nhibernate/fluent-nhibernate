@@ -29,7 +29,7 @@ namespace FluentNHibernate.MappingModel.Output
             nullableArray[nullableArray.Length - 1] = item;
         }
 
-        protected E LookupEnumValueIn<E>(XmlLinkedEnumBiDictionary<E> enumDict, String key)
+        protected E LookupEnumValueIn<E, V>(EnumBiDictionary<E, V> enumDict, V key)
                 where E : System.Enum
         {
             try
@@ -40,6 +40,12 @@ namespace FluentNHibernate.MappingModel.Output
             {
                 throw new NotSupportedException(String.Format("{0} is not a recognized value for {1}", key, typeof(E).Name), keyEx);
             }
+        }
+
+        protected E LookupEnumValueIn<E>(XmlLinkedEnumBiDictionary<E> enumDict, String key)
+                where E : System.Enum
+        {
+            return LookupEnumValueIn<E, string>(enumDict, key);
         }
     }
 }

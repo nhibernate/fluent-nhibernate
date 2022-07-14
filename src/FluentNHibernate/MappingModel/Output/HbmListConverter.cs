@@ -64,7 +64,7 @@ namespace FluentNHibernate.MappingModel.Output
             bool lazySpecified = collectionMapping.IsSpecified("Lazy");
             hbmList.lazySpecified = lazySpecified;
             if (lazySpecified)
-                hbmList.lazy = FluentHbmLazyBiDict[collectionMapping.Lazy];
+                hbmList.lazy = LookupEnumValueIn(FluentHbmLazyBiDict, collectionMapping.Lazy);
 
             if (collectionMapping.IsSpecified("Name"))
                 hbmList.name = collectionMapping.Name;
