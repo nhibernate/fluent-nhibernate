@@ -116,10 +116,8 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterConverter<StoredProcedureMapping, HbmCustomSQL>(c =>
                 new HbmStoredProcedureConverter());
 
-            /*
             RegisterConverter<TuplizerMapping, HbmTuplizer>(c =>
                 new HbmTuplizerConverter());
-            */
         }
 
         private void RegisterIdConverters()
