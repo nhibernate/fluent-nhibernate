@@ -7,11 +7,11 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class HbmCollectionConverter : HbmConverterBase<CollectionMapping, object>
     {
-        public static readonly EnumBiDictionary<Lazy, HbmCollectionLazy> FluentHbmLazyBiDict = new EnumBiDictionary<Lazy, HbmCollectionLazy>(
-            new Dictionary<Lazy, HbmCollectionLazy>() {
-                { Lazy.True, HbmCollectionLazy.True },
-                { Lazy.False, HbmCollectionLazy.False },
-                { Lazy.Extra, HbmCollectionLazy.Extra },
+        public static readonly EnumBiDictionary<HbmCollectionLazy, Lazy> FluentHbmLazyBiDict = new EnumBiDictionary<HbmCollectionLazy, Lazy>(
+            new Dictionary<HbmCollectionLazy, Lazy>() {
+                { HbmCollectionLazy.True, Lazy.True  },
+                { HbmCollectionLazy.False, Lazy.False },
+                { HbmCollectionLazy.Extra, Lazy.Extra },
             }
         );
 
