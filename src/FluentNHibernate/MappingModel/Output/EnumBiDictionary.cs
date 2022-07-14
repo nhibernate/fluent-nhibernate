@@ -18,8 +18,10 @@ namespace FluentNHibernate.MappingModel.Output
             memberToValue = valueToMember.ToDictionary(pair => pair.Value, pair => pair.Key);
         }
 
-        public EnumBiDictionary(IReadOnlyDictionary<E, V> enumToValueDict) : this(e => enumToValueDict[e])
+        public EnumBiDictionary(IReadOnlyDictionary<E, V> enumToValueDict)
         {
+            valueToMember = enumToValueDict.ToDictionary(pair => pair.Value, pair => pair.Key); // Obtain this by inverting the input dictionary
+            memberToValue = valueToMember.ToDictionary(pair => pair.Value, pair => pair.Key); // Invert the inversion (we could also just copy it, but this is more consistent)
         }
 
         public V this [E enumMember]
