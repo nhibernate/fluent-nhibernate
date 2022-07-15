@@ -29,10 +29,8 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterIdConverters();
             RegisterComponentConverters();
 
-            /*
             RegisterConverter<NaturalIdMapping, HbmNaturalId>(c =>
                 new HbmNaturalIdConverter(c.Resolve<IHbmConverterServiceLocator>()));
-            */
 
             RegisterConverter<ColumnMapping, HbmColumn>(c =>
                 new HbmColumnConverter());
