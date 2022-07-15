@@ -50,10 +50,10 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterConverter<CompositeElementMapping, HbmCompositeElement>(c =>
                 new HbmCompositeElementConverter(c.Resolve<IHbmConverterServiceLocator>()));
+            */
 
             RegisterConverter<VersionMapping, HbmVersion>(c =>
                 new HbmVersionConverter(c.Resolve<IHbmConverterServiceLocator>()));
-            */
 
             RegisterConverter<CacheMapping, HbmCache>(c =>
                 new HbmCacheConverter());
