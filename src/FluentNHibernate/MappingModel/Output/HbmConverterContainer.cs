@@ -58,10 +58,8 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterConverter<CacheMapping, HbmCache>(c =>
                 new HbmCacheConverter());
 
-            /*
             RegisterConverter<OneToOneMapping, HbmOneToOne>(c =>
                 new HbmOneToOneConverter());
-            */
 
             RegisterCollectionConverters();
 
