@@ -82,10 +82,10 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterConverter<OneToManyMapping, HbmOneToMany>(c =>
                 new HbmOneToManyConverter());
             
-            /*
             RegisterConverter<AnyMapping, HbmAny>(c =>
                 new HbmAnyConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
+            /*
             RegisterConverter<MetaValueMapping, HbmMetaValue>(c =>
                 new HbmMetaValueConverter());
             */
