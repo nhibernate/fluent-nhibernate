@@ -85,10 +85,8 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterConverter<AnyMapping, HbmAny>(c =>
                 new HbmAnyConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
-            /*
             RegisterConverter<MetaValueMapping, HbmMetaValue>(c =>
                 new HbmMetaValueConverter());
-            */
 
             // collection relationships
             RegisterConverter<ICollectionRelationshipMapping, object>(c =>
