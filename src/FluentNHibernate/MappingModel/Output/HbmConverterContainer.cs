@@ -44,10 +44,8 @@ namespace FluentNHibernate.MappingModel.Output
             RegisterConverter<KeyMapping, HbmKey>(c =>
                 new HbmKeyConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
-            /*
             RegisterConverter<ParentMapping, HbmParent>(c =>
                 new HbmParentConverter());
-            */
 
             RegisterConverter<CompositeElementMapping, HbmCompositeElement>(c =>
                 new HbmCompositeElementConverter(c.Resolve<IHbmConverterServiceLocator>()));
