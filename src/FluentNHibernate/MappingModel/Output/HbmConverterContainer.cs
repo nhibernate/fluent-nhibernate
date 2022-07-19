@@ -47,10 +47,10 @@ namespace FluentNHibernate.MappingModel.Output
             /*
             RegisterConverter<ParentMapping, HbmParent>(c =>
                 new HbmParentConverter());
+            */
 
             RegisterConverter<CompositeElementMapping, HbmCompositeElement>(c =>
                 new HbmCompositeElementConverter(c.Resolve<IHbmConverterServiceLocator>()));
-            */
 
             RegisterConverter<VersionMapping, HbmVersion>(c =>
                 new HbmVersionConverter(c.Resolve<IHbmConverterServiceLocator>()));
