@@ -4,6 +4,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 using NHibernate.Cfg.MappingSchema;
+using IComponentMapping = FluentNHibernate.MappingModel.ClassBased.IComponentMapping;
 
 namespace FluentNHibernate.MappingModel.Output
 {
@@ -172,16 +173,11 @@ namespace FluentNHibernate.MappingModel.Output
 
         private void RegisterComponentConverters()
         {
-            /*
-            // FIXME: What does this need to convert as?
-            // FIXME: Needs an explicit import or to be fully explicit here, depending on whether we need  both IComponentMapping types...
-            RegisterConverter<IComponentMapping, HbmComponent>(c =>
-                new HbmComponentConverter(c.Resolve<IHbmConverterServiceLocator>()));
+            RegisterConverter<IComponentMapping, object>(c =>
+                new HbmComponentBasedConverter(c.Resolve<IHbmConverterServiceLocator>()));
 
-            // FIXME: What does this need to convert as?
-            RegisterConverter<ReferenceComponentMapping>(c =>
+            RegisterConverter<ReferenceComponentMapping, object>(c =>
                 new HbmReferenceComponentConverter(c.Resolve<IHbmConverterServiceLocator>()));
-            */
         }
 
         private void RegisterConverter<F, H>(Func<Container, object> instantiate)
