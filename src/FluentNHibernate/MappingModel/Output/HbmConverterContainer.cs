@@ -178,6 +178,9 @@ namespace FluentNHibernate.MappingModel.Output
 
             RegisterConverter<ReferenceComponentMapping, object>(c =>
                 new HbmReferenceComponentConverter(c.Resolve<IHbmConverterServiceLocator>()));
+
+            RegisterConverter<ComponentMapping, HbmComponent>(c =>
+                new HbmComponentConverter(c.Resolve<IHbmConverterServiceLocator>()));
         }
 
         private void RegisterConverter<F, H>(Func<Container, object> instantiate)
