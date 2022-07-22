@@ -644,7 +644,7 @@ namespace FluentNHibernate.Testing.Hbm
             // in cases where we are doing recursive types and HSuper == H we get the real converter for the "outer" call but the
             // fake for any "inner" calls.
             var container = new HbmConverterContainer();
-            IHbmConverter<FSuper, HSuper> converter = container.Resolve<IHbmConverter<FSuper, HSuper>>(); // FIXME: This differs between them (but we don't even have FSuper, does it have to?)
+            IHbmConverter<FSuper, HSuper> converter = container.Resolve<IHbmConverter<FSuper, HSuper>>();
             container.Register<IHbmConverter<F, H>>(cnvrt => fakeConverter);
 
             // Allocate an instance of the descendant type, but explicitly label it as the ancestor type to ensure that we pass it correctly
