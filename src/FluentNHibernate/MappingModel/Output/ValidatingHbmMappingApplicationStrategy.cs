@@ -44,35 +44,36 @@ namespace FluentNHibernate.MappingModel.Output
             cfg.AddDeserializedMapping(directHbmMapping, "(XmlDocument)");
         }
 
+        private static readonly IReadOnlyList<Type> KnownTypes = new List<Type>() {
+                typeof(NHibernate.Type.Int32Type),
+                typeof(Dictionary<String, LayeredValues>),
+                typeof(HbmClass),
+                typeof(HbmId),
+                typeof(HbmProperty),
+                typeof(HbmColumn),
+                typeof(HbmManyToOne),
+                typeof(HbmJoin),
+                typeof(HbmSet),
+                typeof(HbmOneToMany),
+                typeof(HbmManyToMany),
+                typeof(HbmSubclass),
+                typeof(HbmJoinedSubclass),
+                typeof(HbmUnionSubclass),
+                typeof(HbmArray),
+                typeof(HbmBag),
+                typeof(HbmList),
+                typeof(HbmMap),
+                typeof(HbmSet),
+                typeof(HbmOneToMany),
+                typeof(HbmManyToMany),
+                typeof(HbmIndex),
+                typeof(HbmIndexManyToMany),
+                typeof(HbmListIndex),
+            };
+
         private string ToJson(object mapping)
         {
-            List<Type> knownTypes = new List<Type>();
-            knownTypes.Add(typeof(NHibernate.Type.Int32Type));
-            knownTypes.Add(typeof(Dictionary<String, LayeredValues>));
-            knownTypes.Add(typeof(HbmClass));
-            knownTypes.Add(typeof(HbmId));
-            knownTypes.Add(typeof(HbmProperty));
-            knownTypes.Add(typeof(HbmColumn));
-            knownTypes.Add(typeof(HbmManyToOne));
-            knownTypes.Add(typeof(HbmJoin));
-            knownTypes.Add(typeof(HbmSet));
-            knownTypes.Add(typeof(HbmOneToMany));
-            knownTypes.Add(typeof(HbmManyToMany));
-            knownTypes.Add(typeof(HbmSubclass));
-            knownTypes.Add(typeof(HbmJoinedSubclass));
-            knownTypes.Add(typeof(HbmUnionSubclass));
-            knownTypes.Add(typeof(HbmArray));
-            knownTypes.Add(typeof(HbmBag));
-            knownTypes.Add(typeof(HbmList));
-            knownTypes.Add(typeof(HbmMap));
-            knownTypes.Add(typeof(HbmSet));
-            knownTypes.Add(typeof(HbmOneToMany));
-            knownTypes.Add(typeof(HbmManyToMany));
-            knownTypes.Add(typeof(HbmIndex));
-            knownTypes.Add(typeof(HbmIndexManyToMany));
-            knownTypes.Add(typeof(HbmListIndex));
-
-            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(mapping.GetType(), knownTypes);
+            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(mapping.GetType(), KnownTypes);
             MemoryStream memStream = new MemoryStream();
             jsonSerializer.WriteObject(memStream, mapping);
             return Encoding.Default.GetString(memStream.ToArray());
