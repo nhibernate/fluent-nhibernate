@@ -69,6 +69,9 @@ namespace FluentNHibernate.MappingModel.Output
                 typeof(HbmIndex),
                 typeof(HbmIndexManyToMany),
                 typeof(HbmListIndex),
+                typeof(HbmAny),
+                typeof(HbmComponent),
+                typeof(HbmDynamicComponent),
             };
 
         private string ToJson(object mapping)
