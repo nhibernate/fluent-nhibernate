@@ -4,10 +4,6 @@ namespace FluentNHibernate.MappingModel.Output
 {
     public class HbmAnyConverter : HbmConverterBase<AnyMapping, HbmAny>
     {
-        private static readonly XmlLinkedEnumBiDictionary<HbmFetchMode> fetchDict = new XmlLinkedEnumBiDictionary<HbmFetchMode>();
-        private static readonly XmlLinkedEnumBiDictionary<HbmLaziness> lazyDict = new XmlLinkedEnumBiDictionary<HbmLaziness>();
-        private static readonly XmlLinkedEnumBiDictionary<HbmNotFoundMode> notFoundDict = new XmlLinkedEnumBiDictionary<HbmNotFoundMode>();
-
         private HbmAny hbmAny;
 
         public HbmAnyConverter(IHbmConverterServiceLocator serviceLocator) : base(serviceLocator)
