@@ -12,6 +12,7 @@ namespace FluentNHibernate.Cfg
         bool mergeMappings;
         readonly IDiagnosticLogger logger;
         PersistenceModel model;
+        IMappingApplicationStrategy mappingApplicationStrategy;
 
         public MappingConfiguration()
             : this(new NullDiagnosticsLogger())
@@ -32,6 +33,12 @@ namespace FluentNHibernate.Cfg
         public MappingConfiguration UsePersistenceModel(PersistenceModel persistenceModel)
         {
             model = persistenceModel;
+            return this;
+        }
+
+        public MappingConfiguration UseMappingApplicationStrategy(IMappingApplicationStrategy mappingApplicationStrategy)
+        {
+            this.mappingApplicationStrategy = mappingApplicationStrategy;
             return this;
         }
 
@@ -93,6 +100,8 @@ namespace FluentNHibernate.Cfg
             FluentMappings.Apply(model);
             AutoMappings.Apply(cfg, model);
             model.DegreeOfParallelism = degreeOfParallelism;
+            if (mappingApplicationStrategy != null)
+                model.MappingApplicationStrategy = mappingApplicationStrategy;
             model.Configure(cfg);
         }
 
