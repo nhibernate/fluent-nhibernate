@@ -19,7 +19,7 @@ namespace FluentNHibernate.MappingModel.Output
 
         protected override void ApplyIntermediateFormToConfiguration(HbmMapping intermediateForm, Configuration cfg)
         {
-            cfg.AddDeserializedMapping(intermediateForm, "(XmlDocument)");
+            cfg.AddDeserializedMapping(intermediateForm, "(Direct)");
         }
     }
 }
