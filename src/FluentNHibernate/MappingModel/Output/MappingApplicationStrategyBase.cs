@@ -30,8 +30,8 @@ namespace FluentNHibernate.MappingModel.Output
         /// Apply a translated mapping to a <see cref="Configuration"/>. Implementations of this method are not required
         /// to be thread-safe, and may safely assume that calls to this method will be invoked serially.
         /// </summary>
-        /// <param name="intermediateForm"></param>
-        /// <param name="cfg"></param>
+        /// <param name="intermediateForm">a translated Hibernate mapping</param>
+        /// <param name="cfg">the target configuration</param>
         protected abstract void ApplyIntermediateFormToConfiguration(I intermediateForm, Configuration cfg);
 
         public void ApplyMappingsToConfiguration(IEnumerable<HibernateMapping> mappings, Configuration cfg, int degreeOfParallelism)
