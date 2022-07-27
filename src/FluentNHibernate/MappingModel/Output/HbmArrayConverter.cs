@@ -92,6 +92,9 @@ namespace FluentNHibernate.MappingModel.Output
             if (collectionMapping.IsSpecified("Subselect"))
                 hbmArray.subselect = collectionMapping.Subselect.ToHbmSubselect();
 
+            if (collectionMapping.IsSpecified("Mutable"))
+                hbmArray.mutable = collectionMapping.Mutable;
+
             #endregion Base collection attributes
 
             #region Type-specific collection attributes

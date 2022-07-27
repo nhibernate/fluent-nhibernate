@@ -376,6 +376,25 @@ namespace FluentNHibernate.Testing.MappingModel.Output
             convertedHbmArray.subselect.ShouldEqual(blankHbmArray.subselect);
         }
 
+        [Test]
+        public void ShouldConvertMutableIfPopulated()
+        {
+            var arrayMapping = CollectionMapping.Array();
+            arrayMapping.Set(fluent => fluent.Mutable, Layer.Conventions, false); // Defaults to true, so use this to ensure that we can detect changes
+            var convertedHbmArray = converter.Convert(arrayMapping);
+            convertedHbmArray.mutable.ShouldEqual(arrayMapping.Mutable);
+        }
+
+        [Test]
+        public void ShouldNotConvertMutableIfNotPopulated()
+        {
+            var arrayMapping = CollectionMapping.Array();
+            // Don't set anything on the original mapping
+            var convertedHbmArray = converter.Convert(arrayMapping);
+            var blankHbmArray = new HbmArray();
+            convertedHbmArray.mutable.ShouldEqual(blankHbmArray.mutable);
+        }
+
         #endregion Base collection attribute value field tests
 
         #region Type-specific collection attribute value field tests
