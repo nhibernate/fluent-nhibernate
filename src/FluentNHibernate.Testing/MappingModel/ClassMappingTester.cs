@@ -4,6 +4,7 @@ using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Visitors;
 using FakeItEasy;
+using FluentNHibernate.MappingModel.Collections;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.MappingModel
@@ -148,6 +149,66 @@ namespace FluentNHibernate.Testing.MappingModel
             classMap.AcceptVisitor(visitor);
 
             A.CallTo(() => visitor.Visit(classMap.Discriminator)).MustHaveHappened();
+        }
+
+        [Test]
+        public void CanAddCollection()
+        {
+            var collection = CollectionMapping.Bag();
+            collection.Set(x => x.Name, Layer.Defaults, "Collection1");
+            mapping.AddCollection(collection);
+
+            mapping.Collections.ShouldContain(collection);
+        }
+
+        [Test]
+        public void CanAddComponent()
+        {
+            var component = new ComponentMapping(ComponentType.Component);
+            component.Set(x => x.Name, Layer.Defaults, "Component1");
+            mapping.AddComponent(component);
+
+            mapping.Components.ShouldContain(component);
+        }
+
+        [Test]
+        public void CanAddOneToOne()
+        {
+            var oneToOne = new OneToOneMapping();
+            oneToOne.Set(x => x.Name, Layer.Defaults, "OneToOne1");
+            mapping.AddOneToOne(oneToOne);
+
+            mapping.OneToOnes.ShouldContain(oneToOne);
+        }
+
+        [Test]
+        public void CanAddAny()
+        {
+            var any = new AnyMapping();
+            any.Set(x => x.Name, Layer.Defaults, "Any1");
+            mapping.AddAny(any);
+
+            mapping.Anys.ShouldContain(any);
+        }
+
+        [Test]
+        public void CanAddJoin()
+        {
+            var join = new JoinMapping();
+            join.Set(x => x.TableName, Layer.Defaults, "TableName1");
+            mapping.AddJoin(join);
+
+            mapping.Joins.ShouldContain(join);
+        }
+
+        [Test]
+        public void CanAddFilter()
+        {
+            var filter = new FilterMapping();
+            filter.Set(x => x.Name, Layer.Defaults, "Filter1");
+            mapping.AddFilter(filter);
+
+            mapping.Filters.ShouldContain(filter);
         }
     }
 }
