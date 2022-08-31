@@ -86,10 +86,11 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
-        public void Can_add_subclass()
+        public void CanAddSubclass()
         {
             var joinedSubclass = new SubclassMapping(SubclassType.JoinedSubclass);
             mapping.AddSubclass(joinedSubclass);
+
             mapping.Subclasses.ShouldContain(joinedSubclass);
         }
 
@@ -113,10 +114,11 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
-        public void Can_add_stored_procedure()
+        public void CanAddStoredProcedure()
         {
             var storedProcedure = new StoredProcedureMapping();
             mapping.AddStoredProcedure(storedProcedure);
+
             mapping.StoredProcedures.ShouldContain(storedProcedure);
         }
 
