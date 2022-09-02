@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Identity;
@@ -49,6 +50,19 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
+        public void ShouldFailToAddDuplicateProperty()
+        {
+            var property1 = new PropertyMapping();
+            property1.Set(x => x.Name, Layer.Defaults, "Property1");
+            mapping.AddProperty(property1);
+
+            var property2 = new PropertyMapping();
+            property2.Set(x => x.Name, Layer.Defaults, property1.Name);
+            Assert.Throws<InvalidOperationException>(() => mapping.AddProperty(property2));
+            mapping.Properties.ShouldContain(property1);
+        }
+
+        [Test]
         public void CanAddReference()
         {
             var reference = new ManyToOneMapping();
@@ -56,6 +70,19 @@ namespace FluentNHibernate.Testing.MappingModel
             mapping.AddReference(reference);
 
             mapping.References.ShouldContain(reference);
+        }
+
+        [Test]
+        public void ShouldFailToAddDuplicateReference()
+        {
+            var reference1 = new ManyToOneMapping();
+            reference1.Set(x => x.Name, Layer.Defaults, "parent");
+            mapping.AddReference(reference1);
+
+            var reference2 = new ManyToOneMapping();
+            reference2.Set(x => x.Name, Layer.Defaults, reference1.Name);
+            Assert.Throws<InvalidOperationException>(() => mapping.AddReference(reference2));
+            mapping.References.ShouldContain(reference1);
         }
 
         [Test]
@@ -89,10 +116,10 @@ namespace FluentNHibernate.Testing.MappingModel
         [Test]
         public void CanAddSubclass()
         {
-            var joinedSubclass = new SubclassMapping(SubclassType.JoinedSubclass);
-            mapping.AddSubclass(joinedSubclass);
+            var subclass = new SubclassMapping(SubclassType.JoinedSubclass);
+            mapping.AddSubclass(subclass);
 
-            mapping.Subclasses.ShouldContain(joinedSubclass);
+            mapping.Subclasses.ShouldContain(subclass);
         }
 
         [Test]
@@ -121,6 +148,29 @@ namespace FluentNHibernate.Testing.MappingModel
             mapping.AddStoredProcedure(storedProcedure);
 
             mapping.StoredProcedures.ShouldContain(storedProcedure);
+        }
+
+        [Test]
+        public void CanAddDuplicateStoredProcedure()
+        {
+            // Unlike other types, stored procedures do allow duplicate entries. However, in order to distinguish
+            // whether two entries are identical or not, we need to set some non-identity attribute on them to be
+            // a different value. For this test, "Query" is easy enough.
+            var storedProcedure1 = new StoredProcedureMapping();
+            storedProcedure1.Set(x => x.Name, Layer.Defaults, "storedProcedure1");
+            storedProcedure1.Set(x => x.Query, Layer.Defaults, "x=y");
+            mapping.AddStoredProcedure(storedProcedure1);
+
+            var storedProcedure2 = new StoredProcedureMapping();
+            storedProcedure1.Set(x => x.Name, Layer.Defaults, storedProcedure1.Name);
+            storedProcedure1.Set(x => x.Query, Layer.Defaults, "x=y");
+
+            // Check that adding the duplicate does _not_ throw
+            mapping.AddStoredProcedure(storedProcedure2);
+
+            // Now check that both are present in stored procedures tracker
+            mapping.StoredProcedures.ShouldContain(storedProcedure1);
+            mapping.StoredProcedures.ShouldContain(storedProcedure2);
         }
 
         [Test]
@@ -162,6 +212,19 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
+        public void ShouldFailToAddDuplicateCollection()
+        {
+            var collection1 = CollectionMapping.Bag();
+            collection1.Set(x => x.Name, Layer.Defaults, "Collection1");
+            mapping.AddCollection(collection1);
+
+            var collection2 = CollectionMapping.Bag();
+            collection2.Set(x => x.Name, Layer.Defaults, collection1.Name);
+            Assert.Throws<InvalidOperationException>(() => mapping.AddCollection(collection2));
+            mapping.Collections.ShouldContain(collection1);
+        }
+
+        [Test]
         public void CanAddComponent()
         {
             var component = new ComponentMapping(ComponentType.Component);
@@ -169,6 +232,19 @@ namespace FluentNHibernate.Testing.MappingModel
             mapping.AddComponent(component);
 
             mapping.Components.ShouldContain(component);
+        }
+
+        [Test]
+        public void ShouldFailToAddDuplicateComponent()
+        {
+            var component1 = new ComponentMapping(ComponentType.Component);
+            component1.Set(x => x.Name, Layer.Defaults, "Component1");
+            mapping.AddComponent(component1);
+
+            var component2 = new ComponentMapping(ComponentType.Component);
+            component2.Set(x => x.Name, Layer.Defaults, component1.Name);
+            Assert.Throws<InvalidOperationException>(() => mapping.AddComponent(component2));
+            mapping.Components.ShouldContain(component1);
         }
 
         [Test]
@@ -182,6 +258,19 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
+        public void ShouldFailToAddDuplicateOneToOne()
+        {
+            var oneToOne1 = new OneToOneMapping();
+            oneToOne1.Set(x => x.Name, Layer.Defaults, "OneToOne1");
+            mapping.AddOneToOne(oneToOne1);
+
+            var oneToOne2 = new OneToOneMapping();
+            oneToOne2.Set(x => x.Name, Layer.Defaults, oneToOne1.Name);
+            Assert.Throws<InvalidOperationException>(() => mapping.AddOneToOne(oneToOne2));
+            mapping.OneToOnes.ShouldContain(oneToOne1);
+        }
+
+        [Test]
         public void CanAddAny()
         {
             var any = new AnyMapping();
@@ -189,6 +278,19 @@ namespace FluentNHibernate.Testing.MappingModel
             mapping.AddAny(any);
 
             mapping.Anys.ShouldContain(any);
+        }
+
+        [Test]
+        public void ShouldFailToAddDuplicateAny()
+        {
+            var any1 = new AnyMapping();
+            any1.Set(x => x.Name, Layer.Defaults, "Any1");
+            mapping.AddAny(any1);
+
+            var any2 = new AnyMapping();
+            any2.Set(x => x.Name, Layer.Defaults, any1.Name);
+            Assert.Throws<InvalidOperationException>(() => mapping.AddAny(any2));
+            mapping.Anys.ShouldContain(any1);
         }
 
         [Test]
@@ -202,6 +304,19 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
+        public void ShouldFailToAddDuplicateJoin()
+        {
+            var join1 = new JoinMapping();
+            join1.Set(x => x.TableName, Layer.Defaults, "TableName1");
+            mapping.AddJoin(join1);
+
+            var join2 = new JoinMapping();
+            join2.Set(x => x.TableName, Layer.Defaults, join1.TableName);
+            Assert.Throws<InvalidOperationException>(() => mapping.AddJoin(join2));
+            mapping.Joins.ShouldContain(join1);
+        }
+
+        [Test]
         public void CanAddFilter()
         {
             var filter = new FilterMapping();
@@ -209,6 +324,19 @@ namespace FluentNHibernate.Testing.MappingModel
             mapping.AddFilter(filter);
 
             mapping.Filters.ShouldContain(filter);
+        }
+
+        [Test]
+        public void ShouldFailToAddDuplicateFilter()
+        {
+            var filter1 = new FilterMapping();
+            filter1.Set(x => x.Name, Layer.Defaults, "Filter1");
+            mapping.AddFilter(filter1);
+
+            var filter2 = new FilterMapping();
+            filter2.Set(x => x.Name, Layer.Defaults, filter1.Name);
+            Assert.Throws<InvalidOperationException>(() => mapping.AddFilter(filter2));
+            mapping.Filters.ShouldContain(filter1);
         }
     }
 }
