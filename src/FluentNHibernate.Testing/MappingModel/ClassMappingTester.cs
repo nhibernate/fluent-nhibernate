@@ -65,6 +65,31 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
+        public void CanAddOrReplaceNewProperty()
+        {
+            var property1 = new PropertyMapping();
+            property1.Set(x => x.Name, Layer.Defaults, "Property1");
+            mapping.AddOrReplaceProperty(property1);
+
+            mapping.Properties.ShouldContain(property => ReferenceEquals(property, property1));
+        }
+
+        [Test]
+        public void CanAddOrReplaceExistingProperty()
+        {
+            var property1 = new PropertyMapping();
+            property1.Set(x => x.Name, Layer.Defaults, "Property1");
+            mapping.AddOrReplaceProperty(property1);
+
+            var property2 = new PropertyMapping();
+            property2.Set(x => x.Name, Layer.Defaults, property1.Name);
+            mapping.AddOrReplaceProperty(property2);
+
+            mapping.Properties.ShouldNotContain(property => ReferenceEquals(property, property1));
+            mapping.Properties.ShouldContain(property => ReferenceEquals(property, property2));
+        }
+
+        [Test]
         public void CanAddReference()
         {
             var reference = new ManyToOneMapping();
@@ -87,6 +112,31 @@ namespace FluentNHibernate.Testing.MappingModel
 
             mapping.References.ShouldContain(reference => ReferenceEquals(reference, reference1));
             mapping.References.ShouldNotContain(reference => ReferenceEquals(reference, reference2));
+        }
+
+        [Test]
+        public void CanAddOrReplaceNewReference()
+        {
+            var reference1 = new ManyToOneMapping();
+            reference1.Set(x => x.Name, Layer.Defaults, "Reference1");
+            mapping.AddOrReplaceReference(reference1);
+
+            mapping.References.ShouldContain(reference => ReferenceEquals(reference, reference1));
+        }
+
+        [Test]
+        public void CanAddOrReplaceExistingReference()
+        {
+            var reference1 = new ManyToOneMapping();
+            reference1.Set(x => x.Name, Layer.Defaults, "Reference1");
+            mapping.AddOrReplaceReference(reference1);
+
+            var reference2 = new ManyToOneMapping();
+            reference2.Set(x => x.Name, Layer.Defaults, reference1.Name);
+            mapping.AddOrReplaceReference(reference2);
+
+            mapping.References.ShouldNotContain(reference => ReferenceEquals(reference, reference1));
+            mapping.References.ShouldContain(reference => ReferenceEquals(reference, reference2));
         }
 
         [Test]
@@ -231,6 +281,31 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
+        public void CanAddOrReplaceNewCollection()
+        {
+            var collection1 = CollectionMapping.Bag();
+            collection1.Set(x => x.Name, Layer.Defaults, "Collection1");
+            mapping.AddOrReplaceCollection(collection1);
+
+            mapping.Collections.ShouldContain(collection => ReferenceEquals(collection, collection1));
+        }
+
+        [Test]
+        public void CanAddOrReplaceExistingCollection()
+        {
+            var collection1 = CollectionMapping.Bag();
+            collection1.Set(x => x.Name, Layer.Defaults, "Collection1");
+            mapping.AddOrReplaceCollection(collection1);
+
+            var collection2 = CollectionMapping.Bag();
+            collection2.Set(x => x.Name, Layer.Defaults, collection1.Name);
+            mapping.AddOrReplaceCollection(collection2);
+
+            mapping.Collections.ShouldNotContain(collection => ReferenceEquals(collection, collection1));
+            mapping.Collections.ShouldContain(collection => ReferenceEquals(collection, collection2));
+        }
+
+        [Test]
         public void CanAddComponent()
         {
             var component = new ComponentMapping(ComponentType.Component);
@@ -253,6 +328,31 @@ namespace FluentNHibernate.Testing.MappingModel
 
             mapping.Components.ShouldContain(component => ReferenceEquals(component, component1));
             mapping.Components.ShouldNotContain(component => ReferenceEquals(component, component2));
+        }
+
+        [Test]
+        public void CanAddOrReplaceNewComponent()
+        {
+            var component1 = new ComponentMapping(ComponentType.Component);
+            component1.Set(x => x.Name, Layer.Defaults, "Component1");
+            mapping.AddOrReplaceComponent(component1);
+
+            mapping.Components.ShouldContain(component => ReferenceEquals(component, component1));
+        }
+
+        [Test]
+        public void CanAddOrReplaceExistingComponent()
+        {
+            var component1 = new ComponentMapping(ComponentType.Component);
+            component1.Set(x => x.Name, Layer.Defaults, "Component1");
+            mapping.AddOrReplaceComponent(component1);
+
+            var component2 = new ComponentMapping(ComponentType.Component);
+            component2.Set(x => x.Name, Layer.Defaults, component1.Name);
+            mapping.AddOrReplaceComponent(component2);
+
+            mapping.Components.ShouldNotContain(component => ReferenceEquals(component, component1));
+            mapping.Components.ShouldContain(component => ReferenceEquals(component, component2));
         }
 
         [Test]
@@ -281,6 +381,31 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
+        public void CanAddOrReplaceNewOneToOne()
+        {
+            var oneToOne1 = new OneToOneMapping();
+            oneToOne1.Set(x => x.Name, Layer.Defaults, "OneToOne1");
+            mapping.AddOrReplaceOneToOne(oneToOne1);
+
+            mapping.OneToOnes.ShouldContain(oneToOne => ReferenceEquals(oneToOne, oneToOne1));
+        }
+
+        [Test]
+        public void CanAddOrReplaceExistingOneToOne()
+        {
+            var oneToOne1 = new OneToOneMapping();
+            oneToOne1.Set(x => x.Name, Layer.Defaults, "OneToOne1");
+            mapping.AddOrReplaceOneToOne(oneToOne1);
+
+            var oneToOne2 = new OneToOneMapping();
+            oneToOne2.Set(x => x.Name, Layer.Defaults, oneToOne1.Name);
+            mapping.AddOrReplaceOneToOne(oneToOne2);
+
+            mapping.OneToOnes.ShouldNotContain(oneToOne => ReferenceEquals(oneToOne, oneToOne1));
+            mapping.OneToOnes.ShouldContain(oneToOne => ReferenceEquals(oneToOne, oneToOne2));
+        }
+
+        [Test]
         public void CanAddAny()
         {
             var any = new AnyMapping();
@@ -303,6 +428,31 @@ namespace FluentNHibernate.Testing.MappingModel
 
             mapping.Anys.ShouldContain(any => ReferenceEquals(any, any1));
             mapping.Anys.ShouldNotContain(any => ReferenceEquals(any, any2));
+        }
+
+        [Test]
+        public void CanAddOrReplaceNewAny()
+        {
+            var any1 = new AnyMapping();
+            any1.Set(x => x.Name, Layer.Defaults, "Any1");
+            mapping.AddOrReplaceAny(any1);
+
+            mapping.Anys.ShouldContain(any => ReferenceEquals(any, any1));
+        }
+
+        [Test]
+        public void CanAddOrReplaceExistingAny()
+        {
+            var any1 = new AnyMapping();
+            any1.Set(x => x.Name, Layer.Defaults, "Any1");
+            mapping.AddOrReplaceAny(any1);
+
+            var any2 = new AnyMapping();
+            any2.Set(x => x.Name, Layer.Defaults, any1.Name);
+            mapping.AddOrReplaceAny(any2);
+
+            mapping.Anys.ShouldNotContain(any => ReferenceEquals(any, any1));
+            mapping.Anys.ShouldContain(any => ReferenceEquals(any, any2));
         }
 
         [Test]
@@ -331,6 +481,31 @@ namespace FluentNHibernate.Testing.MappingModel
         }
 
         [Test]
+        public void CanAddOrReplaceNewJoin()
+        {
+            var join1 = new JoinMapping();
+            join1.Set(x => x.TableName, Layer.Defaults, "Join1");
+            mapping.AddOrReplaceJoin(join1);
+
+            mapping.Joins.ShouldContain(join => ReferenceEquals(join, join1));
+        }
+
+        [Test]
+        public void CanAddOrReplaceExistingJoin()
+        {
+            var join1 = new JoinMapping();
+            join1.Set(x => x.TableName, Layer.Defaults, "Join1");
+            mapping.AddOrReplaceJoin(join1);
+
+            var join2 = new JoinMapping();
+            join2.Set(x => x.TableName, Layer.Defaults, join1.TableName);
+            mapping.AddOrReplaceJoin(join2);
+
+            mapping.Joins.ShouldNotContain(join => ReferenceEquals(join, join1));
+            mapping.Joins.ShouldContain(join => ReferenceEquals(join, join2));
+        }
+
+        [Test]
         public void CanAddFilter()
         {
             var filter = new FilterMapping();
@@ -353,6 +528,31 @@ namespace FluentNHibernate.Testing.MappingModel
 
             mapping.Filters.ShouldContain(filter => ReferenceEquals(filter, filter1));
             mapping.Filters.ShouldNotContain(filter => ReferenceEquals(filter, filter2));
+        }
+
+        [Test]
+        public void CanAddOrReplaceNewFilter()
+        {
+            var filter1 = new FilterMapping();
+            filter1.Set(x => x.Name, Layer.Defaults, "Filter1");
+            mapping.AddOrReplaceFilter(filter1);
+
+            mapping.Filters.ShouldContain(filter => ReferenceEquals(filter, filter1));
+        }
+
+        [Test]
+        public void CanAddOrReplaceExistingFilter()
+        {
+            var filter1 = new FilterMapping();
+            filter1.Set(x => x.Name, Layer.Defaults, "Filter1");
+            mapping.AddOrReplaceFilter(filter1);
+
+            var filter2 = new FilterMapping();
+            filter2.Set(x => x.Name, Layer.Defaults, filter1.Name);
+            mapping.AddOrReplaceFilter(filter2);
+
+            mapping.Filters.ShouldNotContain(filter => ReferenceEquals(filter, filter1));
+            mapping.Filters.ShouldContain(filter => ReferenceEquals(filter, filter2));
         }
     }
 }
