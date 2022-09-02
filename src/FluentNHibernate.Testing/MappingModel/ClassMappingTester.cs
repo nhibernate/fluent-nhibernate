@@ -59,7 +59,9 @@ namespace FluentNHibernate.Testing.MappingModel
             var property2 = new PropertyMapping();
             property2.Set(x => x.Name, Layer.Defaults, property1.Name);
             Assert.Throws<InvalidOperationException>(() => mapping.AddProperty(property2));
-            mapping.Properties.ShouldContain(property1);
+
+            mapping.Properties.ShouldContain(property => ReferenceEquals(property, property1));
+            mapping.Properties.ShouldNotContain(property => ReferenceEquals(property, property2));
         }
 
         [Test]
@@ -82,7 +84,9 @@ namespace FluentNHibernate.Testing.MappingModel
             var reference2 = new ManyToOneMapping();
             reference2.Set(x => x.Name, Layer.Defaults, reference1.Name);
             Assert.Throws<InvalidOperationException>(() => mapping.AddReference(reference2));
-            mapping.References.ShouldContain(reference1);
+
+            mapping.References.ShouldContain(reference => ReferenceEquals(reference, reference1));
+            mapping.References.ShouldNotContain(reference => ReferenceEquals(reference, reference2));
         }
 
         [Test]
@@ -169,8 +173,8 @@ namespace FluentNHibernate.Testing.MappingModel
             mapping.AddStoredProcedure(storedProcedure2);
 
             // Now check that both are present in stored procedures tracker
-            mapping.StoredProcedures.ShouldContain(storedProcedure1);
-            mapping.StoredProcedures.ShouldContain(storedProcedure2);
+            mapping.StoredProcedures.ShouldContain(storedProcedure => ReferenceEquals(storedProcedure, storedProcedure1));
+            mapping.StoredProcedures.ShouldContain(storedProcedure => ReferenceEquals(storedProcedure, storedProcedure2));
         }
 
         [Test]
@@ -221,7 +225,9 @@ namespace FluentNHibernate.Testing.MappingModel
             var collection2 = CollectionMapping.Bag();
             collection2.Set(x => x.Name, Layer.Defaults, collection1.Name);
             Assert.Throws<InvalidOperationException>(() => mapping.AddCollection(collection2));
-            mapping.Collections.ShouldContain(collection1);
+
+            mapping.Collections.ShouldContain(collection => ReferenceEquals(collection, collection1));
+            mapping.Collections.ShouldNotContain(collection => ReferenceEquals(collection, collection2));
         }
 
         [Test]
@@ -244,7 +250,9 @@ namespace FluentNHibernate.Testing.MappingModel
             var component2 = new ComponentMapping(ComponentType.Component);
             component2.Set(x => x.Name, Layer.Defaults, component1.Name);
             Assert.Throws<InvalidOperationException>(() => mapping.AddComponent(component2));
-            mapping.Components.ShouldContain(component1);
+
+            mapping.Components.ShouldContain(component => ReferenceEquals(component, component1));
+            mapping.Components.ShouldNotContain(component => ReferenceEquals(component, component2));
         }
 
         [Test]
@@ -267,7 +275,9 @@ namespace FluentNHibernate.Testing.MappingModel
             var oneToOne2 = new OneToOneMapping();
             oneToOne2.Set(x => x.Name, Layer.Defaults, oneToOne1.Name);
             Assert.Throws<InvalidOperationException>(() => mapping.AddOneToOne(oneToOne2));
-            mapping.OneToOnes.ShouldContain(oneToOne1);
+
+            mapping.OneToOnes.ShouldContain(oneToOne => ReferenceEquals(oneToOne, oneToOne1));
+            mapping.OneToOnes.ShouldNotContain(oneToOne => ReferenceEquals(oneToOne, oneToOne2));
         }
 
         [Test]
@@ -290,7 +300,9 @@ namespace FluentNHibernate.Testing.MappingModel
             var any2 = new AnyMapping();
             any2.Set(x => x.Name, Layer.Defaults, any1.Name);
             Assert.Throws<InvalidOperationException>(() => mapping.AddAny(any2));
-            mapping.Anys.ShouldContain(any1);
+
+            mapping.Anys.ShouldContain(any => ReferenceEquals(any, any1));
+            mapping.Anys.ShouldNotContain(any => ReferenceEquals(any, any2));
         }
 
         [Test]
@@ -313,7 +325,9 @@ namespace FluentNHibernate.Testing.MappingModel
             var join2 = new JoinMapping();
             join2.Set(x => x.TableName, Layer.Defaults, join1.TableName);
             Assert.Throws<InvalidOperationException>(() => mapping.AddJoin(join2));
-            mapping.Joins.ShouldContain(join1);
+
+            mapping.Joins.ShouldContain(join => ReferenceEquals(join, join1));
+            mapping.Joins.ShouldNotContain(join => ReferenceEquals(join, join2));
         }
 
         [Test]
@@ -336,7 +350,9 @@ namespace FluentNHibernate.Testing.MappingModel
             var filter2 = new FilterMapping();
             filter2.Set(x => x.Name, Layer.Defaults, filter1.Name);
             Assert.Throws<InvalidOperationException>(() => mapping.AddFilter(filter2));
-            mapping.Filters.ShouldContain(filter1);
+
+            mapping.Filters.ShouldContain(filter => ReferenceEquals(filter, filter1));
+            mapping.Filters.ShouldNotContain(filter => ReferenceEquals(filter, filter2));
         }
     }
 }
