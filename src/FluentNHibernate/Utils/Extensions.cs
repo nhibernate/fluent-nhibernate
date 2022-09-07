@@ -91,5 +91,13 @@ namespace FluentNHibernate.Utils
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IAutoMappingOverride<>) && type.GetGenericArguments().Length > 0;
         }
+
+        public static T GetCustomAttribute<T>(this Enum enumValue)
+        {
+            var enumType = enumValue.GetType();
+            var memberInfos = enumType.GetMember(Enum.GetName(enumType, enumValue));
+            var attrs = memberInfos[0].GetCustomAttributes(typeof(T), false);
+            return (T)attrs.FirstOrDefault();
+        }
     }
 }

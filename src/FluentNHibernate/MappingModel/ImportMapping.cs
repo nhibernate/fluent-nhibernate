@@ -1,5 +1,7 @@
-using FluentNHibernate.Visitors;
 using System;
+using System.Linq.Expressions;
+using FluentNHibernate.Visitors;
+using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -60,6 +62,11 @@ namespace FluentNHibernate.MappingModel
         protected override void Set(string attribute, int layer, object value)
         {
             attributes.Set(attribute, layer, value);
+        }
+
+        public void Set<T>(Expression<Func<ImportMapping, T>> expression, int layer, T value)
+        {
+            Set(expression.ToMember().Name, layer, value);
         }
     }
 }
