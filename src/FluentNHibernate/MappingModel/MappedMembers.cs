@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
+using NHibernate.Util;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -24,10 +23,14 @@ namespace FluentNHibernate.MappingModel
         }
 
         private readonly List<Tuple<MappingType, IMapping>> orderedMappings;
+        private readonly IReadOnlyDictionary<MappingType, IDictionary<string, int>> mappingIndicesByType;
 
         public MappedMembers()
         {
             orderedMappings = new List<Tuple<MappingType, IMapping>>();
+            // This has to use a NullableDictionary or (at least) various test cases will fail due to null names on mappings
+            IDictionary<string, int> IndexMapGen(MappingType ignored) => new NullableDictionary<string, int>();
+            mappingIndicesByType = Enum.GetValues(typeof(MappingType)).Cast<MappingType>().ToDictionary(m => m, IndexMapGen);
         }
 
         public IEnumerable<PropertyMapping> Properties => orderedMappings.Where(x => x.Item1 == MappingType.Property).Select(x => x.Item2).Cast<PropertyMapping>();
@@ -50,99 +53,90 @@ namespace FluentNHibernate.MappingModel
 
         public void AddOrReplaceFilter(FilterMapping mapping)
         {
-            AddOrReplaceMapping(mapping, MappingType.Filter, x => x.Name == mapping.Name);
+            AddOrReplaceMapping(mapping, MappingType.Filter, x => x.Name);
         }
 
         public void AddProperty(PropertyMapping property)
         {
-            string propertyName = property.Name;
-            if (Properties.Any(x => x.Name == propertyName))
-                throw new InvalidOperationException("Tried to add property '" + propertyName + "' when already added.");
-            AddMapping(property, MappingType.Property);
+            AddMapping(property, MappingType.Property, x => x.Name,
+                "Tried to add property '" + property.Name + "' when already added.");
         }
 
         public void AddOrReplaceProperty(PropertyMapping mapping)
         {
-            AddOrReplaceMapping(mapping, MappingType.Property, x => x.Name == mapping.Name);
+            AddOrReplaceMapping(mapping, MappingType.Property, x => x.Name);
         }
 
         public void AddCollection(Collections.CollectionMapping collection)
         {
-            if (Collections.Any(x => x.Name == collection.Name))
-                throw new InvalidOperationException("Tried to add collection '" + collection.Name + "' when already added.");
-            AddMapping(collection, MappingType.Collection);
+            AddMapping(collection, MappingType.Collection, x => x.Name,
+                "Tried to add collection '" + collection.Name + "' when already added.");
         }
 
         public void AddOrReplaceCollection(Collections.CollectionMapping mapping)
         {
-            AddOrReplaceMapping(mapping, MappingType.Collection, x => x.Name == mapping.Name);
+            AddOrReplaceMapping(mapping, MappingType.Collection, x => x.Name);
         }
 
         public void AddReference(ManyToOneMapping manyToOne)
         {
-            if (References.Any(x => x.Name == manyToOne.Name))
-                throw new InvalidOperationException("Tried to add many-to-one '" + manyToOne.Name + "' when already added.");
-            AddMapping(manyToOne, MappingType.ManyToOne);
+            AddMapping(manyToOne, MappingType.ManyToOne, x => x.Name,
+                "Tried to add many-to-one '" + manyToOne.Name + "' when already added.");
         }
 
         public void AddOrReplaceReference(ManyToOneMapping manyToOne)
         {
-            AddOrReplaceMapping(manyToOne, MappingType.ManyToOne, x => x.Name == manyToOne.Name);
+            AddOrReplaceMapping(manyToOne, MappingType.ManyToOne, x => x.Name);
         }
 
         public void AddComponent(IComponentMapping componentMapping)
         {
-            if (Components.Any(x => x.Name == componentMapping.Name))
-                throw new InvalidOperationException("Tried to add component '" + componentMapping.Name + "' when already added.");
-            AddMapping(componentMapping, MappingType.IComponent);
+            AddMapping(componentMapping, MappingType.IComponent, x => x.Name,
+                "Tried to add component '" + componentMapping.Name + "' when already added.");
         }
 
         public void AddOrReplaceComponent(IComponentMapping componentMapping)
         {
-            AddOrReplaceMapping(componentMapping, MappingType.IComponent, x => x.Name == componentMapping.Name);
+            AddOrReplaceMapping(componentMapping, MappingType.IComponent, x => x.Name);
         }
 
         public void AddOneToOne(OneToOneMapping mapping)
         {
-            if (OneToOnes.Any(x => x.Name == mapping.Name))
-                throw new InvalidOperationException("Tried to add one-to-one '" + mapping.Name + "' when already added.");
-            AddMapping(mapping, MappingType.OneToOne);
+            AddMapping(mapping, MappingType.OneToOne, x => x.Name,
+                "Tried to add one-to-one '" + mapping.Name + "' when already added.");
         }
 
         public void AddOrReplaceOneToOne(OneToOneMapping mapping)
         {
-            AddOrReplaceMapping(mapping, MappingType.OneToOne, x => x.Name == mapping.Name);
+            AddOrReplaceMapping(mapping, MappingType.OneToOne, x => x.Name);
         }
 
         public void AddAny(AnyMapping mapping)
         {
-            if (Anys.Any(x => x.Name == mapping.Name))
-                throw new InvalidOperationException("Tried to add any '" + mapping.Name + "' when already added.");
-            AddMapping(mapping, MappingType.Any);
+            AddMapping(mapping, MappingType.Any, x => x.Name,
+                "Tried to add any '" + mapping.Name + "' when already added.");
         }
 
         public void AddOrReplaceAny(AnyMapping mapping)
         {
-            AddOrReplaceMapping(mapping, MappingType.Any, x => x.Name == mapping.Name);
+            AddOrReplaceMapping(mapping, MappingType.Any, x => x.Name);
         }
 
         public void AddJoin(JoinMapping mapping)
         {
-            if (Joins.Any(x => x.TableName == mapping.TableName))
-                throw new InvalidOperationException("Tried to add join to table '" + mapping.TableName + "' when already added.");
-            AddMapping(mapping, MappingType.Join);
+            AddMapping(mapping, MappingType.Join, x => x.TableName,
+                "Tried to add join to table '" + mapping.TableName + "' when already added.");
         }
 
         public void AddOrReplaceJoin(JoinMapping mapping)
         {
-            AddOrReplaceMapping(mapping, MappingType.Join, x => x.TableName == mapping.TableName);
+            AddOrReplaceMapping(mapping, MappingType.Join, x => x.TableName);
         }
 
         public void AddFilter(FilterMapping mapping)
         {
-            if (Filters.Any(x => x.Name == mapping.Name))
-                throw new InvalidOperationException("Tried to add filter with name '" + mapping.Name + "' when already added.");
-            AddMapping(mapping, MappingType.Filter);
+            AddMapping(mapping, MappingType.Filter, x => x.Name,
+                "Tried to add filter with name '" + mapping.Name + "' when already added.");
         }
 
         public virtual void AcceptVisitor(IMappingModelVisitor visitor)
@@ -191,7 +185,7 @@ namespace FluentNHibernate.MappingModel
 
         public void AddStoredProcedure(StoredProcedureMapping mapping)
         {
-            AddMapping(mapping, MappingType.StoredProcedure);
+            ManageMapping(mapping, MappingType.StoredProcedure, null, true, false, null);
         }
 
         public bool Equals(MappedMembers other)
@@ -213,19 +207,37 @@ namespace FluentNHibernate.MappingModel
             return orderedMappings.GetHashCode();
         }
 
-        private void AddMapping<TMapping>(TMapping mapping, MappingType mappingType) where TMapping : IMapping {
-            orderedMappings.Add(Tuple.Create(mappingType, (IMapping)mapping));
+        private void AddMapping<TMapping>(TMapping mapping, MappingType mappingType, Func<TMapping, string> keyMapper, string badDupeMsg)
+                where TMapping : IMapping
+        {
+            ManageMapping(mapping, mappingType, keyMapper, false, false, badDupeMsg);
         }
 
-        private void AddOrReplaceMapping<TMapping>(TMapping mapping, MappingType mappingType, Predicate<TMapping> matchPredicate) {
-            var newMapping = Tuple.Create(mappingType, (IMapping)mapping);            
-            var index = orderedMappings.FindIndex(x => x.Item1 == mappingType && matchPredicate((TMapping)x.Item2));
-            if (index >= 0)
-                orderedMappings[index] = newMapping;
-            else
-                orderedMappings.Add(newMapping);
+        private void AddOrReplaceMapping<TMapping>(TMapping mapping, MappingType mappingType, Func<TMapping, string> keyMapper) where TMapping : IMapping
+        {
+            ManageMapping(mapping, mappingType, keyMapper, false, true, null);
         }
 
+        private void ManageMapping<TMapping>(TMapping mapping, MappingType mappingType, Func<TMapping, string> keyMapper, bool allowDupes, bool allowReplace,
+                string badDupeMsg) where TMapping : IMapping
+        {
+            var newTuple = Tuple.Create(mappingType, (IMapping)mapping);
+            if (allowDupes) {
+                orderedMappings.Add(newTuple);
+                // Types that allow duplicates don't have index tracking
+            } else {
+                var key = keyMapper(mapping);
+                var mappingIndices = mappingIndicesByType[mappingType];
+                if (!mappingIndices.ContainsKey(key))
+                {
+                    orderedMappings.Add(newTuple);
+                    mappingIndices[key] = orderedMappings.Count - 1;
+                }
+                else if (allowReplace)
+                        orderedMappings[mappingIndices[key]] = newTuple;
+                else
+                    throw new InvalidOperationException(badDupeMsg);
+            }
+        }
     }
 }
-
