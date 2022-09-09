@@ -10,6 +10,7 @@ pull_requests:
 environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
+  IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
 
 branches:
   only:
