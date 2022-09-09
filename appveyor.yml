@@ -1,5 +1,7 @@
 version: '{build}'
 image: Visual Studio 2017
+environment:
+  IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
 
 init:
   - git config --global core.autocrlf true
