@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping.Alterations
 {
@@ -12,14 +9,17 @@ namespace FluentNHibernate.Automapping.Alterations
     public class AutoMappingOverrideAlteration : IAutoMappingAlteration
     {
         private readonly Assembly assembly;
+        private readonly bool includeInternal;
 
         /// <summary>
         /// Constructor for AutoMappingOverrideAlteration.
         /// </summary>
         /// <param name="overrideAssembly">Assembly to load overrides from.</param>
-        public AutoMappingOverrideAlteration(Assembly overrideAssembly)
+        /// <param name="includeInternal">Should internal IAutoMappingOverrides be included.</param>
+        public AutoMappingOverrideAlteration(Assembly overrideAssembly, bool includeInternal)
         {
             assembly = overrideAssembly;
+            this.includeInternal = includeInternal;
         }
 
         /// <summary>
@@ -32,8 +32,9 @@ namespace FluentNHibernate.Automapping.Alterations
         /// <param name="model">AutoPersistenceModel instance to alter</param>
         public void Alter(AutoPersistenceModel model)
         {
+            var assemblyTypes = includeInternal ? assembly.GetTypes() : assembly.GetExportedTypes();
             // find all types deriving from IAutoMappingOverride<T>
-            var types = from type in assembly.GetExportedTypes()
+            var types = from type in assemblyTypes
                         where !type.IsAbstract
                         let entity = (from interfaceType in type.GetInterfaces()
                                       where interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IAutoMappingOverride<>)
