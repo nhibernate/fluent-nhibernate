@@ -6,7 +6,7 @@ namespace FluentNHibernate.Cfg.Db
     {
         private string connectionString;
 
-#if NETFX
+#if NETFRAMEWORK
         public ConnectionStringBuilder FromAppSetting(string appSettingKey)
         {
             connectionString = ConfigurationManager.AppSettings[appSettingKey];
@@ -15,7 +15,7 @@ namespace FluentNHibernate.Cfg.Db
         }
 #endif
 
-#if NETFX
+#if NETFRAMEWORK
         public ConnectionStringBuilder FromConnectionStringWithKey(string connectionStringKey)
         {
             connectionString = ConfigurationManager.ConnectionStrings[connectionStringKey].ConnectionString;
