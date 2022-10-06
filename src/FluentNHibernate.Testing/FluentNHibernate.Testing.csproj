@@ -21,7 +21,7 @@
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
     <PackageReference Include="FakeItEasy" Version="7.3.1" />
-    <PackageReference Include="FluentAssertions" Version="4.19.4" />
+    <PackageReference Include="FluentAssertions" Version="6.7.0" />
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
