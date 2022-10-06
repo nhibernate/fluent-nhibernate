@@ -24,7 +24,7 @@ branches:
 
 # clone_depth: 1
 build_script:
-  - ps: .\build.ps1 -Target AppVeyor -Verbosity Diagnostic
+  - ps: .\build.ps1 --target AppVeyor --verbosity Diagnostic
 
 test: off
 
