@@ -1,4 +1,4 @@
-#addin "nuget:?package=Cake.FileHelpers&version=4.0.1"
+#addin "nuget:?package=Cake.FileHelpers&version=5.0.0"
 #tool "nuget:?package=GitReleaseManager&version=0.11.0"
 #tool "nuget:?package=GitVersion.CommandLine&version=5.8.1"
 
