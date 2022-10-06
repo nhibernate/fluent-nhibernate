@@ -2,7 +2,6 @@
   
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-    <NoWarn>1591</NoWarn>
     <OutputType>Exe</OutputType>        
     <PlatformTarget>AnyCpu</PlatformTarget>
     <IsPackable>false</IsPackable>
