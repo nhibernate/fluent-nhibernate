@@ -10,10 +10,6 @@
     <AssemblyOriginatorKeyFile>../FluentKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="NHibernate" Version="5.3.3" />
   </ItemGroup>

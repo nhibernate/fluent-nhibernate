@@ -22,8 +22,4 @@
     <Reference Include="System.Transactions" />  
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-
 </Project>
