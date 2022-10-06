@@ -46,7 +46,7 @@ namespace FluentNHibernate.Testing.Cfg
                 .ToProperties().ShouldContain("connection.connection_string", "value");
         }
 
-#if NETFX
+#if NETFRAMEWORK
         [Test]
         public void ConnectionStringSetFromAppSetting()
         {
@@ -57,7 +57,7 @@ namespace FluentNHibernate.Testing.Cfg
         }
 #endif
 
-#if NETFX
+#if NETFRAMEWORK
         [Test]
         public void ConnectionStringSetFromConnectionStrings()
         {

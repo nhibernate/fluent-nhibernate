@@ -93,7 +93,7 @@ Task("Test")
 
             DotNetCoreTest(project.ToString(), new DotNetCoreTestSettings
             {
-                Framework = "netcoreapp2.0",
+                Framework = "net6.0",
                 NoBuild = true,
                 NoRestore = true,
                 Configuration = parameters.Configuration

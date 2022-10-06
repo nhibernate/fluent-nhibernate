@@ -34,7 +34,7 @@ namespace FluentNHibernate.Testing.DomainModel
                 .VerifyTheMappings();
         }
 
-#if NETFX
+#if NETFRAMEWORK
         [Test]
         public void Mapping_test_with_arrays()
         {
@@ -42,9 +42,7 @@ namespace FluentNHibernate.Testing.DomainModel
                 .CheckProperty(r => r.BinaryValue, new byte[] { 1, 2, 3 })
                 .VerifyTheMappings();
         }
-#endif
-
-#if NETCORE
+#else
         [Test, Ignore("Currently not supported by Msqlite with NETStandard")]
         public void Mapping_test_with_arrays()
         {

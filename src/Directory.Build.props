@@ -5,7 +5,7 @@
     <Authors>James Gregory and contributors (Paul Batum, Hudson Akridge, Gleb Chermennov, Jorge Rodríguez Galán).</Authors>
     <Company>NHibernate.info</Company>
     <PackageDescription>Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate.</PackageDescription>
-    <PackageLicenseUrl>https://github.com/nhibernate/fluent-nhibernate/raw/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIconUrl>https://raw.githubusercontent.com/nhibernate/fluent-nhibernate/master/docs/logo-nuget.png</PackageIconUrl>
     <PackageIcon>logo-nuget.png</PackageIcon>
     <PackageProjectUrl>https://github.com/nhibernate/fluent-nhibernate</PackageProjectUrl>
@@ -15,31 +15,17 @@
     <IncludeSymbols>true</IncludeSymbols>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <LangVersion>10</LangVersion>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(CI)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
-  
-  <PropertyGroup>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">2.0.0</NetStandardImplicitPackageVersion>
-  </PropertyGroup>
-
-  <!-- Framework constants -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <DefineConstants>$(DefineConstants);NETFX</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
-    <DebugType>portable</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
-    <DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
-    <DebugType>portable</DebugType>
-  </PropertyGroup>
 
   <ItemGroup Condition="'$(IsPackable)' == 'true'">
     <None Include="$(MSBuildThisFileDirectory)../docs/logo-nuget.png" Pack="true" PackagePath="/"/>
+    <None Include="$(MSBuildThisFileDirectory)../LICENSE" Pack="true" PackagePath="/"/>
   </ItemGroup>
 
   <ItemGroup>

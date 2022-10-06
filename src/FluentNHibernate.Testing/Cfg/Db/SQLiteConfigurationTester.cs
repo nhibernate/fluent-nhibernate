@@ -7,7 +7,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
     [TestFixture]
     public class SQLiteConfigurationTester
     {
-#if NETFX
+#if NETFRAMEWORK
         [Test]
         public void should_set_up_default_query_substitutions()
         {

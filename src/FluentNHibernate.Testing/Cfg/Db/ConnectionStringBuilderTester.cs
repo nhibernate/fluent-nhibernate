@@ -22,7 +22,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
             builder.ConnectionString.ShouldEqual("a string");
         }
 
-#if NETFX
+#if NETFRAMEWORK
         [Test]
         public void ConnectionStringSetFromAppSetting()
         {
@@ -31,7 +31,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
         }
 #endif
 
-#if NETFX
+#if NETFRAMEWORK
         [Test]
         public void ConnectionStringSetFromConnectionStrings()
         {
