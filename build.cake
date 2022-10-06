@@ -1,6 +1,6 @@
-#addin "nuget:?package=Cake.FileHelpers&version=4.0.1"
-#tool "nuget:?package=GitReleaseManager&version=0.11.0"
-#tool "nuget:?package=GitVersion.CommandLine&version=5.8.1"
+#addin "nuget:?package=Cake.FileHelpers&version=5.0.0"
+#tool "dotnet:?package=GitReleaseManager.Tool&version=0.13.0"
+#tool "dotnet:?package=GitVersion.Tool&version=5.10.3"
 
 #load "./build/parameters.cake"
 
@@ -66,7 +66,7 @@ Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
     {
-        DotNetCoreBuild(SolutionPath, new DotNetCoreBuildSettings
+        DotNetBuild(SolutionPath, new DotNetCoreBuildSettings
         {
             Configuration = parameters.Configuration,
             MSBuildSettings = msBuildSettings
@@ -83,7 +83,7 @@ Task("Test")
 
         foreach(var project in testProjects) 
         {                      
-            DotNetCoreTest(project.ToString(), new DotNetCoreTestSettings
+            DotNetTest(project.ToString(), new DotNetCoreTestSettings
             {
                 Framework = "net461",
                 NoBuild = true,
@@ -91,7 +91,7 @@ Task("Test")
                 Configuration = parameters.Configuration
             });          
 
-            DotNetCoreTest(project.ToString(), new DotNetCoreTestSettings
+            DotNetTest(project.ToString(), new DotNetCoreTestSettings
             {
                 Framework = "net6.0",
                 NoBuild = true,
@@ -176,13 +176,11 @@ Task("Publish-GitHub-Release")
     .Does(() =>
     {
         GitReleaseManagerAddAssets(
-            parameters.GitHub.UserName, parameters.GitHub.Password, 
-            parameters.GitHub.Owner, parameters.GitHub.Repository, 
+            parameters.GitHub.Token, parameters.GitHub.Owner, parameters.GitHub.Repository, 
             parameters.Version.Milestone, 
             parameters.Paths.Files.ZipArtifactPathDesktop.ToString());
         GitReleaseManagerClose(
-            parameters.GitHub.UserName, parameters.GitHub.Password, 
-            parameters.GitHub.Owner, parameters.GitHub.Repository, 
+            parameters.GitHub.Token, parameters.GitHub.Owner, parameters.GitHub.Repository, 
             parameters.Version.Milestone);
     })
     .OnError(exception =>
@@ -195,7 +193,7 @@ Task("Create-Release-Notes")
     .Does(() =>
     {
         GitReleaseManagerCreate(
-            parameters.GitHub.UserName, parameters.GitHub.Password, 
+            parameters.GitHub.Token, 
             parameters.GitHub.Owner, parameters.GitHub.Repository, 
             new GitReleaseManagerCreateSettings {
                 Milestone         = parameters.Version.Milestone,
