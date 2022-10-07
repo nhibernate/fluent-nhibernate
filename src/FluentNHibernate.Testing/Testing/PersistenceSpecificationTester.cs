@@ -141,8 +141,8 @@ namespace FluentNHibernate.Testing.Testing
         {
             spec = new PersistenceSpecification<Cat>(sessionSource);
 
-            typeof(ApplicationException).ShouldBeThrownBy(() =>
-                spec.CheckList(x => x.AllKittens, cat.AllKittens).VerifyTheMappings());
+            Action act = () => spec.CheckList(x => x.AllKittens, cat.AllKittens).VerifyTheMappings();
+            act.ShouldThrow<ApplicationException>();
         }
 
         [Test]
@@ -163,7 +163,8 @@ namespace FluentNHibernate.Testing.Testing
             spec.CheckEnumerable(x => x.EnumerableOfKittens, (cat, kitten) => cat.AddKitten(kitten), kittens);
 #pragma warning restore 618,612
 
-            typeof(ApplicationException).ShouldBeThrownBy(() => spec.VerifyTheMappings());
+            Action act = () => spec.VerifyTheMappings();
+            act.ShouldThrow<ApplicationException>();
         }
 
         [Test]
@@ -232,8 +233,8 @@ namespace FluentNHibernate.Testing.Testing
         {
             var _spec = new PersistenceSpecification<NoParameterlessConstructorClass>(sessionSource);
 
-            typeof(MissingConstructorException).ShouldBeThrownBy(() =>
-                _spec.VerifyTheMappings());
+            Action act = () => _spec.VerifyTheMappings();
+            act.ShouldThrow<MissingConstructorException>();
         }
 
         [Test]

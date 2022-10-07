@@ -2,7 +2,6 @@ using System;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using NUnit.Framework;
-using FluentAssertions;
 
 namespace FluentNHibernate.Testing.ConventionFinderTests
 {
@@ -31,7 +30,6 @@ namespace FluentNHibernate.Testing.ConventionFinderTests
             Action act = () => finder.Add<ConventionWithIConventionFinderConstructor>();
 
             act.ShouldNotThrow();
-
         }
 
         [Test]
