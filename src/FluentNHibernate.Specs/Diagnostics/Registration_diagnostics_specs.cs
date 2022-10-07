@@ -114,7 +114,7 @@ namespace FluentNHibernate.Specs.Diagnostics
             results.AutomappingSkippedTypes.Select(x => x.Reason).Should().Contain("Skipped by result of IAutomappingConfiguration.ShouldMap(Type)");
 
         It should_not_include_a_skipped_entry_for_used_types = () =>
-            results.AutomappingSkippedTypes.Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
+            results.AutomappingSkippedTypes.Select(x => x.Type).Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
 
         It should_include_all_unskipped_types_in_the_candidate_list = () =>
             results.AutomappingCandidateTypes.Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
@@ -160,7 +160,7 @@ namespace FluentNHibernate.Specs.Diagnostics
             results.AutomappingSkippedTypes.Select(x => x.Reason).Should().Contain("Skipped by Where clause");
 
         It should_not_include_a_skipped_entry_for_used_types = () =>
-            results.AutomappingSkippedTypes.Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
+            results.AutomappingSkippedTypes.Select(x => x.Type).Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
 
         It should_include_all_unskipped_types_in_the_candidate_list = () =>
             results.AutomappingCandidateTypes.Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
@@ -198,7 +198,7 @@ namespace FluentNHibernate.Specs.Diagnostics
             results.AutomappingSkippedTypes.Select(x => x.Reason).Should().Contain("Skipped by IgnoreBase");
 
         It should_not_include_a_skipped_entry_for_used_types = () =>
-            results.AutomappingSkippedTypes.Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
+            results.AutomappingSkippedTypes.Select(x => x.Type).Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
 
         It should_include_all_unskipped_types_in_the_candidate_list = () =>
             results.AutomappingCandidateTypes.Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
@@ -236,7 +236,7 @@ namespace FluentNHibernate.Specs.Diagnostics
             results.AutomappingSkippedTypes.Select(x => x.Reason).Should().Contain("Skipped by IgnoreBase");
 
         It should_not_include_a_skipped_entry_for_used_types = () =>
-            results.AutomappingSkippedTypes.Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
+            results.AutomappingSkippedTypes.Select(x => x.Type).Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
 
         It should_include_all_unskipped_types_in_the_candidate_list = () =>
             results.AutomappingCandidateTypes.Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
@@ -273,7 +273,7 @@ namespace FluentNHibernate.Specs.Diagnostics
             results.AutomappingSkippedTypes.Select(x => x.Reason).Should().Contain("Skipped by IAutomappingConfiguration.AbstractClassIsLayerSupertype(Type)");
 
         It should_not_include_a_skipped_entry_for_used_types = () =>
-            results.AutomappingSkippedTypes.Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
+            results.AutomappingSkippedTypes.Select(x => x.Type).Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
 
         It should_include_all_unskipped_types_in_the_candidate_list = () =>
             results.AutomappingCandidateTypes.Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
@@ -318,7 +318,7 @@ namespace FluentNHibernate.Specs.Diagnostics
             results.AutomappingSkippedTypes.Select(x => x.Reason).Should().Contain("Skipped by IAutomappingConfiguration.IsComponent(Type)");
 
         It should_not_include_a_skipped_entry_for_used_types = () =>
-            results.AutomappingSkippedTypes.Should().NotContain(new Type[] { typeof(Second), typeof(Third) } );
+            results.AutomappingSkippedTypes.Select(x => x.Type).Should().NotContain(new Type[] { typeof(Second), typeof(Third) } );
 
         It should_include_all_unskipped_types_in_the_candidate_list = () =>
             results.AutomappingCandidateTypes.Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));

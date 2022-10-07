@@ -2,7 +2,6 @@
   
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-    <NoWarn>1591</NoWarn>
     <OutputType>Exe</OutputType>
     <PlatformTarget>AnyCpu</PlatformTarget>
     <IsPackable>false</IsPackable>
@@ -13,7 +12,7 @@
   </ItemGroup>
   
   <ItemGroup>    
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.1" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
@@ -21,10 +20,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />  
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
 
 </Project>

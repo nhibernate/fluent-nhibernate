@@ -2,17 +2,12 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461;netcoreapp2.0</TargetFrameworks>
-    <NoWarn>1591</NoWarn>
     <PlatformTarget>AnyCpu</PlatformTarget>
     <OutputType>Library</OutputType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../FluentKey.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

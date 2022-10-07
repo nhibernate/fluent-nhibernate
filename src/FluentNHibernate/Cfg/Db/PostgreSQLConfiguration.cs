@@ -24,5 +24,10 @@ namespace FluentNHibernate.Cfg.Db
         {
             get { return new PostgreSQLConfiguration().Dialect<PostgreSQL82Dialect>(); }
         }
+
+        public static PostgreSQLConfiguration PostgreSQL83
+        {
+            get { return new PostgreSQLConfiguration().Dialect<PostgreSQL83Dialect>(); }
+        }
     }
 }

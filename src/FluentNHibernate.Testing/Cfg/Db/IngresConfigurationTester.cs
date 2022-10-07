@@ -42,7 +42,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
         }
 
 
-#if NETFX
+#if NETFRAMEWORK
         [Test]
         public void ConnectionStringSetFromAppSetting()
         {
@@ -53,7 +53,7 @@ namespace FluentNHibernate.Testing.Cfg.Db
         }
 #endif
 
-#if NETFX
+#if NETFRAMEWORK
         [Test]
         public void ConnectionStringSetFromConnectionStrings()
         {

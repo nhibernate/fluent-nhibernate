@@ -24,7 +24,6 @@ namespace FluentNHibernate.Testing.Testing
         [Test]
         public void Should_Not_Open_A_New_Transaction_If_One_Is_Passed()
         {
-
             var transaction = A.Fake<ITransaction>();
             A.CallTo(() => transaction.IsActive).Returns(true);
 
@@ -35,7 +34,7 @@ namespace FluentNHibernate.Testing.Testing
             spec.VerifyTheMappings();
 
             A.CallTo(() => session.BeginTransaction()).MustNotHaveHappened();
-            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Twice);
+            A.CallTo(() => session.Transaction).MustHaveHappened(2, Times.Exactly);
         }
 
         [Test]
@@ -52,7 +51,7 @@ namespace FluentNHibernate.Testing.Testing
             var spec = new PersistenceSpecification<Cat>(session);
             spec.VerifyTheMappings();
 
-            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Twice);
+            A.CallTo(() => session.Transaction).MustHaveHappened(2, Times.Exactly);
         }
 
         [Test]
@@ -81,7 +80,7 @@ namespace FluentNHibernate.Testing.Testing
 
             spec.VerifyTheMappings();
 
-            A.CallTo(() => session.Transaction).MustHaveHappened(Repeated.Exactly.Twice);
+            A.CallTo(() => session.Transaction).MustHaveHappened(2, Times.Exactly);
             A.CallTo(() => session.BeginTransaction()).MustNotHaveHappened();
         }
 

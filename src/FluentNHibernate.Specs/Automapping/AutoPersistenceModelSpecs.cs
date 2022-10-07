@@ -64,11 +64,9 @@ namespace FluentNHibernate.Specs.Automapping
 
         private static IPersistenceConfigurer CreateStandardInMemoryConfiguration()
         {
-#if NETFX
+#if NETFRAMEWORK
             var configuration = SQLiteConfiguration.Standard.InMemory();
-#endif
-
-#if NETCORE
+#else
             var configuration = MsSqliteConfiguration.Standard.InMemory();
 #endif
             return configuration;
