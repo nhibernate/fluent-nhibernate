@@ -1,7 +1,6 @@
 ﻿using System;
 using FluentNHibernate.Infrastructure;
 using NUnit.Framework;
-using FluentAssertions;
 
 namespace FluentNHibernate.Testing.Infrastructure
 {

@@ -7,8 +7,6 @@ using NUnit.Framework;
 
 namespace FluentNHibernate.Testing
 {
-    public delegate void MethodThatThrows();
-
     public static class SpecificationExtensions
     {
         public static void ShouldBeFalse(this bool condition)
@@ -240,31 +238,19 @@ namespace FluentNHibernate.Testing
             StringAssert.DoesNotStartWith(expected, actual);
         }
 
-        public static void ShouldContainErrorMessage(this Exception exception, string expected)
+        public static void WithMessage(this Exception exception, string expected)
         {
-            StringAssert.Contains(expected, exception.Message);
+            Assert.That(exception.Message, Is.EqualTo(expected));
         }
 
-        public static Exception ShouldBeThrownBy(this Type exceptionType, MethodThatThrows method)
+        public static Exception ShouldThrow<TException>(this Action action) where TException : Exception
         {
-            Exception exception = null;
+            return Assert.Throws<TException>(new TestDelegate(action));
+        }
 
-            try
-            {
-                method();
-            }
-            catch (Exception e)
-            {
-                Assert.AreEqual(exceptionType, e.GetType());
-                exception = e;
-            }
-
-            if (exception == null)
-            {
-                Assert.Fail(String.Format("Expected {0} to be thrown.", exceptionType.FullName));
-            }
-
-            return exception;
+        public static void ShouldNotThrow(this Action action)
+        {
+            Assert.DoesNotThrow(new TestDelegate(action));
         }
 
         public static void ShouldEqualSqlDate(this DateTime actual, DateTime expected)
