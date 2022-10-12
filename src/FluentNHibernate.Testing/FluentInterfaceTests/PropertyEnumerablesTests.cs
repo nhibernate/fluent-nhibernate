@@ -1,5 +1,5 @@
 using System.Linq;
-using FluentNHibernate.Mapping;
+using NHibernate.Type;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
@@ -19,19 +19,19 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
-        public void ShouldSetNullableEnumsToUseGenericEnumMapper()
+        public void ShouldSetNullableEnumsToUseEnumStringType()
         {
             Property<Target>(x => x.NullableEnum)
                 .Mapping(m => {})
-                .ModelShouldMatch(x => x.Type.GetUnderlyingSystemType().ShouldEqual(typeof(GenericEnumMapper<Enum>)));
+                .ModelShouldMatch(x => x.Type.GetUnderlyingSystemType().ShouldEqual(typeof(EnumStringType<Enum>)));
         }
 
         [Test]
-        public void ShouldSetEnumsToUseGenericEnumMapper()
+        public void ShouldSetEnumsToUseEnumStringType()
         {
             Property<Target>(x => x.Enum)
                 .Mapping(m => { })
-                .ModelShouldMatch(x => x.Type.GetUnderlyingSystemType().ShouldEqual(typeof(GenericEnumMapper<Enum>)));
+                .ModelShouldMatch(x => x.Type.GetUnderlyingSystemType().ShouldEqual(typeof(EnumStringType<Enum>)));
         }
 
         private class Target

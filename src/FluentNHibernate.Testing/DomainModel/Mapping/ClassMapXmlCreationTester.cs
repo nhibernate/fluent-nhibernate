@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 using FluentNHibernate.Mapping;
+using NHibernate.Type;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
 {
@@ -218,13 +219,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         }
 
         [Test]
-        public void Map_an_enumeration()
+        public void MapAnEnumeration()
         {
             new MappingTester<MappedObject>()
                 .ForMapping(m => m.Map(x => x.Color))
                 .Element("class/property[@name='Color']")
                     .Exists()
-                    .HasAttribute("type", typeof(GenericEnumMapper<ColorEnum>).AssemblyQualifiedName)
+                    .HasAttribute("type", typeof(EnumStringType<ColorEnum>).AssemblyQualifiedName)
                 .Element("class/property[@name='Color']/column")
                     .Exists();
         }
@@ -236,7 +237,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 .ForMapping(m => m.Map(x => x.NullableColor))
                 .Element("class/property[@name='NullableColor']")
                     .Exists()
-                    .HasAttribute("type", typeof(GenericEnumMapper<ColorEnum>).AssemblyQualifiedName)
+                    .HasAttribute("type", typeof(EnumStringType<ColorEnum>).AssemblyQualifiedName)
                 .Element("class/property[@name='NullableColor']/column")
                     .Exists()
                     .HasAttribute("not-null", "false");

@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using FluentNHibernate.Automapping;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Identity;
+using NHibernate.Type;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.AutoMapping.Overrides
@@ -60,7 +60,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Overrides
 				//of getting to the key type though
 				firstKey.ShouldBeOfType(typeof(KeyPropertyMapping));
 				var keyProp = (KeyPropertyMapping)firstKey;
-				keyProp.Type.GetUnderlyingSystemType().ShouldEqual(typeof(GenericEnumMapper<>).MakeGenericType(typeof(SomeEnum)));
+				keyProp.Type.GetUnderlyingSystemType().ShouldEqual(typeof(EnumStringType<>).MakeGenericType(typeof(SomeEnum)));
 			});
 		}
 

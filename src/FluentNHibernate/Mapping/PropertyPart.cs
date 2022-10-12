@@ -4,6 +4,7 @@ using System.Linq;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
+using NHibernate.Type;
 using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping
@@ -353,10 +354,10 @@ namespace FluentNHibernate.Mapping
             var type = new TypeReference(member.PropertyType);
 
             if (member.PropertyType.IsEnum())
-                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(member.PropertyType));
+                type = new TypeReference(typeof(EnumStringType<>).MakeGenericType(member.PropertyType));
 
             if (member.PropertyType.IsNullable() && member.PropertyType.IsEnum())
-                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(member.PropertyType.GetGenericArguments()[0]));
+                type = new TypeReference(typeof(EnumStringType<>).MakeGenericType(member.PropertyType.GetGenericArguments()[0]));
 
             return type;
         }
