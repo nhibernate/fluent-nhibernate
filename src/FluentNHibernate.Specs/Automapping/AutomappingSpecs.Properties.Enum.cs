@@ -1,10 +1,10 @@
 using System.Linq;
 using FluentNHibernate.Automapping;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
 using FluentAssertions;
+using NHibernate.Type;
 
 namespace FluentNHibernate.Specs.Automapping
 {
@@ -34,8 +34,8 @@ namespace FluentNHibernate.Specs.Automapping
         It should_create_a_property_mapping_for_the_property = () =>
             mapping.Properties.ShouldContain(x => x.Name == "EnumProperty");
 
-        It should_use_the_generic_enum_mapper_for_the_property = () =>
-            mapping.Properties.First().Type.GetUnderlyingSystemType().Should().Be(typeof(GenericEnumMapper<Enum>));
+        It should_use_the_enum_string_type_for_the_property = () =>
+            mapping.Properties.First().Type.GetUnderlyingSystemType().Should().Be(typeof(EnumStringType<Enum>));
 
         It should_create_a_column_for_the_property_mapping_with_the_property_name = () =>
             mapping.Properties.First().Columns.ShouldContain(x => x.Name == "EnumProperty");
@@ -52,8 +52,8 @@ namespace FluentNHibernate.Specs.Automapping
         It should_create_a_property_mapping_for_the_property = () =>
             mapping.Properties.ShouldContain(x => x.Name == "EnumProperty");
 
-        It should_use_the_generic_enum_mapper_for_the_property = () =>
-            mapping.Properties.First().Type.GetUnderlyingSystemType().Should().Be(typeof(GenericEnumMapper<Enum>));
+        It should_use_the_enum_string_mapper_for_the_property = () =>
+            mapping.Properties.First().Type.GetUnderlyingSystemType().Should().Be(typeof(EnumStringType<Enum>));
 
         It should_create_a_column_for_the_property_mapping_with_the_property_name = () =>
             mapping.Properties.First().Columns.ShouldContain(x => x.Name == "EnumProperty");

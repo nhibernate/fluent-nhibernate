@@ -1,6 +1,8 @@
-﻿using FluentNHibernate.MappingModel;
+﻿using System;
+using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 using FluentNHibernate.Mapping;
+using NHibernate.Type;
 
 namespace FluentNHibernate.Testing.Utils
 {
@@ -8,6 +10,13 @@ namespace FluentNHibernate.Testing.Utils
     public class TypeReferenceEnumTests
     {
         [Test]
+        public void IsEnumOnTypeReferenceToEnumStringTypeShouldBeTrue()
+        {
+            var enumTypeReference = new TypeReference(typeof(EnumStringType<TestEnum>));
+            enumTypeReference.IsEnum.ShouldBeTrue();
+        }
+        
+        [Test, Obsolete]
         public void IsEnumOnTypeReferenceToGenericEnumMapperShouldBeTrue()
         {
             var enumTypeReference = new TypeReference(typeof(GenericEnumMapper<TestEnum>));
@@ -18,7 +27,5 @@ namespace FluentNHibernate.Testing.Utils
         {
             Value1            
         }
-
-        
     }
 }

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using FluentNHibernate.Mapping;
+using NHibernate.Type;
 
 namespace FluentNHibernate.MappingModel
 {
@@ -35,12 +37,20 @@ namespace FluentNHibernate.MappingModel
                 if (innerType == null)
                     return false;
 
-                if (innerType.IsGenericType 
-                    && innerType.GetGenericTypeDefinition() == typeof(FluentNHibernate.Mapping.GenericEnumMapper<>))
+                if (innerType.IsGenericType)
                 {
-                    return true;
+                    if (innerType.GetGenericTypeDefinition() == typeof(EnumStringType<>))
+                    {
+                        return true;
+                    }
+#pragma warning disable CS0618
+                    if (innerType.GetGenericTypeDefinition() == typeof(GenericEnumMapper<>))
+#pragma warning restore CS0618
+                    {
+                        return true;
+                    }
                 }
-                
+
 
                 return innerType.IsEnum;
             }

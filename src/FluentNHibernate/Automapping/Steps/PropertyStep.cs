@@ -6,8 +6,8 @@ using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
+using NHibernate.Type;
 
 namespace FluentNHibernate.Automapping.Steps
 {
@@ -116,10 +116,10 @@ namespace FluentNHibernate.Automapping.Steps
             var type = new TypeReference(property.PropertyType);
 
             if (property.PropertyType.IsEnum())
-                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(property.PropertyType));
+                type = new TypeReference(typeof(EnumStringType<>).MakeGenericType(property.PropertyType));
 
             if (property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
-                type = new TypeReference(typeof(GenericEnumMapper<>).MakeGenericType(property.PropertyType.GetGenericArguments()[0]));
+                type = new TypeReference(typeof(EnumStringType<>).MakeGenericType(property.PropertyType.GetGenericArguments()[0]));
 
             return type;
         }

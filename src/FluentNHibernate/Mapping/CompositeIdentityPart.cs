@@ -7,6 +7,7 @@ using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils;
+using NHibernate.Type;
 
 namespace FluentNHibernate.Mapping
 {
@@ -74,7 +75,7 @@ namespace FluentNHibernate.Mapping
             var type = member.PropertyType;
 
             if (type.IsEnum)
-                type = typeof(GenericEnumMapper<>).MakeGenericType(type);
+                type = typeof(EnumStringType<>).MakeGenericType(type);
 
             var key = new KeyPropertyMapping
             {

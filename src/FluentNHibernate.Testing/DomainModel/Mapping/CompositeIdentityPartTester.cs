@@ -1,8 +1,7 @@
-using System;
 using System.Linq;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel.ClassBased;
+using NHibernate.Type;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
@@ -89,7 +88,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                     c.CompositeId()
                         .KeyProperty(x => x.EnumProperty))
                 .Element("class/composite-id/key-property")
-                    .HasAttribute("type", typeof(GenericEnumMapper<SomeEnum>).AssemblyQualifiedName);
+                    .HasAttribute("type", typeof(EnumStringType<SomeEnum>).AssemblyQualifiedName);
         }
 
         [Test]
