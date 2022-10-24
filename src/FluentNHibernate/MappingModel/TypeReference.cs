@@ -148,7 +148,7 @@ namespace FluentNHibernate.MappingModel
                 return Equals((TypeReference)obj);
             if (obj is Type)
                 return Equals((Type)obj);
-            if (obj.GetType() == typeof(string))
+            if (obj is string)
                 return Equals((string)obj);
 
             return false;
