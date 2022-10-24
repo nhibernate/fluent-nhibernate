@@ -32,9 +32,9 @@ namespace FluentNHibernate.Utils
         {
             if (expression.Body is BinaryExpression)
                 return Convert<T>((BinaryExpression)expression.Body);
-            if (expression.Body is MemberExpression memberExpression&& memberExpression.Type == typeof(bool))
+            if (expression.Body is MemberExpression memberExpression && memberExpression.Type == typeof(bool))
                     return Convert(CreateExpression<T>(memberExpression)) + " = " + Convert(true);
-            if (expression.Body is UnaryExpression unaryExpression&& unaryExpression.Type == typeof(bool) && unaryExpression.NodeType == ExpressionType.Not)
+            if (expression.Body is UnaryExpression unaryExpression && unaryExpression.Type == typeof(bool) && unaryExpression.NodeType == ExpressionType.Not)
                     return Convert(CreateExpression<T>(unaryExpression.Operand)) + " = " + Convert(false);
 
             throw new InvalidOperationException("Unable to convert expression to SQL");
@@ -73,7 +73,7 @@ namespace FluentNHibernate.Utils
             if (body.Operand is MemberExpression member)
                 return Convert(expression, member);
 
-            if (body.Operand is UnaryExpression unaryExpression&& unaryExpression.NodeType == ExpressionType.Convert)
+            if (body.Operand is UnaryExpression unaryExpression && unaryExpression.NodeType == ExpressionType.Convert)
                 return Convert(expression, unaryExpression);
 
             throw new InvalidOperationException("Unable to convert expression to SQL");
