@@ -30,8 +30,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
             var mappings = model.BuildMappings();
 
-            var leftMapping = mappings.SelectMany(x => x.Classes).Where(x => x.Type == typeof(Left)).First();
-            var rightMapping = mappings.SelectMany(x => x.Classes).Where(x => x.Type == typeof(Right)).First();
+            var leftMapping = mappings.SelectMany(x => x.Classes).First(x => x.Type == typeof(Left));
+            var rightMapping = mappings.SelectMany(x => x.Classes).First(x => x.Type == typeof(Right));
 
             leftMapping.Collections.First().TableName.ShouldEqual("LeftsToRights");
             rightMapping.Collections.First().TableName.ShouldEqual("LeftsToRights");
@@ -57,8 +57,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
             var mappings = model.BuildMappings();
 
-            var leftMapping = mappings.SelectMany(x => x.Classes).Where(x => x.Type == typeof(Left)).First();
-            var rightMapping = mappings.SelectMany(x => x.Classes).Where(x => x.Type == typeof(Right)).First();
+            var leftMapping = mappings.SelectMany(x => x.Classes).First(x => x.Type == typeof(Left));
+            var rightMapping = mappings.SelectMany(x => x.Classes).First(x => x.Type == typeof(Right));
 
             leftMapping.Collections.First().TableName.ShouldEqual("MyJoinTable");
             rightMapping.Collections.First().TableName.ShouldEqual("MyJoinTable");
@@ -84,8 +84,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
             var mappings = model.BuildMappings();
 
-            var leftMapping = mappings.SelectMany(x => x.Classes).Where(x => x.Type == typeof(Left)).First();
-            var rightMapping = mappings.SelectMany(x => x.Classes).Where(x => x.Type == typeof(Right)).First();
+            var leftMapping = mappings.SelectMany(x => x.Classes).First(x => x.Type == typeof(Left));
+            var rightMapping = mappings.SelectMany(x => x.Classes).First(x => x.Type == typeof(Right));
 
             leftMapping.Collections.First().TableName.ShouldEqual("MyJoinTable");
             rightMapping.Collections.First().TableName.ShouldEqual("MyJoinTable");
@@ -109,7 +109,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
             var mappings = model.BuildMappings();
 
-            var leftMapping = mappings.SelectMany(x => x.Classes).Where(x => x.Type == typeof(Left)).First();
+            var leftMapping = mappings.SelectMany(x => x.Classes).First(x => x.Type == typeof(Left));
 
             leftMapping.Collections.First().TableName.ShouldEqual("RightToLeft");
         }
@@ -135,8 +135,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
             var mappings = model.BuildMappings();
 
-            var leftMapping = mappings.SelectMany(x => x.Classes).Where(x => x.Type == typeof(Left)).First();
-            var rightMapping = mappings.SelectMany(x => x.Classes).Where(x => x.Type == typeof(Right)).First();
+            var leftMapping = mappings.SelectMany(x => x.Classes).First(x => x.Type == typeof(Left));
+            var rightMapping = mappings.SelectMany(x => x.Classes).First(x => x.Type == typeof(Right));
 
             leftMapping.Collections.First().TableName.ShouldEqual("LeftsToRights");
             rightMapping.Collections.First().TableName.ShouldEqual("LeftsToRights");
@@ -165,8 +165,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
             var mappings = model.BuildMappings();
 
-            var leftMapping = mappings.SelectMany(x => x.Classes).Where(x => x.Type == typeof(Left)).First();
-            var rightMapping = mappings.SelectMany(x => x.Classes).Where(x => x.Type == typeof(Right)).First();
+            var leftMapping = mappings.SelectMany(x => x.Classes).First(x => x.Type == typeof(Left));
+            var rightMapping = mappings.SelectMany(x => x.Classes).First(x => x.Type == typeof(Right));
 
             leftMapping.Collections.First().TableName.ShouldEqual("Lefts_Rights");
             rightMapping.Collections.First().TableName.ShouldEqual("Lefts_Rights");
@@ -191,7 +191,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
 
             var mappings = model.BuildMappings();
 
-            var leftMapping = mappings.SelectMany(x => x.Classes).Where(x => x.Type == typeof(Left)).First();
+            var leftMapping = mappings.SelectMany(x => x.Classes).First(x => x.Type == typeof(Left));
 
             leftMapping.Collections.First().TableName.ShouldEqual("RightUni");
         }
