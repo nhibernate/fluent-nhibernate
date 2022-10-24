@@ -1,3 +1,4 @@
+using System;
 using FakeItEasy;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
