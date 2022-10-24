@@ -111,7 +111,7 @@ namespace FluentNHibernate.Automapping
 
         IPropertyIgnorer IPropertyIgnorer.IgnoreProperties(string first, params string[] others)
         {
-            var options = (others ?? new string[0]).Concat(new[] { first }).ToArray();
+            var options = (others ?? Array.Empty<string>()).Concat(new[] { first }).ToArray();
 
             ((IPropertyIgnorer)this).IgnoreProperties(x => x.Name.In(options));
 

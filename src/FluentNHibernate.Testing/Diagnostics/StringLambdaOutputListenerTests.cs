@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FakeItEasy;
 using FluentNHibernate.Diagnostics;
 using FluentNHibernate.Testing.Utils;
@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.Diagnostics
         [Test]
         public void should_format_results()
         {
-            var results = new DiagnosticResults(new ScannedSource[0], new Type[0], new Type[0], new SkippedAutomappingType[0], new Type[0], new AutomappingType[0]);
+            var results = new DiagnosticResults(Array.Empty<ScannedSource>(), Array.Empty<Type>(), Array.Empty<Type>(), Array.Empty<SkippedAutomappingType>(), Array.Empty<Type>(), Array.Empty<AutomappingType>());
             var formatter = A.Fake<IDiagnosticResultsFormatter>();
             var listener = new StringLambdaOutputListener(x => { });
             listener.SetFormatter(formatter);
@@ -24,7 +24,7 @@ namespace FluentNHibernate.Testing.Diagnostics
         [Test]
         public void should_raise_formatted_results()
         {
-            var results = new DiagnosticResults(new ScannedSource[0], new Type[0], new Type[0], new SkippedAutomappingType[0], new Type[0], new AutomappingType[0]);
+            var results = new DiagnosticResults(Array.Empty<ScannedSource>(), Array.Empty<Type>(), Array.Empty<Type>(), Array.Empty<SkippedAutomappingType>(), Array.Empty<Type>(), Array.Empty<AutomappingType>());
             var output = "formatted output";
             var receivedOutput = "";
             var formatter = A.Fake<IDiagnosticResultsFormatter>();

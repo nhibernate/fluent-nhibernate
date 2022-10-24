@@ -361,7 +361,7 @@ namespace FluentNHibernate
 
         public IEnumerable<Member> GetIgnoredProperties()
         {
-            return new Member[0];
+            return Array.Empty<Member>();
         }
     }
 }

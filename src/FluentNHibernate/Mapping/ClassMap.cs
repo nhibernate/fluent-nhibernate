@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
@@ -724,7 +724,7 @@ namespace FluentNHibernate.Mapping
 
         IEnumerable<Member> IMappingProvider.GetIgnoredProperties()
         {
-            return new Member[0];
+            return Array.Empty<Member>();
         }
     }
 }

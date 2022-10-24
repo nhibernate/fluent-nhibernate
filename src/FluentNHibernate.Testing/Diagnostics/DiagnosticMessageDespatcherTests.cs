@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FakeItEasy;
 using FluentNHibernate.Diagnostics;
 using FluentNHibernate.Testing.Utils;
@@ -22,7 +22,7 @@ namespace FluentNHibernate.Testing.Diagnostics
         {
             var firstListener = A.Fake<IDiagnosticListener>();
             var secondListener = A.Fake<IDiagnosticListener>();
-            var results = new DiagnosticResults(new ScannedSource[0], new Type[0], new Type[0], new SkippedAutomappingType[0], new Type[0], new AutomappingType[0]);
+            var results = new DiagnosticResults(Array.Empty<ScannedSource>(), Array.Empty<Type>(), Array.Empty<Type>(), Array.Empty<SkippedAutomappingType>(), Array.Empty<Type>(), Array.Empty<AutomappingType>());
 
             dispatcher.RegisterListener(firstListener);
             dispatcher.RegisterListener(secondListener);

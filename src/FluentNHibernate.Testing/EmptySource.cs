@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FluentNHibernate.Diagnostics;
 
@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing
     {
         public IEnumerable<Type> GetTypes()
         {
-            return new Type[0];
+            return Array.Empty<Type>();
         }
 
         public void LogSource(IDiagnosticLogger logger)

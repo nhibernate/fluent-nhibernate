@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Reflection;
 
@@ -31,7 +31,7 @@ namespace FluentNHibernate
 
         public override object[] GetCustomAttributes(bool inherit)
         {
-            return new object[0];
+            return Array.Empty<object>();
         }
 
         public override bool IsDefined(Type attributeType, bool inherit)
@@ -49,7 +49,7 @@ namespace FluentNHibernate
 
         public override MethodInfo[] GetAccessors(bool nonPublic)
         {
-            return new MethodInfo[0];
+            return Array.Empty<MethodInfo>();
         }
 
         public override MethodInfo GetGetMethod(bool nonPublic)
@@ -64,7 +64,7 @@ namespace FluentNHibernate
 
         public override ParameterInfo[] GetIndexParameters()
         {
-            return new ParameterInfo[0];
+            return Array.Empty<ParameterInfo>();
         }
 
         public override string Name
@@ -104,7 +104,7 @@ namespace FluentNHibernate
 
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
-            return new object[0];
+            return Array.Empty<object>();
         }
     }
 }

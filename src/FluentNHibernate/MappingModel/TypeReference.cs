@@ -99,7 +99,7 @@ namespace FluentNHibernate.MappingModel
         public Type[] GetGenericArguments()
         {
             if (innerType == null)
-                return new Type[0];
+                return Array.Empty<Type>();
 
             return innerType.GetGenericArguments();
         }
