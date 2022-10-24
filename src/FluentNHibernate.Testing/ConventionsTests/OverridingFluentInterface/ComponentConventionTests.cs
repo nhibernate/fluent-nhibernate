@@ -99,7 +99,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
             var modelInstance = (ComponentMapping)generatedModels
                 .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) != null)
                 .Classes.First()
-                .Components.Where(x => x is ComponentMapping).First();
+                .Components.First(x => x is ComponentMapping);
 
             modelVerification(modelInstance);
         }
