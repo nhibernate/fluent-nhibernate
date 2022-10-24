@@ -39,9 +39,7 @@ namespace FluentNHibernate.Automapping
         void IAutoClasslike.AlterModel(ClassMappingBase mapping)
         {
             mapping.MergeAttributes(attributes.Clone());
-
-            var classMapping = mapping as ClassMapping;
-            if (classMapping != null)
+            if (mapping is ClassMapping classMapping)
             {
                 if (providers.Id != null)
                     classMapping.Set(x => x.Id, Layer.Defaults, providers.Id.GetIdentityMapping());
