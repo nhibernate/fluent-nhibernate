@@ -43,7 +43,7 @@ namespace FluentNHibernate.Visitors
             var subclasses = SortByDistanceFrom(type, subclassProviders.Except(extendsSubclasses));
 
             if (subclasses.Keys.Count == 0 && !extendsSubclasses.Any())
-                return new IIndeterminateSubclassMappingProvider[0];
+                return Array.Empty<IIndeterminateSubclassMappingProvider>();
             if (subclasses.Keys.Count == 0)
                 return extendsSubclasses;
 

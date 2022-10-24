@@ -1,4 +1,5 @@
-﻿using FakeItEasy;
+using System;
+using FakeItEasy;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -44,7 +45,7 @@ namespace FluentNHibernate.Testing.Visitors
     {
         public override void establish_context()
         {
-            visitor = new ComponentReferenceResolutionVisitor(new[] { new ComponentMapComponentReferenceResolver() }, new IExternalComponentMappingProvider[0]);
+            visitor = new ComponentReferenceResolutionVisitor(new[] { new ComponentMapComponentReferenceResolver() }, Array.Empty<IExternalComponentMappingProvider>());
             memberProperty = new DummyPropertyInfo("Component", typeof(ComponentTarget)).ToMember();
         }
 

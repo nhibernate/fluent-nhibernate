@@ -22,7 +22,7 @@ namespace FluentNHibernate
 
         public override object[] GetCustomAttributes(bool inherit)
         {
-            return new object[0];
+            return Array.Empty<object>();
         }
 
         public override bool IsDefined(Type attributeType, bool inherit)
@@ -32,7 +32,7 @@ namespace FluentNHibernate
 
         public override ParameterInfo[] GetParameters()
         {
-            return new ParameterInfo[0];
+            return Array.Empty<ParameterInfo>();
         }
 
         public override MethodImplAttributes GetMethodImplementationFlags()
@@ -82,7 +82,7 @@ namespace FluentNHibernate
 
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
-            return new object[0];
+            return Array.Empty<object>();
         }
     }
 }

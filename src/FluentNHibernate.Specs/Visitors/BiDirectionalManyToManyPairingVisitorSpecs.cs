@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.MappingModel;
@@ -283,7 +283,7 @@ namespace FluentNHibernate.Specs.Visitors
         protected static void Visit(params CollectionMapping[] mappings)
         {
             mappings.Each(visitor.Visit);
-            visitor.Visit(new HibernateMapping[0]); // simulate end of visit
+            visitor.Visit(Array.Empty<HibernateMapping>()); // simulate end of visit
         }
     }
 
