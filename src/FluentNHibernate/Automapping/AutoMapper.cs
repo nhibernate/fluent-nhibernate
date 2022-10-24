@@ -78,8 +78,7 @@ namespace FluentNHibernate.Automapping
                 }
 
                 SubclassMapping subclassMapping;
-                var tempSubClassMap = mapping as SubclassMapping;
-                if(!tempIsNull && tempMapping.IsUnionSubclass || tempSubClassMap != null && tempSubClassMap.SubclassType == SubclassType.UnionSubclass)
+                if(!tempIsNull && tempMapping.IsUnionSubclass || mapping is SubclassMapping tempSubClassMap&& tempSubClassMap.SubclassType == SubclassType.UnionSubclass)
                 {
                     subclassMapping = new SubclassMapping(SubclassType.UnionSubclass);
                     subclassMapping.Set(x => x.Type, Layer.Defaults, inheritedClass.Type);

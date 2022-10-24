@@ -32,11 +32,9 @@ namespace FluentNHibernate.Utils
         {
             if (expression.Body is BinaryExpression)
                 return Convert<T>((BinaryExpression)expression.Body);
-            var memberExpression = expression.Body as MemberExpression;
-            if (memberExpression != null && memberExpression.Type == typeof(bool))
+            if (expression.Body is MemberExpression memberExpression&& memberExpression.Type == typeof(bool))
                     return Convert(CreateExpression<T>(memberExpression)) + " = " + Convert(true);
-            var unaryExpression = expression.Body as UnaryExpression;
-            if (unaryExpression != null && unaryExpression.Type == typeof(bool) && unaryExpression.NodeType == ExpressionType.Not)
+            if (expression.Body is UnaryExpression unaryExpression&& unaryExpression.Type == typeof(bool) && unaryExpression.NodeType == ExpressionType.Not)
                     return Convert(CreateExpression<T>(unaryExpression.Operand)) + " = " + Convert(false);
 
             throw new InvalidOperationException("Unable to convert expression to SQL");
@@ -68,19 +66,14 @@ namespace FluentNHibernate.Utils
 
         private static string Convert<T>(Expression<Func<T, object>> expression, UnaryExpression body)
         {
-            var constant = body.Operand as ConstantExpression;
 
-            if (constant != null)
+            if (body.Operand is ConstantExpression constant)
                 return Convert(constant);
 
-            var member = body.Operand as MemberExpression;
-
-            if (member != null)
+            if (body.Operand is MemberExpression member)
                 return Convert(expression, member);
 
-            var unaryExpression = body.Operand as UnaryExpression;
-
-            if (unaryExpression != null && unaryExpression.NodeType == ExpressionType.Convert)
+            if (body.Operand is UnaryExpression unaryExpression&& unaryExpression.NodeType == ExpressionType.Convert)
                 return Convert(expression, unaryExpression);
 
             throw new InvalidOperationException("Unable to convert expression to SQL");
