@@ -4,6 +4,7 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Diagnostics;
+using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures;
 using NHibernate.Cfg;
@@ -179,6 +180,32 @@ namespace FluentNHibernate.Testing.Cfg
             mapping.Apply(new Configuration());
 
             model.MergeMappings.ShouldBeTrue();
+        }
+
+        [Test]
+        public void MappingApplicationStrategyShouldPropagateToPersistenceModelIfSet()
+        {
+            var model = new PersistenceModel();
+            var strategy = new ValidatingHbmMappingApplicationStrategy();
+
+            mapping.UsePersistenceModel(model);
+            mapping.UseMappingApplicationStrategy(strategy);
+            mapping.Apply(new Configuration());
+
+            model.MappingApplicationStrategy.ShouldBeTheSameAs(strategy);
+        }
+
+        [Test]
+        public void MappingApplicationStrategyShouldNotPropagateToPersistenceModelIfEmpty()
+        {
+            var model = new PersistenceModel();
+            var origStrategy = model.MappingApplicationStrategy;
+
+            mapping.UsePersistenceModel(model);
+            mapping.UseMappingApplicationStrategy(null);
+            mapping.Apply(new Configuration());
+
+            model.MappingApplicationStrategy.ShouldBeTheSameAs(origStrategy);
         }
     }
 }

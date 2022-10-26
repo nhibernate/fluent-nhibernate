@@ -35,6 +35,8 @@ namespace FluentNHibernate
         public bool MergeMappings { get; set; }
         private IEnumerable<HibernateMapping> compiledMappings;
         private ValidationVisitor validationVisitor;
+        public int DegreeOfParallelism { get; set; } = 1;
+        public IMappingApplicationStrategy MappingApplicationStrategy { get; set; } = new XmlMappingApplicationStrategy();
         public PairBiDirectionalManyToManySidesDelegate BiDirectionalManyToManyPairer { get; set; }
 
         IDiagnosticMessageDispatcher diagnosticDispatcher = new DefaultDiagnosticMessageDispatcher();
@@ -77,12 +79,15 @@ namespace FluentNHibernate
 
         public void AddMappingsFromSource(ITypeSource source)
         {
-            source.GetTypes()
+            foreach (object o in source.GetTypes()
                 .Where(x => IsMappingOf<IMappingProvider>(x) ||
                             IsMappingOf<IIndeterminateSubclassMappingProvider>(x) ||
                             IsMappingOf<IExternalComponentMappingProvider>(x) ||
                             IsMappingOf<IFilterDefinition>(x))
-                .Each(Add);
+                .AsParallel().AsOrdered().WithDegreeOfParallelism(DegreeOfParallelism).Select(t => t.InstantiateUsingParameterlessConstructor()).ToList())
+            {
+                AddObject(o);
+            }
 
             log.LoadedFluentMappingsFromSource(source);
         }
@@ -129,7 +134,11 @@ namespace FluentNHibernate
         public void Add(Type type)
         {
             var mapping = type.InstantiateUsingParameterlessConstructor();
-
+            AddObject(mapping);
+        }
+        public void AddObject(object mapping)
+        {
+            Type type = mapping.GetType();
             if (mapping is IMappingProvider)
             {
                 log.FluentMappingDiscovered(type);
@@ -276,21 +285,7 @@ namespace FluentNHibernate
         {
             EnsureMappingsBuilt();
 
-            foreach (var mapping in compiledMappings.Where(m => !m.Classes.Any()))
-            {
-                var serializer = new MappingXmlSerializer();
-                XmlDocument document = serializer.Serialize(mapping);
-                cfg.AddDocument(document);
-            }
-
-            foreach (var mapping in compiledMappings.Where(m => m.Classes.Any()))
-            {
-                var serializer = new MappingXmlSerializer();
-                XmlDocument document = serializer.Serialize(mapping);
-
-                if (cfg.GetClassMapping(mapping.Classes.First().Type) == null)
-                    cfg.AddDocument(document);
-            }
+            MappingApplicationStrategy.ApplyMappingsToConfiguration(compiledMappings, cfg, DegreeOfParallelism);
         }
 
         public bool ContainsMapping(Type type)
@@ -363,5 +358,10 @@ namespace FluentNHibernate
         {
             return Array.Empty<Member>();
         }
+    }
+
+    public interface IMappingApplicationStrategy
+    {
+        void ApplyMappingsToConfiguration(IEnumerable<HibernateMapping> mappings, Configuration cfg, int degreeOfParallelism);
     }
 }

@@ -12,6 +12,7 @@ namespace FluentNHibernate.Cfg
         bool mergeMappings;
         readonly IDiagnosticLogger logger;
         PersistenceModel model;
+        IMappingApplicationStrategy mappingApplicationStrategy;
 
         public MappingConfiguration()
             : this(new NullDiagnosticsLogger())
@@ -32,6 +33,12 @@ namespace FluentNHibernate.Cfg
         public MappingConfiguration UsePersistenceModel(PersistenceModel persistenceModel)
         {
             model = persistenceModel;
+            return this;
+        }
+
+        public MappingConfiguration UseMappingApplicationStrategy(IMappingApplicationStrategy mappingApplicationStrategy)
+        {
+            this.mappingApplicationStrategy = mappingApplicationStrategy;
             return this;
         }
 
@@ -69,6 +76,15 @@ namespace FluentNHibernate.Cfg
         /// <param name="cfg">NHibernate Configuration instance</param>
         public void Apply(Configuration cfg)
         {
+            Apply(cfg, 1);
+        }
+        /// <summary>
+        /// Applies any mappings to the NHibernate Configuration
+        /// </summary>
+        /// <param name="cfg">NHibernate Configuration instance</param>
+        /// <param name="degreeOfParallelism">the number of threads to use to perform startup</param>
+        public void Apply(Configuration cfg, int degreeOfParallelism)
+        {
             foreach (var autoMapping in AutoMappings)
                 autoMapping.SetLogger(logger);
 
@@ -83,7 +99,9 @@ namespace FluentNHibernate.Cfg
             HbmMappings.Apply(cfg);
             FluentMappings.Apply(model);
             AutoMappings.Apply(cfg, model);
-
+            model.DegreeOfParallelism = degreeOfParallelism;
+            if (mappingApplicationStrategy != null)
+                model.MappingApplicationStrategy = mappingApplicationStrategy;
             model.Configure(cfg);
         }
 
