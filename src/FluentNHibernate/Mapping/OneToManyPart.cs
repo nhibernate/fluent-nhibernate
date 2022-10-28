@@ -82,6 +82,27 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
+        /// Specify that this is a ternary association
+        /// </summary>
+        /// <param name="indexType">Index Type</param>
+        /// <param name="indexColumnName">Index column</param>
+        /// <param name="valueType">Value Type</param>
+        public OneToManyPart<TChild> AsTernaryAssociation(Type indexType, string indexColumnName, Type valueType )
+        {
+            EnsureGenericDictionary();
+
+            manyToManyIndex = new IndexManyToManyPart(typeof(ManyToManyPart<TChild>));
+            manyToManyIndex.Column(indexColumnName);
+            manyToManyIndex.Type(indexType);
+
+            this.valueType = valueType;
+            isTernary = true;
+
+            return this;
+        }
+
+
+        /// <summary>
         /// Specify this as an entity map
         /// </summary>
         public OneToManyPart<TChild> AsEntityMap()
@@ -98,6 +119,18 @@ namespace FluentNHibernate.Mapping
         public OneToManyPart<TChild> AsEntityMap(string indexColumnName)
         {
             return AsMap(null).AsTernaryAssociation(indexColumnName);
+        }
+
+        /// <summary>
+        /// Specify this as an entity map
+        /// </summary>
+        /// <param name="indexType">Index Type</param>
+        /// <param name="indexColumnName">Index column</param>
+        /// <param name="valueType">Value Type</param>
+       
+        public OneToManyPart<TChild> AsEntityMap(Type indexType, string indexColumnName, Type valueType)
+        {
+            return AsMap(null).AsTernaryAssociation(indexType, indexColumnName, valueType);
         }
 
         /// <summary>

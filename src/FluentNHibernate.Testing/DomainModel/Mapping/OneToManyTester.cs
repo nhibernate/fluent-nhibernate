@@ -17,6 +17,12 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public virtual string Name { get; set; }
     }
 
+    public class SomeOtherEntity
+    {
+        public virtual int Id { get; set; }
+        public virtual string Name { get; set; }
+    }
+
     public class IndexTarget {}
 
     public class FieldOneToManyTarget

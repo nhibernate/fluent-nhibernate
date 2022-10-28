@@ -207,6 +207,11 @@ namespace FluentNHibernate.Mapping
             return AsMap(null).AsTernaryAssociation(indexColumn, valueColumn);
         }
 
+        public ManyToManyPart<TChild> AsEntityMap(Type indexType, string indexColumn, Type typeOfValue, string valueColumn)
+        {
+            return AsMap(null).AsTernaryAssociation(indexType, indexColumn, typeOfValue, valueColumn);
+        }
+
         public Type ChildType
         {
             get { return typeof(TChild); }
