@@ -599,6 +599,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public byte[] Data { get; set; }
         public decimal DecimalProperty { get; set; }
         public IDictionary ExtensionData { get; set; }
+        public IDictionary<string, object> GenericExtensionData { get; set; }
     }
 
     public class FieldTarget
@@ -612,6 +613,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public byte[] Data;
         public decimal DecimalProperty;
         public IDictionary ExtensionData;
+        public IDictionary<string, object> GenericExtensionData;
     }
 
     public class PrivatePropertyTarget
@@ -625,6 +627,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
         public byte[] Data { get; set; }
         public decimal DecimalProperty { get; set; }
         public IDictionary ExtensionData { get; set; }
+        public IDictionary<string, object> GenericExtensionData { get; set; }
     }
 
     public class PropertyReferenceTarget

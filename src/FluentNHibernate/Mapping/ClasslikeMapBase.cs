@@ -229,6 +229,36 @@ namespace FluentNHibernate.Mapping
         }
 
         /// <summary>
+        /// Create a dynamic component mapping. This is a dictionary that represents
+        /// a limited number of columns in the database.
+        /// </summary>
+        /// <param name="memberExpression">Property containing component</param>
+        /// <param name="dynamicComponentAction">Component setup action</param>
+        /// <example>
+        /// DynamicComponent(x => x.Data, comp =>
+        /// {
+        ///   comp.Map(x => (int)x["age"]);
+        /// });
+        /// </example>
+        public DynamicComponentPart<IDictionary<string, object>> DynamicComponent(Expression<Func<T, IDictionary<string, object>>> memberExpression, Action<DynamicComponentPart<IDictionary<string, object>>> dynamicComponentAction)
+        {
+            return DynamicComponent(memberExpression.ToMember(), dynamicComponentAction);
+        }
+
+        DynamicComponentPart<IDictionary<string, object>> DynamicComponent(Member member, Action<DynamicComponentPart<IDictionary<string, object>>> dynamicComponentAction)
+        {
+            OnMemberMapped(member);
+
+            var part = new DynamicComponentPart<IDictionary<string, object>>(typeof(T), member);
+
+            dynamicComponentAction(part);
+
+            providers.Components.Add(part);
+
+            return part;
+        }
+
+        /// <summary>
         /// Creates a component reference. This is a place-holder for a component that is defined externally with a
         /// <see cref="ComponentMap{T}"/>; the mapping defined in said <see cref="ComponentMap{T}"/> will be merged
         /// with any options you specify from this call.

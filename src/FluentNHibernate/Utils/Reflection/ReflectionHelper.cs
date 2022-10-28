@@ -83,10 +83,29 @@ namespace FluentNHibernate.Utils.Reflection
                 desiredConversionType = unaryExpression.Type;
                 nextOperand = unaryExpression.Operand;
             }
-                
-            var constExpression = methodCallExpression.Arguments[0] as ConstantExpression;
-                
-            return new DummyPropertyInfo((string)constExpression.Value, desiredConversionType);
+            var expr = DynamicComponentPropertyVisitor.Visit(methodCallExpression.Arguments[0]);
+            var value = (expr as ConstantExpression)?.Value;
+            
+            return new DummyPropertyInfo((string)value, desiredConversionType);
+        }
+        private static readonly Visitor DynamicComponentPropertyVisitor = new Visitor();
+        private class Visitor:ExpressionVisitor
+        {
+            protected override Expression VisitMember(MemberExpression memberExpression)
+            {
+                var expression = Visit(memberExpression.Expression);
+                object container = expression is ConstantExpression constantExpression ? constantExpression.Value : null;
+                var member = memberExpression.Member;
+                switch (member)
+                {
+                    case FieldInfo fieldInfo: 
+                        return Expression.Constant(fieldInfo.GetValue(container));
+                    case PropertyInfo propertyInfo: 
+                        return Expression.Constant(propertyInfo.GetValue(container, null));
+                    default: 
+                        return base.VisitMember(memberExpression);
+                }
+            }
         }
 
         private static MemberExpression GetMemberExpression(Expression expression)

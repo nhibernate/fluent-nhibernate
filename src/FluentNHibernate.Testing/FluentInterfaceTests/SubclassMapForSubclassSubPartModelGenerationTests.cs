@@ -65,6 +65,14 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
         }
 
         [Test]
+        public void GenericDynamicComponentShouldAddToModelComponentsCollection()
+        {
+            SubclassMapForSubclass<PropertyTarget>()
+                .Mapping(m => m.DynamicComponent(x => x.GenericExtensionData, c => { }))
+                .ModelShouldMatch(x => x.Components.Count().ShouldEqual(1));
+        }
+
+        [Test]
         public void MapShouldAddToModelPropertiesCollection()
         {
             SubclassMapForSubclass<PropertyTarget>()

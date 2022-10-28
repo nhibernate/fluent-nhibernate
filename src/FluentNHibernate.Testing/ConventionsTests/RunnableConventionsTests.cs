@@ -151,6 +151,22 @@ namespace FluentNHibernate.Testing.ConventionsTests
         }
 
         [Test]
+        public void ShouldApplyGenericIDynamicComponentConvention()
+        {
+            TestConvention(new DynamicComponentConvention(), () =>
+                {
+                    var map = new ClassMap<Target>();
+
+                    map.Id(x => x.Id);
+                    map.DynamicComponent(x => x.GenericDynamicComponent, c => { });
+
+                    return map;
+                })
+                .Components.First()
+                .Access.ShouldEqual("field");
+        }
+
+        [Test]
         public void ShouldApplyIHasManyConvention()
         {
             TestConvention(new HasManyConvention(), () =>
@@ -738,6 +754,7 @@ namespace FluentNHibernate.Testing.ConventionsTests
             public string Property { get; set; }
             public OtherObject Component { get; set; }
             public IDictionary DynamicComponent { get; set; }
+            public IDictionary<string, object> GenericDynamicComponent { get; set; }
             public OtherObject Other { get; set; }
             public int Id { get; set; }
             public IDictionary<string, OtherObject> DictionaryBag { get; set; }
