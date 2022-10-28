@@ -13,7 +13,7 @@ namespace FluentNHibernate.Visitors
             if (mapping.OtherSide == null)
             {
                 // uni-directional
-                mapping.Set(x => x.TableName, Layer.Defaults, mapping.ChildType.Name + "To" + mapping.ContainingEntityType.Name);
+                mapping.Set(x => x.TableName, Layer.Defaults, mapping.TableName ?? mapping.ChildType.Name + "To" + mapping.ContainingEntityType.Name);
             }
             else
             {
