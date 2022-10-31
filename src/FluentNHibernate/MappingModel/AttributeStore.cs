@@ -60,7 +60,7 @@ namespace FluentNHibernate.MappingModel
         public override bool Equals(object obj)
         {
            var typed = obj as AttributeStore;
-           if (typed == null) return false;
+           if (typed is null) return false;
            return Equals(typed);
         }
 
