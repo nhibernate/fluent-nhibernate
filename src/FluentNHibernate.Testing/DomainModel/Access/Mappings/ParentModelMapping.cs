@@ -4,45 +4,44 @@ using System.Linq;
 using System.Text;
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Testing.DomainModel.Access.Mappings
+namespace FluentNHibernate.Testing.DomainModel.Access.Mappings;
+
+class ParentModelMapping : ClassMap<ParentModel>
 {
-    class ParentModelMapping : ClassMap<ParentModel>
+    public ParentModelMapping()
     {
-        public ParentModelMapping()
+        Id(x => x.Id);
+        Version(x => x.Version);
+        Map(x => x.Property);
+
+        Join("Joined", j =>
         {
-            Id(x => x.Id);
-            Version(x => x.Version);
-            Map(x => x.Property);
+            j.KeyColumn("Id");
+            j.Map(x => x.JoinedProperty);
+        });
 
-            Join("Joined", j =>
-            {
-                j.KeyColumn("Id");
-                j.Map(x => x.JoinedProperty);
-            });
+        Component(x => x.Component, c =>
+        {
+            c.Map(x => x.Value);
+        });
 
-            Component(x => x.Component, c =>
-            {
-                c.Map(x => x.Value);
-            });
+        HasOne(x => x.One);
 
-            HasOne(x => x.One);
+        ReferencesAny(x => x.Any)
+            .EntityTypeColumn("anytype")
+            .EntityIdentifierColumn("anyid")
+            .IdentityType(typeof(int));
 
-            ReferencesAny(x => x.Any)
-                .EntityTypeColumn("anytype")
-                .EntityIdentifierColumn("anyid")
-                .IdentityType(typeof(int));
+        DynamicComponent(x => x.Dynamic, x => { });
 
-            DynamicComponent(x => x.Dynamic, x => { });
+        HasMany(x => x.MapOne).AsMap("type");
+        HasMany(x => x.SetOne).AsSet();
+        HasMany(x => x.ListOne).AsList();
+        HasMany(x => x.BagOne).AsBag();
 
-            HasMany(x => x.MapOne).AsMap("type");
-            HasMany(x => x.SetOne).AsSet();
-            HasMany(x => x.ListOne).AsList();
-            HasMany(x => x.BagOne).AsBag();
-
-            HasManyToMany(x => x.MapMany).AsMap("type");
-            HasManyToMany(x => x.SetMany).AsSet();
-            HasManyToMany(x => x.ListMany).AsList();
-            HasManyToMany(x => x.BagMany).AsBag();
-        }
+        HasManyToMany(x => x.MapMany).AsMap("type");
+        HasManyToMany(x => x.SetMany).AsSet();
+        HasManyToMany(x => x.ListMany).AsList();
+        HasManyToMany(x => x.BagMany).AsBag();
     }
 }

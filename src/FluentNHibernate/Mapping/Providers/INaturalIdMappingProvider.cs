@@ -1,9 +1,8 @@
 ﻿using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Mapping.Providers
+namespace FluentNHibernate.Mapping.Providers;
+
+public interface INaturalIdMappingProvider
 {
-    public interface INaturalIdMappingProvider
-    {
-        NaturalIdMapping GetNaturalIdMapping();
-    }
+    NaturalIdMapping GetNaturalIdMapping();
 }

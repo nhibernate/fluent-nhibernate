@@ -2,77 +2,76 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace FluentNHibernate.Testing.Testing.Values
+namespace FluentNHibernate.Testing.Testing.Values;
+
+public class ListEntity
 {
-    public class ListEntity
+    private readonly IList<string> backingField;
+
+    public ListEntity()
     {
-        private readonly IList<string> backingField;
+        backingField = new List<string>();
+        GetterAndSetter = new List<string>();
+        GetterAndPrivateSetter = new List<string>();
 
-        public ListEntity()
-        {
-            backingField = new List<string>();
-            GetterAndSetter = new List<string>();
-            GetterAndPrivateSetter = new List<string>();
-
-            TypedSet = new HashSet<string>();
-            //Set = new HashedSet();
-            Collection = new StringCollection();
-            List = new List<string>();
-        }
-
-        public IEnumerable<string> GetterAndSetter { get; set; }
-        public IEnumerable<string> GetterAndPrivateSetter { get; private set; }
-        public IEnumerable<string> BackingField
-        {
-            get { return backingField; }
-        }
-
-        public ISet<string> TypedSet { get; set; }
-        //public ISet Set { get; set; }
-        public ICollection Collection { get; set; }
-        public string[] Array { get; set; }
-        public IList<string> List { get; set; }
-
-        public void AddListItem(string value)
-        {
-            backingField.Add(value);
-        }
+        TypedSet = new HashSet<string>();
+        //Set = new HashedSet();
+        Collection = new StringCollection();
+        List = new List<string>();
     }
 
-    public class ReferenceEntity
+    public IEnumerable<string> GetterAndSetter { get; set; }
+    public IEnumerable<string> GetterAndPrivateSetter { get; private set; }
+    public IEnumerable<string> BackingField
     {
-        public ReferenceEntity()
-        {
-            ReferenceList = new List<OtherEntity>();
-        }
-
-        public OtherEntity Reference { get; set; }
-        public IEnumerable<OtherEntity> ReferenceList { get; set; }
-
-        public void SetReference(OtherEntity value)
-        {
-            Reference = value;
-        }
+        get { return backingField; }
     }
 
-    public class PropertyEntity
+    public ISet<string> TypedSet { get; set; }
+    //public ISet Set { get; set; }
+    public ICollection Collection { get; set; }
+    public string[] Array { get; set; }
+    public IList<string> List { get; set; }
+
+    public void AddListItem(string value)
     {
-        private string backingField;
-
-        public string GetterAndSetter { get; set; }
-        public string GetterAndPrivateSetter { get; private set; }
-
-        public string BackingField
-        {
-            get { return backingField; }
-        }
-
-        public void SetBackingField(string value)
-        {
-            backingField = value;
-        }
+        backingField.Add(value);
     }
-
-    public class OtherEntity
-    {}
 }
+
+public class ReferenceEntity
+{
+    public ReferenceEntity()
+    {
+        ReferenceList = new List<OtherEntity>();
+    }
+
+    public OtherEntity Reference { get; set; }
+    public IEnumerable<OtherEntity> ReferenceList { get; set; }
+
+    public void SetReference(OtherEntity value)
+    {
+        Reference = value;
+    }
+}
+
+public class PropertyEntity
+{
+    private string backingField;
+
+    public string GetterAndSetter { get; set; }
+    public string GetterAndPrivateSetter { get; private set; }
+
+    public string BackingField
+    {
+        get { return backingField; }
+    }
+
+    public void SetBackingField(string value)
+    {
+        backingField = value;
+    }
+}
+
+public class OtherEntity
+{}

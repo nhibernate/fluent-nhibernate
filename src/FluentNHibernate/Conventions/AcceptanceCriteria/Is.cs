@@ -1,22 +1,21 @@
 using System;
 using System.Diagnostics;
 
-namespace FluentNHibernate.Conventions.AcceptanceCriteria
-{
-    public class Is
-    {
-        public static IAcceptanceCriterion Set
-        {
-            get { return new SetCriterion(false); }
-        }
+namespace FluentNHibernate.Conventions.AcceptanceCriteria;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public static InverseIs Not
+public class Is
+{
+    public static IAcceptanceCriterion Set
+    {
+        get { return new SetCriterion(false); }
+    }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    public static InverseIs Not
+    {
+        get
         {
-            get
-            {
-                return new InverseIs();
-            }
+            return new InverseIs();
         }
     }
 }

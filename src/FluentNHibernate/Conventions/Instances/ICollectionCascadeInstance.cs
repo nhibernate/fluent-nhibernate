@@ -1,8 +1,7 @@
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public interface ICollectionCascadeInstance : ICascadeInstance
 {
-    public interface ICollectionCascadeInstance : ICascadeInstance
-    {
-        void AllDeleteOrphan();
-        void DeleteOrphan();
-    }
+    void AllDeleteOrphan();
+    void DeleteOrphan();
 }

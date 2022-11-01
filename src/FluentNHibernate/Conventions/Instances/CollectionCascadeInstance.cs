@@ -1,25 +1,24 @@
 using System;
 
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public class CollectionCascadeInstance : CascadeInstance, ICollectionCascadeInstance
 {
-    public class CollectionCascadeInstance : CascadeInstance, ICollectionCascadeInstance
+    private readonly Action<string> setter;
+
+    public CollectionCascadeInstance(Action<string> setter)
+        : base(setter)
     {
-        private readonly Action<string> setter;
+        this.setter = setter;
+    }
 
-        public CollectionCascadeInstance(Action<string> setter)
-            : base(setter)
-        {
-            this.setter = setter;
-        }
+    public void AllDeleteOrphan()
+    {
+        setter("all-delete-orphan");
+    }
 
-        public void AllDeleteOrphan()
-        {
-            setter("all-delete-orphan");
-        }
-
-        public void DeleteOrphan()
-        {
-            setter("delete-orphan");
-        }
+    public void DeleteOrphan()
+    {
+        setter("delete-orphan");
     }
 }

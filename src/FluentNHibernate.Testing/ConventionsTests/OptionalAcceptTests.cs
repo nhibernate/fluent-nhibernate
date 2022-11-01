@@ -7,89 +7,88 @@ using FluentNHibernate.Visitors;
 using NUnit.Framework;
 using Is=FluentNHibernate.Conventions.AcceptanceCriteria.Is;
 
-namespace FluentNHibernate.Testing.ConventionsTests
+namespace FluentNHibernate.Testing.ConventionsTests;
+
+[TestFixture]
+public class OptionalAcceptTests
 {
-    [TestFixture]
-    public class OptionalAcceptTests
+    private DefaultConventionFinder conventions;
+    private ConventionVisitor visitor;
+
+    [SetUp]
+    public void CreateVisitor()
     {
-        private DefaultConventionFinder conventions;
-        private ConventionVisitor visitor;
+        conventions = new DefaultConventionFinder();
+        visitor = new ConventionVisitor(conventions);
+    }
 
-        [SetUp]
-        public void CreateVisitor()
-        {
-            conventions = new DefaultConventionFinder();
-            visitor = new ConventionVisitor(conventions);
-        }
+    [Test]
+    public void ShouldNotApplyConventionWithFailingAccept()
+    {
+        conventions.Add<ConventionWithFailingAccept>();
 
-        [Test]
-        public void ShouldNotApplyConventionWithFailingAccept()
-        {
-            conventions.Add<ConventionWithFailingAccept>();
-
-            var mapping = new ClassMapping();
+        var mapping = new ClassMapping();
             
-            visitor.ProcessClass(mapping);
+        visitor.ProcessClass(mapping);
 
-            mapping.IsSpecified("TableName").ShouldBeFalse();
+        mapping.IsSpecified("TableName").ShouldBeFalse();
+    }
+
+    [Test]
+    public void ShouldApplyConventionWithSuccessfulAccept()
+    {
+        conventions.Add<ConventionWithSuccessfulAccept>();
+
+        var mapping = new ClassMapping();
+
+        visitor.ProcessClass(mapping);
+
+        mapping.IsSpecified("TableName").ShouldBeTrue();
+    }
+
+    [Test]
+    public void ShouldApplyConventionWithNoAccept()
+    {
+        conventions.Add<ConventionWithNoAccept>();
+
+        var mapping = new ClassMapping();
+
+        visitor.ProcessClass(mapping);
+
+        mapping.IsSpecified("TableName").ShouldBeTrue();
+    }
+
+    private class ConventionWithFailingAccept : IClassConvention, IConventionAcceptance<IClassInspector>
+    {
+        public void Accept(IAcceptanceCriteria<IClassInspector> criteria)
+        {
+            criteria.Expect(x => x.TableName == "test"); // never true
         }
 
-        [Test]
-        public void ShouldApplyConventionWithSuccessfulAccept()
+        public void Apply(IClassInstance instance)
         {
-            conventions.Add<ConventionWithSuccessfulAccept>();
+            instance.Table("xxx");
+        }
+    }
 
-            var mapping = new ClassMapping();
-
-            visitor.ProcessClass(mapping);
-
-            mapping.IsSpecified("TableName").ShouldBeTrue();
+    private class ConventionWithSuccessfulAccept : IClassConvention, IConventionAcceptance<IClassInspector>
+    {
+        public void Accept(IAcceptanceCriteria<IClassInspector> criteria)
+        {
+            criteria.Expect(x => x.TableName, Is.Not.Set); // always true
         }
 
-        [Test]
-        public void ShouldApplyConventionWithNoAccept()
+        public void Apply(IClassInstance instance)
         {
-            conventions.Add<ConventionWithNoAccept>();
-
-            var mapping = new ClassMapping();
-
-            visitor.ProcessClass(mapping);
-
-            mapping.IsSpecified("TableName").ShouldBeTrue();
+            instance.Table("xxx");
         }
+    }
 
-        private class ConventionWithFailingAccept : IClassConvention, IConventionAcceptance<IClassInspector>
+    private class ConventionWithNoAccept : IClassConvention
+    {
+        public void Apply(IClassInstance instance)
         {
-            public void Accept(IAcceptanceCriteria<IClassInspector> criteria)
-            {
-                criteria.Expect(x => x.TableName == "test"); // never true
-            }
-
-            public void Apply(IClassInstance instance)
-            {
-                instance.Table("xxx");
-            }
-        }
-
-        private class ConventionWithSuccessfulAccept : IClassConvention, IConventionAcceptance<IClassInspector>
-        {
-            public void Accept(IAcceptanceCriteria<IClassInspector> criteria)
-            {
-                criteria.Expect(x => x.TableName, Is.Not.Set); // always true
-            }
-
-            public void Apply(IClassInstance instance)
-            {
-                instance.Table("xxx");
-            }
-        }
-
-        private class ConventionWithNoAccept : IClassConvention
-        {
-            public void Apply(IClassInstance instance)
-            {
-                instance.Table("xxx");
-            }
+            instance.Table("xxx");
         }
     }
 }

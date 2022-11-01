@@ -3,12 +3,11 @@ using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
 
-namespace FluentNHibernate.Conventions.Helpers.Prebuilt
+namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
+
+public class BuiltManyToManyCollectionConvention : BuiltConventionBase<IManyToManyCollectionInspector, IManyToManyCollectionInstance>, IHasManyToManyConvention, IHasManyToManyConventionAcceptance
 {
-    public class BuiltManyToManyCollectionConvention : BuiltConventionBase<IManyToManyCollectionInspector, IManyToManyCollectionInstance>, IHasManyToManyConvention, IHasManyToManyConventionAcceptance
-    {
-        public BuiltManyToManyCollectionConvention(Action<IAcceptanceCriteria<IManyToManyCollectionInspector>> accept, Action<IManyToManyCollectionInstance> convention)
-            : base(accept, convention)
-        { }
-    }
+    public BuiltManyToManyCollectionConvention(Action<IAcceptanceCriteria<IManyToManyCollectionInspector>> accept, Action<IManyToManyCollectionInstance> convention)
+        : base(accept, convention)
+    { }
 }

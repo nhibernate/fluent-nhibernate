@@ -1,9 +1,8 @@
 ﻿using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public interface IIndexInstanceBase : IIndexInspectorBase
 {
-    public interface IIndexInstanceBase : IIndexInspectorBase
-    {
-        void Column(string columnName);
-    }
+    void Column(string columnName);
 }

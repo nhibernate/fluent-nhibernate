@@ -3,47 +3,46 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.MappingModel.Identity;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface IGeneratorInspector : IInspector
 {
-    public interface IGeneratorInspector : IInspector
+    string Class { get; }
+    IDictionary<string, string> Params { get; }
+}
+
+public class GeneratorInspector : IGeneratorInspector
+{
+    private readonly InspectorModelMapper<IGeneratorInspector, GeneratorMapping> propertyMappings = new InspectorModelMapper<IGeneratorInspector, GeneratorMapping>();
+    private readonly GeneratorMapping mapping;
+
+    public GeneratorInspector(GeneratorMapping mapping)
     {
-        string Class { get; }
-        IDictionary<string, string> Params { get; }
+        this.mapping = mapping;
     }
 
-    public class GeneratorInspector : IGeneratorInspector
+    public Type EntityType
     {
-        private readonly InspectorModelMapper<IGeneratorInspector, GeneratorMapping> propertyMappings = new InspectorModelMapper<IGeneratorInspector, GeneratorMapping>();
-        private readonly GeneratorMapping mapping;
+        get { return mapping.ContainingEntityType; }
+    }
 
-        public GeneratorInspector(GeneratorMapping mapping)
-        {
-            this.mapping = mapping;
-        }
+    public string StringIdentifierForModel
+    {
+        get { return mapping.Class; }
+    }
 
-        public Type EntityType
-        {
-            get { return mapping.ContainingEntityType; }
-        }
+    public bool IsSet(Member property)
+    {
+        return mapping.IsSpecified(propertyMappings.Get(property));
+    }
 
-        public string StringIdentifierForModel
-        {
-            get { return mapping.Class; }
-        }
+    public string Class
+    {
+        get { return mapping.Class; }
+    }
 
-        public bool IsSet(Member property)
-        {
-            return mapping.IsSpecified(propertyMappings.Get(property));
-        }
-
-        public string Class
-        {
-            get { return mapping.Class; }
-        }
-
-        public IDictionary<string, string> Params
-        {
-            get { return new Dictionary<string, string>(mapping.Params); }
-        }
+    public IDictionary<string, string> Params
+    {
+        get { return new Dictionary<string, string>(mapping.Params); }
     }
 }

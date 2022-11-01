@@ -4,80 +4,79 @@ using FluentNHibernate.Mapping;
 using NUnit.Framework;
 using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
-namespace FluentNHibernate.Testing.DomainModel
+namespace FluentNHibernate.Testing.DomainModel;
+
+[TestFixture]
+public class InverseOneToManyTester
 {
-    [TestFixture]
-    public class InverseOneToManyTester
+    [SetUp]
+    public void SetUp()
     {
-        [SetUp]
-        public void SetUp()
-        {
-            var properties = CreateStandardConfiguration()
-                .UseOuterJoin()
-                .ShowSql()
-                .InMemory()
-                .ToProperties();
+        var properties = CreateStandardConfiguration()
+            .UseOuterJoin()
+            .ShowSql()
+            .InMemory()
+            .ToProperties();
                 
-            _source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new MusicPersistenceModel());
-            _source.BuildSchema();
-        }
-
-        private ISessionSource _source;
-
-        [Test]
-        public void Should_handle_inverse_collections()
-        {
-            var artists = new List<Artist>
-            {
-                new Artist {Name = "Artist1"},
-                new Artist {Name = "Artist2"}
-            };
-
-            new PersistenceSpecification<Genre>(_source)
-                .CheckProperty(g => g.Id, 1L)
-                .CheckProperty(g => g.Name, "Genre")
-                .CheckComponentList(g => g.Artists, artists, (g, a) => g.AddArtist(a))
-                .VerifyTheMappings();
-        }
+        _source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new MusicPersistenceModel());
+        _source.BuildSchema();
     }
 
-    public class MusicPersistenceModel : PersistenceModel
+    private ISessionSource _source;
+
+    [Test]
+    public void Should_handle_inverse_collections()
     {
-        public MusicPersistenceModel()
+        var artists = new List<Artist>
         {
-            Add(typeof(ArtistMap));
-            Add(typeof(GenreMap));
-        }
+            new Artist {Name = "Artist1"},
+            new Artist {Name = "Artist2"}
+        };
+
+        new PersistenceSpecification<Genre>(_source)
+            .CheckProperty(g => g.Id, 1L)
+            .CheckProperty(g => g.Name, "Genre")
+            .CheckComponentList(g => g.Artists, artists, (g, a) => g.AddArtist(a))
+            .VerifyTheMappings();
     }
+}
 
-    public class ArtistMap : ClassMap<Artist>
+public class MusicPersistenceModel : PersistenceModel
+{
+    public MusicPersistenceModel()
     {
-        public ArtistMap()
-        {
-            Id(x => x.Id)
-                .GeneratedBy.Native();
-
-            Map(x => x.Name);
-
-            References(a => a.Genre)
-                .Column("GenreID")
-                .Not.Nullable();
-        }
+        Add(typeof(ArtistMap));
+        Add(typeof(GenreMap));
     }
+}
 
-    public class GenreMap : ClassMap<Genre>
+public class ArtistMap : ClassMap<Artist>
+{
+    public ArtistMap()
     {
-        public GenreMap()
-        {
-            Id(x => x.Id)
-                .GeneratedBy.Native();
+        Id(x => x.Id)
+            .GeneratedBy.Native();
 
-            Map(x => x.Name);
+        Map(x => x.Name);
 
-            HasMany(g => g.Artists)
-                .KeyColumn("GenreID")
-                .Cascade.All()
-                .Inverse();
-        }
+        References(a => a.Genre)
+            .Column("GenreID")
+            .Not.Nullable();
+    }
+}
+
+public class GenreMap : ClassMap<Genre>
+{
+    public GenreMap()
+    {
+        Id(x => x.Id)
+            .GeneratedBy.Native();
+
+        Map(x => x.Name);
+
+        HasMany(g => g.Artists)
+            .KeyColumn("GenreID")
+            .Cascade.All()
+            .Inverse();
     }
 }

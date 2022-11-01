@@ -4,60 +4,59 @@ using NHibernate.Cfg;
 using NUnit.Framework;
 using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
-namespace FluentNHibernate.Testing.DomainModel.Mapping
+namespace FluentNHibernate.Testing.DomainModel.Mapping;
+
+[TestFixture]
+public class ManyToManySelfReferencedInverseIntegrationTester
 {
-    [TestFixture]
-    public class ManyToManySelfReferencedInverseIntegrationTester
+    public class TreeNode
     {
-        public class TreeNode
+        public virtual int Id { get; set; }
+        public virtual IEnumerable<TreeNode> Ancestors { get; set; }
+        public virtual IEnumerable<TreeNode> Descendants { get; set; }
+    }
+
+    public class TreeNodeMap : ClassMap<TreeNode>
+    {
+        public TreeNodeMap()
         {
-            public virtual int Id { get; set; }
-            public virtual IEnumerable<TreeNode> Ancestors { get; set; }
-            public virtual IEnumerable<TreeNode> Descendants { get; set; }
-        }
+            Id(x => x.Id)
+                .GeneratedBy.Native();
 
-        public class TreeNodeMap : ClassMap<TreeNode>
+            HasManyToMany(x => x.Ancestors)
+                .AsSet()
+                .Table("TreeNode_hierarhy")
+                .ParentKeyColumn("ChildID")
+                .ChildKeyColumn("ParentID")
+                .Cascade.SaveUpdate();
+
+            HasManyToMany(x => x.Descendants)
+                .AsSet()
+                .Table("TreeNode_hierarhy")
+                .ParentKeyColumn("ParentID")
+                .ChildKeyColumn("ChildID")
+                .Inverse();
+        }
+    }
+
+    private class ManyToManyPersistenceModel : PersistenceModel
+    {
+        public override void Configure(Configuration configuration)
         {
-            public TreeNodeMap()
-            {
-                Id(x => x.Id)
-                    .GeneratedBy.Native();
-
-                HasManyToMany(x => x.Ancestors)
-                    .AsSet()
-                    .Table("TreeNode_hierarhy")
-                    .ParentKeyColumn("ChildID")
-                    .ChildKeyColumn("ParentID")
-                    .Cascade.SaveUpdate();
-
-                HasManyToMany(x => x.Descendants)
-                    .AsSet()
-                    .Table("TreeNode_hierarhy")
-                    .ParentKeyColumn("ParentID")
-                    .ChildKeyColumn("ChildID")
-                    .Inverse();
-            }
+            Add(new TreeNodeMap());
+            base.Configure(configuration);
         }
+    }
 
-        private class ManyToManyPersistenceModel : PersistenceModel
-        {
-            public override void Configure(Configuration configuration)
-            {
-                Add(new TreeNodeMap());
-                base.Configure(configuration);
-            }
-        }
+    [Test]
+    public void NHibernateCanLoadOneToManyTargetMapping()
+    {
+        var cfg = CreateStandardInMemoryConfiguration()
+            .ConfigureProperties(new Configuration());
 
-        [Test]
-        public void NHibernateCanLoadOneToManyTargetMapping()
-        {
-            var cfg = CreateStandardInMemoryConfiguration()
-                .ConfigureProperties(new Configuration());
+        var model = new ManyToManyPersistenceModel();
+        model.Configure(cfg);
 
-            var model = new ManyToManyPersistenceModel();
-            model.Configure(cfg);
-
-            cfg.BuildSessionFactory();
-        }
+        cfg.BuildSessionFactory();
     }
 }

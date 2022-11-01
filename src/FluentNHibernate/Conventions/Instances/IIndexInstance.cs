@@ -1,8 +1,7 @@
 ﻿using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public interface IIndexInstance : IIndexInstanceBase, IIndexInspector
 {
-    public interface IIndexInstance : IIndexInstanceBase, IIndexInspector
-    {
-    }
 }

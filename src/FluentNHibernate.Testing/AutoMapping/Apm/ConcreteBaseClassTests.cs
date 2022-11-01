@@ -6,46 +6,45 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.Testing.Automapping.Apm;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.AutoMapping.Apm
+namespace FluentNHibernate.Testing.AutoMapping.Apm;
+
+[TestFixture]
+public class ConcreteBaseClassTests
 {
-    [TestFixture]
-    public class ConcreteBaseClassTests
+    [Test]
+    public void ShouldAllowPropertiesWithSameNameToExistInDerivedClasses()
     {
-        [Test]
-        public void ShouldAllowPropertiesWithSameNameToExistInDerivedClasses()
-        {
-            var automapper =
-                AutoMap.Source(new StubTypeSource(new[] { typeof(BaseDomain), typeof(Subclass1), typeof(Subclass2), typeof(Subclass3) }));
+        var automapper =
+            AutoMap.Source(new StubTypeSource(new[] { typeof(BaseDomain), typeof(Subclass1), typeof(Subclass2), typeof(Subclass3) }));
 
-            automapper.MergeMappings = true;
-            var mappings = automapper.BuildMappings();
+        automapper.MergeMappings = true;
+        var mappings = automapper.BuildMappings();
 
-            mappings
-                .SelectMany(x => x.Classes)
-                .SelectMany(x => x.Subclasses)
-                .SelectMany(c => c.Properties)
-                .Count(p => p.Name == "CommonField1")
-                .ShouldEqual(2);
-        }
+        mappings
+            .SelectMany(x => x.Classes)
+            .SelectMany(x => x.Subclasses)
+            .SelectMany(c => c.Properties)
+            .Count(p => p.Name == "CommonField1")
+            .ShouldEqual(2);
     }
+}
 
-    public class BaseDomain
-    {
-        public long Id { get; set; }
-    }
+public class BaseDomain
+{
+    public long Id { get; set; }
+}
 
-    public class Subclass1 : BaseDomain
-    {
-        public string CommonField1 { get; set; }
-    }
+public class Subclass1 : BaseDomain
+{
+    public string CommonField1 { get; set; }
+}
 
-    public class Subclass2 : BaseDomain
-    {
-        public string CommonField1 { get; set; }
-    }
+public class Subclass2 : BaseDomain
+{
+    public string CommonField1 { get; set; }
+}
 
-    public class Subclass3 : BaseDomain
-    {
+public class Subclass3 : BaseDomain
+{
 
-    }
 }

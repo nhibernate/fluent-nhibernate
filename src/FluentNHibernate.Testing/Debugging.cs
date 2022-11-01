@@ -1,14 +1,13 @@
 ﻿using NUnit.Framework;
 
-namespace FluentNHibernate.Testing
+namespace FluentNHibernate.Testing;
+
+[TestFixture]
+public class Debugging
 {
-    [TestFixture]
-    public class Debugging
+    [Test]
+    public void Break()
     {
-        [Test]
-        public void Break()
-        {
-            //Assert.Fail("Make it break");
-        }
+        //Assert.Fail("Make it break");
     }
 }

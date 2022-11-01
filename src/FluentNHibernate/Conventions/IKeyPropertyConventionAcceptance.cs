@@ -1,8 +1,7 @@
 ﻿using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
 
-namespace FluentNHibernate.Conventions
-{
-    public interface IKeyPropertyConventionAcceptance : IConventionAcceptance<IKeyPropertyInspector>
-    {}
-}
+namespace FluentNHibernate.Conventions;
+
+public interface IKeyPropertyConventionAcceptance : IConventionAcceptance<IKeyPropertyInspector>
+{}

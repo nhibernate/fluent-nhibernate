@@ -3,12 +3,11 @@ using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions.Helpers.Prebuilt
+namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
+
+internal class BuiltClassConvention : BuiltConventionBase<IClassInspector, IClassInstance>, IClassConvention, IClassConventionAcceptance
 {
-    internal class BuiltClassConvention : BuiltConventionBase<IClassInspector, IClassInstance>, IClassConvention, IClassConventionAcceptance
-    {
-        public BuiltClassConvention(Action<IAcceptanceCriteria<IClassInspector>> accept, Action<IClassInstance> convention)
-            : base(accept, convention)
-        {}
-    }
+    public BuiltClassConvention(Action<IAcceptanceCriteria<IClassInspector>> accept, Action<IClassInstance> convention)
+        : base(accept, convention)
+    {}
 }

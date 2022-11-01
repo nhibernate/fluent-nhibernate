@@ -1,19 +1,18 @@
 using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions.AcceptanceCriteria
+namespace FluentNHibernate.Conventions.AcceptanceCriteria;
+
+public class InvertedExpectation : IExpectation
 {
-    public class InvertedExpectation : IExpectation
+    private readonly IExpectation expectation;
+
+    public InvertedExpectation(IExpectation expectation)
     {
-        private readonly IExpectation expectation;
+        this.expectation = expectation;
+    }
 
-        public InvertedExpectation(IExpectation expectation)
-        {
-            this.expectation = expectation;
-        }
-
-        public bool Matches(IInspector inspector)
-        {
-            return !expectation.Matches(inspector);
-        }
+    public bool Matches(IInspector inspector)
+    {
+        return !expectation.Matches(inspector);
     }
 }

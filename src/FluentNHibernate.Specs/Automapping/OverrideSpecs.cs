@@ -9,144 +9,143 @@ using FluentNHibernate.Specs.ExternalFixtures.Overrides;
 using Machine.Specifications;
 using FluentAssertions;
 
-namespace FluentNHibernate.Specs.Automapping
+namespace FluentNHibernate.Specs.Automapping;
+
+public class when_using_an_automapping_override_to_create_a_join
 {
-    public class when_using_an_automapping_override_to_create_a_join
+    Establish context = () =>
+        model = AutoMap.Source(new StubTypeSource(typeof(Entity)))
+            .Override<Entity>(map =>
+                map.Join("join_table", m => m.Map(x => x.One)));
+
+    Because of = () =>
+        mapping = model.BuildMappingFor<Entity>();
+
+    It should_create_the_join_mapping = () =>
+        mapping.Joins.Should().NotBeEmpty();
+
+    It should_have_a_property_in_the_join = () =>
+        mapping.Joins.Single().Properties.Select(x => x.Name).Should().Contain("One");
+
+    It should_exclude_the_join_mapped_property_from_the_main_automapping = () =>
+        mapping.Properties.Select(x => x.Name).Should().NotContain("One");
+
+    static AutoPersistenceModel model;
+    static ClassMapping mapping;
+}
+
+public class when_using_an_automapping_override_to_specify_a_discriminators_and_join_on_subclass
+{
+    private Establish context = () =>
+        model = AutoMap.Source(new StubTypeSource(typeof (Parent), typeof (Child)))
+            .Override<Parent>(map =>
+                map.DiscriminateSubClassesOnColumn("type"))
+            .Override<Child>(map => map.Join("table", part => { }));
+
+    private Because of = () => 
+        mapping = model.BuildMappingFor<Parent>();
+
+    It should_not_create_the_join_mapping = () =>
+        mapping.Joins.Should().BeEmpty();
+
+    It should_map_the_discriminator = () =>
+        mapping.Discriminator.Should().NotBeNull();
+
+    It should_map_subclasses_as_joined_subclasses = () =>
+        mapping.Subclasses.Should().OnlyContain(x => x.Joins.Any());
+
+    static AutoPersistenceModel model;
+    static ClassMapping mapping;
+}
+
+public class when_using_an_automapping_override_to_specify_a_discriminator
+{
+    Establish context = () =>
+        model = AutoMap.Source(new StubTypeSource(typeof(Parent), typeof(Child)))
+            .Override<Parent>(map =>
+                map.DiscriminateSubClassesOnColumn("discriminator"));
+
+    Because of = () =>
+        mapping = model.BuildMappingFor<Parent>();
+
+    It should_map_the_discriminator = () =>
+        mapping.Discriminator.Should().NotBeNull();
+
+    It should_map_subclasses_as_subclass_instead_of_joined_subclass = () =>
     {
-        Establish context = () =>
-            model = AutoMap.Source(new StubTypeSource(typeof(Entity)))
-                .Override<Entity>(map =>
-                    map.Join("join_table", m => m.Map(x => x.One)));
+        mapping.Subclasses.Count().Should().Be(1);
+        mapping.Subclasses.Should().OnlyContain(subclass => subclass.SubclassType == SubclassType.Subclass);
+    };
 
-        Because of = () =>
-            mapping = model.BuildMappingFor<Entity>();
+    static AutoPersistenceModel model;
+    static ClassMapping mapping;
+}
 
-        It should_create_the_join_mapping = () =>
-            mapping.Joins.Should().NotBeEmpty();
+[Subject(typeof(IAutoMappingOverride<>))]
+public class when_using_multiple_overrides_from_different_assemblies
+{
+    Establish context = () =>
+        model = AutoMap.Source(new StubTypeSource(typeof(Entity)))
+            .UseOverridesFromAssemblyOf<EntityBatchSizeOverride>()
+            .UseOverridesFromAssemblyOf<EntityTableOverride>();
 
-        It should_have_a_property_in_the_join = () =>
-            mapping.Joins.Single().Properties.Select(x => x.Name).Should().Contain("One");
+    Because of = () =>
+        mapping = model.BuildMappingFor<Entity>();
 
-        It should_exclude_the_join_mapped_property_from_the_main_automapping = () =>
-            mapping.Properties.Select(x => x.Name).Should().NotContain("One");
+    It should_apply_override_from_the_first_assembly = () =>
+        mapping.BatchSize.Should().Be(1234);
 
-        static AutoPersistenceModel model;
-        static ClassMapping mapping;
+    It should_apply_override_from_the_second_assembly = () =>
+        mapping.TableName.Should().Be("OverriddenTableName");
+
+    static AutoPersistenceModel model;
+    static ClassMapping mapping;
+}
+
+[Subject(typeof(IAutoMappingOverride<>))]
+public class when_multiple_overrides_present_in_one_class
+{
+    Establish context = () =>
+    {
+        model = AutoMap.Source(new StubTypeSource(typeof(Entity), typeof(Parent), typeof(B_Parent)));
+        model.Override(typeof(MultipleOverrides));
+    };
+
+    Because of = () =>
+    {
+        entityMapping = model.BuildMappingFor<Entity>();
+        parentMapping = model.BuildMappingFor<Parent>();
+        bParentMapping = model.BuildMappingFor<B_Parent>();
+    };
+
+    It should_apply_overrides_to_every_class_for_which_such_were_provided = () =>
+    {
+        entityMapping.EntityName.Should().Be("customEntityName");
+        parentMapping.TableName.Should().Be("fancyTableName_Parent");
+        bParentMapping.BatchSize.Should().Be(50);
+    };
+
+
+    static AutoPersistenceModel model;
+    static ClassMapping entityMapping;
+    static ClassMapping parentMapping;
+    static ClassMapping bParentMapping;
+}
+
+public class MultipleOverrides: IAutoMappingOverride<Entity>, IAutoMappingOverride<Parent>, IAutoMappingOverride<B_Parent>
+{
+    public void Override(AutoMapping<Entity> mapping)
+    {
+        mapping.EntityName("customEntityName");
     }
 
-    public class when_using_an_automapping_override_to_specify_a_discriminators_and_join_on_subclass
+    public void Override(AutoMapping<Parent> mapping)
     {
-        private Establish context = () =>
-            model = AutoMap.Source(new StubTypeSource(typeof (Parent), typeof (Child)))
-                .Override<Parent>(map =>
-                    map.DiscriminateSubClassesOnColumn("type"))
-                .Override<Child>(map => map.Join("table", part => { }));
-
-        private Because of = () => 
-            mapping = model.BuildMappingFor<Parent>();
-
-        It should_not_create_the_join_mapping = () =>
-            mapping.Joins.Should().BeEmpty();
-
-        It should_map_the_discriminator = () =>
-            mapping.Discriminator.Should().NotBeNull();
-
-        It should_map_subclasses_as_joined_subclasses = () =>
-            mapping.Subclasses.Should().OnlyContain(x => x.Joins.Any());
-
-        static AutoPersistenceModel model;
-        static ClassMapping mapping;
+        mapping.Table("fancyTableName_Parent");
     }
 
-    public class when_using_an_automapping_override_to_specify_a_discriminator
+    public void Override(AutoMapping<B_Parent> mapping)
     {
-        Establish context = () =>
-            model = AutoMap.Source(new StubTypeSource(typeof(Parent), typeof(Child)))
-                .Override<Parent>(map =>
-                    map.DiscriminateSubClassesOnColumn("discriminator"));
-
-        Because of = () =>
-            mapping = model.BuildMappingFor<Parent>();
-
-        It should_map_the_discriminator = () =>
-            mapping.Discriminator.Should().NotBeNull();
-
-        It should_map_subclasses_as_subclass_instead_of_joined_subclass = () =>
-        {
-            mapping.Subclasses.Count().Should().Be(1);
-            mapping.Subclasses.Should().OnlyContain(subclass => subclass.SubclassType == SubclassType.Subclass);
-        };
-
-        static AutoPersistenceModel model;
-        static ClassMapping mapping;
-    }
-
-    [Subject(typeof(IAutoMappingOverride<>))]
-    public class when_using_multiple_overrides_from_different_assemblies
-    {
-        Establish context = () =>
-            model = AutoMap.Source(new StubTypeSource(typeof(Entity)))
-                .UseOverridesFromAssemblyOf<EntityBatchSizeOverride>()
-                .UseOverridesFromAssemblyOf<EntityTableOverride>();
-
-        Because of = () =>
-            mapping = model.BuildMappingFor<Entity>();
-
-        It should_apply_override_from_the_first_assembly = () =>
-            mapping.BatchSize.Should().Be(1234);
-
-        It should_apply_override_from_the_second_assembly = () =>
-            mapping.TableName.Should().Be("OverriddenTableName");
-
-        static AutoPersistenceModel model;
-        static ClassMapping mapping;
-    }
-
-    [Subject(typeof(IAutoMappingOverride<>))]
-    public class when_multiple_overrides_present_in_one_class
-    {
-        Establish context = () =>
-        {
-            model = AutoMap.Source(new StubTypeSource(typeof(Entity), typeof(Parent), typeof(B_Parent)));
-            model.Override(typeof(MultipleOverrides));
-        };
-
-        Because of = () =>
-        {
-            entityMapping = model.BuildMappingFor<Entity>();
-            parentMapping = model.BuildMappingFor<Parent>();
-            bParentMapping = model.BuildMappingFor<B_Parent>();
-        };
-
-        It should_apply_overrides_to_every_class_for_which_such_were_provided = () =>
-        {
-            entityMapping.EntityName.Should().Be("customEntityName");
-            parentMapping.TableName.Should().Be("fancyTableName_Parent");
-            bParentMapping.BatchSize.Should().Be(50);
-        };
-
-
-        static AutoPersistenceModel model;
-        static ClassMapping entityMapping;
-        static ClassMapping parentMapping;
-        static ClassMapping bParentMapping;
-    }
-
-    public class MultipleOverrides: IAutoMappingOverride<Entity>, IAutoMappingOverride<Parent>, IAutoMappingOverride<B_Parent>
-    {
-        public void Override(AutoMapping<Entity> mapping)
-        {
-            mapping.EntityName("customEntityName");
-        }
-
-        public void Override(AutoMapping<Parent> mapping)
-        {
-            mapping.Table("fancyTableName_Parent");
-        }
-
-        public void Override(AutoMapping<B_Parent> mapping)
-        {
-            mapping.BatchSize(50);
-        }
+        mapping.BatchSize(50);
     }
 }

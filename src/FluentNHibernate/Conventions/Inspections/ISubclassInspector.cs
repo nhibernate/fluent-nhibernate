@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface ISubclassInspector : ISubclassInspectorBase
 {
-    public interface ISubclassInspector : ISubclassInspectorBase
-    {
-        object DiscriminatorValue { get; }
-        new IEnumerable<ISubclassInspector> Subclasses { get; }
-    }
+    object DiscriminatorValue { get; }
+    new IEnumerable<ISubclassInspector> Subclasses { get; }
 }

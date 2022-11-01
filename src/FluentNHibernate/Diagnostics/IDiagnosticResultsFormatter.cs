@@ -1,7 +1,6 @@
-﻿namespace FluentNHibernate.Diagnostics
+﻿namespace FluentNHibernate.Diagnostics;
+
+public interface IDiagnosticResultsFormatter
 {
-    public interface IDiagnosticResultsFormatter
-    {
-        string Format(DiagnosticResults results);
-    }
+    string Format(DiagnosticResults results);
 }

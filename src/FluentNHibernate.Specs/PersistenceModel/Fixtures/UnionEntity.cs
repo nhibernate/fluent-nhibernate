@@ -1,7 +1,6 @@
-﻿namespace FluentNHibernate.Specs.PersistenceModel.Fixtures
+﻿namespace FluentNHibernate.Specs.PersistenceModel.Fixtures;
+
+class UnionEntity
 {
-    class UnionEntity
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

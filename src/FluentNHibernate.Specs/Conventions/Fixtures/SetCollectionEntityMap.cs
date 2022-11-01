@@ -1,13 +1,12 @@
 ﻿using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Specs.Conventions.Fixtures
+namespace FluentNHibernate.Specs.Conventions.Fixtures;
+
+public class SetCollectionEntityMap : ClassMap<SetCollectionEntity>
 {
-    public class SetCollectionEntityMap : ClassMap<SetCollectionEntity>
+    public SetCollectionEntityMap()
     {
-        public SetCollectionEntityMap()
-        {
-            Id(x => x.Id);
-            HasMany(x => x.Children);
-        }
+        Id(x => x.Id);
+        HasMany(x => x.Children);
     }
 }

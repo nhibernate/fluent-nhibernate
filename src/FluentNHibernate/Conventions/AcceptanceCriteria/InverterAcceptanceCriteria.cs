@@ -3,30 +3,29 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions.AcceptanceCriteria
+namespace FluentNHibernate.Conventions.AcceptanceCriteria;
+
+public class InverterAcceptanceCriteria<TInspector> : ConcreteAcceptanceCriteria<TInspector>
+    where TInspector : IInspector
 {
-    public class InverterAcceptanceCriteria<TInspector> : ConcreteAcceptanceCriteria<TInspector>
-        where TInspector : IInspector
+    protected override IExpectation CreateExpectation(Expression<Func<TInspector, object>> expression, IAcceptanceCriterion value)
     {
-        protected override IExpectation CreateExpectation(Expression<Func<TInspector, object>> expression, IAcceptanceCriterion value)
-        {
-            var expectation = base.CreateExpectation(expression, value);
+        var expectation = base.CreateExpectation(expression, value);
 
-            return new InvertedExpectation(expectation);
-        }
+        return new InvertedExpectation(expectation);
+    }
 
-        protected override IExpectation CreateEvalExpectation(Func<TInspector, bool> expression)
-        {
-            var expectation = base.CreateEvalExpectation(expression);
+    protected override IExpectation CreateEvalExpectation(Func<TInspector, bool> expression)
+    {
+        var expectation = base.CreateEvalExpectation(expression);
 
-            return new InvertedExpectation(expectation);
-        }
+        return new InvertedExpectation(expectation);
+    }
 
-        protected override IExpectation CreateCollectionExpectation<TCollectionItem>(Expression<Func<TInspector, IEnumerable<TCollectionItem>>> property, ICollectionAcceptanceCriterion<TCollectionItem> value)
-        {
-            var expectation = base.CreateCollectionExpectation<TCollectionItem>(property, value);
+    protected override IExpectation CreateCollectionExpectation<TCollectionItem>(Expression<Func<TInspector, IEnumerable<TCollectionItem>>> property, ICollectionAcceptanceCriterion<TCollectionItem> value)
+    {
+        var expectation = base.CreateCollectionExpectation<TCollectionItem>(property, value);
             
-            return new InvertedExpectation(expectation);
-        }
+        return new InvertedExpectation(expectation);
     }
 }

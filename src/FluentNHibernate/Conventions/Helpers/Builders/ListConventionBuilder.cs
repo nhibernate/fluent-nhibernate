@@ -4,19 +4,18 @@ using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
 using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions.Helpers.Builders
-{
-    [Obsolete("Use CollectionConventionBuilder")]
-    internal class ListConventionBuilder : IConventionBuilder<IListConvention, IListInspector, IListInstance>
-    {
-        public IListConvention Always(Action<IListInstance> convention)
-        {
-            return new BuiltListConvention(accept => { }, convention);
-        }
+namespace FluentNHibernate.Conventions.Helpers.Builders;
 
-        public IListConvention When(Action<IAcceptanceCriteria<IListInspector>> expectations, Action<IListInstance> convention)
-        {
-            return new BuiltListConvention(expectations, convention);
-        }
+[Obsolete("Use CollectionConventionBuilder")]
+internal class ListConventionBuilder : IConventionBuilder<IListConvention, IListInspector, IListInstance>
+{
+    public IListConvention Always(Action<IListInstance> convention)
+    {
+        return new BuiltListConvention(accept => { }, convention);
+    }
+
+    public IListConvention When(Action<IAcceptanceCriteria<IListInspector>> expectations, Action<IListInstance> convention)
+    {
+        return new BuiltListConvention(expectations, convention);
     }
 }

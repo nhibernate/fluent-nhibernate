@@ -1,10 +1,9 @@
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public interface IOneToManyInstance : IOneToManyInspector, IRelationshipInstance
 {
-    public interface IOneToManyInstance : IOneToManyInspector, IRelationshipInstance
-    {
-        new INotFoundInstance NotFound { get; }
-    }
+    new INotFoundInstance NotFound { get; }
 }

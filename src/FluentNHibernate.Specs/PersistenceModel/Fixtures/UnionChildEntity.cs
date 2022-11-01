@@ -1,5 +1,4 @@
-﻿namespace FluentNHibernate.Specs.PersistenceModel.Fixtures
-{
-    class UnionChildEntity : UnionEntity
-    {}
-}
+﻿namespace FluentNHibernate.Specs.PersistenceModel.Fixtures;
+
+class UnionChildEntity : UnionEntity
+{}

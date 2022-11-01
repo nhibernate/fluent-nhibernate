@@ -7,107 +7,106 @@ using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Output;
 using Machine.Specifications;
 
-namespace FluentNHibernate.Specs.Automapping.Fixtures
+namespace FluentNHibernate.Specs.Automapping.Fixtures;
+
+public static class AutomappingSpecExtensions
 {
-    public static class AutomappingSpecExtensions
+    public static ClassMapping BuildMappingFor<T>(this AutoPersistenceModel model)
     {
-        public static ClassMapping BuildMappingFor<T>(this AutoPersistenceModel model)
-        {
-            return model.BuildMappings()
-                .SelectMany(x => x.Classes)
-                .FirstOrDefault(x => x.Type == typeof(T));
-        }
-
-        public static XmlDocument ToXml(this ClassMapping mapping)
-        {
-            var hbm = new HibernateMapping();
-
-            hbm.AddClass(mapping);
-
-            return new MappingXmlSerializer()
-                .Serialize(hbm);
-        }
+        return model.BuildMappings()
+            .SelectMany(x => x.Classes)
+            .FirstOrDefault(x => x.Type == typeof(T));
     }
 
-    public static class XmlTestExtensions
+    public static XmlDocument ToXml(this ClassMapping mapping)
     {
-        public static XmlElementTester Element(this XmlDocument doc, string path)
+        var hbm = new HibernateMapping();
+
+        hbm.AddClass(mapping);
+
+        return new MappingXmlSerializer()
+            .Serialize(hbm);
+    }
+}
+
+public static class XmlTestExtensions
+{
+    public static XmlElementTester Element(this XmlDocument doc, string path)
+    {
+        return new XmlElementTester(doc, path);
+    }
+
+    public class XmlElementTester
+    {
+        readonly XmlDocument doc;
+        string currentPath;
+        XmlElement currentElement;
+
+        public XmlElementTester(XmlDocument doc, string path)
         {
-            return new XmlElementTester(doc, path);
+            currentElement = (XmlElement)doc.DocumentElement.SelectSingleNode(path);
+            this.doc = doc;
+            currentPath = path;
         }
 
-        public class XmlElementTester
+        public XmlElementTester ShouldExist()
         {
-            readonly XmlDocument doc;
-            string currentPath;
-            XmlElement currentElement;
+            if (currentElement == null)
+                throw new SpecificationException(string.Format("Should exist at {0} but does not.", currentPath));
 
-            public XmlElementTester(XmlDocument doc, string path)
-            {
-                currentElement = (XmlElement)doc.DocumentElement.SelectSingleNode(path);
-                this.doc = doc;
-                currentPath = path;
-            }
+            return this;
+        }
 
-            public XmlElementTester ShouldExist()
-            {
-                if (currentElement == null)
-                    throw new SpecificationException(string.Format("Should exist at {0} but does not.", currentPath));
+        public XmlElementTester ShouldNotExist()
+        {
+            if (currentElement != null)
+                throw new SpecificationException(string.Format("Should not exist at {0} but does.", currentPath));
 
-                return this;
-            }
+            return this;
+        }
 
-            public XmlElementTester ShouldNotExist()
-            {
-                if (currentElement != null)
-                    throw new SpecificationException(string.Format("Should not exist at {0} but does.", currentPath));
+        public XmlElementTester HasAttribute(string name)
+        {
+            if (!currentElement.HasAttribute(name))
+                throw new SpecificationException(string.Format("Should have attribute named {0} at {1} but does not.", name, currentPath));
 
-                return this;
-            }
+            return this;
+        }
 
-            public XmlElementTester HasAttribute(string name)
-            {
-                if (!currentElement.HasAttribute(name))
-                    throw new SpecificationException(string.Format("Should have attribute named {0} at {1} but does not.", name, currentPath));
+        public XmlElementTester HasAttribute(string name, string value)
+        {
+            ShouldExist();
+            HasAttribute(name);
 
-                return this;
-            }
+            var actual = currentElement.GetAttribute(name);
 
-            public XmlElementTester HasAttribute(string name, string value)
-            {
-                ShouldExist();
-                HasAttribute(name);
+            if (!actual.Equals(value))
+                throw new SpecificationException(string.Format("Should have attribute named {0} at {1} with value of {2} but was {3}", name, currentPath, value, actual));
 
-                var actual = currentElement.GetAttribute(name);
+            return this;
+        }
 
-                if (!actual.Equals(value))
-                    throw new SpecificationException(string.Format("Should have attribute named {0} at {1} with value of {2} but was {3}", name, currentPath, value, actual));
+        public XmlElementTester HasAttribute(string name, Func<string, bool> predicate)
+        {
+            ShouldExist();
+            HasAttribute(name);
 
-                return this;
-            }
+            var actual = currentElement.GetAttribute(name);
 
-            public XmlElementTester HasAttribute(string name, Func<string, bool> predicate)
-            {
-                ShouldExist();
-                HasAttribute(name);
+            if (!predicate(actual))
+                throw new SpecificationException(string.Format("Should have attribute named {0} at {1} with value matching predicate but does not.", name, currentPath));
 
-                var actual = currentElement.GetAttribute(name);
+            return this;
+        }
 
-                if (!predicate(actual))
-                    throw new SpecificationException(string.Format("Should have attribute named {0} at {1} with value matching predicate but does not.", name, currentPath));
+        public XmlElementTester DoesntHaveAttribute(string name)
+        {
+            ShouldExist();
 
-                return this;
-            }
+            if (currentElement.HasAttribute(name))
+                throw new SpecificationException(string.Format("Should not have attribute named {0} at {1} but does.", name, currentPath));
 
-            public XmlElementTester DoesntHaveAttribute(string name)
-            {
-                ShouldExist();
-
-                if (currentElement.HasAttribute(name))
-                    throw new SpecificationException(string.Format("Should not have attribute named {0} at {1} but does.", name, currentPath));
-
-                return this;
-            }
+            return this;
         }
     }
 }

@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Testing.DomainModel.Access.Mappings
+namespace FluentNHibernate.Testing.DomainModel.Access.Mappings;
+
+class ManyToOneModelMapping : ClassMap<ManyToOneModel>
 {
-    class ManyToOneModelMapping : ClassMap<ManyToOneModel>
+    public ManyToOneModelMapping()
     {
-        public ManyToOneModelMapping()
-        {
-            Id(x => x.Id);
-            References(x => x.Parent);
-        }
+        Id(x => x.Id);
+        References(x => x.Parent);
     }
 }

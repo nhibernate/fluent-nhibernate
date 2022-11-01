@@ -2,47 +2,46 @@ using System;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public class ParentInspector : IParentInspector
 {
-    public class ParentInspector : IParentInspector
+    private readonly InspectorModelMapper<IPropertyInspector, ParentMapping> mappedProperties = new InspectorModelMapper<IPropertyInspector, ParentMapping>();
+    private readonly ParentMapping mapping;
+
+    public ParentInspector(ParentMapping mapping)
     {
-        private readonly InspectorModelMapper<IPropertyInspector, ParentMapping> mappedProperties = new InspectorModelMapper<IPropertyInspector, ParentMapping>();
-        private readonly ParentMapping mapping;
+        this.mapping = mapping;
+    }
 
-        public ParentInspector(ParentMapping mapping)
-        {
-            this.mapping = mapping;
-        }
+    public Type EntityType
+    {
+        get { return mapping.ContainingEntityType; }
+    }
 
-        public Type EntityType
-        {
-            get { return mapping.ContainingEntityType; }
-        }
+    public string StringIdentifierForModel
+    {
+        get { return mapping.Name; }
+    }
 
-        public string StringIdentifierForModel
-        {
-            get { return mapping.Name; }
-        }
+    public bool IsSet(Member property)
+    {
+        return mapping.IsSpecified(mappedProperties.Get(property));
+    }
 
-        public bool IsSet(Member property)
-        {
-            return mapping.IsSpecified(mappedProperties.Get(property));
-        }
+    public string Name
+    {
+        get { return mapping.Name; }
+    }
 
-        public string Name
+    public Access Access
+    {
+        get
         {
-            get { return mapping.Name; }
-        }
-
-        public Access Access
-        {
-            get
-            {
-                if (mapping.Access != null)
-                    return Access.FromString(mapping.Access);
+            if (mapping.Access != null)
+                return Access.FromString(mapping.Access);
              
-                return null;
-            }
+            return null;
         }
     }
 }

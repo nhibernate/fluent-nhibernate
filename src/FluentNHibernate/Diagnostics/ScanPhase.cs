@@ -1,8 +1,7 @@
-﻿namespace FluentNHibernate.Diagnostics
+﻿namespace FluentNHibernate.Diagnostics;
+
+public enum ScanPhase
 {
-    public enum ScanPhase
-    {
-        FluentMappings,
-        Conventions
-    }
+    FluentMappings,
+    Conventions
 }

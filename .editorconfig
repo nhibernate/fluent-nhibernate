@@ -13,6 +13,11 @@ indent_size = 2
 [*.cs]
 indent_style = space
 indent_size = 4
+insert_final_newline = true
+
+csharp_style_namespace_declarations = file_scoped
+
+dotnet_diagnostic.IDE0161.severity = warning
 
 [*.cake]
 indent_style = space

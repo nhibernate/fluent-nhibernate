@@ -1,8 +1,7 @@
-﻿namespace FluentNHibernate.Diagnostics
+﻿namespace FluentNHibernate.Diagnostics;
+
+public class ScannedSource
 {
-    public class ScannedSource
-    {
-        public string Identifier { get; set; }
-        public ScanPhase Phase { get; set; }
-    }
+    public string Identifier { get; set; }
+    public ScanPhase Phase { get; set; }
 }

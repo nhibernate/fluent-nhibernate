@@ -4,234 +4,233 @@ using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.MappingModel.Output
+namespace FluentNHibernate.Testing.MappingModel.Output;
+
+[TestFixture]
+public class XmlBagWriterTester
 {
-    [TestFixture]
-    public class XmlBagWriterTester
+    private IXmlWriter<CollectionMapping> writer;
+
+    [SetUp]
+    public void GetWriterFromContainer()
     {
-        private IXmlWriter<CollectionMapping> writer;
+        var container = new XmlWriterContainer();
+        writer = container.Resolve<IXmlWriter<CollectionMapping>>();
+    }
 
-        [SetUp]
-        public void GetWriterFromContainer()
-        {
-            var container = new XmlWriterContainer();
-            writer = container.Resolve<IXmlWriter<CollectionMapping>>();
-        }
+    [Test]
+    public void ShouldWriteAccessAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.Access, "acc").MapsToAttribute("access");
 
-        [Test]
-        public void ShouldWriteAccessAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.Access, "acc").MapsToAttribute("access");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteBatchSizeAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.BatchSize, 10).MapsToAttribute("batch-size");
 
-        [Test]
-        public void ShouldWriteBatchSizeAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.BatchSize, 10).MapsToAttribute("batch-size");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteCascadeAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.Cascade, "all").MapsToAttribute("cascade");
 
-        [Test]
-        public void ShouldWriteCascadeAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.Cascade, "all").MapsToAttribute("cascade");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteCheckAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.Check, "ck").MapsToAttribute("check");
 
-        [Test]
-        public void ShouldWriteCheckAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.Check, "ck").MapsToAttribute("check");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteCollectionTypeAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.CollectionType, new TypeReference("type")).MapsToAttribute("collection-type");
 
-        [Test]
-        public void ShouldWriteCollectionTypeAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.CollectionType, new TypeReference("type")).MapsToAttribute("collection-type");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldNotWriteCollectionTypeWhenEmpty()
+    {
+        var mapping = CollectionMapping.Bag();
+        mapping.Set(x => x.CollectionType, Layer.Defaults, TypeReference.Empty);
+        writer.VerifyXml(mapping)
+            .DoesntHaveAttribute("collection-type");
+    }
 
-        [Test]
-        public void ShouldNotWriteCollectionTypeWhenEmpty()
-        {
-            var mapping = CollectionMapping.Bag();
-            mapping.Set(x => x.CollectionType, Layer.Defaults, TypeReference.Empty);
-            writer.VerifyXml(mapping)
-                .DoesntHaveAttribute("collection-type");
-        }
+    [Test]
+    public void ShouldWriteFetchAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.Fetch, "fetch").MapsToAttribute("fetch");
 
-        [Test]
-        public void ShouldWriteFetchAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.Fetch, "fetch").MapsToAttribute("fetch");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteGenericAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.Generic, true).MapsToAttribute("generic");
 
-        [Test]
-        public void ShouldWriteGenericAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.Generic, true).MapsToAttribute("generic");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteInverseAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.Inverse, true).MapsToAttribute("inverse");
 
-        [Test]
-        public void ShouldWriteInverseAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.Inverse, true).MapsToAttribute("inverse");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteLazyAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.Lazy, Lazy.True).MapsToAttribute("lazy");
 
-        [Test]
-        public void ShouldWriteLazyAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.Lazy, Lazy.True).MapsToAttribute("lazy");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteNameAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
 
-        [Test]
-        public void ShouldWriteNameAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteOptimisticLockAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.OptimisticLock, true).MapsToAttribute("optimistic-lock");
 
-        [Test]
-        public void ShouldWriteOptimisticLockAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.OptimisticLock, true).MapsToAttribute("optimistic-lock");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteOrderByAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.OrderBy, "ord").MapsToAttribute("order-by");
 
-        [Test]
-        public void ShouldWriteOrderByAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.OrderBy, "ord").MapsToAttribute("order-by");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWritePersisterAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.Persister, new TypeReference(typeof(string))).MapsToAttribute("persister");
 
-        [Test]
-        public void ShouldWritePersisterAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.Persister, new TypeReference(typeof(string))).MapsToAttribute("persister");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteSchemaAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.Schema, "dbo").MapsToAttribute("schema");
 
-        [Test]
-        public void ShouldWriteSchemaAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.Schema, "dbo").MapsToAttribute("schema");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteTableAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.TableName, "table").MapsToAttribute("table");
 
-        [Test]
-        public void ShouldWriteTableAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.TableName, "table").MapsToAttribute("table");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteWhereAttribute()
+    {
+        var testHelper = Helper();
+        testHelper.Check(x => x.Where, "x = 1").MapsToAttribute("where");
 
-        [Test]
-        public void ShouldWriteWhereAttribute()
-        {
-            var testHelper = Helper();
-            testHelper.Check(x => x.Where, "x = 1").MapsToAttribute("where");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteKey()
+    {
+        var mapping = CollectionMapping.Bag();
+        mapping.Set(x => x.Key, Layer.Defaults, new KeyMapping());
 
-        [Test]
-        public void ShouldWriteKey()
-        {
-            var mapping = CollectionMapping.Bag();
-            mapping.Set(x => x.Key, Layer.Defaults, new KeyMapping());
+        writer.VerifyXml(mapping)
+            .Element("key").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("key").Exists();
-        }
+    [Test]
+    public void ShouldWriteRelationshipElement()
+    {
+        var mapping = CollectionMapping.Bag();
 
-        [Test]
-        public void ShouldWriteRelationshipElement()
-        {
-            var mapping = CollectionMapping.Bag();
+        mapping.Set(x => x.Relationship, Layer.Defaults, new OneToManyMapping());
 
-            mapping.Set(x => x.Relationship, Layer.Defaults, new OneToManyMapping());
+        writer.VerifyXml(mapping)
+            .Element("one-to-many").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("one-to-many").Exists();
-        }
+    [Test]
+    public void ShouldWriteCacheElement()
+    {
+        var mapping = CollectionMapping.Bag();
 
-        [Test]
-        public void ShouldWriteCacheElement()
-        {
-            var mapping = CollectionMapping.Bag();
+        mapping.Set(x => x.Cache, Layer.Defaults, new CacheMapping());
 
-            mapping.Set(x => x.Cache, Layer.Defaults, new CacheMapping());
+        writer.VerifyXml(mapping)
+            .Element("cache").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("cache").Exists();
-        }
+    [Test]
+    public void ShouldWriteCompositeElement()
+    {
+        var mapping = CollectionMapping.Bag();
 
-        [Test]
-        public void ShouldWriteCompositeElement()
-        {
-            var mapping = CollectionMapping.Bag();
+        mapping.Set(x => x.CompositeElement, Layer.Defaults, new CompositeElementMapping());
 
-            mapping.Set(x => x.CompositeElement, Layer.Defaults, new CompositeElementMapping());
+        writer.VerifyXml(mapping)
+            .Element("composite-element").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("composite-element").Exists();
-        }
+    [Test]
+    public void ShouldWriteElement()
+    {
+        var mapping = CollectionMapping.Bag();
 
-        [Test]
-        public void ShouldWriteElement()
-        {
-            var mapping = CollectionMapping.Bag();
+        mapping.Set(x => x.Element, Layer.Defaults, new ElementMapping());
 
-            mapping.Set(x => x.Element, Layer.Defaults, new ElementMapping());
+        writer.VerifyXml(mapping)
+            .Element("element").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("element").Exists();
-        }
+    static XmlWriterTestHelper<CollectionMapping> Helper()
+    {
+        var helper = new XmlWriterTestHelper<CollectionMapping>();
 
-        static XmlWriterTestHelper<CollectionMapping> Helper()
-        {
-            var helper = new XmlWriterTestHelper<CollectionMapping>();
+        helper.CreateInstance(CollectionMapping.Bag);
 
-            helper.CreateInstance(CollectionMapping.Bag);
-
-            return helper;
-        }
+        return helper;
     }
 }
