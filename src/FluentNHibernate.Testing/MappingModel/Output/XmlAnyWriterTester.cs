@@ -3,144 +3,143 @@ using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.MappingModel.Output
+namespace FluentNHibernate.Testing.MappingModel.Output;
+
+[TestFixture]
+public class XmlAnyWriterTester
 {
-    [TestFixture]
-    public class XmlAnyWriterTester
+    private IXmlWriter<AnyMapping> writer;
+
+    [SetUp]
+    public void GetWriterFromContainer()
     {
-        private IXmlWriter<AnyMapping> writer;
+        var container = new XmlWriterContainer();
+        writer = container.Resolve<IXmlWriter<AnyMapping>>();
+    }
 
-        [SetUp]
-        public void GetWriterFromContainer()
-        {
-            var container = new XmlWriterContainer();
-            writer = container.Resolve<IXmlWriter<AnyMapping>>();
-        }
+    [Test]
+    public void ShouldWriteIdTypeAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<AnyMapping>();
+        testHelper.Check(x => x.IdType, "id").MapsToAttribute("id-type");
 
-        [Test]
-        public void ShouldWriteIdTypeAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<AnyMapping>();
-            testHelper.Check(x => x.IdType, "id").MapsToAttribute("id-type");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteMetaTypeAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<AnyMapping>();
+        testHelper.Check(x => x.MetaType, new TypeReference("meta")).MapsToAttribute("meta-type");
 
-        [Test]
-        public void ShouldWriteMetaTypeAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<AnyMapping>();
-            testHelper.Check(x => x.MetaType, new TypeReference("meta")).MapsToAttribute("meta-type");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteNameAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<AnyMapping>();
+        testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
 
-        [Test]
-        public void ShouldWriteNameAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<AnyMapping>();
-            testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteAccessAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<AnyMapping>();
+        testHelper.Check(x => x.Access, "acc").MapsToAttribute("access");
 
-        [Test]
-        public void ShouldWriteAccessAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<AnyMapping>();
-            testHelper.Check(x => x.Access, "acc").MapsToAttribute("access");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteInsertAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<AnyMapping>();
+        testHelper.Check(x => x.Insert, true).MapsToAttribute("insert");
 
-        [Test]
-        public void ShouldWriteInsertAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<AnyMapping>();
-            testHelper.Check(x => x.Insert, true).MapsToAttribute("insert");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteUpdateAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<AnyMapping>();
+        testHelper.Check(x => x.Update, true).MapsToAttribute("update");
 
-        [Test]
-        public void ShouldWriteUpdateAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<AnyMapping>();
-            testHelper.Check(x => x.Update, true).MapsToAttribute("update");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteCascadeAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<AnyMapping>();
+        testHelper.Check(x => x.Cascade, "all").MapsToAttribute("cascade");
 
-        [Test]
-        public void ShouldWriteCascadeAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<AnyMapping>();
-            testHelper.Check(x => x.Cascade, "all").MapsToAttribute("cascade");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteLazyAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<AnyMapping>();
+        testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
 
-        [Test]
-        public void ShouldWriteLazyAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<AnyMapping>();
-            testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteOptimisticLockAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<AnyMapping>();
+        testHelper.Check(x => x.OptimisticLock, true).MapsToAttribute("optimistic-lock");
 
-        [Test]
-        public void ShouldWriteOptimisticLockAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<AnyMapping>();
-            testHelper.Check(x => x.OptimisticLock, true).MapsToAttribute("optimistic-lock");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteTypeColumns()
+    {
+        var mapping = new AnyMapping();
 
-        [Test]
-        public void ShouldWriteTypeColumns()
-        {
-            var mapping = new AnyMapping();
+        mapping.AddTypeColumn(Layer.Defaults, new ColumnMapping("Column1"));
 
-            mapping.AddTypeColumn(Layer.Defaults, new ColumnMapping("Column1"));
+        writer.VerifyXml(mapping)
+            .Element("column").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("column").Exists();
-        }
+    [Test]
+    public void ShouldWriteIdentifierColumns()
+    {
+        var mapping = new AnyMapping();
 
-        [Test]
-        public void ShouldWriteIdentifierColumns()
-        {
-            var mapping = new AnyMapping();
+        mapping.AddIdentifierColumn(Layer.Defaults, new ColumnMapping("Column1"));
 
-            mapping.AddIdentifierColumn(Layer.Defaults, new ColumnMapping("Column1"));
+        writer.VerifyXml(mapping)
+            .Element("column").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("column").Exists();
-        }
+    [Test]
+    public void ShouldWriteTypeColumnsBeforeIdentifiers()
+    {
+        var mapping = new AnyMapping();
 
-        [Test]
-        public void ShouldWriteTypeColumnsBeforeIdentifiers()
-        {
-            var mapping = new AnyMapping();
+        mapping.AddIdentifierColumn(Layer.Defaults, new ColumnMapping("Column1"));
+        mapping.AddTypeColumn(Layer.Defaults, new ColumnMapping("Column2"));
 
-            mapping.AddIdentifierColumn(Layer.Defaults, new ColumnMapping("Column1"));
-            mapping.AddTypeColumn(Layer.Defaults, new ColumnMapping("Column2"));
+        writer.VerifyXml(mapping)
+            .Element("column[1]").HasAttribute("name", "Column2");
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("column[1]").HasAttribute("name", "Column2");
-        }
+    [Test]
+    public void ShouldWriteMetaValues()
+    {
+        var mapping = new AnyMapping();
 
-        [Test]
-        public void ShouldWriteMetaValues()
-        {
-            var mapping = new AnyMapping();
+        mapping.AddMetaValue(new MetaValueMapping());
 
-            mapping.AddMetaValue(new MetaValueMapping());
-
-            writer.VerifyXml(mapping)
-                .Element("meta-value").Exists();
-        }
+        writer.VerifyXml(mapping)
+            .Element("meta-value").Exists();
     }
 }

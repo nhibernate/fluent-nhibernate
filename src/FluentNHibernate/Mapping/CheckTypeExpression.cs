@@ -1,27 +1,26 @@
 using System;
 
-namespace FluentNHibernate.Mapping
+namespace FluentNHibernate.Mapping;
+
+public class CheckTypeExpression<TParent>
 {
-    public class CheckTypeExpression<TParent>
+    internal Action<string> setValue;
+
+    private readonly TParent parent;
+
+    public CheckTypeExpression(TParent parent, Action<string> setter)
     {
-        internal Action<string> setValue;
+        this.parent = parent;
+        this.setValue = setter;
+    }
 
-        private readonly TParent parent;
+    public void None()
+    {
+        setValue("none");
+    }
 
-        public CheckTypeExpression(TParent parent, Action<string> setter)
-        {
-            this.parent = parent;
-            this.setValue = setter;
-        }
-
-        public void None()
-        {
-            setValue("none");
-        }
-
-        public void RowCount()
-        {
-            setValue("rowcount");
-        }
+    public void RowCount()
+    {
+        setValue("rowcount");
     }
 }

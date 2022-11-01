@@ -1,8 +1,7 @@
-﻿namespace FluentNHibernate.MappingModel.Collections
+﻿namespace FluentNHibernate.MappingModel.Collections;
+
+public enum SortType
 {
-    public enum SortType
-    {
-        Unsorted,
-        Natural
-    }
+    Unsorted,
+    Natural
 }

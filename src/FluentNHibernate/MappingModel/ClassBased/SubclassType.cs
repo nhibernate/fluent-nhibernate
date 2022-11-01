@@ -1,57 +1,56 @@
 using System;
 
-namespace FluentNHibernate.MappingModel.ClassBased
+namespace FluentNHibernate.MappingModel.ClassBased;
+
+[Serializable]
+public class SubclassType
 {
-    [Serializable]
-    public class SubclassType
+    public static readonly SubclassType Subclass = new SubclassType("subclass");
+    public static readonly SubclassType JoinedSubclass = new SubclassType("joined-subclass");
+    public static readonly SubclassType UnionSubclass = new SubclassType("union-subclass");
+
+    readonly string elementName;
+
+    private SubclassType(string elementName)
     {
-        public static readonly SubclassType Subclass = new SubclassType("subclass");
-        public static readonly SubclassType JoinedSubclass = new SubclassType("joined-subclass");
-        public static readonly SubclassType UnionSubclass = new SubclassType("union-subclass");
+        this.elementName = elementName;
+    }
 
-        readonly string elementName;
+    public string GetElementName()
+    {
+        return elementName;
+    }
 
-        private SubclassType(string elementName)
-        {
-            this.elementName = elementName;
-        }
+    public bool Equals(SubclassType other)
+    {
+        return Equals(other.elementName, elementName);
+    }
 
-        public string GetElementName()
-        {
-            return elementName;
-        }
+    public override bool Equals(object obj)
+    {
+        if (obj.GetType() != typeof(SubclassType))
+            return false;
 
-        public bool Equals(SubclassType other)
-        {
-            return Equals(other.elementName, elementName);
-        }
+        return Equals((SubclassType)obj);
+    }
 
-        public override bool Equals(object obj)
-        {
-            if (obj.GetType() != typeof(SubclassType))
-                return false;
+    public override int GetHashCode()
+    {
+        return (elementName != null ? elementName.GetHashCode() : 0);
+    }
 
-            return Equals((SubclassType)obj);
-        }
+    public override string ToString()
+    {
+        return string.Format("ElementName: {0}", elementName);
+    }
 
-        public override int GetHashCode()
-        {
-            return (elementName != null ? elementName.GetHashCode() : 0);
-        }
+    public static bool operator ==(SubclassType left, SubclassType right)
+    {
+        return Equals(left, right);
+    }
 
-        public override string ToString()
-        {
-            return string.Format("ElementName: {0}", elementName);
-        }
-
-        public static bool operator ==(SubclassType left, SubclassType right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(SubclassType left, SubclassType right)
-        {
-            return !(left == right);
-        }
+    public static bool operator !=(SubclassType left, SubclassType right)
+    {
+        return !(left == right);
     }
 }

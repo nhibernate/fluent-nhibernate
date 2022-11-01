@@ -1,7 +1,6 @@
-namespace FluentNHibernate.Specs.FluentInterface.Fixtures
+namespace FluentNHibernate.Specs.FluentInterface.Fixtures;
+
+class EntityWithFields
 {
-    class EntityWithFields
-    {
-        public string Name;
-    }
+    public string Name;
 }

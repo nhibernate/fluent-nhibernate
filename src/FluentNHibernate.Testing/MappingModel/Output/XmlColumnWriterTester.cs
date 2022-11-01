@@ -3,101 +3,100 @@ using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.MappingModel.Output
+namespace FluentNHibernate.Testing.MappingModel.Output;
+
+[TestFixture]
+public class XmlColumnWriterTester
 {
-    [TestFixture]
-    public class XmlColumnWriterTester
+    private XmlColumnWriter writer;
+
+    [Test]
+    public void ShouldWriteCheckAttribute()
     {
-        private XmlColumnWriter writer;
+        writer = new XmlColumnWriter();
+        var testHelper = new XmlWriterTestHelper<ColumnMapping>();
+        testHelper.Check(x => x.Check, "ck").MapsToAttribute("check");
 
-        [Test]
-        public void ShouldWriteCheckAttribute()
-        {
-            writer = new XmlColumnWriter();
-            var testHelper = new XmlWriterTestHelper<ColumnMapping>();
-            testHelper.Check(x => x.Check, "ck").MapsToAttribute("check");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteDefaultAttribute()
+    {
+        writer = new XmlColumnWriter();
+        var testHelper = new XmlWriterTestHelper<ColumnMapping>();
+        testHelper.Check(x => x.Default, "df").MapsToAttribute("default");
 
-        [Test]
-        public void ShouldWriteDefaultAttribute()
-        {
-            writer = new XmlColumnWriter();
-            var testHelper = new XmlWriterTestHelper<ColumnMapping>();
-            testHelper.Check(x => x.Default, "df").MapsToAttribute("default");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteIndexAttribute()
+    {
+        writer = new XmlColumnWriter();
+        var testHelper = new XmlWriterTestHelper<ColumnMapping>();
+        testHelper.Check(x => x.Index, "ix").MapsToAttribute("index");
 
-        [Test]
-        public void ShouldWriteIndexAttribute()
-        {
-            writer = new XmlColumnWriter();
-            var testHelper = new XmlWriterTestHelper<ColumnMapping>();
-            testHelper.Check(x => x.Index, "ix").MapsToAttribute("index");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteLengthAttribute()
+    {
+        writer = new XmlColumnWriter();
+        var testHelper = new XmlWriterTestHelper<ColumnMapping>();
+        testHelper.Check(x => x.Length, 10).MapsToAttribute("length");
 
-        [Test]
-        public void ShouldWriteLengthAttribute()
-        {
-            writer = new XmlColumnWriter();
-            var testHelper = new XmlWriterTestHelper<ColumnMapping>();
-            testHelper.Check(x => x.Length, 10).MapsToAttribute("length");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteNameAttribute()
+    {
+        writer = new XmlColumnWriter();
+        var testHelper = new XmlWriterTestHelper<ColumnMapping>();
+        testHelper.Check(x => x.Name, "name").MapsToAttribute("name", "name");
 
-        [Test]
-        public void ShouldWriteNameAttribute()
-        {
-            writer = new XmlColumnWriter();
-            var testHelper = new XmlWriterTestHelper<ColumnMapping>();
-            testHelper.Check(x => x.Name, "name").MapsToAttribute("name", "name");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteNotNullAttribute()
+    {
+        writer = new XmlColumnWriter();
+        var testHelper = new XmlWriterTestHelper<ColumnMapping>();
+        testHelper.Check(x => x.NotNull, true).MapsToAttribute("not-null");
 
-        [Test]
-        public void ShouldWriteNotNullAttribute()
-        {
-            writer = new XmlColumnWriter();
-            var testHelper = new XmlWriterTestHelper<ColumnMapping>();
-            testHelper.Check(x => x.NotNull, true).MapsToAttribute("not-null");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteSqlTypeAttribute()
+    {
+        writer = new XmlColumnWriter();
+        var testHelper = new XmlWriterTestHelper<ColumnMapping>();
+        testHelper.Check(x => x.SqlType, "type").MapsToAttribute("sql-type");
 
-        [Test]
-        public void ShouldWriteSqlTypeAttribute()
-        {
-            writer = new XmlColumnWriter();
-            var testHelper = new XmlWriterTestHelper<ColumnMapping>();
-            testHelper.Check(x => x.SqlType, "type").MapsToAttribute("sql-type");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteUniqueAttribute()
+    {
+        writer = new XmlColumnWriter();
+        var testHelper = new XmlWriterTestHelper<ColumnMapping>();
+        testHelper.Check(x => x.Unique, true).MapsToAttribute("unique");
 
-        [Test]
-        public void ShouldWriteUniqueAttribute()
-        {
-            writer = new XmlColumnWriter();
-            var testHelper = new XmlWriterTestHelper<ColumnMapping>();
-            testHelper.Check(x => x.Unique, true).MapsToAttribute("unique");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteUniqueKeyAttribute()
+    {
+        writer = new XmlColumnWriter();
+        var testHelper = new XmlWriterTestHelper<ColumnMapping>();
+        testHelper.Check(x => x.UniqueKey, "uk").MapsToAttribute("unique-key");
 
-        [Test]
-        public void ShouldWriteUniqueKeyAttribute()
-        {
-            writer = new XmlColumnWriter();
-            var testHelper = new XmlWriterTestHelper<ColumnMapping>();
-            testHelper.Check(x => x.UniqueKey, "uk").MapsToAttribute("unique-key");
-
-            testHelper.VerifyAll(writer);
-        }
+        testHelper.VerifyAll(writer);
     }
 }

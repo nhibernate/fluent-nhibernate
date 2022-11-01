@@ -1,21 +1,20 @@
 ﻿using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Automapping
+namespace FluentNHibernate.Automapping;
+
+public class AutoJoinPart<T> : JoinPart<T>
 {
-    public class AutoJoinPart<T> : JoinPart<T>
+    readonly IList<Member> mappedMembers;
+
+    public AutoJoinPart(IList<Member> mappedMembers, string tableName)
+        : base(tableName)
     {
-        readonly IList<Member> mappedMembers;
+        this.mappedMembers = mappedMembers;
+    }
 
-        public AutoJoinPart(IList<Member> mappedMembers, string tableName)
-            : base(tableName)
-        {
-            this.mappedMembers = mappedMembers;
-        }
-
-        internal override void OnMemberMapped(Member member)
-        {
-            mappedMembers.Add(member);
-        }
+    internal override void OnMemberMapped(Member member)
+    {
+        mappedMembers.Add(member);
     }
 }

@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface ICompositeElementInspector : IInspector
 {
-    public interface ICompositeElementInspector : IInspector
-    {
-        TypeReference Class { get; }
-        IParentInspector Parent { get; }
-        IEnumerable<IPropertyInspector> Properties { get; }
-        IEnumerable<IManyToOneInspector> References { get; }
-    }
+    TypeReference Class { get; }
+    IParentInspector Parent { get; }
+    IEnumerable<IPropertyInspector> Properties { get; }
+    IEnumerable<IManyToOneInspector> References { get; }
 }

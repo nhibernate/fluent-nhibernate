@@ -1,9 +1,8 @@
 using System.Xml;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public interface IXmlWriter<T>
 {
-    public interface IXmlWriter<T>
-    {
-        XmlDocument Write(T mappingModel);        
-    }
+    XmlDocument Write(T mappingModel);        
 }

@@ -1,7 +1,6 @@
-﻿namespace FluentNHibernate.Specs.Conventions.Fixtures
+﻿namespace FluentNHibernate.Specs.Conventions.Fixtures;
+
+public class Value
 {
-    public class Value
-    {
-        public string Property { get; set; }
-    }
+    public string Property { get; set; }
 }

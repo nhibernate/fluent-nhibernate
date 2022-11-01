@@ -1,7 +1,6 @@
 using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions
-{
-    public interface IIndexManyToManyConventionAcceptance : IConventionAcceptance<IIndexManyToManyInspector>
-    {}
-}
+namespace FluentNHibernate.Conventions;
+
+public interface IIndexManyToManyConventionAcceptance : IConventionAcceptance<IIndexManyToManyInspector>
+{}

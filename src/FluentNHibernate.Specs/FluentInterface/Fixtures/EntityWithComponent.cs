@@ -1,21 +1,20 @@
 using System;
 using System.Collections;
 
-namespace FluentNHibernate.Specs.FluentInterface.Fixtures
+namespace FluentNHibernate.Specs.FluentInterface.Fixtures;
+
+class EntityWithComponent
 {
-    class EntityWithComponent
-    {
-        public ComponentTarget Component { get; set; }
-        public IDictionary DynamicComponent { get; set; }
-    }
+    public ComponentTarget Component { get; set; }
+    public IDictionary DynamicComponent { get; set; }
+}
 
-    class EntityWithFieldComponent
-    {
-        public ComponentTarget Component;
-        public IDictionary DynamicComponent;
-    }
+class EntityWithFieldComponent
+{
+    public ComponentTarget Component;
+    public IDictionary DynamicComponent;
+}
 
-    class ComponentTarget
-    {
-    }
+class ComponentTarget
+{
 }

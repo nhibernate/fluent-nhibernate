@@ -3,75 +3,74 @@ using System.Linq.Expressions;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.MappingModel;
+
+[Serializable]
+public class TuplizerMapping : MappingBase
 {
-    [Serializable]
-    public class TuplizerMapping : MappingBase
+    readonly AttributeStore attributes;
+
+    public TuplizerMapping()
+        : this(new AttributeStore())
+    {}
+
+    public TuplizerMapping(AttributeStore attributes)
     {
-        readonly AttributeStore attributes;
+        this.attributes = attributes;
+    }
 
-        public TuplizerMapping()
-            : this(new AttributeStore())
-        {}
+    public override void AcceptVisitor(IMappingModelVisitor visitor)
+    {
+        visitor.ProcessTuplizer(this);
+    }
 
-        public TuplizerMapping(AttributeStore attributes)
-        {
-            this.attributes = attributes;
-        }
+    public override bool IsSpecified(string attribute)
+    {
+        return attributes.IsSpecified(attribute);
+    }
 
-        public override void AcceptVisitor(IMappingModelVisitor visitor)
-        {
-            visitor.ProcessTuplizer(this);
-        }
+    public TuplizerMode Mode
+    {
+        get { return attributes.GetOrDefault<TuplizerMode>("Mode"); }
+    }
 
-        public override bool IsSpecified(string attribute)
-        {
-            return attributes.IsSpecified(attribute);
-        }
+    public string EntityName
+    {
+        get { return attributes.GetOrDefault<string>("EntityName"); }
+    }
 
-        public TuplizerMode Mode
-        {
-            get { return attributes.GetOrDefault<TuplizerMode>("Mode"); }
-        }
+    public TypeReference Type
+    {
+        get { return attributes.GetOrDefault<TypeReference>("Type"); }
+    }
 
-        public string EntityName
-        {
-            get { return attributes.GetOrDefault<string>("EntityName"); }
-        }
+    public bool Equals(TuplizerMapping other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return Equals(other.attributes, attributes);
+    }
 
-        public TypeReference Type
-        {
-            get { return attributes.GetOrDefault<TypeReference>("Type"); }
-        }
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != typeof(TuplizerMapping)) return false;
+        return Equals((TuplizerMapping)obj);
+    }
 
-        public bool Equals(TuplizerMapping other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(other.attributes, attributes);
-        }
+    public override int GetHashCode()
+    {
+        return (attributes != null ? attributes.GetHashCode() : 0);
+    }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof(TuplizerMapping)) return false;
-            return Equals((TuplizerMapping)obj);
-        }
+    public void Set<T>(Expression<Func<TuplizerMapping, T>> expression, int layer, T value)
+    {
+        Set(expression.ToMember().Name, layer, value);
+    }
 
-        public override int GetHashCode()
-        {
-            return (attributes != null ? attributes.GetHashCode() : 0);
-        }
-
-        public void Set<T>(Expression<Func<TuplizerMapping, T>> expression, int layer, T value)
-        {
-            Set(expression.ToMember().Name, layer, value);
-        }
-
-        protected override void Set(string attribute, int layer, object value)
-        {
-            attributes.Set(attribute, layer, value);
-        }
+    protected override void Set(string attribute, int layer, object value)
+    {
+        attributes.Set(attribute, layer, value);
     }
 }

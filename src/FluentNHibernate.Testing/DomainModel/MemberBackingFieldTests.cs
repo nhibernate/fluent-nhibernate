@@ -3,192 +3,191 @@ using System.Collections.Generic;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.DomainModel
+namespace FluentNHibernate.Testing.DomainModel;
+
+[TestFixture]
+public class MemberBackingFieldTests
 {
-    [TestFixture]
-    public class MemberBackingFieldTests
+    [Test]
+    public void PropertyWithCamelCaseField()
     {
-        [Test]
-        public void PropertyWithCamelCaseField()
-        {
-            var member = ReflectionHelper.GetMember<Example, string>(x => x.PropertyWithCamelCaseField);
-            Member field;
+        var member = ReflectionHelper.GetMember<Example, string>(x => x.PropertyWithCamelCaseField);
+        Member field;
 
-            member.TryGetBackingField(out field);
+        member.TryGetBackingField(out field);
 
-            field.IsField.ShouldBeTrue();
-            field.Name.ShouldEqual("propertyWithCamelCaseField");
-        }
+        field.IsField.ShouldBeTrue();
+        field.Name.ShouldEqual("propertyWithCamelCaseField");
+    }
 
-        [Test]
-        public void PropertyWithLowerCaseField()
-        {
-            var member = ReflectionHelper.GetMember<Example, string>(x => x.PropertyWithLowerCaseField);
-            Member field;
+    [Test]
+    public void PropertyWithLowerCaseField()
+    {
+        var member = ReflectionHelper.GetMember<Example, string>(x => x.PropertyWithLowerCaseField);
+        Member field;
 
-            member.TryGetBackingField(out field);
+        member.TryGetBackingField(out field);
 
-            field.IsField.ShouldBeTrue();
-            field.Name.ShouldEqual("propertywithlowercasefield");
-        }
+        field.IsField.ShouldBeTrue();
+        field.Name.ShouldEqual("propertywithlowercasefield");
+    }
 
-        [Test]
-        public void PropertyWithUnderscoreCamelCaseField()
-        {
-            var member = ReflectionHelper.GetMember<Example, string>(x => x.PropertyWithUnderscoreCamelCaseField);
-            Member field;
+    [Test]
+    public void PropertyWithUnderscoreCamelCaseField()
+    {
+        var member = ReflectionHelper.GetMember<Example, string>(x => x.PropertyWithUnderscoreCamelCaseField);
+        Member field;
 
-            member.TryGetBackingField(out field);
+        member.TryGetBackingField(out field);
 
-            field.IsField.ShouldBeTrue();
-            field.Name.ShouldEqual("_propertyWithUnderscoreCamelCaseField");
-        }
+        field.IsField.ShouldBeTrue();
+        field.Name.ShouldEqual("_propertyWithUnderscoreCamelCaseField");
+    }
 
-        [Test]
-        public void PropertyWithUnderscorePascalCaseField()
-        {
-            var member = ReflectionHelper.GetMember<Example, string>(x => x.PropertyWithUnderscorePascalCaseField);
-            Member field;
+    [Test]
+    public void PropertyWithUnderscorePascalCaseField()
+    {
+        var member = ReflectionHelper.GetMember<Example, string>(x => x.PropertyWithUnderscorePascalCaseField);
+        Member field;
 
-            member.TryGetBackingField(out field);
+        member.TryGetBackingField(out field);
 
-            field.IsField.ShouldBeTrue();
-            field.Name.ShouldEqual("_PropertyWithUnderscorePascalCaseField");
-        }
+        field.IsField.ShouldBeTrue();
+        field.Name.ShouldEqual("_PropertyWithUnderscorePascalCaseField");
+    }
 
-        [Test]
-        public void MethodWithCamelCaseBackingField()
-        {
-            var member = ReflectionHelper.GetMember<Example, IEnumerable<Example>>(x => x.CamelCaseMethod());
-            Member field;
+    [Test]
+    public void MethodWithCamelCaseBackingField()
+    {
+        var member = ReflectionHelper.GetMember<Example, IEnumerable<Example>>(x => x.CamelCaseMethod());
+        Member field;
 
-            member.TryGetBackingField(out field);
+        member.TryGetBackingField(out field);
 
-            field.IsField.ShouldBeTrue();
-            field.Name.ShouldEqual("camelCaseMethod");
-        }
+        field.IsField.ShouldBeTrue();
+        field.Name.ShouldEqual("camelCaseMethod");
+    }
 
-        [Test]
-        public void MethodWithLowerCaseBackingField()
-        {
-            var member = ReflectionHelper.GetMember<Example, IEnumerable<Example>>(x => x.LowerCaseMethod());
-            Member field;
+    [Test]
+    public void MethodWithLowerCaseBackingField()
+    {
+        var member = ReflectionHelper.GetMember<Example, IEnumerable<Example>>(x => x.LowerCaseMethod());
+        Member field;
 
-            member.TryGetBackingField(out field);
+        member.TryGetBackingField(out field);
 
-            field.IsField.ShouldBeTrue();
-            field.Name.ShouldEqual("lowercasemethod");
-        }
+        field.IsField.ShouldBeTrue();
+        field.Name.ShouldEqual("lowercasemethod");
+    }
 
-        [Test]
-        public void MethodWithUnderscorePascalCaseBackingField()
-        {
-            var member = ReflectionHelper.GetMember<Example, IEnumerable<Example>>(x => x.UnderscorePascalCaseMethod());
-            Member field;
+    [Test]
+    public void MethodWithUnderscorePascalCaseBackingField()
+    {
+        var member = ReflectionHelper.GetMember<Example, IEnumerable<Example>>(x => x.UnderscorePascalCaseMethod());
+        Member field;
 
-            member.TryGetBackingField(out field);
+        member.TryGetBackingField(out field);
 
-            field.IsField.ShouldBeTrue();
-            field.Name.ShouldEqual("_UnderscorePascalCaseMethod");
-        }
+        field.IsField.ShouldBeTrue();
+        field.Name.ShouldEqual("_UnderscorePascalCaseMethod");
+    }
 
-        [Test]
-        public void GetMethodWithCamelCaseBackingField()
-        {
-            var member = ReflectionHelper.GetMember<Example, IEnumerable<Example>>(x => x.GetCamelCaseMethod());
-            Member field;
+    [Test]
+    public void GetMethodWithCamelCaseBackingField()
+    {
+        var member = ReflectionHelper.GetMember<Example, IEnumerable<Example>>(x => x.GetCamelCaseMethod());
+        Member field;
 
-            member.TryGetBackingField(out field);
+        member.TryGetBackingField(out field);
 
-            field.IsField.ShouldBeTrue();
-            field.Name.ShouldEqual("camelCaseMethod");
-        }
+        field.IsField.ShouldBeTrue();
+        field.Name.ShouldEqual("camelCaseMethod");
+    }
 
-        [Test]
-        public void GetMethodWithLowerCaseBackingField()
-        {
-            var member = ReflectionHelper.GetMember<Example, IEnumerable<Example>>(x => x.GetLowerCaseMethod());
-            Member field;
+    [Test]
+    public void GetMethodWithLowerCaseBackingField()
+    {
+        var member = ReflectionHelper.GetMember<Example, IEnumerable<Example>>(x => x.GetLowerCaseMethod());
+        Member field;
 
-            member.TryGetBackingField(out field);
+        member.TryGetBackingField(out field);
 
-            field.IsField.ShouldBeTrue();
-            field.Name.ShouldEqual("lowercasemethod");
-        }
+        field.IsField.ShouldBeTrue();
+        field.Name.ShouldEqual("lowercasemethod");
+    }
 
-        [Test]
-        public void GetMethodWithUnderscorePascalCaseBackingField()
-        {
-            var member = ReflectionHelper.GetMember<Example, IEnumerable<Example>>(x => x.GetUnderscorePascalCaseMethod());
-            Member field;
+    [Test]
+    public void GetMethodWithUnderscorePascalCaseBackingField()
+    {
+        var member = ReflectionHelper.GetMember<Example, IEnumerable<Example>>(x => x.GetUnderscorePascalCaseMethod());
+        Member field;
 
-            member.TryGetBackingField(out field);
+        member.TryGetBackingField(out field);
 
-            field.IsField.ShouldBeTrue();
-            field.Name.ShouldEqual("_UnderscorePascalCaseMethod");
-        }
+        field.IsField.ShouldBeTrue();
+        field.Name.ShouldEqual("_UnderscorePascalCaseMethod");
+    }
 
 #pragma warning disable 649
-        class Example
+    class Example
+    {
+        string propertyWithCamelCaseField;
+        string _propertyWithUnderscoreCamelCaseField;
+        string _PropertyWithUnderscorePascalCaseField;
+        string propertywithlowercasefield;
+        IEnumerable<Example> camelCaseMethod;
+        IEnumerable<Example> lowercasemethod;
+        IEnumerable<Example> _UnderscorePascalCaseMethod;
+
+        public string PropertyWithCamelCaseField
         {
-            string propertyWithCamelCaseField;
-            string _propertyWithUnderscoreCamelCaseField;
-            string _PropertyWithUnderscorePascalCaseField;
-            string propertywithlowercasefield;
-            IEnumerable<Example> camelCaseMethod;
-            IEnumerable<Example> lowercasemethod;
-            IEnumerable<Example> _UnderscorePascalCaseMethod;
-
-            public string PropertyWithCamelCaseField
-            {
-                get { return propertyWithCamelCaseField; }
-            }
-
-            public string PropertyWithLowerCaseField
-            {
-                get { return propertywithlowercasefield; }
-            }
-
-            public string PropertyWithUnderscoreCamelCaseField
-            {
-                get { return _propertyWithUnderscoreCamelCaseField; }
-            }
-
-            public string PropertyWithUnderscorePascalCaseField
-            {
-                get { return _PropertyWithUnderscorePascalCaseField; }
-            }
-
-            public IEnumerable<Example> CamelCaseMethod()
-            {
-                return camelCaseMethod;
-            }
-
-            public IEnumerable<Example> LowerCaseMethod()
-            {
-                return lowercasemethod;
-            }
-
-            public IEnumerable<Example> UnderscorePascalCaseMethod()
-            {
-                return _UnderscorePascalCaseMethod;
-            }
-
-            public IEnumerable<Example> GetCamelCaseMethod()
-            {
-                return camelCaseMethod;
-            }
-
-            public IEnumerable<Example> GetLowerCaseMethod()
-            {
-                return lowercasemethod;
-            }
-
-            public IEnumerable<Example> GetUnderscorePascalCaseMethod()
-            {
-                return _UnderscorePascalCaseMethod;
-            }
+            get { return propertyWithCamelCaseField; }
         }
-#pragma warning restore 649
+
+        public string PropertyWithLowerCaseField
+        {
+            get { return propertywithlowercasefield; }
+        }
+
+        public string PropertyWithUnderscoreCamelCaseField
+        {
+            get { return _propertyWithUnderscoreCamelCaseField; }
+        }
+
+        public string PropertyWithUnderscorePascalCaseField
+        {
+            get { return _PropertyWithUnderscorePascalCaseField; }
+        }
+
+        public IEnumerable<Example> CamelCaseMethod()
+        {
+            return camelCaseMethod;
+        }
+
+        public IEnumerable<Example> LowerCaseMethod()
+        {
+            return lowercasemethod;
+        }
+
+        public IEnumerable<Example> UnderscorePascalCaseMethod()
+        {
+            return _UnderscorePascalCaseMethod;
+        }
+
+        public IEnumerable<Example> GetCamelCaseMethod()
+        {
+            return camelCaseMethod;
+        }
+
+        public IEnumerable<Example> GetLowerCaseMethod()
+        {
+            return lowercasemethod;
+        }
+
+        public IEnumerable<Example> GetUnderscorePascalCaseMethod()
+        {
+            return _UnderscorePascalCaseMethod;
+        }
     }
+#pragma warning restore 649
 }

@@ -1,7 +1,6 @@
-namespace FluentNHibernate.Specs.Utilities.Fixtures
+namespace FluentNHibernate.Specs.Utilities.Fixtures;
+
+public abstract class TargetParent
 {
-    public abstract class TargetParent
-    {
-        private string SuperProperty { get; set; }
-    }
+    private string SuperProperty { get; set; }
 }

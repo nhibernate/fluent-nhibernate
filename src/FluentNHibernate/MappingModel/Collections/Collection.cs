@@ -1,11 +1,10 @@
-﻿namespace FluentNHibernate.MappingModel.Collections
+﻿namespace FluentNHibernate.MappingModel.Collections;
+
+public enum Collection
 {
-    public enum Collection
-    {
-        Array,
-        Bag,
-        Map,
-        List,
-        Set
-    }
+    Array,
+    Bag,
+    Map,
+    List,
+    Set
 }

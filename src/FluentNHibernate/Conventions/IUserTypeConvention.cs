@@ -1,6 +1,5 @@
-namespace FluentNHibernate.Conventions
+namespace FluentNHibernate.Conventions;
+
+public interface IUserTypeConvention : IPropertyConventionAcceptance, IPropertyConvention
 {
-    public interface IUserTypeConvention : IPropertyConventionAcceptance, IPropertyConvention
-    {
-    }
 }

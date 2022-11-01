@@ -1,11 +1,10 @@
 using System;
 
-namespace FluentNHibernate.Automapping
+namespace FluentNHibernate.Automapping;
+
+public interface IPropertyIgnorer
 {
-    public interface IPropertyIgnorer
-    {
-        IPropertyIgnorer IgnoreProperty(string name);
-        IPropertyIgnorer IgnoreProperties(string first, params string[] others);
-        IPropertyIgnorer IgnoreProperties(Func<Member, bool> predicate);
-    }
+    IPropertyIgnorer IgnoreProperty(string name);
+    IPropertyIgnorer IgnoreProperties(string first, params string[] others);
+    IPropertyIgnorer IgnoreProperties(Func<Member, bool> predicate);
 }

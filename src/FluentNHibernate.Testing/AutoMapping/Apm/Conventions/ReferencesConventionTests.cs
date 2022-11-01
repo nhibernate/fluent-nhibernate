@@ -5,31 +5,30 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.Conventions;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
+namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions;
+
+[TestFixture]
+public class ReferencesConventionTests
 {
-    [TestFixture]
-    public class ReferencesConventionTests
+    [Test]
+    public void ShouldBeAbleToSpecifyKeyInConvention()
     {
-        [Test]
-        public void ShouldBeAbleToSpecifyKeyInConvention()
-        {
-            var model =
-                AutoMap.Source(new StubTypeSource(typeof(Target)))
-                    .Conventions.Add<FKConvention>();
+        var model =
+            AutoMap.Source(new StubTypeSource(typeof(Target)))
+                .Conventions.Add<FKConvention>();
 
-            model.BuildMappings()
-                .First()
-                .Classes.First()
-                .References.First()
-                .Columns.First().Name.ShouldEqual("xxx");
-        }
+        model.BuildMappings()
+            .First()
+            .Classes.First()
+            .References.First()
+            .Columns.First().Name.ShouldEqual("xxx");
+    }
 
-        private class FKConvention : ForeignKeyConvention
+    private class FKConvention : ForeignKeyConvention
+    {
+        protected override string GetKeyName(Member property, Type type)
         {
-            protected override string GetKeyName(Member property, Type type)
-            {
-                return "xxx";
-            }
+            return "xxx";
         }
     }
 }

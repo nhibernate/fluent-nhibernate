@@ -1,8 +1,7 @@
 using System;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface IDynamicComponentInspector : IComponentBaseInspector
 {
-    public interface IDynamicComponentInspector : IComponentBaseInspector
-    {
-    }
 }

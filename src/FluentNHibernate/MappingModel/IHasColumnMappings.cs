@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.MappingModel;
+
+public interface IHasColumnMappings
 {
-    public interface IHasColumnMappings
-    {
-        IEnumerable<ColumnMapping> Columns { get; }
-        void AddColumn(int layer, ColumnMapping column);
-        void MakeColumnsEmpty(int layer);
-    }
+    IEnumerable<ColumnMapping> Columns { get; }
+    void AddColumn(int layer, ColumnMapping column);
+    void MakeColumnsEmpty(int layer);
 }

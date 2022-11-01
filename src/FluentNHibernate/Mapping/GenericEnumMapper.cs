@@ -1,15 +1,14 @@
 ﻿using System;
 using NHibernate.Type;
 
-namespace FluentNHibernate.Mapping
+namespace FluentNHibernate.Mapping;
+
+[Obsolete("Please use EnumStringType<T> instead")]
+[Serializable]
+public class GenericEnumMapper<TEnum> : EnumStringType
 {
-    [Obsolete("Please use EnumStringType<T> instead")]
-    [Serializable]
-    public class GenericEnumMapper<TEnum> : EnumStringType
+    public GenericEnumMapper()
+        : base(typeof(TEnum))
     {
-        public GenericEnumMapper()
-            : base(typeof(TEnum))
-        {
-        }
     }
 }

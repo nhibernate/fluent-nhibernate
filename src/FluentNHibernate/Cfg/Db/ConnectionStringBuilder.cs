@@ -1,10 +1,10 @@
 using System.Configuration;
 
-namespace FluentNHibernate.Cfg.Db
+namespace FluentNHibernate.Cfg.Db;
+
+public class ConnectionStringBuilder
 {
-    public class ConnectionStringBuilder
-    {
-        private string connectionString;
+    private string connectionString;
 
 #if NETFRAMEWORK
         public ConnectionStringBuilder FromAppSetting(string appSettingKey)
@@ -24,18 +24,17 @@ namespace FluentNHibernate.Cfg.Db
         }
 #endif
 
-        public ConnectionStringBuilder Is(string rawConnectionString)
-        {
-            connectionString = rawConnectionString;
-            IsDirty = true;
-            return this;
-        }
+    public ConnectionStringBuilder Is(string rawConnectionString)
+    {
+        connectionString = rawConnectionString;
+        IsDirty = true;
+        return this;
+    }
 
-        protected internal bool IsDirty { get; set; }
+    protected internal bool IsDirty { get; set; }
 
-        protected internal virtual string Create()
-        {
-            return connectionString;
-        }
+    protected internal virtual string Create()
+    {
+        return connectionString;
     }
 }

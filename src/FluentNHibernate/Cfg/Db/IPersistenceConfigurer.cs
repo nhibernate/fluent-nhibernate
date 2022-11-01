@@ -1,9 +1,8 @@
 using NHibernate.Cfg;
 
-namespace FluentNHibernate.Cfg.Db
+namespace FluentNHibernate.Cfg.Db;
+
+public interface IPersistenceConfigurer
 {
-    public interface IPersistenceConfigurer
-    {
-        Configuration ConfigureProperties(Configuration nhibernateConfig);
-    }
+    Configuration ConfigureProperties(Configuration nhibernateConfig);
 }

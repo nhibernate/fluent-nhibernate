@@ -1,7 +1,6 @@
 ﻿using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Specs.PersistenceModel.Fixtures
-{
-    class UnionChildEntityMap : SubclassMap<UnionChildEntity>
-    {}
-}
+namespace FluentNHibernate.Specs.PersistenceModel.Fixtures;
+
+class UnionChildEntityMap : SubclassMap<UnionChildEntity>
+{}

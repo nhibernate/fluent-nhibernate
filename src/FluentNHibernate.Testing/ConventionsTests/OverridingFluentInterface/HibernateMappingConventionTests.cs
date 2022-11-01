@@ -9,110 +9,109 @@ using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface
+namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
+
+[TestFixture]
+public class HibernateMappingConventionTests
 {
-    [TestFixture]
-    public class HibernateMappingConventionTests
+    private PersistenceModel model;
+    private IMappingProvider mapping;
+    private Type mappingType;
+
+    [SetUp]
+    public void CreatePersistanceModel()
     {
-        private PersistenceModel model;
-        private IMappingProvider mapping;
-        private Type mappingType;
-
-        [SetUp]
-        public void CreatePersistanceModel()
-        {
-            model = new PersistenceModel();
-        }
-
-        [Test]
-        public void CatalogShouldntBeOverridden()
-        {
-            Mapping(x => x.Catalog("xxx"));
-
-            Convention(x => x.Catalog("cat"));
-
-            VerifyModel(x => x.Catalog.ShouldEqual("xxx"));
-        }
-
-        [Test]
-        public void DefaultAccessShouldntBeOverridden()
-        {
-            Mapping(x => x.DefaultAccess.Property());
-
-            Convention(x => x.DefaultAccess.Field());
-
-            VerifyModel(x => x.DefaultAccess.ShouldEqual("property"));
-        }
-
-        [Test]
-        public void DefaultCascadeShouldntBeOverridden()
-        {
-            Mapping(x => x.DefaultCascade.None());
-
-            Convention(x => x.DefaultCascade.All());
-
-            VerifyModel(x => x.DefaultCascade.ShouldEqual("none"));
-        }
-
-        [Test]
-        public void SchemaShouldntBeOverridden()
-        {
-            Mapping(x => x.Schema("xxx"));
-
-            Convention(x => x.Schema("dbo"));
-
-            VerifyModel(x => x.Schema.ShouldEqual("xxx"));
-        }
-
-        [Test]
-        public void DefaultLazyShouldntBeOverridden()
-        {
-            Mapping(x => x.Not.DefaultLazy());
-
-            Convention(x => x.DefaultLazy());
-
-            VerifyModel(x => x.DefaultLazy.ShouldEqual(false));
-        }
-
-        [Test]
-        public void AutoImportShouldntBeOverridden()
-        {
-            Mapping(x => x.Not.AutoImport());
-
-            Convention(x => x.AutoImport());
-
-            VerifyModel(x => x.AutoImport.ShouldEqual(false));
-        }
-
-        #region Helpers
-
-        private void Convention(Action<IHibernateMappingInstance> convention)
-        {
-            model.Conventions.Add(new HibernateMappingConventionBuilder().Always(convention));
-        }
-
-        private void Mapping(Action<HibernateMappingPart> mappingDefinition)
-        {
-            var classMap = new ClassMap<ExampleClass>();
-            classMap.Id(x => x.Id);
-
-            mappingDefinition(classMap.HibernateMapping);
-
-            mapping = classMap;
-            mappingType = typeof(ExampleClass);
-        }
-
-        private void VerifyModel(Action<HibernateMapping> modelVerification)
-        {
-            model.Add(mapping);
-
-            var generatedModels = model.BuildMappings();
-            var modelInstance = generatedModels
-                .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) != null);
-
-            modelVerification(modelInstance);
-        }
-
-        #endregion
+        model = new PersistenceModel();
     }
+
+    [Test]
+    public void CatalogShouldntBeOverridden()
+    {
+        Mapping(x => x.Catalog("xxx"));
+
+        Convention(x => x.Catalog("cat"));
+
+        VerifyModel(x => x.Catalog.ShouldEqual("xxx"));
+    }
+
+    [Test]
+    public void DefaultAccessShouldntBeOverridden()
+    {
+        Mapping(x => x.DefaultAccess.Property());
+
+        Convention(x => x.DefaultAccess.Field());
+
+        VerifyModel(x => x.DefaultAccess.ShouldEqual("property"));
+    }
+
+    [Test]
+    public void DefaultCascadeShouldntBeOverridden()
+    {
+        Mapping(x => x.DefaultCascade.None());
+
+        Convention(x => x.DefaultCascade.All());
+
+        VerifyModel(x => x.DefaultCascade.ShouldEqual("none"));
+    }
+
+    [Test]
+    public void SchemaShouldntBeOverridden()
+    {
+        Mapping(x => x.Schema("xxx"));
+
+        Convention(x => x.Schema("dbo"));
+
+        VerifyModel(x => x.Schema.ShouldEqual("xxx"));
+    }
+
+    [Test]
+    public void DefaultLazyShouldntBeOverridden()
+    {
+        Mapping(x => x.Not.DefaultLazy());
+
+        Convention(x => x.DefaultLazy());
+
+        VerifyModel(x => x.DefaultLazy.ShouldEqual(false));
+    }
+
+    [Test]
+    public void AutoImportShouldntBeOverridden()
+    {
+        Mapping(x => x.Not.AutoImport());
+
+        Convention(x => x.AutoImport());
+
+        VerifyModel(x => x.AutoImport.ShouldEqual(false));
+    }
+
+    #region Helpers
+
+    private void Convention(Action<IHibernateMappingInstance> convention)
+    {
+        model.Conventions.Add(new HibernateMappingConventionBuilder().Always(convention));
+    }
+
+    private void Mapping(Action<HibernateMappingPart> mappingDefinition)
+    {
+        var classMap = new ClassMap<ExampleClass>();
+        classMap.Id(x => x.Id);
+
+        mappingDefinition(classMap.HibernateMapping);
+
+        mapping = classMap;
+        mappingType = typeof(ExampleClass);
+    }
+
+    private void VerifyModel(Action<HibernateMapping> modelVerification)
+    {
+        model.Add(mapping);
+
+        var generatedModels = model.BuildMappings();
+        var modelInstance = generatedModels
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) != null);
+
+        modelVerification(modelInstance);
+    }
+
+    #endregion
 }

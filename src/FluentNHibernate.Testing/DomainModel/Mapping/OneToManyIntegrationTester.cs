@@ -4,52 +4,51 @@ using NUnit.Framework;
 using NHibernate.Cfg;
 using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
-namespace FluentNHibernate.Testing.DomainModel.Mapping
+namespace FluentNHibernate.Testing.DomainModel.Mapping;
+
+[TestFixture]
+public class OneToManyIntegrationTester
 {
-    [TestFixture]
-    public class OneToManyIntegrationTester
+    private class OneToManyPersistenceModel : PersistenceModel
     {
-        private class OneToManyPersistenceModel : PersistenceModel
+        public override void Configure(NHibernate.Cfg.Configuration configuration)
         {
-            public override void Configure(NHibernate.Cfg.Configuration configuration)
-            {
-                Add(new ChildObjectMap());
-                Add(new OneToManyTargetMap());
-                base.Configure(configuration);
-            }
+            Add(new ChildObjectMap());
+            Add(new OneToManyTargetMap());
+            base.Configure(configuration);
+        }
 
-            private class ChildObjectMap : ClassMap<ChildObject>
+        private class ChildObjectMap : ClassMap<ChildObject>
+        {
+            public ChildObjectMap()
             {
-                public ChildObjectMap()
-                {
-                    Id(x => x.Id);
-                }
-            }
-
-            private class OneToManyTargetMap : ClassMap<OneToManyTarget>
-            {
-                public OneToManyTargetMap()
-                {
-                    Id(x => x.Id);
-                    HasMany(x => x.ListOfChildren).AsList();
-                    HasMany(x => x.BagOfChildren).AsBag();
-                    HasMany(x => x.SetOfChildren).AsSet();
-                    HasMany(x => x.MapOfChildren).AsMap( x => x.Name);
-                    HasMany(x => x.ArrayOfChildren).AsArray(x => x.Position);
-                }
+                Id(x => x.Id);
             }
         }
 
-        [Test]
-        public void NHibernateCanLoadOneToManyTargetMapping()
+        private class OneToManyTargetMap : ClassMap<OneToManyTarget>
         {
-            var cfg = CreateStandardInMemoryConfiguration()
-                .ConfigureProperties(new Configuration());
-
-            var model = new OneToManyPersistenceModel();
-            model.Configure(cfg);
-
-            cfg.BuildSessionFactory();
+            public OneToManyTargetMap()
+            {
+                Id(x => x.Id);
+                HasMany(x => x.ListOfChildren).AsList();
+                HasMany(x => x.BagOfChildren).AsBag();
+                HasMany(x => x.SetOfChildren).AsSet();
+                HasMany(x => x.MapOfChildren).AsMap( x => x.Name);
+                HasMany(x => x.ArrayOfChildren).AsArray(x => x.Position);
+            }
         }
+    }
+
+    [Test]
+    public void NHibernateCanLoadOneToManyTargetMapping()
+    {
+        var cfg = CreateStandardInMemoryConfiguration()
+            .ConfigureProperties(new Configuration());
+
+        var model = new OneToManyPersistenceModel();
+        model.Configure(cfg);
+
+        cfg.BuildSessionFactory();
     }
 }

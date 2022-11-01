@@ -1,10 +1,9 @@
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public interface IOptimisticLockInstance
 {
-    public interface IOptimisticLockInstance
-    {
-        void None();
-        void Version();
-        void Dirty();
-        void All();
-    }
+    void None();
+    void Version();
+    void Dirty();
+    void All();
 }

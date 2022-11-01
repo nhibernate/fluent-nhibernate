@@ -3,203 +3,202 @@ using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 using NHibernate.Type;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.MappingModel;
+
+[Serializable]
+public class TypeReference
 {
-    [Serializable]
-    public class TypeReference
+    public static readonly TypeReference Empty = new TypeReference("nop");
+
+    private readonly Type innerType;
+    private readonly string innerName;
+
+    public TypeReference(string name)
     {
-        public static readonly TypeReference Empty = new TypeReference("nop");
+        innerType = Type.GetType(name, false, true);
+        innerName = name;
+    }
 
-        private readonly Type innerType;
-        private readonly string innerName;
+    public TypeReference(Type type)
+    {
+        innerType = type;
+        innerName = type.Name;
+    }
 
-        public TypeReference(string name)
+    public string Name
+    {
+        get { return innerName; }
+    }
+
+    public bool IsEnum
+    {
+        get
         {
-            innerType = Type.GetType(name, false, true);
-            innerName = name;
-        }
+            if (innerType == null)
+                return false;
 
-        public TypeReference(Type type)
-        {
-            innerType = type;
-            innerName = type.Name;
-        }
-
-        public string Name
-        {
-            get { return innerName; }
-        }
-
-        public bool IsEnum
-        {
-            get
+            if (innerType.IsGenericType)
             {
-                if (innerType == null)
-                    return false;
-
-                if (innerType.IsGenericType)
+                if (innerType.GetGenericTypeDefinition() == typeof(EnumStringType<>))
                 {
-                    if (innerType.GetGenericTypeDefinition() == typeof(EnumStringType<>))
-                    {
-                        return true;
-                    }
-#pragma warning disable CS0618
-                    if (innerType.GetGenericTypeDefinition() == typeof(GenericEnumMapper<>))
-#pragma warning restore CS0618
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-
-
-                return innerType.IsEnum;
+#pragma warning disable CS0618
+                if (innerType.GetGenericTypeDefinition() == typeof(GenericEnumMapper<>))
+#pragma warning restore CS0618
+                {
+                    return true;
+                }
             }
+
+
+            return innerType.IsEnum;
         }
+    }
 
-        public bool IsGenericType
-        {
-            get
-            {
-                if (innerType == null)
-                    return false;
-
-                return innerType.IsGenericType;
-            }
-        }
-
-        public bool IsGenericTypeDefinition
-        {
-            get
-            {
-                if (innerType == null)
-                    return false;
-
-                return innerType.IsGenericTypeDefinition;
-            }
-        }
-
-        public Type GetGenericTypeDefinition()
+    public bool IsGenericType
+    {
+        get
         {
             if (innerType == null)
-                return null;
+                return false;
 
-            return innerType.GetGenericTypeDefinition();
+            return innerType.IsGenericType;
         }
+    }
 
-        public Type GenericTypeDefinition
-        {
-            get { return GetGenericTypeDefinition(); }
-        }
-
-        public bool IsNullable
-        {
-            get { return GenericTypeDefinition == typeof(Nullable<>); }
-        }
-
-        public Type[] GetGenericArguments()
+    public bool IsGenericTypeDefinition
+    {
+        get
         {
             if (innerType == null)
-                return Array.Empty<Type>();
-
-            return innerType.GetGenericArguments();
-        }
-
-        public IEnumerable<Type> GenericArguments
-        {
-            get { return GetGenericArguments(); }
-        }
-
-        public override string ToString()
-        {
-            return innerType == null ? innerName : innerType.AssemblyQualifiedName;
-        }
-
-        public bool Equals(TypeReference other)
-        {
-            if(ReferenceEquals(other, null))
                 return false;
-            if (other.innerType == null && innerType == null)
-                return other.innerName.Equals(innerName);                        
-            if (other.innerType != null)
-                return other.innerType.Equals(innerType);
 
+            return innerType.IsGenericTypeDefinition;
+        }
+    }
+
+    public Type GetGenericTypeDefinition()
+    {
+        if (innerType == null)
+            return null;
+
+        return innerType.GetGenericTypeDefinition();
+    }
+
+    public Type GenericTypeDefinition
+    {
+        get { return GetGenericTypeDefinition(); }
+    }
+
+    public bool IsNullable
+    {
+        get { return GenericTypeDefinition == typeof(Nullable<>); }
+    }
+
+    public Type[] GetGenericArguments()
+    {
+        if (innerType == null)
+            return Array.Empty<Type>();
+
+        return innerType.GetGenericArguments();
+    }
+
+    public IEnumerable<Type> GenericArguments
+    {
+        get { return GetGenericArguments(); }
+    }
+
+    public override string ToString()
+    {
+        return innerType == null ? innerName : innerType.AssemblyQualifiedName;
+    }
+
+    public bool Equals(TypeReference other)
+    {
+        if(ReferenceEquals(other, null))
             return false;
-        }
+        if (other.innerType == null && innerType == null)
+            return other.innerName.Equals(innerName);                        
+        if (other.innerType != null)
+            return other.innerType.Equals(innerType);
 
-        public bool Equals(Type other)
-        {
-            if (ReferenceEquals(other, null))
-                return false;
-            return other.Equals(innerType);
-        }
+        return false;
+    }
 
-        public bool Equals(string other)
-        {
-            if (ReferenceEquals(other, null))
-                return false;
-            return other.Equals(innerName);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if(obj == null)
-                return false;
-            if (obj.GetType() == typeof(TypeReference))
-                return Equals((TypeReference)obj);
-            if (obj is Type)
-                return Equals((Type)obj);
-            if (obj is string)
-                return Equals((string)obj);
-
+    public bool Equals(Type other)
+    {
+        if (ReferenceEquals(other, null))
             return false;
-        }
+        return other.Equals(innerType);
+    }
 
-        public override int GetHashCode()
+    public bool Equals(string other)
+    {
+        if (ReferenceEquals(other, null))
+            return false;
+        return other.Equals(innerName);
+    }
+
+    public override bool Equals(object obj)
+    {
+        if(obj == null)
+            return false;
+        if (obj.GetType() == typeof(TypeReference))
+            return Equals((TypeReference)obj);
+        if (obj is Type)
+            return Equals((Type)obj);
+        if (obj is string)
+            return Equals((string)obj);
+
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            unchecked
-            {
-                return ((innerType != null ? innerType.GetHashCode() : 0) * 397) ^ (innerName != null ? innerName.GetHashCode() : 0);
-            }
+            return ((innerType != null ? innerType.GetHashCode() : 0) * 397) ^ (innerName != null ? innerName.GetHashCode() : 0);
         }
+    }
 
-        public Type GetUnderlyingSystemType()
-        {
-            return innerType;
-        }
+    public Type GetUnderlyingSystemType()
+    {
+        return innerType;
+    }
 
-        public static bool operator ==(TypeReference original, Type type)
-        {
-            if (type == null)
-                return false;
-            if (original == (Type)null || original.innerType == null)
-                return false;
+    public static bool operator ==(TypeReference original, Type type)
+    {
+        if (type == null)
+            return false;
+        if (original == (Type)null || original.innerType == null)
+            return false;
 
-            return original.innerType == type;
-        }
+        return original.innerType == type;
+    }
 
-        public static bool operator !=(TypeReference original, Type type)
-        {
-            return !(original == type);
-        }
+    public static bool operator !=(TypeReference original, Type type)
+    {
+        return !(original == type);
+    }
 
-        public static bool operator ==(Type original, TypeReference type)
-        {
-            return type == original;
-        }
+    public static bool operator ==(Type original, TypeReference type)
+    {
+        return type == original;
+    }
 
-        public static bool operator !=(Type original, TypeReference type)
-        {
-            return !(original == type);
-        }
+    public static bool operator !=(Type original, TypeReference type)
+    {
+        return !(original == type);
+    }
 
-        public static bool operator ==(TypeReference original, TypeReference other)
-        {
-            return original.Equals(other);
-        }
+    public static bool operator ==(TypeReference original, TypeReference other)
+    {
+        return original.Equals(other);
+    }
 
-        public static bool operator !=(TypeReference original, TypeReference other)
-        {
-            return !(original == other);
-        }
+    public static bool operator !=(TypeReference original, TypeReference other)
+    {
+        return !(original == other);
     }
 }

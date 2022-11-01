@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FluentNHibernate.Specs.FluentInterface.Fixtures
-{
-    class SuperTarget
-    {
-    }
+namespace FluentNHibernate.Specs.FluentInterface.Fixtures;
 
-    class ChildTarget : SuperTarget
-    {}
+class SuperTarget
+{
 }
+
+class ChildTarget : SuperTarget
+{}

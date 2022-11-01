@@ -1,9 +1,8 @@
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.Mapping.Providers
+namespace FluentNHibernate.Mapping.Providers;
+
+public interface ICompositeElementMappingProvider
 {
-    public interface ICompositeElementMappingProvider
-    {
-        CompositeElementMapping GetCompositeElementMapping();
-    }
+    CompositeElementMapping GetCompositeElementMapping();
 }

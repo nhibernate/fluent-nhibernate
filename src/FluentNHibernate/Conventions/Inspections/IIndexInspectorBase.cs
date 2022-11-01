@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface IIndexInspectorBase :IInspector
 {
-    public interface IIndexInspectorBase :IInspector
-    {
-        IEnumerable<IColumnInspector> Columns { get; }
-    }
+    IEnumerable<IColumnInspector> Columns { get; }
 }

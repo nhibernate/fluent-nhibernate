@@ -2,11 +2,10 @@ using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Conventions
-{
-    /// <summary>
-    /// Version convention, implement this interface to apply changes to version mappings.
-    /// </summary>
-    public interface IVersionConvention : IConvention<IVersionInspector, IVersionInstance>
-    { }
-}
+namespace FluentNHibernate.Conventions;
+
+/// <summary>
+/// Version convention, implement this interface to apply changes to version mappings.
+/// </summary>
+public interface IVersionConvention : IConvention<IVersionInspector, IVersionInstance>
+{ }

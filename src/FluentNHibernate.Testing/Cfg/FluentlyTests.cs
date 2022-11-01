@@ -2,27 +2,26 @@
 using NHibernate.Cfg;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.Cfg
+namespace FluentNHibernate.Testing.Cfg;
+
+[TestFixture]
+public class FluentlyTests
 {
-    [TestFixture]
-    public class FluentlyTests
+    [Test]
+    public void ConfigureReturnsFluentConfiguration()
     {
-        [Test]
-        public void ConfigureReturnsFluentConfiguration()
-        {
-            Fluently.Configure().ShouldBeOfType(typeof(FluentConfiguration));
-        }
+        Fluently.Configure().ShouldBeOfType(typeof(FluentConfiguration));
+    }
 
-        [Test]
-        public void ConfigureReturnsNewInstance()
-        {
-            (Fluently.Configure() == Fluently.Configure()).ShouldBeFalse();
-        }
+    [Test]
+    public void ConfigureReturnsNewInstance()
+    {
+        (Fluently.Configure() == Fluently.Configure()).ShouldBeFalse();
+    }
 
-        [Test]
-        public void ConfigureCanAcceptExistingConfig()
-        {
-            Fluently.Configure(new Configuration()).ShouldNotBeNull();
-        }
+    [Test]
+    public void ConfigureCanAcceptExistingConfig()
+    {
+        Fluently.Configure(new Configuration()).ShouldNotBeNull();
     }
 }

@@ -3,54 +3,53 @@ using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public class OneToManyCollectionInstance : CollectionInstance, IOneToManyCollectionInstance
 {
-    public class OneToManyCollectionInstance : CollectionInstance, IOneToManyCollectionInstance
+    private readonly CollectionMapping mapping;
+
+    public OneToManyCollectionInstance(CollectionMapping mapping)
+        : base(mapping)
     {
-        private readonly CollectionMapping mapping;
+        nextBool = true;
+        this.mapping = mapping;
+    }
 
-        public OneToManyCollectionInstance(CollectionMapping mapping)
-            : base(mapping)
+    IOneToManyInspector IOneToManyCollectionInspector.Relationship
+    {
+        get { return Relationship; }
+    }
+
+    IManyToOneInspector IOneToManyCollectionInspector.OtherSide
+    {
+        get { return OtherSide; }
+    }
+
+    public IManyToOneInstance OtherSide
+    {
+        get
         {
-            nextBool = true;
-            this.mapping = mapping;
-        }
+            var otherSide = mapping.OtherSide as ManyToOneMapping;
+            if (otherSide == null)
+                return null;
 
-        IOneToManyInspector IOneToManyCollectionInspector.Relationship
+            return new ManyToOneInstance(otherSide);
+        }
+    }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    public new IOneToManyCollectionInstance Not
+    {
+        get
         {
-            get { return Relationship; }
+            nextBool = !nextBool;
+            return this;
         }
+    }
 
-        IManyToOneInspector IOneToManyCollectionInspector.OtherSide
-        {
-            get { return OtherSide; }
-        }
-
-        public IManyToOneInstance OtherSide
-        {
-            get
-            {
-                var otherSide = mapping.OtherSide as ManyToOneMapping;
-                if (otherSide == null)
-                    return null;
-
-                return new ManyToOneInstance(otherSide);
-            }
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public new IOneToManyCollectionInstance Not
-        {
-            get
-            {
-                nextBool = !nextBool;
-                return this;
-            }
-        }
-
-        public new IOneToManyInstance Relationship
-        {
-            get { return new OneToManyInstance((OneToManyMapping)mapping.Relationship); }
-        }
+    public new IOneToManyInstance Relationship
+    {
+        get { return new OneToManyInstance((OneToManyMapping)mapping.Relationship); }
     }
 }

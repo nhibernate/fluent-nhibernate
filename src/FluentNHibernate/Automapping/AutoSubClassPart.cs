@@ -5,100 +5,98 @@ using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
-namespace FluentNHibernate.Automapping
-{
+namespace FluentNHibernate.Automapping;
 #pragma warning disable 612,618
-    public class AutoSubClassPart<T> : SubClassPart<T>, IAutoClasslike
+public class AutoSubClassPart<T> : SubClassPart<T>, IAutoClasslike
 #pragma warning restore 612,618
+{
+    private readonly MappingProviderStore providers;
+    private readonly IList<Member> mappedMembers = new List<Member>();
+
+    public AutoSubClassPart(DiscriminatorPart parent, string discriminatorValue)
+        : this(parent, discriminatorValue, new MappingProviderStore())
+    {}
+
+    public AutoSubClassPart(DiscriminatorPart parent, object discriminatorValue)
+        : this(parent, discriminatorValue, new MappingProviderStore())
+    {}
+
+    AutoSubClassPart(DiscriminatorPart parent, object discriminatorValue, MappingProviderStore providers)
+        : base(parent, discriminatorValue, providers)
     {
-        private readonly MappingProviderStore providers;
-        private readonly IList<Member> mappedMembers = new List<Member>();
+        this.providers = providers;
+    }
 
-        public AutoSubClassPart(DiscriminatorPart parent, string discriminatorValue)
-            : this(parent, discriminatorValue, new MappingProviderStore())
-        {}
+    public object GetMapping()
+    {
+        return ((ISubclassMappingProvider)this).GetSubclassMapping();
+    }
 
-        public AutoSubClassPart(DiscriminatorPart parent, object discriminatorValue)
-            : this(parent, discriminatorValue, new MappingProviderStore())
-        {}
-
-        AutoSubClassPart(DiscriminatorPart parent, object discriminatorValue, MappingProviderStore providers)
-            : base(parent, discriminatorValue, providers)
-        {
-            this.providers = providers;
-        }
-
-        public object GetMapping()
-        {
-            return ((ISubclassMappingProvider)this).GetSubclassMapping();
-        }
-
-        void IAutoClasslike.DiscriminateSubClassesOnColumn(string column)
-        {
+    void IAutoClasslike.DiscriminateSubClassesOnColumn(string column)
+    {
             
-        }
+    }
 
-        void IAutoClasslike.AlterModel(ClassMappingBase mapping)
-        { }
+    void IAutoClasslike.AlterModel(ClassMappingBase mapping)
+    { }
 
-        internal override void OnMemberMapped(Member member)
-        {
-            mappedMembers.Add(member);
-        }
+    internal override void OnMemberMapped(Member member)
+    {
+        mappedMembers.Add(member);
+    }
 
-        public void JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
-        {
-            var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(typeof(TSubclass));
-            var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn);
+    public void JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
+    {
+        var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(typeof(TSubclass));
+        var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn);
 
-            action(joinedclass);
+        action(joinedclass);
 
-            providers.Subclasses[typeof(TSubclass)] = joinedclass;
-        }
+        providers.Subclasses[typeof(TSubclass)] = joinedclass;
+    }
 
-        public IAutoClasslike JoinedSubClass(Type type, string keyColumn)
-        {
-            var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(type);
-            var joinedclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, keyColumn);
+    public IAutoClasslike JoinedSubClass(Type type, string keyColumn)
+    {
+        var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(type);
+        var joinedclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, keyColumn);
 
-            providers.Subclasses[type] = joinedclass;
+        providers.Subclasses[type] = joinedclass;
 
-            return (IAutoClasslike)joinedclass;
-        }
+        return (IAutoClasslike)joinedclass;
+    }
 
-        public void SubClass<TSubclass>(string discriminatorValue, Action<AutoSubClassPart<TSubclass>> action)
-        {
-            var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
-            var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, discriminatorValue);
+    public void SubClass<TSubclass>(string discriminatorValue, Action<AutoSubClassPart<TSubclass>> action)
+    {
+        var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
+        var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, discriminatorValue);
 
-            if (action != null) action(subclass);
+        if (action != null) action(subclass);
 
-            providers.Subclasses[typeof(TSubclass)] = subclass;
-        }
+        providers.Subclasses[typeof(TSubclass)] = subclass;
+    }
 
-        public IAutoClasslike SubClass(Type type, string discriminatorValue)
-        {
-            var genericType = typeof(AutoSubClassPart<>).MakeGenericType(type);
-            var subclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, discriminatorValue);
+    public IAutoClasslike SubClass(Type type, string discriminatorValue)
+    {
+        var genericType = typeof(AutoSubClassPart<>).MakeGenericType(type);
+        var subclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, discriminatorValue);
 
-            providers.Subclasses[type] = subclass;
+        providers.Subclasses[type] = subclass;
 
-            return (IAutoClasslike)subclass;
-        }
+        return (IAutoClasslike)subclass;
+    }
 
-        public ClassMapping GetClassMapping()
-        {
-            return null;
-        }
+    public ClassMapping GetClassMapping()
+    {
+        return null;
+    }
 
-        public HibernateMapping GetHibernateMapping()
-        {
-            return null;
-        }
+    public HibernateMapping GetHibernateMapping()
+    {
+        return null;
+    }
 
-        public IEnumerable<Member> GetIgnoredProperties()
-        {
-            return mappedMembers;
-        }
+    public IEnumerable<Member> GetIgnoredProperties()
+    {
+        return mappedMembers;
     }
 }

@@ -1,34 +1,33 @@
 using System;
 
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public class OptimisticLockInstance : IOptimisticLockInstance
 {
-    public class OptimisticLockInstance : IOptimisticLockInstance
+    private readonly Action<string> setter;
+
+    public OptimisticLockInstance(Action<string> setter)
     {
-        private readonly Action<string> setter;
+        this.setter = setter;
+    }
 
-        public OptimisticLockInstance(Action<string> setter)
-        {
-            this.setter = setter;
-        }
+    public void None()
+    {
+        setter("none");
+    }
 
-        public void None()
-        {
-            setter("none");
-        }
+    public void Version()
+    {
+        setter("version");
+    }
 
-        public void Version()
-        {
-            setter("version");
-        }
+    public void Dirty()
+    {
+        setter("dirty");
+    }
 
-        public void Dirty()
-        {
-            setter("dirty");
-        }
-
-        public void All()
-        {
-            setter("all");
-        }
+    public void All()
+    {
+        setter("all");
     }
 }

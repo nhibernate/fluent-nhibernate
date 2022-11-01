@@ -1,13 +1,12 @@
-﻿namespace FluentNHibernate.Specs.FluentInterface.Fixtures
-{
-    class EntityWithProperties
-    {
-        public string Name { get; set; }
-    }
+﻿namespace FluentNHibernate.Specs.FluentInterface.Fixtures;
 
-    class EntityWithPrivateProperties
-    {
-        private string Name { get; set; }
-        string name;
-    }
+class EntityWithProperties
+{
+    public string Name { get; set; }
+}
+
+class EntityWithPrivateProperties
+{
+    private string Name { get; set; }
+    string name;
 }

@@ -1,15 +1,15 @@
 using FluentNHibernate.Cfg.Db;
 using System.Data;
 
-namespace FluentNHibernate.Testing.Cfg
+namespace FluentNHibernate.Testing.Cfg;
+
+public static class SQLiteFrameworkConfigurationFactory
 {
-    public static class SQLiteFrameworkConfigurationFactory
-    {
 #if NETFRAMEWORK
-        internal static SQLiteConfiguration CreateStandardInMemoryConfiguration()
-        {
-            return SQLiteConfiguration.Standard.InMemory();
-        }
+    internal static SQLiteConfiguration CreateStandardInMemoryConfiguration()
+    {
+        return SQLiteConfiguration.Standard.InMemory();
+    }
 #else
         internal static MsSqliteConfiguration CreateStandardInMemoryConfiguration()
         {
@@ -18,10 +18,10 @@ namespace FluentNHibernate.Testing.Cfg
 #endif
 
 #if NETFRAMEWORK
-        internal static SQLiteConfiguration CreateStandardConfiguration()
-        {
-            return SQLiteConfiguration.Standard;
-        }
+    internal static SQLiteConfiguration CreateStandardConfiguration()
+    {
+        return SQLiteConfiguration.Standard;
+    }
 #else
         internal static MsSqliteConfiguration CreateStandardConfiguration()
         {
@@ -30,10 +30,10 @@ namespace FluentNHibernate.Testing.Cfg
 #endif
 
 #if NETFRAMEWORK
-        internal static SQLiteConfiguration CreateStandardConfiguration(IsolationLevel isolationLevel)
-        {
-            return SQLiteConfiguration.Standard.IsolationLevel(isolationLevel);
-        }
+    internal static SQLiteConfiguration CreateStandardConfiguration(IsolationLevel isolationLevel)
+    {
+        return SQLiteConfiguration.Standard.IsolationLevel(isolationLevel);
+    }
 #else
         internal static MsSqliteConfiguration CreateStandardConfiguration(IsolationLevel isolationLevel)
         {
@@ -41,5 +41,4 @@ namespace FluentNHibernate.Testing.Cfg
         }
 #endif
 
-    }
 }

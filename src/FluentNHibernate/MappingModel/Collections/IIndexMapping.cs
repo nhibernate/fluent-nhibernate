@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Collections
+namespace FluentNHibernate.MappingModel.Collections;
+
+public interface IIndexMapping
 {
-    public interface IIndexMapping
-    {
-        void AcceptVisitor(IMappingModelVisitor visitor);
-        IEnumerable<ColumnMapping> Columns { get; }
-    }
+    void AcceptVisitor(IMappingModelVisitor visitor);
+    IEnumerable<ColumnMapping> Columns { get; }
 }

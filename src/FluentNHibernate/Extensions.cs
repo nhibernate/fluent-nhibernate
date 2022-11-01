@@ -6,24 +6,23 @@ using FluentNHibernate.Automapping;
 using NHibernate.Cfg;
 using NHibernate.Util;
 
-namespace FluentNHibernate
+namespace FluentNHibernate;
+
+public static class ConfigurationHelper
 {
-    public static class ConfigurationHelper
+    public static Configuration AddMappingsFromAssembly(this Configuration configuration, Assembly assembly)
     {
-        public static Configuration AddMappingsFromAssembly(this Configuration configuration, Assembly assembly)
-        {
-            var models = new PersistenceModel();
-            models.AddMappingsFromAssembly(assembly);
-            models.Configure(configuration);
+        var models = new PersistenceModel();
+        models.AddMappingsFromAssembly(assembly);
+        models.Configure(configuration);
 
-            return configuration;
-        }
+        return configuration;
+    }
 
-        public static Configuration AddAutoMappings(this Configuration configuration, AutoPersistenceModel model)
-        {
-            model.Configure(configuration);
+    public static Configuration AddAutoMappings(this Configuration configuration, AutoPersistenceModel model)
+    {
+        model.Configure(configuration);
 
-            return configuration;
-        }
+        return configuration;
     }
 }

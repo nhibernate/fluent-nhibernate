@@ -1,9 +1,8 @@
 using System;
 
-namespace FluentNHibernate.Specs.FluentInterface.Fixtures
+namespace FluentNHibernate.Specs.FluentInterface.Fixtures;
+
+class EntityWithVersion
 {
-    class EntityWithVersion
-    {
-        public TimeSpan VersionNumber { get; set; }
-    }
+    public TimeSpan VersionNumber { get; set; }
 }

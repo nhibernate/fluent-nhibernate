@@ -4,118 +4,117 @@ using System.Linq;
 using System.Reflection;
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public class JoinInspector : IJoinInspector
 {
-    public class JoinInspector : IJoinInspector
+    private readonly InspectorModelMapper<IJoinInspector, JoinMapping> propertyMappings = new InspectorModelMapper<IJoinInspector, JoinMapping>();
+    private readonly JoinMapping mapping;
+
+    public JoinInspector(JoinMapping mapping)
     {
-        private readonly InspectorModelMapper<IJoinInspector, JoinMapping> propertyMappings = new InspectorModelMapper<IJoinInspector, JoinMapping>();
-        private readonly JoinMapping mapping;
+        this.mapping = mapping;
+    }
 
-        public JoinInspector(JoinMapping mapping)
+    public Type EntityType
+    {
+        get { return mapping.ContainingEntityType; }
+    }
+
+    public string StringIdentifierForModel
+    {
+        get { return mapping.TableName; }
+    }
+
+    public bool IsSet(Member property)
+    {
+        return mapping.IsSpecified(propertyMappings.Get(property));
+    }
+
+    public IEnumerable<IAnyInspector> Anys
+    {
+        get
         {
-            this.mapping = mapping;
+            return mapping.Anys
+                .Select(x => new AnyInspector(x))
+                .Cast<IAnyInspector>();
         }
+    }
 
-        public Type EntityType
+    public Fetch Fetch
+    {
+        get { return Fetch.FromString(mapping.Fetch); }
+    }
+
+    public bool Inverse
+    {
+        get { return mapping.Inverse; }
+    }
+
+    public IKeyInspector Key
+    {
+        get
         {
-            get { return mapping.ContainingEntityType; }
-        }
+            if (mapping.Key == null)
+                return new KeyInspector(new KeyMapping());
 
-        public string StringIdentifierForModel
+            return new KeyInspector(mapping.Key);
+        }
+    }
+
+    public bool Optional
+    {
+        get { return mapping.Optional; }
+    }
+
+    public IEnumerable<IPropertyInspector> Properties
+    {
+        get
         {
-            get { return mapping.TableName; }
+            return mapping.Properties
+                .Select(x => new PropertyInspector(x))
+                .Cast<IPropertyInspector>();
         }
+    }
 
-        public bool IsSet(Member property)
+    public IEnumerable<IManyToOneInspector> References
+    {
+        get
         {
-            return mapping.IsSpecified(propertyMappings.Get(property));
+            return mapping.References
+                .Select(x => new ManyToOneInspector(x))
+                .Cast<IManyToOneInspector>();
         }
+    }
 
-        public IEnumerable<IAnyInspector> Anys
+
+    public IEnumerable<ICollectionInspector> Collections
+    {
+        get
         {
-            get
-            {
-                return mapping.Anys
-                    .Select(x => new AnyInspector(x))
-                    .Cast<IAnyInspector>();
-            }
+            return mapping.Collections
+                .Select(x => new CollectionInspector(x))
+                .Cast<ICollectionInspector>();
         }
+    }
 
-        public Fetch Fetch
-        {
-            get { return Fetch.FromString(mapping.Fetch); }
-        }
+    public string Schema
+    {
+        get { return mapping.Schema; }
+    }
 
-        public bool Inverse
-        {
-            get { return mapping.Inverse; }
-        }
-
-        public IKeyInspector Key
-        {
-            get
-            {
-                if (mapping.Key == null)
-                    return new KeyInspector(new KeyMapping());
-
-                return new KeyInspector(mapping.Key);
-            }
-        }
-
-        public bool Optional
-        {
-            get { return mapping.Optional; }
-        }
-
-        public IEnumerable<IPropertyInspector> Properties
-        {
-            get
-            {
-                return mapping.Properties
-                    .Select(x => new PropertyInspector(x))
-                    .Cast<IPropertyInspector>();
-            }
-        }
-
-        public IEnumerable<IManyToOneInspector> References
-        {
-            get
-            {
-                return mapping.References
-                    .Select(x => new ManyToOneInspector(x))
-                    .Cast<IManyToOneInspector>();
-            }
-        }
-
-
-        public IEnumerable<ICollectionInspector> Collections
-        {
-            get
-            {
-                return mapping.Collections
-                    .Select(x => new CollectionInspector(x))
-                    .Cast<ICollectionInspector>();
-            }
-        }
-
-        public string Schema
-        {
-            get { return mapping.Schema; }
-        }
-
-        public string TableName
-        {
-            get { return mapping.TableName; }
-        }
+    public string TableName
+    {
+        get { return mapping.TableName; }
+    }
         
-        public string Catalog
-        {
-            get { return mapping.Catalog; }
-        }
+    public string Catalog
+    {
+        get { return mapping.Catalog; }
+    }
 
-        public string Subselect
-        {
-            get { return mapping.Subselect; }
-        }
+    public string Subselect
+    {
+        get { return mapping.Subselect; }
     }
 }

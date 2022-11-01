@@ -3,59 +3,58 @@ using System.Diagnostics;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public class ManyToManyCollectionInstance : CollectionInstance, IManyToManyCollectionInstance
 {
-    public class ManyToManyCollectionInstance : CollectionInstance, IManyToManyCollectionInstance
+    private readonly CollectionMapping mapping;
+
+    public ManyToManyCollectionInstance(CollectionMapping mapping)
+        : base(mapping)
     {
-        private readonly CollectionMapping mapping;
+        nextBool = true;
+        this.mapping = mapping;
+    }
 
-        public ManyToManyCollectionInstance(CollectionMapping mapping)
-            : base(mapping)
-        {
-            nextBool = true;
-            this.mapping = mapping;
-        }
+    IManyToManyInspector IManyToManyCollectionInspector.Relationship
+    {
+        get { return Relationship; }
+    }
 
-        IManyToManyInspector IManyToManyCollectionInspector.Relationship
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    public new IManyToManyCollectionInstance Not
+    {
+        get
         {
-            get { return Relationship; }
+            nextBool = !nextBool;
+            return this;
         }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public new IManyToManyCollectionInstance Not
-        {
-            get
-            {
-                nextBool = !nextBool;
-                return this;
-            }
-        }
+    }
         
-        public IManyToManyCollectionInstance OtherSide
+    public IManyToManyCollectionInstance OtherSide
+    {
+        get
         {
-            get
-            {
-                var otherSide = mapping.OtherSide as CollectionMapping;
-                if (otherSide == null)
-                    return null;
+            var otherSide = mapping.OtherSide as CollectionMapping;
+            if (otherSide == null)
+                return null;
 
-                return new ManyToManyCollectionInstance(otherSide);
-            }
+            return new ManyToManyCollectionInstance(otherSide);
         }
+    }
 
-        public new IManyToManyInstance Relationship
-        {
-            get { return new ManyToManyInstance((ManyToManyMapping)mapping.Relationship); }
-        }
+    public new IManyToManyInstance Relationship
+    {
+        get { return new ManyToManyInstance((ManyToManyMapping)mapping.Relationship); }
+    }
 
-        public new Type ChildType
-        {
-            get { return mapping.ChildType; }
-        }
+    public new Type ChildType
+    {
+        get { return mapping.ChildType; }
+    }
 
-        IManyToManyCollectionInspector IManyToManyCollectionInspector.OtherSide
-        {
-            get { return OtherSide; }
-        }
+    IManyToManyCollectionInspector IManyToManyCollectionInspector.OtherSide
+    {
+        get { return OtherSide; }
     }
 }

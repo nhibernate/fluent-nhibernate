@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Testing.DomainModel.Access.Mappings
+namespace FluentNHibernate.Testing.DomainModel.Access.Mappings;
+
+class CompositeIdModelMapping : ClassMap<CompositeIdModel>
 {
-    class CompositeIdModelMapping : ClassMap<CompositeIdModel>
+    public CompositeIdModelMapping()
     {
-        public CompositeIdModelMapping()
-        {
-            CompositeId()
-                .KeyProperty(x => x.IdA)
-                .KeyProperty(x => x.IdB);
-        }
+        CompositeId()
+            .KeyProperty(x => x.IdA)
+            .KeyProperty(x => x.IdB);
     }
 }

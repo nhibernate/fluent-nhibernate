@@ -1,10 +1,9 @@
 using System.Reflection;
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface IExposedThroughPropertyInspector : IInspector
 {
-    public interface IExposedThroughPropertyInspector : IInspector
-    {
-        Member Property { get; }
-    }
+    Member Property { get; }
 }

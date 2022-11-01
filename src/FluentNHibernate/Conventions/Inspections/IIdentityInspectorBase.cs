@@ -1,11 +1,10 @@
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface IIdentityInspectorBase : IInspector
 {
-    public interface IIdentityInspectorBase : IInspector
-    {
-        Access Access { get; }
-        string UnsavedValue { get; }
-        string Name { get; }
-    }
+    Access Access { get; }
+    string UnsavedValue { get; }
+    string Name { get; }
 }

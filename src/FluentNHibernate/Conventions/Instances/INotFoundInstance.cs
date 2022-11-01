@@ -1,8 +1,7 @@
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public interface INotFoundInstance
 {
-    public interface INotFoundInstance
-    {
-        void Ignore();
-        void Exception();
-    }
+    void Ignore();
+    void Exception();
 }

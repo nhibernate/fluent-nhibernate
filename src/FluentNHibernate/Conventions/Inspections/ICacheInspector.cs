@@ -1,9 +1,8 @@
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface ICacheInspector : IInspector
 {
-    public interface ICacheInspector : IInspector
-    {
-        string Usage { get; }
-        string Region { get; }
-        Include Include { get; }
-    }
+    string Usage { get; }
+    string Region { get; }
+    Include Include { get; }
 }

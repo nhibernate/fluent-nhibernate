@@ -1,9 +1,8 @@
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface IAccessInspector
 {
-    public interface IAccessInspector
-    {
-        Access Access { get; }
-    }
+    Access Access { get; }
 }
