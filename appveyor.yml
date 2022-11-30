@@ -14,11 +14,10 @@ environment:
 
 branches:
   only:
-    - refs/heads/master
+    - refs/heads/main
     - refs/tags/*
     - /r/.*/
-    - master
-    - develop
+    - main
     - /feat/.*/
     - /fix/.*/
 

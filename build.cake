@@ -5,7 +5,7 @@
 #load "./build/parameters.cake"
 
 BuildParameters parameters = BuildParameters.GetParameters(Context);
-DotNetCoreMSBuildSettings msBuildSettings = null;
+DotNetMSBuildSettings msBuildSettings = null;
 bool publishingError = false;
 
 var SolutionPath = "./src/FluentNHibernate.sln";
@@ -29,7 +29,7 @@ Setup((context) =>
     var releaseNotes = string.Join("\n", 
         parameters.ReleaseNotes.Notes.ToArray()).Replace("\"", "\"\"");
 
-    msBuildSettings = new DotNetCoreMSBuildSettings()
+    msBuildSettings = new DotNetMSBuildSettings()
         .WithProperty("Version", parameters.Version.SemVersion)
         .WithProperty("AssemblyVersion", parameters.Version.AssemblyVersion)
         .WithProperty("FileVersion", parameters.Version.Version)
@@ -45,7 +45,7 @@ Task("Clean")
   .Does(() =>
     {
         CleanDirectories(parameters.Paths.Directories.ToClean);
-        DotNetCoreClean(SolutionPath);
+        DotNetClean(SolutionPath);
         EnsureDirectoryExists(parameters.Paths.Directories.Artifacts);
         EnsureDirectoryExists(parameters.Paths.Directories.ArtifactsBinFullFx);
         EnsureDirectoryExists(parameters.Paths.Directories.TestResults);
@@ -56,9 +56,9 @@ Task("Restore")
     .IsDependentOn("Clean")
     .Does(() =>
     {
-        DotNetCoreRestore(SolutionPath, new DotNetCoreRestoreSettings
+        DotNetRestore(SolutionPath, new DotNetRestoreSettings
         {
-            Verbosity = DotNetCoreVerbosity.Minimal,            
+            Verbosity = DotNetVerbosity.Minimal,            
         });
     });
 
@@ -66,7 +66,7 @@ Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
     {
-        DotNetBuild(SolutionPath, new DotNetCoreBuildSettings
+        DotNetBuild(SolutionPath, new DotNetBuildSettings
         {
             Configuration = parameters.Configuration,
             MSBuildSettings = msBuildSettings
@@ -83,7 +83,7 @@ Task("Test")
 
         foreach(var project in testProjects) 
         {                      
-            DotNetTest(project.ToString(), new DotNetCoreTestSettings
+            DotNetTest(project.ToString(), new DotNetTestSettings
             {
                 Framework = "net461",
                 NoBuild = true,
@@ -91,7 +91,7 @@ Task("Test")
                 Configuration = parameters.Configuration
             });          
 
-            DotNetTest(project.ToString(), new DotNetCoreTestSettings
+            DotNetTest(project.ToString(), new DotNetTestSettings
             {
                 Framework = "net6.0",
                 NoBuild = true,
@@ -259,11 +259,11 @@ private void PublishProjects(
     string artifactsBin,
     string versionSuffix,
     string configuration, 
-    DotNetCoreMSBuildSettings msBuildSettings)
+    DotNetMSBuildSettings msBuildSettings)
 {
     foreach(var project in projectNames)
     {        
-        DotNetCorePublish($"./src/{project}", new DotNetCorePublishSettings
+        DotNetPublish($"./src/{project}", new DotNetPublishSettings
         {
             Framework = framework,
             VersionSuffix = versionSuffix,
@@ -284,7 +284,7 @@ private void PackProjects(
 {
     foreach(var project in projectNames) {
         var projectPath = File($"./src/{project}/{project}.csproj");
-        DotNetCorePack(projectPath.ToString(), new DotNetCorePackSettings
+        DotNetPack(projectPath.ToString(), new DotNetPackSettings
         {
             Configuration = configuration,
             MSBuildSettings = msBuildSettings,
