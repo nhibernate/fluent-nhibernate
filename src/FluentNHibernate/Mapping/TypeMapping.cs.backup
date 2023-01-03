@@ -1,0 +1,23 @@
+using System;
+using System.Collections.Concurrent;
+
+namespace FluentNHibernate.Mapping
+{
+    public static class TypeMapping
+    {
+        private static readonly ConcurrentDictionary<string, string> cache = new ConcurrentDictionary<string, string>();
+
+        private static string Deduplicate(string str)
+        {
+            return cache.GetOrAdd(str, str);
+        }
+
+        public static string GetTypeString(Type type)
+        {
+            if (type.Assembly == typeof(string).Assembly)
+                return Deduplicate(type.IsGenericType ? type.FullName : type.Name);
+
+            return Deduplicate(type.AssemblyQualifiedName);
+        }
+    }
+}

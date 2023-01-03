@@ -1,0 +1,21 @@
+﻿using FluentNHibernate.Mapping;
+using NUnit.Framework;
+
+namespace FluentNHibernate.Testing.Mapping
+{
+    [TestFixture]
+    public class TypeMappingTests
+    {
+        [Test]
+        public void GetStringTypeDoesNotDuplicateStrings()
+        {
+            var typeString1 = TypeMapping.GetTypeString(typeof(TypeMappingTests));
+            var typeString2 = TypeMapping.GetTypeString(typeof(TypeMappingTests));
+            
+            // First make sure that the strings are equal, otherwise something has gone _very_ strong
+            typeString1.ShouldEqual(typeString2);
+            // Now make sure that they are the same object, not just equal
+            typeString1.ShouldBeTheSameAs(typeString2);
+        }
+    }
+}
