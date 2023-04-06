@@ -54,12 +54,12 @@ public class MsSqlConnectionStringBuilder : ConnectionStringBuilder
 
         var sb = new StringBuilder();
 
-        if (server.Contains(" "))
+        if (server.Contains(' '))
             sb.AppendFormat("Data Source=\"{0}\"", server);
         else
             sb.AppendFormat("Data Source={0}", server);
 
-        if (database.Contains(" "))
+        if (database.Contains(' '))
             sb.AppendFormat(";Initial Catalog=\"{0}\"", database);
         else
             sb.AppendFormat(";Initial Catalog={0}", database);
@@ -68,12 +68,12 @@ public class MsSqlConnectionStringBuilder : ConnectionStringBuilder
 
         if (!trustedConnection)
         {
-            if (username.Contains(" "))
+            if (username.Contains(' '))
                 sb.AppendFormat(";User ID=\"{0}\"", username);
             else
                 sb.AppendFormat(";User ID={0}", username);
 
-            if (password.Contains(" "))
+            if (password.Contains(' '))
                 sb.AppendFormat(";Password=\"{0}\"", password);
             else
                 sb.AppendFormat(";Password={0}", password);
