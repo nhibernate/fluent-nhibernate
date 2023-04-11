@@ -1,6 +1,6 @@
-![FluentNHibernate logo](https://raw.githubusercontent.com/jagregory/fluent-nhibernate/master/docs/logo.png)
+![FluentNHibernate logo](https://raw.githubusercontent.com/nhibernate/fluent-nhibernate/main/docs/logo.png)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/684r2ot07i2lrcij/branch/master?svg=true)](https://ci.appveyor.com/project/nhibernate/fluent-nhibernate/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/684r2ot07i2lrcij/branch/main?svg=true)](https://ci.appveyor.com/project/nhibernate/fluent-nhibernate/branch/main)
 [![NuGet](https://img.shields.io/nuget/v/FluentNHibernate.svg)](https://www.nuget.org/packages/FluentNHibernate)
 
 ## What is FluentNHibernate?
@@ -37,5 +37,5 @@ Fluent NHibernate wouldn't be possible without the time and effort of its contri
 
 Thanks goes to [Jeremy Miller](http://codebetter.com/blogs/jeremy.miller) for the original idea and implementation.
     
-Fluent NHibernate is &copy; 2008-2018 [James Gregory](http://jagregory.com) and contributors under the [BSD license](https://github.com/FluentNHibernate/fluent-nhibernate/blob/master/LICENSE)
+Fluent NHibernate is &copy; 2008-2018 [James Gregory](http://jagregory.com) and contributors under the [BSD license](https://github.com/nhibernate/fluent-nhibernate/blob/main/LICENSE)
 
