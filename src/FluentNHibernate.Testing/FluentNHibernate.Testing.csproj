@@ -23,7 +23,7 @@
     <PackageReference Include="FakeItEasy" Version="7.3.1" />
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.117" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
