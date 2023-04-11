@@ -1,6 +1,6 @@
 #addin "nuget:?package=Cake.FileHelpers&version=6.1.3"
 #tool "dotnet:?package=GitReleaseManager.Tool&version=0.13.0"
-#tool "dotnet:?package=GitVersion.Tool&version=5.11.1"
+#tool "dotnet:?package=GitVersion.Tool&version=5.12.0"
 
 #load "./build/parameters.cake"
 
