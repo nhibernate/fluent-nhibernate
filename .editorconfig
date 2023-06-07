@@ -1,10 +1,10 @@
+root = true
 ; This file is for unifying the coding style for different editors and IDEs.
 ; More information at http://EditorConfig.org
 
-root = true
 
 [*]
-end_of_line = CRLF
+end_of_line = crlf
 
 [*.ps1]
 indent_style = space
@@ -17,7 +17,10 @@ insert_final_newline = true
 
 csharp_style_namespace_declarations = file_scoped
 
-dotnet_diagnostic.IDE0161.severity = warning
+dotnet_diagnostic.ide0161.severity = warning
+
+# ReSharper properties
+resharper_default_private_modifier = implicit
 
 [*.cake]
 indent_style = space
