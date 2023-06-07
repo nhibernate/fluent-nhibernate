@@ -10,9 +10,9 @@ namespace FluentNHibernate.Mapping;
 
 public class NaturalIdPart<T> : INaturalIdMappingProvider
 {
-    readonly AttributeStore attributes = new AttributeStore();
-    readonly IList<PropertyMapping> properties = new List<PropertyMapping>();
-    readonly IList<ManyToOneMapping> manyToOnes = new List<ManyToOneMapping>();
+    readonly AttributeStore attributes = new();
+    readonly List<PropertyPart> properties = new();
+    readonly List<ManyToOneMapping> manyToOnes = new();
     bool nextBool = true;
 
     /// <summary>
@@ -22,8 +22,7 @@ public class NaturalIdPart<T> : INaturalIdMappingProvider
     /// <returns>The natural id part fluent interface</returns>
     public NaturalIdPart<T> Property(Expression<Func<T, object>> expression)
     {
-        var member = expression.ToMember();
-        return Property(expression, member.Name);
+        return Property(expression, null);
     }
 
     /// <summary>
@@ -40,15 +39,10 @@ public class NaturalIdPart<T> : INaturalIdMappingProvider
 
     protected virtual NaturalIdPart<T> Property(Member member, string columnName)
     {
-        var key = new PropertyMapping();
-        key.Set(x => x.Name, Layer.Defaults, member.Name);
-        key.Set(x => x.Type, Layer.Defaults, new TypeReference(member.PropertyType));
-        var columnMapping = new ColumnMapping();
-        columnMapping.Set(x => x.Name, Layer.Defaults, columnName);
-        key.AddColumn(Layer.UserSupplied, columnMapping);
-
-        properties.Add(key);
-
+        var property = new PropertyPart(member, typeof(T));
+        if (!string.IsNullOrEmpty(columnName))
+            property.Column(columnName);
+        properties.Add(property);
         return this;
     }
 
@@ -120,7 +114,7 @@ public class NaturalIdPart<T> : INaturalIdMappingProvider
     {
         var mapping = new NaturalIdMapping(attributes.Clone());
 
-        properties.Each(mapping.AddProperty);
+        properties.Each(p => mapping.AddProperty(((IPropertyMappingProvider)p).GetPropertyMapping()));
         manyToOnes.Each(mapping.AddReference);
 
         return mapping;

@@ -84,6 +84,11 @@ public abstract class DefaultMappingModelVisitor : NullMappingModelVisitor
         mapping.AcceptVisitor(this);
     }
 
+    public override void Visit(NaturalIdMapping mapping)
+    {
+        mapping.AcceptVisitor(this);
+    }
+
     public override void Visit(ClassMapping classMapping)
     {
         classMapping.AcceptVisitor(this);

@@ -325,7 +325,7 @@ public class PropertyPart : IPropertyMappingProvider
             Member = member
         };
 
-        if (columns.Count() == 0 && !mapping.IsSpecified("Formula"))
+        if (columns.Count == 0 && !mapping.IsSpecified("Formula"))
         {
             var columnMapping = new ColumnMapping(columnAttributes.Clone());
             columnMapping.Set(x => x.Name, Layer.Defaults, member.Name);
