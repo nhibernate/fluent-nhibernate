@@ -1,33 +1,23 @@
-﻿using FluentNHibernate.Driver;
-using NHibernate.Dialect;
+﻿using FluentNHibernate.Dialects;
+using FluentNHibernate.Driver;
 
 namespace FluentNHibernate.Cfg.Db;
 
 public class MsSqliteConfiguration : PersistenceConfiguration<MsSqliteConfiguration>
 {
-    public static MsSqliteConfiguration Standard
-    {
-        get { return new MsSqliteConfiguration(); }
-    }
+    public static MsSqliteConfiguration Standard => new();
 
     public MsSqliteConfiguration()
     {
         Driver<MsSQLiteDriver>();
-        Dialect<SQLiteDialect>();
+        Dialect<MsSQLiteDialect>();
         Raw("query.substitutions", "true=1;false=0");
     }
 
-    public MsSqliteConfiguration InMemory()
-    {
-        Raw("connection.release_mode", "on_close");
+    public MsSqliteConfiguration InMemory() =>
+        ConnectionString(c => c.Is("Data Source=:memory:"))
+            .Raw("connection.release_mode", "on_close");
 
-        return ConnectionString(c => c
-            .Is("Data Source=:memory:"));
-    }
-
-    public MsSqliteConfiguration UsingFile(string fileName)
-    {
-        return ConnectionString(c => c
-            .Is(string.Format("Data Source={0}", fileName)));
-    }
+    public MsSqliteConfiguration UsingFile(string fileName) =>
+        ConnectionString(c => c.Is($"Data Source={fileName}"));
 }
