@@ -183,7 +183,7 @@ public static class FluentNHibernateAnnotationsExtensions
         //GetType().IsNullable.
         if ((!requiredApplied) && (!memberInfo.GetType().IsNullable()))
         {
-            RequiredAttribute requiredAttribute = new RequiredAttribute();
+            RequiredAttribute requiredAttribute = new ();
             Debug(
                 "[{0}] TryApply(mapping={1}, attribute={2}) Sender=TryApplyAttributesFrom Cause=!GetType().IsNullable()",
                 typeof(FluentNHibernateAnnotationsExtensions),
