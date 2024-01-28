@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -35,6 +37,8 @@ public class IdentityStep : IAutomappingStep
         idMapping.Member = member;
         idMapping.Set(x => x.Generator, Layer.Defaults, GetDefaultGenerator(member));
 
+        columnMapping.TryApplyAttributesFrom(member.MemberInfo,isIdColumn:true);
+
         SetDefaultAccess(member, idMapping);
 
         ((ClassMapping)classMap).Set(x => x.Id, Layer.Defaults, idMapping);        
@@ -67,6 +71,8 @@ public class IdentityStep : IAutomappingStep
         else
             defaultGenerator.Assigned();
 
+        generatorMapping.TryApply(property.MemberInfo.GetCustomAttribute<DatabaseGeneratedAttribute>());
+        
         return generatorMapping;
     }
 }
