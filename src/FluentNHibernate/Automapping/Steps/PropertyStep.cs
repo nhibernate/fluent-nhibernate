@@ -89,6 +89,8 @@ public class PropertyStep : IAutomappingStep
         mapping.Set(x => x.Name, Layer.Defaults, mapping.Member.Name);
         mapping.Set(x => x.Type, Layer.Defaults, GetDefaultType(property));
 
+        columnMapping.TryApplyAttributesFrom(property.MemberInfo,isIdColumn:false);
+
         SetDefaultAccess(property, mapping);
 
         return mapping;
