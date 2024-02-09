@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461;netcoreapp2.0;net6.0</TargetFrameworks>
     <PlatformTarget>AnyCpu</PlatformTarget>
     <OutputType>Library</OutputType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -9,15 +8,13 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../FluentKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="NHibernate" Version="5.3.3" />
+	<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />  
   </ItemGroup>
-
   <ItemGroup>
     <None Include="..\FluentKey.snk">
       <Link>FluentKey.snk</Link>
     </None>
   </ItemGroup>
-
 </Project>

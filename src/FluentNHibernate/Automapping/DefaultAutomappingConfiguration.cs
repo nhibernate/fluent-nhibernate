@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Automapping.Steps;
@@ -27,6 +29,10 @@ public class DefaultAutomappingConfiguration : IAutomappingConfiguration
 
     public virtual bool IsId(Member member)
     {
+        if (member.MemberInfo.GetCustomAttribute<KeyAttribute>() != null)
+        {
+            return true;
+        }
         return member.Name.Equals("id", StringComparison.InvariantCultureIgnoreCase);
     }
 
