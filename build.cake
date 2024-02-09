@@ -85,7 +85,7 @@ Task("Test")
         {                      
             DotNetTest(project.ToString(), new DotNetTestSettings
             {
-                Framework = "net461",
+                Framework = "net48",
                 NoBuild = true,
                 NoRestore = true,
                 Configuration = parameters.Configuration
