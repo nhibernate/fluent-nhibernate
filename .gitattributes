@@ -1,2 +1,2 @@
-[core]
-autocrlf=false
+# Disable core.autocrlf by marking all files as NOT being text
+* -text
