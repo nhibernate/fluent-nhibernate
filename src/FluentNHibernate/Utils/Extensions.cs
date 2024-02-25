@@ -1,11 +1,7 @@
 using FluentNHibernate.Automapping.Alterations;
-using FluentNHibernate.Infrastructure;
 using NHibernate.Util;
 using System;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace FluentNHibernate.Utils;
 
@@ -64,25 +60,6 @@ public static class Extensions
     public static bool HasInterface(this Type type, Type interfaceType)
     {
         return type.GetInterfaces().Contains(interfaceType);
-    }
-
-    [Obsolete("Please do not use this method. It will be removed in a future version.")]
-    public static T DeepClone<T>(this T obj)
-    {
-        using (var stream = new MemoryStream())
-        {
-
-#if NETFRAMEWORK
-            var formatter = new BinaryFormatter();
-#else
-                var formatter = new BinaryFormatter(new NetStandardSerialization.SurrogateSelector(), new StreamingContext());
-#endif
-
-            formatter.Serialize(stream, obj);
-            stream.Seek(0, SeekOrigin.Begin);
-
-            return (T)formatter.Deserialize(stream);
-        }
     }
 
     public static bool IsAutoMappingOverrideType(this Type type)
