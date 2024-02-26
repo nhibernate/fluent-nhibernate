@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,28 +50,28 @@ public class MappingXmlTestHelper
 
     public virtual MappingXmlTestHelper DoesntHaveAttribute(string name)
     {
-        Assert.IsFalse(_currentElement.HasAttribute(name), "Found attribute '" + name + "' on element.");
+        Assert.That(_currentElement.HasAttribute(name), Is.False, $"Found attribute '{name}' on element.");
 
         return this;
     }
 
     public virtual MappingXmlTestHelper Exists()
     {
-        Assert.IsNotNull(_currentElement);
+        Assert.That(_currentElement, Is.Not.Null);
 
         return this;
     }
 
     public virtual MappingXmlTestHelper DoesntExist()
     {
-        Assert.IsNull(_currentElement);
+        Assert.That(_currentElement, Is.Null);
 
         return this;
     }
 
     public virtual MappingXmlTestHelper HasName(string name)
     {
-        Assert.AreEqual(name, _currentElement.Name, "Expected current element to have the name '" + name + "' but found '" + _currentElement.Name + "'.");
+        Assert.That(_currentElement.Name, Is.EqualTo(name), $"Expected current element to have the name '{name}' but found '{_currentElement.Name}'.");
 
         return this;
     }
@@ -97,7 +97,7 @@ public class MappingXmlTestHelper
         foreach (XmlElement node in _currentElement.ChildNodes)
         {
             if (node.HasAttribute(key))
-                Assert.AreNotEqual(node.Attributes[key].Value, value);
+                Assert.That(value, Is.Not.EqualTo(node.Attributes[key].Value));
         }
         return this;
     }

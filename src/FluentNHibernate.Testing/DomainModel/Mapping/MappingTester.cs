@@ -93,19 +93,18 @@ public class MappingTester<T>
 
     public virtual MappingTester<T> HasAttribute(string name, string value)
     {
-        Assert.IsNotNull(currentElement, "Couldn't find element matching '" + currentPath + "'");
+        Assert.That(currentElement, Is.Not.Null, $"Couldn't find element matching '{currentPath}'");
 
         var actual = currentElement.GetAttribute(name);
 
-        Assert.AreEqual(value, actual,
-            "Attribute '" + name + "' of '" + currentPath + "' didn't match.");
+        Assert.That(actual, Is.EqualTo(value), $"Attribute '{name}' of '{currentPath}' didn't match.");
 
         return this;
     }
 
     public virtual MappingTester<T> HasAttribute(string name, Func<string, bool> predicate)
     {
-        Assert.IsNotNull(currentElement, "Couldn't find element matching '" + currentPath + "'");
+        Assert.That(currentElement, Is.Not.Null, $"Couldn't find element matching '{currentPath}'");
 
         currentElement.HasAttribute(name).ShouldBeTrue();
 
@@ -116,28 +115,28 @@ public class MappingTester<T>
 
     public virtual MappingTester<T> DoesntHaveAttribute(string name)
     {
-        Assert.IsFalse(currentElement.HasAttribute(name), "Found attribute '" + name + "' on element.");
+        Assert.That(currentElement.HasAttribute(name), Is.False, $"Found attribute '{name}' on element.");
 
         return this;
     }
 
     public virtual MappingTester<T> Exists()
     {
-        Assert.IsNotNull(currentElement, "Couldn't find element matching '" + currentPath + "'");
+        Assert.That(currentElement, Is.Not.Null, $"Couldn't find element matching '{currentPath}'");
 
         return this;
     }
 
     public virtual MappingTester<T> DoesntExist()
     {
-        Assert.IsNull(currentElement);
+        Assert.That(currentElement, Is.Null);
 
         return this;
     }
 
     public virtual MappingTester<T> HasName(string name)
     {
-        Assert.AreEqual(name, currentElement.Name, "Expected current element to have the name '" + name + "' but found '" + currentElement.Name + "'.");
+        Assert.That(currentElement.Name, Is.EqualTo(name), $"Expected current element to have the name '{name}' but found '{currentElement.Name}'.");
 
         return this;
     }
@@ -160,12 +159,12 @@ public class MappingTester<T>
 
     public MappingTester<T> ChildrenDontContainAttribute(string key, string value)
     {
-        Assert.IsNotNull(currentElement, "Couldn't find element matching '" + currentPath + "'");
+        Assert.That(currentElement, Is.Not.Null, $"Couldn't find element matching '{currentPath}'");
 
         foreach (XmlElement node in currentElement.ChildNodes)
         {
             if (node.HasAttribute(key))
-                Assert.AreNotEqual(node.Attributes[key].Value, value);
+                Assert.That(value, Is.Not.EqualTo(node.Attributes[key].Value));
         }
         return this;
     }
@@ -191,7 +190,7 @@ public class MappingTester<T>
         else
         {
             XmlElement elementAtPosition = (XmlElement)currentElement.ParentNode.ChildNodes.Item(elementPosition);
-            Assert.IsTrue(elementAtPosition == currentElement, "Expected '" + currentElement.Name + "' but was '" + elementAtPosition.Name + "'");
+            Assert.That(elementAtPosition, Is.EqualTo(currentElement), $"Expected '{currentElement.Name}' but was '{elementAtPosition.Name}'");
         }
 
         return this;

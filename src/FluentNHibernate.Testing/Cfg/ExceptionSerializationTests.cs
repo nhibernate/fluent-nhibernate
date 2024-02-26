@@ -27,7 +27,7 @@ public class ExceptionSerializationTests
             var result = formatter.Deserialize(stream) as FluentConfigurationException;
 
             original.Message.ShouldEqual(result.Message);
-            CollectionAssert.AreEquivalent(original.PotentialReasons, result.PotentialReasons);
+            Assert.That(result.PotentialReasons, Is.EquivalentTo(original.PotentialReasons));
         }
     }
 

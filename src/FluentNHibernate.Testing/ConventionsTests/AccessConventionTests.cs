@@ -44,7 +44,7 @@ public class AccessConventionTests
     [Test]
     public void IdIsSet()
     {
-        Assert.AreEqual(expectedAccess, ((IdMapping)parent.Id).Access);
+        Assert.That(((IdMapping)parent.Id).Access, Is.EqualTo(expectedAccess));
     }
 
     [Test]
@@ -53,79 +53,79 @@ public class AccessConventionTests
         CompositeIdMapping id;
 
         id = ((CompositeIdMapping)compositeId.Id);
-        Assert.AreEqual(expectedAccess, id.Access);
-        Assert.AreEqual(expectedAccess, id.Keys.First(x => x.Name.Equals("IdA")).Access);
-        Assert.AreEqual(expectedAccess, id.Keys.First(x => x.Name.Equals("IdB")).Access);
+        Assert.That(id.Access, Is.EqualTo(expectedAccess));
+        Assert.That(id.Keys.First(x => x.Name.Equals("IdA")).Access, Is.EqualTo(expectedAccess));
+        Assert.That(id.Keys.First(x => x.Name.Equals("IdB")).Access, Is.EqualTo(expectedAccess));
 
         id = ((CompositeIdMapping)oneToOne.Id);
-        Assert.AreEqual(expectedAccess, id.Access);
-        Assert.AreEqual(expectedAccess, id.Keys.First(x => x.Name.Equals("Parent")).Access);
+        Assert.That(id.Access, Is.EqualTo(expectedAccess));
+        Assert.That(id.Keys.First(x => x.Name.Equals("Parent")).Access, Is.EqualTo(expectedAccess));
     }
 
     [Test]
     public void VersionIsSet()
     {
-        Assert.AreEqual(expectedAccess, parent.Version.Access);
+        Assert.That(parent.Version.Access, Is.EqualTo(expectedAccess));
     }
 
     [Test]
     public void PropertyIsSet()
     {
-        Assert.AreEqual(expectedAccess, parent.Properties.First(x => x.Name.Equals("Property")).Access);
+        Assert.That(parent.Properties.First(x => x.Name.Equals("Property")).Access, Is.EqualTo(expectedAccess));
     }
 
     [Test]
     public void JoinedPropertyIsSet()
     {
-        Assert.AreEqual(expectedAccess, parent.Joins.SelectMany(x => x.Properties).First(x => x.Name.Equals("JoinedProperty")).Access);
+        Assert.That(parent.Joins.SelectMany(x => x.Properties).First(x => x.Name.Equals("JoinedProperty")).Access, Is.EqualTo(expectedAccess));
     }
 
     [Test]
     public void ComponentIsSet()
     {
-        Assert.AreEqual(expectedAccess, parent.Components.First(x => x.Name.Equals("Component")).Access);
+        Assert.That(parent.Components.First(x => x.Name.Equals("Component")).Access, Is.EqualTo(expectedAccess));
     }
 
     [Test]
     public void DynamicComponentIsSet()
     {
-        Assert.AreEqual(expectedAccess, parent.Components.First(x => x.Name.Equals("Dynamic")).Access);
+        Assert.That(parent.Components.First(x => x.Name.Equals("Dynamic")).Access, Is.EqualTo(expectedAccess));
     }
 
     [Test]
     public void OneToOneIsSet()
     {
-        Assert.AreEqual(expectedAccess, parent.OneToOnes.First(x => x.Name.Equals("One")).Access);
+        Assert.That(parent.OneToOnes.First(x => x.Name.Equals("One")).Access, Is.EqualTo(expectedAccess));
     }
 
     [Test]
     public void OneToManyIsSet()
     {
-        Assert.AreEqual(expectedAccess, parent.Collections.First(x => x.Name.Equals("MapOne")).Access);
-        Assert.AreEqual(expectedAccess, parent.Collections.First(x => x.Name.Equals("SetOne")).Access);
-        Assert.AreEqual(expectedAccess, parent.Collections.First(x => x.Name.Equals("ListOne")).Access);
-        Assert.AreEqual(expectedAccess, parent.Collections.First(x => x.Name.Equals("BagOne")).Access);
+        Assert.That(parent.Collections.First(x => x.Name.Equals("MapOne")).Access, Is.EqualTo(expectedAccess));
+        Assert.That(parent.Collections.First(x => x.Name.Equals("SetOne")).Access, Is.EqualTo(expectedAccess));
+        Assert.That(parent.Collections.First(x => x.Name.Equals("ListOne")).Access, Is.EqualTo(expectedAccess));
+        Assert.That(parent.Collections.First(x => x.Name.Equals("BagOne")).Access, Is.EqualTo(expectedAccess));
     }
 
     [Test]
     public void ManyToManyIsSet()
     {
-        Assert.AreEqual(expectedAccess, parent.Collections.First(x => x.Name.Equals("MapMany")).Access);
-        Assert.AreEqual(expectedAccess, parent.Collections.First(x => x.Name.Equals("SetMany")).Access);
-        Assert.AreEqual(expectedAccess, parent.Collections.First(x => x.Name.Equals("ListMany")).Access);
-        Assert.AreEqual(expectedAccess, parent.Collections.First(x => x.Name.Equals("BagMany")).Access);
+        Assert.That(parent.Collections.First(x => x.Name.Equals("MapMany")).Access, Is.EqualTo(expectedAccess));
+        Assert.That(parent.Collections.First(x => x.Name.Equals("SetMany")).Access, Is.EqualTo(expectedAccess));
+        Assert.That(parent.Collections.First(x => x.Name.Equals("ListMany")).Access, Is.EqualTo(expectedAccess));
+        Assert.That(parent.Collections.First(x => x.Name.Equals("BagMany")).Access, Is.EqualTo(expectedAccess));
     }
 
     [Test]
     public void ManyToOneIsSet()
     {
-        Assert.AreEqual(expectedAccess, manyToOne.References.First(x => x.Name.Equals("Parent")).Access);
+        Assert.That(manyToOne.References.First(x => x.Name.Equals("Parent")).Access, Is.EqualTo(expectedAccess));
     }
 
     [Test]
     public void AnyIsSet()
     {
-        Assert.AreEqual(expectedAccess, parent.Anys.First(x => x.Name.Equals("Any")).Access);
+        Assert.That(parent.Anys.First(x => x.Name.Equals("Any")).Access, Is.EqualTo(expectedAccess));
     }
 
     private class BackfieldAccessConvention : AccessConvention

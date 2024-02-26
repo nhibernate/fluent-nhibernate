@@ -18,7 +18,7 @@ public class SerializationFixture
 
         foreach (var userTypeType in userTypes)
         {
-            Assert.IsTrue(userTypeType.IsSerializable, string.Format("{0} should be serializable.", userTypeType.Name));
+            Assert.That(userTypeType.IsSerializable, $"{userTypeType.Name} should be serializable.");
         }
     }
 }
