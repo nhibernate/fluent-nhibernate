@@ -99,10 +99,9 @@ public class XmlWriterTestHelper<TMappingType>
                     document.OutputXmlToConsole();
 
                 Assert.That(areEqual,
-                    "Property '{0}' was set to '{1}' and was expected to be written to attribute '{2}' with value '{3}'. The value was instead '{4}'",
-                    sourceProperty.InnerMember.MemberInfo.ReflectedType.Name + "." + sourceProperty.Name,
-                    sourceValue, check.Key, check.Value, attributeValue
-                );
+                    $"Property '{sourceProperty.InnerMember.MemberInfo.ReflectedType?.Name}.{sourceProperty.Name}' was set to '{sourceValue}' " +
+                    $"and was expected to be written to attribute '{check.Key}' with value '{check.Value}'. " +
+                    $"The value was instead '{attributeValue}'");
                 //string.Equals()
                 //rootElement.AttributeShouldEqual(check.Key, check.Value.ToString());
                 //rootElement.Attributes[check.Key].Value.ShouldBeEqualIgnoringCase(check.Value.ToString());

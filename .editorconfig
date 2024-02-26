@@ -18,6 +18,7 @@ insert_final_newline = true
 csharp_style_namespace_declarations = file_scoped
 
 dotnet_diagnostic.ide0161.severity = warning
+dotnet_diagnostic.NUnit1032.severity = suggestion
 
 # ReSharper properties
 resharper_default_private_modifier = implicit
