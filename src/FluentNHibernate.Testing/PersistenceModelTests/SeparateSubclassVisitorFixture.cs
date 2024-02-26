@@ -33,8 +33,8 @@ public class SeparateSubclassVisitorFixture
         providers.Add(new StringFooMap());
         var sut = CreateSut();
         sut.ProcessClass(fooMapping);
-        Assert.AreEqual(1, fooMapping.Subclasses.Count());
-        Assert.AreEqual(1, fooMapping.Subclasses.Where(sub => sub.Type.Equals(typeof(Foo<string>))).Count());
+        Assert.That(fooMapping.Subclasses.Count(), Is.EqualTo(1));
+        Assert.That(fooMapping.Subclasses.Count(sub => sub.Type == typeof(Foo<string>)), Is.EqualTo(1));
     }
 
     [Test]
@@ -50,8 +50,8 @@ public class SeparateSubclassVisitorFixture
         providers.Add(new StringFooMap());
         var sut = CreateSut();
         sut.ProcessClass(fooMapping);
-        Assert.AreEqual(1, fooMapping.Subclasses.Count());
-        Assert.AreEqual(1, fooMapping.Subclasses.Where(sub => sub.Type.Equals(typeof(Foo<string>))).Count());
+        Assert.That(fooMapping.Subclasses.Count(), Is.EqualTo(1));
+        Assert.That(fooMapping.Subclasses.Count(sub => sub.Type == typeof(Foo<string>)), Is.EqualTo(1));
     }
 
     [Test]
@@ -67,7 +67,7 @@ public class SeparateSubclassVisitorFixture
         providers.Add(new StandAloneMap());
         var sut = CreateSut();
         sut.ProcessClass(fooMapping);
-        Assert.AreEqual(0, fooMapping.Subclasses.Count());
+        Assert.That(fooMapping.Subclasses.Count(), Is.EqualTo(0));
     }
 
     [Test]
@@ -83,7 +83,7 @@ public class SeparateSubclassVisitorFixture
         providers.Add(new StandAloneMap());
         var sut = CreateSut();
         sut.ProcessClass(fooMapping);
-        Assert.AreEqual(0, fooMapping.Subclasses.Count());
+        Assert.That(fooMapping.Subclasses.Count(), Is.EqualTo(0));
     }
 
     [Test]
@@ -101,8 +101,8 @@ public class SeparateSubclassVisitorFixture
         providers.Add(new StringFooMap());
         var sut = CreateSut();
         sut.ProcessClass(fooMapping);
-        Assert.AreEqual(1, fooMapping.Subclasses.Count());
-        Assert.AreEqual(1, fooMapping.Subclasses.Where(sub => sub.Type.Equals(typeof(BaseImpl))).Count());
+        Assert.That(fooMapping.Subclasses.Count(), Is.EqualTo(1));
+        Assert.That(fooMapping.Subclasses.Count(sub => sub.Type == typeof(BaseImpl)), Is.EqualTo(1));
     }
 
     [Test]
@@ -120,8 +120,8 @@ public class SeparateSubclassVisitorFixture
         providers.Add(new StringFooMap());
         var sut = CreateSut();
         sut.ProcessClass(fooMapping);
-        Assert.AreEqual(1, fooMapping.Subclasses.Count());
-        Assert.AreEqual(1, fooMapping.Subclasses.Where(sub => sub.Type.Equals(typeof(BaseImpl))).Count());
+        Assert.That(fooMapping.Subclasses.Count(), Is.EqualTo(1));
+        Assert.That(fooMapping.Subclasses.Count(sub => sub.Type == typeof(BaseImpl)), Is.EqualTo(1));
     }
 
     [Test]
@@ -132,8 +132,8 @@ public class SeparateSubclassVisitorFixture
         providers.Add(new ExtendsChildMap());
         var sut = CreateSut();
         sut.ProcessClass(fooMapping);
-        Assert.AreEqual(1, fooMapping.Subclasses.Count());
-        Assert.AreEqual(1, fooMapping.Subclasses.Where(sub => sub.Type.Equals(typeof(ExtendsChild))).Count());
+        Assert.That(fooMapping.Subclasses.Count(), Is.EqualTo(1));
+        Assert.That(fooMapping.Subclasses.Count(sub => sub.Type == typeof(ExtendsChild)), Is.EqualTo(1));
     }
 
     [Test]

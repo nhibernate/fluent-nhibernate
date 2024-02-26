@@ -31,7 +31,7 @@ public class ContainerTester
         Action act = () => container.Resolve<IExample>();
 
         act.ShouldThrow<ResolveException>()
-            .WithMessage("Unable to resolve dependency: '" + typeof(IExample).FullName + "'");
+            .WithMessage($"Unable to resolve dependency: '{typeof(IExample).FullName}'");
     }
 
     private interface IExample
