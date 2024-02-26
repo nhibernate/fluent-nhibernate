@@ -20,7 +20,7 @@ public class ClassMapFilterPartModelGenerationTests : BaseModelFixture
 
     private void CheckFirstFilterWithoutCondition(ClassMapping mapping)
     {
-        if (mapping.Filters.Count() == 0) Assert.Fail("No filter added");
+        if (!mapping.Filters.Any()) Assert.Fail("No filter added");
         if (mapping.Filters.First().Name != "test") Assert.Fail("Wrong filter name added");
     }
 
