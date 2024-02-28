@@ -2,10 +2,6 @@ root = true
 ; This file is for unifying the coding style for different editors and IDEs.
 ; More information at http://EditorConfig.org
 
-
-[*]
-end_of_line = crlf
-
 [*.ps1]
 indent_style = space
 indent_size = 2
