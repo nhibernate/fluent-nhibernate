@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FluentNHibernate.Infrastructure;
 using NUnit.Framework;
 

@@ -1,2 +1,28 @@
-[core]
-autocrlf=false
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+*.cs      text diff=csharp
+*.xaml    text
+*.txt     text
+*.tt      text
+*.ps1     text
+*.cmd     text
+*.msbuild text
+*.md      text
+
+*.sln text eol=crlf
+*.csproj text eol=crlf
+*.vbproj text eol=crlf
+*.fsproj text eol=crlf
+*.dbproj text eol=crlf
+
+# Resharper DotSettings files are in Unix format
+*.DotSettings text eol=lf 
+
+# Binary files
+*.png binary
+*.jpg binary
+*.dll binary
+*.exe binary
