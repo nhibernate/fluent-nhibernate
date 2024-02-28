@@ -28,3 +28,11 @@ indent_size = 4
 [*.js]
 indent_style = tab
 indent_size = 2
+
+[*.csproj]
+indent_style = space
+indent_size = 2
+
+[*.props]
+indent_style = space
+indent_size = 2
