@@ -43,13 +43,7 @@ namespace FluentNHibernate.Automapping.TestFixtures
     {
         public int Id { get; set; }
         public int ExampleCustomColumnId { get; set; }
-        public int CustomColumn
-        {
-            get
-            {
-                return 12;
-            }
-        }
+        public int CustomColumn => 12;
     }
 
     public class ExampleInheritedClass : ExampleClass
@@ -306,15 +300,9 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomTypes
             get { return new[] {new SqlType(DbType.String)}; }
         }
 
-        public Type ReturnedType
-        {
-            get { return typeof(Custom); }
-        }
+        public Type ReturnedType => typeof(Custom);
 
-        public bool IsMutable
-        {
-            get { return true; }
-        }
+        public bool IsMutable => true;
     }
 }
 
@@ -322,10 +310,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
 {
     public class DoubleStringType : ICompositeUserType
     {
-        public System.Type ReturnedClass
-        {
-            get { return typeof(string[]); }
-        }
+        public System.Type ReturnedClass => typeof(string[]);
 
         public new bool Equals(object x, object y)
         {
@@ -357,10 +342,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
             return result;
         }
 
-        public bool IsMutable
-        {
-            get { return true; }
-        }
+        public bool IsMutable => true;
 
         public object NullSafeGet(DbDataReader dr, string[] names, ISessionImplementor session, object owner)
         {
@@ -431,13 +413,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.SuperTypes
     public class ExampleCustomColumn : SuperType
     {
         public int ExampleCustomColumnId { get; set; }
-        public int CustomColumn
-        {
-            get
-            {
-                return 12;
-            }
-        }
+        public int CustomColumn => 12;
     }
 
     public class ExampleInheritedClass : ExampleClass

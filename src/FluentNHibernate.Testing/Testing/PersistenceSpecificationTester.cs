@@ -24,7 +24,8 @@ public class PersistenceSpecificationTester
             AllKittens = new List<Kitten>();
         }
 
-        public IEnumerable<Kitten> EnumerableOfKittens { get { return AllKittens; } }
+        public IEnumerable<Kitten> EnumerableOfKittens => AllKittens;
+
         public void AddKitten(Kitten kitten)
         {
             AllKittens.Add(kitten);

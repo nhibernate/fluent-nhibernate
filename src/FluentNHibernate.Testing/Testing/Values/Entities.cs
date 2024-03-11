@@ -22,10 +22,7 @@ public class ListEntity
 
     public IEnumerable<string> GetterAndSetter { get; set; }
     public IEnumerable<string> GetterAndPrivateSetter { get; private set; }
-    public IEnumerable<string> BackingField
-    {
-        get { return backingField; }
-    }
+    public IEnumerable<string> BackingField => backingField;
 
     public ISet<string> TypedSet { get; set; }
     //public ISet Set { get; set; }
@@ -62,10 +59,7 @@ public class PropertyEntity
     public string GetterAndSetter { get; set; }
     public string GetterAndPrivateSetter { get; private set; }
 
-    public string BackingField
-    {
-        get { return backingField; }
-    }
+    public string BackingField => backingField;
 
     public void SetBackingField(string value)
     {

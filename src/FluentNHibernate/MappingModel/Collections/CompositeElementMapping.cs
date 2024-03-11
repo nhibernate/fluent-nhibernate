@@ -36,35 +36,20 @@ public class CompositeElementMapping : MappingBase
         mappedMembers.AcceptVisitor(visitor);
     }
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
-    public ParentMapping Parent
-    {
-        get { return attributes.GetOrDefault<ParentMapping>("Parent"); }
-    }
+    public ParentMapping Parent => attributes.GetOrDefault<ParentMapping>("Parent");
 
-    public IEnumerable<PropertyMapping> Properties
-    {
-        get { return mappedMembers.Properties; }
-    }
+    public IEnumerable<PropertyMapping> Properties => mappedMembers.Properties;
 
     public void AddProperty(PropertyMapping property)
     {
         mappedMembers.AddProperty(property);
     }
 
-    public IEnumerable<ManyToOneMapping> References
-    {
-        get { return mappedMembers.References; }
-    }
+    public IEnumerable<ManyToOneMapping> References => mappedMembers.References;
 
-    public IEnumerable<NestedCompositeElementMapping> CompositeElements
-    {
-        get { return compositeElements; }
-    }
+    public IEnumerable<NestedCompositeElementMapping> CompositeElements => compositeElements;
 
     public Type ContainingEntityType { get; set; }
 

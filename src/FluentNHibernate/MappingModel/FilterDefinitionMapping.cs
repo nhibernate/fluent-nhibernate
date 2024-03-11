@@ -24,15 +24,9 @@ public class FilterDefinitionMapping : MappingBase
 
     public IDictionary<string, IType> Parameters { get; }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Condition
-    {
-        get { return attributes.GetOrDefault<string>("Condition"); }
-    }
+    public string Condition => attributes.GetOrDefault<string>("Condition");
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

@@ -21,50 +21,23 @@ public class ClassMapping : ClassMappingBase
         this.attributes = attributes;
     }
 
-    public IIdentityMapping Id
-    {
-        get { return attributes.GetOrDefault<IIdentityMapping>("Id"); }
-    }
+    public IIdentityMapping Id => attributes.GetOrDefault<IIdentityMapping>("Id");
 
-    public NaturalIdMapping NaturalId
-    {
-        get { return attributes.GetOrDefault<NaturalIdMapping>("NaturalId"); }
-    }
+    public NaturalIdMapping NaturalId => attributes.GetOrDefault<NaturalIdMapping>("NaturalId");
 
-    public override string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public override string Name => attributes.GetOrDefault<string>("Name");
 
-    public override Type Type
-    {
-        get { return attributes.GetOrDefault<Type>("Type"); }
-    }
+    public override Type Type => attributes.GetOrDefault<Type>("Type");
 
-    public CacheMapping Cache
-    {
-        get { return attributes.GetOrDefault<CacheMapping>("Cache"); }
-    }
+    public CacheMapping Cache => attributes.GetOrDefault<CacheMapping>("Cache");
 
-    public VersionMapping Version
-    {
-        get { return attributes.GetOrDefault<VersionMapping>("Version"); }
-    }
+    public VersionMapping Version => attributes.GetOrDefault<VersionMapping>("Version");
 
-    public DiscriminatorMapping Discriminator
-    {
-        get { return attributes.GetOrDefault<DiscriminatorMapping>("Discriminator"); }
-    }
+    public DiscriminatorMapping Discriminator => attributes.GetOrDefault<DiscriminatorMapping>("Discriminator");
 
-    public bool IsUnionSubclass
-    {
-        get { return attributes.GetOrDefault<bool>("IsUnionSubclass"); }
-    }
+    public bool IsUnionSubclass => attributes.GetOrDefault<bool>("IsUnionSubclass");
 
-    public TuplizerMapping Tuplizer
-    {
-        get { return attributes.GetOrDefault<TuplizerMapping>("Tuplizer"); }
-    }
+    public TuplizerMapping Tuplizer => attributes.GetOrDefault<TuplizerMapping>("Tuplizer");
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -91,100 +64,43 @@ public class ClassMapping : ClassMappingBase
         base.AcceptVisitor(visitor);
     }
 
-    public string TableName
-    {
-        get { return attributes.GetOrDefault<string>("TableName"); }
-    }
+    public string TableName => attributes.GetOrDefault<string>("TableName");
 
-    public int BatchSize
-    {
-        get { return attributes.GetOrDefault<int>("BatchSize"); }
-    }
+    public int BatchSize => attributes.GetOrDefault<int>("BatchSize");
 
-    public object DiscriminatorValue
-    {
-        get { return attributes.GetOrDefault<object>("DiscriminatorValue"); }
-    }
+    public object DiscriminatorValue => attributes.GetOrDefault<object>("DiscriminatorValue");
 
-    public string Schema
-    {
-        get { return attributes.GetOrDefault<string>("Schema"); }
-    }
+    public string Schema => attributes.GetOrDefault<string>("Schema");
 
-    public bool Lazy
-    {
-        get { return attributes.GetOrDefault<bool>("Lazy"); }
-    }
+    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
 
-    public bool Mutable
-    {
-        get { return attributes.GetOrDefault<bool>("Mutable"); }
-    }
+    public bool Mutable => attributes.GetOrDefault<bool>("Mutable");
 
-    public bool DynamicUpdate
-    {
-        get { return attributes.GetOrDefault<bool>("DynamicUpdate"); }
-    }
+    public bool DynamicUpdate => attributes.GetOrDefault<bool>("DynamicUpdate");
 
-    public bool DynamicInsert
-    {
-        get { return attributes.GetOrDefault<bool>("DynamicInsert"); }
-    }
+    public bool DynamicInsert => attributes.GetOrDefault<bool>("DynamicInsert");
 
-    public string OptimisticLock
-    {
-        get { return attributes.GetOrDefault<string>("OptimisticLock"); }
-    }
+    public string OptimisticLock => attributes.GetOrDefault<string>("OptimisticLock");
 
-    public string Polymorphism
-    {
-        get { return attributes.GetOrDefault<string>("Polymorphism"); }
-    }
+    public string Polymorphism => attributes.GetOrDefault<string>("Polymorphism");
 
-    public string Persister
-    {
-        get { return attributes.GetOrDefault<string>("Persister"); }
-    }
+    public string Persister => attributes.GetOrDefault<string>("Persister");
 
-    public string Where
-    {
-        get { return attributes.GetOrDefault<string>("Where"); }
-    }
+    public string Where => attributes.GetOrDefault<string>("Where");
 
-    public string Check
-    {
-        get { return attributes.GetOrDefault<string>("Check"); }
-    }
+    public string Check => attributes.GetOrDefault<string>("Check");
 
-    public string Proxy
-    {
-        get { return attributes.GetOrDefault<string>("Proxy"); }
-    }
+    public string Proxy => attributes.GetOrDefault<string>("Proxy");
 
-    public bool SelectBeforeUpdate
-    {
-        get { return attributes.GetOrDefault<bool>("SelectBeforeUpdate"); }
-    }
+    public bool SelectBeforeUpdate => attributes.GetOrDefault<bool>("SelectBeforeUpdate");
 
-    public bool Abstract
-    {
-        get { return attributes.GetOrDefault<bool>("Abstract"); }
-    }
+    public bool Abstract => attributes.GetOrDefault<bool>("Abstract");
 
-    public string Subselect
-    {
-        get { return attributes.GetOrDefault<string>("Subselect"); }
-    }
+    public string Subselect => attributes.GetOrDefault<string>("Subselect");
 
-    public string SchemaAction
-    {
-        get { return attributes.GetOrDefault<string>("SchemaAction"); }
-    }
+    public string SchemaAction => attributes.GetOrDefault<string>("SchemaAction");
 
-    public string EntityName
-    {
-        get { return attributes.GetOrDefault<string>("EntityName"); }
-    }       
+    public string EntityName => attributes.GetOrDefault<string>("EntityName");
 
     public bool Equals(ClassMapping other)
     {

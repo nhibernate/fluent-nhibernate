@@ -16,30 +16,18 @@ public class IndexManyToManyInspector : IIndexManyToManyInspector
         this.mapping = mapping;
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Class.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Class.Name;
 
     public bool IsSet(Member property)
     {
         return mapping.IsSpecified(mappedProperties.Get(property));
     }
         
-    public TypeReference Class
-    {
-        get { return mapping.Class; }
-    }
-        
-    public string ForeignKey
-    {
-        get { return mapping.ForeignKey; }
-    }
+    public TypeReference Class => mapping.Class;
+
+    public string ForeignKey => mapping.ForeignKey;
 
     public IEnumerable<IColumnInspector> Columns
     {

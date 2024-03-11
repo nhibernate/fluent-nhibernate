@@ -305,8 +305,8 @@ public class PersistenceModel
     /// </summary>
     public bool ValidationEnabled
     {
-        get { return validationVisitor.Enabled; }
-        set { validationVisitor.Enabled = value; }
+        get => validationVisitor.Enabled;
+        set => validationVisitor.Enabled = value;
     }
 
     internal void ImportProviders(PersistenceModel model)

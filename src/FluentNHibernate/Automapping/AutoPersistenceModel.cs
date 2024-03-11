@@ -97,10 +97,7 @@ public class AutoPersistenceModel : PersistenceModel
     /// <summary>
     /// Alter convention discovery
     /// </summary>
-    public new SetupConventionFinder<AutoPersistenceModel> Conventions
-    {
-        get { return new SetupConventionFinder<AutoPersistenceModel>(this, base.Conventions); }
-    }
+    public new SetupConventionFinder<AutoPersistenceModel> Conventions => new(this, base.Conventions);
 
     /// <summary>
     /// Alter some of the configuration options that control how the automapper works.
@@ -471,10 +468,7 @@ public class AutoPersistenceModel : PersistenceModel
         return "AutoMappings.hbm.xml";
     }
 
-    bool HasUserDefinedConfiguration
-    {
-        get { return !(cfg is ExpressionBasedAutomappingConfiguration); }
-    }
+    bool HasUserDefinedConfiguration => !(cfg is ExpressionBasedAutomappingConfiguration);
 }
 
 public class AutomappedComponentResolver : IComponentReferenceResolver

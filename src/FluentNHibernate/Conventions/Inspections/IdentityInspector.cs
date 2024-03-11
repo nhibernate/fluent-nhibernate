@@ -19,25 +19,16 @@ public class IdentityInspector : ColumnBasedInspector, IIdentityInspector
         propertyMappings.Map(x => x.Nullable, "NotNull");
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
     public bool IsSet(Member property)
     {
         return mapping.IsSpecified(propertyMappings.Get(property));
     }
 
-    public Member Property
-    {
-        get { return mapping.Member; }
-    }
+    public Member Property => mapping.Member;
 
     public IEnumerable<IColumnInspector> Columns
     {
@@ -60,23 +51,11 @@ public class IdentityInspector : ColumnBasedInspector, IIdentityInspector
         }
     }
 
-    public string UnsavedValue
-    {
-        get { return mapping.UnsavedValue; }
-    }
+    public string UnsavedValue => mapping.UnsavedValue;
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
-    public Access Access
-    {
-        get { return Access.FromString(mapping.Access); }
-    }
+    public Access Access => Access.FromString(mapping.Access);
 
-    public TypeReference Type
-    {
-        get { return mapping.Type; }
-    }
+    public TypeReference Type => mapping.Type;
 }

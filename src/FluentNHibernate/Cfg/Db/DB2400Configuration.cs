@@ -10,8 +10,5 @@ public class DB2400Configuration : PersistenceConfiguration<DB2400Configuration,
         Driver<DB2400Driver>();
     }
 
-    public static DB2400Configuration Standard
-    {
-        get { return new DB2400Configuration().Dialect<DB2400Dialect>(); }
-    }
+    public static DB2400Configuration Standard => new DB2400Configuration().Dialect<DB2400Dialect>();
 }

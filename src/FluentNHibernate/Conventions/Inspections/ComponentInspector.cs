@@ -19,8 +19,5 @@ public class ComponentInspector : ComponentBaseInspector, IComponentInspector
         return mapping.IsSpecified(mappedProperties.Get(property));
     }
 
-    public bool LazyLoad
-    {
-        get { return mapping.Lazy; }
-    }
+    public bool LazyLoad => mapping.Lazy;
 }

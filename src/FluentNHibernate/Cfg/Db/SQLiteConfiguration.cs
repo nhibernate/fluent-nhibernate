@@ -5,10 +5,7 @@ namespace FluentNHibernate.Cfg.Db;
 
 public class SQLiteConfiguration : PersistenceConfiguration<SQLiteConfiguration>
 {
-    public static SQLiteConfiguration Standard
-    {
-        get { return new SQLiteConfiguration(); }
-    }
+    public static SQLiteConfiguration Standard => new();
 
     public SQLiteConfiguration()
     {

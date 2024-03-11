@@ -61,8 +61,5 @@ public class ComponentMap<T> : ComponentPartBase<T, ComponentMap<T>>, IExternalC
         return (ExternalComponentMapping) CreateComponentMapping();
     }
 
-    Type IExternalComponentMappingProvider.Type
-    {
-        get { return typeof(T); }
-    }
+    Type IExternalComponentMappingProvider.Type => typeof(T);
 }

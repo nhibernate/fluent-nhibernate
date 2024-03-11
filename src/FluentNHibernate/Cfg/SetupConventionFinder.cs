@@ -17,10 +17,7 @@ public class SetupConventionFinder<TReturn> : IConventionFinder
         this.conventionFinder = conventionFinder;
     }
 
-    ConventionsCollection IConventionFinder.Conventions
-    {
-        get { return conventionFinder.Conventions; }
-    }
+    ConventionsCollection IConventionFinder.Conventions => conventionFinder.Conventions;
 
     public TReturn AddSource(ITypeSource source)
     {

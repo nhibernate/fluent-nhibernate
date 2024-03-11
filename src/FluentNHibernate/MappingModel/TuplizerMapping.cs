@@ -29,20 +29,11 @@ public class TuplizerMapping : MappingBase
         return attributes.IsSpecified(attribute);
     }
 
-    public TuplizerMode Mode
-    {
-        get { return attributes.GetOrDefault<TuplizerMode>("Mode"); }
-    }
+    public TuplizerMode Mode => attributes.GetOrDefault<TuplizerMode>("Mode");
 
-    public string EntityName
-    {
-        get { return attributes.GetOrDefault<string>("EntityName"); }
-    }
+    public string EntityName => attributes.GetOrDefault<string>("EntityName");
 
-    public TypeReference Type
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Type"); }
-    }
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
 
     public bool Equals(TuplizerMapping other)
     {

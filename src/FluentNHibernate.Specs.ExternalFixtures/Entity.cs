@@ -15,10 +15,7 @@ public class Entity
 
     public enum TestEnum {}
 
-    public EntityChild ReadOnlyChild
-    {
-        get { return readOnlyChild; }
-    }
+    public EntityChild ReadOnlyChild => readOnlyChild;
 }
 
 public class EntityChild

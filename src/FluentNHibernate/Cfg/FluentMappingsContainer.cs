@@ -20,10 +20,7 @@ public class FluentMappingsContainer
     PairBiDirectionalManyToManySidesDelegate biDirectionalManyToManyPairer;
 
     [Obsolete("PersistenceModel is no longer available through FluentMappingsContainer. Use MappingConfiguration.UsePersistenceModel to supply a custom PersistenceModel", true)]
-    public PersistenceModel PersistenceModel
-    {
-        get { return null; }
-    }
+    public PersistenceModel PersistenceModel => null;
 
     public FluentMappingsContainer OverrideBiDirectionalManyToManyPairing(PairBiDirectionalManyToManySidesDelegate userControlledPairing)
     {
@@ -101,10 +98,7 @@ public class FluentMappingsContainer
     /// <summary>
     /// Alter convention discovery
     /// </summary>
-    public SetupConventionFinder<FluentMappingsContainer> Conventions
-    {
-        get { return new SetupConventionFinder<FluentMappingsContainer>(this, conventionFinder); }
-    }
+    public SetupConventionFinder<FluentMappingsContainer> Conventions => new(this, conventionFinder);
 
     /// <summary>
     /// Gets whether any mappings were added

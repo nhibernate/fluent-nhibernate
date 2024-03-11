@@ -36,10 +36,7 @@ public class JoinInstance : JoinInspector, IJoinInstance
         nextBool = true;
     }
 
-    public new IKeyInstance Key
-    {
-        get { return new KeyInstance(mapping.Key); }
-    }
+    public new IKeyInstance Key => new KeyInstance(mapping.Key);
 
     public new void Optional()
     {

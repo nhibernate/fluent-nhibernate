@@ -41,9 +41,6 @@ public class ConnectionStringBuilderTester
 
     private class ConnectionStringBuilderDouble : ConnectionStringBuilder
     {
-        public string ConnectionString
-        {
-            get { return Create(); }
-        }
+        public string ConnectionString => Create();
     }
 }

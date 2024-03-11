@@ -343,22 +343,14 @@ internal class CustomPersister : IEntityPersister
         throw new NotImplementedException();
     }
 
-    public ISessionFactoryImplementor Factory
-    {
-        get { return null; }
-    }
-    public string RootEntityName
-    {
-        get { return null; }
-    }
-    public string EntityName
-    {
-        get { return null; }
-    }
-    public EntityMetamodel EntityMetamodel
-    {
-        get { return null; }
-    }
+    public ISessionFactoryImplementor Factory => null;
+
+    public string RootEntityName => null;
+
+    public string EntityName => null;
+
+    public EntityMetamodel EntityMetamodel => null;
+
     public string[] PropertySpaces
     {
         get { return new string[] {}; }
@@ -367,38 +359,24 @@ internal class CustomPersister : IEntityPersister
     {
         get { return new string[] {}; }
     }
-    public bool IsMutable
-    {
-        get { return false; }
-    }
-    public bool IsInherited
-    {
-        get { return false; }
-    }
-    public bool IsIdentifierAssignedByInsert
-    {
-        get { return false; }
-    }
-    bool IEntityPersister.IsVersioned
-    {
-        get { return false; }
-    }
-    public IVersionType VersionType
-    {
-        get { return null; }
-    }
-    public int VersionProperty
-    {
-        get { return 0; }
-    }
+    public bool IsMutable => false;
+
+    public bool IsInherited => false;
+
+    public bool IsIdentifierAssignedByInsert => false;
+
+    bool IEntityPersister.IsVersioned => false;
+
+    public IVersionType VersionType => null;
+
+    public int VersionProperty => 0;
+
     public int[] NaturalIdentifierProperties
     {
         get { return new int[] {}; }
     }
-    public IIdentifierGenerator IdentifierGenerator
-    {
-        get { return null; }
-    }
+    public IIdentifierGenerator IdentifierGenerator => null;
+
     public IType[] PropertyTypes
     {
         get { return new IType[] {}; }
@@ -439,106 +417,57 @@ internal class CustomPersister : IEntityPersister
     {
         get { return new CascadeStyle[] {}; }
     }
-    public IType IdentifierType
-    {
-        get { return null; }
-    }
-    public string IdentifierPropertyName
-    {
-        get { return null; }
-    }
-    public bool IsCacheInvalidationRequired
-    {
-        get { return false; }
-    }
-    public bool IsLazyPropertiesCacheable
-    {
-        get { return false; }
-    }
-    public ICacheConcurrencyStrategy Cache
-    {
-        get { return null; }
-    }
-    public ICacheEntryStructure CacheEntryStructure
-    {
-        get { return null; }
-    }
-    public IClassMetadata ClassMetadata
-    {
-        get { return null; }
-    }
-    public bool IsBatchLoadable
-    {
-        get { return false; }
-    }
-    public bool IsSelectBeforeUpdateRequired
-    {
-        get { return false; }
-    }
-    public bool IsVersionPropertyGenerated
-    {
-        get { return false; }
-    }
-    public bool HasProxy
-    {
-        get { return false; }
-    }
-    public bool HasCollections
-    {
-        get { return false; }
-    }
-    public bool HasMutableProperties
-    {
-        get { return false; }
-    }
-    public bool HasSubselectLoadableCollections
-    {
-        get { return false; }
-    }
-    public bool HasCascades
-    {
-        get { return false; }
-    }
-    public bool HasIdentifierProperty
-    {
-        get { return false; }
-    }
-    public bool CanExtractIdOutOfEntity
-    {
-        get { return false; }
-    }
-    public bool HasNaturalIdentifier
-    {
-        get { return false; }
-    }
-    public bool HasLazyProperties
-    {
-        get { return false; }
-    }
+    public IType IdentifierType => null;
+
+    public string IdentifierPropertyName => null;
+
+    public bool IsCacheInvalidationRequired => false;
+
+    public bool IsLazyPropertiesCacheable => false;
+
+    public ICacheConcurrencyStrategy Cache => null;
+
+    public ICacheEntryStructure CacheEntryStructure => null;
+
+    public IClassMetadata ClassMetadata => null;
+
+    public bool IsBatchLoadable => false;
+
+    public bool IsSelectBeforeUpdateRequired => false;
+
+    public bool IsVersionPropertyGenerated => false;
+
+    public bool HasProxy => false;
+
+    public bool HasCollections => false;
+
+    public bool HasMutableProperties => false;
+
+    public bool HasSubselectLoadableCollections => false;
+
+    public bool HasCascades => false;
+
+    public bool HasIdentifierProperty => false;
+
+    public bool CanExtractIdOutOfEntity => false;
+
+    public bool HasNaturalIdentifier => false;
+
+    public bool HasLazyProperties => false;
+
     public bool[] PropertyUpdateability
     {
         get { return new bool[] {}; }
     }
-    public bool HasCache
-    {
-        get { return false; }
-    }
-    public bool HasInsertGeneratedProperties
-    {
-        get { return false; }
-    }
-    public bool HasUpdateGeneratedProperties
-    {
-        get { return false; }
-    }
-    bool IOptimisticCacheSource.IsVersioned
-    {
-        get { return false; }
-    }
-    public IComparer VersionComparator
-    {
-        get { return null; }
-    }
+    public bool HasCache => false;
+
+    public bool HasInsertGeneratedProperties => false;
+
+    public bool HasUpdateGeneratedProperties => false;
+
+    bool IOptimisticCacheSource.IsVersioned => false;
+
+    public IComparer VersionComparator => null;
 
     bool IEntityPersister.IsInstrumented => throw new NotImplementedException();
 
