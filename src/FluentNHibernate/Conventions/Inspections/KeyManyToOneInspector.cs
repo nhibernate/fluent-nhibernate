@@ -18,50 +18,26 @@ public class KeyManyToOneInspector : IKeyManyToOneInspector
         mappedProperties.Map(x => x.LazyLoad, x => x.Lazy);
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
     public bool IsSet(Member property)
     {
         return mapping.IsSpecified(mappedProperties.Get(property));
     }
 
-    public Access Access
-    {
-        get { return Access.FromString(mapping.Access); }
-    }
+    public Access Access => Access.FromString(mapping.Access);
 
-    public TypeReference Class
-    {
-        get { return mapping.Class; }
-    }
+    public TypeReference Class => mapping.Class;
 
-    public string ForeignKey
-    {
-        get { return mapping.ForeignKey; }
-    }
+    public string ForeignKey => mapping.ForeignKey;
 
-    public bool LazyLoad
-    {
-        get { return mapping.Lazy; }
-    }
+    public bool LazyLoad => mapping.Lazy;
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
-    public NotFound NotFound
-    {
-        get { return NotFound.FromString(mapping.NotFound); }
-    }
+    public NotFound NotFound => NotFound.FromString(mapping.NotFound);
 
     public IEnumerable<IColumnInspector> Columns
     {

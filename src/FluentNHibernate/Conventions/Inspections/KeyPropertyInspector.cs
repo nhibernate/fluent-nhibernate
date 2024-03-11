@@ -17,35 +17,20 @@ public class KeyPropertyInspector : IKeyPropertyInspector
         this.mapping = mapping;
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
     public bool IsSet(Member property)
     {
         return mapping.IsSpecified(mappedProperties.Get(property));
     }
 
-    public Access Access
-    {
-        get { return Access.FromString(mapping.Access); }
-    }
+    public Access Access => Access.FromString(mapping.Access);
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
-    public TypeReference Type
-    {
-        get { return mapping.Type; }
-    }
+    public TypeReference Type => mapping.Type;
 
     public IEnumerable<IColumnInspector> Columns
     {
@@ -56,8 +41,5 @@ public class KeyPropertyInspector : IKeyPropertyInspector
                 .Cast<IColumnInspector>();
         }
     }
-    public int Length
-    {
-        get { return mapping.Length; }
-    }
+    public int Length => mapping.Length;
 }

@@ -10,23 +10,11 @@ public class PostgreSQLConfiguration : PersistenceConfiguration<PostgreSQLConfig
         Driver<NpgsqlDriver>();
     }
 
-    public static PostgreSQLConfiguration Standard
-    {
-        get { return new PostgreSQLConfiguration().Dialect<PostgreSQLDialect>(); }
-    }
+    public static PostgreSQLConfiguration Standard => new PostgreSQLConfiguration().Dialect<PostgreSQLDialect>();
 
-    public static PostgreSQLConfiguration PostgreSQL81
-    {
-        get { return new PostgreSQLConfiguration().Dialect<PostgreSQL81Dialect>(); }
-    }
+    public static PostgreSQLConfiguration PostgreSQL81 => new PostgreSQLConfiguration().Dialect<PostgreSQL81Dialect>();
 
-    public static PostgreSQLConfiguration PostgreSQL82
-    {
-        get { return new PostgreSQLConfiguration().Dialect<PostgreSQL82Dialect>(); }
-    }
+    public static PostgreSQLConfiguration PostgreSQL82 => new PostgreSQLConfiguration().Dialect<PostgreSQL82Dialect>();
 
-    public static PostgreSQLConfiguration PostgreSQL83
-    {
-        get { return new PostgreSQLConfiguration().Dialect<PostgreSQL83Dialect>(); }
-    }
+    public static PostgreSQLConfiguration PostgreSQL83 => new PostgreSQLConfiguration().Dialect<PostgreSQL83Dialect>();
 }

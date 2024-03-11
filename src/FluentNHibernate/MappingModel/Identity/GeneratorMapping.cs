@@ -21,10 +21,7 @@ public class GeneratorMapping : MappingBase
         visitor.ProcessGenerator(this);
     }
 
-    public string Class
-    {
-        get { return attributes.GetOrDefault<string>("Class"); }
-    }
+    public string Class => attributes.GetOrDefault<string>("Class");
 
     public IDictionary<string, string> Params { get; private set; }
     public Type ContainingEntityType { get; set; }

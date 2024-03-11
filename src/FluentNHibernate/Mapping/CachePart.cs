@@ -99,10 +99,7 @@ public class CachePart : ICacheMappingProvider
         return this;
     }
 
-    internal bool IsDirty
-    {
-        get { return attributes.IsSpecified("Region") || attributes.IsSpecified("Usage") || attributes.IsSpecified("Include"); }
-    }
+    internal bool IsDirty => attributes.IsSpecified("Region") || attributes.IsSpecified("Usage") || attributes.IsSpecified("Include");
 
     CacheMapping ICacheMappingProvider.GetCacheMapping()
     {

@@ -19,20 +19,11 @@ public class CollectionInspector : ICollectionInspector,
         propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
-    Collection ICollectionInspector.Collection
-    {
-        get { return mapping.Collection; }
-    }
+    Collection ICollectionInspector.Collection => mapping.Collection;
 
     /// <summary>
     /// Represents a string identifier for the model instance, used in conventions for a lazy
@@ -57,20 +48,11 @@ public class CollectionInspector : ICollectionInspector,
         }
     }
 
-    public string TableName
-    {
-        get { return mapping.TableName; }
-    }
+    public string TableName => mapping.TableName;
 
-    public bool IsMethodAccess
-    {
-        get { return mapping.Member.IsMethod; }
-    }
+    public bool IsMethodAccess => mapping.Member.IsMethod;
 
-    public MemberInfo Member
-    {
-        get { return mapping.Member.MemberInfo; }
-    }
+    public MemberInfo Member => mapping.Member.MemberInfo;
 
     public IRelationshipInspector Relationship
     {
@@ -83,40 +65,19 @@ public class CollectionInspector : ICollectionInspector,
         }
     }
 
-    public Cascade Cascade
-    {
-        get { return Cascade.FromString(mapping.Cascade); }
-    }
+    public Cascade Cascade => Cascade.FromString(mapping.Cascade);
 
-    public Fetch Fetch
-    {
-        get { return Fetch.FromString(mapping.Fetch); }
-    }
+    public Fetch Fetch => Fetch.FromString(mapping.Fetch);
 
-    public bool OptimisticLock
-    {
-        get { return mapping.OptimisticLock; }
-    }
+    public bool OptimisticLock => mapping.OptimisticLock;
 
-    public bool Generic
-    {
-        get { return mapping.Generic; }
-    }
+    public bool Generic => mapping.Generic;
 
-    public bool Inverse
-    {
-        get { return mapping.Inverse; }
-    }
+    public bool Inverse => mapping.Inverse;
 
-    public Access Access
-    {
-        get { return Access.FromString(mapping.Access); }
-    }
+    public Access Access => Access.FromString(mapping.Access);
 
-    public int BatchSize
-    {
-        get { return mapping.BatchSize; }
-    }
+    public int BatchSize => mapping.BatchSize;
 
     public ICacheInspector Cache
     {
@@ -129,20 +90,11 @@ public class CollectionInspector : ICollectionInspector,
         }
     }
 
-    public string Check
-    {
-        get { return mapping.Check; }
-    }
+    public string Check => mapping.Check;
 
-    public Type ChildType
-    {
-        get { return mapping.ChildType; }
-    }
+    public Type ChildType => mapping.ChildType;
 
-    public TypeReference CollectionType
-    {
-        get { return mapping.CollectionType; }
-    }
+    public TypeReference CollectionType => mapping.CollectionType;
 
     public ICompositeElementInspector CompositeElement
     {
@@ -166,40 +118,19 @@ public class CollectionInspector : ICollectionInspector,
         }
     }
 
-    public Lazy LazyLoad
-    {
-        get { return mapping.Lazy; }
-    }
+    public Lazy LazyLoad => mapping.Lazy;
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
-    public TypeReference Persister
-    {
-        get { return mapping.Persister; }
-    }
+    public TypeReference Persister => mapping.Persister;
 
-    public string Schema
-    {
-        get { return mapping.Schema; }
-    }
+    public string Schema => mapping.Schema;
 
-    public string Where
-    {
-        get { return mapping.Where; }
-    }
+    public string Where => mapping.Where;
 
-    public string OrderBy
-    {
-        get { return mapping.OrderBy; }
-    }
+    public string OrderBy => mapping.OrderBy;
 
-    public string Sort
-    {
-        get { return mapping.Sort; }
-    }
+    public string Sort => mapping.Sort;
 
     public IIndexInspectorBase Index
     {

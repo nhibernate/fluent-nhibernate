@@ -72,20 +72,17 @@ public class MemberAccessResolverTests
 
         public string Property
         {
-            get { return property; }
-            set { property = value; }
+            get => property;
+            set => property = value;
         }
 
         public string PropertyPrivateSetter
         {
-            get { return propertyPrivateSetter; }
-            private set { propertyPrivateSetter = value; }
+            get => propertyPrivateSetter;
+            private set => propertyPrivateSetter = value;
         }
 
-        public string PropertyNoSetter
-        {
-            get { return propertyNoSetter; }
-        }
+        public string PropertyNoSetter => propertyNoSetter;
 
         public IEnumerable<Example> GetViaMethod()
         {

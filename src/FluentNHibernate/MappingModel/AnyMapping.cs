@@ -38,65 +38,29 @@ public class AnyMapping : MappingBase
             visitor.Visit(column);
     }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string IdType
-    {
-        get { return attributes.GetOrDefault<string>("IdType"); }
-    }
+    public string IdType => attributes.GetOrDefault<string>("IdType");
 
-    public TypeReference MetaType
-    {
-        get { return attributes.GetOrDefault<TypeReference>("MetaType"); }
-    }
+    public TypeReference MetaType => attributes.GetOrDefault<TypeReference>("MetaType");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public bool Insert
-    {
-        get { return attributes.GetOrDefault<bool>("Insert"); }
-    }
+    public bool Insert => attributes.GetOrDefault<bool>("Insert");
 
-    public bool Update
-    {
-        get { return attributes.GetOrDefault<bool>("Update"); }
-    }
+    public bool Update => attributes.GetOrDefault<bool>("Update");
 
-    public string Cascade
-    {
-        get { return attributes.GetOrDefault<string>("Cascade"); }
-    }
+    public string Cascade => attributes.GetOrDefault<string>("Cascade");
 
-    public bool Lazy
-    {
-        get { return attributes.GetOrDefault<bool>("Lazy"); }
-    }
+    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
 
-    public bool OptimisticLock
-    {
-        get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
-    }
+    public bool OptimisticLock => attributes.GetOrDefault<bool>("OptimisticLock");
 
-    public IEnumerable<ColumnMapping> TypeColumns
-    {
-        get { return typeColumns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> TypeColumns => typeColumns.Columns;
 
-    public IEnumerable<ColumnMapping> IdentifierColumns
-    {
-        get { return identifierColumns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> IdentifierColumns => identifierColumns.Columns;
 
-    public IEnumerable<MetaValueMapping> MetaValues
-    {
-        get { return metaValues; }
-    }
+    public IEnumerable<MetaValueMapping> MetaValues => metaValues;
 
     public Type ContainingEntityType { get; set; }
 

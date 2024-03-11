@@ -64,7 +64,7 @@ public class Image : Media
     public virtual int Width { get; set; }
     public virtual int Height { get; set; }
 
-    public virtual IList<string> Contexts { get { return contexts; } }
+    public virtual IList<string> Contexts => contexts;
 }
 
 public class ImageMap : SubclassMap<Image>
@@ -142,14 +142,9 @@ public class ImageContextsUserType : IUserType
         throw new NotImplementedException();
     }
 
-    public Type ReturnedType
-    {
-        get { return typeof(IList<string>); }
-    }
-    public bool IsMutable
-    {
-        get { throw new NotImplementedException(); }
-    }
+    public Type ReturnedType => typeof(IList<string>);
+
+    public bool IsMutable => throw new NotImplementedException();
 
     public SqlType[] SqlTypes
     {

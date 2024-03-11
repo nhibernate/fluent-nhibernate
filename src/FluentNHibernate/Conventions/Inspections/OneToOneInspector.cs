@@ -16,66 +16,30 @@ public class OneToOneInspector : IOneToOneInspector
         propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
     public bool IsSet(Member property)
     {
         return mapping.IsSpecified(propertyMappings.Get(property));
     }
 
-    public Access Access
-    {
-        get { return Access.FromString(mapping.Access); }
-    }
+    public Access Access => Access.FromString(mapping.Access);
 
-    public Cascade Cascade
-    {
-        get { return Cascade.FromString(mapping.Cascade); }
-    }
+    public Cascade Cascade => Cascade.FromString(mapping.Cascade);
 
-    public TypeReference Class
-    {
-        get
-        {
-            return mapping.Class;
-        }
-    }
+    public TypeReference Class => mapping.Class;
 
-    public bool Constrained
-    {
-        get { return mapping.Constrained; }
-    }
+    public bool Constrained => mapping.Constrained;
 
-    public Fetch Fetch
-    {
-        get { return Fetch.FromString(mapping.Fetch); }
-    }
+    public Fetch Fetch => Fetch.FromString(mapping.Fetch);
 
-    public string ForeignKey
-    {
-        get { return mapping.ForeignKey; }
-    }
+    public string ForeignKey => mapping.ForeignKey;
 
-    public Laziness LazyLoad
-    {
-        get { return new Laziness(mapping.Lazy); }
-    }
+    public Laziness LazyLoad => new(mapping.Lazy);
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
-    public string PropertyRef
-    {
-        get { return mapping.PropertyRef; }
-    }
+    public string PropertyRef => mapping.PropertyRef;
 }

@@ -15,10 +15,7 @@ public abstract class ColumnBasedMappingBase : MappingBase, IHasColumnMappings
         attributes = underlyingStore.Clone();
     }
 
-    public IEnumerable<ColumnMapping> Columns
-    {
-        get { return columns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> Columns => columns.Columns;
 
     public void AddColumn(int layer, ColumnMapping mapping)
     {

@@ -79,15 +79,9 @@ public class TypeReference
         return innerType?.GetGenericTypeDefinition();
     }
 
-    public Type GenericTypeDefinition
-    {
-        get { return GetGenericTypeDefinition(); }
-    }
+    public Type GenericTypeDefinition => GetGenericTypeDefinition();
 
-    public bool IsNullable
-    {
-        get { return GenericTypeDefinition == typeof(Nullable<>); }
-    }
+    public bool IsNullable => GenericTypeDefinition == typeof(Nullable<>);
 
     public Type[] GetGenericArguments()
     {
@@ -97,10 +91,7 @@ public class TypeReference
         return innerType.GetGenericArguments();
     }
 
-    public IEnumerable<Type> GenericArguments
-    {
-        get { return GetGenericArguments(); }
-    }
+    public IEnumerable<Type> GenericArguments => GetGenericArguments();
 
     public override string ToString()
     {

@@ -10,18 +10,9 @@ public class IfxDRDAConfiguration : PersistenceConfiguration<IfxDRDAConfiguratio
         Driver<IfxDriver>();
     }
 
-    public static IfxDRDAConfiguration Informix
-    {
-        get { return new IfxDRDAConfiguration().Dialect<InformixDialect>(); }
-    }
+    public static IfxDRDAConfiguration Informix => new IfxDRDAConfiguration().Dialect<InformixDialect>();
 
-    public static IfxDRDAConfiguration Informix0940
-    {
-        get { return new IfxDRDAConfiguration().Dialect<InformixDialect0940>(); }
-    }
+    public static IfxDRDAConfiguration Informix0940 => new IfxDRDAConfiguration().Dialect<InformixDialect0940>();
 
-    public static IfxDRDAConfiguration Informix1000
-    {
-        get { return new IfxDRDAConfiguration().Dialect<InformixDialect1000>(); }
-    }
+    public static IfxDRDAConfiguration Informix1000 => new IfxDRDAConfiguration().Dialect<InformixDialect1000>();
 }

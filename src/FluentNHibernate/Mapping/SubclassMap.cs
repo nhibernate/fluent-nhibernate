@@ -347,15 +347,9 @@ public class SubclassMap<T> : ClasslikeMapBase<T>, IIndeterminateSubclassMapping
         return mapping;
     }
 
-    Type IIndeterminateSubclassMappingProvider.EntityType
-    {
-        get { return EntityType; }
-    }
+    Type IIndeterminateSubclassMappingProvider.EntityType => EntityType;
 
-    Type IIndeterminateSubclassMappingProvider.Extends
-    {
-        get { return attributes.GetOrDefault<Type>("Extends"); }
-    }
+    Type IIndeterminateSubclassMappingProvider.Extends => attributes.GetOrDefault<Type>("Extends");
 
     void GenerateNestedSubclasses(SubclassMapping mapping)
     {

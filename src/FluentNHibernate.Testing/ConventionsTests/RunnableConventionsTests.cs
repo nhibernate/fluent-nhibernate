@@ -692,18 +692,11 @@ public class RunnableConventionsTests
             throw new NotImplementedException();
         }
 
-        public SqlType[] SqlTypes
-        {
-            get { return null; }
-        }
-        public Type ReturnedType
-        {
-            get { return typeof(OtherObject); }
-        }
-        public bool IsMutable
-        {
-            get { return false; }
-        }
+        public SqlType[] SqlTypes => null;
+
+        public Type ReturnedType => typeof(OtherObject);
+
+        public bool IsMutable => false;
     }
 
     #endregion

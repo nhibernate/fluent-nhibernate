@@ -32,65 +32,29 @@ public class ColumnMapping : MappingBase
 
     public Member Member { get; set; }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public int Length
-    {
-        get { return attributes.GetOrDefault<int>("Length"); }
-    }
+    public int Length => attributes.GetOrDefault<int>("Length");
 
-    public bool NotNull
-    {
-        get { return attributes.GetOrDefault<bool>("NotNull"); }
-    }
+    public bool NotNull => attributes.GetOrDefault<bool>("NotNull");
 
-    public bool Nullable
-    {
-        get { return !NotNull; }
-    }
+    public bool Nullable => !NotNull;
 
-    public bool Unique
-    {
-        get { return attributes.GetOrDefault<bool>("Unique"); }
-    }
+    public bool Unique => attributes.GetOrDefault<bool>("Unique");
 
-    public string UniqueKey
-    {
-        get { return attributes.GetOrDefault<string>("UniqueKey"); }
-    }
+    public string UniqueKey => attributes.GetOrDefault<string>("UniqueKey");
 
-    public string SqlType
-    {
-        get { return attributes.GetOrDefault<string>("SqlType"); }
-    }
+    public string SqlType => attributes.GetOrDefault<string>("SqlType");
 
-    public string Index
-    {
-        get { return attributes.GetOrDefault<string>("Index"); }
-    }
+    public string Index => attributes.GetOrDefault<string>("Index");
 
-    public string Check
-    {
-        get { return attributes.GetOrDefault<string>("Check"); }
-    }
+    public string Check => attributes.GetOrDefault<string>("Check");
 
-    public int Precision
-    {
-        get { return attributes.GetOrDefault<int>("Precision"); }
-    }
+    public int Precision => attributes.GetOrDefault<int>("Precision");
 
-    public int Scale
-    {
-        get { return attributes.GetOrDefault<int>("Scale"); }
-    }
+    public int Scale => attributes.GetOrDefault<int>("Scale");
 
-    public string Default
-    {
-        get { return attributes.GetOrDefault<string>("Default"); }
-    }
+    public string Default => attributes.GetOrDefault<string>("Default");
 
     public ColumnMapping Clone()
     {

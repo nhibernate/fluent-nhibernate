@@ -19,20 +19,11 @@ public class NaturalIdMapping : MappingBase
         this.attributes = attributes;
     }
 
-    public bool Mutable
-    {
-        get { return attributes.GetOrDefault<bool>("Mutable"); }
-    }
+    public bool Mutable => attributes.GetOrDefault<bool>("Mutable");
 
-    public IEnumerable<PropertyMapping> Properties
-    {
-        get { return properties; }
-    }
+    public IEnumerable<PropertyMapping> Properties => properties;
 
-    public IEnumerable<ManyToOneMapping> ManyToOnes
-    {
-        get { return manyToOnes; }
-    }
+    public IEnumerable<ManyToOneMapping> ManyToOnes => manyToOnes;
 
     public void AddProperty(PropertyMapping mapping)
     {

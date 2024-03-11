@@ -24,20 +24,11 @@ public class CacheMapping : MappingBase
         visitor.ProcessCache(this);
     }
 
-    public string Region
-    {
-        get { return attributes.GetOrDefault<string>("Region"); }
-    }
+    public string Region => attributes.GetOrDefault<string>("Region");
 
-    public string Usage
-    {
-        get { return attributes.GetOrDefault<string>("Usage"); }
-    }
+    public string Usage => attributes.GetOrDefault<string>("Usage");
 
-    public string Include
-    {
-        get { return attributes.GetOrDefault<string>("Include"); }
-    }
+    public string Include => attributes.GetOrDefault<string>("Include");
 
     public Type ContainedEntityType { get; set; }
 

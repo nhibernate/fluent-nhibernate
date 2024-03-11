@@ -506,20 +506,11 @@ public class PropertyPartTester
             throw new NotImplementedException();
         }
 
-        public SqlType[] SqlTypes
-        {
-            get { return null; }
-        }
+        public SqlType[] SqlTypes => null;
 
-        public Type ReturnedType
-        {
-            get { return null; }
-        }
+        public Type ReturnedType => null;
 
-        public bool IsMutable
-        {
-            get { return false; }
-        }
+        public bool IsMutable => false;
     }
 
     public class CustomGenericTypeForTesting<T> : IUserType
@@ -576,14 +567,9 @@ public class PropertyPartTester
         {
             get { return new SqlType[] {}; }
         }
-        public Type ReturnedType
-        {
-            get { return null; }
-        }
-        public bool IsMutable
-        {
-            get { return false; }
-        }
+        public Type ReturnedType => null;
+
+        public bool IsMutable => false;
     }
     #endregion
 }
@@ -664,8 +650,5 @@ public class FakePropertyAccessor : IPropertyAccessor
         return null;
     }
 
-    public bool CanAccessThroughReflectionOptimizer
-    {
-        get { return false; }
-    }
+    public bool CanAccessThroughReflectionOptimizer => false;
 }
