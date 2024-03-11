@@ -1,7 +1,6 @@
 using System;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Helpers;
 

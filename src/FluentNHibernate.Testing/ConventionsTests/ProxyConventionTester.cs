@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FakeItEasy;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 

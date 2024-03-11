@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures.Basic;
 using FluentNHibernate.Testing.Fixtures.MixedMappingsInSameLocation;

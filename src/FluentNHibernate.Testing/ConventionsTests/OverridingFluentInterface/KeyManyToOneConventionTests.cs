@@ -1,12 +1,9 @@
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using FluentNHibernate.Automapping.TestFixtures;
-using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using NUnit.Framework;
 

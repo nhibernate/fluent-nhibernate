@@ -1,4 +1,3 @@
-using System;
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
 

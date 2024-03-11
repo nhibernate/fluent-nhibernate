@@ -1,5 +1,4 @@
-﻿using System;
-using FluentNHibernate.Diagnostics;
+﻿using FluentNHibernate.Diagnostics;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Diagnostics;

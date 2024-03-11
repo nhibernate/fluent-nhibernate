@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.DomainModel;

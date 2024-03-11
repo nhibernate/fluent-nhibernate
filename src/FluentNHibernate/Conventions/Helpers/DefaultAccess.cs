@@ -2,7 +2,6 @@ using System;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
 using FluentNHibernate.Conventions.Inspections;
 using NHibernate.Properties;
-using Prefix=FluentNHibernate.Mapping.Prefix;
 
 namespace FluentNHibernate.Conventions.Helpers;
 

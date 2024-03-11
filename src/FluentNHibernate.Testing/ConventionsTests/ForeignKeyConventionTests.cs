@@ -1,10 +1,8 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests;

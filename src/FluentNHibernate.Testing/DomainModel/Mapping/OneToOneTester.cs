@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping;
 

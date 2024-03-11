@@ -1,7 +1,6 @@
 using System.Linq;
 using FluentNHibernate.Cfg;
 using NHibernate.Type;
-using NHibernate.UserTypes;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Serialization;

@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;

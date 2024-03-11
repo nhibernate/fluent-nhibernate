@@ -1,5 +1,4 @@
 using System.Linq;
-using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 

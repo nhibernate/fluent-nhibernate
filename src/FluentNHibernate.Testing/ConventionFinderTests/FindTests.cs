@@ -1,7 +1,5 @@
 using System.Linq;
-using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions;
 using NUnit.Framework;
 

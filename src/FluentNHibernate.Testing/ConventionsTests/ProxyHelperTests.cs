@@ -1,4 +1,3 @@
-using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 using FluentNHibernate.Conventions.Helpers;

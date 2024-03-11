@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentNHibernate.Automapping;
+﻿using FluentNHibernate.Automapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Automapping;

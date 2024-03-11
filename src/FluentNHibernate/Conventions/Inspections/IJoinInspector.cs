@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Inspections;
 

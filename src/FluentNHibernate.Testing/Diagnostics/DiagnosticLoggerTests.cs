@@ -3,7 +3,6 @@ using FakeItEasy;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Diagnostics;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.Testing.Utils;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Diagnostics;

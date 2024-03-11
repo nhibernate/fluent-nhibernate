@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using FluentNHibernate.Conventions.Inspections;
+﻿using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Instances;
 

@@ -1,7 +1,6 @@
 using System.Linq;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Output;
 using Machine.Specifications;
-using Machine.Specifications.Model;
 using FluentAssertions;
 
 namespace FluentNHibernate.Specs.FluentInterface;

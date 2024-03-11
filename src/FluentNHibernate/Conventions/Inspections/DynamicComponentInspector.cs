@@ -1,5 +1,3 @@
-using System.Reflection;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Inspections;

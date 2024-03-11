@@ -1,5 +1,3 @@
-using Examples.FirstProject.Entities;
-
 namespace Examples.FirstProject.Entities;
 
 public class Employee
