@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Collections;
 using NHibernate.Cfg;

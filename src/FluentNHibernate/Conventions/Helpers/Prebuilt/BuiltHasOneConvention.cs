@@ -2,7 +2,6 @@ using System;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
 

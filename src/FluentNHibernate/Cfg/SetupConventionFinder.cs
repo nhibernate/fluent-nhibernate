@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Diagnostics;
-using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Cfg;
 

@@ -1,5 +1,4 @@
 using System;
-using NHibernate.Properties;
 
 namespace FluentNHibernate.Mapping;
 

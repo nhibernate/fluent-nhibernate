@@ -1,11 +1,5 @@
-﻿using System;
-using System.Linq;
-using FluentNHibernate.Automapping;
-using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Automapping;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
 using FluentAssertions;

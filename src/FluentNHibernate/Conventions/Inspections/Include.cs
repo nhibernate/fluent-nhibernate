@@ -1,5 +1,3 @@
-using System;
-
 namespace FluentNHibernate.Conventions.Inspections;
 
 public class Include

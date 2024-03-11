@@ -4,7 +4,6 @@ using System.Xml;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Output;
-using NHibernate.Cfg;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping;

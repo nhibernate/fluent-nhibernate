@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentNHibernate.MappingModel.Output.Sorting;
+﻿using FluentNHibernate.MappingModel.Output.Sorting;
 using NUnit.Framework;
 using System.Xml;
 

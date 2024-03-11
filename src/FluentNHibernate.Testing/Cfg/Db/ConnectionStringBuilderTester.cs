@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using FluentNHibernate.Cfg.Db;
 using NUnit.Framework;
 

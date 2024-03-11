@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Utils;
-using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.Conventions.AcceptanceCriteria;
 

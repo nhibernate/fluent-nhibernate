@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using FluentNHibernate.Automapping.TestFixtures;
+﻿using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Testing.DomainModel.Mapping;
-using FluentNHibernate.Testing.Fixtures.Basic;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests;

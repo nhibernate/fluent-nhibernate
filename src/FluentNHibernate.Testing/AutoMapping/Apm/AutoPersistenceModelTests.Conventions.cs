@@ -1,11 +1,7 @@
 ﻿using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.TestFixtures;
-using FluentNHibernate.Automapping.TestFixtures.ComponentTypes;
 using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
-using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Helpers;
-using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Testing.Automapping;
 using NUnit.Framework;
 

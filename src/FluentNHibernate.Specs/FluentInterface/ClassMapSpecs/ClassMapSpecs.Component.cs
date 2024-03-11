@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.FluentInterface.Fixtures;

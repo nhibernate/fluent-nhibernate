@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentNHibernate.Automapping.TestFixtures.SuperTypes;
+﻿using FluentNHibernate.Automapping.TestFixtures.SuperTypes;
 using FluentNHibernate.Testing.Automapping;
 using NUnit.Framework;
 

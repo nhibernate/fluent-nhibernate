@@ -6,7 +6,6 @@ using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
-using NHibernate.Criterion;
 
 namespace FluentNHibernate.Mapping;
 

@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.PersistenceModel.Fixtures;
 using Machine.Specifications;
 using NHibernate.Cfg;
-using NHibernate.Tool.hbm2ddl;
 using FluentAssertions;
 
 namespace FluentNHibernate.Specs.PersistenceModel;

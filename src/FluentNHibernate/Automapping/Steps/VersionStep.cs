@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping.Steps;

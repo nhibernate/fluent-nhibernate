@@ -1,4 +1,3 @@
-using System;
 using FluentNHibernate.Diagnostics;
 using NHibernate.Cfg;
 

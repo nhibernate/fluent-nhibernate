@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions;
