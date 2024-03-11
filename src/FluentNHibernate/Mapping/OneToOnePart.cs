@@ -11,17 +11,14 @@ public class OneToOnePart<TOther> : IOneToOneMappingProvider
 {
     readonly Type entity;
     readonly Member member;
-    readonly AccessStrategyBuilder<OneToOnePart<TOther>> access;
-    readonly FetchTypeExpression<OneToOnePart<TOther>> fetch;
-    readonly CascadeExpression<OneToOnePart<TOther>> cascade;
     readonly AttributeStore attributes = new AttributeStore();
     bool nextBool = true;
 
     public OneToOnePart(Type entity, Member member)
     {
-        access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
-        fetch = new FetchTypeExpression<OneToOnePart<TOther>>(this, value => attributes.Set("Fetch", Layer.UserSupplied, value));
-        cascade = new CascadeExpression<OneToOnePart<TOther>>(this, value =>
+        Access = new AccessStrategyBuilder<OneToOnePart<TOther>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
+        Fetch = new FetchTypeExpression<OneToOnePart<TOther>>(this, value => attributes.Set("Fetch", Layer.UserSupplied, value));
+        Cascade = new CascadeExpression<OneToOnePart<TOther>>(this, value =>
         {
             var current = attributes.Get("Cascade") as string;
             attributes.Set("Cascade", Layer.UserSupplied, current is null ? value : string.Format("{0},{1}", current, value));
@@ -67,10 +64,7 @@ public class OneToOnePart<TOther> : IOneToOneMappingProvider
     /// <example>
     /// Fetch.Select();
     /// </example>
-    public FetchTypeExpression<OneToOnePart<TOther>> Fetch
-    {
-        get { return fetch; }
-    }
+    public FetchTypeExpression<OneToOnePart<TOther>> Fetch { get; }
 
     /// <summary>
     /// Specifies that this relationship should be created with a default-named
@@ -128,10 +122,7 @@ public class OneToOnePart<TOther> : IOneToOneMappingProvider
     /// <example>
     /// Cascade.All();
     /// </example>
-    public CascadeExpression<OneToOnePart<TOther>> Cascade
-    {
-        get { return cascade; }
-    }
+    public CascadeExpression<OneToOnePart<TOther>> Cascade { get; }
 
     /// <summary>
     /// Specifies the access strategy for this relationship
@@ -139,10 +130,7 @@ public class OneToOnePart<TOther> : IOneToOneMappingProvider
     /// <example>
     /// Access.Field();
     /// </example>
-    public AccessStrategyBuilder<OneToOnePart<TOther>> Access
-    {
-        get { return access; }
-    }
+    public AccessStrategyBuilder<OneToOnePart<TOther>> Access { get; }
 
     /// <summary>
     /// Specify the lazy behaviour of this relationship.

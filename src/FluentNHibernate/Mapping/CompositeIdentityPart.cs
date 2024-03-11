@@ -14,7 +14,6 @@ namespace FluentNHibernate.Mapping;
 public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
 {
     readonly Action<Member> onMemberMapped;
-    readonly AccessStrategyBuilder<CompositeIdentityPart<T>> access;
     readonly AttributeStore attributes = new AttributeStore();
     readonly IList<ICompositeIdKeyMapping> keys = new List<ICompositeIdKeyMapping>();
     bool nextBool = true;
@@ -22,7 +21,7 @@ public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
     public CompositeIdentityPart(Action<Member> onMemberMapped)
     {
         this.onMemberMapped = onMemberMapped;
-        access = new AccessStrategyBuilder<CompositeIdentityPart<T>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
+        Access = new AccessStrategyBuilder<CompositeIdentityPart<T>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
     }
 
     public CompositeIdentityPart(string name, Action<Member> onMemberMapped)
@@ -183,10 +182,7 @@ public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
     /// <summary>
     /// Set the access and naming strategy for this identity.
     /// </summary>
-    public AccessStrategyBuilder<CompositeIdentityPart<T>> Access
-    {
-        get { return access; }
-    }
+    public AccessStrategyBuilder<CompositeIdentityPart<T>> Access { get; }
 
     /// <summary>
     /// Invert the next boolean operation

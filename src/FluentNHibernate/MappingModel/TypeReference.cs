@@ -11,24 +11,20 @@ public class TypeReference
     public static readonly TypeReference Empty = new TypeReference("nop");
 
     private readonly Type innerType;
-    private readonly string innerName;
 
     public TypeReference(string name)
     {
         innerType = Type.GetType(name, false, true);
-        innerName = name;
+        Name = name;
     }
 
     public TypeReference(Type type)
     {
         innerType = type;
-        innerName = type.Name;
+        Name = type.Name;
     }
 
-    public string Name
-    {
-        get { return innerName; }
-    }
+    public string Name { get; }
 
     public bool IsEnum
     {
@@ -111,7 +107,7 @@ public class TypeReference
 
     public override string ToString()
     {
-        return innerType is null ? innerName : innerType.AssemblyQualifiedName;
+        return innerType is null ? Name : innerType.AssemblyQualifiedName;
     }
 
     public bool Equals(TypeReference other)
@@ -119,7 +115,7 @@ public class TypeReference
         if(ReferenceEquals(other, null))
             return false;
         if (other.innerType is null && innerType is null)
-            return other.innerName.Equals(innerName);                        
+            return other.Name.Equals(Name);                        
         if (other.innerType is not null)
             return other.innerType.Equals(innerType);
 
@@ -137,7 +133,7 @@ public class TypeReference
     {
         if (ReferenceEquals(other, null))
             return false;
-        return other.Equals(innerName);
+        return other.Equals(Name);
     }
 
     public override bool Equals(object obj)
@@ -158,7 +154,7 @@ public class TypeReference
     {
         unchecked
         {
-            return ((innerType is not null ? innerType.GetHashCode() : 0) * 397) ^ (innerName is not null ? innerName.GetHashCode() : 0);
+            return ((innerType is not null ? innerType.GetHashCode() : 0) * 397) ^ (Name is not null ? Name.GetHashCode() : 0);
         }
     }
 

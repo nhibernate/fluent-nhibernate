@@ -30,14 +30,9 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
 {
     protected readonly AttributeStore attributes;
     readonly MappingProviderStore providers;
-    readonly OptimisticLockBuilder<ClassMap<T>> optimisticLock;
 
     readonly IList<ImportPart> imports = new List<ImportPart>();
     bool nextBool = true;
-
-    readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
-    readonly PolymorphismBuilder<ClassMap<T>> polymorphism;
-    readonly SchemaActionBuilder<ClassMap<T>> schemaAction;
 
     public ClassMap()
         : this(new AttributeStore(), new MappingProviderStore())
@@ -48,9 +43,9 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     {
         this.attributes = attributes;
         this.providers = providers;
-        optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => attributes.Set("OptimisticLock", Layer.UserSupplied, value));
-        polymorphism = new PolymorphismBuilder<ClassMap<T>>(this, value => attributes.Set("Polymorphism", Layer.UserSupplied, value));
-        schemaAction = new SchemaActionBuilder<ClassMap<T>>(this, value => attributes.Set("SchemaAction", Layer.UserSupplied, value));
+        OptimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => attributes.Set("OptimisticLock", Layer.UserSupplied, value));
+        Polymorphism = new PolymorphismBuilder<ClassMap<T>>(this, value => attributes.Set("Polymorphism", Layer.UserSupplied, value));
+        SchemaAction = new SchemaActionBuilder<ClassMap<T>>(this, value => attributes.Set("SchemaAction", Layer.UserSupplied, value));
         Cache = new CachePart(typeof(T));
     }
 
@@ -69,10 +64,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     /// <example>
     /// HibernateMapping.Schema("dto");
     /// </example>
-    public HibernateMappingPart HibernateMapping
-    {
-        get { return hibernateMappingPart; }
-    }
+    public HibernateMappingPart HibernateMapping { get; } = new HibernateMappingPart();
 
     #region Ids
 
@@ -427,26 +419,17 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     /// <summary>
     /// Sets the optimistic locking strategy
     /// </summary>
-    public OptimisticLockBuilder<ClassMap<T>> OptimisticLock
-    {
-        get { return optimisticLock; }
-    }
+    public OptimisticLockBuilder<ClassMap<T>> OptimisticLock { get; }
 
     /// <summary>
     /// Sets the polymorphism behaviour
     /// </summary>
-    public PolymorphismBuilder<ClassMap<T>> Polymorphism
-    {
-        get { return polymorphism; }
-    }
+    public PolymorphismBuilder<ClassMap<T>> Polymorphism { get; }
 
     /// <summary>
     /// Sets the schema action behaviour
     /// </summary>
-    public SchemaActionBuilder<ClassMap<T>> SchemaAction
-    {
-        get { return schemaAction; }
-    }
+    public SchemaActionBuilder<ClassMap<T>> SchemaAction { get; }
 
     /// <summary>
     /// Specifies a check constraint
@@ -689,7 +672,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
 
     HibernateMapping IMappingProvider.GetHibernateMapping()
     {
-        var hibernateMapping = ((IHibernateMappingProvider)hibernateMappingPart).GetHibernateMapping();
+        var hibernateMapping = ((IHibernateMappingProvider)HibernateMapping).GetHibernateMapping();
 
         foreach (var import in imports)
             hibernateMapping.AddImport(import.GetImportMapping());

@@ -12,7 +12,6 @@ public abstract class ComponentPartBase<TEntity, TBuilder> : ClasslikeMapBase<TE
 {
     protected readonly Member member;
     readonly MappingProviderStore providers;
-    readonly AccessStrategyBuilder<TBuilder> access;
     readonly AttributeStore attributes;
     protected bool nextBool = true;
 
@@ -24,7 +23,7 @@ public abstract class ComponentPartBase<TEntity, TBuilder> : ClasslikeMapBase<TE
         : base(providers)
     {
         this.attributes = attributes;
-        access = new AccessStrategyBuilder<TBuilder>((TBuilder)this, value => attributes.Set("Access", Layer.UserSupplied, value));
+        Access = new AccessStrategyBuilder<TBuilder>((TBuilder)this, value => attributes.Set("Access", Layer.UserSupplied, value));
         this.member = member;
         this.providers = providers;
 
@@ -45,10 +44,7 @@ public abstract class ComponentPartBase<TEntity, TBuilder> : ClasslikeMapBase<TE
     /// <summary>
     /// Set the access and naming strategy for this component.
     /// </summary>
-    public AccessStrategyBuilder<TBuilder> Access
-    {
-        get { return access; }
-    }
+    public AccessStrategyBuilder<TBuilder> Access { get; }
 
     /// <summary>
     /// Specify a parent reference for this component

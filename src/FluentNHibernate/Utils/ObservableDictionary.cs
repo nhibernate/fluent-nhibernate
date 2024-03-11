@@ -13,34 +13,32 @@ public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INo
     private const string KeysName = "Keys";
     private const string ValuesName = "Values";
 
-    private IDictionary<TKey, TValue> _dictionary;
-
-    protected IDictionary<TKey, TValue> Dictionary => _dictionary;
+    protected IDictionary<TKey, TValue> Dictionary { get; private set; }
 
     #region Constructors
 
     public ObservableDictionary() {
-        _dictionary = new Dictionary<TKey, TValue>();
+        Dictionary = new Dictionary<TKey, TValue>();
     }
 
     public ObservableDictionary(IDictionary<TKey, TValue> dictionary) {
-        _dictionary = new Dictionary<TKey, TValue>(dictionary);
+        Dictionary = new Dictionary<TKey, TValue>(dictionary);
     }
 
     public ObservableDictionary(IEqualityComparer<TKey> comparer) {
-        _dictionary = new Dictionary<TKey, TValue>(comparer);
+        Dictionary = new Dictionary<TKey, TValue>(comparer);
     }
 
     public ObservableDictionary(int capacity) {
-        _dictionary = new Dictionary<TKey, TValue>(capacity);
+        Dictionary = new Dictionary<TKey, TValue>(capacity);
     }
 
     public ObservableDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer) {
-        _dictionary = new Dictionary<TKey, TValue>(dictionary, comparer);
+        Dictionary = new Dictionary<TKey, TValue>(dictionary, comparer);
     }
 
     public ObservableDictionary(int capacity, IEqualityComparer<TKey> comparer) {
-        _dictionary = new Dictionary<TKey, TValue>(capacity, comparer);
+        Dictionary = new Dictionary<TKey, TValue>(capacity, comparer);
     }
 
     #endregion
@@ -151,7 +149,7 @@ public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INo
                 else
                     foreach (var item in items) Dictionary.Add(item);
             } else
-                _dictionary = new Dictionary<TKey, TValue>(items);
+                Dictionary = new Dictionary<TKey, TValue>(items);
 
             OnCollectionChanged(NotifyCollectionChangedAction.Add, items.ToArray());
         }

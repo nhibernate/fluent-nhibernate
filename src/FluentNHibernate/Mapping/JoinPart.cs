@@ -14,7 +14,6 @@ public class JoinPart<T> : ClasslikeMapBase<T>, IJoinMappingProvider
 {
     readonly MappingProviderStore providers;
     readonly IList<string> columns = new List<string>();
-    readonly FetchTypeExpression<JoinPart<T>> fetch;
     readonly AttributeStore attributes = new AttributeStore();
     bool nextBool = true;
 
@@ -26,7 +25,7 @@ public class JoinPart<T> : ClasslikeMapBase<T>, IJoinMappingProvider
         : base(providers)
     {
         this.providers = providers;
-        fetch = new FetchTypeExpression<JoinPart<T>>(this, value => attributes.Set("Fetch", Layer.UserSupplied, value));
+        Fetch = new FetchTypeExpression<JoinPart<T>>(this, value => attributes.Set("Fetch", Layer.UserSupplied, value));
 
         attributes.Set("TableName", Layer.Defaults, tableName);
         attributes.Set("Key", Layer.Defaults, new KeyMapping { ContainingEntityType = typeof(T) });
@@ -67,10 +66,7 @@ public class JoinPart<T> : ClasslikeMapBase<T>, IJoinMappingProvider
     /// <summary>
     /// Specify the fetching strategy
     /// </summary>
-    public FetchTypeExpression<JoinPart<T>> Fetch
-    {
-        get { return fetch; }
-    }
+    public FetchTypeExpression<JoinPart<T>> Fetch { get; }
 
     /// <summary>
     /// Inverse the ownership of this relationship

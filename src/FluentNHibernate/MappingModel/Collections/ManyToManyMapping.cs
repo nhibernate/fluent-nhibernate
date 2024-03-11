@@ -11,12 +11,8 @@ public class ManyToManyMapping : MappingBase, ICollectionRelationshipMapping, IH
 {
     readonly AttributeStore attributes;
     readonly LayeredColumns columns = new LayeredColumns();
-    readonly IList<FilterMapping> childFilters = new List<FilterMapping>();
 
-    public IList<FilterMapping> ChildFilters
-    {
-        get { return childFilters; }
-    }
+    public IList<FilterMapping> ChildFilters { get; } = new List<FilterMapping>();
 
     public ManyToManyMapping()
         : this(new AttributeStore())
