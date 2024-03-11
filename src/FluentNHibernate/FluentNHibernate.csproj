@@ -9,6 +9,10 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../FluentKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+    <RuntimeFrameworkVersion>2.0.9</RuntimeFrameworkVersion>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NHibernate" Version="5.3.3" />
