@@ -8,8 +8,5 @@ public class JetDriverConfiguration : PersistenceConfiguration<JetDriverConfigur
         Driver("NHibernate.JetDriver.JetDriver, NHibernate.JetDriver");
     }
 
-    public static JetDriverConfiguration Standard
-    {
-        get { return new JetDriverConfiguration(); }
-    }
+    public static JetDriverConfiguration Standard => new();
 }

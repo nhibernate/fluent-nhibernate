@@ -111,9 +111,6 @@ public class CacheSettingsBuilderTester
 
     private class CacheSettingsBuilderDouble : CacheSettingsBuilder
     {
-        public IDictionary<string, string> Properties
-        {
-            get { return Create(); }
-        }
+        public IDictionary<string, string> Properties => Create();
     }
 }

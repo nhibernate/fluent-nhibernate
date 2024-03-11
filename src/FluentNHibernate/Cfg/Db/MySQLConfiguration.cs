@@ -10,8 +10,5 @@ public class MySQLConfiguration : PersistenceConfiguration<MySQLConfiguration, M
         Driver<MySqlDataDriver>();
     }
 
-    public static MySQLConfiguration Standard
-    {
-        get { return new MySQLConfiguration().Dialect<MySQLDialect>(); }
-    }
+    public static MySQLConfiguration Standard => new MySQLConfiguration().Dialect<MySQLDialect>();
 }

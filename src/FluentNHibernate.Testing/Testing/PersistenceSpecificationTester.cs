@@ -24,7 +24,8 @@ public class PersistenceSpecificationTester
             AllKittens = new List<Kitten>();
         }
 
-        public IEnumerable<Kitten> EnumerableOfKittens { get { return AllKittens; } }
+        public IEnumerable<Kitten> EnumerableOfKittens => AllKittens;
+
         public void AddKitten(Kitten kitten)
         {
             AllKittens.Add(kitten);
@@ -176,8 +177,7 @@ public class PersistenceSpecificationTester
     [Test]
     public void VerifyTheMappings_returns_instance()
     {
-        var cat = spec.CheckProperty(x => x.FirstKitten, this.cat.FirstKitten).VerifyTheMappings();
-        cat.ShouldNotBeNull();
+        spec.CheckProperty(x => x.FirstKitten, this.cat.FirstKitten).VerifyTheMappings().ShouldNotBeNull();
     }
 
     [Test]

@@ -44,32 +44,17 @@ internal sealed class DummyMethodInfo : MethodInfo
         return null;
     }
 
-    public override ICustomAttributeProvider ReturnTypeCustomAttributes
-    {
-        get { return null; }
-    }
+    public override ICustomAttributeProvider ReturnTypeCustomAttributes => null;
 
     public override string Name { get; }
 
-    public override Type DeclaringType
-    {
-        get { return null; }
-    }
+    public override Type DeclaringType => null;
 
-    public override Type ReflectedType
-    {
-        get { return null; }
-    }
+    public override Type ReflectedType => null;
 
-    public override RuntimeMethodHandle MethodHandle
-    {
-        get { return new RuntimeMethodHandle(); }
-    }
+    public override RuntimeMethodHandle MethodHandle => new();
 
-    public override MethodAttributes Attributes
-    {
-        get { return MethodAttributes.Public; }
-    }
+    public override MethodAttributes Attributes => MethodAttributes.Public;
 
     public override object[] GetCustomAttributes(Type attributeType, bool inherit)
     {

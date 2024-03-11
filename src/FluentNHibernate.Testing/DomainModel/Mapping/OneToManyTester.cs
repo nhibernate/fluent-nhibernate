@@ -43,8 +43,7 @@ public class OneToManyTarget
     public virtual IList<ChildObject> GetOtherChildren() { return otherChildren; }
 
     private IList<ChildObject> listToArrayChild = new List<ChildObject>();
-    public virtual ChildObject[] ListToArrayChild { get { return listToArrayChild.ToArray(); } }
-
+    public virtual ChildObject[] ListToArrayChild => listToArrayChild.ToArray();
 }
 
 public class ValueObject

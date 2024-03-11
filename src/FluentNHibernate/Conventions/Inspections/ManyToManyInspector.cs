@@ -17,15 +17,9 @@ public class ManyToManyInspector : IManyToManyInspector
         mappedProperties.Map(x => x.LazyLoad, x => x.Lazy);
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Class.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Class.Name;
 
     public bool IsSet(Member property)
     {
@@ -42,48 +36,21 @@ public class ManyToManyInspector : IManyToManyInspector
         }
     }
 
-    public Type ChildType
-    {
-        get { return mapping.ChildType; }
-    }
+    public Type ChildType => mapping.ChildType;
 
-    public TypeReference Class
-    {
-        get { return mapping.Class; }
-    }
+    public TypeReference Class => mapping.Class;
 
-    public Fetch Fetch
-    {
-        get { return Fetch.FromString(mapping.Fetch); }
-    }
+    public Fetch Fetch => Fetch.FromString(mapping.Fetch);
 
-    public string ForeignKey
-    {
-        get { return mapping.ForeignKey; }
-    }
+    public string ForeignKey => mapping.ForeignKey;
 
-    public bool LazyLoad
-    {
-        get { return mapping.Lazy; }
-    }
+    public bool LazyLoad => mapping.Lazy;
 
-    public NotFound NotFound
-    {
-        get { return NotFound.FromString(mapping.NotFound); }
-    }
+    public NotFound NotFound => NotFound.FromString(mapping.NotFound);
 
-    public Type ParentType
-    {
-        get { return mapping.ParentType; }
-    }
+    public Type ParentType => mapping.ParentType;
 
-    public string Where
-    {
-        get { return mapping.Where; }
-    }
+    public string Where => mapping.Where;
 
-    public string OrderBy
-    {
-        get { return mapping.OrderBy; }
-    }
+    public string OrderBy => mapping.OrderBy;
 }

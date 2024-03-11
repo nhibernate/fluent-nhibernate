@@ -17,30 +17,18 @@ public class CompositeIdentityInspector : ICompositeIdentityInspector
         this.mapping = mapping;
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
     public bool IsSet(Member property)
     {
         return mapping.IsSpecified(mappedProperties.Get(property));
     }
 
-    public Access Access
-    {
-        get { return Access.FromString(mapping.Access); }
-    }
+    public Access Access => Access.FromString(mapping.Access);
 
-    public TypeReference Class
-    {
-        get { return mapping.Class; }
-    }
+    public TypeReference Class => mapping.Class;
 
     public IEnumerable<IKeyManyToOneInspector> KeyManyToOnes
     {
@@ -64,18 +52,9 @@ public class CompositeIdentityInspector : ICompositeIdentityInspector
         }
     }
 
-    public bool Mapped
-    {
-        get { return mapping.Mapped; }
-    }
+    public bool Mapped => mapping.Mapped;
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
-    public string UnsavedValue
-    {
-        get { return mapping.UnsavedValue; }
-    }
+    public string UnsavedValue => mapping.UnsavedValue;
 }

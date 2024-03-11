@@ -17,30 +17,18 @@ public class AnyInspector : IAnyInspector
         propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
     public bool IsSet(Member property)
     {
         return mapping.IsSpecified(propertyMappings.Get(property));
     }
 
-    public Access Access
-    {
-        get { return Access.FromString(mapping.Access); }
-    }
+    public Access Access => Access.FromString(mapping.Access);
 
-    public Cascade Cascade
-    {
-        get { return Cascade.FromString(mapping.Cascade); }
-    }
+    public Cascade Cascade => Cascade.FromString(mapping.Cascade);
 
     public IEnumerable<IColumnInspector> IdentifierColumns
     {
@@ -52,20 +40,11 @@ public class AnyInspector : IAnyInspector
         }
     }
 
-    public string IdType
-    {
-        get { return mapping.IdType; }
-    }
+    public string IdType => mapping.IdType;
 
-    public bool Insert
-    {
-        get { return mapping.Insert; }
-    }
+    public bool Insert => mapping.Insert;
 
-    public TypeReference MetaType
-    {
-        get { return mapping.MetaType; }
-    }
+    public TypeReference MetaType => mapping.MetaType;
 
     public IEnumerable<IMetaValueInspector> MetaValues
     {
@@ -77,10 +56,7 @@ public class AnyInspector : IAnyInspector
         }
     }
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
     public IEnumerable<IColumnInspector> TypeColumns
     {
@@ -92,18 +68,9 @@ public class AnyInspector : IAnyInspector
         }
     }
 
-    public bool Update
-    {
-        get { return mapping.Update; }
-    }
+    public bool Update => mapping.Update;
 
-    public bool LazyLoad
-    {
-        get { return mapping.Lazy; }
-    }
+    public bool LazyLoad => mapping.Lazy;
 
-    public bool OptimisticLock
-    {
-        get { return mapping.OptimisticLock; }
-    }
+    public bool OptimisticLock => mapping.OptimisticLock;
 }

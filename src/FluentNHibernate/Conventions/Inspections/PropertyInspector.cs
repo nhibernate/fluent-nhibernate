@@ -20,40 +20,19 @@ public class PropertyInspector : ColumnBasedInspector, IPropertyInspector
         propertyMappings.Map(x => x.Nullable, "NotNull");
     }
 
-    public bool Insert
-    {
-        get { return mapping.Insert; }
-    }
+    public bool Insert => mapping.Insert;
 
-    public bool Update
-    {
-        get { return mapping.Update; }
-    }
+    public bool Update => mapping.Update;
 
-    public string Formula
-    {
-        get { return mapping.Formula; }
-    }
+    public string Formula => mapping.Formula;
 
-    public TypeReference Type
-    {
-        get { return mapping.Type; }
-    }
+    public TypeReference Type => mapping.Type;
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
-    public bool OptimisticLock
-    {
-        get { return mapping.OptimisticLock; }
-    }
+    public bool OptimisticLock => mapping.OptimisticLock;
 
-    public Generated Generated
-    {
-        get { return Generated.FromString(mapping.Generated); }
-    }
+    public Generated Generated => Generated.FromString(mapping.Generated);
 
     public IEnumerable<IColumnInspector> Columns
     {
@@ -66,10 +45,7 @@ public class PropertyInspector : ColumnBasedInspector, IPropertyInspector
         }
     }
 
-    public bool LazyLoad
-    {
-        get { return mapping.Lazy; }
-    }
+    public bool LazyLoad => mapping.Lazy;
 
     public Access Access
     {
@@ -82,25 +58,13 @@ public class PropertyInspector : ColumnBasedInspector, IPropertyInspector
         }
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
-    public bool ReadOnly
-    {
-        get { return mapping.Insert && mapping.Update; }
-    }
+    public bool ReadOnly => mapping.Insert && mapping.Update;
 
-    public Member Property
-    {
-        get { return mapping.Member; }
-    }
+    public Member Property => mapping.Member;
 
     public bool IsSet(Member property)
     {

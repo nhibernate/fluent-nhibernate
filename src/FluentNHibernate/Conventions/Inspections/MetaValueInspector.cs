@@ -13,28 +13,16 @@ public class MetaValueInspector : IMetaValueInspector
         this.mapping = mapping;
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Class.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Class.Name;
 
     public bool IsSet(Member property)
     {
         return mapping.IsSpecified(propertyMappings.Get(property));
     }
 
-    public TypeReference Class
-    {
-        get { return mapping.Class; }
-    }
+    public TypeReference Class => mapping.Class;
 
-    public string Value
-    {
-        get { return mapping.Value; }
-    }
+    public string Value => mapping.Value;
 }

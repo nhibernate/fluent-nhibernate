@@ -45,20 +45,11 @@ public class PropertyChain : Accessor
         return innerMember.GetValue(target);
     }
 
-    public string FieldName
-    {
-        get { return innerMember.FieldName; }
-    }
+    public string FieldName => innerMember.FieldName;
 
-    public Type PropertyType
-    {
-        get { return innerMember.PropertyType; }
-    }
+    public Type PropertyType => innerMember.PropertyType;
 
-    public Member InnerMember
-    {
-        get { return innerMember.InnerMember; }
-    }
+    public Member InnerMember => innerMember.InnerMember;
 
     public Accessor GetChildAccessor<T>(Expression<Func<T, object>> expression)
     {

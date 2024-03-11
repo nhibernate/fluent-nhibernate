@@ -16,25 +16,16 @@ public class IndexInspector : IIndexInspector
         this.mapping = mapping;
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Type.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Type.Name;
 
     public bool IsSet(Member property)
     {
         return mapping.IsSpecified(mappedProperties.Get(property));
     }
 
-    public TypeReference Type
-    {
-        get { return mapping.Type; }
-    }
+    public TypeReference Type => mapping.Type;
 
     public IEnumerable<IColumnInspector> Columns
     {

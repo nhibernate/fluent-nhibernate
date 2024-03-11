@@ -15,15 +15,9 @@ public class JoinInspector : IJoinInspector
         this.mapping = mapping;
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.TableName; }
-    }
+    public string StringIdentifierForModel => mapping.TableName;
 
     public bool IsSet(Member property)
     {
@@ -40,15 +34,9 @@ public class JoinInspector : IJoinInspector
         }
     }
 
-    public Fetch Fetch
-    {
-        get { return Fetch.FromString(mapping.Fetch); }
-    }
+    public Fetch Fetch => Fetch.FromString(mapping.Fetch);
 
-    public bool Inverse
-    {
-        get { return mapping.Inverse; }
-    }
+    public bool Inverse => mapping.Inverse;
 
     public IKeyInspector Key
     {
@@ -61,10 +49,7 @@ public class JoinInspector : IJoinInspector
         }
     }
 
-    public bool Optional
-    {
-        get { return mapping.Optional; }
-    }
+    public bool Optional => mapping.Optional;
 
     public IEnumerable<IPropertyInspector> Properties
     {
@@ -97,23 +82,11 @@ public class JoinInspector : IJoinInspector
         }
     }
 
-    public string Schema
-    {
-        get { return mapping.Schema; }
-    }
+    public string Schema => mapping.Schema;
 
-    public string TableName
-    {
-        get { return mapping.TableName; }
-    }
-        
-    public string Catalog
-    {
-        get { return mapping.Catalog; }
-    }
+    public string TableName => mapping.TableName;
 
-    public string Subselect
-    {
-        get { return mapping.Subselect; }
-    }
+    public string Catalog => mapping.Catalog;
+
+    public string Subselect => mapping.Subselect;
 }

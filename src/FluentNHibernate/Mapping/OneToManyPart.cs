@@ -41,10 +41,7 @@ public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild>
     /// <summary>
     /// Specify the cascade behaviour
     /// </summary>
-    public new CollectionCascadeExpression<OneToManyPart<TChild>> Cascade
-    {
-        get { return base.Cascade; }
-    }
+    public new CollectionCascadeExpression<OneToManyPart<TChild>> Cascade => base.Cascade;
 
     /// <summary>
     /// Specify that this is a ternary association

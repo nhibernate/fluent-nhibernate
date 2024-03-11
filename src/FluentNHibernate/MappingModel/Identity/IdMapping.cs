@@ -18,10 +18,7 @@ public class IdMapping : ColumnBasedMappingBase, IIdentityMapping
 
     public Member Member { get; set; }
 
-    public GeneratorMapping Generator
-    {
-        get { return attributes.GetOrDefault<GeneratorMapping>("Generator"); }
-    }
+    public GeneratorMapping Generator => attributes.GetOrDefault<GeneratorMapping>("Generator");
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -34,25 +31,13 @@ public class IdMapping : ColumnBasedMappingBase, IIdentityMapping
             visitor.Visit(Generator);
     }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public TypeReference Type
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Type"); }
-    }
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
 
-    public string UnsavedValue
-    {
-        get { return attributes.GetOrDefault<string>("UnsavedValue"); }
-    }
+    public string UnsavedValue => attributes.GetOrDefault<string>("UnsavedValue");
 
     public Type ContainingEntityType { get; set; }
 

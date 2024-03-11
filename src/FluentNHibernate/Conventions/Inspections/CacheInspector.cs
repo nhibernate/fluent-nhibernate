@@ -13,30 +13,15 @@ public class CacheInspector : ICacheInspector
         this.mapping = mapping;
     }
 
-    public string Usage
-    {
-        get { return mapping.Usage; }
-    }
+    public string Usage => mapping.Usage;
 
-    public string Region
-    {
-        get { return mapping.Region; }
-    }
+    public string Region => mapping.Region;
 
-    public Include Include
-    {
-        get { return Include.FromString(mapping.Include); }
-    }
+    public Include Include => Include.FromString(mapping.Include);
 
-    public Type EntityType
-    {
-        get { return mapping.ContainedEntityType; }
-    }
+    public Type EntityType => mapping.ContainedEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Usage; }
-    }
+    public string StringIdentifierForModel => mapping.Usage;
 
     public bool IsSet(Member property)
     {

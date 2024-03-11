@@ -17,10 +17,7 @@ public abstract class FilterDefinition : IFilterDefinition
 
     public string Name { get; private set; }
 
-    public IEnumerable<KeyValuePair<string, IType>> Parameters
-    {
-        get { return parameters; }
-    }
+    public IEnumerable<KeyValuePair<string, IType>> Parameters => parameters;
 
     public FilterDefinition WithName(string name)
     {

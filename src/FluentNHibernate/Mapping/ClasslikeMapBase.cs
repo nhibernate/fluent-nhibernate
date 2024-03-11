@@ -446,18 +446,9 @@ public abstract class ClasslikeMapBase<T>
         return part;
     }
 
-    internal IEnumerable<IPropertyMappingProvider> Properties
-    {
-        get { return providers.Properties; }
-    }
+    internal IEnumerable<IPropertyMappingProvider> Properties => providers.Properties;
 
-    internal IEnumerable<IComponentMappingProvider> Components
-    {
-        get { return providers.Components; }
-    }
+    internal IEnumerable<IComponentMappingProvider> Components => providers.Components;
 
-    internal Type EntityType
-    {
-        get { return typeof(T); }
-    }
+    internal Type EntityType => typeof(T);
 }

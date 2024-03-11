@@ -46,8 +46,5 @@ public class ReferenceComponentPart<T> : IReferenceComponentMappingProvider
         return new ReferenceComponentMapping(ComponentType.Component, property, typeof(T), containingEntityType, columnPrefix);
     }
 
-    Type IReferenceComponentMappingProvider.Type
-    {
-        get { return typeof(T); }
-    }
+    Type IReferenceComponentMappingProvider.Type => typeof(T);
 }

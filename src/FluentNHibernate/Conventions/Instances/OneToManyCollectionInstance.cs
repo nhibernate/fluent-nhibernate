@@ -16,15 +16,9 @@ public class OneToManyCollectionInstance : CollectionInstance, IOneToManyCollect
         this.mapping = mapping;
     }
 
-    IOneToManyInspector IOneToManyCollectionInspector.Relationship
-    {
-        get { return Relationship; }
-    }
+    IOneToManyInspector IOneToManyCollectionInspector.Relationship => Relationship;
 
-    IManyToOneInspector IOneToManyCollectionInspector.OtherSide
-    {
-        get { return OtherSide; }
-    }
+    IManyToOneInspector IOneToManyCollectionInspector.OtherSide => OtherSide;
 
     public IManyToOneInstance OtherSide
     {
@@ -48,8 +42,5 @@ public class OneToManyCollectionInstance : CollectionInstance, IOneToManyCollect
         }
     }
 
-    public new IOneToManyInstance Relationship
-    {
-        get { return new OneToManyInstance((OneToManyMapping)mapping.Relationship); }
-    }
+    public new IOneToManyInstance Relationship => new OneToManyInstance((OneToManyMapping)mapping.Relationship);
 }

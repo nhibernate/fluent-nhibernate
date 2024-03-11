@@ -17,20 +17,14 @@ public class OracleConfiguration : PersistenceConfiguration<OracleConfiguration,
     /// Oracle Data Provider (Oracle.DataAccess) library specifying the Oracle 8i dialect.
     /// The Oracle.DataAccess library must be available to the calling application/library.
     /// </summary>
-    public static OracleConfiguration Oracle8
-    {
-        get { return new OracleConfiguration().Dialect<Oracle8iDialect>(); }
-    }
+    public static OracleConfiguration Oracle8 => new OracleConfiguration().Dialect<Oracle8iDialect>();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="OracleConfiguration"/> class using the
     /// Oracle Data Provider (Oracle.DataAccess) library specifying the Oracle 9i dialect.
     /// The Oracle.DataAccess library must be available to the calling application/library.
     /// </summary>
-    public static OracleConfiguration Oracle9
-    {
-        get { return new OracleConfiguration().Dialect<Oracle9iDialect>(); }
-    }
+    public static OracleConfiguration Oracle9 => new OracleConfiguration().Dialect<Oracle9iDialect>();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="OracleConfiguration"/> class using the
@@ -38,8 +32,5 @@ public class OracleConfiguration : PersistenceConfiguration<OracleConfiguration,
     /// The Oracle.DataAccess library must be available to the calling application/library.
     /// This allows for ANSI join syntax.
     /// </summary>
-    public static OracleConfiguration Oracle10
-    {
-        get { return new OracleConfiguration().Dialect<Oracle10gDialect>(); }
-    }
+    public static OracleConfiguration Oracle10 => new OracleConfiguration().Dialect<Oracle10gDialect>();
 }

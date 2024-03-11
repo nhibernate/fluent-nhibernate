@@ -102,15 +102,9 @@ public class CustomUserType : IUserType
         get { return new[] { new SqlType(DbType.String) }; }
     }
 
-    public Type ReturnedType
-    {
-        get { return typeof(CustomUserType); }
-    }
+    public Type ReturnedType => typeof(CustomUserType);
 
-    public bool IsMutable
-    {
-        get { return true; }
-    }
+    public bool IsMutable => true;
 }
 
 public struct UserValueType : IUserType
@@ -169,6 +163,6 @@ public struct UserValueType : IUserType
     }
 
     public SqlType[] SqlTypes { get; private set; }
-    public Type ReturnedType { get { return typeof(UserValueType); } }
+    public Type ReturnedType => typeof(UserValueType);
     public bool IsMutable { get; private set; }
 }

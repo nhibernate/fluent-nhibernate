@@ -22,35 +22,17 @@ public class ClassInspector : IClassInspector
         propertyMappings.Map(x => x.EntityType, x => x.Type);
     }
 
-    public Type EntityType
-    {
-        get { return mapping.Type; }
-    }
+    public Type EntityType => mapping.Type;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
-    public bool LazyLoad
-    {
-        get { return mapping.Lazy; }
-    }
+    public bool LazyLoad => mapping.Lazy;
 
-    public bool ReadOnly
-    {
-        get { return !mapping.Mutable; }
-    }
+    public bool ReadOnly => !mapping.Mutable;
 
-    public string TableName
-    {
-        get { return mapping.TableName; }
-    }
+    public string TableName => mapping.TableName;
 
-    ICacheInspector IClassInspector.Cache
-    {
-        get { return Cache; }
-    }
+    ICacheInspector IClassInspector.Cache => Cache;
 
     public ICacheInstance Cache
     {
@@ -64,40 +46,19 @@ public class ClassInspector : IClassInspector
         }
     }
 
-    public OptimisticLock OptimisticLock
-    {
-        get { return OptimisticLock.FromString(mapping.OptimisticLock); }
-    }
+    public OptimisticLock OptimisticLock => OptimisticLock.FromString(mapping.OptimisticLock);
 
-    public SchemaAction SchemaAction
-    {
-        get { return SchemaAction.FromString(mapping.SchemaAction); }
-    }
+    public SchemaAction SchemaAction => SchemaAction.FromString(mapping.SchemaAction);
 
-    public string Schema
-    {
-        get { return mapping.Schema; }
-    }
+    public string Schema => mapping.Schema;
 
-    public bool DynamicUpdate
-    {
-        get { return mapping.DynamicUpdate; }
-    }
+    public bool DynamicUpdate => mapping.DynamicUpdate;
 
-    public bool DynamicInsert
-    {
-        get { return mapping.DynamicInsert; }
-    }
+    public bool DynamicInsert => mapping.DynamicInsert;
 
-    public int BatchSize
-    {
-        get { return mapping.BatchSize; }
-    }
+    public int BatchSize => mapping.BatchSize;
 
-    public bool Abstract
-    {
-        get { return mapping.Abstract; }
-    }
+    public bool Abstract => mapping.Abstract;
 
     public IVersionInspector Version
     {
@@ -120,10 +81,7 @@ public class ClassInspector : IClassInspector
         }
     }
 
-    public string Check
-    {
-        get { return mapping.Check; }
-    }
+    public string Check => mapping.Check;
 
     public IEnumerable<ICollectionInspector> Collections
     {
@@ -211,45 +169,21 @@ public class ClassInspector : IClassInspector
         }
     }
 
-    public object DiscriminatorValue
-    {
-        get { return mapping.DiscriminatorValue; }
-    }
+    public object DiscriminatorValue => mapping.DiscriminatorValue;
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
-    public string Persister
-    {
-        get { return mapping.Persister; }
-    }
+    public string Persister => mapping.Persister;
 
-    public Polymorphism Polymorphism
-    {
-        get { return Polymorphism.FromString(mapping.Polymorphism); }
-    }
+    public Polymorphism Polymorphism => Polymorphism.FromString(mapping.Polymorphism);
 
-    public string Proxy
-    {
-        get { return mapping.Proxy; }
-    }
+    public string Proxy => mapping.Proxy;
 
-    public string Where
-    {
-        get { return mapping.Where; }
-    }
+    public string Where => mapping.Where;
 
-    public string Subselect
-    {
-        get { return mapping.Subselect; }
-    }
+    public string Subselect => mapping.Subselect;
 
-    public bool SelectBeforeUpdate
-    {
-        get { return mapping.SelectBeforeUpdate; }
-    }
+    public bool SelectBeforeUpdate => mapping.SelectBeforeUpdate;
 
     public IIdentityInspectorBase Id
     {

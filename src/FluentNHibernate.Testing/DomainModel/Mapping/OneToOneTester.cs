@@ -90,10 +90,7 @@ public class OneToOneTester
     private class User
     {
         public int Id { get; set; }
-        public IUserLoginInfo LoginInfo
-        {
-            get { return null; }
-        }
+        public IUserLoginInfo LoginInfo => null;
     }
 
         
