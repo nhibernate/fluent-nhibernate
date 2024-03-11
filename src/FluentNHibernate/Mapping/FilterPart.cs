@@ -14,26 +14,19 @@ public interface IFilter : IFilterMappingProvider
 /// </summary>
 public class FilterPart : IFilter
 {
-    readonly string filterName;
-    readonly string condition;
     readonly AttributeStore attributes = new AttributeStore();
 
     public FilterPart(string name) : this(name, null) { }
 
     public FilterPart(string name, string condition)
     {
-        filterName = name;
-        this.condition = condition;
+        Name = name;
+        this.Condition = condition;
     }
 
-    public string Condition
-    {
-        get { return condition; }
-    }
-    public string Name
-    {
-        get { return filterName; }
-    }
+    public string Condition { get; }
+
+    public string Name { get; }
 
     public override bool Equals(object obj)
     {
@@ -55,15 +48,15 @@ public class FilterPart : IFilter
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(other.filterName, filterName) && Equals(other.condition, condition) && Equals(other.attributes, attributes);
+        return Equals(other.Name, Name) && Equals(other.Condition, Condition) && Equals(other.attributes, attributes);
     }
 
     public override int GetHashCode()
     {
         unchecked
         {
-            int result = (filterName is not null ? filterName.GetHashCode() : 0);
-            result = (result * 397) ^ (condition is not null ? condition.GetHashCode() : 0);
+            int result = (Name is not null ? Name.GetHashCode() : 0);
+            result = (result * 397) ^ (Condition is not null ? Condition.GetHashCode() : 0);
             result = (result * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
             return result;
         }

@@ -6,19 +6,13 @@ namespace FluentNHibernate;
 
 internal sealed class DummyMethodInfo : MethodInfo
 {
-    private readonly string name;
-    private readonly Type type;
-
     public DummyMethodInfo(string name, Type type)
     {
-        this.name = name;
-        this.type = type;
+        this.Name = name;
+        this.ReturnType = type;
     }
 
-    public override Type ReturnType
-    {
-        get { return type; }
-    }
+    public override Type ReturnType { get; }
 
     public override object[] GetCustomAttributes(bool inherit)
     {
@@ -55,10 +49,7 @@ internal sealed class DummyMethodInfo : MethodInfo
         get { return null; }
     }
 
-    public override string Name
-    {
-        get { return name; }
-    }
+    public override string Name { get; }
 
     public override Type DeclaringType
     {

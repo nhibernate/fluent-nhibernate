@@ -10,10 +10,6 @@ namespace FluentNHibernate.Mapping;
 
 public class ManyToOnePart<TOther> : IManyToOneMappingProvider
 {
-    readonly AccessStrategyBuilder<ManyToOnePart<TOther>> access;
-    readonly FetchTypeExpression<ManyToOnePart<TOther>> fetch;
-    readonly NotFoundExpression<ManyToOnePart<TOther>> notFound;
-    readonly CascadeExpression<ManyToOnePart<TOther>> cascade;
     readonly IList<string> columns = new List<string>();
     bool nextBool = true;
     readonly AttributeStore attributes = new AttributeStore();
@@ -25,14 +21,14 @@ public class ManyToOnePart<TOther> : IManyToOneMappingProvider
     {
         this.entity = entity;
         this.member = member;
-        access = new AccessStrategyBuilder<ManyToOnePart<TOther>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
-        fetch = new FetchTypeExpression<ManyToOnePart<TOther>>(this, value => attributes.Set("Fetch", Layer.UserSupplied, value));
-        cascade = new CascadeExpression<ManyToOnePart<TOther>>(this, value =>
+        Access = new AccessStrategyBuilder<ManyToOnePart<TOther>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
+        Fetch = new FetchTypeExpression<ManyToOnePart<TOther>>(this, value => attributes.Set("Fetch", Layer.UserSupplied, value));
+        Cascade = new CascadeExpression<ManyToOnePart<TOther>>(this, value =>
         {
             var current = attributes.Get("Cascade") as string;
             attributes.Set("Cascade", Layer.UserSupplied, current is null ? value : string.Format("{0},{1}", current, value));
         });
-        notFound = new NotFoundExpression<ManyToOnePart<TOther>>(this, value => attributes.Set("NotFound", Layer.UserSupplied, value));
+        NotFound = new NotFoundExpression<ManyToOnePart<TOther>>(this, value => attributes.Set("NotFound", Layer.UserSupplied, value));
 
         SetDefaultAccess();
     }
@@ -53,10 +49,7 @@ public class ManyToOnePart<TOther> : IManyToOneMappingProvider
     /// <example>
     /// Fetch.Select();
     /// </example>
-    public FetchTypeExpression<ManyToOnePart<TOther>> Fetch
-    {
-        get { return fetch; }
-    }
+    public FetchTypeExpression<ManyToOnePart<TOther>> Fetch { get; }
 
     /// <summary>
     /// Set the behaviour for when this relationship is null in the database
@@ -64,10 +57,7 @@ public class ManyToOnePart<TOther> : IManyToOneMappingProvider
     /// <example>
     /// NotFound.Exception();
     /// </example>
-    public NotFoundExpression<ManyToOnePart<TOther>> NotFound
-    {
-        get { return notFound; }
-    }
+    public NotFoundExpression<ManyToOnePart<TOther>> NotFound { get; }
 
     /// <summary>
     /// Sets whether this relationship is unique
@@ -274,10 +264,7 @@ public class ManyToOnePart<TOther> : IManyToOneMappingProvider
     /// <example>
     /// Cascade.All();
     /// </example>
-    public CascadeExpression<ManyToOnePart<TOther>> Cascade
-    {
-        get { return cascade; }
-    }
+    public CascadeExpression<ManyToOnePart<TOther>> Cascade { get; }
 
     /// <summary>
     /// Specifies the property reference
@@ -328,10 +315,7 @@ public class ManyToOnePart<TOther> : IManyToOneMappingProvider
     /// <example>
     /// Access.Field();
     /// </example>
-    public AccessStrategyBuilder<ManyToOnePart<TOther>> Access
-    {
-        get { return access; }
-    }
+    public AccessStrategyBuilder<ManyToOnePart<TOther>> Access { get; }
 
     /// <summary>
     /// Inverts the next boolean

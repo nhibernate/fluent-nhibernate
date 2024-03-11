@@ -277,15 +277,13 @@ internal class FieldMember : Member
 internal class PropertyMember : Member
 {
     readonly PropertyInfo member;
-    readonly MethodMember getMethod;
-    readonly MethodMember setMethod;
     Member backingField;
 
     public PropertyMember(PropertyInfo member)
     {
         this.member = member;
-        getMethod = GetMember(member.GetGetMethod(true));
-        setMethod = GetMember(member.GetSetMethod(true));
+        Get = GetMember(member.GetGetMethod(true));
+        Set = GetMember(member.GetSetMethod(true));
     }
 
     MethodMember GetMember(MethodInfo method)
@@ -340,7 +338,7 @@ internal class PropertyMember : Member
             // override the default reflection value here. Private setters aren't
             // considered "settable" in the same sense that public ones are. We can
             // use this to control the access strategy later
-            if (IsAutoProperty && (setMethod is null || setMethod.IsPrivate))
+            if (IsAutoProperty && (Set is null || Set.IsPrivate))
                 return false;
 
             return member.CanWrite;
@@ -375,40 +373,34 @@ internal class PropertyMember : Member
     {
         get
         {
-            return (getMethod is not null && getMethod.IsCompilerGenerated) 
-                   || (setMethod is not null && setMethod.IsCompilerGenerated);
+            return (Get is not null && Get.IsCompilerGenerated) 
+                   || (Set is not null && Set.IsCompilerGenerated);
         }
     }
 
     public override bool IsPrivate
     {
-        get { return getMethod.IsPrivate; }
+        get { return Get.IsPrivate; }
     }
 
     public override bool IsProtected
     {
-        get { return getMethod.IsProtected; }
+        get { return Get.IsProtected; }
     }
 
     public override bool IsPublic
     {
-        get { return getMethod.IsPublic; }
+        get { return Get.IsPublic; }
     }
 
     public override bool IsInternal
     {
-        get { return getMethod.IsInternal; }
+        get { return Get.IsInternal; }
     }
 
-    public MethodMember Get
-    {
-        get { return getMethod; }
-    }
+    public MethodMember Get { get; }
 
-    public MethodMember Set
-    {
-        get { return setMethod; }
-    }
+    public MethodMember Set { get; }
 
     public override string ToString()
     {

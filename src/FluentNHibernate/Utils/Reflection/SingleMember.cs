@@ -5,49 +5,44 @@ namespace FluentNHibernate.Utils;
 
 public class SingleMember : Accessor
 {
-    private readonly Member member;
-
     public SingleMember(Member member)
     {
-        this.member = member;
+        this.InnerMember = member;
     }
 
     #region Accessor Members
 
     public string FieldName
     {
-        get { return member.Name; }
+        get { return InnerMember.Name; }
     }
 
     public Type PropertyType
     {
-        get { return member.PropertyType; }
+        get { return InnerMember.PropertyType; }
     }
 
-    public Member InnerMember
-    {
-        get { return member; }
-    }
+    public Member InnerMember { get; }
 
     public Accessor GetChildAccessor<T>(Expression<Func<T, object>> expression)
     {
         var property = expression.ToMember();
-        return new PropertyChain(new[] {member, property});
+        return new PropertyChain(new[] {InnerMember, property});
     }
 
     public string Name
     {
-        get { return member.Name; }
+        get { return InnerMember.Name; }
     }
 
     public void SetValue(object target, object propertyValue)
     {
-        member.SetValue(target, propertyValue);
+        InnerMember.SetValue(target, propertyValue);
     }
 
     public object GetValue(object target)
     {
-        return member.GetValue(target);
+        return InnerMember.GetValue(target);
     }
 
     #endregion

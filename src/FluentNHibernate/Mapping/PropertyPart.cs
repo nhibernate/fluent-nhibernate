@@ -12,9 +12,6 @@ public class PropertyPart : IPropertyMappingProvider
 {
     readonly Member member;
     readonly Type parentType;
-    readonly AccessStrategyBuilder<PropertyPart> access;
-    readonly PropertyGeneratedBuilder generated;
-    readonly ColumnMappingCollection<PropertyPart> columns;
     readonly AttributeStore attributes = new AttributeStore();
     readonly AttributeStore columnAttributes = new AttributeStore();
 
@@ -22,9 +19,9 @@ public class PropertyPart : IPropertyMappingProvider
 
     public PropertyPart(Member member, Type parentType)
     {
-        columns = new ColumnMappingCollection<PropertyPart>(this);
-        access = new AccessStrategyBuilder<PropertyPart>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
-        generated = new PropertyGeneratedBuilder(this, value => attributes.Set("Generated", Layer.UserSupplied, value));
+        Columns = new ColumnMappingCollection<PropertyPart>(this);
+        Access = new AccessStrategyBuilder<PropertyPart>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
+        Generated = new PropertyGeneratedBuilder(this, value => attributes.Set("Generated", Layer.UserSupplied, value));
 
         this.member = member;
         this.parentType = parentType;
@@ -48,10 +45,7 @@ public class PropertyPart : IPropertyMappingProvider
     /// <example>
     /// Generated.Insert();
     /// </example>
-    public PropertyGeneratedBuilder Generated
-    {
-        get { return generated; }
-    }
+    public PropertyGeneratedBuilder Generated { get; }
 
     /// <summary>
     /// Specify the property column name
@@ -67,18 +61,12 @@ public class PropertyPart : IPropertyMappingProvider
     /// <summary>
     /// Modify the columns collection
     /// </summary>
-    public ColumnMappingCollection<PropertyPart> Columns
-    {
-        get { return columns; }
-    }
+    public ColumnMappingCollection<PropertyPart> Columns { get; }
 
     /// <summary>
     /// Set the access and naming strategy for this property.
     /// </summary>
-    public AccessStrategyBuilder<PropertyPart> Access
-    {
-        get { return access; }
-    }
+    public AccessStrategyBuilder<PropertyPart> Access { get; }
 
     /// <summary>
     /// Specify that this property is insertable
@@ -324,14 +312,14 @@ public class PropertyPart : IPropertyMappingProvider
             Member = member
         };
 
-        if (columns.Count == 0 && !mapping.IsSpecified("Formula"))
+        if (Columns.Count == 0 && !mapping.IsSpecified("Formula"))
         {
             var columnMapping = new ColumnMapping(columnAttributes.Clone());
             columnMapping.Set(x => x.Name, Layer.Defaults, member.Name);
             mapping.AddColumn(Layer.Defaults, columnMapping);
         }
 
-        foreach (var column in columns)
+        foreach (var column in Columns)
             mapping.AddColumn(Layer.UserSupplied, column.Clone());
 
         foreach (var column in mapping.Columns)

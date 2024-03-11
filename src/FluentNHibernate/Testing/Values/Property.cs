@@ -17,14 +17,12 @@ public abstract class Property<T>
 public class Property<T, TProperty> : Property<T>
 {
     private static readonly Action<T, Accessor, TProperty> DefaultValueSetter = (target, propertyAccessor, value) => propertyAccessor.SetValue (target, value);
-    private readonly Accessor _propertyAccessor;
-    private readonly TProperty _value;
     private Action<T, Accessor, TProperty> _valueSetter;
 
     public Property(Accessor property, TProperty value)
     {
-        _propertyAccessor = property;
-        _value = value;
+        PropertyAccessor = property;
+        Value = value;
     }
 
     public virtual Action<T, Accessor, TProperty> ValueSetter
@@ -41,15 +39,9 @@ public class Property<T, TProperty> : Property<T>
         set { _valueSetter = value; }
     }
 
-    protected Accessor PropertyAccessor
-    {
-        get { return _propertyAccessor; }
-    }
+    protected Accessor PropertyAccessor { get; }
 
-    protected TProperty Value
-    {
-        get { return _value; }
-    }
+    protected TProperty Value { get; }
 
     public override void SetValue(T target)
     {
@@ -59,7 +51,7 @@ public class Property<T, TProperty> : Property<T>
         }
         catch (Exception e)
         {
-            string message = "Error while trying to set property " + _propertyAccessor.Name;
+            string message = "Error while trying to set property " + PropertyAccessor.Name;
             throw new ApplicationException(message, e);
         }
     }

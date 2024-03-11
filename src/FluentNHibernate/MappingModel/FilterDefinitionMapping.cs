@@ -11,7 +11,6 @@ namespace FluentNHibernate.MappingModel;
 public class FilterDefinitionMapping : MappingBase
 {
     readonly AttributeStore attributes;
-    readonly IDictionary<string, IType> parameters;
 
     public FilterDefinitionMapping()
         : this(new AttributeStore())
@@ -20,13 +19,10 @@ public class FilterDefinitionMapping : MappingBase
     public FilterDefinitionMapping(AttributeStore attributes)
     {
         this.attributes = attributes;
-        parameters = new Dictionary<string, IType>();
+        Parameters = new Dictionary<string, IType>();
     }
 
-    public IDictionary<string, IType> Parameters
-    {
-        get { return parameters; }
-    }
+    public IDictionary<string, IType> Parameters { get; }
 
     public string Name
     {
@@ -48,7 +44,7 @@ public class FilterDefinitionMapping : MappingBase
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
-               other.parameters.ContentEquals(parameters);
+               other.Parameters.ContentEquals(Parameters);
     }
 
     public override bool Equals(object obj)
@@ -63,7 +59,7 @@ public class FilterDefinitionMapping : MappingBase
     {
         unchecked
         {
-            return ((attributes is not null ? attributes.GetHashCode() : 0) * 397) ^ (parameters is not null ? parameters.GetHashCode() : 0);
+            return ((attributes is not null ? attributes.GetHashCode() : 0) * 397) ^ (Parameters is not null ? Parameters.GetHashCode() : 0);
         }
     }
 

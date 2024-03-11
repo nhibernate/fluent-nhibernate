@@ -11,8 +11,6 @@ public class VersionPart : IVersionMappingProvider
 {
     readonly Type entity;
     readonly Member member;
-    readonly AccessStrategyBuilder<VersionPart> access;
-    readonly VersionGeneratedBuilder<VersionPart> generated;
     readonly AttributeStore attributes = new AttributeStore();
     readonly AttributeStore columnAttributes = new AttributeStore();
     readonly List<string> columns = new List<string>();
@@ -22,8 +20,8 @@ public class VersionPart : IVersionMappingProvider
     {
         this.entity = entity;
         this.member = member;
-        access = new AccessStrategyBuilder<VersionPart>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
-        generated = new VersionGeneratedBuilder<VersionPart>(this, value => attributes.Set("Generated", Layer.UserSupplied, value));
+        Access = new AccessStrategyBuilder<VersionPart>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
+        Generated = new VersionGeneratedBuilder<VersionPart>(this, value => attributes.Set("Generated", Layer.UserSupplied, value));
 
         SetDefaultAccess();
     }
@@ -41,18 +39,12 @@ public class VersionPart : IVersionMappingProvider
     /// <summary>
     /// Specify if this version is database generated
     /// </summary>
-    public VersionGeneratedBuilder<VersionPart> Generated
-    {
-        get { return generated; }
-    }
+    public VersionGeneratedBuilder<VersionPart> Generated { get; }
 
     /// <summary>
     /// Specify the access strategy
     /// </summary>
-    public AccessStrategyBuilder<VersionPart> Access
-    {
-        get { return access; }
-    }
+    public AccessStrategyBuilder<VersionPart> Access { get; }
 
     /// <summary>
     /// Invert the next boolean operation

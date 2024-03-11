@@ -11,7 +11,6 @@ namespace FluentNHibernate.Mapping;
 public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclassMappingProvider
 {
     readonly MappingProviderStore providers;
-    readonly ColumnMappingCollection<JoinedSubClassPart<TSubclass>> columns;
     readonly List<SubclassMapping> subclassMappings = new List<SubclassMapping>();
     readonly AttributeStore attributes;
     bool nextBool = true;
@@ -25,7 +24,7 @@ public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubcl
     {
         this.providers = providers;
         this.attributes = attributes;
-        columns = new ColumnMappingCollection<JoinedSubClassPart<TSubclass>>(this)
+        KeyColumns = new ColumnMappingCollection<JoinedSubClassPart<TSubclass>>(this)
         {
             keyColumn
         };
@@ -42,10 +41,7 @@ public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubcl
         subclassMappings.Add(((ISubclassMappingProvider)subclass).GetSubclassMapping());
     }
 
-    public ColumnMappingCollection<JoinedSubClassPart<TSubclass>> KeyColumns
-    {
-        get { return columns; }
-    }
+    public ColumnMappingCollection<JoinedSubClassPart<TSubclass>> KeyColumns { get; }
 
     public JoinedSubClassPart<TSubclass> Table(string tableName)
     {
@@ -142,7 +138,7 @@ public class JoinedSubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubcl
         mapping.Set(x => x.Name, Layer.Defaults, typeof(TSubclass).AssemblyQualifiedName);
         mapping.Set(x => x.Type, Layer.Defaults, typeof(TSubclass));
 
-        foreach (var column in columns)
+        foreach (var column in KeyColumns)
             mapping.Key.AddColumn(Layer.Defaults, column.Clone());
 
         foreach (var property in providers.Properties)

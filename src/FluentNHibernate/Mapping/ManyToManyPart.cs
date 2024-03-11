@@ -12,12 +12,8 @@ namespace FluentNHibernate.Mapping;
 public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
 {
     private readonly IList<IFilterMappingProvider> childFilters = new List<IFilterMappingProvider>();
-    private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
-    private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
     private IndexManyToManyPart manyToManyIndex;
     private IndexPart index;
-    private readonly ColumnMappingCollection<ManyToManyPart<TChild>> childKeyColumns;
-    private readonly ColumnMappingCollection<ManyToManyPart<TChild>> parentKeyColumns;
     private readonly Type childType;
     private Type valueType;
     private bool isTernary;
@@ -32,11 +28,11 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
     {
         childType = collectionType;
 
-        fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set("Fetch", Layer.UserSupplied, value));
-        notFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set("NotFound", Layer.UserSupplied, value));
+        FetchType = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set("Fetch", Layer.UserSupplied, value));
+        NotFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set("NotFound", Layer.UserSupplied, value));
 
-        childKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
-        parentKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
+        ChildKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
+        ParentKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
     }
 
     /// <summary>
@@ -44,8 +40,8 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
     /// </summary>
     public ManyToManyPart<TChild> ChildKeyColumn(string childKeyColumn)
     {
-        childKeyColumns.Clear(); 
-        childKeyColumns.Add(childKeyColumn);
+        ChildKeyColumns.Clear(); 
+        ChildKeyColumns.Add(childKeyColumn);
         return this;
     }
 
@@ -54,20 +50,14 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
     /// </summary>
     public ManyToManyPart<TChild> ParentKeyColumn(string parentKeyColumn)
     {
-        parentKeyColumns.Clear(); 
-        parentKeyColumns.Add(parentKeyColumn);
+        ParentKeyColumns.Clear(); 
+        ParentKeyColumns.Add(parentKeyColumn);
         return this;
     }
 
-    public ColumnMappingCollection<ManyToManyPart<TChild>> ChildKeyColumns
-    {
-        get { return childKeyColumns; }
-    }
+    public ColumnMappingCollection<ManyToManyPart<TChild>> ChildKeyColumns { get; }
 
-    public ColumnMappingCollection<ManyToManyPart<TChild>> ParentKeyColumns
-    {
-        get { return parentKeyColumns; }
-    }
+    public ColumnMappingCollection<ManyToManyPart<TChild>> ParentKeyColumns { get; }
 
     public ManyToManyPart<TChild> ForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName)
     {
@@ -82,10 +72,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         return this;
     }
 
-    public FetchTypeExpression<ManyToManyPart<TChild>> FetchType
-    {
-        get { return fetch; }
-    }
+    public FetchTypeExpression<ManyToManyPart<TChild>> FetchType { get; }
 
     private void EnsureDictionary()
     {
@@ -209,10 +196,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         get { return typeof(TChild); }
     }
 
-    public NotFoundExpression<ManyToManyPart<TChild>> NotFound
-    {
-        get { return notFound; }
-    }
+    public NotFoundExpression<ManyToManyPart<TChild>> NotFound { get; }
 
     protected override ICollectionRelationshipMapping GetRelationship()
     {
@@ -363,19 +347,19 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         var collection = base.GetCollectionMapping();
 
         // key columns
-        if (parentKeyColumns.Count == 0)
+        if (ParentKeyColumns.Count == 0)
             collection.Key.AddColumn(Layer.Defaults, new ColumnMapping(EntityType.Name + "_id"));
 
-        foreach (var column in parentKeyColumns)
+        foreach (var column in ParentKeyColumns)
             collection.Key.AddColumn(Layer.UserSupplied, column.Clone());
 
         if (collection.Relationship is not null)
         {
             // child columns
-            if (childKeyColumns.Count == 0)
+            if (ChildKeyColumns.Count == 0)
                 ((ManyToManyMapping)collection.Relationship).AddColumn(Layer.Defaults, new ColumnMapping(typeof(TChild).Name + "_id"));
 
-            foreach (var column in childKeyColumns)
+            foreach (var column in ChildKeyColumns)
                 ((ManyToManyMapping)collection.Relationship).AddColumn(Layer.UserSupplied, column.Clone());
         }
 

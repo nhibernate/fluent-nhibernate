@@ -8,13 +8,12 @@ namespace FluentNHibernate.Testing.Values;
 
 public class List<T, TListElement> : Property<T, IEnumerable<TListElement>>
 {
-    private readonly IEnumerable<TListElement> _expected;
     private Action<T, Accessor, IEnumerable<TListElement>> _valueSetter;
 
     public List(Accessor property, IEnumerable<TListElement> value)
         : base(property, value)
     {
-        _expected = value;
+        Expected = value;
     }
 
     public override Action<T, Accessor, IEnumerable<TListElement>> ValueSetter
@@ -54,10 +53,7 @@ public class List<T, TListElement> : Property<T, IEnumerable<TListElement>>
         set { _valueSetter = value; }
     }
 
-    protected IEnumerable<TListElement> Expected
-    {
-        get { return _expected; }
-    }
+    protected IEnumerable<TListElement> Expected { get; }
 
     public override void CheckValue(object target)
     {

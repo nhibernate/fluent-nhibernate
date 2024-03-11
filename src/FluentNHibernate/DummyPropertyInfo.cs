@@ -7,16 +7,13 @@ namespace FluentNHibernate;
 [Serializable]
 public sealed class DummyPropertyInfo : PropertyInfo
 {
-    private readonly string name;
-    private readonly Type type;
-
     public DummyPropertyInfo(string name, Type type)
     {
         if (name is null) throw new ArgumentNullException("name");
         if (type is null) throw new ArgumentNullException("type");
 
-        this.name = name;
-        this.type = type;
+        this.Name = name;
+        this.DeclaringType = type;
     }
 
     public override Module Module
@@ -26,7 +23,7 @@ public sealed class DummyPropertyInfo : PropertyInfo
 
     public override int MetadataToken
     {
-        get { return name.GetHashCode(); }
+        get { return Name.GetHashCode(); }
     }
 
     public override object[] GetCustomAttributes(bool inherit)
@@ -67,15 +64,9 @@ public sealed class DummyPropertyInfo : PropertyInfo
         return Array.Empty<ParameterInfo>();
     }
 
-    public override string Name
-    {
-        get { return name; }
-    }
+    public override string Name { get; }
 
-    public override Type DeclaringType
-    {
-        get { return type; }
-    }
+    public override Type DeclaringType { get; }
 
     public override Type ReflectedType
     {
@@ -84,7 +75,7 @@ public sealed class DummyPropertyInfo : PropertyInfo
 
     public override Type PropertyType
     {
-        get { return type; }
+        get { return DeclaringType; }
     }
 
     public override PropertyAttributes Attributes

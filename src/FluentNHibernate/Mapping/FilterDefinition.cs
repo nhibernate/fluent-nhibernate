@@ -7,7 +7,6 @@ namespace FluentNHibernate.Mapping;
 
 public abstract class FilterDefinition : IFilterDefinition
 {
-    private string filterName;
     private string filterCondition;
     private readonly IDictionary<string, IType> parameters;
 
@@ -16,10 +15,7 @@ public abstract class FilterDefinition : IFilterDefinition
         parameters = new Dictionary<string, IType>();
     }
 
-    public string Name
-    {
-        get { return filterName; }
-    }
+    public string Name { get; private set; }
 
     public IEnumerable<KeyValuePair<string, IType>> Parameters
     {
@@ -28,7 +24,7 @@ public abstract class FilterDefinition : IFilterDefinition
 
     public FilterDefinition WithName(string name)
     {
-        filterName = name;
+        Name = name;
         return this;
     }
 
@@ -49,7 +45,7 @@ public abstract class FilterDefinition : IFilterDefinition
     FilterDefinitionMapping IFilterDefinition.GetFilterMapping()
     {
         var mapping = new FilterDefinitionMapping();
-        mapping.Set(x => x.Name, Layer.Defaults, filterName);
+        mapping.Set(x => x.Name, Layer.Defaults, Name);
         mapping.Set(x => x.Condition, Layer.Defaults, filterCondition);
         foreach (var pair in Parameters)
         {

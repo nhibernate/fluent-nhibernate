@@ -12,7 +12,6 @@ namespace FluentNHibernate.Conventions;
 public class DefaultConventionFinder : IConventionFinder
 {
     IDiagnosticLogger log = new NullDiagnosticsLogger();
-    readonly ConventionsCollection conventions = new ConventionsCollection();
 
     /// <summary>
     /// Find any conventions implementing T.
@@ -21,9 +20,9 @@ public class DefaultConventionFinder : IConventionFinder
     /// <returns>IEnumerable of T</returns>
     public IEnumerable<T> Find<T>() where T : IConvention
     {
-        foreach (var type in conventions.Where(x => typeof(T).IsAssignableFrom(x)))
+        foreach (var type in Conventions.Where(x => typeof(T).IsAssignableFrom(x)))
         {
-            foreach (var instance in conventions[type])
+            foreach (var instance in Conventions[type])
             {
                 yield return (T)instance;
             }
@@ -37,13 +36,10 @@ public class DefaultConventionFinder : IConventionFinder
 
     public void Merge(IConventionFinder conventionFinder)
     {
-        conventions.Merge(conventionFinder.Conventions);
+        Conventions.Merge(conventionFinder.Conventions);
     }
 
-    public ConventionsCollection Conventions
-    {
-        get { return conventions; }
-    }
+    public ConventionsCollection Conventions { get; } = new ConventionsCollection();
 
     public void AddSource(ITypeSource source)
     {
@@ -106,9 +102,9 @@ public class DefaultConventionFinder : IConventionFinder
 
     public void Add(Type type, object instance)
     {
-        if (conventions.Contains(type) && !AllowMultiplesOf(type)) return;
+        if (Conventions.Contains(type) && !AllowMultiplesOf(type)) return;
 
-        conventions.Add(type, instance);
+        Conventions.Add(type, instance);
     }
 
     /// <summary>
@@ -121,9 +117,9 @@ public class DefaultConventionFinder : IConventionFinder
     /// <param name="instance">Instance of convention</param>
     public void Add<T>(T instance) where T : IConvention
     {
-        if (conventions.Contains(typeof(T)) && !AllowMultiplesOf(instance.GetType())) return;
+        if (Conventions.Contains(typeof(T)) && !AllowMultiplesOf(instance.GetType())) return;
 
-        conventions.Add(typeof(T), instance);
+        Conventions.Add(typeof(T), instance);
     }
 
     private void Add(Type type, MissingConstructor missingConstructor)
@@ -133,9 +129,9 @@ public class DefaultConventionFinder : IConventionFinder
         if (missingConstructor == MissingConstructor.Ignore && !HasValidConstructor(type))
             return;
 
-        if (conventions.Contains(type) && !AllowMultiplesOf(type)) return;
+        if (Conventions.Contains(type) && !AllowMultiplesOf(type)) return;
 
-        conventions.Add(type, Instantiate(type));
+        Conventions.Add(type, Instantiate(type));
         log.ConventionDiscovered(type);
     }
 

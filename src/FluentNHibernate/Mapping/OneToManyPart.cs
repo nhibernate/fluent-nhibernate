@@ -11,8 +11,6 @@ namespace FluentNHibernate.Mapping;
 public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild>
 {
     private readonly Type entity;
-    private readonly ColumnMappingCollection<OneToManyPart<TChild>> keyColumns;
-    private readonly NotFoundExpression<OneToManyPart<TChild>> notFound;
     private IndexManyToManyPart manyToManyIndex;
     private readonly Type childType;
     private Type valueType;
@@ -29,8 +27,8 @@ public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild>
         this.entity = entity;
         childType = collectionType;
 
-        keyColumns = new ColumnMappingCollection<OneToManyPart<TChild>>(this);
-        notFound = new NotFoundExpression<OneToManyPart<TChild>>(this, value => relationshipAttributes.Set("NotFound", Layer.UserSupplied, value));
+        KeyColumns = new ColumnMappingCollection<OneToManyPart<TChild>>(this);
+        NotFound = new NotFoundExpression<OneToManyPart<TChild>>(this, value => relationshipAttributes.Set("NotFound", Layer.UserSupplied, value));
 
         collectionAttributes.Set("Name", Layer.Defaults, member.Name);
     }
@@ -38,10 +36,7 @@ public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild>
     /// <summary>
     /// Specifies the behaviour for if this collection is not found
     /// </summary>
-    public NotFoundExpression<OneToManyPart<TChild>> NotFound
-    {
-        get { return notFound; }
-    }
+    public NotFoundExpression<OneToManyPart<TChild>> NotFound { get; }
 
     /// <summary>
     /// Specify the cascade behaviour
@@ -114,10 +109,7 @@ public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild>
     /// <summary>
     /// Modify the key columns collection
     /// </summary>
-    public ColumnMappingCollection<OneToManyPart<TChild>> KeyColumns
-    {
-        get { return keyColumns; }
-    }
+    public ColumnMappingCollection<OneToManyPart<TChild>> KeyColumns { get; }
 
     /// <summary>
     /// Specify a foreign key constraint
@@ -193,10 +185,10 @@ public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild>
     {
         var collection = base.GetCollectionMapping();
 
-        if (keyColumns.Count() == 0)
+        if (KeyColumns.Count() == 0)
             collection.Key.AddColumn(Layer.Defaults, new ColumnMapping(entity.Name + "_id"));
 
-        foreach (var column in keyColumns)
+        foreach (var column in KeyColumns)
         {
             collection.Key.AddColumn(Layer.UserSupplied, column.Clone());
         }
