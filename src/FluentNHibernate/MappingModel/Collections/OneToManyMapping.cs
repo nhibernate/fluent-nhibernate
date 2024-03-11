@@ -24,25 +24,13 @@ public class OneToManyMapping : MappingBase, ICollectionRelationshipMapping
         visitor.ProcessOneToMany(this);
     }
 
-    public Type ChildType
-    {
-        get { return attributes.GetOrDefault<Type>("ChildType"); }
-    }
+    public Type ChildType => attributes.GetOrDefault<Type>("ChildType");
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
-    public string NotFound
-    {
-        get { return attributes.GetOrDefault<string>("NotFound"); }
-    }
+    public string NotFound => attributes.GetOrDefault<string>("NotFound");
 
-    public string EntityName
-    {
-        get { return attributes.GetOrDefault<string>("EntityName"); }
-    }
+    public string EntityName => attributes.GetOrDefault<string>("EntityName");
 
     public Type ContainingEntityType { get; set; }
 

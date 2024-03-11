@@ -24,10 +24,7 @@ public class InspectablePersistenceSpecification<T> : PersistenceSpecification<T
     public InspectablePersistenceSpecification(ISession session, IEqualityComparer entityEqualityComparer) : base(session, entityEqualityComparer)
     {}
 
-    public List<Property<T>> AllProperties
-    {
-        get { return allProperties; }
-    }
+    public List<Property<T>> AllProperties => allProperties;
 }
 
 public abstract class With_persistence_specification<T> : Specification

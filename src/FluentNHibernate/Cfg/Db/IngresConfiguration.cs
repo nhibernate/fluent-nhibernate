@@ -10,8 +10,5 @@ public class IngresConfiguration : PersistenceConfiguration<IngresConfiguration,
         Driver<IngresDriver>();
     }
 
-    public static IngresConfiguration Standard
-    {
-        get { return new IngresConfiguration().Dialect<IngresDialect>(); }
-    }
+    public static IngresConfiguration Standard => new IngresConfiguration().Dialect<IngresDialect>();
 }

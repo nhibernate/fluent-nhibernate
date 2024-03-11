@@ -16,27 +16,15 @@ public abstract class ComponentBaseInspector : IComponentBaseInspector
         this.mapping = mapping;
     }
 
-    public Access Access
-    {
-        get { return Access.FromString(mapping.Access); }
-    }
+    public Access Access => Access.FromString(mapping.Access);
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
     public abstract bool IsSet(Member property);
 
-    public Member Property
-    {
-        get { return mapping.Member; }
-    }
+    public Member Property => mapping.Member;
 
     public IParentInspector Parent
     {
@@ -49,15 +37,9 @@ public abstract class ComponentBaseInspector : IComponentBaseInspector
         }
     }
 
-    public bool Insert
-    {
-        get { return mapping.Insert; }
-    }
+    public bool Insert => mapping.Insert;
 
-    public bool Update
-    {
-        get { return mapping.Update; }
-    }
+    public bool Update => mapping.Update;
 
     public IEnumerable<IAnyInspector> Anys
     {
@@ -94,25 +76,13 @@ public abstract class ComponentBaseInspector : IComponentBaseInspector
         }
     }
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
-    public bool OptimisticLock
-    {
-        get { return mapping.OptimisticLock; }
-    }
+    public bool OptimisticLock => mapping.OptimisticLock;
 
-    public bool Unique
-    {
-        get { return mapping.Unique; }
-    }
+    public bool Unique => mapping.Unique;
 
-    public TypeReference Class
-    {
-        get { return mapping is ComponentMapping ? ((ComponentMapping)mapping).Class : null; }
-    }
+    public TypeReference Class => mapping is ComponentMapping ? ((ComponentMapping)mapping).Class : null;
 
     public IEnumerable<IOneToOneInspector> OneToOnes
     {
@@ -144,8 +114,5 @@ public abstract class ComponentBaseInspector : IComponentBaseInspector
         }
     }
 
-    public Type Type
-    {
-        get { return mapping.Type; }
-    }
+    public Type Type => mapping.Type;
 }

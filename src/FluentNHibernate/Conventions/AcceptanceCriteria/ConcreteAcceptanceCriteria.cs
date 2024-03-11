@@ -98,10 +98,7 @@ public class ConcreteAcceptanceCriteria<TInspector> : IAcceptanceCriteria<TInspe
         return Any(subCriteriaA, subCriteriaB);
     }
 
-    public IEnumerable<IExpectation> Expectations
-    {
-        get { return expectations; }
-    }
+    public IEnumerable<IExpectation> Expectations => expectations;
 
     public bool Matches(IInspector inspector)
     {

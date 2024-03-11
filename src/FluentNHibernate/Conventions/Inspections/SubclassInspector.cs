@@ -16,25 +16,16 @@ public class SubclassInspector : ISubclassInspector
         mappedProperties.Map(x => x.LazyLoad, x => x.Lazy);
     }
 
-    public Type EntityType
-    {
-        get { return mapping.Type; }
-    }
+    public Type EntityType => mapping.Type;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
     public bool IsSet(Member property)
     {
         return mapping.IsSpecified(mappedProperties.Get(property));
     }
 
-    public bool Abstract
-    {
-        get { return mapping.Abstract; }
-    }
+    public bool Abstract => mapping.Abstract;
 
     public IEnumerable<IAnyInspector> Anys
     {
@@ -71,25 +62,13 @@ public class SubclassInspector : ISubclassInspector
         }
     }
 
-    public object DiscriminatorValue
-    {
-        get { return mapping.DiscriminatorValue; }
-    }
+    public object DiscriminatorValue => mapping.DiscriminatorValue;
 
-    public bool DynamicInsert
-    {
-        get { return mapping.DynamicInsert; }
-    }
+    public bool DynamicInsert => mapping.DynamicInsert;
 
-    public bool DynamicUpdate
-    {
-        get { return mapping.DynamicUpdate; }
-    }
+    public bool DynamicUpdate => mapping.DynamicUpdate;
 
-    public Type Extends
-    {
-        get { return mapping.Extends; }
-    }
+    public Type Extends => mapping.Extends;
 
     public IEnumerable<IJoinInspector> Joins
     {
@@ -101,15 +80,9 @@ public class SubclassInspector : ISubclassInspector
         }
     }
 
-    public bool LazyLoad
-    {
-        get { return mapping.Lazy; }
-    }
+    public bool LazyLoad => mapping.Lazy;
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
     public IEnumerable<IOneToOneInspector> OneToOnes
     {
@@ -131,10 +104,7 @@ public class SubclassInspector : ISubclassInspector
         }
     }
 
-    public string Proxy
-    {
-        get { return mapping.Proxy; }
-    }
+    public string Proxy => mapping.Proxy;
 
     public IEnumerable<IManyToOneInspector> References
     {
@@ -145,10 +115,7 @@ public class SubclassInspector : ISubclassInspector
                 .Cast<IManyToOneInspector>();
         }
     }
-    public bool SelectBeforeUpdate
-    {
-        get { return mapping.SelectBeforeUpdate; }
-    }
+    public bool SelectBeforeUpdate => mapping.SelectBeforeUpdate;
 
     public IEnumerable<ISubclassInspector> Subclasses
     {
@@ -160,13 +127,7 @@ public class SubclassInspector : ISubclassInspector
         }
     }
 
-    IEnumerable<ISubclassInspectorBase> ISubclassInspectorBase.Subclasses
-    {
-        get { return Subclasses.Cast<ISubclassInspectorBase>(); }
-    }
+    IEnumerable<ISubclassInspectorBase> ISubclassInspectorBase.Subclasses => Subclasses.Cast<ISubclassInspectorBase>();
 
-    public Type Type
-    {
-        get { return mapping.Type; }
-    }
+    public Type Type => mapping.Type;
 }

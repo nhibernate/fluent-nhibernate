@@ -19,15 +19,9 @@ public class NestedCompositeElementMapping : CompositeElementMapping
         this.attributes = attributes;
     }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
     public void Set<T>(Expression<Func<NestedCompositeElementMapping, T>> expression, int layer, T value)
     {

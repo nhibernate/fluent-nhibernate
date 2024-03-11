@@ -52,15 +52,10 @@ public class MappingConfiguration
     /// <summary>
     /// Get whether any mappings of any kind were added
     /// </summary>
-    public bool WasUsed
-    {
-        get
-        {
-            return FluentMappings.WasUsed ||
-                   AutoMappings.WasUsed ||
-                   HbmMappings.WasUsed;
-        }
-    }
+    public bool WasUsed =>
+        FluentMappings.WasUsed ||
+        AutoMappings.WasUsed ||
+        HbmMappings.WasUsed;
 
     /// <summary>
     /// Applies any mappings to the NHibernate Configuration

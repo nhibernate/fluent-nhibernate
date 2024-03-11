@@ -18,25 +18,13 @@ public class ManyToOneInspector : IManyToOneInspector
         propertyMappings.Map(x => x.Nullable, "NotNull");
     }
 
-    public Access Access
-    {
-        get { return Access.FromString(mapping.Access); }
-    }
+    public Access Access => Access.FromString(mapping.Access);
 
-    public NotFound NotFound
-    {
-        get { return NotFound.FromString(mapping.NotFound); }
-    }
+    public NotFound NotFound => NotFound.FromString(mapping.NotFound);
 
-    public string PropertyRef
-    {
-        get { return mapping.PropertyRef; }
-    }
+    public string PropertyRef => mapping.PropertyRef;
 
-    public bool Update
-    {
-        get { return mapping.Update; }
-    }
+    public bool Update => mapping.Update;
 
     public bool Nullable
     {
@@ -48,20 +36,11 @@ public class ManyToOneInspector : IManyToOneInspector
             return !mapping.Columns.First().NotNull;
         }
     }
-    public bool OptimisticLock
-    {
-        get { return mapping.OptimisticLock; }
-    }
+    public bool OptimisticLock => mapping.OptimisticLock;
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
     public bool IsSet(Member property)
     {
@@ -71,15 +50,9 @@ public class ManyToOneInspector : IManyToOneInspector
                mapping.IsSpecified(mappedProperty);
     }
 
-    public Member Property
-    {
-        get { return mapping.Member; }
-    }
+    public Member Property => mapping.Member;
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
     public IEnumerable<IColumnInspector> Columns
     {
@@ -91,38 +64,17 @@ public class ManyToOneInspector : IManyToOneInspector
         }
     }
 
-    public Cascade Cascade
-    {
-        get { return Cascade.FromString(mapping.Cascade); }
-    }
-        
-    public string Formula
-    {
-        get { return mapping.Formula; }
-    }
+    public Cascade Cascade => Cascade.FromString(mapping.Cascade);
 
-    public TypeReference Class
-    {
-        get { return mapping.Class; }
-    }
+    public string Formula => mapping.Formula;
 
-    public Fetch Fetch
-    {
-        get { return Fetch.FromString(mapping.Fetch); }
-    }
+    public TypeReference Class => mapping.Class;
 
-    public string ForeignKey
-    {
-        get { return mapping.ForeignKey; }
-    }
+    public Fetch Fetch => Fetch.FromString(mapping.Fetch);
 
-    public bool Insert
-    {
-        get { return mapping.Insert; }
-    }
+    public string ForeignKey => mapping.ForeignKey;
 
-    public Laziness LazyLoad
-    {
-        get { return new Laziness(mapping.Lazy); }
-    }
+    public bool Insert => mapping.Insert;
+
+    public Laziness LazyLoad => new(mapping.Lazy);
 }

@@ -16,65 +16,29 @@ public class ColumnInspector : IColumnInspector
 
     public Type EntityType { get; private set; }
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
-    public string Check
-    {
-        get { return mapping.Check; }
-    }
+    public string Check => mapping.Check;
 
-    public string Index
-    {
-        get { return mapping.Index; }
-    }
+    public string Index => mapping.Index;
 
-    public int Length
-    {
-        get { return mapping.Length; }
-    }
+    public int Length => mapping.Length;
 
-    public bool NotNull
-    {
-        get { return mapping.NotNull; }
-    }
+    public bool NotNull => mapping.NotNull;
 
-    public string SqlType
-    {
-        get { return mapping.SqlType; }
-    }
+    public string SqlType => mapping.SqlType;
 
-    public bool Unique
-    {
-        get { return mapping.Unique; }
-    }
+    public bool Unique => mapping.Unique;
 
-    public string UniqueKey
-    {
-        get { return mapping.UniqueKey; }
-    }
+    public string UniqueKey => mapping.UniqueKey;
 
-    public int Precision
-    {
-        get { return mapping.Precision; }
-    }
+    public int Precision => mapping.Precision;
 
-    public int Scale
-    {
-        get { return mapping.Scale; }
-    }
+    public int Scale => mapping.Scale;
 
-    public string Default
-    {
-        get { return mapping.Default; }
-    }
+    public string Default => mapping.Default;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
     public bool IsSet(Member property)
     {

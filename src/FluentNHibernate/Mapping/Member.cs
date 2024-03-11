@@ -106,72 +106,35 @@ internal class MethodMember : Member
         this.member = member;
     }
 
-    public override string Name
-    {
-        get { return member.Name; }
-    }
-    public override Type PropertyType
-    {
-        get { return member.ReturnType; }
-    }
-    public override bool CanWrite
-    {
-        get { return false; }
-    }
-    public override MemberInfo MemberInfo
-    {
-        get { return member; }
-    }
-    public override Type DeclaringType
-    {
-        get { return member.DeclaringType; }
-    }
-    public override bool HasIndexParameters
-    {
-        get { return false; }
-    }
-    public override bool IsMethod
-    {
-        get { return true; }
-    }
-    public override bool IsField
-    {
-        get { return false; }
-    }
-    public override bool IsProperty
-    {
-        get { return false; }
-    }
+    public override string Name => member.Name;
 
-    public override bool IsAutoProperty
-    {
-        get { return false; }
-    }
+    public override Type PropertyType => member.ReturnType;
 
-    public override bool IsPrivate
-    {
-        get { return member.IsPrivate; }
-    }
+    public override bool CanWrite => false;
 
-    public override bool IsProtected
-    {
-        get { return member.IsFamily || member.IsFamilyAndAssembly; }
-    }
+    public override MemberInfo MemberInfo => member;
 
-    public override bool IsPublic
-    {
-        get { return member.IsPublic; }
-    }
+    public override Type DeclaringType => member.DeclaringType;
 
-    public override bool IsInternal
-    {
-        get { return member.IsAssembly || member.IsFamilyAndAssembly; }
-    }
+    public override bool HasIndexParameters => false;
 
-    public bool IsCompilerGenerated
-    {
-        get { return member.GetCustomAttributes(typeof(CompilerGeneratedAttribute), true).Any(); }
-    }
+    public override bool IsMethod => true;
+
+    public override bool IsField => false;
+
+    public override bool IsProperty => false;
+
+    public override bool IsAutoProperty => false;
+
+    public override bool IsPrivate => member.IsPrivate;
+
+    public override bool IsProtected => member.IsFamily || member.IsFamilyAndAssembly;
+
+    public override bool IsPublic => member.IsPublic;
+
+    public override bool IsInternal => member.IsAssembly || member.IsFamilyAndAssembly;
+
+    public bool IsCompilerGenerated => member.GetCustomAttributes(typeof(CompilerGeneratedAttribute), true).Any();
 
     public override string ToString()
     {
@@ -205,67 +168,33 @@ internal class FieldMember : Member
         this.member = member;
     }
 
-    public override string Name
-    {
-        get { return member.Name; }
-    }
-    public override Type PropertyType
-    {
-        get { return member.FieldType; }
-    }
-    public override bool CanWrite
-    {
-        get { return true; }
-    }
-    public override MemberInfo MemberInfo
-    {
-        get { return member; }
-    }
-    public override Type DeclaringType
-    {
-        get { return member.DeclaringType; }
-    }
-    public override bool HasIndexParameters
-    {
-        get { return false; }
-    }
-    public override bool IsMethod
-    {
-        get { return false; }
-    }
-    public override bool IsField
-    {
-        get { return true; }
-    }
-    public override bool IsProperty
-    {
-        get { return false; }
-    }
+    public override string Name => member.Name;
 
-    public override bool IsAutoProperty
-    {
-        get { return false; }
-    }
+    public override Type PropertyType => member.FieldType;
 
-    public override bool IsPrivate
-    {
-        get { return member.IsPrivate; }
-    }
+    public override bool CanWrite => true;
 
-    public override bool IsProtected
-    {
-        get { return member.IsFamily || member.IsFamilyAndAssembly; }
-    }
+    public override MemberInfo MemberInfo => member;
 
-    public override bool IsPublic
-    {
-        get { return member.IsPublic; }
-    }
+    public override Type DeclaringType => member.DeclaringType;
 
-    public override bool IsInternal
-    {
-        get { return member.IsAssembly || member.IsFamilyAndAssembly; }
-    }
+    public override bool HasIndexParameters => false;
+
+    public override bool IsMethod => false;
+
+    public override bool IsField => true;
+
+    public override bool IsProperty => false;
+
+    public override bool IsAutoProperty => false;
+
+    public override bool IsPrivate => member.IsPrivate;
+
+    public override bool IsProtected => member.IsFamily || member.IsFamilyAndAssembly;
+
+    public override bool IsPublic => member.IsPublic;
+
+    public override bool IsInternal => member.IsAssembly || member.IsFamilyAndAssembly;
 
     public override string ToString()
     {
@@ -323,14 +252,10 @@ internal class PropertyMember : Member
         return true;
     }
 
-    public override string Name
-    {
-        get { return member.Name; }
-    }
-    public override Type PropertyType
-    {
-        get { return member.PropertyType; }
-    }
+    public override string Name => member.Name;
+
+    public override Type PropertyType => member.PropertyType;
+
     public override bool CanWrite
     {
         get
@@ -344,59 +269,29 @@ internal class PropertyMember : Member
             return member.CanWrite;
         }
     }
-    public override MemberInfo MemberInfo
-    {
-        get { return member; }
-    }
-    public override Type DeclaringType
-    {
-        get { return member.DeclaringType; }
-    }
-    public override bool HasIndexParameters
-    {
-        get { return member.GetIndexParameters().Length > 0; }
-    }
-    public override bool IsMethod
-    {
-        get { return false; }
-    }
-    public override bool IsField
-    {
-        get { return false; }
-    }
-    public override bool IsProperty
-    {
-        get { return true; }
-    }
+    public override MemberInfo MemberInfo => member;
 
-    public override bool IsAutoProperty
-    {
-        get
-        {
-            return (Get is not null && Get.IsCompilerGenerated) 
-                   || (Set is not null && Set.IsCompilerGenerated);
-        }
-    }
+    public override Type DeclaringType => member.DeclaringType;
 
-    public override bool IsPrivate
-    {
-        get { return Get.IsPrivate; }
-    }
+    public override bool HasIndexParameters => member.GetIndexParameters().Length > 0;
 
-    public override bool IsProtected
-    {
-        get { return Get.IsProtected; }
-    }
+    public override bool IsMethod => false;
 
-    public override bool IsPublic
-    {
-        get { return Get.IsPublic; }
-    }
+    public override bool IsField => false;
 
-    public override bool IsInternal
-    {
-        get { return Get.IsInternal; }
-    }
+    public override bool IsProperty => true;
+
+    public override bool IsAutoProperty =>
+        (Get is not null && Get.IsCompilerGenerated) 
+        || (Set is not null && Set.IsCompilerGenerated);
+
+    public override bool IsPrivate => Get.IsPrivate;
+
+    public override bool IsProtected => Get.IsProtected;
+
+    public override bool IsPublic => Get.IsPublic;
+
+    public override bool IsInternal => Get.IsInternal;
 
     public MethodMember Get { get; }
 

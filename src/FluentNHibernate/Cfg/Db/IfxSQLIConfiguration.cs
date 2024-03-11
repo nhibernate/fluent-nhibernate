@@ -10,18 +10,9 @@ public class IfxSQLIConfiguration : PersistenceConfiguration<IfxSQLIConfiguratio
         Driver<IfxDriver>();
     }
 
-    public static IfxSQLIConfiguration Informix
-    {
-        get { return new IfxSQLIConfiguration().Dialect<InformixDialect>(); }
-    }
+    public static IfxSQLIConfiguration Informix => new IfxSQLIConfiguration().Dialect<InformixDialect>();
 
-    public static IfxSQLIConfiguration Informix0940
-    {
-        get { return new IfxSQLIConfiguration().Dialect<InformixDialect0940>(); }
-    }
+    public static IfxSQLIConfiguration Informix0940 => new IfxSQLIConfiguration().Dialect<InformixDialect0940>();
 
-    public static IfxSQLIConfiguration Informix1000
-    {
-        get { return new IfxSQLIConfiguration().Dialect<InformixDialect1000>(); }
-    }
+    public static IfxSQLIConfiguration Informix1000 => new IfxSQLIConfiguration().Dialect<InformixDialect1000>();
 }

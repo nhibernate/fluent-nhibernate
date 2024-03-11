@@ -6,20 +6,11 @@ namespace FluentNHibernate.Conventions.Helpers;
 
 public static class ConventionBuilder
 {
-    public static IConventionBuilder<IClassConvention, IClassInspector, IClassInstance> Class
-    {
-        get { return new ClassConventionBuilder(); }
-    }
+    public static IConventionBuilder<IClassConvention, IClassInspector, IClassInstance> Class => new ClassConventionBuilder();
 
-    public static IConventionBuilder<IIdConvention, IIdentityInspector, IIdentityInstance> Id
-    {
-        get { return new IdConventionBuilder(); }
-    }
+    public static IConventionBuilder<IIdConvention, IIdentityInspector, IIdentityInstance> Id => new IdConventionBuilder();
 
-    public static IConventionBuilder<IPropertyConvention, IPropertyInspector, IPropertyInstance> Property
-    {
-        get { return new PropertyConventionBuilder(); }
-    }
+    public static IConventionBuilder<IPropertyConvention, IPropertyInspector, IPropertyInstance> Property => new PropertyConventionBuilder();
 
     //public static IConventionBuilder<IVersionConvention, IVersion> Version
     //{
@@ -36,15 +27,9 @@ public static class ConventionBuilder
     //    get { return new DynamicComponentConventionBuilder(); }
     //}
 
-    public static IConventionBuilder<IHasManyConvention, IOneToManyCollectionInspector, IOneToManyCollectionInstance> HasMany
-    {
-        get { return new HasManyConventionBuilder(); }
-    }
+    public static IConventionBuilder<IHasManyConvention, IOneToManyCollectionInspector, IOneToManyCollectionInstance> HasMany => new HasManyConventionBuilder();
 
-    public static IConventionBuilder<IHasManyToManyConvention, IManyToManyCollectionInspector, IManyToManyCollectionInstance> HasManyToMany
-    {
-        get { return new HasManyToManyConventionBuilder(); }
-    }
+    public static IConventionBuilder<IHasManyToManyConvention, IManyToManyCollectionInspector, IManyToManyCollectionInstance> HasManyToMany => new HasManyToManyConventionBuilder();
 
     //public static IConventionBuilder<IArrayConvention, IArrayInspector, IArrayInstance> AsArray
     //{
@@ -76,10 +61,7 @@ public static class ConventionBuilder
     //    get { return new HasOneConventionBuilder(); }
     //}
 
-    public static IConventionBuilder<IReferenceConvention, IManyToOneInspector, IManyToOneInstance> Reference
-    {
-        get { return new ReferenceConventionBuilder(); }
-    }
+    public static IConventionBuilder<IReferenceConvention, IManyToOneInspector, IManyToOneInstance> Reference => new ReferenceConventionBuilder();
 
     //public static IConventionBuilder<IRelationshipConvention, IRelationship> Relationship
     //{

@@ -25,35 +25,17 @@ public class JoinMapping : IMapping
         mappedMembers = new MappedMembers();
     }
 
-    public KeyMapping Key
-    {
-        get { return attributes.GetOrDefault<KeyMapping>("Key"); }
-    }
+    public KeyMapping Key => attributes.GetOrDefault<KeyMapping>("Key");
 
-    public IEnumerable<PropertyMapping> Properties
-    {
-        get { return mappedMembers.Properties; }
-    }
+    public IEnumerable<PropertyMapping> Properties => mappedMembers.Properties;
 
-    public IEnumerable<ManyToOneMapping> References
-    {
-        get { return mappedMembers.References; }
-    }
+    public IEnumerable<ManyToOneMapping> References => mappedMembers.References;
 
-    public IEnumerable<IComponentMapping> Components
-    {
-        get { return mappedMembers.Components; }
-    }
+    public IEnumerable<IComponentMapping> Components => mappedMembers.Components;
 
-    public IEnumerable<AnyMapping> Anys
-    {
-        get { return mappedMembers.Anys; }
-    }
+    public IEnumerable<AnyMapping> Anys => mappedMembers.Anys;
 
-    public IEnumerable<CollectionMapping> Collections
-    {
-        get { return mappedMembers.Collections; }
-    }
+    public IEnumerable<CollectionMapping> Collections => mappedMembers.Collections;
 
     public void AddProperty(PropertyMapping property)
     {
@@ -85,40 +67,19 @@ public class JoinMapping : IMapping
         mappedMembers.AddStoredProcedure(storedProcedureMapping);
     }
 
-    public string TableName
-    {
-        get { return attributes.GetOrDefault<string>("TableName"); }
-    }
+    public string TableName => attributes.GetOrDefault<string>("TableName");
 
-    public string Schema
-    {
-        get { return attributes.GetOrDefault<string>("Schema"); }
-    }
+    public string Schema => attributes.GetOrDefault<string>("Schema");
 
-    public string Catalog
-    {
-        get { return attributes.GetOrDefault<string>("Catalog"); }
-    }
+    public string Catalog => attributes.GetOrDefault<string>("Catalog");
 
-    public string Subselect
-    {
-        get { return attributes.GetOrDefault<string>("Subselect"); }
-    }
+    public string Subselect => attributes.GetOrDefault<string>("Subselect");
 
-    public string Fetch
-    {
-        get { return attributes.GetOrDefault<string>("Fetch"); }
-    }
+    public string Fetch => attributes.GetOrDefault<string>("Fetch");
 
-    public bool Inverse
-    {
-        get { return attributes.GetOrDefault<bool>("Inverse"); }
-    }
+    public bool Inverse => attributes.GetOrDefault<bool>("Inverse");
 
-    public bool Optional
-    {
-        get { return attributes.GetOrDefault<bool>("Optional"); }
-    }
+    public bool Optional => attributes.GetOrDefault<bool>("Optional");
 
     public Type ContainingEntityType { get; set; }
 

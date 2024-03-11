@@ -50,7 +50,7 @@ public class List<T, TListElement> : Property<T, IEnumerable<TListElement>>
                 propertyAccessor.SetValue(target, collection);
             };
         }
-        set { _valueSetter = value; }
+        set => _valueSetter = value;
     }
 
     protected IEnumerable<TListElement> Expected { get; }

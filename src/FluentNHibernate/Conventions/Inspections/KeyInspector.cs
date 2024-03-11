@@ -15,15 +15,9 @@ public class KeyInspector : IKeyInspector
         this.mapping = mapping;
     }
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return ""; }
-    }
+    public string StringIdentifierForModel => "";
 
     public bool IsSet(Member property)
     {
@@ -40,18 +34,9 @@ public class KeyInspector : IKeyInspector
         }
     }
 
-    public string ForeignKey
-    {
-        get { return mapping.ForeignKey; }
-    }
+    public string ForeignKey => mapping.ForeignKey;
 
-    public OnDelete OnDelete
-    {
-        get { return OnDelete.FromString(mapping.OnDelete); }
-    }
+    public OnDelete OnDelete => OnDelete.FromString(mapping.OnDelete);
 
-    public string PropertyRef
-    {
-        get { return mapping.PropertyRef; }
-    }
+    public string PropertyRef => mapping.PropertyRef;
 }

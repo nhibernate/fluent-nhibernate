@@ -245,10 +245,7 @@ public class IdentityPart : IIdentityMappingProvider
         name = newName;
     }
 
-    bool HasNameSpecified
-    {
-        get { return !string.IsNullOrEmpty(name); }
-    }
+    bool HasNameSpecified => !string.IsNullOrEmpty(name);
 
     void SetDefaultGenerator()
     {

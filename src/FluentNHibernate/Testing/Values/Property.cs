@@ -36,7 +36,7 @@ public class Property<T, TProperty> : Property<T>
 
             return DefaultValueSetter;
         }
-        set { _valueSetter = value; }
+        set => _valueSetter = value;
     }
 
     protected Accessor PropertyAccessor { get; }
