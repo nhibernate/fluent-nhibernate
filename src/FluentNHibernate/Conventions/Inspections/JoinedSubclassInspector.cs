@@ -33,8 +33,7 @@ public class JoinedSubclassInspector : IJoinedSubclassInspector
         get
         {
             return mapping.Anys
-                .Select(x => new AnyInspector(x))
-                .Cast<IAnyInspector>();
+                .Select(x => new AnyInspector(x));
         }
     }
 
@@ -56,8 +55,7 @@ public class JoinedSubclassInspector : IJoinedSubclassInspector
         get
         {
             return mapping.Collections
-                .Select(x => new CollectionInspector(x))
-                .Cast<ICollectionInspector>();
+                .Select(x => new CollectionInspector(x));
         }
     }
 
@@ -87,8 +85,7 @@ public class JoinedSubclassInspector : IJoinedSubclassInspector
         get
         {
             return mapping.Joins
-                .Select(x => new JoinInspector(x))
-                .Cast<IJoinInspector>();
+                .Select(x => new JoinInspector(x));
         }
     }
 
@@ -103,8 +100,7 @@ public class JoinedSubclassInspector : IJoinedSubclassInspector
         get
         {
             return mapping.OneToOnes
-                .Select(x => new OneToOneInspector(x))
-                .Cast<IOneToOneInspector>();
+                .Select(x => new OneToOneInspector(x));
         }
     }
 
@@ -113,8 +109,7 @@ public class JoinedSubclassInspector : IJoinedSubclassInspector
         get
         {
             return mapping.Properties
-                .Select(x => new PropertyInspector(x))
-                .Cast<IPropertyInspector>();
+                .Select(x => new PropertyInspector(x));
         }
     }
 
@@ -125,8 +120,7 @@ public class JoinedSubclassInspector : IJoinedSubclassInspector
         get
         {
             return mapping.References
-                .Select(x => new ManyToOneInspector(x))
-                .Cast<IManyToOneInspector>();
+                .Select(x => new ManyToOneInspector(x));
         }
     }
     public bool SelectBeforeUpdate => mapping.SelectBeforeUpdate;
@@ -136,12 +130,11 @@ public class JoinedSubclassInspector : IJoinedSubclassInspector
         get
         {
             return mapping.Subclasses
-                .Select(x => new JoinedSubclassInspector(x))
-                .Cast<IJoinedSubclassInspector>();
+                .Select(x => new JoinedSubclassInspector(x));
         }
     }
 
-    IEnumerable<ISubclassInspectorBase> ISubclassInspectorBase.Subclasses => Subclasses.Cast<ISubclassInspectorBase>();
+    IEnumerable<ISubclassInspectorBase> ISubclassInspectorBase.Subclasses => Subclasses;
 
     public string TableName => mapping.TableName;
 

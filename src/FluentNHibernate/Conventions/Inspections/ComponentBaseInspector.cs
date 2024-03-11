@@ -46,8 +46,7 @@ public abstract class ComponentBaseInspector : IComponentBaseInspector
         get
         {
             return mapping.Anys
-                .Select(x => new AnyInspector(x))
-                .Cast<IAnyInspector>();
+                .Select(x => new AnyInspector(x));
         }
     }
 
@@ -56,8 +55,7 @@ public abstract class ComponentBaseInspector : IComponentBaseInspector
         get
         {
             return mapping.Collections
-                .Select(x => new CollectionInspector(x))
-                .Cast<ICollectionInspector>();
+                .Select(x => new CollectionInspector(x));
         }
     }
 
@@ -89,8 +87,7 @@ public abstract class ComponentBaseInspector : IComponentBaseInspector
         get
         {
             return mapping.OneToOnes
-                .Select(x => new OneToOneInspector(x))
-                .Cast<IOneToOneInspector>();
+                .Select(x => new OneToOneInspector(x));
         }
     }
 
@@ -99,8 +96,7 @@ public abstract class ComponentBaseInspector : IComponentBaseInspector
         get
         {
             return mapping.Properties
-                .Select(x => new PropertyInspector(x))
-                .Cast<IPropertyInspector>();
+                .Select(x => new PropertyInspector(x));
         }
     }
 
@@ -109,8 +105,7 @@ public abstract class ComponentBaseInspector : IComponentBaseInspector
         get
         {
             return mapping.References
-                .Select(x => new ManyToOneInspector(x))
-                .Cast<IManyToOneInspector>();
+                .Select(x => new ManyToOneInspector(x));
         }
     }
 

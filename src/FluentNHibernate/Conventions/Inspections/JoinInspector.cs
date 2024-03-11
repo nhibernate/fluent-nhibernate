@@ -29,8 +29,7 @@ public class JoinInspector : IJoinInspector
         get
         {
             return mapping.Anys
-                .Select(x => new AnyInspector(x))
-                .Cast<IAnyInspector>();
+                .Select(x => new AnyInspector(x));
         }
     }
 
@@ -56,8 +55,7 @@ public class JoinInspector : IJoinInspector
         get
         {
             return mapping.Properties
-                .Select(x => new PropertyInspector(x))
-                .Cast<IPropertyInspector>();
+                .Select(x => new PropertyInspector(x));
         }
     }
 
@@ -66,8 +64,7 @@ public class JoinInspector : IJoinInspector
         get
         {
             return mapping.References
-                .Select(x => new ManyToOneInspector(x))
-                .Cast<IManyToOneInspector>();
+                .Select(x => new ManyToOneInspector(x));
         }
     }
 
@@ -77,8 +74,7 @@ public class JoinInspector : IJoinInspector
         get
         {
             return mapping.Collections
-                .Select(x => new CollectionInspector(x))
-                .Cast<ICollectionInspector>();
+                .Select(x => new CollectionInspector(x));
         }
     }
 

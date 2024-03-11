@@ -36,8 +36,7 @@ public class CompositeIdentityInspector : ICompositeIdentityInspector
         {
             return mapping.Keys
                 .Where(x => x is KeyManyToOneMapping)
-                .Select(x => new KeyManyToOneInspector((KeyManyToOneMapping)x))
-                .Cast<IKeyManyToOneInspector>();
+                .Select(x => new KeyManyToOneInspector((KeyManyToOneMapping)x));
         }
     }
 
@@ -47,8 +46,7 @@ public class CompositeIdentityInspector : ICompositeIdentityInspector
         {
             return mapping.Keys
                 .Where(x => x is KeyPropertyMapping)
-                .Select(x => new KeyPropertyInspector((KeyPropertyMapping)x))
-                .Cast<IKeyPropertyInspector>();
+                .Select(x => new KeyPropertyInspector((KeyPropertyMapping)x));
         }
     }
 

@@ -40,8 +40,7 @@ public class KeyInstance : KeyInspector, IKeyInstance
         get
         {
             return mapping.Columns
-                .Select(x => new ColumnInstance(mapping.ContainingEntityType, x))
-                .Cast<IColumnInstance>();
+                .Select(x => new ColumnInstance(mapping.ContainingEntityType, x));
         }
     }
 

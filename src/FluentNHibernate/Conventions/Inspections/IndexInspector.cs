@@ -32,8 +32,7 @@ public class IndexInspector : IIndexInspector
         get
         {
             return mapping.Columns
-                .Select(x => new ColumnInspector(mapping.ContainingEntityType, x))
-                .Cast<IColumnInspector>();
+                .Select(x => new ColumnInspector(mapping.ContainingEntityType, x));
         }
     }
 }
