@@ -20,7 +20,7 @@ public class FluentConfigurationException : Exception
         this.PotentialReasons = info.GetValue("PotentialReasons", typeof(List<string>)) as List<string>;            
     }
 
-    public IList<string> PotentialReasons { get; private set; }
+    public IList<string> PotentialReasons { get; }
 
     public override string Message
     {

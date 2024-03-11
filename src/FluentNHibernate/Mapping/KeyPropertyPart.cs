@@ -40,5 +40,5 @@ public class KeyPropertyPart
         return this;
     }
 
-    public AccessStrategyBuilder<KeyPropertyPart> Access { get; private set; }
+    public AccessStrategyBuilder<KeyPropertyPart> Access { get; }
 }

@@ -60,7 +60,7 @@ public class IdentityPart : IIdentityMappingProvider
     /// Id("PersonId")
     ///   .GeneratedBy.Assigned();
     /// </example>
-    public IdentityGenerationStrategyBuilder<IdentityPart> GeneratedBy { get; private set; }
+    public IdentityGenerationStrategyBuilder<IdentityPart> GeneratedBy { get; }
 
     /// <summary>
     /// Set the access and naming strategy for this identity.

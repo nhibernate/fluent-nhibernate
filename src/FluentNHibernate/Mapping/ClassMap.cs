@@ -55,7 +55,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     /// <example>
     /// Cache.ReadWrite();
     /// </example>
-    public CachePart Cache { get; private set; }
+    public CachePart Cache { get; }
 
     /// <summary>
     /// Specify settings for the container/hibernate-mapping for this class.

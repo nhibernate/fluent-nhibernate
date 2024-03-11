@@ -23,7 +23,7 @@ public class GeneratorMapping : MappingBase
 
     public string Class => attributes.GetOrDefault<string>("Class");
 
-    public IDictionary<string, string> Params { get; private set; }
+    public IDictionary<string, string> Params { get; }
     public Type ContainingEntityType { get; set; }
 
     public bool Equals(GeneratorMapping other)

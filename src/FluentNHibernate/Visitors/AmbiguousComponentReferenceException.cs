@@ -14,7 +14,7 @@ public class AmbiguousComponentReferenceException : Exception
         SourceMember = sourceMember;
     }
 
-    public Type ReferencedComponentType { get; private set; }
-    public Type SourceType { get; private set; }
-    public Member SourceMember { get; private set; }
+    public Type ReferencedComponentType { get; }
+    public Type SourceType { get; }
+    public Member SourceMember { get; }
 }

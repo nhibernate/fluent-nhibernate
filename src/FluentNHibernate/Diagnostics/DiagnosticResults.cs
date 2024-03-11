@@ -17,10 +17,10 @@ public class DiagnosticResults
         AutomappedTypes = automappingTypes.ToArray();
     }
 
-    public IEnumerable<Type> FluentMappings { get; private set; }
-    public IEnumerable<ScannedSource> ScannedSources { get; private set; }
-    public IEnumerable<Type> Conventions { get; private set; }
-    public IEnumerable<SkippedAutomappingType> AutomappingSkippedTypes { get; private set; }
-    public IEnumerable<Type> AutomappingCandidateTypes { get; private set; }
-    public IEnumerable<AutomappingType> AutomappedTypes { get; private set; }
+    public IEnumerable<Type> FluentMappings { get; }
+    public IEnumerable<ScannedSource> ScannedSources { get; }
+    public IEnumerable<Type> Conventions { get; }
+    public IEnumerable<SkippedAutomappingType> AutomappingSkippedTypes { get; }
+    public IEnumerable<Type> AutomappingCandidateTypes { get; }
+    public IEnumerable<AutomappingType> AutomappedTypes { get; }
 }
