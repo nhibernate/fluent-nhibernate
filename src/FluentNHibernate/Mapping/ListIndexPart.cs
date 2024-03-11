@@ -4,15 +4,9 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Mapping;
 
-public class ListIndexPart
+public class ListIndexPart(IndexMapping mapping)
 {
-    readonly IndexMapping mapping;
     readonly AttributeStore sharedColumnAttributes = new AttributeStore();
-    
-    public ListIndexPart(IndexMapping mapping)
-    {
-        this.mapping = mapping;
-    }
 
     /// <summary>
     /// offset added to index in column

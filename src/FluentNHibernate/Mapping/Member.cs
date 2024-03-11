@@ -59,9 +59,9 @@ public abstract class Member : IEquatable<Member>
 }
 
 [Serializable]
-internal class MethodMember : Member
+internal class MethodMember(MethodInfo member) : Member
 {
-    private readonly MethodInfo member;
+    private readonly MethodInfo member = member;
     Member backingField;
 
     public override void SetValue(object target, object value)
@@ -101,11 +101,6 @@ internal class MethodMember : Member
         return true;
     }
 
-    public MethodMember(MethodInfo member)
-    {
-        this.member = member;
-    }
-
     public override string Name => member.Name;
 
     public override Type PropertyType => member.ReturnType;
@@ -143,9 +138,9 @@ internal class MethodMember : Member
 }
 
 [Serializable]
-internal class FieldMember : Member
+internal class FieldMember(FieldInfo member) : Member
 {
-    private readonly FieldInfo member;
+    private readonly FieldInfo member = member;
 
     public override void SetValue(object target, object value)
     {
@@ -161,11 +156,6 @@ internal class FieldMember : Member
     {
         backingField = null;
         return false;
-    }
-
-    public FieldMember(FieldInfo member)
-    {
-        this.member = member;
     }
 
     public override string Name => member.Name;

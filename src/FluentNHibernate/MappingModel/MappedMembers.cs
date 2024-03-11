@@ -21,12 +21,7 @@ internal class MappedMembers : IMapping, IHasMappedMembers
         StoredProcedure,
     }
 
-    private readonly List<Tuple<MappingType, IMapping>> orderedMappings;
-
-    public MappedMembers()
-    {
-        orderedMappings = new List<Tuple<MappingType, IMapping>>();
-    }
+    private readonly List<Tuple<MappingType, IMapping>> orderedMappings = new();
 
     public IEnumerable<PropertyMapping> Properties => orderedMappings.Where(x => x.Item1 == MappingType.Property).Select(x => x.Item2).Cast<PropertyMapping>();
 

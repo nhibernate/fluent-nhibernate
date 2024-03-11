@@ -3,18 +3,11 @@ using System.IO;
 
 namespace FluentNHibernate.Diagnostics;
 
-public class ConsoleOutputListener : IDiagnosticListener
+public class ConsoleOutputListener(IDiagnosticResultsFormatter formatter) : IDiagnosticListener
 {
-    readonly IDiagnosticResultsFormatter formatter;
-
     public ConsoleOutputListener()
         : this(new DefaultOutputFormatter())
     {}
-
-    public ConsoleOutputListener(IDiagnosticResultsFormatter formatter)
-    {
-        this.formatter = formatter;
-    }
 
     public void Receive(DiagnosticResults results)
     {
@@ -24,20 +17,11 @@ public class ConsoleOutputListener : IDiagnosticListener
     }
 }
 
-public class FileOutputListener : IDiagnosticListener
+public class FileOutputListener(IDiagnosticResultsFormatter formatter, string outputPath) : IDiagnosticListener
 {
-    readonly IDiagnosticResultsFormatter formatter;
-    readonly string outputPath;
-
     public FileOutputListener(string outputPath)
         : this(new DefaultOutputFormatter(), outputPath)
     {}
-
-    public FileOutputListener(IDiagnosticResultsFormatter formatter, string outputPath)
-    {
-        this.formatter = formatter;
-        this.outputPath = outputPath;
-    }
 
     public void Receive(DiagnosticResults results)
     {

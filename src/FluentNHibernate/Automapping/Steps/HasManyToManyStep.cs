@@ -10,15 +10,8 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping.Steps;
 
-public class HasManyToManyStep : IAutomappingStep
+public class HasManyToManyStep(IAutomappingConfiguration cfg) : IAutomappingStep
 {
-    private readonly IAutomappingConfiguration cfg;
-
-    public HasManyToManyStep(IAutomappingConfiguration cfg)
-    {
-        this.cfg = cfg;
-    }
-
     public bool ShouldMap(Member member)
     {
         var type = member.PropertyType;

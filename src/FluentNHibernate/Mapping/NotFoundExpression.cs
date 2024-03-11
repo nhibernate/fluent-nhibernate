@@ -2,17 +2,8 @@ using System;
 
 namespace FluentNHibernate.Mapping;
 
-public class NotFoundExpression<TParent>
+public class NotFoundExpression<TParent>(TParent parent, Action<string> setter)
 {
-    private readonly TParent parent;
-    private readonly Action<string> setter;
-
-    public NotFoundExpression(TParent parent, Action<string> setter)
-    {
-        this.parent = parent;
-        this.setter = setter;
-    }
-
     /// <summary>
     /// Used to set the Not-Found attribute to ignore.  This tells NHibernate to 
     /// return a null object rather then throw an exception when the join fails

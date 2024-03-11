@@ -7,15 +7,9 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class ManyToManyInstance : ManyToManyInspector, IManyToManyInstance
+public class ManyToManyInstance(ManyToManyMapping mapping) : ManyToManyInspector(mapping), IManyToManyInstance
 {
-    private readonly ManyToManyMapping mapping;
-
-    public ManyToManyInstance(ManyToManyMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    private readonly ManyToManyMapping mapping = mapping;
 
     public void Column(string columnName)
     {

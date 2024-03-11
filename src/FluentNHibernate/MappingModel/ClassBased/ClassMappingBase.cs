@@ -5,18 +5,11 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.ClassBased;
 
 [Serializable]
-public abstract class ClassMappingBase : MappingBase, IHasMappedMembers
+public abstract class ClassMappingBase(AttributeStore attributes) : MappingBase, IHasMappedMembers
 {
-    readonly AttributeStore attributes;
-    readonly MappedMembers mappedMembers;
-    readonly IList<SubclassMapping> subclasses;
-
-    protected ClassMappingBase(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-        mappedMembers = new MappedMembers();
-        subclasses = new List<SubclassMapping>();
-    }
+    readonly AttributeStore attributes = attributes;
+    readonly MappedMembers mappedMembers = new();
+    readonly IList<SubclassMapping> subclasses = new List<SubclassMapping>();
 
     public abstract string Name { get; }
     public abstract Type Type { get; }

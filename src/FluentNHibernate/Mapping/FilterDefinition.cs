@@ -8,12 +8,7 @@ namespace FluentNHibernate.Mapping;
 public abstract class FilterDefinition : IFilterDefinition
 {
     private string filterCondition;
-    private readonly IDictionary<string, IType> parameters;
-
-    protected FilterDefinition()
-    {
-        parameters = new Dictionary<string, IType>();
-    }
+    private readonly IDictionary<string, IType> parameters = new Dictionary<string, IType>();
 
     public string Name { get; private set; }
 

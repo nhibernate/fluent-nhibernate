@@ -6,29 +6,20 @@ namespace FluentNHibernate.Testing.Testing.Values;
 
 public class ListEntity
 {
-    private readonly IList<string> backingField;
+    private readonly IList<string> backingField = new List<string>();
 
-    public ListEntity()
-    {
-        backingField = new List<string>();
-        GetterAndSetter = new List<string>();
-        GetterAndPrivateSetter = new List<string>();
+    //Set = new HashedSet();
 
-        TypedSet = new HashSet<string>();
-        //Set = new HashedSet();
-        Collection = new StringCollection();
-        List = new List<string>();
-    }
-
-    public IEnumerable<string> GetterAndSetter { get; set; }
-    public IEnumerable<string> GetterAndPrivateSetter { get; private set; }
+    public IEnumerable<string> GetterAndSetter { get; set; } = new List<string>();
+    public IEnumerable<string> GetterAndPrivateSetter { get; private set; } = new List<string>();
     public IEnumerable<string> BackingField => backingField;
 
-    public ISet<string> TypedSet { get; set; }
+    public ISet<string> TypedSet { get; set; } = new HashSet<string>();
+
     //public ISet Set { get; set; }
-    public ICollection Collection { get; set; }
+    public ICollection Collection { get; set; } = new StringCollection();
     public string[] Array { get; set; }
-    public IList<string> List { get; set; }
+    public IList<string> List { get; set; } = new List<string>();
 
     public void AddListItem(string value)
     {
@@ -38,13 +29,8 @@ public class ListEntity
 
 public class ReferenceEntity
 {
-    public ReferenceEntity()
-    {
-        ReferenceList = new List<OtherEntity>();
-    }
-
     public OtherEntity Reference { get; set; }
-    public IEnumerable<OtherEntity> ReferenceList { get; set; }
+    public IEnumerable<OtherEntity> ReferenceList { get; set; } = new List<OtherEntity>();
 
     public void SetReference(OtherEntity value)
     {

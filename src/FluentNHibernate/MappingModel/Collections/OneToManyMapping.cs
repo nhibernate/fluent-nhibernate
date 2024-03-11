@@ -6,18 +6,13 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public class OneToManyMapping : MappingBase, ICollectionRelationshipMapping
+public class OneToManyMapping(AttributeStore attributes) : MappingBase, ICollectionRelationshipMapping
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public OneToManyMapping()
         : this(new AttributeStore())
     {}
-
-    public OneToManyMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

@@ -5,17 +5,8 @@ namespace FluentNHibernate.Diagnostics;
 /// <summary>
 /// Diagnostic logging configuration
 /// </summary>
-public class DiagnosticsConfiguration
+public class DiagnosticsConfiguration(IDiagnosticMessageDispatcher dispatcher, Action<IDiagnosticLogger> setLogger)
 {
-    readonly IDiagnosticMessageDispatcher dispatcher;
-    readonly Action<IDiagnosticLogger> setLogger;
-
-    public DiagnosticsConfiguration(IDiagnosticMessageDispatcher dispatcher, Action<IDiagnosticLogger> setLogger)
-    {
-        this.dispatcher = dispatcher;
-        this.setLogger = setLogger;
-    }
-
     /// <summary>
     /// Conditionally enable logging
     /// </summary>

@@ -5,19 +5,13 @@ using FluentNHibernate.Utils;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public class NestedCompositeElementMapping : CompositeElementMapping
+public class NestedCompositeElementMapping(AttributeStore attributes) : CompositeElementMapping(attributes)
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public NestedCompositeElementMapping()
         : this(new AttributeStore())
     { }
-
-    public NestedCompositeElementMapping(AttributeStore attributes)
-        : base(attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public string Name => attributes.GetOrDefault<string>("Name");
 

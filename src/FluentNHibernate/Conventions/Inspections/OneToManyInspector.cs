@@ -4,15 +4,9 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class OneToManyInspector : IOneToManyInspector
+public class OneToManyInspector(OneToManyMapping mapping) : IOneToManyInspector
 {
     private readonly InspectorModelMapper<IOneToManyInspector, OneToManyMapping> mappedProperties = new InspectorModelMapper<IOneToManyInspector, OneToManyMapping>();
-    private readonly OneToManyMapping mapping;
-
-    public OneToManyInspector(OneToManyMapping mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public Type EntityType => mapping.ContainingEntityType;
 

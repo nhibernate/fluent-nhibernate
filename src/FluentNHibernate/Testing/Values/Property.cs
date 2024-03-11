@@ -14,16 +14,10 @@ public abstract class Property<T>
     {}
 }
 
-public class Property<T, TProperty> : Property<T>
+public class Property<T, TProperty>(Accessor property, TProperty value) : Property<T>
 {
     private static readonly Action<T, Accessor, TProperty> DefaultValueSetter = (target, propertyAccessor, value) => propertyAccessor.SetValue (target, value);
     private Action<T, Accessor, TProperty> _valueSetter;
-
-    public Property(Accessor property, TProperty value)
-    {
-        PropertyAccessor = property;
-        Value = value;
-    }
 
     public virtual Action<T, Accessor, TProperty> ValueSetter
     {
@@ -39,9 +33,9 @@ public class Property<T, TProperty> : Property<T>
         set => _valueSetter = value;
     }
 
-    protected Accessor PropertyAccessor { get; }
+    protected Accessor PropertyAccessor { get; } = property;
 
-    protected TProperty Value { get; }
+    protected TProperty Value { get; } = value;
 
     public override void SetValue(T target)
     {

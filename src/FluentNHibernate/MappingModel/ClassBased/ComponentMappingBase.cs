@@ -4,19 +4,13 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.ClassBased;
 
 [Serializable]
-public abstract class ComponentMappingBase : ClassMappingBase
+public abstract class ComponentMappingBase(AttributeStore attributes) : ClassMappingBase(attributes)
 {
-    private readonly AttributeStore attributes;
+    private readonly AttributeStore attributes = attributes;
 
     protected ComponentMappingBase()
         : this(new AttributeStore())
     {}
-
-    protected ComponentMappingBase(AttributeStore attributes)
-        : base(attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

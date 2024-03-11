@@ -3,18 +3,11 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class ColumnInspector : IColumnInspector
+public class ColumnInspector(Type containingEntityType, ColumnMapping mapping) : IColumnInspector
 {
-    private readonly ColumnMapping mapping;
     private readonly InspectorModelMapper<IColumnInspector, ColumnMapping> propertyMappings = new InspectorModelMapper<IColumnInspector, ColumnMapping>();
 
-    public ColumnInspector(Type containingEntityType, ColumnMapping mapping)
-    {
-        EntityType = containingEntityType;
-        this.mapping = mapping;
-    }
-
-    public Type EntityType { get; }
+    public Type EntityType { get; } = containingEntityType;
 
     public string Name => mapping.Name;
 

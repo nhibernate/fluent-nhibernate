@@ -6,14 +6,10 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class PropertyMapping : ColumnBasedMappingBase
+public class PropertyMapping(AttributeStore underlyingStore) : ColumnBasedMappingBase(underlyingStore)
 {
     public PropertyMapping()
         : this(new AttributeStore())
-    {}
-
-    public PropertyMapping(AttributeStore underlyingStore)
-        : base(underlyingStore)
     {}
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)

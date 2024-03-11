@@ -5,15 +5,10 @@ using FluentNHibernate.MappingModel.Collections;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public abstract class ColumnBasedMappingBase : MappingBase, IHasColumnMappings
+public abstract class ColumnBasedMappingBase(AttributeStore underlyingStore) : MappingBase, IHasColumnMappings
 {
     readonly LayeredColumns columns = new LayeredColumns();
-    protected readonly AttributeStore attributes;
-
-    protected ColumnBasedMappingBase(AttributeStore underlyingStore)
-    {
-        attributes = underlyingStore.Clone();
-    }
+    protected readonly AttributeStore attributes = underlyingStore.Clone();
 
     public IEnumerable<ColumnMapping> Columns => columns.Columns;
 

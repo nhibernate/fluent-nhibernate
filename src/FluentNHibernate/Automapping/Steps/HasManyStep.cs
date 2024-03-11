@@ -2,16 +2,10 @@
 
 namespace FluentNHibernate.Automapping.Steps;
 
-public class HasManyStep : IAutomappingStep
+public class HasManyStep(IAutomappingConfiguration cfg) : IAutomappingStep
 {
-    readonly SimpleTypeCollectionStep simpleTypeCollectionStepStep;
-    readonly CollectionStep collectionStep;
-
-    public HasManyStep(IAutomappingConfiguration cfg)
-    {
-        simpleTypeCollectionStepStep = new SimpleTypeCollectionStep(cfg);
-        collectionStep = new CollectionStep(cfg);
-    }
+    readonly SimpleTypeCollectionStep simpleTypeCollectionStepStep = new(cfg);
+    readonly CollectionStep collectionStep = new(cfg);
 
     public bool ShouldMap(Member member)
     {

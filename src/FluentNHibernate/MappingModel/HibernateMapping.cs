@@ -8,23 +8,15 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class HibernateMapping : MappingBase
+public class HibernateMapping(AttributeStore attributes) : MappingBase
 {
-    readonly IList<ClassMapping> classes;
-    readonly IList<FilterDefinitionMapping> filters;
-    readonly IList<ImportMapping> imports;
-    readonly AttributeStore attributes;
+    readonly IList<ClassMapping> classes = new List<ClassMapping>();
+    readonly IList<FilterDefinitionMapping> filters = new List<FilterDefinitionMapping>();
+    readonly IList<ImportMapping> imports = new List<ImportMapping>();
+    readonly AttributeStore attributes = attributes;
 
     public HibernateMapping(): this(new AttributeStore())
     {}
-
-    public HibernateMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-        classes = new List<ClassMapping>();
-        filters = new List<FilterDefinitionMapping>();
-        imports = new List<ImportMapping>();
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

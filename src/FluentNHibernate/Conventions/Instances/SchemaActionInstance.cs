@@ -2,15 +2,8 @@ using System;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class SchemaActionInstance : ISchemaActionInstance
+public class SchemaActionInstance(Action<string> setter) : ISchemaActionInstance
 {
-    private readonly Action<string> setter;
-
-    public SchemaActionInstance(Action<string> setter)
-    {
-        this.setter = setter;
-    }
-
     public void None()
     {
         setter("none");

@@ -4,15 +4,9 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class ParentInspector : IParentInspector
+public class ParentInspector(ParentMapping mapping) : IParentInspector
 {
     private readonly InspectorModelMapper<IPropertyInspector, ParentMapping> mappedProperties = new InspectorModelMapper<IPropertyInspector, ParentMapping>();
-    private readonly ParentMapping mapping;
-
-    public ParentInspector(ParentMapping mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public Type EntityType => mapping.ContainingEntityType;
 

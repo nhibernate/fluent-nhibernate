@@ -6,15 +6,9 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class CompositeElementInspector : ICompositeElementInspector
+public class CompositeElementInspector(CompositeElementMapping mapping) : ICompositeElementInspector
 {
     private readonly InspectorModelMapper<ICompositeElementInspector, CompositeElementMapping> mappedProperties = new InspectorModelMapper<ICompositeElementInspector, CompositeElementMapping>();
-    private readonly CompositeElementMapping mapping;
-
-    public CompositeElementInspector(CompositeElementMapping mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public Type EntityType => mapping.ContainingEntityType;
 

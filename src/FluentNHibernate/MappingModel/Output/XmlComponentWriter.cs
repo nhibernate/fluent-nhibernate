@@ -4,15 +4,10 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output;
 
-public class XmlReferenceComponentWriter : BaseXmlComponentWriter, IXmlWriter<ReferenceComponentMapping>
+public class XmlReferenceComponentWriter(IXmlWriterServiceLocator serviceLocator)
+    : BaseXmlComponentWriter(serviceLocator), IXmlWriter<ReferenceComponentMapping>
 {
-    private IXmlWriter<IComponentMapping> innerWriter;
-
-    public XmlReferenceComponentWriter(IXmlWriterServiceLocator serviceLocator)
-        : base(serviceLocator)
-    {
-        innerWriter = serviceLocator.GetWriter<IComponentMapping>();
-    }
+    private IXmlWriter<IComponentMapping> innerWriter = serviceLocator.GetWriter<IComponentMapping>();
 
     public XmlDocument Write(ReferenceComponentMapping mappingModel)
     {
@@ -20,12 +15,9 @@ public class XmlReferenceComponentWriter : BaseXmlComponentWriter, IXmlWriter<Re
     }
 }
 
-public class XmlComponentWriter : BaseXmlComponentWriter, IXmlWriter<IComponentMapping>
+public class XmlComponentWriter(IXmlWriterServiceLocator serviceLocator)
+    : BaseXmlComponentWriter(serviceLocator), IXmlWriter<IComponentMapping>
 {
-    public XmlComponentWriter(IXmlWriterServiceLocator serviceLocator)
-        : base(serviceLocator)
-    {}
-
     public XmlDocument Write(IComponentMapping mappingModel)
     {
         document = null;

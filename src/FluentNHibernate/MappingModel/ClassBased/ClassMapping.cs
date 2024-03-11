@@ -7,19 +7,13 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.ClassBased;
 
 [Serializable]
-public class ClassMapping : ClassMappingBase
+public class ClassMapping(AttributeStore attributes) : ClassMappingBase(attributes)
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public ClassMapping()
         : this(new AttributeStore())
     {}
-
-    public ClassMapping(AttributeStore attributes)
-        : base(attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public IIdentityMapping Id => attributes.GetOrDefault<IIdentityMapping>("Id");
 

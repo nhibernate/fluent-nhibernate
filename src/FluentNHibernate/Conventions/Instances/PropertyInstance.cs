@@ -7,17 +7,11 @@ using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class PropertyInstance : PropertyInspector, IPropertyInstance
+public class PropertyInstance(PropertyMapping mapping) : PropertyInspector(mapping), IPropertyInstance
 {
-    private readonly PropertyMapping mapping;
+    private readonly PropertyMapping mapping = mapping;
     private bool nextBool = true;
     const int layer = Layer.Conventions;
-
-    public PropertyInstance(PropertyMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
 
     /// <inheritdoc />
     public new void Insert()

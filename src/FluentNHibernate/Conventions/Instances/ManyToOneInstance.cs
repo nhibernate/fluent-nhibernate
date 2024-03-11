@@ -7,16 +7,10 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class ManyToOneInstance : ManyToOneInspector, IManyToOneInstance
+public class ManyToOneInstance(ManyToOneMapping mapping) : ManyToOneInspector(mapping), IManyToOneInstance
 {
-    private readonly ManyToOneMapping mapping;
+    private readonly ManyToOneMapping mapping = mapping;
     private bool nextBool = true;
-
-    public ManyToOneInstance(ManyToOneMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public void Column(string columnName)
     {

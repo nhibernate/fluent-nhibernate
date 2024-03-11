@@ -4,16 +4,10 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class JoinInstance : JoinInspector, IJoinInstance
+public class JoinInstance(JoinMapping mapping) : JoinInspector(mapping), IJoinInstance
 {
-    private readonly JoinMapping mapping;
+    private readonly JoinMapping mapping = mapping;
     private bool nextBool = true;
-
-    public JoinInstance(JoinMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public IJoinInstance Not

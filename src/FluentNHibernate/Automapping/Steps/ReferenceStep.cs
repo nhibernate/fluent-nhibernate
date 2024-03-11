@@ -5,19 +5,13 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Automapping.Steps;
 
-public class ReferenceStep : IAutomappingStep
+public class ReferenceStep(IAutomappingConfiguration cfg) : IAutomappingStep
 {
     private readonly Func<Member, bool> findPropertyconvention = p => (
         p.PropertyType.Namespace != "System" && // ignore clr types (won't be entities)
         p.PropertyType.Namespace != "System.Collections.Generic" &&
         p.PropertyType.Namespace != "Iesi.Collections.Generic" &&
         !p.PropertyType.IsEnum);
-    readonly IAutomappingConfiguration cfg;
-
-    public ReferenceStep(IAutomappingConfiguration cfg)
-    {
-        this.cfg = cfg;
-    }
 
     public bool ShouldMap(Member member)
     {

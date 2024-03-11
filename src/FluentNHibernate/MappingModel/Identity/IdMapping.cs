@@ -6,14 +6,10 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Identity;
 
 [Serializable]
-public class IdMapping : ColumnBasedMappingBase, IIdentityMapping
+public class IdMapping(AttributeStore underlyingStore) : ColumnBasedMappingBase(underlyingStore), IIdentityMapping
 {
     public IdMapping()
         : this(new AttributeStore())
-    {}
-
-    public IdMapping(AttributeStore underlyingStore)
-        : base(underlyingStore)
     {}
 
     public Member Member { get; set; }

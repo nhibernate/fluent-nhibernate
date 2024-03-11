@@ -6,17 +6,11 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class VersionInstance : VersionInspector, IVersionInstance
+public class VersionInstance(VersionMapping mapping) : VersionInspector(mapping), IVersionInstance
 {
-    readonly VersionMapping mapping;
+    readonly VersionMapping mapping = mapping;
     bool nextBool = true;
     const int layer = Layer.Conventions;
-
-    public VersionInstance(VersionMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public new IAccessInstance Access
     {

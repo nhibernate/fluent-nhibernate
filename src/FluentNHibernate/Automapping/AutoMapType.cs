@@ -2,13 +2,8 @@ using System;
 
 namespace FluentNHibernate.Automapping;
 
-public class AutoMapType
+public class AutoMapType(Type type)
 {
-    public AutoMapType(Type type)
-    {
-        Type = type;
-    }
-
-    public Type Type { get; set;}
+    public Type Type { get; set;} = type;
     public bool IsMapped { get; set; }
 }

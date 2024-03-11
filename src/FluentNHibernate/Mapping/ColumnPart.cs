@@ -3,15 +3,9 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping;
 
-public class ColumnPart
+public class ColumnPart(ColumnMapping columnMapping)
 {
-    private ColumnMapping columnMapping;
     private bool nextBool = true;
-
-    public ColumnPart(ColumnMapping columnMapping)
-    {
-        this.columnMapping = columnMapping;
-    }
 
     /// <summary>
     /// Inverts the next boolean

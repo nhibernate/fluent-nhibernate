@@ -8,20 +8,15 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class KeyMapping : MappingBase, IHasColumnMappings
+public class KeyMapping(AttributeStore attributes) : MappingBase, IHasColumnMappings
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
     readonly LayeredColumns columns = new LayeredColumns();
     public Type ContainingEntityType { get; set; }
 
     public KeyMapping()
         : this(new AttributeStore())
     {}
-
-    public KeyMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

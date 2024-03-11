@@ -7,15 +7,9 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Visitors;
 
-public class SeparateSubclassVisitor : DefaultMappingModelVisitor
+public class SeparateSubclassVisitor(IIndeterminateSubclassMappingProviderCollection subclassProviders)
+    : DefaultMappingModelVisitor
 {
-    private readonly IIndeterminateSubclassMappingProviderCollection subclassProviders;
-
-    public SeparateSubclassVisitor(IIndeterminateSubclassMappingProviderCollection subclassProviders)
-    {
-        this.subclassProviders = subclassProviders;
-    }
-
     public override void ProcessClass(ClassMapping mapping)
     {
         var subclasses = FindClosestSubclasses(mapping.Type);

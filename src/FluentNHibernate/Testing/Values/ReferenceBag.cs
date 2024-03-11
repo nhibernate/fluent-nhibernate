@@ -6,11 +6,9 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Testing.Values;
 
-public class ReferenceBag<T, TListElement> : ReferenceList<T, TListElement>
+public class ReferenceBag<T, TListElement>(Accessor property, IEnumerable<TListElement> value)
+    : ReferenceList<T, TListElement>(property, value)
 {
-    public ReferenceBag(Accessor property, IEnumerable<TListElement> value) : base(property, value)
-    {}
-
     public override void CheckValue(object target)
     {
         var actual = PropertyAccessor.GetValue(target) as IEnumerable;

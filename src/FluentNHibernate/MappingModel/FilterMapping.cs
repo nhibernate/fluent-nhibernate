@@ -6,18 +6,13 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class FilterMapping : IMapping
+public class FilterMapping(AttributeStore attributes) : IMapping
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public FilterMapping()
         : this(new AttributeStore())
     { }
-
-    public FilterMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public string Name => attributes.GetOrDefault<string>("Name");
 

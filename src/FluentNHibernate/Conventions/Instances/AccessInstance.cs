@@ -4,15 +4,8 @@ using NHibernate.Properties;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class AccessInstance : IAccessInstance
+public class AccessInstance(Action<string> setter) : IAccessInstance
 {
-    private readonly Action<string> setter;
-
-    public AccessInstance(Action<string> setter)
-    {
-        this.setter = setter;
-    }
-
     public void Property()
     {
         setter("property");

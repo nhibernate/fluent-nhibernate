@@ -7,15 +7,9 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class KeyPropertyInspector : IKeyPropertyInspector
+public class KeyPropertyInspector(KeyPropertyMapping mapping) : IKeyPropertyInspector
 {
     private readonly InspectorModelMapper<IKeyPropertyInspector, KeyPropertyMapping> mappedProperties = new InspectorModelMapper<IKeyPropertyInspector, KeyPropertyMapping>();
-    private readonly KeyPropertyMapping mapping;
-
-    public KeyPropertyInspector(KeyPropertyMapping mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public Type EntityType => mapping.ContainingEntityType;
 

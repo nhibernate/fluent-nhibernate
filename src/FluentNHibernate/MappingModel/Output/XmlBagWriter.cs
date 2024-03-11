@@ -4,12 +4,9 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output;
 
-public class XmlBagWriter : BaseXmlCollectionWriter, IXmlWriter<CollectionMapping>
+public class XmlBagWriter(IXmlWriterServiceLocator serviceLocator)
+    : BaseXmlCollectionWriter(serviceLocator), IXmlWriter<CollectionMapping>
 {
-    public XmlBagWriter(IXmlWriterServiceLocator serviceLocator)
-        : base(serviceLocator)
-    {}
-
     public XmlDocument Write(CollectionMapping mappingModel)
     {
         document = null;

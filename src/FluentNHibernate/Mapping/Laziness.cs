@@ -3,7 +3,7 @@
 /// <summary>
 /// Laziness strategy for relationships
 /// </summary>
-public class Laziness
+public class Laziness(string value)
 {
     /// <summary>
     /// No lazy loading
@@ -20,12 +20,7 @@ public class Laziness
     /// </summary>
     public static readonly Laziness NoProxy = new Laziness("no-proxy");
             
-    readonly string value;
-
-    public Laziness(string value)
-    {
-        this.value = value;
-    }
+    readonly string value = value;
 
     public override bool Equals(object obj)
     {

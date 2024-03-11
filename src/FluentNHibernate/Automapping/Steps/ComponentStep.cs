@@ -2,15 +2,8 @@
 
 namespace FluentNHibernate.Automapping.Steps;
 
-public class ComponentStep : IAutomappingStep
+public class ComponentStep(IAutomappingConfiguration cfg) : IAutomappingStep
 {
-    private readonly IAutomappingConfiguration cfg;
-
-    public ComponentStep(IAutomappingConfiguration cfg)
-    {
-        this.cfg = cfg;
-    }
-
     public bool ShouldMap(Member member)
     {
         return cfg.IsComponent(member.PropertyType);

@@ -10,15 +10,9 @@ public interface IGeneratorInspector : IInspector
     IDictionary<string, string> Params { get; }
 }
 
-public class GeneratorInspector : IGeneratorInspector
+public class GeneratorInspector(GeneratorMapping mapping) : IGeneratorInspector
 {
     private readonly InspectorModelMapper<IGeneratorInspector, GeneratorMapping> propertyMappings = new InspectorModelMapper<IGeneratorInspector, GeneratorMapping>();
-    private readonly GeneratorMapping mapping;
-
-    public GeneratorInspector(GeneratorMapping mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public Type EntityType => mapping.ContainingEntityType;
 

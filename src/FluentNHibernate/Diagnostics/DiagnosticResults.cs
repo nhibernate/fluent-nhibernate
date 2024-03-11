@@ -4,23 +4,18 @@ using System.Linq;
 
 namespace FluentNHibernate.Diagnostics;
 
-public class DiagnosticResults
+public class DiagnosticResults(
+    IEnumerable<ScannedSource> scannedSources,
+    IEnumerable<Type> fluentMappings,
+    IEnumerable<Type> conventions,
+    IEnumerable<SkippedAutomappingType> automappingSkippedTypes,
+    IEnumerable<Type> automappingCandidateTypes,
+    IEnumerable<AutomappingType> automappingTypes)
 {
-
-    public DiagnosticResults(IEnumerable<ScannedSource> scannedSources, IEnumerable<Type> fluentMappings, IEnumerable<Type> conventions, IEnumerable<SkippedAutomappingType> automappingSkippedTypes, IEnumerable<Type> automappingCandidateTypes, IEnumerable<AutomappingType> automappingTypes)
-    {
-        FluentMappings = fluentMappings.ToArray();
-        ScannedSources = scannedSources.ToArray();
-        Conventions = conventions.ToArray();
-        AutomappingSkippedTypes = automappingSkippedTypes.ToArray();
-        AutomappingCandidateTypes = automappingCandidateTypes.ToArray();
-        AutomappedTypes = automappingTypes.ToArray();
-    }
-
-    public IEnumerable<Type> FluentMappings { get; }
-    public IEnumerable<ScannedSource> ScannedSources { get; }
-    public IEnumerable<Type> Conventions { get; }
-    public IEnumerable<SkippedAutomappingType> AutomappingSkippedTypes { get; }
-    public IEnumerable<Type> AutomappingCandidateTypes { get; }
-    public IEnumerable<AutomappingType> AutomappedTypes { get; }
+    public IEnumerable<Type> FluentMappings { get; } = fluentMappings.ToArray();
+    public IEnumerable<ScannedSource> ScannedSources { get; } = scannedSources.ToArray();
+    public IEnumerable<Type> Conventions { get; } = conventions.ToArray();
+    public IEnumerable<SkippedAutomappingType> AutomappingSkippedTypes { get; } = automappingSkippedTypes.ToArray();
+    public IEnumerable<Type> AutomappingCandidateTypes { get; } = automappingCandidateTypes.ToArray();
+    public IEnumerable<AutomappingType> AutomappedTypes { get; } = automappingTypes.ToArray();
 }

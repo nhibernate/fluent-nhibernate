@@ -4,19 +4,8 @@ using NHibernate.Id;
 
 namespace FluentNHibernate.Mapping;
 
-internal class GeneratorBuilder
+internal class GeneratorBuilder(GeneratorMapping mapping, Type identityType, int layer)
 {
-    private readonly Type identityType;
-    private readonly int layer;
-    private readonly GeneratorMapping mapping;
-
-    public GeneratorBuilder(GeneratorMapping mapping, Type identityType, int layer)
-    {
-        this.mapping = mapping;
-        this.identityType = identityType;
-        this.layer = layer;
-    }
-
     private void SetGenerator(string generator)
     {
         mapping.Set(x => x.Class, layer, generator);

@@ -5,15 +5,9 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output;
 
-public abstract class BaseXmlCollectionWriter : NullMappingModelVisitor
+public abstract class BaseXmlCollectionWriter(IXmlWriterServiceLocator serviceLocator) : NullMappingModelVisitor
 {
-    private readonly IXmlWriterServiceLocator serviceLocator;
     protected XmlDocument document;
-
-    protected BaseXmlCollectionWriter(IXmlWriterServiceLocator serviceLocator)
-    {
-        this.serviceLocator = serviceLocator;
-    }
 
     public override void Visit(KeyMapping mapping)
     {

@@ -5,15 +5,8 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Conventions.AcceptanceCriteria;
 
-public class SetCriterion : IAcceptanceCriterion
+public class SetCriterion(bool inverse) : IAcceptanceCriterion
 {
-    private readonly bool inverse;
-
-    public SetCriterion(bool inverse)
-    {
-        this.inverse = inverse;
-    }
-
     public bool IsSatisfiedBy<T>(Expression<Func<T, object>> expression, T inspector) where T : IInspector
     {
         var member = expression.ToMember();

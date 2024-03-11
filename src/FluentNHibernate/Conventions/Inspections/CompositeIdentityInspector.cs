@@ -7,15 +7,9 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class CompositeIdentityInspector : ICompositeIdentityInspector
+public class CompositeIdentityInspector(CompositeIdMapping mapping) : ICompositeIdentityInspector
 {
     private readonly InspectorModelMapper<ICompositeIdentityInspector, CompositeIdMapping> mappedProperties = new InspectorModelMapper<ICompositeIdentityInspector, CompositeIdMapping>();
-    private readonly CompositeIdMapping mapping;
-
-    public CompositeIdentityInspector(CompositeIdMapping mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public Type EntityType => mapping.ContainingEntityType;
 

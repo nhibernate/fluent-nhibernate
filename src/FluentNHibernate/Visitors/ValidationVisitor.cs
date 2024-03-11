@@ -8,11 +8,6 @@ namespace FluentNHibernate.Visitors;
 /// </summary>
 public class ValidationVisitor : DefaultMappingModelVisitor
 {
-    public ValidationVisitor()
-    {
-        Enabled = true;
-    }
-
     public override void ProcessClass(ClassMapping classMapping)
     {
         if (!Enabled) return;
@@ -43,5 +38,5 @@ public class ValidationVisitor : DefaultMappingModelVisitor
     /// <summary>
     /// Gets or sets whether validation is performed.
     /// </summary>
-    public bool Enabled { get; set; }
+    public bool Enabled { get; set; } = true;
 }

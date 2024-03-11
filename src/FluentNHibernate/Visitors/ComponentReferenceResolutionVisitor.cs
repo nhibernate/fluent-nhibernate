@@ -33,17 +33,11 @@ public class ComponentMapComponentReferenceResolver : IComponentReferenceResolve
     }
 }
 
-public class ComponentReferenceResolutionVisitor : DefaultMappingModelVisitor
+public class ComponentReferenceResolutionVisitor(
+    IEnumerable<IComponentReferenceResolver> resolvers,
+    IEnumerable<IExternalComponentMappingProvider> componentProviders)
+    : DefaultMappingModelVisitor
 {
-    readonly IEnumerable<IComponentReferenceResolver> resolvers;
-    readonly IEnumerable<IExternalComponentMappingProvider> componentProviders;
-
-    public ComponentReferenceResolutionVisitor(IEnumerable<IComponentReferenceResolver> resolvers, IEnumerable<IExternalComponentMappingProvider> componentProviders)
-    {
-        this.resolvers = resolvers;
-        this.componentProviders = componentProviders;
-    }
-
     public override void ProcessComponent(ReferenceComponentMapping mapping)
     {
         var context = new ComponentResolutionContext

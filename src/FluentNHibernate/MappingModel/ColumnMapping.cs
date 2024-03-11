@@ -6,9 +6,9 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class ColumnMapping : MappingBase
+public class ColumnMapping(AttributeStore attributes) : MappingBase
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public ColumnMapping()
         : this(new AttributeStore())
@@ -18,11 +18,6 @@ public class ColumnMapping : MappingBase
         : this()
     {
         Set(x => x.Name, Layer.Defaults, defaultColumnName);
-    }
-
-    public ColumnMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
     }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)

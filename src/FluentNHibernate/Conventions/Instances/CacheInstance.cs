@@ -3,16 +3,10 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class CacheInstance : CacheInspector, ICacheInstance
+public class CacheInstance(CacheMapping mapping) : CacheInspector(mapping), ICacheInstance
 {
     const int layer = Layer.Conventions;
-    readonly CacheMapping mapping;
-
-    public CacheInstance(CacheMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly CacheMapping mapping = mapping;
 
     public void ReadWrite()
     {

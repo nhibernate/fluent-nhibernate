@@ -5,14 +5,8 @@ using System.Reflection;
 namespace FluentNHibernate;
 
 [Serializable]
-public sealed class DummyPropertyInfo : PropertyInfo
+public sealed class DummyPropertyInfo(string name, Type type) : PropertyInfo
 {
-    public DummyPropertyInfo(string name, Type type)
-    {
-        Name = name ?? throw new ArgumentNullException(nameof(name));
-        DeclaringType = type ?? throw new ArgumentNullException(nameof(type));
-    }
-
     public override Module Module => null;
 
     public override int MetadataToken => Name.GetHashCode();
@@ -55,9 +49,9 @@ public sealed class DummyPropertyInfo : PropertyInfo
         return Array.Empty<ParameterInfo>();
     }
 
-    public override string Name { get; }
+    public override string Name { get; } = name ?? throw new ArgumentNullException(nameof(name));
 
-    public override Type DeclaringType { get; }
+    public override Type DeclaringType { get; } = type ?? throw new ArgumentNullException(nameof(type));
 
     public override Type ReflectedType => null;
 

@@ -5,15 +5,8 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.AcceptanceCriteria;
 
-public class EmptyCriterion : IAcceptanceCriterion
+public class EmptyCriterion(bool inverse) : IAcceptanceCriterion
 {
-    private readonly bool inverse;
-
-    public EmptyCriterion(bool inverse)
-    {
-        this.inverse = inverse;
-    }
-
     public bool IsSatisfiedBy<T>(Expression<Func<T, object>> propertyExpression, T inspector) where T : IInspector
     {
         var func = propertyExpression.Compile();

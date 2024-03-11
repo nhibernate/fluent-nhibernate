@@ -6,21 +6,14 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.ClassBased;
 
 [Serializable]
-public class SubclassMapping : ClassMappingBase
+public class SubclassMapping(SubclassType subclassType, AttributeStore attributes) : ClassMappingBase(attributes)
 {
-    public SubclassType SubclassType { get; }
-    AttributeStore attributes;
+    public SubclassType SubclassType { get; } = subclassType;
+    AttributeStore attributes = attributes;
 
     public SubclassMapping(SubclassType subclassType)
         : this(subclassType, new AttributeStore())
     {}
-
-    public SubclassMapping(SubclassType subclassType, AttributeStore attributes)
-        : base(attributes)
-    {
-        SubclassType = subclassType;
-        this.attributes = attributes;
-    }
 
     /// <summary>
     /// Set which type this subclass extends.

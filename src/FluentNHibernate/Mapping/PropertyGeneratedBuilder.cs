@@ -2,17 +2,8 @@ using System;
 
 namespace FluentNHibernate.Mapping;
 
-public class PropertyGeneratedBuilder
+public class PropertyGeneratedBuilder(PropertyPart parent, Action<string> setter)
 {
-    private readonly PropertyPart parent;
-    private readonly Action<string> setter;
-
-    public PropertyGeneratedBuilder(PropertyPart parent, Action<string> setter)
-    {
-        this.parent = parent;
-        this.setter = setter;
-    }
-
     /// <summary>
     /// Property is never database generated
     /// </summary>

@@ -3,20 +3,15 @@ using System.Linq.Expressions;
 
 namespace FluentNHibernate.Utils;
 
-public class SingleMember : Accessor
+public class SingleMember(Member member) : Accessor
 {
-    public SingleMember(Member member)
-    {
-        this.InnerMember = member;
-    }
-
     #region Accessor Members
 
     public string FieldName => InnerMember.Name;
 
     public Type PropertyType => InnerMember.PropertyType;
 
-    public Member InnerMember { get; }
+    public Member InnerMember { get; } = member;
 
     public Accessor GetChildAccessor<T>(Expression<Func<T, object>> expression)
     {

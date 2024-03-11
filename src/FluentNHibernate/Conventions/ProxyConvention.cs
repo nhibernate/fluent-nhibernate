@@ -4,18 +4,13 @@ using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions;
 
-public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneConvention, IReferenceConvention, ICollectionConvention
+public class ProxyConvention(
+    Func<Type, Type> mapPersistentTypeToProxyInterfaceType,
+    Func<Type, Type> mapProxyInterfaceTypeToPersistentType)
+    : IClassConvention, ISubclassConvention, IHasOneConvention, IReferenceConvention, ICollectionConvention
 {
-    private readonly Func<Type, Type> _mapPersistentTypeToProxyInterfaceType;
-    private readonly Func<Type, Type> _mapProxyInterfaceTypeToPersistentType;
-
-    public ProxyConvention(
-        Func<Type, Type> mapPersistentTypeToProxyInterfaceType,
-        Func<Type, Type> mapProxyInterfaceTypeToPersistentType)
-    {
-        _mapPersistentTypeToProxyInterfaceType = mapPersistentTypeToProxyInterfaceType ?? throw new ArgumentNullException(nameof(mapPersistentTypeToProxyInterfaceType));
-        _mapProxyInterfaceTypeToPersistentType = mapProxyInterfaceTypeToPersistentType ?? throw new ArgumentNullException(nameof(mapProxyInterfaceTypeToPersistentType));
-    }
+    private readonly Func<Type, Type> _mapPersistentTypeToProxyInterfaceType = mapPersistentTypeToProxyInterfaceType ?? throw new ArgumentNullException(nameof(mapPersistentTypeToProxyInterfaceType));
+    private readonly Func<Type, Type> _mapProxyInterfaceTypeToPersistentType = mapProxyInterfaceTypeToPersistentType ?? throw new ArgumentNullException(nameof(mapProxyInterfaceTypeToPersistentType));
 
     /// <summary>
     /// Apply changes to the target

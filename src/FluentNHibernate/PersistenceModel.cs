@@ -339,15 +339,8 @@ public interface IMappingProvider
     IEnumerable<Member> GetIgnoredProperties();
 }
 
-public class PassThroughMappingProvider : IMappingProvider
+public class PassThroughMappingProvider(ClassMapping mapping) : IMappingProvider
 {
-    private readonly ClassMapping mapping;
-
-    public PassThroughMappingProvider(ClassMapping mapping)
-    {
-        this.mapping = mapping;
-    }
-
     public ClassMapping GetClassMapping()
     {
         return mapping;

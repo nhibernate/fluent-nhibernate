@@ -7,21 +7,15 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public class CompositeElementMapping : MappingBase
+public class CompositeElementMapping(AttributeStore attributes) : MappingBase
 {
-    readonly MappedMembers mappedMembers;
+    readonly MappedMembers mappedMembers = new();
     readonly List<NestedCompositeElementMapping> compositeElements = new List<NestedCompositeElementMapping>();
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public CompositeElementMapping()
         : this(new AttributeStore())
     { }
-
-    public CompositeElementMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-        mappedMembers = new MappedMembers();
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

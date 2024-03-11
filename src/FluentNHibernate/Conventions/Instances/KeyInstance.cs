@@ -5,15 +5,9 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class KeyInstance : KeyInspector, IKeyInstance
+public class KeyInstance(KeyMapping mapping) : KeyInspector(mapping), IKeyInstance
 {
-    private readonly KeyMapping mapping;
-
-    public KeyInstance(KeyMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    private readonly KeyMapping mapping = mapping;
 
     public void Column(string columnName)
     {

@@ -5,15 +5,9 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping;
 
-public class ColumnMappingCollection<TParent> : IEnumerable<ColumnMapping>
+public class ColumnMappingCollection<TParent>(TParent parent) : IEnumerable<ColumnMapping>
 {
     private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
-    private readonly TParent parent;
-
-    public ColumnMappingCollection(TParent parent)
-    {
-        this.parent = parent;
-    }
 
     public TParent Add(string name)
     {

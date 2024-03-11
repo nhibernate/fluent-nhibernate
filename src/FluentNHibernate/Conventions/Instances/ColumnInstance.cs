@@ -4,15 +4,10 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class ColumnInstance : ColumnInspector, IColumnInstance
+public class ColumnInstance(Type parentType, ColumnMapping mapping)
+    : ColumnInspector(parentType, mapping), IColumnInstance
 {
-    private readonly ColumnMapping mapping;
-
-    public ColumnInstance(Type parentType, ColumnMapping mapping)
-        : base(parentType, mapping)
-    {
-        this.mapping = mapping;
-    }
+    private readonly ColumnMapping mapping = mapping;
 
     public new void Length(int length)
     {

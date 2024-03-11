@@ -171,14 +171,8 @@ public static class NetStandardSerialization
     [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     public sealed class SurrogateSelector : ISurrogateSelector
     {
-        private readonly ISurrogateProvider _typeSerializationProvider;
-        private readonly ISurrogateProvider _memberInfoSerializationProvider;
-
-        public SurrogateSelector()
-        {
-            _typeSerializationProvider = new TypeSerializationSurrogate();
-            _memberInfoSerializationProvider = new MemberInfoSerializationSurrogate();
-        }
+        private readonly ISurrogateProvider _typeSerializationProvider = new TypeSerializationSurrogate();
+        private readonly ISurrogateProvider _memberInfoSerializationProvider = new MemberInfoSerializationSurrogate();
 
         void ISurrogateSelector.ChainSelector(ISurrogateSelector selector) => throw new NotImplementedException();
 

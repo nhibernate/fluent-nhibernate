@@ -12,19 +12,14 @@ namespace FluentNHibernate.Mapping;
 /// Component-element for component HasMany's.
 /// </summary>
 /// <typeparam name="T">Component type</typeparam>
-public class CompositeElementPart<T> : ICompositeElementMappingProvider, INestedCompositeElementMappingProvider
+public class CompositeElementPart<T>(Type entity)
+    : ICompositeElementMappingProvider, INestedCompositeElementMappingProvider
 {
-    readonly Type entity;
     private protected readonly Member member;
     readonly List<IPropertyMappingProvider> properties = new List<IPropertyMappingProvider>();
     readonly List<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
     readonly List<INestedCompositeElementMappingProvider> components = new List<INestedCompositeElementMappingProvider>();
     private protected readonly AttributeStore attributes = new AttributeStore();
-
-    public CompositeElementPart(Type entity)
-    {
-        this.entity = entity;
-    }
 
     public CompositeElementPart(Type entity, Member member)
         : this(entity)

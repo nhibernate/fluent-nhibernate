@@ -2,17 +2,8 @@ using System;
 
 namespace FluentNHibernate.Mapping;
 
-public class SchemaActionBuilder<T>
+public class SchemaActionBuilder<T>(T parent, Action<string> setter)
 {
-    private readonly T parent;
-    private readonly Action<string> setter;
-
-    public SchemaActionBuilder(T parent, Action<string> setter)
-    {
-        this.parent = parent;
-        this.setter = setter;
-    }
-
     public T All()
     {
         setter("all");

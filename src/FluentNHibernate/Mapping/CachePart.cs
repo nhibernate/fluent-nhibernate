@@ -4,15 +4,9 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping;
 
-public class CachePart : ICacheMappingProvider
+public class CachePart(Type entityType) : ICacheMappingProvider
 {
-    readonly Type entityType;
     readonly AttributeStore attributes = new AttributeStore();
-
-    public CachePart(Type entityType)
-    {
-        this.entityType = entityType;
-    }
 
     /// <summary>
     /// Sets caching to read-write

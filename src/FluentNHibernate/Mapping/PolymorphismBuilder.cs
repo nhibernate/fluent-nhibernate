@@ -2,17 +2,8 @@ using System;
 
 namespace FluentNHibernate.Mapping;
 
-public class PolymorphismBuilder<T>
+public class PolymorphismBuilder<T>(T parent, Action<string> setter)
 {
-    private readonly T parent;
-    private readonly Action<string> setter;
-
-    public PolymorphismBuilder(T parent, Action<string> setter)
-    {
-        this.parent = parent;
-        this.setter = setter;
-    }
-
     /// <summary>
     /// Implicit polymorphism
     /// </summary>

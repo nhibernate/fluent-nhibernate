@@ -9,19 +9,12 @@ using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.Automapping;
 
-public class AutoMapper
+public class AutoMapper(
+    IAutomappingConfiguration cfg,
+    IConventionFinder conventionFinder,
+    IEnumerable<InlineOverride> inlineOverrides)
 {
     List<AutoMapType> mappingTypes;
-    readonly IAutomappingConfiguration cfg;
-    readonly IConventionFinder conventionFinder;
-    readonly IEnumerable<InlineOverride> inlineOverrides;
-
-    public AutoMapper(IAutomappingConfiguration cfg, IConventionFinder conventionFinder, IEnumerable<InlineOverride> inlineOverrides)
-    {
-        this.cfg = cfg;
-        this.conventionFinder = conventionFinder;
-        this.inlineOverrides = inlineOverrides;
-    }
 
     private void ApplyOverrides(Type classType, IList<Member> mappedMembers, ClassMappingBase mapping)
     {
