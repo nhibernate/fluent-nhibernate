@@ -116,7 +116,7 @@ public class CollectionMapping : MappingBase, IRelationship
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.filters.ContentEquals(filters) &&
-               Equals(other.ContainingEntityType, ContainingEntityType)
+               other.ContainingEntityType == ContainingEntityType
                && Equals(other.Member, Member);
     }
 

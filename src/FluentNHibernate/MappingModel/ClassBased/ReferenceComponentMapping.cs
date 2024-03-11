@@ -139,9 +139,9 @@ public class ReferenceComponentMapping : IComponentMapping
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.property, property) &&
-               Equals(other.componentType, componentType) &&
+               other.componentType == componentType &&
                Equals(other.mergedComponent, mergedComponent) &&
-               Equals(other.containingEntityType, containingEntityType);
+               other.containingEntityType == containingEntityType;
     }
 
     public override bool Equals(object obj)

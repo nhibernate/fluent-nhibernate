@@ -39,7 +39,7 @@ public class ParentMapping : MappingBase
 
     public bool Equals(ParentMapping other)
     {
-        return Equals(other.attributes, attributes) && Equals(other.ContainingEntityType, ContainingEntityType);
+        return Equals(other.attributes, attributes) && other.ContainingEntityType == ContainingEntityType;
     }
 
     public override int GetHashCode()

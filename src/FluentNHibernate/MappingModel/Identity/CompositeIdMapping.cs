@@ -59,7 +59,7 @@ public class CompositeIdMapping : MappingBase, IIdentityMapping
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.keys.ContentEquals(keys) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

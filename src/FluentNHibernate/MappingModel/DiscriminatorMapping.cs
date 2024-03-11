@@ -37,7 +37,7 @@ public class DiscriminatorMapping : ColumnBasedMappingBase
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(other.ContainingEntityType, ContainingEntityType) &&
+        return other.ContainingEntityType == ContainingEntityType &&
                other.Columns.ContentEquals(Columns) &&
                Equals(other.attributes, attributes);
     }
