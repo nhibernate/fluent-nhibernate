@@ -117,7 +117,7 @@ public class PropertyStep : IAutomappingStep
         if (property.PropertyType.IsEnum())
             type = new TypeReference(typeof(EnumStringType<>).MakeGenericType(property.PropertyType));
 
-        if (property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
+        if (property.PropertyType.IsNullableType() && property.PropertyType.IsEnum())
             type = new TypeReference(typeof(EnumStringType<>).MakeGenericType(property.PropertyType.GetGenericArguments()[0]));
 
         return type;
