@@ -13,19 +13,8 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
         Func<Type, Type> mapPersistentTypeToProxyInterfaceType,
         Func<Type, Type> mapProxyInterfaceTypeToPersistentType)
     {
-        if (mapPersistentTypeToProxyInterfaceType is null)
-        {
-            throw new ArgumentNullException("mapPersistentTypeToProxyInterfaceType");
-        }
-
-        if(mapProxyInterfaceTypeToPersistentType is null)
-        {
-            throw new ArgumentNullException("mapProxyInterfaceTypeToPersistentType");
-        }
-
-        this._mapPersistentTypeToProxyInterfaceType = mapPersistentTypeToProxyInterfaceType;
-            
-        this._mapProxyInterfaceTypeToPersistentType = mapProxyInterfaceTypeToPersistentType;
+        _mapPersistentTypeToProxyInterfaceType = mapPersistentTypeToProxyInterfaceType ?? throw new ArgumentNullException(nameof(mapPersistentTypeToProxyInterfaceType));
+        _mapProxyInterfaceTypeToPersistentType = mapProxyInterfaceTypeToPersistentType ?? throw new ArgumentNullException(nameof(mapProxyInterfaceTypeToPersistentType));
     }
 
     /// <summary>

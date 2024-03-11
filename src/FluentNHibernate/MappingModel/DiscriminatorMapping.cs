@@ -23,25 +23,13 @@ public class DiscriminatorMapping : ColumnBasedMappingBase
         Columns.Each(visitor.Visit);
     }
 
-    public bool Force
-    {
-        get { return attributes.GetOrDefault<bool>("Force"); }
-    }
+    public bool Force => attributes.GetOrDefault<bool>("Force");
 
-    public bool Insert
-    {
-        get { return attributes.GetOrDefault<bool>("Insert"); }
-    }
+    public bool Insert => attributes.GetOrDefault<bool>("Insert");
 
-    public string Formula
-    {
-        get { return attributes.GetOrDefault<string>("Formula"); }
-    }
+    public string Formula => attributes.GetOrDefault<string>("Formula");
 
-    public TypeReference Type
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Type"); }
-    }
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
 
     public Type ContainingEntityType { get; set; }
 
@@ -49,7 +37,7 @@ public class DiscriminatorMapping : ColumnBasedMappingBase
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(other.ContainingEntityType, ContainingEntityType) &&
+        return other.ContainingEntityType == ContainingEntityType &&
                other.Columns.ContentEquals(Columns) &&
                Equals(other.attributes, attributes);
     }

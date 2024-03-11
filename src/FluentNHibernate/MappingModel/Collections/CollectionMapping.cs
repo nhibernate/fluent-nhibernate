@@ -21,10 +21,7 @@ public class CollectionMapping : MappingBase, IRelationship
         this.attributes = attributes;
     }
 
-    public IEnumerable<FilterMapping> Filters
-    {
-        get { return filters; }
-    }
+    public IEnumerable<FilterMapping> Filters => filters;
 
     public void AddFilter(FilterMapping mapping)
     {
@@ -57,139 +54,61 @@ public class CollectionMapping : MappingBase, IRelationship
             visitor.Visit(Cache);
     }
 
-    public Type ChildType
-    {
-        get { return attributes.GetOrDefault<Type>("ChildType"); }
-    }
+    public Type ChildType => attributes.GetOrDefault<Type>("ChildType");
 
     public IRelationship OtherSide { get; set; }
 
-    public KeyMapping Key
-    {
-        get { return attributes.GetOrDefault<KeyMapping>("Key"); }
-    }
+    public KeyMapping Key => attributes.GetOrDefault<KeyMapping>("Key");
 
-    public ElementMapping Element
-    {
-        get { return attributes.GetOrDefault<ElementMapping>("Element"); }
-    }
+    public ElementMapping Element => attributes.GetOrDefault<ElementMapping>("Element");
 
-    public CompositeElementMapping CompositeElement
-    {
-        get { return attributes.GetOrDefault<CompositeElementMapping>("CompositeElement"); }
-    }
+    public CompositeElementMapping CompositeElement => attributes.GetOrDefault<CompositeElementMapping>("CompositeElement");
 
-    public CacheMapping Cache
-    {
-        get { return attributes.GetOrDefault<CacheMapping>("Cache"); }
-    }
+    public CacheMapping Cache => attributes.GetOrDefault<CacheMapping>("Cache");
 
-    public ICollectionRelationshipMapping Relationship
-    {
-        get { return attributes.GetOrDefault<ICollectionRelationshipMapping>("Relationship"); }
-    }
+    public ICollectionRelationshipMapping Relationship => attributes.GetOrDefault<ICollectionRelationshipMapping>("Relationship");
 
-    public bool Generic
-    {
-        get { return attributes.GetOrDefault<bool>("Generic"); }
-    }
+    public bool Generic => attributes.GetOrDefault<bool>("Generic");
 
-    public Lazy Lazy
-    {
-        get { return attributes.GetOrDefault<Lazy>("Lazy"); }
-    }
+    public Lazy Lazy => attributes.GetOrDefault<Lazy>("Lazy");
 
-    public bool Inverse
-    {
-        get { return attributes.GetOrDefault<bool>("Inverse"); }
-    }
+    public bool Inverse => attributes.GetOrDefault<bool>("Inverse");
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public string TableName
-    {
-        get { return attributes.GetOrDefault<string>("TableName"); }
-    }
+    public string TableName => attributes.GetOrDefault<string>("TableName");
 
-    public string Schema
-    {
-        get { return attributes.GetOrDefault<string>("Schema"); }
-    }
+    public string Schema => attributes.GetOrDefault<string>("Schema");
 
-    public string Fetch
-    {
-        get { return attributes.GetOrDefault<string>("Fetch"); }
-    }
+    public string Fetch => attributes.GetOrDefault<string>("Fetch");
 
-    public string Cascade
-    {
-        get { return attributes.GetOrDefault<string>("Cascade"); }
-    }
+    public string Cascade => attributes.GetOrDefault<string>("Cascade");
 
-    public string Where
-    {
-        get { return attributes.GetOrDefault<string>("Where"); }
-    }
+    public string Where => attributes.GetOrDefault<string>("Where");
 
-    public bool Mutable
-    {
-        get { return attributes.GetOrDefault<bool>("Mutable"); }
-    }
+    public bool Mutable => attributes.GetOrDefault<bool>("Mutable");
 
-    public string Subselect
-    {
-        get { return attributes.GetOrDefault<string>("Subselect"); }
-    }
+    public string Subselect => attributes.GetOrDefault<string>("Subselect");
 
-    public TypeReference Persister
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Persister"); }
-    }
+    public TypeReference Persister => attributes.GetOrDefault<TypeReference>("Persister");
 
-    public int BatchSize
-    {
-        get { return attributes.GetOrDefault<int>("BatchSize"); }
-    }
+    public int BatchSize => attributes.GetOrDefault<int>("BatchSize");
 
-    public string Check
-    {
-        get { return attributes.GetOrDefault<string>("Check"); }
-    }
+    public string Check => attributes.GetOrDefault<string>("Check");
 
-    public TypeReference CollectionType
-    {
-        get { return attributes.GetOrDefault<TypeReference>("CollectionType"); }
-    }
+    public TypeReference CollectionType => attributes.GetOrDefault<TypeReference>("CollectionType");
 
-    public bool OptimisticLock
-    {
-        get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
-    }
+    public bool OptimisticLock => attributes.GetOrDefault<bool>("OptimisticLock");
 
-    public string OrderBy
-    {
-        get { return attributes.GetOrDefault<string>("OrderBy"); }
-    }
+    public string OrderBy => attributes.GetOrDefault<string>("OrderBy");
 
     public Collection Collection { get; set; }
         
-    public string Sort
-    {
-        get { return attributes.GetOrDefault<string>("Sort"); }
-    }
+    public string Sort => attributes.GetOrDefault<string>("Sort");
 
-    public IIndexMapping Index
-    {
-        get { return attributes.GetOrDefault<IIndexMapping>("Index"); }
-    }
+    public IIndexMapping Index => attributes.GetOrDefault<IIndexMapping>("Index");
 
     public bool Equals(CollectionMapping other)
     {
@@ -197,7 +116,7 @@ public class CollectionMapping : MappingBase, IRelationship
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.filters.ContentEquals(filters) &&
-               Equals(other.ContainingEntityType, ContainingEntityType)
+               other.ContainingEntityType == ContainingEntityType
                && Equals(other.Member, Member);
     }
 

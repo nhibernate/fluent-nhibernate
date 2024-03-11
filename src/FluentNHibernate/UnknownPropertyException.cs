@@ -14,9 +14,9 @@ public class UnknownPropertyException : Exception
         Property = propertyName;
     }
 
-    public string Property { get; private set; }
+    public string Property { get; }
 
-    public Type Type { get; private set; }
+    public Type Type { get; }
 
     [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     protected UnknownPropertyException(SerializationInfo info, StreamingContext context) : base(info, context)

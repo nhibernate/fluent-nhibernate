@@ -31,15 +31,9 @@ public class IndexManyToManyMapping : MappingBase, IIndexMapping, IHasColumnMapp
 
     public Type ContainingEntityType { get; set; }
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
-    public IEnumerable<ColumnMapping> Columns
-    {
-        get { return columns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> Columns => columns.Columns;
 
     public void AddColumn(int layer, ColumnMapping mapping)
     {
@@ -51,15 +45,9 @@ public class IndexManyToManyMapping : MappingBase, IIndexMapping, IHasColumnMapp
         columns.MakeColumnsEmpty(layer);
     }
 
-    public string ForeignKey
-    {
-        get { return attributes.GetOrDefault<string>("ForeignKey"); }
-    }
+    public string ForeignKey => attributes.GetOrDefault<string>("ForeignKey");
 
-    public string EntityName
-    {
-        get { return attributes.GetOrDefault<string>("EntityName"); }
-    }     
+    public string EntityName => attributes.GetOrDefault<string>("EntityName");
 
     public bool Equals(IndexManyToManyMapping other)
     {
@@ -67,7 +55,7 @@ public class IndexManyToManyMapping : MappingBase, IIndexMapping, IHasColumnMapp
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.columns.ContentEquals(columns) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

@@ -75,7 +75,7 @@ public static class ReflectionHelper
             }
 
             if (nextOperand.NodeType != ExpressionType.Convert)
-                throw new ArgumentException("Expression not supported", "expression");
+                throw new ArgumentException("Expression not supported", nameof(expression));
 	            
             var unaryExpression = (UnaryExpression)nextOperand;
             desiredConversionType = unaryExpression.Type;
@@ -107,7 +107,7 @@ public static class ReflectionHelper
 
         if (enforceCheck && memberExpression is null)
         {
-            throw new ArgumentException("Not a member access", "expression");
+            throw new ArgumentException("Not a member access", nameof(expression));
         }
 
         return memberExpression;

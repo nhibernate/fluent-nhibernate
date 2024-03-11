@@ -31,40 +31,19 @@ public class KeyMapping : MappingBase, IHasColumnMappings
             visitor.Visit(column);
     }
 
-    public string ForeignKey
-    {
-        get { return attributes.GetOrDefault<string>("ForeignKey"); }
-    }
+    public string ForeignKey => attributes.GetOrDefault<string>("ForeignKey");
 
-    public string PropertyRef
-    {
-        get { return attributes.GetOrDefault<string>("PropertyRef"); }
-    }
+    public string PropertyRef => attributes.GetOrDefault<string>("PropertyRef");
 
-    public string OnDelete
-    {
-        get { return attributes.GetOrDefault<string>("OnDelete"); }
-    }
+    public string OnDelete => attributes.GetOrDefault<string>("OnDelete");
 
-    public bool NotNull
-    {
-        get { return attributes.GetOrDefault<bool>("NotNull"); }
-    }
+    public bool NotNull => attributes.GetOrDefault<bool>("NotNull");
 
-    public bool Update
-    {
-        get { return attributes.GetOrDefault<bool>("Update"); }
-    }
+    public bool Update => attributes.GetOrDefault<bool>("Update");
 
-    public bool Unique
-    {
-        get { return attributes.GetOrDefault<bool>("Unique"); }
-    }
+    public bool Unique => attributes.GetOrDefault<bool>("Unique");
 
-    public IEnumerable<ColumnMapping> Columns
-    {
-        get { return columns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> Columns => columns.Columns;
 
     public void AddColumn(int layer, ColumnMapping mapping)
     {
@@ -82,7 +61,7 @@ public class KeyMapping : MappingBase, IHasColumnMappings
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.columns.ContentEquals(columns) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

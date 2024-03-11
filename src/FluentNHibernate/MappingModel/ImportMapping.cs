@@ -22,15 +22,9 @@ public class ImportMapping : MappingBase
         visitor.ProcessImport(this);
     }
 
-    public string Rename
-    {
-        get { return attributes.GetOrDefault<string>("Rename"); }
-    }
+    public string Rename => attributes.GetOrDefault<string>("Rename");
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
     public bool Equals(ImportMapping other)
     {

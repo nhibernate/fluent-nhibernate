@@ -40,20 +40,11 @@ public class HibernateMapping : MappingBase
             visitor.Visit(filterMapping);
     }
 
-    public IEnumerable<ClassMapping> Classes
-    {
-        get { return classes; }
-    }
+    public IEnumerable<ClassMapping> Classes => classes;
 
-    public IEnumerable<FilterDefinitionMapping> Filters
-    {
-        get { return filters; }
-    }
+    public IEnumerable<FilterDefinitionMapping> Filters => filters;
 
-    public IEnumerable<ImportMapping> Imports
-    {
-        get { return imports; }
-    }
+    public IEnumerable<ImportMapping> Imports => imports;
 
     public void AddClass(ClassMapping classMapping)
     {
@@ -70,45 +61,21 @@ public class HibernateMapping : MappingBase
         imports.Add(importMapping);
     }
 
-    public string Catalog
-    {
-        get { return attributes.GetOrDefault<string>("Catalog"); }
-    }
+    public string Catalog => attributes.GetOrDefault<string>("Catalog");
 
-    public string DefaultAccess
-    {
-        get { return attributes.GetOrDefault<string>("DefaultAccess"); }
-    }
+    public string DefaultAccess => attributes.GetOrDefault<string>("DefaultAccess");
 
-    public string DefaultCascade
-    {
-        get { return attributes.GetOrDefault<string>("DefaultCascade"); }
-    }
+    public string DefaultCascade => attributes.GetOrDefault<string>("DefaultCascade");
 
-    public bool AutoImport
-    {
-        get { return attributes.GetOrDefault<bool>("AutoImport"); }
-    }
+    public bool AutoImport => attributes.GetOrDefault<bool>("AutoImport");
 
-    public string Schema
-    {
-        get { return attributes.GetOrDefault<string>("Schema"); }
-    }
+    public string Schema => attributes.GetOrDefault<string>("Schema");
 
-    public bool DefaultLazy
-    {
-        get { return attributes.GetOrDefault<bool>("DefaultLazy"); }
-    }
+    public bool DefaultLazy => attributes.GetOrDefault<bool>("DefaultLazy");
 
-    public string Namespace
-    {
-        get { return attributes.GetOrDefault<string>("Namespace"); }
-    }
+    public string Namespace => attributes.GetOrDefault<string>("Namespace");
 
-    public string Assembly
-    {
-        get { return attributes.GetOrDefault<string>("Assembly"); }
-    }
+    public string Assembly => attributes.GetOrDefault<string>("Assembly");
 
     public bool Equals(HibernateMapping other)
     {

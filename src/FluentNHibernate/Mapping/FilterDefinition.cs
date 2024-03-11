@@ -17,10 +17,7 @@ public abstract class FilterDefinition : IFilterDefinition
 
     public string Name { get; private set; }
 
-    public IEnumerable<KeyValuePair<string, IType>> Parameters
-    {
-        get { return parameters; }
-    }
+    public IEnumerable<KeyValuePair<string, IType>> Parameters => parameters;
 
     public FilterDefinition WithName(string name)
     {
@@ -36,8 +33,8 @@ public abstract class FilterDefinition : IFilterDefinition
 
     public FilterDefinition AddParameter(string name, IType type)
     {
-        if (string.IsNullOrEmpty(name)) throw new ArgumentException("The name is mandatory", "name");
-        if (type is null) throw new ArgumentNullException("type");
+        if (string.IsNullOrEmpty(name)) throw new ArgumentException("The name is mandatory", nameof(name));
+        if (type is null) throw new ArgumentNullException(nameof(type));
         parameters.Add(name, type);
         return this;
     }

@@ -30,7 +30,7 @@ public class PersistenceModel
         new ComponentMapComponentReferenceResolver()
     };
     private readonly IList<IMappingModelVisitor> visitors = new List<IMappingModelVisitor>();
-    public IConventionFinder Conventions { get; private set; }
+    public IConventionFinder Conventions { get; }
     public bool MergeMappings { get; set; }
     private IEnumerable<HibernateMapping> compiledMappings;
     private ValidationVisitor validationVisitor;
@@ -305,8 +305,8 @@ public class PersistenceModel
     /// </summary>
     public bool ValidationEnabled
     {
-        get { return validationVisitor.Enabled; }
-        set { validationVisitor.Enabled = value; }
+        get => validationVisitor.Enabled;
+        set => validationVisitor.Enabled = value;
     }
 
     internal void ImportProviders(PersistenceModel model)

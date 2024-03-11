@@ -29,20 +29,11 @@ public class ElementMapping : MappingBase, IHasColumnMappings
             visitor.Visit(column);
     }
 
-    public TypeReference Type
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Type"); }
-    }
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
 
-    public string Formula
-    {
-        get { return attributes.GetOrDefault<string>("Formula"); }
-    }
+    public string Formula => attributes.GetOrDefault<string>("Formula");
 
-    public IEnumerable<ColumnMapping> Columns
-    {
-        get { return columns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> Columns => columns.Columns;
 
     public void AddColumn(int layer, ColumnMapping mapping)
     {
@@ -62,7 +53,7 @@ public class ElementMapping : MappingBase, IHasColumnMappings
         if (ReferenceEquals(this, other)) return true;
         return other.columns.ContentEquals(columns) &&
                Equals(other.attributes, attributes) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

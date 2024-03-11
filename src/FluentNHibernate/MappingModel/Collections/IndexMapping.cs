@@ -29,22 +29,13 @@ public class IndexMapping : MappingBase, IIndexMapping, IHasColumnMappings
             visitor.Visit(column);
     }
 
-    public TypeReference Type
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Type"); }
-    }
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
 
-    public int Offset
-    {
-        get { return attributes.GetOrDefault<int>("Offset"); }
-    }
+    public int Offset => attributes.GetOrDefault<int>("Offset");
 
     public Type ContainingEntityType { get; set; }
 
-    public IEnumerable<ColumnMapping> Columns
-    {
-        get { return columns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> Columns => columns.Columns;
 
     public void AddColumn(int layer, ColumnMapping mapping)
     {
@@ -62,7 +53,7 @@ public class IndexMapping : MappingBase, IIndexMapping, IHasColumnMappings
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.columns.ContentEquals(columns) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

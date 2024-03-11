@@ -191,10 +191,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         return AsMap(null).AsTernaryAssociation(indexColumn, valueColumn);
     }
 
-    public Type ChildType
-    {
-        get { return typeof(TChild); }
-    }
+    public Type ChildType => typeof(TChild);
 
     public NotFoundExpression<ManyToManyPart<TChild>> NotFound { get; }
 

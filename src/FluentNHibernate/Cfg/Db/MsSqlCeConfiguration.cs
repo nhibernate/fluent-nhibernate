@@ -10,13 +10,7 @@ public class MsSqlCeConfiguration : PersistenceConfiguration<MsSqlCeConfiguratio
         Driver<SqlServerCeDriver>();
     }
 
-    public static MsSqlCeConfiguration Standard
-    {
-        get { return new MsSqlCeConfiguration().Dialect<MsSqlCeDialect>(); }
-    }
+    public static MsSqlCeConfiguration Standard => new MsSqlCeConfiguration().Dialect<MsSqlCeDialect>();
 
-    public static MsSqlCeConfiguration MsSqlCe40
-    {
-        get { return new MsSqlCeConfiguration().Dialect<MsSqlCe40Dialect>(); }
-    }
+    public static MsSqlCeConfiguration MsSqlCe40 => new MsSqlCeConfiguration().Dialect<MsSqlCe40Dialect>();
 }

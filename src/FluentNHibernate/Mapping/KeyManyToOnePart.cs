@@ -39,9 +39,9 @@ public class KeyManyToOnePart
     /// <summary>
     /// Defines how NHibernate will access the object for persisting/hydrating (Defaults to Property)
     /// </summary>
-    public AccessStrategyBuilder<KeyManyToOnePart> Access { get; private set; }
+    public AccessStrategyBuilder<KeyManyToOnePart> Access { get; }
 
-    public NotFoundExpression<KeyManyToOnePart> NotFound { get; private set; }
+    public NotFoundExpression<KeyManyToOnePart> NotFound { get; }
 
     public KeyManyToOnePart Lazy()
     {

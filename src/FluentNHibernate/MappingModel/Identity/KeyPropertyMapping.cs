@@ -20,30 +20,15 @@ public class KeyPropertyMapping : MappingBase, ICompositeIdKeyMapping
             visitor.Visit(column);
     }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public TypeReference Type
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Type"); }
-    }
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
 
-    public int Length
-    {
-        get { return attributes.GetOrDefault<int>("Length"); }
-    }
+    public int Length => attributes.GetOrDefault<int>("Length");
 
-    public IEnumerable<ColumnMapping> Columns
-    {
-        get { return columns; }
-    }
+    public IEnumerable<ColumnMapping> Columns => columns;
 
     public Type ContainingEntityType { get; set; }
 
@@ -58,7 +43,7 @@ public class KeyPropertyMapping : MappingBase, ICompositeIdKeyMapping
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.columns.ContentEquals(columns) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

@@ -15,9 +15,7 @@ public class AssemblyTypeSource : ITypeSource
 
     public AssemblyTypeSource(Assembly source)
     {
-        if (source is null) throw new ArgumentNullException("source");
-
-        this.source = source;
+        this.source = source ?? throw new ArgumentNullException(nameof(source));
     }
 
     #region ITypeSource Members
@@ -29,7 +27,7 @@ public class AssemblyTypeSource : ITypeSource
 
     public void LogSource(IDiagnosticLogger logger)
     {
-        if (logger is null) throw new ArgumentNullException("logger");
+        if (logger is null) throw new ArgumentNullException(nameof(logger));
 
         logger.LoadedFluentMappingsFromSource(this);
     }

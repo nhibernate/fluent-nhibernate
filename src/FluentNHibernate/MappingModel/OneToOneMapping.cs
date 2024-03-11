@@ -24,54 +24,25 @@ public class OneToOneMapping : MappingBase
         visitor.ProcessOneToOne(this);
     }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
-    public string Cascade
-    {
-        get { return attributes.GetOrDefault<string>("Cascade"); }
-    }
-    public bool Constrained
-    {
-        get { return attributes.GetOrDefault<bool>("Constrained"); }
-    }
+    public string Cascade => attributes.GetOrDefault<string>("Cascade");
 
-    public string Fetch
-    {
-        get { return attributes.GetOrDefault<string>("Fetch"); }
-    }
+    public bool Constrained => attributes.GetOrDefault<bool>("Constrained");
 
-    public string ForeignKey
-    {
-        get { return attributes.GetOrDefault<string>("ForeignKey"); }
-    }
+    public string Fetch => attributes.GetOrDefault<string>("Fetch");
 
-    public string PropertyRef
-    {
-        get { return attributes.GetOrDefault<string>("PropertyRef"); }
-    }
+    public string ForeignKey => attributes.GetOrDefault<string>("ForeignKey");
 
-    public string Lazy
-    {
-        get { return attributes.GetOrDefault<string>("Lazy"); }
-    }
+    public string PropertyRef => attributes.GetOrDefault<string>("PropertyRef");
 
-    public string EntityName
-    {
-        get { return attributes.GetOrDefault<string>("EntityName"); }
-    }
+    public string Lazy => attributes.GetOrDefault<string>("Lazy");
+
+    public string EntityName => attributes.GetOrDefault<string>("EntityName");
 
     public Type ContainingEntityType { get; set; }
 
@@ -79,7 +50,7 @@ public class OneToOneMapping : MappingBase
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(other.attributes, attributes) && Equals(other.ContainingEntityType, ContainingEntityType);
+        return Equals(other.attributes, attributes) && other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

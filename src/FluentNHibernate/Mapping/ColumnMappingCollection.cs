@@ -54,10 +54,7 @@ public class ColumnMappingCollection<TParent> : IEnumerable<ColumnMapping>
         return parent;
     }
 
-    public int Count
-    {
-        get { return columns.Count; }
-    }
+    public int Count => columns.Count;
 
     public IEnumerator<ColumnMapping> GetEnumerator()
     {

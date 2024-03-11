@@ -34,67 +34,31 @@ public class ManyToManyMapping : MappingBase, ICollectionRelationshipMapping, IH
             visitor.Visit(filter);
     }
 
-    public Type ChildType
-    {
-        get { return attributes.GetOrDefault<Type>("ChildType"); }
-    }
+    public Type ChildType => attributes.GetOrDefault<Type>("ChildType");
 
-    public Type ParentType
-    {
-        get { return attributes.GetOrDefault<Type>("ParentType"); }
-    }
+    public Type ParentType => attributes.GetOrDefault<Type>("ParentType");
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
-    public string ForeignKey
-    {
-        get { return attributes.GetOrDefault<string>("ForeignKey"); }
-    }
+    public string ForeignKey => attributes.GetOrDefault<string>("ForeignKey");
 
-    public string Fetch
-    {
-        get { return attributes.GetOrDefault<string>("Fetch"); }
-    }
+    public string Fetch => attributes.GetOrDefault<string>("Fetch");
 
-    public string NotFound
-    {
-        get { return attributes.GetOrDefault<string>("NotFound"); }
-    }
+    public string NotFound => attributes.GetOrDefault<string>("NotFound");
 
-    public string Where
-    {
-        get { return attributes.GetOrDefault<string>("Where"); }
-    }
+    public string Where => attributes.GetOrDefault<string>("Where");
 
-    public bool Lazy
-    {
-        get { return attributes.GetOrDefault<bool>("Lazy"); }
-    }
+    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
 
-    public string EntityName
-    {
-        get { return attributes.GetOrDefault<string>("EntityName"); }
-    }
+    public string EntityName => attributes.GetOrDefault<string>("EntityName");
 
-    public string OrderBy
-    {
-        get { return attributes.GetOrDefault<string>("OrderBy"); }
-    }        
+    public string OrderBy => attributes.GetOrDefault<string>("OrderBy");
 
-    public string ChildPropertyRef
-    {
-        get { return attributes.GetOrDefault<string>("ChildPropertyRef"); }
-    }
+    public string ChildPropertyRef => attributes.GetOrDefault<string>("ChildPropertyRef");
 
     public Type ContainingEntityType { get; set; }
 
-    public IEnumerable<ColumnMapping> Columns
-    {
-        get { return columns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> Columns => columns.Columns;
 
     public void AddColumn(int layer, ColumnMapping mapping)
     {
@@ -112,7 +76,7 @@ public class ManyToManyMapping : MappingBase, ICollectionRelationshipMapping, IH
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.columns.ContentEquals(columns) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

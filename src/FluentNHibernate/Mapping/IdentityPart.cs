@@ -60,7 +60,7 @@ public class IdentityPart : IIdentityMappingProvider
     /// Id("PersonId")
     ///   .GeneratedBy.Assigned();
     /// </example>
-    public IdentityGenerationStrategyBuilder<IdentityPart> GeneratedBy { get; private set; }
+    public IdentityGenerationStrategyBuilder<IdentityPart> GeneratedBy { get; }
 
     /// <summary>
     /// Set the access and naming strategy for this identity.
@@ -245,10 +245,7 @@ public class IdentityPart : IIdentityMappingProvider
         name = newName;
     }
 
-    bool HasNameSpecified
-    {
-        get { return !string.IsNullOrEmpty(name); }
-    }
+    bool HasNameSpecified => !string.IsNullOrEmpty(name);
 
     void SetDefaultGenerator()
     {

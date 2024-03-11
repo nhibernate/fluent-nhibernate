@@ -34,35 +34,17 @@ public class CompositeIdMapping : MappingBase, IIdentityMapping
         }
     }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public bool Mapped
-    {
-        get { return attributes.GetOrDefault<bool>("Mapped") || !string.IsNullOrEmpty(Name); }
-    }
+    public bool Mapped => attributes.GetOrDefault<bool>("Mapped") || !string.IsNullOrEmpty(Name);
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
-    public string UnsavedValue
-    {
-        get { return attributes.GetOrDefault<string>("UnsavedValue"); }
-    }
+    public string UnsavedValue => attributes.GetOrDefault<string>("UnsavedValue");
 
-    public IEnumerable<ICompositeIdKeyMapping> Keys
-    {
-        get { return keys; }
-    }
+    public IEnumerable<ICompositeIdKeyMapping> Keys => keys;
 
     public Type ContainingEntityType { get; set; }
 
@@ -77,7 +59,7 @@ public class CompositeIdMapping : MappingBase, IIdentityMapping
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.keys.ContentEquals(keys) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

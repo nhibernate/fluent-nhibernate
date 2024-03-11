@@ -67,7 +67,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     /// <summary>
     /// Specify caching for this entity.
     /// </summary>
-    public CachePart Cache { get; private set; }
+    public CachePart Cache { get; }
 
     /// <summary>
     /// Specify the lazy-load behaviour

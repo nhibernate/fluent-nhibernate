@@ -6,10 +6,7 @@ namespace FluentNHibernate.Conventions.Helpers;
 
 public static class PrimaryKey
 {
-    public static PrimaryKeyNameBuilder Name
-    {
-        get { return new PrimaryKeyNameBuilder(); }
-    }
+    public static PrimaryKeyNameBuilder Name => new();
 }
 
 public class PrimaryKeyNameBuilder

@@ -441,7 +441,7 @@ public class IdentityGenerationStrategyBuilder<TParent>
 
     /// <summary>
     /// Generator that uses the RDBMS native function to generate a GUID.
-    /// The behavior is similar to the “sequence” generator. When a new
+    /// The behavior is similar to the ï¿½sequenceï¿½ generator. When a new
     /// object is saved NH run two queries: the first to retrieve the GUID
     /// value and the second to insert the entity using the Guid retrieved
     /// from the RDBMS. Your entity Id must be System.Guid and the SQLType
@@ -457,7 +457,7 @@ public class IdentityGenerationStrategyBuilder<TParent>
 
     /// <summary>
     /// Generator that uses the RDBMS native function to generate a GUID.
-    /// The behavior is similar to the “sequence” generator. When a new
+    /// The behavior is similar to the ï¿½sequenceï¿½ generator. When a new
     /// object is saved NH run two queries: the first to retrieve the GUID
     /// value and the second to insert the entity using the Guid retrieved
     /// from the RDBMS. Your entity Id must be System.Guid and the SQLType

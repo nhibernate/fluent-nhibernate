@@ -29,35 +29,17 @@ public abstract class ComponentMappingBase : ClassMappingBase
     public Type ContainingEntityType { get; set; }
     public Member Member { get; set; }
 
-    public ParentMapping Parent
-    {
-        get { return attributes.GetOrDefault<ParentMapping>("Parent"); }
-    }
+    public ParentMapping Parent => attributes.GetOrDefault<ParentMapping>("Parent");
 
-    public bool Unique
-    {
-        get { return attributes.GetOrDefault<bool>("Unique"); }
-    }
+    public bool Unique => attributes.GetOrDefault<bool>("Unique");
 
-    public bool Insert
-    {
-        get { return attributes.GetOrDefault<bool>("Insert"); }
-    }
+    public bool Insert => attributes.GetOrDefault<bool>("Insert");
 
-    public bool Update
-    {
-        get { return attributes.GetOrDefault<bool>("Update"); }
-    }
+    public bool Update => attributes.GetOrDefault<bool>("Update");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public bool OptimisticLock
-    {
-        get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
-    }
+    public bool OptimisticLock => attributes.GetOrDefault<bool>("OptimisticLock");
 
     public bool Equals(ComponentMappingBase other)
     {
@@ -65,7 +47,7 @@ public abstract class ComponentMappingBase : ClassMappingBase
         if (ReferenceEquals(this, other)) return true;
         return base.Equals(other) &&
                Equals(other.attributes, attributes) &&
-               Equals(other.ContainingEntityType, ContainingEntityType) &&
+               other.ContainingEntityType == ContainingEntityType &&
                Equals(other.Member, Member);
     }
 

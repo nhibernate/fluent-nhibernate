@@ -12,15 +12,9 @@ public class SingleMember : Accessor
 
     #region Accessor Members
 
-    public string FieldName
-    {
-        get { return InnerMember.Name; }
-    }
+    public string FieldName => InnerMember.Name;
 
-    public Type PropertyType
-    {
-        get { return InnerMember.PropertyType; }
-    }
+    public Type PropertyType => InnerMember.PropertyType;
 
     public Member InnerMember { get; }
 
@@ -30,10 +24,7 @@ public class SingleMember : Accessor
         return new PropertyChain(new[] {InnerMember, property});
     }
 
-    public string Name
-    {
-        get { return InnerMember.Name; }
-    }
+    public string Name => InnerMember.Name;
 
     public void SetValue(object target, object propertyValue)
     {

@@ -11,7 +11,7 @@ public class SkippedAutomappingType
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(other.Type, Type) && Equals(other.Reason, Reason);
+        return other.Type == Type && Equals(other.Reason, Reason);
     }
 
     public override bool Equals(object obj)

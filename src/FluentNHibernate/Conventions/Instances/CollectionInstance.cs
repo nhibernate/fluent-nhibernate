@@ -236,10 +236,7 @@ public class CollectionInstance : CollectionInspector, ICollectionInstance,
         get { return new AccessInstance(value => mapping.Set(x => x.Access, Layer.Conventions, value)); }
     }
 
-    public new IKeyInstance Key
-    {
-        get { return new KeyInstance(mapping.Key); }
-    }
+    public new IKeyInstance Key => new KeyInstance(mapping.Key);
 
     public new IElementInstance Element
     {

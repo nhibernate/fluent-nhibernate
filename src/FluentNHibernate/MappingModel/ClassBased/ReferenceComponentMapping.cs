@@ -56,35 +56,17 @@ public class ReferenceComponentMapping : IComponentMapping
         mergedComponent.Set(x => x.Type, Layer.Defaults, componentType);
     }
 
-    public IEnumerable<ManyToOneMapping> References
-    {
-        get { return mergedComponent.References; }
-    }
+    public IEnumerable<ManyToOneMapping> References => mergedComponent.References;
 
-    public IEnumerable<CollectionMapping> Collections
-    {
-        get { return mergedComponent.Collections; }
-    }
-        
-    public IEnumerable<PropertyMapping> Properties
-    {
-        get { return mergedComponent.Properties; }
-    }
+    public IEnumerable<CollectionMapping> Collections => mergedComponent.Collections;
 
-    public IEnumerable<IComponentMapping> Components
-    {
-        get { return mergedComponent.Components; }
-    }
+    public IEnumerable<PropertyMapping> Properties => mergedComponent.Properties;
 
-    public IEnumerable<OneToOneMapping> OneToOnes
-    {
-        get { return mergedComponent.OneToOnes; }
-    }
+    public IEnumerable<IComponentMapping> Components => mergedComponent.Components;
 
-    public IEnumerable<AnyMapping> Anys
-    {
-        get { return mergedComponent.Anys; }
-    }
+    public IEnumerable<OneToOneMapping> OneToOnes => mergedComponent.OneToOnes;
+
+    public IEnumerable<AnyMapping> Anys => mergedComponent.Anys;
 
     public void AddProperty(PropertyMapping property)
     {
@@ -118,90 +100,48 @@ public class ReferenceComponentMapping : IComponentMapping
 
     public Type ContainingEntityType
     {
-        get { return containingEntityType; }
-        set { containingEntityType = value; }
+        get => containingEntityType;
+        set => containingEntityType = value;
     }
 
-    public Member Member
-    {
-        get { return (mergedComponent is null) ? property : mergedComponent.Member; }
-    }
+    public Member Member => (mergedComponent is null) ? property : mergedComponent.Member;
 
-    public ParentMapping Parent
-    {
-        get { return mergedComponent.Parent; }
-    }
+    public ParentMapping Parent => mergedComponent.Parent;
 
-    public bool Unique
-    {
-        get { return mergedComponent.Unique; }
-    }
+    public bool Unique => mergedComponent.Unique;
 
-    public bool HasColumnPrefix
-    {
-        get { return !string.IsNullOrEmpty(ColumnPrefix); }
-    }
+    public bool HasColumnPrefix => !string.IsNullOrEmpty(ColumnPrefix);
 
     public string ColumnPrefix { get; set; }
 
-    public bool Insert
-    {
-        get { return mergedComponent.Insert; }
-    }
+    public bool Insert => mergedComponent.Insert;
 
-    public bool Update
-    {
-        get { return mergedComponent.Update; }
-    }
+    public bool Update => mergedComponent.Update;
 
-    public string Access
-    {
-        get { return mergedComponent.Access; }
-    }
+    public string Access => mergedComponent.Access;
 
-    public bool OptimisticLock
-    {
-        get { return mergedComponent.OptimisticLock; }
-    }
+    public bool OptimisticLock => mergedComponent.OptimisticLock;
 
-    public string Name
-    {
-        get { return (mergedComponent is null) ? property.Name : mergedComponent.Name; }
-    }
+    public string Name => (mergedComponent is null) ? property.Name : mergedComponent.Name;
 
-    public Type Type
-    {
-        get { return (mergedComponent is null) ? componentType : mergedComponent.Type; }
-    }
+    public Type Type => (mergedComponent is null) ? componentType : mergedComponent.Type;
 
-    public TypeReference Class
-    {
-        get { return mergedComponent.Class; }
-    }
+    public TypeReference Class => mergedComponent.Class;
 
-    public bool Lazy
-    {
-        get { return mergedComponent.Lazy; }
-    }
+    public bool Lazy => mergedComponent.Lazy;
 
-    public bool IsAssociated
-    {
-        get { return mergedComponent is not null; }
-    }
+    public bool IsAssociated => mergedComponent is not null;
 
-    public ComponentMapping MergedModel
-    {
-        get { return mergedComponent; }
-    }
+    public ComponentMapping MergedModel => mergedComponent;
 
     public bool Equals(ReferenceComponentMapping other)
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.property, property) &&
-               Equals(other.componentType, componentType) &&
+               other.componentType == componentType &&
                Equals(other.mergedComponent, mergedComponent) &&
-               Equals(other.containingEntityType, containingEntityType);
+               other.containingEntityType == containingEntityType;
     }
 
     public override bool Equals(object obj)

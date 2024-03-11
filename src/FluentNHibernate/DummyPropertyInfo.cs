@@ -9,22 +9,13 @@ public sealed class DummyPropertyInfo : PropertyInfo
 {
     public DummyPropertyInfo(string name, Type type)
     {
-        if (name is null) throw new ArgumentNullException("name");
-        if (type is null) throw new ArgumentNullException("type");
-
-        this.Name = name;
-        this.DeclaringType = type;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+        DeclaringType = type ?? throw new ArgumentNullException(nameof(type));
     }
 
-    public override Module Module
-    {
-        get { return null; }
-    }
+    public override Module Module => null;
 
-    public override int MetadataToken
-    {
-        get { return Name.GetHashCode(); }
-    }
+    public override int MetadataToken => Name.GetHashCode();
 
     public override object[] GetCustomAttributes(bool inherit)
     {
@@ -68,30 +59,15 @@ public sealed class DummyPropertyInfo : PropertyInfo
 
     public override Type DeclaringType { get; }
 
-    public override Type ReflectedType
-    {
-        get { return null; }
-    }
+    public override Type ReflectedType => null;
 
-    public override Type PropertyType
-    {
-        get { return DeclaringType; }
-    }
+    public override Type PropertyType => DeclaringType;
 
-    public override PropertyAttributes Attributes
-    {
-        get { return PropertyAttributes.None; }
-    }
+    public override PropertyAttributes Attributes => PropertyAttributes.None;
 
-    public override bool CanRead
-    {
-        get { return false; }
-    }
+    public override bool CanRead => false;
 
-    public override bool CanWrite
-    {
-        get { return false; }
-    }
+    public override bool CanWrite => false;
 
     public override object[] GetCustomAttributes(Type attributeType, bool inherit)
     {

@@ -21,12 +21,9 @@ public class GeneratorMapping : MappingBase
         visitor.ProcessGenerator(this);
     }
 
-    public string Class
-    {
-        get { return attributes.GetOrDefault<string>("Class"); }
-    }
+    public string Class => attributes.GetOrDefault<string>("Class");
 
-    public IDictionary<string, string> Params { get; private set; }
+    public IDictionary<string, string> Params { get; }
     public Type ContainingEntityType { get; set; }
 
     public bool Equals(GeneratorMapping other)
@@ -35,7 +32,7 @@ public class GeneratorMapping : MappingBase
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.Params.ContentEquals(Params) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

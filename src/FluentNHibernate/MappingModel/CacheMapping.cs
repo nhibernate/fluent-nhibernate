@@ -24,20 +24,11 @@ public class CacheMapping : MappingBase
         visitor.ProcessCache(this);
     }
 
-    public string Region
-    {
-        get { return attributes.GetOrDefault<string>("Region"); }
-    }
+    public string Region => attributes.GetOrDefault<string>("Region");
 
-    public string Usage
-    {
-        get { return attributes.GetOrDefault<string>("Usage"); }
-    }
+    public string Usage => attributes.GetOrDefault<string>("Usage");
 
-    public string Include
-    {
-        get { return attributes.GetOrDefault<string>("Include"); }
-    }
+    public string Include => attributes.GetOrDefault<string>("Include");
 
     public Type ContainedEntityType { get; set; }
 
@@ -45,7 +36,7 @@ public class CacheMapping : MappingBase
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(other.attributes, attributes) && Equals(other.ContainedEntityType, ContainedEntityType);
+        return Equals(other.attributes, attributes) && other.ContainedEntityType == ContainedEntityType;
     }
 
     public override bool Equals(object obj)

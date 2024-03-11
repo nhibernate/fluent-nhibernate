@@ -24,21 +24,15 @@ public class MetaValueMapping : MappingBase
         visitor.ProcessMetaValue(this);
     }
 
-    public string Value
-    {
-        get { return attributes.GetOrDefault<string>("Value"); }
-    }
+    public string Value => attributes.GetOrDefault<string>("Value");
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
     public Type ContainingEntityType { get; set; }
 
     public bool Equals(MetaValueMapping other)
     {
-        return Equals(other.attributes, attributes) && Equals(other.ContainingEntityType, ContainingEntityType);
+        return Equals(other.attributes, attributes) && other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
