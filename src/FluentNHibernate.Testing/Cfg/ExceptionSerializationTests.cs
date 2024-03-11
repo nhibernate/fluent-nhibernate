@@ -2,12 +2,12 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using FluentNHibernate.Cfg;
-using FluentNHibernate.Utils;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Cfg;
 
 [TestFixture]
+[Obsolete("BinaryFormatter serialization is obsolete and should not be used.")]
 public class ExceptionSerializationTests
 {
     [Test]

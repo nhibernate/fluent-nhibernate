@@ -12,6 +12,7 @@ namespace FluentNHibernate.Infrastructure;
 /// </summary>
 public static class NetStandardSerialization
 {
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     public sealed class TypeSerializationSurrogate : ISurrogateProvider
     {
         public void GetObjectData(object obj, SerializationInfo info, StreamingContext context)
@@ -55,6 +56,7 @@ public static class NetStandardSerialization
         }
     }
 
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     public sealed class MemberInfoSerializationSurrogate : ISurrogateProvider
     {
         public void GetObjectData(object obj, SerializationInfo info, StreamingContext context) =>
@@ -166,6 +168,7 @@ public static class NetStandardSerialization
         }
     }
 
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     public sealed class SurrogateSelector : ISurrogateSelector
     {
         private readonly ISurrogateProvider _typeSerializationProvider;

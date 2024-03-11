@@ -18,17 +18,21 @@ public class UnknownPropertyException : Exception
 
     public Type Type { get; private set; }
 
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     protected UnknownPropertyException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
         this.Type = Type.GetType(info.GetString("TypeFullName"));
         this.Property = info.GetString("Property");
     }
 
+#pragma warning disable 809
     [SecurityCritical]
-    public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
     {
         base.GetObjectData(info, context);
         info.AddValue("TypeFullName", Type.FullName);
         info.AddValue("Property", Property);
     }
+#pragma warning restore 809
 }
