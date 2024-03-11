@@ -32,14 +32,12 @@ public class XmlStoredProcedureWriterTester
     [Test]
     public void ShouldWriteCheckAttribute()
     {
-        IXmlWriter<StoredProcedureMapping> writer;
         var container = new XmlWriterContainer();
-        writer = container.Resolve<IXmlWriter<StoredProcedureMapping>>();
+        var w = container.Resolve<IXmlWriter<StoredProcedureMapping>>();
 
         var testHelper = new XmlWriterTestHelper<StoredProcedureMapping>();
         testHelper.Check(x => x.Check, "none").MapsToAttribute("check");
 
-        testHelper.VerifyAll(writer);
+        testHelper.VerifyAll(w);
     }
-
 }
