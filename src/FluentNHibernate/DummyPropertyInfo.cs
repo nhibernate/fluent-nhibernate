@@ -9,11 +9,8 @@ public sealed class DummyPropertyInfo : PropertyInfo
 {
     public DummyPropertyInfo(string name, Type type)
     {
-        if (name is null) throw new ArgumentNullException("name");
-        if (type is null) throw new ArgumentNullException("type");
-
-        this.Name = name;
-        this.DeclaringType = type;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+        DeclaringType = type ?? throw new ArgumentNullException(nameof(type));
     }
 
     public override Module Module => null;
