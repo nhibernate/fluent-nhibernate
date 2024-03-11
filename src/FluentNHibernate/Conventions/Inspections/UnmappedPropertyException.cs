@@ -10,6 +10,7 @@ public class UnmappedPropertyException : Exception
         : base("Unmapped property '" + name + "' on type '" + type.Name + "'")
     {}
 
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     protected UnmappedPropertyException(SerializationInfo info, StreamingContext context) : base(info, context)
     {}
 }

@@ -13,11 +13,9 @@ public class ConventionException : Exception
         this.conventionTarget = conventionTarget;
     }
 
-    protected ConventionException(
-        SerializationInfo info,
-        StreamingContext context) : base(info, context)
-    {
-    }
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
+    protected ConventionException(SerializationInfo info, StreamingContext context) : base(info, context)
+    { }
 
     public object ConventionTarget
     {

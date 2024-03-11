@@ -8,9 +8,9 @@ namespace FluentNHibernate.MappingModel.Collections;
 public class LayeredValues : Dictionary<int, object>
 {
     public LayeredValues()
-    {}
+    { }
 
-    protected LayeredValues(SerializationInfo info, StreamingContext context)
-        : base(info, context)
-    {}
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
+    protected LayeredValues(SerializationInfo info, StreamingContext context) : base(info, context)
+    { }
 }
