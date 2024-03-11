@@ -54,13 +54,13 @@ public class SingleMember : Accessor
 
     public static SingleMember Build<T>(Expression<Func<T, object>> expression)
     {
-        var member = expression.ToMember();
-        return new SingleMember(member);
+        var m = expression.ToMember();
+        return new SingleMember(m);
     }
 
     public static SingleMember Build<T>(string propertyName)
     {
-        var member = typeof(T).GetProperty(propertyName).ToMember();
-        return new SingleMember(member);
+        var m = typeof(T).GetProperty(propertyName).ToMember();
+        return new SingleMember(m);
     }
 }
