@@ -65,12 +65,12 @@ public class List<T, TListElement> : Property<T, IEnumerable<TListElement>>
     {
         if (actualEnumerable is null)
         {
-            throw new ArgumentNullException("actualEnumerable",
+            throw new ArgumentNullException(nameof(actualEnumerable),
                 "Actual and expected are not equal (actual was null).");
         }
         if (expectedEnumerable is null)
         {
-            throw new ArgumentNullException("expectedEnumerable",
+            throw new ArgumentNullException(nameof(expectedEnumerable),
                 "Actual and expected are not equal (expected was null).");
         }
 

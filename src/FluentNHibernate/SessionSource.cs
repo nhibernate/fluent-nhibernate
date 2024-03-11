@@ -43,7 +43,7 @@ public class SessionSource : ISessionSource
 
     protected void Initialize(Configuration nhibernateConfig, PersistenceModel model)
     {
-        if( model is null ) throw new ArgumentNullException("model", "Model cannot be null");
+        if (model is null) throw new ArgumentNullException(nameof(model), "Model cannot be null");
 
         Configuration = nhibernateConfig;
 
