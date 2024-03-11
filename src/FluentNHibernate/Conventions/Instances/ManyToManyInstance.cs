@@ -26,8 +26,7 @@ public class ManyToManyInstance(ManyToManyMapping mapping) : ManyToManyInspector
         get
         {
             return mapping.Columns
-                .Select(x => new ColumnInstance(mapping.ContainingEntityType, x))
-                .Cast<IColumnInstance>();
+                .Select(x => new ColumnInstance(mapping.ContainingEntityType, x));
         }
     }
 

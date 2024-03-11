@@ -28,8 +28,7 @@ public class IndexManyToManyInspector(IndexManyToManyMapping mapping) : IIndexMa
         get
         {
             return mapping.Columns
-                .Select(x => new ColumnInspector(mapping.ContainingEntityType, x))
-                .Cast<IColumnInspector>();
+                .Select(x => new ColumnInspector(mapping.ContainingEntityType, x));
         }
     }
 }

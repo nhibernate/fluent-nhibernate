@@ -35,8 +35,7 @@ public class IdentityInspector : ColumnBasedInspector, IIdentityInspector
         get
         {
             return mapping.Columns
-                .Select(x => new ColumnInspector(EntityType, x))
-                .Cast<IColumnInspector>();
+                .Select(x => new ColumnInspector(EntityType, x));
         }
     }
 

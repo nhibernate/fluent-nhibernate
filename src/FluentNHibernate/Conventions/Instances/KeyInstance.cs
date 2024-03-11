@@ -34,8 +34,7 @@ public class KeyInstance(KeyMapping mapping) : KeyInspector(mapping), IKeyInstan
         get
         {
             return mapping.Columns
-                .Select(x => new ColumnInstance(mapping.ContainingEntityType, x))
-                .Cast<IColumnInstance>();
+                .Select(x => new ColumnInstance(mapping.ContainingEntityType, x));
         }
     }
 

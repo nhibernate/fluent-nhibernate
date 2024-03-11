@@ -58,10 +58,10 @@ public class ComponentInstance(ComponentMapping mapping) : ComponentInspector(ma
 
     public new IEnumerable<IOneToOneInstance> OneToOnes
     {
-        get { return mapping.OneToOnes.Select(x => new OneToOneInstance(x)).Cast<IOneToOneInstance>(); }
+        get { return mapping.OneToOnes.Select(x => new OneToOneInstance(x)); }
     }
     public new IEnumerable<IPropertyInstance> Properties
     {
-        get { return mapping.Properties.Select(x => new PropertyInstance(x)).Cast<IPropertyInstance>(); }
+        get { return mapping.Properties.Select(x => new PropertyInstance(x)); }
     }        
 }

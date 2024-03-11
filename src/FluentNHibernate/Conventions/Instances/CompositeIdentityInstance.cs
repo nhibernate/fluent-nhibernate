@@ -44,8 +44,7 @@ public class CompositeIdentityInstance(CompositeIdMapping mapping)
         {
             return mapping.Keys
                 .Where(x => x is KeyPropertyMapping)
-                .Select(x => new KeyPropertyInstance((KeyPropertyMapping)x))
-                .Cast<IKeyPropertyInstance>();
+                .Select(x => new KeyPropertyInstance((KeyPropertyMapping)x));
         }
     }
 
@@ -55,8 +54,7 @@ public class CompositeIdentityInstance(CompositeIdMapping mapping)
         {
             return mapping.Keys
                 .Where(x => x is KeyManyToOneMapping)
-                .Select(x => new KeyManyToOneInstance((KeyManyToOneMapping)x))
-                .Cast<IKeyManyToOneInstance>();
+                .Select(x => new KeyManyToOneInstance((KeyManyToOneMapping)x));
         }
     }
 }

@@ -37,8 +37,7 @@ public class CompositeElementInspector(CompositeElementMapping mapping) : ICompo
         get
         {
             return mapping.Properties
-                .Select(x => new PropertyInspector(x))
-                .Cast<IPropertyInspector>();
+                .Select(x => new PropertyInspector(x));
         }
     }
 
@@ -47,8 +46,7 @@ public class CompositeElementInspector(CompositeElementMapping mapping) : ICompo
         get
         {
             return mapping.References
-                .Select(x => new ManyToOneInspector(x))
-                .Cast<IManyToOneInspector>();
+                .Select(x => new ManyToOneInspector(x));
         }
     }
 }
