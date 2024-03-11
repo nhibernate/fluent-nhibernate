@@ -24,7 +24,7 @@ public class OneToOnePart<TOther> : IOneToOneMappingProvider
         cascade = new CascadeExpression<OneToOnePart<TOther>>(this, value =>
         {
             var current = attributes.Get("Cascade") as string;
-            attributes.Set("Cascade", Layer.UserSupplied, current == null ? value : string.Format("{0},{1}", current, value));
+            attributes.Set("Cascade", Layer.UserSupplied, current is null ? value : string.Format("{0},{1}", current, value));
         });
         this.entity = entity;
         this.member = member;

@@ -56,7 +56,7 @@ public class FilterMapping : IMapping
 
     public override int GetHashCode()
     {
-        return (attributes != null ? attributes.GetHashCode() : 0);
+        return (attributes is not null ? attributes.GetHashCode() : 0);
     }
 
     public void Set<T>(Expression<Func<FilterMapping, T>> expression, int layer, T value)

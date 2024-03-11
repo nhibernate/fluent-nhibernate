@@ -330,7 +330,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
         public new bool Equals(object x, object y)
         {
             if (x == y) return true;
-            if (x == null || y == null) return false;
+            if (x is null || y is null) return false;
 
             DoubleString lhs = (DoubleString)x;
             DoubleString rhs = (DoubleString)y;
@@ -349,7 +349,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
 
         public Object DeepCopy(Object x)
         {
-            if (x == null) return null;
+            if (x is null) return null;
             DoubleString result = new DoubleString();
             DoubleString input = (DoubleString)x;
             result.s1 = input.s1;
@@ -367,7 +367,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
             string first = (string)NHibernateUtil.String.NullSafeGet(dr, names[0], session, owner);
             string second = (string)NHibernateUtil.String.NullSafeGet(dr, names[1], session, owner);
 
-            return (first == null && second == null) ? null : new string[] { first, second };
+            return (first is null && second is null) ? null : new string[] { first, second };
         }
 
         public void NullSafeSet(DbCommand cmd, object value, int index, bool[] settable, ISessionImplementor session)

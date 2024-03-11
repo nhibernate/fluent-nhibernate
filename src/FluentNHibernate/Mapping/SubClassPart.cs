@@ -34,7 +34,7 @@ public class SubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclassMap
     {
         var mapping = new SubclassMapping(SubclassType.Subclass, attributes.Clone());
 
-        if (discriminatorValue != null)
+        if (discriminatorValue is not null)
             mapping.Set(x => x.DiscriminatorValue, Layer.Defaults, discriminatorValue);
 
         mapping.Set(x => x.Type, Layer.Defaults, typeof(TSubclass));

@@ -35,25 +35,25 @@ public class CollectionMapping : MappingBase, IRelationship
     {
         visitor.ProcessCollection(this);
 
-        if (Key != null)
+        if (Key is not null)
             visitor.Visit(Key);
 
-        if (Index != null && (Collection == Collection.Array || Collection == Collection.List || Collection == Collection.Map))
+        if (Index is not null && (Collection == Collection.Array || Collection == Collection.List || Collection == Collection.Map))
             visitor.Visit(Index);
 
-        if (Element != null)
+        if (Element is not null)
             visitor.Visit(Element);
 
-        if (CompositeElement != null)
+        if (CompositeElement is not null)
             visitor.Visit(CompositeElement);
 
-        if (Relationship != null)
+        if (Relationship is not null)
             visitor.Visit(Relationship);
 
         foreach (var filter in Filters)
             visitor.Visit(filter);
 
-        if (Cache != null)
+        if (Cache is not null)
             visitor.Visit(Cache);
     }
 
@@ -213,10 +213,10 @@ public class CollectionMapping : MappingBase, IRelationship
     {
         unchecked
         {
-            int result = (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (filters != null ? filters.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
-            result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (filters is not null ? filters.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
+            result = (result * 397) ^ (Member is not null ? Member.GetHashCode() : 0);
             return result;
         }
     }

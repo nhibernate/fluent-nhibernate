@@ -79,7 +79,7 @@ public class AutoMappingsContainer : IEnumerable<AutoPersistenceModel>
             if (!string.IsNullOrEmpty(exportPath))
                 mapping.WriteMappingsTo(exportPath);
 
-            if (exportTextWriter != null)
+            if (exportTextWriter is not null)
                 mapping.WriteMappingsTo(exportTextWriter);
 
             mapping.ImportProviders(model);

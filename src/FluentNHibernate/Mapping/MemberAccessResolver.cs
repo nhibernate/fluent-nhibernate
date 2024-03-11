@@ -8,7 +8,7 @@ public static class MemberAccessResolver
         {
             var property = (PropertyMember)member;
                 
-            if (property.Set != null && !(property.Set.IsPrivate || property.Set.IsInternal))
+            if (property.Set is not null && !(property.Set.IsPrivate || property.Set.IsInternal))
                 return Access.Property;
 
             return Access.BackField;
@@ -18,7 +18,7 @@ public static class MemberAccessResolver
         {
             var property = (PropertyMember)member;
 
-            if (property.Set != null && !(property.Set.IsPrivate || property.Set.IsInternal))
+            if (property.Set is not null && !(property.Set.IsPrivate || property.Set.IsInternal))
                 return Access.Property;
 
             Member backingField;

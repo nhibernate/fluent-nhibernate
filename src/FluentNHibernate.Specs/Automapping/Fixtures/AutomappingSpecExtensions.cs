@@ -51,7 +51,7 @@ public static class XmlTestExtensions
 
         public XmlElementTester ShouldExist()
         {
-            if (currentElement == null)
+            if (currentElement is null)
                 throw new SpecificationException(string.Format("Should exist at {0} but does not.", currentPath));
 
             return this;
@@ -59,7 +59,7 @@ public static class XmlTestExtensions
 
         public XmlElementTester ShouldNotExist()
         {
-            if (currentElement != null)
+            if (currentElement is not null)
                 throw new SpecificationException(string.Format("Should not exist at {0} but does.", currentPath));
 
             return this;

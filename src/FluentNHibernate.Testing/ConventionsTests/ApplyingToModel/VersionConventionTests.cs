@@ -157,7 +157,7 @@ public class VersionConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ValidVersionClass)) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ValidVersionClass)) is not null)
             .Classes.First()
             .Version;
 

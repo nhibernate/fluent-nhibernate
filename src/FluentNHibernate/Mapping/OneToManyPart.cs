@@ -202,7 +202,7 @@ public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild>
         }
 
         // HACK: shouldn't have to do this!
-        if (manyToManyIndex != null && collection.Collection == Collection.Map)
+        if (manyToManyIndex is not null && collection.Collection == Collection.Map)
 #pragma warning disable 612,618
             collection.Set(x => x.Index, Layer.Defaults, manyToManyIndex.GetIndexMapping());
 #pragma warning restore 612,618
@@ -217,7 +217,7 @@ public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild>
             ContainingEntityType = entity
         };
 
-        if (isTernary && valueType != null)
+        if (isTernary && valueType is not null)
             mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(valueType));
 
         return mapping;

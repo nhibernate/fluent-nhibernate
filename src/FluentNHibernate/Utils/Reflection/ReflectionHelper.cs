@@ -65,7 +65,7 @@ public static class ReflectionHelper
         MethodCallExpression methodCallExpression = null;
         var nextOperand = expression;
 
-        while (nextOperand != null)
+        while (nextOperand is not null)
         {
             if (nextOperand.NodeType == ExpressionType.Call)
             {
@@ -105,7 +105,7 @@ public static class ReflectionHelper
             memberExpression = expression as MemberExpression;
         }
 
-        if (enforceCheck && memberExpression == null)
+        if (enforceCheck && memberExpression is null)
         {
             throw new ArgumentException("Not a member access", "expression");
         }
@@ -117,7 +117,7 @@ public static class ReflectionHelper
     {
         var list = new List<Member>();
 
-        while (memberExpression != null)
+        while (memberExpression is not null)
         {
             list.Add(memberExpression.Member.ToMember());
             memberExpression = memberExpression.Expression as MemberExpression;

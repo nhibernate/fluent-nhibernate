@@ -213,7 +213,7 @@ public class FluentConfiguration
     /// <returns>Fluent configuration</returns>
     public FluentConfiguration ExposeConfiguration(Action<Configuration> config)
     {
-        if (config != null)
+        if (config is not null)
             configAlterations.Add(config);
 
         return this;

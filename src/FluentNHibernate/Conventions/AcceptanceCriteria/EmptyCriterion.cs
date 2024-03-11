@@ -22,7 +22,7 @@ public class EmptyCriterion : IAcceptanceCriterion
         if (!(actualValue is IEnumerable))
             return false;
 
-        var result = ((IEnumerable)actualValue).GetEnumerator().Current != null;
+        var result = ((IEnumerable)actualValue).GetEnumerator().Current is not null;
 
         return inverse ? !result : result;
     }

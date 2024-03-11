@@ -54,7 +54,7 @@ public class JoinInspector : IJoinInspector
     {
         get
         {
-            if (mapping.Key == null)
+            if (mapping.Key is null)
                 return new KeyInspector(new KeyMapping());
 
             return new KeyInspector(mapping.Key);

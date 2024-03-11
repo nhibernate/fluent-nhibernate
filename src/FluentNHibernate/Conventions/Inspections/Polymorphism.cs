@@ -27,7 +27,7 @@ public class Polymorphism
 
     public override int GetHashCode()
     {
-        return (value != null ? value.GetHashCode() : 0);
+        return (value is not null ? value.GetHashCode() : 0);
     }
 
     public static bool operator ==(Polymorphism x, Polymorphism y)

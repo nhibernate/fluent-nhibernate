@@ -21,7 +21,7 @@ public class LayeredColumns
 
             foreach (var value in values)
             {
-                if (value == null)
+                if (value is null)
                     yield break;
 
                 yield return value;

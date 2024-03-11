@@ -70,7 +70,7 @@ public class AutoSubClassPart<T> : SubClassPart<T>, IAutoClasslike
         var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
         var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, discriminatorValue);
 
-        if (action != null) action(subclass);
+        if (action is not null) action(subclass);
 
         providers.Subclasses[typeof(TSubclass)] = subclass;
     }

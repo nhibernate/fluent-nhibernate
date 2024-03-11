@@ -32,7 +32,7 @@ public static class EnumerableExtensionsForConventions
     {
         var item = collection.FirstOrDefault(prediate);
 
-        return item != null;
+        return item is not null;
     }
 
     public static bool IsEmpty<T>(this IEnumerable<T> collection)

@@ -13,6 +13,6 @@ public class BuiltSuffixForeignKeyConvention : ForeignKeyConvention
 
     protected override string GetKeyName(Member property, Type type)
     {
-        return (property != null ? property.Name : type.Name) + suffix;
+        return (property is not null ? property.Name : type.Name) + suffix;
     }
 }

@@ -37,7 +37,7 @@ public class SubclassMapping : ClassMappingBase
     {
         visitor.ProcessSubclass(this);
 
-        if (SubclassType == SubclassType.JoinedSubclass && Key != null)
+        if (SubclassType == SubclassType.JoinedSubclass && Key is not null)
             visitor.Visit(Key);
 
         base.AcceptVisitor(visitor);
@@ -152,7 +152,7 @@ public class SubclassMapping : ClassMappingBase
         unchecked
         {
             {
-                return (base.GetHashCode() * 397) ^ (attributes != null
+                return (base.GetHashCode() * 397) ^ (attributes is not null
                     ? attributes.GetHashCode()
                     : 0);
             }

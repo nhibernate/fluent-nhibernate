@@ -20,7 +20,7 @@ public class PersistenceConfigurationTester
 
     public string ValueOf(string key)
     {
-        if( _nhibConfig == null )
+        if( _nhibConfig is null )
         {
             _nhibConfig = new Configuration();
             _config.ConfigureProperties(_nhibConfig);

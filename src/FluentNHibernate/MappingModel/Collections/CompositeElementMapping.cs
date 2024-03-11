@@ -27,7 +27,7 @@ public class CompositeElementMapping : MappingBase
     {
         visitor.ProcessCompositeElement(this);
 
-        if (Parent != null)
+        if (Parent is not null)
             visitor.Visit(Parent);
 
         foreach (var compositeElement in CompositeElements)
@@ -97,9 +97,9 @@ public class CompositeElementMapping : MappingBase
     {
         unchecked
         {
-            int result = (mappedMembers != null ? mappedMembers.GetHashCode() : 0);
-            result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (mappedMembers is not null ? mappedMembers.GetHashCode() : 0);
+            result = (result * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

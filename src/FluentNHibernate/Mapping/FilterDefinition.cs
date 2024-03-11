@@ -41,7 +41,7 @@ public abstract class FilterDefinition : IFilterDefinition
     public FilterDefinition AddParameter(string name, IType type)
     {
         if (string.IsNullOrEmpty(name)) throw new ArgumentException("The name is mandatory", "name");
-        if (type == null) throw new ArgumentNullException("type");
+        if (type is null) throw new ArgumentNullException("type");
         parameters.Add(name, type);
         return this;
     }

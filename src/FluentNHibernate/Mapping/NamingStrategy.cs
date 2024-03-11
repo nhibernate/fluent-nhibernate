@@ -37,7 +37,7 @@ public class NamingStrategy
 
     public override int GetHashCode()
     {
-        return (strategy != null ? strategy.GetHashCode() : 0);
+        return (strategy is not null ? strategy.GetHashCode() : 0);
     }
 
     public override string ToString()

@@ -94,7 +94,7 @@ public class PropertyMapping : ColumnBasedMappingBase
     {
         unchecked
         {
-            return ((ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0) * 397) ^ (Member != null ? Member.GetHashCode() : 0);
+            return ((ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0) * 397) ^ (Member is not null ? Member.GetHashCode() : 0);
         }
     }
 

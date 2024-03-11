@@ -31,7 +31,7 @@ public class Property<T, TProperty> : Property<T>
     {
         get
         {
-            if (_valueSetter != null)
+            if (_valueSetter is not null)
             {
                 return _valueSetter;
             }
@@ -70,10 +70,10 @@ public class Property<T, TProperty> : Property<T>
 
         bool areEqual;
             
-        if (EntityEqualityComparer != null)
+        if (EntityEqualityComparer is not null)
             areEqual = EntityEqualityComparer.Equals(Value, actual);
-        else if (Value == null)
-            areEqual = actual == null;
+        else if (Value is null)
+            areEqual = actual is null;
         else
             areEqual = Value.Equals(actual);
 
@@ -87,11 +87,11 @@ public class Property<T, TProperty> : Property<T>
     {
         string message;
 
-        string actualToPrint = actual != null ? actual.ToString() : "(null)";
+        string actualToPrint = actual is not null ? actual.ToString() : "(null)";
         string actualTypeToPrint = PropertyAccessor.PropertyType.FullName;
 
-        string valueToPrint = Value != null ? Value.ToString() : "(null)";
-        string valueTypeToPrint = Value != null ? Value.GetType().FullName : "(null)";
+        string valueToPrint = Value is not null ? Value.ToString() : "(null)";
+        string valueTypeToPrint = Value is not null ? Value.GetType().FullName : "(null)";
 
         if (actualToPrint != valueToPrint && actualTypeToPrint != valueTypeToPrint)
         {

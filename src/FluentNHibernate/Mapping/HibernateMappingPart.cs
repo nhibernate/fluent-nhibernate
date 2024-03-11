@@ -16,7 +16,7 @@ public class HibernateMappingPart : IHibernateMappingProvider
         defaultCascade = new CascadeExpression<HibernateMappingPart>(this, value =>
         {
             var current = attributes.Get("DefaultCascade") as string;
-            attributes.Set("DefaultCascade", Layer.UserSupplied, current == null ? value : string.Format("{0},{1}", current, value));
+            attributes.Set("DefaultCascade", Layer.UserSupplied, current is null ? value : string.Format("{0},{1}", current, value));
         });
         defaultAccess = new AccessStrategyBuilder<HibernateMappingPart>(this, value => attributes.Set("DefaultAccess", Layer.UserSupplied, value));
     }

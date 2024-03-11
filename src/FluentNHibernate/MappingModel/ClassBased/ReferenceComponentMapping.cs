@@ -31,7 +31,7 @@ public class ReferenceComponentMapping : IComponentMapping
     {
         visitor.ProcessComponent(this);
 
-        if (mergedComponent != null)
+        if (mergedComponent is not null)
             mergedComponent.AcceptVisitor(visitor);
     }
 
@@ -125,7 +125,7 @@ public class ReferenceComponentMapping : IComponentMapping
 
     public Member Member
     {
-        get { return (mergedComponent == null) ? property : mergedComponent.Member; }
+        get { return (mergedComponent is null) ? property : mergedComponent.Member; }
     }
 
     public ParentMapping Parent
@@ -167,12 +167,12 @@ public class ReferenceComponentMapping : IComponentMapping
 
     public string Name
     {
-        get { return (mergedComponent == null) ? property.Name : mergedComponent.Name; }
+        get { return (mergedComponent is null) ? property.Name : mergedComponent.Name; }
     }
 
     public Type Type
     {
-        get { return (mergedComponent == null) ? componentType : mergedComponent.Type; }
+        get { return (mergedComponent is null) ? componentType : mergedComponent.Type; }
     }
 
     public TypeReference Class
@@ -187,7 +187,7 @@ public class ReferenceComponentMapping : IComponentMapping
 
     public bool IsAssociated
     {
-        get { return mergedComponent != null; }
+        get { return mergedComponent is not null; }
     }
 
     public ComponentMapping MergedModel
@@ -217,10 +217,10 @@ public class ReferenceComponentMapping : IComponentMapping
     {
         unchecked
         {
-            int result = (property != null ? property.GetHashCode() : 0);
-            result = (result * 397) ^ (componentType != null ? componentType.GetHashCode() : 0);
-            result = (result * 397) ^ (mergedComponent != null ? mergedComponent.GetHashCode() : 0);
-            result = (result * 397) ^ (containingEntityType != null ? containingEntityType.GetHashCode() : 0);
+            int result = (property is not null ? property.GetHashCode() : 0);
+            result = (result * 397) ^ (componentType is not null ? componentType.GetHashCode() : 0);
+            result = (result * 397) ^ (mergedComponent is not null ? mergedComponent.GetHashCode() : 0);
+            result = (result * 397) ^ (containingEntityType is not null ? containingEntityType.GetHashCode() : 0);
             return result;
         }
     }

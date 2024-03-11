@@ -20,7 +20,7 @@ public abstract class ComponentMappingBase : ClassMappingBase
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
-        if (Parent != null)
+        if (Parent is not null)
             visitor.Visit(Parent);
 
         base.AcceptVisitor(visitor);
@@ -81,9 +81,9 @@ public abstract class ComponentMappingBase : ClassMappingBase
         unchecked
         {
             int result = base.GetHashCode();
-            result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
-            result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
+            result = (result * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
+            result = (result * 397) ^ (Member is not null ? Member.GetHashCode() : 0);
             return result;
         }
     }

@@ -36,7 +36,7 @@ public class ManyToManyCollectionInstance : CollectionInstance, IManyToManyColle
         get
         {
             var otherSide = mapping.OtherSide as CollectionMapping;
-            if (otherSide == null)
+            if (otherSide is null)
                 return null;
 
             return new ManyToManyCollectionInstance(otherSide);

@@ -109,7 +109,7 @@ public class ForeignKeyConventionTests
     {
         protected override string GetKeyName(Member property, Type type)
         {
-            return property == null ? type.Name + "!" : property.Name + "!";
+            return property is null ? type.Name + "!" : property.Name + "!";
         }
     }
 }

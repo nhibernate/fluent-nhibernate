@@ -293,7 +293,7 @@ public class SubclassMap<T> : ClasslikeMapBase<T>, IIndeterminateSubclassMapping
         // TODO: un-hardcode this
         Type baseType = typeof(T).BaseType
                         ?? attributes.Get("Extends") as Type;
-        if (baseType != null)
+        if (baseType is not null)
         {
             var key = new KeyMapping();
             key.AddColumn(Layer.Defaults, new ColumnMapping(baseType.Name + "_id"));

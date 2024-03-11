@@ -75,7 +75,7 @@ public class PropertyInspector : ColumnBasedInspector, IPropertyInspector
     {
         get
         {
-            if (mapping.Access != null)
+            if (mapping.Access is not null)
                 return Access.FromString(mapping.Access);
 
             return Access.Unset;

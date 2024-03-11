@@ -132,10 +132,10 @@ public class HibernateMapping : MappingBase
     {
         unchecked
         {
-            int result = (classes != null ? classes.GetHashCode() : 0);
-            result = (result * 397) ^ (filters != null ? filters.GetHashCode() : 0);
-            result = (result * 397) ^ (imports != null ? imports.GetHashCode() : 0);
-            result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+            int result = (classes is not null ? classes.GetHashCode() : 0);
+            result = (result * 397) ^ (filters is not null ? filters.GetHashCode() : 0);
+            result = (result * 397) ^ (imports is not null ? imports.GetHashCode() : 0);
+            result = (result * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
             return result;
         }
     }

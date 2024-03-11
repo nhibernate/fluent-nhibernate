@@ -126,7 +126,7 @@ public abstract class ClasslikeMapBase<T>
 
         var part = new ManyToOnePart<TOther>(EntityType, member);
 
-        if (columnName != null)
+        if (columnName is not null)
             part.Column(columnName);
 
         providers.References.Add(part);
@@ -294,7 +294,7 @@ public abstract class ClasslikeMapBase<T>
 
         var part = new ComponentPart<TComponent>(typeof(T), member);
 
-        if (action != null) action(part);
+        if (action is not null) action(part);
 
         providers.Components.Add(part);
 

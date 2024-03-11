@@ -31,7 +31,7 @@ public class OneToManyCollectionInstance : CollectionInstance, IOneToManyCollect
         get
         {
             var otherSide = mapping.OtherSide as ManyToOneMapping;
-            if (otherSide == null)
+            if (otherSide is null)
                 return null;
 
             return new ManyToOneInstance(otherSide);

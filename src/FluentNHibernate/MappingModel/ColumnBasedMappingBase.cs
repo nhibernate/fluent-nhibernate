@@ -50,7 +50,7 @@ public abstract class ColumnBasedMappingBase : MappingBase, IHasColumnMappings
     {
         unchecked
         {
-            return ((columns != null ? columns.GetHashCode() : 0) * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+            return ((columns is not null ? columns.GetHashCode() : 0) * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
         }
     }
 }

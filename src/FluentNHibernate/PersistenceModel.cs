@@ -215,7 +215,7 @@ public class PersistenceModel
 
     private void EnsureMappingsBuilt()
     {
-        if (compiledMappings != null) return;
+        if (compiledMappings is not null) return;
 
         compiledMappings = BuildMappings();
     }
@@ -265,7 +265,7 @@ public class PersistenceModel
             }
             finally
             {
-                if(shouldDispose && xmlWriter != null)
+                if(shouldDispose && xmlWriter is not null)
                     xmlWriter.Close();
             }
         }
@@ -287,7 +287,7 @@ public class PersistenceModel
             var serializer = new MappingXmlSerializer();
             XmlDocument document = serializer.Serialize(mapping);
 
-            if (cfg.GetClassMapping(mapping.Classes.First().Type) == null)
+            if (cfg.GetClassMapping(mapping.Classes.First().Type) is null)
                 cfg.AddDocument(document);
         }
     }

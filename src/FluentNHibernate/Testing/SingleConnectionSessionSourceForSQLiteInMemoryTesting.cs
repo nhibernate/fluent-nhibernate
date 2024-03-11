@@ -18,7 +18,7 @@ public class SingleConnectionSessionSourceForSQLiteInMemoryTesting : SessionSour
 
     protected void EnsureCurrentSession()
     {
-        if (session == null)
+        if (session is null)
             session = base.CreateSession();
     }
 

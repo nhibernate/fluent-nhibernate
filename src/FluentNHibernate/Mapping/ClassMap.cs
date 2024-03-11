@@ -104,7 +104,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
 
         var part = new IdentityPart(EntityType, member);
 
-        if (column != null)
+        if (column is not null)
             part.Column(column);
 
         providers.Id = part;
@@ -145,7 +145,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     {
         var part = new IdentityPart(typeof(T), typeof(TId));
 
-        if (column != null)
+        if (column is not null)
         {
             part.SetName(column);
             part.Column(column);
@@ -618,7 +618,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
         mapping.Set(x => x.Type, Layer.Defaults, typeof(T));
         mapping.Set(x => x.Name, Layer.Defaults, typeof(T).AssemblyQualifiedName);
 
-        if (providers.Version != null)
+        if (providers.Version is not null)
             mapping.Set(x => x.Version, Layer.Defaults, providers.Version.GetVersionMapping());
 
         foreach (var provider in providers.OrderedProviders) {

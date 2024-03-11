@@ -87,10 +87,10 @@ public class PersistenceSpecificationTransactionTest
     {
         bool IEqualityComparer.Equals(object x, object y)
         {
-            if (x == null || y == null)
+            if (x is null || y is null)
                 return false;
 
-            if (x.GetType().GetProperty("Name") != null && y.GetType().GetProperty("Name") != null)
+            if (x.GetType().GetProperty("Name") is not null && y.GetType().GetProperty("Name") is not null)
             {
                 return x.GetType().GetProperty("Name").GetValue(x, null) == y.GetType().GetProperty("Name").GetValue(x, null);
             }

@@ -126,7 +126,7 @@ public class JoinMapping : IMapping
     {
         visitor.ProcessJoin(this);
 
-        if (Key != null)
+        if (Key is not null)
             visitor.Visit(Key);
 
         mappedMembers.AcceptVisitor(visitor);
@@ -153,9 +153,9 @@ public class JoinMapping : IMapping
     {
         unchecked
         {
-            int result = (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (mappedMembers != null ? mappedMembers.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (mappedMembers is not null ? mappedMembers.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

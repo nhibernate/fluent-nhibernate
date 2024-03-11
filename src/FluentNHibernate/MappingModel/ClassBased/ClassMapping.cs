@@ -70,22 +70,22 @@ public class ClassMapping : ClassMappingBase
     {
         visitor.ProcessClass(this);            
 
-        if (Id != null)
+        if (Id is not null)
             visitor.Visit(Id);
 
-        if (NaturalId != null)
+        if (NaturalId is not null)
             visitor.Visit(NaturalId);
 
-        if (Discriminator != null)
+        if (Discriminator is not null)
             visitor.Visit(Discriminator);
 
-        if (Cache != null)
+        if (Cache is not null)
             visitor.Visit(Cache);
 
-        if (Version != null)
+        if (Version is not null)
             visitor.Visit(Version);
 
-        if (Tuplizer != null)
+        if (Tuplizer is not null)
             visitor.Visit(Tuplizer);
 
         base.AcceptVisitor(visitor);
@@ -204,7 +204,7 @@ public class ClassMapping : ClassMappingBase
 
     public override int GetHashCode()
     {
-        return (attributes != null ? attributes.GetHashCode() : 0);
+        return (attributes is not null ? attributes.GetHashCode() : 0);
     }
 
     public void Set<T>(Expression<Func<ClassMapping, T>> expression, int layer, T value)

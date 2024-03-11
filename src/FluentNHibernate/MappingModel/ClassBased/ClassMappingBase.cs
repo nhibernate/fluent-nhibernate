@@ -197,7 +197,7 @@ public abstract class ClassMappingBase : MappingBase, IHasMappedMembers
     {
         unchecked
         {
-            return ((mappedMembers != null ? mappedMembers.GetHashCode() : 0) * 397) ^ (subclasses != null ? subclasses.GetHashCode() : 0);
+            return ((mappedMembers is not null ? mappedMembers.GetHashCode() : 0) * 397) ^ (subclasses is not null ? subclasses.GetHashCode() : 0);
         }
     }
 

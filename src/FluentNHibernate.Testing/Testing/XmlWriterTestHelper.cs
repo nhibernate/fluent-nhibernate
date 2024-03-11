@@ -40,7 +40,7 @@ public class XmlWriterTestHelper<TMappingType>
         {
             TMappingType mapping;
 
-            if (constructor == null)
+            if (constructor is null)
                 mapping = (TMappingType)typeof(TMappingType).InstantiateUsingParameterlessConstructor();
             else
                 mapping = constructor();

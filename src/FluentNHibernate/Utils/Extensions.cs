@@ -55,7 +55,7 @@ public static class Extensions
     {
         var constructor = ReflectHelper.GetDefaultConstructor(type);
 
-        if (constructor == null)
+        if (constructor is null)
             throw new MissingConstructorException(type);
 
         return constructor.Invoke(null);

@@ -22,7 +22,7 @@ public class JoinedSubclassInstance : JoinedSubclassInspector, IJoinedSubclassIn
     {
         get
         {
-            if (mapping.Key == null)
+            if (mapping.Key is null)
                 mapping.Set(x => x.Key, Layer.Conventions, new KeyMapping());
 
             return new KeyInstance(mapping.Key);

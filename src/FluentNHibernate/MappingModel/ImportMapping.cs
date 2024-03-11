@@ -49,7 +49,7 @@ public class ImportMapping : MappingBase
 
     public override int GetHashCode()
     {
-        return (attributes != null ? attributes.GetHashCode() : 0);
+        return (attributes is not null ? attributes.GetHashCode() : 0);
     }
 
     public override bool IsSpecified(string attribute)

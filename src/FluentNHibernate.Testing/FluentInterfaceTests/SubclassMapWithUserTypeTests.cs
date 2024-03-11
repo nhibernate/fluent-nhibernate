@@ -113,7 +113,7 @@ public class ImageContextsUserType : IUserType
     {
         IList<string> contexts = value as IList<string>;
 
-        if (contexts != null)
+        if (contexts is not null)
         {
             NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Icon"), index, session);
             NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Promo"), index + 1, session);

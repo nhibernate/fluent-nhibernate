@@ -30,7 +30,7 @@ public class IdMapping : ColumnBasedMappingBase, IIdentityMapping
         foreach (var column in Columns)
             visitor.Visit(column);
 
-        if (Generator != null)
+        if (Generator is not null)
             visitor.Visit(Generator);
     }
 
@@ -85,8 +85,8 @@ public class IdMapping : ColumnBasedMappingBase, IIdentityMapping
         unchecked
         {
             int result = base.GetHashCode();
-            result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            result = (result * 397) ^ (Member is not null ? Member.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

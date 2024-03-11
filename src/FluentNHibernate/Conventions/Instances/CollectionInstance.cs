@@ -93,7 +93,7 @@ public class CollectionInstance : CollectionInspector, ICollectionInstance,
     {
         get
         {
-            if (mapping.Index == null)
+            if (mapping.Index is null)
                 return new IndexInstance(new IndexMapping());
 
             if (mapping.Index is IndexMapping)
@@ -184,7 +184,7 @@ public class CollectionInstance : CollectionInspector, ICollectionInstance,
     void ICollectionInstance.AsList()
     {
         mapping.Collection = Collection.List;
-        if (mapping.Index == null)
+        if (mapping.Index is null)
         {
             var indexMapping = new IndexMapping();
             var columnMapping = new ColumnMapping();
@@ -218,7 +218,7 @@ public class CollectionInstance : CollectionInspector, ICollectionInstance,
     {
         get
         {
-            if (mapping.Cache == null)
+            if (mapping.Cache is null)
                 // conventions are hitting it, user must want a cache
                 mapping.Set(x => x.Cache, Layer.Conventions, new CacheMapping());
 
@@ -245,7 +245,7 @@ public class CollectionInstance : CollectionInspector, ICollectionInstance,
     {
         get
         {
-            if (mapping.Element == null)
+            if (mapping.Element is null)
                 mapping.Set(x => x.Element, Layer.Conventions, new ElementMapping());
                 
             return new ElementInstance(mapping.Element);

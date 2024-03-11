@@ -63,7 +63,7 @@ public class FilterDefinitionMapping : MappingBase
     {
         unchecked
         {
-            return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^ (parameters != null ? parameters.GetHashCode() : 0);
+            return ((attributes is not null ? attributes.GetHashCode() : 0) * 397) ^ (parameters is not null ? parameters.GetHashCode() : 0);
         }
     }
 
