@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
 using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;

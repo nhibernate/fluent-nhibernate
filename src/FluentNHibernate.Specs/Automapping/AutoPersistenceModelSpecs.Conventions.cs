@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data;
-using System.Xml;
+﻿using System.Xml;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Inspections;
@@ -8,8 +6,6 @@ using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using FluentNHibernate.Specs.ExternalFixtures;
 using Machine.Specifications;
-using NHibernate.SqlTypes;
-using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Specs.Automapping;
 

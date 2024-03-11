@@ -4,7 +4,6 @@ using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 

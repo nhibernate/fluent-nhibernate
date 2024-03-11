@@ -1,8 +1,5 @@
 using System.Linq;
-using FluentNHibernate.Mapping;
-using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;

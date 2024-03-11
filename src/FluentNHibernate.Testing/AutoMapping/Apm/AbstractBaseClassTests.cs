@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using FluentNHibernate.Automapping;
-using FluentNHibernate.MappingModel.Identity;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Automapping.Apm;

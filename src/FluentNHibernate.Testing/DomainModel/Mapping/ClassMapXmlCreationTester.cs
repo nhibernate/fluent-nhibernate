@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
-using FluentNHibernate.Mapping;
 using NHibernate.Type;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping;

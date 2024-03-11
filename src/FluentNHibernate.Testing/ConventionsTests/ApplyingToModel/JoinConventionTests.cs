@@ -5,8 +5,6 @@ using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Testing.FluentInterfaceTests;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;

@@ -1,6 +1,4 @@
 using System.Linq;
-using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 

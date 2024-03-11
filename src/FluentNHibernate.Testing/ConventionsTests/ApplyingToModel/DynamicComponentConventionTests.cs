@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Linq;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;

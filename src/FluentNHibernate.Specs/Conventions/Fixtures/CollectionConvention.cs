@@ -1,5 +1,4 @@
-﻿using System;
-using FluentNHibernate.Conventions;
+﻿using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Specs.Conventions.Fixtures;

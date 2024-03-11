@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;

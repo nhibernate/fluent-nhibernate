@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml;
 using FluentNHibernate.MappingModel.ClassBased;
-using Machine.Specifications;
 using FluentAssertions;
 
 namespace FluentNHibernate.Specs;

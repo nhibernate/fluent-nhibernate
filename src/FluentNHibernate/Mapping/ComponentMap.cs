@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping;
 

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Inspections;

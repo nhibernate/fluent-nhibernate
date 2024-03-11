@@ -2,7 +2,6 @@ using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria;

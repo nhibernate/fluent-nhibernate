@@ -1,9 +1,7 @@
-using System;
 using System.Linq;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests;

@@ -1,6 +1,4 @@
 using System;
-using System.Reflection;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
 

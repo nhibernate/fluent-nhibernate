@@ -1,9 +1,5 @@
-using System;
-using System.Xml;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.Utils;
-using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.Mapping;
 
