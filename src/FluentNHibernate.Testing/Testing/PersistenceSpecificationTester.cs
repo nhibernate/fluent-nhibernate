@@ -177,8 +177,7 @@ public class PersistenceSpecificationTester
     [Test]
     public void VerifyTheMappings_returns_instance()
     {
-        var cat = spec.CheckProperty(x => x.FirstKitten, this.cat.FirstKitten).VerifyTheMappings();
-        cat.ShouldNotBeNull();
+        spec.CheckProperty(x => x.FirstKitten, this.cat.FirstKitten).VerifyTheMappings().ShouldNotBeNull();
     }
 
     [Test]

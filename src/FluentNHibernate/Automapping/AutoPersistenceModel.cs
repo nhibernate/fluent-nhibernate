@@ -468,7 +468,7 @@ public class AutoPersistenceModel : PersistenceModel
         return "AutoMappings.hbm.xml";
     }
 
-    bool HasUserDefinedConfiguration => !(cfg is ExpressionBasedAutomappingConfiguration);
+    bool HasUserDefinedConfiguration => cfg is not ExpressionBasedAutomappingConfiguration;
 }
 
 public class AutomappedComponentResolver : IComponentReferenceResolver
