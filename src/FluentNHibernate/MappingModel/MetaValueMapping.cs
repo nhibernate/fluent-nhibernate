@@ -38,7 +38,7 @@ public class MetaValueMapping : MappingBase
 
     public bool Equals(MetaValueMapping other)
     {
-        return Equals(other.attributes, attributes) && Equals(other.ContainingEntityType, ContainingEntityType);
+        return Equals(other.attributes, attributes) && other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

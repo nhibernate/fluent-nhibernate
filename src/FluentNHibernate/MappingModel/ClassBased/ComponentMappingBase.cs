@@ -65,7 +65,7 @@ public abstract class ComponentMappingBase : ClassMappingBase
         if (ReferenceEquals(this, other)) return true;
         return base.Equals(other) &&
                Equals(other.attributes, attributes) &&
-               Equals(other.ContainingEntityType, ContainingEntityType) &&
+               other.ContainingEntityType == ContainingEntityType &&
                Equals(other.Member, Member);
     }
 

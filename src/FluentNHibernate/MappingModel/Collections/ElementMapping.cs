@@ -62,7 +62,7 @@ public class ElementMapping : MappingBase, IHasColumnMappings
         if (ReferenceEquals(this, other)) return true;
         return other.columns.ContentEquals(columns) &&
                Equals(other.attributes, attributes) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

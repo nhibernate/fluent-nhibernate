@@ -35,7 +35,7 @@ public class GeneratorMapping : MappingBase
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.Params.ContentEquals(Params) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

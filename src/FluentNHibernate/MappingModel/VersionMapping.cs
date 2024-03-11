@@ -54,7 +54,7 @@ public class VersionMapping : ColumnBasedMappingBase
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return base.Equals(other) && Equals(other.ContainingEntityType, ContainingEntityType);
+        return base.Equals(other) && other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)

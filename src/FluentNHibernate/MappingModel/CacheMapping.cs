@@ -45,7 +45,7 @@ public class CacheMapping : MappingBase
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(other.attributes, attributes) && Equals(other.ContainedEntityType, ContainedEntityType);
+        return Equals(other.attributes, attributes) && other.ContainedEntityType == ContainedEntityType;
     }
 
     public override bool Equals(object obj)

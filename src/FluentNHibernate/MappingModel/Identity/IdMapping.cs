@@ -70,7 +70,7 @@ public class IdMapping : ColumnBasedMappingBase, IIdentityMapping
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return base.Equals(other) && Equals(other.Member, Member) && Equals(other.ContainingEntityType, ContainingEntityType);
+        return base.Equals(other) && Equals(other.Member, Member) && other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
