@@ -193,10 +193,7 @@ public class RelationshipPairingVisitor : DefaultMappingModelVisitor
             .OrderBy(x => x.Differences)
             .FirstOrDefault();
 
-        if (alternative is null)
-            return null;
-
-        return alternative.Collection;
+        return alternative?.Collection;
     }
 
     static bool AnyHaveSameLikeness(IEnumerable<LikenessContainer> likenesses, LikenessContainer current)

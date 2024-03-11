@@ -47,9 +47,8 @@ public class PropertyStep : IAutomappingStep
 
                 var criteria = new ConcreteAcceptanceCriteria<IPropertyInspector>();
                 var acceptance = c as IConventionAcceptance<IPropertyInspector>;
-                    
-                if (acceptance is not null)
-                    acceptance.Accept(criteria);
+
+                acceptance?.Accept(criteria);
 
                 var propertyMapping = new PropertyMapping
                 {

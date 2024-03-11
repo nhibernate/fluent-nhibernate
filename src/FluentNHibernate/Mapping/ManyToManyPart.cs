@@ -112,8 +112,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         manyToManyIndex.Column(indexColumn);
         manyToManyIndex.Type(indexType);
 
-        if (indexAction is not null)
-            indexAction(manyToManyIndex);
+        indexAction?.Invoke(manyToManyIndex);
 
         ChildKeyColumn(valueColumn);
         valueType = typeOfValue;
@@ -141,8 +140,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         manyToManyIndex.Column(indexColumn);
         manyToManyIndex.Type(indexType);
 
-        if (indexAction is not null)
-            indexAction(manyToManyIndex);
+        indexAction?.Invoke(manyToManyIndex);
 
         ChildKeyColumn(valueColumn);
         valueType = typeOfValue;

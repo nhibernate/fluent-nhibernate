@@ -29,10 +29,7 @@ public class ComponentMapComponentReferenceResolver : IComponentReferenceResolve
 
         var provider = providers.SingleOrDefault();
 
-        if (provider is null)
-            return null;
-
-        return provider.GetComponentMapping();
+        return provider?.GetComponentMapping();
     }
 }
 

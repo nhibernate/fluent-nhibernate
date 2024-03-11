@@ -288,10 +288,7 @@ internal class PropertyMember : Member
 
     MethodMember GetMember(MethodInfo method)
     {
-        if (method is null)
-            return null;
-
-        return (MethodMember)method.ToMember();
+        return (MethodMember)method?.ToMember();
     }
 
     public override void SetValue(object target, object value)

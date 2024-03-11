@@ -161,8 +161,7 @@ public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
 
         var keyPart = new KeyManyToOnePart(key);
 
-        if (customMapping is not null)
-            customMapping(keyPart);
+        customMapping?.Invoke(keyPart);
 
         keys.Add(key);            
 
@@ -172,10 +171,7 @@ public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
     public virtual CompositeIdentityPart<T> CustomType<CType>()
     {
         var key = keys.Where(x => x is KeyPropertyMapping).Cast<KeyPropertyMapping>().LastOrDefault();
-        if (key is not null)
-        {
-            key.Set(x => x.Type, Layer.Defaults, new TypeReference(typeof(CType)));
-        }
+        key?.Set(x => x.Type, Layer.Defaults, new TypeReference(typeof(CType)));
         return this;
     }
 

@@ -394,8 +394,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     {
         var indexPart = new IndexPart(typeof(T));
 
-        if (customIndex is not null)
-            customIndex(indexPart);
+        customIndex?.Invoke(indexPart);
 
 #pragma warning disable 612,618
         indexMapping = indexPart.GetIndexMapping();
@@ -407,8 +406,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         indexMapping = new IndexMapping();
         var builder = new ListIndexPart(indexMapping);
 
-        if (customIndex is not null)
-            customIndex(builder);
+        customIndex?.Invoke(builder);
     }
 
     /// <summary>
@@ -434,7 +432,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     public T Element(string columnName, Action<ElementPart> customElementMapping)
     {
         Element(columnName);
-        if (customElementMapping is not null) customElementMapping(elementPart);
+        customElementMapping?.Invoke(elementPart);
         return (T)this;
     }
 
