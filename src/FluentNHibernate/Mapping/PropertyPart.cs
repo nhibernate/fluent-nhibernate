@@ -324,7 +324,7 @@ public class PropertyPart : IPropertyMappingProvider
 
         foreach (var column in mapping.Columns)
         {
-            if (member.PropertyType.IsNullable() && member.PropertyType.IsEnum())
+            if (member.PropertyType.IsNullableType() && member.PropertyType.IsEnum())
                 column.Set(x => x.NotNull, Layer.Defaults, false);
 
             column.MergeAttributes(columnAttributes);
@@ -343,7 +343,7 @@ public class PropertyPart : IPropertyMappingProvider
         if (member.PropertyType.IsEnum())
             type = new TypeReference(typeof(EnumStringType<>).MakeGenericType(member.PropertyType));
 
-        if (member.PropertyType.IsNullable() && member.PropertyType.IsEnum())
+        if (member.PropertyType.IsNullableType() && member.PropertyType.IsEnum())
             type = new TypeReference(typeof(EnumStringType<>).MakeGenericType(member.PropertyType.GetGenericArguments()[0]));
 
         return type;
