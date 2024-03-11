@@ -133,8 +133,7 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
         var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(typeof(TSubclass));
         var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn);
 
-        if (action is not null)
-            action(joinedclass);
+        action?.Invoke(joinedclass);
 
         providers.Subclasses[typeof(TSubclass)] = joinedclass;
 
@@ -167,8 +166,7 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
         var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
         var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, null, discriminatorValue);
 
-        if (action is not null)
-            action(subclass);
+        action?.Invoke(subclass);
 
         // remove any mappings for the same type, then re-add
         providers.Subclasses[typeof(TSubclass)] = subclass;

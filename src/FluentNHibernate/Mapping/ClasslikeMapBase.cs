@@ -294,7 +294,7 @@ public abstract class ClasslikeMapBase<T>
 
         var part = new ComponentPart<TComponent>(typeof(T), member);
 
-        if (action is not null) action(part);
+        action?.Invoke(part);
 
         providers.Components.Add(part);
 
