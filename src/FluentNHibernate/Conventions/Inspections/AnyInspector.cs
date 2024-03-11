@@ -35,8 +35,7 @@ public class AnyInspector : IAnyInspector
         get
         {
             return mapping.IdentifierColumns
-                .Select(x => new ColumnInspector(mapping.ContainingEntityType, x))
-                .Cast<IColumnInspector>();
+                .Select(x => new ColumnInspector(mapping.ContainingEntityType, x));
         }
     }
 
@@ -51,8 +50,7 @@ public class AnyInspector : IAnyInspector
         get
         {
             return mapping.MetaValues
-                .Select(x => new MetaValueInspector(x))
-                .Cast<IMetaValueInspector>();
+                .Select(x => new MetaValueInspector(x));
         }
     }
 
@@ -63,8 +61,7 @@ public class AnyInspector : IAnyInspector
         get
         {
             return mapping.TypeColumns
-                .Select(x => new ColumnInspector(mapping.ContainingEntityType, x))
-                .Cast<IColumnInspector>();
+                .Select(x => new ColumnInspector(mapping.ContainingEntityType, x));
         }
     }
 
