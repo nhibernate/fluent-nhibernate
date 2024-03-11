@@ -134,11 +134,11 @@ public class AnyMapping : MappingBase
     {
         unchecked
         {
-            int result = (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (typeColumns != null ? typeColumns.GetHashCode() : 0);
-            result = (result * 397) ^ (identifierColumns != null ? identifierColumns.GetHashCode() : 0);
-            result = (result * 397) ^ (metaValues != null ? metaValues.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (typeColumns is not null ? typeColumns.GetHashCode() : 0);
+            result = (result * 397) ^ (identifierColumns is not null ? identifierColumns.GetHashCode() : 0);
+            result = (result * 397) ^ (metaValues is not null ? metaValues.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

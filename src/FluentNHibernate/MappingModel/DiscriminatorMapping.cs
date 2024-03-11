@@ -66,7 +66,7 @@ public class DiscriminatorMapping : ColumnBasedMappingBase
     {
         unchecked
         {
-            return ((ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0) * 397) ^ ((Columns != null ? Columns.GetHashCode() : 0) * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+            return ((ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0) * 397) ^ ((Columns is not null ? Columns.GetHashCode() : 0) * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
         }
     }
 

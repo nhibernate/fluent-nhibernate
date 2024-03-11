@@ -109,7 +109,7 @@ public class Access
 
     public override int GetHashCode()
     {
-        return (value != null ? value.GetHashCode() : 0);
+        return (value is not null ? value.GetHashCode() : 0);
     }
 
     public static bool operator ==(Access x, Access y)

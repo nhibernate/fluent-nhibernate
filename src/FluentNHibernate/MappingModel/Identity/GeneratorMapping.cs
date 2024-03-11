@@ -50,9 +50,9 @@ public class GeneratorMapping : MappingBase
     {
         unchecked
         {
-            int result = (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (Params != null ? Params.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (Params is not null ? Params.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

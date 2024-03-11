@@ -126,7 +126,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         manyToManyIndex.Column(indexColumn);
         manyToManyIndex.Type(indexType);
 
-        if (indexAction != null)
+        if (indexAction is not null)
             indexAction(manyToManyIndex);
 
         ChildKeyColumn(valueColumn);
@@ -155,7 +155,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         manyToManyIndex.Column(indexColumn);
         manyToManyIndex.Type(indexType);
 
-        if (indexAction != null)
+        if (indexAction is not null)
             indexAction(manyToManyIndex);
 
         ChildKeyColumn(valueColumn);
@@ -224,7 +224,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
             ContainingEntityType = EntityType,
         };
 
-        if (isTernary && valueType != null)
+        if (isTernary && valueType is not null)
             mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(valueType));
 
         foreach (var filterPart in childFilters)
@@ -372,7 +372,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         foreach (var column in parentKeyColumns)
             collection.Key.AddColumn(Layer.UserSupplied, column.Clone());
 
-        if (collection.Relationship != null)
+        if (collection.Relationship is not null)
         {
             // child columns
             if (childKeyColumns.Count == 0)
@@ -383,7 +383,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         }
 
         // HACK: Index only on list and map - shouldn't have to do this!
-        if (index != null)
+        if (index is not null)
         {
 #pragma warning disable 612,618
             collection.Set(x => x.Index, Layer.Defaults, index.GetIndexMapping());
@@ -391,7 +391,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         }
 
         // HACK: shouldn't have to do this!
-        if (manyToManyIndex != null && collection.Collection == Collection.Map)
+        if (manyToManyIndex is not null && collection.Collection == Collection.Map)
 #pragma warning disable 612,618
             collection.Set(x => x.Index, Layer.Defaults, manyToManyIndex.GetIndexMapping());
 #pragma warning restore 612,618

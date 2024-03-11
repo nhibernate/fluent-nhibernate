@@ -29,7 +29,7 @@ public class OptimisticLock
 
     public override int GetHashCode()
     {
-        return (value != null ? value.GetHashCode() : 0);
+        return (value is not null ? value.GetHashCode() : 0);
     }
 
     public static bool operator ==(OptimisticLock x, OptimisticLock y)

@@ -21,7 +21,7 @@ public class List<T, TListElement> : Property<T, IEnumerable<TListElement>>
     {
         get
         {
-            if (_valueSetter != null)
+            if (_valueSetter is not null)
             {
                 return _valueSetter;
             }
@@ -67,12 +67,12 @@ public class List<T, TListElement> : Property<T, IEnumerable<TListElement>>
 
     private void AssertGenericListMatches(IEnumerable actualEnumerable, IEnumerable<TListElement> expectedEnumerable)
     {
-        if (actualEnumerable == null)
+        if (actualEnumerable is null)
         {
             throw new ArgumentNullException("actualEnumerable",
                 "Actual and expected are not equal (actual was null).");
         }
-        if (expectedEnumerable == null)
+        if (expectedEnumerable is null)
         {
             throw new ArgumentNullException("expectedEnumerable",
                 "Actual and expected are not equal (expected was null).");
@@ -91,7 +91,7 @@ public class List<T, TListElement> : Property<T, IEnumerable<TListElement>>
             throw new ApplicationException(String.Format("Actual count ({0}) does not equal expected count ({1})", actualList.Count, expectedList.Count));
         }
 
-        var equalsFunc = (EntityEqualityComparer != null) ? ((a, b) => EntityEqualityComparer.Equals(a, b)): new Func<object, object, bool>(Equals);
+        var equalsFunc = (EntityEqualityComparer is not null) ? ((a, b) => EntityEqualityComparer.Equals(a, b)): new Func<object, object, bool>(Equals);
 
         for (var i = 0; i < actualList.Count; i++)
         {

@@ -16,12 +16,12 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
         Func<Type, Type> mapPersistentTypeToProxyInterfaceType,
         Func<Type, Type> mapProxyInterfaceTypeToPersistentType)
     {
-        if (mapPersistentTypeToProxyInterfaceType == null)
+        if (mapPersistentTypeToProxyInterfaceType is null)
         {
             throw new ArgumentNullException("mapPersistentTypeToProxyInterfaceType");
         }
 
-        if(mapProxyInterfaceTypeToPersistentType == null)
+        if(mapProxyInterfaceTypeToPersistentType is null)
         {
             throw new ArgumentNullException("mapProxyInterfaceTypeToPersistentType");
         }
@@ -38,7 +38,7 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
     {
         var proxy = GetProxyType(instance.EntityType);
 
-        if(proxy != null)
+        if(proxy is not null)
         {
             instance.Proxy(proxy);
         }
@@ -51,7 +51,7 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
     {
         var proxy = GetProxyType(instance.EntityType);
 
-        if(proxy != null)
+        if(proxy is not null)
         {
             instance.Proxy(proxy);
         }
@@ -65,7 +65,7 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
         Type inferredType = instance.Class.GetUnderlyingSystemType();
         Type persistentType = _mapProxyInterfaceTypeToPersistentType(inferredType);
 
-        if (persistentType != null)
+        if (persistentType is not null)
         {
             instance.OverrideInferredClass(persistentType);
         }
@@ -78,7 +78,7 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
     {
         var proxy = GetPersistentType(instance.Relationship.Class.GetUnderlyingSystemType());
 
-        if(proxy != null)
+        if(proxy is not null)
         {
             instance.Relationship.CustomClass(proxy);
         }
@@ -92,7 +92,7 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
         Type inferredType = ((IOneToOneInspector)instance).Class.GetUnderlyingSystemType();
         Type persistentType = _mapProxyInterfaceTypeToPersistentType(inferredType);
 
-        if(persistentType != null)
+        if(persistentType is not null)
         {
             instance.OverrideInferredClass(persistentType);
         }

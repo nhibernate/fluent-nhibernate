@@ -292,7 +292,7 @@ public class IdentityPart : IIdentityMappingProvider
             mapping.AddColumn(Layer.Defaults, columnMapping);
         }
 
-        if (member != null)
+        if (member is not null)
             mapping.Set(x => x.Name, Layer.Defaults, name);
 
         mapping.Set(x => x.Type, Layer.Defaults, new TypeReference(identityType));

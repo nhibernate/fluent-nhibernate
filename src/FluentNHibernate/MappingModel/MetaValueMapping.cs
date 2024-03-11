@@ -51,8 +51,8 @@ public class MetaValueMapping : MappingBase
     {
         unchecked
         {
-            return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^
-                   (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            return ((attributes is not null ? attributes.GetHashCode() : 0) * 397) ^
+                   (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
         }
     }
 

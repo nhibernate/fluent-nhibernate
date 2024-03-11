@@ -58,7 +58,7 @@ public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INo
     public ICollection<TKey> Keys => Dictionary.Keys;
 
     public bool Remove(TKey key) {
-        if (key == null) throw new ArgumentNullException("key");
+        if (key is null) throw new ArgumentNullException("key");
 
         TValue value;
         Dictionary.TryGetValue(key, out value);
@@ -142,7 +142,7 @@ public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INo
     #endregion
 
     public void AddRange(IDictionary<TKey, TValue> items) {
-        if (items == null) throw new ArgumentNullException("items");
+        if (items is null) throw new ArgumentNullException("items");
 
         if (items.Count > 0) {
             if (Dictionary.Count > 0) {
@@ -158,7 +158,7 @@ public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INo
     }
 
     private void Insert(TKey key, TValue value, bool add) {
-        if (key == null) throw new ArgumentNullException("key");
+        if (key is null) throw new ArgumentNullException("key");
 
         TValue item;
         if (Dictionary.TryGetValue(key, out item)) {

@@ -50,7 +50,7 @@ public class CollectionInspector : ICollectionInspector,
     {
         get
         {
-            if (mapping.Key == null)
+            if (mapping.Key is null)
                 return new KeyInspector(new KeyMapping());
 
             return new KeyInspector(mapping.Key);
@@ -122,7 +122,7 @@ public class CollectionInspector : ICollectionInspector,
     {
         get
         {
-            if (mapping.Cache == null)
+            if (mapping.Cache is null)
                 return new CacheInspector(new CacheMapping());
 
             return new CacheInspector(mapping.Cache);
@@ -148,7 +148,7 @@ public class CollectionInspector : ICollectionInspector,
     {
         get
         {
-            if (mapping.CompositeElement == null)
+            if (mapping.CompositeElement is null)
                 return new CompositeElementInspector(new CompositeElementMapping());
 
             return new CompositeElementInspector(mapping.CompositeElement);
@@ -159,7 +159,7 @@ public class CollectionInspector : ICollectionInspector,
     {
         get
         {
-            if (mapping.Element == null)
+            if (mapping.Element is null)
                 return new ElementInspector(new ElementMapping());
 
             return new ElementInspector(mapping.Element);
@@ -205,7 +205,7 @@ public class CollectionInspector : ICollectionInspector,
     {
         get
         {
-            if (mapping.Index == null)
+            if (mapping.Index is null)
                 return new IndexInspector(new IndexMapping());
 
             if (mapping.Index is IndexMapping)

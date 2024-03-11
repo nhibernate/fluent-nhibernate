@@ -48,7 +48,7 @@ public class PropertyStep : IAutomappingStep
                 var criteria = new ConcreteAcceptanceCriteria<IPropertyInspector>();
                 var acceptance = c as IConventionAcceptance<IPropertyInspector>;
                     
-                if (acceptance != null)
+                if (acceptance is not null)
                     acceptance.Accept(criteria);
 
                 var propertyMapping = new PropertyMapping
@@ -59,7 +59,7 @@ public class PropertyStep : IAutomappingStep
                 return criteria.Matches(new PropertyInspector(propertyMapping));
             });
 
-        return conventions.FirstOrDefault() != null;
+        return conventions.FirstOrDefault() is not null;
     }
 
     private static bool IsMappableToColumnType(Member property)

@@ -266,7 +266,7 @@ public class ConventionVisitor : DefaultMappingModelVisitor
             var criteria = new ConcreteAcceptanceCriteria<TInspector>();
             var acceptance = convention as IConventionAcceptance<TInspector>;
 
-            if (acceptance != null)
+            if (acceptance is not null)
                 acceptance.Accept(criteria);
 
             if (criteria.Matches(instance))

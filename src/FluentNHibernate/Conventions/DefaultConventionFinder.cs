@@ -141,7 +141,7 @@ public class DefaultConventionFinder : IConventionFinder
 
     private bool AllowMultiplesOf(Type type)
     {
-        return Attribute.GetCustomAttribute(type, typeof(MultipleAttribute), true) != null;
+        return Attribute.GetCustomAttribute(type, typeof(MultipleAttribute), true) is not null;
     }
 
     private object Instantiate(Type type)

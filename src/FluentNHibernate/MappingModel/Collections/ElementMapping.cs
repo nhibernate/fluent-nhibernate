@@ -78,9 +78,9 @@ public class ElementMapping : MappingBase, IHasColumnMappings
     {
         unchecked
         {
-            int result = (columns != null ? columns.GetHashCode() : 0);
-            result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (columns is not null ? columns.GetHashCode() : 0);
+            result = (result * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

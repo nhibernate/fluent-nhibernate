@@ -97,7 +97,7 @@ public class ComponentConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = (ComponentMapping)generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) is not null)
             .Classes.First()
             .Components.First(x => x is ComponentMapping);
 

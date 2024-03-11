@@ -40,7 +40,7 @@ public class ComponentType
 
     public override int GetHashCode()
     {
-        return (elementName != null ? elementName.GetHashCode() : 0);
+        return (elementName is not null ? elementName.GetHashCode() : 0);
     }
 
     public static bool operator ==(ComponentType left, ComponentType right)

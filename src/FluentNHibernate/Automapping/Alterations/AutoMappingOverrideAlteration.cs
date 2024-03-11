@@ -38,7 +38,7 @@ public class AutoMappingOverrideAlteration : IAutoMappingAlteration
             let entity = (from interfaceType in type.GetInterfaces()
                 where interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IAutoMappingOverride<>)
                 select interfaceType.GetGenericArguments()[0]).FirstOrDefault()
-            where entity != null
+            where entity is not null
             select type;
 
         foreach (var type in types)

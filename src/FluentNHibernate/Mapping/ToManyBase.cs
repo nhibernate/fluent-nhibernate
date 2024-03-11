@@ -39,7 +39,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         cascade = new CollectionCascadeExpression<T>((T)this, value =>
         {
             var current = collectionAttributes.Get("Cascade") as string;
-            collectionAttributes.Set("Cascade", Layer.UserSupplied, current == null ? value : string.Format("{0},{1}", current, value));
+            collectionAttributes.Set("Cascade", Layer.UserSupplied, current is null ? value : string.Format("{0},{1}", current, value));
         });
 
         SetDefaultCollectionType();
@@ -405,7 +405,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     {
         var indexPart = new IndexPart(typeof(T));
 
-        if (customIndex != null)
+        if (customIndex is not null)
             customIndex(indexPart);
 
 #pragma warning disable 612,618
@@ -418,7 +418,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         indexMapping = new IndexMapping();
         var builder = new ListIndexPart(indexMapping);
 
-        if (customIndex != null)
+        if (customIndex is not null)
             customIndex(builder);
     }
 
@@ -445,7 +445,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     public T Element(string columnName, Action<ElementPart> customElementMapping)
     {
         Element(columnName);
-        if (customElementMapping != null) customElementMapping(elementPart);
+        if (customElementMapping is not null) customElementMapping(elementPart);
         return (T)this;
     }
 
@@ -737,7 +737,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         if (Cache.IsDirty)
             mapping.Set(x => x.Cache, Layer.Defaults, ((ICacheMappingProvider)Cache).GetCacheMapping());
 
-        if (componentMapping != null)
+        if (componentMapping is not null)
         {
             mapping.Set(x => x.CompositeElement, Layer.Defaults, componentMapping.GetCompositeElementMapping());
             mapping.Set(x => x.Relationship, Layer.Defaults, null); // HACK: bad design
@@ -747,7 +747,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         if (mapping.Collection == Collection.Array || mapping.Collection == Collection.List || mapping.Collection == Collection.Map)
             mapping.Set(x => x.Index, Layer.Defaults, indexMapping);
 
-        if (elementPart != null)
+        if (elementPart is not null)
         {
             mapping.Set(x => x.Element, Layer.Defaults, ((IElementMappingProvider)elementPart).GetElementMapping());
             mapping.Set(x => x.Relationship, Layer.Defaults, null); // HACK: bad design

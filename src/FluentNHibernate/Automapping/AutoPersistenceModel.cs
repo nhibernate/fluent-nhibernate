@@ -158,7 +158,7 @@ public class AutoPersistenceModel : PersistenceModel
                 continue;
             }
             // skipped by inline where clause
-            if (whereClause != null && !whereClause(type))
+            if (whereClause is not null && !whereClause(type))
             {
                 log.AutomappingSkippedType(type, "Skipped by Where clause");
                 continue;
@@ -187,7 +187,7 @@ public class AutoPersistenceModel : PersistenceModel
         var depth = 0;
         var parent = type;
 
-        while (parent != null && parent != typeof(object))
+        while (parent is not null && parent != typeof(object))
         {
             parent = parent.BaseType;
             depth++;
@@ -295,7 +295,7 @@ public class AutoPersistenceModel : PersistenceModel
 
         var mapping = classProviders.FirstOrDefault(t => finder(t, type));
 
-        if (mapping != null) return mapping;
+        if (mapping is not null) return mapping;
 
         // if we haven't found a map yet then try to find a map of the
         // base type to merge if not a concrete base type
@@ -383,7 +383,7 @@ public class AutoPersistenceModel : PersistenceModel
                 MethodInfo overrideHelperMethod = typeof(AutoPersistenceModel)
                     .GetMethod("OverrideHelper", BindingFlags.NonPublic | BindingFlags.Instance);
 
-                if (overrideHelperMethod == null) return;
+                if (overrideHelperMethod is null) return;
 
                 overrideHelperMethod
                     .MakeGenericMethod(entityType)

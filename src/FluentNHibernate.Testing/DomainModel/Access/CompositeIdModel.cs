@@ -23,6 +23,6 @@ class CompositeIdModel
 
     public virtual bool Equals(CompositeIdModel other)
     {
-        return other != null && other.IdA == this.IdA && other.IdB == this.IdB;
+        return other is not null && other.IdA == this.IdA && other.IdB == this.IdB;
     }
 }

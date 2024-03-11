@@ -102,7 +102,7 @@ public class CompositeElementPart<T> : ICompositeElementMappingProvider, INested
     {
         var part = new ManyToOnePart<TOther>(typeof(T), property);
 
-        if (columnName != null)
+        if (columnName is not null)
             part.Column(columnName);
 
         references.Add(part);

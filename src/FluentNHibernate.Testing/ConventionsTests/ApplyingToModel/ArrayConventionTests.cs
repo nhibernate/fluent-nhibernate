@@ -185,7 +185,7 @@ public class ArrayConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleParentClass)) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleParentClass)) is not null)
             .Classes.First()
             .Collections.First();
 

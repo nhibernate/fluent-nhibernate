@@ -38,7 +38,7 @@ public class ParentInspector : IParentInspector
     {
         get
         {
-            if (mapping.Access != null)
+            if (mapping.Access is not null)
                 return Access.FromString(mapping.Access);
              
             return null;

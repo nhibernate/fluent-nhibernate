@@ -60,13 +60,13 @@ public class MappingTester<T>
 
     public virtual MappingTester<T> ForMapping(ClassMap<T> classMap)
     {
-        if (classMap  != null)
+        if (classMap  is not null)
             model.Add(classMap);
 
         var mappings = model.BuildMappings();
-        var foundMapping = mappings.FirstOrDefault(x => x.Classes.FirstOrDefault(c => c.Type == typeof(T)) != null);
+        var foundMapping = mappings.FirstOrDefault(x => x.Classes.FirstOrDefault(c => c.Type == typeof(T)) is not null);
 
-        if (foundMapping == null)
+        if (foundMapping is null)
             throw new InvalidOperationException("Could not find mapping for class '" + typeof(T).Name + "'");
 
         document = new MappingXmlSerializer()
@@ -183,7 +183,7 @@ public class MappingTester<T>
     public virtual MappingTester<T> ShouldBeInParentAtPosition(int elementPosition)
     {
         XmlElement parentElement = (XmlElement)currentElement.ParentNode;
-        if (parentElement == null)
+        if (parentElement is null)
         {
             Assert.Fail("Current element has no parent element.");
         }

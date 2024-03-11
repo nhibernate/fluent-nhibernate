@@ -16,7 +16,7 @@ public abstract class AttributeCollectionConvention<T> : ICollectionConvention, 
 {
     public void Accept(IAcceptanceCriteria<ICollectionInspector> criteria)
     {
-        criteria.Expect(property => Attribute.GetCustomAttribute(property.Member, typeof(T)) as T != null);
+        criteria.Expect(property => Attribute.GetCustomAttribute(property.Member, typeof(T)) as T is not null);
     }
 
     public void Apply(ICollectionInstance instance)

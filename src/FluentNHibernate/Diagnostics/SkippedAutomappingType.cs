@@ -26,7 +26,7 @@ public class SkippedAutomappingType
     {
         unchecked
         {
-            return ((Type != null ? Type.GetHashCode() : 0) * 397) ^ (Reason != null ? Reason.GetHashCode() : 0);
+            return ((Type is not null ? Type.GetHashCode() : 0) * 397) ^ (Reason is not null ? Reason.GetHashCode() : 0);
         }
     }
 }

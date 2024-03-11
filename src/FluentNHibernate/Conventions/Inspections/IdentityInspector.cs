@@ -54,7 +54,7 @@ public class IdentityInspector : ColumnBasedInspector, IIdentityInspector
     {
         get
         {
-            if (mapping.Generator == null)
+            if (mapping.Generator is null)
                 return new GeneratorInspector(new GeneratorMapping());
 
             return new GeneratorInspector(mapping.Generator);

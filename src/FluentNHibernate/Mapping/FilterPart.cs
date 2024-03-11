@@ -66,9 +66,9 @@ public class FilterPart : IFilter
     {
         unchecked
         {
-            int result = (filterName != null ? filterName.GetHashCode() : 0);
-            result = (result * 397) ^ (condition != null ? condition.GetHashCode() : 0);
-            result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+            int result = (filterName is not null ? filterName.GetHashCode() : 0);
+            result = (result * 397) ^ (condition is not null ? condition.GetHashCode() : 0);
+            result = (result * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
             return result;
         }
     }

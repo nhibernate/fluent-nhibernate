@@ -12,8 +12,8 @@ public sealed class DummyPropertyInfo : PropertyInfo
 
     public DummyPropertyInfo(string name, Type type)
     {
-        if (name == null) throw new ArgumentNullException("name");
-        if (type == null) throw new ArgumentNullException("type");
+        if (name is null) throw new ArgumentNullException("name");
+        if (type is null) throw new ArgumentNullException("type");
 
         this.name = name;
         this.type = type;

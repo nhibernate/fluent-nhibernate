@@ -59,7 +59,7 @@ public class SeparateSubclassVisitor : DefaultMappingModelVisitor
             return SubclassType.UnionSubclass;
         }
 
-        if (mapping.Discriminator == null)
+        if (mapping.Discriminator is null)
             return SubclassType.JoinedSubclass;
 
         return SubclassType.Subclass;

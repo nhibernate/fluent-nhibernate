@@ -69,7 +69,7 @@ internal class ExpressionBasedAutomappingConfiguration : DefaultAutomappingConfi
 
     public override bool ShouldMap(Member member)
     {
-        if (expressions.FindMembers != null)
+        if (expressions.FindMembers is not null)
             return expressions.FindMembers(member);
 
         return base.ShouldMap(member);
@@ -77,7 +77,7 @@ internal class ExpressionBasedAutomappingConfiguration : DefaultAutomappingConfi
 
     public override bool IsId(Member member)
     {
-        if (expressions.FindIdentity != null)
+        if (expressions.FindIdentity is not null)
             return expressions.FindIdentity(member);
 
         return base.IsId(member);
@@ -85,7 +85,7 @@ internal class ExpressionBasedAutomappingConfiguration : DefaultAutomappingConfi
 
     public override Type GetParentSideForManyToMany(Type left, Type right)
     {
-        if (expressions.GetParentSideForManyToMany != null)
+        if (expressions.GetParentSideForManyToMany is not null)
             return expressions.GetParentSideForManyToMany(left, right);
 
         return base.GetParentSideForManyToMany(left, right);
@@ -93,7 +93,7 @@ internal class ExpressionBasedAutomappingConfiguration : DefaultAutomappingConfi
 
     public override bool IsConcreteBaseType(Type type)
     {
-        if (expressions.IsConcreteBaseType != null)
+        if (expressions.IsConcreteBaseType is not null)
             return expressions.IsConcreteBaseType(type);
 
         return base.IsConcreteBaseType(type);
@@ -101,7 +101,7 @@ internal class ExpressionBasedAutomappingConfiguration : DefaultAutomappingConfi
 
     public override bool IsComponent(Type type)
     {
-        if (expressions.IsComponentType != null)
+        if (expressions.IsComponentType is not null)
             return expressions.IsComponentType(type);
 
         return base.IsComponent(type);
@@ -109,7 +109,7 @@ internal class ExpressionBasedAutomappingConfiguration : DefaultAutomappingConfi
 
     public override string GetComponentColumnPrefix(Member member)
     {
-        if (expressions.GetComponentColumnPrefix != null)
+        if (expressions.GetComponentColumnPrefix is not null)
             return expressions.GetComponentColumnPrefix(member);
 
         return base.GetComponentColumnPrefix(member);
@@ -117,7 +117,7 @@ internal class ExpressionBasedAutomappingConfiguration : DefaultAutomappingConfi
 
     public override bool IsDiscriminated(Type type)
     {
-        if (expressions.IsDiscriminated != null)
+        if (expressions.IsDiscriminated is not null)
             return expressions.IsDiscriminated(type);
 
         return base.IsDiscriminated(type);
@@ -125,7 +125,7 @@ internal class ExpressionBasedAutomappingConfiguration : DefaultAutomappingConfi
 
     public override string GetDiscriminatorColumn(Type type)
     {
-        if (expressions.DiscriminatorColumn != null)
+        if (expressions.DiscriminatorColumn is not null)
             return expressions.DiscriminatorColumn(type);
 
         return base.GetDiscriminatorColumn(type);
@@ -133,7 +133,7 @@ internal class ExpressionBasedAutomappingConfiguration : DefaultAutomappingConfi
 
     public override bool AbstractClassIsLayerSupertype(Type type)
     {
-        if (expressions.AbstractClassIsLayerSupertype != null)
+        if (expressions.AbstractClassIsLayerSupertype is not null)
             return expressions.AbstractClassIsLayerSupertype(type);
 
         return base.AbstractClassIsLayerSupertype(type);
@@ -141,7 +141,7 @@ internal class ExpressionBasedAutomappingConfiguration : DefaultAutomappingConfi
 
     public override string SimpleTypeCollectionValueColumn(Member member)
     {
-        if (expressions.SimpleTypeCollectionValueColumn != null)
+        if (expressions.SimpleTypeCollectionValueColumn is not null)
             return expressions.SimpleTypeCollectionValueColumn(member);
 
         return base.SimpleTypeCollectionValueColumn(member);

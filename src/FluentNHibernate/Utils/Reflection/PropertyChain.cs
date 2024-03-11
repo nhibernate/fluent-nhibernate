@@ -27,7 +27,7 @@ public class PropertyChain : Accessor
     public void SetValue(object target, object propertyValue)
     {
         target = findInnerMostTarget(target);
-        if (target == null)
+        if (target is null)
         {
             return;
         }
@@ -39,7 +39,7 @@ public class PropertyChain : Accessor
     {
         target = findInnerMostTarget(target);
 
-        if (target == null)
+        if (target is null)
         {
             return null;
         }
@@ -95,7 +95,7 @@ public class PropertyChain : Accessor
         foreach (var info in _chain)
         {
             target = info.GetValue(target);
-            if (target == null)
+            if (target is null)
             {
                 return null;
             }

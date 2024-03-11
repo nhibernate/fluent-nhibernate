@@ -28,7 +28,7 @@ public class HasManyToManyStep : IAutomappingStep
         if (type.HasInterface(typeof(IDictionary)) || type.ClosesInterface(typeof(IDictionary<,>)) || type.Closes(typeof(System.Collections.Generic.IDictionary<,>)))
             return false;
 
-        var hasInverse = GetInverseProperty(member) != null;
+        var hasInverse = GetInverseProperty(member) is not null;
         return hasInverse;
     }
 

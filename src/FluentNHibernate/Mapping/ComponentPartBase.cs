@@ -28,7 +28,7 @@ public abstract class ComponentPartBase<TEntity, TBuilder> : ClasslikeMapBase<TE
         this.member = member;
         this.providers = providers;
 
-        if (member != null)
+        if (member is not null)
             SetDefaultAccess();
     }
 
@@ -168,7 +168,7 @@ public abstract class ComponentPartBase<TEntity, TBuilder> : ClasslikeMapBase<TE
     {
         var mapping = CreateComponentMappingRoot(attributes.Clone());
 
-        if (member != null)
+        if (member is not null)
             mapping.Set(x => x.Name, Layer.Defaults, member.Name);
 
         foreach (var property in providers.Properties)

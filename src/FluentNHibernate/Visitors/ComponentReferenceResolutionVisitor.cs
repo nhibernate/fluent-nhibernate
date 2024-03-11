@@ -29,7 +29,7 @@ public class ComponentMapComponentReferenceResolver : IComponentReferenceResolve
 
         var provider = providers.SingleOrDefault();
 
-        if (provider == null)
+        if (provider is null)
             return null;
 
         return provider.GetComponentMapping();
@@ -57,9 +57,9 @@ public class ComponentReferenceResolutionVisitor : DefaultMappingModelVisitor
         };
         var component = resolvers
             .Select(x => x.Resolve(context, componentProviders))
-            .FirstOrDefault(x => x != null);
+            .FirstOrDefault(x => x is not null);
 
-        if (component == null)
+        if (component is null)
             throw new MissingExternalComponentException(mapping.Type, mapping.ContainingEntityType, mapping.Member);
 
         mapping.AssociateExternalMapping(component);

@@ -27,7 +27,7 @@ public class NotFound
 
     public override int GetHashCode()
     {
-        return (value != null ? value.GetHashCode() : 0);
+        return (value is not null ? value.GetHashCode() : 0);
     }
 
     public static bool operator ==(NotFound x, NotFound y)

@@ -23,7 +23,7 @@ public abstract class ColumnBasedInspector
     {
         var column = columns.FirstOrDefault();
 
-        if (column != null)
+        if (column is not null)
             return (T)property(column);
 
         return default(T);

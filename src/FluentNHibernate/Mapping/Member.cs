@@ -78,7 +78,7 @@ internal class MethodMember : Member
 
     public override bool TryGetBackingField(out Member field)
     {
-        if (backingField != null)
+        if (backingField is not null)
         {
             field = backingField;
             return true;
@@ -93,7 +93,7 @@ internal class MethodMember : Member
         reflectedField = reflectedField ?? DeclaringType.GetField("_" + name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         reflectedField = reflectedField ?? DeclaringType.GetField("m_" + name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-        if (reflectedField == null)
+        if (reflectedField is null)
         {
             field = null;
             return false;
@@ -292,7 +292,7 @@ internal class PropertyMember : Member
 
     MethodMember GetMember(MethodInfo method)
     {
-        if (method == null)
+        if (method is null)
             return null;
 
         return (MethodMember)method.ToMember();
@@ -310,7 +310,7 @@ internal class PropertyMember : Member
 
     public override bool TryGetBackingField(out Member field)
     {
-        if (backingField != null)
+        if (backingField is not null)
         {
             field = backingField;
             return true;
@@ -320,7 +320,7 @@ internal class PropertyMember : Member
         reflectedField = reflectedField ?? DeclaringType.GetField("_" + Name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         reflectedField = reflectedField ?? DeclaringType.GetField("m_" + Name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-        if (reflectedField == null)
+        if (reflectedField is null)
         {
             field = null;
             return false;
@@ -345,7 +345,7 @@ internal class PropertyMember : Member
             // override the default reflection value here. Private setters aren't
             // considered "settable" in the same sense that public ones are. We can
             // use this to control the access strategy later
-            if (IsAutoProperty && (setMethod == null || setMethod.IsPrivate))
+            if (IsAutoProperty && (setMethod is null || setMethod.IsPrivate))
                 return false;
 
             return member.CanWrite;
@@ -380,8 +380,8 @@ internal class PropertyMember : Member
     {
         get
         {
-            return (getMethod != null && getMethod.IsCompilerGenerated) 
-                   || (setMethod != null && setMethod.IsCompilerGenerated);
+            return (getMethod is not null && getMethod.IsCompilerGenerated) 
+                   || (setMethod is not null && setMethod.IsCompilerGenerated);
         }
     }
 
@@ -425,7 +425,7 @@ public static class MemberExtensions
 {
     public static Member ToMember(this PropertyInfo propertyInfo)
     {
-        if (propertyInfo == null)
+        if (propertyInfo is null)
             throw new NullReferenceException("Cannot create member from null.");
             
         return new PropertyMember(propertyInfo);
@@ -433,7 +433,7 @@ public static class MemberExtensions
 
     public static Member ToMember(this MethodInfo methodInfo)
     {
-        if (methodInfo == null)
+        if (methodInfo is null)
             throw new NullReferenceException("Cannot create member from null.");
 
         return new MethodMember(methodInfo);
@@ -441,7 +441,7 @@ public static class MemberExtensions
 
     public static Member ToMember(this FieldInfo fieldInfo)
     {
-        if (fieldInfo == null)
+        if (fieldInfo is null)
             throw new NullReferenceException("Cannot create member from null.");
 
         return new FieldMember(fieldInfo);
@@ -449,7 +449,7 @@ public static class MemberExtensions
 
     public static Member ToMember(this MemberInfo memberInfo)
     {
-        if (memberInfo == null)
+        if (memberInfo is null)
             throw new NullReferenceException("Cannot create member from null.");
 
         if (memberInfo is PropertyInfo)
@@ -490,7 +490,7 @@ public static class MemberExtensions
         type.GetInstanceFields().Each(x => members.Add(x));
         type.GetInstanceMethods().Each(x => members.Add(x));
 
-        if (type.BaseType != null && type.BaseType != typeof(object))
+        if (type.BaseType is not null && type.BaseType != typeof(object))
             type.BaseType.GetInstanceMembers().Each(x => members.Add(x));
 
         return members;

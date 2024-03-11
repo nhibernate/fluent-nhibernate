@@ -69,7 +69,7 @@ public class FluentMappingsContainer
     /// <returns>Fluent mappings configuration</returns>
     public FluentMappingsContainer Add(Type type)
     {
-        if (type == null)
+        if (type is null)
             throw new ArgumentNullException("type");
 
         types.Add(type);
@@ -132,10 +132,10 @@ public class FluentMappingsContainer
         if (!string.IsNullOrEmpty(exportPath))
             model.WriteMappingsTo(exportPath);
 
-        if (exportTextWriter != null)
+        if (exportTextWriter is not null)
             model.WriteMappingsTo(exportTextWriter);
 
-        if (biDirectionalManyToManyPairer != null)
+        if (biDirectionalManyToManyPairer is not null)
             model.BiDirectionalManyToManyPairer = biDirectionalManyToManyPairer;
     }
 }

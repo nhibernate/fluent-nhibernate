@@ -41,7 +41,7 @@ public static class NetStandardSerialization
 
             public TypeReference(Type type)
             {
-                if (type == null)
+                if (type is null)
                     throw new ArgumentNullException(nameof(type));
 
                 AssemblyName = type.Assembly.FullName;
@@ -83,7 +83,7 @@ public static class NetStandardSerialization
 
             private static BindingFlags GetBindingAttr(MemberInfo member)
             {
-                if (member == null) throw new ArgumentNullException(nameof(member));
+                if (member is null) throw new ArgumentNullException(nameof(member));
                 var bindingFlags = default(BindingFlags);
                 switch (member)
                 {
@@ -144,7 +144,7 @@ public static class NetStandardSerialization
                 if (MemberType == MemberTypes.Method || MemberType == MemberTypes.Constructor)
                 {
                     var methods = DeclaringType.GetMember(Name, MemberType, BindingAttr | BindingFlags.DeclaredOnly);
-                    if (Parameters.Any(t => t == null))
+                    if (Parameters.Any(t => t is null))
                         throw new ArgumentException("Detected null argument type in the method signature.",
                             nameof(Parameters));
                     if (Parameters.Any(t => t.IsGenericParameter))

@@ -123,7 +123,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests
             model.AddMappingsFromSource(new StubTypeSource(typeof(TablePerSubclass.TPS_ParentMap), typeof(TablePerSubclass.TPS_ChildMap)));
 
             var classMapping = model.BuildMappings()
-                .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(TablePerSubclass.TPS_Parent)) != null)
+                .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(TablePerSubclass.TPS_Parent)) is not null)
                 .Classes.First();
 
             classMapping.Subclasses.Count().ShouldBeGreaterThan(0);

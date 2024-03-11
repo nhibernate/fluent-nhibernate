@@ -41,7 +41,7 @@ public class CompositeElementInspector : ICompositeElementInspector
     {
         get
         {
-            if (mapping.Parent == null)
+            if (mapping.Parent is null)
                 return new ParentInspector(new ParentMapping());
 
             return new ParentInspector(mapping.Parent);

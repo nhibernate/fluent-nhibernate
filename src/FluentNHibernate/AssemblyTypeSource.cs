@@ -15,7 +15,7 @@ public class AssemblyTypeSource : ITypeSource
 
     public AssemblyTypeSource(Assembly source)
     {
-        if (source == null) throw new ArgumentNullException("source");
+        if (source is null) throw new ArgumentNullException("source");
 
         this.source = source;
     }
@@ -29,7 +29,7 @@ public class AssemblyTypeSource : ITypeSource
 
     public void LogSource(IDiagnosticLogger logger)
     {
-        if (logger == null) throw new ArgumentNullException("logger");
+        if (logger is null) throw new ArgumentNullException("logger");
 
         logger.LoadedFluentMappingsFromSource(this);
     }

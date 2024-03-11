@@ -108,7 +108,7 @@ public class JoinConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) is not null)
             .Classes.First()
             .Joins.First();
 

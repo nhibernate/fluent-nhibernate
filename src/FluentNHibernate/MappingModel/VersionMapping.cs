@@ -69,7 +69,7 @@ public class VersionMapping : ColumnBasedMappingBase
         unchecked
         {
             {
-                return (base.GetHashCode() * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+                return (base.GetHashCode() * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             }
         }
     }

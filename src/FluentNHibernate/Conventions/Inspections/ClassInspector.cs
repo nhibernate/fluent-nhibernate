@@ -56,7 +56,7 @@ public class ClassInspector : IClassInspector
     {
         get
         {
-            if (mapping.Cache == null)
+            if (mapping.Cache is null)
                 // conventions are hitting it, user must want a cache
                 mapping.Set(x => x.Cache, Layer.Conventions, new CacheMapping());
 
@@ -103,7 +103,7 @@ public class ClassInspector : IClassInspector
     {
         get
         {
-            if (mapping.Version == null)
+            if (mapping.Version is null)
                 return new VersionInspector(new VersionMapping());
 
             return new VersionInspector(mapping.Version);
@@ -203,7 +203,7 @@ public class ClassInspector : IClassInspector
     {
         get
         {
-            if (mapping.Discriminator == null)
+            if (mapping.Discriminator is null)
                 // deliberately empty so nothing evaluates to true
                 return new DiscriminatorInspector(new DiscriminatorMapping());
 
@@ -255,7 +255,7 @@ public class ClassInspector : IClassInspector
     {
         get
         {
-            if (mapping.Id == null)
+            if (mapping.Id is null)
                 return new IdentityInspector(new IdMapping());
             if (mapping.Id is CompositeIdMapping)
                 return new CompositeIdentityInspector((CompositeIdMapping)mapping.Id);

@@ -150,10 +150,10 @@ public class ManyToOneMapping : MappingBase, IHasColumnMappings, IRelationship
     {
         unchecked
         {
-            int result = (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (columns != null ? columns.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
-            result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (columns is not null ? columns.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
+            result = (result * 397) ^ (Member is not null ? Member.GetHashCode() : 0);
             return result;
         }
     }
