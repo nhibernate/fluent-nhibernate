@@ -37,17 +37,17 @@ public class MappingConfiguration
     /// <summary>
     /// Fluent mappings
     /// </summary>
-    public FluentMappingsContainer FluentMappings { get; private set; }
+    public FluentMappingsContainer FluentMappings { get; }
 
     /// <summary>
     /// Automatic mapping configurations
     /// </summary>
-    public AutoMappingsContainer AutoMappings { get; private set; }
+    public AutoMappingsContainer AutoMappings { get; }
 
     /// <summary>
     /// Hbm mappings
     /// </summary>
-    public HbmMappingsContainer HbmMappings { get; private set; }
+    public HbmMappingsContainer HbmMappings { get; }
 
     /// <summary>
     /// Get whether any mappings of any kind were added

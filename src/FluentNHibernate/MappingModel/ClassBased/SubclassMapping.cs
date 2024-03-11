@@ -8,7 +8,7 @@ namespace FluentNHibernate.MappingModel.ClassBased;
 [Serializable]
 public class SubclassMapping : ClassMappingBase
 {
-    public SubclassType SubclassType { get; private set; }
+    public SubclassType SubclassType { get; }
     AttributeStore attributes;
 
     public SubclassMapping(SubclassType subclassType)

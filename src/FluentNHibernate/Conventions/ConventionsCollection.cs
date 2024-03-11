@@ -55,8 +55,8 @@ public class ConventionsCollection : IEnumerable<Type>
 
     private class AddedConvention
     {
-        public IList<object> Instances { get; private set; }
-        public Type Type { get; private set; }
+        public IList<object> Instances { get; }
+        public Type Type { get; }
 
         public AddedConvention(Type type)
         {

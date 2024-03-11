@@ -12,6 +12,6 @@ public class ValidationException : Exception
         RelatedEntity = relatedEntity;
     }
 
-    public Type RelatedEntity { get; private set; }
-    public string Resolution { get; private set; }
+    public Type RelatedEntity { get; }
+    public string Resolution { get; }
 }

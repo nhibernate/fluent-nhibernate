@@ -14,7 +14,7 @@ public class ColumnInspector : IColumnInspector
         this.mapping = mapping;
     }
 
-    public Type EntityType { get; private set; }
+    public Type EntityType { get; }
 
     public string Name => mapping.Name;
 
