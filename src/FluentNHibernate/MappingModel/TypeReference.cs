@@ -80,10 +80,7 @@ public class TypeReference
 
     public Type GetGenericTypeDefinition()
     {
-        if (innerType is null)
-            return null;
-
-        return innerType.GetGenericTypeDefinition();
+        return innerType?.GetGenericTypeDefinition();
     }
 
     public Type GenericTypeDefinition

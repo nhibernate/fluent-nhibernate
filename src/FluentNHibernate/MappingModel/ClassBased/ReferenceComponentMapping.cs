@@ -31,8 +31,7 @@ public class ReferenceComponentMapping : IComponentMapping
     {
         visitor.ProcessComponent(this);
 
-        if (mergedComponent is not null)
-            mergedComponent.AcceptVisitor(visitor);
+        mergedComponent?.AcceptVisitor(visitor);
     }
 
     public bool IsSpecified(string name)
