@@ -565,7 +565,7 @@ public class PropertyPartTester
 
         public SqlType[] SqlTypes
         {
-            get { return new SqlType[] {}; }
+            get { return Array.Empty<SqlType>(); }
         }
         public Type ReturnedType => null;
 

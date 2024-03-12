@@ -34,17 +34,17 @@ internal class CustomPersister : IEntityPersister
 
     public int[] FindDirty(object[] currentState, object[] previousState, object entity, ISessionImplementor session)
     {
-        return new int[] {};
+        return Array.Empty<int>();
     }
 
     public int[] FindModified(object[] old, object[] current, object entity, ISessionImplementor session)
     {
-        return new int[] {};
+        return Array.Empty<int>();
     }
 
     public object[] GetNaturalIdentifierSnapshot(object id, ISessionImplementor session)
     {
-        return new object[] {};
+        return Array.Empty<object>();
     }
 
     public object Load(object id, object optionalObject, LockMode lockMode, ISessionImplementor session)
@@ -71,7 +71,7 @@ internal class CustomPersister : IEntityPersister
 
     public object[] GetDatabaseSnapshot(object id, ISessionImplementor session)
     {
-        return new object[] {};
+        return Array.Empty<object>();
     }
 
     public object GetCurrentVersion(object id, ISessionImplementor session)
@@ -112,7 +112,7 @@ internal class CustomPersister : IEntityPersister
 
     public object[] GetPropertyValuesToInsert(object obj, IDictionary mergeMap, ISessionImplementor session)
     {
-        return new object[] {};
+        return Array.Empty<object>();
     }
 
     public void ProcessInsertGeneratedProperties(object id, object entity, object[] state, ISessionImplementor session)
@@ -149,7 +149,7 @@ internal class CustomPersister : IEntityPersister
 
     public object[] GetPropertyValues(object obj, EntityMode entityMode)
     {
-        return new object[] {};
+        return Array.Empty<object>();
     }
 
     public object GetPropertyValue(object obj, int i, EntityMode entityMode)
@@ -353,11 +353,11 @@ internal class CustomPersister : IEntityPersister
 
     public string[] PropertySpaces
     {
-        get { return new string[] {}; }
+        get { return Array.Empty<string>(); }
     }
     public string[] QuerySpaces
     {
-        get { return new string[] {}; }
+        get { return Array.Empty<string>(); }
     }
     public bool IsMutable => false;
 
@@ -373,49 +373,49 @@ internal class CustomPersister : IEntityPersister
 
     public int[] NaturalIdentifierProperties
     {
-        get { return new int[] {}; }
+        get { return Array.Empty<int>(); }
     }
     public IIdentifierGenerator IdentifierGenerator => null;
 
     public IType[] PropertyTypes
     {
-        get { return new IType[] {}; }
+        get { return Array.Empty<IType>(); }
     }
     public string[] PropertyNames
     {
-        get { return new string[] {}; }
+        get { return Array.Empty<string>(); }
     }
     public bool[] PropertyInsertability
     {
-        get { return new bool[] {}; }
+        get { return Array.Empty<bool>(); }
     }
     public ValueInclusion[] PropertyInsertGenerationInclusions
     {
-        get { return new ValueInclusion[] {}; }
+        get { return Array.Empty<ValueInclusion>(); }
     }
     public ValueInclusion[] PropertyUpdateGenerationInclusions
     {
-        get { return new ValueInclusion[] {}; }
+        get { return Array.Empty<ValueInclusion>(); }
     }
     public bool[] PropertyCheckability
     {
-        get { return new bool[] {}; }
+        get { return Array.Empty<bool>(); }
     }
     public bool[] PropertyNullability
     {
-        get { return new bool[] {}; }
+        get { return Array.Empty<bool>(); }
     }
     public bool[] PropertyVersionability
     {
-        get { return new bool[] {}; }
+        get { return Array.Empty<bool>(); }
     }
     public bool[] PropertyLaziness
     {
-        get { return new bool[] {}; }
+        get { return Array.Empty<bool>(); }
     }
     public CascadeStyle[] PropertyCascadeStyles
     {
-        get { return new CascadeStyle[] {}; }
+        get { return Array.Empty<CascadeStyle>(); }
     }
     public IType IdentifierType => null;
 
@@ -457,7 +457,7 @@ internal class CustomPersister : IEntityPersister
 
     public bool[] PropertyUpdateability
     {
-        get { return new bool[] {}; }
+        get { return Array.Empty<bool>(); }
     }
     public bool HasCache => false;
 
