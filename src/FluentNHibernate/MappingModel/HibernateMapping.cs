@@ -8,7 +8,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class HibernateMapping(AttributeStore attributes) : MappingBase
+public class HibernateMapping(AttributeStore attributes) : MappingBase, IEquatable<HibernateMapping>
 {
     readonly IList<ClassMapping> classes = new List<ClassMapping>();
     readonly IList<FilterDefinitionMapping> filters = new List<FilterDefinitionMapping>();

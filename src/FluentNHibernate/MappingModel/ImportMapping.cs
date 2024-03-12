@@ -4,7 +4,7 @@ using System;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class ImportMapping(AttributeStore attributes) : MappingBase
+public class ImportMapping(AttributeStore attributes) : MappingBase, IEquatable<ImportMapping>
 {
     readonly AttributeStore attributes = attributes;
 

@@ -7,7 +7,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public class CompositeElementMapping(AttributeStore attributes) : MappingBase
+public class CompositeElementMapping(AttributeStore attributes) : MappingBase, IEquatable<CompositeElementMapping>
 {
     readonly MappedMembers mappedMembers = new();
     readonly List<NestedCompositeElementMapping> compositeElements = new List<NestedCompositeElementMapping>();

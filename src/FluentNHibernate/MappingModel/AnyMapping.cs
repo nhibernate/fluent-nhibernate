@@ -8,7 +8,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class AnyMapping(AttributeStore attributes) : MappingBase
+public class AnyMapping(AttributeStore attributes) : MappingBase, IEquatable<AnyMapping>
 {
     readonly AttributeStore attributes = attributes;
     readonly LayeredColumns typeColumns = new LayeredColumns();

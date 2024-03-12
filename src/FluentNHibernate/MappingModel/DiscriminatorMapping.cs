@@ -6,7 +6,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class DiscriminatorMapping(AttributeStore underlyingStore) : ColumnBasedMappingBase(underlyingStore)
+public class DiscriminatorMapping(AttributeStore underlyingStore) : ColumnBasedMappingBase(underlyingStore), IEquatable<DiscriminatorMapping>
 {
     public DiscriminatorMapping()
         : this(new AttributeStore())

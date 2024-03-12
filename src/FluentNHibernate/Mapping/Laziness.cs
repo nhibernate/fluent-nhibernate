@@ -1,9 +1,11 @@
-﻿namespace FluentNHibernate.Mapping;
+﻿using System;
+
+namespace FluentNHibernate.Mapping;
 
 /// <summary>
 /// Laziness strategy for relationships
 /// </summary>
-public class Laziness(string value)
+public class Laziness(string value) : IEquatable<Laziness>
 {
     /// <summary>
     /// No lazy loading

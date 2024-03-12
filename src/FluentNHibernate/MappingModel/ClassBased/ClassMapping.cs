@@ -7,7 +7,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.ClassBased;
 
 [Serializable]
-public class ClassMapping(AttributeStore attributes) : ClassMappingBase(attributes)
+public class ClassMapping(AttributeStore attributes) : ClassMappingBase(attributes), IEquatable<ClassMapping>
 {
     readonly AttributeStore attributes = attributes;
 

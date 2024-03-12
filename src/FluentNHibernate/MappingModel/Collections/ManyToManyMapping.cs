@@ -8,7 +8,7 @@ namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
 public class ManyToManyMapping(AttributeStore attributes)
-    : MappingBase, ICollectionRelationshipMapping, IHasColumnMappings
+    : MappingBase, ICollectionRelationshipMapping, IHasColumnMappings, IEquatable<ManyToManyMapping>
 {
     readonly AttributeStore attributes = attributes;
     readonly LayeredColumns columns = new LayeredColumns();

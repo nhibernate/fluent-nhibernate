@@ -1,6 +1,8 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class Include
+public class Include : IEquatable<Include>
 {
     public static readonly Include Unset = new Include("");
     public static readonly Include All = new Include("all");

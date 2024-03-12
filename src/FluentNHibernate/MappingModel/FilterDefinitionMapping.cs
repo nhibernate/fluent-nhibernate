@@ -8,7 +8,7 @@ using NHibernate.Type;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class FilterDefinitionMapping(AttributeStore attributes) : MappingBase
+public class FilterDefinitionMapping(AttributeStore attributes) : MappingBase, IEquatable<FilterDefinitionMapping>
 {
     readonly AttributeStore attributes = attributes;
 

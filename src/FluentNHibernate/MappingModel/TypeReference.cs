@@ -6,7 +6,7 @@ using NHibernate.Type;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class TypeReference
+public class TypeReference: IEquatable<TypeReference>
 {
     public static readonly TypeReference Empty = new TypeReference("nop");
 

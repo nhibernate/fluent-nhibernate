@@ -1,6 +1,8 @@
-﻿namespace FluentNHibernate.Mapping;
+﻿using System;
 
-public class NamingStrategy
+namespace FluentNHibernate.Mapping;
+
+public class NamingStrategy : IEquatable<NamingStrategy>
 {
     public static readonly NamingStrategy LowerCase = new NamingStrategy("lowercase");
     public static readonly NamingStrategy LowerCaseUnderscore = new NamingStrategy("lowercase-underscore");

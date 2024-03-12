@@ -1,6 +1,8 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class NotFound
+public class NotFound : IEquatable<NotFound>
 {
     public static readonly NotFound Unset = new NotFound("");
     public static readonly NotFound Ignore = new NotFound("ignore");

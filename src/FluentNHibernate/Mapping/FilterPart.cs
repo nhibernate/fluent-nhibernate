@@ -1,3 +1,4 @@
+using System;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 
@@ -12,7 +13,7 @@ public interface IFilter : IFilterMappingProvider
 /// <summary>
 /// Maps to the Filter element in NH 2.0
 /// </summary>
-public class FilterPart(string name, string condition) : IFilter
+public class FilterPart(string name, string condition) : IFilter, IEquatable<FilterPart>
 {
     readonly AttributeStore attributes = new AttributeStore();
 

@@ -7,7 +7,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Identity;
 
 [Serializable]
-public class GeneratorMapping : MappingBase
+public class GeneratorMapping : MappingBase, IEquatable<GeneratorMapping>
 {
     readonly AttributeStore attributes = new AttributeStore();
 

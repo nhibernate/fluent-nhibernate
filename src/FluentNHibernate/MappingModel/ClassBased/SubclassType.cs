@@ -3,7 +3,7 @@ using System;
 namespace FluentNHibernate.MappingModel.ClassBased;
 
 [Serializable]
-public class SubclassType
+public class SubclassType: IEquatable<SubclassType>
 {
     public static readonly SubclassType Subclass = new SubclassType("subclass");
     public static readonly SubclassType JoinedSubclass = new SubclassType("joined-subclass");

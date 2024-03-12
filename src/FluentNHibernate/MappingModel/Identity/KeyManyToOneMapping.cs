@@ -7,7 +7,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Identity;
 
 [Serializable]
-public class KeyManyToOneMapping : MappingBase, ICompositeIdKeyMapping
+public class KeyManyToOneMapping : MappingBase, ICompositeIdKeyMapping, IEquatable<KeyManyToOneMapping>
 {
     readonly AttributeStore attributes = new AttributeStore();
     readonly IList<ColumnMapping> columns = new List<ColumnMapping>();

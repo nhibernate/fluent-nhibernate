@@ -6,7 +6,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class OneToOneMapping(AttributeStore attributes) : MappingBase
+public class OneToOneMapping(AttributeStore attributes) : MappingBase, IEquatable<OneToOneMapping>
 {
     private readonly AttributeStore attributes = attributes;
 
