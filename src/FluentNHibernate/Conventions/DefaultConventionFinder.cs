@@ -150,7 +150,7 @@ public class DefaultConventionFinder : IConventionFinder
             if (IsFinderConstructor(constructor))
                 instance = constructor.Invoke(new[] { this });
             else if (IsParameterlessConstructor(constructor))
-                instance = constructor.Invoke(new object[] { });
+                instance = constructor.Invoke(Array.Empty<object>());
         }
 
         return instance;
