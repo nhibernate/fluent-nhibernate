@@ -5,9 +5,6 @@ namespace FluentNHibernate.Mapping;
 public class CollectionCascadeExpression<TParent>(TParent parent, Action<string> setter)
     : CascadeExpression<TParent>(parent, setter)
 {
-    private readonly TParent parent = parent;
-    private readonly Action<string> setter = setter;
-
     /// <summary>
     /// Cascade all actions, deleting any orphaned records
     /// </summary>

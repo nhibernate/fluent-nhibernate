@@ -6,11 +6,7 @@ using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping;
 
-public class DiscriminatorPart(
-    string columnName,
-    Type entity,
-    Action<Type, ISubclassMappingProvider> setter,
-    TypeReference discriminatorValueType)
+public class DiscriminatorPart(string columnName, Type entity, Action<Type, ISubclassMappingProvider> setter, TypeReference discriminatorValueType)
     : IDiscriminatorMappingProvider
 {
     readonly AttributeStore attributes = new AttributeStore();

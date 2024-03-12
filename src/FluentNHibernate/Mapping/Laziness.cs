@@ -9,17 +9,17 @@ public class Laziness(string value)
     /// No lazy loading
     /// </summary>
     public static readonly Laziness False = new Laziness("false");
-            
+
     /// <summary>
     /// Proxy-based lazy-loading
     /// </summary>
     public static readonly Laziness Proxy = new Laziness("proxy");
-            
+
     /// <summary>
     /// No proxy lazy loading
     /// </summary>
     public static readonly Laziness NoProxy = new Laziness("no-proxy");
-            
+
     readonly string value = value;
 
     public override bool Equals(object obj)

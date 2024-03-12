@@ -10,12 +10,7 @@ namespace FluentNHibernate.MappingModel.ClassBased;
 /// that can't be declared externally (property name, for example)
 /// </summary>
 [Serializable]
-public class ReferenceComponentMapping(
-    ComponentType componentType,
-    Member property,
-    Type componentEntityType,
-    Type containingEntityType,
-    string columnPrefix)
+public class ReferenceComponentMapping(ComponentType componentType, Member property, Type componentEntityType, Type containingEntityType, string columnPrefix)
     : IComponentMapping
 {
     public ComponentType ComponentType { get; set; } = componentType;

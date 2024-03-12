@@ -61,7 +61,6 @@ public abstract class Member : IEquatable<Member>
 [Serializable]
 internal class MethodMember(MethodInfo member) : Member
 {
-    private readonly MethodInfo member = member;
     Member backingField;
 
     public override void SetValue(object target, object value)
@@ -140,8 +139,6 @@ internal class MethodMember(MethodInfo member) : Member
 [Serializable]
 internal class FieldMember(FieldInfo member) : Member
 {
-    private readonly FieldInfo member = member;
-
     public override void SetValue(object target, object value)
     {
         member.SetValue(target, value);
