@@ -3,15 +3,9 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class CacheInspector : ICacheInspector
+public class CacheInspector(CacheMapping mapping) : ICacheInspector
 {
     private readonly InspectorModelMapper<ICacheInspector, CacheMapping> propertyMappings = new InspectorModelMapper<ICacheInspector, CacheMapping>();
-    private readonly CacheMapping mapping;
-
-    public CacheInspector(CacheMapping mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public string Usage => mapping.Usage;
 

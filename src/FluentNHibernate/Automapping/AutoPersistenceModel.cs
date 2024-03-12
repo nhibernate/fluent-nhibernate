@@ -471,17 +471,8 @@ public class AutoPersistenceModel : PersistenceModel
     bool HasUserDefinedConfiguration => cfg is not ExpressionBasedAutomappingConfiguration;
 }
 
-public class AutomappedComponentResolver : IComponentReferenceResolver
+public class AutomappedComponentResolver(AutoMapper mapper, IAutomappingConfiguration cfg) : IComponentReferenceResolver
 {
-    readonly AutoMapper mapper;
-    IAutomappingConfiguration cfg;
-
-    public AutomappedComponentResolver(AutoMapper mapper, IAutomappingConfiguration cfg)
-    {
-        this.mapper = mapper;
-        this.cfg = cfg;
-    }
-
     public ExternalComponentMapping Resolve(ComponentResolutionContext context, IEnumerable<IExternalComponentMappingProvider> componentProviders)
     {
         // this will only be called if there was no ComponentMap found

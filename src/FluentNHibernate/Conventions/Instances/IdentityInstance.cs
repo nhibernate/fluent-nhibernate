@@ -7,16 +7,10 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class IdentityInstance : IdentityInspector, IIdentityInstance
+public class IdentityInstance(IdMapping mapping) : IdentityInspector(mapping), IIdentityInstance
 {
-    private readonly IdMapping mapping;
+    private readonly IdMapping mapping = mapping;
     private bool nextBool = true;
-
-    public IdentityInstance(IdMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public void Column(string columnName)
     {

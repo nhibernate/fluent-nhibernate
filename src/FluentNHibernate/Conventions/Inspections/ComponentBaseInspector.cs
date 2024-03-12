@@ -7,15 +7,8 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public abstract class ComponentBaseInspector : IComponentBaseInspector
+public abstract class ComponentBaseInspector(IComponentMapping mapping) : IComponentBaseInspector
 {
-    private readonly IComponentMapping mapping;
-
-    public ComponentBaseInspector(IComponentMapping mapping)
-    {
-        this.mapping = mapping;
-    }
-
     public Access Access => Access.FromString(mapping.Access);
 
     public Type EntityType => mapping.ContainingEntityType;

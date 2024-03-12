@@ -5,15 +5,8 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping.Steps;
 
-public class VersionStep : IAutomappingStep
+public class VersionStep(IAutomappingConfiguration cfg) : IAutomappingStep
 {
-    readonly IAutomappingConfiguration cfg;
-
-    public VersionStep(IAutomappingConfiguration cfg)
-    {
-        this.cfg = cfg;
-    }
-
     public bool ShouldMap(Member member)
     {
         return cfg.IsVersion(member);

@@ -5,15 +5,10 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class IndexManyToManyInstance :IndexManyToManyInspector, IIndexManyToManyInstance
+public class IndexManyToManyInstance(IndexManyToManyMapping mapping)
+    : IndexManyToManyInspector(mapping), IIndexManyToManyInstance
 {
-    private readonly IndexManyToManyMapping mapping;
-
-    public IndexManyToManyInstance(IndexManyToManyMapping mapping) 
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    private readonly IndexManyToManyMapping mapping = mapping;
 
     /// <summary>
     /// Adds a column to the index if columns have not yet been specified

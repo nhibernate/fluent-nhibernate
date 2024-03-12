@@ -8,19 +8,14 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class ManyToOneMapping : MappingBase, IHasColumnMappings, IRelationship
+public class ManyToOneMapping(AttributeStore attributes) : MappingBase, IHasColumnMappings, IRelationship
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
     readonly LayeredColumns columns = new LayeredColumns();
 
     public ManyToOneMapping()
         : this(new AttributeStore())
     {}
-
-    public ManyToOneMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

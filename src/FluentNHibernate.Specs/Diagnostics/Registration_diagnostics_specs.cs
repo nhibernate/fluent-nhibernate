@@ -385,15 +385,8 @@ class ConventionA : IConvention {}
 class ConventionB : IConvention {}
 class NotAConvention {}
 
-class StubListener : IDiagnosticListener
+class StubListener(Action<DiagnosticResults> receiver) : IDiagnosticListener
 {
-    readonly Action<DiagnosticResults> receiver;
-
-    public StubListener(Action<DiagnosticResults> receiver)
-    {
-        this.receiver = receiver;
-    }
-
     public void Receive(DiagnosticResults results)
     {
         receiver(results);

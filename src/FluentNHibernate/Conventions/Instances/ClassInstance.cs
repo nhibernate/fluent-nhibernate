@@ -7,16 +7,10 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class ClassInstance : ClassInspector, IClassInstance
+public class ClassInstance(ClassMapping mapping) : ClassInspector(mapping), IClassInstance
 {
-    private readonly ClassMapping mapping;
+    private readonly ClassMapping mapping = mapping;
     private bool nextBool = true;
-
-    public ClassInstance(ClassMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public IClassInstance Not

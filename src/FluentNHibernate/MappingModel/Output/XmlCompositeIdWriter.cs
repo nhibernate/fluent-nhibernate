@@ -5,15 +5,10 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output;
 
-public class XmlCompositeIdWriter : NullMappingModelVisitor, IXmlWriter<CompositeIdMapping>
+public class XmlCompositeIdWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<CompositeIdMapping>
 {
-    private IXmlWriterServiceLocator serviceLocator;
     private XmlDocument document;
-
-    public XmlCompositeIdWriter(IXmlWriterServiceLocator serviceLocator)
-    {
-        this.serviceLocator = serviceLocator;
-    }
 
     public XmlDocument Write(CompositeIdMapping mappingModel)
     {

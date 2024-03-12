@@ -6,17 +6,11 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class CompositeIdentityInstance : CompositeIdentityInspector, ICompositeIdentityInstance
+public class CompositeIdentityInstance(CompositeIdMapping mapping)
+    : CompositeIdentityInspector(mapping), ICompositeIdentityInstance
 {
-    private readonly CompositeIdMapping mapping;
+    private readonly CompositeIdMapping mapping = mapping;
     private bool nextBool = true;
-
-
-    public CompositeIdentityInstance(CompositeIdMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
 
 
     public new void UnsavedValue(string unsavedValue)

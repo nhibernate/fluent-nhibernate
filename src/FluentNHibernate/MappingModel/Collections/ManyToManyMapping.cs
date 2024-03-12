@@ -7,9 +7,10 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public class ManyToManyMapping : MappingBase, ICollectionRelationshipMapping, IHasColumnMappings
+public class ManyToManyMapping(AttributeStore attributes)
+    : MappingBase, ICollectionRelationshipMapping, IHasColumnMappings
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
     readonly LayeredColumns columns = new LayeredColumns();
 
     public IList<FilterMapping> ChildFilters { get; } = new List<FilterMapping>();
@@ -17,11 +18,6 @@ public class ManyToManyMapping : MappingBase, ICollectionRelationshipMapping, IH
     public ManyToManyMapping()
         : this(new AttributeStore())
     {}
-
-    public ManyToManyMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

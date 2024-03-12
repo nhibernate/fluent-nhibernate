@@ -5,15 +5,9 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class OneToManyInstance : OneToManyInspector, IOneToManyInstance
+public class OneToManyInstance(OneToManyMapping mapping) : OneToManyInspector(mapping), IOneToManyInstance
 {
-    private readonly OneToManyMapping mapping;
-
-    public OneToManyInstance(OneToManyMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    private readonly OneToManyMapping mapping = mapping;
 
     public new INotFoundInstance NotFound
     {

@@ -6,15 +6,9 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class ElementInstance : ElementInspector, IElementInstance
+public class ElementInstance(ElementMapping mapping) : ElementInspector(mapping), IElementInstance
 {
-    private readonly ElementMapping mapping;
-
-    public ElementInstance(ElementMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    private readonly ElementMapping mapping = mapping;
 
     public void Column(string columnName)
     {

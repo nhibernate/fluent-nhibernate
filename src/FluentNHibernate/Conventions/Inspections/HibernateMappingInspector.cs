@@ -5,15 +5,9 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class HibernateMappingInspector : IHibernateMappingInspector
+public class HibernateMappingInspector(HibernateMapping mapping) : IHibernateMappingInspector
 {
     private readonly InspectorModelMapper<IHibernateMappingInspector, HibernateMapping> propertyMappings = new InspectorModelMapper<IHibernateMappingInspector, HibernateMapping>();
-    private readonly HibernateMapping mapping;
-
-    public HibernateMappingInspector(HibernateMapping mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public Type EntityType => mapping.Classes.First().Type;
 

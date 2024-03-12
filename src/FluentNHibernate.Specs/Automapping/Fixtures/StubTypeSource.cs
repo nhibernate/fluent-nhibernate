@@ -4,15 +4,8 @@ using FluentNHibernate.Diagnostics;
 
 namespace FluentNHibernate.Specs.Automapping.Fixtures;
 
-internal class StubTypeSource : ITypeSource
+internal class StubTypeSource(params Type[] types) : ITypeSource
 {
-    private readonly IEnumerable<Type> types;
-
-    public StubTypeSource(params Type[] types)
-    {
-        this.types = types;
-    }
-
     public IEnumerable<Type> GetTypes()
     {
         return types;

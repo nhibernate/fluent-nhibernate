@@ -6,18 +6,13 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class TuplizerMapping : MappingBase
+public class TuplizerMapping(AttributeStore attributes) : MappingBase
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public TuplizerMapping()
         : this(new AttributeStore())
     {}
-
-    public TuplizerMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

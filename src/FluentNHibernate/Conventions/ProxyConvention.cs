@@ -4,18 +4,11 @@ using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions;
 
-public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneConvention, IReferenceConvention, ICollectionConvention
+public class ProxyConvention(Func<Type, Type> mapPersistentTypeToProxyInterfaceType, Func<Type, Type> mapProxyInterfaceTypeToPersistentType)
+    : IClassConvention, ISubclassConvention, IHasOneConvention, IReferenceConvention, ICollectionConvention
 {
-    private readonly Func<Type, Type> _mapPersistentTypeToProxyInterfaceType;
-    private readonly Func<Type, Type> _mapProxyInterfaceTypeToPersistentType;
-
-    public ProxyConvention(
-        Func<Type, Type> mapPersistentTypeToProxyInterfaceType,
-        Func<Type, Type> mapProxyInterfaceTypeToPersistentType)
-    {
-        _mapPersistentTypeToProxyInterfaceType = mapPersistentTypeToProxyInterfaceType ?? throw new ArgumentNullException(nameof(mapPersistentTypeToProxyInterfaceType));
-        _mapProxyInterfaceTypeToPersistentType = mapProxyInterfaceTypeToPersistentType ?? throw new ArgumentNullException(nameof(mapProxyInterfaceTypeToPersistentType));
-    }
+    readonly Func<Type, Type> mapPersistentTypeToProxyInterfaceType = mapPersistentTypeToProxyInterfaceType ?? throw new ArgumentNullException(nameof(mapPersistentTypeToProxyInterfaceType));
+    readonly Func<Type, Type> mapProxyInterfaceTypeToPersistentType = mapProxyInterfaceTypeToPersistentType ?? throw new ArgumentNullException(nameof(mapProxyInterfaceTypeToPersistentType));
 
     /// <summary>
     /// Apply changes to the target
@@ -49,7 +42,7 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
     public void Apply(IManyToOneInstance instance)
     {
         Type inferredType = instance.Class.GetUnderlyingSystemType();
-        Type persistentType = _mapProxyInterfaceTypeToPersistentType(inferredType);
+        Type persistentType = mapProxyInterfaceTypeToPersistentType(inferredType);
 
         if (persistentType is not null)
         {
@@ -76,7 +69,7 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
     public void Apply(IOneToOneInstance instance)
     {
         Type inferredType = ((IOneToOneInspector)instance).Class.GetUnderlyingSystemType();
-        Type persistentType = _mapProxyInterfaceTypeToPersistentType(inferredType);
+        Type persistentType = mapProxyInterfaceTypeToPersistentType(inferredType);
 
         if(persistentType is not null)
         {
@@ -87,14 +80,14 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
     private Type GetProxyType(Type persistentType)
     {
         return !persistentType.IsAbstract
-            ? _mapPersistentTypeToProxyInterfaceType(persistentType)
+            ? mapPersistentTypeToProxyInterfaceType(persistentType)
             : null;
     }
 
     private Type GetPersistentType(Type proxyType)
     {
         return proxyType.IsInterface
-            ? _mapProxyInterfaceTypeToPersistentType(proxyType)
+            ? mapProxyInterfaceTypeToPersistentType(proxyType)
             : null;
     }
 }

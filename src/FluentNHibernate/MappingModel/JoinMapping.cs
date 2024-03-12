@@ -9,21 +9,15 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class JoinMapping : IMapping
+public class JoinMapping(AttributeStore attributes) : IMapping
 {
-    private readonly AttributeStore attributes;
+    private readonly AttributeStore attributes = attributes;
 
-    private readonly MappedMembers mappedMembers;
+    private readonly MappedMembers mappedMembers = new();
 
     public JoinMapping()
         : this(new AttributeStore())
     {}
-
-    public JoinMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-        mappedMembers = new MappedMembers();
-    }
 
     public KeyMapping Key => attributes.GetOrDefault<KeyMapping>("Key");
 

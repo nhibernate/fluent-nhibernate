@@ -7,15 +7,9 @@ using NHibernate.Id;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class GeneratorInstance : GeneratorInspector, IGeneratorInstance
+public class GeneratorInstance(GeneratorMapping mapping, Type type) : GeneratorInspector(mapping), IGeneratorInstance
 {
-    private readonly GeneratorBuilder builder;
-
-    public GeneratorInstance(GeneratorMapping mapping, Type type)
-        : base(mapping)
-    {
-        builder = new GeneratorBuilder(mapping, type, Layer.Conventions);
-    }
+    private readonly GeneratorBuilder builder = new(mapping, type, Layer.Conventions);
 
     /// <summary>
     /// generates identifiers of any integral type that are unique only when no other 
@@ -263,7 +257,7 @@ public class GeneratorInstance : GeneratorInspector, IGeneratorInstance
 
     /// <summary>
     /// Generator that uses the RDBMS native function to generate a GUID.
-    /// The behavior is similar to the “sequence” generator. When a new
+    /// The behavior is similar to the ï¿½sequenceï¿½ generator. When a new
     /// object is saved NH run two queries: the first to retrieve the GUID
     /// value and the second to insert the entity using the Guid retrieved
     /// from the RDBMS. Your entity Id must be System.Guid and the SQLType
@@ -277,7 +271,7 @@ public class GeneratorInstance : GeneratorInspector, IGeneratorInstance
 
     /// <summary>
     /// Generator that uses the RDBMS native function to generate a GUID.
-    /// The behavior is similar to the “sequence” generator. When a new
+    /// The behavior is similar to the ï¿½sequenceï¿½ generator. When a new
     /// object is saved NH run two queries: the first to retrieve the GUID
     /// value and the second to insert the entity using the Guid retrieved
     /// from the RDBMS. Your entity Id must be System.Guid and the SQLType

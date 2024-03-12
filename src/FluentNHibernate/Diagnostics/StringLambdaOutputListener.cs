@@ -2,15 +2,9 @@
 
 namespace FluentNHibernate.Diagnostics;
 
-public class StringLambdaOutputListener : IDiagnosticListener
+public class StringLambdaOutputListener(Action<string> raiseMessage) : IDiagnosticListener
 {
-    readonly Action<string> raiseMessage;
     IDiagnosticResultsFormatter outputFormatter = new DefaultOutputFormatter();
-
-    public StringLambdaOutputListener(Action<string> raiseMessage)
-    {
-        this.raiseMessage = raiseMessage;
-    }
 
     public void Receive(DiagnosticResults results)
     {

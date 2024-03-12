@@ -6,19 +6,9 @@ namespace FluentNHibernate.Automapping.Alterations;
 /// <summary>
 /// Built-in alteration for altering an AutoPersistenceModel with instance of IAutoMappingOverride&lt;T&gt;.
 /// </summary>
-public class AutoMappingOverrideAlteration : IAutoMappingAlteration
+/// <param name="overrideAssembly">Assembly to load overrides from.</param>
+public class AutoMappingOverrideAlteration(Assembly overrideAssembly) : IAutoMappingAlteration
 {
-    private readonly Assembly assembly;
-
-    /// <summary>
-    /// Constructor for AutoMappingOverrideAlteration.
-    /// </summary>
-    /// <param name="overrideAssembly">Assembly to load overrides from.</param>
-    public AutoMappingOverrideAlteration(Assembly overrideAssembly)
-    {
-        assembly = overrideAssembly;
-    }
-
     /// <summary>
     /// Alter the model
     /// </summary>
@@ -30,7 +20,7 @@ public class AutoMappingOverrideAlteration : IAutoMappingAlteration
     public void Alter(AutoPersistenceModel model)
     {
         // find all types deriving from IAutoMappingOverride<T>
-        var types = from type in assembly.GetExportedTypes()
+        var types = from type in overrideAssembly.GetExportedTypes()
             where !type.IsAbstract
             let entity = (from interfaceType in type.GetInterfaces()
                 where interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IAutoMappingOverride<>)

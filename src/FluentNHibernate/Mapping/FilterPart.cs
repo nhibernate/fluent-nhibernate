@@ -12,21 +12,15 @@ public interface IFilter : IFilterMappingProvider
 /// <summary>
 /// Maps to the Filter element in NH 2.0
 /// </summary>
-public class FilterPart : IFilter
+public class FilterPart(string name, string condition) : IFilter
 {
     readonly AttributeStore attributes = new AttributeStore();
 
     public FilterPart(string name) : this(name, null) { }
 
-    public FilterPart(string name, string condition)
-    {
-        Name = name;
-        this.Condition = condition;
-    }
+    public string Condition { get; } = condition;
 
-    public string Condition { get; }
-
-    public string Name { get; }
+    public string Name { get; } = name;
 
     public override bool Equals(object obj)
     {

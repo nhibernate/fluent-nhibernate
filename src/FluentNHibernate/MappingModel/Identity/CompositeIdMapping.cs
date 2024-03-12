@@ -7,19 +7,14 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Identity;
 
 [Serializable]
-public class CompositeIdMapping : MappingBase, IIdentityMapping
+public class CompositeIdMapping(AttributeStore attributes) : MappingBase, IIdentityMapping
 {
-    private readonly AttributeStore attributes;
+    private readonly AttributeStore attributes = attributes;
     private readonly IList<ICompositeIdKeyMapping> keys = new List<ICompositeIdKeyMapping>();
 
     public CompositeIdMapping()
         : this(new AttributeStore())
     {}
-
-    public CompositeIdMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

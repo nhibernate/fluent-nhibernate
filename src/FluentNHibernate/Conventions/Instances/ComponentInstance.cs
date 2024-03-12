@@ -7,17 +7,9 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class ComponentInstance : ComponentInspector, IComponentInstance
+public class ComponentInstance(ComponentMapping mapping) : ComponentInspector(mapping), IComponentInstance
 {
-    private readonly ComponentMapping mapping;
-    private bool nextBool;
-
-    public ComponentInstance(ComponentMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-        nextBool = true;
-    }
+    private bool nextBool = true;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public IComponentInstance Not

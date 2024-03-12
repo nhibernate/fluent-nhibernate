@@ -3,29 +3,24 @@
 /// <summary>
 /// Laziness strategy for relationships
 /// </summary>
-public class Laziness
+public class Laziness(string value)
 {
     /// <summary>
     /// No lazy loading
     /// </summary>
     public static readonly Laziness False = new Laziness("false");
-            
+
     /// <summary>
     /// Proxy-based lazy-loading
     /// </summary>
     public static readonly Laziness Proxy = new Laziness("proxy");
-            
+
     /// <summary>
     /// No proxy lazy loading
     /// </summary>
     public static readonly Laziness NoProxy = new Laziness("no-proxy");
-            
-    readonly string value;
 
-    public Laziness(string value)
-    {
-        this.value = value;
-    }
+    readonly string value = value;
 
     public override bool Equals(object obj)
     {

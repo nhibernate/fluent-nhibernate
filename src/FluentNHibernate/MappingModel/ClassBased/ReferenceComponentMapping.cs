@@ -10,22 +10,14 @@ namespace FluentNHibernate.MappingModel.ClassBased;
 /// that can't be declared externally (property name, for example)
 /// </summary>
 [Serializable]
-public class ReferenceComponentMapping : IComponentMapping
+public class ReferenceComponentMapping(ComponentType componentType, Member property, Type componentEntityType, Type containingEntityType, string columnPrefix)
+    : IComponentMapping
 {
-    public ComponentType ComponentType { get; set; }
-    private readonly Member property;
-    private readonly Type componentType;
+    public ComponentType ComponentType { get; set; } = componentType;
+    private readonly Member property = property;
+    private readonly Type componentType = componentEntityType;
     private ExternalComponentMapping mergedComponent;
-    private Type containingEntityType;
-
-    public ReferenceComponentMapping(ComponentType componentType, Member property, Type componentEntityType, Type containingEntityType, string columnPrefix)
-    {
-        ComponentType = componentType;
-        this.property = property;
-        this.componentType = componentEntityType;
-        this.containingEntityType = containingEntityType;
-        ColumnPrefix = columnPrefix;
-    }
+    private Type containingEntityType = containingEntityType;
 
     public void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -112,7 +104,7 @@ public class ReferenceComponentMapping : IComponentMapping
 
     public bool HasColumnPrefix => !string.IsNullOrEmpty(ColumnPrefix);
 
-    public string ColumnPrefix { get; set; }
+    public string ColumnPrefix { get; set; } = columnPrefix;
 
     public bool Insert => mergedComponent.Insert;
 

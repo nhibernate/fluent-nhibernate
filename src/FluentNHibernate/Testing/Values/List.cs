@@ -6,15 +6,10 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Testing.Values;
 
-public class List<T, TListElement> : Property<T, IEnumerable<TListElement>>
+public class List<T, TListElement>(Accessor property, IEnumerable<TListElement> value)
+    : Property<T, IEnumerable<TListElement>>(property, value)
 {
     private Action<T, Accessor, IEnumerable<TListElement>> _valueSetter;
-
-    public List(Accessor property, IEnumerable<TListElement> value)
-        : base(property, value)
-    {
-        Expected = value;
-    }
 
     public override Action<T, Accessor, IEnumerable<TListElement>> ValueSetter
     {
@@ -53,7 +48,7 @@ public class List<T, TListElement> : Property<T, IEnumerable<TListElement>>
         set => _valueSetter = value;
     }
 
-    protected IEnumerable<TListElement> Expected { get; }
+    protected IEnumerable<TListElement> Expected { get; } = value;
 
     public override void CheckValue(object target)
     {

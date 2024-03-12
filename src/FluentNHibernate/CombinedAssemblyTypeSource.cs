@@ -9,18 +9,13 @@ namespace FluentNHibernate;
 /// <summary>
 /// Provides types for mapping from multiple assemblies
 /// </summary>
-public class CombinedAssemblyTypeSource : ITypeSource
+public class CombinedAssemblyTypeSource(IEnumerable<AssemblyTypeSource> sources) : ITypeSource
 {
-    readonly AssemblyTypeSource[] sources;
+    readonly AssemblyTypeSource[] sources = sources.ToArray();
 
     public CombinedAssemblyTypeSource(IEnumerable<Assembly> sources)
         : this(sources.Select(x => new AssemblyTypeSource(x)))
     {}
-
-    public CombinedAssemblyTypeSource(IEnumerable<AssemblyTypeSource> sources)
-    {
-        this.sources = sources.ToArray();
-    }
 
     public IEnumerable<Type> GetTypes()
     {

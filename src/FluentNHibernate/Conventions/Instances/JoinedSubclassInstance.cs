@@ -7,16 +7,10 @@ using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class JoinedSubclassInstance : JoinedSubclassInspector, IJoinedSubclassInstance
+public class JoinedSubclassInstance(SubclassMapping mapping) : JoinedSubclassInspector(mapping), IJoinedSubclassInstance
 {
-    private readonly SubclassMapping mapping;
+    private readonly SubclassMapping mapping = mapping;
     private bool nextBool = true;
-
-    public JoinedSubclassInstance(SubclassMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public new IKeyInstance Key
     {

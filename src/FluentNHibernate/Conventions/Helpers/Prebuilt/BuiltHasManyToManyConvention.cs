@@ -5,9 +5,5 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
 
-internal class BuiltHasManyToManyConvention : BuiltConventionBase<IManyToManyCollectionInspector, IManyToManyCollectionInstance>, IHasManyToManyConvention, IHasManyToManyConventionAcceptance
-{
-    public BuiltHasManyToManyConvention(Action<IAcceptanceCriteria<IManyToManyCollectionInspector>> accept, Action<IManyToManyCollectionInstance> convention)
-        : base(accept, convention)
-    { }
-}
+internal class BuiltHasManyToManyConvention(Action<IAcceptanceCriteria<IManyToManyCollectionInspector>> accept, Action<IManyToManyCollectionInstance> convention)
+    : BuiltConventionBase<IManyToManyCollectionInspector, IManyToManyCollectionInstance>(accept, convention), IHasManyToManyConvention, IHasManyToManyConventionAcceptance;

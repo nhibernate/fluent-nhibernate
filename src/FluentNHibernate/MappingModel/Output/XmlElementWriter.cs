@@ -5,15 +5,10 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output;
 
-public class XmlElementWriter : NullMappingModelVisitor, IXmlWriter<ElementMapping>
+public class XmlElementWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<ElementMapping>
 {
-    private readonly IXmlWriterServiceLocator serviceLocator;
     private XmlDocument document;
-
-    public XmlElementWriter(IXmlWriterServiceLocator serviceLocator)
-    {
-        this.serviceLocator = serviceLocator;
-    }
 
     public XmlDocument Write(ElementMapping mappingModel)
     {

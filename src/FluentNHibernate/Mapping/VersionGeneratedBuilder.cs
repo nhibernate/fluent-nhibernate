@@ -2,17 +2,8 @@ using System;
 
 namespace FluentNHibernate.Mapping;
 
-public class VersionGeneratedBuilder<TParent>
+public class VersionGeneratedBuilder<TParent>(TParent parent, Action<string> setter)
 {
-    private readonly TParent parent;
-    private readonly Action<string> setter;
-
-    public VersionGeneratedBuilder(TParent parent, Action<string> setter)
-    {
-        this.parent = parent;
-        this.setter = setter;
-    }
-
     public TParent Always()
     {
         setter("always");

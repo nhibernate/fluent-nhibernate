@@ -4,15 +4,9 @@ using System.Reflection;
 
 namespace FluentNHibernate;
 
-internal sealed class DummyMethodInfo : MethodInfo
+internal sealed class DummyMethodInfo(string name, Type type) : MethodInfo
 {
-    public DummyMethodInfo(string name, Type type)
-    {
-        this.Name = name;
-        this.ReturnType = type;
-    }
-
-    public override Type ReturnType { get; }
+    public override Type ReturnType { get; } = type;
 
     public override object[] GetCustomAttributes(bool inherit)
     {
@@ -46,7 +40,7 @@ internal sealed class DummyMethodInfo : MethodInfo
 
     public override ICustomAttributeProvider ReturnTypeCustomAttributes => null;
 
-    public override string Name { get; }
+    public override string Name { get; } = name;
 
     public override Type DeclaringType => null;
 

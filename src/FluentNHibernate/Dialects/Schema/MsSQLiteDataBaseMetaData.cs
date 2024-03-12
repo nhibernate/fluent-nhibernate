@@ -3,12 +3,8 @@ using NHibernate.Dialect.Schema;
 
 namespace FluentNHibernate.Dialects.Schema;
 
-public class MsSQLiteDataBaseMetaData : SQLiteDataBaseMetaData
+public class MsSQLiteDataBaseMetaData(DbConnection connection, NHibernate.Dialect.Dialect dialect)
+    : SQLiteDataBaseMetaData(connection, dialect)
 {
-    public MsSQLiteDataBaseMetaData(DbConnection connection, NHibernate.Dialect.Dialect dialect)
-        : base(connection, dialect)
-    {
-    }
-
     public override bool IncludeDataTypesInReservedWords => false;
 }

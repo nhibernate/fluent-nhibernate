@@ -8,17 +8,12 @@ namespace FluentNHibernate.Visitors;
 
 public delegate void PairBiDirectionalManyToManySidesDelegate(CollectionMapping current, IEnumerable<CollectionMapping> possibles, bool wasResolved);
 
-public class RelationshipPairingVisitor : DefaultMappingModelVisitor
+public class RelationshipPairingVisitor(PairBiDirectionalManyToManySidesDelegate userControlledPair)
+    : DefaultMappingModelVisitor
 {
-    readonly PairBiDirectionalManyToManySidesDelegate userControlledPair;
     readonly List<CollectionMapping> manyToManys = new List<CollectionMapping>();
     readonly List<CollectionMapping> oneToManys = new List<CollectionMapping>();
     readonly List<ManyToOneMapping> references = new List<ManyToOneMapping>();
-
-    public RelationshipPairingVisitor(PairBiDirectionalManyToManySidesDelegate userControlledPair)
-    {
-        this.userControlledPair = userControlledPair;
-    }
 
     public override void Visit(IEnumerable<HibernateMapping> mappings)
     {

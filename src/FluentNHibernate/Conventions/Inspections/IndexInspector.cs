@@ -6,15 +6,9 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class IndexInspector : IIndexInspector
+public class IndexInspector(IndexMapping mapping) : IIndexInspector
 {
     private readonly InspectorModelMapper<IIndexInspector, IndexMapping> mappedProperties = new InspectorModelMapper<IIndexInspector, IndexMapping>();
-    private readonly IndexMapping mapping;
-
-    public IndexInspector(IndexMapping mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public Type EntityType => mapping.ContainingEntityType;
 

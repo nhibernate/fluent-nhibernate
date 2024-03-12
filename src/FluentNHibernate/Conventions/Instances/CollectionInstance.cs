@@ -7,18 +7,12 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances;
 #pragma warning disable 612,618
-public class CollectionInstance : CollectionInspector, ICollectionInstance,
+public class CollectionInstance(CollectionMapping mapping) : CollectionInspector(mapping), ICollectionInstance,
     IArrayInstance, IBagInstance, IListInstance, IMapInstance, ISetInstance
 #pragma warning restore 612,618
 {
-    readonly CollectionMapping mapping;
+    readonly CollectionMapping mapping = mapping;
     protected bool nextBool = true;
-
-    public CollectionInstance(CollectionMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public new IRelationshipInstance Relationship
     {

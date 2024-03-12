@@ -11,11 +11,6 @@ public class GeneratorMapping : MappingBase
 {
     readonly AttributeStore attributes = new AttributeStore();
 
-    public GeneratorMapping()
-    {
-        Params = new Dictionary<string, string>();
-    }
-
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
         visitor.ProcessGenerator(this);
@@ -23,7 +18,7 @@ public class GeneratorMapping : MappingBase
 
     public string Class => attributes.GetOrDefault<string>("Class");
 
-    public IDictionary<string, string> Params { get; }
+    public IDictionary<string, string> Params { get; } = new Dictionary<string, string>();
     public Type ContainingEntityType { get; set; }
 
     public bool Equals(GeneratorMapping other)

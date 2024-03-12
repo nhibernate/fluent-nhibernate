@@ -11,17 +11,9 @@ using NHibernate.Type;
 
 namespace FluentNHibernate.Automapping.Steps;
 
-public class PropertyStep : IAutomappingStep
+public class PropertyStep(IConventionFinder conventionFinder, IAutomappingConfiguration cfg)
+    : IAutomappingStep
 {
-    private readonly IConventionFinder conventionFinder;
-    private readonly IAutomappingConfiguration cfg;
-
-    public PropertyStep(IConventionFinder conventionFinder, IAutomappingConfiguration cfg)
-    {
-        this.conventionFinder = conventionFinder;
-        this.cfg = cfg;
-    }
-
     public bool ShouldMap(Member member)
     {
         if (HasExplicitTypeConvention(member))

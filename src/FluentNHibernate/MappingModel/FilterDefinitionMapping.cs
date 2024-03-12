@@ -8,21 +8,15 @@ using NHibernate.Type;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class FilterDefinitionMapping : MappingBase
+public class FilterDefinitionMapping(AttributeStore attributes) : MappingBase
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public FilterDefinitionMapping()
         : this(new AttributeStore())
     { }
 
-    public FilterDefinitionMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-        Parameters = new Dictionary<string, IType>();
-    }
-
-    public IDictionary<string, IType> Parameters { get; }
+    public IDictionary<string, IType> Parameters { get; } = new Dictionary<string, IType>();
 
     public string Name => attributes.GetOrDefault<string>("Name");
 

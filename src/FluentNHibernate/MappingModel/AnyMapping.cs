@@ -8,9 +8,9 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class AnyMapping : MappingBase
+public class AnyMapping(AttributeStore attributes) : MappingBase
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
     readonly LayeredColumns typeColumns = new LayeredColumns();
     readonly LayeredColumns identifierColumns = new LayeredColumns();
     readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
@@ -18,11 +18,6 @@ public class AnyMapping : MappingBase
     public AnyMapping()
         : this(new AttributeStore())
     {}
-
-    public AnyMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

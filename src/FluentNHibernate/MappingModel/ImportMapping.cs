@@ -4,18 +4,13 @@ using System;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class ImportMapping : MappingBase
+public class ImportMapping(AttributeStore attributes) : MappingBase
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public ImportMapping()
         : this(new AttributeStore())
     {}
-
-    public ImportMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

@@ -7,15 +7,8 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping;
 
-public abstract class ClasslikeMapBase<T>
+public abstract class ClasslikeMapBase<T>(MappingProviderStore providers)
 {
-    readonly MappingProviderStore providers;
-
-    protected ClasslikeMapBase(MappingProviderStore providers)
-    {
-        this.providers = providers;
-    }
-
     /// <summary>
     /// Called when a member is mapped by a builder method.
     /// </summary>

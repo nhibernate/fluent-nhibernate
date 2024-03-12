@@ -7,17 +7,10 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class DynamicComponentInstance : DynamicComponentInspector, IDynamicComponentInstance
+public class DynamicComponentInstance(ComponentMapping mapping)
+    : DynamicComponentInspector(mapping), IDynamicComponentInstance
 {
-    private readonly ComponentMapping mapping;
-    private bool nextBool;
-
-    public DynamicComponentInstance(ComponentMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-        nextBool = true;
-    }
+    private bool nextBool = true;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public IDynamicComponentInstance Not

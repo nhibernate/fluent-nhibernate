@@ -14,13 +14,8 @@ namespace FluentNHibernate.Testing.Testing;
 public class XmlWriterTestHelper<TMappingType>
     where TMappingType : IMapping
 {
-    readonly IList<XmlTest> tests;
+    readonly IList<XmlTest> tests = new List<XmlTest>();
     Func<TMappingType> constructor;
-
-    public XmlWriterTestHelper()
-    {
-        tests = new List<XmlTest>();
-    }
 
     public XmlTest Check(Expression<Func<TMappingType, object>> sourceProperty, object value)
     {
@@ -54,20 +49,11 @@ public class XmlWriterTestHelper<TMappingType>
         }
     }
 
-    public class XmlTest
+    public class XmlTest(Expression<Func<TMappingType, object>> sourceProperty, object value)
     {
-        readonly IDictionary<string, object> checks;
-        readonly Accessor sourceProperty;
-        readonly object sourceValue;
-        readonly Member member;
-
-        public XmlTest(Expression<Func<TMappingType, object>> sourceProperty, object value)
-        {
-            checks = new Dictionary<string, object>();
-            member = sourceProperty.ToMember();
-            this.sourceProperty = ReflectionHelper.GetAccessor(sourceProperty);
-            sourceValue = value;
-        }
+        readonly IDictionary<string, object> checks = new Dictionary<string, object>();
+        readonly Accessor sourceProperty = ReflectionHelper.GetAccessor(sourceProperty);
+        readonly Member member = sourceProperty.ToMember();
 
         public XmlTest MapsToAttribute(string attributeName, object value)
         {
@@ -77,13 +63,13 @@ public class XmlWriterTestHelper<TMappingType>
 
         public XmlTest MapsToAttribute(string attributeName)
         {
-            checks[attributeName] = sourceValue;
+            checks[attributeName] = value;
             return this;
         }
 
         internal void ApplyToSource(TMappingType mapping)
         {
-            mapping.Set(member.Name, Layer.Defaults, sourceValue);
+            mapping.Set(member.Name, Layer.Defaults, value);
         }
 
         internal void Check(XmlDocument document)
@@ -99,7 +85,7 @@ public class XmlWriterTestHelper<TMappingType>
                     document.OutputXmlToConsole();
 
                 Assert.That(areEqual,
-                    $"Property '{sourceProperty.InnerMember.MemberInfo.ReflectedType?.Name}.{sourceProperty.Name}' was set to '{sourceValue}' " +
+                    $"Property '{sourceProperty.InnerMember.MemberInfo.ReflectedType?.Name}.{sourceProperty.Name}' was set to '{value}' " +
                     $"and was expected to be written to attribute '{check.Key}' with value '{check.Value}'. " +
                     $"The value was instead '{attributeValue}'");
                 //string.Equals()

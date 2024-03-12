@@ -5,15 +5,9 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class IndexInstance : IndexInspector, IIndexInstance
+public class IndexInstance(IndexMapping mapping) : IndexInspector(mapping), IIndexInstance
 {
-    private readonly IndexMapping mapping;
-
-    public IndexInstance(IndexMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    private readonly IndexMapping mapping = mapping;
 
     /// <summary>
     /// Adds a column to the index if columns have not yet been specified

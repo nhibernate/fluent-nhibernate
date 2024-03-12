@@ -16,13 +16,8 @@ public class PersistenceSpecificationTester
         public long Id { get; set; }
         public string Name { get; set; }
         public Kitten FirstKitten { get; set; }
-        public IList<Kitten> AllKittens { get; set; }
+        public IList<Kitten> AllKittens { get; set; } = new List<Kitten>();
         public Bitmap Picture { get; set; }
-
-        public Cat()
-        {
-            AllKittens = new List<Kitten>();
-        }
 
         public IEnumerable<Kitten> EnumerableOfKittens => AllKittens;
 

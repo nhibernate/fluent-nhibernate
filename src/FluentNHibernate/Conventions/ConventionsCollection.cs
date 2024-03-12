@@ -53,16 +53,10 @@ public class ConventionsCollection : IEnumerable<Type>
         get { return inner.Find(x => x.Type == type).GetInstances(); }
     }
 
-    private class AddedConvention
+    private class AddedConvention(Type type)
     {
-        public IList<object> Instances { get; }
-        public Type Type { get; }
-
-        public AddedConvention(Type type)
-        {
-            Type = type;
-            Instances = new List<object>();
-        }
+        public IList<object> Instances { get; } = new List<object>();
+        public Type Type { get; } = type;
 
         public IEnumerable<object> GetInstances()
         {

@@ -13,6 +13,5 @@ public class BuiltProxyConvention : ProxyConvention
 
     protected BuiltProxyConvention(Func<Type, Type> mapPersistentTypeToProxyInterfaceType, Func<Type, Type> mapProxyInterfaceTypeToPersistentType) : base(mapPersistentTypeToProxyInterfaceType, mapProxyInterfaceTypeToPersistentType)
     {
-            
     }
 }

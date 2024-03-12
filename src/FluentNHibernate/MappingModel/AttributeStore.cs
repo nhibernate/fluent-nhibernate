@@ -7,12 +7,7 @@ namespace FluentNHibernate.MappingModel;
 [Serializable]
 public class AttributeStore
 {
-    readonly AttributeLayeredValues layeredValues;
-
-    public AttributeStore()
-    {
-        layeredValues = new AttributeLayeredValues();
-    }
+    readonly AttributeLayeredValues layeredValues = new();
 
     public object Get(string property)
     {

@@ -5,16 +5,11 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output;
 
-public class XmlCollectionWriter : NullMappingModelVisitor, IXmlWriter<CollectionMapping>
+public class XmlCollectionWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<CollectionMapping>
 {
-    private readonly IXmlWriterServiceLocator serviceLocator;
     private XmlDocument document;
     Collection collection;
-
-    public XmlCollectionWriter(IXmlWriterServiceLocator serviceLocator)
-    {
-        this.serviceLocator = serviceLocator;
-    }
 
     public XmlDocument Write(CollectionMapping mappingModel)
     {

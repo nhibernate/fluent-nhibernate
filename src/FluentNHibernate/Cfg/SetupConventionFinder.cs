@@ -6,23 +6,14 @@ using FluentNHibernate.Diagnostics;
 
 namespace FluentNHibernate.Cfg;
 
-public class SetupConventionFinder<TReturn> : IConventionFinder
+public class SetupConventionFinder<TReturn>(TReturn container, IConventionFinder conventionFinder) : IConventionFinder
 {
-    private readonly TReturn parent;
-    private readonly IConventionFinder conventionFinder;
-
-    public SetupConventionFinder(TReturn container, IConventionFinder conventionFinder)
-    {
-        parent = container;
-        this.conventionFinder = conventionFinder;
-    }
-
     ConventionsCollection IConventionFinder.Conventions => conventionFinder.Conventions;
 
     public TReturn AddSource(ITypeSource source)
     {
         conventionFinder.AddSource(source);
-        return parent;
+        return container;
     }
 
     void IConventionFinder.AddSource(ITypeSource source)
@@ -33,13 +24,13 @@ public class SetupConventionFinder<TReturn> : IConventionFinder
     public TReturn AddAssembly(Assembly assembly)
     {
         conventionFinder.AddAssembly(assembly);
-        return parent;
+        return container;
     }
 
     public TReturn AddFromAssemblyOf<T>()
     {
         conventionFinder.AddFromAssemblyOf<T>();
-        return parent;
+        return container;
     }
 
     void IConventionFinder.AddFromAssemblyOf<T>()
@@ -55,7 +46,7 @@ public class SetupConventionFinder<TReturn> : IConventionFinder
     public TReturn Add<T>() where T : IConvention
     {
         conventionFinder.Add<T>();
-        return parent;
+        return container;
     }
 
     void IConventionFinder.Add<T>()
@@ -71,7 +62,7 @@ public class SetupConventionFinder<TReturn> : IConventionFinder
     public TReturn Add<T>(T instance) where T : IConvention
     {
         conventionFinder.Add(instance);
-        return parent;
+        return container;
     }
 
     void IConventionFinder.Add(Type type)
@@ -82,7 +73,7 @@ public class SetupConventionFinder<TReturn> : IConventionFinder
     public TReturn Add(Type type)
     {
         conventionFinder.Add(type);
-        return parent;
+        return container;
     }
 
     void IConventionFinder.Add<T>(T instance)
@@ -97,13 +88,13 @@ public class SetupConventionFinder<TReturn> : IConventionFinder
             conventionFinder.Add(instance.GetType(), instance);
         }
 
-        return parent;
+        return container;
     }
 
     public TReturn Setup(Action<IConventionFinder> setupAction)
     {
         setupAction(this);
-        return parent;
+        return container;
     }
 
     public IEnumerable<T> Find<T>() where T : IConvention
