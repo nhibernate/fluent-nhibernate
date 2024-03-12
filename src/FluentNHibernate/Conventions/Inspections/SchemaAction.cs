@@ -1,6 +1,8 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class SchemaAction
+public class SchemaAction : IEquatable<SchemaAction>
 {
     public static readonly SchemaAction Unset = new SchemaAction("");
     public static readonly SchemaAction Drop = new SchemaAction("drop");

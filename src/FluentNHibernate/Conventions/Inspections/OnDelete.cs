@@ -1,6 +1,8 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class OnDelete
+public class OnDelete : IEquatable<OnDelete>
 {
     public static readonly OnDelete Unset = new OnDelete("");
     public static readonly OnDelete Cascade = new OnDelete("cascade");

@@ -7,7 +7,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public class IndexManyToManyMapping(AttributeStore attributes) : MappingBase, IIndexMapping, IHasColumnMappings
+public class IndexManyToManyMapping(AttributeStore attributes) : MappingBase, IIndexMapping, IHasColumnMappings, IEquatable<IndexManyToManyMapping>
 {
     readonly AttributeStore attributes = attributes;
     readonly LayeredColumns columns = new LayeredColumns();

@@ -7,7 +7,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-internal class MappedMembers : IMapping, IHasMappedMembers
+internal class MappedMembers : IMapping, IHasMappedMembers, IEquatable<MappedMembers>
 {
     public enum MappingType {
         Property,

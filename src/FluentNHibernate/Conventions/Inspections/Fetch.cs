@@ -1,6 +1,8 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class Fetch
+public class Fetch : IEquatable<Fetch>
 {
     public static readonly Fetch Unset = new Fetch("");
     public static readonly Fetch Select = new Fetch("select");

@@ -9,7 +9,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class JoinMapping(AttributeStore attributes) : IMapping
+public class JoinMapping(AttributeStore attributes) : IMapping, IEquatable<JoinMapping>
 {
     private readonly AttributeStore attributes = attributes;
 

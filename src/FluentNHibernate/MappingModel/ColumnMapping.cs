@@ -6,7 +6,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class ColumnMapping(AttributeStore attributes) : MappingBase
+public class ColumnMapping(AttributeStore attributes) : MappingBase, IEquatable<ColumnMapping>
 {
     readonly AttributeStore attributes = attributes;
 

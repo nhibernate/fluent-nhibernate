@@ -1,6 +1,8 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class OptimisticLock
+public class OptimisticLock : IEquatable<OptimisticLock>
 {
     public static readonly OptimisticLock Unset = new OptimisticLock("");
     public static readonly OptimisticLock None = new OptimisticLock("none");

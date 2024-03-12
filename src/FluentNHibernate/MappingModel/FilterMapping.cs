@@ -6,7 +6,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class FilterMapping(AttributeStore attributes) : IMapping
+public class FilterMapping(AttributeStore attributes) : IMapping, IEquatable<FilterMapping>
 {
     readonly AttributeStore attributes = attributes;
 

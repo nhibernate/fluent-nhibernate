@@ -1,6 +1,8 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class Generated
+public class Generated : IEquatable<Generated>
 {
     /// <summary>
     /// Use the default value.

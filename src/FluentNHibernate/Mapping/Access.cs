@@ -3,7 +3,7 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Mapping;
 
-public class Access
+public class Access : IEquatable<Access>
 {
     public static readonly Access Unset = new Access("");
     public static readonly Access Field = new Access("field");

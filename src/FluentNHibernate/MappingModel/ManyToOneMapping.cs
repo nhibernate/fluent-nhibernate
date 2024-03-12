@@ -8,7 +8,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class ManyToOneMapping(AttributeStore attributes) : MappingBase, IHasColumnMappings, IRelationship
+public class ManyToOneMapping(AttributeStore attributes) : MappingBase, IHasColumnMappings, IRelationship, IEquatable<ManyToOneMapping>
 {
     readonly AttributeStore attributes = attributes;
     readonly LayeredColumns columns = new LayeredColumns();

@@ -1,6 +1,8 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class Cascade
+public class Cascade : IEquatable<Cascade>
 {
     public static readonly Cascade Unset = new Cascade("");
     public static readonly Cascade All = new Cascade("all");

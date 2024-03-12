@@ -2,7 +2,7 @@
 
 namespace FluentNHibernate.Diagnostics;
 
-public class SkippedAutomappingType
+public class SkippedAutomappingType : IEquatable<SkippedAutomappingType>
 {
     public Type Type { get; set; }
     public string Reason { get; set; }

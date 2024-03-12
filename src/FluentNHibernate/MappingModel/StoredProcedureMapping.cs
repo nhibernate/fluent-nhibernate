@@ -6,7 +6,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class StoredProcedureMapping : MappingBase
+public class StoredProcedureMapping : MappingBase, IEquatable<StoredProcedureMapping>
 {
     private readonly AttributeStore attributes;
 

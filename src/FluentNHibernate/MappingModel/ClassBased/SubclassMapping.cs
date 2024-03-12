@@ -6,7 +6,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.ClassBased;
 
 [Serializable]
-public class SubclassMapping(SubclassType subclassType, AttributeStore attributes) : ClassMappingBase(attributes)
+public class SubclassMapping(SubclassType subclassType, AttributeStore attributes) : ClassMappingBase(attributes), IEquatable<SubclassMapping>
 {
     public SubclassType SubclassType { get; } = subclassType;
     AttributeStore attributes = attributes;

@@ -1,6 +1,8 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class Polymorphism
+public class Polymorphism : IEquatable<Polymorphism>
 {
     public static readonly Polymorphism Unset = new Polymorphism("");
     public static readonly Polymorphism Implicit = new Polymorphism("implicit");

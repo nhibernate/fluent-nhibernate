@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public class AttributeLayeredValues: ISerializable
+public class AttributeLayeredValues: ISerializable, IEquatable<AttributeLayeredValues>
 {
     readonly Dictionary<string, LayeredValues> inner;
 

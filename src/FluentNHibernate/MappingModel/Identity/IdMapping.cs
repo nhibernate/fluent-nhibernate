@@ -6,7 +6,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Identity;
 
 [Serializable]
-public class IdMapping(AttributeStore underlyingStore) : ColumnBasedMappingBase(underlyingStore), IIdentityMapping
+public class IdMapping(AttributeStore underlyingStore) : ColumnBasedMappingBase(underlyingStore), IIdentityMapping, IEquatable<IdMapping>
 {
     public IdMapping()
         : this(new AttributeStore())

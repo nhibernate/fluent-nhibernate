@@ -7,7 +7,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public class CollectionMapping : MappingBase, IRelationship
+public class CollectionMapping : MappingBase, IRelationship, IEquatable<CollectionMapping>
 {
     readonly AttributeStore attributes;
     readonly IList<FilterMapping> filters = new List<FilterMapping>();

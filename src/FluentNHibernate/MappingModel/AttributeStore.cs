@@ -5,7 +5,7 @@ using FluentNHibernate.MappingModel.Collections;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class AttributeStore
+public class AttributeStore: IEquatable<AttributeStore>
 {
     readonly AttributeLayeredValues layeredValues = new();
 

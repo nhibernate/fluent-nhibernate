@@ -11,7 +11,7 @@ namespace FluentNHibernate.MappingModel.ClassBased;
 /// </summary>
 [Serializable]
 public class ReferenceComponentMapping(ComponentType componentType, Member property, Type componentEntityType, Type containingEntityType, string columnPrefix)
-    : IComponentMapping
+    : IComponentMapping, IEquatable<ReferenceComponentMapping>
 {
     public ComponentType ComponentType { get; set; } = componentType;
     private readonly Member property = property;
