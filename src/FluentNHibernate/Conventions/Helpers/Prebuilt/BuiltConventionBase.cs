@@ -5,9 +5,7 @@ using FluentNHibernate.Conventions.Inspections;
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
 
 [Multiple]
-public abstract class BuiltConventionBase<TInspector, TInstance>(
-    Action<IAcceptanceCriteria<TInspector>> accept,
-    Action<TInstance> convention)
+public abstract class BuiltConventionBase<TInspector, TInstance>(Action<IAcceptanceCriteria<TInspector>> accept, Action<TInstance> convention)
     where TInspector : IInspector
 {
     public void Accept(IAcceptanceCriteria<TInspector> acceptance)

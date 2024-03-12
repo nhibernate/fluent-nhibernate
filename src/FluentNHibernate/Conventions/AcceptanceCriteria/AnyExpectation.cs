@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria;
 public class AnyExpectation<TInspector>(IEnumerable<IAcceptanceCriteria<TInspector>> subCriteria) : IExpectation
     where TInspector : IInspector
 {
-    private readonly IList<IAcceptanceCriteria<TInspector>> subCriteria = new List<IAcceptanceCriteria<TInspector>>(subCriteria);
+    readonly List<IAcceptanceCriteria<TInspector>> subCriteria = subCriteria.ToList();
 
     public bool Matches(IInspector inspector)
     {

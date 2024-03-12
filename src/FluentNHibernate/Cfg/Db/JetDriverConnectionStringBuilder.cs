@@ -5,11 +5,10 @@ namespace FluentNHibernate.Cfg.Db;
 public class JetDriverConnectionStringBuilder : ConnectionStringBuilder
 {
     private string databaseFile;
+    // Default provider
     private string provider = "Microsoft.Jet.OLEDB.4.0";
     private string username;
     private string password;
-
-    // Default provider
 
     // Use Provider("Microsoft.ACE.OLEDB.12.0") for Access 2007 database
     public JetDriverConnectionStringBuilder Provider(string provider)

@@ -5,13 +5,12 @@ public class OracleConnectionStringBuilder : ConnectionStringBuilder
     private string instance;
     private string otherOptions;
     private string password;
+    // Port is pre-slugged as 1521 is the default Oracle port.
     private int port = 1521;
     private string server;
     private string username;
     private bool pooling;
     private string statementCacheSize;
-
-    // Port is pre-slugged as 1521 is the default Oracle port.
 
     /// <summary>
     /// Specifies the server to connect. This can be either the DNS name of the
